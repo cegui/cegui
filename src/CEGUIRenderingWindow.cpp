@@ -105,25 +105,6 @@ void RenderingWindow::setRotation(const Vector3& rotation)
 {
     d_rotation = rotation;
     d_geometry->setRotation(d_rotation);
-
-    if ((rotation.d_z != 0.0f) ||
-        (rotation.d_x != 0.0f) ||
-        (rotation.d_y != 0.0f))
-    {
-        // NB: I think it might be valuable to be able to "opt out" of this
-        // auto-enabling occurring, if for example you know you will not need
-        // hit-testing for rotated content.  Though it could also cause a lot of
-        // headaches and misunderstandings, hence the note rather than the
-        // implementation ;)
-        //
-        // Note also we do not ever worry about disabling this.  Doing
-        // this is again a headache since other windows attached to our owner
-        // might need it to remain enabled, and also, keep flicking this off and
-        // on could be a performance issue (depending on how the renderer is
-        // implemented)
-
-        d_owner->getRenderTarget().setDepthBufferEnabled(true);
-    }
 }
 
 //----------------------------------------------------------------------------//

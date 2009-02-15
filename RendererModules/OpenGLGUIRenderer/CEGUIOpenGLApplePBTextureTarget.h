@@ -55,7 +55,6 @@ public:
     void deactivate();
     // implementation of RenderTarget interface
     bool isImageryCache() const;
-    void setDepthBufferEnabled(const bool setting);
     // implementation of TextureTarget interface
     void clear();
     Texture& getTexture() const;
@@ -73,9 +72,6 @@ protected:
 
     //! Switch rendering to target what was active before the pbuffer was used.
     void disablePBuffer() const;
-
-    // overridden from OpenGLRenderTarget
-    float readZValue(const float x, const float y) const;
 
     //! The current pbuffer object used by this TextureTarget.
     CGLPBufferObj d_pbuffer;

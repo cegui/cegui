@@ -57,8 +57,10 @@ void OpenGLGeometryBuffer::draw() const
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(d_clipRect.d_left, vp[3] - d_clipRect.d_bottom,
-              d_clipRect.getWidth(), d_clipRect.getHeight());
+    glScissor(static_cast<GLint>(d_clipRect.d_left),
+              static_cast<GLint>(vp[3] - d_clipRect.d_bottom),
+              static_cast<GLint>(d_clipRect.getWidth()),
+              static_cast<GLint>(d_clipRect.getHeight()));
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -66,16 +68,6 @@ void OpenGLGeometryBuffer::draw() const
 
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixd(d_matrix);
-
-    // set-up arrays that we'll be using in the batches
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_SECONDARY_COLOR_ARRAY);
-    glDisableClientState(GL_INDEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_FOG_COORDINATE_ARRAY);
-    glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     // set up RenderEffect
     if (d_effect)

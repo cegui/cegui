@@ -54,14 +54,10 @@ public:
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
                         const Vector2& p_in, Vector2& p_out) const;
-    bool isDepthBufferEnabled();
 
 protected:
     //! helper that initialises the cached matrix
-    void updateMatrix() const;
-
-    //! read from depth buffer at point (x,y) and return the result.
-    virtual float readZValue(const float x, const float y) const;
+    virtual void updateMatrix() const;
 
     //! OpenGLRenderer that created this object
     OpenGLRenderer& d_owner;
@@ -73,9 +69,8 @@ protected:
     mutable double d_matrix[16];
     //! true if saved matrix is up to date
     mutable bool d_matrixValid;
-
-    //! specifies whether depth has been enabled on this target
-    bool d_depthEnabled;
+    //! tracks viewing distance (this is set up at the same time as d_matrix)
+    mutable double d_viewDistance;
 };
 
 } // End of  CEGUI namespace section

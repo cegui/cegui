@@ -56,7 +56,6 @@ public:
     void deactivate();
     // implementation of RenderTarget interface
     bool isImageryCache() const;
-    void setDepthBufferEnabled(const bool setting);
     // implementation of TextureTarget interface
     void clear();
     Texture& getTexture() const;
@@ -64,7 +63,7 @@ public:
 
 protected:
     //! default size of created texture objects
-    static const int DEFAULT_SIZE = 128;
+    static const float DEFAULT_SIZE;
 
     //! Initialise the PBuffer with the needed size
     void initialisePBuffer();
@@ -83,9 +82,6 @@ protected:
 
     //!Creates the context to use with the pbuffer.
     void createContext();
-
-    // overridden from OpenGLRenderTarget
-    float readZValue(const float x, const float y) const;
 
     //! X server display.
     Display* d_dpy;

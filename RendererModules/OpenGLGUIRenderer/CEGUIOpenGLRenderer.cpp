@@ -322,9 +322,17 @@ void OpenGLRenderer::beginRendering()
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_ALWAYS);
+
+    // enable arrays that we'll be using in the batches
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_SECONDARY_COLOR_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_FOG_COORDINATE_ARRAY);
+    glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     // if enabled, restores a subset of the GL state back to default values.
     if (d_initExtraStates)

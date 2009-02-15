@@ -63,7 +63,6 @@ public:
     void deactivate();
     // implementation of RenderTarget interface
     bool isImageryCache() const;
-    void setDepthBufferEnabled(const bool setting);
     // implementation of TextureTarget interface
     void clear();
     Texture& getTexture() const;
@@ -87,9 +86,6 @@ protected:
 
     //! Perform basic initialisation of the texture we're going to use.
     void initialiseTexture();
-
-    // overridden from OpenGLRenderTarget
-    float readZValue(const float x, const float y) const;
 
     //! Holds the pixel format we use when creating the pbuffer.
     int d_pixfmt;

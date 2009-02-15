@@ -141,8 +141,9 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    buffer_size.d_width, buffer_size.d_height, format,
-                    GL_UNSIGNED_BYTE, buffer);
+                    static_cast<GLsizei>(buffer_size.d_width),
+                    static_cast<GLsizei>(buffer_size.d_height),
+                    format, GL_UNSIGNED_BYTE, buffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -171,8 +172,10 @@ void OpenGLTexture::setTextureSize(const Size& sz)
 
     // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.d_width, size.d_height, 0,
-                 GL_RGBA , GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+                 static_cast<GLsizei>(size.d_width),
+                 static_cast<GLsizei>(size.d_height),
+                 0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
 
     d_dataSize = d_size = size;
     updateCachedScaleValues();
@@ -198,7 +201,9 @@ void OpenGLTexture::restoreTexture()
         generateOpenGLTexture();
 
         // reload the saved image data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, d_size.d_width, d_size.d_height,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                     static_cast<GLsizei>(d_size.d_width),
+                     static_cast<GLsizei>(d_size.d_height),
                      0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
 
         // free the grabbuffer

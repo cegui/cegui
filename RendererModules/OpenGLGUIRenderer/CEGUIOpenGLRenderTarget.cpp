@@ -29,6 +29,7 @@
 #include "CEGUIRenderQueue.h"
 #include "CEGUIOpenGLGeometryBuffer.h"
 #include "CEGUIOpenGL.h"
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,8 +41,7 @@ const double OpenGLRenderTarget::d_yfov_tan = 0.267949192431123;
 OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_matrixValid(false),
-    d_depthEnabled(false)
+    d_matrixValid(false)
 {
 }
 
@@ -78,10 +78,6 @@ void OpenGLRenderTarget::activate()
                static_cast<GLsizei>(d_area.getWidth()),
                static_cast<GLsizei>(d_area.getHeight()));
 
-    // activate depth if needed
-    if (d_depthEnabled)
-        glEnable(GL_DEPTH_TEST);
-
     if (!d_matrixValid)
         updateMatrix();
 
@@ -92,50 +88,88 @@ void OpenGLRenderTarget::activate()
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::deactivate()
 {
-    // reset depth buffer state setting
-    if (d_depthEnabled)
-        glDisable(GL_DEPTH_TEST);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const Vector2& p_in, Vector2& p_out) const
 {
-    // With no depth values, you get no unprojected points...
-    if (!d_depthEnabled)
-    {
-        p_out = p_in;
-        return;
-    }
-
     if (!d_matrixValid)
         updateMatrix();
 
-    const GLint vp[4] =
-        { d_area.d_left, d_area.d_top, d_area.getWidth(), d_area.getHeight() };
+    const OpenGLGeometryBuffer& gb =
+        static_cast<const OpenGLGeometryBuffer&>(buff);
 
-    GLfloat ix = p_in.d_x;
-    GLfloat iy = vp[3] - p_in.d_y;
-    GLfloat iz = readZValue(ix, iy);
+    const GLint vp[4] = {
+        static_cast<GLint>(d_area.d_left),
+        static_cast<GLint>(d_area.d_top),
+        static_cast<GLint>(d_area.getWidth()),
+        static_cast<GLint>(d_area.getHeight())
+    };
 
-    double ox, oy, oz;
+    GLdouble in_x, in_y, in_z = 0.0;
 
-    gluUnProject(ix, iy, iz,
-                 static_cast<const OpenGLGeometryBuffer&>(buff).getMatrix(),
-                 d_matrix,
-                 vp,
-                 &ox, &oy, &oz);
+    // unproject the ends of the ray
+    GLdouble r1_x, r1_y, r1_z;
+    GLdouble r2_x, r2_y, r2_z;
+    in_x = vp[2] * 0.5;
+    in_y = vp[3] * 0.5;
+    in_z = -d_viewDistance;
+    gluUnProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
+                 &r1_x, &r1_y, &r1_z);
+    in_x = p_in.d_x;
+    in_y = vp[3] - p_in.d_y;
+    in_z = 0.0;
+    gluUnProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
+                 &r2_x, &r2_y, &r2_z);
 
-    p_out.d_x = ox;
-    p_out.d_y = oy;
-}
+    // project points to orientate them with GeometryBuffer plane
+    GLdouble p1_x, p1_y, p1_z;
+    GLdouble p2_x, p2_y, p2_z;
+    GLdouble p3_x, p3_y, p3_z;
+    in_x = 0.0;
+    in_y = 0.0;
+    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
+               &p1_x, &p1_y, &p1_z);
+    in_x = 1.0;
+    in_y = 0.0;
+    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
+               &p2_x, &p2_y, &p2_z);
+    in_x = 0.0;
+    in_y = 1.0;
+    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
+               &p3_x, &p3_y, &p3_z);
 
-//----------------------------------------------------------------------------//
-float OpenGLRenderTarget::readZValue(const float x, const float y) const
-{
-    float z;
-    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-    return z;
+    // calculate vectors for generating the plane
+    const double pv1_x = p2_x - p1_x;
+    const double pv1_y = p2_y - p1_y;
+    const double pv1_z = p2_z - p1_z;
+    const double pv2_x = p3_x - p1_x;
+    const double pv2_y = p3_y - p1_y;
+    const double pv2_z = p3_z - p1_z;
+    // given the vectors, calculate the plane normal
+    const double pn_x = pv1_y * pv2_z - pv1_z * pv2_y;
+    const double pn_y = pv1_z * pv2_x - pv1_x * pv2_z;
+    const double pn_z = pv1_x * pv2_y - pv1_y * pv2_x;
+    // calculate plane
+    const double pn_len = std::sqrt(pn_x * pn_x + pn_y * pn_y + pn_z * pn_z);
+    const double pl_a = pn_x / pn_len;
+    const double pl_b = pn_y / pn_len;
+    const double pl_c = pn_z / pn_len;
+    const double pl_d = -(p1_x * pl_a + p1_y * pl_b + p1_z * pl_c);
+    // calculate vector of picking ray
+    const double rv_x = r1_x - r2_x;
+    const double rv_y = r1_y - r2_y;
+    const double rv_z = r1_z - r2_z;
+    // calculate intersection of ray and plane
+    const double pn_dot_r1 = (r1_x * pn_x + r1_y * pn_y + r1_z * pn_z);
+    const double pn_dot_rv = (rv_x * pn_x + rv_y * pn_y + rv_z * pn_z);
+    const double tmp1 = pn_dot_rv != 0.0 ? (pn_dot_r1 + pl_d) / pn_dot_rv : 0.0;
+    const double is_x = r1_x - rv_x * tmp1;
+    const double is_y = r1_y - rv_y * tmp1;
+
+    p_out.d_x = static_cast<float>(is_x);
+    p_out.d_y = static_cast<float>(is_y);
 }
 
 //----------------------------------------------------------------------------//
@@ -146,24 +180,19 @@ void OpenGLRenderTarget::updateMatrix() const
     const double aspect = w / h;
     const double midx = w * 0.5;
     const double midy = h * 0.5;
-    const double dist = midx / (aspect * d_yfov_tan);
+    d_viewDistance = midx / (aspect * d_yfov_tan);
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluPerspective(30.0, aspect, dist * 0.5, dist+dist);
+    gluPerspective(30.0, aspect, d_viewDistance * 0.5, d_viewDistance * 2.0);
     // Projection matrix abuse!
-    gluLookAt(midx, midy, -dist, midx, midy, 1, 0, -1, 0);
+    gluLookAt(midx, midy, -d_viewDistance, midx, midy, 1, 0, -1, 0);
     glGetDoublev(GL_PROJECTION_MATRIX, d_matrix);
+    glTranslated(0.375, 0.375, 0);
     glPopMatrix();
 
     d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLRenderTarget::isDepthBufferEnabled()
-{
-    return d_depthEnabled;
 }
 
 //----------------------------------------------------------------------------//

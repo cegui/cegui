@@ -52,7 +52,6 @@ int pbAttrs[] =
     WGL_GREEN_BITS_ARB, 8,
     WGL_BLUE_BITS_ARB, 8,
     WGL_ALPHA_BITS_ARB, 8,
-    WGL_DEPTH_BITS_ARB, 24,
     0, 0
 };
 
@@ -105,7 +104,6 @@ void OpenGLWGLPBTextureTarget::activate()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_ALWAYS);
 
     OpenGLRenderTarget::activate();
 }
@@ -132,19 +130,11 @@ bool OpenGLWGLPBTextureTarget::isImageryCache() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLWGLPBTextureTarget::setDepthBufferEnabled(const bool setting)
-{
-    d_depthEnabled = setting;
-
-    // TODO: Fix this so depth buffer is created as needed.  Or not?!
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLWGLPBTextureTarget::clear()
 {
     enablePBuffer();
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     disablePBuffer();
 }
 
@@ -254,20 +244,6 @@ void OpenGLWGLPBTextureTarget::initialiseTexture()
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-}
-
-//----------------------------------------------------------------------------//
-float OpenGLWGLPBTextureTarget::readZValue(const float x, const float y) const
-{
-    enablePBuffer();
-
-    float z;
-    glReadPixels(static_cast<GLint>(x), static_cast<GLint>(y),
-                 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-
-    disablePBuffer();
-
-    return z;
 }
 
 //----------------------------------------------------------------------------//

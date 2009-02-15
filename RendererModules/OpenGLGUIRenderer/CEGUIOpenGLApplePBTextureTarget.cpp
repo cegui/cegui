@@ -46,8 +46,7 @@ static CGLPixelFormatAttribute fmtAttrs[] =
     kCGLPFAAccelerated,
     kCGLPFAPBuffer,
     kCGLPFAColorSize, static_cast<CGLPixelFormatAttribute>(24),
-    kCGLPFAAlphaSize, static_cast<CGLPixelFormatAttribute>(8),
-    kCGLPFADepthSize, static_cast<CGLPixelFormatAttribute>(24),
+    kCGLPFAAlphaSize, static_cast<CGLPixelFormatAttribute>(8)
     static_cast<CGLPixelFormatAttribute>(0)
 };
 
@@ -145,17 +144,11 @@ bool OpenGLApplePBTextureTarget::isImageryCache() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLApplePBTextureTarget::setDepthBufferEnabled(const bool setting)
-{
-    d_depthEnabled = setting;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::clear()
 {
     enablePBuffer();
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     disablePBuffer();
 }
 
@@ -236,20 +229,6 @@ void OpenGLApplePBTextureTarget::disablePBuffer() const
 {
     if (CGLGetCurrentContext() == d_context)
         CGLSetCurrentContext(d_prevContext);
-}
-
-//----------------------------------------------------------------------------//
-float OpenGLApplePBTextureTarget::readZValue(const float x, const float y) const
-{
-    enablePBuffer();
-
-    float z;
-    glReadPixels(static_cast<GLint>(x), static_cast<GLint>(y),
-                 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-
-    disablePBuffer();
-
-    return z;
 }
 
 //----------------------------------------------------------------------------//

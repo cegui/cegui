@@ -63,26 +63,5 @@ bool OpenGLViewportTarget::isImageryCache() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLViewportTarget::setDepthBufferEnabled(const bool setting)
-{
-    d_depthEnabled = setting;
-
-    // if disabling, do nothing more
-    if (!d_depthEnabled)
-        return;
-
-    GLint db;
-    glGetIntegerv(GL_DEPTH_BITS, &db);
-
-    if (db == 0)
-        throw InvalidRequestException(
-            "OpenGLViewportTarget::setDepthBufferEnabled - the display window "
-            "was created without depth buffer support!  In order to use "
-            "features that may need depth buffer support (such as rotation) "
-            "on the main display buffer, ensure your OpenGL window is "
-            "initially created with depth buffer support.");
-}
-
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

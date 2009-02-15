@@ -38,9 +38,11 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
+
+//----------------------------------------------------------------------------//
 OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
     OpenGLRenderTarget(owner),
-    d_depthBuffer(0),
     d_texture(0)
 {
     if (!GLEW_EXT_framebuffer_object)
@@ -61,7 +63,6 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
 OpenGLFBOTextureTarget::~OpenGLFBOTextureTarget()
 {
     glDeleteFramebuffersEXT(1, &d_frameBuffer);
-    glDeleteRenderbuffersEXT(1, &d_depthBuffer);
     d_owner.destroyTexture(*d_CEGUITexture);
 }
 
@@ -107,7 +108,7 @@ void OpenGLFBOTextureTarget::clear()
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
     // Clear it.
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     // switch back to rendering to view port
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
@@ -158,56 +159,10 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
-    // if we have a depth buffer, set it to required size also
-    if (d_depthBuffer)
-    {
-        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, d_depthBuffer);
-        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24,
-                                static_cast<GLsizei>(d_area.d_right),
-                                static_cast<GLsizei>(d_area.d_bottom));
-    }
-
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
 }
 
 //----------------------------------------------------------------------------//
-float OpenGLFBOTextureTarget::readZValue(const float x, const float y) const
-{
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
-
-    float z;
-    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
-    return z;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::setDepthBufferEnabled(const bool setting)
-{
-    d_depthEnabled = setting;
-
-    if (d_depthEnabled && !d_depthBuffer)
-    {
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
-        initialiseDepthBuffer();
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::initialiseDepthBuffer()
-{
-    // setup depth buffer
-    glGenRenderbuffersEXT(1, &d_depthBuffer);
-    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, d_depthBuffer);
-    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24,
-                             static_cast<GLsizei>(d_area.d_right),
-                             static_cast<GLsizei>(d_area.d_bottom));
-    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
-                                 GL_RENDERBUFFER_EXT, d_depthBuffer);
-}
 
 } // End of  CEGUI namespace section

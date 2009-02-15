@@ -39,6 +39,9 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const float OpenGLGLXPBTextureTarget::DEFAULT_SIZE = 128.0f;
+
+//----------------------------------------------------------------------------//
 // internal attribute array used to get pbuffer configs
 int pbAttrs[] =
 {
@@ -48,7 +51,6 @@ int pbAttrs[] =
     GLX_GREEN_SIZE, 8,
     GLX_BLUE_SIZE, 8,
     GLX_ALPHA_SIZE, 8,
-    GLX_DEPTH_SIZE, 24,
     None
 };
 
@@ -124,19 +126,11 @@ bool OpenGLGLXPBTextureTarget::isImageryCache() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGLXPBTextureTarget::setDepthBufferEnabled(const bool setting)
-{
-    d_depthEnabled = setting;
-
-    // TODO: Fix this so depth buffer is created as needed.  Or not?!
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGLXPBTextureTarget::clear()
 {
     enablePBuffer();
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     disablePBuffer();
 }
 
@@ -245,19 +239,6 @@ void OpenGLGLXPBTextureTarget::createContext()
     if (!d_context)
         throw RendererException("OpenGLGLXPBTextureTarget::createContext - "
             "Failed to create GLX context for pbuffer.");
-}
-
-//----------------------------------------------------------------------------//
-float OpenGLGLXPBTextureTarget::readZValue(const float x, const float y) const
-{
-    enablePBuffer();
-
-    float z;
-    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z);
-
-    disablePBuffer();
-
-    return z;
 }
 
 //----------------------------------------------------------------------------//
