@@ -242,5 +242,11 @@ void OpenGLGLXPBTextureTarget::createContext()
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLGLXPBTextureTarget::isRenderingInverted() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

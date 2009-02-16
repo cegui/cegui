@@ -77,6 +77,22 @@ public:
         operations rendering content of the given size.
     */
     virtual void declareRenderSize(const Size& sz) = 0;
+
+    /*!
+    \brief
+        Return whether rendering done on the target texture is inverted in
+        relation to regular textures.
+
+        This is intended to be used when generating geometry for rendering the
+        TextureTarget onto another surface.
+
+    \return
+        - true if the texture content should be considered as inverted
+        vertically in comparison with other regular textures.
+        - false if the texture content has the same orientation as regular
+        textures.
+    */
+    virtual bool isRenderingInverted() const = 0;
 };
 
 } // End of  CEGUI namespace section

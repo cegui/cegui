@@ -247,5 +247,11 @@ void OpenGLWGLPBTextureTarget::initialiseTexture()
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLWGLPBTextureTarget::isRenderingInverted() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

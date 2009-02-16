@@ -232,5 +232,11 @@ void OpenGLApplePBTextureTarget::disablePBuffer() const
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLApplePBTextureTarget::isRenderingInverted() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

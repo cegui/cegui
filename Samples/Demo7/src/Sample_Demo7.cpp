@@ -88,7 +88,9 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
     const float tcx = qw * tex.getTexelScaling().d_x;
-    const float tcy = -qh * tex.getTexelScaling().d_y;
+    const float tcy =
+        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
+            tex.getTexelScaling().d_y;
 
     for (int j = 0; j < tess_y; ++j)
     {

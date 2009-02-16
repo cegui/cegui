@@ -164,5 +164,11 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLFBOTextureTarget::isRenderingInverted() const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
