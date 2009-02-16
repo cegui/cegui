@@ -2,7 +2,7 @@
 -- DirectX9GUIRenderer premake script
 --
 
-cegui_dynamic("DirectX9GUIRenderer")
+cegui_dynamic("Direct3D9GUIRenderer")
 
 package.files =
 {
@@ -17,4 +17,4 @@ library("d3dx9", "d")
 
 dependency("CEGUIBase")
 
-define("DIRECTX9_GUIRENDERER_EXPORTS")
+define("DIRECT3D9_GUIRENDERER_EXPORTS")

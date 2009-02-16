@@ -24,9 +24,8 @@ CEGUI_LUA_VER = 51
 -- Renderers
 -- this controls which renderer modules are built
 OPENGL_RENDERER = true
-DIRECTX81_RENDERER = false
-DIRECTX9_RENDERER = true
-DIRECTX10_RENDERER = false
+DIRECT3D9_RENDERER = true
+DIRECT3D10_RENDERER = false
 IRRLICHT_RENDERER = false
 
 ----------------

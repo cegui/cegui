@@ -45,17 +45,9 @@ end
 
 if DIRECTX9_RENDERER and SAMPLES_DX9 then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("DirectX9GUIRenderer")
+        dependency("Direct3D9GUIRenderer")
     else
-        library("DirectX9GUIRenderer", DEBUG_DLL_SUFFIX or "")
-    end
-end
-
-if DIRECTX81_RENDERER and SAMPLES_DX81 then
-    if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("DirectX81GUIRenderer")
-    else
-        library("DirectX81GUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("Direct3D9GUIRenderer", DEBUG_DLL_SUFFIX or "")
     end
 end
 
