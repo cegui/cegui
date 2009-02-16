@@ -27,7 +27,8 @@ if CEGUI_SAMPLES_USE_OPENGL
                                       $(OpenGL_LIBS)
 endif
 
-EXTRA_DIST = DeviceReset_Direct3D10.cpp \
+EXTRA_DIST = CEGuiD3D9BaseApplication.cpp \
+             DeviceReset_Direct3D10.cpp \
              DeviceReset_Direct3D81.cpp \
              DeviceReset_Direct3D9.cpp \
              MacCEGuiRendererSelector.cpp \

@@ -55,7 +55,7 @@ EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUICoronaImageCodec-Info.plist \
              premake/ImageCodecModules/TGAImageCodec/premake.lua \
              premake/RendererModules/DirectX10GUIRenderer/premake.lua \
              premake/RendererModules/DirectX81GUIRenderer/premake.lua \
-             premake/RendererModules/DirectX9GUIRenderer/premake.lua \
+             premake/RendererModules/Direct3D9GUIRenderer/premake.lua \
              premake/RendererModules/IrrlichtRenderer/premake.lua \
              premake/RendererModules/OpenGLGUIRenderer/premake.lua \
              premake/Samples/TextDemo/premake.lua \

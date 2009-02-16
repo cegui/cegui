@@ -1,5 +1,6 @@
 noinst_HEADERS = CEGUISamplesConfig.h \
                  CEGuiBaseApplication.h \
+                 CEGuiD3D9BaseApplication.h \
                  CEGuiOpenGLBaseApplication.h \
                  CEGuiRendererSelector.h \
                  CEGuiSample.h \
