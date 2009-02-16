@@ -46,7 +46,7 @@ static CGLPixelFormatAttribute fmtAttrs[] =
     kCGLPFAAccelerated,
     kCGLPFAPBuffer,
     kCGLPFAColorSize, static_cast<CGLPixelFormatAttribute>(24),
-    kCGLPFAAlphaSize, static_cast<CGLPixelFormatAttribute>(8)
+    kCGLPFAAlphaSize, static_cast<CGLPixelFormatAttribute>(8),
     static_cast<CGLPixelFormatAttribute>(0)
 };
 
