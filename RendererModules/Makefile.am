@@ -1,4 +1,7 @@
 if BUILD_OPENGL_RENDERER
 OPENGL=OpenGLGUIRenderer
 endif
-SUBDIRS = . $(OPENGL) Direct3D9GUIRenderer
+if BUILD_OGRE_RENDERER
+OGRE=OgreGUIRenderer
+endif
+SUBDIRS = . $(OPENGL) $(OGRE) Direct3D9GUIRenderer

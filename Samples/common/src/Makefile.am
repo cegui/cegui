@@ -26,6 +26,12 @@ if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_LIBADD += $(top_builddir)/RendererModules/OpenGLGUIRenderer/libCEGUIOpenGLRenderer.la \
                                       $(OpenGL_LIBS)
 endif
+if CEGUI_SAMPLES_USE_OGRE
+    INCLUDES += $(Ogre_CFLAGS) $(OIS_CFLAGS)
+    libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/RendererModules/OgreGUIRenderer/libCEGUIOgreRenderer.la \
+                                      $(Ogre_LIBS) $(OIS_LIBS)
+endif
 
 EXTRA_DIST = CEGuiD3D9BaseApplication.cpp \
              DeviceReset_Direct3D10.cpp \

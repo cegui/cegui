@@ -316,40 +316,41 @@ to load a custom made image codec module as the default.]),
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
-    PKG_CHECK_MODULES(CEGUIOGRE, CEGUI-OGRE >= 1.4.0, [cegui_found_ogre_renderer=yes], [cegui_found_ogre_renderer=no])
-    PKG_CHECK_MODULES(CEGUI_NULL, CEGUI, [cegui_found_cegui=yes], [cegui_found_cegui=no])
-	PKG_CHECK_MODULES(OIS, OIS >= 1.0.0, [ois_found=yes],[ois_found=no])
+    AC_ARG_ENABLE([ogre-renderer], AC_HELP_STRING([--disable-ogre-renderer],
+                  [Disable building the Ogre renderer module]),
+                  [cegui_enable_ogre=$enableval], [cegui_enable_ogre=yes])
 
-    AC_ARG_WITH([ogre-renderer], AC_HELP_STRING([--without-ogre-renderer], [Disables the use of the Ogre3D renderer, when available, in samples]),
-                [cegui_with_ogre=$withval], [cegui_with_ogre=yes])
+    PKG_CHECK_MODULES(Ogre, OGRE >= 1.6.0, [cegui_found_ogre=yes], [cegui_found_ogre=no])
+    PKG_CHECK_MODULES(OIS, OIS >= 1.0.0, [cegui_found_ois=yes],[cegui_found_ois=no])
 
-
-	if test "x$ois_found" = "xno" ; then
-		cegui_samples_use_ogre=no
-		AC_MSG_NOTICE([
-****************************************************************
-* You do not have OIS installed.  This is required to build    *
-* Ogre CEGUI demos. You may find it at:                        *
-* http://www.sourceforge.net/projects/wgois.                   *
-* If you do not want to build the demos, you can safely ignore *
-* this.                                                        *
-****************************************************************])
-	fi
-
-    if test x$cegui_found_ogre_renderer = xyes && test x$cegui_found_cegui = xyes && test x$cegui_with_ogre = xyes && test x$ois_found = xyes; then
-        cegui_samples_use_ogre=yes
-        AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [], [Define to have the Ogre3D CEGUI renderer available in the samples])
-        AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
+    dnl decide if we will actually build the Ogre Renderer
+    if test x$cegui_enable_ogre = xyes && test x$cegui_found_ogre = xyes; then
+        cegui_enable_ogre=yes
     else
-        cegui_samples_use_ogre=no
-        AC_MSG_NOTICE([Use of Ogre3D in Samples is disabled])
+        cegui_enable_ogre=no
     fi
 
+    dnl see if we should use Ogre in the samples
+    if test x$cegui_enable_ogre = xyes; then
+        if test x$cegui_found_ois = xno; then
+            cegui_samples_use_ogre=no
+        else
+            cegui_samples_use_ogre=yes
+            AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [],
+                      [Define to have the Ogre renderer available in the samples])
+            AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
+        fi
+    else
+        cegui_samples_use_ogre=no
+        AC_MSG_NOTICE([Ogre renderer disabled])
+    fi
+
+    AM_CONDITIONAL([BUILD_OGRE_RENDERER], [test x$cegui_enable_ogre = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OGRE], [test x$cegui_samples_use_ogre = xyes])
-	AC_SUBST(OIS_CFLAGS)
-	AC_SUBST(OIS_LIBS)
-    AC_SUBST(CEGUIOGRE_CFLAGS)
-    AC_SUBST(CEGUIOGRE_LIBS)
+    AC_SUBST(Ogre_CFLAGS)
+    AC_SUBST(Ogre_LIBS)
+    AC_SUBST(OIS_CFLAGS)
+    AC_SUBST(OIS_LIBS)
 ])
 
 AC_DEFUN([CEGUI_ENABLE_DIRECTFB_RENDERER], [

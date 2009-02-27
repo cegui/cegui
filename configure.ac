@@ -88,6 +88,7 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
+CEGUI_ENABLE_OGRE_RENDERER
 
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
@@ -127,6 +128,13 @@ CEGUI_DIRECTFB_AGE=0
 CEGUI_DIRECTFB_VERSION_INFO=$CEGUI_DIRECTFB_CURRENT:$CEGUI_DIRECTFB_REVISION:$CEGUI_DIRECTFB_AGE
 AC_SUBST(CEGUI_DIRECTFB_VERSION_INFO)
 
+dnl versioning info for the Ogre renderer
+CEGUI_OGRE_CURRENT=0
+CEGUI_OGRE_REVISION=0
+CEGUI_OGRE_AGE=0
+CEGUI_OGRE_VERSION_INFO=$CEGUI_OGRE_CURRENT:$CEGUI_OGRE_REVISION:$CEGUI_OGRE_AGE
+AC_SUBST(CEGUI_OGRE_VERSION_INFO)
+
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
@@ -140,6 +148,7 @@ AC_CONFIG_FILES([Makefile
                  RendererModules/Makefile
                  RendererModules/OpenGLGUIRenderer/Makefile
                  RendererModules/Direct3D9GUIRenderer/Makefile
+                 RendererModules/OgreGUIRenderer/Makefile
                  Samples/Demo6/Makefile
                  Samples/Demo6/src/Makefile
                  Samples/Demo7/Makefile
@@ -214,6 +223,7 @@ echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
 echo "*             Using external GLEW library:              ${cegui_found_glew-no}"
+echo "*         Building Ogre Renderer:                       ${cegui_enable_ogre-no}"
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
 echo "*"

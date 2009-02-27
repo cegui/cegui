@@ -82,6 +82,10 @@ if IRRLICHT_RENDERER then
     tinsert(pkg_table.RendererModules, "IrrlichtRenderer")
 end
 
+if OGRE_RENDERER then
+    tinsert(pkg_table.RendererModules, "OgreGUIRenderer")
+end
+
 --
 -- Image codec modules
 --
