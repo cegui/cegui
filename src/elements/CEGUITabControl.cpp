@@ -500,7 +500,7 @@ void TabControl::onSelectionChanged(WindowEventArgs& e)
 /*************************************************************************
 Font changed event
 *************************************************************************/
-void TabControl::onFontChanged(WindowEventArgs& e)
+void TabControl::onFontChanged(WindowEventArgs&)
 {
     // Propagate font change to buttons
     for (size_t i = 0; i < d_tabButtonVector.size(); ++i)

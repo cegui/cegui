@@ -121,7 +121,7 @@ void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 /////   as input.
 /////
 ///////////////////////////////// LOAD TGA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
- TGAImageCodec::ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size)
+ TGAImageCodec::ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t /*buffer_size*/)
 {
     typedef unsigned char byte;
     

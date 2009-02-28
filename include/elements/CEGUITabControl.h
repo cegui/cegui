@@ -341,7 +341,7 @@ protected:
     \return
         Nothing
     */
-    virtual	void	drawSelf(float z) { /* do nothing; rendering handled by children */ }
+    virtual	void	drawSelf(float) { /* do nothing; rendering handled by children */ }
 
     /*!
     \brief

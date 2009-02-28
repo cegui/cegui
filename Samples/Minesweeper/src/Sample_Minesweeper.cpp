@@ -96,7 +96,7 @@ protected:
     Main 
 
 **************************************************************************/
-int main(int argc, char *argv[])
+int main(int /*argc*/, char */*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -268,7 +268,7 @@ void MinesweeperSample::cleanupSample()
 /*************************************************************************
     Handle new game started event 
 *************************************************************************/
-bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
+bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
 {
     d_result->setVisible(false);
     boardReset();
@@ -347,9 +347,6 @@ bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
         CEGUI::Window* button = me.window;
         if (!button->isDisabled())
         {
-            Location* buttonLoc = static_cast<Location*>(button->getUserData());
-            size_t x = buttonLoc->d_col;
-            size_t y = buttonLoc->d_row;
             if (button->getID() == 0)
             {
                 button->setID(1);
@@ -368,7 +365,7 @@ bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
 /***********************************************************************
     Handle timer refresh 
 ***********************************************************************/
-bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs& event)
+bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
 {
     if (d_gameStarted)
     {

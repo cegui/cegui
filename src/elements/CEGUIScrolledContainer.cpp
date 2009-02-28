@@ -149,7 +149,7 @@ namespace CEGUI
         }
     }
 
-    bool ScrolledContainer::handleChildSized(const EventArgs& e)
+    bool ScrolledContainer::handleChildSized(const EventArgs&)
     {
         // Fire event that notifies that a child's area has changed.
         WindowEventArgs args(this);
@@ -157,7 +157,7 @@ namespace CEGUI
         return true;
     }
 
-    bool ScrolledContainer::handleChildMoved(const EventArgs& e)
+    bool ScrolledContainer::handleChildMoved(const EventArgs&)
     {
         // Fire event that notifies that a child's area has changed.
         WindowEventArgs args(this);

@@ -350,14 +350,14 @@ namespace CEGUI
         fireEvent(EventContentPaneScrolled, e, EventNamespace);
     }
 
-    bool ScrollablePane::handleScrollChange(const EventArgs& e)
+    bool ScrollablePane::handleScrollChange(const EventArgs&)
     {
         WindowEventArgs args(this);
         onContentPaneScrolled(args);
         return true;
     }
 
-    bool ScrollablePane::handleContentAreaChange(const EventArgs& e)
+    bool ScrollablePane::handleContentAreaChange(const EventArgs&)
     {
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -393,7 +393,7 @@ namespace CEGUI
         return true;
     }
 
-    bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs& e)
+    bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs&)
     {
         // just forward event to client.
         WindowEventArgs args(this);

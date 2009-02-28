@@ -162,7 +162,7 @@ namespace CEGUI
         /*************************************************************************
         	Implementation of abstract methods from Window
         *************************************************************************/
-        void drawSelf(float z) {};
+        void drawSelf(float) {};
 
         /*************************************************************************
         	Event trigger methods.

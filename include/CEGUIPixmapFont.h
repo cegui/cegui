@@ -42,7 +42,7 @@ namespace FontProperties
 {
     class PixmapImageset;
     class PixmapMapping;
-};
+}
 
 /*!
 \brief

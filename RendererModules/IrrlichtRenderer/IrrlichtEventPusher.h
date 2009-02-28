@@ -77,7 +77,7 @@ namespace CEGUI
 			return false;
 		}
 
-		bool OnKeyDown(EKEY_CODE key, wchar_t wch, bool ctrl, bool shift)
+		bool OnKeyDown(EKEY_CODE key, wchar_t wch, bool /*ctrl*/, bool /*shift*/)
 		{
 			bool handled=false;
 			CEGUI::System& cegui = CEGUI::System::getSingleton();
@@ -86,7 +86,7 @@ namespace CEGUI
 			return handled;
 		}
 
-		bool OnKeyUp(EKEY_CODE key, wchar_t wch, bool ctrl, bool shift)
+		bool OnKeyUp(EKEY_CODE key, wchar_t /*wch*/, bool /*ctrl*/, bool /*shift*/)
 		{
 			bool handled=false;
 			CEGUI::System& cegui = CEGUI::System::getSingleton();

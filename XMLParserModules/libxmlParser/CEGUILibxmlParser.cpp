@@ -70,6 +70,9 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
             if (cur_node->content != 0 && *cur_node->content!= '\0')
                 handler.text((utf8*)cur_node->content);
             break;
+
+        default:
+            break;
         }
     }
 
@@ -86,7 +89,7 @@ LibxmlParser::~LibxmlParser(void)
 {
 }
 
-void LibxmlParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+void LibxmlParser::parseXMLFile(XMLHandler& handler, const String& filename, const String&, const String& resourceGroup)
 {
     // load xml file data into buffer using resource provider
     CEGUI::RawDataContainer rawXMLData;

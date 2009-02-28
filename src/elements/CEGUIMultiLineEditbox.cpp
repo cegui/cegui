@@ -991,7 +991,7 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 /*************************************************************************
 	Processing to insert a new line / paragraph.
 *************************************************************************/
-void MultiLineEditbox::handleNewLine(uint sysKeys)
+void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
 {
 	if (!isReadOnly())
 	{
@@ -1517,7 +1517,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 /*************************************************************************
     Handler for scroll position changes.
 *************************************************************************/
-bool MultiLineEditbox::handle_scrollChange(const EventArgs& args)
+bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Listbox.
     requestRedraw();

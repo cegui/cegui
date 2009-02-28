@@ -44,13 +44,13 @@ namespace CEGUI
 	}
 /************************************************************************/
 	IrrlichtTexture::IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* dr)
-		:Texture(r), device(dr),tex(0)
+		:Texture(r), tex(0), device(dr)
 	{
 		driver=device->getVideoDriver();
 	}
 /************************************************************************/
     IrrlichtTexture::IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* dr, float size)
-        :Texture(r), device(dr),tex(0)
+        :Texture(r), tex(0), device(dr)
     {
         driver=device->getVideoDriver();
         irr::core::dimension2d<irr::s32> texSz(size, size);

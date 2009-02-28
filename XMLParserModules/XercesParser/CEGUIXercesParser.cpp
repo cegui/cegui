@@ -313,7 +313,7 @@ namespace CEGUI
     XercesHandler::~XercesHandler(void)
     {}
 
-    void XercesHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
+    void XercesHandler::startElement(const XMLCh* const /*uri*/, const XMLCh* const localname, const XMLCh* const /*qname*/, const XERCES_CPP_NAMESPACE::Attributes& attrs)
     {
         XERCES_CPP_NAMESPACE_USE;
         XMLAttributes cegui_attributes;
@@ -322,7 +322,7 @@ namespace CEGUI
         d_handler.elementStart(element, cegui_attributes);
     }
 
-    void XercesHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+    void XercesHandler::endElement(const XMLCh* const /*uri*/, const XMLCh* const localname, const XMLCh* const /*qname*/)
     {
         XERCES_CPP_NAMESPACE_USE;
         String element(XercesParser::transcodeXmlCharToString(localname,XMLString::stringLen(localname)));

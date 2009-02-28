@@ -223,7 +223,7 @@ void Slider::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	handler function for when thumb moves.
 *************************************************************************/
-bool Slider::handleThumbMoved(const EventArgs& e)
+bool Slider::handleThumbMoved(const EventArgs&)
 {
 	setCurrentValue(getValueFromThumb());
 
@@ -234,7 +234,7 @@ bool Slider::handleThumbMoved(const EventArgs& e)
 /*************************************************************************
 	handler function for when thumb tracking begins
 *************************************************************************/
-bool Slider::handleThumbTrackStarted(const EventArgs& e)
+bool Slider::handleThumbTrackStarted(const EventArgs&)
 {
 	// simply trigger our own version of this event
 	WindowEventArgs args(this);
@@ -247,7 +247,7 @@ bool Slider::handleThumbTrackStarted(const EventArgs& e)
 /*************************************************************************
 	handler function for when thumb tracking begins
 *************************************************************************/
-bool Slider::handleThumbTrackEnded(const EventArgs& e)
+bool Slider::handleThumbTrackEnded(const EventArgs&)
 {
 	// simply trigger our own version of this event
 	WindowEventArgs args(this);

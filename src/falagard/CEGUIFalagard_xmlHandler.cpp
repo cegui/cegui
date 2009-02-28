@@ -316,7 +316,7 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening Falagard XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes&)
     {
         Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
     }
@@ -396,7 +396,7 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening ImageryComponent XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementImageryComponentStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementImageryComponentStart(const XMLAttributes&)
     {
         assert(d_imagerycomponent == 0);
         d_imagerycomponent = new ImageryComponent();
@@ -407,7 +407,7 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening TextComponent XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementTextComponentStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementTextComponentStart(const XMLAttributes&)
     {
         assert(d_textcomponent == 0);
         d_textcomponent = new TextComponent();
@@ -418,7 +418,7 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening FrameComponent XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementFrameComponentStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementFrameComponentStart(const XMLAttributes&)
     {
         assert(d_framecomponent == 0);
         d_framecomponent = new FrameComponent();
@@ -429,7 +429,7 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening Area XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementAreaStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementAreaStart(const XMLAttributes&)
     {
         assert(d_area == 0);
         d_area = new ComponentArea();

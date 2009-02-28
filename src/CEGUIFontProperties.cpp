@@ -237,7 +237,7 @@ public:
         "This is the glyph-to-image mapping font property. It cannot be read. Format is: codepoint,advance,imagename")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get (const PropertyReceiver*) const
     {
         return String ();
     }

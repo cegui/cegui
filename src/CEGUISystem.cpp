@@ -1390,7 +1390,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
     Handler method for display size change notifications
 *************************************************************************/
-bool System::handleDisplaySizeChange(const EventArgs& e)
+bool System::handleDisplaySizeChange(const EventArgs&)
 {
     // notify the imageset/font manager of the size change
     Size new_sz = getRenderer()->getSize();

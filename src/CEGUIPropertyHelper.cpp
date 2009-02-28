@@ -68,7 +68,7 @@ int PropertyHelper::stringToInt(const String& str)
 {
 	using namespace std;
 
-	uint val = 0;
+	int val = 0;
 	sscanf(str.c_str(), " %d", &val);
 
 	return val;

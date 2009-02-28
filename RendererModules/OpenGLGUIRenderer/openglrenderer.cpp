@@ -100,7 +100,7 @@ const int OpenGLRenderer::VERTEXBUFFER_CAPACITY     = OGLRENDERER_VBUFF_CAPACITY
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
+OpenGLRenderer::OpenGLRenderer(uint /*max_quads*/, ImageCodec*  codec) :
     d_queueing(true),
     d_currTexture(0),
     d_bufferPos(0),
@@ -126,7 +126,7 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
 }
 
 
-OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec) :
+OpenGLRenderer::OpenGLRenderer(uint /*max_quads*/,int width, int height, ImageCodec* codec) :
 	d_queueing(true),
 	d_currTexture(0),
 	d_bufferPos(0),

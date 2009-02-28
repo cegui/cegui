@@ -65,7 +65,7 @@ namespace ScrolledContainerProperties
         return PropertyHelper::rectToString(static_cast<const ScrolledContainer*>(receiver)->getChildExtentsArea());
     }
 
-    void ChildExtentsArea::set(PropertyReceiver* receiver, const String& value)
+    void ChildExtentsArea::set(PropertyReceiver*, const String&)
     {
         Logger::getSingleton().logEvent("ScrolledContainerProperties::ChildExtentsArea property does not support being set.", Errors);        
     }

@@ -1094,7 +1094,7 @@ bool Listbox::resetList_impl(void)
 /*************************************************************************
     Handler for scroll position changes.
 *************************************************************************/
-bool Listbox::handle_scrollChange(const EventArgs& args)
+bool Listbox::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Listbox.
     requestRedraw();

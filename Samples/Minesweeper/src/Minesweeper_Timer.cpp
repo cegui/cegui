@@ -58,8 +58,8 @@ TimerProperties::Delay Timer::d_delayProperty;
 Timer::Timer(const CEGUI::String& type, const CEGUI::String& name) :
     Window(type, name),
     d_delay(0), 
-    d_started(false), 
-    d_currentValue(0)
+    d_currentValue(0),
+    d_started(false)
 {
     CEGUI::UVector2 sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
     setMaxSize(sz);

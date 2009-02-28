@@ -104,7 +104,7 @@ public:
         Reference to a RawDataContainer object that is about to be destroyed.
 
     */
-    virtual void unloadRawDataContainer(RawDataContainer& data)  { }
+    virtual void unloadRawDataContainer(RawDataContainer&)  { }
 
     /*!
     \brief

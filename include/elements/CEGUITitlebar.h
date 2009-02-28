@@ -117,7 +117,7 @@ protected:
 		Note that this is for 'internal' use at the moment and as such does not add or
 		fire a public Event that can be subscribed to.
 	*/
-	virtual void	onDraggingModeChanged(WindowEventArgs& e) {}
+	virtual void	onDraggingModeChanged(WindowEventArgs&) {}
 
 
 	/*************************************************************************

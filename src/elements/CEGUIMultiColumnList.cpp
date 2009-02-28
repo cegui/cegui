@@ -1933,7 +1933,7 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
 *************************************************************************/
-bool MultiColumnList::handleHeaderScroll(const EventArgs& e)
+bool MultiColumnList::handleHeaderScroll(const EventArgs&)
 {
 	// grab the header scroll value, convert to pixels, and set the scroll bar to match.
 	getHorzScrollbar()->setScrollPosition(getListHeader()->getSegmentOffset());
@@ -1961,7 +1961,7 @@ bool MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 /*************************************************************************
 	Event handler for when header segment size (column width) changes
 *************************************************************************/
-bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
+bool MultiColumnList::handleColumnSizeChange(const EventArgs&)
 {
 	configureScrollbars();
 
@@ -1976,7 +1976,7 @@ bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
 /*************************************************************************
 	Event handler for when horizontal scroll bar is moved.
 *************************************************************************/
-bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
+bool MultiColumnList::handleHorzScrollbar(const EventArgs&)
 {
 	// set header offset to match scroll position
 	getListHeader()->setSegmentOffset(getHorzScrollbar()->getScrollPosition());
@@ -1987,7 +1987,7 @@ bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 /*************************************************************************
 	Event handler for when vertical scroll bar is moved.
 *************************************************************************/
-bool MultiColumnList::handleVertScrollbar(const EventArgs& e)
+bool MultiColumnList::handleVertScrollbar(const EventArgs&)
 {
     requestRedraw();
 	return true;
@@ -1997,7 +1997,7 @@ bool MultiColumnList::handleVertScrollbar(const EventArgs& e)
 /*************************************************************************
 	Handler for when sort column in header is changed
 *************************************************************************/
-bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
+bool MultiColumnList::handleSortColumnChange(const EventArgs&)
 {
 	uint col = getSortColumn();
 
@@ -2020,7 +2020,7 @@ bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 /*************************************************************************
 	Handler for when sort direction in header is changed
 *************************************************************************/
-bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
+bool MultiColumnList::handleSortDirectionChange(const EventArgs&)
 {
     resortList();
 	// signal change to our clients

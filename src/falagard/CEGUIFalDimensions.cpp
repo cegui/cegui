@@ -181,12 +181,12 @@ namespace CEGUI
         d_val = val;
     }
 
-    float AbsoluteDim::getValue_impl(const Window& wnd) const
+    float AbsoluteDim::getValue_impl(const Window&) const
     {
         return d_val;
     }
 
-    float AbsoluteDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float AbsoluteDim::getValue_impl(const Window&, const Rect&) const
     {
         return d_val;
     }
@@ -227,7 +227,7 @@ namespace CEGUI
         d_what = dim;
     }
 
-    float ImageDim::getValue_impl(const Window& wnd) const
+    float ImageDim::getValue_impl(const Window&) const
     {
         const Image* img = &ImagesetManager::getSingleton().getImageset(d_imageset)->getImage(d_image);
 
@@ -275,7 +275,7 @@ namespace CEGUI
         }
     }
 
-    float ImageDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float ImageDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue(wnd);
@@ -379,7 +379,7 @@ namespace CEGUI
         }
     }
 
-    float WidgetDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float WidgetDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue(wnd);
@@ -447,7 +447,7 @@ namespace CEGUI
         }
     }
 
-    float FontDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float FontDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         return getValue(wnd);
     }
@@ -515,7 +515,7 @@ namespace CEGUI
         }
     }
 
-    float PropertyDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float PropertyDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         return getValue(wnd);
     }
@@ -645,7 +645,7 @@ namespace CEGUI
         }
     }
 
-    float UnifiedDim::getValue_impl(const Window& wnd, const Rect& container) const
+    float UnifiedDim::getValue_impl(const Window&, const Rect& container) const
     {
         switch (d_what)
         {
