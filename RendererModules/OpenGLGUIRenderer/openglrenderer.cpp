@@ -416,6 +416,9 @@ void OpenGLRenderer::initPerFrameStates(void)
     CEGUI_clientActiveTexture(GL_TEXTURE0);
 
 	glPolygonMode(GL_FRONT, GL_FILL);
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -449,6 +452,8 @@ void OpenGLRenderer::exitPerFrameStates(void)
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 
 	//restore former attributes
