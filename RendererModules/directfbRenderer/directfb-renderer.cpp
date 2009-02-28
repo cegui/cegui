@@ -32,6 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
+#include <algorithm>
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
