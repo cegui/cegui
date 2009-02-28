@@ -1446,7 +1446,9 @@ void System::setDefaultTooltip(Tooltip* tooltip)
     // set new custom tooltip
     d_weOwnTooltip = false;
     d_defaultTooltip = tooltip;
-    d_defaultTooltip->setWritingXMLAllowed(false);
+
+    if (d_defaultTooltip)
+        d_defaultTooltip->setWritingXMLAllowed(false);
 }
 
 void System::setDefaultTooltip(const String& tooltipType)
