@@ -415,6 +415,9 @@ void OpenGLRenderer::initPerFrameStates(void)
     CEGUI_activeTexture(GL_TEXTURE0);
     CEGUI_clientActiveTexture(GL_TEXTURE0);
 
+    if (GLEW_ARB_vertex_buffer_object)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+
 	glPolygonMode(GL_FRONT, GL_FILL);
     glMatrixMode(GL_TEXTURE);
     glPushMatrix();
