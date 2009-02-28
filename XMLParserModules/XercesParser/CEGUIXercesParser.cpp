@@ -329,7 +329,11 @@ namespace CEGUI
         d_handler.elementEnd(element);
     }
 
+#if _XERCES_VERSION >= 30000
+    void XercesHandler::characters(const XMLCh* const chars, const XMLSize_t length)
+#else /* _XERCES_VERSION >= 30000 */
     void XercesHandler::characters (const XMLCh *const chars, const unsigned int length)
+#endif /* _XERCES_VERSION >= 30000 */
     {
         d_handler.text(XercesParser::transcodeXmlCharToString(chars, length));
     }
