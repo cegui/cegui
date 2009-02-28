@@ -73,13 +73,16 @@ end
 
 if OGRE_RENDERER and SAMPLES_OGRE then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("OgreRenderer")
+        dependency("OgreGUIRenderer")
     else
-        library("OgreRenderer", DEBUG_DLL_SUFFIX or "")
+        library("OgreGUIRenderer", DEBUG_DLL_SUFFIX or "")
     end
 
     if OGRE_PATHS then
         add_sdk_paths(OGRE_PATHS)
+    end
+    if OIS_PATHS then
+        add_sdk_paths(OIS_PATHS)
     end
 end
 
