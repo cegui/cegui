@@ -53,6 +53,7 @@ OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
 //----------------------------------------------------------------------------//
 OgreWindowTarget::~OgreWindowTarget()
 {
+    delete d_viewport;
 }
 
 //----------------------------------------------------------------------------//

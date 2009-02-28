@@ -52,7 +52,6 @@ OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
 //----------------------------------------------------------------------------//
 OgreRenderTarget::~OgreRenderTarget()
 {
-    delete d_viewport;
 }
 
 //----------------------------------------------------------------------------//

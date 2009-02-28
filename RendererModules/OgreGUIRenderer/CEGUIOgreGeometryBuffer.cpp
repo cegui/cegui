@@ -359,10 +359,13 @@ void OgreGeometryBuffer::syncHardwareBuffer() const
     }
 
     // copy vertex data into hw buffer
-    std::memcpy(d_hwBuffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD),
-                &d_vertices[0], sizeof(OgreVertex) * d_vertices.size());
+    if (required_size > 0)
+    {
+        std::memcpy(d_hwBuffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD),
+                    &d_vertices[0], sizeof(OgreVertex) * d_vertices.size());
 
-    d_hwBuffer->unlock();
+        d_hwBuffer->unlock();
+    }
 
     d_sync = true;
 }

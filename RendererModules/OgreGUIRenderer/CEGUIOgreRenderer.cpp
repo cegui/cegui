@@ -291,11 +291,14 @@ void OgreRenderer::beginRendering()
     // enable alpha blending
     d_renderSystem->_setSceneBlending(SBF_SOURCE_ALPHA,
                                       SBF_ONE_MINUS_SOURCE_ALPHA);
+
+    d_renderSystem->_beginFrame();
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::endRendering()
 {
+    d_renderSystem->_endFrame();
 }
 
 //----------------------------------------------------------------------------//
