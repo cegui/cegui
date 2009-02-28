@@ -58,7 +58,9 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
     ilGenImages(1, &imgName);
     ilBindImage(imgName);
 
-    if (ilLoadL(IL_TYPE_UNKNOWN, (ILvoid*)data.getDataPtr(), data.getSize()) != IL_FALSE)
+    if (IL_FALSE != ilLoadL(IL_TYPE_UNKNOWN,
+                            static_cast<const void*>(data.getDataPtr()),
+                            data.getSize()))
     {
         // get details about size of loaded image
         ILinfo imgInfo;
@@ -85,7 +87,8 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
             cefmt = Texture::PF_RGB;
             break;
         };
-        ilCopyPixels(0, 0, 0, width, height, 1, ilfmt, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
+        ilCopyPixels(0, 0, 0, width, height, 1, ilfmt, IL_UNSIGNED_BYTE,
+                     static_cast<void*>(tmpBuff));
 
         // delete DevIL image
         ilDeleteImages(1, &imgName);
