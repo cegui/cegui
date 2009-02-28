@@ -2926,7 +2926,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
     Tooltip* tip = getTooltip();
-    if (tip)
+    if (tip && System::getSingleton().getWindowContainingMouse() != tip)
     {
         tip->setTargetWindow(0);
     }
