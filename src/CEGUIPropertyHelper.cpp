@@ -155,7 +155,7 @@ UDim PropertyHelper::stringToUDim(const String& str)
 	using namespace std;
 
 	UDim ud;
-	sscanf(str.c_str()," {%g,%g}", &ud.d_scale, &ud.d_offset);
+	sscanf(str.c_str()," { %g , %g }", &ud.d_scale, &ud.d_offset);
 
 	return ud;
 }
@@ -166,7 +166,9 @@ UVector2 PropertyHelper::stringToUVector2(const String& str)
 	using namespace std;
 
 	UVector2 uv;
-	sscanf(str.c_str(), " {{%g,%g},{%g,%g}}", &uv.d_x.d_scale,&uv.d_x.d_offset, &uv.d_y.d_scale,&uv.d_y.d_offset);
+	sscanf(str.c_str(), " { { %g , %g } , { %g , %g } }",
+           &uv.d_x.d_scale, &uv.d_x.d_offset,
+           &uv.d_y.d_scale, &uv.d_y.d_offset);
 
 	return uv;
 }
@@ -179,7 +181,7 @@ URect PropertyHelper::stringToURect(const String& str)
 	URect ur;
 	sscanf(
 		str.c_str(),
-		" {{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
+		" { { %g , %g } , { %g , %g } , { %g , %g } , { %g , %g } }",
 		&ur.d_min.d_x.d_scale, &ur.d_min.d_x.d_offset,
 		&ur.d_min.d_y.d_scale, &ur.d_min.d_y.d_offset,
 		&ur.d_max.d_x.d_scale, &ur.d_max.d_x.d_offset,
