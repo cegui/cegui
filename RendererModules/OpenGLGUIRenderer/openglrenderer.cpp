@@ -790,7 +790,7 @@ void initialiseGLExtensions()
         CEGUI_clientActiveTexture = glClientActiveTexture;
     }
     // Maybe there is the ARB_multitexture extension version?
-    else if (GL_ARB_multitexture)
+    else if (GLEW_ARB_multitexture)
     {
         CEGUI_activeTexture = glActiveTextureARB;
         CEGUI_clientActiveTexture = glClientActiveTextureARB;

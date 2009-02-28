@@ -52,7 +52,7 @@ const ulong			DirectX9Renderer::VERTEX_FVF				= (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3
 /*************************************************************************
 	Constructor
 *************************************************************************/
-DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads)
+DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint /*max_quads*/)
 {
 	d_device = device;
 	Size size(getViewportSize());
