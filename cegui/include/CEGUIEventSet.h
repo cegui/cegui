@@ -287,8 +287,8 @@ protected:
 
 
 	// Do not allow copying, assignment, or any other usage than simple creation.
-	EventSet(EventSet& e) {}
-	EventSet& operator=(EventSet& e) {return *this;}
+	EventSet(EventSet&) {}
+	EventSet& operator=(EventSet&) {return *this;}
 
 	typedef std::map<String, Event*, String::FastLessCompare>	EventMap;
 	EventMap	d_events;

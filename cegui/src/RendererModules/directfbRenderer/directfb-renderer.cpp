@@ -34,6 +34,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
+#include <algorithm>
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
@@ -99,7 +100,7 @@ DirectfbRenderer::~DirectfbRenderer(void)
 /*************************************************************************
     add's a quad to the list to be rendered
 *************************************************************************/
-void DirectfbRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
+void DirectfbRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode /*quad_split_mode*/)
 {
     /*
        doesn't support for drawing mode selection

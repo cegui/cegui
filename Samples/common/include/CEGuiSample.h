@@ -43,7 +43,6 @@
 class CEGuiBaseApplication;
 class CEGuiRendererSelector;
 
-
 /*!
 \brief
     This is a base class that is intended to be used for all sample applications.

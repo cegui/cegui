@@ -29,7 +29,7 @@
 #include "CEGUI.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -180,7 +180,7 @@ bool DemoConsole::isVisible() const
     return d_root->isVisible();
 }
 
-bool DemoConsole::handleSubmit(const CEGUI::EventArgs& args)
+bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 

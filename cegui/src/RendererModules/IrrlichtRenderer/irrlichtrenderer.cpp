@@ -54,7 +54,7 @@ namespace CEGUI
 	};
 /************************************************************************/
 	void IrrlichtRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex,
-		const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
+		const Rect& texture_rect, const ColourRect& colours, QuadSplitMode /*quad_split_mode*/)
 	{
 
 		/*
@@ -90,7 +90,7 @@ namespace CEGUI
 		}
 	}
 /************************************************************************/
-	void IrrlichtRenderer::print(RenderQuad& quad)
+	void IrrlichtRenderer::print(RenderQuad& /*quad*/)
 	{
 		//char buf[255];
 		//irr::video::ITexture* texture=((IrrlichtTexture*)quad.tex)->getTexture();

@@ -37,7 +37,7 @@ namespace CEGUI
     const utf8 FalagardTree::TypeName[] = "Falagard/Tree";
 
 
-    FalagardTree::FalagardTree(const String& type, const String& name) :
+    FalagardTree::FalagardTree(const String& type, const String&) :
         WindowRenderer(type)
     {
     }

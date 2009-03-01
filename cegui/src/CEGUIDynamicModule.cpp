@@ -46,7 +46,7 @@
 #   include "macPlugins.h"
 #endif
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
 #   include "dlfcn.h"
 #endif
 
@@ -64,7 +64,7 @@ DynamicModule::DynamicModule(const String& name) :
 		return;
 	} // if(name.empty())
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
     // check if we are being asked to open a CEGUI .so, if so postfix the name
     // with our package version
     if (d_moduleName.substr(0, 5) == "CEGUI" ||
@@ -92,7 +92,7 @@ DynamicModule::DynamicModule(const String& name) :
 
     d_handle = DYNLIB_LOAD(d_moduleName.c_str());
 
-#if defined(__linux__) || defined(__MINGW32__)
+#if defined(__linux__) || defined(__MINGW32__) || defined(__FreeBSD__)
     if (!d_handle)
     {
         // see if we need to add the leading 'lib'
@@ -133,7 +133,7 @@ void* DynamicModule::getSymbolAddress(const String& symbol) const
 String DynamicModule::getFailureString() const
 {
     String retMsg;
-#if defined(__linux__) || defined (__APPLE_CC__)
+#if defined(__linux__) || defined (__APPLE_CC__) || defined(__FreeBSD__)
     retMsg = DYNLIB_ERROR();
 #elif defined(__WIN32__) || defined(_WIN32)
     LPVOID msgBuffer;

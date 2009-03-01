@@ -100,7 +100,7 @@ const int OpenGLRenderer::VERTEXBUFFER_CAPACITY     = OGLRENDERER_VBUFF_CAPACITY
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
+OpenGLRenderer::OpenGLRenderer(uint /*max_quads*/, ImageCodec*  codec) :
     d_queueing(true),
     d_currTexture(0),
     d_bufferPos(0),
@@ -126,7 +126,7 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
 }
 
 
-OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec) :
+OpenGLRenderer::OpenGLRenderer(uint /*max_quads*/,int width, int height, ImageCodec* codec) :
 	d_queueing(true),
 	d_currTexture(0),
 	d_bufferPos(0),
@@ -415,7 +415,13 @@ void OpenGLRenderer::initPerFrameStates(void)
     CEGUI_activeTexture(GL_TEXTURE0);
     CEGUI_clientActiveTexture(GL_TEXTURE0);
 
+    if (GLEW_ARB_vertex_buffer_object)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+
 	glPolygonMode(GL_FRONT, GL_FILL);
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -449,6 +455,8 @@ void OpenGLRenderer::exitPerFrameStates(void)
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 
 	//restore former attributes
@@ -790,7 +798,7 @@ void initialiseGLExtensions()
         CEGUI_clientActiveTexture = glClientActiveTexture;
     }
     // Maybe there is the ARB_multitexture extension version?
-    else if (GL_ARB_multitexture)
+    else if (GLEW_ARB_multitexture)
     {
         CEGUI_activeTexture = glActiveTextureARB;
         CEGUI_clientActiveTexture = glClientActiveTextureARB;

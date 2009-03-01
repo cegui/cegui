@@ -126,11 +126,16 @@ namespace CEGUI
 
     void Tooltip::setTargetWindow(Window* wnd)
     {
-        if (wnd)
+        if (!wnd)
+        {
+            d_target = wnd;
+        }
+        else if (wnd != this)
         {
             if (d_target != wnd)
             {
                 System::getSingleton().getGUISheet()->addChildWindow(this);
+                d_target = wnd;
             }
 
             // set text to that of the tooltip text of the target
@@ -142,7 +147,6 @@ namespace CEGUI
         }
 
         resetTimer();
-        d_target = wnd;
     }
 
     const Window* Tooltip::getTargetWindow()

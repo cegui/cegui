@@ -31,7 +31,7 @@
 
 #include <cstdlib>
 
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -193,7 +193,7 @@ void Demo7Sample::initDemoEventWiring(void)
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 }
 
-bool Demo7Sample::handleQuit(const CEGUI::EventArgs& e)
+bool Demo7Sample::handleQuit(const CEGUI::EventArgs&)
 {
     // signal quit
     d_sampleApp->setQuitting();

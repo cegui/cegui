@@ -1373,7 +1373,7 @@ bool Tree::resetList_impl(void)
 /*************************************************************************
     Handler for scroll position changes.
 *************************************************************************/
-bool Tree::handle_scrollChange(const EventArgs& args)
+bool Tree::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Tree.
     requestRedraw();

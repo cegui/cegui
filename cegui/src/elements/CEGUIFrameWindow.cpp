@@ -484,7 +484,7 @@ void FrameWindow::moveBottomEdge(float delta)
 /*************************************************************************
 	Handler to map close button clicks to FrameWindow 'CloseCliked' events
 *************************************************************************/
-bool FrameWindow::closeClickHandler(const EventArgs& e)
+bool FrameWindow::closeClickHandler(const EventArgs&)
 {
     WindowEventArgs args(this);
 	onCloseClicked(args);

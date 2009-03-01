@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__FreeBSD__)
 # include <unistd.h>
 #endif
 
@@ -317,7 +317,7 @@ void CEGuiOpenGLBaseApplication::mouseMotion(int x, int y)
     CEGUI::System::getSingleton().injectMousePosition(x, y);
 }
 
-void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int x, int y)
+void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int /*x*/, int /*y*/)
 {
     switch(button)
     {
@@ -358,7 +358,7 @@ void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int x, int y
 
 }
 
-void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
+void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/)
 {
     handleModifierKeys();
 
@@ -385,7 +385,7 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
 
 }
 
-void CEGuiOpenGLBaseApplication::keySpecial(int key, int x, int y)
+void CEGuiOpenGLBaseApplication::keySpecial(int key, int /*x*/, int /*y*/)
 {
     handleModifierKeys();
 
@@ -476,7 +476,7 @@ void CEGuiOpenGLBaseApplication::doFPSUpdate()
 }
 
 // FreeGLUT supports wheel events
-void CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut(int wheel, int dir, int x, int y)
+void CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut(int wheel, int dir, int /*x*/, int /*y*/)
 {
     if (wheel == 0)
     {

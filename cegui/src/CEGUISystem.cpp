@@ -100,7 +100,7 @@ double SimpleTimer::currentTime()
     return timeGetTime() / 1000.0;
 }
 
-#elif defined(__linux__) || defined(__APPLE__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 #include <sys/time.h>
 double SimpleTimer::currentTime()
 {
@@ -1390,7 +1390,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-bool System::handleDisplaySizeChange(const EventArgs& e)
+bool System::handleDisplaySizeChange(const EventArgs&)
 {
 	// notify the imageset/font manager of the size change
 	Size new_sz = getRenderer()->getSize();
@@ -1446,7 +1446,9 @@ void System::setDefaultTooltip(Tooltip* tooltip)
     // set new custom tooltip
     d_weOwnTooltip = false;
     d_defaultTooltip = tooltip;
-    d_defaultTooltip->setWritingXMLAllowed(false);
+
+    if (d_defaultTooltip)
+        d_defaultTooltip->setWritingXMLAllowed(false);
 }
 
 void System::setDefaultTooltip(const String& tooltipType)

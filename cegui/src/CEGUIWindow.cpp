@@ -2926,7 +2926,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
     Tooltip* tip = getTooltip();
-    if (tip)
+    if (tip && System::getSingleton().getWindowContainingMouse() != tip)
     {
         tip->setTargetWindow(0);
     }
@@ -3121,7 +3121,7 @@ void Window::onWindowRendererDetached(WindowEventArgs& e)
     fireEvent(EventWindowRendererDetached, e, EventNamespace);
 }
 
-bool Window::validateWindowRenderer(const String& name) const
+bool Window::validateWindowRenderer(const String&) const
 {
     return true;
 }
