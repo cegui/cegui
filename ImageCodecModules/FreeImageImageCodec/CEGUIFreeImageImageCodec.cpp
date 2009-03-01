@@ -40,7 +40,7 @@ namespace
     {
         CEGUI::Logger::getSingleton().logEvent(
             CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::Errors);
-    };
+    }
 
 }
 

@@ -46,7 +46,7 @@ namespace FontProperties
 {
     class FreeTypePointSize;
     class FreeTypeAntialiased;
-};
+}
 
 /*!
 \brief

@@ -51,6 +51,7 @@ public:
     }
 
 private:
+    void operator=(const SubComp&) {}
     const BoundSlot& d_s;
 };
 

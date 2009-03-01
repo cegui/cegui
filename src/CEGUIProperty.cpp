@@ -44,7 +44,7 @@ namespace CEGUI
 	/*************************************************************************
 		Returns the default value of the Property as a String.
 	*************************************************************************/
-	String Property::getDefault(const PropertyReceiver* receiver) const
+	String Property::getDefault(const PropertyReceiver*) const
 	{
 		return d_default;
 	}

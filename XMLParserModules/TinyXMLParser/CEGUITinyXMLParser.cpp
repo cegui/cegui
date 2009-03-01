@@ -54,7 +54,7 @@ namespace CEGUI
         XMLHandler* d_handler;
     };
 
-    TinyXMLDocument::TinyXMLDocument(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    TinyXMLDocument::TinyXMLDocument(XMLHandler& handler, const String& filename, const String& /*schemaName*/, const String& resourceGroup)
     {
         d_handler = &handler;
 

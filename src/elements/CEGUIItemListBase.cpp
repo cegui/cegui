@@ -351,6 +351,16 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 	}
 }
 
+//----------------------------------------------------------------------------//
+void ItemListBase::onParentSized(WindowEventArgs& e)
+{
+    Window::onParentSized(e);
+
+    if (d_autoResize)
+        sizeToContent();
+}
+
+//----------------------------------------------------------------------------//
 
 /************************************************************************
     Handler for when a child is removed

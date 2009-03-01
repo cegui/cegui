@@ -149,8 +149,8 @@ private:
 	/*************************************************************************
 		Copy constructor and assignment usage is denied.
 	*************************************************************************/
-	Logger(const Logger& logger) : Singleton <Logger>() {}
-	Logger& operator=(const Logger& logger) {return *this;}
+	Logger(const Logger&) : Singleton <Logger>() {}
+	Logger& operator=(const Logger&) {return *this;}
 
 };
 

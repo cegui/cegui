@@ -342,7 +342,7 @@ LuaFunctor::LuaFunctor(lua_State* state, const String& func, const int selfIndex
 
 //----------------------------------------------------------------------------//
 Event::Connection LuaFunctor::SubscribeEvent(EventSet* self,
-    const String& event_name, const int funcIndex, const int selfIndex,
+    const String& event_name, const int /*funcIndex*/, const int selfIndex,
     const int error_handler, lua_State* L)
 {
     // deal with error handler function

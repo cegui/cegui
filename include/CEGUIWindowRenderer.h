@@ -180,6 +180,8 @@ protected:
     */
     virtual void onLookNFeelUnassigned() {}
 
+    void operator=(const WindowRenderer&) {}
+
     /*************************************************************************
         Implementation data
     **************************************************************************/

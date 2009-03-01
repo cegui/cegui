@@ -63,7 +63,11 @@ namespace CEGUI
         // Implementation of methods in Xerces DefaultHandler.
         void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
         void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
+#if _XERCES_VERSION >= 30000
+        void characters(const XMLCh* const chars, const XMLSize_t length);
+#else /* _XERCES_VERSION >= 30000 */
         void characters (const XMLCh *const chars, const unsigned int length);
+#endif /* _XERCES_VERSION >= 30000 */
         void warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
         void error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
         void fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);

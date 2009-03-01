@@ -47,7 +47,7 @@ ExpatParser::~ExpatParser(void)
 {
 }
 
-void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& /*schemaName*/, const String& resourceGroup)
 {
     // All stuff goes here
     XML_Parser parser = XML_ParserCreate(0); // Create a parser

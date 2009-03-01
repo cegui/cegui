@@ -996,7 +996,7 @@ bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 /*************************************************************************
 	Handler called whenever the mouse moves while dragging a segment
 *************************************************************************/
-bool ListHeader::segmentDragHandler(const EventArgs& e)
+bool ListHeader::segmentDragHandler(const EventArgs&)
 {
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 

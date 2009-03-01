@@ -43,7 +43,7 @@ namespace CEGUI
     {
     }
 
-    void PropertyDefinitionBase::set(PropertyReceiver* receiver, const String& value)
+    void PropertyDefinitionBase::set(PropertyReceiver* receiver, const String&)
     {
         if (d_writeCausesLayout)
             static_cast<Window*>(receiver)->performChildWindowLayout();

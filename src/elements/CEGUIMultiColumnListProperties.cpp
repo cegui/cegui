@@ -286,7 +286,7 @@ void	SelectionMode::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String ColumnHeader::get(const PropertyReceiver* receiver) const
+String ColumnHeader::get(const PropertyReceiver*) const
 {
 	return String("");
 }
@@ -345,7 +345,7 @@ String RowCount::get(const PropertyReceiver* receiver) const
 }
 
 
-void RowCount::set(PropertyReceiver* receiver, const String& value)
+void RowCount::set(PropertyReceiver* receiver, const String&)
 {
 	// property is read only.
 	Logger::getSingleton().logEvent(

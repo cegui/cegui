@@ -175,7 +175,10 @@ private:
         Method that handles the closing of a property XML element.
     */
     void elementPropertyEnd();
-	/*************************************************************************
+
+    void operator=(const GUILayout_xmlHandler&) {}
+
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
     typedef std::pair<Window*,bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
