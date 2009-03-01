@@ -96,7 +96,7 @@ protected:
     Main
 
 **************************************************************************/
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -164,37 +164,37 @@ bool MinesweeperSample::initialiseSample()
     // create the game frame
     Window* frame = winMgr.createWindow("Vanilla/FrameWindow");
     d_alarm->addChildWindow(frame);
-    frame->setXPosition(UDim(0.3, 0.0));
-    frame->setYPosition(UDim(0.15, 0.0));
-    frame->setWidth(UDim(0.4, 0.0));
-    frame->setHeight(UDim(0.7, 0.0));
+    frame->setXPosition(UDim(0.3f, 0.0f));
+    frame->setYPosition(UDim(0.15f, 0.0f));
+    frame->setWidth(UDim(0.4f, 0.0f));
+    frame->setHeight(UDim(0.7f, 0.0f));
     frame->setText("CEGUI Minesweeper");
 
     // create the action panel
     Window* action = winMgr.createWindow("DefaultWindow");
     frame->addChildWindow(action);
-    action->setXPosition(UDim(0.03, 0.0));
-    action->setYPosition(UDim(0.10, 0.0));
-    action->setWidth(UDim(0.94, 0.0));
-    action->setHeight(UDim(0.1, 0.0));
+    action->setXPosition(UDim(0.03f, 0.0f));
+    action->setYPosition(UDim(0.10f, 0.0f));
+    action->setWidth(UDim(0.94f, 0.0f));
+    action->setHeight(UDim(0.1f, 0.0f));
     d_counter = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "mine_counter");
     action->addChildWindow(d_counter);
     d_counter->setText("0");
     d_counter->setTooltipText("Number of mine");
     d_counter->setReadOnly(true);
-    d_counter->setXPosition(UDim(0.0, 0.0));
-    d_counter->setYPosition(UDim(0.0, 0.0));
-    d_counter->setWidth(UDim(0.3, 0.0));
-    d_counter->setHeight(UDim(1.0, 0.0));
+    d_counter->setXPosition(UDim(0.0f, 0.0f));
+    d_counter->setYPosition(UDim(0.0f, 0.0f));
+    d_counter->setWidth(UDim(0.3f, 0.0f));
+    d_counter->setHeight(UDim(1.0f, 0.0f));
 
     Window* newGame = winMgr.createWindow("Vanilla/Button", "new_game");
     action->addChildWindow(newGame);
     newGame->setText("Start");
     newGame->setTooltipText("Start a new game");
-    newGame->setXPosition(UDim(0.35, 0.0));
-    newGame->setYPosition(UDim(0.0, 0.0));
-    newGame->setWidth(UDim(0.3, 0.0));
-    newGame->setHeight(UDim(1.0, 0.0));
+    newGame->setXPosition(UDim(0.35f, 0.0f));
+    newGame->setYPosition(UDim(0.0f, 0.0f));
+    newGame->setWidth(UDim(0.3f, 0.0f));
+    newGame->setHeight(UDim(1.0f, 0.0f));
     newGame->subscribeEvent(PushButton::EventClicked,  Event::Subscriber(&MinesweeperSample::handleGameStartClicked, this));
 
     d_timer = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "timer");
@@ -202,20 +202,20 @@ bool MinesweeperSample::initialiseSample()
     d_timer->setText("0");
     d_timer->setTooltipText("Time elapsed");
     d_timer->setReadOnly(true);
-    d_timer->setXPosition(UDim(0.7, 0.0));
-    d_timer->setYPosition(UDim(0.0, 0.0));
-    d_timer->setWidth(UDim(0.3, 0.0));
-    d_timer->setHeight(UDim(1.0, 0.0));
+    d_timer->setXPosition(UDim(0.7f, 0.0f));
+    d_timer->setYPosition(UDim(0.0f, 0.0f));
+    d_timer->setWidth(UDim(0.3f, 0.0f));
+    d_timer->setHeight(UDim(1.0f, 0.0f));
     d_alarm->subscribeEvent(Timer::EventTimerAlarm, Event::Subscriber(&MinesweeperSample::handleUpdateTimer, this));
 
     // Board button grid
     Window* grid = winMgr.createWindow("DefaultWindow");
     frame->addChildWindow(grid);
-    grid->setXPosition(UDim(0.03, 0.0));
-    grid->setYPosition(UDim(0.23, 0.0));
-    grid->setWidth(    UDim(0.94, 0.0));
-    grid->setHeight(   UDim(0.74, 0.0));
-    const float d_inc = 1.0 / MinesweeperSize;
+    grid->setXPosition(UDim(0.03f, 0.0f));
+    grid->setYPosition(UDim(0.23f, 0.0f));
+    grid->setWidth(    UDim(0.94f, 0.0f));
+    grid->setHeight(   UDim(0.74f, 0.0f));
+    const float d_inc = 1.0f / MinesweeperSize; 
     for(size_t i = 0 ; i < MinesweeperSize ; ++i)
     {
         // create a container for each row
@@ -268,7 +268,7 @@ void MinesweeperSample::cleanupSample()
 /*************************************************************************
     Handle new game started event
 *************************************************************************/
-bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
+bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
 {
     d_result->setVisible(false);
     boardReset();
@@ -365,7 +365,7 @@ bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
 /***********************************************************************
     Handle timer refresh
 ***********************************************************************/
-bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs& event)
+bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
 {
     if (d_gameStarted)
     {

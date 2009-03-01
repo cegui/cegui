@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Nov 23 19:58:09 2008.
+** Generated automatically by tolua++-1.0.92 on Sun Mar  1 22:00:59 2009.
 */
 
 #ifndef __cplusplus
@@ -103,9 +103,16 @@ static int tolua_collect_CEGUI__FileStream (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__MCLGridRef (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
 {
- CEGUI::MCLGridRef* self = (CEGUI::MCLGridRef*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
+{
+ CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -124,16 +131,16 @@ static int tolua_collect_CEGUI__ColourRect (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
+static int tolua_collect_CEGUI__LayerSpecification (lua_State* tolua_S)
 {
- CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::LayerSpecification* self = (CEGUI::LayerSpecification*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__LayerSpecification (lua_State* tolua_S)
+static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
 {
- CEGUI::LayerSpecification* self = (CEGUI::LayerSpecification*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -152,16 +159,16 @@ static int tolua_collect_CEGUI__EventConnection (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
+static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
 {
- CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__MCLGridRef (lua_State* tolua_S)
 {
- CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::MCLGridRef* self = (CEGUI::MCLGridRef*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -187,13 +194,6 @@ static int tolua_collect_CEGUI__NamedArea (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
-{
- CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
 static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
 {
  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
@@ -201,9 +201,16 @@ static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
 {
- CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
+{
+ CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -243,16 +250,16 @@ static int tolua_collect_CEGUI__ActivationEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
 {
- CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
 {
- CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -271,9 +278,9 @@ static int tolua_collect_CEGUI__EventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ComponentArea (lua_State* tolua_S)
 {
- CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ComponentArea* self = (CEGUI::ComponentArea*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -285,9 +292,9 @@ static int tolua_collect_CEGUI__UVector2 (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__ComponentArea (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
 {
- CEGUI::ComponentArea* self = (CEGUI::ComponentArea*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -313,16 +320,16 @@ static int tolua_collect_CEGUI__HeaderSequenceEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
 {
- CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
 {
- CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -334,9 +341,9 @@ static int tolua_collect_CEGUI__URect (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
 {
- CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -369,13 +376,6 @@ static int tolua_collect_CEGUI__UDim (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
-{
- CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
 static int tolua_collect_CEGUI__colour (lua_State* tolua_S)
 {
  CEGUI::colour* self = (CEGUI::colour*) tolua_tousertype(tolua_S,1,0);
@@ -386,6 +386,13 @@ static int tolua_collect_CEGUI__colour (lua_State* tolua_S)
 static int tolua_collect_CEGUI__MouseCursorEventArgs (lua_State* tolua_S)
 {
  CEGUI::MouseCursorEventArgs* self = (CEGUI::MouseCursorEventArgs*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__TreeEventArgs (lua_State* tolua_S)
+{
+ CEGUI::TreeEventArgs* self = (CEGUI::TreeEventArgs*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -420,92 +427,93 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::ComboDropList");
  tolua_usertype(tolua_S,"CEGUI::FrameWindow");
  tolua_usertype(tolua_S,"size_t");
+ tolua_usertype(tolua_S,"CEGUI::FontDim");
  tolua_usertype(tolua_S,"CEGUI::ButtonBase");
  tolua_usertype(tolua_S,"CEGUI::EventConnection");
  tolua_usertype(tolua_S,"CEGUI::ListboxItem");
  tolua_usertype(tolua_S,"CEGUI::Imageset");
  tolua_usertype(tolua_S,"CEGUI::Property");
- tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
  tolua_usertype(tolua_S,"CEGUI::OutStream");
  tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
+ tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
  tolua_usertype(tolua_S,"CEGUI::GroupBox");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::FileStream");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
- tolua_usertype(tolua_S,"CEGUI::PropertyDim");
+ tolua_usertype(tolua_S,"CEGUI::DragContainer");
  tolua_usertype(tolua_S,"CEGUI::PropertyHelper");
- tolua_usertype(tolua_S,"CEGUI::RadioButton");
  tolua_usertype(tolua_S,"CEGUI::LayerSpecification");
  tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
- tolua_usertype(tolua_S,"CEGUI::ProgressBar");
  tolua_usertype(tolua_S,"CEGUI::ImagerySection");
+ tolua_usertype(tolua_S,"CEGUI::ProgressBar");
  tolua_usertype(tolua_S,"CEGUI::TextComponent");
+ tolua_usertype(tolua_S,"CEGUI::PropertyDim");
  tolua_usertype(tolua_S,"CEGUI::UVector2");
- tolua_usertype(tolua_S,"CEGUI::ComponentArea");
  tolua_usertype(tolua_S,"CEGUI::FrameComponent");
- tolua_usertype(tolua_S,"CEGUI::Spinner");
  tolua_usertype(tolua_S,"CEGUI::PropertyLinkDefinition");
+ tolua_usertype(tolua_S,"CEGUI::Spinner");
  tolua_usertype(tolua_S,"CEGUI::PropertyInitialiser");
  tolua_usertype(tolua_S,"CEGUI::PropertyDefinition");
  tolua_usertype(tolua_S,"CEGUI::PropertyDefinitionBase");
- tolua_usertype(tolua_S,"CEGUI::TreeItem");
+ tolua_usertype(tolua_S,"CEGUI::TabControl");
+ tolua_usertype(tolua_S,"CEGUI::ComponentArea");
  tolua_usertype(tolua_S,"CEGUI::ImageryComponent");
  tolua_usertype(tolua_S,"CEGUI::WidgetComponent");
  tolua_usertype(tolua_S,"CEGUI::KeyEventArgs");
  tolua_usertype(tolua_S,"CEGUI::FontManager");
  tolua_usertype(tolua_S,"CEGUI::ScriptWindowHelper");
  tolua_usertype(tolua_S,"CEGUI::ImagesetManager");
- tolua_usertype(tolua_S,"CEGUI::FontDim");
- tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
  tolua_usertype(tolua_S,"CEGUI::UnifiedDim");
+ tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
  tolua_usertype(tolua_S,"CEGUI::WidgetDim");
  tolua_usertype(tolua_S,"CEGUI::ImageDim");
- tolua_usertype(tolua_S,"CEGUI::Thumb");
+ tolua_usertype(tolua_S,"CEGUI::Tree");
  tolua_usertype(tolua_S,"CEGUI::BaseDim");
- tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
+ tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::MenuItem");
+ tolua_usertype(tolua_S,"CEGUI::PopupMenu");
  tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
  tolua_usertype(tolua_S,"CEGUI::WindowManager");
- tolua_usertype(tolua_S,"CEGUI::PopupMenu");
+ tolua_usertype(tolua_S,"CEGUI::TreeItem");
  tolua_usertype(tolua_S,"CEGUI::Checkbox");
  tolua_usertype(tolua_S,"CEGUI::ListHeader");
- tolua_usertype(tolua_S,"CEGUI::Tooltip");
+ tolua_usertype(tolua_S,"CEGUI::ItemEntry");
  tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
  tolua_usertype(tolua_S,"CEGUI::PushButton");
- tolua_usertype(tolua_S,"CEGUI::ItemEntry");
  tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
  tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
  tolua_usertype(tolua_S,"CEGUI::ListHeaderSegment");
  tolua_usertype(tolua_S,"CEGUI::Listbox");
  tolua_usertype(tolua_S,"CEGUI::Combobox");
- tolua_usertype(tolua_S,"CEGUI::DragContainer");
+ tolua_usertype(tolua_S,"CEGUI::Tooltip");
  tolua_usertype(tolua_S,"CEGUI::Editbox");
- tolua_usertype(tolua_S,"CEGUI::ColourRect");
  tolua_usertype(tolua_S,"CEGUI::Slider");
+ tolua_usertype(tolua_S,"CEGUI::ColourRect");
+ tolua_usertype(tolua_S,"CEGUI::DragDropEventArgs");
  tolua_usertype(tolua_S,"CEGUI::System");
  tolua_usertype(tolua_S,"CEGUI::StateImagery");
  tolua_usertype(tolua_S,"CEGUI::ListboxTextItem");
  tolua_usertype(tolua_S,"CEGUI::Menubar");
- tolua_usertype(tolua_S,"CEGUI::SchemeManager");
+ tolua_usertype(tolua_S,"CEGUI::Titlebar");
  tolua_usertype(tolua_S,"CEGUI::Vector2");
  tolua_usertype(tolua_S,"CEGUI::String");
  tolua_usertype(tolua_S,"CEGUI::NamedArea");
- tolua_usertype(tolua_S,"CEGUI::Titlebar");
- tolua_usertype(tolua_S,"CEGUI::TabControl");
+ tolua_usertype(tolua_S,"CEGUI::TabButton");
+ tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
  tolua_usertype(tolua_S,"CEGUI::WindowEventArgs");
  tolua_usertype(tolua_S,"CEGUI::WindowIterator");
  tolua_usertype(tolua_S,"CEGUI::colour");
  tolua_usertype(tolua_S,"CEGUI::Font");
  tolua_usertype(tolua_S,"CEGUI::FontIterator");
  tolua_usertype(tolua_S,"CEGUI::Texture");
- tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
- tolua_usertype(tolua_S,"CEGUI::TabButton");
+ tolua_usertype(tolua_S,"CEGUI::RadioButton");
+ tolua_usertype(tolua_S,"CEGUI::Thumb");
  tolua_usertype(tolua_S,"CEGUI::FalagardMappingIterator");
  tolua_usertype(tolua_S,"CEGUI::EventArgs");
  tolua_usertype(tolua_S,"CEGUI::ScrollablePane");
  tolua_usertype(tolua_S,"CEGUI::EventSet");
- tolua_usertype(tolua_S,"CEGUI::DragDropEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::Scheme");
  tolua_usertype(tolua_S,"CEGUI::PropertyIterator");
  tolua_usertype(tolua_S,"CEGUI::AbsoluteDim");
  tolua_usertype(tolua_S,"CEGUI::HeaderSequenceEventArgs");
@@ -513,13 +521,13 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::GUISheet");
  tolua_usertype(tolua_S,"CEGUI::URect");
  tolua_usertype(tolua_S,"CEGUI::CoordConverter");
- tolua_usertype(tolua_S,"CEGUI::Tree");
- tolua_usertype(tolua_S,"CEGUI::Scheme");
+ tolua_usertype(tolua_S,"CEGUI::SchemeManager");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryManager");
+ tolua_usertype(tolua_S,"CEGUI::Window");
  tolua_usertype(tolua_S,"CEGUI::UDim");
  tolua_usertype(tolua_S,"CEGUI::Size");
  tolua_usertype(tolua_S,"CEGUI::ActivationEventArgs");
- tolua_usertype(tolua_S,"CEGUI::Window");
+ tolua_usertype(tolua_S,"CEGUI::TreeEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Rect");
 }
 
@@ -12650,6 +12658,96 @@ static int tolua_CEGUI_CEGUI_DragDropEventArgs_new00_local(lua_State* tolua_S)
  {
   CEGUI::DragDropEventArgs* tolua_ret = (CEGUI::DragDropEventArgs*)  new CEGUI::DragDropEventArgs(wnd);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::DragDropEventArgs");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: treeItem of class  CEGUI::TreeEventArgs */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__TreeEventArgs_treeItem_ptr
+static int tolua_get_CEGUI__TreeEventArgs_treeItem_ptr(lua_State* tolua_S)
+{
+  CEGUI::TreeEventArgs* self = (CEGUI::TreeEventArgs*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'treeItem'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)self->treeItem,"CEGUI::TreeItem");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: treeItem of class  CEGUI::TreeEventArgs */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__TreeEventArgs_treeItem_ptr
+static int tolua_set_CEGUI__TreeEventArgs_treeItem_ptr(lua_State* tolua_S)
+{
+  CEGUI::TreeEventArgs* self = (CEGUI::TreeEventArgs*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'treeItem'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::TreeItem",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->treeItem = ((CEGUI::TreeItem*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  CEGUI::TreeEventArgs */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeEventArgs_new00
+static int tolua_CEGUI_CEGUI_TreeEventArgs_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::TreeEventArgs",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* wnd = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+ {
+  CEGUI::TreeEventArgs* tolua_ret = (CEGUI::TreeEventArgs*)  new CEGUI::TreeEventArgs(wnd);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::TreeEventArgs");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::TreeEventArgs */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeEventArgs_new00_local
+static int tolua_CEGUI_CEGUI_TreeEventArgs_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::TreeEventArgs",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* wnd = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+ {
+  CEGUI::TreeEventArgs* tolua_ret = (CEGUI::TreeEventArgs*)  new CEGUI::TreeEventArgs(wnd);
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::TreeEventArgs");
  }
  }
  return 1;
@@ -26345,6 +26443,38 @@ static int tolua_CEGUI_CEGUI_Titlebar_setDraggingEnabled00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getFont of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getFont00
+static int tolua_CEGUI_CEGUI_TreeItem_getFont00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TreeItem* self = (const CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFont'",NULL);
+#endif
+ {
+  CEGUI::Font* tolua_ret = (CEGUI::Font*)  self->getFont();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Font");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getFont'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getTextColours of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getTextColours00
 static int tolua_CEGUI_CEGUI_TreeItem_getTextColours00(lua_State* tolua_S)
@@ -26385,6 +26515,67 @@ static int tolua_CEGUI_CEGUI_TreeItem_getTextColours00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setFont of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setFont00
+static int tolua_CEGUI_CEGUI_TreeItem_setFont00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Font",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Font* font = ((CEGUI::Font*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setFont'",NULL);
+#endif
+ {
+  self->setFont(font);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setFont'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setFont of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setFont01
+static int tolua_CEGUI_CEGUI_TreeItem_setFont01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::String* font_name = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setFont'",NULL);
+#endif
+ {
+  self->setFont(*font_name);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_TreeItem_setFont00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setTextColours of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setTextColours00
 static int tolua_CEGUI_CEGUI_TreeItem_setTextColours00(lua_State* tolua_S)
@@ -26393,7 +26584,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTextColours00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"CEGUI::ColourRect",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ColourRect",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -26401,7 +26592,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTextColours00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  CEGUI::ColourRect* cols = ((CEGUI::ColourRect*)  tolua_tousertype(tolua_S,2,0));
+  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTextColours'",NULL);
 #endif
@@ -26499,8 +26690,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getText00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getText'",NULL);
 #endif
  {
-  string tolua_ret = (string)  self->getText();
- tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+  const CEGUI::String& tolua_ret = (const CEGUI::String&)  self->getText();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::String");
  }
  }
  return 1;
@@ -26531,8 +26722,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getTooltipText00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTooltipText'",NULL);
 #endif
  {
-  string tolua_ret = (string)  self->getTooltipText();
- tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+  const CEGUI::String& tolua_ret = (const CEGUI::String&)  self->getTooltipText();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::String");
  }
  }
  return 1;
@@ -26723,8 +26914,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getOwnerWindow00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOwnerWindow'",NULL);
 #endif
  {
-  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getOwnerWindow();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+  const CEGUI::Window* tolua_ret = (const CEGUI::Window*)  self->getOwnerWindow();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"const CEGUI::Window");
  }
  }
  return 1;
@@ -26776,6 +26967,38 @@ static int tolua_CEGUI_CEGUI_TreeItem_getSelectionColours00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getSelectionBrushImage of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getSelectionBrushImage00
+static int tolua_CEGUI_CEGUI_TreeItem_getSelectionBrushImage00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TreeItem* self = (const CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSelectionBrushImage'",NULL);
+#endif
+ {
+  const CEGUI::Image* tolua_ret = (const CEGUI::Image*)  self->getSelectionBrushImage();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"const CEGUI::Image");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getSelectionBrushImage'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setText of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setText00
 static int tolua_CEGUI_CEGUI_TreeItem_setText00(lua_State* tolua_S)
@@ -26784,7 +27007,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setText00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -26792,12 +27015,12 @@ static int tolua_CEGUI_CEGUI_TreeItem_setText00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
+  const CEGUI::String* text = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setText'",NULL);
 #endif
  {
-  self->setText(text);
+  self->setText(*text);
  }
  }
  return 0;
@@ -26817,7 +27040,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTooltipText00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -26825,18 +27048,51 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTooltipText00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
+  const CEGUI::String* text = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltipText'",NULL);
 #endif
  {
-  self->setTooltipText(text);
+  self->setTooltipText(*text);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setTooltipText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setID of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setID00
+static int tolua_CEGUI_CEGUI_TreeItem_setID00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int item_id = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setID'",NULL);
+#endif
+ {
+  self->setID(item_id);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setID'.",&tolua_err);
  return 0;
 #endif
 }
@@ -26974,6 +27230,39 @@ static int tolua_CEGUI_CEGUI_TreeItem_setAutoDeleted00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setOwnerWindow of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setOwnerWindow00
+static int tolua_CEGUI_CEGUI_TreeItem_setOwnerWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* owner = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setOwnerWindow'",NULL);
+#endif
+ {
+  self->setOwnerWindow(owner);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setOwnerWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setSelectionColours of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setSelectionColours00
 static int tolua_CEGUI_CEGUI_TreeItem_setSelectionColours00(lua_State* tolua_S)
@@ -26982,7 +27271,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setSelectionColours00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"CEGUI::ColourRect",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ColourRect",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -26990,7 +27279,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setSelectionColours00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  CEGUI::ColourRect* cols = ((CEGUI::ColourRect*)  tolua_tousertype(tolua_S,2,0));
+  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelectionColours'",NULL);
 #endif
@@ -27069,6 +27358,134 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setSelectionBrushImage of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage00
+static int tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Image",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Image* image = ((const CEGUI::Image*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelectionBrushImage'",NULL);
+#endif
+ {
+  self->setSelectionBrushImage(image);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setSelectionBrushImage'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setSelectionBrushImage of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage01
+static int tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,3,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::String* imageset = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  const CEGUI::String* image = ((const CEGUI::String*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelectionBrushImage'",NULL);
+#endif
+ {
+  self->setSelectionBrushImage(*imageset,*image);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setButtonLocation of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setButtonLocation00
+static int tolua_CEGUI_CEGUI_TreeItem_setButtonLocation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Rect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Rect* buttonOffset = ((CEGUI::Rect*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setButtonLocation'",NULL);
+#endif
+ {
+  self->setButtonLocation(*buttonOffset);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setButtonLocation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getButtonLocation of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getButtonLocation00
+static int tolua_CEGUI_CEGUI_TreeItem_getButtonLocation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getButtonLocation'",NULL);
+#endif
+ {
+  CEGUI::Rect& tolua_ret = (CEGUI::Rect&)  self->getButtonLocation();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Rect");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getButtonLocation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getIsOpen of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getIsOpen00
 static int tolua_CEGUI_CEGUI_TreeItem_getIsOpen00(lua_State* tolua_S)
@@ -27132,6 +27549,40 @@ static int tolua_CEGUI_CEGUI_TreeItem_toggleIsOpen00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getTreeItemFromIndex of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getTreeItemFromIndex00
+static int tolua_CEGUI_CEGUI_TreeItem_getTreeItemFromIndex00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"size_t",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  size_t itemIndex = *((size_t*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTreeItemFromIndex'",NULL);
+#endif
+ {
+  CEGUI::TreeItem* tolua_ret = (CEGUI::TreeItem*)  self->getTreeItemFromIndex(itemIndex);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::TreeItem");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getTreeItemFromIndex'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getItemCount of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_getItemCount00
 static int tolua_CEGUI_CEGUI_TreeItem_getItemCount00(lua_State* tolua_S)
@@ -27139,14 +27590,14 @@ static int tolua_CEGUI_CEGUI_TreeItem_getItemCount00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TreeItem",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::TreeItem* self = (const CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getItemCount'",NULL);
 #endif
@@ -27205,6 +27656,39 @@ static int tolua_CEGUI_CEGUI_TreeItem_addItem00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: removeItem of class  CEGUI::TreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_removeItem00
+static int tolua_CEGUI_CEGUI_TreeItem_removeItem00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::TreeItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::TreeItem* item = ((const CEGUI::TreeItem*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeItem'",NULL);
+#endif
+ {
+  self->removeItem(item);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeItem'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setIcon of class  CEGUI::TreeItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TreeItem_setIcon00
 static int tolua_CEGUI_CEGUI_TreeItem_setIcon00(lua_State* tolua_S)
@@ -27213,7 +27697,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setIcon00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"CEGUI::Image",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Image",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -27221,12 +27705,12 @@ static int tolua_CEGUI_CEGUI_TreeItem_setIcon00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  CEGUI::Image* icon = ((CEGUI::Image*)  tolua_tousertype(tolua_S,2,0));
+  const CEGUI::Image* theIcon = ((const CEGUI::Image*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setIcon'",NULL);
 #endif
  {
-  self->setIcon(*icon);
+  self->setIcon(*theIcon);
  }
  }
  return 0;
@@ -49050,6 +49534,43 @@ static int tolua_CEGUI_CEGUI_createListboxTextItem00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* function: CEGUI::ceguiLua_createTreeItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_createTreeItem00
+static int tolua_CEGUI_CEGUI_createTreeItem00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_iscppstring(tolua_S,1,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,1,&tolua_err) ||
+ !tolua_isuserdata(tolua_S,3,1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,4,1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string text = ((string)  tolua_tocppstring(tolua_S,1,0));
+  unsigned int item_id = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+  void* item_data = ((void*)  tolua_touserdata(tolua_S,3,0));
+  bool disabled = ((bool)  tolua_toboolean(tolua_S,4,false));
+  bool auto_delete = ((bool)  tolua_toboolean(tolua_S,5,true));
+ {
+  CEGUI::TreeItem* tolua_ret = (CEGUI::TreeItem*)  CEGUI::ceguiLua_createTreeItem(text,item_id,item_data,disabled,auto_delete);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::TreeItem");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createTreeItem'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: new of class  CEGUI::FileStream */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FileStream_new00
 static int tolua_CEGUI_CEGUI_FileStream_new00(lua_State* tolua_S)
@@ -50159,6 +50680,17 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_DragDropEventArgs_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_DragDropEventArgs_new00_local);
   tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"TreeEventArgs","CEGUI::TreeEventArgs","CEGUI::WindowEventArgs",tolua_collect_CEGUI__TreeEventArgs);
+  #else
+  tolua_cclass(tolua_S,"TreeEventArgs","CEGUI::TreeEventArgs","CEGUI::WindowEventArgs",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"TreeEventArgs");
+   tolua_variable(tolua_S,"treeItem",tolua_get_CEGUI__TreeEventArgs_treeItem_ptr,tolua_set_CEGUI__TreeEventArgs_treeItem_ptr);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_TreeEventArgs_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_TreeEventArgs_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_TreeEventArgs_new00_local);
+  tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Event","CEGUI::Event","",NULL);
   tolua_beginmodule(tolua_S,"Event");
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Event_getName00);
@@ -50664,7 +51196,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"TreeItem","CEGUI::TreeItem","",NULL);
   tolua_beginmodule(tolua_S,"TreeItem");
+   tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_TreeItem_getFont00);
    tolua_function(tolua_S,"getTextColours",tolua_CEGUI_CEGUI_TreeItem_getTextColours00);
+   tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_TreeItem_setFont00);
+   tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_TreeItem_setFont01);
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_TreeItem_setTextColours00);
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_TreeItem_setTextColours01);
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_TreeItem_setTextColours02);
@@ -50677,19 +51212,28 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isAutoDeleted",tolua_CEGUI_CEGUI_TreeItem_isAutoDeleted00);
    tolua_function(tolua_S,"getOwnerWindow",tolua_CEGUI_CEGUI_TreeItem_getOwnerWindow00);
    tolua_function(tolua_S,"getSelectionColours",tolua_CEGUI_CEGUI_TreeItem_getSelectionColours00);
+   tolua_function(tolua_S,"getSelectionBrushImage",tolua_CEGUI_CEGUI_TreeItem_getSelectionBrushImage00);
    tolua_function(tolua_S,"setText",tolua_CEGUI_CEGUI_TreeItem_setText00);
    tolua_function(tolua_S,"setTooltipText",tolua_CEGUI_CEGUI_TreeItem_setTooltipText00);
+   tolua_function(tolua_S,"setID",tolua_CEGUI_CEGUI_TreeItem_setID00);
    tolua_function(tolua_S,"setUserData",tolua_CEGUI_CEGUI_TreeItem_setUserData00);
    tolua_function(tolua_S,"setSelected",tolua_CEGUI_CEGUI_TreeItem_setSelected00);
    tolua_function(tolua_S,"setDisabled",tolua_CEGUI_CEGUI_TreeItem_setDisabled00);
    tolua_function(tolua_S,"setAutoDeleted",tolua_CEGUI_CEGUI_TreeItem_setAutoDeleted00);
+   tolua_function(tolua_S,"setOwnerWindow",tolua_CEGUI_CEGUI_TreeItem_setOwnerWindow00);
    tolua_function(tolua_S,"setSelectionColours",tolua_CEGUI_CEGUI_TreeItem_setSelectionColours00);
    tolua_function(tolua_S,"setSelectionColours",tolua_CEGUI_CEGUI_TreeItem_setSelectionColours01);
    tolua_function(tolua_S,"setSelectionColours",tolua_CEGUI_CEGUI_TreeItem_setSelectionColours02);
+   tolua_function(tolua_S,"setSelectionBrushImage",tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage00);
+   tolua_function(tolua_S,"setSelectionBrushImage",tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage01);
+   tolua_function(tolua_S,"setButtonLocation",tolua_CEGUI_CEGUI_TreeItem_setButtonLocation00);
+   tolua_function(tolua_S,"getButtonLocation",tolua_CEGUI_CEGUI_TreeItem_getButtonLocation00);
    tolua_function(tolua_S,"getIsOpen",tolua_CEGUI_CEGUI_TreeItem_getIsOpen00);
    tolua_function(tolua_S,"toggleIsOpen",tolua_CEGUI_CEGUI_TreeItem_toggleIsOpen00);
+   tolua_function(tolua_S,"getTreeItemFromIndex",tolua_CEGUI_CEGUI_TreeItem_getTreeItemFromIndex00);
    tolua_function(tolua_S,"getItemCount",tolua_CEGUI_CEGUI_TreeItem_getItemCount00);
    tolua_function(tolua_S,"addItem",tolua_CEGUI_CEGUI_TreeItem_addItem00);
+   tolua_function(tolua_S,"removeItem",tolua_CEGUI_CEGUI_TreeItem_removeItem00);
    tolua_function(tolua_S,"setIcon",tolua_CEGUI_CEGUI_TreeItem_setIcon00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"FrameWindow","CEGUI::FrameWindow","CEGUI::Window",NULL);
@@ -51762,36 +52306,46 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     99, 97,115,116, 40,101, 44, 34, 99,111,110,115,116, 32, 67,
     69, 71, 85, 73, 58, 58, 68,114, 97,103, 68,114,111,112, 69,
    118,101,110,116, 65,114,103,115, 34, 41, 10,101,110,100, 10,
-    67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115,
-    46,116,111, 77,111,117,115,101, 67,117,114,115,111,114, 69,
-   118,101,110,116, 65,114,103,115, 32, 61, 32, 67, 69, 71, 85,
-    73, 46,116,111, 77,111,117,115,101, 67,117,114,115,111,114,
-    69,118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73,
-    46, 69,118,101,110,116, 65,114,103,115, 46,116,111, 87,105,
-   110,100,111,119, 69,118,101,110,116, 65,114,103,115, 32, 61,
-    32, 67, 69, 71, 85, 73, 46,116,111, 87,105,110,100,111,119,
-    69,118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73,
-    46, 69,118,101,110,116, 65,114,103,115, 46,116,111, 65, 99,
-   116,105,118, 97,116,105,111,110, 69,118,101,110,116, 65,114,
-   103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 65, 99,
-   116,105,118, 97,116,105,111,110, 69,118,101,110,116, 65,114,
-   103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,
-   114,103,115, 46,116,111, 72,101, 97,100,101,114, 83,101,113,
-   117,101,110, 99,101, 69,118,101,110,116, 65,114,103,115, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 72,101, 97,100,101,
-   114, 83,101,113,117,101,110, 99,101, 69,118,101,110,116, 65,
-   114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116,
-    65,114,103,115, 46,116,111, 77,111,117,115,101, 69,118,101,
+   102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 84,114,101,101, 69,118,101,110,116, 65,114,103,115,
+    40,101, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
+    97, 46, 99, 97,115,116, 40,101, 44, 34, 99,111,110,115,116,
+    32, 67, 69, 71, 85, 73, 58, 58, 84,114,101,101, 69,118,101,
+   110,116, 65,114,103,115, 34, 41, 10,101,110,100, 10, 67, 69,
+    71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,
+   111, 77,111,117,115,101, 67,117,114,115,111,114, 69,118,101,
    110,116, 65,114,103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 77,111,117,115,101, 69,118,101,110,116, 65,114,103,
+   116,111, 77,111,117,115,101, 67,117,114,115,111,114, 69,118,
+   101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,
+   118,101,110,116, 65,114,103,115, 46,116,111, 87,105,110,100,
+   111,119, 69,118,101,110,116, 65,114,103,115, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 87,105,110,100,111,119, 69,118,
+   101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,
+   118,101,110,116, 65,114,103,115, 46,116,111, 65, 99,116,105,
+   118, 97,116,105,111,110, 69,118,101,110,116, 65,114,103,115,
+    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 65, 99,116,105,
+   118, 97,116,105,111,110, 69,118,101,110,116, 65,114,103,115,
+    10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,
+   115, 46,116,111, 72,101, 97,100,101,114, 83,101,113,117,101,
+   110, 99,101, 69,118,101,110,116, 65,114,103,115, 32, 61, 32,
+    67, 69, 71, 85, 73, 46,116,111, 72,101, 97,100,101,114, 83,
+   101,113,117,101,110, 99,101, 69,118,101,110,116, 65,114,103,
    115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,
-   103,115, 46,116,111, 75,101,121, 69,118,101,110,116, 65,114,
-   103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 75,101,
-   121, 69,118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85,
-    73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,111, 68,
-   114, 97,103, 68,114,111,112, 69,118,101,110,116, 65,114,103,
-   115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114, 97,
-   103, 68,114,111,112, 69,118,101,110,116, 65,114,103,115,32
+   103,115, 46,116,111, 77,111,117,115,101, 69,118,101,110,116,
+    65,114,103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
+    77,111,117,115,101, 69,118,101,110,116, 65,114,103,115, 10,
+    67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115,
+    46,116,111, 75,101,121, 69,118,101,110,116, 65,114,103,115,
+    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 75,101,121, 69,
+   118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46,
+    69,118,101,110,116, 65,114,103,115, 46,116,111, 68,114, 97,
+   103, 68,114,111,112, 69,118,101,110,116, 65,114,103,115, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114, 97,103, 68,
+   114,111,112, 69,118,101,110,116, 65,114,103,115, 10, 67, 69,
+    71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,
+   111, 84,114,101,101, 69,118,101,110,116, 65,114,103,115, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,114,101,101, 69,
+   118,101,110,116, 65,114,103,115,32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 12");
    lua_settop(tolua_S, top);
@@ -51974,121 +52528,129 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    116,111, 84,111,111,108,116,105,112, 40,119, 41, 10,114,101,
    116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
     40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 84,111,111,108,
-   116,105,112, 34, 41, 10,101,110,100, 10, 67, 69, 71, 85, 73,
-    46, 87,105,110,100,111,119, 46,116,111, 66,117,116,116,111,
-   110, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 66,117,116,116,111,110, 66, 97,115,101, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 67,104,101,
-    99,107, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 67,104,101, 99,107, 98,111,120, 10, 67, 69, 71, 85, 73,
-    46, 87,105,110,100,111,119, 46,116,111, 67,111,109, 98,111,
-    98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 67,
-   111,109, 98,111, 98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 67,111,109, 98,111, 68,114,
-   111,112, 76,105,115,116, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 67,111,109, 98,111, 68,114,111,112, 76,105,115,116,
+   116,105,112, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
+   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 84,114,101,
+   101, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,
+   117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85,
+    73, 58, 58, 84,114,101,101, 34, 41, 10,101,110,100, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 66,
+   117,116,116,111,110, 66, 97,115,101, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 66,117,116,116,111,110, 66, 97,115,101,
     10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 68,114, 97,103, 67,111,110,116, 97,105,110,101,114, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114, 97,103, 67,
-   111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 69,100,105,116, 98,111,
-   120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 69,100,105,
-   116, 98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
-   111,119, 46,116,111, 70,114, 97,109,101, 87,105,110,100,111,
-   119, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 70,114, 97,
-   109,101, 87,105,110,100,111,119, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 71, 85, 73, 83,104,101,
-   101,116, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 71, 85,
-    73, 83,104,101,101,116, 10, 67, 69, 71, 85, 73, 46, 87,105,
-   110,100,111,119, 46,116,111, 73,116,101,109, 69,110,116,114,
-   121, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 73,116,101,
-   109, 69,110,116,114,121, 10, 67, 69, 71, 85, 73, 46, 87,105,
-   110,100,111,119, 46,116,111, 73,116,101,109, 76,105,115,116,
-    66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    73,116,101,109, 76,105,115,116, 66, 97,115,101, 10, 67, 69,
-    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 73,116,
-   101,109, 76,105,115,116, 98,111,120, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 73,116,101,109, 76,105,115,116, 66, 97,
-   115,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
-    46,116,111, 76,105,115,116, 98,111,120, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 76,105,115,116, 98,111,120, 10, 67,
-    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 76,
-   105,115,116, 72,101, 97,100,101,114, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 76,105,115,116, 72,101, 97,100,101,114,
-    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 76,105,115,116, 72,101, 97,100,101,114, 83,101,103,109,
-   101,110,116, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 76,
-   105,115,116, 72,101, 97,100,101,114, 83,101,103,109,101,110,
-   116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 77,101,110,117, 98, 97,114, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 77,101,110,117, 98, 97,114, 10, 67, 69,
-    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 77,101,
-   110,117, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 77,101,110,117, 66, 97,115,101, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 77,101,110,117,
-    73,116,101,109, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    77,101,110,117, 73,116,101,109, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 77,117,108,116,105, 67,
-   111,108,117,109,110, 76,105,115,116, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 77,117,108,116,105, 67,111,108,117,109,
-   110, 76,105,115,116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
-   100,111,119, 46,116,111, 77,117,108,116,105, 76,105,110,101,
-    69,100,105,116, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73,
-    46,116,111, 77,117,108,116,105, 76,105,110,101, 69,100,105,
-   116, 98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
-   111,119, 46,116,111, 80,111,112,117,112, 77,101,110,117, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 80,111,112,117,112,
-    77,101,110,117, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
-   111,119, 46,116,111, 80,114,111,103,114,101,115,115, 66, 97,
-   114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 80,114,111,
-   103,114,101,115,115, 66, 97,114, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 80,117,115,104, 66,117,
-   116,116,111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    80,117,115,104, 66,117,116,116,111,110, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 82, 97,100,105,
-   111, 66,117,116,116,111,110, 32, 61, 32, 67, 69, 71, 85, 73,
-    46,116,111, 82, 97,100,105,111, 66,117,116,116,111,110, 10,
+   111, 67,104,101, 99,107, 98,111,120, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 67,104,101, 99,107, 98,111,120, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 67,
+   111,109, 98,111, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 67,111,109, 98,111, 98,111,120, 10, 67, 69, 71,
+    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 67,111,109,
+    98,111, 68,114,111,112, 76,105,115,116, 32, 61, 32, 67, 69,
+    71, 85, 73, 46,116,111, 67,111,109, 98,111, 68,114,111,112,
+    76,105,115,116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
+   111,119, 46,116,111, 68,114, 97,103, 67,111,110,116, 97,105,
+   110,101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,
+   114, 97,103, 67,111,110,116, 97,105,110,101,114, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 69,100,
+   105,116, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 69,100,105,116, 98,111,120, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 70,114, 97,109,101, 87,
+   105,110,100,111,119, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 70,114, 97,109,101, 87,105,110,100,111,119, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 71, 85,
+    73, 83,104,101,101,116, 32, 61, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 71, 85, 73, 83,104,101,101,116, 10, 67, 69, 71, 85,
+    73, 46, 87,105,110,100,111,119, 46,116,111, 73,116,101,109,
+    69,110,116,114,121, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 73,116,101,109, 69,110,116,114,121, 10, 67, 69, 71, 85,
+    73, 46, 87,105,110,100,111,119, 46,116,111, 73,116,101,109,
+    76,105,115,116, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 73,116,101,109, 76,105,115,116, 66, 97,115,
+   101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
+   116,111, 73,116,101,109, 76,105,115,116, 98,111,120, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 73,116,101,109, 76,105,
+   115,116, 66, 97,115,101, 10, 67, 69, 71, 85, 73, 46, 87,105,
+   110,100,111,119, 46,116,111, 76,105,115,116, 98,111,120, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,116, 98,
+   111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 76,105,115,116, 72,101, 97,100,101,114, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,116, 72,101,
+    97,100,101,114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
+   111,119, 46,116,111, 76,105,115,116, 72,101, 97,100,101,114,
+    83,101,103,109,101,110,116, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 76,105,115,116, 72,101, 97,100,101,114, 83,101,
+   103,109,101,110,116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
+   100,111,119, 46,116,111, 77,101,110,117, 98, 97,114, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 77,101,110,117, 98, 97,
+   114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
+   116,111, 77,101,110,117, 66, 97,115,101, 32, 61, 32, 67, 69,
+    71, 85, 73, 46,116,111, 77,101,110,117, 66, 97,115,101, 10,
     67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
-    83, 99,114,111,108,108, 97, 98,108,101, 80, 97,110,101, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,
-   108, 97, 98,108,101, 80, 97,110,101, 10, 67, 69, 71, 85, 73,
-    46, 87,105,110,100,111,119, 46,116,111, 83, 99,114,111,108,
-   108, 98, 97,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    83, 99,114,111,108,108, 98, 97,114, 10, 67, 69, 71, 85, 73,
-    46, 87,105,110,100,111,119, 46,116,111, 83, 99,114,111,108,
-   108,101,100, 67,111,110,116, 97,105,110,101,114, 32, 61, 32,
-    67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,108,101,
-   100, 67,111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 83, 99,114,111,
-   108,108,101,100, 73,116,101,109, 76,105,115,116, 66, 97,115,
-   101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,
-   111,108,108,101,100, 73,116,101,109, 76,105,115,116, 66, 97,
-   115,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
-    46,116,111, 83,108,105,100,101,114, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 83,108,105,100,101,114, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 83,112,105,
-   110,110,101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    83,112,105,110,110,101,114, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 84, 97, 98, 66,117,116,116,
-   111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84, 97,
-    98, 66,117,116,116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 84, 97, 98, 67,111,110,116,
-   114,111,108, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,
-    97, 98, 67,111,110,116,114,111,108, 10, 67, 69, 71, 85, 73,
-    46, 87,105,110,100,111,119, 46,116,111, 84, 97, 98, 80, 97,
-   110,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84, 97,
-    98, 80, 97,110,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
-   100,111,119, 46,116,111, 84,104,117,109, 98, 32, 61, 32, 67,
-    69, 71, 85, 73, 46,116,111, 84,104,117,109, 98, 10, 67, 69,
-    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84,111,
-   111,108,116,105,112, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 84,111,111,108,116,105,112,32
+    77,101,110,117, 73,116,101,109, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 77,101,110,117, 73,116,101,109, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 77,117,
+   108,116,105, 67,111,108,117,109,110, 76,105,115,116, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 77,117,108,116,105, 67,
+   111,108,117,109,110, 76,105,115,116, 10, 67, 69, 71, 85, 73,
+    46, 87,105,110,100,111,119, 46,116,111, 77,117,108,116,105,
+    76,105,110,101, 69,100,105,116, 98,111,120, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 77,117,108,116,105, 76,105,110,
+   101, 69,100,105,116, 98,111,120, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 80,111,112,117,112, 77,
+   101,110,117, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 80,
+   111,112,117,112, 77,101,110,117, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 80,114,111,103,114,101,
+   115,115, 66, 97,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 80,114,111,103,114,101,115,115, 66, 97,114, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 80,117,
+   115,104, 66,117,116,116,111,110, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 80,117,115,104, 66,117,116,116,111,110, 10,
+    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
+    82, 97,100,105,111, 66,117,116,116,111,110, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 82, 97,100,105,111, 66,117,116,
+   116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 83, 99,114,111,108,108, 97, 98,108,101, 80,
+    97,110,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83,
+    99,114,111,108,108, 97, 98,108,101, 80, 97,110,101, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 83,
+    99,114,111,108,108, 98, 97,114, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 83, 99,114,111,108,108, 98, 97,114, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 83,
+    99,114,111,108,108,101,100, 67,111,110,116, 97,105,110,101,
+   114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,
+   111,108,108,101,100, 67,111,110,116, 97,105,110,101,114, 10,
+    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
+    83, 99,114,111,108,108,101,100, 73,116,101,109, 76,105,115,
+   116, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 83, 99,114,111,108,108,101,100, 73,116,101,109, 76,105,
+   115,116, 66, 97,115,101, 10, 67, 69, 71, 85, 73, 46, 87,105,
+   110,100,111,119, 46,116,111, 83,108,105,100,101,114, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 83,108,105,100,101,114,
+    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
+   111, 83,112,105,110,110,101,114, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 83,112,105,110,110,101,114, 10, 67, 69, 71,
+    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84, 97, 98,
+    66,117,116,116,111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 84, 97, 98, 66,117,116,116,111,110, 10, 67, 69, 71,
+    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84, 97, 98,
+    67,111,110,116,114,111,108, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 84, 97, 98, 67,111,110,116,114,111,108, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84,
+    97, 98, 80, 97,110,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 84, 97, 98, 80, 97,110,101, 10, 67, 69, 71, 85, 73,
+    46, 87,105,110,100,111,119, 46,116,111, 84,104,117,109, 98,
+    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,104,117,109,
+    98, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
+   116,111, 84,111,111,108,116,105,112, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 84,111,111,108,116,105,112, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84,114,
+   101,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,114,
+   101,101,32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 13");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
 
   tolua_function(tolua_S,"createListboxTextItem",tolua_CEGUI_CEGUI_createListboxTextItem00);
+  tolua_function(tolua_S,"createTreeItem",tolua_CEGUI_CEGUI_createTreeItem00);
   tolua_cclass(tolua_S,"OutStream","CEGUI::OutStream","",NULL);
   tolua_beginmodule(tolua_S,"OutStream");
   tolua_endmodule(tolua_S);

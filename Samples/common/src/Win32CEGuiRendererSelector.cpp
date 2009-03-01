@@ -383,10 +383,6 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
 
             if (combo)
             {
-                // basic control setup
-                int first_available_idx = -1;
-                int idx;
-
                 // clear old data
                 SendMessage(combo, CB_RESETCONTENT, 0, 0);
 

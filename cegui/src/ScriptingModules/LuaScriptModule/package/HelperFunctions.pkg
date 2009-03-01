@@ -195,6 +195,10 @@ function CEGUI.toTooltip(w)
     return tolua.cast(w,"CEGUI::Tooltip")
 end
 
+function CEGUI.toTree(w)
+    return tolua.cast(w,"CEGUI::Tree")
+end
+
 CEGUI.Window.toButtonBase = CEGUI.toButtonBase
 CEGUI.Window.toCheckbox = CEGUI.toCheckbox
 CEGUI.Window.toCombobox = CEGUI.toCombobox
@@ -229,12 +233,19 @@ CEGUI.Window.toTabControl = CEGUI.toTabControl
 CEGUI.Window.toTabPane = CEGUI.toTabPane
 CEGUI.Window.toThumb = CEGUI.toThumb
 CEGUI.Window.toTooltip = CEGUI.toTooltip
+CEGUI.Window.toTree = CEGUI.toTree
 
 $]
-
 
 /****************************************************
 	Helper to create a ListboxTextItem.
 	Mimics the constructor
 *****************************************************/
 ListboxTextItem* ceguiLua_createListboxTextItem @ createListboxTextItem(string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
+
+/****************************************************
+	Helper to create a TreeItem.
+	Mimics the constructor
+*****************************************************/
+TreeItem* ceguiLua_createTreeItem @ createTreeItem(string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
+

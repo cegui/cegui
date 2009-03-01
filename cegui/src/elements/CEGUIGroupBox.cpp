@@ -107,7 +107,7 @@ Window * GroupBox::getContentPane() const
     return 0;
 }
 
-bool GroupBox::drawAroundWidget(const CEGUI::Window * wnd)
+bool GroupBox::drawAroundWidget(const CEGUI::Window*)
 {
     Logger::getSingleton().logEvent("TODO: GroupBox::drawAroundWidget");
     return true;

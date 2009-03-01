@@ -250,6 +250,8 @@ void CEGuiDirectFBBaseApplication::handleWindowEvent(DFBWindowEvent *evt)
                     break;
                case DWET_WHEEL:
                     break;
+               default:
+                    break;
     }
 }
 
@@ -309,7 +311,7 @@ void CEGuiDirectFBBaseApplication::cleanup()
 
 //----------------------------------------------------------------------------//
 bool CEGuiDirectFBBaseApplication::initialiseDirectFB(unsigned int width,
-    unsigned int height, bool windowed)
+    unsigned int height, bool /*windowed*/)
 {
     DFBWindowDescription desc_window;
     desc_window.flags = (DFBWindowDescriptionFlags)(DWDESC_POSX | DWDESC_POSY |
@@ -321,8 +323,7 @@ bool CEGuiDirectFBBaseApplication::initialiseDirectFB(unsigned int width,
     desc_window.height= height;
 
     DFBResult ret;
-    IDirectFBSurface *surface;
-   
+
     ret = pimpl->d_layer->CreateWindow( pimpl->d_layer, &desc_window, &pimpl->d_window);
     if(ret)
         return true;

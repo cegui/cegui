@@ -345,7 +345,7 @@ namespace CEGUI
     /*************************************************************************
         Handler called when text is changed.
     *************************************************************************/
-    bool FalagardStaticText::onTextChanged(const EventArgs& e)
+    bool FalagardStaticText::onTextChanged(const EventArgs&)
     {
         configureScrollbars();
         d_window->requestRedraw();
@@ -356,7 +356,7 @@ namespace CEGUI
     /*************************************************************************
         Handler called when size is changed
     *************************************************************************/
-    bool FalagardStaticText::onSized(const EventArgs& e)
+    bool FalagardStaticText::onSized(const EventArgs&)
     {
         configureScrollbars();
         return true;
@@ -366,7 +366,7 @@ namespace CEGUI
     /*************************************************************************
         Handler called when font is changed.
     *************************************************************************/
-    bool FalagardStaticText::onFontChanged(const EventArgs& event)
+    bool FalagardStaticText::onFontChanged(const EventArgs&)
     {
         configureScrollbars();
         d_window->requestRedraw();
@@ -399,7 +399,7 @@ namespace CEGUI
     /*************************************************************************
         Handler called when the scroll bar positions change
     *************************************************************************/
-    bool FalagardStaticText::handleScrollbarChange(const EventArgs& e)
+    bool FalagardStaticText::handleScrollbarChange(const EventArgs&)
     {
         d_window->requestRedraw();
         return true;

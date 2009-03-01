@@ -29,7 +29,7 @@
 #include "CEGUI.h"
 #include "ScriptingModules/LuaScriptModule/CEGUILua.h"
 
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of

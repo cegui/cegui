@@ -181,7 +181,7 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
     return false;
 }
 
-bool TextDemo::formatChangedHandler(const CEGUI::EventArgs& e)
+bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 {
     // we will use the WindowManager to get access to the widgets
     WindowManager& winMgr = WindowManager::getSingleton();
@@ -214,7 +214,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs& e)
+bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -229,7 +229,7 @@ bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool TextDemo::quit(const CEGUI::EventArgs& e)
+bool TextDemo::quit(const CEGUI::EventArgs&)
 {
     // signal quit
     d_sampleApp->setQuitting();
@@ -247,7 +247,7 @@ void TextDemo::cleanupSample()
 }
 
 // Main app
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of

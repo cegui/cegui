@@ -207,8 +207,8 @@ private:
     void unsubscribe(const BoundSlot& slot);
 
     // Copy constructor and assignment are not allowed for events
-    Event(const Event& other) {}
-    Event& operator=(const Event& other)  {return *this;}
+    Event(const Event&) {}
+    Event& operator=(const Event&)  {return *this;}
 
     typedef std::multimap<Group, Connection> SlotContainer;
     SlotContainer d_slots;  //!< Collection holding ref-counted bound slots

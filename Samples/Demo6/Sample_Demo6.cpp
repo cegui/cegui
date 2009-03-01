@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <string>
 
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -434,7 +434,7 @@ void Demo6Sample::initDemoEventWiring(void)
         subscribeEvent(MultiColumnList::EventListContentsChanged, Event::Subscriber(&Demo6Sample::handleContentsChanged, this));
 }
 
-bool Demo6Sample::handleQuit(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleQuit(const CEGUI::EventArgs&)
 {
     // signal quit
     d_sampleApp->setQuitting();
@@ -443,7 +443,7 @@ bool Demo6Sample::handleQuit(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -476,7 +476,7 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -502,7 +502,7 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -540,7 +540,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -566,7 +566,7 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -608,7 +608,7 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -629,7 +629,7 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 
@@ -697,7 +697,7 @@ bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& e)
+bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
 

@@ -83,7 +83,20 @@ namespace CEGUI
 
     void DefaultResourceProvider::setResourceGroupDirectory(const String& resourceGroup, const String& directory)
     {
-        d_resourceGroups[resourceGroup] = directory;
+        if (directory.length() == 0)
+            return;
+
+        #if defined(_WIN32) || defined(__WIN32__)
+            // while we rarely use the unportable '\', the user may have
+            const String separators("\\/");
+        #else
+            const String separators("/");
+        #endif
+
+        if (String::npos == separators.find(directory[directory.length() - 1]))
+            d_resourceGroups[resourceGroup] = directory + '/';
+        else
+            d_resourceGroups[resourceGroup] = directory;
     }
 
     const String& DefaultResourceProvider::getResourceGroupDirectory(const String& resourceGroup)

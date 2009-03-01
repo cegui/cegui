@@ -106,7 +106,7 @@ Font::~Font(void)
 /*************************************************************************
     Define a glyph mapping (handle a <Mapping /> XML element)
 *************************************************************************/
-void Font::defineMapping (const XMLAttributes& attributes)
+void Font::defineMapping (const XMLAttributes&)
 {
     throw FileIOException("Font::defineMapping - The <Mapping> XML element is not supported for this font type");
 }
@@ -633,7 +633,7 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth, float x_sc
 }
 
 
-void Font::rasterize (utf32 start_codepoint, utf32 end_codepoint)
+void Font::rasterize (utf32, utf32)
 {
     // do nothing by default
 }

@@ -59,7 +59,7 @@ private:
     void createMenu(CEGUI::Window* bar);
 
     // quit menu item handler
-    bool fileQuit(const CEGUI::EventArgs& e)
+    bool fileQuit(const CEGUI::EventArgs&)
     {
         d_sampleApp->setQuitting(true);
         return true;
@@ -80,7 +80,7 @@ private:
 };
 
 // Sample program entry point
-int main(int argc, char *argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -211,7 +211,7 @@ void ScrollablePaneSample::cleanupSample()
 /*************************************************************************
     Handler for the 'Demo -> New dialog' menu item
 *************************************************************************/
-bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs& e)
+bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
 {
     using namespace CEGUI;
     

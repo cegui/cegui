@@ -410,7 +410,7 @@ namespace CEGUI
         return false;
     }
 
-    bool Spinner::handleEditTextChange(const EventArgs& e)
+    bool Spinner::handleEditTextChange(const EventArgs&)
     {
         // set this windows text to match
         setText(getEditbox()->getText());

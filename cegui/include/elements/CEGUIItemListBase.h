@@ -372,14 +372,14 @@ public:
         Notify this ItemListBase that the given item was just clicked.
         Internal function - NOT to be used from client code.
     */
-    virtual void notifyItemClicked(ItemEntry* li) {}
+    virtual void notifyItemClicked(ItemEntry*) {}
 
     /*!
     \brief
         Notify this ItemListBase that the given item just changed selection state.
         Internal function - NOT to be used from client code.
     */
-    virtual void notifyItemSelectState(ItemEntry* li, bool state) {}
+    virtual void notifyItemSelectState(ItemEntry*, bool) {}
 
     /*!
     \brief
@@ -550,6 +550,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
+    virtual void onParentSized(WindowEventArgs& e);
 	//virtual void    onChildRemoved(WindowEventArgs& e);
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 
