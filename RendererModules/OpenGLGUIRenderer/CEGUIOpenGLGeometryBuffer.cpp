@@ -29,6 +29,7 @@
 #include "CEGUIOpenGLGeometryBuffer.h"
 #include "CEGUIRenderEffect.h"
 #include "CEGUIOpenGLTexture.h"
+#include "CEGUIVertex.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -74,9 +75,22 @@ void OpenGLGeometryBuffer::draw() const
         d_effect->performPreRenderFunctions();
 
     // draw the batches
+    size_t pos = 0;
     BatchList::const_iterator i = d_batches.begin();
     for ( ; i != d_batches.end(); ++i)
-        (*i).draw();
+    {
+        glBindTexture(GL_TEXTURE_2D, (*i).first);
+        // set up pointers to the vertex element arrays
+        glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
+                          &d_vertices[pos]);
+        glColorPointer(4, GL_FLOAT, sizeof(GLVertex),
+                       &d_vertices[pos].colour[0]);
+        glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
+                        &d_vertices[pos].position[0]);
+        // draw the geometry
+        glDrawArrays(GL_TRIANGLES, 0, (*i).second);
+        pos += (*i).second;
+    }
 
     // clean up RenderEffect
     if (d_effect)
@@ -125,7 +139,28 @@ void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     uint vertex_count)
 {
     performBatchManagement();
-    d_batches.back().appendGeometry(vbuff, vertex_count);
+
+    // update size of current batch
+    d_batches.back().second += vertex_count;
+
+    // buffer these vertices
+    GLVertex vd;
+    const Vertex* vs = vbuff;
+    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    {
+        // copy vertex info the buffer, converting from CEGUI::Vertex to
+        // something directly usable by OpenGL as needed.
+        vd.tex[0]      = vs->tex_coords.d_x;
+        vd.tex[1]      = vs->tex_coords.d_y;
+        vd.colour[0]   = vs->colour_val.getRed();
+        vd.colour[1]   = vs->colour_val.getGreen();
+        vd.colour[2]   = vs->colour_val.getBlue();
+        vd.colour[3]   = vs->colour_val.getAlpha();
+        vd.position[0] = vs->position.d_x;
+        vd.position[1] = vs->position.d_y;
+        vd.position[2] = vs->position.d_z;
+        d_vertices.push_back(vd);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -138,6 +173,7 @@ void OpenGLGeometryBuffer::setActiveTexture(Texture* texture)
 void OpenGLGeometryBuffer::reset()
 {
     d_batches.clear();
+    d_vertices.clear();
     d_activeTexture = 0;
 }
 
@@ -150,13 +186,7 @@ Texture* OpenGLGeometryBuffer::getActiveTexture() const
 //----------------------------------------------------------------------------//
 uint OpenGLGeometryBuffer::getVertexCount() const
 {
-    uint count = 0;
-    BatchList::const_iterator i = d_batches.begin();
-
-    for ( ; i != d_batches.end(); ++i)
-        count += (*i).getVertexCount();
-
-    return count;
+    return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
@@ -173,8 +203,8 @@ void OpenGLGeometryBuffer::performBatchManagement()
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (gltex != d_batches.back().getTextureName()))
-        d_batches.push_back(OpenGLGeometryBatch(gltex));
+    if (d_batches.empty() || (gltex != d_batches.back().first))
+        d_batches.push_back(BatchInfo(gltex, 0));
 }
 
 //----------------------------------------------------------------------------//

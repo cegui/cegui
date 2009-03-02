@@ -29,8 +29,10 @@
 #define _CEGUIOpenGLGeometryBuffer_h_
 
 #include "CEGUIGeometryBuffer.h"
-#include "CEGUIOpenGLGeometryBatch.h"
+#include "CEGUIOpenGLRenderer.h"
 #include "CEGUIRect.h"
+
+#include <utility>
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -83,12 +85,26 @@ protected:
     //! update cached matrix
     void updateMatrix() const;
 
+    //! internal Vertex structure used for GL based geometry.
+    struct GLVertex
+    {
+        float tex[2];
+        float colour[4];
+        float position[3];
+    };
+
     //! last texture that was set as active
     OpenGLTexture* d_activeTexture;
-    //! type to use for the OpenGLGeometryBatch collection.
-    typedef std::vector<OpenGLGeometryBatch> BatchList;
-    //! collection of OpenGLGeometryBatch objects.
+    //! type to track info for per-texture sub batches of geometry
+    typedef std::pair<uint, uint> BatchInfo;
+    //! type of container that tracks BatchInfos.
+    typedef std::vector<BatchInfo> BatchList;
+    //! list of texture batches added to the geometry buffer
     BatchList d_batches;
+    //! type of container used to queue the geometry
+    typedef std::vector<GLVertex> VertexList;
+    //! container where added geometry is stored.
+    VertexList d_vertices;
     //! indictes whether a custom transform has been set.
     bool d_hasCustomMatrix;
     //! transform matrix
