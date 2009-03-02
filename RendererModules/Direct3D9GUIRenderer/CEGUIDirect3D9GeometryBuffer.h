@@ -30,9 +30,9 @@
 
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D9Renderer.h"
-#include "CEGUIDirect3D9GeometryBatch.h"
 #include "CEGUIRect.h"
 #include <d3dx9.h>
+#include <utility>
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -84,12 +84,29 @@ protected:
     //! update cached matrix
     void updateMatrix() const;
 
+    //! internal Vertex structure used for Direct3D based geometry.
+    struct D3DVertex
+    {
+        //! The transformed position for the vertex.
+	    FLOAT x, y, z;
+        //! colour of the vertex.
+	    DWORD diffuse;
+        //! texture coordinates.
+	    float tu, tv;
+    };
+
     //! last texture that was set as active
     Direct3D9Texture* d_activeTexture;
-    //! type to use for the Direct3D9GeometryBatch collection.
-    typedef std::vector<Direct3D9GeometryBatch> BatchList;
-    //! collection of Direct3D9GeometryBatch objects.
+    //! type to track info for per-texture sub batches of geometry
+    typedef std::pair<LPDIRECT3DTEXTURE9, uint> BatchInfo;
+    //! type of container that tracks BatchInfos.
+    typedef std::vector<BatchInfo> BatchList;
+    //! list of texture batches added to the geometry buffer
     BatchList d_batches;
+    //! type of container used to queue the geometry
+    typedef std::vector<D3DVertex> VertexList;
+    //! container where added geometry is stored.
+    VertexList d_vertices;
     //! indictes whether a custom transform has been set.
     bool d_hasCustomMatrix;
     //! transform matrix

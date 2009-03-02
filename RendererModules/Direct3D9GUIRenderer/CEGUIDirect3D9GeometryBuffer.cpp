@@ -28,6 +28,7 @@
 #include "CEGUIDirect3D9GeometryBuffer.h"
 #include "CEGUIDirect3D9Texture.h"
 #include "CEGUIRenderEffect.h"
+#include "CEGUIVertex.h"
 #include <d3d9.h>
 
 // Start of CEGUI namespace section
@@ -68,9 +69,15 @@ void Direct3D9GeometryBuffer::draw() const
         d_effect->performPreRenderFunctions();
 
     // draw the batches
+    size_t pos = 0;
     BatchList::const_iterator i = d_batches.begin();
     for ( ; i != d_batches.end(); ++i)
-        (*i).draw();
+    {
+        d_device->SetTexture(0, (*i).first);
+        d_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, (*i).second / 3,
+                                  &d_vertices[pos], sizeof(D3DVertex));
+        pos += (*i).second;
+    }
 
     // clean up RenderEffect
     if (d_effect)
@@ -125,7 +132,25 @@ void Direct3D9GeometryBuffer::appendGeometry(const Vertex* const vbuff,
                                              uint vertex_count)
 {
     performBatchManagement();
-    d_batches.back().appendGeometry(vbuff, vertex_count);
+
+    // update size of current batch
+    d_batches.back().second += vertex_count;
+
+    // buffer these vertices
+    D3DVertex vd;
+    const Vertex* vs = vbuff;
+    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    {
+        // copy vertex info the buffer, converting from CEGUI::Vertex to
+        // something directly usable by D3D as needed.
+        vd.x       = vs->position.d_x - 0.5f;
+        vd.y       = vs->position.d_y - 0.5f;
+        vd.z       = vs->position.d_z;
+        vd.diffuse = vs->colour_val.getARGB();
+        vd.tu      = vs->tex_coords.d_x;
+        vd.tv      = vs->tex_coords.d_y;
+        d_vertices.push_back(vd);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -138,6 +163,7 @@ void Direct3D9GeometryBuffer::setActiveTexture(Texture* texture)
 void Direct3D9GeometryBuffer::reset()
 {
     d_batches.clear();
+    d_vertices.clear();
     d_activeTexture = 0;
 }
 
@@ -150,13 +176,7 @@ Texture* Direct3D9GeometryBuffer::getActiveTexture() const
 //----------------------------------------------------------------------------//
 uint Direct3D9GeometryBuffer::getVertexCount() const
 {
-    uint count = 0;
-    BatchList::const_iterator i = d_batches.begin();
-
-    for ( ; i != d_batches.end(); ++i)
-        count += (*i).getVertexCount();
-
-    return count;
+    return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
@@ -185,8 +205,8 @@ void Direct3D9GeometryBuffer::performBatchManagement()
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (t != d_batches.back().getTexture()))
-        d_batches.push_back(Direct3D9GeometryBatch(d_device, t));
+    if (d_batches.empty() || (t != d_batches.back().first))
+        d_batches.push_back(BatchInfo(t, 0));
 }
 
 //----------------------------------------------------------------------------//

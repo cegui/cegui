@@ -1,6 +1,4 @@
-EXTRA_DIST = CEGUIDirect3D9GeometryBatch.cpp \
-             CEGUIDirect3D9GeometryBatch.h \
-             CEGUIDirect3D9GeometryBuffer.cpp \
+EXTRA_DIST = CEGUIDirect3D9GeometryBuffer.cpp \
              CEGUIDirect3D9GeometryBuffer.h \
              CEGUIDirect3D9Renderer.cpp \
              CEGUIDirect3D9Renderer.h \
