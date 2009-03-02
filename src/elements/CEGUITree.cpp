@@ -677,7 +677,7 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
             {
                 // Draw the Close button
                 if (itemIsVisible)
-                    closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                    closeButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;
@@ -691,7 +691,7 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
             {
                 // Draw the Open button
                 if (itemIsVisible)
-                    openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                    openButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;

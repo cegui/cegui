@@ -190,7 +190,7 @@ namespace CEGUI
             Rect caratRect(textArea);
             caratRect.d_left += extentToCarat + textOffset;
 
-            caratImagery.render(*w, caratRect, 0, 0, &textArea);
+            caratImagery.render(*w, caratRect, 0, &textArea);
         }
     }
 
