@@ -89,6 +89,7 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
 CEGUI_ENABLE_OGRE_RENDERER
+CEGUI_ENABLE_IRRLICHT_RENDERER
 
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
@@ -146,9 +147,10 @@ AC_CONFIG_FILES([Makefile
                  ImageCodecModules/SILLYImageCodec/Makefile
                  ImageCodecModules/TGAImageCodec/Makefile
                  RendererModules/Makefile
-                 RendererModules/OpenGLGUIRenderer/Makefile
                  RendererModules/Direct3D9GUIRenderer/Makefile
+                 RendererModules/IrrlichtGUIRenderer/Makefile
                  RendererModules/OgreGUIRenderer/Makefile
+                 RendererModules/OpenGLGUIRenderer/Makefile
                  Samples/Demo6/Makefile
                  Samples/Demo6/src/Makefile
                  Samples/Demo7/Makefile

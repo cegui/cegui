@@ -4,4 +4,7 @@ endif
 if BUILD_OGRE_RENDERER
 OGRE=OgreGUIRenderer
 endif
-SUBDIRS = . $(OPENGL) $(OGRE) Direct3D9GUIRenderer
+if BUILD_IRRLICHT_RENDERER
+IRRLICHT=IrrlichtGUIRenderer
+endif
+SUBDIRS = . $(OPENGL) $(OGRE) $(IRRLICHT) Direct3D9GUIRenderer

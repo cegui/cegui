@@ -32,6 +32,12 @@ if CEGUI_SAMPLES_USE_OGRE
     libCEGUISampleHelper_la_LIBADD += $(top_builddir)/RendererModules/OgreGUIRenderer/libCEGUIOgreRenderer.la \
                                       $(Ogre_LIBS) $(OIS_LIBS)
 endif
+if CEGUI_SAMPLES_USE_IRRLICHT
+    INCLUDES += $(Irrlicht_CFLAGS)
+    libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/RendererModules/IrrlichtGUIRenderer/libCEGUIIrrlichtRenderer.la \
+                                      $(Irrlicht_LIBS)
+endif
 
 EXTRA_DIST = CEGuiD3D9BaseApplication.cpp \
              DeviceReset_Direct3D10.cpp \
