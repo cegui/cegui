@@ -265,13 +265,7 @@ Texture* OgreGeometryBuffer::getActiveTexture() const
 //----------------------------------------------------------------------------//
 uint OgreGeometryBuffer::getVertexCount() const
 {
-    uint count = 0;
-    BatchList::const_iterator i = d_batches.begin();
-
-    for ( ; i != d_batches.end(); ++i)
-        count += (*i).second;
-
-    return count;
+    return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
