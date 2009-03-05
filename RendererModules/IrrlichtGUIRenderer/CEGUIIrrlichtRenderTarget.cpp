@@ -110,10 +110,6 @@ void IrrlichtRenderTarget::updateMatrix() const
     const float midy = h * 0.5f;
     d_viewDistance = midx / (aspect * 0.267949192431123f);
 
-    const float nearZ = d_viewDistance * 0.5f;
-    const float farZ = d_viewDistance * 2.0f;
-    const float nr_sub_far = nearZ - farZ;
-
     d_matrix.buildProjectionMatrixPerspectiveFovRH(0.523598776f, aspect,
                                                    d_viewDistance * 0.5,
                                                    d_viewDistance * 2);
@@ -124,14 +120,6 @@ void IrrlichtRenderTarget::updateMatrix() const
                                   irr::core::vector3df(0, -1, 0));
 
     d_matrix *= tmp;
-
-//     d_matrix(0, 0) = 3.732050808f / aspect;
-//     d_matrix(1, 1) = -3.732050808f;
-//     d_matrix(2, 2) = -((farZ + nearZ) / nr_sub_far);
-//     d_matrix(2, 3) = 1.0f;
-//     d_matrix(3, 0) = -d_viewDistance;
-//     d_matrix(3, 1) = d_viewDistance;
-//     d_matrix(3, 3) = d_viewDistance;
 
     d_matrixValid = true;
 }
