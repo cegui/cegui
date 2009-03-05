@@ -30,6 +30,9 @@
 
 #include "CEGUIIrrlichtRendererDef.h"
 #include "CEGUIRenderTarget.h"
+#include "CEGUIRect.h"
+
+#include <irrlicht.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,7 +44,8 @@ class IRR_GUIRENDERER_API IrrlichtRenderTarget : public virtual RenderTarget
 {
 public:
     //! Constructor
-    IrrlichtRenderTarget(IrrlichtRenderer& owner);
+    IrrlichtRenderTarget(IrrlichtRenderer& owner,
+                         irr::video::IVideoDriver& driver);
     //! Destructor
     virtual ~IrrlichtRenderTarget();
 
@@ -55,6 +59,21 @@ public:
     void unprojectPoint(const GeometryBuffer& buff,
                         const Vector2& p_in, Vector2& p_out) const;
 protected:
+    //! helper that initialises the cached matrix
+    void updateMatrix() const;
+
+    //! IrrlichtRenderer object that owns this RenderTarget
+    IrrlichtRenderer& d_owner;
+    //! Irrlicht video driver we are using
+    irr::video::IVideoDriver& d_driver;
+    //! holds defined area for the RenderTarget
+    Rect d_area;
+    //! projection / view matrix cache
+    mutable irr::core::matrix4 d_matrix;
+    //! true when d_matrix is valid and up to date
+    mutable bool d_matrixValid;
+    //! tracks viewing distance (this is set up at the same time as d_matrix)
+    mutable float d_viewDistance;
 };
 
 

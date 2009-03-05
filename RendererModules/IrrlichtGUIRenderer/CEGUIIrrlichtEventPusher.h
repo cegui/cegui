@@ -35,25 +35,25 @@ namespace CEGUI
 {
 using namespace irr;
 
-class EventPusher
+class IrrlichtEventPusher
 {
-    gui::ICursorControl* cursorctrl;
+    gui::ICursorControl* d_cursorctrl;
 
-    core::position2d<s32> pos;
-    core::position2d<s32> dpos;
+    core::position2d<s32> d_pos;
+    core::position2d<s32> d_dpos;
 
 public :
-    EventPusher(irr::gui::ICursorControl* ctrl)
-            : cursorctrl(ctrl)
+    IrrlichtEventPusher(irr::gui::ICursorControl* ctrl) :
+        d_cursorctrl(ctrl)
     {
-        cursorctrl->setPosition(0.5f, 0.5f);
-        pos = cursorctrl->getPosition();
-        dpos.X = 0;
-        dpos.Y = 0;
+        d_cursorctrl->setPosition(0.5f, 0.5f);
+        d_pos = d_cursorctrl->getPosition();
+        d_dpos.X = 0;
+        d_dpos.Y = 0;
         initCodes();
     };
 
-    virtual ~EventPusher(){};
+    virtual ~IrrlichtEventPusher(){};
 
     bool OnEvent(const SEvent& event)
     {

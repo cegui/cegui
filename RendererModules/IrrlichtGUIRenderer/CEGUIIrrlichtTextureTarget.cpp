@@ -26,19 +26,44 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIIrrlichtTextureTarget.h"
+#include "CEGUIIrrlichtTexture.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner) :
-    IrrlichtRenderTarget(owner)
+const float IrrlichtTextureTarget::DEFAULT_SIZE = 128.0f;
+
+//----------------------------------------------------------------------------//
+IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
+                                             irr::video::IVideoDriver& driver) :
+    IrrlichtRenderTarget(owner, driver),
+    d_texture(0),
+    d_CEGUITexture(static_cast<IrrlichtTexture*>(&d_owner.createTexture()))
 {
+    // setup area and cause the initial texture to be generated.
+    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::~IrrlichtTextureTarget()
 {
+    cleanupTargetTexture();
+    d_owner.destroyTexture(*d_CEGUITexture);
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTextureTarget::activate()
+{
+    d_driver.setRenderTarget(d_texture, false, false);
+    IrrlichtRenderTarget::activate();
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTextureTarget::deactivate()
+{
+    IrrlichtRenderTarget::deactivate();
+    d_driver.setRenderTarget(0);
 }
 
 //----------------------------------------------------------------------------//
@@ -50,21 +75,52 @@ bool IrrlichtTextureTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::clear()
 {
+    d_driver.setRenderTarget(d_texture, true, false,
+                             irr::video::SColor(0, 0, 0, 0));
+    d_driver.setRenderTarget(0);
 }
 
 //----------------------------------------------------------------------------//
 Texture& IrrlichtTextureTarget::getTexture() const
 {
+    return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
 {
+    // exit if current size is enough
+    if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
+        return;
+
+    cleanupTargetTexture();
+
+    d_texture = d_driver.addRenderTargetTexture(
+        irr::core::dimension2d<irr::s32>(sz.d_width, sz.d_height),
+        IrrlichtTexture::getUniqueName().c_str());
+
+    d_CEGUITexture->setIrrlichtTexture(d_texture);
+    d_CEGUITexture->setOriginalDataSize(d_area.getSize());
+
+    setArea(Rect(d_area.getPosition(), sz));
+    clear();
 }
 
 //----------------------------------------------------------------------------//
 bool IrrlichtTextureTarget::isRenderingInverted() const
 {
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTextureTarget::cleanupTargetTexture()
+{
+    if (d_texture)
+    {
+        d_CEGUITexture->setIrrlichtTexture(0);
+        d_driver.removeTexture(d_texture);
+        d_texture = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//

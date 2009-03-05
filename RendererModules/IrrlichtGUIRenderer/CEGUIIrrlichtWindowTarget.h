@@ -39,7 +39,8 @@ class IRR_GUIRENDERER_API IrrlichtWindowTarget : public IrrlichtRenderTarget
 {
 public:
     //! Constructor
-    IrrlichtWindowTarget(IrrlichtRenderer& owner);
+    IrrlichtWindowTarget(IrrlichtRenderer& owner,
+                         irr::video::IVideoDriver& driver);
     //! Destructor
     virtual ~IrrlichtWindowTarget();
 

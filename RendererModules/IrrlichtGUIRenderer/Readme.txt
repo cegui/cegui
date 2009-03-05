@@ -37,7 +37,7 @@ while(device->run())
 bool CEGuiTest::OnEvent(SEvent event)
 {
     if(irrlichtrenderer!=0)
-        return irrlichtrenderer->OnEvent(event);
+        return irrlichtrenderer->injectEvent(event);
     else
         return false;
 }

@@ -30,23 +30,57 @@
 
 #include "CEGUIIrrlichtRendererDef.h"
 #include "CEGUIRenderer.h"
+#include "CEGUISize.h"
+#include "CEGUIVector.h"
 
+#include <vector>
+
+// forward reference irrlicht classes
 namespace irr
 {
 class IrrlichtDevice;
+class SEvent;
+
+namespace video
+{
+class IVideoDriver;
+}
+
+namespace io
+{
+class IFileSystem;
+}
+
 }
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class IrrlichtTexture;
+class IrrlichtGeometryBuffer;
+class IrrlichtResourceProvider;
+class IrrlichtEventPusher;
+class RenderTarget;
+
 //! CEGUI::Renderer implementation for the Irrlicht engine.
 class IRR_GUIRENDERER_API IrrlichtRenderer : public Renderer
 {
 public:
     //! Function to create and return IrrlichtRenderer objects
     static IrrlichtRenderer& create(irr::IrrlichtDevice& device);
+
     //! Function to destroy IrrlichtRenderer objects.
     static void destroy(IrrlichtRenderer& renderer);
+
+    //! Create a IrrlichtResourceProvider object.
+    static IrrlichtResourceProvider&
+        createIrrlichtResourceProvider(irr::io::IFileSystem& fs);
+
+    //! Destroy a IrrlichtResourceProvider object.
+    static void destroyIrrlichtResourceProvider(IrrlichtResourceProvider& rp);
+
+    //! inject irrlicht event to CEGUI system
+    bool injectEvent(const irr::SEvent& event);
 
     // implement Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
@@ -73,6 +107,38 @@ protected:
     IrrlichtRenderer(irr::IrrlichtDevice& device);
     //! Destructor
     ~IrrlichtRenderer();
+
+    //! String holding the renderer identification text.
+    static String d_rendererID;
+    //! The IrrlichtDevide that we'll be using.
+    irr::IrrlichtDevice& d_device;
+    //! Irrlicht video driver (as obtained from the device)
+    irr::video::IVideoDriver* d_driver;
+    //! What the renderer considers to be the current display size.
+    Size d_displaySize;
+    //! What the renderer considers to be the current display DPI resolution.
+    Vector2 d_displayDPI;
+    //! The default RenderTarget (used by d_defaultRoot)
+    RenderTarget* d_defaultTarget;
+    //! The default rendering root object
+    RenderingRoot* d_defaultRoot;
+    //! container type used to hold TextureTargets we create.
+    typedef std::vector<TextureTarget*> TextureTargetList;
+    //! Container used to track texture targets.
+    TextureTargetList d_textureTargets;
+    //! container type used to hold GeometryBuffers we create.
+    typedef std::vector<IrrlichtGeometryBuffer*> GeometryBufferList;
+    //! Container used to track geometry buffers.
+    GeometryBufferList d_geometryBuffers;
+    //! container type used to hold Textures we create.
+    typedef std::vector<IrrlichtTexture*> TextureList;
+    //! Container used to track textures.
+    TextureList d_textures;
+    //! What the renderer thinks the max texture size is.
+    uint d_maxTextureSize;
+    //! ptr to helper object that aids in injection of events from Irrlicht.
+    IrrlichtEventPusher* d_eventPusher;
+
 };
 
 } // End of  CEGUI namespace section

@@ -40,16 +40,22 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class IrrlichtTexture;
+
 //! CEGUI::TextureTarget implementation for the Irrlicht engine.
 class IRR_GUIRENDERER_API IrrlichtTextureTarget : public IrrlichtRenderTarget,
                                                   public TextureTarget
 {
 public:
     //! Constructor.
-    IrrlichtTextureTarget(IrrlichtRenderer& owner);
+    IrrlichtTextureTarget(IrrlichtRenderer& owner,
+                          irr::video::IVideoDriver& driver);
     //! Destructor.
     virtual ~IrrlichtTextureTarget();
 
+    // overrides from IrrlichtRenderTarget
+    void activate();
+    void deactivate();
     // implementation of RenderTarget interface
     bool isImageryCache() const;
     // implement CEGUI::TextureTarget interface.
@@ -59,6 +65,16 @@ public:
     bool isRenderingInverted() const;
 
 protected:
+    //! default / initial size for the underlying texture.
+    static const float DEFAULT_SIZE;
+
+    //! cleans up the current render target texture used by this object.
+    void cleanupTargetTexture();
+
+    //! The irrlicht render target texture we'll be drawing to
+    irr::video::ITexture* d_texture;
+    //! This wraps d_texture so it can be used by the core CEGUI lib.
+    IrrlichtTexture* d_CEGUITexture;
 };
 
 #if defined(_MSC_VER)

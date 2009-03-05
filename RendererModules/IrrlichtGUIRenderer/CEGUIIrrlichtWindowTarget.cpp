@@ -31,9 +31,14 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-IrrlichtWindowTarget::IrrlichtWindowTarget(IrrlichtRenderer& owner) :
-    IrrlichtRenderTarget(owner)
+IrrlichtWindowTarget::IrrlichtWindowTarget(IrrlichtRenderer& owner,
+                                           irr::video::IVideoDriver& driver) :
+    IrrlichtRenderTarget(owner, driver)
 {
+    irr::core::dimension2d<irr::s32> sz(d_driver.getScreenSize());
+
+    const Rect init_area(0, 0, sz.Width, sz.Height);
+    setArea(init_area);
 }
 
 //----------------------------------------------------------------------------//

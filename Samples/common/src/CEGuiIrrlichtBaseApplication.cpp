@@ -40,13 +40,16 @@
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "CEGuiSample.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIGeometryBuffer.h"
+#include "CEGUIRenderingRoot.h"
 
 //----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     d_device(0),
     d_driver(0),
     d_smgr(0),
-    d_renderer(0)
+    d_renderer(0),
+    d_fps_value(0)
 {
     using namespace irr;
 
@@ -108,6 +111,33 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     camera->setFOV(1.56f);
     d_driver->setAmbientLight(video::SColor(255, 255, 255, 255));
 
+    // setup required to do direct rendering of FPS value
+    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0),
+                            d_renderer->getDisplaySize());
+    d_fps_geometry = &d_renderer->createGeometryBuffer();
+    d_fps_geometry->setClippingRegion(scrn);
+
+    // setup for logo
+    CEGUI::ImagesetManager::getSingleton().
+        createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+    d_logo_geometry = &d_renderer->createGeometryBuffer();
+    d_logo_geometry->setClippingRegion(scrn);
+    d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+    d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
+    CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+        getImage("full_image").draw(*d_logo_geometry,
+                                    CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+    // clearing this queue actually makes sure it's created(!)
+    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    d_renderer->getDefaultRenderingRoot().
+        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+            CEGUI::Event::Subscriber(
+                &CEGuiIrrlichtBaseApplication::overlayHandler, this));
+
+
     d_lastTime = d_device->getTimer()->getRealTime();
 }
 
@@ -142,9 +172,25 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
             // calculate time elapsed
             irr::u32 currTime = d_device->getTimer()->getRealTime();
             // inject time pulse
-            guiSystem.injectTimePulse(
-                static_cast<float>(currTime - d_lastTime) / 1000.0f);
+            const float elapsed =
+                static_cast<float>(currTime - d_lastTime) / 1000.0f;
+            guiSystem.injectTimePulse(elapsed);
             d_lastTime = currTime;
+
+            // update fps text when needed
+            int fps = d_driver->getFPS();
+            if (fps != d_fps_value)
+            {
+                sprintf(d_fps_textbuff , "FPS: %d", fps);
+                d_fps_value = fps;
+            }
+
+            // update logo rotation
+            static float rot = 0.0f;
+            d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+            rot += 180.0f * elapsed;
+            if (rot > 360.0f)
+                rot -= 360.0f;
 
             // start rendering
             d_driver->beginScene(true, true, irr::video::SColor(0, 0, 0, 0));
@@ -187,16 +233,37 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
         }
     }
 
-    return (d_renderer != 0) ? d_renderer->OnEvent(event) : false;
+    return (d_renderer != 0) ? d_renderer->injectEvent(event) : false;
+    return false;
 }
 
 //----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::checkWindowResize()
 {
     irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
-    d_renderer->setDisplaySize(CEGUI::Size(cur_size.Width, cur_size.Height));
+    //d_renderer->setDisplaySize(CEGUI::Size(cur_size.Width, cur_size.Height));
 }
 
 //----------------------------------------------------------------------------//
+bool CEGuiIrrlichtBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+{
+    using namespace CEGUI;
+
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // render FPS:
+    Font* fnt = System::getSingleton().getDefaultFont();
+    if (fnt)
+    {
+        d_fps_geometry->reset();
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        d_fps_geometry->draw();
+    }
+
+    d_logo_geometry->draw();
+
+    return true;
+}
 
 #endif

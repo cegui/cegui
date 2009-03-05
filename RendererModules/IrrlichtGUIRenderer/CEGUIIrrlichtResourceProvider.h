@@ -40,11 +40,11 @@ namespace CEGUI
 class IRR_GUIRENDERER_API IrrlichtResourceProvider : public DefaultResourceProvider
 {
 protected:
-    irr::io::IFileSystem* d_fsys;
+    irr::io::IFileSystem& d_fsys;
 
 public:
-    IrrlichtResourceProvider(irr::io::IFileSystem* fsys_);
-    ~IrrlichtResourceProvider(void) ;
+    IrrlichtResourceProvider(irr::io::IFileSystem& fs);
+    ~IrrlichtResourceProvider() ;
 
     void loadRawDataContainer(const String& filename, RawDataContainer& output,
                               const String& resourceGroup);
