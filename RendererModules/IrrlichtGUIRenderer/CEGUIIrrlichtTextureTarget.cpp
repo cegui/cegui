@@ -89,8 +89,14 @@ Texture& IrrlichtTextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
 {
-    // exit if current size is enough
-    if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
+    bool realloc = ((d_area.getWidth() < sz.d_width) ||
+                    (d_area.getHeight() < sz.d_height));
+
+    // update area to render into.
+    setArea(Rect(d_area.getPosition(), sz));
+
+    // exit if current texture size is large enough
+    if (!realloc)
         return;
 
     cleanupTargetTexture();
@@ -102,7 +108,6 @@ void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
     d_CEGUITexture->setIrrlichtTexture(d_texture);
     d_CEGUITexture->setOriginalDataSize(d_area.getSize());
 
-    setArea(Rect(d_area.getPosition(), sz));
     clear();
 }
 
