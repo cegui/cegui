@@ -54,8 +54,36 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::draw() const
 {
-    // TODO: Set up clipping for this buffer
-    // TODO: No scissor test, so it's funtime with viewports and projections ;)
+    // Set up clipping for this buffer
+    //
+    // NB: This is done via viewport & projection manipulation because Irrlicht
+    // does not expose scissoring facilities of underlying APIs.  This has the
+    // unfortunate side effect of being much more expensive to set up.
+    const irr::core::rect<irr::s32> target_vp(d_driver.getViewPort());
+    const irr::core::matrix4 proj
+        (d_driver.getTransform(irr::video::ETS_PROJECTION));
+
+    const Size csz(d_clipRect.getSize());
+    const Size tsz(target_vp.getWidth(), target_vp.getHeight());
+
+    // set modified projection 'scissor' matix that negates scale and
+    // translation that would be done by setting the viewport to the clip area.
+    irr::core::matrix4 scsr(irr::core::matrix4::EM4CONST_IDENTITY);
+    scsr(0, 0) = tsz.d_width / csz.d_width;
+    scsr(1, 1) = tsz.d_height / csz.d_height;
+    scsr(3, 0) = -(tsz.d_width + 2.0f *
+                   (target_vp.UpperLeftCorner.X -
+                     (d_clipRect.d_left + csz.d_width * 0.5f))) / csz.d_width;
+    scsr(3, 1) = -(tsz.d_height + 2.0f *
+                   (target_vp.UpperLeftCorner.Y -
+                     (d_clipRect.d_top + csz.d_height * 0.5f))) / csz.d_height;
+    scsr *= proj;
+    d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
+
+    // set new viewport for the clipping area
+    const irr::core::rect<irr::s32> vp(d_clipRect.d_left, d_clipRect.d_top,
+                                       d_clipRect.d_right, d_clipRect.d_bottom);
+    d_driver.setViewPort(vp);
 
     if (!d_matrixValid)
         updateMatrix();
@@ -81,6 +109,10 @@ void IrrlichtGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+
+    // restore original projection matrix and viewport.
+    d_driver.setTransform(irr::video::ETS_PROJECTION, proj);
+    d_driver.setViewPort(target_vp);
 }
 
 //----------------------------------------------------------------------------//
