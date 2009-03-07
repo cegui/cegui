@@ -82,8 +82,8 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
 
 	if (!d_allowMultiplePopups&&d_popupItem!=0)
 	{
-		d_popupItem->closePopupMenu(false);
 		WindowEventArgs we(d_popupItem->getPopupMenu());
+		d_popupItem->closePopupMenu(false);
 		d_popupItem = 0;
 		onPopupClosed(we);
 	}
