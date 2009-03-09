@@ -40,6 +40,7 @@ if CEGUI_SAMPLES_USE_IRRLICHT
 endif
 
 EXTRA_DIST = CEGuiD3D9BaseApplication.cpp \
+             CEGuiD3D10BaseApplication.cpp \
              DeviceReset_Direct3D10.cpp \
              DeviceReset_Direct3D81.cpp \
              DeviceReset_Direct3D9.cpp \

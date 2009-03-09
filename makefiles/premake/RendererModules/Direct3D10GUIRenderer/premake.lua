@@ -1,8 +1,8 @@
 --
--- DirectX9GUIRenderer premake script
+-- Direct3D10GUIRenderer premake script
 --
 
-cegui_dynamic("DirectX10GUIRenderer")
+cegui_dynamic("Direct3D10GUIRenderer")
 
 package.files =
 {
@@ -18,4 +18,4 @@ library("d3dx10", "d")
 
 dependency("CEGUIBase")
 
-define("DIRECTX10_GUIRENDERER_EXPORTS")
+define("DIRECT3D10_GUIRENDERER_EXPORTS")
