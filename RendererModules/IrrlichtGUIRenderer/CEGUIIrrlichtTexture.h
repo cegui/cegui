@@ -105,14 +105,14 @@ protected:
     static uint32 d_textureNumber;
     //! Irrlicht video driver we're to use.
     irr::video::IVideoDriver& d_driver;
+    //! ptr to underlying irrlicht texture.
+    irr::video::ITexture* d_texture;
     //! Size of the texture.
     Size d_size;
     //! original pixel of size data loaded into texture
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2 d_texelScaling;
-    //! ptr to underlying irrlicht texture.
-    irr::video::ITexture* d_texture;
 };
 
 } // End of  CEGUI namespace section

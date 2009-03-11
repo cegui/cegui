@@ -175,6 +175,7 @@ OgreTexture::OgreTexture(const Size& sz) :
     d_dataSize(0, 0),
     d_texelScaling(0, 0)
 {
+    // TODO:
 }
 
 //----------------------------------------------------------------------------//

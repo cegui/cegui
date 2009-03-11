@@ -90,7 +90,7 @@ class OGLTextureTargetFactory
 public:
     OGLTextureTargetFactory() {}
     virtual ~OGLTextureTargetFactory() {}
-    virtual TextureTarget* create(OpenGLRenderer& r) const
+    virtual TextureTarget* create(OpenGLRenderer&) const
         { return 0; }
     virtual void destory(TextureTarget* target) const
         { delete target; }
