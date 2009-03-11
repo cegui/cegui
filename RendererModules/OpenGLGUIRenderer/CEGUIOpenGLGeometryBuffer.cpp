@@ -37,7 +37,6 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGLGeometryBuffer::OpenGLGeometryBuffer() :
     d_activeTexture(0),
-    d_hasCustomMatrix(false),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -95,16 +94,6 @@ void OpenGLGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setTransform(const float* matrix)
-{
-    for (int i = 0; i < 16; ++i)
-        d_xform[i] = matrix[i];
-
-    d_hasCustomMatrix = true;
-    d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -234,24 +223,16 @@ void OpenGLGeometryBuffer::updateMatrix() const
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    // apply the transformations we need to use.
-    if (d_hasCustomMatrix)
-    {
-        glLoadMatrixf(d_xform);
-    }
-    else
-    {
-        const Vector3 final_trans(d_translation.d_x + d_pivot.d_x,
-                                d_translation.d_y + d_pivot.d_y,
-                                d_translation.d_z + d_pivot.d_z);
+    const Vector3 final_trans(d_translation.d_x + d_pivot.d_x,
+                            d_translation.d_y + d_pivot.d_y,
+                            d_translation.d_z + d_pivot.d_z);
 
-        glLoadIdentity();
-        glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);
-        glRotatef(d_rotation.d_z, 0.0f, 0.0f, 1.0f);
-        glRotatef(d_rotation.d_y, 0.0f, 1.0f, 0.0f);
-        glRotatef(d_rotation.d_x, 1.0f, 0.0f, 0.0f);
-        glTranslatef(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-    }
+    glLoadIdentity();
+    glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);
+    glRotatef(d_rotation.d_z, 0.0f, 0.0f, 1.0f);
+    glRotatef(d_rotation.d_y, 0.0f, 1.0f, 0.0f);
+    glRotatef(d_rotation.d_x, 1.0f, 0.0f, 0.0f);
+    glTranslatef(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
 
     glGetDoublev(GL_MODELVIEW_MATRIX, d_matrix);
     glPopMatrix();

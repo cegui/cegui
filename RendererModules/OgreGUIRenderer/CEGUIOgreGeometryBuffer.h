@@ -62,7 +62,6 @@ public:
 
     // implement CEGUI::GeometryBuffer interface.
     void draw() const;
-    void setTransform(const float* matrix);
     void setTranslation(const Vector3& v);
     void setRotation(const Vector3& r);
     void setPivot(const Vector3& p);
@@ -99,10 +98,6 @@ protected:
     Ogre::RenderSystem& d_renderSystem;
     //! Texture that is set as active
     OgreTexture* d_activeTexture;
-    //! indictes whether a custom transform has been set.
-    bool d_hasCustomMatrix;
-    //! transform matrix
-    float d_xform[16];
     //! rectangular clip region
     Rect d_clipRect;
     //! translation vector

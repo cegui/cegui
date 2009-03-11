@@ -52,7 +52,6 @@ public:
 
     // implement GeometryBuffer interface
     void draw() const;
-    void setTransform(const float* matrix);
     void setTranslation(const Vector3& v);
     void setRotation(const Vector3& r);
     void setPivot(const Vector3& p);

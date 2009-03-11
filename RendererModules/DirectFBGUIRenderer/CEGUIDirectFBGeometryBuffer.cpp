@@ -90,12 +90,6 @@ void DirectFBGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setTransform(const float* matrix)
-{
-    // No need to do anything.
-}
-
-//----------------------------------------------------------------------------//
 void DirectFBGeometryBuffer::setTranslation(const Vector3& v)
 {
     d_translation = v;

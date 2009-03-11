@@ -58,24 +58,6 @@ public:
 
     /*!
     \brief
-        Set a custom transformation matrix to be used for this buffer.  When a
-        custom transform is active, the regular translation and rotation
-        transforms are not automatically applied, so these should be taken into
-        account with your custom matrix.
-
-    \param matrix
-        16 element array of float values representing a transformation in
-        column-major order (yeah, it's an early GL implementation hang-over).
-
-    \deprecated
-        This API is highly likely to either be removed, or otherwise be changed.
-        It's probably a good idea to not use this in client code, and just stub
-        it in implementations!
-    */
-    virtual void setTransform(const float* matrix) = 0;
-
-    /*!
-    \brief
         Set the translation to be applied to the geometry in the buffer when it
         is subsequently rendered.
 

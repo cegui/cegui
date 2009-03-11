@@ -37,7 +37,6 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(LPDIRECT3DDEVICE9 device) :
     d_activeTexture(0),
-    d_hasCustomMatrix(false),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -82,16 +81,6 @@ void Direct3D9GeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setTransform(const float* matrix)
-{
-    for (int i = 0; i < 16; ++i)
-        d_xform[i] = matrix[i];
-
-    d_hasCustomMatrix = true;
-    d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -212,23 +201,16 @@ void Direct3D9GeometryBuffer::performBatchManagement()
 //----------------------------------------------------------------------------//
 void Direct3D9GeometryBuffer::updateMatrix() const
 {
-    if (d_hasCustomMatrix)
-    {
-        // TODO!
-    }
-    else
-    {
-        const D3DXVECTOR3 p(d_pivot.d_x, d_pivot.d_y, d_pivot.d_z);
-        const D3DXVECTOR3 t(d_translation.d_x, d_translation.d_y, d_translation.d_z);
+    const D3DXVECTOR3 p(d_pivot.d_x, d_pivot.d_y, d_pivot.d_z);
+    const D3DXVECTOR3 t(d_translation.d_x, d_translation.d_y, d_translation.d_z);
 
-        D3DXQUATERNION r;
-        D3DXQuaternionRotationYawPitchRoll(&r,
-            D3DXToRadian(d_rotation.d_y),
-            D3DXToRadian(d_rotation.d_x),
-            D3DXToRadian(d_rotation.d_z));
+    D3DXQUATERNION r;
+    D3DXQuaternionRotationYawPitchRoll(&r,
+        D3DXToRadian(d_rotation.d_y),
+        D3DXToRadian(d_rotation.d_x),
+        D3DXToRadian(d_rotation.d_z));
 
-        D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
-    }
+    D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
 
     d_matrixValid = true;
 }

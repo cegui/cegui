@@ -116,12 +116,6 @@ void IrrlichtGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTransform(const float* matrix)
-{
-    // This is going to be removed!
-}
-
-//----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::setTranslation(const Vector3& v)
 {
     d_translation.X = v.d_x;

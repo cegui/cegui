@@ -105,12 +105,6 @@ void Direct3D10GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::setTransform(const float* matrix)
-{
-    // This is getting removed!
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D10GeometryBuffer::setTranslation(const Vector3& v)
 {
     d_translation = v;

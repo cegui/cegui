@@ -109,7 +109,6 @@ static void cleanupRenderOp(Ogre::RenderOperation& rop,
 OgreGeometryBuffer::OgreGeometryBuffer(Ogre::RenderSystem& rs) :
     d_renderSystem(rs),
     d_activeTexture(0),
-    d_hasCustomMatrix(false),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -162,16 +161,6 @@ void OgreGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setTransform(const float* matrix)
-{
-    for (int i = 0; i < 16; ++i)
-        d_xform[i] = matrix[i];
-
-    d_hasCustomMatrix = true;
-    d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -303,34 +292,27 @@ Ogre::RGBA OgreGeometryBuffer::colourToOgre(const colour& col) const
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::updateMatrix() const
 {
-    if (d_hasCustomMatrix)
-    {
-        // TODO!
-    }
-    else
-    {
-        // translation to position geometry and offset to pivot point
-        Ogre::Matrix4 trans;
-        trans.makeTrans(d_translation.d_x + d_pivot.d_x,
-                        d_translation.d_y + d_pivot.d_y,
-                        d_translation.d_z + d_pivot.d_z);
+    // translation to position geometry and offset to pivot point
+    Ogre::Matrix4 trans;
+    trans.makeTrans(d_translation.d_x + d_pivot.d_x,
+                    d_translation.d_y + d_pivot.d_y,
+                    d_translation.d_z + d_pivot.d_z);
 
-        // rotation
-        Ogre::Quaternion qz(Ogre::Degree(d_rotation.d_z),
-                            Ogre::Vector3::UNIT_Z);
-        Ogre::Quaternion qy(Ogre::Degree(d_rotation.d_y),
-                            Ogre::Vector3::UNIT_Y);
-        Ogre::Quaternion qx(Ogre::Degree(d_rotation.d_x),
-                            Ogre::Vector3::UNIT_X);
-        Ogre::Matrix4 rot(qz * qy * qx);
+    // rotation
+    Ogre::Quaternion qz(Ogre::Degree(d_rotation.d_z),
+                        Ogre::Vector3::UNIT_Z);
+    Ogre::Quaternion qy(Ogre::Degree(d_rotation.d_y),
+                        Ogre::Vector3::UNIT_Y);
+    Ogre::Quaternion qx(Ogre::Degree(d_rotation.d_x),
+                        Ogre::Vector3::UNIT_X);
+    Ogre::Matrix4 rot(qz * qy * qx);
 
-        // translation to remove rotation pivot offset
-        Ogre::Matrix4 inv_pivot_trans;
-        inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    // translation to remove rotation pivot offset
+    Ogre::Matrix4 inv_pivot_trans;
+    inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
 
-        // calculate final matrix
-        d_matrix = trans * rot * inv_pivot_trans;
-    }
+    // calculate final matrix
+    d_matrix = trans * rot * inv_pivot_trans;
 
     d_matrixValid = true;
 }

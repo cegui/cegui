@@ -57,7 +57,6 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-    void setTransform(const float* matrix);
 
     void setTranslation(const Vector3& t);
     void setRotation(const Vector3& r);
@@ -105,10 +104,6 @@ protected:
     typedef std::vector<GLVertex> VertexList;
     //! container where added geometry is stored.
     VertexList d_vertices;
-    //! indictes whether a custom transform has been set.
-    bool d_hasCustomMatrix;
-    //! transform matrix
-    float d_xform[16];
     //! rectangular clip region
     Rect d_clipRect;
     //! translation vector
