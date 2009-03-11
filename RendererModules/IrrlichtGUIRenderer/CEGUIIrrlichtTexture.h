@@ -86,13 +86,12 @@ protected:
     friend void IrrlichtRenderer::destroyTexture(Texture&);
 
     //! Construct a basic texture
-    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver);
+    IrrlichtTexture(irr::video::IVideoDriver& driver);
     //! Construct a texture from the specified file.
-    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
-                    const String& filename, const String& resourceGroup);
+    IrrlichtTexture(irr::video::IVideoDriver& driver, const String& filename,
+                    const String& resourceGroup);
     //! Construct a texture with the given size.
-    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
-                    const Size& size);
+    IrrlichtTexture(irr::video::IVideoDriver& driver, const Size& size);
     //! destructor.
     ~IrrlichtTexture();
 

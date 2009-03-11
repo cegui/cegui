@@ -149,31 +149,9 @@ public:
 
     /*!
     \brief
-        Return a pointer to the Renderer object that created and owns this
-        Texture.
-
-    \return
-        Pointer to the Renderer object that owns the Texture
+        Destructor for Texture base class.
     */
-    Renderer* getRenderer() const;
-
-protected:
-    /*!
-    \brief
-        Constructor for Texture base class.  This is never called by client
-        code.
-    */
-    Texture(Renderer* owner);
-
-    /*!
-    \brief
-        Destructor for Texture base class.  This is never called by client code.
-    */
-    virtual ~Texture();
-
-protected:
-    //! Renderer object that created and owns this Texture.
-    Renderer* d_owner;
+    virtual ~Texture() {}
 };
 
 } // End of  CEGUI namespace section

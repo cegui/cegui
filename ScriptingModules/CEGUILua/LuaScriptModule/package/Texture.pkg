@@ -14,5 +14,4 @@ class Texture
     const Vector2& getTexelScaling() const;
     void loadFromFile(string filename, string resourceGroup);
     //void loadFromMemory(const void* buffer, const Size& buffer_size, PixelFormat pixel_format);
-    Renderer* getRenderer() const;
 };

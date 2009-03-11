@@ -154,9 +154,7 @@ void IrrlichtTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
-                                 irr::video::IVideoDriver& driver) :
-    Texture(&owner),
+IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver) :
     d_driver(driver),
     d_texture(0),
     d_size(0, 0),
@@ -166,11 +164,9 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
-                                 irr::video::IVideoDriver& driver,
+IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
                                  const String& filename,
                                  const String& resourceGroup) :
-    Texture(&owner),
     d_driver(driver),
     d_texture(0)
 {
@@ -178,10 +174,8 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
-                                 irr::video::IVideoDriver& driver,
+IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
                                  const Size& size) :
-    Texture(&owner),
     d_driver(driver),
     d_texture(d_driver.addTexture(
                 irr::core::dimension2d<irr::s32>(size.d_width, size.d_height),

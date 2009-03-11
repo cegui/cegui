@@ -150,8 +150,7 @@ void OgreTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(OgreRenderer& owner) :
-    Texture(&owner),
+OgreTexture::OgreTexture() :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -160,9 +159,7 @@ OgreTexture::OgreTexture(OgreRenderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(OgreRenderer& owner, const String& filename,
-                         const String& resourceGroup) :
-    Texture(&owner),
+OgreTexture::OgreTexture(const String& filename, const String& resourceGroup) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -172,8 +169,7 @@ OgreTexture::OgreTexture(OgreRenderer& owner, const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(OgreRenderer& owner, const Size& sz) :
-    Texture(&owner),
+OgreTexture::OgreTexture(const Size& sz) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -182,9 +178,7 @@ OgreTexture::OgreTexture(OgreRenderer& owner, const Size& sz) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(OgreRenderer& owner, Ogre::TexturePtr& tex,
-                         bool take_ownership) :
-    Texture(&owner),
+OgreTexture::OgreTexture(Ogre::TexturePtr& tex, bool take_ownership) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),

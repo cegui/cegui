@@ -50,14 +50,14 @@ private:
     friend void Direct3D9Renderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    Direct3D9Texture(Renderer* owner);
+    Direct3D9Texture(Direct3D9Renderer& owner);
     //! Construct texture from an image file.
-    Direct3D9Texture(Renderer* owner, const String& filename, 
+    Direct3D9Texture(Direct3D9Renderer& owner, const String& filename, 
                      const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D9Texture(Renderer* owner, const Size& sz);
+    Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz);
     //! Construct texture that wraps an existing D3D9 texture.
-    Direct3D9Texture(Renderer* owner, LPDIRECT3DTEXTURE9 tex);
+    Direct3D9Texture(Direct3D9Renderer& owner, LPDIRECT3DTEXTURE9 tex);
     //! Destructor.
     virtual ~Direct3D9Texture();
 
@@ -104,6 +104,8 @@ protected:
     //! set d_size to actual texture size (d_dataSize is used if query fails)
     void updateTextureSize();
 
+    //! Direct3D9Renderer object that created and owns this texture.
+    Direct3D9Renderer& d_owner;
     //! The D3D9 texture we're wrapping.
     LPDIRECT3DTEXTURE9 d_texture;
     //! Size of the texture.

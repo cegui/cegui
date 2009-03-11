@@ -97,15 +97,14 @@ protected:
     friend void Direct3D10Renderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    Direct3D10Texture(Renderer& owner, ID3D10Device& device);
+    Direct3D10Texture(ID3D10Device& device);
     //! Construct texture from an image file.
-    Direct3D10Texture(Renderer& owner, ID3D10Device& device,
-                      const String& filename, const String& resourceGroup);
+    Direct3D10Texture(ID3D10Device& device, const String& filename,
+                      const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D10Texture(Renderer& owner, ID3D10Device& device, const Size& sz);
+    Direct3D10Texture(ID3D10Device& device, const Size& sz);
     //! Construct texture that wraps an existing D3D10 texture.
-    Direct3D10Texture(Renderer& owner, ID3D10Device& device,
-                      ID3D10Texture2D* tex);
+    Direct3D10Texture(ID3D10Device& device, ID3D10Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D10Texture();
 

@@ -65,14 +65,13 @@ protected:
     friend void OgreRenderer::destroyTexture(Texture&);
 
     //! standard constructor
-    OgreTexture(OgreRenderer& owner);
+    OgreTexture();
     //! construct texture via an image file.
-    OgreTexture(OgreRenderer& owner, const String& filename,
-                const String& resourceGroup);
+    OgreTexture(const String& filename, const String& resourceGroup);
     //! construct texture with a specified initial size.
-    OgreTexture(OgreRenderer& owner, const Size& sz);
+    OgreTexture(const Size& sz);
     //! construct texture from existing Ogre texture.
-    OgreTexture(OgreRenderer& owner, Ogre::TexturePtr& tex, bool take_ownership);
+    OgreTexture(Ogre::TexturePtr& tex, bool take_ownership);
 
     //! destructor.
     virtual ~OgreTexture();

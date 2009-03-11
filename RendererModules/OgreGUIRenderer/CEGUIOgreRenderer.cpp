@@ -220,7 +220,7 @@ void OgreRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& OgreRenderer::createTexture()
 {
-    OgreTexture* t = new OgreTexture(*this);
+    OgreTexture* t = new OgreTexture;
     d_textures.push_back(t);
     return *t;
 }
@@ -229,7 +229,7 @@ Texture& OgreRenderer::createTexture()
 Texture& OgreRenderer::createTexture(const String& filename,
                                      const String& resourceGroup)
 {
-    OgreTexture* t = new OgreTexture(*this, filename, resourceGroup);
+    OgreTexture* t = new OgreTexture(filename, resourceGroup);
     d_textures.push_back(t);
     return *t;
 }
@@ -237,7 +237,7 @@ Texture& OgreRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& OgreRenderer::createTexture(const Size& size)
 {
-    OgreTexture* t = new OgreTexture(*this, size);
+    OgreTexture* t = new OgreTexture(size);
     d_textures.push_back(t);
     return *t;
 }
@@ -245,7 +245,7 @@ Texture& OgreRenderer::createTexture(const Size& size)
 //----------------------------------------------------------------------------//
 Texture& OgreRenderer::createTexture(Ogre::TexturePtr& tex, bool take_ownership)
 {
-    OgreTexture* t = new OgreTexture(*this, tex, take_ownership);
+    OgreTexture* t = new OgreTexture(tex, take_ownership);
     d_textures.push_back(t);
     return *t;
 }

@@ -123,7 +123,7 @@ void Direct3D10Renderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& Direct3D10Renderer::createTexture()
 {
-    Direct3D10Texture* tex = new Direct3D10Texture(*this, *d_device);
+    Direct3D10Texture* tex = new Direct3D10Texture(*d_device);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -132,8 +132,8 @@ Texture& Direct3D10Renderer::createTexture()
 Texture& Direct3D10Renderer::createTexture(const String& filename,
                                            const String& resourceGroup)
 {
-    Direct3D10Texture* tex =
-        new Direct3D10Texture(*this, *d_device, filename, resourceGroup);
+    Direct3D10Texture* tex = new Direct3D10Texture(*d_device, filename,
+                                                   resourceGroup);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -141,7 +141,7 @@ Texture& Direct3D10Renderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& Direct3D10Renderer::createTexture(const Size& size)
 {
-    Direct3D10Texture* tex = new Direct3D10Texture(*this, *d_device, size);
+    Direct3D10Texture* tex = new Direct3D10Texture(*d_device, size);
     d_textures.push_back(tex);
     return *tex;
 }

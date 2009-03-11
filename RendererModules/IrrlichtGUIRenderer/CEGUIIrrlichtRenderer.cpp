@@ -146,7 +146,7 @@ void IrrlichtRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& IrrlichtRenderer::createTexture()
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver);
+    IrrlichtTexture* t = new IrrlichtTexture(*d_driver);
     d_textures.push_back(t);
     return *t;
 }
@@ -155,7 +155,7 @@ Texture& IrrlichtRenderer::createTexture()
 Texture& IrrlichtRenderer::createTexture(const String& filename,
                                          const String& resourceGroup)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, filename,
+    IrrlichtTexture* t = new IrrlichtTexture(*d_driver, filename,
                                              resourceGroup);
     d_textures.push_back(t);
     return *t;
@@ -164,7 +164,7 @@ Texture& IrrlichtRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& IrrlichtRenderer::createTexture(const Size& size)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, size);
+    IrrlichtTexture* t = new IrrlichtTexture(*d_driver, size);
     d_textures.push_back(t);
     return *t;
 }

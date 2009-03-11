@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Mar  1 21:03:56 2009.
+** Generated automatically by tolua++-1.0.92 on Wed Mar 11 19:37:51 2009.
 */
 
 #ifndef __cplusplus
@@ -26449,38 +26449,6 @@ static int tolua_CEGUI_CEGUI_Texture_loadFromFile00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'loadFromFile'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getRenderer of class  CEGUI::Texture */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getRenderer00
-static int tolua_CEGUI_CEGUI_Texture_getRenderer00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderer'",NULL);
-#endif
- {
-  CEGUI::Renderer* tolua_ret = (CEGUI::Renderer*)  self->getRenderer();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Renderer");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getRenderer'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53451,7 +53419,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getOriginalDataSize",tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00);
    tolua_function(tolua_S,"getTexelScaling",tolua_CEGUI_CEGUI_Texture_getTexelScaling00);
    tolua_function(tolua_S,"loadFromFile",tolua_CEGUI_CEGUI_Texture_loadFromFile00);
-   tolua_function(tolua_S,"getRenderer",tolua_CEGUI_CEGUI_Texture_getRenderer00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"GUISheet","CEGUI::GUISheet","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"GUISheet");

@@ -124,7 +124,7 @@ void Direct3D9Renderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture()
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(this);
+	Direct3D9Texture* tex = new Direct3D9Texture(*this);
 	d_textures.push_back(tex);
 	return *tex;
 }
@@ -133,7 +133,8 @@ Texture& Direct3D9Renderer::createTexture()
 Texture& Direct3D9Renderer::createTexture(const String& filename,
                                           const String& resourceGroup)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(this, filename, resourceGroup);
+	Direct3D9Texture* tex = new Direct3D9Texture(*this, filename,
+                                                 resourceGroup);
 	d_textures.push_back(tex);
 	return *tex;
 }
@@ -141,7 +142,7 @@ Texture& Direct3D9Renderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture(const Size& size)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(this, size);
+	Direct3D9Texture* tex = new Direct3D9Texture(*this, size);
 	d_textures.push_back(tex);
 	return *tex;
 }
@@ -309,7 +310,7 @@ LPDIRECT3DDEVICE9 Direct3D9Renderer::getDevice() const
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 texture)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(this, texture);
+	Direct3D9Texture* tex = new Direct3D9Texture(*this, texture);
 	d_textures.push_back(tex);
 	return *tex;
 }

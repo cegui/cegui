@@ -36,8 +36,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Renderer* owner) :
-    Texture(owner),
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner) :
+    d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -46,9 +46,10 @@ Direct3D9Texture::Direct3D9Texture(Renderer* owner) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Renderer* owner, const String& filename,
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   const String& filename,
                                    const String& resourceGroup) :
-    Texture(owner),
+    d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -58,18 +59,16 @@ Direct3D9Texture::Direct3D9Texture(Renderer* owner, const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Renderer* owner, const Size& sz) :
-    Texture(owner),
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz) :
+    d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(sz),
     d_texelScaling(0, 0)
 {
-    Size tex_sz(
-        static_cast<Direct3D9Renderer*>(d_owner)->getAdjustedSize(sz));
+    Size tex_sz(d_owner.getAdjustedSize(sz));
 
-	HRESULT hr = D3DXCreateTexture(
-        static_cast<Direct3D9Renderer*>(d_owner)->getDevice(),
+	HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
         static_cast<UINT>(tex_sz.d_width), static_cast<UINT>(tex_sz.d_height),
         1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &d_texture);
 
@@ -83,8 +82,9 @@ Direct3D9Texture::Direct3D9Texture(Renderer* owner, const Size& sz) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Renderer* owner, LPDIRECT3DTEXTURE9 tex) :
-    Texture(owner),
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   LPDIRECT3DTEXTURE9 tex) :
+    d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -191,11 +191,9 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
             "Invalid PixelFormat value specified.");
 	}
 
-    Size tex_sz(
-        static_cast<Direct3D9Renderer*>(d_owner)->getAdjustedSize(buffer_size));
+    Size tex_sz(d_owner.getAdjustedSize(buffer_size));
 
-	HRESULT hr = D3DXCreateTexture(
-        static_cast<Direct3D9Renderer*>(d_owner)->getDevice(),
+	HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
         static_cast<UINT>(tex_sz.d_width),
         static_cast<UINT>(tex_sz.d_height),
         1, 0, pixfmt, D3DPOOL_MANAGED, &d_texture);

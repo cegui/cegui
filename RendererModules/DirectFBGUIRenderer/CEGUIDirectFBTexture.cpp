@@ -149,8 +149,7 @@ void DirectFBTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb) :
-    Texture(&owner),
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb) :
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),
@@ -160,10 +159,8 @@ DirectFBTexture::DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb) :
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb,
-                                 const String& filename,
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const String& filename,
                                  const String& resourceGroup) :
-    Texture(&owner),
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),
@@ -174,9 +171,7 @@ DirectFBTexture::DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb,
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb,
-                                 const Size& size) :
-    Texture(&owner),
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const Size& size) :
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),

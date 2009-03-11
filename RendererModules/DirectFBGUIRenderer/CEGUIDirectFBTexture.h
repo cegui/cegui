@@ -59,13 +59,12 @@ protected:
     friend void DirectFBRenderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb);
+    DirectFBTexture(IDirectFB& directfb);
     //! Construct texture from file.
-    DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb,
-                    const String& filename, const String& resourceGroup);
+    DirectFBTexture(IDirectFB& directfb, const String& filename,
+                    const String& resourceGroup);
     //! Construct texture with given size.
-    DirectFBTexture(DirectFBRenderer& owner, IDirectFB& directfb,
-                    const Size& size);
+    DirectFBTexture(IDirectFB& directfb, const Size& size);
     //! Destructor.
     ~DirectFBTexture();
 

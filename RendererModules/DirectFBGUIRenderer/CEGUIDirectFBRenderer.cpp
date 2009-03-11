@@ -134,7 +134,7 @@ void DirectFBRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& DirectFBRenderer::createTexture()
 {
-    DirectFBTexture* tex = new DirectFBTexture(*this, d_directfb);
+    DirectFBTexture* tex = new DirectFBTexture(d_directfb);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -143,7 +143,7 @@ Texture& DirectFBRenderer::createTexture()
 Texture& DirectFBRenderer::createTexture(const String& filename,
                                          const String& resourceGroup)
 {
-    DirectFBTexture* tex = new DirectFBTexture(*this, d_directfb, filename,
+    DirectFBTexture* tex = new DirectFBTexture(d_directfb, filename,
                                                resourceGroup);
     d_textures.push_back(tex);
     return *tex;
@@ -152,7 +152,7 @@ Texture& DirectFBRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& DirectFBRenderer::createTexture(const Size& size)
 {
-    DirectFBTexture* tex = new DirectFBTexture(*this, d_directfb, size);
+    DirectFBTexture* tex = new DirectFBTexture(d_directfb, size);
     d_textures.push_back(tex);
     return *tex;
 }

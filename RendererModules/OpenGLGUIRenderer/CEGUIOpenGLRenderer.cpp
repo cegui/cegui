@@ -244,7 +244,7 @@ void OpenGLRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture()
 {
-    OpenGLTexture* tex = new OpenGLTexture(this);
+    OpenGLTexture* tex = new OpenGLTexture;
     d_textures.push_back(tex);
     return *tex;
 }
@@ -253,7 +253,7 @@ Texture& OpenGLRenderer::createTexture()
 Texture& OpenGLRenderer::createTexture(const String& filename,
     const String& resourceGroup)
 {
-    OpenGLTexture* tex = new OpenGLTexture(this);
+    OpenGLTexture* tex = new OpenGLTexture;
     try
     {
         tex->loadFromFile(filename, resourceGroup);
@@ -270,7 +270,7 @@ Texture& OpenGLRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture(const Size& size)
 {
-    OpenGLTexture* tex = new OpenGLTexture(this);
+    OpenGLTexture* tex = new OpenGLTexture;
     try
     {
         tex->setTextureSize(size);
@@ -384,7 +384,7 @@ const String& OpenGLRenderer::getIdentifierString() const
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture(GLuint tex, const Size& sz)
 {
-    OpenGLTexture* t = new OpenGLTexture(this, tex, sz);
+    OpenGLTexture* t = new OpenGLTexture(tex, sz);
     d_textures.push_back(t);
     return *t;
 }

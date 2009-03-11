@@ -243,8 +243,7 @@ void Direct3D10Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device) :
-    Texture(&owner),
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
@@ -255,10 +254,9 @@ Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
                                      const String& filename,
                                      const String& resourceGroup) :
-    Texture(&owner),
     d_device(device),
     d_texture(0),
     d_resourceView(0),
@@ -270,9 +268,7 @@ Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device,
-                                     const Size& sz) :
-    Texture(&owner),
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
@@ -306,9 +302,8 @@ Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(Renderer& owner, ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
                                      ID3D10Texture2D* tex) :
-    Texture(&owner),
     d_device(device),
     d_texture(0),
     d_resourceView(0),

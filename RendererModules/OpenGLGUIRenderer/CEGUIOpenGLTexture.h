@@ -50,9 +50,9 @@ private:
     friend void OpenGLRenderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    OpenGLTexture(Renderer* owner);
+    OpenGLTexture();
     //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(Renderer* owner, GLuint tex, const Size& size);
+    OpenGLTexture(GLuint tex, const Size& size);
     //! Destructor.
     virtual ~OpenGLTexture();
 
