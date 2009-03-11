@@ -68,12 +68,14 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz) :
 {
     Size tex_sz(d_owner.getAdjustedSize(sz));
 
-	HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
-        static_cast<UINT>(tex_sz.d_width), static_cast<UINT>(tex_sz.d_height),
-        1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &d_texture);
+    HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
+                                   static_cast<UINT>(tex_sz.d_width),
+                                   static_cast<UINT>(tex_sz.d_height),
+                                   1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+                                   &d_texture);
 
-	if (FAILED(hr))
-		throw RendererException(
+    if (FAILED(hr))
+        throw RendererException(
             "Direct3D9Texture - Failed to create texture of specified size: "
             "D3D Texture creation failed.");
 
@@ -154,7 +156,7 @@ void Direct3D9Texture::loadFromFile(const String& filename,
     // load file to memory via resource provider
     RawDataContainer texFile;
     sys->getResourceProvider()->loadRawDataContainer(filename, texFile,
-                                                     resourceGroup);
+            resourceGroup);
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
@@ -164,7 +166,7 @@ void Direct3D9Texture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         throw RendererException("Direct3D9Texture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString()+
+                                sys->getImageCodec().getIdentifierString() +
                                 " failed to load image '" + filename + "'.");
 }
 
@@ -175,73 +177,73 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 {
     cleanupDirect3D9Texture();
 
-	// create a texture
-	// TODO: Check resulting pixel format and react appropriately.
-	D3DFORMAT pixfmt;
-	switch (pixel_format)
-	{
-	case PF_RGB:
-	    pixfmt = D3DFMT_R8G8B8;
-	    break;
-	case PF_RGBA:
-	    pixfmt = D3DFMT_A8B8G8R8;
-	    break;
-	default:
+    // create a texture
+    // TODO: Check resulting pixel format and react appropriately.
+    D3DFORMAT pixfmt;
+    switch (pixel_format)
+    {
+    case PF_RGB:
+        pixfmt = D3DFMT_R8G8B8;
+        break;
+    case PF_RGBA:
+        pixfmt = D3DFMT_A8B8G8R8;
+        break;
+    default:
         throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-            "Invalid PixelFormat value specified.");
-	}
+                                "Invalid PixelFormat value specified.");
+    }
 
     Size tex_sz(d_owner.getAdjustedSize(buffer_size));
 
-	HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
-        static_cast<UINT>(tex_sz.d_width),
-        static_cast<UINT>(tex_sz.d_height),
-        1, 0, pixfmt, D3DPOOL_MANAGED, &d_texture);
+    HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
+                                   static_cast<UINT>(tex_sz.d_width),
+                                   static_cast<UINT>(tex_sz.d_height),
+                                   1, 0, pixfmt, D3DPOOL_MANAGED, &d_texture);
 
-	if (FAILED(hr))
+    if (FAILED(hr))
         throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-            "Direct3D9 texture creation failed.");
+                                "Direct3D9 texture creation failed.");
 
     d_dataSize = buffer_size;
     updateTextureSize();
     updateCachedScaleValues();
 
-	// lock the D3D texture
-	D3DLOCKED_RECT	rect;
-	hr = d_texture->LockRect(0, &rect, 0, 0);
+    // lock the D3D texture
+    D3DLOCKED_RECT rect;
+    hr = d_texture->LockRect(0, &rect, 0, 0);
 
-	if (FAILED(hr))
-	{
-		d_texture->Release();
-		d_texture = 0;
+    if (FAILED(hr))
+    {
+        d_texture->Release();
+        d_texture = 0;
 
-		throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-            "IDirect3DTexture9::LockRect failed.");
-	}
+        throw RendererException("Direct3D9Texture::loadFromMemory failed: "
+                                "IDirect3DTexture9::LockRect failed.");
+    }
 
-	// copy data from buffer into texture
-	ulong* dst = static_cast<ulong*>(rect.pBits);
-	const ulong* src = static_cast<const ulong*>(buffer);
+    // copy data from buffer into texture
+    ulong* dst = static_cast<ulong*>(rect.pBits);
+    const ulong* src = static_cast<const ulong*>(buffer);
 
     // RGBA
     if (pixel_format == PF_RGBA)
     {
         for (uint i = 0; i < buffer_size.d_height; ++i)
-	    {
+        {
             for (uint j = 0; j < buffer_size.d_width; ++j)
-		    {
-		        // we dont need endian safety on microsoft
-			    uchar r = static_cast<uchar>(src[j] & 0xFF);
-			    uchar g = static_cast<uchar>((src[j] >> 8) & 0xFF);
-			    uchar b = static_cast<uchar>((src[j] >> 16)  & 0xFF);
-			    uchar a = static_cast<uchar>((src[j] >> 24) & 0xFF);
+            {
+                // we dont need endian safety on microsoft
+                uchar r = static_cast<uchar>(src[j] & 0xFF);
+                uchar g = static_cast<uchar>((src[j] >> 8) & 0xFF);
+                uchar b = static_cast<uchar>((src[j] >> 16)  & 0xFF);
+                uchar a = static_cast<uchar>((src[j] >> 24) & 0xFF);
 
-			    dst[j] = D3DCOLOR_ARGB(a, r, g, b);
-		    }
+                dst[j] = D3DCOLOR_ARGB(a, r, g, b);
+            }
 
-		    dst += rect.Pitch / sizeof(ulong);
+            dst += rect.Pitch / sizeof(ulong);
             src += static_cast<ulong>(buffer_size.d_width);
-	    }
+        }
     }
     // RGB
     else
@@ -258,14 +260,14 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
                 dst[j] = D3DCOLOR_ARGB(a, r, g, b);
             }
 
-		    dst += rect.Pitch / sizeof(ulong);
+            dst += rect.Pitch / sizeof(ulong);
             src = reinterpret_cast<const ulong*>
-                (reinterpret_cast<const uchar*>(src) +
-                    static_cast<int>(buffer_size.d_width) * 3);
+                  (reinterpret_cast<const uchar*>(src) +
+                   static_cast<int>(buffer_size.d_width) * 3);
         }
     }
 
-	d_texture->UnlockRect(0);
+    d_texture->UnlockRect(0);
 }
 
 //----------------------------------------------------------------------------//
@@ -278,11 +280,11 @@ void Direct3D9Texture::saveToMemory(void* buffer)
 //----------------------------------------------------------------------------//
 void Direct3D9Texture::cleanupDirect3D9Texture()
 {
-	if (d_texture)
-	{
-		d_texture->Release();
-		d_texture = 0;
-	}
+    if (d_texture)
+    {
+        d_texture->Release();
+        d_texture = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//

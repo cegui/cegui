@@ -76,7 +76,6 @@ protected:
     void cleanupRenderTexture();
     //! resize the texture
     void resizeRenderTexture();
-
     //! switch to the texture surface & depth buffer
     void enableRenderTexture();
     //! switch back to previous surface

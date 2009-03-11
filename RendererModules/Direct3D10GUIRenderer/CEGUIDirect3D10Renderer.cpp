@@ -218,51 +218,51 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
     d_projectionMatrixVariable(0)
 {
     // create the main effect from the shader source.
-	ID3D10Blob* errors = 0;
+    ID3D10Blob* errors = 0;
     if (FAILED(D3DX10CreateEffectFromMemory(shaderSource, sizeof(shaderSource),
                                             0, 0, 0, "fx_4_0", 0, 0, d_device,
                                             0, 0, &d_effect, &errors, 0)))
-	{
+    {
         std::string msg(static_cast<const char*>(errors->GetBufferPointer()),
                         errors->GetBufferSize());
         errors->Release();
         throw RendererException(msg);
-	}
+    }
 
     // extract the rendering technique
-	d_technique = d_effect->GetTechniqueByName("CEGUIRendering");
+    d_technique = d_effect->GetTechniqueByName("CEGUIRendering");
 
     // Get the variables from the shader we need to be able to access
-	d_boundTextureVariable =
+    d_boundTextureVariable =
             d_effect->GetVariableByName("BoundTexture")->AsShaderResource();
     d_worldMatrixVariable =
             d_effect->GetVariableByName("WorldMatrix")->AsMatrix();
     d_projectionMatrixVariable =
             d_effect->GetVariableByName("ProjectionMatrix")->AsMatrix();
 
-	// Create the input layout
-	const D3D10_INPUT_ELEMENT_DESC vertex_layout[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D10_INPUT_PER_VERTEX_DATA, 0 }, 
-		{ "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,  0, 12, D3D10_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,	  0, 16, D3D10_INPUT_PER_VERTEX_DATA, 0 },		
-	};
+    // Create the input layout
+    const D3D10_INPUT_ELEMENT_DESC vertex_layout[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,  0, 12, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,	  0, 16, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+    };
 
-	const UINT element_count = sizeof(vertex_layout) / sizeof(vertex_layout[0]);
+    const UINT element_count = sizeof(vertex_layout) / sizeof(vertex_layout[0]);
 
-	D3D10_PASS_DESC pass_desc;
-	if (FAILED(d_technique->GetPassByIndex(0)->GetDesc(&pass_desc)))
+    D3D10_PASS_DESC pass_desc;
+    if (FAILED(d_technique->GetPassByIndex(0)->GetDesc(&pass_desc)))
         throw RendererException("Direct3D10Renderer: failed to obtain technique "
                                 "description for pass 0.");
 
     if (FAILED(d_device->CreateInputLayout(vertex_layout, element_count,
-                                           pass_desc.pIAInputSignature,
-                                           pass_desc.IAInputSignatureSize,
-                                           &d_inputLayout)))
-	{
+                                            pass_desc.pIAInputSignature,
+                                            pass_desc.IAInputSignatureSize,
+                                            &d_inputLayout)))
+    {
         throw RendererException("Direct3D10Renderer: failed to create D3D 10 "
                                 "input layout.");
-	}
+    }
 
     d_defaultTarget = new Direct3D10ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
@@ -279,10 +279,10 @@ Direct3D10Renderer::~Direct3D10Renderer()
     delete d_defaultTarget;
 
     if (d_effect)
-		d_effect->Release();
+        d_effect->Release();
 
     if (d_inputLayout)
-		d_inputLayout->Release();
+        d_inputLayout->Release();
 
 }
 

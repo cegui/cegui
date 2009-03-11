@@ -57,11 +57,9 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-
     void setTranslation(const Vector3& t);
     void setRotation(const Vector3& r);
     void setPivot(const Vector3& p);
-
     void setClippingRegion(const Rect& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
@@ -70,7 +68,6 @@ public:
     Texture* getActiveTexture() const;
     uint getVertexCount() const;
     uint getBatchCount() const;
-
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
 

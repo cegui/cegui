@@ -75,8 +75,8 @@ GeometryBuffer& Direct3D9Renderer::createGeometryBuffer()
 void Direct3D9Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 {
     GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
+                                     d_geometryBuffers.end(),
+                                     &buffer);
 
     if (d_geometryBuffers.end() != i)
     {
@@ -104,8 +104,8 @@ TextureTarget* Direct3D9Renderer::createTextureTarget()
 void Direct3D9Renderer::destroyTextureTarget(TextureTarget* target)
 {
     TextureTargetList::iterator i = std::find(d_textureTargets.begin(),
-                                              d_textureTargets.end(),
-                                              target);
+                                    d_textureTargets.end(),
+                                    target);
 
     if (d_textureTargets.end() != i)
     {
@@ -124,27 +124,27 @@ void Direct3D9Renderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture()
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(*this);
-	d_textures.push_back(tex);
-	return *tex;
+    Direct3D9Texture* tex = new Direct3D9Texture(*this);
+    d_textures.push_back(tex);
+    return *tex;
 }
 
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture(const String& filename,
-                                          const String& resourceGroup)
+        const String& resourceGroup)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(*this, filename,
-                                                 resourceGroup);
-	d_textures.push_back(tex);
-	return *tex;
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, filename,
+            resourceGroup);
+    d_textures.push_back(tex);
+    return *tex;
 }
 
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture(const Size& size)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(*this, size);
-	d_textures.push_back(tex);
-	return *tex;
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, size);
+    d_textures.push_back(tex);
+    return *tex;
 }
 
 //----------------------------------------------------------------------------//
@@ -171,47 +171,47 @@ void Direct3D9Renderer::destroyAllTextures()
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::beginRendering()
 {
-    d_device->SetFVF(D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1);
+    d_device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
     // no shaders initially
-	d_device->SetVertexShader(0);
-	d_device->SetPixelShader(0);
+    d_device->SetVertexShader(0);
+    d_device->SetPixelShader(0);
 
-	// set device states
+    // set device states
     d_device->SetRenderState(D3DRS_LIGHTING, FALSE);
-	d_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
-	d_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-	d_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+    d_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
+    d_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+    d_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
     d_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	d_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    d_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
     d_device->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
-	d_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+    d_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-	// setup texture addressing settings
-	d_device->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-	d_device->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+    // setup texture addressing settings
+    d_device->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+    d_device->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
 
-	// setup colour calculations
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-	d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+    // setup colour calculations
+    d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+    d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+    d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 
-	// setup alpha calculations
-	d_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-	d_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-	d_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+    // setup alpha calculations
+    d_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+    d_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+    d_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 
-	// setup filtering
-	d_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	d_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+    // setup filtering
+    d_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+    d_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 
     // disable texture stages we do not need.
     d_device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
 
-	// setup scene alpha blending
-	d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+    // setup scene alpha blending
+    d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+    d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+    d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
 //----------------------------------------------------------------------------//
@@ -256,14 +256,14 @@ Direct3D9Renderer::Direct3D9Renderer(LPDIRECT3DDEVICE9 device) :
 
     if (!caps.RasterCaps && D3DPRASTERCAPS_SCISSORTEST)
         throw RendererException("Direct3D9Renderer: Hardware does not support "
-            "D3DPRASTERCAPS_SCISSORTEST.  Unable to proceed.");
+                                "D3DPRASTERCAPS_SCISSORTEST.  Unable to proceed.");
 
     d_maxTextureSize = ceguimin(caps.MaxTextureHeight, caps.MaxTextureWidth);
 
     d_supportNonSquareTex = !(caps.TextureCaps & D3DPTEXTURECAPS_SQUAREONLY);
 
     d_supportNPOTTex = !(caps.TextureCaps & D3DPTEXTURECAPS_POW2) ||
-        (caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL);
+                       (caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL);
 
     d_defaultTarget = new Direct3D9ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
@@ -277,13 +277,14 @@ Direct3D9Renderer::~Direct3D9Renderer()
 //----------------------------------------------------------------------------//
 Size Direct3D9Renderer::getViewportSize()
 {
-	D3DVIEWPORT9	vp;
+    D3DVIEWPORT9 vp;
 
-	if (FAILED(d_device->GetViewport(&vp)))
-		throw RendererException("Direct3D9Renderer::getViewportSize - Unable "
-            "to access required view port information from Direct3DDevice9.");
-	else
-		return Size(static_cast<float>(vp.Width),
+    if (FAILED(d_device->GetViewport(&vp)))
+        throw RendererException("Direct3D9Renderer::getViewportSize - Unable "
+                                "to access required view port information from "
+                                "Direct3DDevice9.");
+    else
+        return Size(static_cast<float>(vp.Width),
                     static_cast<float>(vp.Height));
 }
 
@@ -291,14 +292,14 @@ Size Direct3D9Renderer::getViewportSize()
 void Direct3D9Renderer::preD3DReset()
 {
     throw RendererException("Direct3D9Renderer::preD3DReset - "
-        "Function is currently unimplemented!");
+                            "Function is currently unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::postD3DReset()
 {
     throw RendererException("Direct3D9Renderer::postD3DReset - "
-        "Function is currently unimplemented!");
+                            "Function is currently unimplemented!");
 }
 
 //----------------------------------------------------------------------------//
@@ -310,9 +311,9 @@ LPDIRECT3DDEVICE9 Direct3D9Renderer::getDevice() const
 //----------------------------------------------------------------------------//
 Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 texture)
 {
-	Direct3D9Texture* tex = new Direct3D9Texture(*this, texture);
-	d_textures.push_back(tex);
-	return *tex;
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, texture);
+    d_textures.push_back(tex);
+    return *tex;
 }
 
 //----------------------------------------------------------------------------//
@@ -338,8 +339,8 @@ Size Direct3D9Renderer::getAdjustedSize(const Size& sz)
         s.d_height = getSizeNextPOT(sz.d_height);
     }
     if (!d_supportNonSquareTex)
-        s.d_width = s.d_height = 
-            ceguimax(s.d_width, s.d_height);
+        s.d_width = s.d_height =
+                        ceguimax(s.d_width, s.d_height);
 
     return s;
 }

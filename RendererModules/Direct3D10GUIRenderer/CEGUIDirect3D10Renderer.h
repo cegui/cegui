@@ -151,12 +151,17 @@ protected:
     typedef std::vector<Direct3D10Texture*> TextureList;
     //! Container used to track textures.
     TextureList d_textures;
-
+    //! Effect (shader) used when rendering.
     ID3D10Effect* d_effect;
+    //! The rendering technique extratced from the shader effect.
     ID3D10EffectTechnique* d_technique;
+    //! D3D10 input layout describing the vertex format we use.
     ID3D10InputLayout* d_inputLayout;
+    //! Variable to access current texture (actually shader resource view)
     ID3D10EffectShaderResourceVariable* d_boundTextureVariable;
+    //! Variable to access world matrix used in geometry transformation.
     ID3D10EffectMatrixVariable* d_worldMatrixVariable;
+    //! Variable to access projection matrix used in geometry transformation.
     ID3D10EffectMatrixVariable* d_projectionMatrixVariable;
 };
 

@@ -39,28 +39,6 @@ namespace CEGUI
 //! Texture implementation for the Direct3D9Renderer.
 class DIRECT3D9_GUIRENDERER_API Direct3D9Texture : public Texture
 {
-private:
-    /*************************************************************************
-        Friends (to allow construction and destruction)
-    *************************************************************************/
-    friend Texture& Direct3D9Renderer::createTexture(void);
-    friend Texture& Direct3D9Renderer::createTexture(const String&, const String&);
-    friend Texture& Direct3D9Renderer::createTexture(const Size&);
-    friend Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 tex);
-    friend void Direct3D9Renderer::destroyTexture(Texture&);
-
-    //! Basic constructor.
-    Direct3D9Texture(Direct3D9Renderer& owner);
-    //! Construct texture from an image file.
-    Direct3D9Texture(Direct3D9Renderer& owner, const String& filename, 
-                     const String& resourceGroup);
-    //! Construct texture with a given size.
-    Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz);
-    //! Construct texture that wraps an existing D3D9 texture.
-    Direct3D9Texture(Direct3D9Renderer& owner, LPDIRECT3DTEXTURE9 tex);
-    //! Destructor.
-    virtual ~Direct3D9Texture();
-
 public:
     /*!
     \brief
@@ -97,6 +75,25 @@ public:
     void saveToMemory(void* buffer);
 
 protected:
+    // Friends (to allow construction and destruction)
+    friend Texture& Direct3D9Renderer::createTexture(void);
+    friend Texture& Direct3D9Renderer::createTexture(const String&, const String&);
+    friend Texture& Direct3D9Renderer::createTexture(const Size&);
+    friend Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 tex);
+    friend void Direct3D9Renderer::destroyTexture(Texture&);
+
+    //! Basic constructor.
+    Direct3D9Texture(Direct3D9Renderer& owner);
+    //! Construct texture from an image file.
+    Direct3D9Texture(Direct3D9Renderer& owner, const String& filename,
+                     const String& resourceGroup);
+    //! Construct texture with a given size.
+    Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz);
+    //! Construct texture that wraps an existing D3D9 texture.
+    Direct3D9Texture(Direct3D9Renderer& owner, LPDIRECT3DTEXTURE9 tex);
+    //! Destructor.
+    virtual ~Direct3D9Texture();
+
     //! clean up the internal texture.
     void cleanupDirect3D9Texture();
     //! updates cached scale value used to map pixels to texture co-ords.

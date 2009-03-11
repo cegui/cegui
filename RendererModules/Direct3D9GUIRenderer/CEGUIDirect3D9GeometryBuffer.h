@@ -60,11 +60,9 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-
     void setTranslation(const Vector3& t);
     void setRotation(const Vector3& r);
     void setPivot(const Vector3& p);
-
     void setClippingRegion(const Rect& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
@@ -73,7 +71,6 @@ public:
     Texture* getActiveTexture() const;
     uint getVertexCount() const;
     uint getBatchCount() const;
-
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
 
@@ -87,11 +84,11 @@ protected:
     struct D3DVertex
     {
         //! The transformed position for the vertex.
-	    FLOAT x, y, z;
+        FLOAT x, y, z;
         //! colour of the vertex.
-	    DWORD diffuse;
+        DWORD diffuse;
         //! texture coordinates.
-	    float tu, tv;
+        float tu, tv;
     };
 
     //! last texture that was set as active

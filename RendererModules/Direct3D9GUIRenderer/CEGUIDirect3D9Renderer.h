@@ -130,7 +130,7 @@ private:
     //! Destructor for Direct3D9Renderer objects.
     virtual ~Direct3D9Renderer();
 
-	//! return size of device view port (if possible).
+    //! return size of device view port (if possible).
     Size getViewportSize();
     //! returns next power of 2 size if \a size is not power of 2
     float getSizeNextPOT(float sz) const;
@@ -138,7 +138,7 @@ private:
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! Direct3DDevice9 interface we were given when constructed.
-	LPDIRECT3DDEVICE9 d_device;
+    LPDIRECT3DDEVICE9 d_device;
     //! What the renderer considers to be the current display size.
     Size d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.

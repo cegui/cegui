@@ -122,7 +122,7 @@ protected:
     //! The D3D 10 texture we're wrapping.
     ID3D10Texture2D* d_texture;
     //! Shader resource view for the texture.
-	ID3D10ShaderResourceView* d_resourceView;
+    ID3D10ShaderResourceView* d_resourceView;
     //! Size of the texture.
     Size d_size;
     //! original pixel of size data loaded into texture

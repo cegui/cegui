@@ -256,7 +256,7 @@ void Direct3D10GeometryBuffer::syncHardwareBuffer() const
 
     if (vertex_count > 0)
     {
-	    void* buff;
+        void* buff;
         if (FAILED(d_vertexBuffer->Map(D3D10_MAP_WRITE_DISCARD, 0, &buff)))
             throw RendererException(
                 "Direct3D10GeometryBuffer::syncHardwareBuffer: "
