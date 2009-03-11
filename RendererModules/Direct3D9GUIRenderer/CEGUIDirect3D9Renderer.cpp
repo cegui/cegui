@@ -272,6 +272,12 @@ Direct3D9Renderer::Direct3D9Renderer(LPDIRECT3DDEVICE9 device) :
 //----------------------------------------------------------------------------//
 Direct3D9Renderer::~Direct3D9Renderer()
 {
+    destroyAllGeometryBuffers();
+    destroyAllTextureTargets();
+    destroyAllTextures();
+
+    delete d_defaultRoot;
+    delete d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//

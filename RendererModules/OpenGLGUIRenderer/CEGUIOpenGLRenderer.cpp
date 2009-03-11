@@ -170,6 +170,7 @@ OpenGLRenderer::OpenGLRenderer(const Size& display_size) :
 OpenGLRenderer::~OpenGLRenderer()
 {
     destroyAllGeometryBuffers();
+    destroyAllTextureTargets();
     destroyAllTextures();
 
     delete d_defaultRoot;
