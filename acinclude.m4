@@ -354,7 +354,7 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
 ])
 
 AC_DEFUN([CEGUI_ENABLE_DIRECTFB_RENDERER], [
-    PKG_CHECK_MODULES(directfb, directfb >= 1.0.0, [cegui_found_directfb=yes], [cegui_found_directfb=no])
+    PKG_CHECK_MODULES(directfb, directfb >= 1.2.0, [cegui_found_directfb=yes], [cegui_found_directfb=no])
     AC_ARG_ENABLE([directfb-renderer], AC_HELP_STRING([--disable-directfb-renderer], [Disable the DirectFB renderer]),
         [cegui_enable_directfb=$enableval],[cegui_enable_directfb=yes])
 
