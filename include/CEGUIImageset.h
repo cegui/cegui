@@ -500,17 +500,14 @@ public:
 	void	setNativeResolution(const Size& size);
 
 
-	/*!
-	\brief
-		Notify the Imageset of the current (usually new) display resolution.
+    /*!
+    \brief
+        Notify the Imageset that the display size may have changed.
 
-	\param size
-		Size object describing the display resolution
-
-	\return
-		Nothing
-	*/
-	void	notifyScreenResolution(const Size& size);
+    \param size
+        Size object describing the display resolution
+    */
+    void notifyDisplaySizeChanged(const Size& size);
 
 
 	/*!

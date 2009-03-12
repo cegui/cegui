@@ -846,15 +846,12 @@ public:
 
     /*!
     \brief
-        Notify the Font of the current (usually new) display resolution.
+        Notify the Font that the display size may have changed.
 
     \param size
         Size object describing the display resolution
-
-    \return
-        Nothing
     */
-    virtual void notifyScreenResolution(const Size& size);
+    virtual void notifyDisplaySizeChanged(const Size& size);
 
     /*************************************************************************
         Informational methods

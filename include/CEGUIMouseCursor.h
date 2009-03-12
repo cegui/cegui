@@ -6,7 +6,7 @@
 	purpose:	Defines interface for the MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -297,6 +297,18 @@ public:
 	*/
 	Point	getDisplayIndependantPosition(void) const;
 
+    /*!
+    \brief
+        Function used to notify the MouseCursor of changes in the display size.
+
+        You normally would not call this directly; rather you would call the
+        function System::notifyDisplaySizeChanged and that will then call this
+        function for you.
+
+    \param new_size
+        Size object describing the new display size in pixels.
+    */
+    void notifyDisplaySizeChanged(const Size& new_size);
 
 protected:
 	/*************************************************************************
@@ -318,9 +330,6 @@ private:
 		Checks the mouse cursor position is within the current 'constrain' Rect and adjusts as required.
 	*/
 	void	constrainPosition(void);
-
-    //! handler to reset clipping area for the mouse geometry
-    bool handleDisplaySizeChange(const EventArgs& args);
 
 	/*************************************************************************
 		Implementation Data

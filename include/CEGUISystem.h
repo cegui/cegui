@@ -6,7 +6,7 @@
 	purpose:	Defines interface for main GUI system class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -82,7 +82,8 @@ public:
 	static const String EventDefaultFontChanged;			//!< Name of event fired when the default font changes.
 	static const String EventDefaultMouseCursorChanged;	//!< Name of event fired when the default mouse cursor changes.
 	static const String EventMouseMoveScalingChanged;		//!< Name of event fired when the mouse move scaling factor changes.
-
+    //! Name of event fired for display size changes (as notified by client).
+    static const String EventDisplaySizeChanged;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -742,6 +743,25 @@ public:
     */
     static const String& getDefaultImageCodecName();
 
+    /*!
+    \brief
+        Notification function to be called when the main display changes size.
+        Client code should call this function when the host window changes size,
+        or if the display resolution is changed in full-screen mode.
+
+        Calling this function ensures that any other parts of the system that
+        need to know about display size changes are notified.  This affects
+        things such as the MouseCursor default constraint area, and also the
+        auto-scale functioning of Imagesets and Fonts.
+
+    \note
+        This function will also fire the System::EventDisplaySizeChanged event.
+
+    \param new_size
+        Size object describing the new display size in pixels.
+    */
+    void notifyDisplaySizeChanged(const Size& new_size);
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -967,13 +987,6 @@ private:
 	*/
 	SystemKey	keyCodeToSyskey(Key::Scan key, bool direction);
 
-
-	/*!
-	\brief
-		Handler method for display size change notifications
-	*/
-	bool	handleDisplaySizeChange(const EventArgs& e);
-
     //! output the standard log header
     void outputLogHeader();
 
@@ -1099,9 +1112,6 @@ private:
 
     Tooltip* d_defaultTooltip;      //!< System default tooltip object.
     bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.
-
-    //!< Holds the connection to Renderer::EventDisplaySizeChanged so we can unsubscribe before we die.
-    Event::Connection d_rendererCon;
 
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 

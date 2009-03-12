@@ -74,6 +74,7 @@ public:
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
+    void setDisplaySize(const Size& sz);
     const Size& getDisplaySize() const;
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;

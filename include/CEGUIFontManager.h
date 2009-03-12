@@ -198,17 +198,14 @@ public:
 	Font*	getFont(const String& name) const;
 
 
-	/*!
-	\brief
-		Notify the FontManager of the current (usually new) display resolution.
+    /*!
+    \brief
+        Notify the FontManager that display size may have changed.
 
-	\param size
-		Size object describing the display resolution
-
-	\return
-		Nothing
-	*/
-	void	notifyScreenResolution(const Size& size);
+    \param size
+        Size object describing the display resolution
+    */
+    void notifyDisplaySizeChanged(const Size& size);
 
 
     /*!

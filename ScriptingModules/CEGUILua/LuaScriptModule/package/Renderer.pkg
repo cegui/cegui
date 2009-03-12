@@ -1,7 +1,7 @@
 /***********************************************************************
     Renderer
 ***********************************************************************/
-class Renderer : public EventSet
+class Renderer
 {
     RenderingRoot& getDefaultRenderingRoot();
 
@@ -19,6 +19,7 @@ class Renderer : public EventSet
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
 
+    void setDisplaySize(const Size& sz);
     const Size& getDisplaySize() const;
     const Vector2& getDisplayDPI() const;
 
@@ -28,6 +29,4 @@ class Renderer : public EventSet
 
     //void beginRendering();
     //void endRendering();
-
-    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

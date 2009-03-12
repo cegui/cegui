@@ -178,6 +178,7 @@ const String System::EventMultiClickAreaSizeChanged( "MultiClickAreaSizeChanged"
 const String System::EventDefaultFontChanged( "DefaultFontChanged" );
 const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
 const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
+const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
 
 // Holds name of default XMLParser
 String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
@@ -332,11 +333,6 @@ System::System(Renderer* renderer,
     // success - we are created!  Log it for prosperity :)
     outputLogHeader();
 
-    // subscribe (as group 1) to hear about display mode changes
-    d_rendererCon = d_renderer->
-        subscribeEvent(Renderer::EventDisplaySizeChanged, 1,
-            Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
-
     // load base scheme
     if (!configSchemeName.empty())
     {
@@ -402,9 +398,6 @@ System::~System(void)
         catch (...) {}  // catch all exceptions and continue system shutdown
 
     }
-
-    // unsubscribe from the renderer
-    d_rendererCon->disconnect();
 
     cleanupImageCodec();
 
@@ -1424,27 +1417,33 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
     Handler method for display size change notifications
 *************************************************************************/
-bool System::handleDisplaySizeChange(const EventArgs&)
+void System::notifyDisplaySizeChanged(const Size& new_size)
 {
-    // notify the imageset/font manager of the size change
-    Size new_sz = getRenderer()->getDisplaySize();
-    ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
-    FontManager::getSingleton().notifyScreenResolution(new_sz);
+    // notify other components of the display size change
+    d_renderer->setDisplaySize(new_size);
+    ImagesetManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    MouseCursor::getSingleton().notifyDisplaySizeChanged(new_size);
 
     // notify gui sheet / root if size change, event propagation will ensure everything else
     // gets updated as required.
+    //
+    // FIXME: This is no longer correct, the RenderTarget the sheet is using as
+    // FIXME: it's parent element may not be the main screen.
     if (d_activeSheet)
     {
         WindowEventArgs args(0);
         d_activeSheet->onParentSized(args);
     }
 
+    // Fire event
+    DisplayEventArgs args(new_size);
+    fireEvent(EventDisplaySizeChanged, args, EventNamespace);
+
     Logger::getSingleton().logEvent(
         "Display resize:"
-        " w=" + PropertyHelper::floatToString(new_sz.d_width) +
-        " h=" + PropertyHelper::floatToString(new_sz.d_height));
-
-    return true;
+        " w=" + PropertyHelper::floatToString(new_size.d_width) +
+        " h=" + PropertyHelper::floatToString(new_size.d_height));
 }
 
 

@@ -220,6 +220,20 @@ void Direct3D9Renderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
+void Direct3D9Renderer::setDisplaySize(const Size& sz)
+{
+    if (sz != d_displaySize)
+    {
+        d_displaySize = sz;
+
+        // FIXME: This is probably not the right thing to do in all cases.
+        Rect area(d_defaultTarget->getArea());
+        area.setSize(sz);
+        d_defaultTarget->setArea(area);
+    }
+}
+
+//----------------------------------------------------------------------------//
 const Size& Direct3D9Renderer::getDisplaySize() const
 {
     return d_displaySize;

@@ -31,7 +31,6 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUIBase.h"
-#include "CEGUIEventSet.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -68,21 +67,9 @@ enum QuadSplitMode
     or API to draw CEGUI imagery requires that an appropriate Renderer object be
     available.
 */
-class CEGUIEXPORT Renderer : public EventSet
+class CEGUIEXPORT Renderer
 {
 public:
-    //! Namespace to be used for global events from Renderer objects.
-    static const String EventNamespace;
-
-    /*!
-    \brief
-        Event that fires when the underlying display size had changed.
-
-        It is important that all Renderer implementers fire this properly as the
-        system itself subscribes to this event.
-    */
-    static const String EventDisplaySizeChanged;
-
     /*!
     \brief
         Return the default rendering root for the renderer.  The default
@@ -239,6 +226,25 @@ public:
 
     /*!
     \brief
+        Set the size of the display or host window in pixels for this Renderer
+        object.
+
+        This is intended to be called by the System as part of the notification
+        process when display size changes are notified to it via the
+        System::notifyDisplaySizeChanged function.
+
+    \note
+        The Renderer implementation should not use this function other than to
+        perform internal state updates on the Renderer and related objects.
+
+    \param size
+        Size object describing the dimesions of the current or host window in
+        pixels.
+    */
+    virtual void setDisplaySize(const Size& size) = 0;
+
+    /*!
+    \brief
         Return the size of the display or host window in pixels.
 
     \return
@@ -276,7 +282,7 @@ public:
     virtual const String& getIdentifierString() const = 0;
 
     //! Destructor.
-    virtual ~Renderer();
+    virtual ~Renderer() {}
 };
 
 } // End of  CEGUI namespace section

@@ -16,7 +16,7 @@ class ImagesetManager
 	tolua_throws|CEGUI::Exception,nil| Imageset* getImageset(string name) const;
 	bool isImagesetPresent(string name) const;
 
-	void notifyScreenResolution(const Size& size);
+	void notifyDisplaySizeChanged(const Size& size);
 
     ImagesetIterator getIterator() const;
 };

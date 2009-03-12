@@ -466,8 +466,9 @@ WndEvtListener::WndEvtListener(CEGUI::OgreRenderer* renderer) :
 
 void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 {
-    d_renderer->setDisplaySize(CEGUI::Size(static_cast<float>(rw->getWidth()),
-                                           static_cast<float>(rw->getHeight())));
+    CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+        CEGUI::Size(static_cast<float>(rw->getWidth()),
+                    static_cast<float>(rw->getHeight())));
 }
 
 #endif

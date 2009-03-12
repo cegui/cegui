@@ -170,23 +170,6 @@ public:
 
     /*!
     \brief
-        Set the size of the display in pixels.
-
-        If your screen, windoe or main viewport size changes, you should call
-        this function with the new size in pixels so that CEGUI can react to the
-        change.
-
-    \note
-        This method will cause the EventDisplaySizeChanged event to fire if the
-        display size has changed.
-
-    \param sz
-        Size object describing the size of the display.
-    */
-    void setDisplaySize(const Size& sz);
-
-    /*!
-    \brief
         Create a CEGUI::Texture that wraps an existing Ogre texture.
 
     \param tex
@@ -216,6 +199,7 @@ public:
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
+    void setDisplaySize(const Size& sz);
     const Size& getDisplaySize() const;
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;

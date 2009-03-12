@@ -517,7 +517,7 @@ void Font::setNativeResolution(const Size& size)
     d_nativeVertRes = size.d_height;
 
     // re-calculate scaling factors & notify images as required
-    notifyScreenResolution(
+    notifyDisplaySizeChanged(
         System::getSingleton().getRenderer()->getDisplaySize());
 }
 
@@ -525,7 +525,7 @@ void Font::setNativeResolution(const Size& size)
 /*************************************************************************
     Notify the Font of the current (usually new) display resolution.
 *************************************************************************/
-void Font::notifyScreenResolution(const Size& size)
+void Font::notifyDisplaySizeChanged(const Size& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;

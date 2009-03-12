@@ -241,7 +241,9 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
 void CEGuiIrrlichtBaseApplication::checkWindowResize()
 {
     irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
-    //d_renderer->setDisplaySize(CEGUI::Size(cur_size.Width, cur_size.Height));
+
+//     CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+//         CEGUI::Size(cur_size.Width, cur_size.Height));
 }
 
 //----------------------------------------------------------------------------//

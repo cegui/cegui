@@ -6,7 +6,7 @@
     purpose:    Implements MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -61,11 +61,6 @@ const String MouseCursor::EventImageChanged( "ImageChanged" );
 MouseCursor::MouseCursor(void) :
     d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer())
 {
-    // subscribe (group 2) to hear about display size changes
-    System::getSingleton().getRenderer()->
-        subscribeEvent(Renderer::EventDisplaySizeChanged, 2,
-            Event::Subscriber(&MouseCursor::handleDisplaySizeChange, this));
-
     const Rect screenArea(Vector2(0, 0),
                           System::getSingleton().getRenderer()->getDisplaySize());
     d_geometry->setClippingRegion(screenArea);
@@ -272,10 +267,9 @@ Point MouseCursor::getDisplayIndependantPosition(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool MouseCursor::handleDisplaySizeChange(const EventArgs& args)
+void MouseCursor::notifyDisplaySizeChanged(const Size& new_size)
 {
-    const Rect screenArea(Vector2(0, 0),
-                          System::getSingleton().getRenderer()->getDisplaySize());
+    const Rect screenArea(Vector2(0, 0), new_size);
     d_geometry->setClippingRegion(screenArea);
 
     // redraw image back into buffer to regenerate geometry at (maybe) new size
@@ -284,8 +278,6 @@ bool MouseCursor::handleDisplaySizeChange(const EventArgs& args)
         d_geometry->reset();
         d_cursorImage->draw(*d_geometry, Vector2(0, 0), 0);
     }
-
-    return true;
 }
 
 //----------------------------------------------------------------------------//

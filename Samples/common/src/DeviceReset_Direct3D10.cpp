@@ -124,9 +124,9 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
             view_port.TopLeftY = 0;
             d3d_device.RSSetViewports(1, &view_port);
 
-            // update CEGUI renderer
-            //d3d_renderer->setDisplaySize(CEGUI::Size((float)width,
-            //                                         (float)height));
+            // notify CEGUI of change.
+            CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+                CEGUI::Size((float)width, (float)height));
         }
     }
 }

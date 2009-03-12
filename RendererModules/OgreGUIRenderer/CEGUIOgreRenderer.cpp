@@ -409,9 +409,6 @@ void OgreRenderer::setDisplaySize(const Size& sz)
         Rect area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
-
-        EventArgs args;
-        fireEvent(EventDisplaySizeChanged, args, EventNamespace);
     }
 
 }

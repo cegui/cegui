@@ -39,7 +39,7 @@ class Font //: public PropertySet
 	bool isCodepointAvailable(unsigned long cp) const;
 
 	void setNativeResolution(const Size& sz);
-	void notifyScreenResolution(const Size& sz);
+	void notifyDisplaySizeChanged(const Size& sz);
 
 	float getTextExtent(string text, float xscale=1);
 	float getLineSpacing(float yscale=1) const;

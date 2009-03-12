@@ -101,13 +101,13 @@ public:
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
     Texture& createTexture();
-    Texture& createTexture(const String& filename,
-                                   const String& resourceGroup);
+    Texture& createTexture(const String& filename, const String& resourceGroup);
     Texture& createTexture(const Size& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
+    void setDisplaySize(const Size& sz);
     const Size& getDisplaySize() const;
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
@@ -128,22 +128,6 @@ public:
         specified to be \a sz.
     */
     Texture& createTexture(GLuint tex, const Size& sz);
-
-    /*!
-    \brief
-        Set the size of the display in pixels.
-
-        If your viewport size changes, you can call this function with the new
-        size in pixels to update the rendering area.
-
-    \note
-        This method will cause the EventDisplaySizeChanged event to fire if the
-        display size has changed.
-
-    \param sz
-        Size object describing the size of the display.
-    */
-    void setDisplaySize(const Size& sz);
 
     /*!
     \brief
