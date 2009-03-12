@@ -13,7 +13,7 @@
             <Window Type="TaharezLook/GroupBox" Name="TextDemo/StaticGroup" >
                 <Property Name="Text" Value="Static text" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.0173979,0},{0.078319,0},{0.986007,0},{0.404881,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0173979,0},{0.018319,0},{0.986007,0},{0.404881,0}}" />
             </Window>
             <Window Type="TaharezLook/GroupBox" Name="TextDemo/SingleLineGroup" >
                 <Property Name="Text" Value="Single line editing" />
@@ -23,59 +23,59 @@
             <Window Type="TaharezLook/StaticText" Name="TextDemo/StaticText" >
                 <Property Name="Text" Value="Demonstrates static (non editable) text. Use the controls on your right for formatting options." />
                 <Property Name="HorzFormatting" Value="WordWrapLeftAligned" />
-		    <Property Name="VertFormatting" Value="TopAligned" />
+                <Property Name="VertFormatting" Value="TopAligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.126344,0},{0.42415,0},{0.384995,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.066344,0},{0.42415,0},{0.384995,0}}" />
             </Window>
             <Window Type="TaharezLook/StaticText" Name="TextDemo/lblHorzFormatting" >
                 <Property Name="Text" Value="Horz. formatting" />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.436163,0},{0.124473,0},{0.634902,0},{0.173498,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.436163,0},{0.066344,0},{0.634902,0},{0.10,0}}" />
                 <Property Name="BackgroundEnabled" Value="False" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/HorzLeft" >
                 <Property Name="Text" Value="Left aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.179757,0},{0.602889,0},{0.228783,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.11,0},{0.602889,0},{0.15,0}}" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/HorzRight" >
                 <Property Name="Text" Value="Right aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.223715,0},{0.602889,0},{0.27274,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.16,0},{0.602889,0},{0.20,0}}" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/HorzCentered" >
                 <Property Name="Text" Value="Center aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.267673,0},{0.602889,0},{0.316698,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.21,0},{0.602889,0},{0.25,0}}" />
             </Window>
             <Window Type="TaharezLook/StaticText" Name="TextDemo/lblVertFormatting" >
                 <Property Name="Text" Value="Vert. formatting" />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.612759,0},{0.124473,0},{0.787369,0},{0.173498,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.632759,0},{0.066344,0},{0.807369,0},{0.10,0}}" />
                 <Property Name="BackgroundEnabled" Value="False" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/VertTop" >
                 <Property Name="Text" Value="Top aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.190256,0},{0.792699,0},{0.227283,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.631157,0},{0.11,0},{0.792699,0},{0.15,0}}" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/VertBottom" >
                 <Property Name="Text" Value="Bottom aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.234214,0},{0.792699,0},{0.27124,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.631157,0},{0.16,0},{0.792699,0},{0.20,0}}" />
             </Window>
             <Window Type="TaharezLook/RadioButton" Name="TextDemo/VertCentered" >
                 <Property Name="Text" Value="Center aligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.276102,0},{0.792699,0},{0.313129,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.631157,0},{0.21,0},{0.792699,0},{0.25,0}}" />
             </Window>
             <Window Type="TaharezLook/Checkbox" Name="TextDemo/Wrap" >
                 <Property Name="Text" Value="Word wrap" />
                 <Property Name="Selected" Value="True" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.780252,0},{0.127429,0},{0.931853,0},{0.180953,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.820252,0},{0.064473,0},{0.931853,0},{0.10,0}}" />
             </Window>
             <Window Type="TaharezLook/Editbox" Name="TextDemo/editName" >
                 <Property Name="Text" Value="Your name" />
@@ -129,12 +129,12 @@
 </Property>
                 <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.651968,0},{0.579514,0},{0.910619,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.631968,0},{0.579514,0},{0.910619,0}}" />
             </Window>
             <Window Type="TaharezLook/Checkbox" Name="TextDemo/forceScroll" >
                 <Property Name="Text" Value="Force vertical scrollbar" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.585348,0},{0.651481,0},{0.832503,0},{0.688507,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.585348,0},{0.631968,0},{0.832503,0},{0.660507,0}}" />
             </Window>
             <Window Type="TaharezLook/Button" Name="TextDemo/Quit" >
                 <Property Name="Text" Value="Quit" />
