@@ -175,13 +175,15 @@ void OgreRenderTarget::updateMatrix() const
     const float farZ = d_viewDistance * 2.0f;
     const float nr_sub_far = nearZ - farZ;
 
-    d_matrix[0][0] = 3.732050808f / aspect;
-    d_matrix[0][3] = -d_viewDistance;
-    d_matrix[1][1] = -3.732050808f;
-    d_matrix[1][3] = d_viewDistance;
-    d_matrix[2][2] = -((farZ + nearZ) / nr_sub_far);
-    d_matrix[3][2] = 1.0f;
-    d_matrix[3][3] = d_viewDistance;
+    Ogre::Matrix4 tmp(Ogre::Matrix4::ZERO);
+    tmp[0][0] = 3.732050808f / aspect;
+    tmp[0][3] = -d_viewDistance;
+    tmp[1][1] = -3.732050808f;
+    tmp[1][3] = d_viewDistance;
+    tmp[2][2] = -((farZ + nearZ) / nr_sub_far);
+    tmp[3][2] = 1.0f;
+    tmp[3][3] = d_viewDistance;
+    d_renderSystem._convertProjectionMatrix(tmp, d_matrix);
 
     d_matrixValid = true;
 }
