@@ -39,23 +39,6 @@ namespace CEGUI
 //! Texture implementation for the OpenGLRenderer.
 class OPENGL_GUIRENDERER_API OpenGLTexture : public Texture
 {
-private:
-    /*************************************************************************
-        Friends (to allow construction and destruction)
-    *************************************************************************/
-    friend Texture& OpenGLRenderer::createTexture(void);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const String&);
-    friend Texture& OpenGLRenderer::createTexture(const Size&);
-    friend Texture& OpenGLRenderer::createTexture(GLuint, const Size&);
-    friend void OpenGLRenderer::destroyTexture(Texture&);
-
-    //! Basic constructor.
-    OpenGLTexture();
-    //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(GLuint tex, const Size& size);
-    //! Destructor.
-    virtual ~OpenGLTexture();
-
 public:
     /*!
     \brief
@@ -121,6 +104,24 @@ public:
     void saveToMemory(void* buffer);
 
 protected:
+    // Friends (to allow construction and destruction)
+    friend Texture& OpenGLRenderer::createTexture(void);
+    friend Texture& OpenGLRenderer::createTexture(const String&, const String&);
+    friend Texture& OpenGLRenderer::createTexture(const Size&);
+    friend Texture& OpenGLRenderer::createTexture(GLuint, const Size&);
+    friend void OpenGLRenderer::destroyTexture(Texture&);
+
+    //! Basic constructor.
+    OpenGLTexture();
+    //! Constructor that creates a Texture from an image file.
+    OpenGLTexture(const String& filename, const String& resourceGroup);
+    //! Constructor that creates a Texture with a given size.
+    OpenGLTexture(const Size& size);
+    //! Constructor that wraps an existing GL texture.
+    OpenGLTexture(GLuint tex, const Size& size);
+    //! Destructor.
+    virtual ~OpenGLTexture();
+
     //! generate the OpenGL texture and set some initial options.
     void generateOpenGLTexture();
 

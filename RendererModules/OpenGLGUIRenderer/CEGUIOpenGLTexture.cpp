@@ -38,9 +38,31 @@ namespace CEGUI
 OpenGLTexture::OpenGLTexture() :
     d_size(0, 0),
     d_grabBuffer(0),
+    d_dataSize(0, 0),
     d_texelScaling(0, 0)
 {
     generateOpenGLTexture();
+}
+
+//----------------------------------------------------------------------------//
+OpenGLTexture::OpenGLTexture(const String& filename,
+                             const String& resourceGroup) :
+    d_size(0, 0),
+    d_grabBuffer(0),
+    d_dataSize(0, 0)
+{
+    generateOpenGLTexture();
+    loadFromFile(filename, resourceGroup);
+}
+
+//----------------------------------------------------------------------------//
+OpenGLTexture::OpenGLTexture(const Size& size) :
+    d_size(0, 0),
+    d_grabBuffer(0),
+    d_dataSize(0, 0)
+{
+    generateOpenGLTexture();
+    setTextureSize(size);
 }
 
 //----------------------------------------------------------------------------//
