@@ -303,16 +303,22 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     d_inputManager = OIS::InputManager::createInputSystem(paramList);
 
     // create buffered keyboard
+#ifdef CEGUI_OLD_OIS_API
+    if (d_inputManager->numKeyboards() > 0)
+#else
     if (d_inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0)
-    //if (d_inputManager->numKeyboards() > 0)
+#endif
     {
         d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
         d_keyboard->setEventCallback(this);
     }
 
     // create buffered mouse
+#ifdef CEGUI_OLD_OIS_API
+    if (d_inputManager->numMice() > 0)
+#else
     if (d_inputManager->getNumberOfDevices(OIS::OISMouse) > 0)
-    //if (d_inputManager->numMice() > 0)
+#endif
     {
         d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
         d_mouse->setEventCallback(this);

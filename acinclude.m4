@@ -339,6 +339,21 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
             AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [],
                       [Define to have the Ogre renderer available in the samples])
             AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
+
+            AC_MSG_NOTICE([Trying to determine OIS APIs to use])
+            cegui_saved_CFLAGS="$CPPFLAGS"
+            CPPFLAGS="$CPPFLAGS $OIS_CFLAGS"
+            AC_LANG_PUSH(C++)
+            AC_COMPILE_IFELSE(
+            [
+                #include <OIS.h>
+                OIS::InputManager* im = 0;
+                int main(int argc, char** argv) {im->numKeyboards(); return 0;}
+            ],
+            [AC_DEFINE([CEGUI_OLD_OIS_API],[1],[Define if your OIS uses the older numKeyboards like APIs rather than the newer getNumberOfDevices API])
+            ])
+            AC_LANG_POP(C++)
+            CPPFLAGS="$cegui_saved_CFLAGS"
         fi
     else
         cegui_samples_use_ogre=no

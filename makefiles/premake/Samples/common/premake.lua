@@ -84,6 +84,9 @@ if OGRE_RENDERER and SAMPLES_OGRE then
     if OIS_PATHS then
         add_sdk_paths(OIS_PATHS)
     end
+    if CEGUI_OLD_OIS_API then
+        define("CEGUI_OLD_OIS_API")
+    end
 end
 
 if DEFAULT_XML_PARSER == "xerces" then
