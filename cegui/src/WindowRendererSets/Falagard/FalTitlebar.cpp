@@ -64,18 +64,4 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Rect FalagardTitlebar::getPixelRect(void) const
-    {
-        // clip to grand-parent as needed
-        if (d_window->getParent() && d_window->getParent()->getParent() && d_window->isClippedByParent())
-        {
-            return d_window->getParent()->getParent()->getInnerRect().getIntersection(d_window->getUnclippedPixelRect());
-        }
-        // clip to screen if no grand-parent, or if clipping has been disabled for us.
-        else
-        {
-            return System::getSingleton().getRenderer()->getRect().getIntersection(d_window->getUnclippedPixelRect());
-        }
-    }
-
 } // End of  CEGUI namespace section

@@ -31,6 +31,7 @@
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUIEvent.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -160,7 +161,7 @@ namespace CEGUI
         ColourRect final_cols(d_textCols);
         final_cols.modulateAlpha(d_window->getEffectiveAlpha());
         // cache the text for rendering.
-        d_window->getRenderCache().cacheText(d_window->getText(), font, (TextFormatting)d_horzFormatting, absarea, 0, final_cols, &clipper);
+        font->drawText(d_window->getGeometryBuffer(), d_window->getText(), absarea, &clipper, (TextFormatting)d_horzFormatting, final_cols);
     }
 
     /************************************************************************
@@ -242,7 +243,7 @@ namespace CEGUI
     void FalagardStaticText::setTextColours(const ColourRect& colours)
     {
         d_textCols = colours;
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -252,7 +253,7 @@ namespace CEGUI
     {
         d_vertFormatting = v_fmt;
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -262,7 +263,7 @@ namespace CEGUI
     {
         d_horzFormatting = h_fmt;
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -348,7 +349,7 @@ namespace CEGUI
     bool FalagardStaticText::onTextChanged(const EventArgs&)
     {
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 
@@ -369,7 +370,7 @@ namespace CEGUI
     bool FalagardStaticText::onFontChanged(const EventArgs&)
     {
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 
@@ -401,7 +402,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::handleScrollbarChange(const EventArgs&)
     {
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 

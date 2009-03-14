@@ -30,6 +30,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -121,45 +122,6 @@ namespace CEGUI
         ColourRect colours;
         float alpha_comp = w->getEffectiveAlpha();
 
-        //
-        // Draw label text
-        //
-        // setup initial rect for text formatting
-        Rect text_part_rect(textArea);
-        // allow for scroll position
-        text_part_rect.d_left += textOffset;
-        // centre text vertically within the defined text area
-        text_part_rect.d_top += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
-
-        // get unhighlighted text colour (saves accessing property twice)
-        colour unselectedColour(getUnselectedTextColour());
-        // draw pre-highlight text
-        String sect = editText->substr(0, w->getSelectionStartIndex());
-        colours.setColours(unselectedColour);
-        colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
-
-        // adjust rect for next section
-        text_part_rect.d_left += font->getTextExtent(sect);
-
-        // draw highlight text
-        sect = editText->substr(w->getSelectionStartIndex(), w->getSelectionLength());
-        colours.setColours(getSelectedTextColour());
-        colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
-
-        // adjust rect for next section
-        text_part_rect.d_left += font->getTextExtent(sect);
-
-        // draw post-highlight text
-        sect = editText->substr(w->getSelectionEndIndex());
-        colours.setColours(unselectedColour);
-        colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
-
-        // remember this for next time.
-        d_lastTextOffset = textOffset;
-
         // see if the editbox is active or inactive.
         bool active = (!w->isReadOnly()) && w->hasInputFocus();
 
@@ -182,6 +144,45 @@ namespace CEGUI
         }
 
         //
+        // Draw label text
+        //
+        // setup initial rect for text formatting
+        Rect text_part_rect(textArea);
+        // allow for scroll position
+        text_part_rect.d_left += textOffset;
+        // centre text vertically within the defined text area
+        text_part_rect.d_top += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
+
+        // get unhighlighted text colour (saves accessing property twice)
+        colour unselectedColour(getUnselectedTextColour());
+        // draw pre-highlight text
+        String sect = editText->substr(0, w->getSelectionStartIndex());
+        colours.setColours(unselectedColour);
+        colours.modulateAlpha(alpha_comp);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+
+        // adjust rect for next section
+        text_part_rect.d_left += font->getTextExtent(sect);
+
+        // draw highlight text
+        sect = editText->substr(w->getSelectionStartIndex(), w->getSelectionLength());
+        colours.setColours(getSelectedTextColour());
+        colours.modulateAlpha(alpha_comp);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+
+        // adjust rect for next section
+        text_part_rect.d_left += font->getTextExtent(sect);
+
+        // draw post-highlight text
+        sect = editText->substr(w->getSelectionEndIndex());
+        colours.setColours(unselectedColour);
+        colours.modulateAlpha(alpha_comp);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+
+        // remember this for next time.
+        d_lastTextOffset = textOffset;
+
+        //
         // Render carat
         //
         if (active)
@@ -189,7 +190,7 @@ namespace CEGUI
             Rect caratRect(textArea);
             caratRect.d_left += extentToCarat + textOffset;
 
-            caratImagery.render(*w, caratRect, 0, 0, &textArea);
+            caratImagery.render(*w, caratRect, 0, &textArea);
         }
     }
 

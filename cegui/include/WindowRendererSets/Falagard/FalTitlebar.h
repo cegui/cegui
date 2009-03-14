@@ -55,7 +55,6 @@ namespace CEGUI
         */
         FalagardTitlebar(const String& type);
 
-        Rect getPixelRect(void) const;
         void render();
     };
 

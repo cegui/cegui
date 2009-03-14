@@ -112,9 +112,9 @@ namespace CEGUI
                 float ypos = caratLine * fnt->getLineSpacing();
                 float xpos = fnt->getTextExtent(w->getText().substr(d_lines[caratLine].d_startIdx, caratLineIdx));
 
-                // get base offset to target layer for cursor.
-                Renderer* renderer = System::getSingleton().getRenderer();
-                float baseZ = renderer->getZLayer(7) - renderer->getCurrentZ();
+//                 // get base offset to target layer for cursor.
+//                 Renderer* renderer = System::getSingleton().getRenderer();
+//                 float baseZ = renderer->getZLayer(7) - renderer->getCurrentZ();
 
                 // get WidgetLookFeel for the assigned look.
                 const WidgetLookFeel& wlf = getLookNFeel();
@@ -130,7 +130,7 @@ namespace CEGUI
                 caratArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
 
                 // cache the carat image for rendering.
-                caratImagery.render(*w, caratArea, baseZ, 0, &textArea);
+                caratImagery.render(*w, caratArea, 0, &textArea);
             }
         }
     }
@@ -158,15 +158,10 @@ namespace CEGUI
         float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
         drawArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
 
-        Renderer* renderer = System::getSingleton().getRenderer();
         Font* fnt = w->getFont();
 
         if (fnt)
         {
-            // get layers to use for rendering
-            float textZ = renderer->getZLayer(4) - renderer->getCurrentZ();
-            float selZ  = renderer->getZLayer(3) - renderer->getCurrentZ();
-
             // calculate final colours to use.
             ColourRect colours;
             float alpha = w->getEffectiveAlpha();
@@ -206,7 +201,7 @@ namespace CEGUI
                 {
                     colours.setColours(normalTextCol);
                     // render the complete line.
-                    w->getRenderCache().cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+                    fnt->drawText(w->getGeometryBuffer(), lineText, lineRect, &dest_area, LeftAligned, colours);
                 }
                 // we have at least some selection highlighting to do
                 else
@@ -231,7 +226,7 @@ namespace CEGUI
 
                         // draw this portion of the text
                         colours.setColours(normalTextCol);
-                        w->getRenderCache().cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+                        fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
 
                         // set position ready for next portion of text
                         lineRect.d_left += selStartOffset;
@@ -247,9 +242,23 @@ namespace CEGUI
                     // get the extent to use as the width of the selection area highlight
                     selAreaWidth = fnt->getTextExtent(sect);
 
+                    const float text_top = lineRect.d_top;
+                    lineRect.d_top = old_top;
+
+                    // calculate area for the selection brush on this line
+                    lineRect.d_left = drawArea.d_left + selStartOffset;
+                    lineRect.d_right = lineRect.d_left + selAreaWidth;
+                    lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
+
+                    // render the selection area brush for this line
+                    colours.setColours(selectBrushCol);
+                    w->getSelectionBrushImage()->draw(w->getGeometryBuffer(), lineRect, &dest_area, colours);
+
                     // draw the text for this section
                     colours.setColours(selectTextCol);
-                    w->getRenderCache().cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+                    fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
+
+                    lineRect.d_top = text_top;
 
                     // render any text beyond selected region of line
                     if (sectIdx < currLine.d_length)
@@ -265,19 +274,8 @@ namespace CEGUI
 
                         // render the text for this section.
                         colours.setColours(normalTextCol);
-                        w->getRenderCache().cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+                        fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
                     }
-
-                    lineRect.d_top = old_top;
-
-                    // calculate area for the selection brush on this line
-                    lineRect.d_left = drawArea.d_left + selStartOffset;
-                    lineRect.d_right = lineRect.d_left + selAreaWidth;
-                    lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
-
-                    // render the selection area brush for this line
-                    colours.setColours(selectBrushCol);
-                    w->getRenderCache().cacheImage(*w->getSelectionBrushImage(), lineRect, selZ, colours, &dest_area);
                 }
 
                 // update master position for next line in paragraph.

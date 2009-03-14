@@ -51,7 +51,7 @@ namespace CEGUI
         if (d_frameEnabled != setting)
         {
             d_frameEnabled = setting;
-            d_window->requestRedraw();
+            d_window->invalidate();
         }
     }
 
@@ -60,7 +60,7 @@ namespace CEGUI
         if (d_backgroundEnabled != setting)
         {
             d_backgroundEnabled = setting;
-            d_window->requestRedraw();
+            d_window->invalidate();
         }
     }
 
