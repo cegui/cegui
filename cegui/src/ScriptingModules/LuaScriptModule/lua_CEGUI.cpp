@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Mar  1 22:00:59 2009.
+** Generated automatically by tolua++-1.0.92 on Sat Mar 14 19:58:10 2009.
 */
 
 #ifndef __cplusplus
@@ -89,13 +89,6 @@ static int tolua_collect_CEGUI__DragDropEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WidgetLookManager (lua_State* tolua_S)
-{
- CEGUI::WidgetLookManager* self = (CEGUI::WidgetLookManager*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
 static int tolua_collect_CEGUI__FileStream (lua_State* tolua_S)
 {
  CEGUI::FileStream* self = (CEGUI::FileStream*) tolua_tousertype(tolua_S,1,0);
@@ -103,30 +96,23 @@ static int tolua_collect_CEGUI__FileStream (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WidgetLookManager (lua_State* tolua_S)
 {
- CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WidgetLookManager* self = (CEGUI::WidgetLookManager*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
+static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
 {
- CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_size_t (lua_State* tolua_S)
+static int tolua_collect_CEGUI__RenderQueueEventArgs (lua_State* tolua_S)
 {
- size_t* self = (size_t*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__ColourRect (lua_State* tolua_S)
-{
- CEGUI::ColourRect* self = (CEGUI::ColourRect*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::RenderQueueEventArgs* self = (CEGUI::RenderQueueEventArgs*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -145,6 +131,27 @@ static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_CEGUI__ColourRect (lua_State* tolua_S)
+{
+ CEGUI::ColourRect* self = (CEGUI::ColourRect*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
+{
+ CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
+{
+ CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_CEGUI__StateImagery (lua_State* tolua_S)
 {
  CEGUI::StateImagery* self = (CEGUI::StateImagery*) tolua_tousertype(tolua_S,1,0);
@@ -159,16 +166,16 @@ static int tolua_collect_CEGUI__EventConnection (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
 {
- CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__MCLGridRef (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
 {
- CEGUI::MCLGridRef* self = (CEGUI::MCLGridRef*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -194,23 +201,23 @@ static int tolua_collect_CEGUI__NamedArea (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
 {
- CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
 {
- CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
 {
- CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -250,16 +257,16 @@ static int tolua_collect_CEGUI__ActivationEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ComponentArea (lua_State* tolua_S)
 {
- CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ComponentArea* self = (CEGUI::ComponentArea*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
 {
- CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -278,9 +285,9 @@ static int tolua_collect_CEGUI__EventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__ComponentArea (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
 {
- CEGUI::ComponentArea* self = (CEGUI::ComponentArea*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -292,9 +299,9 @@ static int tolua_collect_CEGUI__UVector2 (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
 {
- CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -320,16 +327,16 @@ static int tolua_collect_CEGUI__HeaderSequenceEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
 {
- CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__MCLGridRef (lua_State* tolua_S)
 {
- CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::MCLGridRef* self = (CEGUI::MCLGridRef*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -341,9 +348,9 @@ static int tolua_collect_CEGUI__URect (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__Vector3 (lua_State* tolua_S)
 {
- CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::Vector3* self = (CEGUI::Vector3*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -409,6 +416,7 @@ static int tolua_collect_CEGUI__Rect (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
+ tolua_usertype(tolua_S,"CEGUI::PropertyLinkDefinition");
  tolua_usertype(tolua_S,"CEGUI::Logger");
  tolua_usertype(tolua_S,"CEGUI::Image");
  tolua_usertype(tolua_S,"CEGUI::MenuBase");
@@ -416,117 +424,124 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::SchemeIterator");
  tolua_usertype(tolua_S,"CEGUI::FalagardComponentBase");
  tolua_usertype(tolua_S,"CEGUI::Scrollbar");
+ tolua_usertype(tolua_S,"CEGUI::OutStream");
+ tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
  tolua_usertype(tolua_S,"CEGUI::MouseEventArgs");
  tolua_usertype(tolua_S,"CEGUI::ImageIterator");
  tolua_usertype(tolua_S,"CEGUI::ImagesetIterator");
- tolua_usertype(tolua_S,"CEGUI::ItemListBase");
+ tolua_usertype(tolua_S,"CEGUI::RenderingRoot");
  tolua_usertype(tolua_S,"CEGUI::Dimension");
  tolua_usertype(tolua_S,"CEGUI::WindowFactory");
  tolua_usertype(tolua_S,"CEGUI::MouseCursor");
+ tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
  tolua_usertype(tolua_S,"CEGUI::ItemListbox");
  tolua_usertype(tolua_S,"CEGUI::ComboDropList");
  tolua_usertype(tolua_S,"CEGUI::FrameWindow");
- tolua_usertype(tolua_S,"size_t");
- tolua_usertype(tolua_S,"CEGUI::FontDim");
+ tolua_usertype(tolua_S,"CEGUI::BaseDim");
+ tolua_usertype(tolua_S,"CEGUI::Titlebar");
+ tolua_usertype(tolua_S,"CEGUI::LayerSpecification");
+ tolua_usertype(tolua_S,"CEGUI::RenderEffect");
+ tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
+ tolua_usertype(tolua_S,"CEGUI::ImagerySection");
  tolua_usertype(tolua_S,"CEGUI::ButtonBase");
  tolua_usertype(tolua_S,"CEGUI::EventConnection");
  tolua_usertype(tolua_S,"CEGUI::ListboxItem");
  tolua_usertype(tolua_S,"CEGUI::Imageset");
  tolua_usertype(tolua_S,"CEGUI::Property");
- tolua_usertype(tolua_S,"CEGUI::OutStream");
- tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
- tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
+ tolua_usertype(tolua_S,"CEGUI::TextComponent");
+ tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::FrameComponent");
  tolua_usertype(tolua_S,"CEGUI::GroupBox");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::FileStream");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
- tolua_usertype(tolua_S,"CEGUI::DragContainer");
- tolua_usertype(tolua_S,"CEGUI::PropertyHelper");
- tolua_usertype(tolua_S,"CEGUI::LayerSpecification");
- tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
- tolua_usertype(tolua_S,"CEGUI::ImagerySection");
- tolua_usertype(tolua_S,"CEGUI::ProgressBar");
- tolua_usertype(tolua_S,"CEGUI::TextComponent");
- tolua_usertype(tolua_S,"CEGUI::PropertyDim");
- tolua_usertype(tolua_S,"CEGUI::UVector2");
- tolua_usertype(tolua_S,"CEGUI::FrameComponent");
- tolua_usertype(tolua_S,"CEGUI::PropertyLinkDefinition");
- tolua_usertype(tolua_S,"CEGUI::Spinner");
  tolua_usertype(tolua_S,"CEGUI::PropertyInitialiser");
+ tolua_usertype(tolua_S,"CEGUI::PropertyHelper");
  tolua_usertype(tolua_S,"CEGUI::PropertyDefinition");
  tolua_usertype(tolua_S,"CEGUI::PropertyDefinitionBase");
- tolua_usertype(tolua_S,"CEGUI::TabControl");
+ tolua_usertype(tolua_S,"CEGUI::NamedArea");
+ tolua_usertype(tolua_S,"CEGUI::ProgressBar");
  tolua_usertype(tolua_S,"CEGUI::ComponentArea");
+ tolua_usertype(tolua_S,"CEGUI::PropertyDim");
+ tolua_usertype(tolua_S,"CEGUI::UVector2");
+ tolua_usertype(tolua_S,"CEGUI::Vertex");
+ tolua_usertype(tolua_S,"CEGUI::FontDim");
+ tolua_usertype(tolua_S,"CEGUI::Spinner");
+ tolua_usertype(tolua_S,"CEGUI::UnifiedDim");
+ tolua_usertype(tolua_S,"CEGUI::WidgetDim");
+ tolua_usertype(tolua_S,"CEGUI::ImageDim");
+ tolua_usertype(tolua_S,"CEGUI::RenderQueueEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::Vector3");
  tolua_usertype(tolua_S,"CEGUI::ImageryComponent");
  tolua_usertype(tolua_S,"CEGUI::WidgetComponent");
  tolua_usertype(tolua_S,"CEGUI::KeyEventArgs");
  tolua_usertype(tolua_S,"CEGUI::FontManager");
  tolua_usertype(tolua_S,"CEGUI::ScriptWindowHelper");
  tolua_usertype(tolua_S,"CEGUI::ImagesetManager");
- tolua_usertype(tolua_S,"CEGUI::UnifiedDim");
- tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
- tolua_usertype(tolua_S,"CEGUI::WidgetDim");
- tolua_usertype(tolua_S,"CEGUI::ImageDim");
- tolua_usertype(tolua_S,"CEGUI::Tree");
- tolua_usertype(tolua_S,"CEGUI::BaseDim");
  tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
- tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
+ tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
  tolua_usertype(tolua_S,"CEGUI::MenuItem");
  tolua_usertype(tolua_S,"CEGUI::PopupMenu");
- tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
- tolua_usertype(tolua_S,"CEGUI::WindowManager");
- tolua_usertype(tolua_S,"CEGUI::TreeItem");
- tolua_usertype(tolua_S,"CEGUI::Checkbox");
- tolua_usertype(tolua_S,"CEGUI::ListHeader");
+ tolua_usertype(tolua_S,"CEGUI::Menubar");
+ tolua_usertype(tolua_S,"CEGUI::ItemListBase");
  tolua_usertype(tolua_S,"CEGUI::ItemEntry");
- tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
- tolua_usertype(tolua_S,"CEGUI::PushButton");
+ tolua_usertype(tolua_S,"CEGUI::RenderingWindow");
  tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
  tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
+ tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
+ tolua_usertype(tolua_S,"CEGUI::WindowManager");
  tolua_usertype(tolua_S,"CEGUI::ListHeaderSegment");
+ tolua_usertype(tolua_S,"CEGUI::Checkbox");
+ tolua_usertype(tolua_S,"CEGUI::ListHeader");
  tolua_usertype(tolua_S,"CEGUI::Listbox");
+ tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
+ tolua_usertype(tolua_S,"CEGUI::PushButton");
  tolua_usertype(tolua_S,"CEGUI::Combobox");
- tolua_usertype(tolua_S,"CEGUI::Tooltip");
+ tolua_usertype(tolua_S,"CEGUI::TabControl");
+ tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::Editbox");
  tolua_usertype(tolua_S,"CEGUI::Slider");
+ tolua_usertype(tolua_S,"CEGUI::GUISheet");
+ tolua_usertype(tolua_S,"CEGUI::DragContainer");
+ tolua_usertype(tolua_S,"CEGUI::Tooltip");
  tolua_usertype(tolua_S,"CEGUI::ColourRect");
- tolua_usertype(tolua_S,"CEGUI::DragDropEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::TreeItem");
  tolua_usertype(tolua_S,"CEGUI::System");
  tolua_usertype(tolua_S,"CEGUI::StateImagery");
  tolua_usertype(tolua_S,"CEGUI::ListboxTextItem");
- tolua_usertype(tolua_S,"CEGUI::Menubar");
- tolua_usertype(tolua_S,"CEGUI::Titlebar");
+ tolua_usertype(tolua_S,"CEGUI::GeometryBuffer");
+ tolua_usertype(tolua_S,"CEGUI::TabButton");
  tolua_usertype(tolua_S,"CEGUI::Vector2");
  tolua_usertype(tolua_S,"CEGUI::String");
- tolua_usertype(tolua_S,"CEGUI::NamedArea");
- tolua_usertype(tolua_S,"CEGUI::TabButton");
- tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::RenderingContext");
+ tolua_usertype(tolua_S,"CEGUI::RadioButton");
+ tolua_usertype(tolua_S,"CEGUI::Thumb");
  tolua_usertype(tolua_S,"CEGUI::WindowEventArgs");
  tolua_usertype(tolua_S,"CEGUI::WindowIterator");
  tolua_usertype(tolua_S,"CEGUI::colour");
  tolua_usertype(tolua_S,"CEGUI::Font");
  tolua_usertype(tolua_S,"CEGUI::FontIterator");
- tolua_usertype(tolua_S,"CEGUI::Texture");
- tolua_usertype(tolua_S,"CEGUI::RadioButton");
- tolua_usertype(tolua_S,"CEGUI::Thumb");
+ tolua_usertype(tolua_S,"CEGUI::ActivationEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::WindowFactoryManager");
+ tolua_usertype(tolua_S,"CEGUI::Tree");
  tolua_usertype(tolua_S,"CEGUI::FalagardMappingIterator");
  tolua_usertype(tolua_S,"CEGUI::EventArgs");
  tolua_usertype(tolua_S,"CEGUI::ScrollablePane");
  tolua_usertype(tolua_S,"CEGUI::EventSet");
- tolua_usertype(tolua_S,"CEGUI::Scheme");
+ tolua_usertype(tolua_S,"CEGUI::Texture");
  tolua_usertype(tolua_S,"CEGUI::PropertyIterator");
  tolua_usertype(tolua_S,"CEGUI::AbsoluteDim");
  tolua_usertype(tolua_S,"CEGUI::HeaderSequenceEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Event");
- tolua_usertype(tolua_S,"CEGUI::GUISheet");
+ tolua_usertype(tolua_S,"CEGUI::DragDropEventArgs");
  tolua_usertype(tolua_S,"CEGUI::URect");
  tolua_usertype(tolua_S,"CEGUI::CoordConverter");
+ tolua_usertype(tolua_S,"CEGUI::RenderingSurface");
  tolua_usertype(tolua_S,"CEGUI::SchemeManager");
- tolua_usertype(tolua_S,"CEGUI::WindowFactoryManager");
- tolua_usertype(tolua_S,"CEGUI::Window");
+ tolua_usertype(tolua_S,"CEGUI::Scheme");
  tolua_usertype(tolua_S,"CEGUI::UDim");
+ tolua_usertype(tolua_S,"CEGUI::Window");
  tolua_usertype(tolua_S,"CEGUI::Size");
- tolua_usertype(tolua_S,"CEGUI::ActivationEventArgs");
  tolua_usertype(tolua_S,"CEGUI::TreeEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Rect");
 }
@@ -858,6 +873,244 @@ static int tolua_CEGUI_CEGUI_Vector2_new01_local(lua_State* tolua_S)
  return 1;
 tolua_lerror:
  return tolua_CEGUI_CEGUI_Vector2_new00_local(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: d_x of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vector3_x
+static int tolua_get_CEGUI__Vector3_x(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_x'",NULL);
+#endif
+ tolua_pushnumber(tolua_S,(lua_Number)self->d_x);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: d_x of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vector3_x
+static int tolua_set_CEGUI__Vector3_x(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_x'",NULL);
+ if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->d_x = ((float)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: d_y of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vector3_y
+static int tolua_get_CEGUI__Vector3_y(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_y'",NULL);
+#endif
+ tolua_pushnumber(tolua_S,(lua_Number)self->d_y);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: d_y of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vector3_y
+static int tolua_set_CEGUI__Vector3_y(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_y'",NULL);
+ if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->d_y = ((float)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: d_z of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vector3_z
+static int tolua_get_CEGUI__Vector3_z(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_z'",NULL);
+#endif
+ tolua_pushnumber(tolua_S,(lua_Number)self->d_z);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: d_z of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vector3_z
+static int tolua_set_CEGUI__Vector3_z(lua_State* tolua_S)
+{
+  CEGUI::Vector3* self = (CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_z'",NULL);
+ if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->d_z = ((float)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: operator== of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3__eq00
+static int tolua_CEGUI_CEGUI_Vector3__eq00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Vector3* self = (const CEGUI::Vector3*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* vec = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'operator=='",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->operator==(*vec);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function '.eq'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_new00
+static int tolua_CEGUI_CEGUI_Vector3_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  CEGUI::Vector3* tolua_ret = (CEGUI::Vector3*)  new CEGUI::Vector3();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Vector3");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_new00_local
+static int tolua_CEGUI_CEGUI_Vector3_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  CEGUI::Vector3* tolua_ret = (CEGUI::Vector3*)  new CEGUI::Vector3();
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::Vector3");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_new01
+static int tolua_CEGUI_CEGUI_Vector3_new01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  float x = ((float)  tolua_tonumber(tolua_S,2,0));
+  float y = ((float)  tolua_tonumber(tolua_S,3,0));
+  float z = ((float)  tolua_tonumber(tolua_S,4,0));
+ {
+  CEGUI::Vector3* tolua_ret = (CEGUI::Vector3*)  new CEGUI::Vector3(x,y,z);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Vector3");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Vector3_new00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::Vector3 */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_new01_local
+static int tolua_CEGUI_CEGUI_Vector3_new01_local(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  float x = ((float)  tolua_tonumber(tolua_S,2,0));
+  float y = ((float)  tolua_tonumber(tolua_S,3,0));
+  float z = ((float)  tolua_tonumber(tolua_S,4,0));
+ {
+  CEGUI::Vector3* tolua_ret = (CEGUI::Vector3*)  new CEGUI::Vector3(x,y,z);
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::Vector3");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Vector3_new00_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -6222,9 +6475,9 @@ static int tolua_CEGUI_CEGUI_Font_setNativeResolution00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: notifyScreenResolution of class  CEGUI::Font */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_notifyScreenResolution00
-static int tolua_CEGUI_CEGUI_Font_notifyScreenResolution00(lua_State* tolua_S)
+/* method: notifyDisplaySizeChanged of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6240,16 +6493,16 @@ static int tolua_CEGUI_CEGUI_Font_notifyScreenResolution00(lua_State* tolua_S)
   CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
   const CEGUI::Size* sz = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyScreenResolution'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
 #endif
  {
-  self->notifyScreenResolution(*sz);
+  self->notifyDisplaySizeChanged(*sz);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'notifyScreenResolution'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -6803,9 +7056,9 @@ static int tolua_CEGUI_CEGUI_FontManager_getFont00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: notifyScreenResolution of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_notifyScreenResolution00
-static int tolua_CEGUI_CEGUI_FontManager_notifyScreenResolution00(lua_State* tolua_S)
+/* method: notifyDisplaySizeChanged of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_FontManager_notifyDisplaySizeChanged00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6821,16 +7074,16 @@ static int tolua_CEGUI_CEGUI_FontManager_notifyScreenResolution00(lua_State* tol
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   const CEGUI::Size* sz = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyScreenResolution'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
 #endif
  {
-  self->notifyScreenResolution(*sz);
+  self->notifyDisplaySizeChanged(*sz);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'notifyScreenResolution'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7183,137 +7436,6 @@ static int tolua_CEGUI_CEGUI_Image_getSourceTextureArea00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getSourceTextureArea'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getWidth of class  CEGUI::Texture */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getWidth00
-static int tolua_CEGUI_CEGUI_Texture_getWidth00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getWidth'",NULL);
-#endif
- {
-  unsigned short tolua_ret = (unsigned short)  self->getWidth();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getWidth'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getHeight of class  CEGUI::Texture */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getHeight00
-static int tolua_CEGUI_CEGUI_Texture_getHeight00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHeight'",NULL);
-#endif
- {
-  unsigned short tolua_ret = (unsigned short)  self->getHeight();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getHeight'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: loadFromFile of class  CEGUI::Texture */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_loadFromFile00
-static int tolua_CEGUI_CEGUI_Texture_loadFromFile00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Texture",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,3,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Texture* self = (CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
-  string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
-  string resourcegroup = ((string)  tolua_tocppstring(tolua_S,3,""));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadFromFile'",NULL);
-#endif
- {
-  self->loadFromFile(filename,resourcegroup);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'loadFromFile'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getRenderer of class  CEGUI::Texture */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getRenderer00
-static int tolua_CEGUI_CEGUI_Texture_getRenderer00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderer'",NULL);
-#endif
- {
-  CEGUI::Renderer* tolua_ret = (CEGUI::Renderer*)  self->getRenderer();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Renderer");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getRenderer'.",&tolua_err);
  return 0;
 #endif
 }
@@ -7976,9 +8098,9 @@ static int tolua_CEGUI_CEGUI_Imageset_setNativeResolution00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: notifyScreenResolution of class  CEGUI::Imageset */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Imageset_notifyScreenResolution00
-static int tolua_CEGUI_CEGUI_Imageset_notifyScreenResolution00(lua_State* tolua_S)
+/* method: notifyDisplaySizeChanged of class  CEGUI::Imageset */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Imageset_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_Imageset_notifyDisplaySizeChanged00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -7994,16 +8116,16 @@ static int tolua_CEGUI_CEGUI_Imageset_notifyScreenResolution00(lua_State* tolua_
   CEGUI::Imageset* self = (CEGUI::Imageset*)  tolua_tousertype(tolua_S,1,0);
   const CEGUI::Size* sz = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyScreenResolution'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
 #endif
  {
-  self->notifyScreenResolution(*sz);
+  self->notifyDisplaySizeChanged(*sz);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'notifyScreenResolution'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -8160,7 +8282,7 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_createImageset00(lua_State* tolua_S
  bool errorDoIt = false;
  try
  {
-  CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->createImageset(name,texture);
+  CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->createImageset(name,*texture);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
 catch(CEGUI::Exception&e)
@@ -8437,9 +8559,9 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_isImagesetPresent00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: notifyScreenResolution of class  CEGUI::ImagesetManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImagesetManager_notifyScreenResolution00
-static int tolua_CEGUI_CEGUI_ImagesetManager_notifyScreenResolution00(lua_State* tolua_S)
+/* method: notifyDisplaySizeChanged of class  CEGUI::ImagesetManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImagesetManager_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_ImagesetManager_notifyDisplaySizeChanged00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -8455,16 +8577,16 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_notifyScreenResolution00(lua_State*
   CEGUI::ImagesetManager* self = (CEGUI::ImagesetManager*)  tolua_tousertype(tolua_S,1,0);
   const CEGUI::Size* size = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyScreenResolution'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
 #endif
  {
-  self->notifyScreenResolution(*size);
+  self->notifyDisplaySizeChanged(*size);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'notifyScreenResolution'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -12759,6 +12881,96 @@ static int tolua_CEGUI_CEGUI_TreeEventArgs_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: queueID of class  CEGUI::RenderQueueEventArgs */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__RenderQueueEventArgs_queueID
+static int tolua_get_CEGUI__RenderQueueEventArgs_queueID(lua_State* tolua_S)
+{
+  CEGUI::RenderQueueEventArgs* self = (CEGUI::RenderQueueEventArgs*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'queueID'",NULL);
+#endif
+ tolua_pushnumber(tolua_S,(lua_Number)self->queueID);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: queueID of class  CEGUI::RenderQueueEventArgs */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__RenderQueueEventArgs_queueID
+static int tolua_set_CEGUI__RenderQueueEventArgs_queueID(lua_State* tolua_S)
+{
+  CEGUI::RenderQueueEventArgs* self = (CEGUI::RenderQueueEventArgs*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'queueID'",NULL);
+ if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->queueID = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  CEGUI::RenderQueueEventArgs */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00
+static int tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::RenderQueueEventArgs",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderQueueID id = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0));
+ {
+  CEGUI::RenderQueueEventArgs* tolua_ret = (CEGUI::RenderQueueEventArgs*)  new CEGUI::RenderQueueEventArgs(id);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::RenderQueueEventArgs");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::RenderQueueEventArgs */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00_local
+static int tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::RenderQueueEventArgs",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderQueueID id = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0));
+ {
+  CEGUI::RenderQueueEventArgs* tolua_ret = (CEGUI::RenderQueueEventArgs*)  new CEGUI::RenderQueueEventArgs(id);
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::RenderQueueEventArgs");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getName of class  CEGUI::Event */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Event_getName00
 static int tolua_CEGUI_CEGUI_Event_getName00(lua_State* tolua_S)
@@ -13900,6 +14112,82 @@ static int tolua_CEGUI_CEGUI_Window_getName00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: rename of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_rename00
+static int tolua_CEGUI_CEGUI_Window_rename00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string new_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'rename'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  self->rename(new_name);
+ }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'rename'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'rename'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isAutoWindow of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isAutoWindow00
+static int tolua_CEGUI_CEGUI_Window_isAutoWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isAutoWindow'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isAutoWindow();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isAutoWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: isDestroyedByParent of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isDestroyedByParent00
 static int tolua_CEGUI_CEGUI_Window_isDestroyedByParent00(lua_State* tolua_S)
@@ -14990,38 +15278,6 @@ static int tolua_CEGUI_CEGUI_Window_getChildAtIdx00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getActiveChild of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getActiveChild00
-static int tolua_CEGUI_CEGUI_Window_getActiveChild00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getActiveChild'",NULL);
-#endif
- {
-  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getActiveChild();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getActiveChild'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: getChildAtPosition of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildAtPosition00
 static int tolua_CEGUI_CEGUI_Window_getChildAtPosition00(lua_State* tolua_S)
@@ -15090,6 +15346,70 @@ static int tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00(lua_State* tolua_
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getActiveChild of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getActiveChild00
+static int tolua_CEGUI_CEGUI_Window_getActiveChild00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getActiveChild'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getActiveChild();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getActiveChild'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getActiveSibling of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getActiveSibling00
+static int tolua_CEGUI_CEGUI_Window_getActiveSibling00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getActiveSibling'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getActiveSibling();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getActiveSibling'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getParent of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getParent00
 static int tolua_CEGUI_CEGUI_Window_getParent00(lua_State* tolua_S)
@@ -15119,6 +15439,65 @@ static int tolua_CEGUI_CEGUI_Window_getParent00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'getParent'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRootWindow of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getRootWindow00
+static int tolua_CEGUI_CEGUI_Window_getRootWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRootWindow'",NULL);
+#endif
+ {
+  const CEGUI::Window* tolua_ret = (const CEGUI::Window*)  self->getRootWindow();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"const CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRootWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRootWindow of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getRootWindow01
+static int tolua_CEGUI_CEGUI_Window_getRootWindow01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRootWindow'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getRootWindow();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Window_getRootWindow00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -15602,32 +15981,32 @@ static int tolua_CEGUI_CEGUI_Window_setInheritsAlpha00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: requestRedraw of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_requestRedraw00
-static int tolua_CEGUI_CEGUI_Window_requestRedraw00(lua_State* tolua_S)
+/* method: invalidate of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_invalidate00
+static int tolua_CEGUI_CEGUI_Window_invalidate00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'requestRedraw'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'invalidate'",NULL);
 #endif
  {
-  self->requestRedraw();
+  self->invalidate();
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'requestRedraw'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'invalidate'.",&tolua_err);
  return 0;
 #endif
 }
@@ -15693,6 +16072,46 @@ static int tolua_CEGUI_CEGUI_Window_setZOrderingEnabled00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setZOrderingEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getPixelSize of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getPixelSize00
+static int tolua_CEGUI_CEGUI_Window_getPixelSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPixelSize'",NULL);
+#endif
+ {
+  CEGUI::Size tolua_ret = (CEGUI::Size)  self->getPixelSize();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Size(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Size));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getPixelSize'.",&tolua_err);
  return 0;
 #endif
 }
@@ -17149,6 +17568,71 @@ static int tolua_CEGUI_CEGUI_Window_testClassName00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isDragDropTarget of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isDragDropTarget00
+static int tolua_CEGUI_CEGUI_Window_isDragDropTarget00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isDragDropTarget'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isDragDropTarget();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isDragDropTarget'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setDragDropTarget of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setDragDropTarget00
+static int tolua_CEGUI_CEGUI_Window_setDragDropTarget00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool setting = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setDragDropTarget'",NULL);
+#endif
+ {
+  self->setDragDropTarget(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDragDropTarget'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: notifyDragDropItemEnters of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_notifyDragDropItemEnters00
 static int tolua_CEGUI_CEGUI_Window_notifyDragDropItemEnters00(lua_State* tolua_S)
@@ -18503,15 +18987,47 @@ static int tolua_CEGUI_CEGUI_Window_setMousePassThroughEnabled00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: rename of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_rename00
-static int tolua_CEGUI_CEGUI_Window_rename00(lua_State* tolua_S)
+/* method: isWritingXMLAllowed of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isWritingXMLAllowed00
+static int tolua_CEGUI_CEGUI_Window_isWritingXMLAllowed00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isWritingXMLAllowed'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isWritingXMLAllowed();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isWritingXMLAllowed'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setWritingXMLAllowed of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setWritingXMLAllowed00
+static int tolua_CEGUI_CEGUI_Window_setWritingXMLAllowed00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -18519,29 +19035,406 @@ static int tolua_CEGUI_CEGUI_Window_rename00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-  string new_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+  bool allow = ((bool)  tolua_toboolean(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'rename'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setWritingXMLAllowed'",NULL);
 #endif
- char errorBuffer[512];
- bool errorDoIt = false;
- try
  {
-  self->rename(new_name);
+  self->setWritingXMLAllowed(allow);
  }
-catch(CEGUI::Exception&e)
-{
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'rename'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- if (errorDoIt) {
- luaL_error(tolua_S,errorBuffer);
-}
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'rename'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setWritingXMLAllowed'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRotation of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getRotation00
+static int tolua_CEGUI_CEGUI_Window_getRotation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRotation'",NULL);
+#endif
+ {
+  const CEGUI::Vector3& tolua_ret = (const CEGUI::Vector3&)  self->getRotation();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector3");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRotation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRotation of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setRotation00
+static int tolua_CEGUI_CEGUI_Window_setRotation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* rotation = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRotation'",NULL);
+#endif
+ {
+  self->setRotation(*rotation);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRotation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getTargetRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getTargetRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_getTargetRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTargetRenderingSurface'",NULL);
+#endif
+ {
+  CEGUI::RenderingSurface& tolua_ret = (CEGUI::RenderingSurface&)  self->getTargetRenderingSurface();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::RenderingSurface");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getTargetRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRenderingContext of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getRenderingContext00
+static int tolua_CEGUI_CEGUI_Window_getRenderingContext00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::RenderingContext",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderingContext* ctx = ((CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderingContext'",NULL);
+#endif
+ {
+  self->getRenderingContext(*ctx);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRenderingContext'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_getRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderingSurface'",NULL);
+#endif
+ {
+  CEGUI::RenderingSurface* tolua_ret = (CEGUI::RenderingSurface*)  self->getRenderingSurface();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::RenderingSurface");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_setRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderingSurface* surface = ((CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRenderingSurface'",NULL);
+#endif
+ {
+  self->setRenderingSurface(surface);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isUsingAutoRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isUsingAutoRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_isUsingAutoRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isUsingAutoRenderingSurface'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isUsingAutoRenderingSurface();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isUsingAutoRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setUsingAutoRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setUsingAutoRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_setUsingAutoRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool setting = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setUsingAutoRenderingSurface'",NULL);
+#endif
+ {
+  self->setUsingAutoRenderingSurface(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setUsingAutoRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: invalidateRenderingSurface of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_invalidateRenderingSurface00
+static int tolua_CEGUI_CEGUI_Window_invalidateRenderingSurface00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'invalidateRenderingSurface'",NULL);
+#endif
+ {
+  self->invalidateRenderingSurface();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'invalidateRenderingSurface'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isNonClientWindow of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isNonClientWindow00
+static int tolua_CEGUI_CEGUI_Window_isNonClientWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isNonClientWindow'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isNonClientWindow();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isNonClientWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setNonClientWindow of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setNonClientWindow00
+static int tolua_CEGUI_CEGUI_Window_setNonClientWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  const bool setting = ((const bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setNonClientWindow'",NULL);
+#endif
+ {
+  self->setNonClientWindow(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setNonClientWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getGeometryBuffer of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getGeometryBuffer00
+static int tolua_CEGUI_CEGUI_Window_getGeometryBuffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getGeometryBuffer'",NULL);
+#endif
+ {
+  CEGUI::GeometryBuffer& tolua_ret = (CEGUI::GeometryBuffer&)  self->getGeometryBuffer();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::GeometryBuffer");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getGeometryBuffer'.",&tolua_err);
  return 0;
 #endif
 }
@@ -19698,540 +20591,6 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getCurrentZ of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getCurrentZ00
-static int tolua_CEGUI_CEGUI_Renderer_getCurrentZ00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCurrentZ'",NULL);
-#endif
- {
-  float tolua_ret = (float)  self->getCurrentZ();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCurrentZ'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getZLayer of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getZLayer00
-static int tolua_CEGUI_CEGUI_Renderer_getZLayer00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-  unsigned int layer = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getZLayer'",NULL);
-#endif
- {
-  float tolua_ret = (float)  self->getZLayer(layer);
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getZLayer'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: isQueueingEnabled of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_isQueueingEnabled00
-static int tolua_CEGUI_CEGUI_Renderer_isQueueingEnabled00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isQueueingEnabled'",NULL);
-#endif
- {
-  bool tolua_ret = (bool)  self->isQueueingEnabled();
- tolua_pushboolean(tolua_S,(bool)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'isQueueingEnabled'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: createTexture of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture00
-static int tolua_CEGUI_CEGUI_Renderer_createTexture00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
-#endif
- {
-  CEGUI::Texture* tolua_ret = (CEGUI::Texture*)  self->createTexture();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Texture");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'createTexture'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: createTexture of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture01
-static int tolua_CEGUI_CEGUI_Renderer_createTexture01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
- {
-  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-  float size = ((float)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
-#endif
- {
-  CEGUI::Texture* tolua_ret = (CEGUI::Texture*)  self->createTexture(size);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Texture");
- }
- }
- return 1;
-tolua_lerror:
- return tolua_CEGUI_CEGUI_Renderer_createTexture00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: createTexture of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture02
-static int tolua_CEGUI_CEGUI_Renderer_createTexture02(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
- )
- goto tolua_lerror;
- else
- {
-  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-  string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
-  string resourcegroup = ((string)  tolua_tocppstring(tolua_S,3,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
-#endif
- {
-  CEGUI::Texture* tolua_ret = (CEGUI::Texture*)  self->createTexture(filename,resourcegroup);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Texture");
- }
- }
- return 1;
-tolua_lerror:
- return tolua_CEGUI_CEGUI_Renderer_createTexture01(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: destroyTexture of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyTexture00
-static int tolua_CEGUI_CEGUI_Renderer_destroyTexture00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"CEGUI::Texture",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-  CEGUI::Texture* tex = ((CEGUI::Texture*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyTexture'",NULL);
-#endif
- {
-  self->destroyTexture(tex);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'destroyTexture'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: destroyAllTextures of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00
-static int tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAllTextures'",NULL);
-#endif
- {
-  self->destroyAllTextures();
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'destroyAllTextures'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getWidth of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getWidth00
-static int tolua_CEGUI_CEGUI_Renderer_getWidth00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getWidth'",NULL);
-#endif
- {
-  float tolua_ret = (float)  self->getWidth();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getWidth'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getHeight of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getHeight00
-static int tolua_CEGUI_CEGUI_Renderer_getHeight00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHeight'",NULL);
-#endif
- {
-  float tolua_ret = (float)  self->getHeight();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getHeight'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getSize of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getSize00
-static int tolua_CEGUI_CEGUI_Renderer_getSize00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSize'",NULL);
-#endif
- {
-  CEGUI::Size tolua_ret = (CEGUI::Size)  self->getSize();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::Size(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Size));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getSize'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getRect of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getRect00
-static int tolua_CEGUI_CEGUI_Renderer_getRect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRect'",NULL);
-#endif
- {
-  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getRect();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::Rect(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getRect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getMaxTextureSize of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00
-static int tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getMaxTextureSize'",NULL);
-#endif
- {
-  unsigned int tolua_ret = (unsigned int)  self->getMaxTextureSize();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getMaxTextureSize'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getHorzScreenDPI of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getHorzScreenDPI00
-static int tolua_CEGUI_CEGUI_Renderer_getHorzScreenDPI00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorzScreenDPI'",NULL);
-#endif
- {
-  unsigned int tolua_ret = (unsigned int)  self->getHorzScreenDPI();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getHorzScreenDPI'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getVertScreenDPI of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getVertScreenDPI00
-static int tolua_CEGUI_CEGUI_Renderer_getVertScreenDPI00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVertScreenDPI'",NULL);
-#endif
- {
-  unsigned int tolua_ret = (unsigned int)  self->getVertScreenDPI();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getVertScreenDPI'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: ceguiLua_getEventIterator of class  CEGUI::Renderer */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getEventIterator00
-static int tolua_CEGUI_CEGUI_Renderer_getEventIterator00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ceguiLua_getEventIterator'",NULL);
-#endif
- {
-  CEGUI::EventIterator tolua_ret = (CEGUI::EventIterator)  ceguiLua_getEventIterator(self);
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::EventIterator(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::EventIterator");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::EventIterator));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::EventIterator");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getEventIterator'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: getWindow of class  CEGUI::ScriptWindowHelper */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ScriptWindowHelper_getWindow00
 static int tolua_CEGUI_CEGUI_ScriptWindowHelper_getWindow00(lua_State* tolua_S)
@@ -21276,6 +21635,39 @@ static int tolua_CEGUI_CEGUI_System_getDefaultTooltip00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getDefaultTooltip'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: notifyDisplaySizeChanged of class  CEGUI::System */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_System_notifyDisplaySizeChanged00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::System",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size* new_size = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
+#endif
+ {
+  self->notifyDisplaySizeChanged(*new_size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -24217,6 +24609,1877 @@ static int tolua_CEGUI_CEGUI_PropertyHelper_urectToString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: position of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vertex_position
+static int tolua_get_CEGUI__Vertex_position(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'position'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)&self->position,"CEGUI::Vector3");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: position of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vertex_position
+static int tolua_set_CEGUI__Vertex_position(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'position'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::Vector3",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->position = *((CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: tex_coords of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vertex_tex_coords
+static int tolua_get_CEGUI__Vertex_tex_coords(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'tex_coords'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)&self->tex_coords,"CEGUI::Vector2");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: tex_coords of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vertex_tex_coords
+static int tolua_set_CEGUI__Vertex_tex_coords(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'tex_coords'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::Vector2",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->tex_coords = *((CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: colour_val of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__Vertex_colour_val
+static int tolua_get_CEGUI__Vertex_colour_val(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'colour_val'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)&self->colour_val,"CEGUI::colour");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: colour_val of class  CEGUI::Vertex */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__Vertex_colour_val
+static int tolua_set_CEGUI__Vertex_colour_val(lua_State* tolua_S)
+{
+  CEGUI::Vertex* self = (CEGUI::Vertex*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'colour_val'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::colour",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->colour_val = *((CEGUI::colour*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: surface of class  CEGUI::RenderingContext */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__RenderingContext_surface_ptr
+static int tolua_get_CEGUI__RenderingContext_surface_ptr(lua_State* tolua_S)
+{
+  CEGUI::RenderingContext* self = (CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'surface'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)self->surface,"CEGUI::RenderingSurface");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: surface of class  CEGUI::RenderingContext */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__RenderingContext_surface_ptr
+static int tolua_set_CEGUI__RenderingContext_surface_ptr(lua_State* tolua_S)
+{
+  CEGUI::RenderingContext* self = (CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'surface'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::RenderingSurface",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->surface = ((CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: owner of class  CEGUI::RenderingContext */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__RenderingContext_owner_ptr
+static int tolua_get_CEGUI__RenderingContext_owner_ptr(lua_State* tolua_S)
+{
+  CEGUI::RenderingContext* self = (CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'owner'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)self->owner,"const CEGUI::Window");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: offset of class  CEGUI::RenderingContext */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__RenderingContext_offset
+static int tolua_get_CEGUI__RenderingContext_offset(lua_State* tolua_S)
+{
+  CEGUI::RenderingContext* self = (CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'offset'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)&self->offset,"CEGUI::Vector2");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: offset of class  CEGUI::RenderingContext */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__RenderingContext_offset
+static int tolua_set_CEGUI__RenderingContext_offset(lua_State* tolua_S)
+{
+  CEGUI::RenderingContext* self = (CEGUI::RenderingContext*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'offset'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::Vector2",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->offset = *((CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: draw of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_draw00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_draw00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::GeometryBuffer* self = (const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'draw'",NULL);
+#endif
+ {
+  self->draw();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'draw'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setTranslation of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_setTranslation00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_setTranslation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* v = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTranslation'",NULL);
+#endif
+ {
+  self->setTranslation(*v);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setTranslation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRotation of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_setRotation00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_setRotation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* r = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRotation'",NULL);
+#endif
+ {
+  self->setRotation(*r);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRotation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setPivot of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_setPivot00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_setPivot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* p = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setPivot'",NULL);
+#endif
+ {
+  self->setPivot(*p);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setPivot'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: appendVertex of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_appendVertex00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_appendVertex00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vertex",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vertex* vertex = ((const CEGUI::Vertex*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'appendVertex'",NULL);
+#endif
+ {
+  self->appendVertex(*vertex);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'appendVertex'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: appendGeometry of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_appendGeometry00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_appendGeometry00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vertex",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vertex* vbuff = ((const CEGUI::Vertex*)  tolua_tousertype(tolua_S,2,0));
+  unsigned int vertex_count = ((unsigned int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'appendGeometry'",NULL);
+#endif
+ {
+  self->appendGeometry(vbuff,vertex_count);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'appendGeometry'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setActiveTexture of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_setActiveTexture00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_setActiveTexture00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Texture* texture = ((CEGUI::Texture*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setActiveTexture'",NULL);
+#endif
+ {
+  self->setActiveTexture(texture);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setActiveTexture'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: reset of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_reset00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_reset00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'reset'",NULL);
+#endif
+ {
+  self->reset();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'reset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getActiveTexture of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_getActiveTexture00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_getActiveTexture00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::GeometryBuffer* self = (const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getActiveTexture'",NULL);
+#endif
+ {
+  CEGUI::Texture* tolua_ret = (CEGUI::Texture*)  self->getActiveTexture();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Texture");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getActiveTexture'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getVertexCount of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_getVertexCount00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_getVertexCount00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::GeometryBuffer* self = (const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVertexCount'",NULL);
+#endif
+ {
+  unsigned int tolua_ret = (unsigned int)  self->getVertexCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getVertexCount'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getBatchCount of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_getBatchCount00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_getBatchCount00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::GeometryBuffer* self = (const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBatchCount'",NULL);
+#endif
+ {
+  unsigned int tolua_ret = (unsigned int)  self->getBatchCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getBatchCount'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRenderEffect of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_setRenderEffect00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_setRenderEffect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::RenderEffect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderEffect* effect = ((CEGUI::RenderEffect*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRenderEffect'",NULL);
+#endif
+ {
+  self->setRenderEffect(effect);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRenderEffect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRenderEffect of class  CEGUI::GeometryBuffer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GeometryBuffer_getRenderEffect00
+static int tolua_CEGUI_CEGUI_GeometryBuffer_getRenderEffect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GeometryBuffer* self = (CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderEffect'",NULL);
+#endif
+ {
+  CEGUI::RenderEffect* tolua_ret = (CEGUI::RenderEffect*)  self->getRenderEffect();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::RenderEffect");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRenderEffect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: addGeometryBuffer of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_addGeometryBuffer00
+static int tolua_CEGUI_CEGUI_RenderingSurface_addGeometryBuffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,3,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderQueueID queue = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0));
+  const CEGUI::GeometryBuffer* buffer = ((const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addGeometryBuffer'",NULL);
+#endif
+ {
+  self->addGeometryBuffer(queue,*buffer);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeGeometryBuffer of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_removeGeometryBuffer00
+static int tolua_CEGUI_CEGUI_RenderingSurface_removeGeometryBuffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,3,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderQueueID queue = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0));
+  const CEGUI::GeometryBuffer* buffer = ((const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeGeometryBuffer'",NULL);
+#endif
+ {
+  self->removeGeometryBuffer(queue,*buffer);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: clearGeometry of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry00
+static int tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderQueueID queue = ((CEGUI::RenderQueueID) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'clearGeometry'",NULL);
+#endif
+ {
+  self->clearGeometry(queue);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'clearGeometry'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: clearGeometry of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry01
+static int tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'clearGeometry'",NULL);
+#endif
+ {
+  self->clearGeometry();
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: invalidate of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_invalidate00
+static int tolua_CEGUI_CEGUI_RenderingSurface_invalidate00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'invalidate'",NULL);
+#endif
+ {
+  self->invalidate();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'invalidate'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isInvalidated of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_isInvalidated00
+static int tolua_CEGUI_CEGUI_RenderingSurface_isInvalidated00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingSurface* self = (const CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isInvalidated'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isInvalidated();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isInvalidated'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isRenderingWindow of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_isRenderingWindow00
+static int tolua_CEGUI_CEGUI_RenderingSurface_isRenderingWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingSurface* self = (const CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isRenderingWindow'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isRenderingWindow();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isRenderingWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: transferRenderingWindow of class  CEGUI::RenderingSurface */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingSurface_transferRenderingWindow00
+static int tolua_CEGUI_CEGUI_RenderingSurface_transferRenderingWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingSurface",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingSurface* self = (CEGUI::RenderingSurface*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderingWindow* window = ((CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'transferRenderingWindow'",NULL);
+#endif
+ {
+  self->transferRenderingWindow(*window);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'transferRenderingWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setClippingRegion of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setClippingRegion00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setClippingRegion00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Rect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Rect* region = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setClippingRegion'",NULL);
+#endif
+ {
+  self->setClippingRegion(*region);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setClippingRegion'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setPosition of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setPosition00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setPosition00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector2",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector2* position = ((const CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setPosition'",NULL);
+#endif
+ {
+  self->setPosition(*position);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setSize of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setSize00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size* size = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSize'",NULL);
+#endif
+ {
+  self->setSize(*size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRotation of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setRotation00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setRotation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* rotation = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRotation'",NULL);
+#endif
+ {
+  self->setRotation(*rotation);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRotation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setPivot of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setPivot00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setPivot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector3",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector3* pivot = ((const CEGUI::Vector3*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setPivot'",NULL);
+#endif
+ {
+  self->setPivot(*pivot);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setPivot'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getPosition of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getPosition00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getPosition00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingWindow* self = (const CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPosition'",NULL);
+#endif
+ {
+  const CEGUI::Vector2& tolua_ret = (const CEGUI::Vector2&)  self->getPosition();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector2");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getSize of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getSize00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingWindow* self = (const CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSize'",NULL);
+#endif
+ {
+  const CEGUI::Size& tolua_ret = (const CEGUI::Size&)  self->getSize();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Size");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRotation of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getRotation00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getRotation00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingWindow* self = (const CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRotation'",NULL);
+#endif
+ {
+  const CEGUI::Vector3& tolua_ret = (const CEGUI::Vector3&)  self->getRotation();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector3");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRotation'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getPivot of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getPivot00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getPivot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingWindow* self = (const CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPivot'",NULL);
+#endif
+ {
+  const CEGUI::Vector3& tolua_ret = (const CEGUI::Vector3&)  self->getPivot();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector3");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getPivot'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRenderEffect of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_setRenderEffect00
+static int tolua_CEGUI_CEGUI_RenderingWindow_setRenderEffect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::RenderEffect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::RenderEffect* effect = ((CEGUI::RenderEffect*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRenderEffect'",NULL);
+#endif
+ {
+  self->setRenderEffect(effect);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRenderEffect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRenderEffect of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getRenderEffect00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getRenderEffect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRenderEffect'",NULL);
+#endif
+ {
+  CEGUI::RenderEffect* tolua_ret = (CEGUI::RenderEffect*)  self->getRenderEffect();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::RenderEffect");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRenderEffect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getOwner of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getOwner00
+static int tolua_CEGUI_CEGUI_RenderingWindow_getOwner00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::RenderingWindow* self = (const CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOwner'",NULL);
+#endif
+ {
+  const CEGUI::RenderingSurface& tolua_ret = (const CEGUI::RenderingSurface&)  self->getOwner();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::RenderingSurface");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getOwner'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getOwner of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_getOwner01
+static int tolua_CEGUI_CEGUI_RenderingWindow_getOwner01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOwner'",NULL);
+#endif
+ {
+  CEGUI::RenderingSurface& tolua_ret = (CEGUI::RenderingSurface&)  self->getOwner();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::RenderingSurface");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_RenderingWindow_getOwner00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: unprojectPoint of class  CEGUI::RenderingWindow */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RenderingWindow_unprojectPoint00
+static int tolua_CEGUI_CEGUI_RenderingWindow_unprojectPoint00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::RenderingWindow",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector2",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,3,"CEGUI::Vector2",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::RenderingWindow* self = (CEGUI::RenderingWindow*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector2* p_in = ((const CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0));
+  CEGUI::Vector2* p_out = ((CEGUI::Vector2*)  tolua_tousertype(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unprojectPoint'",NULL);
+#endif
+ {
+  self->unprojectPoint(*p_in,*p_out);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'unprojectPoint'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultRenderingRoot of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getDefaultRenderingRoot00
+static int tolua_CEGUI_CEGUI_Renderer_getDefaultRenderingRoot00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getDefaultRenderingRoot'",NULL);
+#endif
+ {
+  CEGUI::RenderingRoot& tolua_ret = (CEGUI::RenderingRoot&)  self->getDefaultRenderingRoot();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::RenderingRoot");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultRenderingRoot'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createGeometryBuffer of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createGeometryBuffer00
+static int tolua_CEGUI_CEGUI_Renderer_createGeometryBuffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createGeometryBuffer'",NULL);
+#endif
+ {
+  CEGUI::GeometryBuffer& tolua_ret = (CEGUI::GeometryBuffer&)  self->createGeometryBuffer();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::GeometryBuffer");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroyGeometryBuffer of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyGeometryBuffer00
+static int tolua_CEGUI_CEGUI_Renderer_destroyGeometryBuffer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::GeometryBuffer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::GeometryBuffer* buffer = ((const CEGUI::GeometryBuffer*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyGeometryBuffer'",NULL);
+#endif
+ {
+  self->destroyGeometryBuffer(*buffer);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroyGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroyAllGeometryBuffers of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyAllGeometryBuffers00
+static int tolua_CEGUI_CEGUI_Renderer_destroyAllGeometryBuffers00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAllGeometryBuffers'",NULL);
+#endif
+ {
+  self->destroyAllGeometryBuffers();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroyAllGeometryBuffers'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createTexture of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture00
+static int tolua_CEGUI_CEGUI_Renderer_createTexture00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
+#endif
+ {
+  CEGUI::Texture& tolua_ret = (CEGUI::Texture&)  self->createTexture();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Texture");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createTexture'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createTexture of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture01
+static int tolua_CEGUI_CEGUI_Renderer_createTexture01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
+#endif
+ {
+  CEGUI::Texture& tolua_ret = (CEGUI::Texture&)  self->createTexture(filename,resourceGroup);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Texture");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Renderer_createTexture00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createTexture of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_createTexture02
+static int tolua_CEGUI_CEGUI_Renderer_createTexture02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size* size = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createTexture'",NULL);
+#endif
+ {
+  CEGUI::Texture& tolua_ret = (CEGUI::Texture&)  self->createTexture(*size);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Texture");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Renderer_createTexture01(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroyTexture of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyTexture00
+static int tolua_CEGUI_CEGUI_Renderer_destroyTexture00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Texture* texture = ((CEGUI::Texture*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyTexture'",NULL);
+#endif
+ {
+  self->destroyTexture(*texture);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroyTexture'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroyAllTextures of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00
+static int tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAllTextures'",NULL);
+#endif
+ {
+  self->destroyAllTextures();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroyAllTextures'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setDisplaySize of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_setDisplaySize00
+static int tolua_CEGUI_CEGUI_Renderer_setDisplaySize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Renderer* self = (CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size* sz = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setDisplaySize'",NULL);
+#endif
+ {
+  self->setDisplaySize(*sz);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDisplaySize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDisplaySize of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getDisplaySize00
+static int tolua_CEGUI_CEGUI_Renderer_getDisplaySize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getDisplaySize'",NULL);
+#endif
+ {
+  const CEGUI::Size& tolua_ret = (const CEGUI::Size&)  self->getDisplaySize();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Size");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDisplaySize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDisplayDPI of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getDisplayDPI00
+static int tolua_CEGUI_CEGUI_Renderer_getDisplayDPI00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getDisplayDPI'",NULL);
+#endif
+ {
+  const CEGUI::Vector2& tolua_ret = (const CEGUI::Vector2&)  self->getDisplayDPI();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector2");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDisplayDPI'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getMaxTextureSize of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00
+static int tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getMaxTextureSize'",NULL);
+#endif
+ {
+  unsigned int tolua_ret = (unsigned int)  self->getMaxTextureSize();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getMaxTextureSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getIdentifierString of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_getIdentifierString00
+static int tolua_CEGUI_CEGUI_Renderer_getIdentifierString00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getIdentifierString'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getIdentifierString();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getIdentifierString'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getSize of class  CEGUI::Texture */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getSize00
+static int tolua_CEGUI_CEGUI_Texture_getSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSize'",NULL);
+#endif
+ {
+  const CEGUI::Size& tolua_ret = (const CEGUI::Size&)  self->getSize();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Size");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getOriginalDataSize of class  CEGUI::Texture */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00
+static int tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOriginalDataSize'",NULL);
+#endif
+ {
+  const CEGUI::Size& tolua_ret = (const CEGUI::Size&)  self->getOriginalDataSize();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Size");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getOriginalDataSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getTexelScaling of class  CEGUI::Texture */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getTexelScaling00
+static int tolua_CEGUI_CEGUI_Texture_getTexelScaling00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTexelScaling'",NULL);
+#endif
+ {
+  const CEGUI::Vector2& tolua_ret = (const CEGUI::Vector2&)  self->getTexelScaling();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Vector2");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getTexelScaling'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: loadFromFile of class  CEGUI::Texture */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_loadFromFile00
+static int tolua_CEGUI_CEGUI_Texture_loadFromFile00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Texture",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Texture* self = (CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
+  string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadFromFile'",NULL);
+#endif
+ {
+  self->loadFromFile(filename,resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'loadFromFile'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getItemCount of class  CEGUI::Tree */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Tree_getItemCount00
 static int tolua_CEGUI_CEGUI_Tree_getItemCount00(lua_State* tolua_S)
@@ -24236,16 +26499,8 @@ static int tolua_CEGUI_CEGUI_Tree_getItemCount00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getItemCount'",NULL);
 #endif
  {
-  size_t tolua_ret = (size_t)  self->getItemCount();
- {
-#ifdef __cplusplus
- void* tolua_obj = new size_t(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(size_t));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#endif
- }
+  unsigned long tolua_ret = (unsigned long)  self->getItemCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
@@ -24276,16 +26531,8 @@ static int tolua_CEGUI_CEGUI_Tree_getSelectedCount00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSelectedCount'",NULL);
 #endif
  {
-  size_t tolua_ret = (size_t)  self->getSelectedCount();
- {
-#ifdef __cplusplus
- void* tolua_obj = new size_t(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(size_t));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#endif
- }
+  unsigned long tolua_ret = (unsigned long)  self->getSelectedCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
@@ -25007,7 +27254,7 @@ static int tolua_CEGUI_CEGUI_Tree_setItemSelectState01(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::Tree",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"size_t",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isboolean(tolua_S,3,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
@@ -25015,7 +27262,7 @@ static int tolua_CEGUI_CEGUI_Tree_setItemSelectState01(lua_State* tolua_S)
  else
  {
   CEGUI::Tree* self = (CEGUI::Tree*)  tolua_tousertype(tolua_S,1,0);
-  size_t item_index = *((size_t*)  tolua_tousertype(tolua_S,2,0));
+  unsigned long item_index = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
   bool state = ((bool)  tolua_toboolean(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setItemSelectState'",NULL);
@@ -27557,7 +29804,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_getTreeItemFromIndex00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"size_t",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -27565,7 +29812,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_getTreeItemFromIndex00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  size_t itemIndex = *((size_t*)  tolua_tousertype(tolua_S,2,0));
+  unsigned long itemIndex = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTreeItemFromIndex'",NULL);
 #endif
@@ -27602,16 +29849,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getItemCount00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getItemCount'",NULL);
 #endif
  {
-  size_t tolua_ret = (size_t)  self->getItemCount();
- {
-#ifdef __cplusplus
- void* tolua_obj = new size_t(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(size_t));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#endif
- }
+  unsigned long tolua_ret = (unsigned long)  self->getItemCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
@@ -44218,11 +46457,10 @@ static int tolua_CEGUI_CEGUI_FalagardComponentBase_render00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::FalagardComponentBase",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,7,&tolua_err)
+ !tolua_isusertype(tolua_S,3,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,4,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -44230,15 +46468,14 @@ static int tolua_CEGUI_CEGUI_FalagardComponentBase_render00(lua_State* tolua_S)
  {
   const CEGUI::FalagardComponentBase* self = (const CEGUI::FalagardComponentBase*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,3,0));
-  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
+  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,3,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,4,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,5,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,base_z,modColours,clipper,clipToDisplay);
+  self->render(*srcWindow,modColours,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -44259,11 +46496,10 @@ static int tolua_CEGUI_CEGUI_FalagardComponentBase_render01(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"const CEGUI::FalagardComponentBase",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,6,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,8,&tolua_err)
+ !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -44271,15 +46507,14 @@ static int tolua_CEGUI_CEGUI_FalagardComponentBase_render01(lua_State* tolua_S)
   const CEGUI::FalagardComponentBase* self = (const CEGUI::FalagardComponentBase*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
   const CEGUI::Rect* baseRect = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,4,0));
-  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,6,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,7,false));
+  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,*baseRect,base_z,modColours,clipper,clipToDisplay);
+  self->render(*srcWindow,*baseRect,modColours,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -45734,11 +47969,10 @@ static int tolua_CEGUI_CEGUI_ImagerySection_render00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::ImagerySection",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,7,&tolua_err)
+ !tolua_isusertype(tolua_S,3,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,4,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -45746,15 +47980,14 @@ static int tolua_CEGUI_CEGUI_ImagerySection_render00(lua_State* tolua_S)
  {
   const CEGUI::ImagerySection* self = (const CEGUI::ImagerySection*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,3,0));
-  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
+  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,3,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,4,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,5,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,base_z,modColours,clipper,clipToDisplay);
+  self->render(*srcWindow,modColours,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -45775,11 +48008,10 @@ static int tolua_CEGUI_CEGUI_ImagerySection_render01(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"const CEGUI::ImagerySection",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,6,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,8,&tolua_err)
+ !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -45787,15 +48019,14 @@ static int tolua_CEGUI_CEGUI_ImagerySection_render01(lua_State* tolua_S)
   const CEGUI::ImagerySection* self = (const CEGUI::ImagerySection*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
   const CEGUI::Rect* baseRect = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,4,0));
-  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,6,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,7,false));
+  const CEGUI::ColourRect* modColours = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,*baseRect,base_z,modColours,clipper,clipToDisplay);
+  self->render(*srcWindow,*baseRect,modColours,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -46355,11 +48586,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_render00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::SectionSpecification",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,7,&tolua_err)
+ !tolua_isusertype(tolua_S,3,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,4,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -46367,15 +48597,14 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_render00(lua_State* tolua_S)
  {
   const CEGUI::SectionSpecification* self = (const CEGUI::SectionSpecification*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,3,0));
-  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
+  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,3,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,4,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,5,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,base_z,modcols,clipper,clipToDisplay);
+  self->render(*srcWindow,modcols,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -46396,11 +48625,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_render01(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"const CEGUI::SectionSpecification",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,6,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,8,&tolua_err)
+ !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -46408,15 +48636,14 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_render01(lua_State* tolua_S)
   const CEGUI::SectionSpecification* self = (const CEGUI::SectionSpecification*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
   const CEGUI::Rect* baseRect = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,4,0));
-  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,6,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,7,false));
+  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,*baseRect,base_z,modcols,clipper,clipToDisplay);
+  self->render(*srcWindow,*baseRect,modcols,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -46857,11 +49084,10 @@ static int tolua_CEGUI_CEGUI_LayerSpecification_render00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::LayerSpecification",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,7,&tolua_err)
+ !tolua_isusertype(tolua_S,3,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,4,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -46869,15 +49095,14 @@ static int tolua_CEGUI_CEGUI_LayerSpecification_render00(lua_State* tolua_S)
  {
   const CEGUI::LayerSpecification* self = (const CEGUI::LayerSpecification*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,3,0));
-  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
+  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,3,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,4,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,5,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,base_z,modcols,clipper,clipToDisplay);
+  self->render(*srcWindow,modcols,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -46898,11 +49123,10 @@ static int tolua_CEGUI_CEGUI_LayerSpecification_render01(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"const CEGUI::LayerSpecification",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",1,&tolua_err) ||
- !tolua_isusertype(tolua_S,6,"const CEGUI::Rect",1,&tolua_err) ||
- !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,8,&tolua_err)
+ !tolua_isusertype(tolua_S,4,"const CEGUI::ColourRect",1,&tolua_err) ||
+ !tolua_isusertype(tolua_S,5,"const CEGUI::Rect",1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -46910,15 +49134,14 @@ static int tolua_CEGUI_CEGUI_LayerSpecification_render01(lua_State* tolua_S)
   const CEGUI::LayerSpecification* self = (const CEGUI::LayerSpecification*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Window* srcWindow = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
   const CEGUI::Rect* baseRect = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  float base_z = ((float)  tolua_tonumber(tolua_S,4,0));
-  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
-  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,6,0));
-  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,7,false));
+  const CEGUI::ColourRect* modcols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,4,0));
+  const CEGUI::Rect* clipper = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,5,0));
+  bool clipToDisplay = ((bool)  tolua_toboolean(tolua_S,6,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'render'",NULL);
 #endif
  {
-  self->render(*srcWindow,*baseRect,base_z,modcols,clipper,clipToDisplay);
+  self->render(*srcWindow,*baseRect,modcols,clipper,clipToDisplay);
  }
  }
  return 0;
@@ -49763,6 +51986,23 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   } /* end of embedded lua code */
 
   #ifdef __cplusplus
+  tolua_cclass(tolua_S,"Vector3","CEGUI::Vector3","",tolua_collect_CEGUI__Vector3);
+  #else
+  tolua_cclass(tolua_S,"Vector3","CEGUI::Vector3","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"Vector3");
+   tolua_variable(tolua_S,"x",tolua_get_CEGUI__Vector3_x,tolua_set_CEGUI__Vector3_x);
+   tolua_variable(tolua_S,"y",tolua_get_CEGUI__Vector3_y,tolua_set_CEGUI__Vector3_y);
+   tolua_variable(tolua_S,"z",tolua_get_CEGUI__Vector3_z,tolua_set_CEGUI__Vector3_z);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector3__eq00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3_new00_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3_new01);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3_new01_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3_new01_local);
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
   tolua_cclass(tolua_S,"Size","CEGUI::Size","",tolua_collect_CEGUI__Size);
   #else
   tolua_cclass(tolua_S,"Size","CEGUI::Size","",NULL);
@@ -50020,7 +52260,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"load",tolua_CEGUI_CEGUI_Font_load00);
    tolua_function(tolua_S,"isCodepointAvailable",tolua_CEGUI_CEGUI_Font_isCodepointAvailable00);
    tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Font_setNativeResolution00);
-   tolua_function(tolua_S,"notifyScreenResolution",tolua_CEGUI_CEGUI_Font_notifyScreenResolution00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getTextExtent",tolua_CEGUI_CEGUI_Font_getTextExtent00);
    tolua_function(tolua_S,"getLineSpacing",tolua_CEGUI_CEGUI_Font_getLineSpacing00);
    tolua_function(tolua_S,"getFontHeight",tolua_CEGUI_CEGUI_Font_getFontHeight00);
@@ -50039,7 +52279,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"destroyAllFonts",tolua_CEGUI_CEGUI_FontManager_destroyAllFonts00);
    tolua_function(tolua_S,"isFontPresent",tolua_CEGUI_CEGUI_FontManager_isFontPresent00);
    tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_FontManager_getFont00);
-   tolua_function(tolua_S,"notifyScreenResolution",tolua_CEGUI_CEGUI_FontManager_notifyScreenResolution00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_FontManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_FontManager_getIterator00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
@@ -50057,13 +52297,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Image_getName00);
    tolua_function(tolua_S,"getImagesetName",tolua_CEGUI_CEGUI_Image_getImagesetName00);
    tolua_function(tolua_S,"getSourceTextureArea",tolua_CEGUI_CEGUI_Image_getSourceTextureArea00);
-  tolua_endmodule(tolua_S);
-  tolua_cclass(tolua_S,"Texture","CEGUI::Texture","",NULL);
-  tolua_beginmodule(tolua_S,"Texture");
-   tolua_function(tolua_S,"getWidth",tolua_CEGUI_CEGUI_Texture_getWidth00);
-   tolua_function(tolua_S,"getHeight",tolua_CEGUI_CEGUI_Texture_getHeight00);
-   tolua_function(tolua_S,"loadFromFile",tolua_CEGUI_CEGUI_Texture_loadFromFile00);
-   tolua_function(tolua_S,"getRenderer",tolua_CEGUI_CEGUI_Texture_getRenderer00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Imageset","CEGUI::Imageset","",NULL);
   tolua_beginmodule(tolua_S,"Imageset");
@@ -50086,7 +52319,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setAutoScalingEnabled",tolua_CEGUI_CEGUI_Imageset_setAutoScalingEnabled00);
    tolua_function(tolua_S,"getNativeResolution",tolua_CEGUI_CEGUI_Imageset_getNativeResolution00);
    tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Imageset_setNativeResolution00);
-   tolua_function(tolua_S,"notifyScreenResolution",tolua_CEGUI_CEGUI_Imageset_notifyScreenResolution00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_Imageset_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_Imageset_getIterator00);
    tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Imageset_setDefaultResourceGroup00);
    tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Imageset_getDefaultResourceGroup00);
@@ -50102,7 +52335,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"destroyAllImagesets",tolua_CEGUI_CEGUI_ImagesetManager_destroyAllImagesets00);
    tolua_function(tolua_S,"getImageset",tolua_CEGUI_CEGUI_ImagesetManager_getImageset00);
    tolua_function(tolua_S,"isImagesetPresent",tolua_CEGUI_CEGUI_ImagesetManager_isImagesetPresent00);
-   tolua_function(tolua_S,"notifyScreenResolution",tolua_CEGUI_CEGUI_ImagesetManager_notifyScreenResolution00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_ImagesetManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_ImagesetManager_getIterator00);
   tolua_endmodule(tolua_S);
 
@@ -50691,6 +52924,17 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_TreeEventArgs_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_TreeEventArgs_new00_local);
   tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"RenderQueueEventArgs","CEGUI::RenderQueueEventArgs","CEGUI::EventArgs",tolua_collect_CEGUI__RenderQueueEventArgs);
+  #else
+  tolua_cclass(tolua_S,"RenderQueueEventArgs","CEGUI::RenderQueueEventArgs","CEGUI::EventArgs",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"RenderQueueEventArgs");
+   tolua_variable(tolua_S,"queueID",tolua_get_CEGUI__RenderQueueEventArgs_queueID,tolua_set_CEGUI__RenderQueueEventArgs_queueID);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_RenderQueueEventArgs_new00_local);
+  tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Event","CEGUI::Event","",NULL);
   tolua_beginmodule(tolua_S,"Event");
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Event_getName00);
@@ -50753,6 +52997,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"Window");
    tolua_function(tolua_S,"getType",tolua_CEGUI_CEGUI_Window_getType00);
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Window_getName00);
+   tolua_function(tolua_S,"rename",tolua_CEGUI_CEGUI_Window_rename00);
+   tolua_function(tolua_S,"isAutoWindow",tolua_CEGUI_CEGUI_Window_isAutoWindow00);
    tolua_function(tolua_S,"isDestroyedByParent",tolua_CEGUI_CEGUI_Window_isDestroyedByParent00);
    tolua_function(tolua_S,"isAlwaysOnTop",tolua_CEGUI_CEGUI_Window_isAlwaysOnTop00);
    tolua_function(tolua_S,"isDisabled",tolua_CEGUI_CEGUI_Window_isDisabled00);
@@ -50787,10 +53033,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive00);
    tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive01);
    tolua_function(tolua_S,"getChildAtIdx",tolua_CEGUI_CEGUI_Window_getChildAtIdx00);
-   tolua_function(tolua_S,"getActiveChild",tolua_CEGUI_CEGUI_Window_getActiveChild00);
    tolua_function(tolua_S,"getChildAtPosition",tolua_CEGUI_CEGUI_Window_getChildAtPosition00);
    tolua_function(tolua_S,"getTargetChildAtPosition",tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00);
+   tolua_function(tolua_S,"getActiveChild",tolua_CEGUI_CEGUI_Window_getActiveChild00);
+   tolua_function(tolua_S,"getActiveSibling",tolua_CEGUI_CEGUI_Window_getActiveSibling00);
    tolua_function(tolua_S,"getParent",tolua_CEGUI_CEGUI_Window_getParent00);
+   tolua_function(tolua_S,"getRootWindow",tolua_CEGUI_CEGUI_Window_getRootWindow00);
+   tolua_function(tolua_S,"getRootWindow",tolua_CEGUI_CEGUI_Window_getRootWindow01);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor00);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor01);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor02);
@@ -50806,9 +53055,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getEffectiveAlpha",tolua_CEGUI_CEGUI_Window_getEffectiveAlpha00);
    tolua_function(tolua_S,"setAlpha",tolua_CEGUI_CEGUI_Window_setAlpha00);
    tolua_function(tolua_S,"setInheritsAlpha",tolua_CEGUI_CEGUI_Window_setInheritsAlpha00);
-   tolua_function(tolua_S,"requestRedraw",tolua_CEGUI_CEGUI_Window_requestRedraw00);
+   tolua_function(tolua_S,"invalidate",tolua_CEGUI_CEGUI_Window_invalidate00);
    tolua_function(tolua_S,"isZOrderingEnabled",tolua_CEGUI_CEGUI_Window_isZOrderingEnabled00);
    tolua_function(tolua_S,"setZOrderingEnabled",tolua_CEGUI_CEGUI_Window_setZOrderingEnabled00);
+   tolua_function(tolua_S,"getPixelSize",tolua_CEGUI_CEGUI_Window_getPixelSize00);
    tolua_function(tolua_S,"getPixelRect",tolua_CEGUI_CEGUI_Window_getPixelRect00);
    tolua_function(tolua_S,"getInnerRect",tolua_CEGUI_CEGUI_Window_getInnerRect00);
    tolua_function(tolua_S,"getUnclippedPixelRect",tolua_CEGUI_CEGUI_Window_getUnclippedPixelRect00);
@@ -50853,6 +53103,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setTooltipText",tolua_CEGUI_CEGUI_Window_setTooltipText00);
    tolua_function(tolua_S,"setInheritsTooltipText",tolua_CEGUI_CEGUI_Window_setInheritsTooltipText00);
    tolua_function(tolua_S,"testClassName",tolua_CEGUI_CEGUI_Window_testClassName00);
+   tolua_function(tolua_S,"isDragDropTarget",tolua_CEGUI_CEGUI_Window_isDragDropTarget00);
+   tolua_function(tolua_S,"setDragDropTarget",tolua_CEGUI_CEGUI_Window_setDragDropTarget00);
    tolua_function(tolua_S,"notifyDragDropItemEnters",tolua_CEGUI_CEGUI_Window_notifyDragDropItemEnters00);
    tolua_function(tolua_S,"notifyDragDropItemLeaves",tolua_CEGUI_CEGUI_Window_notifyDragDropItemLeaves00);
    tolua_function(tolua_S,"notifyDragDropItemDropped",tolua_CEGUI_CEGUI_Window_notifyDragDropItemDropped00);
@@ -50893,7 +53145,20 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getMinSize",tolua_CEGUI_CEGUI_Window_getMinSize00);
    tolua_function(tolua_S,"isMousePassThroughEnabled",tolua_CEGUI_CEGUI_Window_isMousePassThroughEnabled00);
    tolua_function(tolua_S,"setMousePassThroughEnabled",tolua_CEGUI_CEGUI_Window_setMousePassThroughEnabled00);
-   tolua_function(tolua_S,"rename",tolua_CEGUI_CEGUI_Window_rename00);
+   tolua_function(tolua_S,"isWritingXMLAllowed",tolua_CEGUI_CEGUI_Window_isWritingXMLAllowed00);
+   tolua_function(tolua_S,"setWritingXMLAllowed",tolua_CEGUI_CEGUI_Window_setWritingXMLAllowed00);
+   tolua_function(tolua_S,"getRotation",tolua_CEGUI_CEGUI_Window_getRotation00);
+   tolua_function(tolua_S,"setRotation",tolua_CEGUI_CEGUI_Window_setRotation00);
+   tolua_function(tolua_S,"getTargetRenderingSurface",tolua_CEGUI_CEGUI_Window_getTargetRenderingSurface00);
+   tolua_function(tolua_S,"getRenderingContext",tolua_CEGUI_CEGUI_Window_getRenderingContext00);
+   tolua_function(tolua_S,"getRenderingSurface",tolua_CEGUI_CEGUI_Window_getRenderingSurface00);
+   tolua_function(tolua_S,"setRenderingSurface",tolua_CEGUI_CEGUI_Window_setRenderingSurface00);
+   tolua_function(tolua_S,"isUsingAutoRenderingSurface",tolua_CEGUI_CEGUI_Window_isUsingAutoRenderingSurface00);
+   tolua_function(tolua_S,"setUsingAutoRenderingSurface",tolua_CEGUI_CEGUI_Window_setUsingAutoRenderingSurface00);
+   tolua_function(tolua_S,"invalidateRenderingSurface",tolua_CEGUI_CEGUI_Window_invalidateRenderingSurface00);
+   tolua_function(tolua_S,"isNonClientWindow",tolua_CEGUI_CEGUI_Window_isNonClientWindow00);
+   tolua_function(tolua_S,"setNonClientWindow",tolua_CEGUI_CEGUI_Window_setNonClientWindow00);
+   tolua_function(tolua_S,"getGeometryBuffer",tolua_CEGUI_CEGUI_Window_getGeometryBuffer00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);
    tolua_function(tolua_S,"getPropertyDefault",tolua_CEGUI_CEGUI_Window_getPropertyDefault00);
@@ -50930,25 +53195,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"screenToWindow",tolua_CEGUI_CEGUI_CoordConverter_screenToWindow01);
    tolua_function(tolua_S,"screenToWindow",tolua_CEGUI_CEGUI_CoordConverter_screenToWindow02);
    tolua_function(tolua_S,"screenToWindow",tolua_CEGUI_CEGUI_CoordConverter_screenToWindow03);
-  tolua_endmodule(tolua_S);
-  tolua_cclass(tolua_S,"Renderer","CEGUI::Renderer","CEGUI::EventSet",NULL);
-  tolua_beginmodule(tolua_S,"Renderer");
-   tolua_function(tolua_S,"getCurrentZ",tolua_CEGUI_CEGUI_Renderer_getCurrentZ00);
-   tolua_function(tolua_S,"getZLayer",tolua_CEGUI_CEGUI_Renderer_getZLayer00);
-   tolua_function(tolua_S,"isQueueingEnabled",tolua_CEGUI_CEGUI_Renderer_isQueueingEnabled00);
-   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture00);
-   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture01);
-   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture02);
-   tolua_function(tolua_S,"destroyTexture",tolua_CEGUI_CEGUI_Renderer_destroyTexture00);
-   tolua_function(tolua_S,"destroyAllTextures",tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00);
-   tolua_function(tolua_S,"getWidth",tolua_CEGUI_CEGUI_Renderer_getWidth00);
-   tolua_function(tolua_S,"getHeight",tolua_CEGUI_CEGUI_Renderer_getHeight00);
-   tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Renderer_getSize00);
-   tolua_function(tolua_S,"getRect",tolua_CEGUI_CEGUI_Renderer_getRect00);
-   tolua_function(tolua_S,"getMaxTextureSize",tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00);
-   tolua_function(tolua_S,"getHorzScreenDPI",tolua_CEGUI_CEGUI_Renderer_getHorzScreenDPI00);
-   tolua_function(tolua_S,"getVertScreenDPI",tolua_CEGUI_CEGUI_Renderer_getVertScreenDPI00);
-   tolua_function(tolua_S,"getEventIterator",tolua_CEGUI_CEGUI_Renderer_getEventIterator00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ScriptWindowHelper","CEGUI::ScriptWindowHelper","",NULL);
   tolua_beginmodule(tolua_S,"ScriptWindowHelper");
@@ -50988,6 +53234,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setDefaultTooltip",tolua_CEGUI_CEGUI_System_setDefaultTooltip00);
    tolua_function(tolua_S,"setDefaultTooltip",tolua_CEGUI_CEGUI_System_setDefaultTooltip01);
    tolua_function(tolua_S,"getDefaultTooltip",tolua_CEGUI_CEGUI_System_getDefaultTooltip00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_System_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"injectMouseMove",tolua_CEGUI_CEGUI_System_injectMouseMove00);
    tolua_function(tolua_S,"injectMouseLeaves",tolua_CEGUI_CEGUI_System_injectMouseLeaves00);
    tolua_function(tolua_S,"injectMouseButtonDown",tolua_CEGUI_CEGUI_System_injectMouseButtonDown00);
@@ -51100,6 +53347,105 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"udimToString",tolua_CEGUI_CEGUI_PropertyHelper_udimToString00);
    tolua_function(tolua_S,"uvector2ToString",tolua_CEGUI_CEGUI_PropertyHelper_uvector2ToString00);
    tolua_function(tolua_S,"urectToString",tolua_CEGUI_CEGUI_PropertyHelper_urectToString00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"Vertex","CEGUI::Vertex","",NULL);
+  tolua_beginmodule(tolua_S,"Vertex");
+   tolua_variable(tolua_S,"position",tolua_get_CEGUI__Vertex_position,tolua_set_CEGUI__Vertex_position);
+   tolua_variable(tolua_S,"tex_coords",tolua_get_CEGUI__Vertex_tex_coords,tolua_set_CEGUI__Vertex_tex_coords);
+   tolua_variable(tolua_S,"colour_val",tolua_get_CEGUI__Vertex_colour_val,tolua_set_CEGUI__Vertex_colour_val);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"RenderingContext","CEGUI::RenderingContext","",NULL);
+  tolua_beginmodule(tolua_S,"RenderingContext");
+   tolua_variable(tolua_S,"surface",tolua_get_CEGUI__RenderingContext_surface_ptr,tolua_set_CEGUI__RenderingContext_surface_ptr);
+   tolua_variable(tolua_S,"owner",tolua_get_CEGUI__RenderingContext_owner_ptr,NULL);
+   tolua_variable(tolua_S,"offset",tolua_get_CEGUI__RenderingContext_offset,tolua_set_CEGUI__RenderingContext_offset);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"RenderEffect","CEGUI::RenderEffect","",NULL);
+  tolua_beginmodule(tolua_S,"RenderEffect");
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"GeometryBuffer","CEGUI::GeometryBuffer","",NULL);
+  tolua_beginmodule(tolua_S,"GeometryBuffer");
+   tolua_function(tolua_S,"draw",tolua_CEGUI_CEGUI_GeometryBuffer_draw00);
+   tolua_function(tolua_S,"setTranslation",tolua_CEGUI_CEGUI_GeometryBuffer_setTranslation00);
+   tolua_function(tolua_S,"setRotation",tolua_CEGUI_CEGUI_GeometryBuffer_setRotation00);
+   tolua_function(tolua_S,"setPivot",tolua_CEGUI_CEGUI_GeometryBuffer_setPivot00);
+   tolua_function(tolua_S,"appendVertex",tolua_CEGUI_CEGUI_GeometryBuffer_appendVertex00);
+   tolua_function(tolua_S,"appendGeometry",tolua_CEGUI_CEGUI_GeometryBuffer_appendGeometry00);
+   tolua_function(tolua_S,"setActiveTexture",tolua_CEGUI_CEGUI_GeometryBuffer_setActiveTexture00);
+   tolua_function(tolua_S,"reset",tolua_CEGUI_CEGUI_GeometryBuffer_reset00);
+   tolua_function(tolua_S,"getActiveTexture",tolua_CEGUI_CEGUI_GeometryBuffer_getActiveTexture00);
+   tolua_function(tolua_S,"getVertexCount",tolua_CEGUI_CEGUI_GeometryBuffer_getVertexCount00);
+   tolua_function(tolua_S,"getBatchCount",tolua_CEGUI_CEGUI_GeometryBuffer_getBatchCount00);
+   tolua_function(tolua_S,"setRenderEffect",tolua_CEGUI_CEGUI_GeometryBuffer_setRenderEffect00);
+   tolua_function(tolua_S,"getRenderEffect",tolua_CEGUI_CEGUI_GeometryBuffer_getRenderEffect00);
+  tolua_endmodule(tolua_S);
+  tolua_constant(tolua_S,"RQ_USER_0",CEGUI::RQ_USER_0);
+  tolua_constant(tolua_S,"RQ_UNDERLAY",CEGUI::RQ_UNDERLAY);
+  tolua_constant(tolua_S,"RQ_USER_1",CEGUI::RQ_USER_1);
+  tolua_constant(tolua_S,"RQ_BASE",CEGUI::RQ_BASE);
+  tolua_constant(tolua_S,"RQ_USER_2",CEGUI::RQ_USER_2);
+  tolua_constant(tolua_S,"RQ_CONTENT_1",CEGUI::RQ_CONTENT_1);
+  tolua_constant(tolua_S,"RQ_USER_3",CEGUI::RQ_USER_3);
+  tolua_constant(tolua_S,"RQ_CONTENT_2",CEGUI::RQ_CONTENT_2);
+  tolua_constant(tolua_S,"RQ_USER_4",CEGUI::RQ_USER_4);
+  tolua_constant(tolua_S,"RQ_OVERLAY",CEGUI::RQ_OVERLAY);
+  tolua_constant(tolua_S,"RQ_USER_5",CEGUI::RQ_USER_5);
+  tolua_cclass(tolua_S,"RenderingSurface","CEGUI::RenderingSurface","CEGUI::EventSet",NULL);
+  tolua_beginmodule(tolua_S,"RenderingSurface");
+   tolua_function(tolua_S,"addGeometryBuffer",tolua_CEGUI_CEGUI_RenderingSurface_addGeometryBuffer00);
+   tolua_function(tolua_S,"removeGeometryBuffer",tolua_CEGUI_CEGUI_RenderingSurface_removeGeometryBuffer00);
+   tolua_function(tolua_S,"clearGeometry",tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry00);
+   tolua_function(tolua_S,"clearGeometry",tolua_CEGUI_CEGUI_RenderingSurface_clearGeometry01);
+   tolua_function(tolua_S,"invalidate",tolua_CEGUI_CEGUI_RenderingSurface_invalidate00);
+   tolua_function(tolua_S,"isInvalidated",tolua_CEGUI_CEGUI_RenderingSurface_isInvalidated00);
+   tolua_function(tolua_S,"isRenderingWindow",tolua_CEGUI_CEGUI_RenderingSurface_isRenderingWindow00);
+   tolua_function(tolua_S,"transferRenderingWindow",tolua_CEGUI_CEGUI_RenderingSurface_transferRenderingWindow00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"RenderingRoot","CEGUI::RenderingRoot","CEGUI::RenderingSurface",NULL);
+  tolua_beginmodule(tolua_S,"RenderingRoot");
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"RenderingWindow","CEGUI::RenderingWindow","CEGUI::RenderingSurface",NULL);
+  tolua_beginmodule(tolua_S,"RenderingWindow");
+   tolua_function(tolua_S,"setClippingRegion",tolua_CEGUI_CEGUI_RenderingWindow_setClippingRegion00);
+   tolua_function(tolua_S,"setPosition",tolua_CEGUI_CEGUI_RenderingWindow_setPosition00);
+   tolua_function(tolua_S,"setSize",tolua_CEGUI_CEGUI_RenderingWindow_setSize00);
+   tolua_function(tolua_S,"setRotation",tolua_CEGUI_CEGUI_RenderingWindow_setRotation00);
+   tolua_function(tolua_S,"setPivot",tolua_CEGUI_CEGUI_RenderingWindow_setPivot00);
+   tolua_function(tolua_S,"getPosition",tolua_CEGUI_CEGUI_RenderingWindow_getPosition00);
+   tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_RenderingWindow_getSize00);
+   tolua_function(tolua_S,"getRotation",tolua_CEGUI_CEGUI_RenderingWindow_getRotation00);
+   tolua_function(tolua_S,"getPivot",tolua_CEGUI_CEGUI_RenderingWindow_getPivot00);
+   tolua_function(tolua_S,"setRenderEffect",tolua_CEGUI_CEGUI_RenderingWindow_setRenderEffect00);
+   tolua_function(tolua_S,"getRenderEffect",tolua_CEGUI_CEGUI_RenderingWindow_getRenderEffect00);
+   tolua_function(tolua_S,"getOwner",tolua_CEGUI_CEGUI_RenderingWindow_getOwner00);
+   tolua_function(tolua_S,"getOwner",tolua_CEGUI_CEGUI_RenderingWindow_getOwner01);
+   tolua_function(tolua_S,"unprojectPoint",tolua_CEGUI_CEGUI_RenderingWindow_unprojectPoint00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"Renderer","CEGUI::Renderer","",NULL);
+  tolua_beginmodule(tolua_S,"Renderer");
+   tolua_function(tolua_S,"getDefaultRenderingRoot",tolua_CEGUI_CEGUI_Renderer_getDefaultRenderingRoot00);
+   tolua_function(tolua_S,"createGeometryBuffer",tolua_CEGUI_CEGUI_Renderer_createGeometryBuffer00);
+   tolua_function(tolua_S,"destroyGeometryBuffer",tolua_CEGUI_CEGUI_Renderer_destroyGeometryBuffer00);
+   tolua_function(tolua_S,"destroyAllGeometryBuffers",tolua_CEGUI_CEGUI_Renderer_destroyAllGeometryBuffers00);
+   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture00);
+   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture01);
+   tolua_function(tolua_S,"createTexture",tolua_CEGUI_CEGUI_Renderer_createTexture02);
+   tolua_function(tolua_S,"destroyTexture",tolua_CEGUI_CEGUI_Renderer_destroyTexture00);
+   tolua_function(tolua_S,"destroyAllTextures",tolua_CEGUI_CEGUI_Renderer_destroyAllTextures00);
+   tolua_function(tolua_S,"setDisplaySize",tolua_CEGUI_CEGUI_Renderer_setDisplaySize00);
+   tolua_function(tolua_S,"getDisplaySize",tolua_CEGUI_CEGUI_Renderer_getDisplaySize00);
+   tolua_function(tolua_S,"getDisplayDPI",tolua_CEGUI_CEGUI_Renderer_getDisplayDPI00);
+   tolua_function(tolua_S,"getMaxTextureSize",tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00);
+   tolua_function(tolua_S,"getIdentifierString",tolua_CEGUI_CEGUI_Renderer_getIdentifierString00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"Texture","CEGUI::Texture","",NULL);
+  tolua_beginmodule(tolua_S,"Texture");
+   tolua_constant(tolua_S,"PF_RGB",CEGUI::Texture::PF_RGB);
+   tolua_constant(tolua_S,"PF_RGBA",CEGUI::Texture::PF_RGBA);
+   tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Texture_getSize00);
+   tolua_function(tolua_S,"getOriginalDataSize",tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00);
+   tolua_function(tolua_S,"getTexelScaling",tolua_CEGUI_CEGUI_Texture_getTexelScaling00);
+   tolua_function(tolua_S,"loadFromFile",tolua_CEGUI_CEGUI_Texture_loadFromFile00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"GUISheet","CEGUI::GUISheet","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"GUISheet");
@@ -52311,41 +54657,53 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     40,101, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
     97, 46, 99, 97,115,116, 40,101, 44, 34, 99,111,110,115,116,
     32, 67, 69, 71, 85, 73, 58, 58, 84,114,101,101, 69,118,101,
-   110,116, 65,114,103,115, 34, 41, 10,101,110,100, 10, 67, 69,
+   110,116, 65,114,103,115, 34, 41, 10,101,110,100, 10,102,117,
+   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
+    82,101,110,100,101,114, 81,117,101,117,101, 69,118,101,110,
+   116, 65,114,103,115, 40,101, 41, 10,114,101,116,117,114,110,
+    32,116,111,108,117, 97, 46, 99, 97,115,116, 40,101, 44, 34,
+    99,111,110,115,116, 32, 67, 69, 71, 85, 73, 58, 58, 82,101,
+   110,100,101,114, 81,117,101,117,101, 69,118,101,110,116, 65,
+   114,103,115, 34, 41, 10,101,110,100, 10, 67, 69, 71, 85, 73,
+    46, 69,118,101,110,116, 65,114,103,115, 46,116,111, 77,111,
+   117,115,101, 67,117,114,115,111,114, 69,118,101,110,116, 65,
+   114,103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 77,
+   111,117,115,101, 67,117,114,115,111,114, 69,118,101,110,116,
+    65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,
+   116, 65,114,103,115, 46,116,111, 87,105,110,100,111,119, 69,
+   118,101,110,116, 65,114,103,115, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 87,105,110,100,111,119, 69,118,101,110,116,
+    65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,
+   116, 65,114,103,115, 46,116,111, 65, 99,116,105,118, 97,116,
+   105,111,110, 69,118,101,110,116, 65,114,103,115, 32, 61, 32,
+    67, 69, 71, 85, 73, 46,116,111, 65, 99,116,105,118, 97,116,
+   105,111,110, 69,118,101,110,116, 65,114,103,115, 10, 67, 69,
     71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,
-   111, 77,111,117,115,101, 67,117,114,115,111,114, 69,118,101,
-   110,116, 65,114,103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 77,111,117,115,101, 67,117,114,115,111,114, 69,118,
-   101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,
-   118,101,110,116, 65,114,103,115, 46,116,111, 87,105,110,100,
-   111,119, 69,118,101,110,116, 65,114,103,115, 32, 61, 32, 67,
-    69, 71, 85, 73, 46,116,111, 87,105,110,100,111,119, 69,118,
-   101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,
-   118,101,110,116, 65,114,103,115, 46,116,111, 65, 99,116,105,
-   118, 97,116,105,111,110, 69,118,101,110,116, 65,114,103,115,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 65, 99,116,105,
-   118, 97,116,105,111,110, 69,118,101,110,116, 65,114,103,115,
-    10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,
-   115, 46,116,111, 72,101, 97,100,101,114, 83,101,113,117,101,
-   110, 99,101, 69,118,101,110,116, 65,114,103,115, 32, 61, 32,
-    67, 69, 71, 85, 73, 46,116,111, 72,101, 97,100,101,114, 83,
-   101,113,117,101,110, 99,101, 69,118,101,110,116, 65,114,103,
-   115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,
-   103,115, 46,116,111, 77,111,117,115,101, 69,118,101,110,116,
-    65,114,103,115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    77,111,117,115,101, 69,118,101,110,116, 65,114,103,115, 10,
-    67, 69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115,
-    46,116,111, 75,101,121, 69,118,101,110,116, 65,114,103,115,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 75,101,121, 69,
-   118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46,
-    69,118,101,110,116, 65,114,103,115, 46,116,111, 68,114, 97,
-   103, 68,114,111,112, 69,118,101,110,116, 65,114,103,115, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114, 97,103, 68,
-   114,111,112, 69,118,101,110,116, 65,114,103,115, 10, 67, 69,
-    71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,
-   111, 84,114,101,101, 69,118,101,110,116, 65,114,103,115, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,114,101,101, 69,
-   118,101,110,116, 65,114,103,115,32
+   111, 72,101, 97,100,101,114, 83,101,113,117,101,110, 99,101,
+    69,118,101,110,116, 65,114,103,115, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 72,101, 97,100,101,114, 83,101,113,117,
+   101,110, 99,101, 69,118,101,110,116, 65,114,103,115, 10, 67,
+    69, 71, 85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,
+   116,111, 77,111,117,115,101, 69,118,101,110,116, 65,114,103,
+   115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 77,111,117,
+   115,101, 69,118,101,110,116, 65,114,103,115, 10, 67, 69, 71,
+    85, 73, 46, 69,118,101,110,116, 65,114,103,115, 46,116,111,
+    75,101,121, 69,118,101,110,116, 65,114,103,115, 32, 61, 32,
+    67, 69, 71, 85, 73, 46,116,111, 75,101,121, 69,118,101,110,
+   116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,
+   110,116, 65,114,103,115, 46,116,111, 68,114, 97,103, 68,114,
+   111,112, 69,118,101,110,116, 65,114,103,115, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 68,114, 97,103, 68,114,111,112,
+    69,118,101,110,116, 65,114,103,115, 10, 67, 69, 71, 85, 73,
+    46, 69,118,101,110,116, 65,114,103,115, 46,116,111, 84,114,
+   101,101, 69,118,101,110,116, 65,114,103,115, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 84,114,101,101, 69,118,101,110,
+   116, 65,114,103,115, 10, 67, 69, 71, 85, 73, 46, 69,118,101,
+   110,116, 65,114,103,115, 46,116,111, 82,101,110,100,101,114,
+    81,117,101,117,101, 69,118,101,110,116, 65,114,103,115, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 82,101,110,100,101,
+   114, 81,117,101,117,101, 69,118,101,110,116, 65,114,103,115,
+   32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 12");
    lua_settop(tolua_S, top);
@@ -52676,6 +55034,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
 #if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
  int luaopen_CEGUI (lua_State* tolua_S) {
  return tolua_CEGUI_open(tolua_S);
-}
+};
 #endif
 
