@@ -29,6 +29,10 @@
 #include "CEGUI.h"
 #include "CEGuiBaseApplication.h"
 
+#include "CEGUIRenderingWindow.h"
+#include "CEGUITextureTarget.h"
+#include "CEGUIGeometryBuffer.h"
+
 #include <cstdlib>
 
 int main(int /*argc*/, char* /*argv*/[])
@@ -42,6 +46,201 @@ int main(int /*argc*/, char* /*argv*/[])
     return app.run();
 }
 
+//----------------------------------------------------------------------------//
+// The following are related to the RenderEffect
+//
+// Note: This be the land of magic numbers and compound hacks upon hacks :-p
+//       Any final version of this we might provide will likely be cleaned up
+//       considerably.
+//----------------------------------------------------------------------------//
+const float MyEffect::tess_x = 8;
+const float MyEffect::tess_y = 8;
+
+//----------------------------------------------------------------------------//
+MyEffect::MyEffect() :
+    initialised(false),
+    dragX(0), dragY(0),
+    elasX(0), elasY(0)
+{
+}
+
+//----------------------------------------------------------------------------//
+void MyEffect::performPreRenderFunctions()
+{
+    // nothing we need here
+}
+
+//----------------------------------------------------------------------------//
+void MyEffect::performPostRenderFunctions()
+{
+    // nothing we need here
+}
+
+//----------------------------------------------------------------------------//
+bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
+                               CEGUI::GeometryBuffer& geometry)
+{
+    using namespace CEGUI;
+    Texture& tex = window.getTextureTarget().getTexture();
+
+    static const CEGUI::colour c(1, 1, 1, 1);
+
+    const float qw = window.getSize().d_width / tess_x;
+    const float qh = window.getSize().d_height / tess_y;
+    const float tcx = qw * tex.getTexelScaling().d_x;
+    const float tcy =
+        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
+            tex.getTexelScaling().d_y;
+
+    for (int j = 0; j < tess_y; ++j)
+    {
+        for (int i = 0; i < tess_x; ++i)
+        {
+            int idx = (j * tess_x + i) * 6;
+
+            float top_adj = dragX * ((1.0f / tess_x) * j);
+            float bot_adj = dragX * ((1.0f / tess_x) * (j+1));
+            top_adj = ((top_adj*top_adj) / 3) * (dragX < 0 ? -1 : 1);
+            bot_adj = ((bot_adj*bot_adj) / 3) * (dragX < 0 ? -1 : 1);
+
+            float lef_adj = dragY * ((1.0f / tess_y) * i);
+            float rig_adj = dragY * ((1.0f / tess_y) * (i+1));
+            lef_adj = ((lef_adj*lef_adj) / 3) * (dragY < 0 ? -1 : 1);
+            rig_adj = ((rig_adj*rig_adj) / 3) * (dragY < 0 ? -1 : 1);
+
+            // vertex 0
+            vb[idx + 0].position   = Vector3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 0].colour_val = c;
+            vb[idx + 0].tex_coords = Vector2(i * tcx, j*tcy);
+
+            // vertex 1
+            vb[idx + 1].position   = Vector3(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
+            vb[idx + 1].colour_val = c;
+            vb[idx + 1].tex_coords = Vector2(i*tcx, j*tcy+tcy);
+
+            // vertex 2
+            vb[idx + 2].position   = Vector3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 2].colour_val = c;
+            vb[idx + 2].tex_coords = Vector2(i*tcx+tcx, j*tcy+tcy);
+
+            // vertex 3
+            vb[idx + 3].position   = Vector3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 3].colour_val = c;
+            vb[idx + 3].tex_coords = Vector2(i*tcx+tcx, j*tcy+tcy);
+
+            // vertex 4
+            vb[idx + 4].position   = Vector3(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
+            vb[idx + 4].colour_val = c;
+            vb[idx + 4].tex_coords = Vector2(i*tcx+tcx, j*tcy);
+
+            // vertex 5
+            vb[idx + 5].position   = Vector3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 5].colour_val = c;
+            vb[idx + 5].tex_coords = Vector2(i * tcx, j*tcy);
+        }
+    }
+
+    geometry.setActiveTexture(&tex);
+    geometry.appendGeometry(vb, buffsize);
+
+    // false, because we do not want the default geometry added!
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
+{
+    using namespace CEGUI;
+    
+    // initialise ourself upon the first update call.
+    if (!initialised)
+    {
+        initialised=true;
+        lastX = window.getPosition().d_x;
+        lastY = window.getPosition().d_y;
+        return true;
+    }
+
+    const Vector2 pos(window.getPosition());
+
+    //
+    // Set up for X axis animation.
+    //
+    if (pos.d_x != lastX)
+    {
+        dragX += (pos.d_x - lastX) * 0.2;
+        elasX = 0.05f;
+        lastX = pos.d_x;
+
+        if (dragX > 25)
+            dragX = 25;
+        else if (dragX < -25)
+            dragX = -25;
+    }
+
+    //
+    // Set up for y axis animation
+    //
+    if (pos.d_y != lastY)
+    {
+        dragY += (pos.d_y - lastY) * 0.2f;
+        elasY = 0.05f;
+        lastY = pos.d_y;
+
+        if (dragY > 25)
+            dragY = 25;
+        else if (dragY < -25)
+            dragY = -25;
+    }
+
+    //
+    // Perform required animation steps
+    //
+    if ((dragX != 0) || (dragY != 0))
+    {
+        if (dragX < 0)
+        {
+            dragX += (elasX * 800 * elapsed);
+            elasX += 0.075 * elapsed;
+            if (dragX >0)
+                dragX = 0;
+        }
+        else
+        {
+            dragX -= (elasX * 800 * elapsed);
+            elasX += 0.075 * elapsed;
+            if (dragX < 0)
+                dragX = 0;
+        }
+
+        if (dragY < 0)
+        {
+            dragY += elasY * 800 * elapsed;
+            elasY += 0.075 * elapsed;
+            if (dragY >0)
+                dragY = 0;
+        }
+        else
+        {
+            dragY -= elasY * 800 * elapsed;
+            elasY += 0.075 * elapsed;
+            if (dragY < 0)
+                dragY = 0;
+        }
+
+        // note we just need system to redraw the geometry; we do not need a
+        // full redraw of all window/widget content - which is unchanged.
+        System::getSingleton().signalRedraw();
+        return false;
+    }
+
+    return true;
+}
+
+
+//----------------------------------------------------------------------------//
+// The following are for the main Demo7Sample class.
+//----------------------------------------------------------------------------//
 
 /*************************************************************************
     Sample specific initialisation goes here.
@@ -83,6 +282,22 @@ bool Demo7Sample::initialiseSample()
     createListContent();
     // initialise the event handling.
     initDemoEventWiring();
+
+    // attach RenderEffects
+    Window* w = winMgr.getWindow("Demo7/Window1");
+    if (w && w->getRenderingSurface())
+        static_cast<RenderingWindow*>(w->getRenderingSurface())->
+            setRenderEffect(&d_effect_win1);
+
+    w = winMgr.getWindow("Demo7/Window2");
+    if (w && w->getRenderingSurface())
+        static_cast<RenderingWindow*>(w->getRenderingSurface())->
+            setRenderEffect(&d_effect_win2);
+
+    w = winMgr.getWindow("Demo7/Window3");
+    if (w && w->getRenderingSurface())
+        static_cast<RenderingWindow*>(w->getRenderingSurface())->
+            setRenderEffect(&d_effect_win3);
 
     // success!
     return true;

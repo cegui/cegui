@@ -32,7 +32,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_9
 
 #include "CEGUI.h"
-#include "RendererModules/directx9GUIRenderer/d3d9renderer.h"
+#include "RendererModules/Direct3D9GUIRenderer/CEGUIDirect3D9Renderer.h"
 
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the
@@ -50,8 +50,8 @@
 //----------------------------------------------------------------------------//
 void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer)
 {
-    CEGUI::DirectX9Renderer* d3d_renderer =
-        static_cast<CEGUI::DirectX9Renderer*>(renderer);
+    CEGUI::Direct3D9Renderer* d3d_renderer =
+        static_cast<CEGUI::Direct3D9Renderer*>(renderer);
 
     LPDIRECT3DDEVICE9 d3d_device = d3d_renderer->getDevice();
 

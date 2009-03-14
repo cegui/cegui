@@ -166,8 +166,8 @@ bool MinesweeperSample::initialiseSample()
     d_alarm->addChildWindow(frame);
     frame->setXPosition(UDim(0.3f, 0.0f));
     frame->setYPosition(UDim(0.15f, 0.0f));
-    frame->setWidth(UDim(0.4f, 0.0f));
-    frame->setHeight(UDim(0.7f, 0.0f));
+    frame->setWidth(UDim(0.4f, 0.0f)); 
+    frame->setHeight(UDim(0.7f, 0.0f)); 
     frame->setText("CEGUI Minesweeper");
 
     // create the action panel

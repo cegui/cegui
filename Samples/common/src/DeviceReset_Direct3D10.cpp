@@ -32,8 +32,10 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
 
 #include "CEGUI.h"
-#include "RendererModules/directx10GUIRenderer/d3d10renderer.h"
-
+#include "RendererModules/Direct3D10GUIRenderer/CEGUIDirect3D10Renderer.h"
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <d3d10.h>
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the
 // preD3DReset call, the actual device reset, and then the postD3DReset call -
@@ -65,13 +67,13 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
     if (!swap_chain)
         return;
 
-    CEGUI::DirectX10Renderer* d3d_renderer =
-        static_cast<CEGUI::DirectX10Renderer*>(renderer);
+    CEGUI::Direct3D10Renderer* d3d_renderer =
+        static_cast<CEGUI::Direct3D10Renderer*>(renderer);
 
-    LPDIRECT3DDEVICE d3d_device = d3d_renderer->getDevice();
+    ID3D10Device& d3d_device = d3d_renderer->getDirect3DDevice();
 
     ID3D10RenderTargetView* rtview;
-    d3d_device->OMGetRenderTargets(1, &rtview, 0);
+    d3d_device.OMGetRenderTargets(1, &rtview, 0);
 
     // we release once for the reference we just asked for
     rtview->Release();
@@ -102,7 +104,7 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
     if (SUCCEEDED(res))
     {
         // create render target view using the back buffer
-        res = d3d_device->CreateRenderTargetView(back_buffer, 0, &rtview);
+        res = d3d_device.CreateRenderTargetView(back_buffer, 0, &rtview);
 
         // release handle to buffer - we have done all we needed to with it.
         back_buffer->Release();
@@ -110,7 +112,7 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
         if (SUCCEEDED(res))
         {
             // bind the back-buffer render target to get the output.
-            d3d_device->OMSetRenderTargets(1, &rtview, 0);
+            d3d_device.OMSetRenderTargets(1, &rtview, 0);
 
             // set a basic viewport.
             D3D10_VIEWPORT view_port;
@@ -120,11 +122,11 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
             view_port.MaxDepth = 1.0f;
             view_port.TopLeftX = 0;
             view_port.TopLeftY = 0;
-            d3d_device->RSSetViewports(1, &view_port);
+            d3d_device.RSSetViewports(1, &view_port);
 
-            // update CEGUI renderer
-            d3d_renderer->setDisplaySize(CEGUI::Size((float)width,
-                                                     (float)height));
+            // notify CEGUI of change.
+            CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+                CEGUI::Size((float)width, (float)height));
         }
     }
 }

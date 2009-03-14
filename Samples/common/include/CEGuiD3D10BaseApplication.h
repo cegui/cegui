@@ -29,6 +29,7 @@
 #define _CEGuiD3D10BaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
+#include "CEGUIGeometryBuffer.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   define WIN32_LEAN_AND_MEAN
@@ -41,15 +42,15 @@
 #   pragma comment(lib, "d3d10.lib")
 #   if defined(_DEBUG)
 #       if defined(CEGUI_STATIC)
-#           pragma comment(lib, "DirectX10GUIRenderer_Static_d.lib")
+#           pragma comment(lib, "Direct3D10GUIRenderer_Static_d.lib")
 #       else
-#           pragma comment(lib, "DirectX10GUIRenderer_d.lib")
+#           pragma comment(lib, "Direct3D10GUIRenderer_d.lib")
 #       endif
 #   else
 #       if defined(CEGUI_STATIC)
-#           pragma comment(lib, "DirectX10GUIRenderer_Static.lib")
+#           pragma comment(lib, "Direct3D10GUIRenderer_Static.lib")
 #       else
-#           pragma comment(lib, "DirectX10GUIRenderer.lib")
+#           pragma comment(lib, "Direct3D10GUIRenderer.lib")
 #       endif
 #   endif
 #endif
@@ -79,11 +80,11 @@ protected:
     bool initialiseDirect3D(unsigned int width, unsigned int height,
                             bool windowed);
 
-    //! Perform update on the FPS counter fields.
-    void updateFPS(void);
-
     //! cleanup D3D objects / interfaces
     void cleanupDirect3D();
+
+    void doFPSUpdate(void);
+    bool overlayHandler(const CEGUI::EventArgs& args);
 
     /*************************************************************************
         Data fields
@@ -91,12 +92,15 @@ protected:
     //! Pointer to the struct holding D3D specific fields.
     CEGuiBaseApplicationImpl* pimpl;;
 
-    // FPS stuff
-    DWORD   d_lastTime;
-    int d_frames;
-    int d_FPS;
     // counter used to track elapsed time (for time pulse injection)
     DWORD d_lastFrameTime;
+    // FPS stuff
+    DWORD d_fps_lastTime;
+    int d_fps_frames;
+    int d_fps_value;
+    char d_fps_textbuff[16];
+    CEGUI::GeometryBuffer* d_fps_geometry;
+    CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 #endif  // end of guard _CEGuiD3D10BaseApplication_h_

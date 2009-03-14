@@ -38,10 +38,12 @@
 #ifdef CEGUI_SAMPLES_USE_OPENGL
 
 #include "CEGuiOpenGLBaseApplication.h"
-#include "RendererModules/OpenGLGUIRenderer/openglrenderer.h"
+#include "RendererModules/OpenGLGUIRenderer/CEGUIOpenGLRenderer.h"
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIGeometryBuffer.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -124,6 +126,7 @@ int CEGuiOpenGLBaseApplication::d_fps_lastTime = 0;
 int CEGuiOpenGLBaseApplication::d_fps_frames = 0;
 int CEGuiOpenGLBaseApplication::d_fps_value = 0;
 char CEGuiOpenGLBaseApplication::d_fps_textbuff[16];
+CEGUI::GeometryBuffer* CEGuiOpenGLBaseApplication::d_logo_geometry = 0;
 
 /*************************************************************************
     Constructor.
@@ -142,7 +145,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutCreateWindow("Crazy Eddie's GUI Mk-2 - Sample Application");
     glutSetCursor(GLUT_CURSOR_NONE);
 
-    d_renderer = new CEGUI::OpenGLRenderer(1024);
+    d_renderer = &CEGUI::OpenGLRenderer::create();
     new CEGUI::System(d_renderer);
 
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
@@ -196,6 +199,30 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
         rp->setResourceGroupDirectory("schemas", "xml_schemas/");
     #endif
 #endif
+
+    // setup required to do direct rendering of FPS value
+    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
+    d_fps_geometry = &d_renderer->createGeometryBuffer();
+    d_fps_geometry->setClippingRegion(scrn);
+
+    // setup for logo
+    CEGUI::ImagesetManager::getSingleton().
+        createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+    d_logo_geometry = &d_renderer->createGeometryBuffer();
+    d_logo_geometry->setClippingRegion(scrn);
+    d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+    d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
+    CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+        getImage("full_image").draw(*d_logo_geometry, CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+    // clearing this queue actually makes sure it's created(!)
+    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    d_renderer->getDefaultRenderingRoot().
+        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+            CEGUI::Event::Subscriber(&CEGuiOpenGLBaseApplication::overlayHandler,
+                                     this));
 }
 
 
@@ -205,7 +232,28 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 CEGuiOpenGLBaseApplication::~CEGuiOpenGLBaseApplication()
 {
     delete CEGUI::System::getSingletonPtr();
-    delete d_renderer;
+    CEGUI::OpenGLRenderer::destroy(*d_renderer);
+}
+
+bool CEGuiOpenGLBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+{
+    using namespace CEGUI;
+
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // render FPS:
+    Font* fnt = System::getSingleton().getDefaultFont();
+    if (fnt)
+    {
+        d_fps_geometry->reset();
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        d_fps_geometry->draw();
+    }
+
+    d_logo_geometry->draw();
+
+    return true;
 }
 
 
@@ -264,24 +312,16 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     // update fps fields
     doFPSUpdate();
 
+    // update logo rotation
+    static float rot = 0.0f;
+    d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+    rot += 180.0f * (elapsed / 1000.0f);
+    if (rot > 360.0f)
+        rot -= 360.0f;
+
     // do rendering for this frame.
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0.0, 0.0, 12, 0.0, 0.0, -100, 0.0, 1.0, 0.0);
-
     guiSystem.renderGUI();
-
-    // render FPS:
-    CEGUI::Font* fnt = guiSystem.getDefaultFont();
-    if (fnt)
-    {
-        guiSystem.getRenderer()->setQueueingEnabled(false);
-        fnt->drawText(d_fps_textbuff, CEGUI::Vector3(0, 0, 0), guiSystem.getRenderer()->getRect());
-    }
-
-    glFlush();
     glutPostRedisplay();
     glutSwapBuffers();
 
@@ -292,9 +332,10 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     if (d_quitFlag)
     {
         // cleanup cegui system
-        CEGUI::Renderer* renderer = guiSystem.getRenderer();
+        CEGUI::OpenGLRenderer* renderer =
+            static_cast<CEGUI::OpenGLRenderer*>(guiSystem.getRenderer());
         delete CEGUI::System::getSingletonPtr();
-        delete renderer;
+        CEGUI::OpenGLRenderer::destroy(*renderer);
 
         // exit
         exit(0);
@@ -308,8 +349,8 @@ void CEGuiOpenGLBaseApplication::reshape(int w, int h)
     glLoadIdentity ();
     gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 50.0);
     glMatrixMode(GL_MODELVIEW);
-    CEGUI::OpenGLRenderer* renderer = (CEGUI::OpenGLRenderer*)CEGUI::System::getSingleton().getRenderer();
-    renderer->setDisplaySize(CEGUI::Size((float)w,(float)h));
+    CEGUI::System::getSingleton().
+        notifyDisplaySizeChanged(CEGUI::Size((float)w,(float)h));
 }
 
 void CEGuiOpenGLBaseApplication::mouseMotion(int x, int y)
