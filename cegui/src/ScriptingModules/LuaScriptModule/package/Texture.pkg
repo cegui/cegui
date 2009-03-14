@@ -3,11 +3,15 @@
 ***********************************************************************/
 class Texture
 {
-	unsigned short getWidth() const;
-	unsigned short getHeight() const;
-	void loadFromFile(string filename, string resourcegroup="");
+    enum PixelFormat
+    {
+        PF_RGB,
+        PF_RGBA
+    };
 
-	// no memory loading
-
-	Renderer* getRenderer() const;
+    const Size& getSize() const;
+    const Size& getOriginalDataSize() const;
+    const Vector2& getTexelScaling() const;
+    void loadFromFile(string filename, string resourceGroup);
+    //void loadFromMemory(const void* buffer, const Size& buffer_size, PixelFormat pixel_format);
 };

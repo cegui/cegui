@@ -14,7 +14,6 @@ $pfile "Font.pkg"
 $pfile "FontManager.pkg"
 
 $pfile "Image.pkg"
-$pfile "Texture.pkg"
 $pfile "Imageset.pkg"
 $pfile "ImagesetManager.pkg"
 
@@ -27,7 +26,6 @@ $pfile "EventSet.pkg"
 $pfile "MouseCursor.pkg"
 $pfile "Window.pkg"
 $pfile "CoordConverter.pkg"
-$pfile "Renderer.pkg"
 $pfile "ScriptWindowHelper.pkg"
 $pfile "System.pkg"
 
@@ -38,6 +36,17 @@ $pfile "Scheme.pkg"
 $pfile "SchemeManager.pkg"
 
 $pfile "PropertyHelper.pkg"
+
+// Renderer related
+$pfile "Vertex.pkg"
+$pfile "RenderingContext.pkg"
+$pfile "RenderEffect.pkg"
+$pfile "GeometryBuffer.pkg"
+$pfile "RenderingSurface.pkg"
+$pfile "RenderingRoot.pkg"
+$pfile "RenderingWindow.pkg"
+$pfile "Renderer.pkg"
+$pfile "Texture.pkg"
 
 // elements
 $pfile "elements/GUISheet.pkg"

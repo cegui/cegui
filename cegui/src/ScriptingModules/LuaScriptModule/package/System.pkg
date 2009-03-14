@@ -49,6 +49,8 @@ class System : public EventSet
 	void setDefaultTooltip(string tooltipType);
 	Tooltip* getDefaultTooltip(void) const;
 
+    void notifyDisplaySizeChanged(const Size& new_size);
+
 	bool injectMouseMove(float dx, float dy);
 	bool injectMouseLeaves();
 	bool injectMouseButtonDown(MouseButton btn);

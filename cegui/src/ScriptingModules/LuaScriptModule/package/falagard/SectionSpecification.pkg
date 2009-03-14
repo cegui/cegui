@@ -4,8 +4,8 @@
 
 class SectionSpecification
 {
-  void render(Window& srcWindow, float base_z, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
-  void render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
   string getOwnerWidgetLookFeel() const;
   string getSectionName() const;

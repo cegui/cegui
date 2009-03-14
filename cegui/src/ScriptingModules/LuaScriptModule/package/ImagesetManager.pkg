@@ -5,7 +5,7 @@ class ImagesetManager
 {
 	static ImagesetManager& getSingleton();
 
-	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string name, Texture* texture);
+	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string name, Texture& texture);
 	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string filename, string resourcegroup="");
 	tolua_throws|CEGUI::Exception,error| Imageset* createImagesetFromImageFile(string name, string filename, string resourcegroup="");
 
@@ -16,7 +16,7 @@ class ImagesetManager
 	tolua_throws|CEGUI::Exception,nil| Imageset* getImageset(string name) const;
 	bool isImagesetPresent(string name) const;
 
-	void notifyScreenResolution(const Size& size);
+	void notifyDisplaySizeChanged(const Size& size);
 
     ImagesetIterator getIterator() const;
 };
