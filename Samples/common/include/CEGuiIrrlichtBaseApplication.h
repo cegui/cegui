@@ -37,20 +37,23 @@
 #      pragma comment(lib, "IrrlichtRenderer.lib")
 #  endif
 #else
-#	define _IRR_STATIC_LIB_ //Define this regardless if we are using a dll or not
-#	if defined(_DEBUG)
-#		pragma comment(lib, "IrrlichtRenderer_Static_d.lib")
-#	else
-#		pragma comment(lib, "IrrlichtRenderer_Static.lib")
-#	endif
+# define _IRR_STATIC_LIB_ //Define this regardless if we are using a dll or not
+# if defined(_DEBUG)
+#  pragma comment(lib, "IrrlichtRenderer_Static_d.lib")
+# else
+#  pragma comment(lib, "IrrlichtRenderer_Static.lib")
+# endif
 #endif
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "RendererModules/IrrlichtRenderer/irrlichtrenderer.h"
+#include "RendererModules/IrrlichtGUIRenderer/CEGUIIrrlichtRenderer.h"
 #include "CEGUI.h"
 
-class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,  public irr::IEventReceiver
+#include <irrlicht.h>
+
+class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,
+                                     public irr::IEventReceiver
 {
 public:
     CEGuiIrrlichtBaseApplication();
@@ -67,6 +70,9 @@ public:
     bool OnEvent(irr::SEvent event);
 #endif
 
+    //! handler for rendering the CEGUI fps & logo geometry
+    bool overlayHandler(const CEGUI::EventArgs& args);
+
 protected:
     /// member to check and handle resizing of the display window.
     void checkWindowResize();
@@ -76,6 +82,12 @@ protected:
     irr::scene::ISceneManager* d_smgr;
     irr::u32                   d_lastTime;
     CEGUI::IrrlichtRenderer*   d_renderer;
+
+    int d_fps_value;
+    char d_fps_textbuff[16];
+    CEGUI::GeometryBuffer* d_fps_geometry;
+    CEGUI::GeometryBuffer* d_logo_geometry;
+
 };
 
 

@@ -30,7 +30,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTFB
 
 #include "CEGuiDirectFBBaseApplication.h"
-#include "RendererModules/directfbRenderer/directfb-renderer.h"
+#include "RendererModules/DirectFBGUIRenderer/CEGUIDirectFBRenderer.h"
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 #include "CEGUIDefaultResourceProvider.h"
@@ -79,13 +79,13 @@ static DFBKeyMapping specialKeyMap[] =
 //----------------------------------------------------------------------------//
 struct CEGuiBaseApplicationImpl
 {
-    IDirectFB *d_dfb;
-    IDirectFBDisplayLayer *d_layer;
-    IDirectFBWindow *d_window;
-    IDirectFBSurface *d_surface;
-    IDirectFBEventBuffer *d_event_buffer;
+    IDirectFB* d_dfb;
+    IDirectFBDisplayLayer* d_layer;
+    IDirectFBWindow* d_window;
+    IDirectFBSurface* d_surface;
+    IDirectFBEventBuffer* d_event_buffer;
 
-    CEGUI::DirectfbRenderer* d_renderer;
+    CEGUI::DirectFBRenderer* d_renderer;
 };
 
 //----------------------------------------------------------------------------//
@@ -100,24 +100,24 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 
     setenv("DFBARGS", "no-cursor-updates,layer-bg-none", 1);
 
-    ret = DirectFBInit(0, NULL);
+    ret = DirectFBInit(0, 0);
     if (ret) {
         throw std::runtime_error("DirectFB application failed to "
                              "initialise. [DirectFBInit]");
     }
-   
+
     ret = DirectFBCreate(&pimpl->d_dfb);
     if (ret) {
-        pimpl->d_dfb = NULL;
+        pimpl->d_dfb = 0;
         throw std::runtime_error("DirectFB application failed to "
                              "initialise. [DirectFBCreate]");
     }
-   
+
     ret = pimpl->d_dfb->GetDisplayLayer(pimpl->d_dfb, DLID_PRIMARY, &pimpl->d_layer);
     if (ret) {
-        pimpl->d_layer = NULL;
+        pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
-        pimpl->d_dfb = NULL;
+        pimpl->d_dfb = 0;
         throw std::runtime_error("DirectFB application failed to "
                              "initialise. [GetDisplayLayer]");
     }
@@ -130,9 +130,9 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
     ret = pimpl->d_window->CreateEventBuffer(pimpl->d_window, &pimpl->d_event_buffer);
     if (ret) {
         pimpl->d_layer->Release(pimpl->d_layer);
-        pimpl->d_layer = NULL;
+        pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
-        pimpl->d_dfb = NULL;
+        pimpl->d_dfb = 0;
         throw std::runtime_error("DirectFB application failed to "
                              "initialise. [CreateEventBuffer]");
     }
@@ -140,7 +140,7 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
     pimpl->d_window->GetSurface(pimpl->d_window, &pimpl->d_surface);
 
     pimpl->d_renderer =
-        new CEGUI::DirectfbRenderer(pimpl->d_dfb, pimpl->d_surface);
+        &CEGUI::DirectFBRenderer::create(*pimpl->d_dfb, *pimpl->d_surface);
 
     // initialise the gui system
     new CEGUI::System(pimpl->d_renderer);
@@ -181,7 +181,7 @@ CEGuiDirectFBBaseApplication::~CEGuiDirectFBBaseApplication()
 {
     // cleanup gui system
     delete CEGUI::System::getSingletonPtr();
-    delete pimpl->d_renderer;
+    CEGUI::DirectFBRenderer::destroy(*pimpl->d_renderer);
 
     cleanupDirectFB();
 
@@ -276,27 +276,28 @@ bool CEGuiDirectFBBaseApplication::execute(CEGuiSample* sampleApp)
         } else {
             /* TODO */
             guiSystem.injectTimePulse(1000/ 1000.0f);
-   
+
             updateFPS();
             char fpsbuff[16];
             sprintf(fpsbuff, "FPS: %d", d_FPS);
-   
+
             // clear display
             pimpl->d_surface->Clear( pimpl->d_surface, 0x0, 0x0, 0x0, 0xFF );
-   
+
             // main CEGUI rendering call
             guiSystem.renderGUI();
-   
-            // render FPS:
-            CEGUI::Font* fnt = guiSystem.getDefaultFont();
-            if (fnt)
-            {
-                guiSystem.getRenderer()->setQueueingEnabled(false);
-                fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0),
-                              guiSystem.getRenderer()->getRect());
-            }
-            pimpl->d_surface->Flip(pimpl->d_surface, NULL, (DFBSurfaceFlipFlags)0);
-   
+
+//             // render FPS:
+//             CEGUI::Font* fnt = guiSystem.getDefaultFont();
+//             if (fnt)
+//             {
+//                 guiSystem.getRenderer()->setQueueingEnabled(false);
+//                 fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0),
+//                               guiSystem.getRenderer()->getRect());
+//             }
+
+            pimpl->d_surface->Flip(pimpl->d_surface, 0, (DFBSurfaceFlipFlags)0);
+
         }
     }
 
@@ -352,7 +353,7 @@ void CEGuiDirectFBBaseApplication::updateFPS(void)
     if (no_monotonic)
 #endif
         if(syscall(__NR_clock_gettime, CLOCK_REALTIME, &ts)) {
-            gettimeofday( &tv, NULL );
+            gettimeofday( &tv, 0 );
         }
     tv.tv_sec = ts.tv_sec;
     tv.tv_usec = ts.tv_nsec / 1000;
@@ -374,7 +375,7 @@ void CEGuiDirectFBBaseApplication::updateFPS(void)
     /* Compute the time remaining to wait. */
     elapsed.tv_sec = tv.tv_sec - d_lastTime.tv_sec;
     elapsed.tv_usec = tv.tv_usec - d_lastTime.tv_usec;
-    
+
     if ((elapsed.tv_sec >= 1) || (elapsed.tv_usec >= 1000000))
     {
         d_FPS = d_frames;
@@ -401,11 +402,11 @@ void CEGuiDirectFBBaseApplication::cleanupDirectFB()
     if(pimpl->d_dfb) {
         pimpl->d_dfb->Release(pimpl->d_dfb);
     }
-    pimpl->d_dfb = NULL;
-    pimpl->d_layer = NULL;
-    pimpl->d_window = NULL;
-    pimpl->d_surface = NULL;
-    pimpl->d_event_buffer = NULL;
+    pimpl->d_dfb = 0;
+    pimpl->d_layer = 0;
+    pimpl->d_window = 0;
+    pimpl->d_surface = 0;
+    pimpl->d_event_buffer = 0;
 }
 
 #endif

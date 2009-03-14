@@ -39,11 +39,12 @@
 #undef min
 #undef max
 
-#include "RendererModules/directx9GUIRenderer/d3d9renderer.h"
+#include "RendererModules/Direct3D9GUIRenderer/CEGUIDirect3D9Renderer.h"
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIRenderingRoot.h"
 #include <stdexcept>
 
 
@@ -56,7 +57,7 @@ struct CEGuiBaseApplicationImpl
     LPDIRECT3D9 d_D3D;
     LPDIRECT3DDEVICE9 d_3DDevice;
     D3DPRESENT_PARAMETERS d_ppars;
-    CEGUI::DirectX9Renderer* d_renderer;
+    CEGUI::Direct3D9Renderer* d_renderer;
     Win32AppHelper::DirectInputState d_directInput;
 };
 
@@ -66,9 +67,10 @@ struct CEGuiBaseApplicationImpl
 *************************************************************************/
 CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
         pimpl(new CEGuiBaseApplicationImpl),
-        d_lastTime(GetTickCount()),
-        d_frames(0),
-        d_FPS(0)
+        d_lastFrameTime(GetTickCount()),
+        d_fps_lastTime(d_lastFrameTime),
+        d_fps_frames(0),
+        d_fps_value(0)
 {
     if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
     {
@@ -76,7 +78,8 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
         {
             if (Win32AppHelper::initialiseDirectInput(pimpl->d_window, pimpl->d_directInput))
             {
-                pimpl->d_renderer = new CEGUI::DirectX9Renderer(pimpl->d_3DDevice, 3000);
+                pimpl->d_renderer =
+                        &CEGUI::Direct3D9Renderer::create(pimpl->d_3DDevice);
 
                 // initialise the gui system
                 new CEGUI::System(pimpl->d_renderer);
@@ -102,11 +105,35 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
                 sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
                 rp->setResourceGroupDirectory("lua_scripts", resourcePath);
                 #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
+                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
                     rp->setResourceGroupDirectory("schemas", resourcePath);
                 #endif
 
                 CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
+
+                // setup required to do direct rendering of FPS value
+                const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), pimpl->d_renderer->getDisplaySize());
+                d_fps_geometry = &pimpl->d_renderer->createGeometryBuffer();
+                d_fps_geometry->setClippingRegion(scrn);
+
+                // setup for logo
+                CEGUI::ImagesetManager::getSingleton().
+                    createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+                d_logo_geometry = &pimpl->d_renderer->createGeometryBuffer();
+                d_logo_geometry->setClippingRegion(scrn);
+                d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+                d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
+                CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+                    getImage("full_image").draw(*d_logo_geometry, CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+                // clearing this queue actually makes sure it's created(!)
+                pimpl->d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+                // subscribe handler to render overlay items
+                pimpl->d_renderer->getDefaultRenderingRoot().
+                    subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+                        CEGUI::Event::Subscriber(&CEGuiD3D9BaseApplication::overlayHandler,
+                                                 this));
 
                 return;
             }
@@ -126,7 +153,6 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
     throw std::runtime_error("Win32 DirectX 9 application failed to initialise.");
 }
 
-
 /*************************************************************************
     Destructor.
 *************************************************************************/
@@ -136,7 +162,7 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
 
     // cleanup gui system
 	delete CEGUI::System::getSingletonPtr();
-    delete pimpl->d_renderer;
+    CEGUI::Direct3D9Renderer::destroy(*pimpl->d_renderer);
 
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
@@ -149,6 +175,29 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
     delete pimpl;
 }
 
+//----------------------------------------------------------------------------//
+bool CEGuiD3D9BaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+{
+    using namespace CEGUI;
+
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // render FPS:
+    Font* fnt = System::getSingleton().getDefaultFont();
+    if (fnt)
+    {
+        d_fps_geometry->reset();
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        d_fps_geometry->draw();
+    }
+
+    d_logo_geometry->draw();
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 /*************************************************************************
     Start the base application
@@ -192,29 +241,23 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
                 }
             }
 
-            if (FAILED(pimpl->d_3DDevice->BeginScene()))
-            {
-                continue;
-            }
+            doFPSUpdate();
 
-            updateFPS();
-            char fpsbuff[16];
-            sprintf(fpsbuff, "FPS: %d", d_FPS);
+            // update logo rotation
+            static float rot = 0.0f;
+            d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+            rot += 180.0f * (elapsed / 1000.0f);
+            if (rot > 360.0f)
+                rot -= 360.0f;
 
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
             // draw display
-            pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+            if (FAILED(pimpl->d_3DDevice->BeginScene()))
+                continue;
+            pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET,
+                                     D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
             guiSystem.renderGUI();
-
-            // render FPS:
-            CEGUI::Font* fnt = guiSystem.getDefaultFont();
-            if (fnt)
-            {
-                guiSystem.getRenderer()->setQueueingEnabled(false);
-                fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0), guiSystem.getRenderer()->getRect());
-            }
-
             pimpl->d_3DDevice->EndScene();
 
             pimpl->d_3DDevice->Present(0, 0, 0, 0);
@@ -313,5 +356,25 @@ bool CEGuiD3D9BaseApplication::resetDirect3D(void)
 
     return false;
 }
+
+//----------------------------------------------------------------------------//
+void CEGuiD3D9BaseApplication::doFPSUpdate(void)
+{
+    ++d_fps_frames;
+
+    DWORD thisTime = GetTickCount();
+
+    if (thisTime - d_fps_lastTime >= 1000)
+    {
+        // update FPS text to output
+        sprintf(d_fps_textbuff , "FPS: %d", d_fps_frames);
+        d_fps_value = d_fps_frames;
+        d_fps_frames = 0;
+        d_fps_lastTime = thisTime;
+    }
+
+}
+
+//----------------------------------------------------------------------------//
 
 #endif

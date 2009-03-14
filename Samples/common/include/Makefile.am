@@ -1,7 +1,6 @@
 noinst_HEADERS = CEGUISamplesConfig.h \
                  CEGuiBaseApplication.h \
                  CEGuiD3D10BaseApplication.h \
-                 CEGuiD3D81BaseApplication.h \
                  CEGuiD3D9BaseApplication.h \
                  CEGuiIrrlichtBaseApplication.h \
                  CEGuiDirectFBBaseApplication.h \

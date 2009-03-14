@@ -36,6 +36,12 @@
 
 #include "CEGUI.h"
 
+// forward reference this
+namespace CEGUI
+{
+class OpenGLRenderer;
+class GeometryBuffer;
+}
 
 class CEGuiOpenGLBaseApplication : public CEGuiBaseApplication
 {
@@ -64,6 +70,7 @@ public:
     void setQuitting(bool quit = true);
     bool isQuitting() const;
 
+    bool overlayHandler(const CEGUI::EventArgs& args);
 protected:
     /*************************************************************************
         Implementation Methods
@@ -82,7 +89,7 @@ protected:
     /*************************************************************************
         Data fields
     *************************************************************************/
-    CEGUI::Renderer* d_renderer;
+    CEGUI::OpenGLRenderer* d_renderer;
     static bool d_quitFlag;
     static int  d_lastFrameTime;
     static int  d_modifiers;
@@ -91,6 +98,8 @@ protected:
     static int d_fps_frames;
     static int d_fps_value;
     static char d_fps_textbuff[16];
+    CEGUI::GeometryBuffer* d_fps_geometry;
+    static CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 

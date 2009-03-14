@@ -34,7 +34,7 @@ purpose:    Demonstrates the use of instanced windows with XML and lua
 
 using namespace CEGUI;
 
-int main(int /*argc*/, char** /*argv*/)
+int main(int argc, char**argv)
 {
 
 	DemoInstanced app;

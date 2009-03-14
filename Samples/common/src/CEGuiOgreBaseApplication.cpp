@@ -39,7 +39,10 @@
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include "CEGuiSample.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIGeometryBuffer.h"
 
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot(0),
@@ -51,8 +54,6 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     using namespace Ogre;
 
     d_ogreRoot = new Root();
-
-    initialiseResources();
 
     if (d_ogreRoot->showConfigDialog())
     {
@@ -70,17 +71,15 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
-        vp->setBackgroundColour(ColourValue(0,0,0));
-
+        vp->setBackgroundColour(ColourValue(0, 0, 0));
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
-        // initialise resources
-        ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+        // initialise GUI system using the new automagic function
+        d_renderer = &CEGUI::OgreRenderer::bootstrapSystem();
 
-        // initialise GUI system
-        d_renderer = new CEGUI::OgreCEGUIRenderer(d_window, RENDER_QUEUE_OVERLAY, false, 0, sm);
-        new CEGUI::System(d_renderer);
+        initialiseResources();
+        ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
         // create frame listener
         d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
@@ -90,6 +89,32 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_windowEventListener = new WndEvtListener(d_renderer);
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
+
+        // setup required to do direct rendering of FPS value
+        const CEGUI::Rect scrn(CEGUI::Vector2(0, 0),
+                               d_renderer->getDisplaySize());
+        d_fps_geometry = &d_renderer->createGeometryBuffer();
+        d_fps_geometry->setClippingRegion(scrn);
+
+        // setup for logo
+        CEGUI::ImagesetManager::getSingleton().
+            createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+        d_logo_geometry = &d_renderer->createGeometryBuffer();
+        d_logo_geometry->setClippingRegion(scrn);
+        d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+        d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
+        CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+            getImage("full_image").draw(*d_logo_geometry,
+                                        CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+        // clearing this queue actually makes sure it's created(!)
+        d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+        // subscribe handler to render overlay items
+        d_renderer->getDefaultRenderingRoot().
+            subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+                CEGUI::Event::Subscriber(
+                    &CEGuiOgreBaseApplication::overlayHandler, this));
 
         d_initialised = true;
     }
@@ -104,8 +129,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 {
     delete d_frameListener;
-    delete CEGUI::System::getSingletonPtr();
-    delete d_renderer;
+    CEGUI::OgreRenderer::destroySystem();
     delete d_ogreRoot;
     delete d_windowEventListener;
 }
@@ -198,6 +222,57 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
 #endif
 }
 
+void CEGuiOgreBaseApplication::doFrameUpdate(float elapsed)
+{
+    // update fps fields
+    doFPSUpdate(elapsed);
+
+    // update logo rotation
+    static float rot = 0.0f;
+    d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+    rot += 180.0f * elapsed;
+    if (rot > 360.0f)
+        rot -= 360.0f;
+}
+
+void CEGuiOgreBaseApplication::doFPSUpdate(float elapsed)
+{
+    // another frame
+    d_fps_frames += 1;
+
+    // has at least a second passed since we last updated the text?
+    if ((d_fps_time += elapsed) >= 1.0f)
+    {
+        // update FPS text to output
+        sprintf(d_fps_textbuff , "FPS: %g", d_fps_frames);
+        // reset counter
+        d_fps_frames    = 0;
+        // update timer
+        d_fps_time -= 1.0f;
+    }
+}
+
+bool CEGuiOgreBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+{
+    using namespace CEGUI;
+
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // render FPS:
+    Font* fnt = System::getSingleton().getDefaultFont();
+    if (fnt)
+    {
+        d_fps_geometry->reset();
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        d_fps_geometry->draw();
+    }
+
+    d_logo_geometry->draw();
+
+    return true;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /*******************************************************************************
@@ -218,20 +293,31 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
+// #if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined (DEBUG)
+//     paramList.insert(std::make_pair(std::string("x11_mouse_grab"), "false"));
+//     paramList.insert(std::make_pair(std::string("x11_mouse_hide"), "false"));
+// #endif
+
     // create input system
     d_inputManager = OIS::InputManager::createInputSystem(paramList);
 
     // create buffered keyboard
-    //if (d_inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0)
+#ifdef CEGUI_OLD_OIS_API
     if (d_inputManager->numKeyboards() > 0)
+#else
+    if (d_inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0)
+#endif
     {
         d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
         d_keyboard->setEventCallback(this);
     }
 
     // create buffered mouse
-    //if (d_inputManager->getNumberOfDevices(OIS::OISMouse) > 0)
+#ifdef CEGUI_OLD_OIS_API
     if (d_inputManager->numMice() > 0)
+#else
+    if (d_inputManager->getNumberOfDevices(OIS::OISMouse) > 0)
+#endif
     {
         d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
         d_mouse->setEventCallback(this);
@@ -277,6 +363,9 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
     {
         // always inject a time pulse to enable widget automation
         CEGUI::System::getSingleton().injectTimePulse(static_cast<float>(evt.timeSinceLastFrame));
+
+        static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
+            doFrameUpdate(static_cast<float>(evt.timeSinceLastFrame));
 
         // update input system
         if (d_mouse)
@@ -376,14 +465,15 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 *******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 
-WndEvtListener::WndEvtListener(CEGUI::OgreCEGUIRenderer* renderer) :
+WndEvtListener::WndEvtListener(CEGUI::OgreRenderer* renderer) :
     d_renderer(renderer)
 {}
 
 void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 {
-    d_renderer->setDisplaySize(CEGUI::Size(static_cast<float>(rw->getWidth()),
-                                           static_cast<float>(rw->getHeight())));
+    CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+        CEGUI::Size(static_cast<float>(rw->getWidth()),
+                    static_cast<float>(rw->getHeight())));
 }
 
 #endif

@@ -31,7 +31,7 @@
 #include "CEGuiBaseApplication.h"
 #include "CEGUI.h"
 
-#include <OgreCEGUIRenderer.h>
+#include "RendererModules/OgreGUIRenderer/CEGUIOgreRenderer.h"
 #include <Ogre.h>
 #include <OIS.h>
 
@@ -52,6 +52,11 @@ class CEGuiDemoFrameListener;
 // Window event listener forward ref (see class below)
 class WndEvtListener;
 
+namespace CEGUI
+{
+class GeometryBuffer;
+}
+
 class CEGuiOgreBaseApplication : public CEGuiBaseApplication
 {
 public:
@@ -68,6 +73,11 @@ public:
     */
     virtual ~CEGuiOgreBaseApplication();
 
+    //! called by the frame listener to perform per-frame updates.
+    void doFrameUpdate(float elapsed);
+
+    //! handler for rendering the CEGUI fps & logo geometry
+    bool overlayHandler(const CEGUI::EventArgs& args);
 
     // Implementation of base class abstract methods.
     bool execute(CEGuiSample* sampleApp);
@@ -75,6 +85,7 @@ public:
 
 protected:
     void initialiseResources(void);
+    void doFPSUpdate(float elapsed);
 
     /*************************************************************************
         Data Fields
@@ -82,11 +93,19 @@ protected:
     Ogre::Root* d_ogreRoot;
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
-    CEGUI::OgreCEGUIRenderer* d_renderer;
+    CEGUI::OgreRenderer* d_renderer;
     bool d_initialised;
 
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;
+
+    // FPS stuff
+    float d_fps_time;
+    float d_fps_frames;
+    float d_fps_value;
+    char d_fps_textbuff[16];
+    CEGUI::GeometryBuffer* d_fps_geometry;
+    CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 
@@ -132,10 +151,10 @@ protected:
 //! window event listener class we use to hear abour window resizing
 class WndEvtListener : public Ogre::WindowEventListener
 {
-    CEGUI::OgreCEGUIRenderer* d_renderer;
+    CEGUI::OgreRenderer* d_renderer;
 
 public:
-    WndEvtListener(CEGUI::OgreCEGUIRenderer* renderer);
+    WndEvtListener(CEGUI::OgreRenderer* renderer);
 
     void windowResized(Ogre::RenderWindow* rw);
 };

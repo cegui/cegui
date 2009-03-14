@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,38 +40,49 @@
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "CEGuiSample.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIGeometryBuffer.h"
+#include "CEGUIRenderingRoot.h"
 
+//----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
-        d_device(0),
-        d_driver(0),
-        d_smgr(0),
-        d_renderer(0)
+    d_device(0),
+    d_driver(0),
+    d_smgr(0),
+    d_renderer(0),
+    d_fps_value(0)
 {
     using namespace irr;
 
     // create a device
-    d_device = irr::createDevice(video::EDT_OPENGL, core::dimension2d<s32>(800, 600), 32, false, true, false, this);
+    d_device = irr::createDevice(video::EDT_OPENGL,
+                                 core::dimension2d<s32>(800, 600), 32,
+                                 false, true, false, this);
 
     // set flags for texture creation
     d_device->getCursorControl()->setVisible(false);
-    d_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT,true);
-    d_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_16_BIT,false);
-    d_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,false);
-    d_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_OPTIMIZED_FOR_QUALITY,true);
+    d_device->getVideoDriver()->
+        setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
+    d_device->getVideoDriver()->
+        setTextureCreationFlag(irr::video::ETCF_ALWAYS_16_BIT, false);
+    d_device->getVideoDriver()->
+        setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);
+    d_device->getVideoDriver()->
+        setTextureCreationFlag(irr::video::ETCF_OPTIMIZED_FOR_QUALITY, true);
 
     // get driver and scenemanager
     d_driver = d_device->getVideoDriver();
     d_smgr = d_device->getSceneManager();
 
-    // create a renderer which uses the IrrlichtResourceProvider to load data
-    d_renderer= new CEGUI::IrrlichtRenderer(d_device, false);
+    // create main renderer object
+    d_renderer = &CEGUI::IrrlichtRenderer::create(*d_device);
 
     // create the gui
     new CEGUI::System(d_renderer);
 
     // initialise the required dirs for the ResourceProvider
-    CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
-        (CEGUI::System::getSingleton().getResourceProvider());
+    CEGUI::DefaultResourceProvider* rp =
+        static_cast<CEGUI::DefaultResourceProvider*>
+            (CEGUI::System::getSingleton().getResourceProvider());
 
     const char* dataPathPrefix = getDataPathPrefix();
     char resourcePath[PATH_MAX];
@@ -89,34 +100,61 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     rp->setResourceGroupDirectory("looknfeels", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-        rp->setResourceGroupDirectory("schemas", resourcePath);
-    #endif
+#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+    rp->setResourceGroupDirectory("schemas", resourcePath);
+#endif
 
-    irr::scene::ICameraSceneNode* camera = d_smgr->addCameraSceneNode(0, core::vector3df(0,0,0), core::vector3df(0,0,1));
+    irr::scene::ICameraSceneNode* camera =
+        d_smgr->addCameraSceneNode(0, core::vector3df(0, 0, 0),
+                                   core::vector3df(0, 0, 1));
     camera->setFOV(1.56f);
-    d_driver->setAmbientLight(video::SColor(255,255,255,255));
+    d_driver->setAmbientLight(video::SColor(255, 255, 255, 255));
+
+    // setup required to do direct rendering of FPS value
+    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0),
+                            d_renderer->getDisplaySize());
+    d_fps_geometry = &d_renderer->createGeometryBuffer();
+    d_fps_geometry->setClippingRegion(scrn);
+
+    // setup for logo
+    CEGUI::ImagesetManager::getSingleton().
+        createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+    d_logo_geometry = &d_renderer->createGeometryBuffer();
+    d_logo_geometry->setClippingRegion(scrn);
+    d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+    d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
+    CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+        getImage("full_image").draw(*d_logo_geometry,
+                                    CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+    // clearing this queue actually makes sure it's created(!)
+    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    d_renderer->getDefaultRenderingRoot().
+        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+            CEGUI::Event::Subscriber(
+                &CEGuiIrrlichtBaseApplication::overlayHandler, this));
+
 
     d_lastTime = d_device->getTimer()->getRealTime();
 }
 
+//----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 {
     // free the gui system
     delete CEGUI::System::getSingletonPtr();
 
     if (d_renderer)
-    {
-        delete d_renderer;
-    }
+        CEGUI::IrrlichtRenderer::destroy(*d_renderer);
 
     if (d_device)
-    {
         d_device->drop();
-    }
 }
 
+//----------------------------------------------------------------------------//
 bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
 {
     sampleApp->initialiseSample();
@@ -124,38 +162,42 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
     // draw everything
-    while(d_device->run())
+    while (d_device->run())
     {
         // draw only if the window is active
         if (d_device->isWindowActive())
         {
             checkWindowResize();
 
-            // create FPS string
-            char fps_buff[16];
-            int frame_rate = d_driver->getFPS();
-            sprintf(fps_buff , "FPS: %d", frame_rate);
-
             // calculate time elapsed
             irr::u32 currTime = d_device->getTimer()->getRealTime();
             // inject time pulse
-            guiSystem.injectTimePulse(static_cast<float>(currTime - d_lastTime) / 1000.0f);
+            const float elapsed =
+                static_cast<float>(currTime - d_lastTime) / 1000.0f;
+            guiSystem.injectTimePulse(elapsed);
             d_lastTime = currTime;
 
+            // update fps text when needed
+            int fps = d_driver->getFPS();
+            if (fps != d_fps_value)
+            {
+                sprintf(d_fps_textbuff , "FPS: %d", fps);
+                d_fps_value = fps;
+            }
+
+            // update logo rotation
+            static float rot = 0.0f;
+            d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+            rot += 180.0f * elapsed;
+            if (rot > 360.0f)
+                rot -= 360.0f;
+
             // start rendering
-            d_driver->beginScene(true, true, irr::video::SColor(150,50,50,50));
+            d_driver->beginScene(true, true, irr::video::SColor(0, 0, 0, 0));
             //draw scene
             d_smgr->drawAll();
             // draw gui
             guiSystem.renderGUI();
-            // render FPS
-            CEGUI::Font* fnt = guiSystem.getDefaultFont();
-            if (fnt)
-            {
-                guiSystem.getRenderer()->setQueueingEnabled(false);
-                fnt->drawText(fps_buff, CEGUI::Vector3(0, 0, 0),
-                    guiSystem.getRenderer()->getRect());
-            }
 
             d_driver->endScene();
         }
@@ -168,11 +210,13 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
     return true;
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::cleanup()
 {
     // Nothing to do here.
 }
 
+//----------------------------------------------------------------------------//
 #if CEGUI_IRR_SDK_VERSION >= 14
 bool CEGuiIrrlichtBaseApplication::OnEvent(const irr::SEvent& event)
 #else
@@ -189,14 +233,39 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
         }
     }
 
-    return (d_renderer != 0) ? d_renderer->OnEvent(event) : false;
+    return (d_renderer != 0) ? d_renderer->injectEvent(event) : false;
+    return false;
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::checkWindowResize()
 {
     irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
-    d_renderer->setDisplaySize(CEGUI::Size(cur_size.Width, cur_size.Height));
+
+//     CEGUI::System::getSingleton().notifyDisplaySizeChanged(
+//         CEGUI::Size(cur_size.Width, cur_size.Height));
+}
+
+//----------------------------------------------------------------------------//
+bool CEGuiIrrlichtBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+{
+    using namespace CEGUI;
+
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // render FPS:
+    Font* fnt = System::getSingleton().getDefaultFont();
+    if (fnt)
+    {
+        d_fps_geometry->reset();
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        d_fps_geometry->draw();
+    }
+
+    d_logo_geometry->draw();
+
+    return true;
 }
 
 #endif
-
