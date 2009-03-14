@@ -4,6 +4,7 @@ EXTRA_DIST = Basic.pkg \
              EventSet.pkg \
              Font.pkg \
              FontManager.pkg \
+             GeometryBuffer.pkg \
              HelperFunctions.pkg \
              Image.pkg \
              Imageset.pkg \
@@ -17,12 +18,18 @@ EXTRA_DIST = Basic.pkg \
              PropertyHelper.pkg \
              README \
              Renderer.pkg \
+             RenderEffect.pkg \
+             RenderingContext.pkg \
+             RenderingRoot.pkg \
+             RenderingSurface.pkg \
+             RenderingWindow.pkg \
              Scheme.pkg \
              SchemeManager.pkg \
              ScriptWindowHelper.pkg \
              System.pkg \
              Texture.pkg \
              UnifiedCoordSystem.pkg \
+             Vertex.pkg \
              Window.pkg \
              WindowFactoryManager.pkg \
              WindowManager.pkg \

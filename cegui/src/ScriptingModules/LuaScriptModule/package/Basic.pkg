@@ -21,6 +21,22 @@ $[
 CEGUI.Point = CEGUI.Vector2
 $]
 
+/***********************************************************************
+    Vector3
+***********************************************************************/
+class Vector3
+{
+    // rename 'd_x', 'd_y' and 'd_z' to just 'x', 'y' and 'z'
+    float d_x @ x;
+    float d_y @ y;
+    float d_z @ z;
+
+    bool operator== (const Vector3& vec) const;
+
+    Vector3();
+    Vector3(float x, float y, float z);
+};
+
 
 
 /***********************************************************************

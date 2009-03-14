@@ -30,6 +30,12 @@
 #include "CEGUI.h"
 #include "CEGUILua.h"
 #include "CEGUILuaFunctor.h"
+#include "CEGUIRenderingContext.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIRenderingWindow.h"
+#include "CEGUIGeometryBuffer.h"
+#include "CEGUIVertex.h"
+#include "CEGUIRenderEffect.h"
 #include <fstream>
 
 #define __operator_increment    operator++

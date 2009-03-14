@@ -127,3 +127,13 @@ class TreeEventArgs : public WindowEventArgs
 
    TreeEventArgs(Window* wnd);
 };
+
+/***********************************************************************
+    RenderQueueEventArgs
+***********************************************************************/
+class RenderQueueEventArgs : public EventArgs
+{
+    RenderQueueID queueID;
+
+    RenderQueueEventArgs(RenderQueueID id);
+};

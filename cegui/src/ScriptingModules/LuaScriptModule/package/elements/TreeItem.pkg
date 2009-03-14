@@ -38,8 +38,8 @@ class TreeItem
     Rect &getButtonLocation();
     bool getIsOpen();
     void toggleIsOpen();
-    TreeItem *getTreeItemFromIndex(size_t itemIndex);
-    size_t getItemCount() const;
+    TreeItem *getTreeItemFromIndex(unsigned long itemIndex);
+    unsigned long getItemCount() const;
     void addItem(TreeItem* item);
     void removeItem(const TreeItem* item);
     void setIcon(const Image &theIcon);

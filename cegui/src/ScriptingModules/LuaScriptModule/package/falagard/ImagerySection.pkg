@@ -4,9 +4,8 @@
 
 class ImagerySection
 {
-  void render(Window& srcWindow, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
-
-  void render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void render(Window& srcWindow, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
   void addImageryComponent(const ImageryComponent& img);
   void clearImageryComponents();
   void addTextComponent(const TextComponent& text);

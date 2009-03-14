@@ -1,34 +1,32 @@
 /***********************************************************************
-	Renderer
+    Renderer
 ***********************************************************************/
-class Renderer : public EventSet
+class Renderer
 {
-	//void doRender();
-	//void clearRenderList();
+    RenderingRoot& getDefaultRenderingRoot();
 
-	//void resetZValue();
-	//void advanceZValue();
-	float getCurrentZ() const;
-	float getZLayer(unsigned int layer) const;
+    GeometryBuffer& createGeometryBuffer();
+    void destroyGeometryBuffer(const GeometryBuffer& buffer);
+    void destroyAllGeometryBuffers();
 
-	//void setQueueingEnabled(bool setting);
-	bool isQueueingEnabled() const;
+    //TextureTarget* createTextureTarget();
+    //void destroyTextureTarget(TextureTarget* target);
+    //void destroyAllTextureTargets();
 
-	Texture* createTexture();
-	Texture* createTexture(float size);
-	Texture* createTexture(string filename, string resourcegroup);
+    Texture& createTexture();
+    Texture& createTexture(string filename, string resourceGroup);
+    Texture& createTexture(const Size& size);
+    void destroyTexture(Texture& texture);
+    void destroyAllTextures();
 
-	void destroyTexture(Texture* tex);
-	void destroyAllTextures();
+    void setDisplaySize(const Size& sz);
+    const Size& getDisplaySize() const;
+    const Vector2& getDisplayDPI() const;
 
-	float getWidth() const;
-	float getHeight() const;
-	Size getSize() const;
-	Rect getRect() const;
+    unsigned int getMaxTextureSize() const;
 
-	unsigned int getMaxTextureSize() const;
-	unsigned int getHorzScreenDPI() const;
-	unsigned int getVertScreenDPI() const;
+    string getIdentifierString() const;
 
-    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
+    //void beginRendering();
+    //void endRendering();
 };
