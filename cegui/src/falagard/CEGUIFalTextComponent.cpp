@@ -81,7 +81,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool /*clipToDisplay*/) const
     {
         // get font to use
         Font* font;

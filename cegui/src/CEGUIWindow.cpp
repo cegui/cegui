@@ -1413,7 +1413,7 @@ void Window::drawSelf(const RenderingContext& ctx)
 }
 
 //----------------------------------------------------------------------------//
-void Window::bufferGeometry(const RenderingContext& ctx)
+void Window::bufferGeometry(const RenderingContext&)
 {
     if (d_needsRedraw)
     {
