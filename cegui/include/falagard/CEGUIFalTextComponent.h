@@ -217,7 +217,7 @@ namespace CEGUI
 
     protected:
         // implemets abstract from base
-        void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
+        void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
 
     private:
         String               d_text;            //!< text rendered by this component.

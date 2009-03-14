@@ -561,7 +561,7 @@ void Listbox::handleUpdatedItemData(void)
         resortList();
 
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -777,7 +777,7 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 void Listbox::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 	fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
@@ -788,7 +788,7 @@ void Listbox::onListContentsChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onSelectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
@@ -798,7 +798,7 @@ void Listbox::onSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onSortModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSortModeChanged, e, EventNamespace);
 }
 
@@ -818,7 +818,7 @@ void Listbox::onMultiselectModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -829,7 +829,7 @@ void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -1097,7 +1097,7 @@ bool Listbox::resetList_impl(void)
 bool Listbox::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Listbox.
-    requestRedraw();
+    invalidate();
     return true;
 }
 

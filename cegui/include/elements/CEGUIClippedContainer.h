@@ -38,6 +38,13 @@ namespace CEGUI
 \brief
     Helper container window that has configurable clipping.
     Used by the ItemListbox widget.
+
+\deprecated
+    This class is deprecated and is scheduled for removal.  The function this
+    class used to provide was broken when the inner-rect (aka client area)
+    support got fixed.  The good news is that fixing inner-rect support
+    effectively negated the need for this class anyway - clipping areas can
+    now be established in the looknfeel and extracted via the WindowRenderer.
 */
 class CEGUIEXPORT ClippedContainer : public Window
 {
@@ -123,7 +130,7 @@ protected:
     /*************************************************************************
     	Overridden from Window.
     *************************************************************************/
-    virtual void drawSelf(float) {}
+    virtual void drawSelf(const RenderingContext&) {}
 
     /*************************************************************************
     	Data fields

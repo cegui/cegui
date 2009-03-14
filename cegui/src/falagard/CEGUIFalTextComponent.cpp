@@ -30,6 +30,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIFont.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -80,7 +81,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // get font to use
         Font* font;
@@ -136,8 +137,9 @@ namespace CEGUI
 
         // offset the font little down so that it's centered within its own spacing
         destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
-        // add text to the rendering cache for the target window.
-        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
+        // add geometry for text to the target window.
+        font->drawText(srcWindow.getGeometryBuffer(), renderString, destRect,
+                       clipper, (TextFormatting)horzFormatting, finalColours);
     }
 
     void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const

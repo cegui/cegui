@@ -52,7 +52,6 @@ Titlebar::Titlebar(const String& type, const String& name) :
 	Window(type, name)
 {
 	addTitlebarProperties();
-
 	setAlwaysOnTop(true);
 
 	// basic initialisation
@@ -150,7 +149,9 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				if ((d_parent == 0) || (d_parent->getParent() == 0))
 				{
-					constrainArea = System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea);
+                    Rect screen(Vector2(0, 0),
+                                System::getSingleton().getRenderer()->getDisplaySize());
+					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
 				else 
 				{

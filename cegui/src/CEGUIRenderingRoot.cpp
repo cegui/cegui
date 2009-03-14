@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUITexture.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
-	
-	purpose:	Implements Texture base class
+    filename:   CEGUIRenderingRoot.cpp
+    created:    Mon Jan 12 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,12 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUITexture.h"
-
+#include "CEGUIRenderingRoot.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
+//----------------------------------------------------------------------------//
+RenderingRoot::RenderingRoot(RenderTarget& target) :
+    RenderingSurface(target)
+{
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

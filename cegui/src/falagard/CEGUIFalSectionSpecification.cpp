@@ -53,7 +53,7 @@ namespace CEGUI
         d_renderControlProperty(controlPropertySource)
     {}
 
-    void SectionSpecification::render(Window& srcWindow, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
+    void SectionSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         // see if we need to bother rendering
         if (d_renderControlProperty.empty() ||
@@ -74,7 +74,7 @@ namespace CEGUI
                     finalColours *= *modcols;
 
                 // render the imagery section
-                sect->render(srcWindow, base_z, &finalColours, clipper, clipToDisplay);
+                sect->render(srcWindow, &finalColours, clipper, clipToDisplay);
             }
             // do nothing here, errors are non-faltal and are logged for debugging purposes.
             catch (Exception&)
@@ -82,7 +82,7 @@ namespace CEGUI
         }
     }
 
-    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
+    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         try
         {
@@ -99,7 +99,7 @@ namespace CEGUI
                 finalColours *= *modcols;
 
             // render the imagery section
-            sect->render(srcWindow, baseRect, base_z, &finalColours, clipper, clipToDisplay);
+            sect->render(srcWindow, baseRect, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception&)

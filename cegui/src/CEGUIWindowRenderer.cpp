@@ -109,4 +109,11 @@ void WindowRenderer::onDetach()
     }
 }
 
+//----------------------------------------------------------------------------//
+void WindowRenderer::getRenderingContext(RenderingContext& ctx) const
+{
+    // default just calls back to the window implementation version.
+    return d_window->getRenderingContext_impl(ctx);
+}
+
 } // End of CEGUI namespace

@@ -70,16 +70,13 @@ namespace CEGUI
         \param srcWindow
             Window object to be used when calculating pixel values from BaseDim values.
 
-        \param base_z
-            base z value to be used for all imagery in the section.
-
         \param modColours
             ColourRect specifying colours to be modulated with the ImagerySection's master colours.  May be 0.
 
         \return
             Nothing.
         */
-        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -91,16 +88,13 @@ namespace CEGUI
         \param baseRect
             Rect object to be used when calculating pixel values from BaseDim values.
 
-        \param base_z
-            base z value to be used for all imagery in the section.
-
         \param modColours
             ColourRect specifying colours to be modulated with the ImagerySection's master colours.  May be 0.
 
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief

@@ -36,8 +36,10 @@
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUIXMLParser.h"
-#include "CEGUIXMLSerializer.h" 
-#include "CEGUIPropertyHelper.h" 
+#include "CEGUIXMLSerializer.h"
+#include "CEGUIPropertyHelper.h"
+#include "CEGUIGeometryBuffer.h"
+#include "CEGUIVertex.h"
 #include <iostream>
 #include <cmath>
 
@@ -56,9 +58,9 @@ String Imageset::d_defaultResourceGroup;
 /*************************************************************************
 	constructor
 *************************************************************************/
-Imageset::Imageset(const String& name, Texture* texture) :
+Imageset::Imageset(const String& name, Texture& texture) :
 	d_name(name),
-	d_texture(texture)
+	d_texture(&texture)
 {
 	if (!d_texture)
 	{
@@ -89,7 +91,7 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
 {
     // try to load the image file using the renderer
     d_texture =
-        System::getSingleton().getRenderer()->createTexture(filename,
+        &System::getSingleton().getRenderer()->createTexture(filename,
         resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
     // store texture filename
@@ -98,13 +100,14 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
 
     // initialse the auto-scaling for this Imageset
     d_autoScale = true;
-    setNativeResolution(
-        Size(d_texture->getWidth(), d_texture->getHeight()));
+    setNativeResolution(d_texture->getSize());
 
     // define the default image for this Imageset
     defineImage(
         "full_image",
-        Rect(0, 0, d_texture->getOriginalWidth(), d_texture->getOriginalHeight()),
+        Rect(0, 0,
+             d_texture->getOriginalDataSize().d_width,
+             d_texture->getOriginalDataSize().d_height),
         Point(0, 0)
     );
 }
@@ -205,40 +208,102 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 
 
 /*************************************************************************
-	Queues an area of the associated Texture the be drawn on the screen.
-	Low-level routine not normally used!
+    Queues an area of the associated Texture the be drawn on the screen.
+    Low-level routine not normally used!
 *************************************************************************/
-void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode) const
+void Imageset::draw(GeometryBuffer& buffer, const Rect& source_rect,
+    const Rect& dest_rect, const Rect* clip_rect,const ColourRect& colours,
+    QuadSplitMode quad_split_mode) const
 {
-	// get the rect area that we will actually draw to (i.e. perform clipping)
-	Rect final_rect(dest_rect.getIntersection(clip_rect));
+    // get the rect area that we will actually draw to (i.e. perform clipping)
+    Rect final_rect(clip_rect ? dest_rect.getIntersection(*clip_rect) : dest_rect );
 
-	// check if rect was totally clipped
-	if (final_rect.getWidth() != 0)
-	{
-        // Fix bug #45
-        // Obtain correct scale vlaue from the texture
-        const float x_scale = d_texture->getXScale();
-        const float y_scale = d_texture->getYScale();
+    // check if rect was totally clipped
+    if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
+        return;
 
-		float tex_per_pix_x = source_rect.getWidth() / dest_rect.getWidth();
-		float tex_per_pix_y = source_rect.getHeight() / dest_rect.getHeight();
+    // Fix bug #45
+    // Obtain correct scale values from the texture
+    const float x_scale = d_texture->getTexelScaling().d_x;
+    const float y_scale = d_texture->getTexelScaling().d_y;
 
-		// calculate final, clipped, texture co-ordinates
-		Rect  tex_rect((source_rect.d_left + ((final_rect.d_left - dest_rect.d_left) * tex_per_pix_x)) * x_scale,
-			(source_rect.d_top + ((final_rect.d_top - dest_rect.d_top) * tex_per_pix_y)) * y_scale,
-			(source_rect.d_right + ((final_rect.d_right - dest_rect.d_right) * tex_per_pix_x)) * x_scale,
-			(source_rect.d_bottom + ((final_rect.d_bottom - dest_rect.d_bottom) * tex_per_pix_y)) * y_scale);
+    float tex_per_pix_x = source_rect.getWidth() / dest_rect.getWidth();
+    float tex_per_pix_y = source_rect.getHeight() / dest_rect.getHeight();
 
-		final_rect.d_left	= PixelAligned(final_rect.d_left);
-		final_rect.d_right	= PixelAligned(final_rect.d_right);
-		final_rect.d_top	= PixelAligned(final_rect.d_top);
-		final_rect.d_bottom	= PixelAligned(final_rect.d_bottom);
+    // calculate final, clipped, texture co-ordinates
+    Rect  tex_rect((source_rect.d_left + ((final_rect.d_left - dest_rect.d_left) * tex_per_pix_x)) * x_scale,
+        (source_rect.d_top + ((final_rect.d_top - dest_rect.d_top) * tex_per_pix_y)) * y_scale,
+        (source_rect.d_right + ((final_rect.d_right - dest_rect.d_right) * tex_per_pix_x)) * x_scale,
+        (source_rect.d_bottom + ((final_rect.d_bottom - dest_rect.d_bottom) * tex_per_pix_y)) * y_scale);
 
-		// queue a quad to be rendered
-		d_texture->getRenderer()->addQuad(final_rect, z, d_texture, tex_rect, colours, quad_split_mode);
-	}
+    final_rect.d_left	= PixelAligned(final_rect.d_left);
+    final_rect.d_right	= PixelAligned(final_rect.d_right);
+    final_rect.d_top	= PixelAligned(final_rect.d_top);
+    final_rect.d_bottom	= PixelAligned(final_rect.d_bottom);
 
+    Vertex vbuffer[6];
+
+    // vertex 0
+    vbuffer[0].position   = Vector3(final_rect.d_left, final_rect.d_top, 0.0f);
+    vbuffer[0].colour_val = colours.d_top_left;
+    vbuffer[0].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+
+    // vertex 1
+    vbuffer[1].position   = Vector3(final_rect.d_left, final_rect.d_bottom, 0.0f);
+    vbuffer[1].colour_val = colours.d_bottom_left;
+    vbuffer[1].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_bottom);
+
+    // vertex 2
+    vbuffer[2].position.d_x   = final_rect.d_right;
+    vbuffer[2].position.d_z   = 0.0f;
+    vbuffer[2].colour_val     = colours.d_bottom_right;
+    vbuffer[2].tex_coords.d_x = tex_rect.d_right;
+
+    // top-left to bottom-right diagonal
+    if (quad_split_mode == TopLeftToBottomRight)
+    {
+        vbuffer[2].position.d_y   = final_rect.d_bottom;
+        vbuffer[2].tex_coords.d_y = tex_rect.d_bottom;
+    }
+    // bottom-left to top-right diagonal
+    else
+    {
+        vbuffer[2].position.d_y   = final_rect.d_top;
+        vbuffer[2].tex_coords.d_y = tex_rect.d_top;
+    }
+
+    // vertex 3
+    vbuffer[3].position   = Vector3(final_rect.d_right, final_rect.d_top, 0.0f);
+    vbuffer[3].colour_val = colours.d_top_right;
+    vbuffer[3].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_top);
+
+    // vertex 4
+    vbuffer[4].position.d_x   = final_rect.d_left;
+    vbuffer[4].position.d_z   = 0.0f;
+    vbuffer[4].colour_val     = colours.d_top_left;
+    vbuffer[4].tex_coords.d_x = tex_rect.d_left;
+
+    // top-left to bottom-right diagonal
+    if (quad_split_mode == TopLeftToBottomRight)
+    {
+        vbuffer[4].position.d_y   = final_rect.d_top;
+        vbuffer[4].tex_coords.d_y = tex_rect.d_top;
+    }
+    // bottom-left to top-right diagonal
+    else
+    {
+        vbuffer[4].position.d_y   = final_rect.d_bottom;
+        vbuffer[4].tex_coords.d_y = tex_rect.d_bottom;
+    }
+
+    // vertex 5
+    vbuffer[5].position = Vector3(final_rect.d_right, final_rect.d_bottom, 0.0f);
+    vbuffer[5].colour_val= colours.d_bottom_right;
+    vbuffer[5].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+
+    // TODO: Remove cast when GeometryBuffer gets it's APIs fixed!
+    buffer.setActiveTexture((Texture*)d_texture);
+    buffer.appendGeometry(vbuffer, 6);
 }
 
 /*************************************************************************
@@ -249,7 +314,7 @@ void Imageset::unload(void)
 	undefineAllImages();
 
 	// cleanup texture
-	System::getSingleton().getRenderer()->destroyTexture(d_texture);
+	System::getSingleton().getRenderer()->destroyTexture(*d_texture);
 	d_texture = 0;
 }
 
@@ -304,14 +369,15 @@ void Imageset::setNativeResolution(const Size& size)
 	d_nativeVertRes = size.d_height;
 
 	// re-calculate scaling factors & notify images as required
-	notifyScreenResolution(System::getSingleton().getRenderer()->getSize());
+	notifyDisplaySizeChanged(
+       System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 
 /*************************************************************************
 	Notify the Imageset of the current (usually new) display resolution.
 *************************************************************************/
-void Imageset::notifyScreenResolution(const Size& size)
+void Imageset::notifyDisplaySizeChanged(const Size& size)
 {
 	d_horzScaling = size.d_width / d_nativeHorzRes;
 	d_vertScaling = size.d_height / d_nativeVertRes;
@@ -339,7 +405,7 @@ void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_autoScale)
         xml_stream.attribute("AutoScaled", "true");
-    
+
     // output images
     ImageIterator image = getIterator();
     while (!image.isAtEnd())

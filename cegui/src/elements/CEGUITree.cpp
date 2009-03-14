@@ -600,19 +600,19 @@ void Tree::setItemSelectState(size_t item_index, bool state)
 void Tree::handleUpdatedItemData(void)
 {
     configureScrollbars();
-    requestRedraw();
+    invalidate();
 }
 
 /*************************************************************************
     Perform the actual rendering for this Window.
 *************************************************************************/
-void Tree::populateRenderCache()
+void Tree::populateGeometryBuffer()
 {
     // get the derived class to render general stuff before we handle the items
     cacheTreeBaseImagery();
     
     // Render list items
-    Vector3  itemPos;
+    Vector2  itemPos;
     float    widest = getWidestItemWidth();
     
     // calculate position of area we have to render into
@@ -622,13 +622,14 @@ void Tree::populateRenderCache()
     // set up some initial positional details for items
     itemPos.d_x = d_itemArea.d_left - d_horzScrollbar->getScrollPosition();
     itemPos.d_y = d_itemArea.d_top - d_vertScrollbar->getScrollPosition();
-    itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
     
-    drawItemList(d_listItems, d_itemArea, widest, itemPos, d_renderCache, getEffectiveAlpha());
+    drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
+                 getEffectiveAlpha());
 }
 
 // Recursive!
-void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vector3 &itemPos, RenderCache& cache, float alpha)
+void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
+                        Vector2& itemPos, GeometryBuffer& geometry, float alpha)
 {
     if (itemList.empty())
         return;
@@ -655,7 +656,7 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
         if (itemClipper.getHeight() > 0)
         {
             itemIsVisible = true;
-            itemList[i]->draw(d_renderCache, itemRect, itemPos.d_z, alpha, &itemClipper);
+            itemList[i]->draw(geometry, itemRect, alpha, &itemClipper);
         }
         else
         {
@@ -676,20 +677,21 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
             {
                 // Draw the Close button
                 if (itemIsVisible)
-                    d_closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                    d_closeButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;
                 
                 itemPos.d_x += 20;
-                drawItemList(itemList[i]->getItemList(), itemsArea, widest, itemPos, cache, alpha);
+                drawItemList(itemList[i]->getItemList(), itemsArea, widest,
+                             itemPos, geometry, alpha);
                 itemPos.d_x -= 20;
             }
             else
             {
                 // Draw the Open button
                 if (itemIsVisible)
-                    d_openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                    d_openButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;
@@ -993,7 +995,7 @@ void Tree::addTreeEvents(void)
 void Tree::onListContentsChanged(WindowEventArgs& e)
 {
     configureScrollbars();
-    requestRedraw();
+    invalidate();
     fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
@@ -1003,7 +1005,7 @@ void Tree::onListContentsChanged(WindowEventArgs& e)
 *************************************************************************/
 void Tree::onSelectionChanged(TreeEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
@@ -1012,7 +1014,7 @@ void Tree::onSelectionChanged(TreeEventArgs& e)
 *************************************************************************/
 void Tree::onSortModeChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventSortModeChanged, e, EventNamespace);
 }
 
@@ -1030,7 +1032,7 @@ void Tree::onMultiselectModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Tree::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -1040,7 +1042,7 @@ void Tree::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Tree::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -1050,7 +1052,7 @@ void Tree::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Tree::onBranchOpened(TreeEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventBranchOpened, e, EventNamespace);
 }
 
@@ -1060,7 +1062,7 @@ void Tree::onBranchOpened(TreeEventArgs& e)
 *************************************************************************/
 void Tree::onBranchClosed(TreeEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventBranchClosed, e, EventNamespace);
 }
 
@@ -1083,7 +1085,7 @@ void Tree::onSized(WindowEventArgs& e)
 void Tree::onMouseButtonDown(MouseEventArgs& e)
 {
     // base class processing
-    // populateRenderCache();
+    // populateGeometryBuffer();
     Window::onMouseButtonDown(e);
     
     if (e.button == LeftButton)
@@ -1100,7 +1102,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             modified = true;
             TreeEventArgs args(this);
             args.treeItem = item;
-            populateRenderCache();
+            populateGeometryBuffer();
             Rect buttonLocation = item->getButtonLocation();
             if ((localPos.d_x >= buttonLocation.d_left) && (localPos.d_x <= buttonLocation.d_right) &&
                 (localPos.d_y >= buttonLocation.d_top) && (localPos.d_y <= buttonLocation.d_bottom))
@@ -1119,7 +1121,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 }
                 
                 // Update the item screen locations, needed to update the scrollbars.
-                //	populateRenderCache();
+                //	populateGeometryBuffer();
                 
                 // Opened or closed a tree branch, so must update scrollbars.
                 configureScrollbars();
@@ -1376,7 +1378,7 @@ bool Tree::resetList_impl(void)
 bool Tree::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Tree.
-    requestRedraw();
+    invalidate();
     return true;
 }
 

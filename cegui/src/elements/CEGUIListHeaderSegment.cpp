@@ -135,7 +135,7 @@ void ListHeaderSegment::setSortDirection(SortDirection sort_dir)
 		WindowEventArgs args(this);
 		onSortDirectionChanged(args);
 
-		requestRedraw();
+		invalidate();
 	}
 
 }
@@ -205,7 +205,7 @@ void ListHeaderSegment::onSizingSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSortDirectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSortDirectionChanged, e, EventNamespace);
 }
 
@@ -243,7 +243,7 @@ void ListHeaderSegment::onSegmentDragStop(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSegmentDragPositionChanged, e, EventNamespace);
 }
 
@@ -253,7 +253,7 @@ void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentSized(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSegmentSized, e, EventNamespace);
 }
 
@@ -282,8 +282,8 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -364,14 +364,14 @@ void ListHeaderSegment::initSizingHoverState(void)
 		MouseCursor::getSingleton().setImage(d_sizingMouseCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
-		requestRedraw();
+		invalidate();
 	}
 
 	// reset segment hover as needed.
 	if (d_segmentHover)
 	{	
 		d_segmentHover = false;
-		requestRedraw();
+		invalidate();
 	}
 
 }
@@ -387,14 +387,14 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	{
 		d_splitterHover = false;
 		MouseCursor::getSingleton().setImage(getMouseCursor());
-		requestRedraw();
+		invalidate();
 	}
 
 	// set segment hover state if not already set.
 	if ((!d_segmentHover) && isClickable())
 	{
 		d_segmentHover = true;
-		requestRedraw();
+		invalidate();
 	}
 }
 
@@ -480,14 +480,14 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		{
 			d_splitterHover = false;
 			MouseCursor::getSingleton().setImage(getMouseCursor());
-			requestRedraw();
+			invalidate();
 		}
 
 		// reset segment hover state if not already done.
 		if (d_segmentHover)
 		{	
 			d_segmentHover = false;
-			requestRedraw();
+			invalidate();
 		}
 
 	}
@@ -601,7 +601,7 @@ void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
 	d_splitterHover = false;
 	d_dragSizing = false;
 	d_segmentHover = false;
-	requestRedraw();
+	invalidate();
 }
 
 

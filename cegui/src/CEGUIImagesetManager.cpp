@@ -74,7 +74,7 @@ ImagesetManager::~ImagesetManager(void)
 	Create an empty Imageset that has the given name and uses the
 	given Texture
 *************************************************************************/
-Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
+Imageset* ImagesetManager::createImageset(const String& name, Texture& texture)
 {
 	Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +"' with texture only.");
 
@@ -201,14 +201,14 @@ Imageset* ImagesetManager::getImageset(const String& name) const
 	Notify the ImagesetManager of the current (usually new) display
 	resolution.
 *************************************************************************/
-void ImagesetManager::notifyScreenResolution(const Size& size)
+void ImagesetManager::notifyDisplaySizeChanged(const Size& size)
 {
 	// notify all attached Imageset objects of the change in resolution
 	ImagesetRegistry::iterator pos = d_imagesets.begin(), end = d_imagesets.end();
 
 	for (; pos != end; ++pos)
 	{
-		pos->second->notifyScreenResolution(size);
+        pos->second->notifyDisplaySizeChanged(size);
 	}
 
 }

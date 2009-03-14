@@ -29,6 +29,7 @@
 #define _CEGUIFalSectionSpecification_h_
 
 #include "CEGUIWindow.h"
+#include "CEGUIColourRect.h"
 
 
 // Start of CEGUI namespace section
@@ -89,13 +90,10 @@ namespace CEGUI
         \param srcWindow
             Window object to be used when calculating pixel values from BaseDim values.
 
-        \param base_z
-            base z co-ordinate to use for all imagery in the linked section.
-
         \return
             Nothing.
         */
-        void render(Window& srcWindow, float base_z, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -107,13 +105,10 @@ namespace CEGUI
         \param baseRect
             Rect object to be used when calculating pixel values from BaseDim values.
 
-        \param base_z
-            base z co-ordinate to use for all imagery in the linked section.
-
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief

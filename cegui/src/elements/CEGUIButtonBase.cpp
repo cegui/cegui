@@ -87,7 +87,7 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 	// if state has changed, trigger a re-draw
 	if (oldstate != d_hovering)
 	{
-		requestRedraw();
+		invalidate();
 	}
 
 }
@@ -126,7 +126,7 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 		{
 			d_pushed = true;
 			updateInternalState(e.position);
-			requestRedraw();
+			invalidate();
 		}
 
 		// event was handled by us.
@@ -164,7 +164,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 
 	d_pushed = false;
 	updateInternalState(MouseCursor::getSingletonPtr()->getPosition());
-	requestRedraw();
+	invalidate();
 
 	// event was handled by us.
 	e.handled = true;
@@ -180,7 +180,7 @@ void ButtonBase::onMouseLeaves(MouseEventArgs& e)
 	Window::onMouseLeaves(e);
 
 	d_hovering = false;
-	requestRedraw();
+	invalidate();
 
 	e.handled = true;
 }

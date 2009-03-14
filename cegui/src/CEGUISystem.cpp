@@ -53,11 +53,16 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIDynamicModule.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIRenderingWindow.h"
+#include "CEGUIRenderingContext.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <ctime>
 #include <clocale>
 
 //This block includes the proper headers when static linking
 #if defined(CEGUI_STATIC)
+    // XML Parser
 	#ifdef CEGUI_WITH_EXPAT
 		#include "XMLParserModules/ExpatParser/CEGUIExpatParserModule.h"
 	#elif CEGUI_WITH_TINYXML
@@ -65,8 +70,21 @@
 	#elif CEGUI_WITH_XERCES
 		#include "XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
 	#endif
+    // Image codec
+    #if defined(CEGUI_CODEC_SILLY)
+        #include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+    #elif defined(CEGUI_CODEC_TGA)
+        #include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
+    #elif defined(CEGUI_CODEC_CORONA)
+        #include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
+    #elif defined(CEGUI_CODEC_DEVIL)
+        #include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
+    #elif defined(CEGUI_CODEC_FREEIMAGE)
+        #include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
+    #else //Make Silly the default
+        #include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+    #endif
 #endif
-
 
 #define S_(X) #X
 #define STRINGIZE(X) S_(X)
@@ -160,9 +178,12 @@ const String System::EventMultiClickAreaSizeChanged( "MultiClickAreaSizeChanged"
 const String System::EventDefaultFontChanged( "DefaultFontChanged" );
 const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
 const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
+const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
 
 // Holds name of default XMLParser
 String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
+// Holds name of default ImageCodec
+String System::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 
 
 /*************************************************************************
@@ -171,12 +192,14 @@ String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
 System::System(Renderer* renderer,
                ResourceProvider* resourceProvider,
                XMLParser* xmlParser,
+               ImageCodec* imageCodec,
                ScriptModule* scriptModule,
                const String& configFile,
                const String& logFile)
 
 : d_renderer(renderer),
-  d_resourceProvider(resourceProvider ? resourceProvider : d_renderer->createResourceProvider()),
+  d_resourceProvider(resourceProvider),
+  d_ourResourceProvider(false),
   d_defaultFont(0),
   d_wndWithMouse(0),
   d_activeSheet(0),
@@ -199,7 +222,9 @@ System::System(Renderer* renderer,
   d_ourXmlParser(false),
   d_parserModule(0),
   d_defaultTooltip(0),
-  d_weOwnTooltip(false)
+  d_weOwnTooltip(false),
+  d_imageCodec(imageCodec),
+  d_imageCodecModule(0)
 {
     bool userCreatedLogger = true;
 
@@ -217,6 +242,13 @@ System::System(Renderer* renderer,
         userCreatedLogger = false;
     }
 
+    // create default resource provider, unless one was already provided
+    if (!d_resourceProvider)
+    {
+        d_resourceProvider = new DefaultResourceProvider;
+        d_ourResourceProvider = true;
+    }
+
     // Set CEGUI version
     d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
@@ -224,6 +256,10 @@ System::System(Renderer* renderer,
 
     // handle initialisation and setup of the XML parser
     setupXMLParser();
+
+    // set up ImageCodec if needed
+    if (!d_imageCodec)
+        setupImageCodec("");
 
     // strings we may get from the configuration file.
     String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
@@ -297,9 +333,6 @@ System::System(Renderer* renderer,
     // success - we are created!  Log it for prosperity :)
     outputLogHeader();
 
-    // subscribe to hear about display mode changes
-    d_rendererCon = d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
-
     // load base scheme
     if (!configSchemeName.empty())
     {
@@ -366,8 +399,7 @@ System::~System(void)
 
 	}
 
-    // unsubscribe from the renderer
-    d_rendererCon->disconnect();
+    cleanupImageCodec();
 
     // cleanup XML stuff
     cleanupXMLParser();
@@ -393,6 +425,10 @@ System::~System(void)
 	// cleanup singletons
     destroySingletons();
 
+    // cleanup resource provider if we own it
+    if (d_ourResourceProvider)
+        delete d_resourceProvider;
+
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
 	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
@@ -409,35 +445,26 @@ System::~System(void)
 *************************************************************************/
 void System::renderGUI(void)
 {
-	//////////////////////////////////////////////////////////////////////////
-	// This makes use of some tricks the Renderer can do so that we do not
-	// need to do a full redraw every frame - only when some UI element has
-	// changed.
-	//
-	// Since the mouse is likely to move very often, and in order not to
-	// short-circuit the above optimisation, the mouse is not queued, but is
-	// drawn directly to the display every frame.
-	//////////////////////////////////////////////////////////////////////////
+    d_renderer->beginRendering();
 
 	if (d_gui_redraw)
 	{
-		d_renderer->resetZValue();
-		d_renderer->setQueueingEnabled(true);
-		d_renderer->clearRenderList();
-
 		if (d_activeSheet)
 		{
+            RenderingSurface& rs = d_activeSheet->getTargetRenderingSurface();
+            rs.clearGeometry();
 			d_activeSheet->render();
+
+            if (rs.isRenderingWindow())
+                static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
 		}
 
 		d_gui_redraw = false;
 	}
 
-	d_renderer->doRender();
-
-	// draw mouse
-	d_renderer->setQueueingEnabled(false);
+    d_renderer->getDefaultRenderingRoot().draw();
 	MouseCursor::getSingleton().draw();
+    d_renderer->endRendering();
 
     // do final destruction on dead-pool windows
     WindowManager::getSingleton().cleanDeadPool();
@@ -1390,27 +1417,33 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-bool System::handleDisplaySizeChange(const EventArgs&)
+void System::notifyDisplaySizeChanged(const Size& new_size)
 {
-	// notify the imageset/font manager of the size change
-	Size new_sz = getRenderer()->getSize();
-	ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
-	FontManager::getSingleton().notifyScreenResolution(new_sz);
+    // notify other components of the display size change
+    d_renderer->setDisplaySize(new_size);
+    ImagesetManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    MouseCursor::getSingleton().notifyDisplaySizeChanged(new_size);
 
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
+    //
+    // FIXME: This is no longer correct, the RenderTarget the sheet is using as
+    // FIXME: it's parent element may not be the main screen.
 	if (d_activeSheet)
 	{
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
 	}
 
+    // Fire event
+    DisplayEventArgs args(new_size);
+    fireEvent(EventDisplaySizeChanged, args, EventNamespace);
+
     Logger::getSingleton().logEvent(
         "Display resize:"
-        " w=" + PropertyHelper::floatToString(new_sz.d_width) +
-        " h=" + PropertyHelper::floatToString(new_sz.d_height));
-
-	return true;
+        " w=" + PropertyHelper::floatToString(new_size.d_width) +
+        " h=" + PropertyHelper::floatToString(new_size.d_height));
 }
 
 
@@ -1716,5 +1749,97 @@ bool System::updateWindowContainingMouse()
     return true;
 }
 
+//----------------------------------------------------------------------------//
+ImageCodec& System::getImageCodec() const
+{
+    return *d_imageCodec;
+}
+
+//----------------------------------------------------------------------------//
+void System::setImageCodec(const String& codecName)
+{
+    setupImageCodec(codecName);
+}
+
+//----------------------------------------------------------------------------//
+void System::setImageCodec(ImageCodec& codec)
+{
+    cleanupImageCodec();
+    d_imageCodec = &codec;
+    d_imageCodecModule = 0;
+}
+
+//----------------------------------------------------------------------------//
+void System::setupImageCodec(const String& codecName)
+{
+    // Cleanup the old image codec
+    if (d_imageCodec)
+        cleanupImageCodec();
+
+    // Test whether we should use the default codec or not
+    if (codecName.empty())
+        // when statically linked the default codec is already in the system
+        #if defined(CEGUI_STATIC)
+            d_imageCodecModule = 0;
+        #else
+            d_imageCodecModule =
+                new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
+        #endif
+    else
+        d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
+
+    //Check to make sure we have a module...
+    if (d_imageCodecModule)
+    {
+        // Create the codec object itself
+        ImageCodec*(*createFunc)(void) =
+            (ImageCodec*(*)(void))d_imageCodecModule->
+                getSymbolAddress("createImageCodec");
+        d_imageCodec = createFunc();
+    }
+    else
+    {
+        #if defined(CEGUI_STATIC)
+            d_imageCodec = createImageCodec();
+        #else
+            throw InvalidRequestException("Unable to load codec " + codecName);
+        #endif
+    }
+}
+
+//----------------------------------------------------------------------------//
+void System::cleanupImageCodec()
+{
+    if (d_imageCodec && d_imageCodecModule)
+    {
+        void(*deleteFunc)(ImageCodec*) =
+            (void(*)(ImageCodec*))d_imageCodecModule->
+                getSymbolAddress("destroyImageCodec");
+        deleteFunc(d_imageCodec);
+        d_imageCodec = 0;
+        delete d_imageCodecModule;
+        d_imageCodecModule = 0;
+    }
+    else
+    {
+        #if defined(CEGUI_STATIC)
+            destroyImageCodec(d_imageCodec);
+        #endif
+    }
+}
+
+//----------------------------------------------------------------------------//
+void System::setDefaultImageCodecName(const String& codecName)
+{
+    d_defaultImageCodecName = codecName;
+}
+
+//----------------------------------------------------------------------------//
+const String& System::getDefaultImageCodecName()
+{
+    return d_defaultImageCodecName;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

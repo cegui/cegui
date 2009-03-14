@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "elements/CEGUIScrolledContainer.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -167,11 +168,8 @@ namespace CEGUI
 
     Rect ScrolledContainer::getUnclippedInnerRect_impl(void) const
     {
-        // return inner rect of our parent when possible,
-        // or of the screen when not.
-        return d_parent ?
-            d_parent->getUnclippedInnerRect_impl() :
-            System::getSingleton().getRenderer()->getRect();
+        // return the size of our content as our inner rect.
+        return CoordConverter::windowToScreen(*this, d_contentArea);
     }
 
     void ScrolledContainer::onChildAdded(WindowEventArgs& e)

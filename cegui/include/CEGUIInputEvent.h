@@ -342,6 +342,21 @@ public:
 	DragContainer*	dragDropItem; //<! pointer to the DragContainer window being dragged / dropped.
 };
 
+/*!
+\brief
+    EventArgs based class that is used for notifications regarding the main
+    display.
+*/
+class CEGUIEXPORT DisplayEventArgs : public EventArgs
+{
+public:
+    DisplayEventArgs(const Size& sz) : size(sz) {}
+
+    //! current / new size of the display.
+    Size size;
+};
+
+
 } // End of  CEGUI namespace section
 
 

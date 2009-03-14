@@ -40,28 +40,20 @@ namespace CEGUI
 
     void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rect* clipper) const
     {
-        float base_z;
+        // TODO: Fix layer priority handling
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-        {
-            // TODO: Magic number removal
-            base_z = -0.0000001f * static_cast<float>((*curr).getLayerPriority());
-            (*curr).render(srcWindow, base_z, modcols, clipper, d_clipToDisplay);
-        }
+            (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
     }
 
     void StateImagery::render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols, const Rect* clipper) const
     {
-        float base_z;
+        // TODO: Fix layer priority handling
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-        {
-            // TODO: Magic number removal
-            base_z = -0.0000001f * static_cast<float>((*curr).getLayerPriority());
-            (*curr).render(srcWindow, baseRect, base_z, modcols, clipper, d_clipToDisplay);
-        }
+            (*curr).render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);
     }
 
     void StateImagery::addLayer(const LayerSpecification& layer)
