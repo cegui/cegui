@@ -8,7 +8,6 @@ INCLUDES += -I$(top_srcdir)/cegui/include \
             -I$(top_srcdir)/cegui/include/RendererModules/OpenGLGUIRenderer \
             $(OpenGL_CFLAGS)
 
-
 libCEGUIOpenGLRenderer_la_LDFLAGS =
 
 if MINGW32_BUILD
@@ -27,7 +26,13 @@ libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) \
 libCEGUIOpenGLRenderer_la_LDFLAGS += -release @PACKAGE_VERSION@
 
 lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
-libCEGUIOpenGLRenderer_la_SOURCES = openglrenderer.cpp opengltexture.cpp
+libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp \
+                                    CEGUIOpenGLGLXPBTextureTarget.cpp \
+                                    CEGUIOpenGLGeometryBuffer.cpp \
+                                    CEGUIOpenGLRenderer.cpp \
+                                    CEGUIOpenGLRenderTarget.cpp \
+                                    CEGUIOpenGLTexture.cpp \
+                                    CEGUIOpenGLViewportTarget.cpp
 
 if BUILD_USING_INTERNAL_GLEW
 libCEGUIOpenGLRenderer_la_SOURCES += GLEW/src/glew.c
@@ -37,4 +42,8 @@ noinst_HEADERS= GLEW/GL/glew.h \
                 GLEW/GL/glxew.h \
                 GLEW/GL/wglew.h
 
-EXTRA_DIST = GLEW/GLEW-LICENSE
+EXTRA_DIST = GLEW/GLEW-LICENSE \
+             CEGUIOpenGLApplePBTextureTarget.cpp \
+             CEGUIOpenGLApplePBTextureTarget.h \
+             CEGUIOpenGLWGLPBTextureTarget.cpp \
+             CEGUIOpenGLWGLPBTextureTarget.h
