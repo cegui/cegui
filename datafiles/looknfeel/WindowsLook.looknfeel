@@ -404,6 +404,7 @@
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
         <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -799,6 +800,7 @@
         <Property name="NWSESizingCursorImage" value="set:WindowsLook image:MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="set:WindowsLook image:MouseNeSwCursor" />
         <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -1428,6 +1430,7 @@
                 <Dim type="Height" ><AbsoluteDim value="16" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
+            <Property name="NonClient" value="True" />
         </Child>
         <Child  type="WindowsLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
             <Area>
@@ -1437,6 +1440,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
+            <Property name="NonClient" value="True" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -2717,6 +2721,7 @@
                 <Dim type="Height" ><AbsoluteDim value="16" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
+            <Property name="NonClient" value="True" />
         </Child>
         <Child  type="WindowsLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
             <Area>
@@ -2726,6 +2731,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
+            <Property name="NonClient" value="True" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -4413,6 +4419,7 @@
     -->
     <WidgetLook name="WindowsLook/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FF000000" redrawOnWrite="true" />
+        <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>

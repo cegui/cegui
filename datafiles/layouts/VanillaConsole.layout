@@ -32,20 +32,18 @@
             <Property Name="ID" Value="3" />
             <Property Name="ReadOnly" Value="True" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedPosition" Value="{{0,7},{0,35}}" />
-            <Property Name="UnifiedSize" Value="{{1,-14},{1,-75}}" />
-            <Property Name="Text">
-CEGUI Demo Console - F12 toggles this window
-          
+            <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
+            <Property Name="UnifiedSize" Value="{{1,-14},{1,-47}}" />
+            <Property Name="Text">CEGUI Demo Console - F12 toggles this window
+
 It's now easy to add multiline text property.
 Line 1
 <![CDATA[
-You can now put <xml>stuff</xml> in your property easly " " " 
+You can now put <xml>stuff</xml> in your property easly " " "
 ]]>
 Line 2
-Line 3 
+Line 3
 </Property>
-              
         </Window>
     </Window>
 </GUILayout>

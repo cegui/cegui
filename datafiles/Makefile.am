@@ -25,6 +25,7 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              imagesets/FairChar.tga \
              imagesets/GPN-2000-001437.tga \
              imagesets/Imageset.xsd \
+             imagesets/logo.png \
              imagesets/ReadMe.txt \
              imagesets/TaharezLook.imageset \
              imagesets/TaharezLook.tga \

@@ -7,7 +7,7 @@
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/RadioButton" />
 	<FalagardMapping WindowType="TaharezLook/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="TaharezLook/FrameWindow" />
 	<FalagardMapping WindowType="TaharezLook/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="TaharezLook/Titlebar" />
-	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/SystemButton" LookNFeel="TaharezLook/Button" />
+	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button" LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Editbox"          TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="TaharezLook/Editbox" />
 	<FalagardMapping WindowType="TaharezLook/MultiLineEditbox" TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="TaharezLook/MultiLineEditbox" />
 	<FalagardMapping WindowType="TaharezLook/Menubar"   TargetType="CEGUI/Menubar"   Renderer="Falagard/Menubar"   LookNFeel="TaharezLook/Menubar" />

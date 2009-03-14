@@ -17,8 +17,8 @@
 
             <Window Type="Vanilla/Listbox" Name="Demo7/Window2/Listbox">
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,35}}" />
-                <Property Name="UnifiedSize" Value="{{1,-14},{1,-108}}" />
+                <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
+                <Property Name="UnifiedSize" Value="{{1,-14},{1,-80}}" />
             </Window>
 
             <Window Type="Vanilla/StaticText" Name="Demo/NewNode/label1">
@@ -69,8 +69,8 @@
 
             <Window Type="Vanilla/StaticText" Name="Demo/NamespaceViewer/area1">
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,35}}" />
-                <Property Name="UnifiedSize" Value="{{1,-14},{0,65}}" />
+                <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
+                <Property Name="UnifiedSize" Value="{{1,-14},{0,93}}" />
             </Window>
 
             <Window Type="Vanilla/Listbox" Name="Demo/NamespaceViewer/area2">
