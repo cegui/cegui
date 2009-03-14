@@ -1,15 +1,14 @@
 if BUILD_OPENGL_RENDERER
 OPENGL=OpenGLGUIRenderer
 endif
+if BUILD_OGRE_RENDERER
+OGRE=OgreGUIRenderer
+endif
 if BUILD_IRRLICHT_RENDERER
-IRRLICHT=IrrlichtRenderer
+IRRLICHT=IrrlichtGUIRenderer
 endif
 if BUILD_DIRECTFB_RENDERER
-DIRECTFB=directfbRenderer
+DIRECTFB=DirectFBGUIRenderer
 endif
-SUBDIRS = . \
-          $(OPENGL) \
-          $(IRRLICHT) \
-          $(DIRECTFB) \
-          directx9GUIRenderer \
-          directx10GUIRenderer
+SUBDIRS = . $(OPENGL) $(OGRE) $(IRRLICHT) $(DIRECTFB) \
+          Direct3D9GUIRenderer Direct3D10GUIRenderer
