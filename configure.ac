@@ -6,8 +6,8 @@ dnl now done like this to save repetition, and make it more explicit where
 dnl we should define these numbers (we could pick up the same info by other means
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
-m4_define([CEGUI_MIN_VER], 7)
-m4_define([CEGUI_REL_VER], 0)
+m4_define([CEGUI_REL_VER], 6)
+m4_define([CEGUI_REL_VER], 9999)
 
 dnl Construct the final version number out of the sub-version values specified above
 m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
@@ -63,6 +63,7 @@ AC_SUBST(pcre_CFLAGS)
 AC_SUBST(pcre_LIBS)
 
 CEGUI_CHECK_XML_PARSERS
+CEGUI_CHECK_IMAGE_CODECS
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -100,6 +101,13 @@ CEGUI_CHECK_WANTS_SAMPLES
 # decide whether to build the lua module
 CEGUI_CHECK_LUA
 
+dnl versioning info for the Ogre renderer
+CEGUI_OGRE_CURRENT=0
+CEGUI_OGRE_REVISION=0
+CEGUI_OGRE_AGE=0
+CEGUI_OGRE_VERSION_INFO=$CEGUI_OGRE_CURRENT:$CEGUI_OGRE_REVISION:$CEGUI_OGRE_AGE
+AC_SUBST(CEGUI_OGRE_VERSION_INFO)
+
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
@@ -116,12 +124,13 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/include/ImageCodecModules/SILLYImageCodec/Makefile
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
-                 cegui/include/RendererModules/directx9GUIRenderer/Makefile
-                 cegui/include/RendererModules/directx10GUIRenderer/Makefile
+                 cegui/include/RendererModules/Direct3D10GUIRenderer/Makefile
+                 cegui/include/RendererModules/Direct3D9GUIRenderer/Makefile
+                 cegui/include/RendererModules/DirectFBGUIRenderer/Makefile
                  cegui/include/RendererModules/IrrlichtRenderer/Makefile
-                 cegui/include/RendererModules/Makefile
+                 cegui/include/RendererModules/OgreGUIRenderer/Makefile
                  cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
-                 cegui/include/RendererModules/directfbRenderer/Makefile
+                 cegui/include/RendererModules/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/support/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/support/tolua++/Makefile
@@ -140,12 +149,13 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/ImageCodecModules/SILLYImageCodec/Makefile
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
-                 cegui/src/RendererModules/directx9GUIRenderer/Makefile
-                 cegui/src/RendererModules/directx10GUIRenderer/Makefile
+                 cegui/src/RendererModules/Direct3D10GUIRenderer/Makefile
+                 cegui/src/RendererModules/Direct3D9GUIRenderer/Makefile
+                 cegui/src/RendererModules/DirectFBGUIRenderer/Makefile
                  cegui/src/RendererModules/IrrlichtRenderer/Makefile
-                 cegui/src/RendererModules/Makefile
+                 cegui/src/RendererModules/OgreGUIRenderer/Makefile
                  cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
-                 cegui/src/RendererModules/directfbRenderer/Makefile
+                 cegui/src/RendererModules/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/package/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/support/Makefile
@@ -195,11 +205,11 @@ echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
 echo "*             Using external GLEW library:              ${cegui_found_glew-no}"
+echo "*         Building Ogre Renderer:                       ${cegui_enable_ogre-no}"
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
 echo "*"
-if test x"$cegui_enable_opengl" = x"yes"; then
-echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
+echo "* Image Loading Codec Modules:"
 echo "*         Building Corona Image Codec:                  ${cegui_with_corona-no}"
 echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
 echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
@@ -207,8 +217,22 @@ echo "*         Building SILLY Image Codec:                   ${cegui_with_silly
 echo "*         Building TGA Image Codec:                     ${cegui_with_tga-no}"
 echo "*"
 echo "*         Default Image Codec will be:                  ${cegui_default_image_codec}"
+if test x"$cegui_default_image_codec" != x"DevILImageCodec" &&
+   test x"$cegui_default_image_codec" != x"FreeImageImageCodec" &&
+   test x"$cegui_default_image_codec" != x"SILLYImageCodec" &&
+   test x"$cegui_default_image_codec" != x"CoronaImageCodec" &&
+   test x"$cegui_default_image_codec" != x"TGAImageCodec"; then
 echo "*"
+echo "*         WARNING!  Default codec is not set to one of the pre-made codecs:"
+echo "*         WARNING!      DevILImageCodec, FreeImageImageCodec, SILLYImageCodec,"
+echo "*         WARNING!      CoronaImageCodec, or TGAImageCodec."
+echo "*         WARNING!"
+echo "*         WARNING!  This is fine if you meant to do this and are using a custom"
+echo "*         WARNING!  codec as the 'hard-coded' default, else you should go back"
+echo "*         WARNING!  and check the config values specified for building codecs"
+echo "*         WARNING!  and setting the default codec (--with-default-image-codec)."
 fi
+echo "*"
 echo "* XML Parser Modules:"
 echo "*         Building TinyXMLParser:                       ${cegui_with_tinyxml-no}"
 if test x$cegui_with_tinyxml = xyes; then
