@@ -9,7 +9,7 @@
 	<FalagardMapping WindowType="WindowsLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="WindowsLook/RadioButton" />
 	<FalagardMapping WindowType="WindowsLook/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="WindowsLook/FrameWindow" />
 	<FalagardMapping WindowType="WindowsLook/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="WindowsLook/Titlebar" />
-	<FalagardMapping WindowType="WindowsLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/SystemButton" LookNFeel="WindowsLook/SystemButton" />
+	<FalagardMapping WindowType="WindowsLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button" LookNFeel="WindowsLook/SystemButton" />
 	<FalagardMapping WindowType="WindowsLook/Editbox"          TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="WindowsLook/Editbox" />
 	<FalagardMapping WindowType="WindowsLook/MultiLineEditbox" TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="WindowsLook/MultiLineEditbox" />
 	<FalagardMapping WindowType="WindowsLook/Menubar"   TargetType="CEGUI/Menubar"   Renderer="Falagard/Menubar"   LookNFeel="WindowsLook/Menubar" />
