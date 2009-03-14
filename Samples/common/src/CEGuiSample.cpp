@@ -137,10 +137,6 @@ int CEGuiSample::run()
     {
         outputExceptionMessage(exc);
     }
-    catch(const char* m)
-    {
-        outputExceptionMessage(m);
-    }
     catch(...)
     {
         outputExceptionMessage("Unknown exception was caught!");

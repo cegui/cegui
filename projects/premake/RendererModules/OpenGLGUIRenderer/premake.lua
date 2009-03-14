@@ -15,10 +15,10 @@ package.files =
 -- Windows does not have GLX, and is not an Apple ;)
 package.excludes =
 {
-    pkgdir.."CEGUIOpenGLGLXPBTextureTarget.cpp",
-    pkgdir.."CEGUIOpenGLGLXPBTextureTarget.h",
-    pkgdir.."CEGUIOpenGLApplePBTextureTarget.cpp",
-    pkgdir.."CEGUIOpenGLApplePBTextureTarget.h",
+    rootdir.."cegui/src/"..pkgdir.."CEGUIOpenGLGLXPBTextureTarget.cpp",
+    rootdir.."cegui/include/"..pkgdir.."CEGUIOpenGLGLXPBTextureTarget.h",
+    rootdir.."cegui/src/"..pkgdir.."CEGUIOpenGLApplePBTextureTarget.cpp",
+    rootdir.."cegui/include/"..pkgdir.."CEGUIOpenGLApplePBTextureTarget.h",
 }
 
 include(rootdir.."cegui/include/"..pkgdir)
