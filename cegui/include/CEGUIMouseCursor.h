@@ -6,7 +6,7 @@
 	purpose:	Defines interface for the MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -50,6 +50,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class GeometryBuffer;
 
 /*!
 \brief
@@ -261,7 +262,8 @@ public:
 	\return
 		Point object describing the mouse cursor position in screen pixels.
 	*/
-	Point	getPosition(void) const		{return Point(d_position.d_x, d_position.d_y);}
+	Point	getPosition(void) const
+    { return d_position; }
 
 
 	/*!
@@ -295,6 +297,18 @@ public:
 	*/
 	Point	getDisplayIndependantPosition(void) const;
 
+    /*!
+    \brief
+        Function used to notify the MouseCursor of changes in the display size.
+
+        You normally would not call this directly; rather you would call the
+        function System::notifyDisplaySizeChanged and that will then call this
+        function for you.
+
+    \param new_size
+        Size object describing the new display size in pixels.
+    */
+    void notifyDisplaySizeChanged(const Size& new_size);
 
 protected:
 	/*************************************************************************
@@ -317,14 +331,15 @@ private:
 	*/
 	void	constrainPosition(void);
 
-
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
-	Vector3	d_position;					//!< Current location of the cursor
+	Vector2	d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
+    //! buffer to hold geometry for mouse cursor imagery.
+    GeometryBuffer* d_geometry;
 };
 
 } // End of  CEGUI namespace section

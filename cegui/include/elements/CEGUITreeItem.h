@@ -31,7 +31,6 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
-#include "CEGUIRenderCache.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -576,7 +575,7 @@ public:
         Draw the tree item in its current state
      
      \param position
-        Vector3 object describing the upper-left corner of area that should be
+        Vector2 object describing the upper-left corner of area that should be
         rendered in to for the draw operation.
      
      \param alpha
@@ -588,10 +587,7 @@ public:
      \return
         Nothing.
      */
-    virtual void draw(const Vector3& position, float alpha,
-                      const Rect& clipper) const;
-    
-    virtual void draw(RenderCache& cache,const Rect& targetRect, float zBase,
+    virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
                       float alpha, const Rect* clipper) const;
     
     /*************************************************************************

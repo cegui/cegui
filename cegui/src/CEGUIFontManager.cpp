@@ -263,14 +263,14 @@ Font* FontManager::getFont(const String& name) const
 	Notify the FontManager of the current (usually new) display
 	resolution.
 *************************************************************************/
-void FontManager::notifyScreenResolution(const Size& size)
+void FontManager::notifyDisplaySizeChanged(const Size& size)
 {
 	// notify all attached Font objects of the change in resolution
 	FontRegistry::iterator pos = d_fonts.begin(), end = d_fonts.end();
 
 	for (; pos != end; ++pos)
 	{
-		pos->second->notifyScreenResolution(size);
+        pos->second->notifyDisplaySizeChanged(size);
 	}
 
 }

@@ -172,8 +172,7 @@ public:
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/
     Size getPixelSize(void) const;
-    void draw(const Vector3& position, float alpha, const Rect& clipper) const;
-    void draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const;
+    void draw(GeometryBuffer& buffer, const Rect& targetRect, float alpha, const Rect* clipper) const;
 
 protected:
 	/*************************************************************************

@@ -538,7 +538,7 @@ void MultiLineEditbox::formatText(void)
 	}
 
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -1444,7 +1444,7 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventCaratMoved, e, EventNamespace);
 }
 
@@ -1454,7 +1454,7 @@ void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventTextSelectionChanged, e, EventNamespace);
 }
 
@@ -1474,7 +1474,7 @@ void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -1485,7 +1485,7 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
@@ -1520,7 +1520,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
 {
     // simply trigger a redraw of the Listbox.
-    requestRedraw();
+    invalidate();
     return true;
 }
 
@@ -1575,7 +1575,7 @@ const Image* MultiLineEditbox::getSelectionBrushImage() const
 void MultiLineEditbox::setSelectionBrushImage(const Image* image)
 {
     d_selectionBrush = image;
-    requestRedraw();
+    invalidate();
 }
 
 /*************************************************************************

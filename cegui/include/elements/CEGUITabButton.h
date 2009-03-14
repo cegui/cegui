@@ -76,7 +76,7 @@ public:
     \brief
         Set whether this tab button is selected or not
     */
-    virtual void setSelected(bool selected) { d_selected = selected; requestRedraw(); }
+    virtual void setSelected(bool selected) { d_selected = selected; invalidate(); }
 
     /*!
     \brief

@@ -28,6 +28,7 @@
 #include "elements/CEGUIDragContainer.h"
 #include "CEGUIImageset.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIRenderingContext.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
@@ -191,6 +192,8 @@ namespace CEGUI
 
             d_dragging = true;
 
+            notifyScreenAreaChanged();
+
             // Now drag mode is set, change cursor as required
             updateActiveMouseCursor();
         }
@@ -297,6 +300,8 @@ namespace CEGUI
             setPosition(d_startPosition);
             setClippedByParent(d_storedClipState);
             setAlpha(d_storedAlpha);
+
+            notifyScreenAreaChanged();
 
             // restore normal mouse cursor
             updateActiveMouseCursor();
@@ -451,5 +456,26 @@ namespace CEGUI
         if (d_dropTarget)
             d_dropTarget->notifyDragDropItemEnters(this);
     }
+
+//----------------------------------------------------------------------------//
+void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
+{
+    // if not dragging, do the default thing.
+    if (!d_dragging)
+        return (void)Window::getRenderingContext_impl(ctx);
+
+    // otherwise, switch rendering onto root rendering surface
+    const Window* root = getRootWindow();
+    ctx.surface = &root->getTargetRenderingSurface();
+    // ensure root window is only used as owner if it really is.
+    ctx.owner = root->getRenderingSurface() == ctx.surface ? root : 0;
+    // ensure use of correct offset for the surface we're targetting
+    ctx.offset = ctx.owner ? ctx.owner->getPixelRect().getPosition() :
+                             Vector2(0, 0);
+    // draw to overlay queue
+    ctx.queue = RQ_OVERLAY;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

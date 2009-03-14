@@ -107,7 +107,7 @@ public:
 
     //Render the actual tree
     void doTreeRender()
-        { populateRenderCache(); }
+        { populateGeometryBuffer(); }
 
     //UpdateScrollbars
     void doScrollbars()
@@ -735,12 +735,12 @@ protected:
      */
     bool handle_scrollChange(const EventArgs& args);
     
-    // overridden from Window base class.
-    virtual void populateRenderCache();
+     // overridden from Window base class.
+     virtual void populateGeometryBuffer();
+ 
+     void drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
+                       Vector2& itemPos, GeometryBuffer& geometry, float alpha);
     
-    void drawItemList(LBItemList &itemList, Rect &itemsArea, float widest,
-                      Vector3 &itemPos, RenderCache& cache, float alpha);
-
     /*************************************************************************
         New event handlers
      *************************************************************************/

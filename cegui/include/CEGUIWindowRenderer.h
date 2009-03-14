@@ -45,6 +45,7 @@ namespace CEGUI
 {
 
 class WidgetLookFeel;
+struct RenderingContext;
 
 /*!
 \brief
@@ -132,6 +133,13 @@ public:
         child windows.
     */
     virtual void performChildWindowLayout() {}
+
+    /*!
+    \brief
+        update the RenderingContext as needed for our window.  This is normally
+        invoked via our window's member function with the same name.
+    */
+    virtual void getRenderingContext(RenderingContext& ctx) const;
 
 protected:
     /*************************************************************************

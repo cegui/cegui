@@ -78,7 +78,7 @@ void RadioButton::setSelected(bool select)
 	if (select != d_selected)
 	{
 		d_selected = select;
-		requestRedraw();
+		invalidate();
 
 		// if new state is 'selected', we must de-select any selected radio buttons within our group.
 		if (d_selected)

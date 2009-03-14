@@ -80,7 +80,7 @@ namespace CEGUI
     void Tooltip::positionSelf(void)
     {
         MouseCursor& cursor = MouseCursor::getSingleton();
-        Rect screen(System::getSingleton().getRenderer()->getRect());
+        Rect screen(Vector2(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
         Rect tipRect(getUnclippedPixelRect());
         const Image* mouseImage = cursor.getImage();
 
@@ -173,7 +173,8 @@ namespace CEGUI
 
         if (fnt)
         {
-            Rect area(System::getSingleton().getRenderer()->getRect());
+            Rect area(Vector2(0, 0),
+                      System::getSingleton().getRenderer()->getDisplaySize());
 
             // get required size of the tool tip according to the text extents.
             // TODO: Add a proprty to allow specification of text formatting.

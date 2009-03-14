@@ -107,29 +107,12 @@ Size ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& clipper) const
-{
-	if (d_selected && (d_selectBrush != 0))
-	{
-		d_selectBrush->draw(clipper, position.d_z, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
-	}
-
-	Font* fnt = getFont();
-
-	if (fnt)
-	{
-        Vector3 finalPos(position);
-        finalPos.d_y += PixelAligned((fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f);
-		fnt->drawText(d_itemText, finalPos, clipper, getModulateAlphaColourRect(d_textCols, alpha));
-	}
-
-}
-
-void ListboxTextItem::draw(RenderCache& cache,const Rect& targetRect, float zBase, float alpha, const Rect* clipper) const
+void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect, float alpha, const Rect* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
     {
-        cache.cacheImage(*d_selectBrush, targetRect, zBase, getModulateAlphaColourRect(d_selectCols, alpha), clipper);
+//        cache.cacheImage(*d_selectBrush, targetRect, getModulateAlphaColourRect(d_selectCols, alpha), clipper);
+        d_selectBrush->draw(buffer, targetRect, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
     }
 
     Font* font = getFont();
@@ -138,7 +121,8 @@ void ListboxTextItem::draw(RenderCache& cache,const Rect& targetRect, float zBas
     {
         Rect finalPos(targetRect);
         finalPos.d_top += PixelAligned((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-        cache.cacheText(d_itemText, font, LeftAligned, finalPos, zBase, getModulateAlphaColourRect(d_textCols, alpha), clipper);
+//        cache.cacheText(d_itemText, font, LeftAligned, finalPos, getModulateAlphaColourRect(d_textCols, alpha), clipper);
+        font->drawText(buffer, d_itemText, finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
     }
 }
 

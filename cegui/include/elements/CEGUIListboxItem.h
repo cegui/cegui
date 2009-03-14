@@ -33,11 +33,12 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
-#include "CEGUIRenderCache.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class GeometryBuffer;
+
 /*!
 \brief
 	Base class for list box items
@@ -377,7 +378,7 @@ public:
 		Draw the list box item in its current state
 
 	\param position
-		Vecor3 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+		Vecor2 object describing the upper-left corner of area that should be rendered in to for the draw operation.
 
 	\param alpha
 		Alpha value to be used when rendering the item (between 0.0f and 1.0f).
@@ -388,9 +389,8 @@ public:
 	\return
 		Nothing.
 	*/
-	virtual	void	draw(const Vector3& position, float alpha, const Rect& clipper) const	= 0;
-
-    virtual void    draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const = 0;
+    virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
+                      float alpha, const Rect* clipper) const = 0;
 
 	/*************************************************************************
 		Operators

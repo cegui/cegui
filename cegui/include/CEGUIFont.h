@@ -55,11 +55,11 @@ namespace CEGUI
 // Forward declarations for font properties
 namespace FontProperties
 {
-    class NativeRes;
-    class Name;
-    class FileName;
-    class ResourceGroup;
-    class AutoScaled;
+class NativeRes;
+class Name;
+class FileName;
+class ResourceGroup;
+class AutoScaled;
 }
 
 /*!
@@ -107,57 +107,57 @@ public:
     \brief
         construct an empty uninitialized FontGlyph
     */
-    FontGlyph ()
+    FontGlyph()
     { }
 
     /*!
     \brief
         FontGlyph constructor.
     */
-    FontGlyph (float advance) : d_image (0), d_advance (advance)
+    FontGlyph(float advance) : d_image(0), d_advance(advance)
     { }
 
     /*!
     \brief
         A better :-) FontGlyph constructor.
     */
-    FontGlyph (float advance, const Image *image) : d_image (image), d_advance (advance)
+    FontGlyph(float advance, const Image *image) : d_image(image), d_advance(advance)
     { }
 
     /*!
     \brief
         Return the CEGUI::Image object rendered for this glyph.
     */
-    const Image* getImage () const
+    const Image* getImage() const
     { return d_image; }
 
     /*!
     \brief
         Return the parent CEGUI::Imageset object for this glyph.
     */
-    const Imageset* getImageset () const
-    { return d_image->getImageset (); }
+    const Imageset* getImageset() const
+    { return d_image->getImageset(); }
 
     /*!
     \brief
         Return the scaled pixel size of the glyph.
     */
-    Size getSize (float x_scale, float y_scale) const
-    { return Size (getWidth (x_scale), getHeight (y_scale)); }
+    Size getSize(float x_scale, float y_scale) const
+    { return Size(getWidth(x_scale), getHeight(y_scale)); }
 
     /*!
     \brief
         Return the scaled widht of the glyph.
     */
-    float getWidth (float x_scale) const
-    { return d_image->getWidth () * x_scale; }
+    float getWidth(float x_scale) const
+    { return d_image->getWidth() * x_scale; }
 
     /*!
     \brief
         Return the scaled height of the glyph.
     */
-    float getHeight (float y_scale) const
-    { return d_image->getHeight () * y_scale; }
+    float getHeight(float y_scale) const
+    { return d_image->getHeight() * y_scale; }
 
     /*!
     \brief
@@ -166,8 +166,8 @@ public:
         The rendered advance value is the total number of pixels from the
         current pen position that will be occupied by this glyph when rendered.
     */
-    float getRenderedAdvance (float x_scale) const
-    { return (d_image->getWidth () + d_image->getOffsetX ()) * x_scale; }
+    float getRenderedAdvance(float x_scale) const
+    { return (d_image->getWidth() + d_image->getOffsetX()) * x_scale; }
 
     /*!
     \brief
@@ -178,21 +178,21 @@ public:
         is not always the same as the glyph image width or rendererd advance,
         since it allows for horizontal overhangs.
     */
-    float getAdvance (float x_scale = 1.0) const
+    float getAdvance(float x_scale = 1.0) const
     { return d_advance * x_scale; }
 
     /*!
     \brief
         Set the horizontal advance value for the glyph.
     */
-    void setAdvance (float advance)
+    void setAdvance(float advance)
     { d_advance = advance; }
 
     /*!
     \brief
         Set the CEGUI::Image object rendered for this glyph.
     */
-    void setImage (const Image* image)
+    void setImage(const Image* image)
     { d_image = image; }
 };
 
@@ -297,8 +297,8 @@ protected:
         Resource group identifier to be passed to the resource provider
         to load the font definition file.
     */
-    Font (const String& name, const String& fontname,
-          const String& resourceGroup = "");
+    Font(const String& name, const String& fontname,
+         const String& resourceGroup = "");
 
     /*!
     \brief
@@ -327,55 +327,64 @@ protected:
     \exception  MemoryException
         thrown if allocation of imagery construction buffer fails.
     */
-    Font (const XMLAttributes& attributes);
+    Font(const XMLAttributes& attributes);
 
     /*!
     \brief
         Destroys a Font object
     */
-    virtual ~Font ();
+    virtual ~Font();
 
     /*!
     \brief
         Define a glyph mapping (handle a <Mapping /> XML element)
     */
-    virtual void defineMapping (const XMLAttributes& attributes);
+    virtual void defineMapping(const XMLAttributes& attributes);
 
     /*!
     \brief
         Update the font as required according to the current parameters
     */
-    virtual void updateFont () = 0;
+    virtual void updateFont() = 0;
 
     /*!
     \brief
         draws wrapped text.  returns number of lines output.
     */
-    size_t drawWrappedText (const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+    size_t drawWrappedText(GeometryBuffer& buffer, const String& text,
+                           const Rect& draw_area, const Rect* clip_rect,
+                           TextFormatting fmt, const ColourRect& colours,
+                           float x_scale = 1.0f, float y_scale = 1.0f);
 
     /*!
     \brief
         helper function for renderWrappedText to get next word of a string
     */
-    size_t getNextWord (const String& in_string, size_t start_idx, String& out_string) const;
+    size_t getNextWord(const String& in_string, size_t start_idx, String& out_string) const;
 
     /*!
     \brief
         Draw a line of text.  No formatting is applied.
     */
-    void drawTextLine (const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+    void drawTextLine(GeometryBuffer& buffer, const String& text,
+                      const Vector2& position, const Rect* clip_rect,
+                      const ColourRect& colours,
+                      float x_scale = 1.0f, float y_scale = 1.0f);
 
     /*!
     \brief
         Draw a justified line of text.
     */
-    void drawTextLineJustified (const String& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+    void drawTextLineJustified(GeometryBuffer& buffer, const String& text,
+                               const Rect& draw_area, const Vector2& position,
+                               const Rect* clip_rect, const ColourRect& colours,
+                               float x_scale = 1.0f, float y_scale = 1.0f);
 
     /*!
     \brief
         returns extent of widest line of wrapped text.
     */
-    float getWrappedTextExtent (const String& text, float wrapWidth, float x_scale = 1.0f);
+    float getWrappedTextExtent(const String& text, float wrapWidth, float x_scale = 1.0f);
 
     /*!
     \brief
@@ -389,14 +398,14 @@ protected:
         Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
         is defined for \a codepoint.
     */
-    const FontGlyph* getGlyphData (utf32 codepoint);
+    const FontGlyph* getGlyphData(utf32 codepoint);
 
     /*!
     \brief
         Set the maximal glyph index. This reserves the respective
         number of bits in the d_glyphPageLoaded array.
     */
-    void setMaxCodepoint (utf32 codepoint);
+    void setMaxCodepoint(utf32 codepoint);
 
     /*!
     \brief
@@ -412,7 +421,7 @@ protected:
     \param end_codepoint
         The highest codepoint that should be rasterized
     */
-    virtual void rasterize (utf32 start_codepoint, utf32 end_codepoint);
+    virtual void rasterize(utf32 start_codepoint, utf32 end_codepoint);
 
     /*!
     \brief
@@ -424,7 +433,7 @@ protected:
     \return
         Nothing.
     */
-    void writeXMLToStream (XMLSerializer& xml_stream) const;
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     /*!
     \brief
@@ -434,13 +443,13 @@ protected:
     \param xml_stream
         Stream where xml data should be output.
     */
-    virtual void writeXMLToStream_impl (XMLSerializer& xml_stream) const = 0;
+    virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
 
     /*!
     \brief
         Register all properties of this class.
     */
-    void addFontProperties ();
+    void addFontProperties();
 
 public:
     /// Colour value used whenever a colour is not specified.
@@ -454,7 +463,7 @@ public:
         it is your responsability to call this function as soon as you
         set up all the appropiate fields of the Font object.
     */
-    virtual void load () = 0;
+    virtual void load() = 0;
 
     /*!
     \brief
@@ -467,7 +476,7 @@ public:
         true if the font contains a mapping for code point \a cp,
         false if it does not contain a mapping for \a cp.
     */
-    bool isCodepointAvailable (utf32 cp) const
+    bool isCodepointAvailable(utf32 cp) const
     { return (d_cp_map.find(cp) != d_cp_map.end()); }
 
     /*************************************************************************
@@ -477,244 +486,351 @@ public:
     \brief
         Draw text into a specified area of the display.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is not clipped to this Rect, but is formatted
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is not clipped to this Rect, but is formatted
         using this Rect depending upon the option specified in \a fmt.
 
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
-
     \param clip_rect
-        Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
+        Rect object describing the clipping area for the drawing.
+        No drawing will occur outside this Rect.
 
     \param fmt
-        One of the TextFormatting values specifying the text formatting required.
+        One of the TextFormatting values specifying the text formatting
+        required.
 
     \param colours
-        ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
+        ColourRect object describing the colours to be applied when drawing the
+        text.  NB: The colours specified in here are applied to each glyph,
         rather than the text as a whole.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
-        The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
+        The number of lines output.  NB: This does not consider clipping, so if
+        all text was clipped, this would still return >=1.
     */
-    size_t drawText (const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+    size_t drawText(GeometryBuffer& buffer, const String& text,
+                    const Rect& draw_area, const Rect* clip_rect,
+                    TextFormatting fmt, const ColourRect& colours,
+                    float x_scale = 1.0f, float y_scale = 1.0f);
 
     /*!
     \brief
         Draw text into a specified area of the display using default colours.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is not clipped to this Rect, but is formatted
-        using this Rect depending upon the option specified in \a fmt.
-
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is not clipped to this Rect, but is formatted using
+        this Rect depending upon the option specified in \a fmt.
 
     \param clip_rect
-        Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
+        Rect object describing the clipping area for the drawing.
+        No drawing will occur outside this Rect.
 
     \param fmt
-        One of the TextFormatting values specifying the text formatting required.
+        One of the TextFormatting values specifying the text formatting
+        required.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
-        The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
+        The number of lines output.  NB: This does not consider clipping, so if
+        all text was clipped, this would still return >=1.
     */
-    size_t drawText (const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
-    { return drawText (text, draw_area, z, clip_rect, fmt, ColourRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
+    size_t drawText(GeometryBuffer& buffer, const String& text,
+                    const Rect& draw_area, const Rect* clip_rect,
+                    TextFormatting fmt,
+                    float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        return drawText(buffer, text, draw_area, clip_rect, fmt,
+                        ColourRect(DefaultColour, DefaultColour,
+                                   DefaultColour, DefaultColour),
+                        x_scale, y_scale);
+    }
 
     /*!
     \brief
-        Draw text into a specified area of the display with default colours and default formatting (LeftAligned).
+        Draw text into a specified area of the display with default colours and
+        default formatting (LeftAligned).
+
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
 
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is not clipped to this Rect, but is formatted
-        using this Rect depending upon the option specified in \a fmt.
-
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is not clipped to this Rect, but is formatted using
+        this Rect depending upon the option specified in \a fmt.
 
     \param clip_rect
-        Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
+        Rect object describing the clipping area for the drawing.  No drawing
+        will occur outside this Rect.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
         Nothing.
     */
-    void drawText (const String& text, const Rect& draw_area, float z, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
-    { drawText (text, draw_area, z, clip_rect, LeftAligned, ColourRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
+    void drawText(GeometryBuffer& buffer, const String& text,
+                  const Rect& draw_area, const Rect* clip_rect,
+                  float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        drawText(buffer, text, draw_area, clip_rect, LeftAligned,
+                 ColourRect(DefaultColour, DefaultColour,
+                            DefaultColour, DefaultColour),
+                 x_scale, y_scale);
+    }
 
     /*!
     \brief
         Draw text into a specified area of the display.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is formatted using this Rect depending
-        upon the option specified in \a fmt.  Additionally, the drawn text is clipped to be within this Rect (applies to non-word wrapped formatting
-        where the text may otherwise have fallen outside this Rect).
-
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is formatted using this Rect depending upon the
+        option specified in \a fmt.  Additionally, the drawn text is clipped to
+        be within this Rect (applies to non-word wrapped formatting where the
+        text may otherwise have fallen outside this Rect).
 
     \param fmt
-        One of the TextFormatting values specifying the text formatting required.
+        One of the TextFormatting values specifying the text formatting
+        required.
 
     \param colours
-        ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
+        ColourRect object describing the colours to be applied when drawing the
+        text.  NB: The colours specified in here are applied to each glyph,
         rather than the text as a whole.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
-        The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
+        The number of lines output.  NB: This does not consider clipping, so if
+        all text was clipped, this would still return >=1.
     */
-    size_t drawText (const String& text, const Rect& draw_area, float z, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
-    { return drawText (text, draw_area, z, draw_area, fmt, colours, x_scale, y_scale); }
+    size_t drawText(GeometryBuffer& buffer, const String& text,
+                    const Rect& draw_area, TextFormatting fmt,
+                    const ColourRect& colours,
+                    float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        return drawText(buffer, text, draw_area, &draw_area, fmt, colours,
+                        x_scale, y_scale);
+    }
 
     /*!
     \brief
         Draw text into a specified area of the display with default colours.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is formatted using this Rect depending
-        upon the option specified in \a fmt.  Additionally, the drawn text is clipped to be within this Rect (applies to non-word wrapped formatting
-        where the text may otherwise have fallen outside this Rect).
-
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is formatted using this Rect depending upon the
+        option specified in \a fmt.  Additionally, the drawn text is clipped to
+        be within this Rect (applies to non-word wrapped formatting where the
+        text may otherwise have fallen outside this Rect).
 
     \param fmt
-        One of the TextFormatting values specifying the text formatting required.
+        One of the TextFormatting values specifying the text formatting
+        required.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
-        The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
+        The number of lines output.  NB: This does not consider clipping, so if
+        all text was clipped, this would still return >=1.
     */
-    size_t drawText (const String& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
-    { return drawText (text, draw_area, z, draw_area, fmt, ColourRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
+    size_t drawText(GeometryBuffer& buffer, const String& text,
+                    const Rect& draw_area, TextFormatting fmt,
+                    float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        return drawText(buffer, text, draw_area, &draw_area, fmt,
+                        ColourRect(DefaultColour, DefaultColour,
+                                   DefaultColour, DefaultColour),
+                        x_scale, y_scale);
+    }
 
     /*!
     \brief
-        Draw text into a specified area of the display with default colours and default formatting (LeftAligned).
+        Draw text into a specified area of the display with default colours and
+        default formatting (LeftAligned).
+
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
 
     \param text
         String object containing the text to be drawn.
 
     \param draw_area
-        Rect object describing the area of the display where the text is to be rendered.  The text is formatted using this Rect depending
-        upon the option specified in \a fmt.  Additionally, the drawn text is clipped to be within this Rect (applies to non-word wrapped formatting
-        where the text may otherwise have fallen outside this Rect).
-
-    \param z
-        flat value specifying the z co-ordinate for the drawn text.
+        Rect object describing the area of the display where the text is to be
+        rendered.  The text is formatted using this Rect depending upon the
+        option specified in \a fmt.  Additionally, the drawn text is clipped to
+        be within this Rect (applies to non-word wrapped formatting where the
+        text may otherwise have fallen outside this Rect).
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
         Nothing.
     */
-    void drawText (const String& text, const Rect& draw_area, float z, float x_scale = 1.0f, float y_scale = 1.0f)
-    { drawText (text, draw_area, z, draw_area, LeftAligned, ColourRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
+    void drawText(GeometryBuffer& buffer, const String& text,
+                  const Rect& draw_area,
+                  float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        drawText(buffer, text, draw_area, &draw_area, LeftAligned,
+                 ColourRect(DefaultColour, DefaultColour,
+                            DefaultColour, DefaultColour),
+                 x_scale, y_scale);
+    }
 
     /*!
     \brief
         Draw text at the specified location.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param position
-        Vector3 object describing the location for the text.  NB: The position specified here corresponds to the text baseline and not the
-        top of any glyph.  The baseline spacing required can be retrieved by calling getBaseline().
-        
+        Vector2 object describing the location for the text.  NB: The position
+        specified here corresponds to the text baseline and not the
+        top of any glyph.  The baseline spacing required can be retrieved by
+        calling getBaseline().
+
     \param clip_rect
-        Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
+        Rect object describing the clipping area for the drawing.
+        No drawing will occur outside this Rect.
 
     \param colours
-        ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
+        ColourRect object describing the colours to be applied when drawing the
+        text.  NB: The colours specified in here are applied to each glyph,
         rather than the text as a whole.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
         Nothing.
     */
-    void drawText (const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
-    { drawText (text, Rect (position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, colours, x_scale, y_scale); }
+    void drawText(GeometryBuffer& buffer, const String& text,
+                  const Vector2& position, const Rect* clip_rect,
+                  const ColourRect& colours,
+                  float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        drawText(buffer, text, Rect(position.d_x, position.d_y,
+                                    position.d_x, position.d_y),
+                 clip_rect, LeftAligned, colours, x_scale, y_scale);
+    }
 
     /*!
     \brief
         Draw text at the specified location with default colours.
 
+    \param buffer
+        GeometryBuffer object where the geometry for the text be queued.
+
     \param text
         String object containing the text to be drawn.
 
     \param position
-        Vector3 object describing the location for the text.  NB: The position specified here corresponds to the text baseline and not the
-        top of any glyph.  The baseline spacing required can be retrieved by calling getBaseline().
-        
+        Vector2 object describing the location for the text.  NB: The position
+        specified here corresponds to the text baseline and not the top of any
+        glyph.  The baseline spacing required can be retrieved by calling
+        getBaseline().
+
     \param clip_rect
-        Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
+        Rect object describing the clipping area for the drawing.  No drawing
+        will occur outside this Rect.
 
     \param x_scale
-        Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's x axis, where 1.0f is
+        considered to be 'normal'.
 
     \param y_scale
-        Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+        Scaling factor to be applied to each glyph's y axis, where 1.0f is
+        considered to be 'normal'.
 
     \return
         Nothing.
     */
-    void drawText (const String& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
-    { drawText (text, Rect (position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
+    void drawText(GeometryBuffer& buffer, const String& text,
+                  const Vector2& position, const Rect* clip_rect,
+                  float x_scale = 1.0f, float y_scale = 1.0f)
+    {
+        drawText(buffer, text, Rect(position.d_x, position.d_y,
+                                    position.d_x, position.d_y),
+                 clip_rect, LeftAligned,
+                 ColourRect(DefaultColour, DefaultColour,
+                            DefaultColour, DefaultColour),
+                 x_scale, y_scale);
+    }
 
     /*!
     \brief
@@ -726,19 +842,16 @@ public:
     \return
         Nothing
     */
-    virtual void setNativeResolution (const Size& size);
+    virtual void setNativeResolution(const Size& size);
 
     /*!
     \brief
-        Notify the Font of the current (usually new) display resolution.
+        Notify the Font that the display size may have changed.
 
     \param size
         Size object describing the display resolution
-
-    \return
-        Nothing
     */
-    virtual void notifyScreenResolution (const Size& size);
+    virtual void notifyDisplaySizeChanged(const Size& size);
 
     /*************************************************************************
         Informational methods
@@ -755,7 +868,7 @@ public:
         Number of pixels between vertical base lines, i.e. The minimum
         pixel space between two lines of text.
     */
-    float getLineSpacing (float y_scale = 1.0f) const
+    float getLineSpacing(float y_scale = 1.0f) const
     { return d_height * y_scale; }
 
     /*!
@@ -770,7 +883,7 @@ public:
         float value describing the pixel height of the font without
         any additional padding.
     */
-    float getFontHeight (float y_scale = 1.0f) const
+    float getFontHeight(float y_scale = 1.0f) const
     { return (d_ascender - d_descender) * y_scale; }
 
     /*!
@@ -785,7 +898,7 @@ public:
     \return
         pixel spacing from top of front glyphs to baseline
     */
-    float getBaseline (float y_scale = 1.0f) const
+    float getBaseline(float y_scale = 1.0f) const
     { return d_ascender * y_scale; }
 
     /*!
@@ -805,7 +918,7 @@ public:
         Number of pixels that \a text will occupy when rendered with
         this Font.
     */
-    float getTextExtent (const String& text, float x_scale = 1.0f);
+    float getTextExtent(const String& text, float x_scale = 1.0f);
 
     /*!
     \brief
@@ -830,7 +943,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel (const String& text, float pixel, float x_scale = 1.0f)
+    size_t getCharAtPixel(const String& text, float pixel, float x_scale = 1.0f)
     { return getCharAtPixel(text, 0, pixel, x_scale); }
 
     /*!
@@ -861,7 +974,7 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel (const String& text, size_t start_char, float pixel, float x_scale = 1.0f);
+    size_t getCharAtPixel(const String& text, size_t start_char, float pixel, float x_scale = 1.0f);
 
     /*!
     \brief
@@ -889,7 +1002,7 @@ public:
     \return
         The number of lines produced from the specified formatting
     */
-    size_t getFormattedLineCount (const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f);
+    size_t getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f);
 
     /*!
     \brief
@@ -917,7 +1030,7 @@ public:
         The widest pixel extent of the lines produced from the specified
         formatting.
     */
-    float getFormattedTextExtent (const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f);
+    float getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f);
 
 
     /*!
@@ -930,7 +1043,7 @@ public:
     \return
         Nothing.
     */
-    static void setDefaultResourceGroup (const String& resourceGroup)
+    static void setDefaultResourceGroup(const String& resourceGroup)
     { d_defaultResourceGroup = resourceGroup; }
 
 
@@ -942,7 +1055,7 @@ public:
         String describing the default resource group identifier that will be
         used when loading font data.
     */
-    static const String& getDefaultResourceGroup ()
+    static const String& getDefaultResourceGroup()
     { return d_defaultResourceGroup; }
 };
 

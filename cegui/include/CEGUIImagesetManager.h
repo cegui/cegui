@@ -89,7 +89,7 @@ public:
 
 	\exception AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
 	*/
-	Imageset*	createImageset(const String& name, Texture* texture);
+	Imageset*	createImageset(const String& name, Texture& texture);
 
 	/*!
 	\brief
@@ -197,17 +197,14 @@ public:
 	bool	isImagesetPresent(const String& name) const			{return d_imagesets.find(name) != d_imagesets.end();}
 
 
-	/*!
-	\brief
-		Notify the ImagesetManager of the current (usually new) display resolution.
+    /*!
+    \brief
+        Notify the ImagesetManager that the display size may have changed.
 
-	\param size
-		Size object describing the display resolution
-
-	\return
-		Nothing
-	*/
-	void	notifyScreenResolution(const Size& size);
+    \param size
+        Size object describing the display resolution
+    */
+    void notifyDisplaySizeChanged(const Size& size);
 
 
     /*!

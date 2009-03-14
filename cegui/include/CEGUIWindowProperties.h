@@ -1053,6 +1053,182 @@ public:
     void set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to get/set whether the Window will automatically attempt to use a
+    full imagery caching RenderingSurface (if supported by the renderer).  Here,
+    "full imagery caching" usually will mean caching a window's representation
+    onto a texture (although no such implementation requirement is specified.)
+
+    \par Usage:
+        - Name: AutoRenderingSurface
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" if Window should automatically use a full imagery caching
+          RenderingSurface (aka a RenderingWindow).
+        - "False" if Window should not automatically use a full imagery caching
+          RenderingSurface.
+*/
+class AutoRenderingSurface : public Property
+{
+public:
+    AutoRenderingSurface() : Property(
+        "AutoRenderingSurface",
+        "Property to get/set whether the Window will automatically attempt to "
+        "use a full imagery caching RenderingSurface (if supported by the "
+        "renderer).  Here, full imagery caching usually will mean caching a "
+        "window's representation onto a texture (although no such "
+        "implementation requirement is specified.)"
+        "  Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access the rotation factors of the window.
+
+    \par Usage:
+        - Name: Rotation
+        - Format: "x:[x_float] y:[y_float] z:[z_float]"
+
+    \par Where:
+        - [x_float] is a floating point value describing the rotation around the
+                    x axis, in degrees.
+        - [y_float] is a floating point value describing the rotation around the
+                    y axis, in degrees.
+        - [z_float] is a floating point value describing the rotation around the
+                    z axis, in degrees.
+*/
+class Rotation : public Property
+{
+    public:
+        Rotation() : Property(
+        "Rotation",
+        "Property to get/set the windows rotation factors.  Value is "
+        "\"x:[x_float] y:[y_float] z:[z_float]\".",
+        "x:0 y:0 z:0")
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access the x axis rotation factor of the window.
+
+    \par Usage:
+        - Name: XRotation
+        - Format: "[float]"
+
+    \par Where:
+        - [float] is a floating point value describing the rotation around the
+                  x axis, in degrees.
+*/
+class XRotation : public Property
+{
+    public:
+        XRotation() : Property(
+        "XRotation",
+        "Property to get/set the window's x axis rotation factor.  Value is "
+        "\"[float]\".",
+        "0", false)
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access the y axis rotation factor of the window.
+
+    \par Usage:
+        - Name: YRotation
+        - Format: "[float]"
+
+    \par Where:
+        - [float] is a floating point value describing the rotation around the
+                  y axis, in degrees.
+*/
+class YRotation : public Property
+{
+    public:
+        YRotation() : Property(
+        "YRotation",
+        "Property to get/set the window's y axis rotation factor.  Value is "
+        "\"[float]\".",
+        "0", false)
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access the z axis rotation factor of the window.
+
+    \par Usage:
+        - Name: ZRotation
+        - Format: "[float]"
+
+    \par Where:
+        - [float] is a floating point value describing the rotation around the
+                  z axis, in degrees.
+*/
+class ZRotation : public Property
+{
+    public:
+        ZRotation() : Property(
+        "ZRotation",
+        "Property to get/set the window's z axis rotation factor.  Value is "
+        "\"[float]\".",
+        "0", false)
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access window non-client setting.
+
+    This property offers access to the "non client" setting for the window.
+
+    \par Usage:
+        - Name: NonClient
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate the Window is a non-client window.
+        - "False" to indicate the Window is not a non-client.
+*/
+class NonClient : public Property
+{
+public:
+    NonClient() : Property(
+        "NonClient",
+        "Property to get/set the 'non-client' setting for the Window.  "
+        "Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
+
+
+
+
 
 } // End of  WindowProperties namespace section
 

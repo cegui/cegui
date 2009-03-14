@@ -222,27 +222,7 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 /*************************************************************************
     Draw the tree item in its current state.
 *************************************************************************/
-void TreeItem::draw(const Vector3& position, float alpha, const Rect& clipper) const
-{
-    if (d_selected && (d_selectBrush != 0))
-        d_selectBrush->draw(clipper, position.d_z, clipper,
-                            getModulateAlphaColourRect(d_selectCols, alpha));
-    
-    Font* fnt = getFont();
-    
-    if (fnt != 0)
-    {
-        Vector3 finalPos(position);
-        finalPos.d_y -= PixelAligned(
-            (fnt->getLineSpacing() - fnt->getBaseline()) * 0.5f);
-
-        fnt->drawText(d_itemText, finalPos, clipper,
-                      getModulateAlphaColourRect(d_textCols, alpha),1,1);
-    }
-}
-
-
-void TreeItem::draw(RenderCache &cache, const Rect &targetRect, float zBase,
+void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
                     float alpha, const Rect *clipper) const
 {
     Rect finalRect(targetRect);
@@ -253,24 +233,23 @@ void TreeItem::draw(RenderCache &cache, const Rect &targetRect, float zBase,
         Rect finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
-        cache.cacheImage(*d_iconImage, finalPos, zBase,
-                         ColourRect(colour(1,1,1,alpha)), clipper);
+        d_iconImage->draw(buffer, finalPos, clipper,
+                          ColourRect(colour(1,1,1,alpha)));
         finalRect.d_left += targetRect.getHeight();
     }
-    
+
     if (d_selected && d_selectBrush != 0)
-        cache.cacheImage(*d_selectBrush, finalRect, zBase,
-                         getModulateAlphaColourRect(d_selectCols, alpha),
-                         clipper);
-    
+        d_selectBrush->draw(buffer, finalRect, clipper,
+                            getModulateAlphaColourRect(d_selectCols, alpha));
+
     Font* font = getFont();
-    
+
     if (font)
     {
         Rect finalPos(finalRect);
         finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
-        cache.cacheText(d_itemText, font, LeftAligned, finalPos, zBase,
-                        getModulateAlphaColourRect(d_textCols, alpha), clipper);
+        font->drawText(buffer, d_itemText, finalPos, clipper, LeftAligned,
+                       getModulateAlphaColourRect(d_textCols, alpha));
     }
 }
 

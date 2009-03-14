@@ -87,7 +87,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -206,8 +206,8 @@ namespace CEGUI
                     clippingRect = clipper;
                 }
 
-                // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*img, finalRect, base_z, finalColours, clippingRect, clipToDisplay);
+                // add geometry for image to the target window.
+                img->draw(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;

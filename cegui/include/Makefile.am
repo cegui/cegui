@@ -26,10 +26,11 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFunctorPointerSlot.h \
                  CEGUIFunctorReferenceBinder.h \
                  CEGUIFunctorReferenceSlot.h \
+                 CEGUIGeometryBuffer.h \
                  CEGUIGlobalEventSet.h \
                  CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
-				 CEGUIImageCodec.h \
+                 CEGUIImageCodec.h \
                  CEGUIImageset.h \
                  CEGUIImagesetManager.h \
                  CEGUIImageset_xmlHandler.h \
@@ -44,8 +45,14 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIPropertySet.h \
                  CEGUIRect.h \
                  CEGUIRefCounted.h \
-                 CEGUIRenderCache.h \
                  CEGUIRenderer.h \
+                 CEGUIRenderEffect.h \
+                 CEGUIRenderTarget.h \
+                 CEGUIRenderingContext.h \
+                 CEGUIRenderQueue.h \
+                 CEGUIRenderingRoot.h \
+                 CEGUIRenderingSurface.h \
+                 CEGUIRenderingWindow.h \
                  CEGUIResourceProvider.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
@@ -61,9 +68,11 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUITask.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
+                 CEGUITextureTarget.h \
                  CEGUIUDim.h \
                  CEGUIVector.h \
                  CEGUIVersion.h \
+                 CEGUIVertex.h \
                  CEGUIWidgetModule.h \
                  CEGUIWindow.h \
                  CEGUIWindowFactory.h \

@@ -246,6 +246,9 @@ namespace CEGUI
         */
         Window* getCurrentDropTarget(void) const;
 
+        // Window class overrides.
+        void getRenderingContext_impl(RenderingContext& ctx) const;
+
     protected:
         /*************************************************************************
         	Protected Implementation Methods

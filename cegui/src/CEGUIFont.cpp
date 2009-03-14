@@ -1,9 +1,9 @@
 /***********************************************************************
-    filename: 	CEGUIFont.cpp
-    created:	21/2/2004
-    author:		Paul D Turner
+    filename:  CEGUIFont.cpp
+    created: 21/2/2004
+    author:  Paul D Turner
 
-    purpose:	Implements Font class
+    purpose: Implements Font class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -44,51 +44,51 @@ namespace CEGUI
 // must be a power of two
 #define GLYPHS_PER_PAGE 256
 
-static const String FontNameAttribute ("Name");
-static const String FontFilenameAttribute ("Filename");
-static const String FontResourceGroupAttribute ("ResourceGroup");
-static const String FontAutoScaledAttribute ("AutoScaled");
-static const String FontNativeHorzResAttribute ("NativeHorzRes");
-static const String FontNativeVertResAttribute ("NativeVertRes");
+static const String FontNameAttribute("Name");
+static const String FontFilenameAttribute("Filename");
+static const String FontResourceGroupAttribute("ResourceGroup");
+static const String FontAutoScaledAttribute("AutoScaled");
+static const String FontNativeHorzResAttribute("NativeHorzRes");
+static const String FontNativeVertResAttribute("NativeVertRes");
 
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
-Font::Font (const String& name, const String& fontname, const String& resourceGroup) :
-    d_name (name),
-    d_fileName (fontname),
-    d_resourceGroup (resourceGroup),
-    d_ascender (0),
-    d_descender (0),
-    d_height (0),
-    d_autoScale (false),
-    d_horzScaling (1.0f),
-    d_vertScaling (1.0f),
-    d_nativeHorzRes (DefaultNativeHorzRes),
-    d_nativeVertRes (DefaultNativeVertRes),
-    d_maxCodepoint (0),
-    d_glyphPageLoaded (0)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup) :
+        d_name(name),
+        d_fileName(fontname),
+        d_resourceGroup(resourceGroup),
+        d_ascender(0),
+        d_descender(0),
+        d_height(0),
+        d_autoScale(false),
+        d_horzScaling(1.0f),
+        d_vertScaling(1.0f),
+        d_nativeHorzRes(DefaultNativeHorzRes),
+        d_nativeVertRes(DefaultNativeVertRes),
+        d_maxCodepoint(0),
+        d_glyphPageLoaded(0)
 {
-    addFontProperties ();
+    addFontProperties();
 }
 
 
-Font::Font (const XMLAttributes& attributes) :
-    d_name (attributes.getValueAsString (FontNameAttribute)),
-    d_fileName (attributes.getValueAsString (FontFilenameAttribute)),
-    d_resourceGroup (attributes.getValueAsString (FontResourceGroupAttribute)),
-    d_ascender (0),
-    d_descender (0),
-    d_height (0),
-    d_autoScale (attributes.getValueAsBool(FontAutoScaledAttribute, false)),
-    d_nativeHorzRes (attributes.getValueAsInteger (FontNativeHorzResAttribute, int (DefaultNativeHorzRes))),
-    d_nativeVertRes (attributes.getValueAsInteger (FontNativeVertResAttribute, int (DefaultNativeVertRes))),
-    d_maxCodepoint (0),
-    d_glyphPageLoaded (0)
+Font::Font(const XMLAttributes& attributes) :
+        d_name(attributes.getValueAsString(FontNameAttribute)),
+        d_fileName(attributes.getValueAsString(FontFilenameAttribute)),
+        d_resourceGroup(attributes.getValueAsString(FontResourceGroupAttribute)),
+        d_ascender(0),
+        d_descender(0),
+        d_height(0),
+        d_autoScale(attributes.getValueAsBool(FontAutoScaledAttribute, false)),
+        d_nativeHorzRes(attributes.getValueAsInteger(FontNativeHorzResAttribute, int (DefaultNativeHorzRes))),
+        d_nativeVertRes(attributes.getValueAsInteger(FontNativeVertResAttribute, int (DefaultNativeVertRes))),
+        d_maxCodepoint(0),
+        d_glyphPageLoaded(0)
 {
-    addFontProperties ();
+    addFontProperties();
 
-    Size size = System::getSingleton ().getRenderer()->getSize ();
+    Size size = System::getSingleton().getRenderer()->getDisplaySize();
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
@@ -116,7 +116,7 @@ void Font::defineMapping (const XMLAttributes&)
     Set the maximal glyph index. This reserves the respective
     number of bits in the d_glyphPageLoaded array.
 *************************************************************************/
-void Font::setMaxCodepoint (utf32 codepoint)
+void Font::setMaxCodepoint(utf32 codepoint)
 {
     d_maxCodepoint = codepoint;
 
@@ -125,7 +125,7 @@ void Font::setMaxCodepoint (utf32 codepoint)
     uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
     uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
     d_glyphPageLoaded = new uint [size];
-    memset (d_glyphPageLoaded, 0, size * sizeof (uint));
+    memset(d_glyphPageLoaded, 0, size * sizeof(uint));
 }
 
 
@@ -133,7 +133,7 @@ void Font::setMaxCodepoint (utf32 codepoint)
     Return a pointer to the glyphDat struct for the given codepoint,
     or 0 if the codepoint does not have a glyph defined.
 *************************************************************************/
-const FontGlyph *Font::getGlyphData (utf32 codepoint)
+const FontGlyph *Font::getGlyphData(utf32 codepoint)
 {
     if (codepoint > d_maxCodepoint)
         return 0;
@@ -146,12 +146,12 @@ const FontGlyph *Font::getGlyphData (utf32 codepoint)
         if (!(d_glyphPageLoaded [page / BITS_PER_UINT] & mask))
         {
             d_glyphPageLoaded [page / BITS_PER_UINT] |= mask;
-            rasterize (codepoint & ~(GLYPHS_PER_PAGE - 1),
-                       codepoint | (GLYPHS_PER_PAGE - 1));
+            rasterize(codepoint & ~(GLYPHS_PER_PAGE - 1),
+                      codepoint | (GLYPHS_PER_PAGE - 1));
         }
     }
 
-    CodepointMap::const_iterator pos = d_cp_map.find (codepoint);
+    CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
     return (pos != d_cp_map.end()) ? &pos->second : 0;
 }
 
@@ -227,12 +227,12 @@ size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, 
 
     // handle wraping cases
     size_t lineStart = 0, lineEnd = 0;
-    String	sourceLine;
+    String sourceLine;
 
-    float	wrap_width = format_area.getWidth();
+    float wrap_width = format_area.getWidth();
     String  whitespace = TextUtils::DefaultWhitespace;
-    String	thisLine, thisWord;
-    size_t	line_count = 0, currpos = 0;
+    String thisLine, thisWord;
+    size_t line_count = 0, currpos = 0;
 
     while (lineEnd < text.length())
     {
@@ -281,12 +281,14 @@ size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, 
 /*************************************************************************
     Renders text on the display.  Return number of lines output.
 *************************************************************************/
-size_t Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale)
+size_t Font::drawText(GeometryBuffer& buffer, const String& text,
+                      const Rect& draw_area, const Rect* clip_rect, TextFormatting fmt,
+                      const ColourRect& colours, float x_scale, float y_scale)
 {
     size_t thisCount;
     size_t lineCount = 0;
 
-    float	y_base = draw_area.d_top + getBaseline(y_scale);
+    float y_base = draw_area.d_top + getBaseline(y_scale);
 
     Rect tmpDrawArea(
         PixelAligned(draw_area.d_left),
@@ -296,7 +298,7 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
     );
 
     size_t lineStart = 0, lineEnd = 0;
-    String	currLine;
+    String currLine;
 
     while (lineEnd < text.length())
     {
@@ -304,53 +306,53 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
             lineEnd = text.length();
 
         currLine = text.substr(lineStart, lineEnd - lineStart);
-        lineStart = lineEnd + 1;	// +1 to skip \n char
+        lineStart = lineEnd + 1; // +1 to skip \n char
 
-        switch(fmt)
+        switch (fmt)
         {
         case LeftAligned:
-            drawTextLine(currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine, Vector2(tmpDrawArea.d_left, y_base), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case RightAligned:
-            drawTextLine(currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine, Vector2(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Centred:
-            drawTextLine(currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine, Vector2(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Justified:
             // new function in order to keep drawTextLine's signature unchanged
-            drawTextLineJustified(currLine, draw_area, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLineJustified(buffer, currLine, draw_area, Vector2(tmpDrawArea.d_left, y_base), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case WordWrapLeftAligned:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, LeftAligned, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapRightAligned:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, RightAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, RightAligned, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapCentred:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, Centred, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapJustified:
             // no change needed
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Justified, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, Justified, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
@@ -381,15 +383,17 @@ size_t Font::getNextWord(const String& in_string, size_t start_idx, String& out_
 /*************************************************************************
     draws wrapped text
 *************************************************************************/
-size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale)
+size_t Font::drawWrappedText(GeometryBuffer& buffer, const String& text,
+                             const Rect& draw_area, const Rect* clip_rect, TextFormatting fmt,
+                             const ColourRect& colours, float x_scale, float y_scale)
 {
-    size_t	line_count = 0;
-    Rect	dest_area(draw_area);
-    float	wrap_width = draw_area.getWidth();
+    size_t line_count = 0;
+    Rect dest_area(draw_area);
+    float wrap_width = draw_area.getWidth();
 
     String  whitespace = TextUtils::DefaultWhitespace;
-    String	thisLine, thisWord;
-    size_t	currpos = 0;
+    String thisLine, thisWord;
+    size_t currpos = 0;
 
     // get first word.
     currpos += getNextWord(text, currpos, thisLine);
@@ -404,7 +408,7 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
         if ((getTextExtent(thisLine, x_scale) + getTextExtent(thisWord, x_scale)) > wrap_width)
         {
             // output what we had until this new word
-            line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
+            line_count += drawText(buffer, thisLine, dest_area, clip_rect, fmt, colours, x_scale, y_scale);
 
             // remove whitespace from next word - it will form start of next line
             thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
@@ -423,7 +427,7 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
     // Last line is left aligned
     TextFormatting last_fmt = (fmt == Justified ? LeftAligned : fmt);
     // output last bit of string
-    line_count += drawText(thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
+    line_count += drawText(buffer, thisLine, dest_area, clip_rect, last_fmt, colours, x_scale, y_scale);
 
     return line_count;
 }
@@ -432,9 +436,11 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
 /*************************************************************************
     Draw a line of text.  No formatting is applied.
 *************************************************************************/
-void Font::drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale)
+void Font::drawTextLine(GeometryBuffer& buffer, const String& text,
+                        const Vector2& position, const Rect* clip_rect, const ColourRect& colours,
+                        float x_scale, float y_scale)
 {
-    Vector3	cur_pos(position);
+    Vector2 cur_pos(position);
 
     const FontGlyph* glyph;
     float base_y = position.d_y;
@@ -447,7 +453,7 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
         {
             const Image* img = glyph->getImage();
             cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
+            img->draw(buffer, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
             cur_pos.d_x += glyph->getAdvance(x_scale);
         }
     }
@@ -457,9 +463,11 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 /*************************************************************************
     Draw a justified line of text.
 *************************************************************************/
-void Font::drawTextLineJustified (const String& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale)
+void Font::drawTextLineJustified(GeometryBuffer& buffer, const String& text,
+                                 const Rect& draw_area, const Vector2& position, const Rect* clip_rect,
+                                 const ColourRect& colours, float x_scale, float y_scale)
 {
-    Vector3	cur_pos(position);
+    Vector2 cur_pos(position);
 
     const FontGlyph* glyph;
     float base_y = position.d_y;
@@ -489,7 +497,7 @@ void Font::drawTextLineJustified (const String& text, const Rect& draw_area, con
         {
             const Image* img = glyph->getImage();
             cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
+            img->draw(buffer, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
             cur_pos.d_x += glyph->getAdvance(x_scale);
 
             // That's where we adjust the size of each space character
@@ -503,26 +511,27 @@ void Font::drawTextLineJustified (const String& text, const Rect& draw_area, con
 /*************************************************************************
     Set the native resolution for this Font
 *************************************************************************/
-void Font::setNativeResolution (const Size& size)
+void Font::setNativeResolution(const Size& size)
 {
     d_nativeHorzRes = size.d_width;
     d_nativeVertRes = size.d_height;
 
     // re-calculate scaling factors & notify images as required
-    notifyScreenResolution (System::getSingleton ().getRenderer()->getSize ());
+    notifyDisplaySizeChanged(
+        System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 
 /*************************************************************************
     Notify the Font of the current (usually new) display resolution.
 *************************************************************************/
-void Font::notifyScreenResolution (const Size& size)
+void Font::notifyDisplaySizeChanged(const Size& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 
     if (d_autoScale)
-        updateFont ();
+        updateFont();
 }
 
 
@@ -535,7 +544,7 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
     float widest = 0;
 
     size_t lineStart = 0, lineEnd = 0;
-    String	currLine;
+    String currLine;
 
     while (lineEnd < text.length())
     {
@@ -545,9 +554,9 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
         }
 
         currLine = text.substr(lineStart, lineEnd - lineStart);
-        lineStart = lineEnd + 1;	// +1 to skip \n char
+        lineStart = lineEnd + 1; // +1 to skip \n char
 
-        switch(fmt)
+        switch (fmt)
         {
         case Centred:
         case RightAligned:
@@ -592,21 +601,21 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 float Font::getWrappedTextExtent(const String& text, float wrapWidth, float x_scale)
 {
     String  whitespace = TextUtils::DefaultWhitespace;
-    String	thisWord;
-    size_t	currpos;
-    float	lineWidth, wordWidth;
-    float	widest = 0;
+    String thisWord;
+    size_t currpos;
+    float lineWidth, wordWidth;
+    float widest = 0;
 
     // get first word.
-    currpos = getNextWord (text, 0, thisWord);
-    lineWidth = getTextExtent (thisWord, x_scale);
+    currpos = getNextWord(text, 0, thisWord);
+    lineWidth = getTextExtent(thisWord, x_scale);
 
     // while there are words left in the string...
-    while (String::npos != text.find_first_not_of (whitespace, currpos))
+    while (String::npos != text.find_first_not_of(whitespace, currpos))
     {
         // get next word of the string...
-        currpos += getNextWord (text, currpos, thisWord);
-        wordWidth = getTextExtent (thisWord, x_scale);
+        currpos += getNextWord(text, currpos, thisWord);
+        wordWidth = getTextExtent(thisWord, x_scale);
 
         // if the new word would make the string too long
         if ((lineWidth + wordWidth) > wrapWidth)
@@ -615,8 +624,8 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth, float x_sc
                 widest = lineWidth;
 
             // remove whitespace from next word - it will form start of next line
-            thisWord = thisWord.substr (thisWord.find_first_not_of (whitespace));
-            wordWidth = getTextExtent (thisWord, x_scale);
+            thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
+            wordWidth = getTextExtent(thisWord, x_scale);
 
             // reset for a new line.
             lineWidth = 0;
@@ -646,11 +655,11 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // output starting <Font ... > element
     xml_stream.openTag("Font")
-        .attribute(FontNameAttribute, d_name)
-        .attribute(FontFilenameAttribute, d_fileName);
+    .attribute(FontNameAttribute, d_name)
+    .attribute(FontFilenameAttribute, d_fileName);
 
-    if (!d_resourceGroup.empty ())
-        xml_stream.attribute (FontResourceGroupAttribute, d_resourceGroup);
+    if (!d_resourceGroup.empty())
+        xml_stream.attribute(FontResourceGroupAttribute, d_resourceGroup);
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
         xml_stream.attribute(FontNativeHorzResAttribute, PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
@@ -661,7 +670,7 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
     if (d_autoScale)
         xml_stream.attribute(FontAutoScaledAttribute, "True");
 
-    writeXMLToStream_impl (xml_stream);
+    writeXMLToStream_impl(xml_stream);
 
     // output closing </Font> element.
     xml_stream.closeTag();

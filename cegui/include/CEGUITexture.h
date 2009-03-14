@@ -1,13 +1,13 @@
 /***********************************************************************
-	filename: 	CEGUITexture.h
-	created:	21/2/2004
-	author:		Paul D Turner
-	
-	purpose:	Defines abstract interface for texture objects.  Texture
-				objects are created & destroyed by the Renderer.
+    filename: CEGUITexture.h
+    created:  21/2/2004
+    author:   Paul D Turner
+
+    purpose: Defines abstract interface for texture objects.  Texture
+             objects are created & destroyed by the Renderer.
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,21 +37,25 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class Vector2;
+
 /*!
 \brief
-	Abstract base class specifying the required interface for Texture objects.
+    Abstract base class specifying the required interface for Texture objects.
 
-	Texture objects are created via the Renderer.  The actual inner workings of any Texture object
-	are dependant upon the Renderer (and underlying API) in use.  This base class defines the minimal
-	set of functions that is required for the rest of the system to work.  Texture objects are only
-	created through the Renderer object's texture creation functions.
+    Texture objects are created via the Renderer.  The actual inner workings of
+    any Texture object are dependant upon the Renderer (and underlying API) in
+    use.  This base class defines the minimal set of functions that is required
+    for the rest of the system to work.  Texture objects are only created
+    through the Renderer object's texture creation functions.
 */
 class CEGUIEXPORT Texture
 {
 public:
     /*!
     \brief
-        Enum containing the list of supported pixel formats that can be passed to loadFromMemory
+        Enumerated type containing the supported pixel formats that can be
+        passed to loadFromMemory
     */
     enum PixelFormat
     {
@@ -61,144 +65,95 @@ public:
         PF_RGBA
     };
 
-	/*************************************************************************
-		Abstract Interface
-	*************************************************************************/
-	/*!
-	\brief
-		Returns the current pixel width of the texture
+    /*!
+    \brief
+        Returns the current pixel size of the texture.
 
-	\return
-		ushort value that is the current width of the texture in pixels
-	*/
-	virtual	ushort	getWidth(void) const = 0;
+    \return
+        Reference to a Size object that describes the size of the texture in
+        pixels.
+    */
+    virtual const Size& getSize() const = 0;
 
     /*!
     \brief
-        Returns the original pixel width of the data loaded into the texture.
+        Returns the original pixel size of the data loaded into the texture.
 
     \return
-        ushort value that is the original width, in pixels, of the data last
-        loaded into the texture.
-
-    \note 
-        for compatibility reason this method is optional the auto scale 
-        issue mantis ticket # 0000045 is not fixed for renderer that do 
-        not handle this. 
+        reference to a Size object that describes the original size, in pixels,
+        of the data loaded into the texture.
     */
-    virtual ushort getOriginalWidth(void) const { return getWidth(); }
-
-    /*! 
-    \brief 
-        Returns the current scale used for the width of the texture 
-
-    \return 
-        float value that denotes the horizontal scaling required to
-        accurately map pixel positions to texture co-ords.
-    */
-    virtual float getXScale(void) const { return 1.0f / static_cast<float>(getOriginalWidth()); } 
-
-	/*!
-	\brief
-		Returns the current pixel height of the texture
-
-	\return
-		ushort value that is the current height of the texture in pixels
-	*/
-	virtual	ushort	getHeight(void) const = 0;
+    virtual const Size& getOriginalDataSize() const = 0;
 
     /*!
     \brief
-        Returns the original pixel height of the data loaded into the texture.
+        Returns pixel to texel scale values that should be used for converting
+        pixel values to texture co-ords.
 
     \return
-        ushort value that is the original height, in pixels, of the data last
-        loaded into the texture.
-
-    \note for compatibility reason this method is optional the auto scale 
-    issue mantis ticket # 0000045 is not fixed for renderer that do 
-    not handle this. 
+        Reference to a Vector2 object that describes the scaling values required
+        to accurately map pixel positions to texture co-ordinates.
     */
-    virtual ushort getOriginalHeight(void) const { return getHeight(); }
+    virtual const Vector2& getTexelScaling() const = 0;
 
-    /*! 
-    \brief 
-        Returns the current scale used for the height of the texture 
+    /*!
+    \brief
+        Loads the specified image file into the texture.  The texture is resized
+        as required to hold the image.
 
-    \return 
-        float value that denotes the vertical scaling required to
-        accurately map pixel positions to texture co-ords.
-    */
-    virtual float getYScale(void) const { return 1.0f / static_cast<float>(getOriginalHeight()); }
-
-	/*!
-	\brief
-		Loads the specified image file into the texture.  The texture is resized as required to hold the image.
-
-	\param filename
-		The filename of the image file that is to be loaded into the texture
+    \param filename
+        The filename of the image file that is to be loaded into the texture
 
     \param resourceGroup
-        Resource group identifier to be passed to the resource provider when loading the image file.
+        Resource group identifier to be passed to the resource provider when
+        loading the image file.
 
-	\return
-		Nothing.
-	*/
-	virtual void	loadFromFile(const String& filename, const String& resourceGroup) = 0;
+    \return
+        Nothing.
+    */
+    virtual void loadFromFile(const String& filename,
+                              const String& resourceGroup) = 0;
 
+    /*!
+    \brief
+        Loads (copies) an image in memory into the texture.  The texture is
+        resized as required to hold the image.
 
-	/*!
-	\brief
-		Loads (copies) an image in memory into the texture.  The texture is resized as required to hold the image.
+    \param buffer
+        Pointer to the buffer containing the image data.
 
-	\param buffPtr
-		Pointer to the buffer containing the image data
+    \param buffer_size
+        Size of the buffer (in pixels as specified by \a pixelFormat)
 
-	\param buffWidth
-		Width of the buffer (in pixels as specified by \a pixelFormat )
+    \param pixel_format
+        PixelFormat value describing the format contained in \a buffPtr.
 
-	\param buffHeight
-		Height of the buffer (in pixels as specified by \a pixelFormat )
+    \return
+        Nothing.
+    */
+    virtual void loadFromMemory(const void* buffer,
+                                const Size& buffer_size,
+                                PixelFormat pixel_format) = 0;
 
-    \param pixelFormat
-        PixelFormat value describing the format contained in \a buffPtr
+    /*!
+    \brief
+        Save / dump the content of the texture to a memory buffer.  The dumped
+        pixel format is always RGBA (4 bytes per pixel).
 
-	\return
-		Nothing.
-	*/
-	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight, PixelFormat pixelFormat) = 0;
+    \param buffer
+        Pointer to the buffer that is to receive the image data.  You must make
+        sure that this buffer is large enough to hold the dumped texture data,
+        the required pixel dimensions can be established by calling getSize.
+    */
+    virtual void saveToMemory(void* buffer) = 0;
 
-
-	/*!
-	\brief
-		Return a pointer to the Renderer object that created and owns this Texture
-
-	\return
-		Pointer to the Renderer object that owns the Texture
-	*/
-	Renderer*	getRenderer(void) const			{return d_owner;}
-
-
-protected:
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for Texture base class.  This is never called by client code.
-	*/
-	Texture(Renderer* owner) : d_owner(owner) {}
-
-	/*!
-	\brief
-		Destructor for Texture base class.  This is never called by client code.
-	*/
-	virtual ~Texture(void) {}
-
-private:
-	Renderer* d_owner;		//<! Renderer object that created and owns this texture
+    /*!
+    \brief
+        Destructor for Texture base class.
+    */
+    virtual ~Texture() {}
 };
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _CEGUITexture_h_
+#endif // end of guard _CEGUITexture_h_

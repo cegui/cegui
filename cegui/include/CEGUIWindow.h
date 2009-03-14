@@ -41,7 +41,6 @@
 #include "CEGUIInputEvent.h"
 #include "CEGUIWindowProperties.h"
 #include "CEGUIUDim.h"
-#include "CEGUIRenderCache.h"
 #include "CEGUIWindowRenderer.h"
 #include <vector>
 #include <set>
@@ -56,6 +55,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class RenderingSurface;
+struct RenderingContext;
+
 /*!
 \brief
     Enumerated type used when specifying vertical alignments.
@@ -125,7 +127,7 @@ public:
     static const String EventNamespace;
 
     // generated internally by Window
-	static const String EventWindowUpdated; //!< Event to signal the window is being updated. Used by lua system!
+    static const String EventWindowUpdated; //!< Event to signal the window is being updated. Used by lua system!
     //! Parent of this Window has been re-sized.
     static const String EventParentSized;
     //! Window size has changed
@@ -190,6 +192,10 @@ public:
     static const String EventWindowRendererAttached;
     //! The currently assigned window renderer was detached.
     static const String EventWindowRendererDetached;
+    //! Window rotation factor(s) changed
+    static const String EventRotated;
+    //! Window non-client setting was changed
+    static const String EventNonClientChanged;
 
     // generated externally (inputs)
     //! Mouse cursor has entered the Window.
@@ -268,11 +274,11 @@ public:
     */
     const String& getName(void) const  {return d_name;}
 
-	/**
-	 * Return a string to the window prefix
-	 * \return String object holding the prefix of this window
-	 */
-	const String& getPrefix(void) const {return d_windowPrefix;}
+    /**
+     * Return a string to the window prefix
+     * \return String object holding the prefix of this window
+     */
+    const String& getPrefix(void) const {return d_windowPrefix;}
 
     /*!
     \brief
@@ -473,7 +479,7 @@ public:
         ABI compatibility for the 0.6.x series of releases.  This function will
         be gone in 0.7.0.
     */
-	Window* recursiveChildSearch(const String& name) const;
+    Window* recursiveChildSearch(const String& name) const;
 
     /*!
     \brief
@@ -1105,12 +1111,12 @@ public:
 
     /*!
     \brief
-        Return the RenderCache object for this Window.
+        Return the GeometryBuffer object for this Window.
 
     \return
-        Reference to the RenderCache object for this Window.
+        Reference to the GeometryBuffer object for this Window.
     */
-    RenderCache& getRenderCache()   { return d_renderCache; }
+    GeometryBuffer& getGeometryBuffer();
 
     /*!
     \brief
@@ -1294,6 +1300,75 @@ public:
     */
     bool isDragDropTarget() const;
 
+    /*!
+    \brief
+        Fill in the RenderingContext \a ctx with details of the RenderingSurface
+        where this Window object should normally do it's rendering.
+    */
+    void getRenderingContext(RenderingContext& ctx) const;
+
+    //! implementation of the default getRenderingContext logic.
+    virtual void getRenderingContext_impl(RenderingContext& ctx) const;
+
+    /*!
+    \brief
+        return the RenderingSurface currently set for this window.  May return
+        0.
+    */
+    RenderingSurface* getRenderingSurface() const;
+
+    /*!
+    \brief
+        return the RenderingSurface that will be used by this window as the
+        target for rendering.
+    */
+    RenderingSurface& getTargetRenderingSurface() const;
+
+    /*!
+    \brief
+        Returns whether \e automatic use of an imagery caching RenderingSurface
+        (i.e. a RenderingWindow) is enabled for this window.  The reason we
+        emphasise 'automatic' is because the client may manually set a
+        RenderingSurface that does exactly the same job.
+
+    \return
+        - true if automatic use of a caching RenderingSurface is enabled.
+        - false if automatic use of a caching RenderTarget is not enabled.
+    */
+    bool isUsingAutoRenderingSurface() const;
+
+    /*!
+    \brief
+        Returns the window at the root of the hierarchy starting at this
+        Window.  The root window is defined as the first window back up the
+        hierarchy that has no parent window.
+
+    \return
+        A pointer to the root window of the hierarchy that this window is
+        attched to.
+    */
+    const Window* getRootWindow() const;
+    Window* getRootWindow();
+
+    //! return the rotations set for this window.
+    const Vector3& getRotation() const;
+
+    /*!
+    \brief
+        Return whether the Window is a non-client window.
+
+        A non-client window is clipped, positioned and sized according to the
+        parent window's full area as opposed to just the inner rect area used
+        for normal client windows.
+
+    \return
+        - true if the window should is clipped, positioned and sized according
+        to the full area rectangle of it's parent.
+        - false if the window is be clipped, positioned and sized according
+        to the inner rect area of it's parent.
+    */
+    bool isNonClientWindow() const;
+
     /*************************************************************************
         Manipulator functions
     *************************************************************************/
@@ -1476,11 +1551,11 @@ public:
     */
     void setID(uint ID);
 
-	/**
-	 * Sets the unique prefix for this window.
-	 * \param prefix String object holding the prefix to be used on this window.
-	 */
-	void setPrefix(String prefix) { d_windowPrefix = prefix;}
+    /**
+     * Sets the unique prefix for this window.
+     * \param prefix String object holding the prefix to be used on this window.
+     */
+    void setPrefix(String prefix) { d_windowPrefix = prefix;}
 
     /*!
     \brief
@@ -1737,13 +1812,13 @@ public:
 
     /*!
     \brief
-        Signal the System object to redraw (at least) this Window on the next
-        render cycle.
+        Invalidate this window causing at least this window to be redrawn during
+        the next rendering pass.
 
     \return
         Nothing
     */
-    void requestRedraw(void) const;
+    void invalidate(void);
 
     /*!
     \brief
@@ -2496,7 +2571,7 @@ public:
     \return
         Nothing
     */
-    void render(void);
+    void render();
 
     /*!
     \brief
@@ -2603,9 +2678,15 @@ public:
 
     /*!
     \brief
-        Recursively inform all children that the screen area has changed, and needs to be re-cached
+        Inform the window, and optionally all children, that screen area
+        rectangles have changed.
+
+    \param recursive
+        - true to recursively call notifyScreenAreaChanged on attached child
+          Window objects.
+        - false to just process \e this Window.
     */
-    void notifyScreenAreaChanged(void);
+    void notifyScreenAreaChanged(bool recursive = true);
 
     /*!
     \brief
@@ -2630,6 +2711,98 @@ public:
         - false to disable the Window as a drag and drop target.
     */
     void setDragDropTarget(bool setting);
+
+    /*!
+    \brief
+        Set the RenderingSurface to be associated with this Window, or 0 if
+        none is required.
+    \par
+        If this function is called, and the option for automatic use of an
+        imagery caching RenderingSurface is enabled, any automatically created
+        RenderingSurface will be released, and the affore mentioned option will
+        be disabled.
+    \par
+        If after having set a custom RenderingSurface you then subsequently
+        enable the automatic use of an imagery caching RenderingSurface by
+        calling setUsingAutoRenderingSurface, the previously set
+        RenderingSurface will be disassociated from the Window.  Note that the
+        previous RenderingSurface is not destroyed or cleaned up at all - this
+        is the job of whoever created that object initially.
+
+    \param target
+        Pointer to the RenderingSurface object to be associated with the window.
+    */
+    void setRenderingSurface(RenderingSurface* surface);
+
+    /*!
+    \brief
+        Invalidate the chain of rendering surfaces from this window backwards to
+        ensure they get properly redrawn - but doing the minimum amount of work
+        possibe - next render.
+    */
+    void invalidateRenderingSurface();
+
+    /*!
+    \brief
+        Sets whether \e automatic use of an imagery caching RenderingSurface
+        (i.e. a RenderingWindow) is enabled for this window.  The reason we
+        emphasise 'atutomatic' is because the client may manually set a
+        RenderingSurface that does exactlythe same job.
+    \par
+        Note that this setting really only controls whether the Window
+        automatically creates and manages the RenderingSurface, as opposed to
+        the \e use of the RenderingSurface.  If a RenderingSurfaceis set for the
+        Window it will be used regardless of this setting.
+    \par
+        Enabling this option will cause the Window to attempt to create a
+        suitable RenderingSurface (which will actually be a RenderingWindow).
+        If there is an existing RenderingSurface assocated with this Window, it
+        will be removed as the Window's RenderingSurface
+        <em>but not destroyed</em>; whoever created the RenderingSurface in the
+        first place should take care of its destruction.
+    \par
+        Disabling this option will cause any automatically created
+        RenderingSurface to be released.
+    \par
+        It is possible that the renderer in use may not support facilities for
+        RenderingSurfaces that are suitable for full imagery caching.  If this
+        is the case, then calling getRenderingSurface after enabling this option
+        will return 0.  In these cases this option will still show as being
+        'enabled', this is because Window \e settings should not be influenced
+        by capabilities the renderer in use; for example, this enables correct
+        XML layouts to be written from a Window on a system that does not
+        support such RenderingSurfaces, so that the layout will function as
+        preferred on systems that do.
+    \par
+        If this option is enabled, and the client subsequently assigns a
+        different RenderingSurface to the Window, the existing automatically
+        created RenderingSurface will be released and this setting will be
+        disabled.
+
+    \param setting
+        - true to enable automatic use of an imagery caching RenderingSurface.
+        - false to disable automatic use of an imagery caching RenderingSurface.
+    */
+    void setUsingAutoRenderingSurface(bool setting);
+
+    //! set the rotations for this window.
+    void setRotation(const Vector3& rotation);
+
+    /*!
+    \brief
+        Set whether the Window is a non-client window.
+
+        A non-client window is clipped, positioned and sized according to the
+        parent window's full area as opposed to just the inner rect area used
+        for normal client windows.
+
+    \param setting
+        - true if the window should be clipped, positioned and sized according
+        to the full area rectangle of it's parent.
+        - false if the window should be clipped, positioned and sized according
+        to the inner rect area of it's parent.
+    */
+    void setNonClientWindow(const bool setting);
 
 protected:
     /*************************************************************************
@@ -3126,6 +3299,29 @@ protected:
     */
     virtual void onWindowRendererDetached(WindowEventArgs& e);
 
+    /*!
+    \brief
+        Handler called when the window's rotation factor is changed.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onRotated(WindowEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the window's non-client setting, affecting it's
+        position and size relative to it's parent is changed.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onNonClientChanged(WindowEventArgs& e);
+
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
@@ -3146,23 +3342,46 @@ protected:
     \brief
         Perform the actual rendering for this Window.
 
-    \param z
-        float value specifying the base Z co-ordinate that should be used when
-        rendering
+    \param ctx
+        RenderingContext holding the details of the RenderingSurface to be
+        used for the Window rendering operations.
 
     \return
         Nothing
     */
-    virtual void drawSelf(float z);
+    virtual void drawSelf(const RenderingContext& ctx);
+
+    /*!
+    \brief
+        Perform drawing operations concerned with generating and buffering
+        window geometry.
+
+    \note
+        This function is a sub-function of drawSelf; it is provided to make it
+        easier to override drawSelf without needing to duplicate large sections
+        of the code from the default implementation.
+    */
+    void bufferGeometry(const RenderingContext& ctx);
+
+    /*!
+    \brief
+        Perform drawing operations concerned with positioning, clipping and
+        queueing of window geometry to RenderingSurfaces.
+
+    \note
+        This function is a sub-function of drawSelf and is provided to make it
+        easier to override drawSelf without needing to duplicate large sections
+        of the code from the default implementation.
+    */
+    void queueGeometry(const RenderingContext& ctx);
 
     /*!
     \brief
         Update the rendering cache.
 
-        Populates the Window's RenderCache with imagery to be sent to the
-        renderer.
+        Populates the Window's GeometryBuffer ready for rendering.
     */
-    virtual void populateRenderCache()  {}
+    virtual void populateGeometryBuffer()  {}
 
     /*!
     \brief
@@ -3239,6 +3458,15 @@ protected:
     */
     void notifyClippingChanged(void);
 
+    //! helper to create and setup the auto RenderingWindow surface
+    void allocateRenderingWindow();
+
+    //! helper to clean up the auto RenderingWindow surface
+    void releaseRenderingWindow();
+
+    //! Helper to intialise the needed clipping for geometry and render surface.
+    void initialiseClippers(const RenderingContext& ctx);
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -3277,6 +3505,9 @@ protected:
 
     //! Current constrained pixel size of the window.
     Size d_pixelSize;
+
+    //! Rotation angles for this window
+    Vector3 d_rotation;
 
     //! Holds pointer to the Window objects current mouse cursor image.
     const Image* d_mouseCursor;
@@ -3320,6 +3551,9 @@ protected:
 
     //! true when Window will be clipped by parent Window area Rect.
     bool d_clippedByParent;
+
+    //! true if Window is in non-client (outside InnerRect) area of parent.
+    bool d_nonClientContent;
 
     //! true when Window will be auto-destroyed by parent.
     bool d_destroyedByParent;
@@ -3402,10 +3636,14 @@ protected:
     bool d_inheritsTipText;
 
     // rendering
-    //! Object which acts as a cache for Images to be drawn by this Window.
-    RenderCache d_renderCache;
-    //! true if window image cache needs to be regenerated.
+    //! Object which acts as a cache of geometry drawn by this Window.
+    GeometryBuffer* d_geometry;
+    //! RenderingSurface owned by this window (may be 0)
+    RenderingSurface* d_surface;
+    //! true if window geometry cache needs to be regenerated.
     mutable bool d_needsRedraw;
+    //! holds setting for automatic creation of of surface (RenderingWindow)
+    bool d_autoRenderingWindow;
 
     // Look'N'Feel stuff
     //! Name of the Look assigned to this window (if any).
@@ -3494,6 +3732,12 @@ protected:
     static  WindowProperties::WindowRenderer    d_windowRendererProperty;
     static  WindowProperties::LookNFeel         d_lookNFeelProperty;
     static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
+    static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
+    static  WindowProperties::Rotation d_rotationProperty;
+    static  WindowProperties::XRotation d_xRotationProperty;
+    static  WindowProperties::YRotation d_yRotationProperty;
+    static  WindowProperties::ZRotation d_zRotationProperty;
+    static  WindowProperties::NonClient d_nonClientProperty;
 
     /*************************************************************************
         implementation functions
@@ -3631,6 +3875,16 @@ protected:
     */
     bool isTopOfZOrder() const;
 
+    /*!
+    \brief
+        Update position and clip region on this Windows geometry / rendering
+        surface.
+    */
+    void updateGeometryRenderSettings();
+
+    //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
+    void transferChildSurfaces();
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
@@ -3657,8 +3911,8 @@ protected:
     //! Type name of the window as defined in a Falagard mapping.
     String    d_falagardType;
 
-	//! The prefix used on this window (if any) when created instanced windows.
-	String    d_windowPrefix;
+    //! The prefix used on this window (if any) when created instanced windows.
+    String    d_windowPrefix;
 
     friend class WindowManager;
 };

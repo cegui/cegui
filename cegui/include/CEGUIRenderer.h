@@ -1,12 +1,12 @@
 /***********************************************************************
-	filename: 	CEGUIRenderer.h
-	created:	20/2/2004
-	author:		Paul D Turner
-	
-	purpose:	Defines interface for abstract Renderer class
+    filename: CEGUIRenderer.h
+    created:  20/2/2004
+    author:   Paul D Turner
+
+    purpose: Defines interface for abstract Renderer class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,375 +31,261 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIRect.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIEventSet.h"
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-	Enumerated type that contains the valid flags that can be to use when rendering image
-*/
-enum OrientationFlags {
-	FlipHorizontal		= 1,	//!< Horizontal flip the image
-	FlipVertical		= 2,	//!< Vertical flip the image
-	RotateRightAngle	= 4		//!< Rotate the image anticlockwise 90 degree
-};
+class GeometryBuffer;
+class RenderingRoot;
+class TextureTarget;
+class Size;
+class Vector2;
+
+//----------------------------------------------------------------------------//
 
 /*!
 \brief
-	Enumerated type that contains the valid diagonal-mode that specify how a quad is split into triangles when rendered with fx. a 3D API
+    Enumerated type that contains the valid diagonal-mode that specify how a
+    quad is split into triangles when rendered with by a 3D API.
 */
 enum QuadSplitMode
 {
-	TopLeftToBottomRight,	//!< Diagonal goes from top-left to bottom-right
-	BottomLeftToTopRight	//!< Diagonal goes from bottom-left to top-right
+    //! Diagonal split goes from top-left to bottom-right
+    TopLeftToBottomRight,
+    //! Diagonal split goes from bottom-left to top-right
+    BottomLeftToTopRight
 };
 
+//----------------------------------------------------------------------------//
 
 /*!
 \brief
-	Abstract class defining the interface for Renderer objects.
+    Abstract class defining the basic required interface for Renderer objects.
 
-	Objects derived from Renderer are the means by which the GUI system interfaces
-	with specific rendering technologies.  To use a rendering system or API to draw
-	CEGUI imagery requires that an appropriate Renderer object be available.
+    Objects derived from Renderer are the means by which the GUI system
+    interfaces with specific rendering technologies.  To use a rendering system
+    or API to draw CEGUI imagery requires that an appropriate Renderer object be
+    available.
 */
-class CEGUIEXPORT Renderer : public EventSet
+class CEGUIEXPORT Renderer
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
-
-	/*************************************************************************
-		Event name constants
-	*************************************************************************/
-	/*!
-		event that fires when the underlying display size had changed.
-		
-		It is important that all Renderer implementers fire this properly as the
-		system itself subscribes to this event.
-	*/
-	static const String EventDisplaySizeChanged;
-
-
-	/*************************************************************************
-		Abstract interface methods
-	*************************************************************************/
-	/*!
-	\brief
-		Add a quad to the rendering queue.  All clipping and other adjustments should have been made prior to calling this.
-
-	\param dest_rect
-		Rect object describing the destination area (values are in pixels)
-
-	\param z
-		float value specifying the z co-ordinate / z order of the quad
-
-	\param tex
-		pointer to the Texture object that holds the imagery to be rendered
-
-	\param texture_rect
-		Rect object holding the area of \a tex that is to be rendered (values are in texture co-ordinates).
-
-	\param colours
-		ColourRect object describing the colour values that are to be applied when rendering.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
-
-	\return
-		Nothing
-	*/
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode) = 0;
-
-
-	/*!
-	\brief
-		Perform final rendering for all quads that have been queued for rendering
-
-		The contents of the rendering queue is retained and can be rendered again as required.  If the contents is not required call clearRenderList().
-
-	\return
-		Nothing
-	*/
-	virtual	void	doRender(void) = 0;
-
-
-	/*!
-	\brief
-		Clears all queued quads from the render queue.
-	
-	\return
-		Nothing
-	*/
-	virtual	void	clearRenderList(void) = 0;
-
-
-	/*!
-	\brief
-		Enable or disable the queueing of quads from this point on.
-
-		This only affects queueing.  If queueing is turned off, any calls to addQuad will cause the quad to be rendered directly.  Note that
-		disabling queueing will not cause currently queued quads to be rendered, nor is the queue cleared - at any time the queue can still
-		be drawn by calling doRender, and the list can be cleared by calling clearRenderList.  Re-enabling the queue causes subsequent quads
-		to be added as if queueing had never been disabled.
-
-	\param setting
-		true to enable queueing, or false to disable queueing (see notes above).
-
-	\return
-		Nothing
-	*/
-	virtual void	setQueueingEnabled(bool setting) = 0;
-
-
-	/*!
-	\brief
-		Creates a 'null' Texture object.
-
-	\return
-		a newly created Texture object.  The returned Texture object has no size or imagery associated with it, and is
-		generally of little or no use.
-	*/
-	virtual	Texture*	createTexture(void) = 0;
-
-
-	/*!
-	\brief
-		Create a Texture object using the given image file.
-
-	\param filename
-		String object that specifies the path and filename of the image file to use when creating the texture.
-
-    \param resourceGroup
-        Resource group identifier to be passed to the resource provider when loading the texture file.
-
-	\return
-		a newly created Texture object.  The initial contents of the texture memory is the requested image file.
-
-	\note
-		Textures are always created with a size that is a power of 2.  If the file you specify is of a size that is not
-		a power of two, the final size will be rounded up.  Additionally, textures are always square, so the ultimate
-		size is governed by the larger of the width and height of the specified file.  You can check the ultimate sizes
-		by querying the texture after creation.
-	*/
-	virtual	Texture*	createTexture(const String& filename, const String& resourceGroup) = 0;
-
-
-	/*!
-	\brief
-		Create a Texture object with the given pixel dimensions as specified by \a size.  NB: Textures are always square.
-
-	\param size
-		float value that specifies the size to use for the width and height when creating the new texture.
-
-	\return
-		a newly created Texture object.  The initial contents of the texture memory is undefined / random.
-
-	\note
-		Textures are always created with a size that is a power of 2.  If you specify a size that is not a power of two, the final
-		size will be rounded up.  So if you specify a size of 1024, the texture will be (1024 x 1024), however, if you specify a size
-		of 1025, the texture will be (2048 x 2048).  You can check the ultimate size by querying the texture after creation.
-	*/	
-	virtual	Texture*	createTexture(float size) = 0;
-
-
-	/*!
-	\brief
-		Destroy the given Texture object.
-
-	\param texture
-		pointer to the Texture object to be destroyed
-
-	\return
-		Nothing
-	*/
-	virtual	void		destroyTexture(Texture* texture) = 0;
-
-	
-	/*!
-	\brief
-		Destroy all Texture objects.
-
-	\return
-		Nothing
-	*/
-	virtual void		destroyAllTextures(void) = 0;
-
-
-	/*!
-	\brief
-		Return whether queueing is enabled.
-
-	\return
-		true if queueing is enabled, false if queueing is disabled.
-	*/
-	virtual bool	isQueueingEnabled(void) const = 0;
-
-
-	/*!
-	\brief
-		Return the current width of the display in pixels
-
-	\return
-		float value equal to the current width of the display in pixels.
-	*/
-	virtual float	getWidth(void) const	= 0;
-
-
-	/*!
-	\brief
-		Return the current height of the display in pixels
-
-	\return
-		float value equal to the current height of the display in pixels.
-	*/
-	virtual float	getHeight(void) const	= 0;
-
-
-	/*!
-	\brief
-		Return the size of the display in pixels
-
-	\return
-		Size object describing the dimensions of the current display.
-	*/
-	virtual Size	getSize(void) const		= 0;
-
-
-	/*!
-	\brief
-		Return a Rect describing the screen
-
-	\return
-		A Rect object that describes the screen area.  Typically, the top-left values are always 0, and the size of the area described is
-		equal to the screen resolution.
-	*/
-	virtual Rect	getRect(void) const		= 0;
-
-
-	/*!
-	\brief
-		Return the maximum texture size available
-
-	\return
-		Size of the maximum supported texture in pixels (textures are always assumed to be square)
-	*/
-	virtual	uint	getMaxTextureSize(void) const	= 0;
-
-
-	/*!
-	\brief
-		Return the horizontal display resolution dpi
-
-	\return
-		horizontal resolution of the display in dpi.
-	*/
-	virtual	uint	getHorzScreenDPI(void) const	= 0;
-
-
-	/*!
-	\brief
-		Return the vertical display resolution dpi
-
-	\return
-		vertical resolution of the display in dpi.
-	*/
-	virtual	uint	getVertScreenDPI(void) const	= 0;
-
-
-	/*************************************************************************
-		Basic stuff we provide in base class
-	*************************************************************************/
-	/*!
-	\brief
-		Reset the z co-ordinate for rendering.
-	
-	\return
-		Nothing
-	*/
-	void	resetZValue(void)				{d_current_z = GuiZInitialValue;}
-
-
-	/*!
-	\brief
-		Update the z co-ordinate for the next major UI element (window).
-
-	\return
-		Nothing
-	*/
-	void	advanceZValue(void)				{d_current_z -= GuiZElementStep;}
-
-
-	/*!
-	\brief
-		return the current Z value to use (equates to layer 0 for this UI element).
-
-	\return
-		float value that specifies the z co-ordinate to be used for layer 0 on the current GUI element.
-	*/
-	float	getCurrentZ(void) const			{return d_current_z;}
-
-
-	/*!
-	\brief
-		return the z co-ordinate to use for the requested layer on the current GUI element.
-
-	\param layer
-		Specifies the layer to return the Z co-ordinate for.  Each GUI element can use up to 10 layers, so valid inputs are 0 to 9 inclusive.
-		If you specify an invalid value for \a layer, results are undefined.
-
-	\return
-		float value that specifies the Z co-ordinate for layer \a layer on the current GUI element.
-	*/
-	float	getZLayer(uint layer) const		{return d_current_z - ((float)layer * GuiZLayerStep);}
-
+    /*!
+    \brief
+        Return the default rendering root for the renderer.  The default
+        rendering root is typically a RenderingRoot that targets the entire
+        screen (or rendering window).
+
+    \return
+        RenderingRoot object that is the default RenderingSurface provided by
+        the Renderer.
+    */
+    virtual RenderingRoot& getDefaultRenderingRoot() = 0;
 
     /*!
     \brief
-        Return identification string for the renderer module.  If the internal id string has not been
-        set by the Renderer module creator, a generic string of "Unknown renderer" will be returned.
+        Create a new GeometryBuffer and return a reference to it.  You should
+        remove the GeometryBuffer from any RenderQueues and call
+        destroyGeometryBuffer when you want to destroy the GeometryBuffer.
 
     \return
-        String object holding a string that identifies the Renderer in use.
+        GeometryBuffer object.
     */
-    const String& getIdentifierString() const;
+    virtual GeometryBuffer& createGeometryBuffer() = 0;
 
-    virtual ResourceProvider* createResourceProvider(void);
+    /*!
+    \brief
+        Destroy a GeometryBuffer that was returned when calling the
+        createGeometryBuffer function.  Before destroying any GeometryBuffer
+        you should ensure that it has been removed from any RenderQueue that
+        was using it.
 
-protected:
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	Renderer(void);
+    \param buffer
+        The GeometryBuffer object to be destroyed.
+    */
+    virtual void destroyGeometryBuffer(const GeometryBuffer& buffer) = 0;
 
-public:		// for luabind support
-	virtual ~Renderer(void);
+    /*!
+    \brief
+        Destroy all GeometryBuffer objects created by this Renderer.
+    */
+    virtual void destroyAllGeometryBuffers() = 0;
 
-private:
-	/*************************************************************************
-		Implementation constants
-	*************************************************************************/
-	static const float	GuiZInitialValue;		//!< Initial value to use for 'z' each frame.
-	static const float	GuiZElementStep;		//!< Value to step 'z' for each GUI element.
-	static const float	GuiZLayerStep;			//!< Value to step 'z' for each GUI layer.
+    /*!
+    \brief
+        Create a TextureTarget that can be used to cache imagery; this is a
+        RenderTarget that does not lose it's content from one frame to another.
 
+        If the renderer is unable to offer such a thing, 0 should be returned.
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	float	d_current_z;		//!< The current z co-ordinate value.
+    \return
+        Pointer to a TextureTarget object that is suitable for caching imagery,
+        or 0 if the renderer is unable to offer such a thing.
+    */
+    virtual TextureTarget* createTextureTarget() = 0;
 
-protected:
-    ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object.
-    String d_identifierString;                 //!< String that holds some id information about the renderer.
+    /*!
+    \brief
+        Function that cleans up TextureTarget objects created with the
+        createTextureTarget function.
+
+    \param target
+        A pointer to a TextureTarget object that was previously returned from a
+        call to createTextureTarget.
+    */
+    virtual void destroyTextureTarget(TextureTarget* target) = 0;
+
+    /*!
+    \brief
+        Destory all TextureTarget objects created by this Renderer.
+    */
+    virtual void destroyAllTextureTargets() = 0;
+
+    /*!
+    \brief
+        Create a 'null' Texture object.
+
+    \return
+        A newly created Texture object.  The returned Texture object has no size
+        or imagery associated with it.
+    */
+    virtual Texture& createTexture() = 0;
+
+    /*!
+    \brief
+        Create a Texture object using the given image file.
+
+    \param filename
+        String object that specifies the path and filename of the image file to
+        use when creating the texture.
+
+    \param resourceGroup
+        String objet that specifies the resource group identifier to be passed
+        to the resource provider when loading the texture file \a filename.
+
+    \return
+        A newly created Texture object.  The initial content of the texture
+        memory is the requested image file.
+
+    \note
+        Due to possible limitations of the underlying hardware, API or engine,
+        the final size of the texture may not match the size of the loaded file.
+        You can check the ultimate sizes by querying the Texture object
+        after creation.
+    */
+    virtual Texture& createTexture(const String& filename,
+                                   const String& resourceGroup) = 0;
+
+    /*!
+    \brief
+        Create a Texture object with the given pixel dimensions as specified by
+        \a size.
+
+    \param size
+        Size object that describes the desired texture size.
+
+    \return
+        A newly created Texture object.  The initial contents of the texture
+        memory is undefined.
+
+    \note
+        Due to possible limitations of the underlying hardware, API or engine,
+        the final size of the texture may not match the requested size.  You can
+        check the ultimate sizes by querying the Texture object after creation.
+    */
+    virtual Texture& createTexture(const Size& size) = 0;
+
+    /*!
+    \brief
+        Destroy a Texture object that was previously created by calling the
+        createTexture functions.
+
+    \param texture
+        Texture object to be destroyed.
+    */
+    virtual void destroyTexture(Texture& texture) = 0;
+
+    /*!
+    \brief
+        Destroy all Texture objects created by this Renderer.
+    */
+    virtual void destroyAllTextures() = 0;
+
+    /*!
+    \brief
+        Perform any operations required to put the system into a state ready
+        for rendering operations to begin.
+    */
+    virtual void beginRendering() = 0;
+
+    /*!
+    \brief
+        Perform any operations required to finalise rendering.
+    */
+    virtual void endRendering() = 0;
+
+    /*!
+    \brief
+        Set the size of the display or host window in pixels for this Renderer
+        object.
+
+        This is intended to be called by the System as part of the notification
+        process when display size changes are notified to it via the
+        System::notifyDisplaySizeChanged function.
+
+    \note
+        The Renderer implementation should not use this function other than to
+        perform internal state updates on the Renderer and related objects.
+
+    \param size
+        Size object describing the dimesions of the current or host window in
+        pixels.
+    */
+    virtual void setDisplaySize(const Size& size) = 0;
+
+    /*!
+    \brief
+        Return the size of the display or host window in pixels.
+
+    \return
+        Size object describing the pixel dimesntions of the current display or
+        host window.
+    */
+    virtual const Size& getDisplaySize() const = 0;
+
+    /*!
+    \brief
+        Return the resolution of the display or host window in dots per inch.
+
+    \return
+        Vector2 object that describes the resolution of the display or host
+        window in DPI.
+    */
+    virtual const Vector2& getDisplayDPI() const = 0;
+
+    /*!
+    \brief
+        Return the pixel size of the maximum supported texture.
+
+    \return
+        Size of the maximum supported texture in pixels.
+    */
+    virtual uint getMaxTextureSize() const = 0;
+
+    /*!
+    \brief
+        Return identification string for the renderer module.
+
+    \return
+        String object holding text that identifies the Renderer in use.
+    */
+    virtual const String& getIdentifierString() const = 0;
+
+    //! Destructor.
+    virtual ~Renderer() {}
 };
 
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _CEGUIRenderer_h_
+#endif // end of guard _CEGUIRenderer_h_

@@ -678,7 +678,7 @@ void ListHeader::setSegmentOffset(float offset)
 	{
 		d_segmentOffset = offset;
 		layoutSegments();
-		requestRedraw();
+		invalidate();
 	
 		// Fire event.
 		WindowEventArgs args(this);

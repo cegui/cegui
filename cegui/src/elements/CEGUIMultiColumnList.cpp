@@ -1269,7 +1269,7 @@ void MultiColumnList::handleUpdatedItemData(void)
 {
     resortList();
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -1767,7 +1767,7 @@ void MultiColumnList::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onSelectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
@@ -1778,7 +1778,7 @@ void MultiColumnList::onSelectionChanged(WindowEventArgs& e)
 void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 	fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
@@ -1788,7 +1788,7 @@ void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSortColumnChanged, e, EventNamespace);
 }
 
@@ -1798,7 +1798,7 @@ void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onSortDirectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSortDirectionChanged, e, EventNamespace);
 }
 
@@ -1809,7 +1809,7 @@ void MultiColumnList::onSortDirectionChanged(WindowEventArgs& e)
 void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 {
 	configureScrollbars();
-	requestRedraw();
+	invalidate();
 	fireEvent(EventListColumnSized, e, EventNamespace);
 }
 
@@ -1819,7 +1819,7 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventListColumnMoved, e, EventNamespace);
 }
 
@@ -1980,7 +1980,7 @@ bool MultiColumnList::handleHorzScrollbar(const EventArgs&)
 {
 	// set header offset to match scroll position
 	getListHeader()->setSegmentOffset(getHorzScrollbar()->getScrollPosition());
-    requestRedraw();
+    invalidate();
 	return true;
 }
 
@@ -1989,7 +1989,7 @@ bool MultiColumnList::handleHorzScrollbar(const EventArgs&)
 *************************************************************************/
 bool MultiColumnList::handleVertScrollbar(const EventArgs&)
 {
-    requestRedraw();
+    invalidate();
 	return true;
 }
 

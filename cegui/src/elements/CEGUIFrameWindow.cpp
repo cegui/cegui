@@ -160,7 +160,7 @@ void FrameWindow::setSizingEnabled(bool setting)
 void FrameWindow::setFrameEnabled(bool setting)
 {
 	d_frameEnabled = setting;
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -316,8 +316,8 @@ void FrameWindow::moveLeftEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -359,8 +359,8 @@ void FrameWindow::moveRightEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -404,8 +404,8 @@ void FrameWindow::moveTopEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -449,8 +449,8 @@ void FrameWindow::moveBottomEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -535,7 +535,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     notifyClippingChanged();
 
 	fireEvent(EventRollupToggled, e, EventNamespace);
@@ -698,7 +698,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
 void FrameWindow::onActivated(ActivationEventArgs& e)
 {
 	Window::onActivated(e);
-	getTitlebar()->requestRedraw();
+	getTitlebar()->invalidate();
 }
 
 
@@ -708,7 +708,7 @@ void FrameWindow::onActivated(ActivationEventArgs& e)
 void FrameWindow::onDeactivated(ActivationEventArgs& e)
 {
 	Window::onDeactivated(e);
-	getTitlebar()->requestRedraw();
+	getTitlebar()->invalidate();
 }
 
 
