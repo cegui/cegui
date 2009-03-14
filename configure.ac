@@ -6,7 +6,7 @@ dnl now done like this to save repetition, and make it more explicit where
 dnl we should define these numbers (we could pick up the same info by other means
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
-m4_define([CEGUI_REL_VER], 6)
+m4_define([CEGUI_MIN_VER], 6)
 m4_define([CEGUI_REL_VER], 9999)
 
 dnl Construct the final version number out of the sub-version values specified above
@@ -101,13 +101,6 @@ CEGUI_CHECK_WANTS_SAMPLES
 # decide whether to build the lua module
 CEGUI_CHECK_LUA
 
-dnl versioning info for the Ogre renderer
-CEGUI_OGRE_CURRENT=0
-CEGUI_OGRE_REVISION=0
-CEGUI_OGRE_AGE=0
-CEGUI_OGRE_VERSION_INFO=$CEGUI_OGRE_CURRENT:$CEGUI_OGRE_REVISION:$CEGUI_OGRE_AGE
-AC_SUBST(CEGUI_OGRE_VERSION_INFO)
-
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
@@ -127,7 +120,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/include/RendererModules/Direct3D10GUIRenderer/Makefile
                  cegui/include/RendererModules/Direct3D9GUIRenderer/Makefile
                  cegui/include/RendererModules/DirectFBGUIRenderer/Makefile
-                 cegui/include/RendererModules/IrrlichtRenderer/Makefile
+                 cegui/include/RendererModules/IrrlichtGUIRenderer/Makefile
                  cegui/include/RendererModules/OgreGUIRenderer/Makefile
                  cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
                  cegui/include/RendererModules/Makefile
@@ -152,7 +145,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/RendererModules/Direct3D10GUIRenderer/Makefile
                  cegui/src/RendererModules/Direct3D9GUIRenderer/Makefile
                  cegui/src/RendererModules/DirectFBGUIRenderer/Makefile
-                 cegui/src/RendererModules/IrrlichtRenderer/Makefile
+                 cegui/src/RendererModules/IrrlichtGUIRenderer/Makefile
                  cegui/src/RendererModules/OgreGUIRenderer/Makefile
                  cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
                  cegui/src/RendererModules/Makefile

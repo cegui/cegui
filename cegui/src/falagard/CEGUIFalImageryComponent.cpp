@@ -87,7 +87,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool /*clipToDisplay*/) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?

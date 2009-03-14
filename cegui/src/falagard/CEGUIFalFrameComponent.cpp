@@ -380,7 +380,7 @@ namespace CEGUI
         }
     }
 
-    void FrameComponent::doBackgroundRender(Window& srcWindow, Rect& destRect, const ColourRect& colours, const Rect* clipper, bool clipToDisplay) const
+    void FrameComponent::doBackgroundRender(Window& srcWindow, Rect& destRect, const ColourRect& colours, const Rect* clipper, bool /*clipToDisplay*/) const
     {
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
             FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
