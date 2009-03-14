@@ -27,7 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDevILImageCodec.h" 
+#include "CEGUIDevILImageCodec.h"
+#include "CEGUISize.h"
 #include <IL/il.h>
 #include <IL/ilu.h> 
 #include <string.h>
@@ -97,7 +98,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         // create cegui texture
         try
         {
-            result->loadFromMemory(tmpBuff, width, height, cefmt);
+            result->loadFromMemory(tmpBuff, Size(width, height), cefmt);
         }
         catch(...)
         {
