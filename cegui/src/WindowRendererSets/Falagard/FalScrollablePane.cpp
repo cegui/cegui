@@ -30,6 +30,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIScrollbar.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -38,7 +39,8 @@ namespace CEGUI
 
 
     FalagardScrollablePane::FalagardScrollablePane(const String& type) :
-        ScrollablePaneWindowRenderer(type)
+        ScrollablePaneWindowRenderer(type),
+        d_widgetLookAssigned(false)
     {
     }
 
@@ -85,6 +87,25 @@ namespace CEGUI
         imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
+    }
+
+    void FalagardScrollablePane::onLookNFeelAssigned()
+    {
+        d_widgetLookAssigned = true;
+    }
+
+    void FalagardScrollablePane::onLookNFeelUnassigned()
+    {
+        d_widgetLookAssigned = false;
+    }
+
+    Rect FalagardScrollablePane::getUnclippedInnerRect() const
+    {
+        if (!d_widgetLookAssigned)
+            return d_window->getUnclippedPixelRect();
+
+        const Rect lr(getViewableArea());
+        return CoordConverter::windowToScreen(*d_window, lr);
     }
 
 } // End of  CEGUI namespace section

@@ -25,6 +25,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "elements/CEGUIItemListbox.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -32,7 +33,8 @@ namespace CEGUI
     const utf8 FalagardItemListbox::TypeName[] = "Falagard/ItemListbox";
 
     FalagardItemListbox::FalagardItemListbox(const String& type) :
-        ItemListBaseWindowRenderer(type)
+        ItemListBaseWindowRenderer(type),
+        d_widgetLookAssigned(false)
     {
     }
 
@@ -79,6 +81,25 @@ namespace CEGUI
 
         // default to plain ItemRenderArea
         return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*lb);
+    }
+
+    void FalagardItemListbox::onLookNFeelAssigned()
+    {
+        d_widgetLookAssigned = true;
+    }
+
+    void FalagardItemListbox::onLookNFeelUnassigned()
+    {
+        d_widgetLookAssigned = false;
+    }
+
+    Rect FalagardItemListbox::getUnclippedInnerRect() const
+    {
+        if (!d_widgetLookAssigned)
+            return d_window->getUnclippedPixelRect();
+
+        const Rect lr(getItemRenderArea());
+        return CoordConverter::windowToScreen(*d_window, lr);
     }
 
 } // End of  CEGUI namespace section

@@ -47,7 +47,10 @@ namespace CEGUI
         // clip to screen if no grand-parent, or if clipping has been disabled for us.
         else
         {
-            return System::getSingleton().getRenderer()->getRect().getIntersection(d_window->getUnclippedPixelRect());
+            const Rect scrn(Vector2(0, 0),
+                    System::getSingleton().getRenderer()->getDisplaySize());
+
+            return scrn.getIntersection(d_window->getUnclippedPixelRect());
         }
     }
 

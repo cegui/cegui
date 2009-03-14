@@ -95,7 +95,7 @@ namespace CEGUI
         // set up some initial positional details for items
         itemPos.d_x = itemsArea.d_left - lb->getHorzScrollbar()->getScrollPosition();
         itemPos.d_y = itemsArea.d_top - lb->getVertScrollbar()->getScrollPosition();
-        itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
+        itemPos.d_z = 0.0f;
 
         float alpha = lb->getEffectiveAlpha();
 
@@ -124,7 +124,7 @@ namespace CEGUI
             }
 
             // draw this item
-            listItem->draw(lb->getRenderCache(), itemRect, itemPos.d_z, alpha, &itemClipper);
+            listItem->draw(lb->getGeometryBuffer(), itemRect, alpha, &itemClipper);
 
             // update position ready for next item
             itemPos.d_y += itemSize.d_height;

@@ -68,6 +68,18 @@ namespace CEGUI
 
         void render();
         Rect getViewableArea(void) const;
+
+        // overridden from WindowRenderer base class.
+        Rect getUnclippedInnerRect() const;
+
+    protected:
+        // overridden from WindowRenderer base class.
+        void onLookNFeelAssigned();
+        void onLookNFeelUnassigned();
+
+        //! flag whether target window has looknfeel assigned yet.
+        bool d_widgetLookAssigned;
+
     };
 
 } // End of  CEGUI namespace section
