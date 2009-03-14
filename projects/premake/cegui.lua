@@ -70,20 +70,20 @@ if OPENGL_RENDERER then
     tinsert(pkg_table.RendererModules, "OpenGLGUIRenderer")
 end
 
-if DIRECTX10_RENDERER then
-    tinsert(pkg_table.RendererModules, "DirectX10GUIRenderer")
+if DIRECT3D10_RENDERER then
+    tinsert(pkg_table.RendererModules, "Direct3D10GUIRenderer")
 end
 
-if DIRECTX9_RENDERER then
-    tinsert(pkg_table.RendererModules, "DirectX9GUIRenderer")
-end
-
-if DIRECTX81_RENDERER then
-    tinsert(pkg_table.RendererModules, "DirectX81GUIRenderer")
+if DIRECT3D9_RENDERER then
+    tinsert(pkg_table.RendererModules, "Direct3D9GUIRenderer")
 end
 
 if IRRLICHT_RENDERER then
     tinsert(pkg_table.RendererModules, "IrrlichtRenderer")
+end
+
+if OGRE_RENDERER then
+    tinsert(pkg_table.RendererModules, "OgreGUIRenderer")
 end
 
 --
@@ -159,13 +159,10 @@ do
     if OPENGL_RENDERER and SAMPLES_GL then
         config_h.CEGUI_SAMPLES_USE_OPENGL = ""
     end
-    if DIRECTX81_RENDERER and SAMPLES_DX81 then
-        config_h.CEGUI_SAMPLES_USE_DIRECTX_8 = ""
-    end
-    if DIRECTX9_RENDERER and SAMPLES_DX9 then
+    if DIRECT3D9_RENDERER and SAMPLES_DX9 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_9 = ""
     end
-    if DIRECTX10_RENDERER and SAMPLES_DX10 then
+    if DIRECT3D10_RENDERER and SAMPLES_DX10 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_10 = ""
     end
     if SAMPLES_OGRE then

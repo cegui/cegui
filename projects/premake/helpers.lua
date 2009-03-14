@@ -323,9 +323,11 @@ function setup_static_samples()
 		if DIRECTX10_RENDERER then
 		    dependency("DirectX10GUIRenderer")
 		end
-
 		if IRRLICHT_RENDERER then
 		    dependency("IrrlichtRenderer")
+		end
+		if OGRE_RENDERER then
+		    dependency("OgreGUIRenderer")
 		end
 		
 		--Window Renderers
@@ -387,6 +389,13 @@ function setup_static_samples()
 		    library_static("IrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
                 if IRRLICHT_PATHS then
                      add_sdk_paths(IRRLICHT_PATHS)
+                end
+		end
+		
+		if OGRE_RENDERER then
+		    library_static("OgreGUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+                if OGRE_PATHS then
+                     add_sdk_paths(OGRE_PATHS)
                 end
 		end
 		
