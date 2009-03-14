@@ -30,6 +30,7 @@ purpose:	This codec provide FreeImage based image loading
 #include "CEGUIExceptions.h"
 #include "CEGUIFreeImageImageCodec.h"
 #include "CEGUILogger.h"
+#include "CEGUISize.h"
 
 #include <FreeImage.h>
 
@@ -158,7 +159,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         FreeImage_Unload(img);
         img = 0;
 
-        result->loadFromMemory(rawBuf, width, height, Texture::PF_RGBA);
+        result->loadFromMemory(rawBuf, Size(width, height), Texture::PF_RGBA);
         delete [] rawBuf;
         retval = result;
     }

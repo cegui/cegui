@@ -28,9 +28,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIExceptions.h"
-#include "CEGUISILLYImageCodec.h" 
+#include "CEGUISILLYImageCodec.h"
 #include <SILLY.h>
-#include "CEGUILogger.h" 
+#include "CEGUILogger.h"
+#include "CEGUISize.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -83,7 +84,8 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0;
     }
 
-    result->loadFromMemory(img.getPixelsDataPtr(), img.getWidth(), img.getHeight(), cefmt);
+    result->loadFromMemory(img.getPixelsDataPtr(),
+                           Size(img.getWidth(), img.getHeight()), cefmt);
     return result;
 }
 
