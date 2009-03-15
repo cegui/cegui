@@ -5,7 +5,7 @@ INCLUDES += -I$(top_srcdir)/cegui/src/RendererModules/OpenGL/GLEW
 endif
 
 INCLUDES += -I$(top_srcdir)/cegui/include \
-            -I$(top_srcdir)/cegui/include/RendererModules/OpenGLGUIRenderer \
+            -I$(top_srcdir)/cegui/include/RendererModules/OpenGL \
             $(OpenGL_CFLAGS)
 
 libCEGUIOpenGLRenderer_la_LDFLAGS =

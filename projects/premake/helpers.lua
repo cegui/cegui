@@ -260,18 +260,18 @@ function setup_static_samples()
  	library_static("freetype","","_D")
 	library_static("pcre","", "_d")
 	
-	-- Warn user when both DX9 and DX10 are defined during static builds
-	if DIRECTX9_RENDERER and DIRECTX10_RENDERER then
-		print "DX9 and DX10 cannot both be defined for static builds, because it will result in a linker conflict."
+	-- Warn user when both D3D9 and D3D10 are defined during static builds
+	if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then
+		print "D3D9 and D3D10 cannot both be defined for static builds, because it will result in a linker conflict."
 	end
 	
-	if DIRECTX9_RENDERER then
+	if DIRECT3D9_RENDERER then
 		library_static("dxguid")
 		library_static("d3dx9")
 		library_static("dxerr9")
 	end
 
-	if DIRECTX10_RENDERER then
+	if DIRECT3D10_RENDERER then
 		library_static("d3d10")
 		library_static("dxerr")
 		library_static("d3dx10")
@@ -311,23 +311,20 @@ function setup_static_samples()
 		end
 		
 		-- Renderers
-	    if OPENGL_RENDERER then
-	        dependency("OpenGLGUIRenderer")
+	        if OPENGL_RENDERER then
+	           dependency("CEGUIOpenGLRenderer")
 		end
-		if DIRECTX81_RENDERER then
-		    dependency("DirectX81GUIRenderer")
+		if DIRECT3D9_RENDERER then
+		    dependency("CEGUIDirect3D9Renderer")
 		end
-		if DIRECTX9_RENDERER then
-		    dependency("DirectX9GUIRenderer")
-		end
-		if DIRECTX10_RENDERER then
-		    dependency("DirectX10GUIRenderer")
+		if DIRECT3D10_RENDERER then
+		    dependency("CEGUIDirect3D10Renderer")
 		end
 		if IRRLICHT_RENDERER then
-		    dependency("IrrlichtRenderer")
+		    dependency("CEGUIIrrlichtRenderer")
 		end
 		if OGRE_RENDERER then
-		    dependency("OgreGUIRenderer")
+		    dependency("CEGUIOgreRenderer")
 		end
 		
 		--Window Renderers
@@ -373,27 +370,24 @@ function setup_static_samples()
 		end
 
 		-- Renderers
-	    if OPENGL_RENDERER then
-	        library_static("OpenGLGUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+	        if OPENGL_RENDERER then
+	            library_static("CEGUIOpenGLRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
-		if DIRECTX81_RENDERER then
-		    library_static("DirectX81GUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		if DIRECT3D9_RENDERER then
+		    library_static("CEGUIDirect3D9Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
-		if DIRECTX9_RENDERER then
-		    library_static("DirectX9GUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if DIRECTX10_RENDERER then
-		    library_static("DirectX10GUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		if DIRECT3D10_RENDERER then
+		    library_static("CEGUIDirect3D10Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
 		if IRRLICHT_RENDERER then
-		    library_static("IrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		    library_static("CEGUIIrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
                 if IRRLICHT_PATHS then
                      add_sdk_paths(IRRLICHT_PATHS)
                 end
 		end
 		
 		if OGRE_RENDERER then
-		    library_static("OgreGUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		    library_static("CEGUIOgreRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
                 if OGRE_PATHS then
                      add_sdk_paths(OGRE_PATHS)
                 end

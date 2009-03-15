@@ -1,5 +1,5 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
-           -I$(top_srcdir)/cegui/include/RendererModules/DirectFBGUIRenderer \
+           -I$(top_srcdir)/cegui/include/RendererModules/DirectFB \
             $(directfb_CFLAGS)
 
 libCEGUIDirectFBRenderer_la_LDFLAGS = -release @PACKAGE_VERSION@

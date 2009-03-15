@@ -2,7 +2,7 @@
 -- Direct3D10GUIRenderer premake script
 --
 
-cegui_dynamic("Direct3D10GUIRenderer")
+cegui_dynamic("CEGUIDirect3D10Renderer")
 
 package.files =
 {

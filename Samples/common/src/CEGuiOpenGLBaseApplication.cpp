@@ -66,15 +66,15 @@
 #ifdef _MSC_VER
 # if defined(DEBUG) || defined (_DEBUG)
 #	if defined(CEGUI_STATIC)
-#		pragma comment (lib, "OpenGLGUIRenderer_Static_d.lib")
+#		pragma comment (lib, "CEGUIOpenGLRenderer_Static_d.lib")
 #	else
-#		pragma comment (lib, "OpenGLGUIRenderer_d.lib")
+#		pragma comment (lib, "CEGUIOpenGLRenderer_d.lib")
 #	endif
 # else
 #	if defined(CEGUI_STATIC)
-#		pragma comment (lib, "OpenGLGUIRenderer_Static.lib")
+#		pragma comment (lib, "CEGUIOpenGLRenderer_Static.lib")
 #	else
-#		pragma comment (lib, "OpenGLGUIRenderer.lib")
+#		pragma comment (lib, "CEGUIOpenGLRenderer.lib")
 #	endif
 # endif
 #endif

@@ -37,11 +37,11 @@
 
 #if defined(_MSC_VER)
 #  if defined(_DEBUG)
-#      pragma comment(lib, "OgreGUIRenderer_d.lib")
+#      pragma comment(lib, "CEGUIOgreRenderer_d.lib")
 #      pragma comment(lib, "OgreMain_d.lib")
 #      pragma comment(lib, "OIS_d.lib")
 #  else
-#      pragma comment(lib, "OgreGUIRenderer.lib")
+#      pragma comment(lib, "CEGUIOgreRenderer.lib")
 #      pragma comment(lib, "OgreMain.lib")
 #      pragma comment(lib, "OIS.lib")
 #  endif

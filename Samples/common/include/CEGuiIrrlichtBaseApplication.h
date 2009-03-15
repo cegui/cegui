@@ -32,16 +32,16 @@
 #  pragma comment(lib, "irrlicht.lib")
 #if !defined(CEGUI_STATIC)
 #  if defined(_DEBUG)
-#      pragma comment(lib, "IrrlichtRenderer_d.lib")
+#      pragma comment(lib, "CEGUIIrrlichtRenderer_d.lib")
 #  else
-#      pragma comment(lib, "IrrlichtRenderer.lib")
+#      pragma comment(lib, "CEGUIIrrlichtRenderer.lib")
 #  endif
 #else
 # define _IRR_STATIC_LIB_ //Define this regardless if we are using a dll or not
 # if defined(_DEBUG)
-#  pragma comment(lib, "IrrlichtRenderer_Static_d.lib")
+#  pragma comment(lib, "CEGUIIrrlichtRenderer_Static_d.lib")
 # else
-#  pragma comment(lib, "IrrlichtRenderer_Static.lib")
+#  pragma comment(lib, "CEGUIIrrlichtRenderer_Static.lib")
 # endif
 #endif
 #endif

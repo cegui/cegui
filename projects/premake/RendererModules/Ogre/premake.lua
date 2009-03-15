@@ -2,7 +2,7 @@
 -- OgreGUIRenderer premake script
 --
 
-cegui_dynamic("OgreGUIRenderer")
+cegui_dynamic("CEGUIOgreRenderer")
 
 package.files =
 {
