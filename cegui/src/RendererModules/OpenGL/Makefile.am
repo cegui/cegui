@@ -1,7 +1,7 @@
 INCLUDES =
 
 if BUILD_USING_INTERNAL_GLEW
-INCLUDES += -I$(top_srcdir)/cegui/src/RendererModules/OpenGLGUIRenderer/GLEW
+INCLUDES += -I$(top_srcdir)/cegui/src/RendererModules/OpenGL/GLEW
 endif
 
 INCLUDES += -I$(top_srcdir)/cegui/include \

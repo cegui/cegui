@@ -1,4 +1,4 @@
-pkgincludedir=$(prefix)/include/CEGUI/RendererModules/OpenGLGUIRenderer
+pkgincludedir=$(prefix)/include/CEGUI/RendererModules/OpenGL
 pkginclude_HEADERS = CEGUIOpenGL.h \
                      CEGUIOpenGLFBOTextureTarget.h \
                      CEGUIOpenGLGLXPBTextureTarget.h \

@@ -32,7 +32,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
 
 #include "CEGUI.h"
-#include "RendererModules/Direct3D10GUIRenderer/CEGUIDirect3D10Renderer.h"
+#include "RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <d3d10.h>

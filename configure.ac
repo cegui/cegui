@@ -117,12 +117,12 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/include/ImageCodecModules/SILLYImageCodec/Makefile
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
-                 cegui/include/RendererModules/Direct3D10GUIRenderer/Makefile
-                 cegui/include/RendererModules/Direct3D9GUIRenderer/Makefile
-                 cegui/include/RendererModules/DirectFBGUIRenderer/Makefile
-                 cegui/include/RendererModules/IrrlichtGUIRenderer/Makefile
-                 cegui/include/RendererModules/OgreGUIRenderer/Makefile
-                 cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
+                 cegui/include/RendererModules/Direct3D10/Makefile
+                 cegui/include/RendererModules/Direct3D9/Makefile
+                 cegui/include/RendererModules/DirectFB/Makefile
+                 cegui/include/RendererModules/Irrlicht/Makefile
+                 cegui/include/RendererModules/Ogre/Makefile
+                 cegui/include/RendererModules/OpenGL/Makefile
                  cegui/include/RendererModules/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/support/Makefile
@@ -142,12 +142,12 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/ImageCodecModules/SILLYImageCodec/Makefile
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
-                 cegui/src/RendererModules/Direct3D10GUIRenderer/Makefile
-                 cegui/src/RendererModules/Direct3D9GUIRenderer/Makefile
-                 cegui/src/RendererModules/DirectFBGUIRenderer/Makefile
-                 cegui/src/RendererModules/IrrlichtGUIRenderer/Makefile
-                 cegui/src/RendererModules/OgreGUIRenderer/Makefile
-                 cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
+                 cegui/src/RendererModules/Direct3D10/Makefile
+                 cegui/src/RendererModules/Direct3D9/Makefile
+                 cegui/src/RendererModules/DirectFB/Makefile
+                 cegui/src/RendererModules/Irrlicht/Makefile
+                 cegui/src/RendererModules/Ogre/Makefile
+                 cegui/src/RendererModules/OpenGL/Makefile
                  cegui/src/RendererModules/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/package/Makefile

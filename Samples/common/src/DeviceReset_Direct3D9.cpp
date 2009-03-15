@@ -32,7 +32,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_9
 
 #include "CEGUI.h"
-#include "RendererModules/Direct3D9GUIRenderer/CEGUIDirect3D9Renderer.h"
+#include "RendererModules/Direct3D9/CEGUIDirect3D9Renderer.h"
 
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the

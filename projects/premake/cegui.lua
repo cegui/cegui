@@ -67,23 +67,23 @@ end
 pkg_table.RendererModules = {}
 
 if OPENGL_RENDERER then
-    tinsert(pkg_table.RendererModules, "OpenGLGUIRenderer")
+    tinsert(pkg_table.RendererModules, "OpenGL")
 end
 
 if DIRECT3D10_RENDERER then
-    tinsert(pkg_table.RendererModules, "Direct3D10GUIRenderer")
+    tinsert(pkg_table.RendererModules, "Direct3D10")
 end
 
 if DIRECT3D9_RENDERER then
-    tinsert(pkg_table.RendererModules, "Direct3D9GUIRenderer")
+    tinsert(pkg_table.RendererModules, "Direct3D9")
 end
 
 if IRRLICHT_RENDERER then
-    tinsert(pkg_table.RendererModules, "IrrlichtRenderer")
+    tinsert(pkg_table.RendererModules, "Irrlicht")
 end
 
 if OGRE_RENDERER then
-    tinsert(pkg_table.RendererModules, "OgreGUIRenderer")
+    tinsert(pkg_table.RendererModules, "Ogre")
 end
 
 --
