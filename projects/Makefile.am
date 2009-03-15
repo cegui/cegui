@@ -19,11 +19,11 @@ EXTRA_DIST = premake/README \
              premake/ImageCodecModules/FreeImageImageCodec/premake.lua \
              premake/ImageCodecModules/SILLYImageCodec/premake.lua \
              premake/ImageCodecModules/TGAImageCodec/premake.lua \
-             premake/RendererModules/Direct3D10GUIRenderer/premake.lua \
-             premake/RendererModules/Direct3D9GUIRenderer/premake.lua \
-             premake/RendererModules/IrrlichtRenderer/premake.lua \
-             premake/RendererModules/OgreGUIRenderer/premake.lua \
-             premake/RendererModules/OpenGLGUIRenderer/premake.lua \
+             premake/RendererModules/Direct3D10/premake.lua \
+             premake/RendererModules/Direct3D9/premake.lua \
+             premake/RendererModules/Irrlicht/premake.lua \
+             premake/RendererModules/Ogre/premake.lua \
+             premake/RendererModules/OpenGL/premake.lua \
              premake/Samples/TextDemo/premake.lua \
              premake/Samples/Demo6/premake.lua \
              premake/Samples/Demo7/premake.lua \

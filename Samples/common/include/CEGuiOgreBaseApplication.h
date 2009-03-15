@@ -31,7 +31,7 @@
 #include "CEGuiBaseApplication.h"
 #include "CEGUI.h"
 
-#include "RendererModules/OgreGUIRenderer/CEGUIOgreRenderer.h"
+#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include <Ogre.h>
 #include <OIS.h>
 

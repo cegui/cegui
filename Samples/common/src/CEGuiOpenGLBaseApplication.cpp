@@ -38,7 +38,7 @@
 #ifdef CEGUI_SAMPLES_USE_OPENGL
 
 #include "CEGuiOpenGLBaseApplication.h"
-#include "RendererModules/OpenGLGUIRenderer/CEGUIOpenGLRenderer.h"
+#include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 #include "CEGUIDefaultResourceProvider.h"

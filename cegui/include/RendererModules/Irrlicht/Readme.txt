@@ -1,7 +1,7 @@
 CEGUI IrrlichtRenderer
 
 For license information read the remarks in the file:
-"include/RendererModule/IrrlichtGUIRenderer/CEGUIIrrlichtRendererDef.h"
+"include/RendererModule/Irrlicht/CEGUIIrrlichtRendererDef.h"
 
 Use the method "bool IrrlichtRenderer::OnEvent(SEvent e)" to push events into
 the gui system.

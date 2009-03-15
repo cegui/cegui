@@ -32,7 +32,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
 
 #include "CEGuiD3D10BaseApplication.h"
-#include "RendererModules/Direct3D10GUIRenderer/CEGUIDirect3D10Renderer.h"
+#include "RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h"
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"

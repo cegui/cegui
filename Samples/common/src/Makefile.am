@@ -26,25 +26,25 @@ if CEGUI_USING_GTK2
 endif
 if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OpenGLGUIRenderer/libCEGUIOpenGLRenderer.la \
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OpenGL/libCEGUIOpenGLRenderer.la \
                                       $(OpenGL_LIBS)
 endif
 if CEGUI_SAMPLES_USE_OGRE
     INCLUDES += $(Ogre_CFLAGS) $(OIS_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OgreGUIRenderer/libCEGUIOgreRenderer.la \
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Ogre/libCEGUIOgreRenderer.la \
                                       $(Ogre_LIBS) $(OIS_LIBS)
 endif
 if CEGUI_SAMPLES_USE_IRRLICHT
     INCLUDES += $(Irrlicht_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/IrrlichtGUIRenderer/libCEGUIIrrlichtRenderer.la \
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Irrlicht/libCEGUIIrrlichtRenderer.la \
                                       $(Irrlicht_LIBS)
 endif
 if CEGUI_SAMPLES_USE_DIRECTFB
     INCLUDES += $(directfb_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiDirectFBBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/DirectFBGUIRenderer/libCEGUIDirectFBRenderer.la \
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/DirectFB/libCEGUIDirectFBRenderer.la \
                                       $(directfb_LIBS)
 endif
 
