@@ -2,7 +2,7 @@
 -- IrrlichtRenderer premake script
 --
 
-cegui_dynamic("IrrlichtRenderer")
+cegui_dynamic("CEGUIIrrlichtRenderer")
 
 package.files =
 {

@@ -2,7 +2,7 @@
 -- DirectX9GUIRenderer premake script
 --
 
-cegui_dynamic("Direct3D9GUIRenderer")
+cegui_dynamic("CEGUIDirect3D9Renderer")
 
 package.files =
 {

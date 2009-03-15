@@ -45,15 +45,15 @@
 #  pragma comment(lib, "d3d9.lib")
 #  if defined(_DEBUG)
 #	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "Direct3D9GUIRenderer_Static_d.lib")
+#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static_d.lib")
 #	else
-#      pragma comment(lib, "Direct3D9GUIRenderer_d.lib")
+#      pragma comment(lib, "CEGUIDirect3D9Renderer_d.lib")
 #	endif
 #  else
 #	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "Direct3D9GUIRenderer_Static.lib")
+#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static.lib")
 #	else
-#      pragma comment(lib, "Direct3D9GUIRenderer.lib")
+#      pragma comment(lib, "CEGUIDirect3D9Renderer.lib")
 #	endif
 #  endif
 #endif

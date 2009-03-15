@@ -37,33 +37,33 @@ end
 if OPENGL_RENDERER and SAMPLES_GL then
     library("freeglut", "_d")
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("OpenGLGUIRenderer")
+        dependency("CEGUIOpenGLRenderer")
     else
-        library("OpenGLGUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("CEGUIOpenGLRenderer", DEBUG_DLL_SUFFIX or "")
     end
 end
 
-if DIRECTX9_RENDERER and SAMPLES_DX9 then
+if DIRECT3D9_RENDERER and SAMPLES_DX9 then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("Direct3D9GUIRenderer")
+        dependency("CEGUIDirect3D9Renderer")
     else
-        library("Direct3D9GUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("CEGUIDirect3D9Renderer", DEBUG_DLL_SUFFIX or "")
     end
 end
 
-if DIRECTX10_RENDERER and SAMPLES_DX10 then
+if DIRECT3D10_RENDERER and SAMPLES_DX10 then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("DirectX10GUIRenderer")
+        dependency("CEGUIDirect3D10Renderer")
     else
-        library("DirectX10GUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("CEGUIDirect3D10Renderer", DEBUG_DLL_SUFFIX or "")
     end
 end
 
 if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("IrrlichtRenderer")
+        dependency("CEGUIIrrlichtRenderer")
     else
-        library("IrrlichtRenderer", DEBUG_DLL_SUFFIX or "")
+        library("CEGUIIrrlichtRenderer", DEBUG_DLL_SUFFIX or "")
     end
 
     if IRRLICHT_PATHS then
@@ -73,9 +73,9 @@ end
 
 if OGRE_RENDERER and SAMPLES_OGRE then
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("OgreGUIRenderer")
+        dependency("CEGUIOgreRenderer")
     else
-        library("OgreGUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("CEGUIOgreRenderer", DEBUG_DLL_SUFFIX or "")
     end
 
     if OGRE_PATHS then

@@ -1,5 +1,5 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
-           -I$(top_srcdir)/cegui/include/RendererModules/OgreGUIRenderer \
+           -I$(top_srcdir)/cegui/include/RendererModules/Ogre \
             $(Ogre_CFLAGS)
 
 lib_LTLIBRARIES=libCEGUIOgreRenderer.la

@@ -2,7 +2,7 @@
 -- OpenGLGUIRenderer premake script
 --
 
-cegui_dynamic("OpenGLGUIRenderer")
+cegui_dynamic("CEGUIOpenGLRenderer")
 
 package.files =
 {

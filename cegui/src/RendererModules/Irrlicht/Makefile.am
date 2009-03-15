@@ -1,5 +1,5 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
-           -I$(top_srcdir)/cegui/include/RendererModules/IrrlichtGUIRenderer \
+           -I$(top_srcdir)/cegui/include/RendererModules/Irrlicht \
             $(Irrlicht_CFLAGS)
 
 lib_LTLIBRARIES=libCEGUIIrrlichtRenderer.la
