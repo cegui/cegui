@@ -619,6 +619,27 @@
 		DAAABCC40F6E6F5F0003BE03 /* CEGUIOpenGLRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096450F6D633B00B8A582 /* CEGUIOpenGLRenderTarget.h */; };
 		DAAABCC50F6E6F5F0003BE03 /* CEGUIOpenGLTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096460F6D633B00B8A582 /* CEGUIOpenGLTexture.h */; };
 		DAAABCC60F6E6F5F0003BE03 /* CEGUIOpenGLViewportTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096470F6D633B00B8A582 /* CEGUIOpenGLViewportTarget.h */; };
+		DAAF38920F6FAD6800EEADDB /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DAAF38930F6FAD9C00EEADDB /* CEGUIIrrlichtEventPusher.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096510F6D637300B8A582 /* CEGUIIrrlichtEventPusher.h */; };
+		DAAF38940F6FAD9C00EEADDB /* CEGUIIrrlichtGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1096490F6D635E00B8A582 /* CEGUIIrrlichtGeometryBuffer.cpp */; };
+		DAAF38950F6FAD9C00EEADDB /* CEGUIIrrlichtGeometryBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096520F6D637300B8A582 /* CEGUIIrrlichtGeometryBuffer.h */; };
+		DAAF38960F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964A0F6D635E00B8A582 /* CEGUIIrrlichtMemoryFile.cpp */; };
+		DAAF38970F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096530F6D637300B8A582 /* CEGUIIrrlichtMemoryFile.h */; };
+		DAAF38980F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964B0F6D635E00B8A582 /* CEGUIIrrlichtRenderer.cpp */; };
+		DAAF38990F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096540F6D637300B8A582 /* CEGUIIrrlichtRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAF389A0F6FAD9C00EEADDB /* CEGUIIrrlichtRendererDef.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096550F6D637300B8A582 /* CEGUIIrrlichtRendererDef.h */; };
+		DAAF389B0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964C0F6D635E00B8A582 /* CEGUIIrrlichtRenderTarget.cpp */; };
+		DAAF389C0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096560F6D637300B8A582 /* CEGUIIrrlichtRenderTarget.h */; };
+		DAAF389D0F6FAD9C00EEADDB /* CEGUIIrrlichtResourceProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964D0F6D635E00B8A582 /* CEGUIIrrlichtResourceProvider.cpp */; };
+		DAAF389E0F6FAD9C00EEADDB /* CEGUIIrrlichtResourceProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096570F6D637300B8A582 /* CEGUIIrrlichtResourceProvider.h */; };
+		DAAF389F0F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964E0F6D635E00B8A582 /* CEGUIIrrlichtTexture.cpp */; };
+		DAAF38A00F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096580F6D637300B8A582 /* CEGUIIrrlichtTexture.h */; };
+		DAAF38A10F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964F0F6D635E00B8A582 /* CEGUIIrrlichtTextureTarget.cpp */; };
+		DAAF38A20F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096590F6D637300B8A582 /* CEGUIIrrlichtTextureTarget.h */; };
+		DAAF38A30F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1096500F6D635E00B8A582 /* CEGUIIrrlichtWindowTarget.cpp */; };
+		DAAF38A40F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10965A0F6D637300B8A582 /* CEGUIIrrlichtWindowTarget.h */; };
+		DAAF38A50F6FAD9C00EEADDB /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = DA10965B0F6D637300B8A582 /* Readme.txt */; };
+		DAAF39150F6FB34E00EEADDB /* CEGUIIrrlichtRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1230,6 +1251,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DA1099FB0F6D90BC00B8A582;
 			remoteInfo = CEGUIFalagardWRBase;
+		};
+		DAAF38900F6FAD5D00EEADDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2218,6 +2246,8 @@
 		DAAABAC80F6E56BF0003BE03 /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo8-Info.plist"; sourceTree = "<group>"; };
 		DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstancedWindows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAABAF60F6E578E0003BE03 /* InstancedWindows-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InstancedWindows-Info.plist"; sourceTree = "<group>"; };
+		DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIIrrlichtRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAAF38820F6FACF800EEADDB /* CEGUIIrrlichtRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIIrrlichtRenderer-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2330,6 +2360,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAAF39150F6FB34E00EEADDB /* CEGUIIrrlichtRenderer.framework in Frameworks */,
 				DA109FE40F6DB68100B8A582 /* CEGUIBase.framework in Frameworks */,
 				DA109FE50F6DB68100B8A582 /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				DA109FFC0F6DB73200B8A582 /* GLUT.framework in Frameworks */,
@@ -2471,6 +2502,14 @@
 				DAAABB020F6E579E0003BE03 /* CEGUIBase.framework in Frameworks */,
 				DAAABB030F6E579E0003BE03 /* CEGUILuaScriptModule.framework in Frameworks */,
 				DAAABB040F6E579E0003BE03 /* CEGUISampleHelper.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAAF387F0F6FACF800EEADDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAAF38920F6FAD6800EEADDB /* CEGUIBase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2628,6 +2667,7 @@
 		DA1093610F6D52FB00B8A582 /* IrrlichtRenderer */ = {
 			isa = PBXGroup;
 			children = (
+				DAAF38820F6FACF800EEADDB /* CEGUIIrrlichtRenderer-Info.plist */,
 				DA10977D0F6D680E00B8A582 /* include */,
 				DA10977E0F6D681500B8A582 /* src */,
 				DA10965B0F6D637300B8A582 /* Readme.txt */,
@@ -4077,8 +4117,11 @@
 			isa = PBXGroup;
 			children = (
 				DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */,
+				DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */,
 				DA10998B0F6D8D4100B8A582 /* CEGUIOpenGLRenderer.framework */,
+				DAAABA0B0F6E53320003BE03 /* CEGUILuaScriptModule.framework */,
 				DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */,
+				DAAAB9890F6E50D60003BE03 /* ceguitolua++.framework */,
 				DA1099FC0F6D90BC00B8A582 /* CEGUIFalagardWRBase.bundle */,
 				DA109AA30F6D99BB00B8A582 /* CEGUIExpatParser.bundle */,
 				DA109B360F6DA46800B8A582 /* CEGUITinyXMLParser.bundle */,
@@ -4100,8 +4143,6 @@
 				DAAAB8EA0F6E4EA70003BE03 /* TabControlDemo.app */,
 				DAAAB90B0F6E4F120003BE03 /* TextDemo.app */,
 				DAAAB92C0F6E4FBD0003BE03 /* TreeDemo.app */,
-				DAAAB9890F6E50D60003BE03 /* ceguitolua++.framework */,
-				DAAABA0B0F6E53320003BE03 /* CEGUILuaScriptModule.framework */,
 				DAAABAC60F6E56BF0003BE03 /* Demo8.app */,
 				DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */,
 			);
@@ -4362,6 +4403,23 @@
 				DAAABA8C0F6E54AC0003BE03 /* CEGUILua.h in Headers */,
 				DAAABA8E0F6E54AC0003BE03 /* CEGUILuaFunctor.h in Headers */,
 				DAAABA910F6E54AC0003BE03 /* required.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAAF387C0F6FACF800EEADDB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAAF38930F6FAD9C00EEADDB /* CEGUIIrrlichtEventPusher.h in Headers */,
+				DAAF38950F6FAD9C00EEADDB /* CEGUIIrrlichtGeometryBuffer.h in Headers */,
+				DAAF38970F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.h in Headers */,
+				DAAF38990F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.h in Headers */,
+				DAAF389A0F6FAD9C00EEADDB /* CEGUIIrrlichtRendererDef.h in Headers */,
+				DAAF389C0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.h in Headers */,
+				DAAF389E0F6FAD9C00EEADDB /* CEGUIIrrlichtResourceProvider.h in Headers */,
+				DAAF38A00F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.h in Headers */,
+				DAAF38A20F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.h in Headers */,
+				DAAF38A40F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4910,6 +4968,26 @@
 			productReference = DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DAAF38800F6FACF800EEADDB /* CEGUIIrrlichtRenderer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DAAF38850F6FACF900EEADDB /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */;
+			buildPhases = (
+				DAAF387C0F6FACF800EEADDB /* Headers */,
+				DAAF3A100F6FBCC000EEADDB /* Custom Header Setup */,
+				DAAF387D0F6FACF800EEADDB /* Resources */,
+				DAAF387E0F6FACF800EEADDB /* Sources */,
+				DAAF387F0F6FACF800EEADDB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DAAF38910F6FAD5D00EEADDB /* PBXTargetDependency */,
+			);
+			name = CEGUIIrrlichtRenderer;
+			productName = CEGUIIrrlichtRenderer;
+			productReference = DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4930,6 +5008,7 @@
 				DAAABB390F6E587D0003BE03 /* ImageCodec Modules */,
 				DAAABB480F6E58AA0003BE03 /* XMLParser Modules */,
 				DA1097A20F6D838D00B8A582 /* CEGUIBase */,
+				DAAF38800F6FACF800EEADDB /* CEGUIIrrlichtRenderer */,
 				DAAABA0A0F6E53320003BE03 /* CEGUILuaScriptModule */,
 				DA10998A0F6D8D4100B8A582 /* CEGUIOpenGLRenderer */,
 				DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */,
@@ -4982,6 +5061,14 @@
 			files = (
 				DAAAB9DE0F6E51F10003BE03 /* INFO in Resources */,
 				DAAAB9DF0F6E51F10003BE03 /* README in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAAF387D0F6FACF800EEADDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAAF38A50F6FAD9C00EEADDB /* Readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5323,6 +5410,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=support --exclude=\"*.am\" ./ScriptingModules/LuaScriptModule \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+		};
+		DAAF3A100F6FBCC000EEADDB /* Custom Header Setup */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Custom Header Setup";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Irrlicht \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -5771,6 +5872,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAAF387E0F6FACF800EEADDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAAF38940F6FAD9C00EEADDB /* CEGUIIrrlichtGeometryBuffer.cpp in Sources */,
+				DAAF38960F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.cpp in Sources */,
+				DAAF38980F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.cpp in Sources */,
+				DAAF389B0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.cpp in Sources */,
+				DAAF389D0F6FAD9C00EEADDB /* CEGUIIrrlichtResourceProvider.cpp in Sources */,
+				DAAF389F0F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.cpp in Sources */,
+				DAAF38A10F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.cpp in Sources */,
+				DAAF38A30F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -6209,6 +6325,11 @@
 			target = DA1099FB0F6D90BC00B8A582 /* CEGUIFalagardWRBase */;
 			targetProxy = DAAABC4D0F6E5CC70003BE03 /* PBXContainerItemProxy */;
 		};
+		DAAF38910F6FAD5D00EEADDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			targetProxy = DAAF38900F6FAD5D00EEADDB /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -6218,6 +6339,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
+				CEGUI_IRR_LINK_FLAGS = "-lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
+				CEGUI_IRR_SDK_PATH = "../../../Irrlicht-1.5";
+				CEGUI_IRR_SDK_VERSION = 14;
 				CEGUI_VERSION = 0.6.9999;
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
@@ -6231,6 +6356,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
+				CEGUI_IRR_LINK_FLAGS = "-lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
+				CEGUI_IRR_SDK_PATH = "../../../Irrlicht-1.5";
+				CEGUI_IRR_SDK_VERSION = 14;
 				CEGUI_VERSION = 0.6.9999;
 				COPY_PHASE_STRIP = YES;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
@@ -6964,8 +7093,17 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(CEGUI_IRR_SDK_PATH)/include",
+					../../cegui/include,
+				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(CEGUI_IRR_SDK_PATH)/lib/MacOSX";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -6988,8 +7126,17 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(CEGUI_IRR_SDK_PATH)/include",
+					../../cegui/include,
+				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(CEGUI_IRR_SDK_PATH)/lib/MacOSX";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -7848,6 +7995,82 @@
 			};
 			name = Release;
 		};
+		DAAF38830F6FACF800EEADDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_SDK_PATH)/include",
+				);
+				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+					"$(CEGUI_IRR_LINK_FLAGS)",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUIIrrlichtRenderer;
+			};
+			name = Debug;
+		};
+		DAAF38840F6FACF800EEADDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_SDK_PATH)/include",
+				);
+				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+					"$(CEGUI_IRR_LINK_FLAGS)",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUIIrrlichtRenderer;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -8162,6 +8385,15 @@
 			buildConfigurations = (
 				DAAABB850F6E595F0003BE03 /* Debug */,
 				DAAABB860F6E595F0003BE03 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAAF38850F6FACF900EEADDB /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAAF38830F6FACF800EEADDB /* Debug */,
+				DAAF38840F6FACF800EEADDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
