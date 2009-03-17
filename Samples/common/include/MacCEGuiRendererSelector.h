@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   MacCEGuiRendererSelector.h
-    created:    22/11/2005
-    author:     Paul A Schifferer
+    created:    Tue Mar 17 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,26 +31,35 @@
 #include "CEGuiRendererSelector.h"
 #include <string>
 
+//! RendererSelector for Apple Mac via Carbon
 class MacCEGuiRendererSelector : public CEGuiRendererSelector
 {
 public:
     MacCEGuiRendererSelector();
     ~MacCEGuiRendererSelector();
 
+    // Implement CEGuiRendererSelector interface.
     bool invokeDialog();
 
 private:
-    // Renderer name strings
-    static const std::string    OgreRendererName;
-    static const std::string    OpenGLRendererName;
+    //! Load the dialog window from the nib file.
+    void loadDialogWindow();
+    //! Add entries for available renderers. returns the number of renderers.
+    int populateRendererMenu();
 
-    // Static member funcs
-    void createDialog();
+    OSStatus commandHandler(UInt32 command);
 
-    // general data
+    //! function that will dispatch events back into the object for handling.
+    static OSStatus eventDispatcher(EventHandlerCallRef, EventRef, void*);
+
+    //! array of CEGuiRendererTypes that map to entries in the pop up.
+    CEGuiRendererType d_rendererTypes[4];
+    //! the main dialog window.
+    WindowRef d_dialog;
+    //! The popup button holding the renderer choices.
+	HIViewRef d_rendererPopup;
+    //! true if user cancelled the dialog
     bool d_cancelled;
-
-    // Mac widgets
 };
 
 #endif  // end of guard _MacCEGuiRendererSelector_h_

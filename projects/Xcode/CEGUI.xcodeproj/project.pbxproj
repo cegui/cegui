@@ -640,6 +640,7 @@
 		DAAF38A40F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10965A0F6D637300B8A582 /* CEGUIIrrlichtWindowTarget.h */; };
 		DAAF38A50F6FAD9C00EEADDB /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = DA10965B0F6D637300B8A582 /* Readme.txt */; };
 		DAAF39150F6FB34E00EEADDB /* CEGUIIrrlichtRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */; };
+		DAAF3BC60F6FF2A600EEADDB /* RendererSelector.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1256,7 +1257,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 /* End PBXContainerItemProxy section */
@@ -2248,6 +2249,7 @@
 		DAAABAF60F6E578E0003BE03 /* InstancedWindows-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InstancedWindows-Info.plist"; sourceTree = "<group>"; };
 		DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIIrrlichtRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAF38820F6FACF800EEADDB /* CEGUIIrrlichtRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIIrrlichtRenderer-Info.plist"; sourceTree = "<group>"; };
+		DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RendererSelector.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2848,6 +2850,7 @@
 				DA109FDC0F6DB65000B8A582 /* CEGUISampleHelper-Info.plist */,
 				DA1093C90F6D59AE00B8A582 /* src */,
 				DA1093CA0F6D59B300B8A582 /* include */,
+				DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */,
 			);
 			name = SampleHelper;
 			sourceTree = "<group>";
@@ -4654,6 +4657,7 @@
 			buildConfigurationList = DA109FDF0F6DB65000B8A582 /* Build configuration list for PBXNativeTarget "CEGUISampleHelper" */;
 			buildPhases = (
 				DA109FD60F6DB65000B8A582 /* Headers */,
+				DAAF3BCE0F6FF2C400EEADDB /* Resources */,
 				DA109FD80F6DB65000B8A582 /* Sources */,
 				DA109FD90F6DB65000B8A582 /* Frameworks */,
 			);
@@ -5069,6 +5073,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAAF38A50F6FAD9C00EEADDB /* Readme.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAAF3BCE0F6FF2C400EEADDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAAF3BC60F6FF2A600EEADDB /* RendererSelector.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
