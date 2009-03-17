@@ -1,7 +1,7 @@
 /***********************************************************************
     filename:   MacCEGuiRendererSelector.cpp
-    created:    22/11/2005
-    author:     Paul A Schifferer
+    created:    Tue Mar 17 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -27,122 +27,160 @@
  ***************************************************************************/
 #include "MacCEGuiRendererSelector.h"
 
-// Renderer name strings
-const std::string MacCEGuiRendererSelector::OgreRendererName("Ogre3D Engine Renderer");
-const std::string MacCEGuiRendererSelector::OpenGLRendererName("OpenGL Renderer");
-
-
-
+//----------------------------------------------------------------------------//
 MacCEGuiRendererSelector::MacCEGuiRendererSelector() :
+    d_dialog(0),
+    d_rendererPopup(0),
     d_cancelled(false)
 {
-    createDialog();
 }
 
+//----------------------------------------------------------------------------//
 MacCEGuiRendererSelector::~MacCEGuiRendererSelector()
 {
 }
 
+//----------------------------------------------------------------------------//
 bool MacCEGuiRendererSelector::invokeDialog()
 {
-    CEGuiRendererType renderer_types[2];
-    int idx = 0;
+    loadDialogWindow();
+    int rendererCount = populateRendererMenu();
 
-    // Put items in the combobox for enabled renderers.
-    if (d_rendererAvailability[OgreGuiRendererType])
+    // 'cancel' if there are no renderers available
+    if (rendererCount == 0)
+        d_cancelled = true;
+    // only bother with the dialog if there is a choice ;)
+    else if (rendererCount > 1)
     {
-//        gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), OgreRendererName.c_str());
-        renderer_types[idx++] = OgreGuiRendererType;
+        // set the event handling
+        EventTypeSpec cmdEvt;	
+        cmdEvt.eventClass = kEventClassCommand;
+        cmdEvt.eventKind = kEventCommandProcess;
+        
+        InstallEventHandler(
+            GetWindowEventTarget(d_dialog),
+            NewEventHandlerUPP(MacCEGuiRendererSelector::eventDispatcher), 1,
+            &cmdEvt, this, 0); 
+
+        ShowWindow(d_dialog);
+        RunApplicationEventLoop();
     }
+
+    SInt32 idx = HIViewGetValue(d_rendererPopup);
+    DisposeWindow(d_dialog);
+
+    // bail out if user cancelled dialog or if selected index is 0
+    if (d_cancelled || (idx == 0))
+        return false;
+
+    // set the last selected renderer - i.e. the one we want to use.
+    d_lastSelected = d_rendererTypes[idx - 1];
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+OSStatus MacCEGuiRendererSelector::commandHandler(UInt32 command)
+{
+	OSStatus status = noErr;
+
+    switch (command)
+    {
+    case 'ok  ':
+        QuitApplicationEventLoop();
+        break;
+
+    case 'not!':
+        d_cancelled = true;
+        QuitApplicationEventLoop();
+        break;
+
+    default:
+        status = eventNotHandledErr;
+        break;
+    }
+
+    return status;
+}
+
+//----------------------------------------------------------------------------//
+void MacCEGuiRendererSelector::loadDialogWindow()
+{
+    // get our framework bundle from the app
+    CFBundleRef helperFwk =
+        CFBundleGetBundleWithIdentifier(
+            CFSTR("net.sourceforge.crayzedsgui.CEGUISampleHelper"));
+
+    if (helperFwk)
+    {
+        IBNibRef nib;
+        if (!CreateNibReferenceWithCFBundle(helperFwk,
+                                            CFSTR("RendererSelector"), &nib))
+        {
+            CreateWindowFromNib(nib, CFSTR("RendererSelector"), &d_dialog);
+            DisposeNibReference (nib);
+
+            // find popup button in the window
+            const HIViewID rendererPopupID = {'PBTN', 0};
+            HIViewFindByID(HIViewGetRoot(d_dialog),
+                           rendererPopupID,
+                           &d_rendererPopup);
+        }
+    }    
+}
+
+//----------------------------------------------------------------------------//
+int MacCEGuiRendererSelector::populateRendererMenu()
+{
+	// get the menu from the popup
+	MenuRef menu;
+	GetControlData(d_rendererPopup, 0, kControlPopupButtonMenuRefTag,
+                   sizeof(menu), &menu, 0);
+
+    int idx = 0;
+    // Put items in the combobox for enabled renderers.
     if (d_rendererAvailability[OpenGLGuiRendererType])
     {
-//        gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), OpenGLRendererName.c_str());
-        renderer_types[idx++] = OpenGLGuiRendererType;
+        d_rendererTypes[idx++] = OpenGLGuiRendererType;
+        AppendMenuItemTextWithCFString(menu, CFSTR("OpenGL Renderer"),
+                                       0, 0, 0);
     }
-
-#if 0
-    gtk_widget_show(d_dialog);
-    gtk_main ();
-#endif
-
-    if (!d_cancelled)
+    if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
-#if 1  // FIXME
-        d_lastSelected = renderer_types[0];
-#else
-        gint active = gtk_combo_box_get_active(GTK_COMBO_BOX(d_combobox1));
-
-        if (active != -1)
-        {
-             d_lastSelected = renderer_types[active]; FIXME
-        }
-        else
-        {
-            d_cancelled = true;
-        }
-#endif
-
+        d_rendererTypes[idx++] = IrrlichtGuiRendererType;
+        AppendMenuItemTextWithCFString(menu, CFSTR("Irrlicht Renderer"),
+                                       0, 0, 0);
+    }
+    if (d_rendererAvailability[OgreGuiRendererType])
+    {
+        d_rendererTypes[idx++] = OgreGuiRendererType;
+        AppendMenuItemTextWithCFString(menu, CFSTR("Ogre Renderer"),
+                                       0, 0, 0);
+    }
+    if (d_rendererAvailability[DirectFBGuiRendererType])
+    {
+        d_rendererTypes[idx++] = DirectFBGuiRendererType;
+        AppendMenuItemTextWithCFString(menu, CFSTR("DirectFB Renderer"),
+                                       0, 0, 0);
     }
 
-    return !d_cancelled;
+	HIViewSetMaximum(d_rendererPopup, CountMenuItems(menu));
+    HIViewSetValue(d_rendererPopup, 1);
+    return idx;
 }
 
-void MacCEGuiRendererSelector::createDialog()
+//----------------------------------------------------------------------------//
+OSStatus MacCEGuiRendererSelector::eventDispatcher(EventHandlerCallRef,
+                                                   EventRef event,
+                                                   void* ob)
 {
-#if 0
-    d_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_size_request(d_dialog, 320, 100);
-    gtk_window_set_title(GTK_WINDOW(d_dialog), "CEGui - Renderer Selection");
-    gtk_window_set_position(GTK_WINDOW(d_dialog), GTK_WIN_POS_CENTER);
-    gtk_window_set_resizable(GTK_WINDOW(d_dialog), FALSE);
-    gtk_window_set_type_hint(GTK_WINDOW(d_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+	// get the command
+	HICommand command;
+	GetEventParameter(event, kEventParamDirectObject, typeHICommand, 
+				      0, sizeof(command), 0, &command); 
 
-    d_vbox1 = gtk_vbox_new(FALSE, 10);
-    gtk_widget_show(d_vbox1);
-    gtk_container_add(GTK_CONTAINER(d_dialog), d_vbox1);
-
-    d_label1 = gtk_label_new("Select Renderer:");
-    gtk_widget_show(d_label1);
-    gtk_box_pack_start(GTK_BOX(d_vbox1), d_label1, FALSE, FALSE, 0);
-    gtk_misc_set_alignment(GTK_MISC(d_label1), 0, 0.5);
-
-    d_hbox1 = gtk_hbox_new(FALSE, 0);
-    gtk_widget_show(d_hbox1);
-    gtk_box_pack_end(GTK_BOX(d_vbox1), d_hbox1, FALSE, TRUE, 5);
-
-    d_cancelButton = gtk_button_new_from_stock("gtk-cancel");
-    gtk_widget_show(d_cancelButton);
-    gtk_box_pack_start(GTK_BOX(d_hbox1), d_cancelButton, TRUE, FALSE, 0);
-
-    d_okButton = gtk_button_new_from_stock("gtk-ok");
-    gtk_widget_show(d_okButton);
-    gtk_box_pack_start(GTK_BOX(d_hbox1), d_okButton, TRUE, FALSE, 0);
-
-    d_combobox1 = gtk_combo_box_new_text();
-    gtk_widget_show(d_combobox1);
-    gtk_box_pack_start(GTK_BOX(d_vbox1), d_combobox1, TRUE, FALSE, 0);
-
-    g_signal_connect((gpointer) d_cancelButton, "clicked",
-                       G_CALLBACK(MacCEGuiRendererSelector::on_cancelButton_clicked),
-                       this);
-    g_signal_connect((gpointer) d_okButton, "clicked",
-                       G_CALLBACK(MacCEGuiRendererSelector::on_okButton_clicked),
-                       this);
-#endif
+    return reinterpret_cast<MacCEGuiRendererSelector*>(ob)->
+        commandHandler(command.commandID);
 }
 
-#if 0
-void MacCEGuiRendererSelector::on_cancelButton_clicked(GtkButton* button, gpointer user_data)
-{
-    static_cast<MacCEGuiRendererSelector*>(user_data)->d_cancelled = true;
-    gtk_widget_hide(static_cast<MacCEGuiRendererSelector*>(user_data)->d_dialog);
-    gtk_main_quit();
-}
-
-void MacCEGuiRendererSelector::on_okButton_clicked(GtkButton* button, gpointer user_data)
-{
-    static_cast<MacCEGuiRendererSelector*>(user_data)->d_cancelled = false;
-    gtk_widget_hide(static_cast<MacCEGuiRendererSelector*>(user_data)->d_dialog);
-    gtk_main_quit();
-}
-#endif
+//----------------------------------------------------------------------------//
