@@ -47,6 +47,16 @@ const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
 const char* CEGuiBaseApplication::getDataPathPrefix() const
 {
     static char dataPathPrefix[PATH_MAX];
+
+#ifdef __APPLE__
+    CFURLRef datafilesURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                    CFSTR("datafiles"),
+                                                    0, 0);
+    CFURLGetFileSystemRepresentation(datafilesURL, true,
+                                     reinterpret_cast<UInt8*>(dataPathPrefix),
+                                     PATH_MAX);
+    CFRelease(datafilesURL);
+#else
     char* envDataPath = 0;
 
     // get data path from environment var
@@ -60,6 +70,7 @@ const char* CEGuiBaseApplication::getDataPathPrefix() const
         strcpy(dataPathPrefix, envDataPath);
     else
         strcpy(dataPathPrefix, CEGUI_SAMPLE_DATAPATH);
+#endif
 
     return dataPathPrefix;
 }
