@@ -61,7 +61,8 @@ Each item in here has a comment to describe what it's for.
 // If you want to enable the Irrlicht renderer in the samples:
 // - In main project settings, set CEGUI_IRR_SDK_PATH to where your SDK is.
 // - In main project settings, set CEGUI_IRR_SDK_VERSION to 12, 13 or 14
-// - Build the CEGUIrrlichtRenderer framework(!)
+// - Build the CEGUIrrlichtRenderer framework(!) + add it to CEGUISampleHelper
+//   'Linked libraries' in the General build settings. 
 // - Add $(CEGUI_IRR_LINK_FLAGS) and $(CEGUI_IRR_SAMPLE_LINK_FLAGS) to the
 //   'Other Linker Flags' in the CEGUISampleHelper target build settings.
 // - Uncomment the following line and build.

@@ -186,7 +186,6 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 
-#ifndef __APPLE__
     const char* dataPathPrefix = getDataPathPrefix();
     char resourcePath[PATH_MAX];
 
@@ -207,19 +206,6 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
         sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
         ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
     #endif
-#else
-    // Because Ogre/Mac looks in the bundle's Resources folder by default...
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/fonts", "FileSystem", "fonts");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/imagesets", "FileSystem", "imagesets");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/layouts", "FileSystem", "layouts");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/looknfeel", "FileSystem", "looknfeels");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/schemes", "FileSystem", "schemes");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/configs", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem", "lua_scripts");
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        ResourceGroupManager::getSingleton().addResourceLocation("datafiles/xml_schemas", "FileSystem", "schemas");
-    #endif
-#endif
 }
 
 void CEGuiOgreBaseApplication::doFrameUpdate(float elapsed)
