@@ -43,6 +43,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUIWindowRendererModule.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -305,35 +306,51 @@ void Scheme::loadWindowFactories()
 *************************************************************************/
 void Scheme::loadWindowRendererFactories()
 {
-    WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
-
     // check factories
-    std::vector<UIModule>::iterator cmod = d_windowRendererModules.begin();
+    std::vector<WRModule>::iterator cmod = d_windowRendererModules.begin();
     for (;cmod != d_windowRendererModules.end(); ++cmod)
     {
-        // create and load dynamic module as required
-        if (!(*cmod).module)
+        if (!(*cmod).wrModule)
         {
-            (*cmod).module = new FactoryModule((*cmod).name);
+#if !defined(CEGUI_STATIC)
+            // load dynamic module as required
+            if (!(*cmod).dynamicModule)
+                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
+
+            WindowRendererModule& (*getWRModuleFunc)() =
+                reinterpret_cast<WindowRendererModule&(*)()>(
+                    (*cmod).dynamicModule->
+                        getSymbolAddress("getWindowRendererModule"));
+
+            if (!getWRModuleFunc)
+                throw InvalidRequestException(
+                    "Scheme::loadWindowRendererFactories: Required function "
+                    "export 'WindowRendererModule& getWindowRendererModule()' "
+                    "was not found in module '" + (*cmod).name + "'.");
+
+            // get the WindowRendererModule object for this module.
+            (*cmod).wrModule = &getWRModuleFunc();
+#else
+            (*cmod).wrModule = getWindowRendererModule();
+#endif
         }
 
-        // see if we should just register all factories available in the module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        // see if we should just register all factories available in the module
+        // (i.e. No factories explicitly specified)
+        if ((*cmod).wrTypes.size() == 0)
         {
-            Logger::getSingleton().logEvent("No window renderer factories specified for module '" + (*cmod).name + "' - adding all available factories...");
-            (*cmod).module->registerAllFactories();
+            Logger::getSingleton().logEvent("No window renderer factories "
+                                            "specified for module '" +
+                                            (*cmod).name + "' - adding all "
+                                            "available factories...");
+            (*cmod).wrModule->registerAllFactories();
         }
         // some names were explicitly given, so only register those.
         else
         {
-            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
-            for (; elem != (*cmod).factories.end(); ++elem)
-            {
-                if (!wfmgr.isFactoryPresent((*elem).name))
-                {
-                    (*cmod).module->registerFactory((*elem).name);
-                }
-            }
+            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
+            for (; elem != (*cmod).wrTypes.end(); ++elem)
+                (*cmod).wrModule->registerFactory(*elem);
         }
     }
 }
@@ -496,32 +513,37 @@ void Scheme::unloadWindowFactories()
 *************************************************************************/
 void Scheme::unloadWindowRendererFactories()
 {
-    WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
-    std::vector<UIModule>::iterator cmod = d_windowRendererModules.begin();
+    std::vector<WRModule>::iterator cmod = d_windowRendererModules.begin();
 
     // for all widget modules loaded
     for (;cmod != d_windowRendererModules.end(); ++cmod)
     {
+        // assume module's factories were already removed if wrModule is 0.
+        if (!(*cmod).wrModule)
+            continue;
+
         // see if we should just unregister all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        if ((*cmod).wrTypes.size() == 0)
         {
-            // TODO: This is not supported yet!
+            (*cmod).wrModule->unregisterAllFactories();
         }
         // remove all window factories explicitly registered for this module
         else
         {
-            std::vector<UIElementFactory>::const_iterator elem = (*cmod).factories.begin();
-            for (; elem != (*cmod).factories.end(); ++elem)
-                wfmgr.removeFactory((*elem).name);
+            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
+            for (; elem != (*cmod).wrTypes.end(); ++elem)
+                (*cmod).wrModule->unregisterFactory(*elem);
         }
 
         // unload dynamic module as required
-        if ((*cmod).module)
+        if ((*cmod).dynamicModule)
         {
-            delete (*cmod).module;
-            (*cmod).module = 0;
+            delete (*cmod).dynamicModule;
+            (*cmod).dynamicModule = 0;
         }
+
+        (*cmod).wrModule = 0;
     }
 }
 
@@ -684,27 +706,25 @@ bool Scheme::areWindowFactoriesLoaded() const
 bool Scheme::areWindowRendererFactoriesLoaded() const
 {
     WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
-    std::vector<UIModule>::const_iterator   cmod = d_windowRendererModules.begin();
+    std::vector<WRModule>::const_iterator cmod = d_windowRendererModules.begin();
 
     // check factory modules
     for (;cmod != d_windowRendererModules.end(); ++cmod)
     {
         // see if we should just test all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        if ((*cmod).wrTypes.size() == 0)
         {
             // TODO: This is not supported yet!
         }
         // check all window factories explicitly registered for this module
         else
         {
-            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
+            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
 
-            for (; elem != (*cmod).factories.end(); ++elem)
-            {
-                if (!wfmgr.isFactoryPresent((*elem).name))
+            for (; elem != (*cmod).wrTypes.end(); ++elem)
+                if (!wfmgr.isFactoryPresent(*elem))
                     return false;
-            }
         }
     }
 

@@ -69,6 +69,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
                  CEGUITextureTarget.h \
+                 CEGUITplWRFactoryRegisterer.h \
                  CEGUIUDim.h \
                  CEGUIVector.h \
                  CEGUIVersion.h \
@@ -82,6 +83,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIWindowRenderer.h \
                  CEGUIWindowRendererManager.h \
                  CEGUIWindowRendererModule.h \
+                 CEGUIWRFactoryRegisterer.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
