@@ -1,8 +1,7 @@
 /***********************************************************************
-    filename:   CEGUIWindowRendererModule.h
-    created:    Fri Jan 13 2006
+    filename:   CEGUIWRFactoryRegisterer.cpp
+    created:    Thu Mar 19 2009
     author:     Paul D Turner <paul@cegui.org.uk>
-                Tomas Lindquist Olsen <tomas@famolsen.dk>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
@@ -26,39 +25,39 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIWindowRendererModule_h_
-#define _CEGUIWindowRendererModule_h_
+#include "CEGUIWRFactoryRegisterer.h"
+#include "CEGUIWindowRendererManager.h"
 
-#include "CEGUIBase.h"
-#include <vector>
-
+// Start of CEGUI namespace section
 namespace CEGUI
 {
-class WRFactoryRegisterer;
-class String;
+//----------------------------------------------------------------------------//
+WRFactoryRegisterer::WRFactoryRegisterer(const CEGUI::utf8* type) :
+    d_type(type)
+{}
 
-//! Abstract interface for window renderer module objects.
-class CEGUIEXPORT WindowRendererModule
+//----------------------------------------------------------------------------//
+WRFactoryRegisterer::~WRFactoryRegisterer()
+{}
+
+//----------------------------------------------------------------------------//
+void WRFactoryRegisterer::registerFactory()
 {
-public:
-    //! Destructor.
-    virtual ~WindowRendererModule();
-    //! Register the factory for WindowRenderers of the specified type.
-    void registerFactory(const String& type_name);
-    //! Register factories for all WindowRenderer types in the module.
-    uint registerAllFactories();
-    //! Unregister the factory for WindowRenderers of the specified type.
-    void unregisterFactory(const String& type_name);
-    //! Unregister factories for all WindowRenderer types in the module.
-    uint unregisterAllFactories();
-
-protected:
-    //! Collection type that holds pointers to the factory registerer objects.
-    typedef std::vector<WRFactoryRegisterer*> FactoryRegistry;
-    //! The collection of factorty registerer object pointers.
-    FactoryRegistry d_registry;
-};
-
+    if (CEGUI::WindowRendererManager::getSingleton().isFactoryPresent(d_type))
+        CEGUI::Logger::getSingleton().logEvent(
+            "Factory for '" + CEGUI::String(d_type) +
+            "' appears to be  already registered, skipping.",
+            CEGUI::Informative);
+    else
+        this->doFactoryAdd();
 }
 
-#endif  // end of guard _CEGUIWindowRendererModule_h_
+//----------------------------------------------------------------------------//
+void WRFactoryRegisterer::unregisterFactory()
+{
+    WindowRendererManager::getSingleton().removeFactory(d_type);
+}
+
+//----------------------------------------------------------------------------//
+
+} // End of  CEGUI namespace section

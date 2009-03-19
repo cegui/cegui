@@ -226,11 +226,11 @@ void Scheme_xmlHandler::elementWindowFactoryStart(const XMLAttributes& attribute
 *************************************************************************/
 void Scheme_xmlHandler::elementWindowRendererSetStart(const XMLAttributes& attributes)
 {
-    Scheme::UIModule    module;
-    module.name     = attributes.getValueAsString(FilenameAttribute);
-    module.module   = 0;
+    Scheme::WRModule module;
+    module.name = attributes.getValueAsString(FilenameAttribute);
+    module.dynamicModule = 0;
+    module.wrModule = 0;
 
-    module.factories.clear();
     d_scheme->d_windowRendererModules.push_back(module);
 }
 
@@ -239,11 +239,9 @@ void Scheme_xmlHandler::elementWindowRendererSetStart(const XMLAttributes& attri
 *************************************************************************/
 void Scheme_xmlHandler::elementWindowRendererFactoryStart(const XMLAttributes& attributes)
 {
-    Scheme::UIElementFactory factory;
-
-    factory.name = attributes.getValueAsString(NameAttribute);
-
-    d_scheme->d_windowRendererModules[d_scheme->d_windowRendererModules.size() - 1].factories.push_back(factory);
+    d_scheme->
+        d_windowRendererModules[d_scheme->d_windowRendererModules.size() - 1].
+            wrTypes.push_back(attributes.getValueAsString(NameAttribute));
 }
 
 /*************************************************************************

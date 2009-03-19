@@ -47,6 +47,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class WindowRendererModule;
+
 /*!
 \brief
 	A class that groups a set of GUI elements and initialises the system to access those elements.
@@ -333,6 +335,14 @@ private:
 		std::vector<UIElementFactory>	factories;
 	};
 
+    struct WRModule
+    {
+        String name;
+        DynamicModule* dynamicModule;
+        WindowRendererModule* wrModule;
+        std::vector<String> wrTypes;
+    };
+
 	struct AliasMapping
 	{
 		String aliasName;
@@ -356,7 +366,7 @@ private:
 	std::vector<LoadableUIElement>		d_imagesetsFromImages;
 	std::vector<LoadableUIElement>		d_fonts;
 	std::vector<UIModule>				d_widgetModules;
-    std::vector<UIModule>               d_windowRendererModules;
+    std::vector<WRModule>               d_windowRendererModules;
 	std::vector<AliasMapping>			d_aliasMappings;
     std::vector<LoadableUIElement>		d_looknfeels;
     std::vector<FalagardMapping>        d_falagardMappings;
