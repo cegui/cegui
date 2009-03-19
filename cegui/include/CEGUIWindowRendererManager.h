@@ -6,7 +6,7 @@
     purpose:    Defines interface for the WindowRendererManager class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,10 +30,12 @@
 #ifndef _CEGUIWindowRendererManager_h_
 #define _CEGUIWindowRendererManager_h_
 
-#include "CEGUIWindowRenderer.h"
 #include "CEGUISingleton.h"
-//#include "CEGUIIteratorBase.h"
+#include "CEGUIWindowRenderer.h"
+#include "CEGUILogger.h"
+#include "CEGUIExceptions.h"
 #include <map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -43,7 +45,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 class CEGUIEXPORT WindowRendererManager : public Singleton<WindowRendererManager>
 {
 public:
@@ -68,6 +69,21 @@ public:
     /*************************************************************************
         Manipulators
     *************************************************************************/
+    /*!
+    \brief
+        Creates a WindowRendererFactory of the type \a T and adds it to the
+        system for use.
+
+        The created WindowRendererFactory will automatically be deleted when the
+        factory is removed from the system (either directly or at system
+        deletion time).
+
+    \tparam T
+        Specifies the type of WindowRendererFactory subclass to add a factory
+        for.
+    */
+    template <typename T>
+    static void addFactory();
     void addFactory(WindowRendererFactory* wr);
     void removeFactory(const String& name);
 
@@ -87,7 +103,47 @@ private:
     *************************************************************************/
     typedef std::map<String, WindowRendererFactory*, String::FastLessCompare> WR_Registry;
     WR_Registry d_wrReg;
+
+    //! Container type to hold WindowRenderFacory objects that we created.
+    typedef std::vector<WindowRendererFactory*> OwnedFactoryList;
+    //! Container that tracks WindowFactory objects we created ourselves.
+    static OwnedFactoryList d_ownedFactories;
 };
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void WindowRendererManager::addFactory()
+{
+    // create the factory object
+    WindowRendererFactory* factory = new T;
+
+    // only do the actual add now if our singleton has already been created
+    if (WindowRendererManager::getSingletonPtr())
+    {
+        Logger::getSingleton().logEvent("Created WindowRendererFactory for '" +
+                                        factory->getName() +
+                                        "' WindowRenderers.");
+        // add the factory we just created
+        try
+        {
+            WindowRendererManager::getSingleton().addFactory(factory);
+        }
+        catch (Exception& e)
+        {
+            Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
+                                            "'" + factory->getName() +
+                                            "' WindowRenderers.");
+            // delete the factory object
+            delete factory;
+            throw;
+        }
+    }
+
+    d_ownedFactories.push_back(factory);
+}
+
+//----------------------------------------------------------------------------//
+
 
 } // End of CEGUI namespace
 
