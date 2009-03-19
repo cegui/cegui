@@ -1,5 +1,5 @@
 pkgincludedir=$(prefix)/include/CEGUI/elements
-pkginclude_HEADERS = CEGUIBaseFactories.h \
+pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIButtonBase.h \
                      CEGUICheckbox.h \
                      CEGUICheckboxProperties.h \
@@ -69,5 +69,4 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUITooltipProperties.h \
                      CEGUITree.h \
                      CEGUITreeItem.h \
-                     CEGUITreeProperties.h 
-
+                     CEGUITreeProperties.h
