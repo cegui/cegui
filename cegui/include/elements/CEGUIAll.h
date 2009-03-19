@@ -1,12 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIBaseFactories.h
-    created:    Sun Feb 5 2006
-    author:     Tomas Lindquist Olsen <tomas@famolsen.dk>
-
-    purpose:    Declarations of all the base window factories
+    filename:   CEGUIAll.h
+    created:    Thu Mar 19 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,10 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIBaseFactories_h_
-#define _CEGUIBaseFactories_h_
+#ifndef _CEGUIAll_h_
+#define _CEGUIAll_h_
 
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIDragContainer.h"
 #include "elements/CEGUIScrolledContainer.h"
@@ -65,43 +62,4 @@
 #include "elements/CEGUIGroupBox.h"
 #include "elements/CEGUITree.h"
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-    CEGUI_DECLARE_WINDOW_FACTORY(GUISheet)
-    CEGUI_DECLARE_WINDOW_FACTORY(DragContainer)
-    CEGUI_DECLARE_WINDOW_FACTORY(ScrolledContainer)
-    CEGUI_DECLARE_WINDOW_FACTORY(ClippedContainer)
-    CEGUI_DECLARE_WINDOW_FACTORY(Checkbox)
-    CEGUI_DECLARE_WINDOW_FACTORY(ComboDropList)
-    CEGUI_DECLARE_WINDOW_FACTORY(Combobox)
-    CEGUI_DECLARE_WINDOW_FACTORY(Editbox)
-    CEGUI_DECLARE_WINDOW_FACTORY(FrameWindow)
-    CEGUI_DECLARE_WINDOW_FACTORY(ItemEntry)
-    CEGUI_DECLARE_WINDOW_FACTORY(ListHeader)
-    CEGUI_DECLARE_WINDOW_FACTORY(ListHeaderSegment)
-    CEGUI_DECLARE_WINDOW_FACTORY(Listbox)
-    CEGUI_DECLARE_WINDOW_FACTORY(MenuItem)
-    CEGUI_DECLARE_WINDOW_FACTORY(Menubar)
-    CEGUI_DECLARE_WINDOW_FACTORY(MultiColumnList)
-    CEGUI_DECLARE_WINDOW_FACTORY(MultiLineEditbox)
-    CEGUI_DECLARE_WINDOW_FACTORY(PopupMenu)
-    CEGUI_DECLARE_WINDOW_FACTORY(ProgressBar)
-    CEGUI_DECLARE_WINDOW_FACTORY(PushButton)
-    CEGUI_DECLARE_WINDOW_FACTORY(RadioButton)
-    CEGUI_DECLARE_WINDOW_FACTORY(ScrollablePane)
-    CEGUI_DECLARE_WINDOW_FACTORY(Scrollbar)
-    CEGUI_DECLARE_WINDOW_FACTORY(Slider)
-    CEGUI_DECLARE_WINDOW_FACTORY(Spinner)
-    CEGUI_DECLARE_WINDOW_FACTORY(TabButton)
-    CEGUI_DECLARE_WINDOW_FACTORY(TabControl)
-    CEGUI_DECLARE_WINDOW_FACTORY(Thumb)
-    CEGUI_DECLARE_WINDOW_FACTORY(Titlebar)
-    CEGUI_DECLARE_WINDOW_FACTORY(Tooltip)
-    CEGUI_DECLARE_WINDOW_FACTORY(ItemListbox)
-	CEGUI_DECLARE_WINDOW_FACTORY(GroupBox)
-	CEGUI_DECLARE_WINDOW_FACTORY(Tree)
-
-} // End of  CEGUI namespace section
-
-#endif // End of guard _CEGUIBaseFactories_h_
+#endif // End of guard _CEGUIAll_h_

@@ -36,13 +36,13 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIWindowFactoryManager.h"
+#include "CEGUITplWindowFactory.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
-#include "elements/CEGUIBaseFactories.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
 #include "CEGUIDataContainer.h"
@@ -57,6 +57,7 @@
 #include "CEGUIRenderingWindow.h"
 #include "CEGUIRenderingContext.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "elements/CEGUIAll.h"
 #include <ctime>
 #include <clocale>
 
@@ -1526,40 +1527,39 @@ void System::outputLogHeader()
 void System::addStandardWindowFactories()
 {
     // Add factories for types all base elements
-    WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GUISheet));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(DragContainer));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrolledContainer));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ClippedContainer));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Combobox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ComboDropList));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Editbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(FrameWindow));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemEntry));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Listbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeader));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeaderSegment));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Menubar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PopupMenu));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MenuItem));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiColumnList));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiLineEditbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ProgressBar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrollablePane));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Scrollbar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Slider));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Spinner));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabControl));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Thumb));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemListbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GroupBox));
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tree));
+    WindowFactoryManager::addFactory< TplWindowFactory<GUISheet> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<DragContainer> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ScrolledContainer> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ClippedContainer> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Checkbox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<PushButton> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<RadioButton> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Combobox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ComboDropList> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Editbox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<FrameWindow> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ItemEntry> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Listbox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ListHeader> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ListHeaderSegment> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Menubar> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<PopupMenu> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<MenuItem> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<MultiColumnList> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<MultiLineEditbox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ProgressBar> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ScrollablePane> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Scrollbar> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Slider> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Spinner> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<TabButton> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<TabControl> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Thumb> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Titlebar> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Tooltip> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<ItemListbox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<GroupBox> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<Tree> >();
 }
 
 void System::createSingletons()
