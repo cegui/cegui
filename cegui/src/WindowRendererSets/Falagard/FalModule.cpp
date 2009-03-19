@@ -26,6 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "FalModule.h"
+#include "CEGUITplWRFactoryRegisterer.h"
+
 // includes for types we create
 #include "FalButton.h"
 #include "FalDefault.h"
@@ -56,67 +58,57 @@
 #include "FalItemListbox.h"
 #include "FalTree.h"
 
-// Define factories to create Falagard window types
-CEGUI_DEFINE_WR_FACTORY( FalagardButton )
-CEGUI_DEFINE_WR_FACTORY( FalagardDefault )
-CEGUI_DEFINE_WR_FACTORY( FalagardEditbox )
-CEGUI_DEFINE_WR_FACTORY( FalagardFrameWindow )
-CEGUI_DEFINE_WR_FACTORY( FalagardItemEntry )
-CEGUI_DEFINE_WR_FACTORY( FalagardListHeader )
-CEGUI_DEFINE_WR_FACTORY( FalagardListHeaderSegment )
-CEGUI_DEFINE_WR_FACTORY( FalagardListbox )
-CEGUI_DEFINE_WR_FACTORY( FalagardMenubar )
-CEGUI_DEFINE_WR_FACTORY( FalagardMenuItem )
-CEGUI_DEFINE_WR_FACTORY( FalagardMultiColumnList )
-CEGUI_DEFINE_WR_FACTORY( FalagardMultiLineEditbox )
-CEGUI_DEFINE_WR_FACTORY( FalagardPopupMenu )
-CEGUI_DEFINE_WR_FACTORY( FalagardProgressBar )
-CEGUI_DEFINE_WR_FACTORY( FalagardScrollablePane )
-CEGUI_DEFINE_WR_FACTORY( FalagardScrollbar )
-CEGUI_DEFINE_WR_FACTORY( FalagardSlider )
-CEGUI_DEFINE_WR_FACTORY( FalagardStatic )
-CEGUI_DEFINE_WR_FACTORY( FalagardStaticImage )
-CEGUI_DEFINE_WR_FACTORY( FalagardStaticText )
-CEGUI_DEFINE_WR_FACTORY( FalagardSystemButton )
-CEGUI_DEFINE_WR_FACTORY( FalagardTabButton )
-CEGUI_DEFINE_WR_FACTORY( FalagardTabControl )
-CEGUI_DEFINE_WR_FACTORY( FalagardTitlebar )
-CEGUI_DEFINE_WR_FACTORY( FalagardToggleButton )
-CEGUI_DEFINE_WR_FACTORY( FalagardTooltip )
-CEGUI_DEFINE_WR_FACTORY( FalagardItemListbox )
-CEGUI_DEFINE_WR_FACTORY( FalagardTree )
+//----------------------------------------------------------------------------//
+extern "C"
+CEGUI::WindowRendererModule& getWindowRendererModule()
+{
+    static CEGUI::FalagardWRModule mod;
+    return mod;
+}
 
-// Define the factory map so types can be registered
-CEGUI_START_WR_FACTORY_MAP( Falagard )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardButton )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardDefault )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardEditbox )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardFrameWindow )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardItemEntry )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardListHeader )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardListHeaderSegment )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardListbox )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardMenubar )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardMenuItem )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardMultiColumnList )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardMultiLineEditbox )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardPopupMenu )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardProgressBar )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardScrollablePane )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardScrollbar )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardSlider )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardStatic )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardStaticImage )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardStaticText )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardSystemButton )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTabButton )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTabControl )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTitlebar )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardToggleButton )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTooltip )
-    CEGUI_WR_FACTORY_MAP_ENTRY( FalagardItemListbox )
-	CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTree )
-CEGUI_END_WR_FACTORY_MAP
+namespace CEGUI
+{
+//----------------------------------------------------------------------------//
+FalagardWRModule::FalagardWRModule()
+{
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardButton>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardDefault>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardEditbox>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardFrameWindow>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardItemEntry>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardListHeader>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardListHeaderSegment>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardListbox>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardMenubar>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardMenuItem>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardMultiColumnList>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardMultiLineEditbox>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardPopupMenu>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardProgressBar>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardScrollablePane>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardScrollbar>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardSlider>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardStatic>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardStaticImage>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardStaticText>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardSystemButton>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardTabButton>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardTabControl>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardTitlebar>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardToggleButton>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardTooltip>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardItemListbox>);
+    d_registry.push_back(new TplWRFactoryRegisterer<FalagardTree>);
+}
 
-// define the widget module for Falagard
-CEGUI_DEFINE_WR_MODULE( Falagard )
+//----------------------------------------------------------------------------//
+FalagardWRModule::~FalagardWRModule()
+{
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+        delete (*i);
+}
+
+//----------------------------------------------------------------------------//
+
+}

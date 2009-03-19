@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,9 +28,9 @@
 #ifndef _FalModule_h_
 #define _FalModule_h_
 
-/*************************************************************************
-    Import / Export control macros
-*************************************************************************/
+#include "CEGUIWindowRendererModule.h"
+#include "CEGUIWindowRenderer.h"
+
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef FALAGARDWRBASE_EXPORTS
 #       define FALAGARDBASE_API __declspec(dllexport)
@@ -41,8 +41,20 @@
 #   define FALAGARDBASE_API
 #endif
 
-#include "CEGUIWindowRendererModule.h"
+//! Function we're required to export.
+extern "C"
+FALAGARDBASE_API CEGUI::WindowRendererModule& getWindowRendererModule();
 
-CEGUI_DECLARE_WR_MODULE( Falagard )
+namespace CEGUI
+{
+//! Implementation of WindowRendererModule for the Falagard window renderers
+class FalagardWRModule : public CEGUI::WindowRendererModule
+{
+public:
+    FalagardWRModule();
+    ~FalagardWRModule();
+};
+
+}
 
 #endif  // end of guard _FalModule_h_
