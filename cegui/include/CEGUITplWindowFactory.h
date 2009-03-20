@@ -50,7 +50,7 @@ namespace CEGUI
     destroy instances of.
 */
 template <typename T>
-class CEGUIEXPORT TplWindowFactory : public WindowFactory
+class TplWindowFactory : public WindowFactory
 {
 public:
     //! Default constructor.

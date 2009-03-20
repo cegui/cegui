@@ -32,6 +32,11 @@
 #include "CEGUIBase.h"
 #include <vector>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 class WRFactoryRegisterer;
@@ -60,5 +65,9 @@ protected:
 };
 
 }
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIWindowRendererModule_h_

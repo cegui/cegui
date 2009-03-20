@@ -475,7 +475,7 @@ void WindowFactoryManager::addFactory()
         {
             WindowFactoryManager::getSingleton().addFactory(factory);
         }
-        catch (Exception& e)
+        catch (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
                                             factory->getTypeName() +

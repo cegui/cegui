@@ -128,7 +128,7 @@ void WindowRendererManager::addFactory()
         {
             WindowRendererManager::getSingleton().addFactory(factory);
         }
-        catch (Exception& e)
+        catch (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
                                             "'" + factory->getName() +

@@ -26,6 +26,7 @@
  ***************************************************************************/
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIExceptions.h"
+#include <algorithm>
 
 // Start CEGUI namespace
 namespace CEGUI

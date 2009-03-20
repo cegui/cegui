@@ -41,7 +41,7 @@ namespace CEGUI
     registration of a factory for any WindowRenderer type.
 */
 template <typename T>
-class CEGUIEXPORT TplWRFactoryRegisterer : public WRFactoryRegisterer
+class TplWRFactoryRegisterer : public WRFactoryRegisterer
 {
 public:
     //! Constructor.
