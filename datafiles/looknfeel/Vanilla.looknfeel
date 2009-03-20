@@ -113,10 +113,17 @@
 
 
     <WidgetLook name="Vanilla/Button">
-		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="UseStandardImagery" initialValue="True" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+
         <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="label">
             <TextComponent>
@@ -130,11 +137,52 @@
                 <HorzFormat type="WordWrapCentreAligned" />
             </TextComponent>
         </ImagerySection>
+        <ImagerySection name="normal_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="NormalImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="PushedImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+
         <StateImagery name="Normal">
             <Layer>
-                <Section look="Vanilla/Shared" section="Frame">
+                <Section look="Vanilla/Shared" section="Frame" controlProperty="UseStandardImagery" >
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
+                <Section section="normal_image" />
                 <Section section="label">
                     <ColourProperty name="NormalTextColour" />
                 </Section>
@@ -142,9 +190,10 @@
         </StateImagery>
         <StateImagery name="Hover">
             <Layer>
-                <Section look="Vanilla/Shared" section="Frame">
+                <Section look="Vanilla/Shared" section="Frame" controlProperty="UseStandardImagery" >
                     <Colours topLeft="FF9F9F9F" topRight="FF9F9F9F" bottomLeft="FF9F9F9F" bottomRight="FF9F9F9F" />
                 </Section>
+                <Section section="hover_image" />
                 <Section section="label">
                     <ColourProperty name="HoverTextColour" />
                 </Section>
@@ -152,9 +201,10 @@
         </StateImagery>
         <StateImagery name="Pushed">
             <Layer>
-                <Section look="Vanilla/Shared" section="Frame">
+                <Section look="Vanilla/Shared" section="Frame" controlProperty="UseStandardImagery" >
                     <Colours topLeft="FF6F6F6F" topRight="FF6F6F6F" bottomLeft="FF6F6F6F" bottomRight="FF6F6F6F" />
                 </Section>
+                <Section section="pushed_image" />
                 <Section section="label">
                     <ColourProperty name="PushedTextColour" />
                 </Section>
@@ -162,7 +212,10 @@
         </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
-                <Section look="Vanilla/Shared" section="Frame">
+                <Section look="Vanilla/Shared" section="Frame" controlProperty="UseStandardImagery" >
+                    <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
+                </Section>
+                <Section section="normal_image">
                     <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
                 </Section>
                 <Section section="label">
