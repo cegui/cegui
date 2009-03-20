@@ -106,8 +106,6 @@
 		DA1097A90F6D841500B8A582 /* CEGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095420F6D5F9B00B8A582 /* CEGUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1097AA0F6D841500B8A582 /* CEGUIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */; };
 		DA1097AB0F6D841500B8A582 /* CEGUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */; };
-		DA1097AC0F6D841500B8A582 /* CEGUIBaseFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094AD0F6D5EFD00B8A582 /* CEGUIBaseFactories.cpp */; };
-		DA1097AD0F6D841500B8A582 /* CEGUIBaseFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10959A0F6D5F9B00B8A582 /* CEGUIBaseFactories.h */; };
 		DA1097AE0F6D841500B8A582 /* CEGUIBoundSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */; };
 		DA1097AF0F6D841500B8A582 /* CEGUIBoundSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */; };
 		DA1097B00F6D841500B8A582 /* CEGUIButtonBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094AE0F6D5EFD00B8A582 /* CEGUIButtonBase.cpp */; };
@@ -551,6 +549,13 @@
 		DA10A0220F6DB84700B8A582 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DA10A0230F6DB84700B8A582 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DA10A02A0F6DB88500B8A582 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093BA0F6D594000B8A582 /* Sample_FirstWindow.cpp */; };
+		DA54492E0F739EC100983E1A /* CEGUITplWindowFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */; };
+		DA54492F0F739EC200983E1A /* CEGUITplWindowRendererFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */; };
+		DA5449300F739EC300983E1A /* CEGUITplWRFactoryRegisterer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */; };
+		DA5449310F739ECC00983E1A /* CEGUIWindowRendererModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */; };
+		DA5449320F739ED200983E1A /* CEGUIWRFactoryRegisterer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */; };
+		DA5449330F739ED300983E1A /* CEGUIWRFactoryRegisterer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA54492B0F739DF800983E1A /* CEGUIWRFactoryRegisterer.h */; };
+		DA5449AC0F73A0D800983E1A /* CEGUIAll.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449AB0F73A0D800983E1A /* CEGUIAll.h */; };
 		DAAAB8070F6E4ACC0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DAAAB8080F6E4ACC0003BE03 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DAAAB80D0F6E4AEF0003BE03 /* Sample_Demo7.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093B30F6D591900B8A582 /* Sample_Demo7.cpp */; };
@@ -1278,7 +1283,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 /* End PBXContainerItemProxy section */
@@ -1528,7 +1533,6 @@
 		DA10942B0F6D5D1A00B8A582 /* GUIScheme.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = GUIScheme.xsd; path = ../../datafiles/xml_schemas/GUIScheme.xsd; sourceTree = SOURCE_ROOT; };
 		DA10942C0F6D5D1A00B8A582 /* CEGUIConfig.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = CEGUIConfig.xsd; path = ../../datafiles/xml_schemas/CEGUIConfig.xsd; sourceTree = SOURCE_ROOT; };
 		DA10942D0F6D5D1A00B8A582 /* Font.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Font.xsd; path = ../../datafiles/xml_schemas/Font.xsd; sourceTree = SOURCE_ROOT; };
-		DA1094AD0F6D5EFD00B8A582 /* CEGUIBaseFactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBaseFactories.cpp; path = ../../cegui/src/elements/CEGUIBaseFactories.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094AE0F6D5EFD00B8A582 /* CEGUIButtonBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIButtonBase.cpp; path = ../../cegui/src/elements/CEGUIButtonBase.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094AF0F6D5EFD00B8A582 /* CEGUICheckbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICheckbox.cpp; path = ../../cegui/src/elements/CEGUICheckbox.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094B00F6D5EFD00B8A582 /* CEGUICheckboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICheckboxProperties.cpp; path = ../../cegui/src/elements/CEGUICheckboxProperties.cpp; sourceTree = SOURCE_ROOT; };
@@ -1764,7 +1768,6 @@
 		DA1095960F6D5F9B00B8A582 /* CEGUIXMLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXMLHandler.h; path = ../../cegui/include/CEGUIXMLHandler.h; sourceTree = SOURCE_ROOT; };
 		DA1095970F6D5F9B00B8A582 /* CEGUIXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXMLParser.h; path = ../../cegui/include/CEGUIXMLParser.h; sourceTree = SOURCE_ROOT; };
 		DA1095980F6D5F9B00B8A582 /* CEGUIXMLSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXMLSerializer.h; path = ../../cegui/include/CEGUIXMLSerializer.h; sourceTree = SOURCE_ROOT; };
-		DA10959A0F6D5F9B00B8A582 /* CEGUIBaseFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIBaseFactories.h; sourceTree = "<group>"; };
 		DA10959B0F6D5F9B00B8A582 /* CEGUIButtonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIButtonBase.h; sourceTree = "<group>"; };
 		DA10959C0F6D5F9B00B8A582 /* CEGUICheckbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUICheckbox.h; sourceTree = "<group>"; };
 		DA10959D0F6D5F9B00B8A582 /* CEGUICheckboxProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUICheckboxProperties.h; sourceTree = "<group>"; };
@@ -2239,6 +2242,13 @@
 		DA109FFB0F6DB73200B8A582 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DA10A0180F6DB83200B8A582 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA10A01A0F6DB83200B8A582 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowFactory.h; path = ../../cegui/include/CEGUITplWindowFactory.h; sourceTree = SOURCE_ROOT; };
+		DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowRendererFactory.h; path = ../../cegui/include/CEGUITplWindowRendererFactory.h; sourceTree = SOURCE_ROOT; };
+		DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWRFactoryRegisterer.h; path = ../../cegui/include/CEGUITplWRFactoryRegisterer.h; sourceTree = SOURCE_ROOT; };
+		DA54492B0F739DF800983E1A /* CEGUIWRFactoryRegisterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIWRFactoryRegisterer.h; path = ../../cegui/include/CEGUIWRFactoryRegisterer.h; sourceTree = SOURCE_ROOT; };
+		DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWindowRendererModule.cpp; path = ../../cegui/src/CEGUIWindowRendererModule.cpp; sourceTree = SOURCE_ROOT; };
+		DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWRFactoryRegisterer.cpp; path = ../../cegui/src/CEGUIWRFactoryRegisterer.cpp; sourceTree = SOURCE_ROOT; };
+		DA5449AB0F73A0D800983E1A /* CEGUIAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIAll.h; sourceTree = "<group>"; };
 		DAAAB7FD0F6E4A970003BE03 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAAB7FF0F6E4A970003BE03 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
 		DAAAB8220F6E4BC30003BE03 /* Demo6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo6.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3303,6 +3313,9 @@
 				DA1095850F6D5F9B00B8A582 /* CEGUITexture.h */,
 				DA1095860F6D5F9B00B8A582 /* CEGUITextureTarget.h */,
 				DA1095870F6D5F9B00B8A582 /* CEGUITextUtils.h */,
+				DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */,
+				DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */,
+				DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */,
 				DA1095880F6D5F9B00B8A582 /* CEGUIUDim.h */,
 				DA1095890F6D5F9B00B8A582 /* CEGUIVector.h */,
 				DA10958A0F6D5F9B00B8A582 /* CEGUIVersion.h */,
@@ -3316,6 +3329,7 @@
 				DA1095920F6D5F9B00B8A582 /* CEGUIWindowRenderer.h */,
 				DA1095930F6D5F9B00B8A582 /* CEGUIWindowRendererManager.h */,
 				DA1095940F6D5F9B00B8A582 /* CEGUIWindowRendererModule.h */,
+				DA54492B0F739DF800983E1A /* CEGUIWRFactoryRegisterer.h */,
 				DA1095950F6D5F9B00B8A582 /* CEGUIXMLAttributes.h */,
 				DA1095960F6D5F9B00B8A582 /* CEGUIXMLHandler.h */,
 				DA1095970F6D5F9B00B8A582 /* CEGUIXMLParser.h */,
@@ -3387,6 +3401,8 @@
 				DA10953B0F6D5F4100B8A582 /* CEGUIWindowProperties.cpp */,
 				DA10953C0F6D5F4100B8A582 /* CEGUIWindowRenderer.cpp */,
 				DA10953D0F6D5F4100B8A582 /* CEGUIWindowRendererManager.cpp */,
+				DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */,
+				DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */,
 				DA10953E0F6D5F4100B8A582 /* CEGUIXMLAttributes.cpp */,
 				DA10953F0F6D5F4100B8A582 /* CEGUIXMLHandler.cpp */,
 				DA1095400F6D5F4100B8A582 /* CEGUIXMLParser.cpp */,
@@ -3424,7 +3440,6 @@
 		DA1094310F6D5D6D00B8A582 /* elements */ = {
 			isa = PBXGroup;
 			children = (
-				DA1094AD0F6D5EFD00B8A582 /* CEGUIBaseFactories.cpp */,
 				DA1094AE0F6D5EFD00B8A582 /* CEGUIButtonBase.cpp */,
 				DA1094AF0F6D5EFD00B8A582 /* CEGUICheckbox.cpp */,
 				DA1094B00F6D5EFD00B8A582 /* CEGUICheckboxProperties.cpp */,
@@ -3500,7 +3515,7 @@
 		DA1095990F6D5F9B00B8A582 /* elements */ = {
 			isa = PBXGroup;
 			children = (
-				DA10959A0F6D5F9B00B8A582 /* CEGUIBaseFactories.h */,
+				DA5449AB0F73A0D800983E1A /* CEGUIAll.h */,
 				DA10959B0F6D5F9B00B8A582 /* CEGUIButtonBase.h */,
 				DA10959C0F6D5F9B00B8A582 /* CEGUICheckbox.h */,
 				DA10959D0F6D5F9B00B8A582 /* CEGUICheckboxProperties.h */,
@@ -4211,8 +4226,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1097A90F6D841500B8A582 /* CEGUI.h in Headers */,
+				DA5449AC0F73A0D800983E1A /* CEGUIAll.h in Headers */,
 				DA1097AB0F6D841500B8A582 /* CEGUIBase.h in Headers */,
-				DA1097AD0F6D841500B8A582 /* CEGUIBaseFactories.h in Headers */,
 				DA1097AF0F6D841500B8A582 /* CEGUIBoundSlot.h in Headers */,
 				DA1097B10F6D841500B8A582 /* CEGUIButtonBase.h in Headers */,
 				DA1097B30F6D841500B8A582 /* CEGUICheckbox.h in Headers */,
@@ -4366,6 +4381,9 @@
 				DA1098C70F6D841500B8A582 /* CEGUITitlebarProperties.h in Headers */,
 				DA1098C90F6D841500B8A582 /* CEGUITooltip.h in Headers */,
 				DA1098CB0F6D841500B8A582 /* CEGUITooltipProperties.h in Headers */,
+				DA54492E0F739EC100983E1A /* CEGUITplWindowFactory.h in Headers */,
+				DA54492F0F739EC200983E1A /* CEGUITplWindowRendererFactory.h in Headers */,
+				DA5449300F739EC300983E1A /* CEGUITplWRFactoryRegisterer.h in Headers */,
 				DA1098CD0F6D841500B8A582 /* CEGUITree.h in Headers */,
 				DA1098CF0F6D841500B8A582 /* CEGUITreeItem.h in Headers */,
 				DA1098D10F6D841500B8A582 /* CEGUITreeProperties.h in Headers */,
@@ -4382,6 +4400,7 @@
 				DA1098E20F6D841500B8A582 /* CEGUIWindowRenderer.h in Headers */,
 				DA1098E40F6D841500B8A582 /* CEGUIWindowRendererManager.h in Headers */,
 				DA1098E50F6D841500B8A582 /* CEGUIWindowRendererModule.h in Headers */,
+				DA5449330F739ED300983E1A /* CEGUIWRFactoryRegisterer.h in Headers */,
 				DA1098E70F6D841500B8A582 /* CEGUIXMLAttributes.h in Headers */,
 				DA1098E90F6D841500B8A582 /* CEGUIXMLHandler.h in Headers */,
 				DA1098EB0F6D841500B8A582 /* CEGUIXMLParser.h in Headers */,
@@ -5525,7 +5544,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1097AA0F6D841500B8A582 /* CEGUIBase.cpp in Sources */,
-				DA1097AC0F6D841500B8A582 /* CEGUIBaseFactories.cpp in Sources */,
 				DA1097AE0F6D841500B8A582 /* CEGUIBoundSlot.cpp in Sources */,
 				DA1097B00F6D841500B8A582 /* CEGUIButtonBase.cpp in Sources */,
 				DA1097B20F6D841500B8A582 /* CEGUICheckbox.cpp in Sources */,
@@ -5669,6 +5687,8 @@
 				DA1098DF0F6D841500B8A582 /* CEGUIWindowProperties.cpp in Sources */,
 				DA1098E10F6D841500B8A582 /* CEGUIWindowRenderer.cpp in Sources */,
 				DA1098E30F6D841500B8A582 /* CEGUIWindowRendererManager.cpp in Sources */,
+				DA5449310F739ECC00983E1A /* CEGUIWindowRendererModule.cpp in Sources */,
+				DA5449320F739ED200983E1A /* CEGUIWRFactoryRegisterer.cpp in Sources */,
 				DA1098E60F6D841500B8A582 /* CEGUIXMLAttributes.cpp in Sources */,
 				DA1098E80F6D841500B8A582 /* CEGUIXMLHandler.cpp in Sources */,
 				DA1098EA0F6D841500B8A582 /* CEGUIXMLParser.cpp in Sources */,
