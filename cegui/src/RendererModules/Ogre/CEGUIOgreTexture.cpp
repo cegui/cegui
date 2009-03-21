@@ -30,6 +30,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIImageCodec.h"
 #include <OgreTextureManager.h>
+#include <OgreHardwarePixelBuffer.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -146,7 +147,17 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 //----------------------------------------------------------------------------//
 void OgreTexture::saveToMemory(void* buffer)
 {
-    // TODO:
+    if (d_texture.isNull())
+        return;
+    
+    Ogre::HardwarePixelBufferSharedPtr src = d_texture->getBuffer();
+
+    if (src.isNull())
+        throw RendererException("OgreTexture::saveToMemory: unable to obtain "
+                                "hardware pixel buffer pointer.");
+
+    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
+    src->readData(0, sz, buffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -175,7 +186,23 @@ OgreTexture::OgreTexture(const Size& sz) :
     d_dataSize(0, 0),
     d_texelScaling(0, 0)
 {
-    // TODO:
+    using namespace Ogre;
+
+    // try to create a Ogre::Texture with given dimensions
+    d_texture = TextureManager::getSingleton().createManual(
+                                   getUniqueName(), "General", TEX_TYPE_2D,
+                                   sz.d_width, sz.d_height, 0,
+                                   Ogre::PF_A8B8G8R8);
+    
+    // throw exception if no texture was able to be created
+    if (d_texture.isNull())
+        throw RendererException("OgreTexture: Failed to create Texture object "
+                                "with spcecified size.");
+    
+    d_size.d_width = d_texture->getWidth();
+    d_size.d_height = d_texture->getHeight();
+    d_dataSize = sz;
+    updateCachedScaleValues();
 }
 
 //----------------------------------------------------------------------------//
