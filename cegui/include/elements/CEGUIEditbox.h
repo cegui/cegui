@@ -175,7 +175,7 @@ public:
 	\return
 		Index of the insert carat relative to the start of the text.
 	*/
-	size_t	getCaratIndex(void) const		{return d_caratPos;}
+    size_t  getCaratIndex(void) const;
 
 
 	/*!

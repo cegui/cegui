@@ -42,6 +42,7 @@
 #include "CEGUIWindowProperties.h"
 #include "CEGUIUDim.h"
 #include "CEGUIWindowRenderer.h"
+#include "CEGUITextUtils.h"
 #include <vector>
 #include <set>
 
@@ -648,7 +649,14 @@ public:
     \return
         The String object that holds the current text for this Window.
     */
-    const String& getText(void) const   {return d_text;}
+    const String& getText(void) const {return d_textLogical;}
+
+#ifdef CEGUI_BIDI_SUPPORT
+    const String& getTextVisual(void) const   {return d_textVisual;}
+
+    const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
+    const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
+#endif
 
     /*!
     \brief
@@ -798,7 +806,7 @@ public:
         - false if no ancestor of this window has captured input.
     */
     bool isCapturedByAncestor(void) const
-         {return isAncestor(getCaptureWindow());}
+    {return isAncestor(getCaptureWindow());}
 
     /*!
     \brief
@@ -1083,7 +1091,7 @@ public:
         true if this window was inherited from \a class_name. false if not.
     */
     bool testClassName(const String& class_name) const
-         {return testClassName_impl(class_name);}
+    {return testClassName_impl(class_name);}
 
     /*!
     \brief
@@ -1136,7 +1144,7 @@ public:
         Returns true if this Window is the modal target, otherwise false.
     */
     bool getModalState(void) const
-         {return (System::getSingleton().getModalTarget() == this);}
+    {return(System::getSingleton().getModalTarget() == this);}
 
     /*!
     \brief
@@ -1583,7 +1591,7 @@ public:
         inserted.
     */
     void insertText(const String& text, const String::size_type position);
-    
+
     /*!
     \brief
         Append the string \a text to the currect text string for the Window
@@ -1594,7 +1602,7 @@ public:
         object's current text string.
     */
     void appendText(const String& text);
-    
+
     /*!
     \brief
         Set the font used by this Window.
@@ -1844,7 +1852,7 @@ public:
         Nothing.
     */
     void setMouseCursor(MouseCursorImage image)
-         {d_mouseCursor = (const Image*)image;}
+    {d_mouseCursor = (const Image*)image;}
 
     /*!
     \brief
@@ -2613,7 +2621,7 @@ public:
         That is just after the window has been created, but before any children or
         properties are read.
     */
-    virtual void beginInitialisation(void)     {d_initialising=true;}
+    virtual void beginInitialisation(void)     {d_initialising = true;}
 
     /*!
     \brief
@@ -2622,7 +2630,7 @@ public:
         creating a window. That is after all properties and children have been
         loaded and just before the next sibling gets created.
     */
-    virtual void endInitialisation(void)       {d_initialising=false;}
+    virtual void endInitialisation(void)       {d_initialising = false;}
 
     /*!
     \brief
@@ -3396,7 +3404,7 @@ protected:
     */
     virtual bool testClassName_impl(const String& class_name) const
     {
-        if (class_name=="Window")   return true;
+        if (class_name == "Window")   return true;
         return false;
     }
 
@@ -3492,8 +3500,13 @@ protected:
     Font* d_font;
 
     //! Holds the text / label / caption for this Window.
-    String d_text;
+    String d_textLogical;
 
+#ifdef CEGUI_BIDI_SUPPORT
+    TextUtils::StrIndexList d_l2vMapping;
+    TextUtils::StrIndexList d_v2lMapping;
+    String d_textVisual;
+#endif
     //! User ID assigned to this Window
     uint d_ID;
 

@@ -118,7 +118,7 @@ void FrameWindow::initialiseComponents(void)
 
     // configure titlebar
     titlebar->setDraggingEnabled(d_dragMovable);
-    titlebar->setText(d_text);
+    titlebar->setText(getText());
 
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
@@ -686,7 +686,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
     Window::onTextChanged(e);
     // pass this onto titlebar component.
-    getTitlebar()->setText(d_text);
+    getTitlebar()->setText(getText());
     // maybe the user is using a fontdim for titlebar dimensions ;)
     performChildWindowLayout();
 }

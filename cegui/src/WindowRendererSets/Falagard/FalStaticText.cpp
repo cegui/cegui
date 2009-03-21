@@ -161,7 +161,11 @@ namespace CEGUI
         ColourRect final_cols(d_textCols);
         final_cols.modulateAlpha(d_window->getEffectiveAlpha());
         // cache the text for rendering.
+#ifdef CEGUI_BIDI_SUPPORT
+        font->drawText(d_window->getGeometryBuffer(), d_window->getTextVisual(), absarea, &clipper, (TextFormatting)d_horzFormatting, final_cols);
+#else
         font->drawText(d_window->getGeometryBuffer(), d_window->getText(), absarea, &clipper, (TextFormatting)d_horzFormatting, final_cols);
+#endif
     }
 
     /************************************************************************

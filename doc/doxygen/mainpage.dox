@@ -2,7 +2,7 @@
 @mainpage Crazy Eddie's GUI System Mk-2: Developer Documentation
 http://www.cegui.org.uk
 
-Copyright (C)2004 - 2008 CEGUI Team & Contributing Authors
+Copyright (C)2004 - 2009 CEGUI Team & Contributing Authors
 
 This sofware uses the PCRE library by Philip Hazel.
 PCRE is Copyright (c) 1997-2008 University of Cambridge, All rights reserved.
@@ -30,6 +30,10 @@ The Spinner widget contains some modified parts of the stringencoders library
 (http://code.google.com/p/stringencoders).  Please see
 @subpage stringencoders_lic for additional licensing that may apply to the use
 of this component.
+
+This software can be compiled to optionally include an embedded copy of the
+minibidi software from the Arabeyes project (http://www.arabeyes.org/).
+minibidi was written by Ahmad Khalifa and is licensed under the MIT license.
 
 
 This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and

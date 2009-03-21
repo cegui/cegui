@@ -30,6 +30,11 @@
 
 #include "falagard/CEGUIFalComponentBase.h"
 
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -54,6 +59,13 @@ namespace CEGUI
             String object containing the text that will be rendered.
         */
         const String& getText() const;
+
+#ifdef CEGUI_BIDI_SUPPORT
+        const String& getTextVisual(void) const   {return d_textVisual;}
+
+        const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
+        const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
+#endif
 
         /*!
         \brief
@@ -220,7 +232,12 @@ namespace CEGUI
         void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
 
     private:
-        String               d_text;            //!< text rendered by this component.
+        String               d_textLogical;            //!< text rendered by this component.
+#ifdef CEGUI_BIDI_SUPPORT
+        TextUtils::StrIndexList d_l2vMapping;
+        TextUtils::StrIndexList d_v2lMapping;
+        String d_textVisual;
+#endif
         String               d_font;            //!< name of font to use.
         VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
         HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.
@@ -230,5 +247,8 @@ namespace CEGUI
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIFalTextComponent_h_

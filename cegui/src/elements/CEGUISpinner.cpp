@@ -301,11 +301,11 @@ namespace CEGUI
         Editbox* editbox = getEditbox();
 
         // update only if needed
-        if (editbox->getText() != d_text)
+        if (editbox->getText() != getText())
         {
             // done before doing base class processing so event subscribers see
             // 'updated' version.
-            editbox->setText(d_text);
+            editbox->setText(getText());
             e.handled = true;
 
             Window::onTextChanged(e);

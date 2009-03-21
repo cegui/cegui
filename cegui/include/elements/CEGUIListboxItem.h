@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIListboxItem.h
-	created:	8/6/2004
-	author:		Paul D Turner
-	
-	purpose:	Interface to base class for list items
+    filename:   CEGUIListboxItem.h
+    created:    8/6/2004
+    author:     Paul D Turner
+
+    purpose:    Interface to base class for list items
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -33,6 +33,12 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
+#include "CEGUITextUtils.h"
+
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,410 +47,427 @@ class GeometryBuffer;
 
 /*!
 \brief
-	Base class for list box items
+    Base class for list box items
 */
 class CEGUIEXPORT ListboxItem
 {
 public:
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	static const colour	DefaultSelectionColour;		//!< Default selection brush colour.
+    /*************************************************************************
+        Constants
+    *************************************************************************/
+    static const colour DefaultSelectionColour;     //!< Default selection brush colour.
 
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		base class constructor
-	*/
-	ListboxItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
+    /*************************************************************************
+        Construction and Destruction
+    *************************************************************************/
+    /*!
+    \brief
+        base class constructor
+    */
+    ListboxItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
 
 
-	/*!
-	\brief
-		base class destructor
-	*/
-	virtual ~ListboxItem(void) {}
+    /*!
+    \brief
+        base class destructor
+    */
+    virtual ~ListboxItem(void) {}
 
 
-	/*************************************************************************
-		Accessors
-	*************************************************************************/
-	/*!
-	\brief
-		return the text string set for this list box item.
+    /*************************************************************************
+        Accessors
+    *************************************************************************/
+    /*!
+    \brief
+        return the text string set for this list box item.
 
-		Note that even if the item does not render text, the text string can still be useful, since it
-		is used for sorting list box items.
+        Note that even if the item does not render text, the text string can still be useful, since it
+        is used for sorting list box items.
 
-	\return
-		String object containing the current text for the list box item.
-	*/
-	const String&	getText(void) const		{return d_itemText;}
-	const String&	getTooltipText(void) const		{return d_tooltipText;}
+    \return
+        String object containing the current text for the list box item.
+    */
+    const String&   getTooltipText(void) const      {return d_tooltipText;}
 
-	/*!
-	\brief
-		Return the current ID assigned to this list box item.
+    const String& getText(void) const {return d_textLogical;}
 
-		Note that the system does not make use of this value, client code can assign any meaning it
-		wishes to the ID.
+#ifdef CEGUI_BIDI_SUPPORT
+    const String& getTextVisual(void) const   {return d_textVisual;}
 
-	\return
-		ID code currently assigned to this list box item
-	*/
-	uint	getID(void) const			{return d_itemID;}
+    const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
+    const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
+#endif
 
+    /*!
+    \brief
+        Return the current ID assigned to this list box item.
 
-	/*!
-	\brief
-		Return the pointer to any client assigned user data attached to this lis box item.
+        Note that the system does not make use of this value, client code can assign any meaning it
+        wishes to the ID.
 
-		Note that the system does not make use of this data, client code can assign any meaning it
-		wishes to the attached data.
+    \return
+        ID code currently assigned to this list box item
+    */
+    uint    getID(void) const           {return d_itemID;}
 
-	\return
-		Pointer to the currently assigned user data.
-	*/
-	void*	getUserData(void) const		{return d_itemData;}
 
+    /*!
+    \brief
+        Return the pointer to any client assigned user data attached to this lis box item.
 
-	/*!
-	\brief
-		return whether this item is selected.
+        Note that the system does not make use of this data, client code can assign any meaning it
+        wishes to the attached data.
 
-	\return
-		true if the item is selected, false if the item is not selected.
-	*/
-	bool	isSelected(void) const		{return d_selected;}
+    \return
+        Pointer to the currently assigned user data.
+    */
+    void*   getUserData(void) const     {return d_itemData;}
 
 
-	/*!
-	\brief
-		return whether this item is disabled.
+    /*!
+    \brief
+        return whether this item is selected.
 
-	\return
-		true if the item is disabled, false if the item is enabled.
-	*/
-	bool	isDisabled(void) const		{return d_disabled;}
+    \return
+        true if the item is selected, false if the item is not selected.
+    */
+    bool    isSelected(void) const      {return d_selected;}
 
 
-	/*!
-	\brief
-		return whether this item will be automatically deleted when the list box it is attached to
-		is destroyed, or when the item is removed from the list box.
+    /*!
+    \brief
+        return whether this item is disabled.
 
-	\return
-		true if the item object will be deleted by the system when the list box it is attached to is
-		destroyed, or when the item is removed from the list.  false if client code must destroy the
-		item after it is removed from the list.
-	*/
-	bool	isAutoDeleted(void) const	{return d_autoDelete;}
+    \return
+        true if the item is disabled, false if the item is enabled.
+    */
+    bool    isDisabled(void) const      {return d_disabled;}
 
 
-	/*!
-	\brief
-		Get the owner window for this ListboxItem.
-		
-		The owner of a ListboxItem is typically set by the list box widgets when an item is added or inserted.
+    /*!
+    \brief
+        return whether this item will be automatically deleted when the list box it is attached to
+        is destroyed, or when the item is removed from the list box.
 
-	\return
-		Ponter to the window that is considered the owner of this ListboxItem.
-	*/
-	const Window*	getOwnerWindow() const		{return d_owner;}
+    \return
+        true if the item object will be deleted by the system when the list box it is attached to is
+        destroyed, or when the item is removed from the list.  false if client code must destroy the
+        item after it is removed from the list.
+    */
+    bool    isAutoDeleted(void) const   {return d_autoDelete;}
 
 
-	/*!
-	\brief
-		Return the current colours used for selection highlighting.
+    /*!
+    \brief
+        Get the owner window for this ListboxItem.
+        
+        The owner of a ListboxItem is typically set by the list box widgets when an item is added or inserted.
 
-	\return
-		ColourRect object describing the currently set colours
-	*/
-	ColourRect	getSelectionColours(void) const		{return d_selectCols;}
+    \return
+        Ponter to the window that is considered the owner of this ListboxItem.
+    */
+    const Window*   getOwnerWindow() const      {return d_owner;}
 
 
-	/*!
-	\brief
-		Return the current selection highlighting brush.
+    /*!
+    \brief
+        Return the current colours used for selection highlighting.
 
-	\return
-		Pointer to the Image object currently used for selection highlighting.
-	*/
-	const Image*	getSelectionBrushImage(void) const		{return d_selectBrush;}
+    \return
+        ColourRect object describing the currently set colours
+    */
+    ColourRect  getSelectionColours(void) const     {return d_selectCols;}
 
 
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
-	/*!
-	\brief
-		set the text string for this list box item.
+    /*!
+    \brief
+        Return the current selection highlighting brush.
 
-		Note that even if the item does not render text, the text string can still be useful, since it
-		is used for sorting list box items.
+    \return
+        Pointer to the Image object currently used for selection highlighting.
+    */
+    const Image*    getSelectionBrushImage(void) const      {return d_selectBrush;}
 
-	\param text
-		String object containing the text to set for the list box item.
 
-	\return
-		Nothing.
-	*/
-	void	setText(const String& text)		{d_itemText = text;}
+    /*************************************************************************
+        Manipulators
+    *************************************************************************/
+    /*!
+    \brief
+        set the text string for this list box item.
 
-	void	setTooltipText(const String& text)		{d_tooltipText = text;}
+        Note that even if the item does not render text, the text string can still be useful, since it
+        is used for sorting list box items.
 
-	/*!
-	\brief
-		Set the ID assigned to this list box item.
+    \param text
+        String object containing the text to set for the list box item.
 
-		Note that the system does not make use of this value, client code can assign any meaning it
-		wishes to the ID.
+    \return
+        Nothing.
+    */
+    void    setText(const String& text);
 
-	\param item_id
-		ID code to be assigned to this list box item
+    void    setTooltipText(const String& text)      {d_tooltipText = text;}
 
-	\return
-		Nothing.
-	*/
-	void	setID(uint item_id)		{d_itemID = item_id;}
+    /*!
+    \brief
+        Set the ID assigned to this list box item.
 
+        Note that the system does not make use of this value, client code can assign any meaning it
+        wishes to the ID.
 
-	/*!
-	\brief
-		Set the client assigned user data attached to this lis box item.
+    \param item_id
+        ID code to be assigned to this list box item
 
-		Note that the system does not make use of this data, client code can assign any meaning it
-		wishes to the attached data.
+    \return
+        Nothing.
+    */
+    void    setID(uint item_id)     {d_itemID = item_id;}
 
-	\param item_data
-		Pointer to the user data to attach to this list item.
 
-	\return
-		Nothing.
-	*/
-	void	setUserData(void* item_data)	{d_itemData = item_data;}
+    /*!
+    \brief
+        Set the client assigned user data attached to this lis box item.
 
+        Note that the system does not make use of this data, client code can assign any meaning it
+        wishes to the attached data.
 
-	/*!
-	\brief
-		set whether this item is selected.
+    \param item_data
+        Pointer to the user data to attach to this list item.
 
-	\param setting
-		true if the item is selected, false if the item is not selected.
+    \return
+        Nothing.
+    */
+    void    setUserData(void* item_data)    {d_itemData = item_data;}
 
-	\return
-		Nothing.
-	*/
-	void	setSelected(bool setting)		{d_selected = setting;}
 
+    /*!
+    \brief
+        set whether this item is selected.
 
-	/*!
-	\brief
-		set whether this item is disabled.
+    \param setting
+        true if the item is selected, false if the item is not selected.
 
-	\param setting
-		true if the item is disabled, false if the item is enabled.
+    \return
+        Nothing.
+    */
+    void    setSelected(bool setting)       {d_selected = setting;}
 
-	\return
-		Nothing.
-	*/
-	void	setDisabled(bool setting)		{d_disabled = setting;}
 
-	/*!
-	\brief
-		Set whether this item will be automatically deleted when the list box it is attached to
-		is destroyed, or when the item is removed from the list box.
+    /*!
+    \brief
+        set whether this item is disabled.
 
-	\param setting
-		true if the item object should be deleted by the system when the list box it is attached to is
-		destroyed, or when the item is removed from the list.  false if client code will destroy the
-		item after it is removed from the list.
+    \param setting
+        true if the item is disabled, false if the item is enabled.
 
-	\return
-		Nothing.
-	*/
-	void	setAutoDeleted(bool setting)		{d_autoDelete = setting;}
+    \return
+        Nothing.
+    */
+    void    setDisabled(bool setting)       {d_disabled = setting;}
 
+    /*!
+    \brief
+        Set whether this item will be automatically deleted when the list box it is attached to
+        is destroyed, or when the item is removed from the list box.
 
-	/*!
-	\brief
-		Set the owner window for this ListboxItem.  This is called by all the list box widgets when
-		an item is added or inserted.
+    \param setting
+        true if the item object should be deleted by the system when the list box it is attached to is
+        destroyed, or when the item is removed from the list.  false if client code will destroy the
+        item after it is removed from the list.
 
-	\param owner
-		Ponter to the window that should be considered the owner of this ListboxItem.
+    \return
+        Nothing.
+    */
+    void    setAutoDeleted(bool setting)        {d_autoDelete = setting;}
 
-	\return
-		Nothing
-	*/
-	void	setOwnerWindow(const Window* owner)		{d_owner = owner;}
 
+    /*!
+    \brief
+        Set the owner window for this ListboxItem.  This is called by all the list box widgets when
+        an item is added or inserted.
 
-	/*!
-	\brief
-		Set the colours used for selection highlighting.
+    \param owner
+        Ponter to the window that should be considered the owner of this ListboxItem.
 
-	\param cols
-		ColourRect object describing the colours to be used.
+    \return
+        Nothing
+    */
+    void    setOwnerWindow(const Window* owner)     {d_owner = owner;}
 
-	\return
-		Nothing.
-	*/
-	void	setSelectionColours(const ColourRect& cols)		{d_selectCols = cols;}
 
+    /*!
+    \brief
+        Set the colours used for selection highlighting.
 
-	/*!
-	\brief
-		Set the colours used for selection highlighting.
+    \param cols
+        ColourRect object describing the colours to be used.
 
-	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of the selection area.
+    \return
+        Nothing.
+    */
+    void    setSelectionColours(const ColourRect& cols)     {d_selectCols = cols;}
 
-	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of the selection area.
 
-	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of the selection area.
+    /*!
+    \brief
+        Set the colours used for selection highlighting.
 
-	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
+    \param top_left_colour
+        Colour (as ARGB value) to be applied to the top-left corner of the selection area.
 
-	\return 
-		Nothing.
-	*/
-	void	setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+    \param top_right_colour
+        Colour (as ARGB value) to be applied to the top-right corner of the selection area.
 
+    \param bottom_left_colour
+        Colour (as ARGB value) to be applied to the bottom-left corner of the selection area.
 
-	/*!
-	\brief
-		Set the colours used for selection highlighting.
+    \param bottom_right_colour
+        Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
 
-	\param col
-		colour value to be used when rendering.
+    \return
+        Nothing.
+    */
+    void    setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
 
-	\return
-		Nothing.
-	*/
-	void	setSelectionColours(colour col)		{setSelectionColours(col, col, col, col);}
 
+    /*!
+    \brief
+        Set the colours used for selection highlighting.
 
-	/*!
-	\brief
-		Set the selection highlighting brush image.
+    \param col
+        colour value to be used when rendering.
 
-	\param image
-		Pointer to the Image object to be used for selection highlighting.
+    \return
+        Nothing.
+    */
+    void    setSelectionColours(colour col)     {setSelectionColours(col, col, col, col);}
 
-	\return
-		Nothing.
-	*/
-	void	setSelectionBrushImage(const Image* image)		{d_selectBrush = image;}
 
+    /*!
+    \brief
+        Set the selection highlighting brush image.
 
-	/*!
-	\brief
-		Set the selection highlighting brush image.
+    \param image
+        Pointer to the Image object to be used for selection highlighting.
 
-	\param imageset
-		Name of the imagest containing the image to be used.
+    \return
+        Nothing.
+    */
+    void    setSelectionBrushImage(const Image* image)      {d_selectBrush = image;}
 
-	\param image
-		Name of the image to be used
 
-	\return
-		Nothing.
-	*/
-	void	setSelectionBrushImage(const String& imageset, const String& image);
+    /*!
+    \brief
+        Set the selection highlighting brush image.
 
+    \param imageset
+        Name of the imagest containing the image to be used.
 
-	/*************************************************************************
-		Abstract portion of interface
-	*************************************************************************/
-	/*!
-	\brief
-		Return the rendered pixel size of this list box item.
+    \param image
+        Name of the image to be used
 
-	\return
-		Size object describing the size of the list box item in pixels.
-	*/
-	virtual	Size	getPixelSize(void) const	= 0;
+    \return
+        Nothing.
+    */
+    void    setSelectionBrushImage(const String& imageset, const String& image);
 
 
-	/*!
-	\brief
-		Draw the list box item in its current state
+    /*************************************************************************
+        Abstract portion of interface
+    *************************************************************************/
+    /*!
+    \brief
+        Return the rendered pixel size of this list box item.
 
-	\param position
-		Vecor2 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+    \return
+        Size object describing the size of the list box item in pixels.
+    */
+    virtual Size    getPixelSize(void) const    = 0;
 
-	\param alpha
-		Alpha value to be used when rendering the item (between 0.0f and 1.0f).
 
-	\param clipper
-		Rect object describing the clipping rectangle for the draw operation.
+    /*!
+    \brief
+        Draw the list box item in its current state
 
-	\return
-		Nothing.
-	*/
+    \param position
+        Vecor2 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+
+    \param alpha
+        Alpha value to be used when rendering the item (between 0.0f and 1.0f).
+
+    \param clipper
+        Rect object describing the clipping rectangle for the draw operation.
+
+    \return
+        Nothing.
+    */
     virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
                       float alpha, const Rect* clipper) const = 0;
 
-	/*************************************************************************
-		Operators
-	*************************************************************************/
-	/*!
-	\brief
-		Less-than operator, compares item texts.
-	*/
-	virtual	bool	operator<(const ListboxItem& rhs) const		{return d_itemText < rhs.getText();}
+    /*************************************************************************
+        Operators
+    *************************************************************************/
+    /*!
+    \brief
+        Less-than operator, compares item texts.
+    */
+    virtual bool    operator<(const ListboxItem& rhs) const     {return getText() < rhs.getText();}
 
 
-	/*!
-	\brief
-		Greater-than operator, compares item texts.
-	*/
-	virtual	bool	operator>(const ListboxItem& rhs) const		{return d_itemText > rhs.getText();}
+    /*!
+    \brief
+        Greater-than operator, compares item texts.
+    */
+    virtual bool    operator>(const ListboxItem& rhs) const     {return getText() > rhs.getText();}
 
 
 protected:
-	/*************************************************************************
-		Implementation methods
-	*************************************************************************/
-	/*!
-	\brief
-		Return a ColourRect object describing the colours in \a cols after having their alpha
-		component modulated by the value \a alpha.
-	*/
-	ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
+    /*************************************************************************
+        Implementation methods
+    *************************************************************************/
+    /*!
+    \brief
+        Return a ColourRect object describing the colours in \a cols after having their alpha
+        component modulated by the value \a alpha.
+    */
+    ColourRect getModulateAlphaColourRect(const ColourRect& cols, float alpha) const;
 
 
-	/*!
-	\brief
-		Return a colour value describing the colour specified by \a col after having its alpha
-		component modulated by the value \a alpha.
-	*/
-	colour calculateModulatedAlphaColour(colour col, float alpha) const;
+    /*!
+    \brief
+        Return a colour value describing the colour specified by \a col after having its alpha
+        component modulated by the value \a alpha.
+    */
+    colour calculateModulatedAlphaColour(colour col, float alpha) const;
 
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	String	d_itemText;		//!< Text for this list box item.  If not rendered, this is still used for list sorting.
-	String  d_tooltipText;  //!< Text for the individual tooltip of this item
-	uint	d_itemID;		//!< ID code assigned by client code.  This has no meaning within the GUI system.
-	void*	d_itemData;		//!< Pointer to some client code data.  This has no meaning within the GUI system.
-	bool	d_selected;		//!< true if this item is selected.  false if the item is not selected.
-	bool	d_disabled;		//!< true if this item is disabled.  false if the item is not disabled.
-	bool	d_autoDelete;	//!< true if the system should destroy this item, false if client code will destroy the item.
-	const Window*	d_owner;	//!< Pointer to the window that owns this item.
-	ColourRect		d_selectCols;		//!< Colours used for selection highlighting.
-	const Image*	d_selectBrush;		//!< Image used for rendering selection.
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    String d_textLogical;
+
+#ifdef CEGUI_BIDI_SUPPORT
+    TextUtils::StrIndexList d_l2vMapping;
+    TextUtils::StrIndexList d_v2lMapping;
+    String d_textVisual;
+#endif
+    String  d_tooltipText;  //!< Text for the individual tooltip of this item
+    uint    d_itemID;       //!< ID code assigned by client code.  This has no meaning within the GUI system.
+    void*   d_itemData;     //!< Pointer to some client code data.  This has no meaning within the GUI system.
+    bool    d_selected;     //!< true if this item is selected.  false if the item is not selected.
+    bool    d_disabled;     //!< true if this item is disabled.  false if the item is not disabled.
+    bool    d_autoDelete;   //!< true if the system should destroy this item, false if client code will destroy the item.
+    const Window*   d_owner;    //!< Pointer to the window that owns this item.
+    ColourRect      d_selectCols;       //!< Colours used for selection highlighting.
+    const Image*    d_selectBrush;      //!< Image used for rendering selection.
 };
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
-#endif	// end of guard _CEGUIListboxItem_h_
+#endif  // end of guard _CEGUIListboxItem_h_

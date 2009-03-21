@@ -955,3 +955,38 @@ AC_DEFUN([CEGUI_CHECK_GLEW],[
 
     AC_LANG_POP([C])
 ])
+
+# Check if we should enable bi-directional text, and which library to use.
+AC_DEFUN([CEGUI_CHECK_BIDI],[
+    AC_ARG_ENABLE([bidirectional-text],
+                  AC_HELP_STRING([--enable-bidirectional-text],
+                                 [Enable bidirectional text support.]),
+                  [cegui_enable_bidi=$enableval], [cegui_enable_bidi=no])
+
+    AC_ARG_WITH([embedded-minibidi], AC_HELP_STRING([--with-embedded-minibidi],
+                                 [Use embedded minibi code for bidirectional text support]),
+                  [cegui_with_minibidi=$withval], [cegui_with_minibidi=no])
+
+    if test x$cegui_enable_bidi = xyes; then
+        if test x$cegui_with_minibidi = xno; then
+            PKG_CHECK_MODULES(fribidi, fribidi >= 0.10,
+                              [cegui_found_fribidi=yes],
+                              [cegui_found_fribidi=no; cegui_with_minibidi=yes])
+        fi
+
+        AC_DEFINE(CEGUI_BIDI_SUPPORT, [], [Define to enable bidirectional text support in CEGUI])
+        AC_MSG_NOTICE([Bi-directional text support is enabled.])
+
+        if test x$cegui_with_minibidi = xyes; then
+            AC_DEFINE(CEGUI_USE_MINIBIDI, [], [Define to use embedded minibidi lib.])
+            AC_MSG_NOTICE([Bi-directional text support is using internal minibidi library.])
+        else
+            AC_DEFINE(CEGUI_USE_FRIBIDI, [], [Define to use external fribidi lib.])
+            AC_MSG_NOTICE([Bi-directional text support is using external fribidi library.])
+        fi
+    fi
+
+    AC_SUBST(fribidi_CFLAGS)
+    AC_SUBST(fribidi_LIBS)
+])
+

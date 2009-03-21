@@ -674,10 +674,10 @@ void Combobox::onTextChanged(WindowEventArgs& e)
     Editbox* editbox = getEditbox();
 
 	// update ourselves only if needed (prevents perpetual event loop & stack overflow)
-	if (editbox->getText() != d_text)
+    if (editbox->getText() != getText())
 	{
 		// done before doing base class processing so event subscribers see 'updated' version of this.
-		editbox->setText(d_text);
+        editbox->setText(getText());
 		e.handled = true;
 
 		Window::onTextChanged(e);
@@ -927,7 +927,7 @@ void Combobox::itemSelectChangeTextUpdate(const ListboxItem* const item,
 {
     if (!new_state)
     {
-        if (d_text == item->getText())
+        if (getText() == item->getText())
             setText("");
     }
     else

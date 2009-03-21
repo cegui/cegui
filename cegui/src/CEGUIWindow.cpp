@@ -1007,7 +1007,12 @@ void Window::setClippedByParent(bool setting)
 *************************************************************************/
 void Window::setText(const String& text)
 {
-    d_text = text;
+    d_textLogical = text;
+
+#ifdef CEGUI_BIDI_SUPPORT
+    TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual,
+                                          d_l2vMapping, d_v2lMapping);
+#endif
     WindowEventArgs args(this);
     onTextChanged(args);
 }
@@ -3407,7 +3412,9 @@ bool Window::isTopOfZOrder() const
 //----------------------------------------------------------------------------//
 void Window::insertText(const String& text, const String::size_type position)
 {
-    d_text.insert(position, text);
+    String newText = getText();
+    newText.insert(position, text);
+    setText(newText);
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3416,7 +3423,9 @@ void Window::insertText(const String& text, const String::size_type position)
 //----------------------------------------------------------------------------//
 void Window::appendText(const String& text)
 {
-    d_text.append(text);
+    String newText = getText();
+    newText.append(text);
+    setText(newText);
 
     WindowEventArgs args(this);
     onTextChanged(args);

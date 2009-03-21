@@ -97,7 +97,7 @@ Size ListboxTextItem::getPixelSize(void) const
 	if (fnt)
 	{
 		tmp.d_height = PixelAligned(fnt->getLineSpacing());
-		tmp.d_width = PixelAligned(fnt->getTextExtent(d_itemText));
+        tmp.d_width = PixelAligned(fnt->getTextExtent(getText()));
 	}
 
 	return tmp;
@@ -122,7 +122,11 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect, float
         Rect finalPos(targetRect);
         finalPos.d_top += PixelAligned((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 //        cache.cacheText(d_itemText, font, LeftAligned, finalPos, getModulateAlphaColourRect(d_textCols, alpha), clipper);
-        font->drawText(buffer, d_itemText, finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
+#ifdef CEGUI_BIDI_SUPPORT
+        font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
+#else
+        font->drawText(buffer, getText(), finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
+#endif
     }
 }
 

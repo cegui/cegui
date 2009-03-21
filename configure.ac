@@ -101,6 +101,9 @@ CEGUI_CHECK_WANTS_SAMPLES
 # decide whether to build the lua module
 CEGUI_CHECK_LUA
 
+# handle config for bi-directional text support.
+CEGUI_CHECK_BIDI
+
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
@@ -194,6 +197,15 @@ echo "* Library Release Version:                              CEGUI_RELEASE_VERS
 echo "*"
 echo "* Code options:"
 echo "*         Building CEGUI in debug mode:                 ${cegui_enable_debug-no}"
+echo "*"
+echo "* Bi-directional text support:                          ${cegui_enable_bidi-no}"
+if test x$cegui_enable_bidi = xyes; then
+    if test x$cegui_with_minibidi = xyes; then
+echo "*         Using: internal minibidi library"
+    else
+echo "*         Using: external fribidi library"
+    fi
+fi
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
