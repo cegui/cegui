@@ -150,7 +150,9 @@ void IrrlichtTexture::saveToMemory(void* buffer)
     if (!d_texture)
         return;
 
-    // TODO:
+    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
+    memcpy(buffer, d_texture->lock(), sz);
+    d_texture->unlock();
 }
 
 //----------------------------------------------------------------------------//
