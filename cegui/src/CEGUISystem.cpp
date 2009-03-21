@@ -254,6 +254,9 @@ System::System(Renderer* renderer,
     d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
+#if defined(DEBUG) || defined(_DEBUG)
+    d_strVersion += " (Debug)";
+#endif
 
     // handle initialisation and setup of the XML parser
     setupXMLParser();
