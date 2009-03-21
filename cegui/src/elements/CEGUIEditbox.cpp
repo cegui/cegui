@@ -152,7 +152,7 @@ bool Editbox::hasInputFocus(void) const
 *************************************************************************/
 bool Editbox::isTextValid(void) const
 {
-	return isStringValid(d_text);
+    return isStringValid(getText());
 }
 
 
@@ -258,9 +258,9 @@ void Editbox::setValidationString(const String& validation_string)
 void Editbox::setCaratIndex(size_t carat_pos)
 {
 	// make sure new position is valid
-	if (carat_pos > d_text.length())
+    if (carat_pos > getText().length())
 	{
-		carat_pos = d_text.length();
+       carat_pos = getText().length();
 	}
 
 	// if new position is different
@@ -282,15 +282,15 @@ void Editbox::setCaratIndex(size_t carat_pos)
 void Editbox::setSelection(size_t start_pos, size_t end_pos)
 {
 	// ensure selection start point is within the valid range
-	if (start_pos > d_text.length())
+    if (start_pos > getText().length())
 	{
-		start_pos = d_text.length();
+       start_pos = getText().length();
 	}
 
 	// ensure selection end point is within the valid range
-	if (end_pos > d_text.length())
+    if (end_pos > getText().length())
 	{
-		end_pos = d_text.length();
+       end_pos = getText().length();
 	}
 
 	// ensure start is before end
@@ -347,9 +347,11 @@ void Editbox::setMaxTextLength(size_t max_len)
 		onMaximumTextLengthChanged(args);
 
 		// trim string
-		if (d_text.length() > d_maxTextLen)
+        if (getText().length() > d_maxTextLen)
 		{
-			d_text.resize(d_maxTextLen);
+           String newText = getText();
+           newText.resize(d_maxTextLen);
+           setText(newText);
 			onTextChanged(args);
 
 			// see if new text is valid
@@ -388,13 +390,15 @@ void Editbox::eraseSelectedText(bool modify_text)
 	if (getSelectionLength() != 0)
 	{
 		// setup new carat position and remove selection highlight.
-		setCaratIndex(getSelectionStartIndex());
+        setCaratIndex(d_selectionStart);
 		clearSelection();
 
 		// erase the selected characters (if required)
 		if (modify_text)
 		{
-			d_text.erase(getSelectionStartIndex(), getSelectionLength());
+            String newText = getText();
+            newText.erase(getSelectionStartIndex(), getSelectionLength());
+            setText(newText);
 
 			// trigger notification that text has changed.
 			WindowEventArgs args(this);
@@ -459,6 +463,12 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
 			clearSelection();
 			d_dragging = true;
 			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
+#ifdef CEGUI_BIDI_SUPPORT
+            if(getV2lMapping().size() > d_dragAnchorIdx )
+            {
+                d_dragAnchorIdx = getV2lMapping()[d_dragAnchorIdx];
+            }
+#endif
 			setCaratIndex(d_dragAnchorIdx);
 		}
 
@@ -498,13 +508,13 @@ void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
 		if (isTextMasked())
 		{
 			d_dragAnchorIdx = 0;
-			setCaratIndex(d_text.length());
+            setCaratIndex(getText().length());
 		}
 		// not masked, so select the word that was double-clicked.
 		else
 		{
-			d_dragAnchorIdx = TextUtils::getWordStartIdx(d_text, (d_caratPos == d_text.length()) ? d_caratPos : d_caratPos + 1);
-			d_caratPos		= TextUtils::getNextWordStartIdx(d_text, d_caratPos);
+           d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(), (d_caratPos == getText().length()) ? d_caratPos : d_caratPos + 1);
+           d_caratPos      = TextUtils::getNextWordStartIdx(getText(), d_caratPos);
 		}
 
 		// perform actual selection operation.
@@ -527,7 +537,7 @@ void Editbox::onMouseTripleClicked(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		d_dragAnchorIdx = 0;
-		setCaratIndex(d_text.length());
+        setCaratIndex(getText().length());
 		setSelection(d_dragAnchorIdx, d_caratPos);
 		e.handled = true;
 	}
@@ -545,7 +555,15 @@ void Editbox::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging)
 	{
-		setCaratIndex(getTextIndexFromPosition(e.position));
+        size_t anchorIdx = getTextIndexFromPosition(e.position);
+#ifdef CEGUI_BIDI_SUPPORT
+        if(getV2lMapping().size() > anchorIdx )
+        {
+            anchorIdx = getV2lMapping()[anchorIdx];
+        }
+#endif
+        setCaratIndex(anchorIdx);
+
 		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 
@@ -577,7 +595,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
 	if (hasInputFocus() && getFont()->isCodepointAvailable(e.codepoint) && !isReadOnly())
 	{
 		// backup current text
-		String tmp(d_text);
+        String tmp(getText());
 		tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
 		// if there is room
@@ -587,7 +605,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
 			if (isStringValid(tmp))
 			{
-				// erase selection using mode that does not modify d_text (we just want to update state)
+               // erase selection using mode that does not modify getText() (we just want to update state)
 				eraseSelectedText(false);
 
                 // advance carat (done first so we can "do stuff" in event handlers!)
@@ -637,7 +655,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 		case Key::RightShift:
 			if (getSelectionLength() == 0)
 			{
-				d_dragAnchorIdx = getCaratIndex();
+                d_dragAnchorIdx = d_caratPos;
 			}
 			break;
 
@@ -704,7 +722,7 @@ void Editbox::handleBackspace(void)
 {
 	if (!isReadOnly())
 	{
-		String tmp(d_text);
+        String tmp(getText());
 
 		if (getSelectionLength() != 0)
 		{
@@ -712,7 +730,7 @@ void Editbox::handleBackspace(void)
 
 			if (isStringValid(tmp))
 			{
-				// erase selection using mode that does not modify d_text (we just want to update state)
+               // erase selection using mode that does not modify getText() (we just want to update state)
 				eraseSelectedText(false);
 
 				// set text to the newly modified string
@@ -758,7 +776,7 @@ void Editbox::handleDelete(void)
 {
 	if (!isReadOnly())
 	{
-		String tmp(d_text);
+        String tmp(getText());
 
 		if (getSelectionLength() != 0)
 		{
@@ -766,7 +784,7 @@ void Editbox::handleDelete(void)
 
 			if (isStringValid(tmp))
 			{
-				// erase selection using mode that does not modify d_text (we just want to update state)
+               // erase selection using mode that does not modify getText() (we just want to update state)
 				eraseSelectedText(false);
 
 				// set text to the newly modified string
@@ -832,7 +850,7 @@ void Editbox::handleWordLeft(uint sysKeys)
 {
 	if (d_caratPos > 0)
 	{
-		setCaratIndex(TextUtils::getWordStartIdx(d_text, getCaratIndex()));
+        setCaratIndex(TextUtils::getWordStartIdx(getText(), d_caratPos));
 	}
 
 	if (sysKeys & Shift)
@@ -852,7 +870,7 @@ void Editbox::handleWordLeft(uint sysKeys)
 *************************************************************************/
 void Editbox::handleCharRight(uint sysKeys)
 {
-	if (d_caratPos < d_text.length())
+    if (d_caratPos < getText().length())
 	{
 		setCaratIndex(d_caratPos + 1);
 	}
@@ -874,9 +892,9 @@ void Editbox::handleCharRight(uint sysKeys)
 *************************************************************************/
 void Editbox::handleWordRight(uint sysKeys)
 {
-	if (d_caratPos < d_text.length())
+    if (d_caratPos < getText().length())
 	{
-		setCaratIndex(TextUtils::getNextWordStartIdx(d_text, getCaratIndex()));
+        setCaratIndex(TextUtils::getNextWordStartIdx(getText(), d_caratPos));
 	}
 
 	if (sysKeys & Shift)
@@ -918,9 +936,9 @@ void Editbox::handleHome(uint sysKeys)
 *************************************************************************/
 void Editbox::handleEnd(uint sysKeys)
 {
-	if (d_caratPos < d_text.length())
+    if (d_caratPos < getText().length())
 	{
-		setCaratIndex(d_text.length());
+        setCaratIndex(getText().length());
 	}
 
 	if (sysKeys & Shift)
@@ -1064,9 +1082,9 @@ void Editbox::onTextChanged(WindowEventArgs& e)
 	clearSelection();
 
 	// make sure carat is within the text
-	if (getCaratIndex() > d_text.length())
+    if (d_caratPos > getText().length())
 	{
-		setCaratIndex(d_text.length());
+        setCaratIndex(getText().length());
 	}
 
 	e.handled = true;
@@ -1103,6 +1121,22 @@ size_t Editbox::getTextIndexFromPosition(const Point& pt) const
         //return getTextIndexFromPosition_impl(pt);
         throw InvalidRequestException("Editbox::getTextIndexFromPosition - This function must be implemented by the window renderer");
     }
+}
+
+/*************************************************************************
+    return the current position of the carat.
+*************************************************************************/
+size_t Editbox::getCaratIndex( void ) const
+{
+    size_t caratPos = d_caratPos;
+#ifdef CEGUI_BIDI_SUPPORT
+    if(getL2vMapping().size() > caratPos )
+    {
+        caratPos = getL2vMapping()[caratPos];
+    }
+#endif
+
+    return d_caratPos;
 }
 
 } // End of  CEGUI namespace section

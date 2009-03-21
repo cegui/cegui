@@ -38,6 +38,26 @@ Each item in here has a comment to describe what it's for.
 #ifndef _CEGUIConfig_h_
 #define _CEGUIConfig_h_
 
+// FIXME: Testing of BiDirectional text support.
+//
+// Note, on linux if you want to use fribidi, you still have to specify the
+// required options to the configure script, as well as specifying the right
+// options here (otherwise it will not find your headers and libs).
+//
+// By the time there is a release, these settings will again only be required
+// for use with Xcode.
+//
+// Uncomment the following line if you want to enable bi-directional text
+// support, then uncomment one of the other lines to select a library to use.
+//#define CEGUI_BIDI_SUPPORT
+//
+// Uncomment this to use the embedded minibidi library.
+//#define CEGUI_USE_MINIBIDI
+// - or -
+// Uncomment this to use an external fribidi library.
+//#define CEGUI_USE_FRIBIDI
+
+
 //////////////////////////////////////////////////////////////////////////
 // The following are intended for X-Code users.
 // 

@@ -41,12 +41,10 @@
 
 #include <map>
 
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -398,8 +396,13 @@ protected:
         Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
         is defined for \a codepoint.
     */
+#ifdef CEGUI_BIDI_SUPPORT
+public:
+#endif
     const FontGlyph* getGlyphData(utf32 codepoint);
-
+#ifdef CEGUI_BIDI_SUPPORT
+protected:
+#endif
     /*!
     \brief
         Set the maximal glyph index. This reserves the respective

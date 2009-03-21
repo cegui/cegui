@@ -1,6 +1,7 @@
 SUBDIRS = . ImageCodecModules RendererModules ScriptingModules WindowRendererSets XMLParserModules
 
-INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS)
+INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS) \
+           $(fribidi_CFLAGS)
 
 libCEGUIBase_la_LDFLAGS =
 libCEGUIBase_la_LIBADD =
@@ -12,7 +13,7 @@ libCEGUIBase_la_LIBADD += -lwinmm
 endif
 
 libCEGUIBase_la_LDFLAGS += -release @PACKAGE_VERSION@
-libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS)
+libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS) $(fribidi_LIBS)
 
 lib_LTLIBRARIES=libCEGUIBase.la
 

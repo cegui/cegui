@@ -45,7 +45,6 @@ const colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 	Base class constructor
 *************************************************************************/
 ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
-	d_itemText(text),
 	d_itemID(item_id),
 	d_itemData(item_data),
     d_selected(false),
@@ -55,6 +54,7 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
 	d_selectBrush(0)
 {
+   setText(text);
 }
 
 
@@ -104,6 +104,16 @@ void ListboxItem::setSelectionColours(colour top_left_colour, colour top_right_c
 	d_selectCols.d_top_right	= top_right_colour;
 	d_selectCols.d_bottom_left	= bottom_left_colour;
 	d_selectCols.d_bottom_right	= bottom_right_colour;
+}
+
+
+void ListboxItem::setText( const String& text )
+{
+   d_textLogical = text;
+
+#ifdef CEGUI_BIDI_SUPPORT
+   TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
+#endif
 }
 
 } // End of  CEGUI namespace section

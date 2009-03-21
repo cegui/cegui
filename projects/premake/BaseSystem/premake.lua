@@ -14,6 +14,12 @@ package.files =
     matchfiles(rootdir.."cegui/include/falagard/*.h"),
 }
 
+-- we do not want to build this directly; it's included elsewhere when needed.
+package.excludes =
+{
+    rootdir.."cegui/src/minibidi.cpp",
+}
+
 library("freetype","_D")
 library("pcre", "_d")
 library("Winmm", "")

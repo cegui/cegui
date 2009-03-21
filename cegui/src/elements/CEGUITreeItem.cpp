@@ -51,7 +51,6 @@ const colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
 *************************************************************************/
 TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
                    bool disabled, bool auto_delete) :
-    d_itemText(text),
     d_itemID(item_id),
     d_itemData(item_data),
     d_selected(false),
@@ -68,6 +67,7 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
     d_iconImage(0),
     d_isOpen(false)
 {
+    setText(text);
 }
 
 /*************************************************************************
@@ -145,7 +145,7 @@ Size TreeItem::getPixelSize(void) const
     if (fnt != 0)
     {
         tmp.d_height = PixelAligned(fnt->getLineSpacing());
-        tmp.d_width = PixelAligned(fnt->getTextExtent(d_itemText));
+        tmp.d_width = PixelAligned(fnt->getTextExtent(getText()));
     }
     
     return tmp;
@@ -248,8 +248,14 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     {
         Rect finalPos(finalRect);
         finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
-        font->drawText(buffer, d_itemText, finalPos, clipper, LeftAligned,
+#ifdef CEGUI_BIDI_SUPPORT
+        font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned,
                        getModulateAlphaColourRect(d_textCols, alpha));
+#else
+        font->drawText(buffer, getText(), finalPos, clipper, LeftAligned,
+                       getModulateAlphaColourRect(d_textCols, alpha));
+#endif
+
     }
 }
 
@@ -281,4 +287,12 @@ void TreeItem::setTextColours(colour top_left_colour,
     d_textCols.d_bottom_right	= bottom_right_colour;
 }
 
+void TreeItem::setText( const String& text )
+{
+    d_textLogical = text;
+#ifdef CEGUI_BIDI_SUPPORT
+    TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
+#endif
+
+}
 } // End of  CEGUI namespace section

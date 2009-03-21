@@ -43,12 +43,15 @@ namespace CEGUI
 
     const String& TextComponent::getText() const
     {
-        return d_text;
+        return d_textLogical;
     }
 
     void TextComponent::setText(const String& text)
     {
-        d_text = text;
+        d_textLogical = text;
+#ifdef CEGUI_BIDI_SUPPORT
+        TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
+#endif
     }
 
     const String& TextComponent::getFont() const
@@ -112,10 +115,15 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // decide which string to render.
+#ifdef CEGUI_BIDI_SUPPORT
         const String& renderString = d_textPropertyName.empty() ?
-            (d_text.empty() ? srcWindow.getText() : d_text)
+            (getTextVisual().empty() ? srcWindow.getTextVisual() : getTextVisual())
             : srcWindow.getProperty(d_textPropertyName);
-
+#else
+       const String& renderString = d_textPropertyName.empty() ?
+           (getText().empty() ? srcWindow.getText() : getText())
+           : srcWindow.getProperty(d_textPropertyName);
+#endif
         // calculate height of formatted text
         float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
 
@@ -150,13 +158,13 @@ namespace CEGUI
         d_area.writeXMLToStream(xml_stream);
 
         // write text element
-        if (!d_font.empty() && !d_text.empty())
+        if (!d_font.empty() && !getText().empty())
         {
             xml_stream.openTag("Text");
             if (!d_font.empty())
                 xml_stream.attribute("font", d_font);
-            if (!d_text.empty())
-                xml_stream.attribute("string", d_text);
+            if (!getText().empty())
+                xml_stream.attribute("string", getText());
             xml_stream.closeTag();
         }
 
