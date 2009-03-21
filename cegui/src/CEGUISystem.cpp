@@ -57,6 +57,7 @@
 #include "CEGUIRenderingWindow.h"
 #include "CEGUIRenderingContext.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIImageCodec.h"
 #include "elements/CEGUIAll.h"
 #include <ctime>
 #include <clocale>
@@ -1524,6 +1525,7 @@ void System::outputLogHeader()
     Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
     Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
+    Logger::getSingleton().logEvent("---- Image Codec module is: " + d_imageCodec->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
 }
 
