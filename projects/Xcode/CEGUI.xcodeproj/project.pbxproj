@@ -2249,6 +2249,7 @@
 		DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWindowRendererModule.cpp; path = ../../cegui/src/CEGUIWindowRendererModule.cpp; sourceTree = SOURCE_ROOT; };
 		DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWRFactoryRegisterer.cpp; path = ../../cegui/src/CEGUIWRFactoryRegisterer.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449AB0F73A0D800983E1A /* CEGUIAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIAll.h; sourceTree = "<group>"; };
+		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAAAB7FD0F6E4A970003BE03 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAAB7FF0F6E4A970003BE03 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
 		DAAAB8220F6E4BC30003BE03 /* Demo6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo6.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3341,6 +3342,7 @@
 		DA10942F0F6D5D5E00B8A582 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DAA18F3F0F763761000D6896 /* minibidi.cpp */,
 				DA1096B60F6D648C00B8A582 /* implementations */,
 				DA1094310F6D5D6D00B8A582 /* elements */,
 				DA1094300F6D5D6500B8A582 /* falagard */,
