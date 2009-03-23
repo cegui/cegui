@@ -1,7 +1,7 @@
 /***********************************************************************
 	WindowManager
 ***********************************************************************/
-class WindowManager
+class WindowManager : public EventSet
 {
 	static WindowManager& getSingleton();
 
@@ -33,4 +33,6 @@ class WindowManager
     void lock();
     void unlock();
     bool isLocked() const;
+
+    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

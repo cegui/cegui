@@ -35,6 +35,7 @@
 #include "CEGUISingleton.h"
 #include "CEGUILogger.h"
 #include "CEGUIIteratorBase.h"
+#include "CEGUIEventSet.h"
 #include <map>
 #include <vector>
 
@@ -57,13 +58,20 @@ namespace CEGUI
 	WindowFactoryManager.  Additionally, the WindowManager tracks every Window object created, and can be
 	used to access those Window objects by name.
 */
-class CEGUIEXPORT WindowManager : public Singleton <WindowManager>
+class CEGUIEXPORT WindowManager : public Singleton <WindowManager>,
+                                  public EventSet
 {
 public:
     /*************************************************************************
         Public static data
     *************************************************************************/
     static const String GeneratedWindowNameBase;      //!< Base name to use for generated window names.
+    //! Namespace for global events.
+    static const String EventNamespace;
+    //! Event fired when a new Window object is created.
+    static const String EventWindowCreated;
+    //! Event fired when a Window object is destroyed.
+    static const String EventWindowDestroyed;
 
 	/*!
 	\brief
