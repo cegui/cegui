@@ -77,7 +77,6 @@
 				DAAABB730F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB750F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB770F6E592A0003BE03 /* PBXTargetDependency */,
-				DAAABB790F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB7B0F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB7D0F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB7F0F6E592A0003BE03 /* PBXTargetDependency */,
@@ -333,8 +332,6 @@
 		DA10988E0F6D841500B8A582 /* CEGUISchemeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10957B0F6D5F9B00B8A582 /* CEGUISchemeManager.h */; };
 		DA10988F0F6D841500B8A582 /* CEGUIScriptModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095300F6D5F4100B8A582 /* CEGUIScriptModule.cpp */; };
 		DA1098900F6D841500B8A582 /* CEGUIScriptModule.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10957C0F6D5F9B00B8A582 /* CEGUIScriptModule.h */; };
-		DA1098910F6D841500B8A582 /* CEGUIScriptWindowHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095310F6D5F4100B8A582 /* CEGUIScriptWindowHelper.cpp */; };
-		DA1098920F6D841500B8A582 /* CEGUIScriptWindowHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10957D0F6D5F9B00B8A582 /* CEGUIScriptWindowHelper.h */; };
 		DA1098930F6D841500B8A582 /* CEGUIScrollablePane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094DA0F6D5EFD00B8A582 /* CEGUIScrollablePane.cpp */; };
 		DA1098940F6D841500B8A582 /* CEGUIScrollablePane.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095C70F6D5F9B00B8A582 /* CEGUIScrollablePane.h */; };
 		DA1098950F6D841500B8A582 /* CEGUIScrollablePaneProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094DB0F6D5EFD00B8A582 /* CEGUIScrollablePaneProperties.cpp */; };
@@ -375,7 +372,6 @@
 		DA1098B80F6D841500B8A582 /* CEGUITabControl.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095D40F6D5F9B00B8A582 /* CEGUITabControl.h */; };
 		DA1098B90F6D841500B8A582 /* CEGUITabControlProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094E80F6D5EFD00B8A582 /* CEGUITabControlProperties.cpp */; };
 		DA1098BA0F6D841500B8A582 /* CEGUITabControlProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095D50F6D5F9B00B8A582 /* CEGUITabControlProperties.h */; };
-		DA1098BB0F6D841500B8A582 /* CEGUITask.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095840F6D5F9B00B8A582 /* CEGUITask.h */; };
 		DA1098BC0F6D841500B8A582 /* CEGUITexture.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095850F6D5F9B00B8A582 /* CEGUITexture.h */; };
 		DA1098BD0F6D841500B8A582 /* CEGUITextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095860F6D5F9B00B8A582 /* CEGUITextureTarget.h */; };
 		DA1098BE0F6D841500B8A582 /* CEGUITextUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095360F6D5F4100B8A582 /* CEGUITextUtils.cpp */; };
@@ -611,10 +607,6 @@
 		DAAABAD50F6E56D70003BE03 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DAAABAE00F6E571C0003BE03 /* Sample_Demo8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093B40F6D592200B8A582 /* Sample_Demo8.cpp */; };
 		DAAABAE40F6E57410003BE03 /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAABA0B0F6E53320003BE03 /* CEGUILuaScriptModule.framework */; };
-		DAAABB020F6E579E0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
-		DAAABB030F6E579E0003BE03 /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAABA0B0F6E53320003BE03 /* CEGUILuaScriptModule.framework */; };
-		DAAABB040F6E579E0003BE03 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
-		DAAABB090F6E57BE0003BE03 /* Instanced.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093BF0F6D595500B8A582 /* Instanced.cpp */; };
 		DAAABC440F6E5C380003BE03 /* lua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAAB98E0F6E50F90003BE03 /* lua.framework */; };
 		DAAABCBE0F6E6F5F0003BE03 /* CEGUIOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10963F0F6D633B00B8A582 /* CEGUIOpenGL.h */; };
 		DAAABCBF0F6E6F5F0003BE03 /* CEGUIOpenGLApplePBTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096400F6D633B00B8A582 /* CEGUIOpenGLApplePBTextureTarget.h */; };
@@ -852,13 +844,6 @@
 			remoteGlobalIDString = DA109FDA0F6DB65000B8A582;
 			remoteInfo = CEGUISampleHelper;
 		};
-		DAAABAFE0F6E57980003BE03 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DA109FDA0F6DB65000B8A582;
-			remoteInfo = CEGUISampleHelper;
-		};
 		DAAABB3C0F6E58860003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
@@ -1020,13 +1005,6 @@
 			remoteGlobalIDString = DAAAB8820F6E4D400003BE03;
 			remoteInfo = FontDemo;
 		};
-		DAAABB780F6E592A0003BE03 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DAAABAF30F6E578E0003BE03;
-			remoteInfo = InstancedWindows;
-		};
 		DAAABB7A0F6E592A0003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
@@ -1175,20 +1153,6 @@
 			remoteInfo = "CEGUI Frameworks";
 		};
 		DAAABBC80F6E5A2D0003BE03 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DAAABB220F6E58450003BE03;
-			remoteInfo = "Loadable Modules";
-		};
-		DAAABBD80F6E5A3A0003BE03 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DAAABB580F6E58F00003BE03;
-			remoteInfo = "CEGUI Frameworks";
-		};
-		DAAABBDA0F6E5A3A0003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
@@ -1426,8 +1390,6 @@
 		DA1093BA0F6D594000B8A582 /* Sample_FirstWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_FirstWindow.cpp; path = ../../Samples/FirstWindow/Sample_FirstWindow.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093BB0F6D594000B8A582 /* Sample_FirstWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample_FirstWindow.h; path = ../../Samples/FirstWindow/Sample_FirstWindow.h; sourceTree = SOURCE_ROOT; };
 		DA1093BC0F6D594800B8A582 /* Sample_FontDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_FontDemo.cpp; path = ../../Samples/FontDemo/Sample_FontDemo.cpp; sourceTree = SOURCE_ROOT; };
-		DA1093BE0F6D595500B8A582 /* Instanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Instanced.h; path = ../../Samples/InstancedWindows/Instanced.h; sourceTree = SOURCE_ROOT; };
-		DA1093BF0F6D595500B8A582 /* Instanced.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Instanced.cpp; path = ../../Samples/InstancedWindows/Instanced.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093C00F6D596D00B8A582 /* Sample_Minesweeper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_Minesweeper.cpp; path = ../../Samples/Minesweeper/Sample_Minesweeper.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093C10F6D596D00B8A582 /* Minesweeper_Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Minesweeper_Timer.cpp; path = ../../Samples/Minesweeper/Minesweeper_Timer.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093C20F6D596D00B8A582 /* Minesweeper_Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Minesweeper_Timer.h; path = ../../Samples/Minesweeper/Minesweeper_Timer.h; sourceTree = SOURCE_ROOT; };
@@ -1517,8 +1479,6 @@
 		DA10941B0F6D5CAB00B8A582 /* TaharezLook.looknfeel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TaharezLook.looknfeel; path = ../../datafiles/looknfeel/TaharezLook.looknfeel; sourceTree = SOURCE_ROOT; };
 		DA10941C0F6D5CAB00B8A582 /* Vanilla.looknfeel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Vanilla.looknfeel; path = ../../datafiles/looknfeel/Vanilla.looknfeel; sourceTree = SOURCE_ROOT; };
 		DA10941D0F6D5CC600B8A582 /* demo8.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = demo8.lua; path = ../../datafiles/lua_scripts/demo8.lua; sourceTree = SOURCE_ROOT; };
-		DA10941E0F6D5CC600B8A582 /* InstancedInit.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = InstancedInit.lua; path = ../../datafiles/lua_scripts/InstancedInit.lua; sourceTree = SOURCE_ROOT; };
-		DA10941F0F6D5CC600B8A582 /* IConsole.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = IConsole.lua; path = ../../datafiles/lua_scripts/IConsole.lua; sourceTree = SOURCE_ROOT; };
 		DA1094200F6D5CE800B8A582 /* WindowsLookWidgets.scheme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = WindowsLookWidgets.scheme; path = ../../datafiles/schemes/WindowsLookWidgets.scheme; sourceTree = SOURCE_ROOT; };
 		DA1094210F6D5CE800B8A582 /* WindowsLook.scheme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = WindowsLook.scheme; path = ../../datafiles/schemes/WindowsLook.scheme; sourceTree = SOURCE_ROOT; };
 		DA1094220F6D5CE800B8A582 /* VanillaSkin.scheme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = VanillaSkin.scheme; path = ../../datafiles/schemes/VanillaSkin.scheme; sourceTree = SOURCE_ROOT; };
@@ -1664,7 +1624,6 @@
 		DA10952E0F6D5F4100B8A582 /* CEGUIScheme_xmlHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIScheme_xmlHandler.cpp; path = ../../cegui/src/CEGUIScheme_xmlHandler.cpp; sourceTree = SOURCE_ROOT; };
 		DA10952F0F6D5F4100B8A582 /* CEGUISchemeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISchemeManager.cpp; path = ../../cegui/src/CEGUISchemeManager.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095300F6D5F4100B8A582 /* CEGUIScriptModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIScriptModule.cpp; path = ../../cegui/src/CEGUIScriptModule.cpp; sourceTree = SOURCE_ROOT; };
-		DA1095310F6D5F4100B8A582 /* CEGUIScriptWindowHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIScriptWindowHelper.cpp; path = ../../cegui/src/CEGUIScriptWindowHelper.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095320F6D5F4100B8A582 /* CEGUISize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISize.cpp; path = ../../cegui/src/CEGUISize.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095330F6D5F4100B8A582 /* CEGUIString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIString.cpp; path = ../../cegui/src/CEGUIString.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095340F6D5F4100B8A582 /* CEGUISubscriberSlot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISubscriberSlot.cpp; path = ../../cegui/src/CEGUISubscriberSlot.cpp; sourceTree = SOURCE_ROOT; };
@@ -1740,14 +1699,12 @@
 		DA10957A0F6D5F9B00B8A582 /* CEGUIScheme_xmlHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIScheme_xmlHandler.h; path = ../../cegui/include/CEGUIScheme_xmlHandler.h; sourceTree = SOURCE_ROOT; };
 		DA10957B0F6D5F9B00B8A582 /* CEGUISchemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISchemeManager.h; path = ../../cegui/include/CEGUISchemeManager.h; sourceTree = SOURCE_ROOT; };
 		DA10957C0F6D5F9B00B8A582 /* CEGUIScriptModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIScriptModule.h; path = ../../cegui/include/CEGUIScriptModule.h; sourceTree = SOURCE_ROOT; };
-		DA10957D0F6D5F9B00B8A582 /* CEGUIScriptWindowHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIScriptWindowHelper.h; path = ../../cegui/include/CEGUIScriptWindowHelper.h; sourceTree = SOURCE_ROOT; };
 		DA10957E0F6D5F9B00B8A582 /* CEGUISingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISingleton.h; path = ../../cegui/include/CEGUISingleton.h; sourceTree = SOURCE_ROOT; };
 		DA10957F0F6D5F9B00B8A582 /* CEGUISize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISize.h; path = ../../cegui/include/CEGUISize.h; sourceTree = SOURCE_ROOT; };
 		DA1095800F6D5F9B00B8A582 /* CEGUISlotFunctorBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISlotFunctorBase.h; path = ../../cegui/include/CEGUISlotFunctorBase.h; sourceTree = SOURCE_ROOT; };
 		DA1095810F6D5F9B00B8A582 /* CEGUIString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIString.h; path = ../../cegui/include/CEGUIString.h; sourceTree = SOURCE_ROOT; };
 		DA1095820F6D5F9B00B8A582 /* CEGUISubscriberSlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISubscriberSlot.h; path = ../../cegui/include/CEGUISubscriberSlot.h; sourceTree = SOURCE_ROOT; };
 		DA1095830F6D5F9B00B8A582 /* CEGUISystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISystem.h; path = ../../cegui/include/CEGUISystem.h; sourceTree = SOURCE_ROOT; };
-		DA1095840F6D5F9B00B8A582 /* CEGUITask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITask.h; path = ../../cegui/include/CEGUITask.h; sourceTree = SOURCE_ROOT; };
 		DA1095850F6D5F9B00B8A582 /* CEGUITexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITexture.h; path = ../../cegui/include/CEGUITexture.h; sourceTree = SOURCE_ROOT; };
 		DA1095860F6D5F9B00B8A582 /* CEGUITextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITextureTarget.h; path = ../../cegui/include/CEGUITextureTarget.h; sourceTree = SOURCE_ROOT; };
 		DA1095870F6D5F9B00B8A582 /* CEGUITextUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITextUtils.h; path = ../../cegui/include/CEGUITextUtils.h; sourceTree = SOURCE_ROOT; };
@@ -2148,7 +2105,6 @@
 		DA10972D0F6D660E00B8A582 /* RenderingWindow.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = RenderingWindow.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/RenderingWindow.pkg; sourceTree = SOURCE_ROOT; };
 		DA10972E0F6D660E00B8A582 /* Scheme.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Scheme.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Scheme.pkg; sourceTree = SOURCE_ROOT; };
 		DA10972F0F6D660E00B8A582 /* SchemeManager.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SchemeManager.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/SchemeManager.pkg; sourceTree = SOURCE_ROOT; };
-		DA1097300F6D660E00B8A582 /* ScriptWindowHelper.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ScriptWindowHelper.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/ScriptWindowHelper.pkg; sourceTree = SOURCE_ROOT; };
 		DA1097310F6D660E00B8A582 /* System.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = System.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/System.pkg; sourceTree = SOURCE_ROOT; };
 		DA1097320F6D660E00B8A582 /* Texture.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Texture.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Texture.pkg; sourceTree = SOURCE_ROOT; };
 		DA1097330F6D660E00B8A582 /* UnifiedCoordSystem.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = UnifiedCoordSystem.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/UnifiedCoordSystem.pkg; sourceTree = SOURCE_ROOT; };
@@ -2277,8 +2233,6 @@
 		DAAABA0C0F6E53320003BE03 /* CEGUILuaScriptModule-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUILuaScriptModule-Info.plist"; sourceTree = "<group>"; };
 		DAAABAC60F6E56BF0003BE03 /* Demo8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAABAC80F6E56BF0003BE03 /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo8-Info.plist"; sourceTree = "<group>"; };
-		DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstancedWindows.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DAAABAF60F6E578E0003BE03 /* InstancedWindows-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InstancedWindows-Info.plist"; sourceTree = "<group>"; };
 		DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIIrrlichtRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAF38820F6FACF800EEADDB /* CEGUIIrrlichtRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIIrrlichtRenderer-Info.plist"; sourceTree = "<group>"; };
 		DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RendererSelector.xib; sourceTree = "<group>"; };
@@ -2530,16 +2484,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DAAABAF20F6E578E0003BE03 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DAAABB020F6E579E0003BE03 /* CEGUIBase.framework in Frameworks */,
-				DAAABB030F6E579E0003BE03 /* CEGUILuaScriptModule.framework in Frameworks */,
-				DAAABB040F6E579E0003BE03 /* CEGUISampleHelper.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DAAF387F0F6FACF800EEADDB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2582,7 +2526,6 @@
 				DA1093760F6D54F900B8A582 /* FalagardDemo1 */,
 				DA1093770F6D550200B8A582 /* FirstWindow */,
 				DA1093780F6D550800B8A582 /* FontDemo */,
-				DA1093790F6D551200B8A582 /* InstancedWindows */,
 				DA10937B0F6D552B00B8A582 /* Minesweeper */,
 				DA10937C0F6D556E00B8A582 /* ScrollablePaneDemo */,
 				DA10937D0F6D557600B8A582 /* TabControlDemo */,
@@ -2966,16 +2909,6 @@
 			name = FontDemo;
 			sourceTree = "<group>";
 		};
-		DA1093790F6D551200B8A582 /* InstancedWindows */ = {
-			isa = PBXGroup;
-			children = (
-				DAAABAF60F6E578E0003BE03 /* InstancedWindows-Info.plist */,
-				DA1093BE0F6D595500B8A582 /* Instanced.h */,
-				DA1093BF0F6D595500B8A582 /* Instanced.cpp */,
-			);
-			name = InstancedWindows;
-			sourceTree = "<group>";
-		};
 		DA10937A0F6D551F00B8A582 /* TextDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -3112,8 +3045,6 @@
 			isa = PBXGroup;
 			children = (
 				DA10941D0F6D5CC600B8A582 /* demo8.lua */,
-				DA10941F0F6D5CC600B8A582 /* IConsole.lua */,
-				DA10941E0F6D5CC600B8A582 /* InstancedInit.lua */,
 			);
 			name = lua_scripts;
 			sourceTree = "<group>";
@@ -3303,14 +3234,12 @@
 				DA10957A0F6D5F9B00B8A582 /* CEGUIScheme_xmlHandler.h */,
 				DA10957B0F6D5F9B00B8A582 /* CEGUISchemeManager.h */,
 				DA10957C0F6D5F9B00B8A582 /* CEGUIScriptModule.h */,
-				DA10957D0F6D5F9B00B8A582 /* CEGUIScriptWindowHelper.h */,
 				DA10957E0F6D5F9B00B8A582 /* CEGUISingleton.h */,
 				DA10957F0F6D5F9B00B8A582 /* CEGUISize.h */,
 				DA1095800F6D5F9B00B8A582 /* CEGUISlotFunctorBase.h */,
 				DA1095810F6D5F9B00B8A582 /* CEGUIString.h */,
 				DA1095820F6D5F9B00B8A582 /* CEGUISubscriberSlot.h */,
 				DA1095830F6D5F9B00B8A582 /* CEGUISystem.h */,
-				DA1095840F6D5F9B00B8A582 /* CEGUITask.h */,
 				DA1095850F6D5F9B00B8A582 /* CEGUITexture.h */,
 				DA1095860F6D5F9B00B8A582 /* CEGUITextureTarget.h */,
 				DA1095870F6D5F9B00B8A582 /* CEGUITextUtils.h */,
@@ -3390,7 +3319,6 @@
 				DA10952E0F6D5F4100B8A582 /* CEGUIScheme_xmlHandler.cpp */,
 				DA10952F0F6D5F4100B8A582 /* CEGUISchemeManager.cpp */,
 				DA1095300F6D5F4100B8A582 /* CEGUIScriptModule.cpp */,
-				DA1095310F6D5F4100B8A582 /* CEGUIScriptWindowHelper.cpp */,
 				DA1095320F6D5F4100B8A582 /* CEGUISize.cpp */,
 				DA1095330F6D5F4100B8A582 /* CEGUIString.cpp */,
 				DA1095340F6D5F4100B8A582 /* CEGUISubscriberSlot.cpp */,
@@ -3800,7 +3728,6 @@
 				DA10972D0F6D660E00B8A582 /* RenderingWindow.pkg */,
 				DA10972E0F6D660E00B8A582 /* Scheme.pkg */,
 				DA10972F0F6D660E00B8A582 /* SchemeManager.pkg */,
-				DA1097300F6D660E00B8A582 /* ScriptWindowHelper.pkg */,
 				DA1097310F6D660E00B8A582 /* System.pkg */,
 				DA1097320F6D660E00B8A582 /* Texture.pkg */,
 				DA1097330F6D660E00B8A582 /* UnifiedCoordSystem.pkg */,
@@ -4196,7 +4123,6 @@
 				DAAAB90B0F6E4F120003BE03 /* TextDemo.app */,
 				DAAAB92C0F6E4FBD0003BE03 /* TreeDemo.app */,
 				DAAABAC60F6E56BF0003BE03 /* Demo8.app */,
-				DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4351,7 +4277,6 @@
 				DA10988C0F6D841500B8A582 /* CEGUIScheme_xmlHandler.h in Headers */,
 				DA10988E0F6D841500B8A582 /* CEGUISchemeManager.h in Headers */,
 				DA1098900F6D841500B8A582 /* CEGUIScriptModule.h in Headers */,
-				DA1098920F6D841500B8A582 /* CEGUIScriptWindowHelper.h in Headers */,
 				DA1098940F6D841500B8A582 /* CEGUIScrollablePane.h in Headers */,
 				DA1098960F6D841500B8A582 /* CEGUIScrollablePaneProperties.h in Headers */,
 				DA1098980F6D841500B8A582 /* CEGUIScrollbar.h in Headers */,
@@ -4373,7 +4298,6 @@
 				DA1098B60F6D841500B8A582 /* CEGUITabButton.h in Headers */,
 				DA1098B80F6D841500B8A582 /* CEGUITabControl.h in Headers */,
 				DA1098BA0F6D841500B8A582 /* CEGUITabControlProperties.h in Headers */,
-				DA1098BB0F6D841500B8A582 /* CEGUITask.h in Headers */,
 				DA1098BC0F6D841500B8A582 /* CEGUITexture.h in Headers */,
 				DA1098BD0F6D841500B8A582 /* CEGUITextureTarget.h in Headers */,
 				DA1098BF0F6D841500B8A582 /* CEGUITextUtils.h in Headers */,
@@ -5019,26 +4943,6 @@
 			productReference = DAAABAC60F6E56BF0003BE03 /* Demo8.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DAAABAF30F6E578E0003BE03 /* InstancedWindows */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DAAABAF90F6E578F0003BE03 /* Build configuration list for PBXNativeTarget "InstancedWindows" */;
-			buildPhases = (
-				DAAABAF10F6E578E0003BE03 /* Sources */,
-				DAAABAF20F6E578E0003BE03 /* Frameworks */,
-				DAAABB130F6E57D10003BE03 /* Create Required Symlinks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DAAABAFF0F6E57980003BE03 /* PBXTargetDependency */,
-				DAAABBD90F6E5A3A0003BE03 /* PBXTargetDependency */,
-				DAAABBDB0F6E5A3A0003BE03 /* PBXTargetDependency */,
-			);
-			name = InstancedWindows;
-			productName = InstancedWindows;
-			productReference = DAAABAF40F6E578E0003BE03 /* InstancedWindows.app */;
-			productType = "com.apple.product-type.application";
-		};
 		DAAF38800F6FACF800EEADDB /* CEGUIIrrlichtRenderer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAAF38850F6FACF900EEADDB /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */;
@@ -5121,7 +5025,6 @@
 				DAAAB8650F6E4CC80003BE03 /* FalagardDemo1 */,
 				DA10A0170F6DB83200B8A582 /* FirstWindow */,
 				DAAAB8820F6E4D400003BE03 /* FontDemo */,
-				DAAABAF30F6E578E0003BE03 /* InstancedWindows */,
 				DAAAB8A10F6E4DAF0003BE03 /* Minesweeper */,
 				DAAAB8C80F6E4E0D0003BE03 /* ScrollablePaneDemo */,
 				DAAAB8E90F6E4EA70003BE03 /* TabControlDemo */,
@@ -5454,20 +5357,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
-		DAAABB130F6E57D10003BE03 /* Create Required Symlinks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Create Required Symlinks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
-		};
 		DAAABC680F6E5FB20003BE03 /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5652,7 +5541,6 @@
 				DA10988B0F6D841500B8A582 /* CEGUIScheme_xmlHandler.cpp in Sources */,
 				DA10988D0F6D841500B8A582 /* CEGUISchemeManager.cpp in Sources */,
 				DA10988F0F6D841500B8A582 /* CEGUIScriptModule.cpp in Sources */,
-				DA1098910F6D841500B8A582 /* CEGUIScriptWindowHelper.cpp in Sources */,
 				DA1098930F6D841500B8A582 /* CEGUIScrollablePane.cpp in Sources */,
 				DA1098950F6D841500B8A582 /* CEGUIScrollablePaneProperties.cpp in Sources */,
 				DA1098970F6D841500B8A582 /* CEGUIScrollbar.cpp in Sources */,
@@ -5978,14 +5866,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DAAABAF10F6E578E0003BE03 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DAAABB090F6E57BE0003BE03 /* Instanced.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DAAF387E0F6FACF800EEADDB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6153,11 +6033,6 @@
 			target = DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */;
 			targetProxy = DAAABAD00F6E56CA0003BE03 /* PBXContainerItemProxy */;
 		};
-		DAAABAFF0F6E57980003BE03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */;
-			targetProxy = DAAABAFE0F6E57980003BE03 /* PBXContainerItemProxy */;
-		};
 		DAAABB3D0F6E58860003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DA109EA60F6DAB9F00B8A582 /* CEGUICoronaImageCodec */;
@@ -6273,11 +6148,6 @@
 			target = DAAAB8820F6E4D400003BE03 /* FontDemo */;
 			targetProxy = DAAABB760F6E592A0003BE03 /* PBXContainerItemProxy */;
 		};
-		DAAABB790F6E592A0003BE03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DAAABAF30F6E578E0003BE03 /* InstancedWindows */;
-			targetProxy = DAAABB780F6E592A0003BE03 /* PBXContainerItemProxy */;
-		};
 		DAAABB7B0F6E592A0003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DAAAB8A10F6E4DAF0003BE03 /* Minesweeper */;
@@ -6387,16 +6257,6 @@
 			isa = PBXTargetDependency;
 			target = DAAABB220F6E58450003BE03 /* Loadable Modules */;
 			targetProxy = DAAABBC80F6E5A2D0003BE03 /* PBXContainerItemProxy */;
-		};
-		DAAABBD90F6E5A3A0003BE03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DAAABB580F6E58F00003BE03 /* CEGUI Frameworks */;
-			targetProxy = DAAABBD80F6E5A3A0003BE03 /* PBXContainerItemProxy */;
-		};
-		DAAABBDB0F6E5A3A0003BE03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DAAABB220F6E58450003BE03 /* Loadable Modules */;
-			targetProxy = DAAABBDA0F6E5A3A0003BE03 /* PBXContainerItemProxy */;
 		};
 		DAAABBE30F6E5A460003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7987,50 +7847,6 @@
 			};
 			name = Release;
 		};
-		DAAABAF70F6E578F0003BE03 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "InstancedWindows-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = InstancedWindows;
-			};
-			name = Debug;
-		};
-		DAAABAF80F6E578F0003BE03 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "InstancedWindows-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = InstancedWindows;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		DAAABB230F6E58450003BE03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8552,15 +8368,6 @@
 			buildConfigurations = (
 				DAAABAC90F6E56C00003BE03 /* Debug */,
 				DAAABACA0F6E56C00003BE03 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DAAABAF90F6E578F0003BE03 /* Build configuration list for PBXNativeTarget "InstancedWindows" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DAAABAF70F6E578F0003BE03 /* Debug */,
-				DAAABAF80F6E578F0003BE03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

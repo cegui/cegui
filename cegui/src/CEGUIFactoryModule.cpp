@@ -50,8 +50,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactoryFunction";
-const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactoriesFunction";
+const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactory";
+const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories";
 
 
 /*************************************************************************

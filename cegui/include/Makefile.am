@@ -58,14 +58,12 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUISchemeManager.h \
                  CEGUIScheme_xmlHandler.h \
                  CEGUIScriptModule.h \
-                 CEGUIScriptWindowHelper.h \
                  CEGUISingleton.h \
                  CEGUISize.h \
                  CEGUISlotFunctorBase.h \
                  CEGUIString.h \
                  CEGUISubscriberSlot.h \
                  CEGUISystem.h \
-                 CEGUITask.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
                  CEGUITextureTarget.h \

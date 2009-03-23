@@ -31,7 +31,6 @@
 #define _CEGUILuaFunctor_h_
 
 #include "CEGUIEventSet.h"
-#include "CEGUIScriptWindowHelper.h"
 
 struct lua_State;
 

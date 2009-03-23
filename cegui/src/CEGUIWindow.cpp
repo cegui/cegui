@@ -321,15 +321,8 @@ bool Window::isChild(const String& name) const
 
 	for (size_t i = 0; i < child_count; ++i)
 	{
-        const String childName(d_children[i]->getName());
-
-        if (childName == name ||
-            childName == d_children[i]->d_windowPrefix + name)
-
-		{
-			return true;
-		}
-
+        if (d_children[i]->getName() == name)
+            return true;
 	}
 
 	return false;
@@ -401,49 +394,17 @@ bool Window::isChild(const Window* window) const
 *************************************************************************/
 Window* Window::getChild(const String& name) const
 {
-	size_t child_count = getChildCount();
-
-	for (size_t i = 0; i < child_count; ++i)
-	{
-        const String childName = d_children[i]->getName();
-        // check if 'name' or 'prefix + name' is attached.
-        if (childName == name || childName == d_children[i]->d_windowPrefix + name)
-			return d_children[i];
-		}
-
-    throw UnknownObjectException("Window::getChild - The Window object named '"
-        + name +"' is not attached to Window '" + d_name + "'.");
-}
-
-/***********************************************************************
-    returns a pointer to a child window... searches recursively for it
-    Use getChild() only. This function should only be used by getChild
-    to find any child windows within it. This function does not throw any
-    exceptions it will return NULL if nothing is found **WARNING**
-************************************************************************/
-Window* Window::recursiveChildSearch( const String& name ) const
-{
     size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        String childName = d_children[i]->getName();
-        //We need to check if the current name is available or if the name + prefix is available.. Hopefully not both
-        if(childName == name || childName == d_children[i]->d_windowPrefix + name)
-        {
+        if (d_children[i]->getName() == name)
             return d_children[i];
-        }
+    }
 
-    } // for (size_t i = 0; i < child_count; ++i)
-
-    for(size_t i=0;i<child_count;i++)
-    {
-        Window* temp = d_children[i]->recursiveChildSearch(name);
-        if(temp)
-            return temp;
-    } // for(size_t i=0;i<child_count;i++)
-
-    return 0;
+    throw UnknownObjectException("Window::getChild - The Window object named '"
+                                 + name + "' is not attached to Window '" +
+                                 d_name + "'.");
 }
 
 
@@ -477,9 +438,8 @@ Window* Window::getChildRecursive(const String& name) const
 
     for (size_t i = 0; i < child_count; ++i)
     {
-        const String childName = d_children[i]->getName();
-        // check if 'name' or 'prefix + name' is attached
-        if (childName == name || childName == d_children[i]->d_windowPrefix + name)
+        const String childName(d_children[i]->getName());
+        if (childName == name)
             return d_children[i];
 
         Window* tmp = d_children[i]->getChildRecursive(name);

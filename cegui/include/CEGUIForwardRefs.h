@@ -62,7 +62,6 @@ class WindowFactory;
 class WindowManager;
 class Scheme;
 class SchemeManager;
-class ScriptWindowHelper;
 class System;
 class FactoryModule;
 class ScriptModule;

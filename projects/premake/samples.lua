@@ -46,7 +46,6 @@ local pkg_table =
 local lua_samples =
 {
     "Demo8",
-    "InstancedWindows",
 }
 
 if LUA_SCRIPT_MODULE then

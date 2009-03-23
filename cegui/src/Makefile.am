@@ -60,7 +60,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
                       CEGUIScriptModule.cpp \
-                      CEGUIScriptWindowHelper.cpp \
                       CEGUISize.cpp \
                       CEGUIString.cpp \
                       CEGUISubscriberSlot.cpp \

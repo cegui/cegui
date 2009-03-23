@@ -178,7 +178,6 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  Samples/FalagardDemo1/Makefile
                  Samples/FirstWindow/Makefile
                  Samples/FontDemo/Makefile
-                 Samples/InstancedWindows/Makefile
                  Samples/Makefile
                  Samples/Minesweeper/Makefile
                  Samples/ScrollablePaneDemo/Makefile

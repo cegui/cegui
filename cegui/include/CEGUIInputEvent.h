@@ -246,9 +246,7 @@ enum SystemKey
 class CEGUIEXPORT WindowEventArgs : public EventArgs
 {
 public:
-	WindowEventArgs(Window* wnd) : window(wnd) {
-		this->d_hasWindow = true;
-	}
+	WindowEventArgs(Window* wnd) : window(wnd) {}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
 };
