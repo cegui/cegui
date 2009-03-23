@@ -7,7 +7,7 @@
 	purpose:	Interface to Texture implemented via Opengl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,14 +28,59 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include <GL/glew.h>
 #include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIImageCodec.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+static bool s_textureStateSaved = false;
+static GLint s_oldTexture = 0;
+static GLint s_oldActiveTexture = GL_TEXTURE0;
+static GLint s_oldClientActiveTexture = GL_TEXTURE0;
+//----------------------------------------------------------------------------//
+void saveGLTextureState()
+{
+    if (s_textureStateSaved)
+        return;
 
+    if (GLEW_ARB_multitexture)
+    {
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &s_oldActiveTexture);
+        glGetIntegerv(GL_CLIENT_ACTIVE_TEXTURE, &s_oldClientActiveTexture);        
+
+        glActiveTextureARB(GL_TEXTURE0);
+        glClientActiveTextureARB(GL_TEXTURE0);
+    }
+
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &s_oldTexture);
+
+    s_textureStateSaved = true;
+}
+
+//----------------------------------------------------------------------------//
+void restoreGLTextureState()
+{
+    if (!s_textureStateSaved)
+        return;
+
+    glBindTexture(GL_TEXTURE_2D, s_oldTexture);
+
+    if (GLEW_ARB_multitexture)
+    {
+        glActiveTextureARB(s_oldActiveTexture);
+        glClientActiveTextureARB(s_oldClientActiveTexture);
+    }
+
+    s_textureStateSaved = false;
+}
+
+//----------------------------------------------------------------------------//
+    
 /*************************************************************************
 	Constructor
 *************************************************************************/
@@ -49,12 +94,13 @@ OpenGLTexture::OpenGLTexture(Renderer* owner) :
 	glGenTextures(1, &d_ogltexture);
 
 	// set some parameters for this texture.
+    saveGLTextureState();
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);	// GL_CLAMP_TO_EDGE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);	// GL_CLAMP_TO_EDGE
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    restoreGLTextureState();
 }
 
 /*************************************************************************
@@ -87,6 +133,7 @@ void OpenGLTexture::loadFromFile(const String& filename, const String& resourceG
     // implemented and that knowledge is relied upon in an unhealthy way; this
     // should be addressed at some stage.
 
+    saveGLTextureState();
     OpenGLRenderer* renderer =  static_cast<OpenGLRenderer*>(getRenderer());
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	// load file to memory via resource provider
@@ -95,6 +142,8 @@ void OpenGLTexture::loadFromFile(const String& filename, const String& resourceG
 	Texture* res = renderer->getImageCodec().load(texFile, this);
 	// unload file data buffer
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
+    restoreGLTextureState();
+
 	if (res == 0)
     {
         // It's an error 
@@ -133,8 +182,10 @@ void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buf
     // update scale values
     updateCachedScaleValues();
     // do the real work of getting the data into the texture
+    saveGLTextureState();
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, buffWidth, buffHeight, format, GL_UNSIGNED_BYTE, buffPtr);
+    restoreGLTextureState();
 }
 
 
@@ -157,8 +208,10 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 	uchar* buff = new uchar[size * size * 4];
 
 	// load empty buffer to texture
+    saveGLTextureState();
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size, size, 0, GL_RGBA ,GL_UNSIGNED_BYTE, buff);
+    restoreGLTextureState();
 
 	// delete buffer
 	delete[] buff;
@@ -172,6 +225,7 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 *************************************************************************/
 void OpenGLTexture::grabTexture(void)
 {
+    saveGLTextureState();
     // bind the texture we want to grab
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     // allocate the buffer for storing the image data
@@ -179,6 +233,7 @@ void OpenGLTexture::grabTexture(void)
     glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,d_grabBuffer);
     // delete the texture
     glDeleteTextures(1, &d_ogltexture);
+    restoreGLTextureState();
 }
 
 
@@ -192,14 +247,15 @@ void OpenGLTexture::restoreTexture(void)
 	glGenTextures(1, &d_ogltexture);
 
 	// set some parameters for this texture.
+    saveGLTextureState();
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);	// GL_CLAMP_TO_EDGE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);	// GL_CLAMP_TO_EDGE
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, d_width, d_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
-    
+    restoreGLTextureState();
+
     // free the grabbuffer
     delete [] d_grabBuffer;
     d_grabBuffer = 0;
