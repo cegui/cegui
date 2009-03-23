@@ -42,8 +42,15 @@ namespace CEGUI
 
     String FalagardToggleButton::actualStateName(const String& name) const
     {
-    	bool selected = PropertyHelper::stringToBool(d_window->getProperty("Selected"));
-        return selected ? "Selected"+name : name;
+        if (!PropertyHelper::stringToBool(d_window->getProperty("Selected")))
+            return name;
+        
+        String stateName = "Selected" + name;
+ 
+        if (!getLookNFeel().isStateImageryPresent(stateName))
+            stateName = "SelectedNormal";
+
+        return stateName;
     }
 
 } // End of  CEGUI namespace section
