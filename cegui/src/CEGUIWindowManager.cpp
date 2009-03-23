@@ -91,20 +91,14 @@ WindowManager::~WindowManager(void)
 /*************************************************************************
 	Create a new window of the specified type
 *************************************************************************/
-Window* WindowManager::createWindow( const String& type, const String& name /*= ""*/, const String& prefix /*= ""*/ )
+Window* WindowManager::createWindow(const String& type, const String& name)
 {
     // only allow creation of Window objects if we are in unlocked state
     if (isLocked())
         throw InvalidRequestException("WindowManager::createWindow - "
                                       "WindowManager is in the locked state.");
 
-    // Make sure that a non-empty name gets passed to the factory
-    String finalName(prefix + name);
-    // Still empty?
-    if (finalName.empty())
-    {
-        finalName = generateUniqueWindowName();
-    }
+    String finalName(name.empty() ? generateUniqueWindowName() : name);
 
 	if (isWindowPresent(finalName))
 	{
@@ -115,7 +109,6 @@ Window* WindowManager::createWindow( const String& type, const String& name /*= 
     WindowFactory* factory = wfMgr.getFactory(type);
 
     Window* newWindow = factory->createWindow(finalName);
-	newWindow->setPrefix(prefix);
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(newWindow));
@@ -274,15 +267,6 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	return handler.getLayoutRootWindow();
 }
 
-Window* WindowManager::loadWindowLayout( const String& filename, bool generateRandomPrefix )
-{
-	//We really just use the bool to get rid of ambiguity with the other loadWindowLayout. There is no difference between
-	//calling this loadWindowLayout and setting GRP to false, and calling the other one with no argument
-	if(generateRandomPrefix)
-		return loadWindowLayout(filename,generateUniqueWindowPrefix());
-
-		return loadWindowLayout(filename);
-}
 bool WindowManager::isDeadPoolEmpty(void) const
 {
     return d_deathrow.empty();
@@ -344,24 +328,6 @@ String WindowManager::generateUniqueWindowName()
 
     // return generated name as a CEGUI::String.
     return String(uidname.str());
-}
-
-CEGUI::String WindowManager::generateUniqueWindowPrefix()
-{
-	std::ostringstream prefix;
-	prefix << d_uid_counter << "_";
-
-	// update counter for next time
-	unsigned long old_uid = d_uid_counter;
-	++d_uid_counter;
-
-	// log if we ever wrap-around (which should be pretty unlikely)
-	if (d_uid_counter < old_uid)
-		Logger::getSingleton().logEvent("UID counter for generated window names has wrapped around - the fun shall now commence!");
-
-	//return generated prefix
-	return String(prefix.str());
-
 }
 
 void WindowManager::renameWindow(const String& window, const String& new_name)

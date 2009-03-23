@@ -157,14 +157,6 @@ public:
     */
     const String& getIdentifierString() const;
 
-	/*!
-	\brief
-		Return an string which identifies the language of this module.
-	/return
-		String object holding a string that identifies the languge of the module
-	*/
-	const String& getLanguage() const;
-
     /*!
     \brief
             Subscribes the named Event to a scripted funtion
@@ -234,8 +226,6 @@ public:
 protected:
     //! String that holds some id information about the module.
     String d_identifierString;
-	//! String that holds a string containing the languge of the scripting modue.
-	String d_language;
     //! holds the default resource group ID for loading script files.
     static String d_defaultResourceGroup;
 };

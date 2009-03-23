@@ -25,7 +25,6 @@ EXTRA_DIST = Basic.pkg \
              RenderingWindow.pkg \
              Scheme.pkg \
              SchemeManager.pkg \
-             ScriptWindowHelper.pkg \
              System.pkg \
              Texture.pkg \
              UnifiedCoordSystem.pkg \

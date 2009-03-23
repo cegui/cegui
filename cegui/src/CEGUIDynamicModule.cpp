@@ -82,7 +82,7 @@ DynamicModule::DynamicModule(const String& name) :
         d_moduleName += ".so";
 #endif
     // Optionally add a _d to the module name for the debug config on Win32
-#if (defined(__WIN32__) || defined(_WIN32))
+#if defined(__WIN32__) || defined(_WIN32)
 #   if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
     // if name has .dll extension, assume it's complete and do not touch it.
     if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")

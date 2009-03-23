@@ -32,7 +32,6 @@ EXTRA_DIST = premake/README \
              premake/Samples/FalagardDemo1/premake.lua \
              premake/Samples/FirstWindow/premake.lua \
              premake/Samples/FontDemo/premake.lua \
-             premake/Samples/InstancedWindows/premake.lua \
              premake/Samples/Medieval/premake.lua \
              premake/Samples/Minesweeper/premake.lua \
              premake/Samples/ScrollablePaneDemo/premake.lua \

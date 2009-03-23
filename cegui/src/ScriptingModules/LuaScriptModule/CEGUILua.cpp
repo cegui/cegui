@@ -219,7 +219,6 @@ void LuaScriptModule::setModuleIdentifierString()
 {
     // set ID string
     d_identifierString = "CEGUI::LuaScriptModule - Official Lua based scripting module for CEGUI";
-	d_language = "Lua";
 }
 
 
@@ -649,17 +648,6 @@ bool LuaScriptModule::executeScriptedEventHandler_impl(
 {
     LuaFunctor::pushNamedFunction(d_state, handler_name);
 
-    ScriptWindowHelper* helper = 0;
-    // If this is an event that was triggered by a window then make a "this"
-    // pointer to the window for the script.
-    if(e.d_hasWindow)
-    {
-        WindowEventArgs& we = (WindowEventArgs&)e;
-        helper = new ScriptWindowHelper(we.window);
-        lua_pushlightuserdata(d_state,(void*)helper);
-        lua_setglobal(d_state,"this");
-    }
-
     // push EventArgs as the first parameter
     tolua_pushusertype(d_state, (void*)&e, "const CEGUI::EventArgs");
 
@@ -671,12 +659,6 @@ bool LuaScriptModule::executeScriptedEventHandler_impl(
     {
         String errStr(lua_tostring(d_state,-1));
         lua_settop(d_state,top);
-        //cleanup the helper object if any
-        if(helper)
-        {
-            delete helper;
-            helper = 0;
-        }
 
         throw ScriptException("Unable to evaluate the Lua event handler: '" +
                               handler_name + "'\n\n" + errStr + "\n");
@@ -685,12 +667,6 @@ bool LuaScriptModule::executeScriptedEventHandler_impl(
     // retrieve result
     bool ret = lua_isboolean(d_state, -1) ? lua_toboolean(d_state, -1 ) : true;
     lua_settop(d_state,top);
-
-    if(helper)
-    {
-        delete helper;
-        helper = 0;
-    }
 
     return ret;
 }

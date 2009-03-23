@@ -275,12 +275,6 @@ public:
     */
     const String& getName(void) const  {return d_name;}
 
-    /**
-     * Return a string to the window prefix
-     * \return String object holding the prefix of this window
-     */
-    const String& getPrefix(void) const {return d_windowPrefix;}
-
     /*!
     \brief
         returns whether or not this Window is set to be destroyed when its
@@ -471,16 +465,6 @@ public:
         thrown if no window named \a name is attached to this Window.
     */
     Window* getChild(const String& name) const;
-
-    /*!
-    \brief
-        This is / was intended for internal use only (should have had protected
-        visibility).  This function is deprecated - do not use this function at
-        all, ever.  The only reason this function is still here is to maintain
-        ABI compatibility for the 0.6.x series of releases.  This function will
-        be gone in 0.7.0.
-    */
-    Window* recursiveChildSearch(const String& name) const;
 
     /*!
     \brief
@@ -1558,12 +1542,6 @@ public:
         Nothing
     */
     void setID(uint ID);
-
-    /**
-     * Sets the unique prefix for this window.
-     * \param prefix String object holding the prefix to be used on this window.
-     */
-    void setPrefix(String prefix) { d_windowPrefix = prefix;}
 
     /*!
     \brief
@@ -3923,9 +3901,6 @@ protected:
 
     //! Type name of the window as defined in a Falagard mapping.
     String    d_falagardType;
-
-    //! The prefix used on this window (if any) when created instanced windows.
-    String    d_windowPrefix;
 
     friend class WindowManager;
 };

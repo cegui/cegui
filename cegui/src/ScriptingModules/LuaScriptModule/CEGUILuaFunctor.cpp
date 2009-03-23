@@ -147,7 +147,7 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         needs_lookup = false;
         CEGUI_LOGINSANE("Late binding of callback '"+function_name+"' performed");
         function_name.clear();
-    } // if (needs_lookup)
+    }
 
     // put error handler on stack if we're using such a thing
     int err_idx = 0;
@@ -156,16 +156,6 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         lua_rawgeti(L, LUA_REGISTRYINDEX, d_errFuncIndex);
         err_idx = lua_gettop(L);
     }
-
-	ScriptWindowHelper* helper = 0;
-	//Set a global for this window
-	if(args.d_hasWindow)
-	{
-		WindowEventArgs& we = (WindowEventArgs&)args;
-		helper = new ScriptWindowHelper(we.window);
-		tolua_pushusertype(L,(void*)helper,"CEGUI::ScriptWindowHelper");
-		lua_setglobal(L,"this");
-	}
 
     // retrieve function
     lua_rawgeti(L, LUA_REGISTRYINDEX, index);
@@ -189,23 +179,12 @@ bool LuaFunctor::operator()(const EventArgs& args) const
     {
         String errStr(lua_tostring(L, -1));
         lua_pop(L, 1);
-		if(helper)
-		{
-			delete helper;
-			helper = 0;
-		}
         throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
-    } // if (error)
+    }
 
     // retrieve result
     bool ret = lua_isboolean(L, -1) ? lua_toboolean(L, -1 ) : true;
     lua_pop(L, 1);
-
-	if(helper)
-	{
-		delete helper;
-		helper = 0;
-	}
 
     return ret;
 }

@@ -57,7 +57,6 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIScheme.h"
 #include "CEGUISchemeManager.h"
-#include "CEGUIScriptWindowHelper.h"
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUICoordConverter.h"

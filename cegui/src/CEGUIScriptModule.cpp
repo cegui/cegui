@@ -48,11 +48,6 @@ const String& ScriptModule::getIdentifierString() const
     return d_identifierString;
 }
 
-const String& ScriptModule::getLanguage() const
-{
-	return d_language;
-}
-
 bool ScriptFunctor::operator()(const EventArgs& e) const
 {
 	ScriptModule* scriptModule = System::getSingleton().getScriptingModule();
