@@ -54,7 +54,10 @@ String WindowManager::d_defaultResourceGroup;
 // Declared in WindowManager
 const char	WindowManager::GUILayoutSchemaName[]	= "GUILayout.xsd";
 const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
-
+const String WindowManager::EventNamespace("WindowManager");
+const String WindowManager::EventWindowCreated("WindowCreated");
+const String WindowManager::EventWindowDestroyed("WindowDestroyed");
+    
 
 /*************************************************************************
     Constructor
@@ -132,6 +135,10 @@ Window* WindowManager::createWindow( const String& type, const String& name /*= 
 
 	d_windowRegistry[finalName] = newWindow;
 
+    // fire event to notify interested parites about the new window.
+    WindowEventArgs args(newWindow);
+    fireEvent(EventWindowCreated, args);
+    
 	return newWindow;
 }
 
@@ -182,6 +189,11 @@ void WindowManager::destroyWindow(const String& window)
         sprintf(addr_buff, "(%p)", static_cast<void*>(wnd));
         Logger::getSingleton().logEvent("Window '" + window + "' has been "
             "added to dead pool. " + addr_buff, Informative);
+    
+        // fire event to notify interested parites about window destruction.
+        // TODO: Perhaps this should fire first, so window is still usable?
+        WindowEventArgs args(wnd);
+        fireEvent(EventWindowDestroyed, args);        
 	}
 
 }
