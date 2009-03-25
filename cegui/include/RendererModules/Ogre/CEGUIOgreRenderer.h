@@ -66,6 +66,7 @@ class TextureTarget;
 class OgreGeometryBuffer;
 class OgreTexture;
 class OgreResourceProvider;
+class OgreImageCodec;
 
 //! CEGUI::Renderer implementation for the Ogre engine.
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
@@ -161,6 +162,12 @@ public:
 
     //! function to destroy a CEGUI::OgreResourceProvider object
     static void destroyOgreResourceProvider(OgreResourceProvider& rp);
+
+    //! function to create a CEGUI::OgreImageCodec object.
+    static OgreImageCodec& createOgreImageCodec();
+
+    //! function to destroy a CEGUI::OgreImageCodec object.
+    static void destroyOgreImageCodec(OgreImageCodec& ic);
 
     //! set whether CEGUI rendering will occur
     void setRenderingEnabled(const bool enabled);

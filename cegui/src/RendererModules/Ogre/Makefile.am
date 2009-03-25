@@ -12,6 +12,7 @@ libCEGUIOgreRenderer_la_LDFLAGS += -no-undefined
 endif
 
 libCEGUIOgreRenderer_la_SOURCES = CEGUIOgreGeometryBuffer.cpp \
+                                  CEGUIOgreImageCodec.cpp \
                                   CEGUIOgreRenderer.cpp \
                                   CEGUIOgreRenderTarget.cpp \
                                   CEGUIOgreResourceProvider.cpp \
