@@ -51,8 +51,6 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              looknfeel/TaharezLook.looknfeel \
              looknfeel/Vanilla.looknfeel \
              looknfeel/WindowsLook.looknfeel \
-             lua_scripts/IConsole.lua \
-             lua_scripts/InstancedInit.lua \
              lua_scripts/demo8.lua \
              schemes/Demo8.scheme \
              schemes/GUIScheme.xsd \
