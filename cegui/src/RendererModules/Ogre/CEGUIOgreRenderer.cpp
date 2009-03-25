@@ -34,6 +34,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIOgreResourceProvider.h"
+#include "CEGUIOgreImageCodec.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
@@ -73,7 +74,8 @@ OgreRenderer& OgreRenderer::bootstrapSystem()
 
     OgreRenderer& renderer = create();
     OgreResourceProvider& rp = createOgreResourceProvider();
-    new System(&renderer, &rp);
+    OgreImageCodec& ic = createOgreImageCodec();
+    new System(&renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
     return renderer;
 }
@@ -87,7 +89,8 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target)
 
     OgreRenderer& renderer = OgreRenderer::create(target);
     OgreResourceProvider& rp = createOgreResourceProvider();
-    new System(&renderer, &rp);
+    OgreImageCodec& ic = createOgreImageCodec();
+    new System(&renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
     return renderer;
 }
@@ -104,7 +107,10 @@ void OgreRenderer::destroySystem()
     OgreResourceProvider* rp =
         static_cast<OgreResourceProvider*>(sys->getResourceProvider());
 
+    OgreImageCodec* ic = &static_cast<OgreImageCodec&>(sys->getImageCodec());
+
     delete sys;
+    destroyOgreImageCodec(*ic);
     destroyOgreResourceProvider(*rp);
     destroy(*renderer);
 }
@@ -137,6 +143,18 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 void OgreRenderer::destroyOgreResourceProvider(OgreResourceProvider& rp)
 {
     delete &rp;
+}
+
+//----------------------------------------------------------------------------//
+OgreImageCodec& OgreRenderer::createOgreImageCodec()
+{
+    return *new OgreImageCodec;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
+{
+    delete &ic;
 }
 
 //----------------------------------------------------------------------------//
