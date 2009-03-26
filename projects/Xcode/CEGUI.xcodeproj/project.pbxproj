@@ -552,6 +552,8 @@
 		DA5449320F739ED200983E1A /* CEGUIWRFactoryRegisterer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */; };
 		DA5449330F739ED300983E1A /* CEGUIWRFactoryRegisterer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA54492B0F739DF800983E1A /* CEGUIWRFactoryRegisterer.h */; };
 		DA5449AC0F73A0D800983E1A /* CEGUIAll.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449AB0F73A0D800983E1A /* CEGUIAll.h */; };
+		DA57F8780F7B90E800C7E72D /* CEGUIOgreImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = DA57F8770F7B90E800C7E72D /* CEGUIOgreImageCodec.h */; };
+		DA57F87A0F7B910000C7E72D /* CEGUIOgreImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA57F8790F7B910000C7E72D /* CEGUIOgreImageCodec.cpp */; };
 		DAAAB8070F6E4ACC0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DAAAB8080F6E4ACC0003BE03 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DAAAB80D0F6E4AEF0003BE03 /* Sample_Demo7.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093B30F6D591900B8A582 /* Sample_Demo7.cpp */; };
@@ -2205,6 +2207,8 @@
 		DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWindowRendererModule.cpp; path = ../../cegui/src/CEGUIWindowRendererModule.cpp; sourceTree = SOURCE_ROOT; };
 		DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWRFactoryRegisterer.cpp; path = ../../cegui/src/CEGUIWRFactoryRegisterer.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449AB0F73A0D800983E1A /* CEGUIAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIAll.h; sourceTree = "<group>"; };
+		DA57F8770F7B90E800C7E72D /* CEGUIOgreImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOgreImageCodec.h; path = ../../cegui/include/RendererModules/Ogre/CEGUIOgreImageCodec.h; sourceTree = SOURCE_ROOT; };
+		DA57F8790F7B910000C7E72D /* CEGUIOgreImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOgreImageCodec.cpp; path = ../../cegui/src/RendererModules/Ogre/CEGUIOgreImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAAAB7FD0F6E4A970003BE03 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAAB7FF0F6E4A970003BE03 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
@@ -4033,6 +4037,7 @@
 			isa = PBXGroup;
 			children = (
 				DA1096630F6D639E00B8A582 /* CEGUIOgreGeometryBuffer.h */,
+				DA57F8770F7B90E800C7E72D /* CEGUIOgreImageCodec.h */,
 				DA1096640F6D639E00B8A582 /* CEGUIOgreRenderer.h */,
 				DA1096650F6D639E00B8A582 /* CEGUIOgreRenderTarget.h */,
 				DA1096660F6D639E00B8A582 /* CEGUIOgreResourceProvider.h */,
@@ -4047,6 +4052,7 @@
 			isa = PBXGroup;
 			children = (
 				DA10965C0F6D638C00B8A582 /* CEGUIOgreGeometryBuffer.cpp */,
+				DA57F8790F7B910000C7E72D /* CEGUIOgreImageCodec.cpp */,
 				DA10965D0F6D638C00B8A582 /* CEGUIOgreRenderer.cpp */,
 				DA10965E0F6D638C00B8A582 /* CEGUIOgreRenderTarget.cpp */,
 				DA10965F0F6D638C00B8A582 /* CEGUIOgreResourceProvider.cpp */,
@@ -4408,6 +4414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC4DE030F71005D000EF0AC /* CEGUIOgreGeometryBuffer.h in Headers */,
+				DA57F8780F7B90E800C7E72D /* CEGUIOgreImageCodec.h in Headers */,
 				DAC4DE050F71005D000EF0AC /* CEGUIOgreRenderer.h in Headers */,
 				DAC4DE070F71005D000EF0AC /* CEGUIOgreRenderTarget.h in Headers */,
 				DAC4DE090F71005D000EF0AC /* CEGUIOgreResourceProvider.h in Headers */,
@@ -5886,6 +5893,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC4DE020F71005D000EF0AC /* CEGUIOgreGeometryBuffer.cpp in Sources */,
+				DA57F87A0F7B910000C7E72D /* CEGUIOgreImageCodec.cpp in Sources */,
 				DAC4DE040F71005D000EF0AC /* CEGUIOgreRenderer.cpp in Sources */,
 				DAC4DE060F71005D000EF0AC /* CEGUIOgreRenderTarget.cpp in Sources */,
 				DAC4DE080F71005D000EF0AC /* CEGUIOgreResourceProvider.cpp in Sources */,
