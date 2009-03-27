@@ -15,4 +15,5 @@ libCEGUIXercesParser_la_LIBADD = $(xerces_LIBS) \
 lib_LTLIBRARIES=libCEGUIXercesParser.la
 
 libCEGUIXercesParser_la_SOURCES = CEGUIXercesParser.cpp \
-                                  CEGUIXercesParserModule.cpp
+                                  CEGUIXercesParserModule.cpp \
+                                  CEGUIXercesParserProperties.cpp

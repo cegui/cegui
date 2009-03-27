@@ -30,6 +30,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUIPropertySet.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -38,7 +39,7 @@ namespace CEGUI
     \brief
         This is an abstract class that is used by CEGUI to interface with XML parser libraries.
      */
-    class CEGUIEXPORT XMLParser
+    class CEGUIEXPORT XMLParser : public PropertySet
     {
     public:
         /*!

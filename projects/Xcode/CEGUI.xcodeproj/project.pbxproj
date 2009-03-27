@@ -654,6 +654,7 @@
 		DAC4DE0E0F71005D000EF0AC /* CEGUIOgreWindowTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1096620F6D638C00B8A582 /* CEGUIOgreWindowTarget.cpp */; };
 		DAC4DE0F0F71005D000EF0AC /* CEGUIOgreWindowTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096690F6D639E00B8A582 /* CEGUIOgreWindowTarget.h */; };
 		DAC4DE130F7100A2000EF0AC /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2242,6 +2243,8 @@
 		DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RendererSelector.xib; sourceTree = "<group>"; };
 		DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIOgreRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC4DDF20F70FFBD000EF0AC /* CEGUIOgreRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIOgreRenderer-Info.plist"; sourceTree = "<group>"; };
+		DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIXercesParserProperties.cpp; path = ../../cegui/src/XMLParserModules/XercesParser/CEGUIXercesParserProperties.cpp; sourceTree = SOURCE_ROOT; };
+		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2800,8 +2803,10 @@
 				DA109B4E0F6DA5AF00B8A582 /* CEGUIXercesParser-Info.plist */,
 				DA1096CF0F6D658100B8A582 /* CEGUIXercesParser.h */,
 				DA1096D00F6D658100B8A582 /* CEGUIXercesParserModule.h */,
+				DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */,
 				DA1096CD0F6D656B00B8A582 /* CEGUIXercesParser.cpp */,
 				DA1096CE0F6D656B00B8A582 /* CEGUIXercesParserModule.cpp */,
+				DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */,
 			);
 			name = XercesParser;
 			sourceTree = "<group>";
@@ -5681,6 +5686,7 @@
 			files = (
 				DA109B5A0F6DA5E700B8A582 /* CEGUIXercesParser.cpp in Sources */,
 				DA109B5B0F6DA5E700B8A582 /* CEGUIXercesParserModule.cpp in Sources */,
+				DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

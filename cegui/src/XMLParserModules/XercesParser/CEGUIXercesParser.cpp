@@ -43,6 +43,9 @@ namespace CEGUI
 {
     // Static data definition for default schema resource group name
     String XercesParser::d_defaultSchemaResourceGroup("");
+    // static data defiinition of the SchemaDefaultResourceGroup property.
+    XercesParserProperties::SchemaDefaultResourceGroup
+        XercesParser::s_schemaDefaultResourceGroupProperty;
 
     ////////////////////////////////////////////////////////////////////////////////
     //
@@ -54,6 +57,8 @@ namespace CEGUI
     {
         // set ID string
         d_identifierString = "CEGUI::XercesParser - Official Xerces-C++ based parser module for CEGUI";
+        // add property
+        addProperty(&s_schemaDefaultResourceGroupProperty);
     }
 
     XercesParser::~XercesParser(void)
