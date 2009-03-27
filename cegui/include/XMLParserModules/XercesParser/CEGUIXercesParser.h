@@ -29,6 +29,7 @@
 #define _CEGUIXercesParser_h_
 
 #include "CEGUIXMLParser.h"
+#include "CEGUIXercesParserProperties.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIXERCESPARSER_EXPORTS
@@ -143,6 +144,9 @@ namespace CEGUI
 
         //! holds the default resource group ID for loading schemas.
         static String d_defaultSchemaResourceGroup;
+        //! Property for accessing the default schema resource group ID.
+        static XercesParserProperties::SchemaDefaultResourceGroup
+            s_schemaDefaultResourceGroupProperty;
     };
 
 } // End of  CEGUI namespace section
