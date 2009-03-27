@@ -241,17 +241,6 @@ bool CEGuiSample::initialise()
             break;
         }
 
-        // set the default resource groups to be used
-        CEGUI::Imageset::setDefaultResourceGroup("imagesets");
-        CEGUI::Font::setDefaultResourceGroup("fonts");
-        CEGUI::Scheme::setDefaultResourceGroup("schemes");
-        CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
-        CEGUI::WindowManager::setDefaultResourceGroup("layouts");
-        CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
-#ifdef CEGUI_WITH_XERCES
-        CEGUI::XercesParser::setSchemaDefaultResourceGroup("schemas");
-#endif
-
         // execute the base application (which sets up the demo via 'this' and runs it.
         if (d_sampleApp->execute(this))
         {

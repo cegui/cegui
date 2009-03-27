@@ -78,7 +78,8 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // initialise GUI system using the new automagic function
         d_renderer = &CEGUI::OgreRenderer::bootstrapSystem();
 
-        initialiseResources();
+        initialiseResourceGroupDirectories();
+        initialiseDefaultResourceGroups();
         ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
         // create frame listener
@@ -169,7 +170,7 @@ void CEGuiOgreBaseApplication::cleanup()
     // nothing to do here.
 }
 
-void CEGuiOgreBaseApplication::initialiseResources(void)
+void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 {
     using namespace Ogre;
     ResourceGroupManager& rgm = ResourceGroupManager::getSingleton();
@@ -202,10 +203,8 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "looknfeels");
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-        ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
-    #endif
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
 }
 
 void CEGuiOgreBaseApplication::doFrameUpdate(float elapsed)

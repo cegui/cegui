@@ -43,7 +43,6 @@
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
-#include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIRenderingRoot.h"
 #include <stdexcept>
 
@@ -84,30 +83,8 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
                 // initialise the gui system
                 new CEGUI::System(pimpl->d_renderer);
 
-                // initialise the required dirs for the DefaultResourceProvider
-                CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
-                    (CEGUI::System::getSingleton().getResourceProvider());
-
-                const char* dataPathPrefix = getDataPathPrefix();
-                char resourcePath[PATH_MAX];
-
-                // for each resource type, set a resource group directory
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-                rp->setResourceGroupDirectory("schemes", resourcePath);
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-                rp->setResourceGroupDirectory("imagesets", resourcePath);
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-                rp->setResourceGroupDirectory("fonts", resourcePath);
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-                rp->setResourceGroupDirectory("layouts", resourcePath);
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-                rp->setResourceGroupDirectory("looknfeels", resourcePath);
-                sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-                rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-                #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
-                    rp->setResourceGroupDirectory("schemas", resourcePath);
-                #endif
+                initialiseResourceGroupDirectories();
+                initialiseDefaultResourceGroups();
 
                 CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
 

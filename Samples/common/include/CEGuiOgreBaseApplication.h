@@ -84,8 +84,10 @@ public:
     void cleanup();
 
 protected:
-    void initialiseResources(void);
     void doFPSUpdate(float elapsed);
+
+    // override from base class since we use a non-default resource provider.
+    void initialiseResourceGroupDirectories();
 
     /*************************************************************************
         Data Fields

@@ -26,6 +26,15 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGuiBaseApplication.h"
+#include "CEGUISystem.h"
+#include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIImageset.h"
+#include "CEGUIFont.h"
+#include "CEGUIScheme.h"
+#include "CEGUIWindowManager.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUIScriptModule.h"
+#include "CEGUIXMLParser.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -74,3 +83,50 @@ const char* CEGuiBaseApplication::getDataPathPrefix() const
 
     return dataPathPrefix;
 }
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::initialiseResourceGroupDirectories()
+{
+    // initialise the required dirs for the DefaultResourceProvider
+    CEGUI::DefaultResourceProvider* rp =
+        static_cast<CEGUI::DefaultResourceProvider*>
+            (CEGUI::System::getSingleton().getResourceProvider());
+    
+    const char* dataPathPrefix = getDataPathPrefix();
+    char resourcePath[PATH_MAX];
+
+    // for each resource type, set a resource group directory
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
+    rp->setResourceGroupDirectory("schemes", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
+    rp->setResourceGroupDirectory("imagesets", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
+    rp->setResourceGroupDirectory("fonts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
+    rp->setResourceGroupDirectory("layouts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
+    rp->setResourceGroupDirectory("looknfeels", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
+    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
+    rp->setResourceGroupDirectory("schemas", resourcePath);   
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::initialiseDefaultResourceGroups()
+{
+    // set the default resource groups to be used
+    CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+    CEGUI::Font::setDefaultResourceGroup("fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+    CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+    CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+    
+    // setup default group for validation schemas
+    CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
+    if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+        parser->setProperty("SchemaDefaultResourceGroup", "schemas");        
+}
+
+//----------------------------------------------------------------------------//
