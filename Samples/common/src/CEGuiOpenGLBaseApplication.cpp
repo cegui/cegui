@@ -167,7 +167,6 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
         (CEGUI::System::getSingleton().getResourceProvider());
 
-#ifndef __APPLE__
     const char* dataPathPrefix = getDataPathPrefix();
     char resourcePath[PATH_MAX];
 
@@ -188,17 +187,6 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
         sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
         rp->setResourceGroupDirectory("schemas", resourcePath);
     #endif
-#else
-    rp->setResourceGroupDirectory("schemes", "datafiles/schemes/");
-    rp->setResourceGroupDirectory("imagesets", "datafiles/imagesets/");
-    rp->setResourceGroupDirectory("fonts", "datafiles/fonts/");
-    rp->setResourceGroupDirectory("layouts", "datafiles/layouts/");
-    rp->setResourceGroupDirectory("looknfeels", "datafiles/looknfeel/");
-    rp->setResourceGroupDirectory("lua_scripts", "datafiles/lua_scripts/");
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        rp->setResourceGroupDirectory("schemas", "xml_schemas/");
-    #endif
-#endif
 
     // setup required to do direct rendering of FPS value
     const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
