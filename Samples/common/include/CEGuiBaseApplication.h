@@ -127,6 +127,17 @@ public:
 protected:
     /*!
     \brief
+        Setup standard sample resource group directory locations.  Default uses
+        the CEGUI::DefaultResourceProvider - override if the sample base app
+        being implemented uses something else!
+    */
+    virtual void initialiseResourceGroupDirectories();
+
+    //! initialise the standard default resource groups used by the samples.
+    virtual void initialiseDefaultResourceGroups();
+
+    /*!
+    \brief
         Return the path prefix to use for datafiles.  The value returned
         is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
         if the variable is not set, a default will be used depending on the

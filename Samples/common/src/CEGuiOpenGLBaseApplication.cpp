@@ -41,7 +41,6 @@
 #include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
 #include "CEGuiSample.h"
 #include "CEGUI.h"
-#include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIRenderingRoot.h"
 #include "CEGUIGeometryBuffer.h"
 
@@ -163,31 +162,9 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     // Set the clear color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    // initialise the required dirs for the DefaultResourceProvider
-    CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
-        (CEGUI::System::getSingleton().getResourceProvider());
-
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
-
-    // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    rp->setResourceGroupDirectory("schemes", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    rp->setResourceGroupDirectory("imagesets", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    rp->setResourceGroupDirectory("fonts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    rp->setResourceGroupDirectory("layouts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    rp->setResourceGroupDirectory("looknfeels", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-        rp->setResourceGroupDirectory("schemas", resourcePath);
-    #endif
-
+    initialiseResourceGroupDirectories();
+    initialiseDefaultResourceGroups();
+    
     // setup required to do direct rendering of FPS value
     const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
     d_fps_geometry = &d_renderer->createGeometryBuffer();

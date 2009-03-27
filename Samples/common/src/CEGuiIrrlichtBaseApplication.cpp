@@ -39,7 +39,6 @@
 
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "CEGuiSample.h"
-#include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUIRenderingRoot.h"
 
@@ -79,31 +78,8 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     // create the gui
     new CEGUI::System(d_renderer);
 
-    // initialise the required dirs for the ResourceProvider
-    CEGUI::DefaultResourceProvider* rp =
-        static_cast<CEGUI::DefaultResourceProvider*>
-            (CEGUI::System::getSingleton().getResourceProvider());
-
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
-
-    // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    rp->setResourceGroupDirectory("schemes", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    rp->setResourceGroupDirectory("imagesets", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    rp->setResourceGroupDirectory("fonts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    rp->setResourceGroupDirectory("layouts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    rp->setResourceGroupDirectory("looknfeels", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
-    rp->setResourceGroupDirectory("schemas", resourcePath);
-#endif
+    initialiseResourceGroupDirectories();
+    initialiseDefaultResourceGroups();
 
     irr::scene::ICameraSceneNode* camera =
         d_smgr->addCameraSceneNode(0, core::vector3df(0, 0, 0),
