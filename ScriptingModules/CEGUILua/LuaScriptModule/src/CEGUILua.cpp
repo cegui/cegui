@@ -108,7 +108,9 @@ LuaScriptModule::LuaScriptModule() :
 /*************************************************************************
 	Constructor (uses given Lua state)
 *************************************************************************/
-LuaScriptModule::LuaScriptModule(lua_State* state)
+LuaScriptModule::LuaScriptModule(lua_State* state) :
+    d_errFuncIndex(LUA_NOREF),
+    d_activeErrFuncIndex(LUA_NOREF)
 {
 	// just use the given state
 	d_ownsState = false;
