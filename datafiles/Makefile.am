@@ -1,5 +1,4 @@
-nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
-             fonts/batang.ttf \
+nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              fonts/Batang-26.font \
              fonts/Commonv2c.ttf \
              fonts/Commonwealth-10.font \
@@ -8,7 +7,6 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              fonts/FairChar-30.font \
              fonts/fkp-16.font \
              fonts/fkp.de.pcf \
-             fonts/Font.xsd \
              fonts/Iconified-12.font \
              fonts/Iconiv2.ttf \
              fonts/Sword.ttf \
@@ -24,7 +22,6 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              imagesets/FairChar.imageset \
              imagesets/FairChar.tga \
              imagesets/GPN-2000-001437.tga \
-             imagesets/Imageset.xsd \
              imagesets/logo.png \
              imagesets/ReadMe.txt \
              imagesets/TaharezLook.imageset \
@@ -38,7 +35,6 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              layouts/Demo8.layout \
              layouts/DragDropDemo.layout \
              layouts/FontDemo.layout \
-             layouts/GUILayout.xsd \
              layouts/TabControlDemo.layout \
              layouts/TabPage.layout \
              layouts/TabPage1.layout \
@@ -47,13 +43,11 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              layouts/TreeDemoTaharez.layout \
              layouts/VanillaConsole.layout \
              layouts/VanillaWindows.layout \
-             looknfeel/Falagard.xsd \
              looknfeel/TaharezLook.looknfeel \
              looknfeel/Vanilla.looknfeel \
              looknfeel/WindowsLook.looknfeel \
              lua_scripts/demo8.lua \
              schemes/Demo8.scheme \
-             schemes/GUIScheme.xsd \
              schemes/TaharezLook.scheme \
              schemes/TaharezLookWidgetAliases.scheme \
              schemes/TaharezLookWidgets.scheme \
