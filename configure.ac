@@ -91,6 +91,13 @@ CEGUI_ENABLE_OGRE_RENDERER
 CEGUI_ENABLE_IRRLICHT_RENDERER
 CEGUI_ENABLE_DIRECTFB_RENDERER
 
+# process ImageCodec options
+cegui_run_codectests=no
+if test x"$cegui_enable_opengl" = xyes || test x"$cegui_enable_directfb" = xyes; then
+    cegui_run_codectests=yes
+fi
+CEGUI_ENABLE_IMAGE_CODECS([$cegui_run_codectests])
+
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
 
@@ -223,8 +230,8 @@ echo "*             Using external GLEW library:              ${cegui_found_glew
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
 echo "*"
-if test x"$cegui_enable_opengl" = x"yes"; then
-echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
+if test x"$cegui_enable_opengl" = x"yes" || test x"$cegui_enable_directfb" = x"yes"; then
+echo "* Image Loading Codec Modules (OpenGL and DirectFB Renderers only):"
 echo "*         Building Corona Image Codec:                  ${cegui_with_corona-no}"
 echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
 echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
