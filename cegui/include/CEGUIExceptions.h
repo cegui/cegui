@@ -103,7 +103,7 @@ namespace CEGUI
         \Return
         Integer representing the line number where the exception occurred.
         */
-        const int	getLine(void) const		{return d_line;}
+        int	getLine(void) const		{return d_line;}
 
     protected:
 
