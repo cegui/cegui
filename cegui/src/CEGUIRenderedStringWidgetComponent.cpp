@@ -71,9 +71,9 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
+void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
                                          const Vector2& position,
-                                         const Rect* clip_rect,
+                                         const Rect* /*clip_rect*/,
                                          const float vertical_space) const
 {
     if (!d_window)
@@ -92,10 +92,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
     }
     // HACK: re-adjust for inner-rect of parent (Ends)
 
-
     Vector2 final_pos(position);
-    float y_scale = 1.0f;
-
     // handle formatting options
     switch (d_verticalFormatting)
     {
@@ -154,7 +151,7 @@ bool RenderedStringWidgetComponent::canSplit() const
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
-    float split_point, bool first_component)
+    float /*split_point*/, bool /*first_component*/)
 {
     throw InvalidRequestException("RenderedStringWidgetComponent::split: this "
                                   "component does not support being split.");

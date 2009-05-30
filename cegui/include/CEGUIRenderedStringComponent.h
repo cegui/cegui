@@ -30,7 +30,7 @@
 
 #include "CEGUISize.h"
 #include "CEGUIRect.h"
-#include "CEGUIFalEnums.h"
+#include "falagard/CEGUIFalEnums.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

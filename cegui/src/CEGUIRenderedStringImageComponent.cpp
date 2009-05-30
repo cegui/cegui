@@ -169,7 +169,7 @@ bool RenderedStringImageComponent::canSplit() const
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::split(
-    float split_point, bool first_component)
+    float /*split_point*/, bool /*first_component*/)
 {
     throw InvalidRequestException("RenderedStringImageComponent::split: this "
                                   "component does not support being split.");
