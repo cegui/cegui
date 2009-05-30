@@ -18,12 +18,15 @@ libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS) $(fribidi_LIBS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
+                      CEGUIBasicRenderedStringParser.cpp \
                       CEGUIBoundSlot.cpp \
+                      CEGUICentredRenderedString.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
                       CEGUIDataContainer.cpp \
                       CEGUIDefaultLogger.cpp \
+                      CEGUIDefaultRenderedStringParser.cpp \
                       CEGUIDefaultResourceProvider.cpp \
                       CEGUIDynamicModule.cpp \
                       CEGUIEvent.cpp \
@@ -37,6 +40,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIFontManager.cpp \
                       CEGUIFontProperties.cpp \
                       CEGUIFont_xmlHandler.cpp \
+                      CEGUIFormattedRenderedString.cpp \
                       CEGUIFreeTypeFont.cpp \
                       CEGUIGlobalEventSet.cpp \
                       CEGUIGUILayout_xmlHandler.cpp \
@@ -45,6 +49,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIImageset.cpp \
                       CEGUIImagesetManager.cpp \
                       CEGUIImageset_xmlHandler.cpp \
+                      CEGUILeftAlignedRenderedString.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUIPixmapFont.cpp \
@@ -52,10 +57,16 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
+                      CEGUIRenderedString.cpp \
+                      CEGUIRenderedStringComponent.cpp \
+                      CEGUIRenderedStringImageComponent.cpp \
+                      CEGUIRenderedStringTextComponent.cpp \
+                      CEGUIRenderedStringWidgetComponent.cpp \
                       CEGUIRenderingRoot.cpp \
                       CEGUIRenderingSurface.cpp \
                       CEGUIRenderingWindow.cpp \
                       CEGUIRenderQueue.cpp \
+                      CEGUIRightAlignedRenderedString.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
