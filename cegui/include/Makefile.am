@@ -2,13 +2,16 @@ SUBDIRS = . elements falagard ImageCodecModules RendererModules ScriptingModules
 
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
+                 CEGUIBasicRenderedStringParser.h \
                  CEGUIBoundSlot.h \
+                 CEGUICentredRenderedString.h \
                  CEGUIColourRect.h \
                  CEGUIConfig.h \
                  CEGUIConfig_xmlHandler.h \
                  CEGUICoordConverter.h \
                  CEGUIDataContainer.h \
                  CEGUIDefaultLogger.h \
+                 CEGUIDefaultRenderedStringParser.h \
                  CEGUIDefaultResourceProvider.h \
                  CEGUIDynamicModule.h \
                  CEGUIEvent.h \
@@ -20,6 +23,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFontManager.h \
                  CEGUIFont_xmlHandler.h \
                  CEGUIFreeTypeFont.h \
+                 CEGUIFormattedRenderedString.h \
                  CEGUIForwardRefs.h \
                  CEGUIFreeFunctionSlot.h \
                  CEGUIFunctorCopySlot.h \
@@ -36,6 +40,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIImageset_xmlHandler.h \
                  CEGUIInputEvent.h \
                  CEGUIIteratorBase.h \
+                 CEGUILeftAlignedRenderedString.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
                  CEGUIMouseCursor.h \
@@ -45,6 +50,13 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIPropertySet.h \
                  CEGUIRect.h \
                  CEGUIRefCounted.h \
+                 CEGUIRenderedString.h \
+                 CEGUIRenderedStringComponent.h \
+                 CEGUIRenderedStringImageComponent.h \
+                 CEGUIRenderedStringParser.h \
+                 CEGUIRenderedStringTextComponent.h \
+                 CEGUIRenderedStringWidgetComponent.h \
+                 CEGUIRenderedStringWordWrapper.h \
                  CEGUIRenderer.h \
                  CEGUIRenderEffect.h \
                  CEGUIRenderTarget.h \
@@ -54,6 +66,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIRenderingSurface.h \
                  CEGUIRenderingWindow.h \
                  CEGUIResourceProvider.h \
+                 CEGUIRightAlignedRenderedString.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
                  CEGUIScheme_xmlHandler.h \
