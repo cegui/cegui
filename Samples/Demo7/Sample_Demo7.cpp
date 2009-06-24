@@ -65,7 +65,13 @@ MyEffect::MyEffect() :
 }
 
 //----------------------------------------------------------------------------//
-void MyEffect::performPreRenderFunctions()
+int MyEffect::getPassCount() const
+{
+    return 1;
+}
+
+//----------------------------------------------------------------------------//
+void MyEffect::performPreRenderFunctions(const int /*pass*/)
 {
     // nothing we need here
 }
