@@ -82,22 +82,26 @@ void Direct3D10GeometryBuffer::draw() const
     const UINT offset = 0;
     d_device.IASetVertexBuffers(0, 1, &d_vertexBuffer, &stride, &offset);
 
-    // set up RenderEffect
-    if (d_effect)
-        d_effect->performPreRenderFunctions();
-
-    // draw the batches
-    size_t pos = 0;
-    BatchList::const_iterator i = d_batches.begin();
-    for ( ; i != d_batches.end(); ++i)
+    const int pass_count = d_effect ? d_effect->getPassCount() : 1;
+    for (int pass = 0; pass < pass_count; ++pass)
     {
-        // Set Texture
-        d_owner.setCurrentTextureShaderResource(
-                const_cast<ID3D10ShaderResourceView*>((*i).first));
-        // Draw this batch
-        d_owner.bindTechniquePass();
-        d_device.Draw((*i).second, pos);
-        pos += (*i).second;
+        // set up RenderEffect
+        if (d_effect)
+            d_effect->performPreRenderFunctions(pass);
+
+        // draw the batches
+        size_t pos = 0;
+        BatchList::const_iterator i = d_batches.begin();
+        for ( ; i != d_batches.end(); ++i)
+        {
+            // Set Texture
+            d_owner.setCurrentTextureShaderResource(
+                    const_cast<ID3D10ShaderResourceView*>((*i).first));
+            // Draw this batch
+            d_owner.bindTechniquePass();
+            d_device.Draw((*i).second, pos);
+            pos += (*i).second;
+        }
     }
 
     // clean up RenderEffect

@@ -64,19 +64,23 @@ void Direct3D9GeometryBuffer::draw() const
 
     d_device->SetTransform(D3DTS_WORLD, &d_matrix);
 
-    // set up RenderEffect
-    if (d_effect)
-        d_effect->performPreRenderFunctions();
-
-    // draw the batches
-    size_t pos = 0;
-    BatchList::const_iterator i = d_batches.begin();
-    for ( ; i != d_batches.end(); ++i)
+    const int pass_count = d_effect ? d_effect->getPassCount() : 1;
+    for (int pass = 0; pass < pass_count; ++pass)
     {
-        d_device->SetTexture(0, (*i).first);
-        d_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, (*i).second / 3,
-                                  &d_vertices[pos], sizeof(D3DVertex));
-        pos += (*i).second;
+        // set up RenderEffect
+        if (d_effect)
+            d_effect->performPreRenderFunctions(pass);
+
+        // draw the batches
+        size_t pos = 0;
+        BatchList::const_iterator i = d_batches.begin();
+        for ( ; i != d_batches.end(); ++i)
+        {
+            d_device->SetTexture(0, (*i).first);
+            d_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, (*i).second / 3,
+                                    &d_vertices[pos], sizeof(D3DVertex));
+            pos += (*i).second;
+        }
     }
 
     // clean up RenderEffect

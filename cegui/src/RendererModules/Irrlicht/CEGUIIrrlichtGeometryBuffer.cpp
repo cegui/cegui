@@ -90,20 +90,24 @@ void IrrlichtGeometryBuffer::draw() const
 
     d_driver.setTransform(irr::video::ETS_WORLD, d_matrix);
 
-    // set up RenderEffect
-    if (d_effect)
-        d_effect->performPreRenderFunctions();
-
-    // draw the batches
-    size_t pos = 0;
-    BatchList::const_iterator i = d_batches.begin();
-    for ( ; i != d_batches.end(); ++i)
+    const int pass_count = d_effect ? d_effect->getPassCount() : 1;
+    for (int pass = 0; pass < pass_count; ++pass)
     {
-        d_material.setTexture(0, (*i).first);
-        d_driver.setMaterial(d_material);
-        d_driver.drawIndexedTriangleList(&d_vertices[pos], (*i).second,
-                                         &d_indices[pos], (*i).second / 3);
-        pos += (*i).second;
+        // set up RenderEffect
+        if (d_effect)
+            d_effect->performPreRenderFunctions(pass);
+
+        // draw the batches
+        size_t pos = 0;
+        BatchList::const_iterator i = d_batches.begin();
+        for ( ; i != d_batches.end(); ++i)
+        {
+            d_material.setTexture(0, (*i).first);
+            d_driver.setMaterial(d_material);
+            d_driver.drawIndexedTriangleList(&d_vertices[pos], (*i).second,
+                                            &d_indices[pos], (*i).second / 3);
+            pos += (*i).second;
+        }
     }
 
     // clean up RenderEffect

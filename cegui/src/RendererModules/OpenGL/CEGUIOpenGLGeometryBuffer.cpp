@@ -69,26 +69,30 @@ void OpenGLGeometryBuffer::draw() const
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixd(d_matrix);
 
-    // set up RenderEffect
-    if (d_effect)
-        d_effect->performPreRenderFunctions();
-
-    // draw the batches
-    size_t pos = 0;
-    BatchList::const_iterator i = d_batches.begin();
-    for ( ; i != d_batches.end(); ++i)
+    const int pass_count = d_effect ? d_effect->getPassCount() : 1;
+    for (int pass = 0; pass < pass_count; ++pass)
     {
-        glBindTexture(GL_TEXTURE_2D, (*i).first);
-        // set up pointers to the vertex element arrays
-        glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
-                          &d_vertices[pos]);
-        glColorPointer(4, GL_FLOAT, sizeof(GLVertex),
-                       &d_vertices[pos].colour[0]);
-        glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
-                        &d_vertices[pos].position[0]);
-        // draw the geometry
-        glDrawArrays(GL_TRIANGLES, 0, (*i).second);
-        pos += (*i).second;
+        // set up RenderEffect
+        if (d_effect)
+            d_effect->performPreRenderFunctions(pass);
+
+        // draw the batches
+        size_t pos = 0;
+        BatchList::const_iterator i = d_batches.begin();
+        for ( ; i != d_batches.end(); ++i)
+        {
+            glBindTexture(GL_TEXTURE_2D, (*i).first);
+            // set up pointers to the vertex element arrays
+            glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
+                              &d_vertices[pos]);
+            glColorPointer(4, GL_FLOAT, sizeof(GLVertex),
+                           &d_vertices[pos].colour[0]);
+            glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
+                            &d_vertices[pos].position[0]);
+            // draw the geometry
+            glDrawArrays(GL_TRIANGLES, 0, (*i).second);
+            pos += (*i).second;
+        }
     }
 
     // clean up RenderEffect
