@@ -69,19 +69,23 @@ void DirectFBGeometryBuffer::draw() const
 
     target_surface->SetMatrix(target_surface, d_matrix);
 
-    // set up RenderEffect
-    if (d_effect)
-        d_effect->performPreRenderFunctions();
-
-    // draw the batches
-    size_t pos = 0;
-    BatchList::const_iterator i = d_batches.begin();
-    for ( ; i != d_batches.end(); ++i)
+    const int pass_count = d_effect ? d_effect->getPassCount() : 1;
+    for (int pass = 0; pass < pass_count; ++pass)
     {
-        target_surface->TextureTriangles(target_surface, (*i).first,
-                                         &d_vertices[pos], 0, (*i).second,
-                                         DTTF_LIST);
-        pos += (*i).second;
+        // set up RenderEffect
+        if (d_effect)
+            d_effect->performPreRenderFunctions(pass);
+
+        // draw the batches
+        size_t pos = 0;
+        BatchList::const_iterator i = d_batches.begin();
+        for ( ; i != d_batches.end(); ++i)
+        {
+            target_surface->TextureTriangles(target_surface, (*i).first,
+                                            &d_vertices[pos], 0, (*i).second,
+                                            DTTF_LIST);
+            pos += (*i).second;
+        }
     }
 
     // clean up RenderEffect

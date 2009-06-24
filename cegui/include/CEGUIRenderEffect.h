@@ -46,18 +46,35 @@ class CEGUIEXPORT RenderEffect
 public:
     /*!
     \brief
+        Return the number of passes required by this effect.
+
+    \return
+        integer value indicating the number of rendering passes required to
+        fully render this effect.
+    */
+    virtual int getPassCount() const = 0;
+
+    /*!
+    \brief
         Function called prior to RenderingWindow::draw being called.  This is
-        intended to be used for any required setup / state initialisation.
+        intended to be used for any required setup / state initialisation and is
+        called once for each pass in the effect.
+
+    \param pass
+        Indicates the pass number to be initialised (starting at pass 0).
+
     \note
         Note that this function is called \e after any standard state
         initialisation that might be peformed by the Renderer module.
     */
-    virtual void performPreRenderFunctions() = 0;
+    virtual void performPreRenderFunctions(const int pass) = 0;
 
     /*!
     \brief
         Function called after RenderingWindow::draw is called.  This is intended
-        to be used for any required cleanup / state restoration.
+        to be used for any required cleanup / state restoration.  This function
+        is called <em>once only</em>, unlike performPreRenderFunctions which may
+        be called multiple times; once for each pass in the effect.
     \note
         Note that this function is called \e before any standard state
         cleanup that might be peformed by the Renderer module.
