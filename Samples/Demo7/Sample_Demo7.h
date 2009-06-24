@@ -39,9 +39,10 @@ class MyEffect : public CEGUI::RenderEffect
 {
 public:
     MyEffect();
-    
+
     // implement required functions from RenderEffect interface.
-    void performPreRenderFunctions();
+    int getPassCount() const;
+    void performPreRenderFunctions(const int pass);
     void performPostRenderFunctions();
     bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
     bool update(const float elapsed, CEGUI::RenderingWindow& window);
