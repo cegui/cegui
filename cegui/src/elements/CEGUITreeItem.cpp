@@ -40,6 +40,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+BasicRenderedStringParser TreeItem::d_stringParser;
+
 /*************************************************************************
     Constants
 *************************************************************************/
@@ -65,7 +68,8 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
                DefaultTextColour, DefaultTextColour),
     d_font(0),
     d_iconImage(0),
-    d_isOpen(false)
+    d_isOpen(false),
+    d_renderedStringValid(false)
 {
     setText(text);
 }
@@ -132,23 +136,30 @@ void TreeItem::setFont(const String& font_name)
     setFont(FontManager::getSingleton().getFont(font_name));
 }
 
+//----------------------------------------------------------------------------//
+void TreeItem::setFont(Font* font)
+{
+    d_font = font;
+
+    d_renderedStringValid = false;
+}
+
+//----------------------------------------------------------------------------//
 
 /*************************************************************************
     Return the rendered pixel size of this tree item.
 *************************************************************************/
 Size TreeItem::getPixelSize(void) const
 {
-    Size tmp(0,0);
-    
     Font* fnt = getFont();
-    
-    if (fnt != 0)
-    {
-        tmp.d_height = PixelAligned(fnt->getLineSpacing());
-        tmp.d_width = PixelAligned(fnt->getTextExtent(getText()));
-    }
-    
-    return tmp;
+
+    if (!fnt)
+        return Size(0, 0);
+
+    if (!d_renderedStringValid)
+        parseTextString();
+
+    return d_renderedString.getPixelSize();
 }
 
 /*************************************************************************
@@ -226,7 +237,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
                     float alpha, const Rect *clipper) const
 {
     Rect finalRect(targetRect);
-    
+
     if (d_iconImage != 0)
     {
         // Size iconSize = d_iconImage->getSize();
@@ -248,8 +259,13 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     {
         Rect finalPos(finalRect);
         finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
-        font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned,
-                       getModulateAlphaColourRect(d_textCols, alpha));
+
+        if (!d_renderedStringValid)
+            parseTextString();
+
+        d_renderedString.draw(buffer, finalPos.getPosition(),
+                              &getModulateAlphaColourRect(ColourRect(0xFFFFFFFF),
+                              alpha), clipper);
     }
 }
 
@@ -279,8 +295,11 @@ void TreeItem::setTextColours(colour top_left_colour,
     d_textCols.d_top_right		= top_right_colour;
     d_textCols.d_bottom_left	= bottom_left_colour;
     d_textCols.d_bottom_right	= bottom_right_colour;
+
+    d_renderedStringValid = false;
 }
 
+//----------------------------------------------------------------------------//
 void TreeItem::setText( const String& text )
 {
     d_textLogical = text;
@@ -289,4 +308,16 @@ void TreeItem::setText( const String& text )
 #endif
 
 }
+
+//----------------------------------------------------------------------------//
+void TreeItem::parseTextString() const
+{
+    d_stringParser.setInitialFontName(getFont()->getProperty("Name"));
+    d_stringParser.setInitialColours(d_textCols);
+    d_renderedString = d_stringParser.parse(getTextVisual());
+    d_renderedStringValid = true;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section
