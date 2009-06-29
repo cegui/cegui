@@ -76,7 +76,9 @@ public:
 
     //! draw the component.
     virtual void draw(GeometryBuffer& buffer, const Vector2& position,
-              const Rect* clip_rect, const float vertical_space) const = 0;
+                      const ColourRect* mod_colours,
+                      const Rect* clip_rect,
+                      const float vertical_space) const = 0;
 
     //! return the pixel size of the rendered component.
     virtual Size getPixelSize() const = 0;

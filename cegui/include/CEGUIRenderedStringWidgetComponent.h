@@ -53,7 +53,8 @@ public:
 
     // implementation of abstract base interface
     void draw(GeometryBuffer& buffer, const Vector2& position,
-              const Rect* clip_rect, const float vertical_space) const;
+              const ColourRect* mod_colours, const Rect* clip_rect,
+              const float vertical_space) const;
     Size getPixelSize() const;
     bool canSplit() const;
     RenderedStringWidgetComponent* split(float split_point, bool first_component);

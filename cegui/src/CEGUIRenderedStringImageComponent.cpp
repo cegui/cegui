@@ -104,6 +104,7 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
                                         const Vector2& position,
+                                        const ColourRect* mod_colours,
                                         const Rect* clip_rect,
                                         const float vertical_space) const
 {
@@ -142,8 +143,13 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
     // apply padding to position
     dest.offset(d_padding.getPosition());
 
+    // apply modulative colours if needed.
+    ColourRect final_cols(d_colours);
+    if (mod_colours)
+        final_cols *= *mod_colours;
+
     // draw the image.
-    d_image->draw(buffer, dest, clip_rect, d_colours);
+    d_image->draw(buffer, dest, clip_rect, final_cols);
 }
 
 //----------------------------------------------------------------------------//

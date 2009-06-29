@@ -47,9 +47,10 @@ void LeftAlignedRenderedString::format(const Size& /*area_size*/)
 //----------------------------------------------------------------------------//
 void LeftAlignedRenderedString::draw(GeometryBuffer& buffer,
                                  const Vector2& position,
+                                 const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString.draw(buffer, position, clip_rect);
+    d_renderedString.draw(buffer, position, mod_colours, clip_rect);
 }
 
 //----------------------------------------------------------------------------//

@@ -120,11 +120,12 @@ const ColourRect& RenderedStringTextComponent::getColours() const
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
                                        const Vector2& position,
+                                       const ColourRect* mod_colours,
                                        const Rect* clip_rect,
                                        const float vertical_space) const
 {
     Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
-    
+
     if (!fnt)
         return;
 
@@ -158,8 +159,13 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
     // apply padding to position:
     final_pos += d_padding.getPosition();
 
+    // apply modulative colours if needed.
+    ColourRect final_cols(d_colours);
+    if (mod_colours)
+        final_cols *= *mod_colours;
+
     // draw the text string.
-    fnt->drawText(buffer, d_text, final_pos, clip_rect, d_colours,
+    fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
                   1.0f, y_scale);
 }
 

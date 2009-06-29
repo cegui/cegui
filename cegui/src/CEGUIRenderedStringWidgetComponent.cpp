@@ -73,6 +73,7 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
                                          const Vector2& position,
+                                         const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rect* /*clip_rect*/,
                                          const float vertical_space) const
 {
