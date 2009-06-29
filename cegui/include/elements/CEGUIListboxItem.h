@@ -209,7 +209,7 @@ public:
     \return
         Nothing.
     */
-    void    setText(const String& text);
+    virtual void setText(const String& text);
 
     void    setTooltipText(const String& text)      {d_tooltipText = text;}
 
