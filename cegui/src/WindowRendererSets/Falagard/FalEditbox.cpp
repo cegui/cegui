@@ -85,11 +85,7 @@ void FalagardEditbox::render()
     // text not masked to editText will be the windows getText() String.
     else
     {
-#ifdef CEGUI_BIDI_SUPPORT
         windowText = w->getTextVisual();
-#else
-        windowText = w->getText();
-#endif
         editText = &windowText;
     }
 
@@ -331,19 +327,11 @@ size_t FalagardEditbox::getTextIndexFromPosition(const Point& pt) const
     //
     if (w->isTextMasked())
     {
-#ifdef CEGUI_BIDI_SUPPORT
         return w->getFont()->getCharAtPixel(String(w->getTextVisual().length(), w->getMaskCodePoint()), wndx);
-#else
-        return w->getFont()->getCharAtPixel(String(w->getText().length(), w->getMaskCodePoint()), wndx);
-#endif
     }
     else
     {
-#ifdef CEGUI_BIDI_SUPPORT
         return w->getFont()->getCharAtPixel(w->getTextVisual(), wndx);
-#else
-        return w->getFont()->getCharAtPixel(w->getText(), wndx);
-#endif
     }
 }
 

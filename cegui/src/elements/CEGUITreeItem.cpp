@@ -248,14 +248,8 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     {
         Rect finalPos(finalRect);
         finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
-#ifdef CEGUI_BIDI_SUPPORT
         font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned,
                        getModulateAlphaColourRect(d_textCols, alpha));
-#else
-        font->drawText(buffer, getText(), finalPos, clipper, LeftAligned,
-                       getModulateAlphaColourRect(d_textCols, alpha));
-#endif
-
     }
 }
 

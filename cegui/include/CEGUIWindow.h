@@ -636,10 +636,13 @@ public:
     const String& getText(void) const {return d_textLogical;}
 
 #ifdef CEGUI_BIDI_SUPPORT
-    const String& getTextVisual(void) const   {return d_textVisual;}
-
     const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
     const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
+
+    const String& getTextVisual(void) const   {return d_textVisual;}
+#else
+    // return unmodified text string when no bi-di support is compiled in.
+    const String& getTextVisual(void) const   {return getText();}
 #endif
 
     /*!
