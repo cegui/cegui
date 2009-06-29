@@ -178,6 +178,8 @@ public:
     void draw(GeometryBuffer& buffer, const Rect& targetRect, float alpha, const Rect* clipper) const;
 
 protected:
+    void parseTextString() const;
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/

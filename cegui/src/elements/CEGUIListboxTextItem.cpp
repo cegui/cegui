@@ -103,17 +103,15 @@ void ListboxTextItem::setFont(Font* font)
 *************************************************************************/
 Size ListboxTextItem::getPixelSize(void) const
 {
-	Size tmp(0,0);
+    Font* fnt = getFont();
 
-	Font* fnt = getFont();
+    if (!fnt)
+        return Size(0, 0);
 
-	if (fnt)
-	{
-		tmp.d_height = PixelAligned(fnt->getLineSpacing());
-        tmp.d_width = PixelAligned(fnt->getTextExtent(getText()));
-	}
+    if (!d_renderedStringValid)
+        parseTextString();
 
-	return tmp;
+    return d_renderedString.getPixelSize();
 }
 
 
@@ -136,12 +134,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
             (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
         if (!d_renderedStringValid)
-        {
-            d_stringParser.setInitialFontName(font->getProperty("Name"));
-            d_stringParser.setInitialColours(d_textCols);
-            d_renderedString = d_stringParser.parse(getTextVisual());
-            d_renderedStringValid = true;
-        }
+            parseTextString();
 
         d_renderedString.draw(buffer, finalPos.getPosition(),
                               &getModulateAlphaColourRect(ColourRect(0xFFFFFFFF),
@@ -175,5 +168,12 @@ void ListboxTextItem::setText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
+void ListboxTextItem::parseTextString() const
+{
+    d_stringParser.setInitialFontName(getFont()->getProperty("Name"));
+    d_stringParser.setInitialColours(d_textCols);
+    d_renderedString = d_stringParser.parse(getTextVisual());
+    d_renderedStringValid = true;
+}
 
 } // End of  CEGUI namespace section
