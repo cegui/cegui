@@ -122,11 +122,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect, float
         Rect finalPos(targetRect);
         finalPos.d_top += PixelAligned((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 //        cache.cacheText(d_itemText, font, LeftAligned, finalPos, getModulateAlphaColourRect(d_textCols, alpha), clipper);
-#ifdef CEGUI_BIDI_SUPPORT
         font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
-#else
-        font->drawText(buffer, getText(), finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
-#endif
     }
 }
 

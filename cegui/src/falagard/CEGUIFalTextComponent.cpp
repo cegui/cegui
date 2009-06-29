@@ -115,15 +115,10 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // decide which string to render.
-#ifdef CEGUI_BIDI_SUPPORT
         const String& renderString = d_textPropertyName.empty() ?
             (getTextVisual().empty() ? srcWindow.getTextVisual() : getTextVisual())
             : srcWindow.getProperty(d_textPropertyName);
-#else
-       const String& renderString = d_textPropertyName.empty() ?
-           (getText().empty() ? srcWindow.getText() : getText())
-           : srcWindow.getProperty(d_textPropertyName);
-#endif
+
         // calculate height of formatted text
         float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
 

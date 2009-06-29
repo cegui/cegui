@@ -188,11 +188,7 @@ namespace CEGUI
             {
                 Rect lineRect(drawArea);
                 const MultiLineEditbox::LineInfo& currLine = d_lines[i];
-#ifdef CEGUI_BIDI_SUPPORT
                 String lineText(w->getTextVisual().substr(currLine.d_startIdx, currLine.d_length));
-#else
-                String lineText(w->getText().substr(currLine.d_startIdx, currLine.d_length));
-#endif
 
                 // offset the font little down so that it's centered within its own spacing
                 float old_top = lineRect.d_top;
