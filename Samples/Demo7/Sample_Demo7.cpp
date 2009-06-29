@@ -356,27 +356,27 @@ void Demo7Sample::createListContent(void)
     // Set first row item texts for the MCL
     mclbox->setItem(new MyListItem("Laggers World"), 0, 0);
     mclbox->setItem(new MyListItem("yourgame.some-server.com"), 1, 0);
-    mclbox->setItem(new MyListItem("1000ms"), 2, 0);
+    mclbox->setItem(new MyListItem("[colour='FFFF0000']1000ms"), 2, 0);
 
     // Set second row item texts for the MCL
     mclbox->setItem(new MyListItem("Super-Server"), 0, 1);
     mclbox->setItem(new MyListItem("whizzy.fakenames.net"), 1, 1);
-    mclbox->setItem(new MyListItem("8ms"), 2, 1);
+    mclbox->setItem(new MyListItem("[colour='FF00FF00']8ms"), 2, 1);
 
     // Set third row item texts for the MCL
     mclbox->setItem(new MyListItem("Cray-Z-Eds"), 0, 2);
     mclbox->setItem(new MyListItem("crayzeds.notarealserver.co.uk"), 1, 2);
-    mclbox->setItem(new MyListItem("43ms"), 2, 2);
+    mclbox->setItem(new MyListItem("[colour='FF00FF00']43ms"), 2, 2);
 
     // Set fourth row item texts for the MCL
     mclbox->setItem(new MyListItem("Fake IPs"), 0, 3);
     mclbox->setItem(new MyListItem("123.320.42.242"), 1, 3);
-    mclbox->setItem(new MyListItem("63ms"), 2, 3);
+    mclbox->setItem(new MyListItem("[colour='FFFFFF00']63ms"), 2, 3);
 
     // Set fifth row item texts for the MCL
     mclbox->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
     mclbox->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
-    mclbox->setItem(new MyListItem("284ms"), 2, 4);
+    mclbox->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
 
     mclbox->setProperty("Font", "fkp-16");
 }
