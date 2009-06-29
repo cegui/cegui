@@ -31,6 +31,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIBasicRenderedStringParser.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -121,8 +122,7 @@ public:
      \return
         Nothing
      */
-    void setFont(Font* font)
-    { d_font = font; }
+    void setFont(Font* font);
 
     /*!
      \brief
@@ -634,6 +634,9 @@ protected:
      */
     colour calculateModulatedAlphaColour(colour col, float alpha) const;
 
+    //! parse the text visual string into a RenderString representation.
+    void parseTextString() const;
+
     /*************************************************************************
         Implementation Data
      *************************************************************************/
@@ -674,6 +677,12 @@ protected:
     LBItemList d_listItems;
     //! true if the this item's tree branch is opened.
     bool d_isOpen;
+    //! Parser used to produce a final RenderedString from the standard String.
+    static BasicRenderedStringParser d_stringParser;
+    //! RenderedString drawn by this item.
+    mutable RenderedString  d_renderedString;
+    //! boolean used to track when item state changes (and needs re-parse)
+    mutable bool d_renderedStringValid;
 };
 
 } // End of  CEGUI namespace section
