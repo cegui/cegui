@@ -36,6 +36,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+BasicRenderedStringParser ListboxTextItem::d_stringParser;
+
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -48,7 +51,8 @@ const colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-	d_font(0)
+	d_font(0),
+    d_renderedStringValid(false)
 {
 }
 
@@ -85,6 +89,15 @@ void ListboxTextItem::setFont(const String& font_name)
 	setFont(FontManager::getSingleton().getFont(font_name));
 }
 
+//----------------------------------------------------------------------------//
+void ListboxTextItem::setFont(Font* font)
+{
+    d_font = font;
+
+    d_renderedStringValid = false;
+}
+
+
 /*************************************************************************
 	Return the rendered pixel size of this list box item.
 *************************************************************************/
@@ -107,22 +120,32 @@ Size ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect, float alpha, const Rect* clipper) const
+void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
+                           float alpha, const Rect* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
-    {
-//        cache.cacheImage(*d_selectBrush, targetRect, getModulateAlphaColourRect(d_selectCols, alpha), clipper);
-        d_selectBrush->draw(buffer, targetRect, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
-    }
+        d_selectBrush->draw(buffer, targetRect, clipper,
+                            getModulateAlphaColourRect(d_selectCols, alpha));
 
     Font* font = getFont();
 
     if (font)
     {
         Rect finalPos(targetRect);
-        finalPos.d_top += PixelAligned((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-//        cache.cacheText(d_itemText, font, LeftAligned, finalPos, getModulateAlphaColourRect(d_textCols, alpha), clipper);
-        font->drawText(buffer, getTextVisual(), finalPos, clipper, LeftAligned, getModulateAlphaColourRect(d_textCols, alpha));
+        finalPos.d_top += PixelAligned(
+            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+
+        if (!d_renderedStringValid)
+        {
+            d_stringParser.setInitialFontName(font->getProperty("Name"));
+            d_stringParser.setInitialColours(d_textCols);
+            d_renderedString = d_stringParser.parse(getTextVisual());
+            d_renderedStringValid = true;
+        }
+
+        d_renderedString.draw(buffer, finalPos.getPosition(),
+                              &getModulateAlphaColourRect(ColourRect(0xFFFFFFFF),
+                              alpha), clipper);
     }
 }
 
@@ -130,13 +153,27 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect, float
 /*************************************************************************
 	Set the colours used for text rendering.	
 *************************************************************************/
-void ListboxTextItem::setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void ListboxTextItem::setTextColours(colour top_left_colour,
+                                     colour top_right_colour,
+                                     colour bottom_left_colour,
+                                     colour bottom_right_colour)
 {
 	d_textCols.d_top_left		= top_left_colour;
 	d_textCols.d_top_right		= top_right_colour;
 	d_textCols.d_bottom_left	= bottom_left_colour;
 	d_textCols.d_bottom_right	= bottom_right_colour;
+
+    d_renderedStringValid = false;
 }
 
+//----------------------------------------------------------------------------//
+void ListboxTextItem::setText(const String& text)
+{
+    ListboxItem::setText(text);
+
+    d_renderedStringValid = false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
