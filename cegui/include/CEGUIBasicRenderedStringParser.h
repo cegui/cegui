@@ -62,6 +62,36 @@ public:
     //! Destructor.
     virtual ~BasicRenderedStringParser();
 
+    /*!
+    \brief
+        set the initial font name to be used on subsequent calls to parse.
+
+    \param font_name
+        String object holding the name of the font.
+    */
+    void setInitialFontName(const String& font_name);
+
+    /*!
+    \brief
+        Set the initial colours to be used on subsequent calls to parse.
+
+    \param colours
+        ColourRect object holding the colours.
+    */
+    void setInitialColours(const ColourRect& colours);
+
+    /*!
+    \brief
+        Return the name of the initial font used in each parse.
+    */
+    const String& getInitialFontName() const;
+
+    /*!
+    \brief
+        Return a ColourRect describing the initial colours used in each parse.
+    */
+    const ColourRect& getInitialColours() const;
+
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string);
 
