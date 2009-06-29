@@ -36,7 +36,17 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-BasicRenderedStringParser::BasicRenderedStringParser()
+BasicRenderedStringParser::BasicRenderedStringParser() :
+    d_initialColours(0xFFFFFFFF)
+{
+    initialiseDefaultState();
+}
+
+//----------------------------------------------------------------------------//
+BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
+                                            const ColourRect& initial_colours) :
+    d_initialFontName(initial_font),
+    d_initialColours(initial_colours)
 {
     initialiseDefaultState();
 }
@@ -53,7 +63,7 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string)
 
     RenderedString rs;
     String curr_section;
-    
+
     size_t curr_pos = 0;
 
     while (curr_pos < input_string.length())
@@ -173,8 +183,8 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 void BasicRenderedStringParser::initialiseDefaultState()
 {
     d_padding = Rect(0, 0, 0, 0);
-    d_colours.setColours(0xFFFFFFFF);
-    d_fontName.clear();
+    d_colours = d_initialColours;
+    d_fontName = d_initialFontName;
 }
 
 //----------------------------------------------------------------------------//

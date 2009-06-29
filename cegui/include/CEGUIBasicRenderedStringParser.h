@@ -39,18 +39,29 @@ namespace CEGUI
 {
 /*!
 \brief
-    A middle level string parser that is intended to be subclassed in order to
-    implement actual creation of the RenderedStringComponent objects based upon
-    control constructs extracted from the input string.
+    Basic RenderedStringParser class that offers support for 'colour', 'font',
+    'image' and 'window' control tags.
 */
 class CEGUIEXPORT BasicRenderedStringParser : public RenderedStringParser
 {
 public:
     //! Constructor.
     BasicRenderedStringParser();
+    /*!
+    \brief
+        Initialising constructor.
+
+    \param initial_font
+        Reference to a String holding the name of the initial font to be used.
+
+    \param initial_colours
+        Reference to a ColourRect describing the initial colours to be used.
+    */
+    BasicRenderedStringParser(const String& initial_font,
+                              const ColourRect& initial_colours);
     //! Destructor.
     virtual ~BasicRenderedStringParser();
-    
+
     // implement required interface from RenderedStringParser
     RenderedString parse(const String& input_string);
 
@@ -64,12 +75,17 @@ protected:
     //! initialise the default state
     virtual void initialiseDefaultState();
 
+    //! initial font name
+    String d_initialFontName;
+    //! initial colours
+    ColourRect d_initialColours;
     //! active padding values.
     Rect d_padding;
     //! active colour values.
     ColourRect d_colours;
     //! active font.
     String d_fontName;
+
 };
 
 } // End of  CEGUI namespace section
