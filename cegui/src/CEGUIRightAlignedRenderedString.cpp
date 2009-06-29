@@ -48,11 +48,12 @@ void RightAlignedRenderedString::format(const Size& area_size)
 //----------------------------------------------------------------------------//
 void RightAlignedRenderedString::draw(GeometryBuffer& buffer,
                                  const Vector2& position,
+                                 const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
     d_renderedString.draw(buffer,
                            Vector2(position.d_x + d_offset, position.d_y),
-                           clip_rect);
+                           mod_colours, clip_rect);
 }
 
 //----------------------------------------------------------------------------//

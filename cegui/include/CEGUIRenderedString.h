@@ -69,12 +69,20 @@ public:
         offset from the top-left corner of the entity represented by the
         GeometryBuffer.
 
+    \param mod_colours
+        Pointer to a ColourRect describing colour values that are to be
+        modulated with the any stored colour values to calculate the final
+        colour values to be used.  This may be 0 if no modulated colours are
+        required.  NB: Each specific component will decide if and how it will
+        apply the modulated colours.
+
     \param clip_rect
         Pointer to a Rect object that describes a clipping rectangle that should
         be used when drawing the RenderedString.  This may be 0 if no clipping
         is required.
     */
     void draw(GeometryBuffer& buffer, const Vector2& position,
+              const ColourRect* mod_colours,
               const Rect* clip_rect) const;
 
     /*!
