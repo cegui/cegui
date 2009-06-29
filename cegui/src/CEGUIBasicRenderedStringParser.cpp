@@ -188,5 +188,29 @@ void BasicRenderedStringParser::initialiseDefaultState()
 }
 
 //----------------------------------------------------------------------------//
+void BasicRenderedStringParser::setInitialFontName(const String& font_name)
+{
+    d_initialFontName = font_name;
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::setInitialColours(const ColourRect& colours)
+{
+    d_initialColours = colours;
+}
+
+//----------------------------------------------------------------------------//
+const String& BasicRenderedStringParser::getInitialFontName() const
+{
+    return d_initialFontName;
+}
+
+//----------------------------------------------------------------------------//
+const ColourRect& BasicRenderedStringParser::getInitialColours() const
+{
+    return d_initialColours;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
