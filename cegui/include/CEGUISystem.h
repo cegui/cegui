@@ -1014,6 +1014,9 @@ private:
     //! cleanup image codec 
     void cleanupImageCodec();
 
+    //! Set the CEGUI version string that gets output to the log.
+    void initialiseVersionString();
+
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/
