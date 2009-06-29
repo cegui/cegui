@@ -251,13 +251,7 @@ System::System(Renderer* renderer,
         d_ourResourceProvider = true;
     }
 
-    // Set CEGUI version
-    d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
-#if defined(DEBUG) || defined(_DEBUG)
-    d_strVersion += " (Debug)";
-#endif
+    initialiseVersionString();
 
     // handle initialisation and setup of the XML parser
     setupXMLParser();
@@ -1518,15 +1512,33 @@ void System::setDefaultTooltip(const String& tooltipType)
 
 void System::outputLogHeader()
 {
+    Logger& l(Logger::getSingleton());
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    Logger::getSingleton().logEvent("CEGUI::System singleton created. " + String(addr_buff));
-    Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
-    Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
-    Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
-    Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
-    Logger::getSingleton().logEvent("---- Image Codec module is: " + d_imageCodec->getIdentifierString() + " ----");
-    Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
+    l.logEvent("CEGUI::System singleton created. " + String(addr_buff));
+    l.logEvent("---- CEGUI System initialisation completed ----");
+    l.logEvent("");
+    l.logEvent("");
+    l.logEvent("********************************************************************************");
+    l.logEvent("* Important:                                                                   *");
+    l.logEvent("*     To get support at the CEGUI forums, you must post _at least_ the section *");
+    l.logEvent("*     of this log file indicated below.  Failure to do this will result in no  *");
+    l.logEvent("*     support being given; please do not waste our time.                       *");
+    l.logEvent("********************************************************************************");
+    l.logEvent("");
+    l.logEvent("********************************************************************************");
+    l.logEvent("* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *");
+    l.logEvent("********************************************************************************");
+    l.logEvent("---- Version " + d_strVersion + " ----");
+    l.logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
+    l.logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
+    l.logEvent("---- Image Codec module is: " + d_imageCodec->getIdentifierString() + " ----");
+    l.logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
+    l.logEvent("********************************************************************************");
+    l.logEvent("* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *");
+    l.logEvent("********************************************************************************");
+    l.logEvent("");
+    l.logEvent("");
 }
 
 void System::addStandardWindowFactories()
@@ -1843,6 +1855,71 @@ void System::setDefaultImageCodecName(const String& codecName)
 const String& System::getDefaultImageCodecName()
 {
     return d_defaultImageCodecName;
+}
+
+//----------------------------------------------------------------------------//
+void System::initialiseVersionString()
+{
+    d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
+       PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
+       PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
+
+    d_strVersion += " (Build: " __DATE__;
+
+#if defined(CEGUI_STATIC)
+    d_strVersion += " Static";
+#endif
+
+#if defined(DEBUG) || defined(_DEBUG)
+    d_strVersion += " Debug";
+#endif
+
+#if defined(__linux__)
+    d_strVersion += " GNU/Linux";
+#elif defined (__FreeBSD__)
+    d_strVersion += " FreeBSD";
+#elif defined (__APPLE__)
+    d_strVersion += " Apple Mac";
+#elif defined (_WIN32) || defined (__WIN32__)
+    d_strVersion += " Microsoft Windows";
+#endif
+
+#ifdef __GNUG__
+    d_strVersion += " g++ " __VERSION__;
+
+#ifdef _LP64
+    d_strVersion += " 64 bit";
+#else
+    d_strVersion += " 32 bit";
+#endif
+
+#elif defined(_MSC_VER)
+    d_strVersion += " MSVC++ ";
+#if _MSC_VER <= 1200
+    d_strVersion += "Dinosaur Edition!";
+#elif _MSC_VER == 1300
+    d_strVersion += "7.0";
+#elif _MSC_VER == 1310
+    d_strVersion += "7.1";
+#elif _MSC_VER == 1400
+    d_strVersion += "8.0";
+#elif _MSC_VER == 1500
+    d_strVersion += "9.0";
+#elif _MSC_VER == 1600
+    d_strVersion += "10.0";
+#elif _MSC_VER > 1600
+    d_strVersion += "Great Scott!";
+#endif
+
+#ifdef _WIN64
+    d_strVersion += " 64 bit";
+#else
+    d_strVersion += " 32 bit";
+#endif
+
+#endif
+
+    d_strVersion += ")";
 }
 
 //----------------------------------------------------------------------------//
