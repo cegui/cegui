@@ -43,6 +43,7 @@
 #include "CEGUIUDim.h"
 #include "CEGUIWindowRenderer.h"
 #include "CEGUITextUtils.h"
+#include "CEGUIBasicRenderedStringParser.h"
 #include <vector>
 #include <set>
 
@@ -2793,6 +2794,15 @@ public:
     */
     void setNonClientWindow(const bool setting);
 
+    //! Return the parsed RenderedString object for this window.
+    const RenderedString& getRenderedString() const;
+    //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
+    RenderedStringParser* getCustomRenderedStringParser() const;
+    //! Set a custom RenderedStringParser, or 0 to remove an existing one.
+    void setCustomRenderedStringParser(RenderedStringParser* parser);
+    //! return the active RenderedStringParser to be used
+    virtual RenderedStringParser& getRenderedStringParser() const;
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -3488,6 +3498,15 @@ protected:
     TextUtils::StrIndexList d_v2lMapping;
     String d_textVisual;
 #endif
+    //! RenderedString representation of text string as ouput from a parser.
+    mutable RenderedString d_renderedString;
+    //! true if d_renderedString is valid, false if needs re-parse.
+    mutable bool d_renderedStringValid;
+    //! Shared instance of a parser to be used in most instances.
+    static BasicRenderedStringParser d_basicStringParser;
+    //! Pointer to a custom (user assigned) RenderedStringParser object.
+    RenderedStringParser* d_customStringParser;
+
     //! User ID assigned to this Window
     uint d_ID;
 
