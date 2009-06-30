@@ -104,6 +104,7 @@ namespace CEGUI
         if (!font)
             return;
 
+        // TODO: FIXME: Fix to use FomattedRenderedString based objects.
         HorizontalTextFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
             FalagardXMLHelper::stringToHorzTextFormat(srcWindow.getProperty(d_horzFormatPropertyName));
 
@@ -114,13 +115,36 @@ namespace CEGUI
         ColourRect finalColours;
         initColoursRect(srcWindow, modColours, finalColours);
 
-        // decide which string to render.
-        const String& renderString = d_textPropertyName.empty() ?
-            (getTextVisual().empty() ? srcWindow.getTextVisual() : getTextVisual())
-            : srcWindow.getProperty(d_textPropertyName);
-
         // calculate height of formatted text
-        float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
+        //float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
+
+        RenderedString custom_rs;
+        const RenderedString* rs = &custom_rs;
+        // do we fetch text from a property
+        if (!d_textPropertyName.empty())
+        {
+            // fetch text & do bi-directional reordering as needed
+            String vis;
+            #ifdef CEGUI_BIDI_SUPPORT
+                TextUtils::StrIndexList l2v, v2l;
+                TextUtils::reorderFromLogicalToVisual(
+                    srcWindow.getProperty(d_textPropertyName), vis, l2v, v2l);
+            #else
+                vis = srcWindow.getProperty(d_textPropertyName);
+            #endif
+            // parse string using parser from Window.
+            custom_rs = srcWindow.getRenderedStringParser().parse(vis);
+        }
+        // do we use a static text string from the looknfeel
+        else if (!getTextVisual().empty())
+            // parse string using parser from Window.
+            custom_rs = srcWindow.getRenderedStringParser().parse(getTextVisual());
+        // use ready-made RenderedString from the Window itself
+        else
+            rs = &srcWindow.getRenderedString();
+
+        // TODO: FIXME: Fix for formatting.
+        const float textHeight = rs->getPixelSize().d_height;
 
         // handle dest area adjustments for vertical formatting.
         switch(vertFormatting)
@@ -139,10 +163,10 @@ namespace CEGUI
         }
 
         // offset the font little down so that it's centered within its own spacing
-        destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
+//        destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // add geometry for text to the target window.
-        font->drawText(srcWindow.getGeometryBuffer(), renderString, destRect,
-                       clipper, (TextFormatting)horzFormatting, finalColours);
+        rs->draw(srcWindow.getGeometryBuffer(), destRect.getPosition(),
+                &finalColours, clipper);
     }
 
     void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
