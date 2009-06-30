@@ -105,7 +105,7 @@ WindowProperties::NonClient Window::d_nonClientProperty;
     static data definitions
 *************************************************************************/
 Window* Window::d_captureWindow     = 0;
-
+BasicRenderedStringParser Window::d_basicStringParser;
 
 /*************************************************************************
     Event name constants
@@ -176,6 +176,9 @@ Window::Window(const String& type, const String& name) :
     d_autoRenderingWindow = false;
     d_geometry = &System::getSingleton().getRenderer()->createGeometryBuffer();
     d_rotation = Vector3(0,0,0);
+
+    d_customStringParser = 0;
+    d_renderedStringValid = false;
 
     // basic set-up
     d_parent        = 0;
@@ -968,6 +971,7 @@ void Window::setClippedByParent(bool setting)
 void Window::setText(const String& text)
 {
     d_textLogical = text;
+    d_renderedStringValid = false;
 
 #ifdef CEGUI_BIDI_SUPPORT
     TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual,
@@ -3723,6 +3727,37 @@ void Window::onNonClientChanged(WindowEventArgs& e)
     // TODO: Trigger update of size and position information if needed
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+const RenderedString& Window::getRenderedString() const
+{
+    if (!d_renderedStringValid)
+    {
+        d_renderedString = getRenderedStringParser().parse(getTextVisual());
+        d_renderedStringValid = true;
+    }
+
+    return d_renderedString;
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser* Window::getCustomRenderedStringParser() const
+{
+    return d_customStringParser;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
+{
+    d_customStringParser = parser;
+    d_renderedStringValid = false;
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser& Window::getRenderedStringParser() const
+{
+    return d_customStringParser ? *d_customStringParser : d_basicStringParser;
 }
 
 //----------------------------------------------------------------------------//
