@@ -80,9 +80,9 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
     d_lines.clear();
 
     RenderedString rstring, lstring;
-    rstring = d_renderedString;
+    rstring = *d_renderedString;
     float rs_width;
-    
+
     while ((rs_width = rstring.getPixelSize().d_width) > 0)
     {
         T* frs;
@@ -90,7 +90,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
         // case where no wrapping occurs
         if (rs_width <= area_size.d_width)
         {
-            frs = new T(rstring);
+            frs = new T(*new RenderedString(rstring));
             frs->format(area_size);
             d_lines.push_back(frs);
             return;
@@ -98,7 +98,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
 
         // split rstring at width into lstring and remaining rstring
         rstring.split(area_size.d_width, lstring);
-        frs = new T(lstring);
+        frs = new T(*new RenderedString(lstring));
         frs->format(area_size);
         d_lines.push_back(frs);
     }

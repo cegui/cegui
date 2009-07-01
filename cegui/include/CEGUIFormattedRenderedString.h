@@ -57,12 +57,17 @@ public:
     virtual float getHorizontalExtent() const = 0;
     virtual float getVerticalExtent() const = 0;
 
+    //! set the RenderedString.
+    void setRenderedString(const RenderedString& string);
+
+    const RenderedString& getRenderedString() const;
+
 protected:
     //! Constructor.
     FormattedRenderedString(const RenderedString& string);
 
     //! RenderedString that we handle formatting for.
-    RenderedString d_renderedString;
+    const RenderedString* d_renderedString;
 };
 
 } // End of  CEGUI namespace section

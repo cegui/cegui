@@ -50,7 +50,7 @@ void LeftAlignedRenderedString::draw(GeometryBuffer& buffer,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString.draw(buffer, position, mod_colours, clip_rect);
+    d_renderedString->draw(buffer, position, mod_colours, clip_rect);
 }
 
 //----------------------------------------------------------------------------//
@@ -63,13 +63,13 @@ size_t LeftAlignedRenderedString::getFormattedLineCount() const
 //----------------------------------------------------------------------------//
 float LeftAlignedRenderedString::getHorizontalExtent() const
 {
-    return d_renderedString.getPixelSize().d_width;
+    return d_renderedString->getPixelSize().d_width;
 }
 
 //----------------------------------------------------------------------------//
 float LeftAlignedRenderedString::getVerticalExtent() const
 {
-    return d_renderedString.getPixelSize().d_height;
+    return d_renderedString->getPixelSize().d_height;
 }
 
 //----------------------------------------------------------------------------//
