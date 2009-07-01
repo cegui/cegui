@@ -31,12 +31,18 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIFont.h"
+#include "CEGUILeftAlignedRenderedString.h"
+#include "CEGUIRightAlignedRenderedString.h"
+#include "CEGUICentredRenderedString.h"
+#include "CEGUIRenderedStringWordWrapper.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     TextComponent::TextComponent() :
+        d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
+        d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
         d_horzFormatting(HTF_LEFT_ALIGNED)
     {}
@@ -84,6 +90,69 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
+    void TextComponent::setupStringFormatter(const Window& window,
+                                             const RenderedString& rendered_string) const
+    {
+        const HorizontalTextFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
+            FalagardXMLHelper::stringToHorzTextFormat(window.getProperty(d_horzFormatPropertyName));
+
+        // no formatting change
+        if (horzFormatting == d_lastHorzFormatting)
+        {
+            d_formattedRenderedString->setRenderedString(rendered_string);
+            return;
+        }
+
+        d_lastHorzFormatting = horzFormatting;
+
+        switch(horzFormatting)
+        {
+        case HTF_LEFT_ALIGNED:
+            d_formattedRenderedString =
+                new LeftAlignedRenderedString(rendered_string);
+            break;
+
+        case HTF_CENTRE_ALIGNED:
+            d_formattedRenderedString =
+                new CentredRenderedString(rendered_string);
+            break;
+
+        case HTF_RIGHT_ALIGNED:
+            d_formattedRenderedString =
+                new RightAlignedRenderedString(rendered_string);
+            break;
+
+        case HTF_JUSTIFIED:
+            d_formattedRenderedString =
+                new LeftAlignedRenderedString(rendered_string);
+            break;
+
+        case HTF_WORDWRAP_LEFT_ALIGNED:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <LeftAlignedRenderedString>(rendered_string);
+            break;
+
+        case HTF_WORDWRAP_CENTRE_ALIGNED:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <CentredRenderedString>(rendered_string);
+            break;
+
+        case HTF_WORDWRAP_RIGHT_ALIGNED:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <RightAlignedRenderedString>(rendered_string);
+            break;
+
+        case HTF_WORDWRAP_JUSTIFIED:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <LeftAlignedRenderedString>(rendered_string);
+            break;
+        }
+    }
+
     void TextComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool /*clipToDisplay*/) const
     {
         // get font to use
@@ -104,22 +173,7 @@ namespace CEGUI
         if (!font)
             return;
 
-        // TODO: FIXME: Fix to use FomattedRenderedString based objects.
-        HorizontalTextFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
-            FalagardXMLHelper::stringToHorzTextFormat(srcWindow.getProperty(d_horzFormatPropertyName));
-
-        VerticalTextFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
-            FalagardXMLHelper::stringToVertTextFormat(srcWindow.getProperty(d_vertFormatPropertyName));
-
-        // calculate final colours to be used
-        ColourRect finalColours;
-        initColoursRect(srcWindow, modColours, finalColours);
-
-        // calculate height of formatted text
-        //float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
-
-        RenderedString custom_rs;
-        const RenderedString* rs = &custom_rs;
+        const RenderedString* rs = &d_renderedString;
         // do we fetch text from a property
         if (!d_textPropertyName.empty())
         {
@@ -133,20 +187,27 @@ namespace CEGUI
                 vis = srcWindow.getProperty(d_textPropertyName);
             #endif
             // parse string using parser from Window.
-            custom_rs = srcWindow.getRenderedStringParser().parse(vis);
+            d_renderedString = srcWindow.getRenderedStringParser().parse(vis);
         }
         // do we use a static text string from the looknfeel
         else if (!getTextVisual().empty())
             // parse string using parser from Window.
-            custom_rs = srcWindow.getRenderedStringParser().parse(getTextVisual());
+            d_renderedString = 
+                srcWindow.getRenderedStringParser().parse(getTextVisual());
         // use ready-made RenderedString from the Window itself
         else
             rs = &srcWindow.getRenderedString();
 
-        // TODO: FIXME: Fix for formatting.
-        const float textHeight = rs->getPixelSize().d_height;
+        setupStringFormatter(srcWindow, *rs);
+        d_formattedRenderedString->format(destRect.getSize());
+
+        // Get total formatted height.
+        const float textHeight = d_formattedRenderedString->getVerticalExtent();
 
         // handle dest area adjustments for vertical formatting.
+        VerticalTextFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
+            FalagardXMLHelper::stringToVertTextFormat(srcWindow.getProperty(d_vertFormatPropertyName));
+
         switch(vertFormatting)
         {
         case VTF_CENTRE_ALIGNED:
@@ -162,11 +223,16 @@ namespace CEGUI
             break;
         }
 
+        // calculate final colours to be used
+        ColourRect finalColours;
+        initColoursRect(srcWindow, modColours, finalColours);
+
         // offset the font little down so that it's centered within its own spacing
 //        destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // add geometry for text to the target window.
-        rs->draw(srcWindow.getGeometryBuffer(), destRect.getPosition(),
-                &finalColours, clipper);
+        d_formattedRenderedString->draw(srcWindow.getGeometryBuffer(),
+                                        destRect.getPosition(),
+                                        &finalColours, clipper);
     }
 
     void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const

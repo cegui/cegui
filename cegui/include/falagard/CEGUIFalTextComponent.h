@@ -29,6 +29,9 @@
 #define _CEGUIFalTextComponent_h_
 
 #include "falagard/CEGUIFalComponentBase.h"
+#include "../CEGUIRenderedString.h"
+#include "../CEGUIRefCounted.h"
+#include "../CEGUIFormattedRenderedString.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -233,7 +236,9 @@ namespace CEGUI
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
-
+        //! helper to set up an appropriate FormattedRenderedString
+        void setupStringFormatter(const Window& window,
+                                  const RenderedString& rendered_string) const;
     private:
         String               d_textLogical;            //!< text rendered by this component.
 #ifdef CEGUI_BIDI_SUPPORT
@@ -241,6 +246,13 @@ namespace CEGUI
         TextUtils::StrIndexList d_v2lMapping;
         String d_textVisual;
 #endif
+        //! RenderedString used when not using the one from the target Window.
+        mutable RenderedString d_renderedString;
+        //! FormattedRenderedString object that applies formatting to the string
+        mutable RefCounted<FormattedRenderedString> d_formattedRenderedString;
+        //! Tracks last used horizontal formatting (in order to detect changes)
+        mutable HorizontalTextFormatting d_lastHorzFormatting;
+
         String               d_font;            //!< name of font to use.
         VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
         HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.

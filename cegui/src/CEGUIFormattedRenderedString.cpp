@@ -32,13 +32,25 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 FormattedRenderedString::FormattedRenderedString(const RenderedString& string) :
-    d_renderedString(string)
+    d_renderedString(&string)
 {
 }
 
 //----------------------------------------------------------------------------//
 FormattedRenderedString::~FormattedRenderedString()
 {
+}
+
+//----------------------------------------------------------------------------//
+void FormattedRenderedString::setRenderedString(const RenderedString& string)
+{
+    d_renderedString = &string;
+}
+
+//----------------------------------------------------------------------------//
+const RenderedString& FormattedRenderedString::getRenderedString() const
+{
+    return *d_renderedString;
 }
 
 //----------------------------------------------------------------------------//
