@@ -136,9 +136,10 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
         if (!d_renderedStringValid)
             parseTextString();
 
+        const ColourRect final_colours(
+            getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
         d_renderedString.draw(buffer, finalPos.getPosition(),
-                              &getModulateAlphaColourRect(ColourRect(0xFFFFFFFF),
-                              alpha), clipper);
+                              &final_colours, clipper);
     }
 }
 
