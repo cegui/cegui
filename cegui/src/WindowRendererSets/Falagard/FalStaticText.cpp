@@ -32,6 +32,10 @@
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUIEvent.h"
 #include "CEGUIFont.h"
+#include "CEGUILeftAlignedRenderedString.h"
+#include "CEGUIRightAlignedRenderedString.h"
+#include "CEGUICentredRenderedString.h"
+#include "CEGUIRenderedStringWordWrapper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -62,7 +66,8 @@ namespace CEGUI
         d_vertFormatting(VertCentred),
         d_textCols(0xFFFFFFFF),
         d_enableVertScrollbar(false),
-        d_enableHorzScrollbar(false)
+        d_enableHorzScrollbar(false),
+        d_formattedRenderedString(0)
     {
         registerProperty(&d_textColoursProperty);
         registerProperty(&d_vertFormattingProperty);
@@ -71,11 +76,23 @@ namespace CEGUI
         registerProperty(&d_horzScrollbarProperty);
     }
 
+//----------------------------------------------------------------------------//
+    FalagardStaticText::~FalagardStaticText()
+    {
+        delete d_formattedRenderedString;
+    }
+
+//----------------------------------------------------------------------------//
+
     /************************************************************************
         Populates the rendercache with imagery for this widget
     *************************************************************************/
     void FalagardStaticText::render()
     {
+        // create formatter if needed
+        if (!d_formattedRenderedString && d_window)
+            setupStringFormatter();
+
         // base class rendering
         FalagardStatic::render();
 
@@ -88,21 +105,14 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::renderScrolledText()
     {
-        Font* font = d_window->getFont();
-        // can't render text without a font :)
-        if (font == 0)
-            return;
-
         // get destination area for the text.
-        Rect absarea(getTextRenderArea());
-        Rect clipper(absarea);
+        const Rect clipper(getTextRenderArea());
+        Rect absarea(clipper);
 
-        float textHeight = font->getFormattedLineCount(d_window->getText(), absarea, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
-
-        Scrollbar* vertScrollbar = getVertScrollbar();
-        Scrollbar* horzScrollbar = getHorzScrollbar();
+        d_formattedRenderedString->format(clipper.getSize());
 
         // see if we may need to adjust horizontal position
+        const Scrollbar* const horzScrollbar = getHorzScrollbar();
         if (horzScrollbar->isVisible())
         {
             switch(d_horzFormatting)
@@ -125,10 +135,11 @@ namespace CEGUI
                 absarea.offset(Point(horzScrollbar->getScrollPosition(), 0));
                 break;
             }
-
         }
 
         // adjust y positioning according to formatting option
+        float textHeight = d_formattedRenderedString->getVerticalExtent();
+        const Scrollbar* const vertScrollbar = getVertScrollbar();
         switch(d_vertFormatting)
         {
         case TopAligned:
@@ -138,14 +149,10 @@ namespace CEGUI
         case VertCentred:
             // if scroll bar is in use, act like TopAligned
             if (vertScrollbar->isVisible())
-            {
                 absarea.d_top -= vertScrollbar->getScrollPosition();
-            }
             // no scroll bar, so centre text instead.
             else
-            {
                 absarea.d_top += PixelAligned((absarea.getHeight() - textHeight) * 0.5f);
-            }
 
             break;
 
@@ -155,16 +162,13 @@ namespace CEGUI
             break;
         }
 
-        // offset the font little down so that it's centered within its own spacing
-        absarea.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // calculate final colours
         ColourRect final_cols(d_textCols);
         final_cols.modulateAlpha(d_window->getEffectiveAlpha());
         // cache the text for rendering.
-        font->drawText(d_window->getGeometryBuffer(),
-                       d_window->getTextVisual(),
-                       absarea, &clipper, (TextFormatting)d_horzFormatting,
-                       final_cols);
+        d_formattedRenderedString->draw(d_window->getGeometryBuffer(),
+                                        absarea.getPosition(),
+                                        &final_cols, &clipper);
     }
 
     /************************************************************************
@@ -228,16 +232,13 @@ namespace CEGUI
     *************************************************************************/
     Size FalagardStaticText::getDocumentSize(const Rect& renderArea) const
     {
-        // we need a font to really measure anything
-        Font* font = d_window->getFont();
-        if (font==0)
-        {
-            return Size(0,0);
-        }
-        // return the total extent of the text
-        float totalHeight = font->getFormattedLineCount(d_window->getText(), renderArea, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
-        float widestItem  = font->getFormattedTextExtent(d_window->getText(), renderArea, (TextFormatting)d_horzFormatting);
-        return Size(widestItem,totalHeight);
+        // we need a formatted string to really measure anything
+        if (!d_formattedRenderedString)
+            return Size(0, 0);
+
+        d_formattedRenderedString->format(renderArea.getSize());
+        return Size(d_formattedRenderedString->getHorizontalExtent(),
+                    d_formattedRenderedString->getVerticalExtent());
     }
 
     /*************************************************************************
@@ -264,7 +265,11 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::setHorizontalFormatting(HorzFormatting h_fmt)
     {
+        if (h_fmt == d_horzFormatting)
+            return;
+
         d_horzFormatting = h_fmt;
+        setupStringFormatter();
         configureScrollbars();
         d_window->invalidate();
     }
@@ -458,5 +463,63 @@ namespace CEGUI
         }
         d_connections.clear();
     }
+
+//----------------------------------------------------------------------------//
+    void FalagardStaticText::setupStringFormatter()
+    {
+        // delete any existing formatter
+        delete d_formattedRenderedString;
+        d_formattedRenderedString = 0;
+
+        // create new formatter of whichever type...
+        switch(d_horzFormatting)
+        {
+        case LeftAligned:
+            d_formattedRenderedString =
+                new LeftAlignedRenderedString(d_window->getRenderedString());
+            break;
+
+        case RightAligned:
+            d_formattedRenderedString =
+                new RightAlignedRenderedString(d_window->getRenderedString());
+            break;
+
+        case HorzCentred:
+            d_formattedRenderedString =
+                new CentredRenderedString(d_window->getRenderedString());
+            break;
+
+        case HorzJustified:
+            d_formattedRenderedString =
+                new LeftAlignedRenderedString(d_window->getRenderedString());
+            break;
+
+        case WordWrapLeftAligned:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <LeftAlignedRenderedString>(d_window->getRenderedString());
+            break;
+
+        case WordWrapRightAligned:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <RightAlignedRenderedString>(d_window->getRenderedString());
+            break;
+
+        case WordWrapCentred:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <CentredRenderedString>(d_window->getRenderedString());
+            break;
+
+        case WordWrapJustified:
+            d_formattedRenderedString =
+                new RenderedStringWordWrapper
+                    <LeftAlignedRenderedString>(d_window->getRenderedString());
+            break;
+        }
+    }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

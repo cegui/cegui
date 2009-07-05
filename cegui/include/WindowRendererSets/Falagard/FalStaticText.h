@@ -42,6 +42,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class FormattedRenderedString;
+
     /*!
     \brief
         StaticText class for the FalagardBase module.
@@ -117,6 +119,9 @@ namespace CEGUI
             Constructor
         */
         FalagardStaticText(const String& type);
+
+        //! Destructor.
+        ~FalagardStaticText();
 
         /************************************************************************
             Scrolled text implementation
@@ -195,6 +200,7 @@ namespace CEGUI
         Scrollbar* getHorzScrollbar(void) const;
         Rect getTextRenderArea(void) const;
         Size getDocumentSize(const Rect& renderArea) const;
+        void setupStringFormatter();
 
         // overridden event handlers
         bool onTextChanged(const EventArgs& e);
@@ -218,6 +224,9 @@ namespace CEGUI
         ColourRect      d_textCols;             //!< Colours used when rendering the text.
         bool            d_enableVertScrollbar;  //!< true if vertical scroll bar is enabled.
         bool            d_enableHorzScrollbar;  //!< true if horizontal scroll bar is enabled.
+
+        //! Class that renders RenderedString with some formatting.
+        FormattedRenderedString* d_formattedRenderedString;
 
         typedef std::vector<Event::Connection> ConnectionList;
         ConnectionList  d_connections;
