@@ -46,6 +46,8 @@ class RenderedStringWordWrapper : public FormattedRenderedString
 public:
     //! Constructor.
     RenderedStringWordWrapper(const RenderedString& string);
+    //! Destructor.
+    ~RenderedStringWordWrapper();
 
     // implementation of base interface
     void format(const Size& area_size);
@@ -56,6 +58,8 @@ public:
     float getVerticalExtent() const;
 
 protected:
+    //! Delete the current formatters and associated RenderedStrings
+    void deleteFormatters();
     //! type of collection used to track the formatted lines.
     typedef std::vector<T*> LineList;
     //! collection of lines.
@@ -72,12 +76,16 @@ RenderedStringWordWrapper<T>::RenderedStringWordWrapper(
 
 //----------------------------------------------------------------------------//
 template <typename T>
+RenderedStringWordWrapper<T>::~RenderedStringWordWrapper()
+{
+    deleteFormatters();
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
 void RenderedStringWordWrapper<T>::format(const Size& area_size)
 {
-    // delete existing formatters
-    for (size_t i = 0; i < d_lines.size(); ++i)
-        delete d_lines[i];
-    d_lines.clear();
+    deleteFormatters();
 
     RenderedString rstring, lstring;
     rstring = *d_renderedString;
@@ -157,6 +165,23 @@ float RenderedStringWordWrapper<T>::getVerticalExtent() const
         h += (*i)->getVerticalExtent();
 
     return h;
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void RenderedStringWordWrapper<T>::deleteFormatters()
+{
+    for (size_t i = 0; i < d_lines.size(); ++i)
+    {
+        // get the rendered string back from rthe formatter
+        const RenderedString* rs = &d_lines[i]->getRenderedString();
+        // delete the formatter
+        delete d_lines[i];
+        // delete the rendered string.
+        delete rs;
+    }
+
+    d_lines.clear();
 }
 
 //----------------------------------------------------------------------------//
