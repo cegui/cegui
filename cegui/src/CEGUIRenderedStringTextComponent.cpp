@@ -219,7 +219,11 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     while (left_len < d_text.length())
     {
         size_t token_len = getNextTokenLength(d_text, left_len);
-        float token_extent = 
+        // exit loop if no more valid tokens.
+        if (token_len == 0)
+            break;
+
+        const float token_extent = 
             fnt->getTextExtent(d_text.substr(left_len, token_len));
 
         // does the next token extend past the split point?
@@ -241,7 +245,14 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     
     // perform the split.
     lhs->d_text = d_text.substr(0, left_len);
-    d_text = d_text.substr(left_len);
+
+    // here we're trimming leading delimiters from the substring range 
+    size_t rhs_start =
+        d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
+    if (rhs_start == String::npos)
+        rhs_start = left_len;
+    
+    d_text = d_text.substr(rhs_start);
 
     return lhs;
 }
@@ -250,20 +261,19 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
 size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
                                                        size_t start_idx)
 {
-    // TODO: This was copied from MultiLineEditbox.  It can probably be bumped
-    // TODO: into TextUtils since it accesses no instance data.
+    String::size_type word_start =
+        text.find_first_not_of(TextUtils::DefaultWrapDelimiters, start_idx);
 
-	String::size_type pos =
-        text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
+    if (word_start == String::npos)
+        word_start = start_idx;
 
-	// handle case where no more whitespace exists (so this is last token)
-	if (pos == String::npos)
-		return (text.length() - start_idx);
-	// handle 'delimiter' token cases
-	else if ((pos - start_idx) == 0)
-		return 1;
-	else
-		return (pos - start_idx);
+    String::size_type word_end =
+        text.find_first_of(TextUtils::DefaultWrapDelimiters, word_start);
+
+    if (word_end == String::npos)
+        word_end = text.length();
+
+    return word_end - start_idx;
 }
 
 //----------------------------------------------------------------------------//
