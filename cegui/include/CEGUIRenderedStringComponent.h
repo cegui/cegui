@@ -78,7 +78,8 @@ public:
     virtual void draw(GeometryBuffer& buffer, const Vector2& position,
                       const ColourRect* mod_colours,
                       const Rect* clip_rect,
-                      const float vertical_space) const = 0;
+                      const float vertical_space,
+                      const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
     virtual Size getPixelSize() const = 0;
@@ -101,6 +102,9 @@ public:
 
     //! clone this component.
     virtual RenderedStringComponent* clone() const = 0;
+
+    //! return the total number of spacing characters in the string.
+    virtual size_t getSpaceCount() const = 0;
 
 protected:
     //! Protected constructor.

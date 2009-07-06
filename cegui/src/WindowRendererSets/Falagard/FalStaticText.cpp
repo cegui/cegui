@@ -35,6 +35,7 @@
 #include "CEGUILeftAlignedRenderedString.h"
 #include "CEGUIRightAlignedRenderedString.h"
 #include "CEGUICentredRenderedString.h"
+#include "CEGUIJustifiedRenderedString.h"
 #include "CEGUIRenderedStringWordWrapper.h"
 
 // Start of CEGUI namespace section
@@ -491,7 +492,7 @@ namespace CEGUI
 
         case HorzJustified:
             d_formattedRenderedString =
-                new LeftAlignedRenderedString(d_window->getRenderedString());
+                new JustifiedRenderedString(d_window->getRenderedString());
             break;
 
         case WordWrapLeftAligned:
@@ -515,7 +516,7 @@ namespace CEGUI
         case WordWrapJustified:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <LeftAlignedRenderedString>(d_window->getRenderedString());
+                    <JustifiedRenderedString>(d_window->getRenderedString());
             break;
         }
     }

@@ -122,7 +122,8 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
                                        const Vector2& position,
                                        const ColourRect* mod_colours,
                                        const Rect* clip_rect,
-                                       const float vertical_space) const
+                                       const float vertical_space,
+                                       const float space_extra) const
 {
     Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
@@ -166,7 +167,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 
     // draw the text string.
     fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
-                  1.0f, y_scale);
+                  1.0f, y_scale, space_extra);
 }
 
 //----------------------------------------------------------------------------//
@@ -273,5 +274,23 @@ RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 }
 
 //----------------------------------------------------------------------------//
-    
+size_t RenderedStringTextComponent::getSpaceCount() const
+{
+    // TODO: The value calculated here is a good candidate for caching.
+
+    size_t space_count = 0;
+
+    // Count the number of spaces in this component.
+    // NB: here I'm not countng tabs since those are really intended to be
+    // something other than just a bigger space.
+    const size_t char_count = d_text.length();
+    for (size_t c = 0; c < char_count; ++c)
+        if (d_text[c] == ' ') // TODO: There are other space characters!
+            ++space_count;
+
+    return space_count;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

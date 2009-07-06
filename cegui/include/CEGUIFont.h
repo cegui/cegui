@@ -360,14 +360,12 @@ protected:
     */
     size_t getNextWord(const String& in_string, size_t start_idx, String& out_string) const;
 
-    /*!
-    \brief
-        Draw a line of text.  No formatting is applied.
-    */
+    //! Draw unoformatted line of text with extra space charater padding.
     void drawTextLine(GeometryBuffer& buffer, const String& text,
                       const Vector2& position, const Rect* clip_rect,
                       const ColourRect& colours,
-                      float x_scale = 1.0f, float y_scale = 1.0f);
+                      const float x_scale, const float y_scale,
+                      const float space_extra);
 
     /*!
     \brief
@@ -528,7 +526,8 @@ public:
     size_t drawText(GeometryBuffer& buffer, const String& text,
                     const Rect& draw_area, const Rect* clip_rect,
                     TextFormatting fmt, const ColourRect& colours,
-                    float x_scale = 1.0f, float y_scale = 1.0f);
+                    const float x_scale = 1.0f, const float y_scale = 1.0f,
+                    const float space_extra = 0.0f);
 
     /*!
     \brief
@@ -785,11 +784,12 @@ public:
     void drawText(GeometryBuffer& buffer, const String& text,
                   const Vector2& position, const Rect* clip_rect,
                   const ColourRect& colours,
-                  float x_scale = 1.0f, float y_scale = 1.0f)
+                  float x_scale = 1.0f, float y_scale = 1.0f,
+                  const float space_extra = 0.0f)
     {
         drawText(buffer, text, Rect(position.d_x, position.d_y,
                                     position.d_x, position.d_y),
-                 clip_rect, LeftAligned, colours, x_scale, y_scale);
+                 clip_rect, LeftAligned, colours, x_scale, y_scale, space_extra);
     }
 
     /*!

@@ -75,7 +75,8 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
                                          const Vector2& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rect* /*clip_rect*/,
-                                         const float vertical_space) const
+                                         const float vertical_space,
+                                         const float /*space_extra*/) const
 {
     if (!d_window)
         return;
@@ -165,5 +166,12 @@ RenderedStringWidgetComponent* RenderedStringWidgetComponent::clone() const
 }
 
 //----------------------------------------------------------------------------//
-    
+size_t RenderedStringWidgetComponent::getSpaceCount() const
+{
+    // widgets do not have spaces
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

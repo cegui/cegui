@@ -34,6 +34,7 @@
 #include "CEGUILeftAlignedRenderedString.h"
 #include "CEGUIRightAlignedRenderedString.h"
 #include "CEGUICentredRenderedString.h"
+#include "CEGUIJustifiedRenderedString.h"
 #include "CEGUIRenderedStringWordWrapper.h"
 #include <iostream>
 
@@ -124,7 +125,7 @@ namespace CEGUI
 
         case HTF_JUSTIFIED:
             d_formattedRenderedString =
-                new LeftAlignedRenderedString(rendered_string);
+                new JustifiedRenderedString(rendered_string);
             break;
 
         case HTF_WORDWRAP_LEFT_ALIGNED:
@@ -148,7 +149,7 @@ namespace CEGUI
         case HTF_WORDWRAP_JUSTIFIED:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
-                    <LeftAlignedRenderedString>(rendered_string);
+                    <JustifiedRenderedString>(rendered_string);
             break;
         }
     }
