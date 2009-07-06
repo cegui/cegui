@@ -1,8 +1,8 @@
 /***********************************************************************
-    filename:   CEGUIRenderedStringWidgetComponent.h
-    created:    27/05/2009
-    author:     Paul Turner
- *************************************************************************/
+    filename:   CEGUIJustifiedRenderedString.h
+    created:    Mon Jul 6 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
+*************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
@@ -25,47 +25,38 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderedStringWidgetComponent_h_
-#define _CEGUIRenderedStringWidgetComponent_h_
+#ifndef _CEGUIJustifiedRenderedString_h_
+#define _CEGUIJustifiedRenderedString_h_
 
-#include "CEGUIRenderedStringComponent.h"
+#include "CEGUIFormattedRenderedString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Window;
-
-//! String component that moves a widget to appear as part of the string.
-class CEGUIEXPORT RenderedStringWidgetComponent : public RenderedStringComponent
+/*!
+\brief
+    FormattedRenderedString implementation that renders the RenderedString with
+    justified formatting.
+*/
+class CEGUIEXPORT JustifiedRenderedString : public FormattedRenderedString
 {
 public:
-    //! Constructor
-    RenderedStringWidgetComponent();
-    RenderedStringWidgetComponent(const String& widget_name);
-    RenderedStringWidgetComponent(Window* widget);
+    //! Constructor.
+    JustifiedRenderedString(const RenderedString& string);
 
-    //! Set the window to be controlled by this component.
-    void setWindow(const String& widget_name);
-    //! Set the window to be controlled by this component.
-    void setWindow(Window* widget);
-    //! return the window currently controlled by this component
-    const Window* getWindow() const;
-
-    // implementation of abstract base interface
+    // implementation of base interface
+    void format(const Size& area_size);
     void draw(GeometryBuffer& buffer, const Vector2& position,
-              const ColourRect* mod_colours, const Rect* clip_rect,
-              const float vertical_space, const float space_extra) const;
-    Size getPixelSize() const;
-    bool canSplit() const;
-    RenderedStringWidgetComponent* split(float split_point, bool first_component);
-    RenderedStringWidgetComponent* clone() const;
-    size_t getSpaceCount() const;
+              const ColourRect* mod_colours, const Rect* clip_rect) const;
+    size_t getFormattedLineCount() const;
+    float getHorizontalExtent() const;
+    float getVerticalExtent() const;
 
 protected:
-    //! pointer to the window controlled by this component.
-    Window* d_window;
+    //! space extra size to use to achieve justified formatting.
+    float d_spaceExtra;
 };
 
 } // End of  CEGUI namespace section
 
-#endif // end of guard _CEGUIRenderedStringWidgetComponent_h_
+#endif  // end of guard _CEGUIJustifiedRenderedString_h_

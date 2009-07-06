@@ -266,7 +266,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
         const ColourRect final_colours(
             getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
         d_renderedString.draw(buffer, finalPos.getPosition(),
-                              &final_colours, clipper);
+                              &final_colours, clipper, 0.0f);
     }
 }
 

@@ -52,7 +52,7 @@ void CentredRenderedString::draw(GeometryBuffer& buffer,
 {
     d_renderedString->draw(buffer,
                            Vector2(position.d_x + d_offset, position.d_y),
-                           mod_colours, clip_rect);
+                           mod_colours, clip_rect, 0.0f);
 }
 
 //----------------------------------------------------------------------------//

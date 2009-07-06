@@ -1,8 +1,8 @@
 /***********************************************************************
-    filename:   CEGUIRightAlignedRenderedString.cpp
-    created:    25/05/2009
-    author:     Paul Turner
- *************************************************************************/
+    filename:   CEGUIJustifiedRenderedString.cpp
+    created:    Mon Jul 6 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
+*************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRightAlignedRenderedString.h"
+#include "CEGUIJustifiedRenderedString.h"
 #include "CEGUIRenderedString.h"
 #include "CEGUIVector.h"
 
@@ -33,48 +33,54 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-RightAlignedRenderedString::RightAlignedRenderedString(
-        const RenderedString& string) :
-    FormattedRenderedString(string)
+JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
+    FormattedRenderedString(string),
+    d_spaceExtra(0.0f)
 {
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::format(const Size& area_size)
+void JustifiedRenderedString::format(const Size& area_size)
 {
-    d_offset = area_size.d_width - getHorizontalExtent();
+    const size_t space_count = d_renderedString->getSpaceCount();
+    const float string_width = d_renderedString->getPixelSize().d_width;
+
+    if ((space_count == 0) || (string_width >= area_size.d_width))
+        d_spaceExtra = 0.0f;
+    else
+        d_spaceExtra = (area_size.d_width - string_width) / space_count;
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::draw(GeometryBuffer& buffer,
+void JustifiedRenderedString::draw(GeometryBuffer& buffer,
                                  const Vector2& position,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString->draw(buffer,
-                           Vector2(position.d_x + d_offset, position.d_y),
-                           mod_colours, clip_rect, 0.0f);
+    d_renderedString->draw(buffer, position, mod_colours, clip_rect,
+                           d_spaceExtra);
 }
 
 //----------------------------------------------------------------------------//
-size_t RightAlignedRenderedString::getFormattedLineCount() const
+size_t JustifiedRenderedString::getFormattedLineCount() const
 {
-    // always one line for basic right aligned formatting.
+    // always one line for basic justified formatting.
     return 1;
 }
 
 //----------------------------------------------------------------------------//
-float RightAlignedRenderedString::getHorizontalExtent() const
+float JustifiedRenderedString::getHorizontalExtent() const
 {
-    return d_renderedString->getPixelSize().d_width;
+    return d_renderedString->getPixelSize().d_width +
+      d_renderedString->getSpaceCount() * d_spaceExtra;
 }
 
 //----------------------------------------------------------------------------//
-float RightAlignedRenderedString::getVerticalExtent() const
+float JustifiedRenderedString::getVerticalExtent() const
 {
     return d_renderedString->getPixelSize().d_height;
 }
 
 //----------------------------------------------------------------------------//
-    
+
 } // End of  CEGUI namespace section

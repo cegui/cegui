@@ -40,6 +40,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIImageset_xmlHandler.h \
                  CEGUIInputEvent.h \
                  CEGUIIteratorBase.h \
+                 CEGUIJustifiedRenderedString.h \
                  CEGUILeftAlignedRenderedString.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \

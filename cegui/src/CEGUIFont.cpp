@@ -282,9 +282,16 @@ size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, 
     Renders text on the display.  Return number of lines output.
 *************************************************************************/
 size_t Font::drawText(GeometryBuffer& buffer, const String& text,
-                      const Rect& draw_area, const Rect* clip_rect, TextFormatting fmt,
-                      const ColourRect& colours, float x_scale, float y_scale)
+                      const Rect& draw_area, const Rect* clip_rect,
+                      const TextFormatting fmt, const ColourRect& colours,
+                      const float x_scale, const float y_scale,
+                      const float space_extra)
 {
+    // FIXME: You may notice that space_extra is only passed to some formatting
+    // FIXME: options, and for justified has no effect.  Well this is an interim
+    // FIXME: measure because eventually all formatting will be removed from
+    // FIXME: Font - in the mean time this hacky solution exists!
+
     size_t thisCount;
     size_t lineCount = 0;
 
@@ -311,48 +318,63 @@ size_t Font::drawText(GeometryBuffer& buffer, const String& text,
         switch (fmt)
         {
         case LeftAligned:
-            drawTextLine(buffer, currLine, Vector2(tmpDrawArea.d_left, y_base), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine, Vector2(tmpDrawArea.d_left, y_base),
+                         clip_rect, colours, x_scale, y_scale, space_extra);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case RightAligned:
-            drawTextLine(buffer, currLine, Vector2(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine,
+                         Vector2(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base),
+                         clip_rect, colours, x_scale, y_scale, space_extra);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Centred:
-            drawTextLine(buffer, currLine, Vector2(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(buffer, currLine,
+                         Vector2(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base),
+                         clip_rect, colours, x_scale, y_scale, space_extra);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Justified:
             // new function in order to keep drawTextLine's signature unchanged
-            drawTextLineJustified(buffer, currLine, draw_area, Vector2(tmpDrawArea.d_left, y_base), clip_rect, colours, x_scale, y_scale);
+            drawTextLineJustified(buffer, currLine, draw_area,
+                                  Vector2(tmpDrawArea.d_left, y_base),
+                                  clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case WordWrapLeftAligned:
-            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, LeftAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea,
+                                        clip_rect, LeftAligned, colours,
+                                        x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapRightAligned:
-            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, RightAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea,
+                                        clip_rect, RightAligned, colours,
+                                        x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapCentred:
-            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, Centred, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea,
+                                        clip_rect, Centred, colours,
+                                        x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapJustified:
             // no change needed
-            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea, clip_rect, Justified, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(buffer, currLine, tmpDrawArea,
+                                        clip_rect, Justified, colours,
+                                        x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
@@ -437,8 +459,10 @@ size_t Font::drawWrappedText(GeometryBuffer& buffer, const String& text,
     Draw a line of text.  No formatting is applied.
 *************************************************************************/
 void Font::drawTextLine(GeometryBuffer& buffer, const String& text,
-                        const Vector2& position, const Rect* clip_rect, const ColourRect& colours,
-                        float x_scale, float y_scale)
+                        const Vector2& position, const Rect* clip_rect,
+                        const ColourRect& colours,
+                        const float x_scale, const float y_scale,
+                        const float space_extra)
 {
     Vector2 cur_pos(position);
 
@@ -449,13 +473,16 @@ void Font::drawTextLine(GeometryBuffer& buffer, const String& text,
     {
         glyph = getGlyphData(text[c]);
 
-        if (glyph)
-        {
-            const Image* img = glyph->getImage();
-            cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(buffer, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
-            cur_pos.d_x += glyph->getAdvance(x_scale);
-        }
+        if (!glyph)
+            continue;
+
+        const Image* img = glyph->getImage();
+        cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
+        img->draw(buffer, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
+        cur_pos.d_x += glyph->getAdvance(x_scale);
+        // apply extra spacing to space chars
+        if (text[c] == ' ')
+            cur_pos.d_x += space_extra;
     }
 }
 

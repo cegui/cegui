@@ -45,7 +45,7 @@ RenderedString::~RenderedString()
 //----------------------------------------------------------------------------//
 void RenderedString::draw(GeometryBuffer& buffer, const Vector2& position,
                           const ColourRect* mod_colours,
-                          const Rect* clip_rect) const
+                          const Rect* clip_rect, const float space_extra) const
 {
     const float render_height = getPixelSize().d_height;
 
@@ -54,7 +54,8 @@ void RenderedString::draw(GeometryBuffer& buffer, const Vector2& position,
     ComponentList::const_iterator i = d_components.begin();
     for (; i != d_components.end(); ++i)
     {
-        (*i)->draw(buffer, comp_pos, mod_colours, clip_rect, render_height);
+        (*i)->draw(buffer, comp_pos, mod_colours, clip_rect, render_height,
+                   space_extra);
         comp_pos.d_x += (*i)->getPixelSize().d_width;
     }
 }
@@ -175,5 +176,17 @@ void RenderedString::split(float split_point, RenderedString& left)
 }
 
 //----------------------------------------------------------------------------//
-    
+size_t RenderedString::getSpaceCount() const
+{
+    size_t space_count = 0;
+
+    ComponentList::const_iterator i = d_components.begin();
+    for (; i != d_components.end(); ++i)
+        space_count += (*i)->getSpaceCount();
+
+    return space_count;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

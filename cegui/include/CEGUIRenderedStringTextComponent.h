@@ -67,11 +67,12 @@ public:
     // implementation of abstract base interface
     void draw(GeometryBuffer& buffer, const Vector2& position,
               const ColourRect* mod_colours, const Rect* clip_rect,
-              const float vertical_space) const;
+              const float vertical_space, const float space_extra) const;
     Size getPixelSize() const;
     bool canSplit() const;
     RenderedStringTextComponent* split(float split_point, bool first_component);
     RenderedStringTextComponent* clone() const;
+    size_t getSpaceCount() const;
 
 protected:
     static size_t getNextTokenLength(const String& text, size_t start_idx);

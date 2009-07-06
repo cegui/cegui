@@ -85,15 +85,19 @@ public:
         Pointer to a Rect object that describes a clipping rectangle that should
         be used when drawing the RenderedString.  This may be 0 if no clipping
         is required.
+
+    \param space_extra
+        float value indicating additional padding value to be applied to space
+        characters in the string.
     */
     void draw(GeometryBuffer& buffer, const Vector2& position,
               const ColourRect* mod_colours,
-              const Rect* clip_rect) const;
+              const Rect* clip_rect, const float space_extra) const;
 
     /*!
     \brief
         Return the total pixel size of the RenderedString.
-        
+
     \return
         Size object describing the size of the rendered output of this
         RenderedString in pixels.
@@ -112,7 +116,7 @@ public:
     /*!
     \brief
         split the string as close to \a split_point as possible.
-        
+
         The RenderedString \a left will receive the left portion of the split,
         while the right portion of the split will remain in this RenderedString.
 
@@ -127,6 +131,9 @@ public:
         Any existing content in the RenderedString is replaced.
     */
     void split(float split_point, RenderedString& left);
+
+    //! return the total number of spacing characters in the string.
+    size_t getSpaceCount() const;
 
     //! Copy constructor.
     RenderedString(const RenderedString& other);

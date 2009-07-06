@@ -106,7 +106,8 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
                                         const Vector2& position,
                                         const ColourRect* mod_colours,
                                         const Rect* clip_rect,
-                                        const float vertical_space) const
+                                        const float vertical_space,
+                                        const float /*space_extra*/) const
 {
     if (!d_image)
         return;
@@ -188,5 +189,12 @@ RenderedStringImageComponent* RenderedStringImageComponent::clone() const
 }
 
 //----------------------------------------------------------------------------//
-    
+size_t RenderedStringImageComponent::getSpaceCount() const
+{
+    // images do not have spaces.
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section
