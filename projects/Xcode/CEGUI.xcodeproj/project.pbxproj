@@ -102,6 +102,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */ = {isa = PBXBuildFile; fileRef = DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */; };
+		DA00829B10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */; };
 		DA1097A90F6D841500B8A582 /* CEGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095420F6D5F9B00B8A582 /* CEGUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1097AA0F6D841500B8A582 /* CEGUIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */; };
 		DA1097AB0F6D841500B8A582 /* CEGUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */; };
@@ -1372,6 +1374,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIJustifiedRenderedString.h; path = ../../cegui/include/CEGUIJustifiedRenderedString.h; sourceTree = SOURCE_ROOT; };
+		DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedString.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedString.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093880F6D568600B8A582 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChangeLog; path = ../../doc/ChangeLog; sourceTree = SOURCE_ROOT; };
 		DA1093890F6D568600B8A582 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = ../../doc/COPYING; sourceTree = SOURCE_ROOT; };
 		DA10938A0F6D568600B8A582 /* GLEW-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "GLEW-LICENSE"; path = "../../doc/GLEW-LICENSE"; sourceTree = SOURCE_ROOT; };
@@ -3273,6 +3277,7 @@
 				DA1095640F6D5F9B00B8A582 /* CEGUIImagesetManager.h */,
 				DA1095650F6D5F9B00B8A582 /* CEGUIInputEvent.h */,
 				DA1095660F6D5F9B00B8A582 /* CEGUIIteratorBase.h */,
+				DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */,
 				DAB270650FCAEFEF00D9EE82 /* CEGUILeftAlignedRenderedString.h */,
 				DA1095670F6D5F9B00B8A582 /* CEGUILogger.h */,
 				DA1095680F6D5F9B00B8A582 /* CEGUIMemberFunctionSlot.h */,
@@ -3377,6 +3382,7 @@
 				DA10951F0F6D5F4100B8A582 /* CEGUIImageset.cpp */,
 				DA1095200F6D5F4100B8A582 /* CEGUIImageset_xmlHandler.cpp */,
 				DA1095210F6D5F4100B8A582 /* CEGUIImagesetManager.cpp */,
+				DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */,
 				DAB270710FCAEFFD00D9EE82 /* CEGUILeftAlignedRenderedString.cpp */,
 				DA1095220F6D5F4100B8A582 /* CEGUILogger.cpp */,
 				DA1095230F6D5F4100B8A582 /* CEGUIMouseCursor.cpp */,
@@ -4428,6 +4434,7 @@
 				DA61D5880FCE9E3500EC1A0C /* CEGUIRenderedStringParser.h in Headers */,
 				DA61D5940FCEA14C00EC1A0C /* CEGUIDefaultRenderedStringParser.h in Headers */,
 				DA61D5B00FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h in Headers */,
+				DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5692,6 +5699,7 @@
 				DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */,
 				DA61D5A00FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp in Sources */,
 				DA61D5BC0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp in Sources */,
+				DA00829B10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
