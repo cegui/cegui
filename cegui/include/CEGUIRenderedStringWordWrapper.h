@@ -61,7 +61,7 @@ protected:
     //! Delete the current formatters and associated RenderedStrings
     void deleteFormatters();
     //! type of collection used to track the formatted lines.
-    typedef std::vector<T*> LineList;
+    typedef std::vector<FormattedRenderedString*> LineList;
     //! collection of lines.
     LineList d_lines;
 };
