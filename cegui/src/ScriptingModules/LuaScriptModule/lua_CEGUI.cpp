@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Mar 23 18:59:23 2009.
+** Generated automatically by tolua++-1.0.92 on Wed Jul  8 21:48:39 2009.
 */
 
 #ifndef __cplusplus
@@ -6681,86 +6681,6 @@ static int tolua_CEGUI_CEGUI_Font_getCharAtPixel01(lua_State* tolua_S)
  return 1;
 tolua_lerror:
  return tolua_CEGUI_CEGUI_Font_getCharAtPixel00(tolua_S);
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getFormattedLineCount of class  CEGUI::Font */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_getFormattedLineCount00
-static int tolua_CEGUI_CEGUI_Font_getFormattedLineCount00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isnumber(tolua_S,5,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
-  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
-  const CEGUI::Rect* format_area = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  CEGUI::TextFormatting fmt = ((CEGUI::TextFormatting) (int)  tolua_tonumber(tolua_S,4,0));
-  float xscale = ((float)  tolua_tonumber(tolua_S,5,1));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFormattedLineCount'",NULL);
-#endif
- {
-  unsigned long tolua_ret = (unsigned long)  self->getFormattedLineCount(text,*format_area,fmt,xscale);
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getFormattedLineCount'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getFormattedTextExtent of class  CEGUI::Font */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_getFormattedTextExtent00
-static int tolua_CEGUI_CEGUI_Font_getFormattedTextExtent00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,3,"const CEGUI::Rect",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
- !tolua_isnumber(tolua_S,5,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
-  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
-  const CEGUI::Rect* format_area = ((const CEGUI::Rect*)  tolua_tousertype(tolua_S,3,0));
-  CEGUI::TextFormatting fmt = ((CEGUI::TextFormatting) (int)  tolua_tonumber(tolua_S,4,0));
-  float xscale = ((float)  tolua_tonumber(tolua_S,5,1));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFormattedTextExtent'",NULL);
-#endif
- {
-  float tolua_ret = (float)  self->getFormattedTextExtent(text,*format_area,fmt,xscale);
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getFormattedTextExtent'.",&tolua_err);
- return 0;
-#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -52164,14 +52084,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getLoggingLevel",tolua_CEGUI_CEGUI_Logger_getLoggingLevel00);
    tolua_function(tolua_S,"logEvent",tolua_CEGUI_CEGUI_Logger_logEvent00);
   tolua_endmodule(tolua_S);
-  tolua_constant(tolua_S,"LeftAligned",CEGUI::LeftAligned);
-  tolua_constant(tolua_S,"RightAligned",CEGUI::RightAligned);
-  tolua_constant(tolua_S,"Centred",CEGUI::Centred);
-  tolua_constant(tolua_S,"Justified",CEGUI::Justified);
-  tolua_constant(tolua_S,"WordWrapLeftAligned",CEGUI::WordWrapLeftAligned);
-  tolua_constant(tolua_S,"WordWrapRightAligned",CEGUI::WordWrapRightAligned);
-  tolua_constant(tolua_S,"WordWrapCentred",CEGUI::WordWrapCentred);
-  tolua_constant(tolua_S,"WordWrapJustified",CEGUI::WordWrapJustified);
   tolua_cclass(tolua_S,"Font","CEGUI::Font","",NULL);
   tolua_beginmodule(tolua_S,"Font");
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Font_setProperty00);
@@ -52192,8 +52104,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getFontHeight",tolua_CEGUI_CEGUI_Font_getFontHeight00);
    tolua_function(tolua_S,"getCharAtPixel",tolua_CEGUI_CEGUI_Font_getCharAtPixel00);
    tolua_function(tolua_S,"getCharAtPixel",tolua_CEGUI_CEGUI_Font_getCharAtPixel01);
-   tolua_function(tolua_S,"getFormattedLineCount",tolua_CEGUI_CEGUI_Font_getFormattedLineCount00);
-   tolua_function(tolua_S,"getFormattedTextExtent",tolua_CEGUI_CEGUI_Font_getFormattedTextExtent00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"FontManager","CEGUI::FontManager","",NULL);
   tolua_beginmodule(tolua_S,"FontManager");

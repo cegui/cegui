@@ -31,6 +31,7 @@
 #include "FalModule.h"
 #include "FalStatic.h"
 #include "FalStaticTextProperties.h"
+#include "../../falagard/CEGUIFalEnums.h"
 #include "CEGUIColourRect.h"
 #include <vector>
 
@@ -76,36 +77,6 @@ class FormattedRenderedString;
         static const utf8   TypeName[];       //!< type name for this widget.
 
         /*************************************************************************
-	        Formatting Enumerations
-        *************************************************************************/
-        /*!
-        \brief
-            Enumeration of horizontal formatting options for falagard static text widgets
-        */
-        enum HorzFormatting
-        {
-            LeftAligned,            //!< Text is output as a single line of text with the first character aligned with the left edge of the widget.
-            RightAligned,           //!< Text is output as a single line of text with the last character aligned with the right edge of the widget.
-            HorzCentred,            //!< Text is output as a single line of text horizontally centred within the widget.
-            HorzJustified,          //!< Text is output as a single line of text with the first and last characters aligned with the edges of the widget.
-            WordWrapLeftAligned,    //!< Text is output as multiple word-wrapped lines of text with the first character of each line aligned with the left edge of the widget.
-            WordWrapRightAligned,   //!< Text is output as multiple word-wrapped lines of text with the last character of each line aligned with the right edge of the widget.
-            WordWrapCentred,        //!< Text is output as multiple word-wrapped lines of text with each line horizontally centered within the widget.
-            WordWrapJustified       //!< Text is output as multiple word-wrapped lines of text with the first and last characters of each line aligned with the edges of the widget.
-        };
-
-        /*!
-        \brief
-            Enumeration of vertical formatting options for a falagard static text widgets
-        */
-        enum VertFormatting
-        {
-            TopAligned,     //!< Text is output with the top of first line of text aligned with the top edge of the widget.
-            BottomAligned,  //!< Text is output with the bottom of last line of text aligned with the bottom edge of the widget.
-            VertCentred     //!< Text is output vertically centred within the widget.
-        };
-
-        /*************************************************************************
             Child Widget name suffix constants
         *************************************************************************/
         static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
@@ -136,13 +107,13 @@ class FormattedRenderedString;
         \brief
             Return the current horizontal formatting option set for this widget.
         */
-        HorzFormatting    getHorizontalFormatting(void) const   {return    d_horzFormatting;}
+        HorizontalTextFormatting getHorizontalFormatting(void) const   {return    d_horzFormatting;}
 
         /*!
         \brief
             Return the current vertical formatting option set for this widget.
         */
-        VertFormatting    getVerticalFormatting(void) const     {return d_vertFormatting;}
+        VerticalTextFormatting getVerticalFormatting(void) const     {return d_vertFormatting;}
 
         /*!
         \brief
@@ -154,13 +125,13 @@ class FormattedRenderedString;
         \brief
             Set the vertical formatting required for the text.
         */
-        void    setVerticalFormatting(VertFormatting v_fmt);
+        void    setVerticalFormatting(VerticalTextFormatting v_fmt);
 
         /*!
         \brief
             Set the horizontal formatting required for the text.
         */
-        void    setHorizontalFormatting(HorzFormatting h_fmt);
+        void    setHorizontalFormatting(HorizontalTextFormatting h_fmt);
 
         /*!
         \brief
@@ -219,8 +190,10 @@ class FormattedRenderedString;
         static FalagardStaticTextProperties::HorzScrollbar  d_horzScrollbarProperty;
 
         // implementation data
-        HorzFormatting  d_horzFormatting;       //!< Horizontal formatting to be applied to the text.
-        VertFormatting  d_vertFormatting;       //!< Vertical formatting to be applied to the text.
+        //! Horizontal formatting to be applied to the text.
+        HorizontalTextFormatting d_horzFormatting;
+        //! Vertical formatting to be applied to the text.
+        VerticalTextFormatting d_vertFormatting;
         ColourRect      d_textCols;             //!< Colours used when rendering the text.
         bool            d_enableVertScrollbar;  //!< true if vertical scroll bar is enabled.
         bool            d_enableHorzScrollbar;  //!< true if horizontal scroll bar is enabled.

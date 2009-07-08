@@ -169,24 +169,7 @@ namespace CEGUI
 
     Size Tooltip::getTextSize_impl() const
     {
-        Font* fnt = getFont();
-
-        if (fnt)
-        {
-            Rect area(Vector2(0, 0),
-                      System::getSingleton().getRenderer()->getDisplaySize());
-
-            // get required size of the tool tip according to the text extents.
-            // TODO: Add a proprty to allow specification of text formatting.
-            float height = PixelAligned(fnt->getFormattedLineCount(getText(), area, LeftAligned) * fnt->getLineSpacing());
-            float width = PixelAligned(fnt->getFormattedTextExtent(getText(), area, LeftAligned));
-
-            return Size(width, height);
-        }
-        else
-        {
-            return Size(0,0);
-        }
+        return getRenderedString().getPixelSize();
     }
 
     void Tooltip::resetTimer(void)

@@ -167,7 +167,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 
     // draw the text string.
     fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
-                  1.0f, y_scale, space_extra);
+                  space_extra, 1.0f, y_scale);
 }
 
 //----------------------------------------------------------------------------//

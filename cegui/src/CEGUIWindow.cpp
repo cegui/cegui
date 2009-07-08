@@ -1393,6 +1393,9 @@ void Window::bufferGeometry(const RenderingContext&)
         WindowEventArgs args(this);
         onRenderingStarted(args);
 
+        // HACK: ensure our rendered string content is up to date
+        getRenderedString();
+
         // get derived class or WindowRenderer to re-populate geometry buffer.
         if (d_windowRenderer)
             d_windowRenderer->render();
