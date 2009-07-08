@@ -194,7 +194,8 @@ void FalagardEditbox::render()
         // no highlighted text - we can draw the whole thing
         colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
-        font->drawText(w->getGeometryBuffer(), *editText, text_part_rect, &textArea, LeftAligned, colours);
+        font->drawText(w->getGeometryBuffer(), *editText,
+                       text_part_rect.getPosition(), &textArea, colours);
 
         // adjust rect for next section
         text_part_rect.d_left += font->getTextExtent(*editText);
@@ -246,7 +247,8 @@ void FalagardEditbox::render()
                 colours.setColours(unselectedColour);
                 colours.modulateAlpha(alpha_comp);
             }
-            font->drawText(w->getGeometryBuffer(), currChar, text_part_rect, &textArea, LeftAligned, colours);
+            font->drawText(w->getGeometryBuffer(), currChar,
+                           text_part_rect.getPosition(), &textArea, colours);
 
             // adjust rect for next section
             text_part_rect.d_left += charAdvance;
@@ -276,7 +278,8 @@ void FalagardEditbox::render()
     String sect = editText->substr(0, w->getSelectionStartIndex());
     colours.setColours(unselectedColour);
     colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &textArea, colours);
 
     // adjust rect for next section
     text_part_rect.d_left += font->getTextExtent(sect);
@@ -285,7 +288,8 @@ void FalagardEditbox::render()
     sect = editText->substr(w->getSelectionStartIndex(), w->getSelectionLength());
     colours.setColours(getSelectedTextColour());
     colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &textArea, colours);
 
     // adjust rect for next section
     text_part_rect.d_left += font->getTextExtent(sect);
@@ -294,7 +298,8 @@ void FalagardEditbox::render()
     sect = editText->substr(w->getSelectionEndIndex());
     colours.setColours(unselectedColour);
     colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &textArea, colours);
 
     // remember this for next time.
     d_lastTextOffset = textOffset;

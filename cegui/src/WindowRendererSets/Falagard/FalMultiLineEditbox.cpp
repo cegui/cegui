@@ -201,7 +201,8 @@ namespace CEGUI
                 {
                     colours.setColours(normalTextCol);
                     // render the complete line.
-                    fnt->drawText(w->getGeometryBuffer(), lineText, lineRect, &dest_area, LeftAligned, colours);
+                    fnt->drawText(w->getGeometryBuffer(), lineText,
+                                  lineRect.getPosition(), &dest_area, colours);
                 }
                 // we have at least some selection highlighting to do
                 else
@@ -226,7 +227,8 @@ namespace CEGUI
 
                         // draw this portion of the text
                         colours.setColours(normalTextCol);
-                        fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
+                        fnt->drawText(w->getGeometryBuffer(), sect,
+                                      lineRect.getPosition(), &dest_area, colours);
 
                         // set position ready for next portion of text
                         lineRect.d_left += selStartOffset;
@@ -256,7 +258,8 @@ namespace CEGUI
 
                     // draw the text for this section
                     colours.setColours(selectTextCol);
-                    fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
+                    fnt->drawText(w->getGeometryBuffer(), sect,
+                                  lineRect.getPosition(), &dest_area, colours);
 
                     lineRect.d_top = text_top;
 
@@ -274,7 +277,8 @@ namespace CEGUI
 
                         // render the text for this section.
                         colours.setColours(normalTextCol);
-                        fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
+                        fnt->drawText(w->getGeometryBuffer(), sect,
+                                      lineRect.getPosition(), &dest_area, colours);
                     }
                 }
 

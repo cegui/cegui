@@ -63,8 +63,8 @@ namespace CEGUI
     *************************************************************************/
     FalagardStaticText::FalagardStaticText(const String& type) :
         FalagardStatic(type),
-        d_horzFormatting(LeftAligned),
-        d_vertFormatting(VertCentred),
+        d_horzFormatting(HTF_LEFT_ALIGNED),
+        d_vertFormatting(VTF_CENTRE_ALIGNED),
         d_textCols(0xFFFFFFFF),
         d_enableVertScrollbar(false),
         d_enableHorzScrollbar(false),
@@ -118,21 +118,21 @@ namespace CEGUI
         {
             switch(d_horzFormatting)
             {
-            case LeftAligned:
-            case WordWrapLeftAligned:
-            case Justified:
-            case WordWrapJustified:
+            case HTF_LEFT_ALIGNED:
+            case HTF_WORDWRAP_LEFT_ALIGNED:
+            case HTF_JUSTIFIED:
+            case HTF_WORDWRAP_JUSTIFIED:
                 absarea.offset(Point(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
-            case Centred:
-            case WordWrapCentred:
+            case HTF_CENTRE_ALIGNED:
+            case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
                 absarea.offset(Point(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
-            case RightAligned:
-            case WordWrapRightAligned:
+            case HTF_RIGHT_ALIGNED:
+            case HTF_WORDWRAP_RIGHT_ALIGNED:
                 absarea.offset(Point(horzScrollbar->getScrollPosition(), 0));
                 break;
             }
@@ -143,11 +143,11 @@ namespace CEGUI
         const Scrollbar* const vertScrollbar = getVertScrollbar();
         switch(d_vertFormatting)
         {
-        case TopAligned:
+        case VTF_TOP_ALIGNED:
             absarea.d_top -= vertScrollbar->getScrollPosition();
             break;
 
-        case VertCentred:
+        case VTF_CENTRE_ALIGNED:
             // if scroll bar is in use, act like TopAligned
             if (vertScrollbar->isVisible())
                 absarea.d_top -= vertScrollbar->getScrollPosition();
@@ -157,7 +157,7 @@ namespace CEGUI
 
             break;
 
-        case BottomAligned:
+        case VTF_BOTTOM_ALIGNED:
             absarea.d_top = absarea.d_bottom - textHeight;
             absarea.d_top += vertScrollbar->getScrollPosition();
             break;
@@ -254,7 +254,7 @@ namespace CEGUI
     /*************************************************************************
         Set the formatting required for the text.    
     *************************************************************************/
-    void FalagardStaticText::setVerticalFormatting(VertFormatting v_fmt)
+    void FalagardStaticText::setVerticalFormatting(VerticalTextFormatting v_fmt)
     {
         d_vertFormatting = v_fmt;
         configureScrollbars();
@@ -264,7 +264,7 @@ namespace CEGUI
     /*************************************************************************
         Set the formatting required for the text.    
     *************************************************************************/
-    void FalagardStaticText::setHorizontalFormatting(HorzFormatting h_fmt)
+    void FalagardStaticText::setHorizontalFormatting(HorizontalTextFormatting h_fmt)
     {
         if (h_fmt == d_horzFormatting)
             return;
@@ -475,45 +475,45 @@ namespace CEGUI
         // create new formatter of whichever type...
         switch(d_horzFormatting)
         {
-        case LeftAligned:
+        case HTF_LEFT_ALIGNED:
             d_formattedRenderedString =
                 new LeftAlignedRenderedString(d_window->getRenderedString());
             break;
 
-        case RightAligned:
+        case HTF_RIGHT_ALIGNED:
             d_formattedRenderedString =
                 new RightAlignedRenderedString(d_window->getRenderedString());
             break;
 
-        case HorzCentred:
+        case HTF_CENTRE_ALIGNED:
             d_formattedRenderedString =
                 new CentredRenderedString(d_window->getRenderedString());
             break;
 
-        case HorzJustified:
+        case HTF_JUSTIFIED:
             d_formattedRenderedString =
                 new JustifiedRenderedString(d_window->getRenderedString());
             break;
 
-        case WordWrapLeftAligned:
+        case HTF_WORDWRAP_LEFT_ALIGNED:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <LeftAlignedRenderedString>(d_window->getRenderedString());
             break;
 
-        case WordWrapRightAligned:
+        case HTF_WORDWRAP_RIGHT_ALIGNED:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <RightAlignedRenderedString>(d_window->getRenderedString());
             break;
 
-        case WordWrapCentred:
+        case HTF_WORDWRAP_CENTRE_ALIGNED:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <CentredRenderedString>(d_window->getRenderedString());
             break;
 
-        case WordWrapJustified:
+        case HTF_WORDWRAP_JUSTIFIED:
             d_formattedRenderedString =
                 new RenderedStringWordWrapper
                     <JustifiedRenderedString>(d_window->getRenderedString());

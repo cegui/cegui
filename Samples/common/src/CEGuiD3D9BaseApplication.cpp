@@ -165,7 +165,8 @@ bool CEGuiD3D9BaseApplication::overlayHandler(const CEGUI::EventArgs& args)
     if (fnt)
     {
         d_fps_geometry->reset();
-        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0);
+        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0,
+                      colour(0xFFFFFFFF));
         d_fps_geometry->draw();
     }
 

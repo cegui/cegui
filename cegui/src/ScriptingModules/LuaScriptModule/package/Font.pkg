@@ -1,20 +1,4 @@
 /***********************************************************************
-	TextFormatting
-***********************************************************************/
-enum TextFormatting
-{
-	LeftAligned,
-	RightAligned,
-	Centred,
-	Justified,
-	WordWrapLeftAligned,
-	WordWrapRightAligned,
-	WordWrapCentred,
-	WordWrapJustified
-};
-
-
-/***********************************************************************
 	Font
 ***********************************************************************/
 class Font //: public PropertySet
@@ -34,7 +18,7 @@ class Font //: public PropertySet
     static void setDefaultResourceGroup(string resourceGroup);
     static string getDefaultResourceGroup();
 
-    void load ();
+    void load();
 
 	bool isCodepointAvailable(unsigned long cp) const;
 
@@ -47,7 +31,4 @@ class Font //: public PropertySet
 
 	unsigned long getCharAtPixel(string text, unsigned long start_char, float pixel, float xscale=1);
 	unsigned long getCharAtPixel(string text, float pixel, float xscale=1);
-
-	unsigned long getFormattedLineCount(string text, const Rect& format_area, TextFormatting fmt, float xscale=1);
-	float getFormattedTextExtent(string text, const Rect& format_area, TextFormatting fmt, float xscale=1);
 };

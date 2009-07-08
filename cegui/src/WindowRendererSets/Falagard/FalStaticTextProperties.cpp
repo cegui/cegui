@@ -61,31 +61,31 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 
 	switch(wr->getHorizontalFormatting())
 	{
-	case FalagardStaticText::RightAligned:
+	case HTF_RIGHT_ALIGNED:
 		return String("RightAligned");
 		break;
 
-	case FalagardStaticText::HorzCentred:
+	case HTF_CENTRE_ALIGNED:
 		return String("HorzCentred");
 		break;
 
-	case FalagardStaticText::HorzJustified:
+	case HTF_JUSTIFIED:
 		return String("HorzJustified");
 		break;
 
-	case FalagardStaticText::WordWrapLeftAligned:
+	case HTF_WORDWRAP_LEFT_ALIGNED:
 		return String("WordWrapLeftAligned");
 		break;
 
-	case FalagardStaticText::WordWrapRightAligned:
+	case HTF_WORDWRAP_RIGHT_ALIGNED:
 		return String("WordWrapRightAligned");
 		break;
 
-	case FalagardStaticText::WordWrapCentred:
+	case HTF_WORDWRAP_CENTRE_ALIGNED:
 		return String("WordWrapCentred");
 		break;
 
-	case FalagardStaticText::WordWrapJustified:
+	case HTF_WORDWRAP_JUSTIFIED:
 		return String("WordWrapJustified");
 		break;
 
@@ -98,39 +98,39 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 
 void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
-	FalagardStaticText::HorzFormatting fmt;
+	HorizontalTextFormatting fmt;
 
 	if (value == "RightAligned")
 	{
-		fmt = FalagardStaticText::RightAligned;
+		fmt = HTF_RIGHT_ALIGNED;
 	}
 	else if (value == "HorzCentred")
 	{
-		fmt = FalagardStaticText::HorzCentred;
+		fmt = HTF_CENTRE_ALIGNED;
 	}
 	else if (value == "HorzJustified")
 	{
-		fmt = FalagardStaticText::HorzJustified;
+		fmt = HTF_JUSTIFIED;
 	}
 	else if (value == "WordWrapLeftAligned")
 	{
-		fmt = FalagardStaticText::WordWrapLeftAligned;
+		fmt = HTF_WORDWRAP_LEFT_ALIGNED;
 	}
 	else if (value == "WordWrapRightAligned")
 	{
-		fmt = FalagardStaticText::WordWrapRightAligned;
+		fmt = HTF_WORDWRAP_RIGHT_ALIGNED;
 	}
 	else if (value == "WordWrapCentred")
 	{
-		fmt = FalagardStaticText::WordWrapCentred;
+		fmt = HTF_WORDWRAP_CENTRE_ALIGNED;
 	}
 	else if (value == "WordWrapJustified")
 	{
-		fmt = FalagardStaticText::WordWrapJustified;
+		fmt = HTF_WORDWRAP_JUSTIFIED;
 	}
 	else
 	{
-		fmt = FalagardStaticText::LeftAligned;
+		fmt = HTF_LEFT_ALIGNED;
 	}
 
 	FalagardStaticText* wr = static_cast<FalagardStaticText*>(
@@ -146,11 +146,11 @@ String	VertFormatting::get(const PropertyReceiver* receiver) const
 
 	switch(wr->getVerticalFormatting())
 	{
-	case FalagardStaticText::BottomAligned:
+	case VTF_BOTTOM_ALIGNED:
 		return String("BottomAligned");
 		break;
 
-	case FalagardStaticText::VertCentred:
+	case VTF_CENTRE_ALIGNED:
 		return String("VertCentred");
 		break;
 
@@ -163,19 +163,19 @@ String	VertFormatting::get(const PropertyReceiver* receiver) const
 
 void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
-	FalagardStaticText::VertFormatting fmt;
+	VerticalTextFormatting fmt;
 
 	if (value == "BottomAligned")
 	{
-		fmt = FalagardStaticText::BottomAligned;
+		fmt = VTF_BOTTOM_ALIGNED;
 	}
 	else if (value == "VertCentred")
 	{
-		fmt = FalagardStaticText::VertCentred;
+		fmt = VTF_CENTRE_ALIGNED;
 	}
 	else
 	{
-		fmt = FalagardStaticText::TopAligned;
+		fmt = VTF_TOP_ALIGNED;
 	}
 
 	FalagardStaticText* wr = static_cast<FalagardStaticText*>(
