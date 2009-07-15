@@ -50,7 +50,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIImagesetManager.cpp \
                       CEGUIImageset_xmlHandler.cpp \
                       CEGUIJustifiedRenderedString.cpp \
-                      CEGUIJustifiedRenderedStringWordWrapper.cpp \
                       CEGUILeftAlignedRenderedString.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \

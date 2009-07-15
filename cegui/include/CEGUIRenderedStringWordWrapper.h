@@ -29,6 +29,7 @@
 #define _CEGUIRenderedStringWordWrapper_h_
 
 #include "CEGUIFormattedRenderedString.h"
+#include "CEGUIJustifiedRenderedString.h"
 #include "CEGUIVector.h"
 #include <vector>
 
@@ -65,6 +66,41 @@ protected:
     //! collection of lines.
     LineList d_lines;
 };
+
+//----------------------------------------------------------------------------//
+template <>
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Size& area_size)
+{
+    deleteFormatters();
+
+    RenderedString rstring, lstring;
+    rstring = *d_renderedString;
+    float rs_width;
+
+    FormattedRenderedString* frs;
+
+    for (size_t line = 0; line < rstring.getLineCount(); ++line)
+    {
+        while ((rs_width = rstring.getPixelSize(line).d_width) > 0)
+        {
+            // skip line if no wrapping occurs
+            if (rs_width <= area_size.d_width)
+                break;
+
+            // split rstring at width into lstring and remaining rstring
+            rstring.split(line, area_size.d_width, lstring);
+            frs = new JustifiedRenderedString(*new RenderedString(lstring));
+            frs->format(area_size);
+            d_lines.push_back(frs);
+            line = 0;
+        }
+    }
+
+    // last line (which we do not justify)
+    frs = new LeftAlignedRenderedString(*new RenderedString(rstring));
+    frs->format(area_size);
+    d_lines.push_back(frs);
+}
 
 //----------------------------------------------------------------------------//
 template <typename T>
