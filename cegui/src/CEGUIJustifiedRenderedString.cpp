@@ -34,21 +34,26 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
-    FormattedRenderedString(string),
-    d_spaceExtra(0.0f)
+    FormattedRenderedString(string)
 {
 }
 
 //----------------------------------------------------------------------------//
 void JustifiedRenderedString::format(const Size& area_size)
 {
-    const size_t space_count = d_renderedString->getSpaceCount();
-    const float string_width = d_renderedString->getPixelSize().d_width;
+    d_spaceExtras.clear();
 
-    if ((space_count == 0) || (string_width >= area_size.d_width))
-        d_spaceExtra = 0.0f;
-    else
-        d_spaceExtra = (area_size.d_width - string_width) / space_count;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        const size_t space_count = d_renderedString->getSpaceCount(i);
+        const float string_width = d_renderedString->getPixelSize(i).d_width;
+
+        if ((space_count == 0) || (string_width >= area_size.d_width))
+            d_spaceExtras.push_back(0.0f);
+        else
+            d_spaceExtras.push_back(
+                (area_size.d_width - string_width) / space_count);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -57,28 +62,46 @@ void JustifiedRenderedString::draw(GeometryBuffer& buffer,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString->draw(buffer, position, mod_colours, clip_rect,
-                           d_spaceExtra);
+    Vector2 draw_pos(position);
+
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        d_renderedString->draw(i, buffer, draw_pos, mod_colours, clip_rect,
+                               d_spaceExtras[i]);
+        draw_pos.d_y += d_renderedString->getPixelSize(i).d_height;
+    }
 }
 
 //----------------------------------------------------------------------------//
 size_t JustifiedRenderedString::getFormattedLineCount() const
 {
-    // always one line for basic justified formatting.
-    return 1;
+    return d_renderedString->getLineCount();
 }
 
 //----------------------------------------------------------------------------//
 float JustifiedRenderedString::getHorizontalExtent() const
 {
-    return d_renderedString->getPixelSize().d_width +
-      d_renderedString->getSpaceCount() * d_spaceExtra;
+    float w = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        const float this_width = d_renderedString->getPixelSize(i).d_width +
+            d_renderedString->getSpaceCount(i) * d_spaceExtras[i];
+
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
 }
 
 //----------------------------------------------------------------------------//
 float JustifiedRenderedString::getVerticalExtent() const
 {
-    return d_renderedString->getPixelSize().d_height;
+    float h = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+        h += d_renderedString->getPixelSize(i).d_height;
+
+    return h;
 }
 
 //----------------------------------------------------------------------------//

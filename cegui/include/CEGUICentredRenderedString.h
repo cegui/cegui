@@ -53,7 +53,7 @@ public:
     float getVerticalExtent() const;
 
 protected:
-    float d_offset;
+    std::vector<float> d_offsets;
 };
 
 } // End of  CEGUI namespace section

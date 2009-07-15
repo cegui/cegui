@@ -169,7 +169,19 @@ namespace CEGUI
 
     Size Tooltip::getTextSize_impl() const
     {
-        return getRenderedString().getPixelSize();
+        const RenderedString& rs(getRenderedString());
+        Size sz(0.0f, 0.0f);
+
+        for (size_t i = 0; i < rs.getLineCount(); ++i)
+        {
+            const Size line_sz(rs.getPixelSize(i));
+            sz.d_height += line_sz.d_height;
+
+            if (line_sz.d_width > sz.d_width)
+                sz.d_width = line_sz.d_width;
+        }
+
+        return sz;
     }
 
     void Tooltip::resetTimer(void)

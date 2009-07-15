@@ -29,6 +29,7 @@
 #define _CEGUIJustifiedRenderedString_h_
 
 #include "CEGUIFormattedRenderedString.h"
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,8 +54,8 @@ public:
     float getVerticalExtent() const;
 
 protected:
-    //! space extra size to use to achieve justified formatting.
-    float d_spaceExtra;
+    //! space extra size for each line to achieve justified formatting.
+    std::vector<float> d_spaceExtras;
 };
 
 } // End of  CEGUI namespace section

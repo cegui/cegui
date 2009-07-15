@@ -111,7 +111,18 @@ Size ListboxTextItem::getPixelSize(void) const
     if (!d_renderedStringValid)
         parseTextString();
 
-    return d_renderedString.getPixelSize();
+    Size sz(0.0f, 0.0f);
+
+    for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
+    {
+        const Size line_sz(d_renderedString.getPixelSize(i));
+        sz.d_height += line_sz.d_height;
+
+        if (line_sz.d_width > sz.d_width)
+            sz.d_width = line_sz.d_width;
+    }
+
+    return sz;
 }
 
 
@@ -127,19 +138,24 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
 
     Font* font = getFont();
 
-    if (font)
+    if (!font)
+        return;
+
+    Vector2 draw_pos(targetRect.getPosition());
+
+    draw_pos.d_y += PixelAligned(
+        (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+
+    if (!d_renderedStringValid)
+        parseTextString();
+
+    const ColourRect final_colours(
+        getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
+
+    for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        Rect finalPos(targetRect);
-        finalPos.d_top += PixelAligned(
-            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-
-        if (!d_renderedStringValid)
-            parseTextString();
-
-        const ColourRect final_colours(
-            getModulateAlphaColourRect(ColourRect(0xFFFFFFFF), alpha));
-        d_renderedString.draw(buffer, finalPos.getPosition(),
-                              &final_colours, clipper, 0.0f);
+        d_renderedString.draw(i, buffer, draw_pos, &final_colours, clipper, 0.0f);
+        draw_pos.d_y += d_renderedString.getPixelSize(i).d_height;
     }
 }
 

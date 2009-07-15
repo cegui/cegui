@@ -30,6 +30,7 @@
 
 #include "CEGUISize.h"
 #include <vector>
+#include <utility>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -64,6 +65,9 @@ public:
     \brief
         Draw the string to a GeometryBuffer.
 
+    \param line
+        The line of the RenderedString to draw.
+
     \param buffer
         GeometryBuffer object that is to receive the geometry resulting from the
         draw operations.
@@ -89,20 +93,30 @@ public:
     \param space_extra
         float value indicating additional padding value to be applied to space
         characters in the string.
-    */
-    void draw(GeometryBuffer& buffer, const Vector2& position,
-              const ColourRect* mod_colours,
-              const Rect* clip_rect, const float space_extra) const;
 
+    \exception InvalidRequestException
+        thrown if \a line is out of range.
+    */
+    void draw(const size_t line, GeometryBuffer& buffer, const Vector2& position,
+              const ColourRect* mod_colours, const Rect* clip_rect,
+              const float space_extra) const;
+
+    //! return the pixel size of the specified line.
     /*!
     \brief
-        Return the total pixel size of the RenderedString.
+        Return the pixel size of a specified line for the RenderedString.
+
+    \param line
+        The line number whose size is to be returned.
 
     \return
-        Size object describing the size of the rendered output of this
-        RenderedString in pixels.
+        Size object describing the size of the rendered output of the specified
+        line of this RenderedString, in pixels.
+
+    \exception InvalidRequestException
+        thrown if \a line is out of range.
     */
-    Size getPixelSize() const;
+    Size getPixelSize(const size_t line) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);
@@ -115,10 +129,13 @@ public:
 
     /*!
     \brief
-        split the string as close to \a split_point as possible.
+        split the string in line \a line as close to \a split_point as possible.
 
         The RenderedString \a left will receive the left portion of the split,
         while the right portion of the split will remain in this RenderedString.
+
+    \param line
+        The line number on which the split is to occur.
 
     \param split_point
         float value specifying the pixel location where the split should occur.
@@ -129,11 +146,20 @@ public:
     \param left
         RenderedString object that will receieve the left portion of the split.
         Any existing content in the RenderedString is replaced.
-    */
-    void split(float split_point, RenderedString& left);
 
-    //! return the total number of spacing characters in the string.
-    size_t getSpaceCount() const;
+    \exception InvalidRequestException
+        thrown if \a line is out of range.
+    */
+    void split(const size_t line, float split_point, RenderedString& left);
+
+    //! return the total number of spacing characters in the specified line.
+    size_t getSpaceCount(const size_t line) const;
+
+    //! linebreak the rendered string at the present position.
+    void appendLineBreak();
+
+    //! return number of lines in this string.
+    size_t getLineCount() const;
 
     //! Copy constructor.
     RenderedString(const RenderedString& other);
@@ -145,6 +171,12 @@ protected:
     typedef std::vector<RenderedStringComponent*> ComponentList;
     //! RenderedStringComponent objects that comprise this RenderedString.
     ComponentList d_components;
+    //! track info for a line.  first is componetn idx, second is component count.
+    typedef std::pair<size_t, size_t> LineInfo;
+    //! Collection type used to hold details about the lines.
+    typedef std::vector<LineInfo> LineList;
+    //! lines that make up this string.
+    LineList d_lines;
     //! Make this object's component list a clone of \a list.
     void cloneComponentList(const ComponentList& list);
     //! Free components in the given ComponentList and clear the list.

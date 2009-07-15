@@ -29,6 +29,7 @@
 #define _CEGUIRightAlignedRenderedString_h_
 
 #include "CEGUIFormattedRenderedString.h"
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,7 +54,7 @@ public:
     float getVerticalExtent() const;
 
 protected:
-    float d_offset;
+    std::vector<float> d_offsets;
 };
     
 } // End of  CEGUI namespace section
