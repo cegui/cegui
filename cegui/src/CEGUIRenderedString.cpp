@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUIRenderedString.h"
 #include "CEGUIRenderedStringComponent.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -34,6 +35,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderedString::RenderedString()
 {
+    // set up initial line info
+    appendLineBreak();
 }
 
 //----------------------------------------------------------------------------//
@@ -43,51 +46,17 @@ RenderedString::~RenderedString()
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::draw(GeometryBuffer& buffer, const Vector2& position,
-                          const ColourRect* mod_colours,
-                          const Rect* clip_rect, const float space_extra) const
-{
-    const float render_height = getPixelSize().d_height;
-
-    Vector2 comp_pos(position);
-
-    ComponentList::const_iterator i = d_components.begin();
-    for (; i != d_components.end(); ++i)
-    {
-        (*i)->draw(buffer, comp_pos, mod_colours, clip_rect, render_height,
-                   space_extra);
-        comp_pos.d_x += (*i)->getPixelSize().d_width;
-    }
-}
-
-//----------------------------------------------------------------------------//
-Size RenderedString::getPixelSize() const
-{
-    Size sz(0, 0);
-
-    ComponentList::const_iterator i = d_components.begin();
-    for (; i != d_components.end(); ++i)
-    {
-        const Size comp_sz((*i)->getPixelSize());
-        sz.d_width += comp_sz.d_width;
-        
-        if (comp_sz.d_height > sz.d_height)
-            sz.d_height = comp_sz.d_height;
-    }
-
-    return sz;
-}
-
-//----------------------------------------------------------------------------//
 void RenderedString::appendComponent(const RenderedStringComponent& component)
 {
     d_components.push_back(component.clone());
+    ++d_lines.back().second;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedString::clearComponents()
 {
     clearComponentList(d_components);
+    d_lines.clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -100,12 +69,14 @@ size_t RenderedString::getComponentCount() const
 RenderedString::RenderedString(const RenderedString& other)
 {
     cloneComponentList(other.d_components);
+    d_lines = other.d_lines;
 }
 
 //----------------------------------------------------------------------------//
 RenderedString& RenderedString::operator=(const RenderedString& rhs)
 {
     cloneComponentList(rhs.d_components);
+    d_lines = rhs.d_lines;
     return *this;
 }
 
@@ -128,38 +99,97 @@ void RenderedString::clearComponentList(ComponentList& list)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::split(float split_point, RenderedString& left)
+void RenderedString::split(const size_t line, float split_point,
+                           RenderedString& left)
 {
+    // FIXME: This function is big and nasty; it breaks all the rules for a
+    // 'good' function and desperately needs some refactoring work done to it.
+    // On the plus side, it does seem to work though ;)
+
+    if (line >= getLineCount())
+        throw InvalidRequestException("RenderedString::split: "
+            "line number specified is invalid.");
+
     left.clearComponents();
 
     if (d_components.empty())
         return;
 
+    // move all components in lines prior to the line being split to the left
+    if (line > 0)
+    {
+        // calculate size of range
+        const size_t sz = d_lines[line - 1].first + d_lines[line - 1].second;
+        // range start
+        ComponentList::iterator cb = d_components.begin();
+        // range end (exclusive)
+        ComponentList::iterator ce = cb + sz;
+        // copy components to left side
+        left.d_components.assign(cb, ce);
+        // erase components from this side.
+        d_components.erase(cb, ce);
+
+        LineList::iterator lb = d_lines.begin();
+        LineList::iterator le = lb + line;
+        // copy lines to left side
+        left.d_lines.assign(lb, le);
+        // erase lines from this side
+        d_lines.erase(lb, le);
+    }
+
     // find the component where the requested split point lies.
     float partial_extent = 0;
 
     size_t idx = 0;
-    for (; idx < d_components.size(); ++idx)
+    const size_t last_component = d_lines[0].second;
+    for (; idx < last_component; ++idx)
     {
         partial_extent += d_components[idx]->getPixelSize().d_width;
-    
+
         if (split_point <= partial_extent)
             break;
     }
 
     // case where split point is past the end
-    if (idx >= d_components.size())
+    if (idx >= last_component)
     {
-        // transfer our components to the 'left' string.
-        left.d_components.swap(d_components);
-        return; 
+        // transfer this line's components to the 'left' string.
+        //
+        // calculate size of range
+        const size_t sz = d_lines[0].second;
+        // range start
+        ComponentList::iterator cb = d_components.begin();
+        // range end (exclusive)
+        ComponentList::iterator ce = cb + sz;
+        // copy components to left side
+        left.d_components.insert(left.d_components.end(), cb, ce);
+        // erase components from this side.
+        d_components.erase(cb, ce);
+
+        // copy line info to left side
+        left.d_lines.push_back(d_lines[0]);
+        // erase line from this side
+        d_lines.erase(d_lines.begin());
+
+        // fix up lines in this object
+        for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
+        {
+            d_lines[i].first = comp;
+            comp += d_lines[i].second;
+        }
+
+        return;
     }
 
+    left.appendLineBreak();
+    const size_t left_line = left.getLineCount() - 1;
     // Everything up to 'idx' is xfered to 'left'
     for (size_t i = 0; i < idx; ++i)
     {
         left.d_components.push_back(d_components[0]);
         d_components.erase(d_components.begin());
+        ++left.d_lines[left_line].second;
+        --d_lines[0].second;
     }
 
     // now to split item 'idx' putting half in left and leaving half in this.
@@ -171,20 +201,94 @@ void RenderedString::split(float split_point, RenderedString& left)
                      idx == 0);
 
         if (lc)
+        {
             left.d_components.push_back(lc);
+            ++left.d_lines[left_line].second;
+        }
+    }
+
+    // fix up lines in this object
+    for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
+    {
+        d_lines[i].first = comp;
+        comp += d_lines[i].second;
     }
 }
 
 //----------------------------------------------------------------------------//
-size_t RenderedString::getSpaceCount() const
+void RenderedString::appendLineBreak()
 {
+    const size_t first_component = d_lines.empty() ? 0 :
+        d_lines.back().first + d_lines.back().second;
+
+    d_lines.push_back(LineInfo(first_component, 0));
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedString::getLineCount() const
+{
+    return d_lines.size();
+}
+
+//----------------------------------------------------------------------------//
+Size RenderedString::getPixelSize(const size_t line) const
+{
+    if (line >= getLineCount())
+        throw InvalidRequestException("RenderedString::getPixelSize: "
+            "line number specified is invalid.");
+
+    Size sz(0, 0);
+
+    const size_t end_component = d_lines[line].first + d_lines[line].second;
+    for (size_t i = d_lines[line].first; i < end_component; ++i)
+    {
+        const Size comp_sz(d_components[i]->getPixelSize());
+        sz.d_width += comp_sz.d_width;
+
+        if (comp_sz.d_height > sz.d_height)
+            sz.d_height = comp_sz.d_height;
+    }
+
+    return sz;
+}
+
+//----------------------------------------------------------------------------//
+size_t RenderedString::getSpaceCount(const size_t line) const
+{
+    if (line >= getLineCount())
+        throw InvalidRequestException("RenderedString::getSpaceCount: "
+            "line number specified is invalid.");
+
     size_t space_count = 0;
 
-    ComponentList::const_iterator i = d_components.begin();
-    for (; i != d_components.end(); ++i)
-        space_count += (*i)->getSpaceCount();
+    const size_t end_component = d_lines[line].first + d_lines[line].second;
+    for (size_t i = d_lines[line].first; i < end_component; ++i)
+        space_count += d_components[i]->getSpaceCount();
 
     return space_count;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
+                          const Vector2& position,
+                          const ColourRect* mod_colours, const Rect* clip_rect,
+                          const float space_extra) const
+{
+    if (line >= getLineCount())
+        throw InvalidRequestException("RenderedString::draw: "
+            "line number specified is invalid.");
+
+    const float render_height = getPixelSize(line).d_height;
+
+    Vector2 comp_pos(position);
+
+    const size_t end_component = d_lines[line].first + d_lines[line].second;
+    for (size_t i = d_lines[line].first; i < end_component; ++i)
+    {
+        d_components[i]->draw(buffer, comp_pos, mod_colours, clip_rect,
+                              render_height, space_extra);
+        comp_pos.d_x += d_components[i]->getPixelSize().d_width;
+    }
 }
 
 //----------------------------------------------------------------------------//

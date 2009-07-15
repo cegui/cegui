@@ -41,7 +41,11 @@ CentredRenderedString::CentredRenderedString(const RenderedString& string) :
 //----------------------------------------------------------------------------//
 void CentredRenderedString::format(const Size& area_size)
 {
-    d_offset = (area_size.d_width - getHorizontalExtent()) / 2.0f;
+    d_offsets.clear();
+
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+        d_offsets.push_back(
+            (area_size.d_width - d_renderedString->getPixelSize(i).d_width) / 2.0f);
 }
 
 //----------------------------------------------------------------------------//
@@ -50,28 +54,45 @@ void CentredRenderedString::draw(GeometryBuffer& buffer,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString->draw(buffer,
-                           Vector2(position.d_x + d_offset, position.d_y),
-                           mod_colours, clip_rect, 0.0f);
+    Vector2 draw_pos;
+    draw_pos.d_y = position.d_y;
+
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        draw_pos.d_x = position.d_x + d_offsets[i];
+        d_renderedString->draw(i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
+        draw_pos.d_y += d_renderedString->getPixelSize(i).d_height;
+    }
 }
 
 //----------------------------------------------------------------------------//
 size_t CentredRenderedString::getFormattedLineCount() const
 {
-    // always one line for basic centred formatting.
-    return 1;
+    return d_renderedString->getLineCount();
 }
 
 //----------------------------------------------------------------------------//
 float CentredRenderedString::getHorizontalExtent() const
 {
-    return d_renderedString->getPixelSize().d_width;
+    float w = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        const float this_width = d_renderedString->getPixelSize(i).d_width;
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
 }
 
 //----------------------------------------------------------------------------//
 float CentredRenderedString::getVerticalExtent() const
 {
-    return d_renderedString->getPixelSize().d_height;
+    float h = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+        h += d_renderedString->getPixelSize(i).d_height;
+
+    return h;
 }
 
 //----------------------------------------------------------------------------//

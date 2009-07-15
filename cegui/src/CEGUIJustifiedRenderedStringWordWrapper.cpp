@@ -45,26 +45,29 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Size& area
     rstring = *d_renderedString;
     float rs_width;
 
-    while ((rs_width = rstring.getPixelSize().d_width) > 0)
-    {
-        FormattedRenderedString* frs;
+    FormattedRenderedString* frs;
 
-        // case where no wrapping occurs - i.e. on the last line)
-        if (rs_width <= area_size.d_width)
+    for (size_t line = 0; line < rstring.getLineCount(); ++line)
+    {
+        while ((rs_width = rstring.getPixelSize(line).d_width) > 0)
         {
-            // use left aligned formatting for this line only.
-            frs = new LeftAlignedRenderedString(*new RenderedString(rstring));
+            // skip line if no wrapping occurs
+            if (rs_width <= area_size.d_width)
+                break;
+
+            // split rstring at width into lstring and remaining rstring
+            rstring.split(line, area_size.d_width, lstring);
+            frs = new JustifiedRenderedString(*new RenderedString(lstring));
             frs->format(area_size);
             d_lines.push_back(frs);
-            return;
+            line = 0;
         }
-
-        // split rstring at width into lstring and remaining rstring
-        rstring.split(area_size.d_width, lstring);
-        frs = new JustifiedRenderedString(*new RenderedString(lstring));
-        frs->format(area_size);
-        d_lines.push_back(frs);
     }
+
+    // last line (which we do not justify)
+    frs = new LeftAlignedRenderedString(*new RenderedString(rstring));
+    frs->format(area_size);
+    d_lines.push_back(frs);
 }
 
 //----------------------------------------------------------------------------//

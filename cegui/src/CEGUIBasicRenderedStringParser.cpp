@@ -124,10 +124,32 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string)
 void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
                                                    const String& text) const
 {
-    RenderedStringTextComponent rtc(text, d_fontName);
-    rtc.setPadding(d_padding);
-    rtc.setColours(d_colours);
-    rs.appendComponent(rtc);
+    size_t cpos = 0;
+    // split the given string into lines based upon the newline character
+    while (text.length() > cpos)
+    {
+        // find next newline
+        const size_t nlpos = text.find('\n', cpos);
+        // calculate length of this substring
+        const size_t len =
+            ((nlpos != String::npos) ? nlpos : text.length()) - cpos;
+
+        // construct new text component and append it.
+        if (len > 0)
+        {
+            RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
+            rtc.setPadding(d_padding);
+            rtc.setColours(d_colours);
+            rs.appendComponent(rtc);
+        }
+
+        // break line if needed
+        if (nlpos != String::npos)
+            rs.appendLineBreak();
+
+        // advance current position.  +1 to skip the \n char
+        cpos += len + 1;
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -50,26 +50,43 @@ void LeftAlignedRenderedString::draw(GeometryBuffer& buffer,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    d_renderedString->draw(buffer, position, mod_colours, clip_rect, 0.0f);
+    Vector2 draw_pos(position);
+
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        d_renderedString->draw(i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
+        draw_pos.d_y += d_renderedString->getPixelSize(i).d_height;
+    }
 }
 
 //----------------------------------------------------------------------------//
 size_t LeftAlignedRenderedString::getFormattedLineCount() const
 {
-    // always one line for basic left aligned formatting.
-    return 1;
+    return d_renderedString->getLineCount();
 }
 
 //----------------------------------------------------------------------------//
 float LeftAlignedRenderedString::getHorizontalExtent() const
 {
-    return d_renderedString->getPixelSize().d_width;
+    float w = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+    {
+        const float this_width = d_renderedString->getPixelSize(i).d_width;
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
 }
 
 //----------------------------------------------------------------------------//
 float LeftAlignedRenderedString::getVerticalExtent() const
 {
-    return d_renderedString->getPixelSize().d_height;
+    float h = 0.0f;
+    for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
+        h += d_renderedString->getPixelSize(i).d_height;
+
+    return h;
 }
 
 //----------------------------------------------------------------------------//
