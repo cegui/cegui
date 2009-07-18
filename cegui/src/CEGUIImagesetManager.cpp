@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIImagesetManager.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
-
-	purpose:	Implements the ImagesetManager class
+    filename:   CEGUIImagesetManager.cpp
+    created:    Sat Jul 18 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,22 +28,17 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Static Data Definitions
-*************************************************************************/
+//----------------------------------------------------------------------------//
 // singleton instance pointer
-template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton	= 0;
+template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton = 0;
 
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
-ImagesetManager::ImagesetManager(void)
+//----------------------------------------------------------------------------//
+ImagesetManager::ImagesetManager() :
+    NamedXMLResourceManager<Imageset, Imageset_xmlHandler>("Imageset")
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -53,184 +46,74 @@ ImagesetManager::ImagesetManager(void)
         "CEGUI::ImagesetManager singleton created " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-ImagesetManager::~ImagesetManager(void)
+//----------------------------------------------------------------------------//
+ImagesetManager::~ImagesetManager()
 {
-	Logger::getSingleton().logEvent("---- Begining cleanup of Imageset system ----");
+    Logger::getSingleton().logEvent(
+        "---- Begining cleanup of Imageset system ----");
 
-	destroyAllImagesets();
+    destroyAll();
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent(
+    Logger::getSingleton().logEvent(
        "CEGUI::ImagesetManager singleton destroyed " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Create an empty Imageset that has the given name and uses the
-	given Texture
-*************************************************************************/
-Imageset* ImagesetManager::createImageset(const String& name, Texture& texture)
+//----------------------------------------------------------------------------//
+Imageset& ImagesetManager::create(const String& name, Texture& texture,
+                                  XMLResourceExistsAction action)
 {
-	Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +"' with texture only.");
+    Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +
+                                    "' with texture only.");
 
-	if (isImagesetPresent(name))
-	{
-		throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
-	}
+    Imageset* existing_object = doExistingObjectAction(name, action);
 
-	Imageset* temp = new Imageset(name, texture);
-	d_imagesets[name] = temp;
-
-	return temp;
+    return existing_object ? *existing_object :
+                             *(d_objects[name] = new Imageset(name, texture));
 }
 
-
-/*************************************************************************
-	Create an Imageset object from the specified file
-*************************************************************************/
-Imageset* ImagesetManager::createImageset(const String& filename, const String& resourceGroup)
+//----------------------------------------------------------------------------//
+Imageset& ImagesetManager::createFromImageFile(const String& name,
+                                               const String& filename,
+                                               const String& resourceGroup,
+                                               XMLResourceExistsAction action)
 {
-	Logger::getSingleton().logEvent("Attempting to create an Imageset from the information specified in file '" + filename + "'.");
+    Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +
+        "' using image file '" + filename + "'.");
 
-	Imageset* temp = new Imageset(filename, resourceGroup);
+    Imageset* existing_object = doExistingObjectAction(name, action);
 
-	String	name = temp->getName();
-
-	if (isImagesetPresent(name))
-	{
-		delete temp;
-
-		throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
-	}
-
-	d_imagesets[name] = temp;
-
-	return temp;
+    return existing_object ? *existing_object :
+                             *(d_objects[name] = new Imageset(name, filename,
+                                                              resourceGroup));
 }
 
-
-/*************************************************************************
-    Create an Imageset object from the specified image file.
-*************************************************************************/
-Imageset* ImagesetManager::createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup)
-{
-    Logger::getSingleton().logEvent("Attempting to create Imageset '" + name + "' using image file '" + filename + "'.");
-
-    if (isImagesetPresent(name))
-    {
-        throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
-    }
-
-    Imageset* temp = new Imageset(name, filename, resourceGroup);
-    d_imagesets[name] = temp;
-
-    return temp;
-}
-
-
-/*************************************************************************
-	Destroys the Imageset with the specified name
-*************************************************************************/
-void ImagesetManager::destroyImageset(const String& name)
-{
-	ImagesetRegistry::iterator	pos = d_imagesets.find(name);
-
-	if (pos != d_imagesets.end())
-	{
-		String tmpName(name);
-
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
-
-		delete pos->second;
-		d_imagesets.erase(pos);
-
-		Logger::getSingleton().logEvent("Imageset '" + tmpName +
-            "' has been destroyed. " + addr_buff, Informative);
-	}
-
-}
-
-
-/*************************************************************************
-	Destroys the given Imageset object
-*************************************************************************/
-void ImagesetManager::destroyImageset(Imageset* imageset)
-{
-	if (imageset)
-	{
-		destroyImageset(imageset->getName());
-	}
-
-}
-
-
-/*************************************************************************
-	Destroy all Imageset objects
-*************************************************************************/
-void ImagesetManager::destroyAllImagesets(void)
-{
-	while (!d_imagesets.empty())
-	{
-		destroyImageset(d_imagesets.begin()->first);
-	}
-}
-
-/*************************************************************************
-	Returns a pointer to the Imageset object with the specified name
-*************************************************************************/
-Imageset* ImagesetManager::getImageset(const String& name) const
-{
-	ImagesetRegistry::const_iterator	pos = d_imagesets.find(name);
-
-	if (pos == d_imagesets.end())
-	{
-		throw UnknownObjectException("ImagesetManager::getImageset - No Imageset named '" + name + "' is present in the system.");
-	}
-
-	return pos->second;
-}
-
-
-/*************************************************************************
-	Notify the ImagesetManager of the current (usually new) display
-	resolution.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void ImagesetManager::notifyDisplaySizeChanged(const Size& size)
 {
-	// notify all attached Imageset objects of the change in resolution
-	ImagesetRegistry::iterator pos = d_imagesets.begin(), end = d_imagesets.end();
+    // notify all attached Imageset objects of the change in resolution
+    ObjectRegistry::iterator pos = d_objects.begin(), end = d_objects.end();
 
-	for (; pos != end; ++pos)
-	{
+    for (; pos != end; ++pos)
         pos->second->notifyDisplaySizeChanged(size);
-	}
-
 }
 
-
-/*************************************************************************
-	Return a ImagesetManager::ImagesetIterator object to iterate over
-	the available Imageset objects.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 ImagesetManager::ImagesetIterator ImagesetManager::getIterator(void) const
 {
-	return ImagesetIterator(d_imagesets.begin(), d_imagesets.end());
+    return ImagesetIterator(d_objects.begin(), d_objects.end());
 }
 
-
-void ImagesetManager::writeImagesetToStream(const String& imageset, OutStream& out_stream) const
+//----------------------------------------------------------------------------//
+void ImagesetManager::writeImagesetToStream(const String& imageset,
+                                            OutStream& out_stream) const
 {
-    const Imageset* iset = getImageset(imageset);
     // Create an XMLSerializer which make use of 4 space and UTF-8 encoding
     XMLSerializer xml(out_stream);
-    iset->writeXMLToStream(xml);
+    get(imageset).writeXMLToStream(xml);
 }
 
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

@@ -62,8 +62,8 @@ void RenderedStringImageComponent::setImage(const String& imageset,
 {
     if (!imageset.empty() && !image.empty())
     {
-        Imageset* is = ImagesetManager::getSingleton().getImageset(imageset);
-        d_image = &is->getImage(image);
+        Imageset& is = ImagesetManager::getSingleton().get(imageset);
+        d_image = &is.getImage(image);
     }
     else
     {

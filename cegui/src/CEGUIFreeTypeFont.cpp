@@ -208,10 +208,10 @@ void FreeTypeFont::rasterize(utf32 start_codepoint, utf32 end_codepoint)
         if (!texsize)
             break;
 
-        Imageset* is = ImagesetManager::getSingleton().createImageset(
+        Imageset& is = ImagesetManager::getSingleton().create(
                            d_name + "_auto_glyph_images_" + int (s->first),
                            System::getSingleton().getRenderer()->createTexture());
-        d_glyphImages.push_back(is);
+        d_glyphImages.push_back(&is);
 
         // Create a memory buffer where we will render our glyphs
         argb_t *mem_buffer = new argb_t [texsize * texsize];
@@ -255,8 +255,8 @@ void FreeTypeFont::rasterize(utf32 start_codepoint, utf32 end_codepoint)
                     Point offset(0, 0);
                     String name;
                     name += s->first;
-                    is->defineImage(name, area, offset);
-                    ((FontGlyph &)s->second).setImage(&is->getImage(name));
+                    is.defineImage(name, area, offset);
+                    ((FontGlyph &)s->second).setImage(&is.getImage(name));
                 }
                 else
                 {
@@ -291,8 +291,8 @@ void FreeTypeFont::rasterize(utf32 start_codepoint, utf32 end_codepoint)
 
                     String name;
                     name += s->first;
-                    is->defineImage(name, area, offset);
-                    ((FontGlyph &)s->second).setImage(&is->getImage(name));
+                    is.defineImage(name, area, offset);
+                    ((FontGlyph &)s->second).setImage(&is.getImage(name));
 
                     // Advance to next position
                     x = x_next;
@@ -318,7 +318,7 @@ void FreeTypeFont::rasterize(utf32 start_codepoint, utf32 end_codepoint)
         }
 
         // Copy our memory buffer into the texture and free it
-        is->getTexture()->loadFromMemory(mem_buffer, Size(texsize, texsize), Texture::PF_RGBA);
+        is.getTexture()->loadFromMemory(mem_buffer, Size(texsize, texsize), Texture::PF_RGBA);
         delete [] mem_buffer;
 
         if (finished)
@@ -379,7 +379,7 @@ void FreeTypeFont::free()
     d_cp_map.clear();
 
     for (size_t i = 0; i < d_glyphImages.size(); i++)
-        ImagesetManager::getSingleton().destroyImageset(d_glyphImages [i]->getName());
+        ImagesetManager::getSingleton().destroy(d_glyphImages [i]->getName());
     d_glyphImages.clear();
 
     FT_Done_Face(d_fontFace);

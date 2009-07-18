@@ -152,7 +152,7 @@ namespace CEGUI
 
     void DragContainer::setDragCursorImage(const String& imageset, const String& image)
     {
-        setDragCursorImage(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image));
+        setDragCursorImage(&ImagesetManager::getSingleton().get(imageset).getImage(image));
     }
 
     Window* DragContainer::getCurrentDropTarget(void) const

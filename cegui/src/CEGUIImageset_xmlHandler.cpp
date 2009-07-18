@@ -1,12 +1,10 @@
 /***********************************************************************
-filename: 	CEGUIImageset_xmlHandler.cpp
-created:	21/2/2004
-author:		Paul D Turner
-
-purpose:	Implements the Imageset class
+    filename:   CEGUIImageset_xmlHandler.cpp
+    created:    Sat Jul 18 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,20 +26,18 @@ purpose:	Implements the Imageset class
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIImageset_xmlHandler.h"
-
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUILogger.h"
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIXMLParser.h"
+#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*************************************************************************
-Definition of constant data for Imageset (and sub-classes)
-*************************************************************************/
-// Declared in Imageset::xmlHandler
+//----------------------------------------------------------------------------//
+const String Imageset_xmlHandler::ImagesetSchemaName("Imageset.xsd");
 const String Imageset_xmlHandler::ImagesetElement( "Imageset" );
 const String Imageset_xmlHandler::ImageElement( "Image" );
 const String Imageset_xmlHandler::ImagesetImageFileAttribute( "Imagefile" );
@@ -58,104 +54,142 @@ const String Imageset_xmlHandler::ImageHeightAttribute( "Height" );
 const String Imageset_xmlHandler::ImageXOffsetAttribute( "XOffset" );
 const String Imageset_xmlHandler::ImageYOffsetAttribute( "YOffset" );
 
-/*************************************************************************
-SAX2 Handler methods
-*************************************************************************/
-void Imageset_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+Imageset_xmlHandler::Imageset_xmlHandler(const String& filename,
+                                         const String& resource_group) :
+    d_imageset(0),
+    d_objectRead(false)
 {
-    // handle an Image element (extract all element attributes and use data to define an Image for the Imageset)
-    if (element == ImageElement)
-    {
-        elementImageStart(attributes);
-    }
-    // handle root Imageset element
-    else if (element == ImagesetElement)
-    {
-        elementImagesetStart(attributes);
-    }
-    // anything else is an error which *should* have already been caught by XML validation
-    else
-    {
-        Logger::getSingleton().logEvent("Imageset::xmlHandler::startElement - Unexpected data was found while parsing the Imageset file: '" + element + "' is unknown.", Errors);
-    }
+    System::getSingleton().getXMLParser()->parseXMLFile(
+            *this, filename, ImagesetSchemaName,
+            resource_group.empty() ? Imageset::getDefaultResourceGroup() :
+                                     resource_group);
 }
 
+//----------------------------------------------------------------------------//
+Imageset_xmlHandler::~Imageset_xmlHandler()
+{
+    if (!d_objectRead)
+        delete d_imageset;
+}
+
+//----------------------------------------------------------------------------//
+const String& Imageset_xmlHandler::getObjectName() const
+{
+    if (!d_imageset)
+        throw InvalidRequestException("Imageset_xmlHandler::getName: "
+            "Attempt to access null object.");
+
+    return d_imageset->getName();
+}
+
+//----------------------------------------------------------------------------//
+Imageset& Imageset_xmlHandler::getObject() const
+{
+    if (!d_imageset)
+        throw InvalidRequestException("Imageset_xmlHandler::getObject: "
+            "Attempt to access null object.");
+
+    d_objectRead = true;
+    return *d_imageset;
+}
+
+//----------------------------------------------------------------------------//
+void Imageset_xmlHandler::elementStart(const String& element,
+                                       const XMLAttributes& attributes)
+{
+    // handle an Image element
+    if (element == ImageElement)
+        elementImageStart(attributes);
+    // handle root Imageset element
+    else if (element == ImagesetElement)
+        elementImagesetStart(attributes);
+    // anything else is a non-fatal error.
+    else
+        Logger::getSingleton().logEvent("Imageset_xmlHandler::elementStart: "
+            "Unknown element encountered: <" + element + ">", Errors);
+    }
+
+//----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementEnd(const String& element)
 {
     if (element == ImagesetElement)
-    {
         elementImagesetEnd();
     }
-}
 
-/*************************************************************************
-    Method that handles the opening Imageset XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
 {
-    d_imageset->d_name = attributes.getValueAsString(ImagesetNameAttribute);
-
-    // get native horizontal resolution
-    float hres = static_cast<float>(attributes.getValueAsInteger(ImagesetNativeHorzResAttribute, 640));
-    // get native vertical resolution
-    float vres = static_cast<float>(attributes.getValueAsInteger(ImagesetNativeVertResAttribute, 480));
-    // set native resolution for imageset
-    d_imageset->setNativeResolution(Size(hres, vres));
-    // enable / disable auto-scaling for this Imageset according to the setting
-    d_imageset->setAutoScalingEnabled(attributes.getValueAsBool(ImagesetAutoScaledAttribute, false));
+    // get name of the imageset.
+    const String name(attributes.getValueAsString(ImagesetNameAttribute));
     // get texture image filename
-    String filename(attributes.getValueAsString(ImagesetImageFileAttribute));
-    // get resource group to use.
-    String resourceGroup(attributes.getValueAsString(ImagesetResourceGroupAttribute));
+    const String filename(
+        attributes.getValueAsString(ImagesetImageFileAttribute));
+    // get resource group to use for image file.
+    const String resource_group(
+        attributes.getValueAsString(ImagesetResourceGroupAttribute));
 
-    Logger::getSingleton().logEvent("Started creation of Imageset from XML specification:");
-    Logger::getSingleton().logEvent("---- CEGUI Imageset name: " + d_imageset->d_name);
-    Logger::getSingleton().logEvent("---- Source texture file: " + filename +
-                                    " in resource group: " + (resourceGroup.empty() ? "(Default)" : resourceGroup));
+    Logger& logger(Logger::getSingleton());
+    logger.logEvent("Started creation of Imageset from XML specification:");
+    logger.logEvent("---- CEGUI Imageset name: " + name);
+    logger.logEvent("---- Source texture file: " + filename +
+                    " in resource group: " +
+                    (resource_group.empty() ? "(Default)" : resource_group));
 
-    // Create a Texture object via the specified filename, and set it as the texture for the Imageset
-    try
-    {
-        d_imageset->d_texture = &System::getSingleton().getRenderer()->createTexture(
-            filename, resourceGroup.empty() ? Imageset::getDefaultResourceGroup() : resourceGroup);
-    }
-    catch(...)
-    {
-        throw RendererException("Imageset::xmlHandler::startElement - An unexpected error occurred while creating a Texture object from file '" + filename + "'");
-    }
+    // Create imageset object from image file
+    d_imageset = new Imageset(name, filename, resource_group);
 
-    d_imageset->d_textureFilename = filename;
+    // set native resolution for imageset
+    const float native_hres = static_cast<float>(
+        attributes.getValueAsInteger(ImagesetNativeHorzResAttribute, 640));
+    const float native_vres = static_cast<float>(
+        attributes.getValueAsInteger(ImagesetNativeVertResAttribute, 480));
+    d_imageset->setNativeResolution(Size(native_hres, native_vres));
+
+    // set auto-scaling as needed
+    d_imageset->setAutoScalingEnabled(
+        attributes.getValueAsBool(ImagesetAutoScaledAttribute, false));
 }
 
-/*************************************************************************
-    Method that handles the Image XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementImageStart(const XMLAttributes& attributes)
 {
-    String  name(attributes.getValueAsString(ImageNameAttribute));
+    if (!d_imageset)
+        throw InvalidRequestException("Imageset_xmlHandler::elementImageStart: "
+            "Attempt to access null object.");
+
+    const String name(attributes.getValueAsString(ImageNameAttribute));
 
     Rect    rect;
-    rect.d_left = static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute));
-    rect.d_top  = static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute));
-    rect.setWidth(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute)));
-    rect.setHeight(static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute)));
+    rect.d_left =
+        static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute));
+    rect.d_top  =
+        static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute));
+    rect.setWidth(
+        static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute)));
+    rect.setHeight(
+        static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute)));
 
-    Point   offset;
-    offset.d_x  = static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0));
-    offset.d_y  = static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0));
+    const Point offset(
+        static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+        static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0)));
 
     d_imageset->defineImage(name, rect, offset);
 }
 
-/*************************************************************************
-    Method that handles the closing Imageset XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementImagesetEnd()
 {
+    if (!d_imageset)
+        throw InvalidRequestException("Imageset_xmlHandler::elementImagesetEnd: "
+            "Attempt to access null object.");
+
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_imageset));
     Logger::getSingleton().logEvent("Finished creation of Imageset '" +
-        d_imageset->d_name + "' via XML file. " + addr_buff, Informative);
+        d_imageset->getName() + "' via XML file. " + addr_buff, Informative);
 }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

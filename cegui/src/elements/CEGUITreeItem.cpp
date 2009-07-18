@@ -81,7 +81,7 @@ void TreeItem::setSelectionBrushImage(const String& imageset,
                                       const String& image)
 {
     setSelectionBrushImage(
-        &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image));
+        &ImagesetManager::getSingleton().get(imageset).getImage(image));
 }
 
 /*************************************************************************

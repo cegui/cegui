@@ -45,6 +45,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
                  CEGUIMouseCursor.h \
+                 CEGUINamedResourceManager.h \
                  CEGUIPixmapFont.h \
                  CEGUIProperty.h \
                  CEGUIPropertyHelper.h \

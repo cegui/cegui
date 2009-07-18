@@ -67,22 +67,22 @@ PixmapFont::PixmapFont (const XMLAttributes& attributes) :
 PixmapFont::~PixmapFont ()
 {
     if (d_imagesetOwner)
-        ImagesetManager::getSingleton ().destroyImageset (d_glyphImages);
+        ImagesetManager::getSingleton ().destroy(*d_glyphImages);
 }
 
 void PixmapFont::reinit ()
 {
     if (d_imagesetOwner)
-        ImagesetManager::getSingleton ().destroyImageset (d_glyphImages);
+        ImagesetManager::getSingleton ().destroy(*d_glyphImages);
 
     if (d_resourceGroup == BuiltInResourceGroup)
     {
-        d_glyphImages = ImagesetManager::getSingleton ().getImageset (d_fileName);
+        d_glyphImages = &ImagesetManager::getSingleton ().get(d_fileName);
         d_imagesetOwner = false;
     }
     else
     {
-        d_glyphImages = ImagesetManager::getSingleton ().createImageset (d_fileName, d_resourceGroup);
+        d_glyphImages = &ImagesetManager::getSingleton().create(d_fileName, d_resourceGroup);
         d_imagesetOwner = true;
     }
 }

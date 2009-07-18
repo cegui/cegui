@@ -61,7 +61,7 @@ bool Demo6Sample::initialiseSample()
 		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
@@ -125,7 +125,7 @@ void Demo6Sample::createDemoWindows(void)
     //cbbo->setSortingEnabled(true);
 
     // populate combobox with possible selection modes
-    const CEGUI::Image* sel_img = &ImagesetManager::getSingleton().getImageset("TaharezLook")->getImage("MultiListSelectionBrush");
+    const CEGUI::Image* sel_img = &ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush");
     itm = new ListboxTextItem("Full Row (Single)", 0);
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
@@ -523,7 +523,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
     // construct a new ListboxTextItem with the required string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to use for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().getImageset("TaharezLook")->getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
 
     // attempt to add a new row, using the new ListboxTextItem as the initial content for one of the columns
     try
@@ -591,7 +591,7 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
     // create a new ListboxTextItem using the new text string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to be used for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().getImageset("TaharezLook")->getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
 
     // attempt to set the new item in place
     try

@@ -62,23 +62,9 @@ namespace CEGUI
 */
 class CEGUIEXPORT Imageset
 {
-	friend class Imageset_xmlHandler;
-private:
 	typedef	std::map<String, Image, String::FastLessCompare>	ImageRegistry;
 
-	/*************************************************************************
-		Friends to allow access to constructors and destructors
-	*************************************************************************/
-	friend Imageset*	ImagesetManager::createImageset(const String& name, Texture& texture);
-	friend Imageset*	ImagesetManager::createImageset(const String& filename, const String& resourceGroup);
-	friend Imageset*	ImagesetManager::createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup);
-	friend void			ImagesetManager::destroyImageset(const String& name);
-
-
-	/*************************************************************************
-		Construction and Destruction (private, only ImagesetManager can 
-		create and destroy Imageset objects).
-	*************************************************************************/
+public:
 	/*!
 	\brief
 		Construct a new Imageset object.  Object will initially have no Images defined
@@ -88,25 +74,8 @@ private:
 	*/
 	Imageset(const String& name, Texture& texture);
 
-
 	/*!
 	\brief
-		Construct a new Imageset object using data contained in the specified file.
-
-	\param filename
-		String object that holds the name of the Imageset data file that is to be processed.
-
-    \param resourceGroup
-        Resource group identifier to be passed to the resource manager.  NB: This affects the
-        imageset xml file only, the texture loaded may have its own group specified in the XML file.
-
-	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
-	*/
-	Imageset(const String& filename, const String& resourceGroup);
-
-
-    /*!
-    \brief
         Construct a new Imageset using the specified image file and imageset name.  The created
         imageset will, by default, have a single Image defined named "full_image" which represents
         the entire area of the loaded image file.
@@ -132,8 +101,6 @@ private:
     */
     Imageset(const String& name, const String& filename, const String& resourceGroup);
 
-
-public:	// For luabind support
 	/*!
 	\brief
 		Destroys Imageset objects
@@ -141,7 +108,6 @@ public:	// For luabind support
 	~Imageset(void);
 
 
-public:
 	typedef	ConstBaseIterator<ImageRegistry>	ImageIterator;	//!< Iterator type for this collection
 
 	/*************************************************************************
@@ -558,33 +524,8 @@ public:
 
 protected:
 	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const char	ImagesetSchemaName[];			//!< Filename of the XML schema used for validating Imageset files.
-
-
-	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
-	/*!
-	\brief
-		Initialise the Imageset with information taken from the specified file.
-
-	\param filename
-		String object that holds the name of the Imageset data file that is to be processed.
-
-    \param resourceGroup
-        Resource group identifier to be passed to the resource manager.  NB: This affects the
-        imageset xml file only, the texture loaded may have its own group specified in the XML file.
-
-	\return
-		Nothing
-
-	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
-	*/	
-	void	load(const String& filename, const String& resourceGroup);
-
-
 	/*!
 	\brief
 		Unloads all loaded data and leaves the Imageset in a clean (but un-usable) state.  This should be called for cleanup purposes only.

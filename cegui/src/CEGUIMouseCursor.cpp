@@ -126,7 +126,7 @@ void MouseCursor::setImage(const Image* image)
 *************************************************************************/
 void MouseCursor::setImage(const String& imageset, const String& image_name)
 {
-	setImage(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
+	setImage(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
 }
 
 

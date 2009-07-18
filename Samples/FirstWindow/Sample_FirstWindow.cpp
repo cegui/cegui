@@ -64,7 +64,7 @@ bool FirstWindowSample::initialiseSample()
     // demonstrating, it is not a requirement.
     //
     // Load TaharezLook imageset by making use of the ImagesetManager singleton.
-    Imageset* taharezImages = ImagesetManager::getSingleton().createImageset("TaharezLook.imageset");
+    Imageset& taharezImages = ImagesetManager::getSingleton().create("TaharezLook.imageset");
 
     // The next thing we do is to set a default mouse cursor image.  This is
     // not strictly essential, although it is nice to always have a visible
@@ -72,7 +72,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor(&taharezImages->getImage("MouseArrow"));
+    System::getSingleton().setDefaultMouseCursor(&taharezImages.getImage("MouseArrow"));
 
     // Now we have the gui imagery side of thigs set up, we should load in a font.
     // You should always load in at least one font, this is to ensure that there

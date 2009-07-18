@@ -99,12 +99,12 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // setup for logo
         CEGUI::ImagesetManager::getSingleton().
-            createImagesetFromImageFile("cegui_logo", "logo.png", "imagesets");
+            createFromImageFile("cegui_logo", "logo.png", "imagesets");
         d_logo_geometry = &d_renderer->createGeometryBuffer();
         d_logo_geometry->setClippingRegion(scrn);
         d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
         d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
-        CEGUI::ImagesetManager::getSingleton().getImageset("cegui_logo")->
+        CEGUI::ImagesetManager::getSingleton().get("cegui_logo").
             getImage("full_image").draw(*d_logo_geometry,
                                         CEGUI::Rect(0, 0, 100, 69.5f), 0);
 
