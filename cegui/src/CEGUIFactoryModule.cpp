@@ -36,14 +36,6 @@
 #   include "config.h"
 #endif
 
-#if defined(CEGUI_STATIC)
-#	if defined(CEGUI_FALAGARD_RENDERER)
-#		include "../WindowRendererSets/Falagard/include/FalModule.h"
-#	endif
-#endif
-
-
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -107,7 +99,7 @@ void FactoryModule::registerFactory(const String& type) const
 	{
 #if defined(CEGUI_STATIC)
 		//Call the register function for the current static library
-		registerFactoryFunction(type);
+//		registerFactoryFunction(type);
 #endif
 	}
 }
@@ -129,7 +121,7 @@ uint FactoryModule::registerAllFactories() const
 	else
 	{
 #if defined(CEGUI_STATIC)
-		return registerAllFactoriesFunction();
+//		return registerAllFactoriesFunction();
 #endif
 	}
 
