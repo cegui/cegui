@@ -282,9 +282,11 @@ function setup_static_samples()
 		-- Link against any XML Parsers we are compiling
 		if EXPAT_PARSER then
 		    dependency("CEGUIExpatParser")
+		    library_static("expat","","_d")
 		end
 		if XERCES_PARSER then
 		    dependency("CEGUIXercesParser")
+		    library_static("xerces-c_2","","D")
 		end
 		if TINYXML_PARSER then
 		    dependency("CEGUITinyXMLParser")
@@ -299,6 +301,7 @@ function setup_static_samples()
 		end
 		if SILLY_IMAGE_CODEC then
 		    dependency("CEGUISILLYImageCodec")
+		    library_static("SILLY","","_d")
 		end
 		if DEVIL_IMAGE_CODEC then
 		    dependency("CEGUIDevILImageCodec")
