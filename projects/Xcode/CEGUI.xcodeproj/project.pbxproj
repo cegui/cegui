@@ -561,6 +561,8 @@
 		DA61D5A00FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA61D59F0FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp */; };
 		DA61D5B00FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h in Headers */ = {isa = PBXBuildFile; fileRef = DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */; };
 		DA61D5BC0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */; };
+		DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */; };
+		DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */; };
 		DAAAB8070F6E4ACC0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DAAAB8080F6E4ACC0003BE03 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DAAAB80D0F6E4AEF0003BE03 /* Sample_Demo7.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093B30F6D591900B8A582 /* Sample_Demo7.cpp */; };
@@ -2244,6 +2246,8 @@
 		DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBasicRenderedStringParser.h; path = ../../cegui/include/CEGUIBasicRenderedStringParser.h; sourceTree = SOURCE_ROOT; };
 		DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBasicRenderedStringParser.cpp; path = ../../cegui/src/CEGUIBasicRenderedStringParser.cpp; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
+		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
+		DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedStringWordWrapper.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedStringWordWrapper.cpp; sourceTree = SOURCE_ROOT; };
 		DAAAB7FD0F6E4A970003BE03 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAAB7FF0F6E4A970003BE03 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
 		DAAAB8220F6E4BC30003BE03 /* Demo6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo6.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3282,6 +3286,7 @@
 				DA1095670F6D5F9B00B8A582 /* CEGUILogger.h */,
 				DA1095680F6D5F9B00B8A582 /* CEGUIMemberFunctionSlot.h */,
 				DA1095690F6D5F9B00B8A582 /* CEGUIMouseCursor.h */,
+				DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */,
 				DA10956A0F6D5F9B00B8A582 /* CEGUIPixmapFont.h */,
 				DA10956B0F6D5F9B00B8A582 /* CEGUIProperty.h */,
 				DA10956C0F6D5F9B00B8A582 /* CEGUIPropertyHelper.h */,
@@ -3383,6 +3388,7 @@
 				DA1095200F6D5F4100B8A582 /* CEGUIImageset_xmlHandler.cpp */,
 				DA1095210F6D5F4100B8A582 /* CEGUIImagesetManager.cpp */,
 				DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */,
+				DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */,
 				DAB270710FCAEFFD00D9EE82 /* CEGUILeftAlignedRenderedString.cpp */,
 				DA1095220F6D5F4100B8A582 /* CEGUILogger.cpp */,
 				DA1095230F6D5F4100B8A582 /* CEGUIMouseCursor.cpp */,
@@ -4435,6 +4441,7 @@
 				DA61D5940FCEA14C00EC1A0C /* CEGUIDefaultRenderedStringParser.h in Headers */,
 				DA61D5B00FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h in Headers */,
 				DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */,
+				DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5700,6 +5707,7 @@
 				DA61D5A00FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp in Sources */,
 				DA61D5BC0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp in Sources */,
 				DA00829B10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp in Sources */,
+				DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
