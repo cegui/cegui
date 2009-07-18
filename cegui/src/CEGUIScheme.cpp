@@ -45,6 +45,17 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIWindowRendererModule.h"
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
+#if defined(CEGUI_STATIC)
+#	if defined(CEGUI_FALAGARD_RENDERER)
+#		include "WindowRendererSets/Falagard/FalModule.h"
+#	endif
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -331,7 +342,7 @@ void Scheme::loadWindowRendererFactories()
             // get the WindowRendererModule object for this module.
             (*cmod).wrModule = &getWRModuleFunc();
 #else
-            (*cmod).wrModule = getWindowRendererModule();
+            (*cmod).wrModule = &getWindowRendererModule();
 #endif
         }
 

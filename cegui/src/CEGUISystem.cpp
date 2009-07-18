@@ -74,17 +74,17 @@
 	#endif
     // Image codec
     #if defined(CEGUI_CODEC_SILLY)
-        #include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
     #elif defined(CEGUI_CODEC_TGA)
-        #include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
+        #include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
     #elif defined(CEGUI_CODEC_CORONA)
-        #include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
+        #include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
     #elif defined(CEGUI_CODEC_DEVIL)
-        #include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
+        #include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
     #elif defined(CEGUI_CODEC_FREEIMAGE)
-        #include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
+        #include "ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
     #else //Make Silly the default
-        #include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
     #endif
 #endif
 
