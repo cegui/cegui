@@ -63,7 +63,7 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 *************************************************************************/
 void ListboxItem::setSelectionBrushImage(const String& imageset, const String& image)
 {
-	setSelectionBrushImage(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image));
+	setSelectionBrushImage(&ImagesetManager::getSingleton().get(imageset).getImage(image));
 }
 
 

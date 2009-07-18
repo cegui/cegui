@@ -84,7 +84,7 @@ namespace CEGUI
 
         try
         {
-            d_frameImages[part] = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+            d_frameImages[part] = &ImagesetManager::getSingleton().get(imageset).getImage(image);
         }
         catch (UnknownObjectException&)
         {

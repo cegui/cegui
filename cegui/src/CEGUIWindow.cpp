@@ -1607,7 +1607,7 @@ const Image* Window::getMouseCursor(bool useDefault) const
 *************************************************************************/
 void Window::setMouseCursor(const String& imageset, const String& image_name)
 {
-    d_mouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
+    d_mouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image_name);
 }
 
 

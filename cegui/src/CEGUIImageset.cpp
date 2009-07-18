@@ -51,7 +51,6 @@ namespace CEGUI
 	Definition of static /const data for Imageset (and sub-classes)
 *************************************************************************/
 // Declared in Imageset
-const char	Imageset::ImagesetSchemaName[]			= "Imageset.xsd";
 String Imageset::d_defaultResourceGroup;
 
 
@@ -69,20 +68,6 @@ Imageset::Imageset(const String& name, Texture& texture) :
 	// defaults for scaling options
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-}
-
-
-/*************************************************************************
-	construct and initialise Imageset from the specified file.
-*************************************************************************/
-Imageset::Imageset(const String& filename, const String& resourceGroup)
-{
-	// defaults for scaling options
-	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-
-	d_texture = 0;
-	load(filename, resourceGroup);
 }
 
 
@@ -136,40 +121,6 @@ void Imageset::setTexture(Texture* texture)
 }
 
 
-/*************************************************************************
-	load Imageset data from the specified file
-*************************************************************************/
-void Imageset::load(const String& filename, const String& resourceGroup)
-{
-	// unload old data and texture.
-	unload();
-
-	if (filename.empty())
-	{
-		throw InvalidRequestException("Imageset::load - Filename supplied for Imageset loading must be valid");
-	}
-
-    // create handler object
-    Imageset_xmlHandler handler(this);
-
-	// do parse (which uses handler to create actual data)
-	try
-	{
-        System::getSingleton().getXMLParser()->parseXMLFile(
-                handler, filename, ImagesetSchemaName,
-                resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
-	}
-	catch(...)
-	{
-		unload();
-
-        Logger::getSingleton().logEvent("Imageset::load - loading of Imageset from file '" + filename +"' failed.", Errors);
-        throw;
-	}
-
-}
-
- 
 /*************************************************************************
 	return the Image object for the named image
 *************************************************************************/

@@ -816,7 +816,7 @@ void FrameWindow::setNESWSizingCursorImage(const Image* image)
 *************************************************************************/
 void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
 {
-    d_nsSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_nsSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 /*************************************************************************
@@ -824,7 +824,7 @@ void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& i
 *************************************************************************/
 void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
 {
-    d_ewSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_ewSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 /*************************************************************************
@@ -832,7 +832,7 @@ void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& i
 *************************************************************************/
 void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
 {
-    d_nwseSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_nwseSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 /*************************************************************************
@@ -840,7 +840,7 @@ void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String&
 *************************************************************************/
 void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
 {
-    d_neswSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_neswSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 /*************************************************************************

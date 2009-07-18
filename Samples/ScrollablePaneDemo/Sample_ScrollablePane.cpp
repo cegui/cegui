@@ -109,13 +109,13 @@ bool ScrollablePaneSample::initialiseSample()
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font
-    Imageset* wndlook = ImagesetManager::getSingleton().getImageset("WindowsLook");
-    wndlook->setAutoScalingEnabled(false);
+    Imageset& wndlook = ImagesetManager::getSingleton().get("WindowsLook");
+    wndlook.setAutoScalingEnabled(false);
     d_font->setProperty("AutoScaled", "false");
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->setDefaultMouseCursor(&wndlook->getImage("MouseArrow"));
+    d_system->setDefaultMouseCursor(&wndlook.getImage("MouseArrow"));
 
     // set the default tooltip type
     d_system->setDefaultTooltip("WindowsLook/Tooltip");

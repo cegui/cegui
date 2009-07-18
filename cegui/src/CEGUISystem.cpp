@@ -564,7 +564,7 @@ void System::setDefaultMouseCursor(const Image* image)
 *************************************************************************/
 void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
 {
-	setDefaultMouseCursor(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
+	setDefaultMouseCursor(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
 }
 
 

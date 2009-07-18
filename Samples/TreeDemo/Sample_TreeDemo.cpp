@@ -109,11 +109,11 @@ bool TreeDemoSample::initialiseSample()
    System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME, "MouseArrow");
 
    // load an image to use as a background
-   ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+   ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
    // Load some icon images for our test tree
-  // Imageset *iconImages = ImagesetManager::getSingleton().createImageset("TreeIcons.imageset");
-   Imageset *drives = ImagesetManager::getSingleton().createImageset("DriveIcons.imageset");
+  // Imageset *iconImages = ImagesetManager::getSingleton().create("TreeIcons.imageset");
+   Imageset& drives = ImagesetManager::getSingleton().create("DriveIcons.imageset");
 
    // here we will use a StaticImage as the root, then we can use it to place a background image
    Window* background = winMgr.createWindow(STATICIMAGE_NAME);
@@ -152,53 +152,53 @@ bool TreeDemoSample::initialiseSample()
    // activate the background window
    background->activate();
 
-   Imageset* iconImages = drives;
-   iconArray[0] = (Image *)&iconImages->getImage("Artic");
-   iconArray[1] = (Image *)&iconImages->getImage("Black");
-   iconArray[2] = (Image *)&iconImages->getImage("Sunset");
-   iconArray[3] = (Image *)&iconImages->getImage("DriveStack");
-   iconArray[4] = (Image *)&iconImages->getImage("GlobalDrive");
-   iconArray[5] = (Image *)&iconImages->getImage("Blue");
-   iconArray[6] = (Image *)&iconImages->getImage("Lime");
-   iconArray[7] = (Image *)&iconImages->getImage("Silver");
-   iconArray[8] = (Image *)&iconImages->getImage("GreenCandy");
+   Imageset& iconImages = drives;
+   iconArray[0] = (Image *)&iconImages.getImage("Artic");
+   iconArray[1] = (Image *)&iconImages.getImage("Black");
+   iconArray[2] = (Image *)&iconImages.getImage("Sunset");
+   iconArray[3] = (Image *)&iconImages.getImage("DriveStack");
+   iconArray[4] = (Image *)&iconImages.getImage("GlobalDrive");
+   iconArray[5] = (Image *)&iconImages.getImage("Blue");
+   iconArray[6] = (Image *)&iconImages.getImage("Lime");
+   iconArray[7] = (Image *)&iconImages.getImage("Silver");
+   iconArray[8] = (Image *)&iconImages.getImage("GreenCandy");
 
    // Create a top-most TreeCtrlEntry
    newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1a");
-   newTreeCtrlEntryLvl1->setIcon(drives->getImage("Black"));
+   newTreeCtrlEntryLvl1->setIcon(drives.getImage("Black"));
    newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
 //   newTreeCtrlEntryLvl1->setUserData((void *)someData);
    theTree->addItem(newTreeCtrlEntryLvl1);
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2a (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives->getImage("Artic"));
+   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Artic"));
    newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create a third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
    newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3a (2a)");
-   newTreeCtrlEntryLvl3->setIcon(drives->getImage("Blue"));
+   newTreeCtrlEntryLvl3->setIcon(drives.getImage("Blue"));
    newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
    newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3b (2a)");
-   newTreeCtrlEntryLvl3->setIcon(drives->getImage("Lime"));
+   newTreeCtrlEntryLvl3->setIcon(drives.getImage("Lime"));
    newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2b (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives->getImage("Sunset"));
+   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Sunset"));
    newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2c (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives->getImage("Silver"));
+   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Silver"));
    newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
 
    // Create another top-most TreeCtrlEntry
    newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1b");
    newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
-   newTreeCtrlEntryLvl1->setIcon(drives->getImage("DriveStack"));
+   newTreeCtrlEntryLvl1->setIcon(drives.getImage("DriveStack"));
    newTreeCtrlEntryLvl1->setDisabled(true); // Let's disable this one just to be sure it works
    theTree->addItem(newTreeCtrlEntryLvl1);
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry

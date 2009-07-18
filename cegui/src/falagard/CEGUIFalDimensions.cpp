@@ -229,7 +229,7 @@ namespace CEGUI
 
     float ImageDim::getValue_impl(const Window&) const
     {
-        const Image* img = &ImagesetManager::getSingleton().getImageset(d_imageset)->getImage(d_image);
+        const Image* img = &ImagesetManager::getSingleton().get(d_imageset).getImage(d_image);
 
         switch (d_what)
         {

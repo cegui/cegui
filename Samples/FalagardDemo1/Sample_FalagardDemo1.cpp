@@ -62,7 +62,7 @@ bool FalagardDemo1Sample::initialiseSample()
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");

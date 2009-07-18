@@ -646,7 +646,7 @@ void ListHeaderSegment::setSizingCursorImage(const Image* image)
 
 void ListHeaderSegment::setSizingCursorImage(const String& imageset, const String& image)
 {
-    d_sizingMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_sizingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 const Image* ListHeaderSegment::getMovingCursorImage() const
@@ -661,7 +661,7 @@ void ListHeaderSegment::setMovingCursorImage(const Image* image)
 
 void ListHeaderSegment::setMovingCursorImage(const String& imageset, const String& image)
 {
-    d_movingMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+    d_movingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
 }
 
 } // End of  CEGUI namespace section

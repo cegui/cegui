@@ -58,7 +58,7 @@ bool DragDropDemo::initialiseSample()
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
-    ImagesetManager::getSingleton().createImageset("DriveIcons.imageset");
+    ImagesetManager::getSingleton().create("DriveIcons.imageset");
 
     // load the initial layout
     System::getSingleton().setGUISheet(

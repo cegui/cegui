@@ -1,3 +1,11 @@
+// Possible actions when loading an XML resource that already exists.
+enum XMLResourceExistsAction
+{
+    XREA_RETURN,
+    XREA_REPLACE,
+    XREA_THROW
+};
+
 /***********************************************************************
     Vector2
 ***********************************************************************/
