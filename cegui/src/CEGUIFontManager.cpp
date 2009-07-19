@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIFontManager.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
-
-	purpose:	Implements the FontManager class
+    filename:   CEGUIFontManager.cpp
+    created:    Sun Jul 19 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,268 +28,130 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-#include "CEGUIFont.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
-#include "CEGUIFont_xmlHandler.h"
 #include "CEGUIFreeTypeFont.h"
 #include "CEGUIPixmapFont.h"
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*************************************************************************
-	Static Data Definitions
-*************************************************************************/
-
-// Font schema filename
-static const String FontSchemaName ("Font.xsd");
-static const String FontTypeFreeType ("FreeType");
-static const String FontTypePixmap ("Pixmap");
-
+//----------------------------------------------------------------------------//
 // singleton instance pointer
-template<> FontManager* Singleton<FontManager>::ms_Singleton	= 0;
+template<> FontManager* Singleton<FontManager>::ms_Singleton = 0;
 
-
-/*************************************************************************
-	constructor
-*************************************************************************/
-FontManager::FontManager(void)
+//----------------------------------------------------------------------------//
+FontManager::FontManager() :
+    NamedXMLResourceManager<Font, Font_xmlHandler>("Font")
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton created. "
-        + String(addr_buff));
+    Logger::getSingleton().logEvent(
+        "CEGUI::FontManager singleton created. " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-FontManager::~FontManager(void)
+//----------------------------------------------------------------------------//
+FontManager::~FontManager()
 {
-	Logger::getSingleton().logEvent("---- Begining cleanup of Font system ----");
-	destroyAllFonts();
+    Logger::getSingleton().logEvent(
+        "---- Begining cleanup of Font system ----");
+
+    destroyAll();
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed. "
-        + String(addr_buff));
+    Logger::getSingleton().logEvent(
+        "CEGUI::FontManager singleton destroyed. " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Create a font from a definition file
-*************************************************************************/
-Font* FontManager::createFont(const String& filename, const String& resourceGroup)
+//----------------------------------------------------------------------------//
+Font& FontManager::createFreeTypeFont(const String& font_name,
+                                      const float point_size,
+                                      const bool anti_aliased,
+                                      const String& font_filename,
+                                      const String& resource_group,
+                                      const bool auto_scaled,
+                                      const float native_horz_res,
+                                      const float native_vert_res,
+                                      XMLResourceExistsAction action)
 {
-    if (filename.empty ())
-        throw InvalidRequestException ("FontManager::createFont - Filename supplied for Font loading must be valid");
+    Logger::getSingleton().logEvent("Attempting to create FreeType font '" +
+        font_name + "' using font file '" + font_filename + "'.");
 
-    Logger::getSingleton ().logEvent ("Attempting to create Font from the information specified in file '" + filename + "'.");
+    Font* object = doExistingObjectAction(font_name, action);
 
-    // create handler object
-    Font_xmlHandler handler;
-
-    // do parse (which uses handler to create actual data)
-    try
+    // see if we should use new object
+    if (!object)
     {
-        System::getSingleton ().getXMLParser ()->parseXMLFile (
-            handler, filename, FontSchemaName, resourceGroup.empty () ?
-            Font::getDefaultResourceGroup () : resourceGroup);
-    }
-    catch (...)
-    {
-        if (handler.d_font)
-            destroyFont (handler.d_font->getProperty ("Name"));
-
-        Logger::getSingleton ().logEvent ("FontManager::createFont - loading of Font from file '" + filename +"' failed.", Errors);
-        throw;
+        object = new FreeTypeFont(font_name, point_size, anti_aliased,
+                                  font_filename, resource_group, auto_scaled,
+                                  native_horz_res, native_vert_res);
+        d_objects[font_name] = object;
+        doPostObjectAdditionAction(*object);
     }
 
-    // if this was the first font created, set it as the default font
-    if (d_fonts.size () == 1)
-        System::getSingleton ().setDefaultFont (handler.d_font);
-
-    return handler.d_font;
+    return *object;
 }
 
-
-/*************************************************************************
-	Create a font from an installed OS font
-*************************************************************************/
-Font* FontManager::createFont (const String& type, const String& name, const String& fontname,
-                               const String& resourceGroup)
+//----------------------------------------------------------------------------//
+Font& FontManager::createPixmapFont(const String& font_name,
+                                    const String& imageset_filename,
+                                    const String& resource_group,
+                                    const bool auto_scaled,
+                                    const float native_horz_res,
+                                    const float native_vert_res,
+                                    XMLResourceExistsAction action)
 {
-    Logger::getSingleton ().logEvent ("Attempting to create Font '" + name + "' using the font file '" + fontname + ".");
+    Logger::getSingleton().logEvent("Attempting to create Pixmap font '" +
+        font_name + "' using imageset file '" + imageset_filename + "'.");
 
-    // first ensure name uniqueness
-    if (isFontPresent (name))
-        throw AlreadyExistsException ("FontManager::createFont - A font named '" + name + "' already exists.");
+    Font* object = doExistingObjectAction(font_name, action);
 
-    Font *temp;
-    // FreeType fonts
-    if (type == FontTypeFreeType)
-        temp = new FreeTypeFont (name, fontname, resourceGroup.empty () ?
-            Font::getDefaultResourceGroup () : resourceGroup);
-    // Imageset based font
-    else if (type == FontTypePixmap)
-        temp = new PixmapFont (name, fontname, resourceGroup.empty () ?
-            Font::getDefaultResourceGroup () : resourceGroup);
-    // error (should never happen)
-    else
-        throw FileIOException ("FontManager::createFont - The value '" + type + "' for the Font:Type attribute is unknown.");
-
-    d_fonts [name] = temp;
-
-    // if this was the first font created, set it as the default font
-    if (d_fonts.size () == 1)
-        System::getSingleton ().setDefaultFont (temp);
-
-    return temp;
-}
-
-
-/*************************************************************************
-	Create a font given its type and the respective XML attributes
-*************************************************************************/
-Font *FontManager::createFont (const String &type, const XMLAttributes& attributes)
-{
-    Font *temp;
-
-    // TrueType fonts
-    if (type == FontTypeFreeType)
-        temp = new FreeTypeFont (attributes);
-    // static (Image based) font
-    else if (type == FontTypePixmap)
-        temp = new PixmapFont (attributes);
-    // error (should never happen)
-    else
-        throw FileIOException ("FontManager::createFont - The value for the Font:Type attribute '" + type + "' is unknown.");
-
-    String name = temp->getProperty ("Name");
-    if (isFontPresent (name))
+    // see if we should use new object
+    if (!object)
     {
-        delete temp;
-        throw AlreadyExistsException ("FontManager::createFont - A font named '" + name + "' already exists.");
+        object = new PixmapFont(font_name, imageset_filename, resource_group,
+                                auto_scaled, native_horz_res, native_vert_res);
+        d_objects[font_name] = object;
+        doPostObjectAdditionAction(*object);
     }
 
-    d_fonts [name] = temp;
-
-    return temp;
+    return *object;
 }
 
-
-/*************************************************************************
-	Destroy the named font
-*************************************************************************/
-void FontManager::destroyFont(const String& name)
-{
-    FontRegistry::iterator pos = d_fonts.find(name);
-
-	if (pos != d_fonts.end())
-	{
-		String tmpName(name);
-
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
-
-		delete pos->second;
-		d_fonts.erase(pos);
-
-		Logger::getSingleton().logEvent("Font '" + tmpName +"' has been "
-          "destroyed. " + addr_buff);
-	}
-
-}
-
-
-/*************************************************************************
-	Destroys the given Font object
-*************************************************************************/
-void FontManager::destroyFont(Font* font)
-{
-	if (font)
-	{
-		destroyFont(font->getProperty ("Name"));
-	}
-
-}
-
-
-/*************************************************************************
-	Destroys all Font objects registered in the system
-*************************************************************************/
-void FontManager::destroyAllFonts(void)
-{
-	while (!d_fonts.empty())
-	{
-		destroyFont(d_fonts.begin()->first);
-	}
-
-}
-
-
-/*************************************************************************
-	Check to see if a font is available
-*************************************************************************/
-bool FontManager::isFontPresent(const String& name) const
-{
-	return (d_fonts.find(name) != d_fonts.end());
-}
-
-
-/*************************************************************************
-	Return a pointer to the named font
-*************************************************************************/
-Font* FontManager::getFont(const String& name) const
-{
-	FontRegistry::const_iterator pos = d_fonts.find(name);
-
-	if (pos == d_fonts.end())
-	{
-		throw UnknownObjectException("FontManager::getFont - A Font object with the specified name '" + name +"' does not exist within the system");
-	}
-
-	return pos->second;
-}
-
-
-/*************************************************************************
-	Notify the FontManager of the current (usually new) display
-	resolution.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void FontManager::notifyDisplaySizeChanged(const Size& size)
 {
-	// notify all attached Font objects of the change in resolution
-	FontRegistry::iterator pos = d_fonts.begin(), end = d_fonts.end();
+    // notify all attached Font objects of the change in resolution
+    ObjectRegistry::iterator pos = d_objects.begin(), end = d_objects.end();
 
-	for (; pos != end; ++pos)
-	{
+    for (; pos != end; ++pos)
         pos->second->notifyDisplaySizeChanged(size);
-	}
-
 }
 
-
-/*************************************************************************
-	Return a FontManager::FontIterator object to iterate over the
-	available Font objects.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 FontManager::FontIterator FontManager::getIterator(void) const
 {
-	return FontIterator(d_fonts.begin(), d_fonts.end());
+    return FontIterator(d_objects.begin(), d_objects.end());
 }
 
-
-void FontManager::writeFontToStream(const String& name, OutStream& out_stream) const
+//----------------------------------------------------------------------------//
+void FontManager::writeFontToStream(const String& name,
+                                    OutStream& out_stream) const
 {
-    const Font* font = getFont(name);
     XMLSerializer xml(out_stream);
     // output font data
-    font->writeXMLToStream(xml);
+    get(name).writeXMLToStream(xml);
 }
+
+//----------------------------------------------------------------------------//
+void FontManager::doPostObjectAdditionAction(Font& object)
+{
+    // if this was the first font created, set it as the default font
+    if (d_objects.size() == 1)
+        System::getSingleton().setDefaultFont(&object);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

@@ -162,8 +162,8 @@ namespace CEGUI
         try
         {
             font = d_fontPropertyName.empty() ?
-                (d_font.empty() ? srcWindow.getFont() : FontManager::getSingleton().getFont(d_font))
-                : FontManager::getSingleton().getFont(srcWindow.getProperty(d_fontPropertyName));
+                (d_font.empty() ? srcWindow.getFont() : &FontManager::getSingleton().get(d_font))
+                : &FontManager::getSingleton().get(srcWindow.getProperty(d_fontPropertyName));
         }
         catch (UnknownObjectException&)
         {

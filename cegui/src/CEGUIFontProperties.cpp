@@ -6,7 +6,7 @@
     purpose:    Interface to available font properties
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,7 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIFont.h"
 #include "CEGUIFreeTypeFont.h"
 #include "CEGUIPixmapFont.h"
 #include "CEGUIImageset.h"
@@ -51,104 +50,67 @@ namespace FontProperties
 class NativeRes : public Property
 {
 public:
-    NativeRes () : Property(
+    NativeRes() : Property(
         "NativeRes",
-        "Native screen resolution for this font. Value uses the 'w:# h:#' format.")
+        "Native screen resolution for this font. Value uses the 'w:# h:#' "
+        "format.")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const
     {
-        const Font *f = static_cast<const Font*>(receiver);
-        Size s (f->d_nativeHorzRes, f->d_nativeVertRes);
-        return PropertyHelper::sizeToString (s);
+        return PropertyHelper::sizeToString(
+            static_cast<const Font*>(receiver)->getNativeResolution());
     }
 
-    void set (PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& value)
     {
-        Font *f = static_cast<Font*>(receiver);
-        f->setNativeResolution (PropertyHelper::stringToSize (value));
+        static_cast<Font*>(receiver)->
+            setNativeResolution(PropertyHelper::stringToSize(value));
     }
 };
 
 class Name : public Property
 {
 public:
-    Name () : Property(
+    Name() : Property(
         "Name",
         "This is font name.  Value is a string.")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const
     {
-        return static_cast<const Font*>(receiver)->d_name;
+        return static_cast<const Font*>(receiver)->getName();
     }
 
-    void set (PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& /*value*/)
     {
-        static_cast<Font*>(receiver)->d_name = value;
-    }
-};
-
-class FileName : public Property
-{
-public:
-    FileName () : Property(
-        "FileName",
-        "This is the filename from which the font is loaded.")
-    {}
-
-    String get (const PropertyReceiver* receiver) const
-    {
-        return static_cast<const Font*>(receiver)->d_fileName;
-    }
-
-    void set (PropertyReceiver* receiver, const String& value)
-    {
-        static_cast<Font*>(receiver)->d_fileName = value;
-    }
-};
-
-class ResourceGroup : public Property
-{
-public:
-    ResourceGroup () : Property(
-        "ResourceGroup",
-        "This is the resource group for font file name.")
-    {}
-
-    String get (const PropertyReceiver* receiver) const
-    {
-        return static_cast<const Font*>(receiver)->d_resourceGroup;
-    }
-
-    void set (PropertyReceiver* receiver, const String& value)
-    {
-        static_cast<Font*>(receiver)->d_resourceGroup = value;
+        // Font can not be renamed
+        Logger::getSingleton().logEvent("FontProperties::Name::set: "
+            "Attempt to set read-only propery 'Name' on Font '" +
+            static_cast<const Font*>(receiver)->getName() + "'- ignoring.",
+            Errors);
     }
 };
 
 class AutoScaled : public Property
 {
 public:
-    AutoScaled () : Property(
+    AutoScaled() : Property(
         "AutoScaled",
-        "This is a flag indicating whether to autoscale font depending on resolution.  Value is either true or false.")
+        "This is a flag indicating whether to autoscale font depending on "
+        "resolution.  Value is either true or false.")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const Font*>(receiver)->d_autoScale);
+        return PropertyHelper::boolToString(
+            static_cast<const Font*>(receiver)->isAutoScaled());
     }
 
-    void set (PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& value)
     {
-        Font *f = static_cast<Font*>(receiver);
-        bool v = PropertyHelper::stringToBool (value);
-        if (f->d_autoScale != v)
-        {
-            f->d_autoScale = v;
-            f->updateFont ();
-        }
+        static_cast<Font*>(receiver)->setAutoScaled(
+            PropertyHelper::stringToBool(value));
     }
 };
 
@@ -156,25 +118,21 @@ public:
 class FreeTypePointSize : public Property
 {
 public:
-    FreeTypePointSize () : Property(
+    FreeTypePointSize() : Property(
         "PointSize",
         "This is the point size of the font.")
     {}
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const FreeTypeFont*>(receiver)->d_ptSize);
+        return PropertyHelper::floatToString(
+            static_cast<const FreeTypeFont*>(receiver)->getPointSize());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
-        FreeTypeFont *f = static_cast<FreeTypeFont*>(receiver);
-        float v = PropertyHelper::stringToFloat (value);
-        if (v != f->d_ptSize)
-        {
-            f->d_ptSize = v;
-            f->updateFont ();
-        }
+        static_cast<FreeTypeFont*>(receiver)->
+            setPointSize(PropertyHelper::stringToFloat (value));
     }
 };
 
@@ -182,49 +140,43 @@ public:
 class FreeTypeAntialiased : public Property
 {
 public:
-    FreeTypeAntialiased () : Property(
+    FreeTypeAntialiased() : Property(
         "Antialiased",
-        "This is a flag indicating whenever to render antialiased font or not.  Value is either true or false.")
+        "This is a flag indicating whenever to render antialiased font or not. "
+        "Value is either true or false.")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const FreeTypeFont*>(receiver)->d_antiAliased);
+        return PropertyHelper::boolToString(
+            static_cast<const FreeTypeFont*>(receiver)->isAntiAliased());
     }
 
-    void set (PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& value)
     {
-        FreeTypeFont *f = static_cast<FreeTypeFont*>(receiver);
-        bool v = PropertyHelper::stringToBool (value);
-        if (f->d_antiAliased != v)
-        {
-            f->d_antiAliased = v;
-            f->updateFont ();
-        }
-    }
+        static_cast<FreeTypeFont*>(receiver)->
+            setAntiAliased(PropertyHelper::stringToBool(value));
+}
 };
 
 // PixmapFont property
 class PixmapImageset : public Property
 {
 public:
-    PixmapImageset () : Property(
+    PixmapImageset() : Property(
         "Imageset",
-        "This is the name of the imageset which contains the glyph images for this font.")
+        "This is the name of the imageset which contains the glyph images for "
+        "this font.")
     {}
 
-    String get (const PropertyReceiver* receiver) const
+    String get(const PropertyReceiver* receiver) const
     {
-        const PixmapFont *f = static_cast<const PixmapFont*>(receiver);
-        return f->d_glyphImages ? f->d_glyphImages->getName () : String ();
+        return static_cast<const PixmapFont*>(receiver)->getImageset();
     }
 
-    void set (PropertyReceiver* receiver, const String& value)
+    void set(PropertyReceiver* receiver, const String& value)
     {
-        PixmapFont *f = static_cast<PixmapFont*>(receiver);
-        f->d_resourceGroup = "*";
-        f->d_fileName = value;
-        f->reinit ();
+        static_cast<PixmapFont*>(receiver)->setImageset(value);
     }
 };
 
@@ -234,22 +186,24 @@ class PixmapMapping : public Property
 public:
     PixmapMapping () : Property(
         "Mapping",
-        "This is the glyph-to-image mapping font property. It cannot be read. Format is: codepoint,advance,imagename")
+        "This is the glyph-to-image mapping font property. It cannot be read. "
+        "Format is: codepoint,advance,imagename")
     {}
 
     String get (const PropertyReceiver*) const
     {
-        return String ();
+        return String();
     }
 
     void set (PropertyReceiver* receiver, const String& value)
     {
-        char img [33];
+        char img[33];
         utf32 codepoint;
         float adv;
         if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
-            throw InvalidRequestException ("Bad glyph Mapping specified: " + value);
-        static_cast<PixmapFont*>(receiver)->defineMapping (img, codepoint, adv);
+            throw InvalidRequestException(
+                "Bad glyph Mapping specified: " + value);
+        static_cast<PixmapFont*>(receiver)->defineMapping(codepoint, img, adv);
     }
 };
 
@@ -257,17 +211,13 @@ public:
 
 void Font::addFontProperties ()
 {
-    static FontProperties::NativeRes NativeRes;
     static FontProperties::Name Name;
-    static FontProperties::FileName FileName;
-    static FontProperties::ResourceGroup ResourceGroup;
+    static FontProperties::NativeRes NativeRes;
     static FontProperties::AutoScaled AutoScaled;
 
-    addProperty (&NativeRes);
-    addProperty (&Name);
-    addProperty (&FileName);
-    addProperty (&ResourceGroup);
-    addProperty (&AutoScaled);
+    addProperty(&Name);
+    addProperty(&NativeRes);
+    addProperty(&AutoScaled);
 }
 
 void FreeTypeFont::addFreeTypeFontProperties ()
@@ -275,8 +225,8 @@ void FreeTypeFont::addFreeTypeFontProperties ()
     static FontProperties::FreeTypePointSize FreeTypePointSize;
     static FontProperties::FreeTypeAntialiased FreeTypeAntialiased;
 
-    addProperty (&FreeTypePointSize);
-    addProperty (&FreeTypeAntialiased);
+    addProperty(&FreeTypePointSize);
+    addProperty(&FreeTypeAntialiased);
 }
 
 void PixmapFont::addPixmapFontProperties ()
@@ -284,8 +234,8 @@ void PixmapFont::addPixmapFontProperties ()
     static FontProperties::PixmapImageset PixmapImageset;
     static FontProperties::PixmapMapping PixmapMapping;
 
-    addProperty (&PixmapImageset);
-    addProperty (&PixmapMapping);
+    addProperty(&PixmapImageset);
+    addProperty(&PixmapMapping);
 }
 
 } // End of CEGUI namespace section

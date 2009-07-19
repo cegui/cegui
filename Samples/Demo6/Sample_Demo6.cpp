@@ -57,8 +57,7 @@ bool Demo6Sample::initialiseSample()
     // load scheme and set up defaults
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
-		FontManager::getSingleton().createFont("Commonwealth-10.font");
+    FontManager::getSingleton().create("Commonwealth-10.font");
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");

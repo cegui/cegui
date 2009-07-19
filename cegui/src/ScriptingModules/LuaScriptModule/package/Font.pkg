@@ -18,8 +18,6 @@ class Font //: public PropertySet
     static void setDefaultResourceGroup(string resourceGroup);
     static string getDefaultResourceGroup();
 
-    void load();
-
 	bool isCodepointAvailable(unsigned long cp) const;
 
 	void setNativeResolution(const Size& sz);

@@ -1,12 +1,10 @@
 /***********************************************************************
-filename: 	CEGUIFont_xmlHandler.cpp
-created:	21/2/2004
-author:		Paul D Turner
-
-purpose:    Handle the basic XML layout for .font files
+    filename:   CEGUIFont_xmlHandler.cpp
+    created:    Sun Jul 19 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,73 +26,192 @@ purpose:    Handle the basic XML layout for .font files
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIFont_xmlHandler.h"
-
 #include "CEGUIExceptions.h"
-#include "CEGUIImageset.h"
 #include "CEGUILogger.h"
 #include "CEGUIXMLAttributes.h"
-#include "CEGUIFont.h"
-#include "CEGUIFontManager.h"
+#include "CEGUISystem.h"
+#include "CEGUIXMLParser.h"
+#include "CEGUIFreeTypeFont.h"
+#include "CEGUIPixmapFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const String Font_xmlHandler::FontSchemaName("Font.xsd");
+const String Font_xmlHandler::FontElement("Font");
+const String Font_xmlHandler::MappingElement("Mapping");
+const String Font_xmlHandler::FontTypeAttribute("Type");
+const String Font_xmlHandler::FontNameAttribute("Name");
+const String Font_xmlHandler::FontFilenameAttribute("Filename");
+const String Font_xmlHandler::FontResourceGroupAttribute("ResourceGroup");
+const String Font_xmlHandler::FontAutoScaledAttribute("AutoScaled");
+const String Font_xmlHandler::FontNativeHorzResAttribute("NativeHorzRes");
+const String Font_xmlHandler::FontNativeVertResAttribute("NativeVertRes");
+const String Font_xmlHandler::FontSizeAttribute("Size");
+const String Font_xmlHandler::FontAntiAliasedAttribute("AntiAlias");
+const String Font_xmlHandler::FontTypeFreeType("FreeType");
+const String Font_xmlHandler::FontTypePixmap("Pixmap");
+const String Font_xmlHandler::MappingCodepointAttribute("Codepoint");
+const String Font_xmlHandler::MappingImageAttribute("Image");
+const String Font_xmlHandler::MappingHorzAdvanceAttribute("HorzAdvance");
 
-/*************************************************************************
-static data definitions
-*************************************************************************/
+//----------------------------------------------------------------------------//
+Font_xmlHandler::Font_xmlHandler(const String& filename,
+                                 const String& resource_group) :
+    d_font(0),
+    d_objectRead(false)
+{
+    System::getSingleton().getXMLParser()->parseXMLFile(
+            *this, filename, FontSchemaName,
+            resource_group.empty() ? Font::getDefaultResourceGroup() :
+                                     resource_group);
+}
 
-// XML related strings
-static const String FontElement ("Font");
-static const String MappingElement ("Mapping");
-static const String FontTypeAttribute ("Type");
+//----------------------------------------------------------------------------//
+Font_xmlHandler::~Font_xmlHandler()
+{
+    if (!d_objectRead)
+        delete d_font;
+}
 
-/*************************************************************************
-    Main element-start despatcher
-*************************************************************************/
-void Font_xmlHandler::elementStart (const String& element, const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+const String& Font_xmlHandler::getObjectName() const
+{
+    if (!d_font)
+        throw InvalidRequestException("Font_xmlHandler::getName: "
+            "Attempt to access null object.");
+
+    return d_font->getName();
+}
+
+//----------------------------------------------------------------------------//
+Font& Font_xmlHandler::getObject() const
+{
+    if (!d_font)
+        throw InvalidRequestException("Font_xmlHandler::getObject: "
+            "Attempt to access null object.");
+
+    d_objectRead = true;
+    return *d_font;
+}
+
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::elementStart(const String& element,
+                                   const XMLAttributes& attributes)
 {
     // handle root Font element
     if (element == FontElement)
-        elementFontStart (attributes);
+        elementFontStart(attributes);
     // handle a Mapping element
-    else if ((element == MappingElement) && d_font)
-        d_font->defineMapping (attributes);
-    // anything else is really an error which *should* have already been
-    // caught by XML validation
+    else if (element == MappingElement)
+        elementMappingStart(attributes);
+    // anything else is a non-fatal error.
     else
-        throw FileIOException ("Font::xmlHandler::startElement - Unexpected data was found while parsing the Font file: '" + element + "' is unknown.");
+        Logger::getSingleton().logEvent("Font_xmlHandler::elementStart: "
+            "Unknown element encountered: <" + element + ">", Errors);
 }
 
-/*************************************************************************
-    Main element-end despatcher
-*************************************************************************/
-void Font_xmlHandler::elementEnd (const String& element)
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::elementEnd(const String& element)
 {
     if (element == FontElement)
-        elementFontEnd ();
+        elementFontEnd();
 }
 
-/*************************************************************************
-    Method that handles the opening Font XML element.
-*************************************************************************/
-void Font_xmlHandler::elementFontStart (const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 {
     // get type of font being created
-    String font_type (attributes.getValueAsString (FontTypeAttribute));
-    d_font = FontManager::getSingleton ().createFont (font_type, attributes);
+    const String font_type(attributes.getValueAsString(FontTypeAttribute));
+
+    // log the start of font creation.
+    Logger::getSingleton().logEvent(
+        "Started creation of Font from XML specification:");
+
+    if (font_type == FontTypeFreeType)
+        createFreeTypeFont(attributes);
+    else if (font_type == FontTypePixmap)
+        createPixmapFont(attributes);
+    else
+        throw InvalidRequestException("Font_xmlHandler::elementFontStart: "
+            "Encountered unknown font type of '" + font_type + "'");
 }
 
-/*************************************************************************
-    Method that handles the closing Font XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Font_xmlHandler::elementFontEnd ()
 {
-	d_font->load ();
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_font));
-    Logger::getSingleton ().logEvent ("Finished creation of Font '" +
-        d_font->d_name + "' via XML file. " + addr_buff, Informative);
+    Logger::getSingleton().logEvent("Finished creation of Font '" +
+        d_font->getName() + "' via XML file. " + addr_buff, Informative);
 }
+
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
+{
+    if (!d_font)
+        throw InvalidRequestException(
+            "Imageset_xmlHandler::elementMappingStart: Attempt to access null "
+            "object.");
+
+    // double-check font type just in case - report issues as 'soft' errors
+    if (d_font->getTypeName() != FontTypePixmap)
+        Logger::getSingleton().logEvent(
+            "Imageset_xmlHandler::elementMappingStart: <Mapping> element is "
+            "only valid for Pixmap type fonts.", Errors);
+    else
+        static_cast<PixmapFont*>(d_font)->defineMapping(
+            attributes.getValueAsInteger(MappingCodepointAttribute),
+            attributes.getValueAsString(MappingImageAttribute),
+            attributes.getValueAsFloat(MappingHorzAdvanceAttribute, -1.0f));
+}
+
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
+{
+    const String name(attributes.getValueAsString(FontNameAttribute));
+    const String filename(attributes.getValueAsString(FontFilenameAttribute));
+    const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
+
+    Logger& logger(Logger::getSingleton());
+    logger.logEvent("---- CEGUI font name: " + name);
+    logger.logEvent("----       Font type: FreeType");
+    logger.logEvent("----     Source file: " + filename +
+                    " in resource group: " + (resource_group.empty() ?
+                                              "(Default)" : resource_group));
+    logger.logEvent("---- Real point size: " +
+            attributes.getValueAsString(FontSizeAttribute, "10"));
+
+    d_font = new FreeTypeFont(name,
+        attributes.getValueAsFloat(FontSizeAttribute, 10.0f),
+        attributes.getValueAsBool(FontAntiAliasedAttribute, true),
+        filename, resource_group,
+        attributes.getValueAsBool(FontAutoScaledAttribute, false),
+        attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
+        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+}
+
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
+{
+    const String name(attributes.getValueAsString(FontNameAttribute));
+    const String filename(attributes.getValueAsString(FontFilenameAttribute));
+    const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
+
+    Logger& logger(Logger::getSingleton());
+    logger.logEvent("---- CEGUI font name: " + name);
+    logger.logEvent("----       Font type: Pixmap");
+    logger.logEvent("----     Source file: " + filename +
+                    " in resource group: " + (resource_group.empty() ?
+                                              "(Default)" : resource_group));
+
+    d_font = new PixmapFont(name, filename, resource_group,
+        attributes.getValueAsBool(FontAutoScaledAttribute, false),
+        attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
+        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

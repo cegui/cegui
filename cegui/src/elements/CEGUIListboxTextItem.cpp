@@ -86,7 +86,7 @@ Font* ListboxTextItem::getFont(void) const
 *************************************************************************/
 void ListboxTextItem::setFont(const String& font_name)
 {
-	setFont(FontManager::getSingleton().getFont(font_name));
+	setFont(&FontManager::getSingleton().get(font_name));
 }
 
 //----------------------------------------------------------------------------//
@@ -187,7 +187,7 @@ void ListboxTextItem::setText(const String& text)
 //----------------------------------------------------------------------------//
 void ListboxTextItem::parseTextString() const
 {
-    d_stringParser.setInitialFontName(getFont()->getProperty("Name"));
+    d_stringParser.setInitialFontName(getFont()->getName());
     d_stringParser.setInitialColours(d_textCols);
     d_renderedString = d_stringParser.parse(getTextVisual());
     d_renderedStringValid = true;

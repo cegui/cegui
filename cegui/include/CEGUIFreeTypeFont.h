@@ -61,25 +61,64 @@ namespace FontProperties
 */
 class FreeTypeFont : public Font
 {
+public:
+    /*!
+    \brief
+        Constructor for FreeTypeFont based fonts.
+
+    \param font_name
+        The name that the font will use within the CEGUI system.
+
+    \param point_size
+        Specifies the point size that the font is to be rendered at.
+
+    \param anti_aliased
+        Specifies whether the font should be rendered using anti aliasing.
+
+    \param font_filename
+        The filename of an font file that will be used as the source for
+        glyph images for this font.
+
+    \param resource_group
+        The resource group identifier to use when loading the font file
+        specified by \a font_filename.
+
+    \param auto_scaled
+        Specifies whether the font imagery should be automatically scaled to
+        maintain the same physical size (which is calculated by using the
+        native resolution setting).
+
+    \param native_horz_res
+        The horizontal native resolution value.  This is only significant when
+        auto scaling is enabled.
+
+    \param native_vert_res
+        The vertical native resolution value.  This is only significant when
+        auto scaling is enabled.
+    */
+    FreeTypeFont(const String& font_name, const float point_size,
+                 const bool anti_aliased, const String& font_filename,
+                 const String& resource_group = "",
+                 const bool auto_scaled = false,
+                 const float native_horz_res = 640.0f,
+                 const float native_vert_res = 480.0f);
+
+    //! Destructor.
+    ~FreeTypeFont();
+
+    //! return the point size of the freetype font.
+    float getPointSize() const;
+
+    //! return whether the freetype font is rendered anti-aliased.
+    bool isAntiAliased() const;
+
+    //! return the point size of the freetype font.
+    void setPointSize(const float point_size);
+
+    //! return whether the freetype font is rendered anti-aliased.
+    void setAntiAliased(const bool anti_alaised);
+
 protected:
-    friend class FontManager;
-    friend class FontProperties::FreeTypePointSize;
-    friend class FontProperties::FreeTypeAntialiased;
-
-    typedef std::vector<Imageset*> ImagesetVector;
-    /// Imagesets that holds the glyphs for this font.
-    ImagesetVector d_glyphImages;
-
-    /// Point size of font.
-    float d_ptSize;
-    /// True if the font should be rendered as anti-alaised by freeType.
-    bool d_antiAliased;
-
-    /// FreeType-specific font handle
-    FT_Face d_fontFace;
-    /// Font file data
-    RawDataContainer d_fontData;
-
     /*!
     \brief
         Copy the current glyph data into \a buffer, which has a width of
@@ -95,7 +134,7 @@ protected:
     \return
         Nothing.
     */
-    void drawGlyphToBuffer (argb_t* buffer, uint buf_width);
+    void drawGlyphToBuffer(argb_t* buffer, uint buf_width);
 
     /*!
     \brief
@@ -106,43 +145,31 @@ protected:
     \param e
         The last glyph in set
     */
-    uint getTextureSize (CodepointMap::const_iterator s,
-                         CodepointMap::const_iterator e);
+    uint getTextureSize(CodepointMap::const_iterator s,
+                        CodepointMap::const_iterator e);
 
-    /// \copydoc Font::Font
-    FreeTypeFont (const String& name, const String& filename,
-                  const String& resourceGroup);
+    //! Register all properties of this class.
+    void addFreeTypeFontProperties();
+    //! Free all allocated font data.
+    void free();
 
-    /// \copydoc Font::Font
-    FreeTypeFont (const XMLAttributes& attributes);
+    // overrides of functions in Font base class.
+    void rasterise (utf32 start_codepoint, utf32 end_codepoint);
+    void updateFont();
+    void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
 
-    /// \copydoc Font::~Font
-    virtual ~FreeTypeFont ();
-
-    /// \copydoc Font::updateFont
-    virtual void updateFont ();
-
-    /// \copydoc Font::writeXMLToStream_impl
-    virtual void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
-
-    /*!
-    \brief
-        Register all properties of this class.
-    */
-    void addFreeTypeFontProperties ();
-
-    /*!
-    \brief
-        Free all allocated font data.
-    */
-    void free ();
-
-public:
-    /// \copydoc Font::load
-    virtual void load ();
-
-    /// \copydoc Font::rasterize
-    virtual void rasterize (utf32 start_codepoint, utf32 end_codepoint);
+    //! Point size of font.
+    float d_ptSize;
+    //! True if the font should be rendered as anti-alaised by freeType.
+    bool d_antiAliased;
+    //! FreeType-specific font handle
+    FT_Face d_fontFace;
+    //! Font file data
+    RawDataContainer d_fontData;
+    //! Type definition for ImagesetVector.
+    typedef std::vector<Imageset*> ImagesetVector;
+    //! Imagesets that holds the glyphs for this font.
+    ImagesetVector d_glyphImages;
 };
 
 } // End of  CEGUI namespace section

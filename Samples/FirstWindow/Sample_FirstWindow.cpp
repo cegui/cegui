@@ -83,7 +83,7 @@ bool FirstWindowSample::initialiseSample()
     // this step may not usually be performed explicitly.
     //
     // Fonts are loaded via the FontManager singleton.
-    FontManager::getSingleton().createFont("Commonwealth-10.font");
+    FontManager::getSingleton().create("Commonwealth-10.font");
 
     // The widgets that we will be using for this sample are the TaharezLook widgets,
     // and to enable us to use this 'skin' we must load the xml specification - which

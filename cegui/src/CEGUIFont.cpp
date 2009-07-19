@@ -1,12 +1,10 @@
 /***********************************************************************
-    filename:  CEGUIFont.cpp
-    created: 21/2/2004
-    author:  Paul D Turner
-
-    purpose: Implements Font class
+    filename:   CEGUIFont.cpp
+    created:    21/2/2004
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,126 +25,93 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #include "CEGUIFont.h"
 #include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUITextUtils.h"
-#include "CEGUIXMLAttributes.h"
+#include "CEGUIFont_xmlHandler.h"
 #include "CEGUIPropertyHelper.h"
-#include <algorithm>
 
 namespace CEGUI
 {
-
+//----------------------------------------------------------------------------//
 // amount of bits in a uint
 #define BITS_PER_UINT   (sizeof (uint) * 8)
 // must be a power of two
 #define GLYPHS_PER_PAGE 256
 
-static const String FontNameAttribute("Name");
-static const String FontFilenameAttribute("Filename");
-static const String FontResourceGroupAttribute("ResourceGroup");
-static const String FontAutoScaledAttribute("AutoScaled");
-static const String FontNativeHorzResAttribute("NativeHorzRes");
-static const String FontNativeVertResAttribute("NativeVertRes");
-
+//----------------------------------------------------------------------------//
 const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
-Font::Font(const String& name, const String& fontname, const String& resourceGroup) :
-        d_name(name),
-        d_fileName(fontname),
-        d_resourceGroup(resourceGroup),
-        d_ascender(0),
-        d_descender(0),
-        d_height(0),
-        d_autoScale(false),
-        d_horzScaling(1.0f),
-        d_vertScaling(1.0f),
-        d_nativeHorzRes(DefaultNativeHorzRes),
-        d_nativeVertRes(DefaultNativeVertRes),
-        d_maxCodepoint(0),
-        d_glyphPageLoaded(0)
-{
-    addFontProperties();
-}
-
-
-Font::Font(const XMLAttributes& attributes) :
-        d_name(attributes.getValueAsString(FontNameAttribute)),
-        d_fileName(attributes.getValueAsString(FontFilenameAttribute)),
-        d_resourceGroup(attributes.getValueAsString(FontResourceGroupAttribute)),
-        d_ascender(0),
-        d_descender(0),
-        d_height(0),
-        d_autoScale(attributes.getValueAsBool(FontAutoScaledAttribute, false)),
-        d_nativeHorzRes(attributes.getValueAsInteger(FontNativeHorzResAttribute, int (DefaultNativeHorzRes))),
-        d_nativeVertRes(attributes.getValueAsInteger(FontNativeVertResAttribute, int (DefaultNativeVertRes))),
-        d_maxCodepoint(0),
-        d_glyphPageLoaded(0)
+//----------------------------------------------------------------------------//
+Font::Font(const String& name, const String& type_name, const String& filename,
+           const String& resource_group, const bool auto_scaled,
+           const float native_horz_res, const float native_vert_res) :
+    d_name(name),
+    d_type(type_name),
+    d_filename(filename),
+    d_resourceGroup(resource_group),
+    d_ascender(0),
+    d_descender(0),
+    d_height(0),
+    d_autoScale(auto_scaled),
+    d_nativeHorzRes(native_horz_res),
+    d_nativeVertRes(native_vert_res),
+    d_maxCodepoint(0),
+    d_glyphPageLoaded(0)
 {
     addFontProperties();
 
-    Size size = System::getSingleton().getRenderer()->getDisplaySize();
+    const Size size(System::getSingleton().getRenderer()->getDisplaySize());
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
 
-
-/*************************************************************************
-    Destroys a Font object
-*************************************************************************/
-Font::~Font(void)
+//----------------------------------------------------------------------------//
+Font::~Font()
 {
-    delete [] d_glyphPageLoaded;
+    delete[] d_glyphPageLoaded;
 }
 
-
-/*************************************************************************
-    Define a glyph mapping (handle a <Mapping /> XML element)
-*************************************************************************/
-void Font::defineMapping (const XMLAttributes&)
+//----------------------------------------------------------------------------//
+const String& Font::getName() const
 {
-    throw FileIOException("Font::defineMapping - The <Mapping> XML element is not supported for this font type");
+    return d_name;
 }
 
+//----------------------------------------------------------------------------//
+const String& Font::getTypeName() const
+{
+    return d_type;
+}
 
-/*************************************************************************
-    Set the maximal glyph index. This reserves the respective
-    number of bits in the d_glyphPageLoaded array.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Font::setMaxCodepoint(utf32 codepoint)
 {
     d_maxCodepoint = codepoint;
 
-    delete [] d_glyphPageLoaded;
+    delete[] d_glyphPageLoaded;
 
     uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
     uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-    d_glyphPageLoaded = new uint [size];
+    d_glyphPageLoaded = new uint[size];
     memset(d_glyphPageLoaded, 0, size * sizeof(uint));
 }
 
-
-/*************************************************************************
-    Return a pointer to the glyphDat struct for the given codepoint,
-    or 0 if the codepoint does not have a glyph defined.
-*************************************************************************/
-const FontGlyph *Font::getGlyphData(utf32 codepoint)
+//----------------------------------------------------------------------------//
+const FontGlyph* Font::getGlyphData(utf32 codepoint)
 {
     if (codepoint > d_maxCodepoint)
         return 0;
 
     if (d_glyphPageLoaded)
     {
-        // Check if glyph page has been rasterized
+        // Check if glyph page has been rasterised
         uint page = codepoint / GLYPHS_PER_PAGE;
         uint mask = 1 << (page & (BITS_PER_UINT - 1));
-        if (!(d_glyphPageLoaded [page / BITS_PER_UINT] & mask))
+        if (!(d_glyphPageLoaded[page / BITS_PER_UINT] & mask))
         {
-            d_glyphPageLoaded [page / BITS_PER_UINT] |= mask;
-            rasterize(codepoint & ~(GLYPHS_PER_PAGE - 1),
+            d_glyphPageLoaded[page / BITS_PER_UINT] |= mask;
+            rasterise(codepoint & ~(GLYPHS_PER_PAGE - 1),
                       codepoint | (GLYPHS_PER_PAGE - 1));
         }
     }
@@ -155,10 +120,7 @@ const FontGlyph *Font::getGlyphData(utf32 codepoint)
     return (pos != d_cp_map.end()) ? &pos->second : 0;
 }
 
-
-/*************************************************************************
-    Return the pixel width of the specified text if rendered with this Font.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 float Font::getTextExtent(const String& text, float x_scale)
 {
     const FontGlyph* glyph;
@@ -182,12 +144,9 @@ float Font::getTextExtent(const String& text, float x_scale)
     return ceguimax(adv_extent, cur_extent);
 }
 
-
-/*************************************************************************
-    Return the index of the closest text character in String 'text' that
-    corresponds to pixel location 'pixel' if the text were rendered.
-*************************************************************************/
-size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel, float x_scale)
+//----------------------------------------------------------------------------//
+size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
+                            float x_scale)
 {
     const FontGlyph* glyph;
     float cur_extent = 0;
@@ -213,9 +172,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel, 
     return char_count;
 }
 
-/*************************************************************************
-    Renders text on the display.  Return number of lines output.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Font::drawText(GeometryBuffer& buffer, const String& text,
                     const Vector2& position, const Rect* clip_rect,
                     const ColourRect& colours, const float space_extra,
@@ -242,10 +199,7 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
     }
 }
 
-
-/*************************************************************************
-    Set the native resolution for this Font
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Font::setNativeResolution(const Size& size)
 {
     d_nativeHorzRes = size.d_width;
@@ -256,10 +210,29 @@ void Font::setNativeResolution(const Size& size)
         System::getSingleton().getRenderer()->getDisplaySize());
 }
 
+//----------------------------------------------------------------------------//
+Size Font::getNativeResolution() const
+{
+    return Size(d_nativeHorzRes, d_nativeVertRes);
+}
 
-/*************************************************************************
-    Notify the Font of the current (usually new) display resolution.
-*************************************************************************/
+//----------------------------------------------------------------------------//
+void Font::setAutoScaled(const bool auto_scaled)
+{
+    if (auto_scaled == d_autoScale)
+        return;
+
+    d_autoScale = auto_scaled;
+    updateFont();
+}
+
+//----------------------------------------------------------------------------//
+bool Font::isAutoScaled() const
+{
+    return d_autoScale;
+}
+
+//----------------------------------------------------------------------------//
 void Font::notifyDisplaySizeChanged(const Size& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
@@ -269,34 +242,34 @@ void Font::notifyDisplaySizeChanged(const Size& size)
         updateFont();
 }
 
-
-void Font::rasterize (utf32, utf32)
+//----------------------------------------------------------------------------//
+void Font::rasterise(utf32, utf32)
 {
     // do nothing by default
 }
 
-
-/*************************************************************************
-    Writes an xml representation of this Font to \a out_stream.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // output starting <Font ... > element
     xml_stream.openTag("Font")
-    .attribute(FontNameAttribute, d_name)
-    .attribute(FontFilenameAttribute, d_fileName);
+        .attribute(Font_xmlHandler::FontNameAttribute, d_name)
+        .attribute(Font_xmlHandler::FontFilenameAttribute, d_filename);
 
     if (!d_resourceGroup.empty())
-        xml_stream.attribute(FontResourceGroupAttribute, d_resourceGroup);
+        xml_stream.attribute(Font_xmlHandler::FontResourceGroupAttribute,
+                             d_resourceGroup);
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
-        xml_stream.attribute(FontNativeHorzResAttribute, PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
+        xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
+            PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
 
     if (d_nativeVertRes != DefaultNativeVertRes)
-        xml_stream.attribute(FontNativeVertResAttribute, PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
+        xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
+            PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
-        xml_stream.attribute(FontAutoScaledAttribute, "True");
+        xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute, "True");
 
     writeXMLToStream_impl(xml_stream);
 
@@ -304,5 +277,6 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
     xml_stream.closeTag();
 }
 
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
