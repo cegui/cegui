@@ -683,6 +683,7 @@
 		DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */; };
 		DAF3D22E0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */; };
 		DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */; };
+		DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2301,6 +2302,7 @@
 		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
 		DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWidgetComponent.h; path = ../../cegui/include/CEGUIRenderedStringWidgetComponent.h; sourceTree = SOURCE_ROOT; };
 		DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderedStringWidgetComponent.cpp; path = ../../cegui/src/CEGUIRenderedStringWidgetComponent.cpp; sourceTree = SOURCE_ROOT; };
+		DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFontGlyph.h; path = ../../cegui/include/CEGUIFontGlyph.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3261,6 +3263,7 @@
 				DA1095510F6D5F9B00B8A582 /* CEGUIExceptions.h */,
 				DA1095520F6D5F9B00B8A582 /* CEGUIFactoryModule.h */,
 				DA1095530F6D5F9B00B8A582 /* CEGUIFont.h */,
+				DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */,
 				DA1095540F6D5F9B00B8A582 /* CEGUIFont_xmlHandler.h */,
 				DA1095550F6D5F9B00B8A582 /* CEGUIFontManager.h */,
 				DAB26FFF0FCAE2AB00D9EE82 /* CEGUIFormattedRenderedString.h */,
@@ -4442,6 +4445,7 @@
 				DA61D5B00FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h in Headers */,
 				DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */,
 				DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */,
+				DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
