@@ -159,6 +159,8 @@ protected:
     //! function to aid in enforcement of XMLResourceExistsAction policy.
     T* doExistingObjectAction(const String& object_name,
                                  const XMLResourceExistsAction action);
+    //! Function called each time a new object is added to the collection.
+    virtual void doPostObjectAdditionAction(T& object);
     //! String holding the text for the resource type managed.
     const String d_resourceType;
     //! the collection of objects
@@ -189,10 +191,17 @@ T& NamedXMLResourceManager<T, U>::create(const String& xml_filename,
 
     const String name(xml_loader.getObjectName());
 
-    T* existing_object = doExistingObjectAction(name, action);
+    T* object = doExistingObjectAction(name, action);
 
-    return existing_object ? *existing_object :
-                             *(d_objects[name] = &xml_loader.getObject());
+    // see if we should use new object
+    if (!object)
+    {
+        object = &xml_loader.getObject();
+        d_objects[name] = object;
+        doPostObjectAdditionAction(*object);
+    }
+
+    return *object;
 }
 
 //----------------------------------------------------------------------------//
@@ -300,6 +309,13 @@ T* NamedXMLResourceManager<T, U>::doExistingObjectAction(
     }
 
     return 0;
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+void NamedXMLResourceManager<T, U>::doPostObjectAdditionAction(T& /*object*/)
+{
+    // do nothing by default.
 }
 
 //----------------------------------------------------------------------------//
