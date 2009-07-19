@@ -505,7 +505,7 @@ void System::setDefaultFont(const String& name)
 	}
 	else
 	{
-		setDefaultFont(FontManager::getSingleton().getFont(name));
+		setDefaultFont(&FontManager::getSingleton().get(name));
 	}
 
 }

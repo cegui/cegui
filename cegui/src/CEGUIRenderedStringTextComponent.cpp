@@ -54,7 +54,7 @@ RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
 RenderedStringTextComponent::RenderedStringTextComponent(
         const String& text, const String& font_name) :
     d_text(text),
-    d_font(font_name.empty() ? 0 : FontManager::getSingleton().getFont(font_name)),
+    d_font(font_name.empty() ? 0 : &FontManager::getSingleton().get(font_name)),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
 {
 }
@@ -90,7 +90,7 @@ void RenderedStringTextComponent::setFont(Font* font)
 void RenderedStringTextComponent::setFont(const String& font_name)
 {
     d_font =
-        font_name.empty() ? 0 : FontManager::getSingleton().getFont(font_name);
+        font_name.empty() ? 0 : &FontManager::getSingleton().get(font_name);
 }
 
 //----------------------------------------------------------------------------//

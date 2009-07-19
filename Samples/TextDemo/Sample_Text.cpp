@@ -44,16 +44,13 @@ bool TextDemo::initialiseSample()
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     // We need a font
-	if(!FontManager::getSingleton().isFontPresent("DejaVuSans-10"))
-    {
-		FontManager::getSingleton().createFont("DejaVuSans-10.font");
-    }
+    FontManager::getSingleton().create("DejaVuSans-10.font");
     // Font defaulting
-    if(FontManager::getSingleton().isFontPresent("DejaVuSans-10"))
+    if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
     {
 		System::getSingleton().setDefaultFont("DejaVuSans-10");
     }
-    else if(FontManager::getSingleton().isFontPresent("Commonwealth-10"))
+    else if(FontManager::getSingleton().isDefined("Commonwealth-10"))
     {
 		System::getSingleton().setDefaultFont("Commonwealth-10");
     }

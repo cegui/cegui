@@ -1005,7 +1005,7 @@ void Window::setFont(const String& name)
     }
     else
     {
-        setFont(FontManager::getSingleton().getFont(name));
+        setFont(&FontManager::getSingleton().get(name));
     }
 
 }

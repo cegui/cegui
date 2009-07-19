@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Jul 18 17:39:33 2009.
+** Generated automatically by tolua++-1.0.92 on Sun Jul 19 20:44:09 2009.
 */
 
 #ifndef __cplusplus
@@ -6376,37 +6376,6 @@ static int tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: load of class  CEGUI::Font */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_load00
-static int tolua_CEGUI_CEGUI_Font_load00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'load'",NULL);
-#endif
- {
-  self->load();
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'load'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: isCodepointAvailable of class  CEGUI::Font */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_isCodepointAvailable00
 static int tolua_CEGUI_CEGUI_Font_isCodepointAvailable00(lua_State* tolua_S)
@@ -6712,66 +6681,11 @@ static int tolua_CEGUI_CEGUI_FontManager_getSingleton00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: createFont of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFont00
-static int tolua_CEGUI_CEGUI_FontManager_createFont00(lua_State* tolua_S)
+/* method: create of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_create00
+static int tolua_CEGUI_CEGUI_FontManager_create00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,5,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
-  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
-  string name = ((string)  tolua_tocppstring(tolua_S,3,0));
-  string fontname = ((string)  tolua_tocppstring(tolua_S,4,0));
-  string resourcegroup = ((string)  tolua_tocppstring(tolua_S,5,""));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFont'",NULL);
-#endif
- char errorBuffer[512];
- bool errorDoIt = false;
- try
- {
-  CEGUI::Font* tolua_ret = (CEGUI::Font*)  self->createFont(type,name,fontname,resourcegroup);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Font");
- }
-catch(CEGUI::AlreadyExistsException&e)
-{
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFont'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- catch(CEGUI::InvalidRequestException&e)
-{
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::InvalidRequestException' was thrown by function 'createFont'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- if (errorDoIt) {
- luaL_error(tolua_S,errorBuffer);
-}
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'createFont'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: createFont of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFont01
-static int tolua_CEGUI_CEGUI_FontManager_createFont01(lua_State* tolua_S)
-{
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
@@ -6781,28 +6695,24 @@ static int tolua_CEGUI_CEGUI_FontManager_createFont01(lua_State* tolua_S)
  )
  goto tolua_lerror;
  else
+#endif
  {
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
-  string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string xml_filename = ((string)  tolua_tocppstring(tolua_S,2,0));
   string resourcegroup = ((string)  tolua_tocppstring(tolua_S,3,""));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFont'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create'",NULL);
 #endif
  char errorBuffer[512];
  bool errorDoIt = false;
  try
  {
-  CEGUI::Font* tolua_ret = (CEGUI::Font*)  self->createFont(filename,resourcegroup);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Font");
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->create(xml_filename,resourcegroup);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
  }
 catch(CEGUI::AlreadyExistsException&e)
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFont'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- catch(CEGUI::InvalidRequestException&e)
-{
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::InvalidRequestException' was thrown by function 'createFont'\nMessage: %s",e.getMessage().c_str());
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'create'\nMessage: %s",e.getMessage().c_str());
  errorDoIt = true;
 }
  if (errorDoIt) {
@@ -6810,14 +6720,140 @@ catch(CEGUI::AlreadyExistsException&e)
 }
  }
  return 1;
-tolua_lerror:
- return tolua_CEGUI_CEGUI_FontManager_createFont00(tolua_S);
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: destroyFont of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroyFont00
-static int tolua_CEGUI_CEGUI_FontManager_destroyFont00(lua_State* tolua_S)
+/* method: createFreeTypeFont of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00
+static int tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,4,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,6,1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,8,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,9,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,10,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,11,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
+  string font_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+  float point_size = ((float)  tolua_tonumber(tolua_S,3,0));
+  bool anti_aliased = ((bool)  tolua_toboolean(tolua_S,4,0));
+  string font_filename = ((string)  tolua_tocppstring(tolua_S,5,0));
+  string resource_group = ((string)  tolua_tocppstring(tolua_S,6,""));
+  bool auto_scaled = ((bool)  tolua_toboolean(tolua_S,7,false));
+  float native_horz_res = ((float)  tolua_tonumber(tolua_S,8,640.0f));
+  float native_vert_res = ((float)  tolua_tonumber(tolua_S,9,480.0f));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,10,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFreeTypeFont'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFreeTypeFont(font_name,point_size,anti_aliased,font_filename,resource_group,auto_scaled,native_horz_res,native_vert_res,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFreeTypeFont'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ catch(CEGUI::GenericException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::GenericException' was thrown by function 'createFreeTypeFont'\nMessage: %s","Unknown");
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createFreeTypeFont'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createPixmapFont of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createPixmapFont00
+static int tolua_CEGUI_CEGUI_FontManager_createPixmapFont00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,4,1,&tolua_err) ||
+ !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,7,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,8,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,9,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
+  string font_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string imageset_filename = ((string)  tolua_tocppstring(tolua_S,3,0));
+  string resource_group = ((string)  tolua_tocppstring(tolua_S,4,""));
+  const bool auto_scaled = ((const bool)  tolua_toboolean(tolua_S,5,false));
+  const float native_horz_res = ((const float)  tolua_tonumber(tolua_S,6,640.0f));
+  const float native_vert_res = ((const float)  tolua_tonumber(tolua_S,7,480.0f));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,8,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createPixmapFont'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createPixmapFont(font_name,imageset_filename,resource_group,auto_scaled,native_horz_res,native_vert_res,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createPixmapFont'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createPixmapFont'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroy of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroy00
+static int tolua_CEGUI_CEGUI_FontManager_destroy00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6833,24 +6869,24 @@ static int tolua_CEGUI_CEGUI_FontManager_destroyFont00(lua_State* tolua_S)
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyFont'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroy'",NULL);
 #endif
  {
-  self->destroyFont(name);
+  self->destroy(name);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'destroyFont'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'destroy'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: destroyFont of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroyFont01
-static int tolua_CEGUI_CEGUI_FontManager_destroyFont01(lua_State* tolua_S)
+/* method: destroy of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroy01
+static int tolua_CEGUI_CEGUI_FontManager_destroy01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -6864,21 +6900,21 @@ static int tolua_CEGUI_CEGUI_FontManager_destroyFont01(lua_State* tolua_S)
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Font* font = ((CEGUI::Font*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyFont'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroy'",NULL);
 #endif
  {
-  self->destroyFont(font);
+  self->destroy(*font);
  }
  }
  return 0;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_FontManager_destroyFont00(tolua_S);
+ return tolua_CEGUI_CEGUI_FontManager_destroy00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: destroyAllFonts of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroyAllFonts00
-static int tolua_CEGUI_CEGUI_FontManager_destroyAllFonts00(lua_State* tolua_S)
+/* method: destroyAll of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_destroyAll00
+static int tolua_CEGUI_CEGUI_FontManager_destroyAll00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6892,24 +6928,24 @@ static int tolua_CEGUI_CEGUI_FontManager_destroyAllFonts00(lua_State* tolua_S)
  {
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAllFonts'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAll'",NULL);
 #endif
  {
-  self->destroyAllFonts();
+  self->destroyAll();
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'destroyAllFonts'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'destroyAll'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: isFontPresent of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_isFontPresent00
-static int tolua_CEGUI_CEGUI_FontManager_isFontPresent00(lua_State* tolua_S)
+/* method: isDefined of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_isDefined00
+static int tolua_CEGUI_CEGUI_FontManager_isDefined00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6925,25 +6961,25 @@ static int tolua_CEGUI_CEGUI_FontManager_isFontPresent00(lua_State* tolua_S)
   const CEGUI::FontManager* self = (const CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isFontPresent'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isDefined'",NULL);
 #endif
  {
-  bool tolua_ret = (bool)  self->isFontPresent(name);
+  bool tolua_ret = (bool)  self->isDefined(name);
  tolua_pushboolean(tolua_S,(bool)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'isFontPresent'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'isDefined'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getFont of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_getFont00
-static int tolua_CEGUI_CEGUI_FontManager_getFont00(lua_State* tolua_S)
+/* method: get of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_get00
+static int tolua_CEGUI_CEGUI_FontManager_get00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -6959,17 +6995,17 @@ static int tolua_CEGUI_CEGUI_FontManager_getFont00(lua_State* tolua_S)
   const CEGUI::FontManager* self = (const CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFont'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get'",NULL);
 #endif
  {
-  CEGUI::Font* tolua_ret = (CEGUI::Font*)  self->getFont(name);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Font");
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->get(name);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getFont'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'get'.",&tolua_err);
  return 0;
 #endif
 }
@@ -52100,7 +52136,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getPropertyIterator",tolua_CEGUI_CEGUI_Font_getPropertyIterator00);
    tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_setDefaultResourceGroup00);
    tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00);
-   tolua_function(tolua_S,"load",tolua_CEGUI_CEGUI_Font_load00);
    tolua_function(tolua_S,"isCodepointAvailable",tolua_CEGUI_CEGUI_Font_isCodepointAvailable00);
    tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Font_setNativeResolution00);
    tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00);
@@ -52113,13 +52148,14 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"FontManager","CEGUI::FontManager","",NULL);
   tolua_beginmodule(tolua_S,"FontManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_FontManager_getSingleton00);
-   tolua_function(tolua_S,"createFont",tolua_CEGUI_CEGUI_FontManager_createFont00);
-   tolua_function(tolua_S,"createFont",tolua_CEGUI_CEGUI_FontManager_createFont01);
-   tolua_function(tolua_S,"destroyFont",tolua_CEGUI_CEGUI_FontManager_destroyFont00);
-   tolua_function(tolua_S,"destroyFont",tolua_CEGUI_CEGUI_FontManager_destroyFont01);
-   tolua_function(tolua_S,"destroyAllFonts",tolua_CEGUI_CEGUI_FontManager_destroyAllFonts00);
-   tolua_function(tolua_S,"isFontPresent",tolua_CEGUI_CEGUI_FontManager_isFontPresent00);
-   tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_FontManager_getFont00);
+   tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_FontManager_create00);
+   tolua_function(tolua_S,"createFreeTypeFont",tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00);
+   tolua_function(tolua_S,"createPixmapFont",tolua_CEGUI_CEGUI_FontManager_createPixmapFont00);
+   tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_FontManager_destroy00);
+   tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_FontManager_destroy01);
+   tolua_function(tolua_S,"destroyAll",tolua_CEGUI_CEGUI_FontManager_destroyAll00);
+   tolua_function(tolua_S,"isDefined",tolua_CEGUI_CEGUI_FontManager_isDefined00);
+   tolua_function(tolua_S,"get",tolua_CEGUI_CEGUI_FontManager_get00);
    tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_FontManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_FontManager_getIterator00);
   tolua_endmodule(tolua_S);

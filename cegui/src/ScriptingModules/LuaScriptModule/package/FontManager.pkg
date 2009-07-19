@@ -5,15 +5,21 @@ class FontManager
 {
 	static FontManager& getSingleton();
 
-	tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::InvalidRequestException,error| Font* createFont(string type, string name, string fontname, string resourcegroup="");
-	tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::InvalidRequestException,error| Font* createFont(string filename, string resourcegroup="");
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& create(string xml_filename, string resourcegroup="");
+    tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::GenericException,error| Font& createFreeTypeFont(string font_name, float point_size, bool anti_aliased,
+                                                                string font_filename, string resource_group = "", bool auto_scaled = false,
+                                                                float native_horz_res = 640.0f, float native_vert_res = 480.0f,
+                                                                XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createPixmapFont(string font_name, string imageset_filename, string resource_group = "",
+                                                                const bool auto_scaled = false, const float native_horz_res = 640.0f,
+                                                                const float native_vert_res = 480.0f, XMLResourceExistsAction action = XREA_RETURN);
 
-	void destroyFont(string name);
-	void destroyFont(Font* font);
-	void destroyAllFonts();
+	void destroy(string name);
+	void destroy(Font& font);
+	void destroyAll();
 
-	bool isFontPresent(string name) const;
-	Font* getFont(string name) const;
+	bool isDefined(string name) const;
+	Font& get(string name) const;
 
 	void notifyDisplaySizeChanged(const Size& sz);
 

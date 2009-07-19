@@ -241,17 +241,17 @@ void Scheme::loadFonts()
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
     {
         // is such a font already loaded?
-        if (!fntmgr.isFontPresent((*pos).name))
+        if (!fntmgr.isDefined((*pos).name))
         {
             // create font using specified xml file.
-            Font* font = fntmgr.createFont((*pos).filename, (*pos).resourceGroup);
+            Font& font = fntmgr.create((*pos).filename, (*pos).resourceGroup);
 
             // check for wrong font for specified name
-            String realname = font->getProperty ("Name");
+            const String realname(font.getName());
 
             if (realname != (*pos).name)
             {
-                fntmgr.destroyFont(font);
+                fntmgr.destroy(font);
                 throw InvalidRequestException("Scheme::loadResources - The Font created by file '" +
                     (*pos).filename + "' is named '" + realname + "', not '" + (*pos).name + "' as required by Scheme '" + d_name + "'.");
             }
@@ -472,7 +472,7 @@ void Scheme::unloadFonts()
 
     // unload all fonts
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
-        fntmgr.destroyFont((*pos).name);
+        fntmgr.destroy((*pos).name);
 }
 
 /*************************************************************************
@@ -662,7 +662,7 @@ bool Scheme::areFontsLoaded() const
     // check fonts
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
     {
-        if (!fntmgr.isFontPresent((*pos).name))
+        if (!fntmgr.isDefined((*pos).name))
             return false;
     }
 

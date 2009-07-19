@@ -1,12 +1,10 @@
 /***********************************************************************
     filename:   CEGUIFont.h
     created:    21/2/2004
-    author:     Paul D Turner
-
-    purpose:    Defines interface for the Font class
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,11 +31,8 @@
 #include "CEGUIBase.h"
 #include "CEGUIPropertySet.h"
 #include "CEGUIString.h"
-#include "CEGUIRect.h"
-#include "CEGUIVector.h"
-#include "CEGUIColourRect.h"
 #include "CEGUIXMLSerializer.h"
-#include "CEGUIImage.h"
+#include "CEGUIFontGlyph.h"
 
 #include <map>
 
@@ -49,130 +44,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-// Forward declarations for font properties
-namespace FontProperties
-{
-class NativeRes;
-class Name;
-class FileName;
-class ResourceGroup;
-class AutoScaled;
-}
-
 /*!
 \brief
-    internal class representing a single font glyph.
-
-    For TrueType fonts initially all FontGlyph's are empty
-    (getImage() will return NULL), but they are filled by demand.
-*/
-class FontGlyph
-{
-private:
-    /// The image which will be rendered.
-    const Image* d_image;
-    /// Amount to advance the pen after rendering this glyph
-    float d_advance;
-
-public:
-    /*!
-    \brief
-        construct an empty uninitialized FontGlyph
-    */
-    FontGlyph()
-    { }
-
-    /*!
-    \brief
-        FontGlyph constructor.
-    */
-    FontGlyph(float advance) : d_image(0), d_advance(advance)
-    { }
-
-    /*!
-    \brief
-        A better :-) FontGlyph constructor.
-    */
-    FontGlyph(float advance, const Image *image) : d_image(image), d_advance(advance)
-    { }
-
-    /*!
-    \brief
-        Return the CEGUI::Image object rendered for this glyph.
-    */
-    const Image* getImage() const
-    { return d_image; }
-
-    /*!
-    \brief
-        Return the parent CEGUI::Imageset object for this glyph.
-    */
-    const Imageset* getImageset() const
-    { return d_image->getImageset(); }
-
-    /*!
-    \brief
-        Return the scaled pixel size of the glyph.
-    */
-    Size getSize(float x_scale, float y_scale) const
-    { return Size(getWidth(x_scale), getHeight(y_scale)); }
-
-    /*!
-    \brief
-        Return the scaled widht of the glyph.
-    */
-    float getWidth(float x_scale) const
-    { return d_image->getWidth() * x_scale; }
-
-    /*!
-    \brief
-        Return the scaled height of the glyph.
-    */
-    float getHeight(float y_scale) const
-    { return d_image->getHeight() * y_scale; }
-
-    /*!
-    \brief
-        Return the rendered advance value for this glyph.
-
-        The rendered advance value is the total number of pixels from the
-        current pen position that will be occupied by this glyph when rendered.
-    */
-    float getRenderedAdvance(float x_scale) const
-    { return (d_image->getWidth() + d_image->getOffsetX()) * x_scale; }
-
-    /*!
-    \brief
-        Return the horizontal advance value for the glyph.
-
-        The returned value is the number of pixels the pen should move
-        horizontally to position itself ready to render the next glyph.  This
-        is not always the same as the glyph image width or rendererd advance,
-        since it allows for horizontal overhangs.
-    */
-    float getAdvance(float x_scale = 1.0) const
-    { return d_advance * x_scale; }
-
-    /*!
-    \brief
-        Set the horizontal advance value for the glyph.
-    */
-    void setAdvance(float advance)
-    { d_advance = advance; }
-
-    /*!
-    \brief
-        Set the CEGUI::Image object rendered for this glyph.
-    */
-    void setImage(const Image* image)
-    { d_image = image; }
-};
-
-
-/*!
-\brief
-    Class that encapsulates text rendering functionality for a typeface
+    Class that encapsulates a typeface.
 
     A Font object is created for each unique typeface required.
     The Font class provides methods for loading typefaces from various sources,
@@ -183,226 +57,18 @@ public:
 */
 class CEGUIEXPORT Font : public PropertySet
 {
-protected:
-    /*************************************************************************
-        Friends so that only FontManager can create and destroy font objects
-    *************************************************************************/
-    friend class FontManager;
-    friend class Font_xmlHandler;
-    friend class FontProperties::NativeRes;
-    friend class FontProperties::Name;
-    friend class FontProperties::FileName;
-    friend class FontProperties::ResourceGroup;
-    friend class FontProperties::AutoScaled;
-
-    /*************************************************************************
-        Implementation Data
-    *************************************************************************/
-    typedef std::map<utf32, FontGlyph> CodepointMap;
-    /// Contains mappings from code points to Image objects
-    CodepointMap d_cp_map;
-
-    /// Name of this font.
-    String d_name;
-    /// Holds the name of the file used to create this font (either font file or imagset)
-    String d_fileName;
-    /// Holds the name of the font file's resource group
-    String d_resourceGroup;
-    /// hold default resource group for font loading.
-    static String d_defaultResourceGroup;
-
-    /// maximal font ascender (pixels above the baseline)
-    float d_ascender;
-    /// maximal font descender (negative pixels below the baseline)
-    float d_descender;
-    /// (ascender - descender) + linegap
-    float d_height;
-
-    /// true when auto-scaling is enabled.
-    bool d_autoScale;
-    /// current horizontal scaling factor.
-    float d_horzScaling;
-    /// current vertical scaling factor.
-    float d_vertScaling;
-    /// native horizontal resolution for this Imageset.
-    float d_nativeHorzRes;
-    /// native vertical resolution for this Imageset.
-    float d_nativeVertRes;
-
-    /// Maximal codepoint for font glyphs
-    utf32 d_maxCodepoint;
-
-    /*!
-    \brief
-        This bitmap holds information about loaded 'pages' of glyphs.
-        A glyph page is a set of 256 codepoints, starting at 256-multiples.
-        For example, the 1st glyph page is 0-255, fourth is 1024-1279 etc.
-        When a specific glyph is required for painting, the corresponding
-        bit is checked to see if the respective page has been rasterized.
-        If not, the rasterize() method is invoked, which prepares the
-        glyphs from the respective glyph page for being painted.
-
-        This array is big enough to hold at least max_codepoint bits.
-        If this member is NULL, all glyphs are considered pre-rasterized.
-    */
-    uint *d_glyphPageLoaded;
-
-    /*************************************************************************
-        Construction & Destruction
-    *************************************************************************/
-    /*!
-    \brief
-        Constructs a new semi-complete Font object. It is the
-        responsability of the user to set up all remaining font
-        parameters after constructing the Font object, and finally
-        calling the load() method which will make font available for use.
-        All font parameters that are not initialized are set to sensible
-        default values.
-
-    \param name
-        The unique name that will be used to identify this Font.
-
-    \param fontname
-        The filename of the font file, which contains the font data.
-        This can be a TrueType, PostScript, bitmap font etc file.
-
-    \param resourceGroup
-        Resource group identifier to be passed to the resource provider
-        to load the font definition file.
-    */
-    Font(const String& name, const String& fontname,
-         const String& resourceGroup = "");
-
-    /*!
-    \brief
-        Constructs a new Font object and instantly loads it.
-        The font is ready for use right after creation, there is no
-        need to load() it. All data required by this font is loaded
-        from the provided XMLAttributes object.
-
-    \param attributes
-        The XML attributes attached to this Font.
-
-    \exception  FileIOException
-        thrown if there was some problem accessing or parsing the file
-        \a filename
-    \exception  InvalidRequestException
-        thrown if an invalid filename was provided.
-    \exception  AlreadyExistsException
-        thrown if a Font Imageset clashes with one already defined in the
-        system.
-    \exception  GenericException
-        thrown if something goes wrong while accessing a true-type font
-        referenced in file \a filename.
-    \exception  RendererException
-        thrown if the Renderer can't support a texture large enough to
-        hold the requested glyph imagery.
-    \exception  MemoryException
-        thrown if allocation of imagery construction buffer fails.
-    */
-    Font(const XMLAttributes& attributes);
-
-    /*!
-    \brief
-        Destroys a Font object
-    */
-    virtual ~Font();
-
-    /*!
-    \brief
-        Define a glyph mapping (handle a <Mapping /> XML element)
-    */
-    virtual void defineMapping(const XMLAttributes& attributes);
-
-    /*!
-    \brief
-        Update the font as required according to the current parameters
-    */
-    virtual void updateFont() = 0;
-
-    /*!
-    \brief
-        Return a pointer to the glyphDat struct for the given codepoint,
-        or 0 if the codepoint does not have a glyph defined.
-
-    \param codepoint
-        utf32 codepoint to return the glyphDat structure for.
-
-    \return
-        Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
-        is defined for \a codepoint.
-    */
-#ifdef CEGUI_BIDI_SUPPORT
 public:
-#endif
-    const FontGlyph* getGlyphData(utf32 codepoint);
-#ifdef CEGUI_BIDI_SUPPORT
-protected:
-#endif
-    /*!
-    \brief
-        Set the maximal glyph index. This reserves the respective
-        number of bits in the d_glyphPageLoaded array.
-    */
-    void setMaxCodepoint(utf32 codepoint);
-
-    /*!
-    \brief
-        This function prepares a certain range of glyphs to be ready for
-        displaying. This means that after returning from this function
-        glyphs from d_cp_map[start_codepoint] to d_cp_map[end_codepoint]
-        should have their d_image member set. If there is an error
-        during rasterization of some glyph, it's okay to leave the
-        d_image field set to NULL, in which case such glyphs will
-        be skipped from display.
-    \param start_codepoint
-        The lowest codepoint that should be rasterized
-    \param end_codepoint
-        The highest codepoint that should be rasterized
-    */
-    virtual void rasterize(utf32 start_codepoint, utf32 end_codepoint);
-
-    /*!
-    \brief
-        Writes an xml representation of this Font to \a out_stream.
-
-    \param xml_stream
-        Stream where xml data should be output.
-
-    \return
-        Nothing.
-    */
-    void writeXMLToStream(XMLSerializer& xml_stream) const;
-
-    /*!
-    \brief
-        Same as writeXMLToStream() but called from inside writeXMLToStream()
-        so that derived classes may add their own attributes to stream.
-
-    \param xml_stream
-        Stream where xml data should be output.
-    */
-    virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
-
-    /*!
-    \brief
-        Register all properties of this class.
-    */
-    void addFontProperties();
-
-public:
-    /// Colour value used whenever a colour is not specified.
+    //! Colour value used whenever a colour is not specified.
     static const argb_t DefaultColour;
 
-    /*!
-    \brief
-        Complete font loading. If you create the font from an XML file,
-        this method is invoked automatically after reading all the required
-        data from the XMLAttributes object. If you create the font manually,
-        it is your responsability to call this function as soon as you
-        set up all the appropiate fields of the Font object.
-    */
-    virtual void load() = 0;
+    //! Destructor.
+    virtual ~Font();
+
+    //! Return the string holding the font name.
+    const String& getName() const;
+
+    //! Return the type of the font.
+    const String& getTypeName() const;
 
     /*!
     \brief
@@ -418,9 +84,6 @@ public:
     bool isCodepointAvailable(utf32 cp) const
     { return (d_cp_map.find(cp) != d_cp_map.end()); }
 
-    /*************************************************************************
-        Text drawing methods
-    *************************************************************************/
     /*!
     \brief
         Draw text into a specified area of the display.
@@ -469,11 +132,38 @@ public:
 
     \param size
         Size object describing the new native screen resolution for this Font.
+    */
+    void setNativeResolution(const Size& size);
+
+    /*!
+    \brief
+        Return the native display size for this Font.  This is only relevant if
+        the Font is being auto-scaled.
 
     \return
-        Nothing
+        Size object describing the native display size for this Font.
     */
-    virtual void setNativeResolution(const Size& size);
+    Size getNativeResolution() const;
+
+    /*!
+    \brief
+        Enable or disable auto-scaling for this Font.
+
+    \param auto_scaled
+        - true to enable auto-scaling.
+        - false to disable auto-scaling.
+    */
+    void setAutoScaled(const bool auto_scaled);
+
+    /*!
+    \brief
+        Return whether this Font is auto-scaled.
+
+    \return
+        - true if Font is auto-scaled.
+        - false if Font is not auto-scaled.
+    */
+    bool isAutoScaled() const;
 
     /*!
     \brief
@@ -484,9 +174,6 @@ public:
     */
     virtual void notifyDisplaySizeChanged(const Size& size);
 
-    /*************************************************************************
-        Informational methods
-    *************************************************************************/
     /*!
     \brief
         Return the pixel line spacing value for.
@@ -605,7 +292,8 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, size_t start_char, float pixel, float x_scale = 1.0f);
+    size_t getCharAtPixel(const String& text, size_t start_char, float pixel,
+                          float x_scale = 1.0f);
 
     /*!
     \brief
@@ -620,7 +308,6 @@ public:
     static void setDefaultResourceGroup(const String& resourceGroup)
     { d_defaultResourceGroup = resourceGroup; }
 
-
     /*!
     \brief
         Returns the default resource group currently set for Fonts.
@@ -631,6 +318,122 @@ public:
     */
     static const String& getDefaultResourceGroup()
     { return d_defaultResourceGroup; }
+
+    /*!
+    \brief
+        Writes an xml representation of this Font to \a out_stream.
+
+    \param xml_stream
+        Stream where xml data should be output.
+
+    \return
+        Nothing.
+    */
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
+
+    /*!
+    \brief
+        Return a pointer to the glyphDat struct for the given codepoint,
+        or 0 if the codepoint does not have a glyph defined.
+
+    \param codepoint
+        utf32 codepoint to return the glyphDat structure for.
+
+    \return
+        Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
+        is defined for \a codepoint.
+    */
+    const FontGlyph* getGlyphData(utf32 codepoint);
+
+protected:
+    //! Constructor.
+    Font(const String& name, const String& type_name, const String& filename,
+         const String& resource_group, const bool auto_scaled,
+         const float native_horz_res, const float native_vert_res);
+
+    /*!
+    \brief
+        This function prepares a certain range of glyphs to be ready for
+        displaying. This means that after returning from this function
+        glyphs from d_cp_map[start_codepoint] to d_cp_map[end_codepoint]
+        should have their d_image member set. If there is an error
+        during rasterisation of some glyph, it's okay to leave the
+        d_image field set to NULL, in which case such glyphs will
+        be skipped from display.
+    \param start_codepoint
+        The lowest codepoint that should be rasterised
+    \param end_codepoint
+        The highest codepoint that should be rasterised
+    */
+    virtual void rasterise(utf32 start_codepoint, utf32 end_codepoint);
+
+    //! Update the font as needed, according to the current parameters.
+    virtual void updateFont() = 0;
+
+    //! implementaion version of writeXMLToStream.
+    virtual void writeXMLToStream_impl(XMLSerializer& xml_stream) const = 0;
+
+    //! Register all properties of this class.
+    void addFontProperties();
+
+    /*!
+    \brief
+        Set the maximal glyph index. This reserves the respective
+        number of bits in the d_glyphPageLoaded array.
+    */
+    void setMaxCodepoint(utf32 codepoint);
+
+    //! Name of this font.
+    String d_name;
+    //! Type name string for this font (not used internally)
+    String d_type;
+    //! Name of the file used to create this font (font file or imagset)
+    String d_filename;
+    //! Name of the font file's resource group.
+    String d_resourceGroup;
+    //! Holds default resource group for font loading.
+    static String d_defaultResourceGroup;
+
+    //! maximal font ascender (pixels above the baseline)
+    float d_ascender;
+    //! maximal font descender (negative pixels below the baseline)
+    float d_descender;
+    //! (ascender - descender) + linegap
+    float d_height;
+
+    //! true when auto-scaling is enabled.
+    bool d_autoScale;
+    //! native horizontal resolution for this Imageset.
+    float d_nativeHorzRes;
+    //! native vertical resolution for this Imageset.
+    float d_nativeVertRes;
+    //! current horizontal scaling factor.
+    float d_horzScaling;
+    //! current vertical scaling factor.
+    float d_vertScaling;
+
+    //! Maximal codepoint for font glyphs
+    utf32 d_maxCodepoint;
+
+    /*!
+    \brief
+        This bitmap holds information about loaded 'pages' of glyphs.
+        A glyph page is a set of 256 codepoints, starting at 256-multiples.
+        For example, the 1st glyph page is 0-255, fourth is 1024-1279 etc.
+        When a specific glyph is required for painting, the corresponding
+        bit is checked to see if the respective page has been rasterised.
+        If not, the rasterise() method is invoked, which prepares the
+        glyphs from the respective glyph page for being painted.
+
+        This array is big enough to hold at least max_codepoint bits.
+        If this member is NULL, all glyphs are considered pre-rasterised.
+    */
+    uint* d_glyphPageLoaded;
+
+    //! Definition of CodepointMap type.
+    typedef std::map<utf32, FontGlyph> CodepointMap;
+    //! Contains mappings from code points to Image objects
+    CodepointMap d_cp_map;
 };
 
 } // End of  CEGUI namespace section

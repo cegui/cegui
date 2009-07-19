@@ -420,7 +420,7 @@ namespace CEGUI
         // get window to use.
         const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
         // get font to use
-        Font* fontObj = d_font.empty() ? sourceWindow.getFont() : FontManager::getSingleton().getFont(d_font);
+        Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
 
         if (fontObj)
         {

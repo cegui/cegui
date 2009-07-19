@@ -50,8 +50,7 @@ bool DragDropDemo::initialiseSample()
     SchemeManager::getSingleton().loadScheme("WindowsLook.scheme");
 
     // load font and setup default if not loaded via scheme
-    if (!FontManager::getSingleton().isFontPresent("DejaVuSans-10"))
-        FontManager::getSingleton().createFont("DejaVuSans-10.font");
+    FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // set up defaults
     System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");

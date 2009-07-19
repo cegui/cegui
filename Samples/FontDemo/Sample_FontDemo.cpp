@@ -117,10 +117,7 @@ public:
 
         // load all the fonts except Commonwealth which has been already loaded
         for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
-		{
-			if(!FontManager::getSingleton().isFontPresent(FontList [i]))
-				FontManager::getSingleton().createFont (String (FontList [i]) + ".font");
-		}
+            FontManager::getSingleton().create(String(FontList [i]) + ".font");
 
         // load an image to use as a background
         ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -214,7 +211,7 @@ public:
 
         if (lbox->getFirstSelectedItem ())
 		{	// Read the fontname
-            Font *f = FontManager::getSingleton ().getFont (
+            Font *f = &FontManager::getSingleton ().get(
                 lbox->getFirstSelectedItem ()->getText ());
 
 			// Tell the textbox to use the newly selected font

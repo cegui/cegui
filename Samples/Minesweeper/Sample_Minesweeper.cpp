@@ -136,8 +136,7 @@ bool MinesweeperSample::initialiseSample()
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
 
     // Load font
-	if(!FontManager::getSingleton().isFontPresent("Iconified-12"))
-		FontManager::getSingleton().createFont("Iconified-12.font");
+    FontManager::getSingleton().create("Iconified-12.font");
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");

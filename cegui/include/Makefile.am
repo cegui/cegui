@@ -20,6 +20,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIExceptions.h \
                  CEGUIFactoryModule.h \
                  CEGUIFont.h \
+                 CEGUIFontGlyph.h \
                  CEGUIFontManager.h \
                  CEGUIFont_xmlHandler.h \
                  CEGUIFreeTypeFont.h \

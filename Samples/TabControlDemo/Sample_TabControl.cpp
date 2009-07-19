@@ -77,12 +77,9 @@ public:
         // load scheme and set up defaults
         SchemeManager::getSingleton().loadScheme (SKIN ".scheme");
         System::getSingleton().setDefaultMouseCursor (SKIN, "MouseArrow");
-        // Load font when not present in the scheme
-        FontManager& fontMgr = FontManager::getSingleton();
-        if (!fontMgr.isFontPresent("DejaVuSans-10"))  // Request by name, not by file!
-        {   // First font gets set as the default font automatically
-		    FontManager::getSingleton().createFont("DejaVuSans-10.font");
-        }
+        // Ensure font is loaded
+        // First font gets set as the default font automatically
+        FontManager::getSingleton().create("DejaVuSans-10.font");
 
         // load an image to use as a background
         ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
