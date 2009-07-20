@@ -24,7 +24,7 @@ CEGUI_IRR_SDK_VERSION = 14
 CEGUI_OLD_OIS_API = true
 
 --- Lua version
---- 50 is 5.0.x series.  51 is 5.1 (and above?)
+--- 51 is 5.1 (and above?) From 0.7.0 onwards, lua 5.0 is no longer supported.
 CEGUI_LUA_VER = 51
 
 -------------

@@ -1,4 +1,4 @@
-//$lfile "lua/compat-5.1.lua"
+$lfile "lua/compat-5.1.lua"
 $lfile "lua/compat.lua"
 $lfile "lua/basic.lua"
 $lfile "lua/feature.lua"

@@ -103,7 +103,7 @@ Each item in here has a comment to describe what it's for.
 
 //////////////////////////////////////////////////////////////////////////
 // The following controls the version of Lua that is going to be used.
-// 50 is for Lua 5.0.x versions
+// Note that from 0.7.0 and up, Lua 5.0 is no longer supported.
 // 51 is for Lua 5.1.x versions (and above?)
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_LUA_VER
