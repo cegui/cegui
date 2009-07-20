@@ -250,6 +250,7 @@ end
 
 -- concatenate all parameters, following output rules
 function concatparam (line, ...)
+ local arg = {...}; arg.n = select ("#", ...)
  local i=1
  while i<=arg.n do
   if _cont and not strfind(_cont,'[%(,"]') and
@@ -270,6 +271,7 @@ end
 
 -- output line
 function output (...)
+ local arg = {...}; arg.n = select ("#", ...)
  local i=1
  while i<=arg.n do
   if _cont and not strfind(_cont,'[%(,"]') and

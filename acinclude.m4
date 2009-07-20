@@ -737,19 +737,13 @@ AC_DEFUN([CEGUI_CHECK_EXPAT],[
 AC_DEFUN([CEGUI_CHECK_LUA],[
     PKG_CHECK_MODULES(Lua, lua >= 5.1,
                       [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
-                      [PKG_CHECK_MODULES(Lua, lua >= 5.0,
-                                         [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=50"],
-                                         [cegui_found_lua=no])
-                      ])
+                      [cegui_found_lua=no])
 
     dnl If that did not work, try again with an alternate name for the packages (as used on (K)Ubuntu etc)
     if test x$cegui_found_lua = xno; then
         PKG_CHECK_MODULES(Lua, lua5.1,
                         [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
-                        [PKG_CHECK_MODULES(Lua, lua50,
-                                            [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=50"],
-                                            [cegui_found_lua=no])
-                        ])
+                        [cegui_found_lua=no])
     fi
 
     AC_ARG_ENABLE([lua-module], AC_HELP_STRING([--disable-lua-module], [Disables building of the Lua scripting module.]),
