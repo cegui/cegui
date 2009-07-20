@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUISchemeManager.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
-
-	purpose:	Implements SchemeManager class
+    filename:   CEGUISchemeManager.cpp
+    created:    Mon Jul 20 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,130 +26,51 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUISchemeManager.h"
-#include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-#include "CEGUIScheme.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Static Data Definitions
-*************************************************************************/
-// singleton instance pointer
-template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= 0;
+//----------------------------------------------------------------------------//
+template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton = 0;
 
+//----------------------------------------------------------------------------//
+SchemeManager::SchemeManager() :
+    NamedXMLResourceManager<Scheme, Scheme_xmlHandler>("Scheme")
 
-
-/*************************************************************************
-	constructor
-*************************************************************************/
-SchemeManager::SchemeManager(void)
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
-       "CEGUI::SchemeManager singleton created. " + String(addr_buff));
+    "CEGUI::SchemeManager singleton created. " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-SchemeManager::~SchemeManager(void)
+//----------------------------------------------------------------------------//
+SchemeManager::~SchemeManager()
 {
-	Logger::getSingleton().logEvent("---- Begining cleanup of GUI Scheme system ----");
+    Logger::getSingleton().logEvent(
+        "---- Begining cleanup of GUI Scheme system ----");
 
-	unloadAllSchemes();
+    destroyAll();
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
-       "CEGUI::SchemeManager singleton destroyed. " + String(addr_buff));
+        "CEGUI::SchemeManager singleton destroyed. " + String(addr_buff));
 }
 
-
-/*************************************************************************
-	Loads a scheme
-*************************************************************************/
-Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup)
-{
-	Logger::getSingleton().logEvent("Attempting to load Scheme from file '" + scheme_filename + "'.");
-
-	Scheme* tmp = new Scheme(scheme_filename, resourceGroup);
-	String name = tmp->getName();
-	d_schemes[name] = tmp;
-	return tmp;
-}
-
-
-/*************************************************************************
-	Un-Loads a scheme
-*************************************************************************/
-void SchemeManager::unloadScheme(const String& scheme_name)
-{
-	SchemeRegistry::iterator pos = d_schemes.find(scheme_name);
-
-	if (pos != d_schemes.end())
-	{
-		String tmpName(scheme_name);
-
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
-
-		delete pos->second;
-		d_schemes.erase(pos);
-
-        Logger::getSingleton().logEvent(
-            "Scheme '" + tmpName + "' has been unloaded via the SchemeManager. "
-            + addr_buff);
-	}
-	else
-	{
-		Logger::getSingleton().logEvent((utf8*)"Unable to unload non-existant scheme '" + scheme_name + "'.", Errors);
-	}
-
-}
-
-
-/*************************************************************************
-	Returns a pointer to the Scheme object with the specified name.
-*************************************************************************/
-Scheme* SchemeManager::getScheme(const String& name) const
-{
-	SchemeRegistry::const_iterator pos = d_schemes.find(name);
-
-	if (pos == d_schemes.end())
-	{
-		throw UnknownObjectException("SchemeManager::getScheme - A Scheme object with the specified name '" + name +"' does not exist within the system");
-	}
-
-	return pos->second;
-}
-
-
-/*************************************************************************
-	Return a SchemeManager::SchemeIterator object to iterate over the
-	available schemes.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 SchemeManager::SchemeIterator SchemeManager::getIterator(void) const
 {
-	return SchemeIterator(d_schemes.begin(), d_schemes.end());
+    return SchemeIterator(d_objects.begin(), d_objects.end());
 }
 
-
-/*************************************************************************
-	Unload all schemes currently defined within the system.
-*************************************************************************/
-void SchemeManager::unloadAllSchemes(void)
+//----------------------------------------------------------------------------//
+void SchemeManager::doPostObjectAdditionAction(Scheme& object)
 {
-	// unload all schemes
-	while (!d_schemes.empty())
-	{
-		unloadScheme(d_schemes.begin()->first);
-	}
-
+    object.loadResources();
 }
 
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

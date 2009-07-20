@@ -75,7 +75,7 @@ public:
         WindowManager& winMgr = WindowManager::getSingleton ();
 
         // load scheme and set up defaults
-        SchemeManager::getSingleton().loadScheme (SKIN ".scheme");
+        SchemeManager::getSingleton().create(SKIN ".scheme");
         System::getSingleton().setDefaultMouseCursor (SKIN, "MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically

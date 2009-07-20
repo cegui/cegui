@@ -128,8 +128,8 @@ bool MinesweeperSample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
 	// Load the scheme to initialse the VanillaSkin which we use in this sample
-    SchemeManager::getSingleton().loadScheme("VanillaSkin.scheme");
-    SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
+    SchemeManager::getSingleton().create("VanillaSkin.scheme");
+    SchemeManager::getSingleton().create("TaharezLook.scheme");
     System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
 
     // set default mouse image

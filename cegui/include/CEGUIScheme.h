@@ -127,35 +127,16 @@ public:
 
 private:
 	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const char	GUISchemeSchemaName[];			//!< Filename of the XML schema used for validating GUIScheme files.
-
-	/*************************************************************************
-		Friends
-	*************************************************************************/
-	friend	Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup);
-	friend	void	SchemeManager::unloadScheme(const String& scheme_name);
-
-
-	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Creates a scheme object from the data specified in the file \a filename
+		Constructs an empty scheme object with the specified name.
 
-	\param filename
-		String object holding the name of the file to use when creating this Scheme object.
-
-    \param resourceGroup
-        Group identifier to be passed to the resource provider when loading the scheme
-        specification file.
-
-	\return
-		Nothing.
+	\param name
+		String object holding the name of the Scheme object.
 	*/
-	Scheme(const String& filename, const String& resourceGroup);
+	Scheme(const String& name);
 
     /*!
     \brief

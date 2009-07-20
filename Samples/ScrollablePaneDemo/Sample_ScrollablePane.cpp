@@ -99,7 +99,7 @@ bool ScrollablePaneSample::initialiseSample()
     using namespace CEGUI;
 
     // this sample will use WindowsLook
-    SchemeManager::getSingleton().loadScheme("WindowsLook.scheme");
+    SchemeManager::getSingleton().create("WindowsLook.scheme");
 
     // load the default font
     d_font = &FontManager::getSingleton().create("DejaVuSans-10.font");

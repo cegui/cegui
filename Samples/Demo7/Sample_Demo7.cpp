@@ -259,7 +259,7 @@ bool Demo7Sample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
+    SchemeManager::getSingleton().create("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     FontManager::getSingleton().create("Commonwealth-10.font");
 

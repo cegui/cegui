@@ -1,12 +1,10 @@
 /***********************************************************************
-filename: 	CEGUIScheme_xmlHandler.cpp
-created:	21/2/2004
-author:		Paul D Turner
-
-purpose:	Implements GUI Scheme class
+    filename:   CEGUIScheme_xmlHandler.cpp
+    created:    Mon Jul 20 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,135 +26,130 @@ purpose:	Implements GUI Scheme class
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIScheme_xmlHandler.h"
-
-#include "CEGUIExceptions.h"
-#include "CEGUIImageset.h"
 #include "CEGUILogger.h"
+#include "CEGUIScheme.h"
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIXMLParser.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const String Scheme_xmlHandler::GUISchemeSchemaName("GUIScheme.xsd");
+const String Scheme_xmlHandler::GUISchemeElement("GUIScheme");
+const String Scheme_xmlHandler::ImagesetElement("Imageset");
+const String Scheme_xmlHandler::ImagesetFromImageElement("ImagesetFromImage");
+const String Scheme_xmlHandler::FontElement("Font");
+const String Scheme_xmlHandler::WindowSetElement("WindowSet");
+const String Scheme_xmlHandler::WindowFactoryElement("WindowFactory");
+const String Scheme_xmlHandler::WindowAliasElement("WindowAlias");
+const String Scheme_xmlHandler::FalagardMappingElement("FalagardMapping");
+const String Scheme_xmlHandler::LookNFeelElement("LookNFeel");
+const String Scheme_xmlHandler::NameAttribute("Name");
+const String Scheme_xmlHandler::FilenameAttribute("Filename");
+const String Scheme_xmlHandler::AliasAttribute("Alias");
+const String Scheme_xmlHandler::TargetAttribute("Target");
+const String Scheme_xmlHandler::ResourceGroupAttribute("ResourceGroup");
+const String Scheme_xmlHandler::WindowTypeAttribute("WindowType");
+const String Scheme_xmlHandler::TargetTypeAttribute("TargetType");
+const String Scheme_xmlHandler::LookNFeelAttribute("LookNFeel");
+const String Scheme_xmlHandler::WindowRendererSetElement("WindowRendererSet");
+const String Scheme_xmlHandler::WindowRendererFactoryElement("WindowRendererFactory");
+const String Scheme_xmlHandler::WindowRendererAttribute("Renderer");
 
-/*************************************************************************
-Static Data definitions
-*************************************************************************/
-
-// xml file elements and attributes
-const String Scheme_xmlHandler::GUISchemeElement( "GUIScheme" );
-const String Scheme_xmlHandler::ImagesetElement( "Imageset" );
-const String Scheme_xmlHandler::ImagesetFromImageElement( "ImagesetFromImage" );
-const String Scheme_xmlHandler::FontElement( "Font" );
-const String Scheme_xmlHandler::WindowSetElement( "WindowSet" );
-const String Scheme_xmlHandler::WindowFactoryElement( "WindowFactory" );
-const String Scheme_xmlHandler::WindowAliasElement( "WindowAlias" );
-const String Scheme_xmlHandler::FalagardMappingElement( "FalagardMapping" );
-const String Scheme_xmlHandler::LookNFeelElement( "LookNFeel" );
-const String Scheme_xmlHandler::NameAttribute( "Name" );
-const String Scheme_xmlHandler::FilenameAttribute( "Filename" );
-const String Scheme_xmlHandler::AliasAttribute( "Alias" );
-const String Scheme_xmlHandler::TargetAttribute( "Target" );
-const String Scheme_xmlHandler::ResourceGroupAttribute( "ResourceGroup" );
-const String Scheme_xmlHandler::WindowTypeAttribute( "WindowType" );
-const String Scheme_xmlHandler::TargetTypeAttribute( "TargetType" );
-const String Scheme_xmlHandler::LookNFeelAttribute( "LookNFeel" );
-const String Scheme_xmlHandler::WindowRendererSetElement( "WindowRendererSet" );
-const String Scheme_xmlHandler::WindowRendererFactoryElement( "WindowRendererFactory" );
-const String Scheme_xmlHandler::WindowRendererAttribute( "Renderer" );
-
-/*************************************************************************
-Handler methods
-*************************************************************************/
-void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+Scheme_xmlHandler::Scheme_xmlHandler(const String& filename,
+                                     const String& resource_group) :
+    d_scheme(0),
+    d_objectRead(false)
 {
-    // handle alias element
-    if (element == WindowAliasElement)
-    {
-        elementWindowAliasStart(attributes);
-    }
-    // handle an Imageset element
-    else if (element == ImagesetElement)
-    {
-        elementImagesetStart(attributes);
-    }
-    // handle an ImagesetFromImage element
-    else if (element == ImagesetFromImageElement)
-    {
-        elementImagesetFromImageStart(attributes);
-    }
-    // handle a font element
-    else if (element == FontElement)
-    {
-        elementFontStart(attributes);
-    }
-    // handle a WindowSet element
-    else if (element == WindowSetElement)
-    {
-        elementWindowSetStart(attributes);
-    }
-    // handle a WindowFactory element
-    else if (element == WindowFactoryElement)
-    {
-        elementWindowFactoryStart(attributes);
-    }
-    // handle a WindowRendererSet element
-    else if (element == WindowRendererSetElement)
-    {
-        elementWindowRendererSetStart(attributes);
-    }
-    // handle a WindowRendererFactory element
-    else if (element == WindowRendererFactoryElement)
-    {
-        elementWindowRendererFactoryStart(attributes);
-    }
-    // handle root Scheme element
-    else if (element == GUISchemeElement)
-    {
-        elementGUISchemeStart(attributes);
-    }
-    else if (element == FalagardMappingElement)
-    {
-        elementFalagardMappingStart(attributes);
-    }
-    else if (element == LookNFeelElement)
-    {
-        elementLookNFeelStart(attributes);
-    }
-    // anything else is an error which *should* have already been caught by XML validation
-    else
-    {
-        Logger::getSingleton().logEvent("Scheme::xmlHandler::startElement - Unexpected data was found while parsing the Scheme file: '" + element + "' is unknown.", Errors);
-    }
+    System::getSingleton().getXMLParser()->parseXMLFile(
+            *this, filename, GUISchemeSchemaName,
+            resource_group.empty() ? Scheme::getDefaultResourceGroup() :
+                                     resource_group);
 }
 
+//----------------------------------------------------------------------------//
+Scheme_xmlHandler::~Scheme_xmlHandler()
+{
+    if (!d_objectRead)
+        delete d_scheme;
+}
+
+//----------------------------------------------------------------------------//
+const String& Scheme_xmlHandler::getObjectName() const
+{
+    if (!d_scheme)
+        throw InvalidRequestException("Scheme_xmlHandler::getName: "
+            "Attempt to access null object.");
+
+    return d_scheme->getName();
+}
+
+//----------------------------------------------------------------------------//
+Scheme& Scheme_xmlHandler::getObject() const
+{
+    if (!d_scheme)
+        throw InvalidRequestException("Scheme_xmlHandler::getObject: "
+            "Attempt to access null object.");
+
+    d_objectRead = true;
+    return *d_scheme;
+}
+
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementStart(const String& element,
+                                     const XMLAttributes& attributes)
+{
+    if (element == WindowAliasElement)
+        elementWindowAliasStart(attributes);
+    else if (element == ImagesetElement)
+        elementImagesetStart(attributes);
+    else if (element == ImagesetFromImageElement)
+        elementImagesetFromImageStart(attributes);
+    else if (element == FontElement)
+        elementFontStart(attributes);
+    else if (element == WindowSetElement)
+        elementWindowSetStart(attributes);
+    else if (element == WindowFactoryElement)
+        elementWindowFactoryStart(attributes);
+    else if (element == WindowRendererSetElement)
+        elementWindowRendererSetStart(attributes);
+    else if (element == WindowRendererFactoryElement)
+        elementWindowRendererFactoryStart(attributes);
+    else if (element == GUISchemeElement)
+        elementGUISchemeStart(attributes);
+    else if (element == FalagardMappingElement)
+        elementFalagardMappingStart(attributes);
+    else if (element == LookNFeelElement)
+        elementLookNFeelStart(attributes);
+    // anything else is a non-fatal error.
+    else
+        Logger::getSingleton().logEvent("Scheme_xmlHandler::elementStart: "
+            "Unknown element encountered: <" + element + ">", Errors);
+}
+
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementEnd(const String& element)
 {
     if (element == GUISchemeElement)
-    {
         elementGUISchemeEnd();
-    }
 }
 
-/*************************************************************************
-    Method that handles the opening GUIScheme XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementGUISchemeStart(const XMLAttributes& attributes)
 {
-    // get name of scheme we are creating
-    d_scheme->d_name = attributes.getValueAsString(NameAttribute);
+    const String name(attributes.getValueAsString(NameAttribute));
+    Logger& logger(Logger::getSingleton());
+    logger.logEvent("Started creation of Scheme from XML specification:");
+    logger.logEvent("---- CEGUI GUIScheme name: " + name);
 
-    Logger::getSingleton().logEvent("Started creation of Scheme '" + d_scheme->d_name + "' via XML file.", Informative);
-
-    if (SchemeManager::getSingleton().isSchemePresent(d_scheme->d_name))
-    {
-        throw   AlreadyExistsException("A GUI Scheme named '" + d_scheme->d_name + "' is already present in the system.");
-    }
+    // create empty scheme with desired name
+    d_scheme = new Scheme(name);
 }
 
-/*************************************************************************
-    Method that handles the Imageset XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
 {
     Scheme::LoadableUIElement   imageset;
@@ -168,10 +161,9 @@ void Scheme_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
     d_scheme->d_imagesets.push_back(imageset);
 }
 
-/*************************************************************************
-    Method that handles the ImagesetFromImage XML element.
-*************************************************************************/
-void Scheme_xmlHandler::elementImagesetFromImageStart(const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementImagesetFromImageStart(
+    const XMLAttributes& attributes)
 {
     Scheme::LoadableUIElement   imageset;
 
@@ -182,9 +174,7 @@ void Scheme_xmlHandler::elementImagesetFromImageStart(const XMLAttributes& attri
     d_scheme->d_imagesetsFromImages.push_back(imageset);
 }
 
-/*************************************************************************
-    Method that handles the Font XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 {
     Scheme::LoadableUIElement   font;
@@ -196,9 +186,7 @@ void Scheme_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     d_scheme->d_fonts.push_back(font);
 }
 
-/*************************************************************************
-    Method that handles the WindowSet XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementWindowSetStart(const XMLAttributes& attributes)
 {
     Scheme::UIModule    module;
@@ -209,22 +197,21 @@ void Scheme_xmlHandler::elementWindowSetStart(const XMLAttributes& attributes)
     d_scheme->d_widgetModules.push_back(module);
 }
 
-/*************************************************************************
-    Method that handles the WindowFactory XML element.
-*************************************************************************/
-void Scheme_xmlHandler::elementWindowFactoryStart(const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementWindowFactoryStart(
+    const XMLAttributes& attributes)
 {
     Scheme::UIElementFactory factory;
 
     factory.name = attributes.getValueAsString(NameAttribute);
 
-    d_scheme->d_widgetModules[d_scheme->d_widgetModules.size() - 1].factories.push_back(factory);
+    d_scheme->d_widgetModules[d_scheme->
+        d_widgetModules.size() - 1].factories.push_back(factory);
 }
 
-/*************************************************************************
-    Method that handles the WindowRendererSet XML element.
-*************************************************************************/
-void Scheme_xmlHandler::elementWindowRendererSetStart(const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementWindowRendererSetStart(
+    const XMLAttributes& attributes)
 {
     Scheme::WRModule module;
     module.name = attributes.getValueAsString(FilenameAttribute);
@@ -234,19 +221,16 @@ void Scheme_xmlHandler::elementWindowRendererSetStart(const XMLAttributes& attri
     d_scheme->d_windowRendererModules.push_back(module);
 }
 
-/*************************************************************************
-    Method that handles the WindowFactory XML element.
-*************************************************************************/
-void Scheme_xmlHandler::elementWindowRendererFactoryStart(const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementWindowRendererFactoryStart(
+    const XMLAttributes& attributes)
 {
     d_scheme->
         d_windowRendererModules[d_scheme->d_windowRendererModules.size() - 1].
             wrTypes.push_back(attributes.getValueAsString(NameAttribute));
 }
 
-/*************************************************************************
-    Method that handles the WindowAlias XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementWindowAliasStart(const XMLAttributes& attributes)
 {
     Scheme::AliasMapping    alias;
@@ -256,10 +240,9 @@ void Scheme_xmlHandler::elementWindowAliasStart(const XMLAttributes& attributes)
     d_scheme->d_aliasMappings.push_back(alias);
 }
 
-/*************************************************************************
-    Method that handles the FalagardMapping XML element.
-*************************************************************************/
-void Scheme_xmlHandler::elementFalagardMappingStart(const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::elementFalagardMappingStart(
+    const XMLAttributes& attributes)
 {
     Scheme::FalagardMapping fmap;
     fmap.windowName = attributes.getValueAsString(WindowTypeAttribute);
@@ -270,9 +253,7 @@ void Scheme_xmlHandler::elementFalagardMappingStart(const XMLAttributes& attribu
     d_scheme->d_falagardMappings.push_back(fmap);
 }
 
-/*************************************************************************
-    Method that handles the LookNFeel XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementLookNFeelStart(const XMLAttributes& attributes)
 {
     Scheme::LoadableUIElement lnf;
@@ -282,12 +263,17 @@ void Scheme_xmlHandler::elementLookNFeelStart(const XMLAttributes& attributes)
     d_scheme->d_looknfeels.push_back(lnf);
 }
 
-/*************************************************************************
-    Method that handles the closing GUIScheme XML element.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementGUISchemeEnd()
 {
-    Logger::getSingleton().logEvent("Finished creation of Scheme '" + d_scheme->d_name + "' via XML file.", Informative);
+    if (!d_scheme)
+        throw InvalidRequestException("Scheme_xmlHandler::elementGUISchemeEnd: "
+            "Attempt to access null object.");
+
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(d_scheme));
+    Logger::getSingleton().logEvent("Finished creation of GUIScheme '" +
+        d_scheme->getName() + "' via XML file. " + addr_buff, Informative);
 }
 
 } // End of  CEGUI namespace section

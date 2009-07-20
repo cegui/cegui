@@ -5,11 +5,11 @@ class SchemeManager
 {
 	static SchemeManager& getSingleton();
 
-	Scheme* loadScheme(string filename, string resourcegroup="");
-	void unloadScheme(string name);
-	bool isSchemePresent(string name) const;
-	Scheme* getScheme(string name) const;
-	void unloadAllSchemes();
+	Scheme& create(string filename, string resourcegroup="");
+	void destroy(string name);
+	bool isDefined(string name) const;
+	Scheme& get(string name) const;
+	void destroyAll();
 
     SchemeIterator getIterator() const;
 };

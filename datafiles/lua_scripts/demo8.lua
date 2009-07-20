@@ -65,7 +65,7 @@ local schemeMgr = CEGUI.SchemeManager:getSingleton()
 local winMgr = CEGUI.WindowManager:getSingleton()
 
 -- load our demo8 scheme
-schemeMgr:loadScheme("Demo8.scheme");
+schemeMgr:create("Demo8.scheme");
 -- load our demo8 window layout
 local root = winMgr:loadWindowLayout("Demo8.layout")
 -- set the layout as the root

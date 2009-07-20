@@ -1,12 +1,10 @@
 /***********************************************************************
     filename:   CEGUIScheme_xmlHandler.h
-    created:    21/2/2004
-    author:     Paul D Turner
-    
-    purpose:    Defines abstract base class for the GUI Scheme object.
+    created:    Mon Jul 20 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,153 +28,107 @@
 #ifndef _CEGUIScheme_xmlHandler_h_
 #define _CEGUIScheme_xmlHandler_h_
 
-#include "CEGUIScheme.h"
 #include "CEGUIXMLHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class Scheme;
 
-    /*!
-    \brief
-        Handler class used to parse the Scheme XML files using SAX2
-    */
-    class Scheme_xmlHandler : public XMLHandler
-    {
-    public:
-        /*************************************************************************
-        Construction & Destruction
-        *************************************************************************/
-        /*!
-        \brief
-            Constructor for Scheme::xmlHandler objects
+//! Handler class used to parse the Scheme XML files using SAX2
+class Scheme_xmlHandler : public XMLHandler
+{
+public:
+    //! Constructor.
+    Scheme_xmlHandler(const String& filename, const String& resource_group);
 
-        \param scheme
-            Pointer to the Scheme object creating this xmlHandler object
-        */
-        Scheme_xmlHandler(Scheme* scheme) : d_scheme(scheme)
-        {}
+    //! Destructor.
+    ~Scheme_xmlHandler();
 
-        /*!
-        \brief
-            Destructor for Scheme::xmlHandler objects
-        */
-        virtual ~Scheme_xmlHandler(void)
-        {}
+    //! Return string holding the name of the created Imageset.
+    const String& getObjectName() const;
 
-        /*************************************************************************
-        SAX2 Handler overrides
-        *************************************************************************/
-        /*!
-        \brief
-            document processing (only care about elements, schema validates format)
-        */
-        virtual void elementStart(const String& element, const XMLAttributes& attributes);
-        virtual void elementEnd(const String& element);
+    //! Return reference to the created Scheme object.
+    Scheme& getObject() const;
 
-    private:
-        /*************************************************************************
-        Implementation Constants
-        *************************************************************************/
-        // XML related strings
-        static const String GUISchemeElement;               //!< Root GUIScheme element.
-        static const String ImagesetElement;                //!< Element specifying an Imageset
-        static const String ImagesetFromImageElement;       //!< Element specifying an Imageset to be created directly via an image file.
-        static const String FontElement;                    //!< Element specifying a Font
-        static const String WindowSetElement;               //!< Element specifying a module and set of WindowFactory elements.
-        static const String WindowFactoryElement;           //!< Element specifying a WindowFactory type.
-        static const String WindowAliasElement;             //!< Element specifying a WindowFactory type alias
-        static const String FalagardMappingElement;         //!< Element specifying a Falagard window mapping
-        static const String LookNFeelElement;               //!< Element specifying a LookNFeel.
-        static const String NameAttribute;                  //!< Attribute specifying the name of some object.
-        static const String FilenameAttribute;              //!< Attribute specifying the name of some file.
-        static const String AliasAttribute;                 //!< Attribute specifying an alias name.
-        static const String TargetAttribute;                //!< Attribute specifying target for an alias.
-        static const String ResourceGroupAttribute;         //!< Attribute specifying resource group for some loadable resource.
-        static const String WindowTypeAttribute;            //!< Attribute specifying the type of a window being created via a mapping.
-        static const String TargetTypeAttribute;            //!< Attribute specifying the base target type of a falagard mapped window type.
-        static const String LookNFeelAttribute;             //!< Attribute specifying the name of a LookNFeel for a falagard mapping..
-        static const String WindowRendererSetElement;       //!< Element specifying a module and set of WindowRendererFactory elements.
-        static const String WindowRendererFactoryElement;   //!< Element specifying a WindowRendererFactory type.
-        static const String WindowRendererAttribute;        //!< Attribute specifying the type name of a window renderer.
+    // XMLHandler overrides
+    void elementStart(const String& element, const XMLAttributes& attributes);
+    void elementEnd(const String& element);
 
-        /*!
-        \brief
-            Method that handles the opening GUIScheme XML element.
-        */
-        void elementGUISchemeStart(const XMLAttributes& attributes);
+private:
+    //! Filename of the XML schema used for validating GUIScheme files.
+    static const String GUISchemeSchemaName;
+    //! Root GUIScheme element.
+    static const String GUISchemeElement;
+    //! Element specifying an Imageset.
+    static const String ImagesetElement;
+    //! Element specifying an Imageset to be created directly via an image file.
+    static const String ImagesetFromImageElement;
+    //! Element specifying a Font.
+    static const String FontElement;
+    //! Element specifying a module and set of WindowFactory elements.
+    static const String WindowSetElement;
+    //! Element specifying a WindowFactory type.
+    static const String WindowFactoryElement;
+    //! Element specifying a WindowFactory type alias.
+    static const String WindowAliasElement;
+    //! Element specifying a Falagard window mapping.
+    static const String FalagardMappingElement;
+    //! Element specifying a LookNFeel.
+    static const String LookNFeelElement;
+    //! Attribute specifying the name of some object.
+    static const String NameAttribute;
+    //! Attribute specifying the name of some file.
+    static const String FilenameAttribute;
+    //! Attribute specifying an alias name.
+    static const String AliasAttribute;
+    //! Attribute specifying target for an alias.
+    static const String TargetAttribute;
+    //! Attribute specifying resource group for some loadable resource.
+    static const String ResourceGroupAttribute;
+    //! Attribute specifying the type of a window being created via a mapping.
+    static const String WindowTypeAttribute;
+    //! Attribute specifying the base type of a falagard mapped window type.
+    static const String TargetTypeAttribute;
+    //! Attribute specifying the name of a LookNFeel for a falagard mapping.
+    static const String LookNFeelAttribute;
+    //! Element specifying a module and set of WindowRendererFactory elements.
+    static const String WindowRendererSetElement;
+    //! Element specifying a WindowRendererFactory type.
+    static const String WindowRendererFactoryElement;
+    //! Attribute specifying the type name of a window renderer.
+    static const String WindowRendererAttribute;
 
-        /*!
-        \brief
-            Method that handles the Imageset XML element.
-        */
-        void elementImagesetStart(const XMLAttributes& attributes);
+    //! Function that handles the opening GUIScheme XML element.
+    void elementGUISchemeStart(const XMLAttributes& attributes);
+    //! Function that handles the Imageset XML element.
+    void elementImagesetStart(const XMLAttributes& attributes);
+    //! Function that handles the ImagesetFromImage XML element.
+    void elementImagesetFromImageStart(const XMLAttributes& attributes);
+    //! Function that handles the Font XML element.
+    void elementFontStart(const XMLAttributes& attributes);
+    //! Function that handles the WindowSet XML element.
+    void elementWindowSetStart(const XMLAttributes& attributes);
+    //! Function that handles the WindowFactory XML element.
+    void elementWindowFactoryStart(const XMLAttributes& attributes);
+    //! Function that handles the WindowRendererSet XML element.
+    void elementWindowRendererSetStart(const XMLAttributes& attributes);
+    //! Function that handles the WindowRendererFactory XML element.
+    void elementWindowRendererFactoryStart(const XMLAttributes& attributes);
+    //! Function that handles the WindowAlias XML element.
+    void elementWindowAliasStart(const XMLAttributes& attributes);
+    //! Function that handles the FalagardMapping XML element.
+    void elementFalagardMappingStart(const XMLAttributes& attributes);
+    //! Function that handles the LookNFeel XML element.
+    void elementLookNFeelStart(const XMLAttributes& attributes);
+    //! Function that handles the closing GUIScheme XML element.
+    void elementGUISchemeEnd();
 
-        /*!
-        \brief
-            Method that handles the ImagesetFromImage XML element.
-        */
-        void elementImagesetFromImageStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the Font XML element.
-        */
-        void elementFontStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the WindowSet XML element.
-        */
-        void elementWindowSetStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the WindowFactory XML element.
-        */
-        void elementWindowFactoryStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the WindowRendererSet XML element.
-        */
-        void elementWindowRendererSetStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the WindowRendererFactory XML element.
-        */
-        void elementWindowRendererFactoryStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the WindowAlias XML element.
-        */
-        void elementWindowAliasStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the FalagardMapping XML element.
-        */
-        void elementFalagardMappingStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the LookNFeel XML element.
-        */
-        void elementLookNFeelStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
-            Method that handles the closing GUIScheme XML element.
-        */
-        void elementGUISchemeEnd();
-
-        /*************************************************************************
-        Implementation Data
-        *************************************************************************/
-        Scheme* d_scheme;           //!< Scheme object that we are helping to build
-    };
+    //! Scheme object that we are constructing
+    Scheme* d_scheme;
+    //! inidcates whether client read the created object
+    mutable bool d_objectRead;
+};
 
 } // End of  CEGUI namespace section
 
