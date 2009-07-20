@@ -134,7 +134,7 @@ protected:
     \return
         Nothing.
     */
-    void drawGlyphToBuffer(argb_t* buffer, uint buf_width);
+    void drawGlyphToBuffer(argb_t* buffer, uint buf_width) const;
 
     /*!
     \brief
@@ -146,7 +146,7 @@ protected:
         The last glyph in set
     */
     uint getTextureSize(CodepointMap::const_iterator s,
-                        CodepointMap::const_iterator e);
+                        CodepointMap::const_iterator e) const;
 
     //! Register all properties of this class.
     void addFreeTypeFontProperties();
@@ -154,7 +154,7 @@ protected:
     void free();
 
     // overrides of functions in Font base class.
-    void rasterise (utf32 start_codepoint, utf32 end_codepoint);
+    void rasterise(utf32 start_codepoint, utf32 end_codepoint) const;
     void updateFont();
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
 
@@ -169,7 +169,7 @@ protected:
     //! Type definition for ImagesetVector.
     typedef std::vector<Imageset*> ImagesetVector;
     //! Imagesets that holds the glyphs for this font.
-    ImagesetVector d_glyphImages;
+    mutable ImagesetVector d_glyphImages;
 };
 
 } // End of  CEGUI namespace section

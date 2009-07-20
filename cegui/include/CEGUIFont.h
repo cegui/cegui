@@ -236,7 +236,7 @@ public:
         Number of pixels that \a text will occupy when rendered with
         this Font.
     */
-    float getTextExtent(const String& text, float x_scale = 1.0f);
+    float getTextExtent(const String& text, float x_scale = 1.0f) const;
 
     /*!
     \brief
@@ -261,7 +261,8 @@ public:
         0 to text.length(), so may actually return an index past the end of
         the string, which indicates \a pixel was beyond the last character.
     */
-    size_t getCharAtPixel(const String& text, float pixel, float x_scale = 1.0f)
+    size_t getCharAtPixel(const String& text, float pixel,
+                          float x_scale = 1.0f) const
     { return getCharAtPixel(text, 0, pixel, x_scale); }
 
     /*!
@@ -293,7 +294,7 @@ public:
         the string, which indicates \a pixel was beyond the last character.
     */
     size_t getCharAtPixel(const String& text, size_t start_char, float pixel,
-                          float x_scale = 1.0f);
+                          float x_scale = 1.0f) const;
 
     /*!
     \brief
@@ -343,7 +344,7 @@ public:
         Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
         is defined for \a codepoint.
     */
-    const FontGlyph* getGlyphData(utf32 codepoint);
+    const FontGlyph* getGlyphData(utf32 codepoint) const;
 
 protected:
     //! Constructor.
@@ -365,7 +366,7 @@ protected:
     \param end_codepoint
         The highest codepoint that should be rasterised
     */
-    virtual void rasterise(utf32 start_codepoint, utf32 end_codepoint);
+    virtual void rasterise(utf32 start_codepoint, utf32 end_codepoint) const;
 
     //! Update the font as needed, according to the current parameters.
     virtual void updateFont() = 0;

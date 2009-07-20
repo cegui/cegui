@@ -94,7 +94,7 @@ FreeTypeFont::~FreeTypeFont()
 
 //----------------------------------------------------------------------------//
 uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
-                                  CodepointMap::const_iterator e)
+                                  CodepointMap::const_iterator e) const
 {
     uint texsize = 32; // start with 32x32
     uint max_texsize = System::getSingleton().getRenderer()->getMaxTextureSize();
@@ -147,7 +147,7 @@ uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint)
+void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 {
     CodepointMap::const_iterator s = d_cp_map.lower_bound(start_codepoint);
     if (s == d_cp_map.end())
@@ -282,7 +282,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint)
 }
 
 //----------------------------------------------------------------------------//
-void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width)
+void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
 {
     FT_Bitmap *glyph_bitmap = &d_fontFace->glyph->bitmap;
 

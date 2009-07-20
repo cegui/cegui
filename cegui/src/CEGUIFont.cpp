@@ -98,7 +98,7 @@ void Font::setMaxCodepoint(utf32 codepoint)
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* Font::getGlyphData(utf32 codepoint)
+const FontGlyph* Font::getGlyphData(utf32 codepoint) const
 {
     if (codepoint > d_maxCodepoint)
         return 0;
@@ -121,7 +121,7 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint)
 }
 
 //----------------------------------------------------------------------------//
-float Font::getTextExtent(const String& text, float x_scale)
+float Font::getTextExtent(const String& text, float x_scale) const
 {
     const FontGlyph* glyph;
     float cur_extent = 0, adv_extent = 0, width;
@@ -146,7 +146,7 @@ float Font::getTextExtent(const String& text, float x_scale)
 
 //----------------------------------------------------------------------------//
 size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
-                            float x_scale)
+                            float x_scale) const
 {
     const FontGlyph* glyph;
     float cur_extent = 0;
@@ -243,7 +243,7 @@ void Font::notifyDisplaySizeChanged(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-void Font::rasterise(utf32, utf32)
+void Font::rasterise(utf32, utf32) const
 {
     // do nothing by default
 }
