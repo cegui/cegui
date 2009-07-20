@@ -59,6 +59,13 @@ static int ft_usage_count = 0;
 static FT_Library ft_lib;
 
 //----------------------------------------------------------------------------//
+#undef __FTERRORS_H__
+#define FT_ERRORDEF( e, v, s ) s,
+#define FT_ERROR_START_LIST static const char* ft_errors[] = {
+#define FT_ERROR_END_LIST 0};
+#include FT_ERRORS_H
+
+//----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
                            const bool anti_aliased, const String& font_filename,
                            const String& resource_group, const bool auto_scaled,
@@ -347,13 +354,15 @@ void FreeTypeFont::updateFont()
         d_filename, d_fontData, d_resourceGroup.empty() ?
             getDefaultResourceGroup() : d_resourceGroup);
 
+    FT_Error error;
+
     // create face using input font
-    if (FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
+    if ((error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
                            static_cast<FT_Long>(d_fontData.getSize()), 0,
-                           &d_fontFace) != 0)
-        throw GenericException("FreeTypeFont::updateFont: "
-            "The source font file '" + d_filename + "' does not contain a "
-            "valid FreeType font.");
+                           &d_fontFace)) != 0)
+        throw GenericException("FreeTypeFont::updateFont: Failed to create "
+            "face from font file '" + d_filename + "' error was: " +
+            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error"));
 
     // check that default Unicode character map is available
     if (!d_fontFace->charmap)

@@ -40,14 +40,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-// Forward declarations for font properties
-namespace FontProperties
-{
-    class FreeTypePointSize;
-    class FreeTypeAntialiased;
-}
-
 /*!
 \brief
     Implementation of the Font class interface using the FreeType library.
