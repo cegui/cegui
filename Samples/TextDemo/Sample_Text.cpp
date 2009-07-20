@@ -41,7 +41,7 @@ bool TextDemo::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
+    SchemeManager::getSingleton().create("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     // We need a font
     FontManager::getSingleton().create("DejaVuSans-10.font");

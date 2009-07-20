@@ -112,7 +112,7 @@ public:
         WindowManager& winMgr = WindowManager::getSingleton ();
 
         // load scheme and set up defaults
-        SchemeManager::getSingleton().loadScheme ("TaharezLook.scheme");
+        SchemeManager::getSingleton().create("TaharezLook.scheme");
         System::getSingleton().setDefaultMouseCursor ("TaharezLook", "MouseArrow");
 
         // load all the fonts except Commonwealth which has been already loaded

@@ -108,14 +108,14 @@ void Imageset_xmlHandler::elementStart(const String& element,
     else
         Logger::getSingleton().logEvent("Imageset_xmlHandler::elementStart: "
             "Unknown element encountered: <" + element + ">", Errors);
-    }
+}
 
 //----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementEnd(const String& element)
 {
     if (element == ImagesetElement)
         elementImagesetEnd();
-    }
+}
 
 //----------------------------------------------------------------------------//
 void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)

@@ -57,7 +57,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
     // Load the scheme to initialse the VanillaSkin which we use in this sample
-    SchemeManager::getSingleton().loadScheme("VanillaSkin.scheme");
+    SchemeManager::getSingleton().create("VanillaSkin.scheme");
     // set default mouse image
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
 

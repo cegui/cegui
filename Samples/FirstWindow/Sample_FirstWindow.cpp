@@ -101,7 +101,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // Use the SchemeManager singleton to load in a scheme that registers widgets
     // for TaharezLook.
-    SchemeManager::getSingleton().loadScheme("TaharezLookWidgets.scheme");
+    SchemeManager::getSingleton().create("TaharezLookWidgets.scheme");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI

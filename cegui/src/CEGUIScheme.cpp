@@ -63,8 +63,6 @@ namespace CEGUI
 /*************************************************************************
     Static Data definitions
 *************************************************************************/
-// name of the xml schema for GUIScheme files
-const char Scheme::GUISchemeSchemaName[]                    = "GUIScheme.xsd";
 // default resource group
 String Scheme::d_defaultResourceGroup;
 
@@ -72,36 +70,9 @@ String Scheme::d_defaultResourceGroup;
 /*************************************************************************
     Constructor for scheme objects
 *************************************************************************/
-Scheme::Scheme(const String& filename, const String& resourceGroup)
+Scheme::Scheme(const String& name) :
+    d_name(name)
 {
-    if (filename.empty())
-    {
-        throw InvalidRequestException("Scheme::Scheme - Filename supplied for Scheme loading must be valid");
-    }
-
-    // create handler object
-    Scheme_xmlHandler handler(this);
-
-    // do parse (which uses handler to create actual data)
-    try
-    {
-        System::getSingleton().getXMLParser()->parseXMLFile(
-            handler, filename, GUISchemeSchemaName,
-            resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
-    }
-    catch(...)
-    {
-        Logger::getSingleton().logEvent("Scheme::Scheme - loading of Scheme from file '" + filename +"' failed.", Errors);
-        throw;
-    }
-
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name +
-       "' from data in file '" + filename + "'. " + addr_buff, Informative);
-
-    // attempt to load in resources
-    loadResources();
 }
 
 

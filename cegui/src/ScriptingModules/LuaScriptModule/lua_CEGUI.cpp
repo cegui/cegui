@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Jul 20 11:12:39 2009.
+** Generated automatically by tolua++-1.0.92 on Mon Jul 20 12:10:26 2009.
 */
 
 #ifndef __cplusplus
@@ -23501,9 +23501,9 @@ static int tolua_CEGUI_CEGUI_SchemeManager_getSingleton00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: loadScheme of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_loadScheme00
-static int tolua_CEGUI_CEGUI_SchemeManager_loadScheme00(lua_State* tolua_S)
+/* method: create of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_create00
+static int tolua_CEGUI_CEGUI_SchemeManager_create00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23521,25 +23521,25 @@ static int tolua_CEGUI_CEGUI_SchemeManager_loadScheme00(lua_State* tolua_S)
   string filename = ((string)  tolua_tocppstring(tolua_S,2,0));
   string resourcegroup = ((string)  tolua_tocppstring(tolua_S,3,""));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadScheme'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create'",NULL);
 #endif
  {
-  CEGUI::Scheme* tolua_ret = (CEGUI::Scheme*)  self->loadScheme(filename,resourcegroup);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Scheme");
+  CEGUI::Scheme& tolua_ret = (CEGUI::Scheme&)  self->create(filename,resourcegroup);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Scheme");
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'loadScheme'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: unloadScheme of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_unloadScheme00
-static int tolua_CEGUI_CEGUI_SchemeManager_unloadScheme00(lua_State* tolua_S)
+/* method: destroy of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_destroy00
+static int tolua_CEGUI_CEGUI_SchemeManager_destroy00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23555,24 +23555,24 @@ static int tolua_CEGUI_CEGUI_SchemeManager_unloadScheme00(lua_State* tolua_S)
   CEGUI::SchemeManager* self = (CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unloadScheme'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroy'",NULL);
 #endif
  {
-  self->unloadScheme(name);
+  self->destroy(name);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'unloadScheme'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'destroy'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: isSchemePresent of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_isSchemePresent00
-static int tolua_CEGUI_CEGUI_SchemeManager_isSchemePresent00(lua_State* tolua_S)
+/* method: isDefined of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_isDefined00
+static int tolua_CEGUI_CEGUI_SchemeManager_isDefined00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23588,25 +23588,25 @@ static int tolua_CEGUI_CEGUI_SchemeManager_isSchemePresent00(lua_State* tolua_S)
   const CEGUI::SchemeManager* self = (const CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isSchemePresent'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isDefined'",NULL);
 #endif
  {
-  bool tolua_ret = (bool)  self->isSchemePresent(name);
+  bool tolua_ret = (bool)  self->isDefined(name);
  tolua_pushboolean(tolua_S,(bool)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'isSchemePresent'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'isDefined'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getScheme of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_getScheme00
-static int tolua_CEGUI_CEGUI_SchemeManager_getScheme00(lua_State* tolua_S)
+/* method: get of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_get00
+static int tolua_CEGUI_CEGUI_SchemeManager_get00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23622,25 +23622,25 @@ static int tolua_CEGUI_CEGUI_SchemeManager_getScheme00(lua_State* tolua_S)
   const CEGUI::SchemeManager* self = (const CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getScheme'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get'",NULL);
 #endif
  {
-  CEGUI::Scheme* tolua_ret = (CEGUI::Scheme*)  self->getScheme(name);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Scheme");
+  CEGUI::Scheme& tolua_ret = (CEGUI::Scheme&)  self->get(name);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Scheme");
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getScheme'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'get'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: unloadAllSchemes of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_unloadAllSchemes00
-static int tolua_CEGUI_CEGUI_SchemeManager_unloadAllSchemes00(lua_State* tolua_S)
+/* method: destroyAll of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_destroyAll00
+static int tolua_CEGUI_CEGUI_SchemeManager_destroyAll00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23654,16 +23654,16 @@ static int tolua_CEGUI_CEGUI_SchemeManager_unloadAllSchemes00(lua_State* tolua_S
  {
   CEGUI::SchemeManager* self = (CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unloadAllSchemes'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAll'",NULL);
 #endif
  {
-  self->unloadAllSchemes();
+  self->destroyAll();
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'unloadAllSchemes'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'destroyAll'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53186,11 +53186,11 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"SchemeManager","CEGUI::SchemeManager","",NULL);
   tolua_beginmodule(tolua_S,"SchemeManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_SchemeManager_getSingleton00);
-   tolua_function(tolua_S,"loadScheme",tolua_CEGUI_CEGUI_SchemeManager_loadScheme00);
-   tolua_function(tolua_S,"unloadScheme",tolua_CEGUI_CEGUI_SchemeManager_unloadScheme00);
-   tolua_function(tolua_S,"isSchemePresent",tolua_CEGUI_CEGUI_SchemeManager_isSchemePresent00);
-   tolua_function(tolua_S,"getScheme",tolua_CEGUI_CEGUI_SchemeManager_getScheme00);
-   tolua_function(tolua_S,"unloadAllSchemes",tolua_CEGUI_CEGUI_SchemeManager_unloadAllSchemes00);
+   tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_SchemeManager_create00);
+   tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_SchemeManager_destroy00);
+   tolua_function(tolua_S,"isDefined",tolua_CEGUI_CEGUI_SchemeManager_isDefined00);
+   tolua_function(tolua_S,"get",tolua_CEGUI_CEGUI_SchemeManager_get00);
+   tolua_function(tolua_S,"destroyAll",tolua_CEGUI_CEGUI_SchemeManager_destroyAll00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_SchemeManager_getIterator00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"PropertyHelper","CEGUI::PropertyHelper","",NULL);

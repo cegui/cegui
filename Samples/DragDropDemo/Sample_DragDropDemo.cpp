@@ -47,7 +47,7 @@ bool DragDropDemo::initialiseSample()
     using namespace CEGUI;
 
     // load windows look
-    SchemeManager::getSingleton().loadScheme("WindowsLook.scheme");
+    SchemeManager::getSingleton().create("WindowsLook.scheme");
 
     // load font and setup default if not loaded via scheme
     FontManager::getSingleton().create("DejaVuSans-10.font");

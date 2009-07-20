@@ -337,7 +337,7 @@ System::System(Renderer* renderer,
     {
         try
         {
-            SchemeManager::getSingleton().loadScheme(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
+            SchemeManager::getSingleton().create(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
 
             // set default font if that was specified also
             if (!defaultFontName.empty())

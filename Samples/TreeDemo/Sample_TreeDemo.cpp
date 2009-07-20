@@ -103,7 +103,7 @@ bool TreeDemoSample::initialiseSample()
    CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Insane);
 
    // Load the scheme to initialise the skin which we use in this sample
-   SchemeManager::getSingleton().loadScheme(SCHEME_FILE_NAME);
+   SchemeManager::getSingleton().create(SCHEME_FILE_NAME);
 
    // set default mouse image
    System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME, "MouseArrow");
