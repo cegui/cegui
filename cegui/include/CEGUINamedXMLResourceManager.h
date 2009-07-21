@@ -177,7 +177,7 @@ protected:
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
     //! function to enforce XMLResourceExistsAction policy.
-    T& doExistingObjectAction(const String& object_name, T* object,
+    T& doExistingObjectAction(const String object_name, T* object,
                               const XMLResourceExistsAction action);
     //! Function called each time a new object is added to the collection.
     virtual void doPostObjectAdditionAction(T& object);
@@ -290,7 +290,7 @@ void NamedXMLResourceManager<T, U>::destroyObject(
 //----------------------------------------------------------------------------//
 template<typename T, typename U>
 T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
-    const String& object_name,
+    const String object_name,
     T* object,
     const XMLResourceExistsAction action)
 {
