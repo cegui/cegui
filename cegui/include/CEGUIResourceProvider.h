@@ -33,6 +33,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUIString.h"
+#include <vector>
 
 
 // Start of CEGUI namespace section
@@ -127,6 +128,12 @@ public:
     */
     void    setDefaultResourceGroup(const String& resourceGroup)    { d_defaultResourceGroup = resourceGroup; }
 
+    /** enumerate the files in \a resource_group that match \a file_pattern and
+    append thier names to \a out_vec
+    */
+    virtual size_t getResourceGroupFileNames(std::vector<String>& out_vec,
+                                             const String& file_pattern,
+                                             const String& resource_group) = 0;
 protected:
     String  d_defaultResourceGroup;     //!< Default resource group identifier.
 };

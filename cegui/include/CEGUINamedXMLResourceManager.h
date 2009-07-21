@@ -33,6 +33,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIInputEvent.h"
+#include "CEGUISystem.h"
 #include <map>
 
 // Start of CEGUI namespace section
@@ -170,6 +171,9 @@ public:
 
     //! Return whether an object named \a object_name exists.
     bool isDefined(const String& object_name) const;
+
+    //! Create a new T object from files with names matching \a pattern in \a resource_group
+    void createAll(const String& pattern, const String& resource_group);
 
 protected:
     //! type of collection used to store and manage objects
@@ -348,6 +352,19 @@ template<typename T, typename U>
 void NamedXMLResourceManager<T, U>::doPostObjectAdditionAction(T& /*object*/)
 {
     // do nothing by default.
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+void NamedXMLResourceManager<T, U>::createAll(const String& pattern,
+                                              const String& resource_group)
+{
+    std::vector<String> names;
+    const size_t num = System::getSingleton().getResourceProvider()->
+        getResourceGroupFileNames(names, pattern, resource_group);
+
+    for (size_t i = 0; i < num; ++i)
+        create(names[i], resource_group);
 }
 
 //----------------------------------------------------------------------------//

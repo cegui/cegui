@@ -101,6 +101,9 @@ public:
 
     void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup);
     void unloadRawDataContainer(RawDataContainer& data);
+    size_t getResourceGroupFileNames(std::vector<String>& out_vec,
+                                     const String& file_pattern,
+                                     const String& resource_group);
 
 protected:
     /*!
