@@ -354,6 +354,21 @@ public:
     Size size;
 };
 
+//! EventArgs based class that is used for notifications regarding resources.
+class CEGUIEXPORT ResourceEventArgs : public EventArgs
+{
+public:
+    ResourceEventArgs(const String& type, const String& name) :
+       resourceType(type),
+       resourceName(name)
+    {}
+
+    //! String identifying the resource type this notification is about.
+    String resourceType;
+    //! String identifying the name of the resource this notification is about.
+    String resourceName;
+};
+
 
 } // End of  CEGUI namespace section
 

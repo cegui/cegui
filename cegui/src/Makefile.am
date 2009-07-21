@@ -54,6 +54,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUILeftAlignedRenderedString.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
+                      CEGUINamedXMLResourceManager.cpp \
                       CEGUIPixmapFont.cpp \
                       CEGUIProperty.cpp \
                       CEGUIPropertyHelper.cpp \
