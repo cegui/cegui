@@ -230,12 +230,6 @@ WindowFactoryManager::TypeAliasIterator WindowFactoryManager::getAliasIterator(v
 *************************************************************************/
 void WindowFactoryManager::addWindowTypeAlias(const String& aliasName, const String& targetType)
 {
-	// throw if target type does not exist
-	if (!isFactoryPresent(targetType))
-	{
-		throw UnknownObjectException("WindowFactoryManager::addWindowTypeAlias - alias '" + aliasName + "' could not be created because the target type '" + targetType + "' is unknown within the system.");
-	}
-
 	TypeAliasRegistry::iterator pos = d_aliasRegistry.find(aliasName);
 
 	if (pos == d_aliasRegistry.end())
