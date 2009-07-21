@@ -181,10 +181,10 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
                     " in resource group: " + (resource_group.empty() ?
                                               "(Default)" : resource_group));
     logger.logEvent("---- Real point size: " +
-            attributes.getValueAsString(FontSizeAttribute, "10"));
+            attributes.getValueAsString(FontSizeAttribute, "12"));
 
     d_font = new FreeTypeFont(name,
-        attributes.getValueAsFloat(FontSizeAttribute, 10.0f),
+        attributes.getValueAsFloat(FontSizeAttribute, 12.0f),
         attributes.getValueAsBool(FontAntiAliasedAttribute, true),
         filename, resource_group,
         attributes.getValueAsBool(FontAutoScaledAttribute, false),
