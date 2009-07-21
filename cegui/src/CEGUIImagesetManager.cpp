@@ -67,10 +67,10 @@ Imageset& ImagesetManager::create(const String& name, Texture& texture,
     Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +
                                     "' with texture only.");
 
-    Imageset* existing_object = doExistingObjectAction(name, action);
-
-    return existing_object ? *existing_object :
-                             *(d_objects[name] = new Imageset(name, texture));
+    // create new object ahead of time
+    Imageset* object = new Imageset(name, texture);
+    // return appropriate object instance (deleting any not required)
+    return doExistingObjectAction(name, object, action);;
 }
 
 //----------------------------------------------------------------------------//
@@ -82,11 +82,10 @@ Imageset& ImagesetManager::createFromImageFile(const String& name,
     Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +
         "' using image file '" + filename + "'.");
 
-    Imageset* existing_object = doExistingObjectAction(name, action);
-
-    return existing_object ? *existing_object :
-                             *(d_objects[name] = new Imageset(name, filename,
-                                                              resourceGroup));
+    // create new object ahead of time
+    Imageset* object = new Imageset(name, filename, resourceGroup);
+    // return appropriate object instance (deleting any not required)
+    return doExistingObjectAction(name, object, action);;
 }
 
 //----------------------------------------------------------------------------//

@@ -28,9 +28,11 @@
 #ifndef _CEGUINamedXMLResourceManager_h_
 #define _CEGUINamedXMLResourceManager_h_
 
+#include "CEGUIEventSet.h"
 #include "CEGUIString.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
+#include "CEGUIInputEvent.h"
 #include <map>
 
 // Start of CEGUI namespace section
@@ -46,6 +48,24 @@ enum XMLResourceExistsAction
     //! Throw an AlreadyExistsException.
     XREA_THROW
 };
+
+//----------------------------------------------------------------------------//
+
+//! implementation class to gather EventSet parts for all template instances.
+class CEGUIEXPORT ResourceEventSet : public EventSet
+{
+public:
+    //! Namespace name for all resource managers
+    static const String EventNamespace;
+    //! Name of event fired when a resource is created by this manager.
+    static const String EventResourceCreated;
+    //! Name of event fired when a resource is destroyed by this manager.
+    static const String EventResourceDestroyed;
+    //! Name of event fired when a resource is replaced by this manager.
+    static const String EventResourceReplaced;
+};
+
+//----------------------------------------------------------------------------//
 
 /*!
 \brief
@@ -70,7 +90,7 @@ enum XMLResourceExistsAction
     made, no such transfer of ownership is assumed.
 */
 template<typename T, typename U>
-class NamedXMLResourceManager
+class NamedXMLResourceManager : public ResourceEventSet
 {
 public:
     /*!
@@ -156,9 +176,9 @@ protected:
     typedef std::map<String, T*, String::FastLessCompare> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
-    //! function to aid in enforcement of XMLResourceExistsAction policy.
-    T* doExistingObjectAction(const String& object_name,
-                                 const XMLResourceExistsAction action);
+    //! function to enforce XMLResourceExistsAction policy.
+    T& doExistingObjectAction(const String& object_name, T* object,
+                              const XMLResourceExistsAction action);
     //! Function called each time a new object is added to the collection.
     virtual void doPostObjectAdditionAction(T& object);
     //! String holding the text for the resource type managed.
@@ -188,20 +208,8 @@ T& NamedXMLResourceManager<T, U>::create(const String& xml_filename,
                                         XMLResourceExistsAction action)
 {
     U xml_loader(xml_filename, resource_group);
-
-    const String name(xml_loader.getObjectName());
-
-    T* object = doExistingObjectAction(name, action);
-
-    // see if we should use new object
-    if (!object)
-    {
-        object = &xml_loader.getObject();
-        d_objects[name] = object;
-        doPostObjectAdditionAction(*object);
-    }
-
-    return *object;
+    return doExistingObjectAction(xml_loader.getObjectName(),
+                                  &xml_loader.getObject(), action);
 }
 
 //----------------------------------------------------------------------------//
@@ -269,16 +277,25 @@ void NamedXMLResourceManager<T, U>::destroyObject(
         "' named '" + ob->first + "' has been destroyed. " +
         addr_buff, Informative);
 
+    // Set up event args for event notification
+    ResourceEventArgs args(d_resourceType, ob->first);
+
     delete ob->second;
     d_objects.erase(ob);
+
+    // fire event signalling an object has been destroyed
+    fireEvent(EventResourceDestroyed, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 template<typename T, typename U>
-T* NamedXMLResourceManager<T, U>::doExistingObjectAction(
+T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
     const String& object_name,
+    T* object,
     const XMLResourceExistsAction action)
 {
+    String event_name;
+
     if (isDefined(object_name))
     {
         switch (action)
@@ -286,29 +303,44 @@ T* NamedXMLResourceManager<T, U>::doExistingObjectAction(
         case XREA_RETURN:
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
-            return d_objects[object_name];
+            // delete any new object we already had created
+            delete object;
+            // return existing instance of object.
+            return *d_objects[object_name];
 
         case XREA_REPLACE:
             Logger::getSingleton().logEvent("---- Replacing existing instance "
                 "of " + d_resourceType + " named '" + object_name +
                 "' (DANGER!).");
             destroy(object_name);
+            event_name = EventResourceReplaced;
             break;
 
         case XREA_THROW:
+            delete object;
             throw AlreadyExistsException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "an object of type '" + d_resourceType + "' named '" +
                 object_name + "' already exists in the collection.");
 
         default:
+            delete object;
             throw InvalidRequestException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "Invalid CEGUI::XMLResourceExistsAction was specified.");
         }
     }
+    else
+        event_name = EventResourceCreated;
 
-    return 0;
+    d_objects[object_name] = object;
+    doPostObjectAdditionAction(*object);
+
+    // fire event about this resource change
+    ResourceEventArgs args(d_resourceType, object_name);
+    fireEvent(event_name, args, EventNamespace);
+
+    return *object;
 }
 
 //----------------------------------------------------------------------------//

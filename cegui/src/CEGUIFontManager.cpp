@@ -78,19 +78,13 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
     Logger::getSingleton().logEvent("Attempting to create FreeType font '" +
         font_name + "' using font file '" + font_filename + "'.");
 
-    Font* object = doExistingObjectAction(font_name, action);
+    // create new object ahead of time
+    Font* object = new FreeTypeFont(font_name, point_size, anti_aliased,
+                                    font_filename, resource_group, auto_scaled,
+                                    native_horz_res, native_vert_res);
 
-    // see if we should use new object
-    if (!object)
-    {
-        object = new FreeTypeFont(font_name, point_size, anti_aliased,
-                                  font_filename, resource_group, auto_scaled,
-                                  native_horz_res, native_vert_res);
-        d_objects[font_name] = object;
-        doPostObjectAdditionAction(*object);
-    }
-
-    return *object;
+    // return appropriate object instance (deleting any not required)
+    return doExistingObjectAction(font_name, object, action);;
 }
 
 //----------------------------------------------------------------------------//
@@ -105,18 +99,12 @@ Font& FontManager::createPixmapFont(const String& font_name,
     Logger::getSingleton().logEvent("Attempting to create Pixmap font '" +
         font_name + "' using imageset file '" + imageset_filename + "'.");
 
-    Font* object = doExistingObjectAction(font_name, action);
+    // create new object ahead of time
+    Font* object = new PixmapFont(font_name, imageset_filename, resource_group,
+                                  auto_scaled, native_horz_res, native_vert_res);
 
-    // see if we should use new object
-    if (!object)
-    {
-        object = new PixmapFont(font_name, imageset_filename, resource_group,
-                                auto_scaled, native_horz_res, native_vert_res);
-        d_objects[font_name] = object;
-        doPostObjectAdditionAction(*object);
-    }
-
-    return *object;
+    // return appropriate object instance (deleting any not required)
+    return doExistingObjectAction(font_name, object, action);;
 }
 
 //----------------------------------------------------------------------------//
