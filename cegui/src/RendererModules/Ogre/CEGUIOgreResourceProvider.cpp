@@ -87,5 +87,29 @@ void OgreResourceProvider::unloadRawDataContainer(RawDataContainer& data)
 }
 
 //----------------------------------------------------------------------------//
+size_t OgreResourceProvider::getResourceGroupFileNames(
+    std::vector<String>& out_vec, const String& file_pattern,
+    const String& resource_group)
+{
+    // get list of files in the group that match the pattern.
+    Ogre::StringVectorPtr vp =
+        Ogre::ResourceGroupManager::getSingleton().findResourceNames(
+            (resource_group.empty() ?
+                d_defaultResourceGroup.c_str() :
+                resource_group.c_str()),
+            file_pattern.c_str());
+
+    size_t entries = 0;
+    Ogre::StringVector::iterator i = vp->begin();
+    for (; i != vp->end(); ++i)
+    {
+        out_vec.push_back(*i);
+        ++entries;
+    }
+
+    return entries;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

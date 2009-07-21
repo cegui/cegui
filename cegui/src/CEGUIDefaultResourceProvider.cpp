@@ -33,6 +33,15 @@
 #include <fstream>
 #include <iostream>
 
+#if defined(__WIN32__) || defined(_WIN32)
+#   include <io.h>
+#else
+#   include <sys/types.h>
+#   include <sys/stat.h>
+#   include <dirent.h>
+#   include <fnmatch.h>
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -131,5 +140,62 @@ namespace CEGUI
         // return result
         return final_filename;
     }
+
+size_t DefaultResourceProvider::getResourceGroupFileNames(
+    std::vector<String>& out_vec,
+    const String& file_pattern,
+    const String& resource_group)
+{
+    // look-up resource group name
+    ResourceGroupMap::const_iterator iter =
+        d_resourceGroups.find(resource_group.empty() ? d_defaultResourceGroup :
+                                                       resource_group);
+    // get directory that's set for the resource group
+    const String dir_name(iter != d_resourceGroups.end() ? (*iter).second : "./");
+
+    size_t entries = 0;
+
+// Win32 code.
+#if defined(__WIN32__) || defined(_WIN32)
+    intptr_t f;
+    struct _finddata_t fd;
+    if ((f = _findfirst((dir_name + file_pattern).c_str(), &fd)) != -1)
+    {
+        do
+        {
+            if ((fd.attrib & _A_SUBDIR))
+                continue;
+
+            out_vec.push_back(fd.name);
+            ++entries;
+        } while (_findnext(f, &fd) == 0);
+
+        _findclose(f);
+    }
+// Everybody else
+#else
+    DIR* dirp;
+    if ((dirp = opendir(dir_name.c_str())))
+    {
+        struct dirent* dp;
+        while ((dp = readdir(dirp)))
+        {
+            const String filename(dir_name + dp->d_name);
+            struct stat s;
+
+            if ((stat(filename.c_str(), &s) == 0) &&
+                S_ISREG(s.st_mode) &&
+                (fnmatch(file_pattern.c_str(), dp->d_name, 0) == 0))
+            {
+                out_vec.push_back(dp->d_name);
+                ++entries;
+            }
+        }
+
+        closedir(dirp);
+    }
+#endif
+    return entries;
+}
 
 } // End of  CEGUI namespace section
