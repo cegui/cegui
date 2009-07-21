@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLook">
-	<Imageset Name="TaharezLook" Filename="TaharezLook.imageset" />
-	<Font Name="Commonwealth-10" Filename="Commonwealth-10.font" />
+	<Imageset Filename="TaharezLook.imageset" />
+	<Font Filename="Commonwealth-10.font" />
 	<LookNFeel Filename="TaharezLook.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
 	

@@ -159,26 +159,34 @@ bool Scheme::resourcesLoaded(void) const
 void Scheme::loadXMLImagesets()
 {
     ImagesetManager& ismgr = ImagesetManager::getSingleton();
-    std::vector<LoadableUIElement>::const_iterator  pos;
+    std::vector<LoadableUIElement>::iterator  pos;
 
     // check all imagesets
     for (pos = d_imagesets.begin(); pos != d_imagesets.end(); ++pos)
     {
-        // does such an imageset exist?
-        if (!ismgr.isDefined((*pos).name))
+        // skip if the imageset already exists
+        if (!(*pos).name.empty() && ismgr.isDefined((*pos).name))
+            continue;
+
+        // create imageset from specified file.
+        Imageset& iset = ismgr.create((*pos).filename, (*pos).resourceGroup);
+        const String realname(iset.getName());
+
+        // if name was not in scheme, set it now and proceed to next imageset
+        if ((*pos).name.empty())
         {
-            // create imageset from specified file.
-            Imageset& iset = ismgr.create((*pos).filename, (*pos).resourceGroup);
+            (*pos).name = realname;
+            continue;
+        }
 
-            // check for wrong imageset for specified name
-            String realname = iset.getName();
-
-            if (realname != (*pos).name)
-            {
-                ismgr.destroy(iset);
-                throw InvalidRequestException("Scheme::loadResources - The Imageset created by file '" +
-                    (*pos).filename + "' is named '" + realname + "', not '" + (*pos).name + "' as required by Scheme '" + d_name + "'.");
-            }
+        // confirm the imageset loaded has same name specified in scheme
+        if (realname != (*pos).name)
+        {
+            ismgr.destroy(iset);
+            throw InvalidRequestException("Scheme::loadResources: "
+                "The Imageset created by file '" + (*pos).filename +
+                "' is named '" + realname + "', not '" + (*pos).name +
+                "' as required by Scheme '" + d_name + "'.");
         }
     }
 }
@@ -189,11 +197,15 @@ void Scheme::loadXMLImagesets()
 void Scheme::loadImageFileImagesets()
 {
     ImagesetManager& ismgr = ImagesetManager::getSingleton();
-    std::vector<LoadableUIElement>::const_iterator  pos;
+    std::vector<LoadableUIElement>::iterator  pos;
 
     // check imagesets that are created directly from image files
     for (pos = d_imagesetsFromImages.begin(); pos != d_imagesetsFromImages.end(); ++pos)
     {
+        // if name is empty use the name of the image file.
+        if ((*pos).name.empty())
+            (*pos).name = (*pos).filename;
+
         // see if imageset is present, and create it if not.
         if (!ismgr.isDefined((*pos).name))
             ismgr.createFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
@@ -206,26 +218,34 @@ void Scheme::loadImageFileImagesets()
 void Scheme::loadFonts()
 {
     FontManager& fntmgr = FontManager::getSingleton();
-    std::vector<LoadableUIElement>::const_iterator  pos;
+    std::vector<LoadableUIElement>::iterator  pos;
 
     // check fonts
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
     {
-        // is such a font already loaded?
-        if (!fntmgr.isDefined((*pos).name))
+        // skip if a font with this name is already loaded
+        if (!(*pos).name.empty() && fntmgr.isDefined((*pos).name))
+            continue;
+
+        // create font using specified xml file.
+        Font& font = fntmgr.create((*pos).filename, (*pos).resourceGroup);
+        const String realname(font.getName());
+
+        // if name was not in scheme, set it now and proceed to next font
+        if ((*pos).name.empty())
         {
-            // create font using specified xml file.
-            Font& font = fntmgr.create((*pos).filename, (*pos).resourceGroup);
+            (*pos).name = realname;
+            continue;
+        }
 
-            // check for wrong font for specified name
-            const String realname(font.getName());
-
-            if (realname != (*pos).name)
-            {
-                fntmgr.destroy(font);
-                throw InvalidRequestException("Scheme::loadResources - The Font created by file '" +
-                    (*pos).filename + "' is named '" + realname + "', not '" + (*pos).name + "' as required by Scheme '" + d_name + "'.");
-            }
+        // confirm the font loaded has same name specified in scheme
+        if (realname != (*pos).name)
+        {
+            fntmgr.destroy(font);
+            throw InvalidRequestException("Scheme::loadResources: "
+                "The Font created by file '" + (*pos).filename +
+                "' is named '" + realname + "', not '" + (*pos).name +
+                "' as required by Scheme '" + d_name + "'.");
         }
     }
 }
@@ -417,7 +437,8 @@ void Scheme::unloadXMLImagesets()
 
     // unload all xml based Imagesets
     for (pos = d_imagesets.begin(); pos != d_imagesets.end(); ++pos)
-        ismgr.destroy((*pos).name);
+        if (!(*pos).name.empty())
+            ismgr.destroy((*pos).name);
 }
 
 /*************************************************************************
@@ -430,7 +451,8 @@ void Scheme::unloadImageFileImagesets()
 
     // unload all imagesets that are created directly from image files
     for (pos = d_imagesetsFromImages.begin(); pos != d_imagesetsFromImages.end(); ++pos)
-        ismgr.destroy((*pos).name);
+        if (!(*pos).name.empty())
+            ismgr.destroy((*pos).name);
 }
 
 /*************************************************************************
@@ -441,9 +463,10 @@ void Scheme::unloadFonts()
     FontManager& fntmgr         = FontManager::getSingleton();
     std::vector<LoadableUIElement>::const_iterator  pos;
 
-    // unload all fonts
+    // unload all loaded fonts
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
-        fntmgr.destroy((*pos).name);
+        if (!(*pos).name.empty())
+            fntmgr.destroy((*pos).name);
 }
 
 /*************************************************************************
@@ -597,10 +620,8 @@ bool Scheme::areXMLImagesetsLoaded() const
 
     // check imagesets
     for (pos = d_imagesets.begin(); pos != d_imagesets.end(); ++pos)
-    {
-        if (!ismgr.isDefined((*pos).name))
+        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
             return false;
-    }
 
     return true;
 }
@@ -614,10 +635,8 @@ bool Scheme::areImageFileImagesetsLoaded() const
     std::vector<LoadableUIElement>::const_iterator  pos;
 
     for (pos = d_imagesetsFromImages.begin(); pos != d_imagesetsFromImages.end(); ++pos)
-    {
-        if (!ismgr.isDefined((*pos).name))
+        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
             return false;
-    }
 
     return true;
 }
@@ -632,10 +651,8 @@ bool Scheme::areFontsLoaded() const
 
     // check fonts
     for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
-    {
-        if (!fntmgr.isDefined((*pos).name))
+        if ((*pos).name.empty() || !fntmgr.isDefined((*pos).name))
             return false;
-    }
 
     return true;
 }

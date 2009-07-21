@@ -167,8 +167,8 @@ void Scheme_xmlHandler::elementImagesetFromImageStart(
 {
     Scheme::LoadableUIElement   imageset;
 
-    imageset.name = attributes.getValueAsString(NameAttribute);
     imageset.filename = attributes.getValueAsString(FilenameAttribute);
+    imageset.name = attributes.getValueAsString(NameAttribute, imageset.filename);
     imageset.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
 
     d_scheme->d_imagesetsFromImages.push_back(imageset);
