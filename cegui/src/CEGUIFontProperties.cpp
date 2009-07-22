@@ -27,12 +27,19 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIFreeTypeFont.h"
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "CEGUIPixmapFont.h"
 #include "CEGUIImageset.h"
 #include "CEGUIXMLSerializer.h" 
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
+
+#ifdef CEGUI_HAS_FREETYPE
+#   include "CEGUIFreeTypeFont.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -114,6 +121,7 @@ public:
     }
 };
 
+#ifdef CEGUI_HAS_FREETYPE
 // FreeTypeFont property
 class FreeTypePointSize : public Property
 {
@@ -158,6 +166,7 @@ public:
             setAntiAliased(PropertyHelper::stringToBool(value));
 }
 };
+#endif // CEGUI_HAS_FREETYPE
 
 // PixmapFont property
 class PixmapImageset : public Property
@@ -220,6 +229,7 @@ void Font::addFontProperties ()
     addProperty(&AutoScaled);
 }
 
+#ifdef CEGUI_HAS_FREETYPE
 void FreeTypeFont::addFreeTypeFontProperties ()
 {
     static FontProperties::FreeTypePointSize FreeTypePointSize;
@@ -228,6 +238,7 @@ void FreeTypeFont::addFreeTypeFontProperties ()
     addProperty(&FreeTypePointSize);
     addProperty(&FreeTypeAntialiased);
 }
+#endif
 
 void PixmapFont::addPixmapFontProperties ()
 {

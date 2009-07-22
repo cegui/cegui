@@ -25,13 +25,21 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
-#include "CEGUIFreeTypeFont.h"
 #include "CEGUIPixmapFont.h"
+
+#ifdef CEGUI_HAS_FREETYPE
+#   include "CEGUIFreeTypeFont.h"
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -65,6 +73,7 @@ FontManager::~FontManager()
 }
 
 //----------------------------------------------------------------------------//
+
 Font& FontManager::createFreeTypeFont(const String& font_name,
                                       const float point_size,
                                       const bool anti_aliased,
@@ -75,6 +84,7 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
                                       const float native_vert_res,
                                       XMLResourceExistsAction action)
 {
+#ifdef CEGUI_HAS_FREETYPE
     Logger::getSingleton().logEvent("Attempting to create FreeType font '" +
         font_name + "' using font file '" + font_filename + "'.");
 
@@ -84,7 +94,12 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
                                     native_horz_res, native_vert_res);
 
     // return appropriate object instance (deleting any not required)
-    return doExistingObjectAction(font_name, object, action);;
+    return doExistingObjectAction(font_name, object, action);
+
+#else
+    throw InvalidRequestException("FontManager::createFreeTypeFont: "
+        "CEGUI was compiled without freetype support.");
+#endif
 }
 
 //----------------------------------------------------------------------------//

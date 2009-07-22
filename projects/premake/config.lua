@@ -27,6 +27,11 @@ CEGUI_OLD_OIS_API = true
 --- 51 is 5.1 (and above?) From 0.7.0 onwards, lua 5.0 is no longer supported.
 CEGUI_LUA_VER = 51
 
+--- Freetype library
+--- CEGUI uses the freetype library for some of it's font support.  To disable
+--- the use of freetype, set this to false.
+CEGUI_USE_FREETYPE = true
+
 -------------
 -- Renderers
 -- this controls which renderer modules are built

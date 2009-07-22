@@ -20,7 +20,9 @@ package.excludes =
     rootdir.."cegui/src/minibidi.cpp",
 }
 
-library("freetype","_D")
+if CEGUI_USE_FREETYPE
+    library("freetype","_D")
+end
 library("pcre", "_d")
 library("Winmm", "")
 
