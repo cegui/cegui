@@ -257,7 +257,7 @@ end
 function setup_static_samples()
 
 -- All Samples using static compiles will need to link against the dependencies
-    if CEGUI_USE_FREETYPE
+    if CEGUI_USE_FREETYPE then
         library_static("freetype","","_D")
     end
 	library_static("pcre","", "_d")
