@@ -214,7 +214,7 @@ do
 	config_h.CEGUI_TINYXML_NAMESPACE = "CEGUITinyXML"
 
     -- Whether or not to use the freetype lib.
-    if CEGUI_USE_FREETYPE
+    if CEGUI_USE_FREETYPE then
         config_h.CEGUI_HAS_FREETYPE = ""
     end
 

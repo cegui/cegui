@@ -20,9 +20,12 @@ package.excludes =
     rootdir.."cegui/src/minibidi.cpp",
 }
 
-if CEGUI_USE_FREETYPE
+if not CEGUI_USE_FREETYPE then
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIFreeTypeFont.cpp")
+else
     library("freetype","_D")
 end
+
 library("pcre", "_d")
 library("Winmm", "")
 
