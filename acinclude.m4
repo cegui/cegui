@@ -984,3 +984,24 @@ AC_DEFUN([CEGUI_CHECK_BIDI],[
     AC_SUBST(fribidi_LIBS)
 ])
 
+# Check if freetype is available and if it's been disabled
+AC_DEFUN([CEGUI_CHECK_FREETYPE],[
+    AC_ARG_ENABLE([freetype],
+                  AC_HELP_STRING([--disable-freetype],
+                                 [Disable the use of the Freetype 2 library for font support.]),
+                  [cegui_enable_freetype=$enableval], [cegui_enable_freetype=yes])
+
+    if test x$cegui_enable_freetype = xyes; then
+        PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0,
+            [AC_DEFINE(CEGUI_HAS_FREETYPE, [], [Define to enable freetype 2 font support in CEGUI])
+             cegui_found_freetype=yes],
+            [AC_MSG_ERROR([Freetype2 library not found!  To continue anyway, rerun configure with the --disable-freetype option.])
+             cegui_found_freetype=no])
+    else
+        AC_MSG_NOTICE([Freetype font support was disabled; hope you know what you're doing!?])
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_FREETYPE_FONT], [test x$cegui_enable_freetype = xyes && test x$cegui_found_freetype=xyes])
+    AC_SUBST(freetype2_CFLAGS)
+    AC_SUBST(freetype2_LIBS)
+])

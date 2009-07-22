@@ -41,7 +41,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIFontProperties.cpp \
                       CEGUIFont_xmlHandler.cpp \
                       CEGUIFormattedRenderedString.cpp \
-                      CEGUIFreeTypeFont.cpp \
                       CEGUIGlobalEventSet.cpp \
                       CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \
@@ -180,6 +179,10 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalWidgetLookManager.cpp \
                       falagard/CEGUIFalXMLEnumHelper.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp
+
+if CEGUI_BUILD_FREETYPE_FONT
+libCEGUIBase_la_SOURCES += CEGUIFreeTypeFont.cpp
+endif
 
 if MACOSX_BUILD
 INCLUDES += -I$(top_srcdir)/src/implementations/mac

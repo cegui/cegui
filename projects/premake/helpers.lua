@@ -257,7 +257,9 @@ end
 function setup_static_samples()
 
 -- All Samples using static compiles will need to link against the dependencies
- 	library_static("freetype","","_D")
+    if CEGUI_USE_FREETYPE
+        library_static("freetype","","_D")
+    end
 	library_static("pcre","", "_d")
 	
 	-- Warn user when both D3D9 and D3D10 are defined during static builds

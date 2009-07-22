@@ -25,14 +25,21 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
-#include "CEGUIFreeTypeFont.h"
 #include "CEGUIPixmapFont.h"
+
+#ifdef CEGUI_HAS_FREETYPE
+#   include "CEGUIFreeTypeFont.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -174,6 +181,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     const String filename(attributes.getValueAsString(FontFilenameAttribute));
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
+#ifdef CEGUI_HAS_FREETYPE
     Logger& logger(Logger::getSingleton());
     logger.logEvent("---- CEGUI font name: " + name);
     logger.logEvent("----       Font type: FreeType");
@@ -190,6 +198,10 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         attributes.getValueAsBool(FontAutoScaledAttribute, false),
         attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
         attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+#else
+    throw InvalidRequestException("Font_xmlHandler::createFreeTypeFont: "
+        "CEGUI was compiled without freetype support.");
+#endif
 }
 
 //----------------------------------------------------------------------------//

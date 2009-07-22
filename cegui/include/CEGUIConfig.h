@@ -110,6 +110,13 @@ Each item in here has a comment to describe what it's for.
 #   define CEGUI_LUA_VER 51
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// The following controls whether freetype based font support will be
+// compiled in (default).  If you want to build CEGUI /without/ freetype
+// support, comment the following line.
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_HAS_FREETYPE
+
 #endif // defined(__APPLE__)
 
 #endif	// end of guard _CEGUIConfig_h_

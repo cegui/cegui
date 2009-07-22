@@ -54,9 +54,7 @@ if test x$MINGW32 != xyes; then
     AC_CHECK_LIB([pthread], [pthread_create],, AC_MSG_ERROR([cannot find pthread library]))
 fi
 
-PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
-AC_SUBST(freetype2_CFLAGS)
-AC_SUBST(freetype2_LIBS)
+CEGUI_CHECK_FREETYPE
 
 PKG_CHECK_MODULES(pcre, libpcre >= 5.0)
 AC_SUBST(pcre_CFLAGS)

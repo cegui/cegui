@@ -213,6 +213,11 @@ do
 	config_h.CEGUI_TINYXML_H = '"ceguitinyxml/tinyxml.h"'
 	config_h.CEGUI_TINYXML_NAMESPACE = "CEGUITinyXML"
 
+    -- Whether or not to use the freetype lib.
+    if CEGUI_USE_FREETYPE
+        config_h.CEGUI_HAS_FREETYPE = ""
+    end
+
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 
