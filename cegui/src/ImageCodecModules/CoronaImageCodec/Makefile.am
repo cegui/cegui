@@ -1,5 +1,5 @@
 INCLUDES=-I$(top_srcdir)/cegui/include \
-         -I$(top_srcdir)/cegui/include/ImageCodecModules/CoronamageCodec \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/CoronaImageCodec \
          $(Corona_CFLAGS)
 
 if MINGW32_BUILD
