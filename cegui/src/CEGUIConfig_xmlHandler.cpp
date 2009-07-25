@@ -1,12 +1,10 @@
 /***********************************************************************
     filename:   CEGUIConfig_xmlHandler.cpp
-    created:    17/7/2004
-    author:     Paul D Turner
-    
-    purpose:    Implements configuration file parser
+    created:    Sat Jul 25 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,70 +29,375 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLAttributes.h"
-
+#include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIFontManager.h"
+#include "CEGUISchemeManager.h"
+#include "CEGUIWindowManager.h"
+#include "CEGUIScriptModule.h"
+#include "CEGUIXMLParser.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    /*************************************************************************
-        Implementation Constants
-    *************************************************************************/
-    const String Config_xmlHandler::CEGUIConfigElement( "CEGUIConfig" );
-    const char  Config_xmlHandler::ConfigLogfileAttribute[]         = "Logfile";
-    const char  Config_xmlHandler::ConfigSchemeAttribute[]          = "Scheme";
-    const char  Config_xmlHandler::ConfigLayoutAttribute[]          = "Layout";
-    const char  Config_xmlHandler::ConfigDefaultFontAttribute[]     = "DefaultFont";
-    const char  Config_xmlHandler::ConfigInitScriptAttribute[]      = "InitScript";
-    const char  Config_xmlHandler::ConfigTerminateScriptAttribute[] = "TerminateScript";
-    const char  Config_xmlHandler::ConfigDefaultResourceGroupAttribute[] = "DefaultResourceGroup";
-    const char  Config_xmlHandler::ConfigLoggingLevelAttribute[]    = "LoggingLevel";
+//----------------------------------------------------------------------------//
+const String Config_xmlHandler::CEGUIConfigSchemaName("CEGUIConfig.xsd");
+const String Config_xmlHandler::CEGUIConfigElement("CEGUIConfig");
+const String Config_xmlHandler::LoggingElement("Logging");
+const String Config_xmlHandler::AutoLoadElement("AutoLoad");
+const String Config_xmlHandler::ResourceDirectoryElement("ResourceDirectory");
+const String Config_xmlHandler::DefaultResourceGroupElement("DefaultResourceGroup");
+const String Config_xmlHandler::ScriptingElement("Scripting");
+const String Config_xmlHandler::XMLParserElement("DefaultXMLParser");
+const String Config_xmlHandler::ImageCodecElement("DefaultImageCodec");
+const String Config_xmlHandler::DefaultFontElement("DefaultFont");
+const String Config_xmlHandler::DefaultMouseCursorElement("DefaultMouseCursor");
+const String Config_xmlHandler::FilenameAttribute("filename");
+const String Config_xmlHandler::LevelAttribute("level");
+const String Config_xmlHandler::TypeAttribute("type");
+const String Config_xmlHandler::GroupAttribute("group");
+const String Config_xmlHandler::PatternAttribute("pattern");
+const String Config_xmlHandler::DirectoryAttribute("directory");
+const String Config_xmlHandler::InitScriptAttribute("initScript");
+const String Config_xmlHandler::TerminateScriptAttribute("terminateScript");
+const String Config_xmlHandler::ImagesetAttribute("imageset");
+const String Config_xmlHandler::ImageAttribute("image");
+const String Config_xmlHandler::NameAttribute("name");
 
-    void Config_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
+//----------------------------------------------------------------------------//
+Config_xmlHandler::Config_xmlHandler() :
+    d_logLevel(Standard)
+{
+}
+
+//----------------------------------------------------------------------------//
+Config_xmlHandler::~Config_xmlHandler()
+{
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::elementStart(const String& element,
+                                     const XMLAttributes& attributes)
+{
+    if (element == CEGUIConfigElement)
+        handleCEGUIConfigElement(attributes);
+    else if (element == LoggingElement)
+        handleLoggingElement(attributes);
+    else if (element == AutoLoadElement)
+        handleAutoLoadElement(attributes);
+    else if (element == ResourceDirectoryElement)
+        handleResourceDirectoryElement(attributes);
+    else if (element == DefaultResourceGroupElement)
+        handleDefaultResourceGroupElement(attributes);
+    else if (element == ScriptingElement)
+        handleScriptingElement(attributes);
+    else if (element == XMLParserElement)
+        handleXMLParserElement(attributes);
+    else if (element == ImageCodecElement)
+        handleImageCodecElement(attributes);
+    else if (element == DefaultFontElement)
+        handleDefaultFontElement(attributes);
+    else if (element == DefaultMouseCursorElement)
+        handleDefaultMouseCursorElement(attributes);
+    else if (element == CEGUIConfigElement)
+        ; // do nothing for this.
+    else
+        Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
+            "Unknown element encountered: <" + element + ">", Errors);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::elementEnd(const String& element)
+{
+    if (element == CEGUIConfigElement)
+        Logger::getSingleton().logEvent(
+            "---- Finished parse of CEGUI config file ----");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleCEGUIConfigElement(const XMLAttributes& /*attr*/)
+{
+    Logger::getSingleton().logEvent(
+        "---- Started parse of CEGUI config file ----");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleLoggingElement(const XMLAttributes& attr)
+{
+    d_logFileName = attr.getValueAsString(FilenameAttribute, "");
+
+    const String logLevel(attr.getValueAsString(LevelAttribute, ""));
+
+    if (logLevel == "Errors")
+        d_logLevel = Errors;
+    else if (logLevel == "Informative")
+        d_logLevel = Informative;
+    else if (logLevel == "Insane")
+        d_logLevel = Insane;
+    else
+        d_logLevel = Standard;
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleAutoLoadElement(const XMLAttributes& attr)
+{
+    AutoLoadResource ob;
+    ob.type_string = attr.getValueAsString(TypeAttribute, "");
+    ob.type = stringToResourceType(ob.type_string);
+    ob.pattern = attr.getValueAsString(PatternAttribute, "*");
+    ob.group = attr.getValueAsString(GroupAttribute, "");
+    d_autoLoadResources.push_back(ob);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleResourceDirectoryElement(const XMLAttributes& attr)
+{
+    ResourceDirectory ob;
+    ob.group = attr.getValueAsString(GroupAttribute, "");
+    ob.directory = attr.getValueAsString(DirectoryAttribute, "./");
+    d_resourceDirectories.push_back(ob);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleDefaultResourceGroupElement(const XMLAttributes& attr)
+{
+    DefaultResourceGroup ob;
+    ob.type = stringToResourceType(attr.getValueAsString(TypeAttribute, ""));
+    ob.group = attr.getValueAsString(GroupAttribute, "");
+    d_defaultResourceGroups.push_back(ob);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleScriptingElement(const XMLAttributes& attr)
+{
+    d_scriptingInitScript =
+        attr.getValueAsString(InitScriptAttribute, "");
+    d_scriptingTerminateScript =
+        attr.getValueAsString(TerminateScriptAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleXMLParserElement(const XMLAttributes& attr)
+{
+    d_xmlParserName = attr.getValueAsString(NameAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleImageCodecElement(const XMLAttributes& attr)
+{
+    d_imageCodecName = attr.getValueAsString(NameAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleDefaultFontElement(const XMLAttributes& attr)
+{
+    d_defaultFont = attr.getValueAsString(NameAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& attr)
+{
+    d_defaultMouseImageset = attr.getValueAsString(ImagesetAttribute, "");
+    d_defaultMouseImage = attr.getValueAsString(ImageAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseXMLParser() const
+{
+    if (!d_xmlParserName.empty())
+        System::getSingleton().setXMLParser(d_xmlParserName);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseImageCodec() const
+{
+    if (!d_imageCodecName.empty())
+        System::getSingleton().setImageCodec(d_imageCodecName);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseLogger(const String& default_filename) const
+{
+    Logger::getSingleton().setLoggingLevel(d_logLevel);
+    Logger::getSingleton().setLogFilename(
+        d_logFileName.empty() ? default_filename : d_logFileName);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseResourceGroupDirectories() const
+{
+    // if we are called, we dangerously assume that the resource provider is an
+    // instace of DefaultResourceProvider...
+    DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>
+        (System::getSingleton().getResourceProvider());
+
+    ResourceDirVector::const_iterator i = d_resourceDirectories.begin();
+    for (; i != d_resourceDirectories.end(); ++i)
+        rp->setResourceGroupDirectory((*i).group, (*i).directory);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseDefaultResourceGroups() const
+{
+    DefaultGroupVector::const_iterator i = d_defaultResourceGroups.begin();
+    for (; i != d_defaultResourceGroups.end(); ++i)
     {
-        // handle root CEGUIConfig element
-        if (element == CEGUIConfigElement)
+        switch ((*i).type)
         {
-            d_logFilename           = attributes.getValueAsString(ConfigLogfileAttribute);
-            d_schemeFilename        = attributes.getValueAsString(ConfigSchemeAttribute);
-            d_layoutFilename        = attributes.getValueAsString(ConfigLayoutAttribute);
-            d_initScriptFilename    = attributes.getValueAsString(ConfigInitScriptAttribute);
-            d_termScriptFilename    = attributes.getValueAsString(ConfigTerminateScriptAttribute);
-            d_defaultFontName       = attributes.getValueAsString(ConfigDefaultFontAttribute);
-            d_defaultResourceGroup  = attributes.getValueAsString(ConfigDefaultResourceGroupAttribute);
+        case RT_IMAGESET:
+            Imageset::setDefaultResourceGroup((*i).group);
+            break;
 
-            // handle logging level
-            String logLevelStr = attributes.getValueAsString(ConfigLoggingLevelAttribute, "Standard");
+        case RT_FONT:
+            Font::setDefaultResourceGroup((*i).group);
+            break;
 
-            if (logLevelStr == "Errors")
+        case RT_SCHEME:
+            Scheme::setDefaultResourceGroup((*i).group);
+            break;
+
+        case RT_LOOKNFEEL:
+            WidgetLookManager::setDefaultResourceGroup((*i).group);
+            break;
+
+        case RT_LAYOUT:
+            WindowManager::setDefaultResourceGroup((*i).group);
+            break;
+
+        case RT_SCRIPT:
+            ScriptModule::setDefaultResourceGroup((*i).group);
+            break;
+
+        case RT_XMLSCHEMA:
+            if (System::getSingleton().getXMLParser()->
+                isPropertyPresent("SchemaDefaultResourceGroup"))
             {
-                d_logLevel = Errors;
+                System::getSingleton().getXMLParser()->
+                    setProperty("SchemaDefaultResourceGroup", (*i).group);
             }
-            else if (logLevelStr == "Warnings")
-            {
-                d_logLevel = Warnings;
-            }
-            else if (logLevelStr == "Informative")
-            {
-                d_logLevel = Informative;
-            }
-            else if (logLevelStr == "Insane")
-            {
-                d_logLevel = Insane;
-            }
-            else
-            {
-                d_logLevel = Standard;
-            }
+            break;
+
+        default:
+            System::getSingleton().getResourceProvider()->
+                setDefaultResourceGroup((*i).group);
+            break;
         }
-        // anything else is an error which *should* have already been caught by XML validation
-        else
-        {
-            String message("Config_xmlHandler::startElement - Unexpected data was found while parsing the configuration file: '" + element + "' is unknown.");
-
-            // throw a std::exception (because it won't try and use logger)
-            throw message.c_str();
-        }
-
     }
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::loadAutoResources() const
+{
+    AutoResourceVector::const_iterator i = d_autoLoadResources.begin();
+    for (; i != d_autoLoadResources.end(); ++i)
+    {
+        switch ((*i).type)
+        {
+        case RT_IMAGESET:
+            ImagesetManager::getSingleton().createAll((*i).pattern, (*i).group);
+            break;
+
+        case RT_FONT:
+            FontManager::getSingleton().createAll((*i).pattern, (*i).group);
+            break;
+
+        case RT_SCHEME:
+            SchemeManager::getSingleton().createAll((*i).pattern, (*i).group);
+            break;
+
+        case RT_LOOKNFEEL:
+            autoLoadLookNFeels((*i).pattern, (*i).group);
+            break;
+
+        case RT_LAYOUT:
+            autoLoadLayouts((*i).pattern, (*i).group);
+            break;
+
+        default:
+            throw InvalidRequestException(
+                "Config_xmlHandler::loadAutoResources: AutoLoad of resource "
+                "type '" + (*i).type_string + "' is not currently supported.  "
+                "Pattern was: " + (*i).pattern + " group was: " + (*i).group);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseDefaultFont() const
+{
+    if (!d_defaultFont.empty())
+        System::getSingleton().setDefaultFont(d_defaultFont);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseDefaultMouseCursor() const
+{
+    if (!d_defaultMouseImageset.empty() && !d_defaultMouseImage.empty())
+        System::getSingleton().
+            setDefaultMouseCursor(d_defaultMouseImageset, d_defaultMouseImage);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::executeInitScript() const
+{
+    if (!d_scriptingInitScript.empty())
+        System::getSingleton().executeScriptFile(d_scriptingInitScript);
+}
+
+//----------------------------------------------------------------------------//
+const String& Config_xmlHandler::getTerminateScriptName() const
+{
+    return d_scriptingTerminateScript;
+}
+
+//----------------------------------------------------------------------------//
+Config_xmlHandler::ResourceType Config_xmlHandler::stringToResourceType(
+    const String& type) const
+{
+    if (type == "Imageset")
+        return RT_IMAGESET;
+    else if (type == "Font")
+        return RT_FONT;
+    else if (type == "Scheme")
+        return RT_SCHEME;
+    else if (type == "LookNFeel")
+        return RT_LOOKNFEEL;
+    else if (type == "Layout")
+        return RT_LAYOUT;
+    else if (type == "Script")
+        return RT_SCRIPT;
+    else if (type == "XMLSchema")
+        return RT_XMLSCHEMA;
+    else
+        return RT_DEFAULT;
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::autoLoadLayouts(const String& pattern,
+                                        const String& group) const
+{
+    std::vector<String> names;
+    const size_t num = System::getSingleton().getResourceProvider()->
+        getResourceGroupFileNames(names, pattern, group);
+
+    for (size_t i = 0; i < num; ++i)
+        WindowManager::getSingleton().loadWindowLayout(names[i], "", group);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::autoLoadLookNFeels(const String& pattern,
+                                           const String& group) const
+{
+    std::vector<String> names;
+    const size_t num = System::getSingleton().getResourceProvider()->
+        getResourceGroupFileNames(names, pattern, group);
+
+    for (size_t i = 0; i < num; ++i)
+        WidgetLookManager::getSingleton().
+            parseLookNFeelSpecification(names[i], group);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
