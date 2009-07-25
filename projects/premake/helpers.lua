@@ -102,7 +102,9 @@ function cegui_dynamic(name, lang, kind)
 	release_sym.defines = {}
 	release_sym.buildflags =
 	{
-	   "optimize-speed",
+--    Optimisation disabled for mantis #293
+--    (http://www.cegui.org.uk/mantis/view.php?id=293)
+--    "optimize-speed",
 	}
 
 
