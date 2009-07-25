@@ -52,6 +52,7 @@ namespace CEGUI
     DragContainerProperties::DragCursorImage DragContainer::d_dragCursorImageProperty;
     DragContainerProperties::DraggingEnabled DragContainer::d_dragEnabledProperty;
     DragContainerProperties::DragThreshold   DragContainer::d_dragThresholdProperty;
+    DragContainerProperties::StickyMode      DragContainer::d_stickyModeProperty;
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +65,9 @@ namespace CEGUI
         d_dragAlpha(0.5f),
         d_dropTarget(0),
         d_dragCursorImage((const Image*)DefaultMouseCursor),
-        d_dropflag(false)
+        d_dropflag(false),
+        d_stickyMode(false),
+        d_pickedUp(false)
     {
         addDragContainerProperties();
     }
@@ -166,6 +169,7 @@ namespace CEGUI
         addProperty(&d_dragAlphaProperty);
         addProperty(&d_dragThresholdProperty);
         addProperty(&d_dragCursorImageProperty);
+        addProperty(&d_stickyModeProperty);
     }
 
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
@@ -249,9 +253,21 @@ namespace CEGUI
         {
             if (d_dragging)
             {
+                // release picked up state
+                if (d_pickedUp)
+                    d_pickedUp = false;
+
                 // fire off event
                 WindowEventArgs args(this);
                 onDragEnded(args);
+            }
+            // check for sticky pick up
+            else if (d_stickyMode && !d_pickedUp)
+            {
+                initialiseDragging();
+                d_pickedUp = true;
+                // in this case, do not proceed to release inputs.
+                return;
             }
 
             // release our capture on the input data
@@ -474,6 +490,18 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
                              Vector2(0, 0);
     // draw to overlay queue
     ctx.queue = RQ_OVERLAY;
+}
+
+//----------------------------------------------------------------------------//
+bool DragContainer::isStickyModeEnabled() const
+{
+    return d_stickyMode;
+}
+
+//----------------------------------------------------------------------------//
+void DragContainer::setStickyModeEnabled(bool setting)
+{
+    d_stickyMode = setting;
 }
 
 //----------------------------------------------------------------------------//

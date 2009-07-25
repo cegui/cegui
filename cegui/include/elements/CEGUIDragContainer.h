@@ -246,6 +246,26 @@ namespace CEGUI
         */
         Window* getCurrentDropTarget(void) const;
 
+        /*!
+        \brief
+            Return whether sticky mode is enable or disabled.
+
+        \return
+            - true if sticky mode is enabled.
+            - false if sticky mode is disabled.
+        */
+        bool isStickyModeEnabled() const;
+
+        /*!
+        \brief
+            Enable or disable sticky mode.
+
+        \param setting
+            - true to enable sticky mode.
+            - false to disable sticky mode.
+        */
+        void setStickyModeEnabled(bool setting);
+
         // Window class overrides.
         void getRenderingContext_impl(RenderingContext& ctx) const;
 
@@ -438,6 +458,10 @@ namespace CEGUI
         Window* d_dropTarget;       //!< Target window for possible drop operation.
         const Image* d_dragCursorImage; //!< Image to use for mouse cursor when dragging.
         bool d_dropflag;            //!< True when we're being dropped
+        //! true when we're in 'sticky' mode.
+        bool d_stickyMode;
+        //! true after been picked-up / dragged via sticky mode
+        bool d_pickedUp;
 
     private:
         /*************************************************************************
@@ -447,6 +471,7 @@ namespace CEGUI
         static DragContainerProperties::DragCursorImage d_dragCursorImageProperty;
         static DragContainerProperties::DraggingEnabled d_dragEnabledProperty;
         static DragContainerProperties::DragThreshold   d_dragThresholdProperty;
+        static DragContainerProperties::StickyMode      d_stickyModeProperty;
 
         /*************************************************************************
         	Implementation methods

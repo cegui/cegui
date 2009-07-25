@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Jul 20 12:10:26 2009.
+** Generated automatically by tolua++-1.0.92 on Sat Jul 25 14:47:29 2009.
 */
 
 #ifndef __cplusplus
@@ -31037,6 +31037,71 @@ static int tolua_CEGUI_CEGUI_DragContainer_getCurrentDropTarget00(lua_State* tol
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isStickyModeEnabled of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_isStickyModeEnabled00
+static int tolua_CEGUI_CEGUI_DragContainer_isStickyModeEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::DragContainer* self = (const CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isStickyModeEnabled'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isStickyModeEnabled();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isStickyModeEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setStickyModeEnabled of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_setStickyModeEnabled00
+static int tolua_CEGUI_CEGUI_DragContainer_setStickyModeEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::DragContainer* self = (CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+  bool setting = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setStickyModeEnabled'",NULL);
+#endif
+ {
+  self->setStickyModeEnabled(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setStickyModeEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getDocumentSize of class  CEGUI::Scrollbar */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_getDocumentSize00
 static int tolua_CEGUI_CEGUI_Scrollbar_getDocumentSize00(lua_State* tolua_S)
@@ -53499,6 +53564,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setDragCursorImage",tolua_CEGUI_CEGUI_DragContainer_setDragCursorImage01);
    tolua_function(tolua_S,"setDragCursorImage",tolua_CEGUI_CEGUI_DragContainer_setDragCursorImage02);
    tolua_function(tolua_S,"getCurrentDropTarget",tolua_CEGUI_CEGUI_DragContainer_getCurrentDropTarget00);
+   tolua_function(tolua_S,"isStickyModeEnabled",tolua_CEGUI_CEGUI_DragContainer_isStickyModeEnabled00);
+   tolua_function(tolua_S,"setStickyModeEnabled",tolua_CEGUI_CEGUI_DragContainer_setStickyModeEnabled00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Scrollbar","CEGUI::Scrollbar","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"Scrollbar");
