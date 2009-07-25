@@ -20,4 +20,7 @@ class DragContainer : public Window
 	void setDragCursorImage(const Image* image);
 
 	Window* getCurrentDropTarget() const;
+
+    bool isStickyModeEnabled() const;
+    void setStickyModeEnabled(bool setting);
 };

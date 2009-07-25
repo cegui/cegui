@@ -85,6 +85,20 @@ namespace DragContainerProperties
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+
+    String StickyMode::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::boolToString(
+            static_cast<const DragContainer*>(receiver)->isStickyModeEnabled());
+    }
+
+    void StickyMode::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<DragContainer*>(receiver)->
+            setStickyModeEnabled(PropertyHelper::stringToBool(value));
+    }
+
 } // End of  DragContainerProperties namespace section
 
 

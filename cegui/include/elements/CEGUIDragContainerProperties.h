@@ -136,6 +136,32 @@ namespace DragContainerProperties
 	    void	set(PropertyReceiver* receiver, const String& value);
     };
 
+    /*!
+    \brief
+        Property to access the state of the sticky mode setting.
+
+        \par Usage:
+            - Name: StickyMode
+            - Format: "[text]".
+
+        \par Where [Text] is:
+            - "True" to indicate that sticky mode is enabled.
+            - "False" to indicate that sticky mode is disabled.
+    */
+    class StickyMode : public Property
+    {
+    public:
+        StickyMode() : Property(
+            "StickyMode",
+            "Property to get/set the state of the sticky mode setting for the "
+                "DragContainer.  Value is either \"True\" or \"False\".",
+            "True")
+        {}
+
+        String get(const PropertyReceiver* receiver) const;
+        void set(PropertyReceiver* receiver, const String& value);
+    };
+
 } // End of  DragContainerProperties namespace section
 } // End of  CEGUI namespace section
 
