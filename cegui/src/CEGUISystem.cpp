@@ -156,12 +156,6 @@ struct MouseClickTrackerImpl
 
 
 /*************************************************************************
-	Constants definitions
-*************************************************************************/
-const char	System::CEGUIConfigSchemaName[]		= "CEGUIConfig.xsd";
-
-
-/*************************************************************************
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
@@ -244,6 +238,8 @@ System::System(Renderer* renderer,
         userCreatedLogger = false;
     }
 
+    Logger& logger(Logger::getSingleton());
+
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
     {
@@ -251,74 +247,53 @@ System::System(Renderer* renderer,
         d_ourResourceProvider = true;
     }
 
-    initialiseVersionString();
-
     // handle initialisation and setup of the XML parser
     setupXMLParser();
 
-    // set up ImageCodec if needed
-    if (!d_imageCodec)
-        setupImageCodec("");
-
-    // strings we may get from the configuration file.
-    String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
-
     // now XML is available, read the configuration file (if any)
+    Config_xmlHandler config;
     if (!configFile.empty())
     {
-        // create handler object
-        Config_xmlHandler handler;
-
-        // do parsing of xml file
         try
         {
-            d_xmlParser->parseXMLFile(handler, configFile, CEGUIConfigSchemaName, "");
+            d_xmlParser->parseXMLFile(config, configFile,
+                                      config.CEGUIConfigSchemaName,
+                                      "");
         }
         catch(...)
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
             delete d_xmlParser;
-
             throw;
         }
-
-        // Set the logging level if the user didn't create a logger beforehand
-        if(!userCreatedLogger)
-            Logger::getSingleton().setLoggingLevel(handler.getLoggingLevel());
-
-        // get the strings read
-        configLogname       = handler.getLogFilename();
-        configSchemeName    = handler.getSchemeFilename();
-        configLayoutName    = handler.getLayoutFilename();
-        defaultFontName     = handler.getDefaultFontName();
-        configInitScript    = handler.getInitScriptFilename();
-        d_termScriptName    = handler.getTermScriptFilename();
-
-        // set default resource group if it was specified.
-        if (!handler.getDefaultResourceGroup().empty())
-        {
-            d_resourceProvider->setDefaultResourceGroup(handler.getDefaultResourceGroup());
-        }
     }
 
-    // Start up the logger if the user didn't create a logger beforehand
+    // Initialise logger if the user didn't create a logger beforehand
     if(!userCreatedLogger)
-    {
-        // Prefer log filename from config file
-        if (!configLogname.empty())
-        {
-            Logger::getSingleton().setLogFilename(configLogname, false);
-        }
-        // No log specified in configuration, use default / hard-coded option
-        else
-        {
-            Logger::getSingleton().setLogFilename(logFile, false);
-        }
-    }
+        config.initialiseLogger(logFile);
+
+    // if we created the resource provider we know it's DefaultResourceProvider
+    // so can auto-initialise the resource group directories via the config
+    if (d_ourResourceProvider)
+        config.initialiseResourceGroupDirectories();
+
+    // get config to update XML parser if it needs to.
+    config.initialiseXMLParser();
+
+    // set up ImageCodec
+    config.initialiseImageCodec();
+    if (!d_imageCodec)
+        setupImageCodec("");
+
+    // initialise any default resource groups specified in the config.
+    config.initialiseDefaultResourceGroups();
+
+    initialiseVersionString();
+    outputLogHeader();
 
     // beginning main init
-    Logger::getSingleton().logEvent("---- Begining CEGUI System initialisation ----");
+    logger.logEvent("---- Begining CEGUI System initialisation ----");
 
     // create the core system singleton objects
     createSingletons();
@@ -329,53 +304,25 @@ System::System(Renderer* renderer,
     // GUISheet's name was changed, register an alias so both can be used
     WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
 
-    // success - we are created!  Log it for prosperity :)
-    outputLogHeader();
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    logger.logEvent("CEGUI::System singleton created. " + String(addr_buff));
+    logger.logEvent("---- CEGUI System initialisation completed ----");
+    logger.logEvent("");
 
-    // load base scheme
-    if (!configSchemeName.empty())
-    {
-        try
-        {
-            SchemeManager::getSingleton().create(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
+    // autoload resources specified in config
+    config.loadAutoResources();
 
-            // set default font if that was specified also
-            if (!defaultFontName.empty())
-            {
-                setDefaultFont(defaultFontName);
-            }
+    // set up defaults
+    config.initialiseDefaultFont();
+    config.initialiseDefaultMouseCursor();
 
-        }
-        catch (CEGUI::Exception&) {}  // catch exception and try to continue anyway
-
-    }
-
-    // load initial layout
-    if (!configLayoutName.empty())
-    {
-        try
-        {
-            setGUISheet(WindowManager::getSingleton().loadWindowLayout(configLayoutName));
-        }
-        catch (CEGUI::Exception&) {}  // catch exception and try to continue anyway
-
-    }
-
-    // Create script module bindings
+    // scripting available?
     if (d_scriptModule)
     {
         d_scriptModule->createBindings();
-    }
-
-    // execute start up script
-    if (!configInitScript.empty())
-    {
-        try
-        {
-            executeScriptFile(configInitScript);
-        }
-        catch (...) {}  // catch all exceptions and try to continue anyway
-
+        config.executeInitScript();
+        d_termScriptName = config.getTerminateScriptName();
     }
 }
 
@@ -1513,11 +1460,6 @@ void System::setDefaultTooltip(const String& tooltipType)
 void System::outputLogHeader()
 {
     Logger& l(Logger::getSingleton());
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-    l.logEvent("CEGUI::System singleton created. " + String(addr_buff));
-    l.logEvent("---- CEGUI System initialisation completed ----");
-    l.logEvent("");
     l.logEvent("");
     l.logEvent("********************************************************************************");
     l.logEvent("* Important:                                                                   *");
@@ -1525,7 +1467,6 @@ void System::outputLogHeader()
     l.logEvent("*     of this log file indicated below.  Failure to do this will result in no  *");
     l.logEvent("*     support being given; please do not waste our time.                       *");
     l.logEvent("********************************************************************************");
-    l.logEvent("");
     l.logEvent("********************************************************************************");
     l.logEvent("* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *");
     l.logEvent("********************************************************************************");
@@ -1537,7 +1478,6 @@ void System::outputLogHeader()
     l.logEvent("********************************************************************************");
     l.logEvent("* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *");
     l.logEvent("********************************************************************************");
-    l.logEvent("");
     l.logEvent("");
 }
 

@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIConfig_xmlHandler.h
-	created:	17/7/2004
-	author:		Paul D Turner
-	
-	purpose:	Interface to configuration file parser
+    filename:   CEGUIConfig_xmlHandler.h
+    created:    Sat Jul 25 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,129 +32,169 @@
 #include "CEGUIString.h"
 #include "CEGUILogger.h"
 #include "CEGUIXMLHandler.h"
-
 #include <vector>
+
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-	Handler class used to parse the Configuration XML file.
-*/
+//! Handler class used to parse the Configuration XML file.
 class Config_xmlHandler : public XMLHandler
 {
 public:
-	/*************************************************************************
-		Construction & Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for GUILayout_xmlHandler objects
-	*/
-	Config_xmlHandler(void) {}
+    //! Name of xsd schema file used for validation.
+    static const String CEGUIConfigSchemaName;
+    // xml tag names
+    static const String CEGUIConfigElement;
+    static const String LoggingElement;
+    static const String AutoLoadElement;
+    static const String ResourceDirectoryElement;
+    static const String DefaultResourceGroupElement;
+    static const String ScriptingElement;
+    static const String XMLParserElement;
+    static const String ImageCodecElement;
+    static const String DefaultFontElement;
+    static const String DefaultMouseCursorElement;
+    // xml attribute names
+    static const String FilenameAttribute;
+    static const String LevelAttribute;
+    static const String TypeAttribute;
+    static const String GroupAttribute;
+    static const String PatternAttribute;
+    static const String DirectoryAttribute;
+    static const String InitScriptAttribute;
+    static const String TerminateScriptAttribute;
+    static const String ImagesetAttribute;
+    static const String ImageAttribute;
+    static const String NameAttribute;
 
-	/*!
-	\brief
-		Destructor for GUILayout_xmlHandler objects
-	*/
-	virtual ~Config_xmlHandler(void) {}
+    //! Constructor.
+    Config_xmlHandler();
 
-	/*************************************************************************
-		SAX2 Handler overrides
-	*************************************************************************/ 
-	/*!
-	\brief
-		document processing (only care about elements, schema validates format)
-	*/
-    virtual void elementStart(const String& element, const XMLAttributes& attributes);
+    //! Destructor.
+    ~Config_xmlHandler();
 
-	/*************************************************************************
-		Functions used by our implementation
-	*************************************************************************/
-	/*!
-	\brief
-		Return log filename
-	*/
-	const String&	getLogFilename(void) const				{return d_logFilename;}
+    //! Initialise the CEGUI XMLParser according to info parsed from config.
+    void initialiseXMLParser() const;
+    //! Initialise the CEGUI ImageCodec according to info parsed from config.
+    void initialiseImageCodec() const;
+    //! Initialise the CEGUI Logger according to info parsed from config.
+    void initialiseLogger(const String& default_filename) const;
+    //! Set resource group dirs read from the config. (DefaultResourceProvider only).
+    void initialiseResourceGroupDirectories() const;
+    //! Set default resource groups according to those in the config.
+    void initialiseDefaultResourceGroups() const;
+    //! Auto-load all resources specified in the config.
+    void loadAutoResources() const;
+    //! initialise the system default font according to the config.
+    void initialiseDefaultFont() const;
+    //! initialise the system default mouse cursor image according to the config.
+    void initialiseDefaultMouseCursor() const;
+    //! execute the init script as specified in the config.
+    void executeInitScript() const;
+    //! return the name of the terminate script from the config (hacky!)
+    const String& getTerminateScriptName() const;
 
-
-	/*!
-	\brief
-		Return initial scheme filename to load
-	*/
-	const String&	getSchemeFilename(void) const			{return d_schemeFilename;}
-
-
-	/*!
-	\brief
-		Return initial layout filename to load and set as the GUI sheet.
-	*/
-	const String&	getLayoutFilename(void) const			{return d_layoutFilename;}
-
-
-	/*!
-	\brief
-		Return the name of the initialisation script to run
-	*/
-	const String&	getInitScriptFilename(void) const		{return d_initScriptFilename;}
-
-
-	/*!
-	\brief
-		Return the name of the termination script to run
-	*/
-	const String&	getTermScriptFilename(void) const		{return d_termScriptFilename;}
-
-
-	/*!
-	\brief
-		Return name of font to use as default.
-	*/
-	const String&	getDefaultFontName(void) const		{return d_defaultFontName;}
-
-
-	/*!
-	\brief
-		Return name of default resource group.
-	*/
-	const String&	getDefaultResourceGroup(void) const		{return d_defaultResourceGroup;}
-
-    /*!
-    \brief
-        Return logging level which was read from the config file.
-    */
-    LoggingLevel getLoggingLevel(void) const     {return d_logLevel;}
-
+    // XMLHandler overrides
+    void elementStart(const String& element, const XMLAttributes& attributes);
+    void elementEnd(const String& element);
 
 private:
-	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const String CEGUIConfigElement;				//!< Tag name for CEGUIConfig elements.
-	static const char	ConfigLogfileAttribute[];			//!< Attribute name that stores the filename to use for the log.
-	static const char	ConfigSchemeAttribute[];			//!< Attribute name that stores the filename of a scheme to load.
-	static const char	ConfigLayoutAttribute[];			//!< Attribute name that stores the filename of a layout to load.
-	static const char	ConfigDefaultFontAttribute[];		//!< Attribute name that stores the name of the default font to set (as loaded by scheme)
-	static const char	ConfigInitScriptAttribute[];		//!< Attribute name that stores the filename of an initialisation script to run.
-	static const char	ConfigTerminateScriptAttribute[];	//!< Attribute name that stores the filename of a termination script to run.
-    static const char   ConfigDefaultResourceGroupAttribute[]; //!< Attribute name that stores the default resource group (also used when loading config resources).
-    static const char   ConfigLoggingLevelAttribute[];      //!< Attribute name that stores the logging level to be used.
+    //! enumeration of resource types.
+    enum ResourceType
+    {
+        RT_IMAGESET,
+        RT_FONT,
+        RT_SCHEME,
+        RT_LOOKNFEEL,
+        RT_LAYOUT,
+        RT_SCRIPT,
+        RT_XMLSCHEMA,
+        RT_DEFAULT
+    };
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	String		d_logFilename;			//!< filename for the log.
-	String		d_schemeFilename;		//!< filename for the scheme to auto-load.
-	String		d_layoutFilename;		//!< filename for the layout to auto-load.
-	String		d_initScriptFilename;	//!< filename for the script to run after system init.
-	String		d_termScriptFilename;	//!< filename for the script to run before system shutdown.
-	String		d_defaultFontName;		//!< Holds name of default font to set.
-    String      d_defaultResourceGroup; //!< Holds default resource group name.
-    LoggingLevel    d_logLevel;         //!< Holds the logging level read from the config.
+    //! struct to track a resource group directory specification.
+    struct ResourceDirectory
+    {
+        String group;
+        String directory;
+    };
+
+    //! struct to track a default resource group specification.
+    struct DefaultResourceGroup
+    {
+        ResourceType type;
+        String group;
+    };
+
+    //! struct to track a set of resources to be auto-loaded.
+    struct AutoLoadResource
+    {
+        String type_string;
+        ResourceType type;
+        String group;
+        String pattern;
+    };
+
+    // functions to handle the various elements
+    void handleCEGUIConfigElement(const XMLAttributes& attr);
+    void handleLoggingElement(const XMLAttributes& attr);
+    void handleAutoLoadElement(const XMLAttributes& attr);
+    void handleResourceDirectoryElement(const XMLAttributes& attr);
+    void handleDefaultResourceGroupElement(const XMLAttributes& attr);
+    void handleScriptingElement(const XMLAttributes& attr);
+    void handleXMLParserElement(const XMLAttributes& attr);
+    void handleImageCodecElement(const XMLAttributes& attr);
+    void handleDefaultFontElement(const XMLAttributes& attr);
+    void handleDefaultMouseCursorElement(const XMLAttributes& attr);
+
+    //! helper to convert resource type string to something more useful.
+    ResourceType stringToResourceType(const String& type) const;
+    //! helper to auto-load layouts
+    void autoLoadLayouts(const String& pattern, const String& group) const;
+    //! helper to auto-load looknfeels
+    void autoLoadLookNFeels(const String& pattern, const String& group) const;
+
+    //! type of collection holding resource group directory specifications.
+    typedef std::vector<ResourceDirectory> ResourceDirVector;
+    //! type of collection holding default resource group specifications.
+    typedef std::vector<DefaultResourceGroup> DefaultGroupVector;
+    //! type of collection holding specifications of resources to auto-load.
+    typedef std::vector<AutoLoadResource> AutoResourceVector;
+    //! The name to use for the CEGUI log file.
+    String d_logFileName;
+    //! The logging level to be set.
+    LoggingLevel d_logLevel;
+    //! The name of the XML parser module to initialise.
+    String d_xmlParserName;
+    //! The name of the image codec module to initialise.
+    String d_imageCodecName;
+    //! The name of the default font to be set.
+    String d_defaultFont;
+    //! The name of the imageset holding the default mouse cursor image.
+    String d_defaultMouseImageset;
+    //! The name of the default mouse cursor image to use.
+    String d_defaultMouseImage;
+    //! name of the initialisation script.
+    String d_scriptingInitScript;
+    //! name of the termination script.
+    String d_scriptingTerminateScript;
+    //! Collection of resouce group directories to be set.
+    ResourceDirVector d_resourceDirectories;
+    //! Collection of default resource groups to be set.
+    DefaultGroupVector d_defaultResourceGroups;
+    //! Collection of resource specifications to be auto-loaded.
+    AutoResourceVector d_autoLoadResources;
 };
-
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _CEGUIConfig_xmlHandler_h_
+#if defined (_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#endif // end of guard _CEGUIConfig_xmlHandler_h_

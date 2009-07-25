@@ -913,12 +913,6 @@ private:
     System& operator=(const System& obj);
 
 	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const char	CEGUIConfigSchemaName[];			//!< Filename of the XML schema used for validating Config files.
-
-
-	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
 	/*!
