@@ -59,6 +59,8 @@ public:
     static const String ImageCodecElement;
     static const String DefaultFontElement;
     static const String DefaultMouseCursorElement;
+    static const String DefaultTooltipElement;
+    static const String DefaultGUISheetElement;
     // xml attribute names
     static const String FilenameAttribute;
     static const String LevelAttribute;
@@ -94,6 +96,10 @@ public:
     void initialiseDefaultFont() const;
     //! initialise the system default mouse cursor image according to the config.
     void initialiseDefaultMouseCursor() const;
+    //! initialise the system default tooltip according to the config.
+    void initialiseDefaulTooltip() const;
+    //! initialise the initial / default GUI Sheet according to the config.
+    void initialiseDefaultGUISheet() const;
     //! execute the init script as specified in the config.
     void executeInitScript() const;
     //! return the name of the terminate script from the config (hacky!)
@@ -149,6 +155,8 @@ private:
     void handleScriptingElement(const XMLAttributes& attr);
     void handleXMLParserElement(const XMLAttributes& attr);
     void handleImageCodecElement(const XMLAttributes& attr);
+    void handleDefaultTooltipElement(const XMLAttributes& attr);
+    void handleDefaultGUISheetElement(const XMLAttributes& attr);
     void handleDefaultFontElement(const XMLAttributes& attr);
     void handleDefaultMouseCursorElement(const XMLAttributes& attr);
 
@@ -179,6 +187,10 @@ private:
     String d_defaultMouseImageset;
     //! The name of the default mouse cursor image to use.
     String d_defaultMouseImage;
+    //! The name of the default tooltip window type.
+    String d_defaultTooltipType;
+    //! The name of Window to use as the default GUI layout / sheet
+    String d_defaultGUISheet;
     //! name of the initialisation script.
     String d_scriptingInitScript;
     //! name of the termination script.
