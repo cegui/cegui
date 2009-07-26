@@ -53,6 +53,8 @@ const String Config_xmlHandler::XMLParserElement("DefaultXMLParser");
 const String Config_xmlHandler::ImageCodecElement("DefaultImageCodec");
 const String Config_xmlHandler::DefaultFontElement("DefaultFont");
 const String Config_xmlHandler::DefaultMouseCursorElement("DefaultMouseCursor");
+const String Config_xmlHandler::DefaultTooltipElement("DefaultTooltip");
+const String Config_xmlHandler::DefaultGUISheetElement("DefaultGUISheet");
 const String Config_xmlHandler::FilenameAttribute("filename");
 const String Config_xmlHandler::LevelAttribute("level");
 const String Config_xmlHandler::TypeAttribute("type");
@@ -100,8 +102,10 @@ void Config_xmlHandler::elementStart(const String& element,
         handleDefaultFontElement(attributes);
     else if (element == DefaultMouseCursorElement)
         handleDefaultMouseCursorElement(attributes);
-    else if (element == CEGUIConfigElement)
-        ; // do nothing for this.
+    else if (element == DefaultTooltipElement)
+        handleDefaultTooltipElement(attributes);
+    else if (element == DefaultGUISheetElement)
+        handleDefaultGUISheetElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
             "Unknown element encountered: <" + element + ">", Errors);
@@ -200,6 +204,18 @@ void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& att
 {
     d_defaultMouseImageset = attr.getValueAsString(ImagesetAttribute, "");
     d_defaultMouseImage = attr.getValueAsString(ImageAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleDefaultTooltipElement(const XMLAttributes& attr)
+{
+    d_defaultTooltipType = attr.getValueAsString(NameAttribute, "");
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::handleDefaultGUISheetElement(const XMLAttributes& attr)
+{
+    d_defaultGUISheet = attr.getValueAsString(NameAttribute, "");
 }
 
 //----------------------------------------------------------------------------//
@@ -336,6 +352,21 @@ void Config_xmlHandler::initialiseDefaultMouseCursor() const
     if (!d_defaultMouseImageset.empty() && !d_defaultMouseImage.empty())
         System::getSingleton().
             setDefaultMouseCursor(d_defaultMouseImageset, d_defaultMouseImage);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseDefaulTooltip() const
+{
+    if (!d_defaultTooltipType.empty())
+        System::getSingleton().setDefaultTooltip(d_defaultTooltipType);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::initialiseDefaultGUISheet() const
+{
+    if (!d_defaultGUISheet.empty())
+        System::getSingleton().setGUISheet(
+            WindowManager::getSingleton().getWindow(d_defaultGUISheet));
 }
 
 //----------------------------------------------------------------------------//
