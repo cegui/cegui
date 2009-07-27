@@ -6,7 +6,7 @@ if MINGW32_BUILD
 libCEGUIExpatParser_la_CPPFLAGS = -DCEGUIEXPATPARSER_EXPORTS
 libCEGUIExpatParser_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIExpatParser_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIExpatParser_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 libCEGUIExpatParser_la_LIBADD = $(expat_LIBS) \

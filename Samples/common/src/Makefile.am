@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/Samples/common/include \
 
 lib_LTLIBRARIES=libCEGUISampleHelper.la
 
-libCEGUISampleHelper_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUISampleHelper_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
 libCEGUISampleHelper_la_SOURCES = CEGuiBaseApplication.cpp \
                                   CEGuiRendererSelector.cpp \

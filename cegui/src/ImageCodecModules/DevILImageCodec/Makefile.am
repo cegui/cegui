@@ -6,7 +6,7 @@ if MINGW32_BUILD
 libCEGUIDevILImageCodec_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
 libCEGUIDevILImageCodec_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIDevILImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIDevILImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 libCEGUIDevILImageCodec_la_LIBADD = $(DevIL_LIBS) \

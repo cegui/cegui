@@ -23,7 +23,7 @@ endif
 libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) \
                                    $(top_builddir)/cegui/src/libCEGUIBase.la
 
-libCEGUIOpenGLRenderer_la_LDFLAGS += -release @PACKAGE_VERSION@
+libCEGUIOpenGLRenderer_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
 lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
 libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp \

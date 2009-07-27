@@ -6,7 +6,7 @@ if MINGW32_BUILD
 libCEGUICoronaImageCodec_la_CPPFLAGS = -DCEGUICORONAIMAGECODEC_EXPORTS
 libCEGUICoronaImageCodec_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUICoronaImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUICoronaImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 libCEGUICoronaImageCodec_la_LIBADD = $(Corona_LIBS) \

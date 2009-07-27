@@ -6,7 +6,7 @@ if MINGW32_BUILD
 libCEGUIXercesParser_la_CPPFLAGS = -DCEGUIXERCESPARSER_EXPORTS
 libCEGUIXercesParser_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIXercesParser_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIXercesParser_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 libCEGUIXercesParser_la_LIBADD = $(xerces_LIBS) \

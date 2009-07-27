@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/RendererModules/DirectFB \
             $(directfb_CFLAGS)
 
-libCEGUIDirectFBRenderer_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIDirectFBRenderer_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 libCEGUIDirectFBRenderer_la_LIBADD = $(directfb_LIBS) \
                                      $(top_builddir)/cegui/src/libCEGUIBase.la
 

@@ -5,7 +5,7 @@ if MINGW32_BUILD
 libCEGUITGAImageCodec_la_CPPFLAGS = -DCEGUITGAIMAGECODEC_EXPORTS
 libCEGUITGAImageCodec_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUITGAImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUITGAImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 lib_LTLIBRARIES=libCEGUITGAImageCodec.la

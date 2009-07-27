@@ -1023,3 +1023,29 @@ AC_DEFUN([CEGUI_CHECK_DEFAULT_LOGGER],[
 
     AM_CONDITIONAL([CEGUI_BUILD_DEFAULT_LOGGER], [test x$cegui_enable_default_logger = xyes])
 ])
+
+AC_DEFUN([CEGUI_VERSION_SUFFIX],[
+    AC_ARG_ENABLE([version-suffix],
+                  AC_HELP_STRING([--disable-version-suffix],
+                                 [Disable adding the release version to shared libraries.
+                                  Using this option leaves you with ABI versioning set at 0:0:0, so is probably
+                                  not what you want to do.  See also --with-version-suffix for how to modify
+                                  the version suffix used.]),
+                  [cegui_enable_version_suffix=$enableval], [cegui_enable_version_suffix=yes])
+
+    AC_ARG_WITH([version-suffix],
+                  AC_HELP_STRING([--with-version-suffix],
+                                 [The release version added to shared libraries unless the
+                                  --disable-version-suffix option is given (default=CEGUI_RELEASE_VERSION)]),
+                  [cegui_lib_version_suffix=$withval], [cegui_lib_version_suffix=CEGUI_RELEASE_VERSION])
+
+    if test x$cegui_enable_version_suffix = xyes; then
+        AC_DEFINE(CEGUI_HAS_VERSION_SUFFIX, [], [Define if shared libraries have a version suffix.])
+        AC_DEFINE_UNQUOTED(CEGUI_VERSION_SUFFIX, ["$cegui_lib_version_suffix"], [Defines the shared library version suffix.])
+
+        CEGUI_LIB_LINK_FLAGS="-release $cegui_lib_version_suffix"
+    fi
+
+    AC_SUBST(CEGUI_LIB_LINK_FLAGS)
+])
+
