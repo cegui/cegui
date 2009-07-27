@@ -53,6 +53,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIPropertySet.h \
                  CEGUIRect.h \
                  CEGUIRefCounted.h \
+                 CEGUIRegexMatcher.h \
                  CEGUIRenderedString.h \
                  CEGUIRenderedStringComponent.h \
                  CEGUIRenderedStringImageComponent.h \
@@ -105,4 +106,5 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIcolour.h
 
 noinst_HEADERS = CEGUIFreeTypeFont.h \
-                 CEGUIPixmapFont.h
+                 CEGUIPixmapFont.h \
+                 CEGUIPCRERegexMatcher.h

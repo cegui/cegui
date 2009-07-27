@@ -31,7 +31,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
-#include <pcre.h>
+#include "CEGUIPCRERegexMatcher.h"
 #include <string.h>
 
 
@@ -40,28 +40,6 @@ namespace CEGUI
 {
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-
-/*!
-\brief
-	Internal struct to contain compiled regex string
-*/
-struct RegexValidator
-{
-	RegexValidator(void) : d_regex(0) {}
-	~RegexValidator(void) { release(); }
-
-	void release()
-	{
-		if (d_regex != 0)
-		{
-			pcre_free(d_regex);
-			d_regex = 0;
-		}
-
-	}
-
-	pcre* d_regex;
-};
 
 /*************************************************************************
     EditboxWindowRenderer
@@ -118,7 +96,7 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_caratPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),
-    d_validator(new RegexValidator),
+    d_validator(new PCRERegexMatcher),
 	d_dragging(false)
 {
 	addEditboxProperties();
@@ -221,34 +199,21 @@ void Editbox::setTextMasked(bool setting)
 *************************************************************************/
 void Editbox::setValidationString(const String& validation_string)
 {
-	if (d_validationString != validation_string)
-	{
-		d_validationString = validation_string;
-		d_validator->release();
+    if (d_validator->getRegexString() == validation_string)
+        return;
 
-		// try to compile this new regex string
-		const char* prce_error;
-		int pcre_erroff;
-		d_validator->d_regex = pcre_compile(d_validationString.c_str(), PCRE_UTF8, &prce_error, &pcre_erroff, 0);
+    d_validator->setRegexString(validation_string);
 
-		// handle failure
-		if (d_validator->d_regex == 0)
-		{
-			throw InvalidRequestException("The Editbox named '" + getName() + "' had the following bad validation expression set: '" + validation_string + "'.  Additional Information: " + prce_error);			
-		}
+    // notification
+    WindowEventArgs args(this);
+    onValidationStringChanged(args);
 
-		// notification
-		WindowEventArgs args(this);
-		onValidationStringChanged(args);
-
-		if (!isTextValid())
-		{
-			// also notify if text is now invalid.
-			onTextInvalidatedEvent(args);
-		}
-
-	}
-
+    // also notify if text is now invalid.
+    if (!isTextValid())
+    {
+        args.handled = false;
+        onTextInvalidatedEvent(args);
+    }
 }
 
 
@@ -416,33 +381,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 *************************************************************************/
 bool Editbox::isStringValid(const String& str) const
 {
-	// if the regex is not valid, then an exception is thrown
-	if (d_validator->d_regex == 0)
-	{
-		throw InvalidRequestException("Editbox::isStringValid - An attempt was made to use the invalid RegEx '" + d_validationString + "'.");
-	}
-
-	const char* utf8str = str.c_str();
-	int	match[3];
-	int len = static_cast<int>(strlen(utf8str));
-	int result = pcre_exec(d_validator->d_regex, 0, utf8str, len, 0, 0, match, 3);
-
-	if (result >= 0)
-	{
-		// this ensures that any regex match is for the entire string
-		return (match[1] - match[0] == len);
-	}
-	// invalid string if there's no match or if string or regex is NULL.
-	else if ((result == PCRE_ERROR_NOMATCH) || (result == PCRE_ERROR_NULL))
-	{
-		return false;
-	}
-	// anything else is an error.
-	else
-	{
-		throw InvalidRequestException("Editbox::isStringValid - An internal error occurred while attempting to match the invalid RegEx '" + d_validationString + "'.");
-	}
-
+    return d_validator->matchRegex(str);
 }
 
 
