@@ -1024,7 +1024,7 @@ AC_DEFUN([CEGUI_CHECK_DEFAULT_LOGGER],[
     AM_CONDITIONAL([CEGUI_BUILD_DEFAULT_LOGGER], [test x$cegui_enable_default_logger = xyes])
 ])
 
-AC_DEFUN([CEGUI_VERSION_SUFFIX],[
+AC_DEFUN([CEGUI_CHECK_VERSION_SUFFIX],[
     AC_ARG_ENABLE([version-suffix],
                   AC_HELP_STRING([--disable-version-suffix],
                                  [Disable adding the release version to shared libraries.
@@ -1048,4 +1048,3 @@ AC_DEFUN([CEGUI_VERSION_SUFFIX],[
 
     AC_SUBST(CEGUI_LIB_LINK_FLAGS)
 ])
-
