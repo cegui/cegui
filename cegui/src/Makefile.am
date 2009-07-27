@@ -53,6 +53,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUINamedXMLResourceManager.cpp \
+                      CEGUIPCRERegexMatcher.cpp \
                       CEGUIPixmapFont.cpp \
                       CEGUIProperty.cpp \
                       CEGUIPropertyHelper.cpp \

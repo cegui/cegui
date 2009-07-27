@@ -44,8 +44,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-// forward declare implementation data type
-struct RegexValidator;
+class RegexMatcher;
 
 /*!
 \brief
@@ -605,7 +604,7 @@ protected:
 	size_t	d_selectionStart;	//!< Start of selection area.
 	size_t	d_selectionEnd;		//!< End of selection area.
 	String	d_validationString;	//!< Copy of validation reg-ex string.
-	RegexValidator*	d_validator;		//!< RegEx String used for validation of text.
+    RegexMatcher* d_validator;  //!< Pointer to class used for validation of text.
 	bool	d_dragging;			//!< true when a selection is being dragged.
 	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
