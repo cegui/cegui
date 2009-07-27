@@ -218,6 +218,11 @@ do
         config_h.CEGUI_HAS_FREETYPE = ""
     end
 
+    -- Whether or not to build the CEGUI::DefaultLogger.
+    if CEGUI_USE_DEFAULT_LOGGER then
+        config_h.CEGUI_HAS_DEFAULT_LOGGER = ""
+    end
+
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 

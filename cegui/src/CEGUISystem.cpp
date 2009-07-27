@@ -220,23 +220,24 @@ System::System(Renderer* renderer,
   d_defaultTooltip(0),
   d_weOwnTooltip(false),
   d_imageCodec(imageCodec),
-  d_imageCodecModule(0)
+  d_imageCodecModule(0),
+  d_ourLogger(Logger::getSingletonPtr() == 0)
 {
-    bool userCreatedLogger = true;
-
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
     setlocale(LC_NUMERIC, "C");
 
-    // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
-    // NOTE: If the user already created a logger prior to calling this constructor,
-    // we mark it as so and leave the logger untouched. This allows the user to fully customize
-    // the logger as he sees fit without fear of seeing its configuration overwritten by this.
-    if (!Logger::getSingletonPtr())
-    {
+    // Instantiate logger first (we have no file at this point, but entries will
+    // be cached until we do)
+    //
+    // NOTE: If the user already created a logger prior to calling this
+    // constructor, we mark it as so and leave the logger untouched. This allows
+    // the user to fully customize the logger as he sees fit without fear of
+    // seeing its configuration overwritten by this.
+#ifdef CEGUI_HAS_DEFAULT_LOGGER
+    if (d_ourLogger)
         new DefaultLogger();
-        userCreatedLogger = false;
-    }
+#endif
 
     Logger& logger(Logger::getSingleton());
 
@@ -270,7 +271,7 @@ System::System(Renderer* renderer,
     }
 
     // Initialise logger if the user didn't create a logger beforehand
-    if(!userCreatedLogger)
+    if (d_ourLogger)
         config.initialiseLogger(logFile);
 
     // if we created the resource provider we know it's DefaultResourceProvider
@@ -382,7 +383,12 @@ System::~System(void)
 	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
        String(addr_buff));
 	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
-	delete Logger::getSingletonPtr();
+
+#ifdef CEGUI_HAS_DEFAULT_LOGGER
+    // delete the Logger object only if we created it.
+    if (d_ourLogger)
+        delete Logger::getSingletonPtr();
+#endif
 
 	delete d_clickTrackerPimpl;
 }

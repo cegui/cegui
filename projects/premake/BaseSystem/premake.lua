@@ -20,6 +20,10 @@ package.excludes =
     rootdir.."cegui/src/minibidi.cpp",
 }
 
+if not CEGUI_USE_DEFAULT_LOGGER then
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIDefaultLogger.cpp")
+end
+
 if not CEGUI_USE_FREETYPE then
     tinsert(package.excludes, rootdir.."cegui/src/CEGUIFreeTypeFont.cpp")
 else

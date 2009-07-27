@@ -32,6 +32,14 @@ CEGUI_LUA_VER = 51
 --- the use of freetype, set this to false.
 CEGUI_USE_FREETYPE = true
 
+--- CEGUI::DefaultLogger
+--- To disable compilation and use of the CEGUI::DefaultLogger, set this to
+--- false.
+---
+--- Note: If you disable this, you MUST provide an alternative CEGUI::Logger
+--- based class and instantiate it before creating the main CEGUI::System object.
+CEGUI_USE_DEFAULT_LOGGER = true
+
 -------------
 -- Renderers
 -- this controls which renderer modules are built

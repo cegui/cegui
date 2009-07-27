@@ -25,7 +25,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
                       CEGUIDataContainer.cpp \
-                      CEGUIDefaultLogger.cpp \
                       CEGUIDefaultRenderedStringParser.cpp \
                       CEGUIDefaultResourceProvider.cpp \
                       CEGUIDynamicModule.cpp \
@@ -182,6 +181,10 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 
 if CEGUI_BUILD_FREETYPE_FONT
 libCEGUIBase_la_SOURCES += CEGUIFreeTypeFont.cpp
+endif
+
+if CEGUI_BUILD_DEFAULT_LOGGER
+libCEGUIBase_la_SOURCES += CEGUIDefaultLogger.cpp
 endif
 
 if MACOSX_BUILD
