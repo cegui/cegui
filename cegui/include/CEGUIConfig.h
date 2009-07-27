@@ -117,6 +117,17 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_HAS_FREETYPE
 
+//////////////////////////////////////////////////////////////////////////
+// The following controls whether the default logger be (possibly) used.
+// If you want to build CEGUI so that it does not use the default logger,
+// comment the following line.
+//
+// Note: If you disable the default logger you MUST provide an alternative
+// CEGUI::Logger based class and instantiate it before creating the main
+// CEGUI::System object.
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_HAS_DEFAULT_LOGGER
+
 #endif // defined(__APPLE__)
 
 #endif	// end of guard _CEGUIConfig_h_

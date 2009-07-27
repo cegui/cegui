@@ -1005,3 +1005,21 @@ AC_DEFUN([CEGUI_CHECK_FREETYPE],[
     AC_SUBST(freetype2_CFLAGS)
     AC_SUBST(freetype2_LIBS)
 ])
+
+AC_DEFUN([CEGUI_CHECK_DEFAULT_LOGGER],[
+    AC_ARG_ENABLE([default-logger],
+                  AC_HELP_STRING([--disable-default-logger],
+                                 [Disable building the default logger.  NB: You must provide a custom alternative
+                                 logger class based on the CEGUI::Logger class and instantiate it prior to creating
+                                 the CEGUI::System object.]),
+                  [cegui_enable_default_logger=$enableval], [cegui_enable_default_logger=yes])
+
+    if test x$cegui_enable_default_logger = xyes; then
+        AC_DEFINE(CEGUI_HAS_DEFAULT_LOGGER, [], [Define to enable possible use of CEGUI::DefaultLogger.])
+    else
+        AC_MSG_NOTICE([CEGUI::DefaultLogger will not be built; you must provide an alternative
+                       and instantiate it before creating the CEGUI::System object!])
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_DEFAULT_LOGGER], [test x$cegui_enable_default_logger = xyes])
+])

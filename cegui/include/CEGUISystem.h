@@ -1120,6 +1120,8 @@ private:
     DynamicModule* d_imageCodecModule;
     //! Holds the name of the default codec to use.
     static String d_defaultImageCodecName;
+    //! true when we created the CEGUI::Logger based object.
+    bool d_ourLogger;
 };
 
 } // End of  CEGUI namespace section
