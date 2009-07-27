@@ -65,18 +65,19 @@ DynamicModule::DynamicModule(const String& name) :
 	} // if(name.empty())
 
 #if defined(__linux__) || defined(__FreeBSD__)
-    // check if we are being asked to open a CEGUI .so, if so postfix the name
-    // with our package version
-    if (d_moduleName.substr(0, 5) == "CEGUI" ||
-        d_moduleName.substr(0, 8) == "libCEGUI")
-    {
-        // strip .so extension before postfixing, will get added again below
-        if (d_moduleName.substr(d_moduleName.length() - 3, 3) == ".so")
-            d_moduleName = d_moduleName.substr(0, d_moduleName.length() - 3);
-        d_moduleName += "-";
-        d_moduleName += PACKAGE_VERSION;
-    }
-
+    #ifdef CEGUI_HAS_VERSION_SUFFIX
+        // check if we are being asked to open a CEGUI .so, if so postfix the
+        // name with our package version
+        if (d_moduleName.substr(0, 5) == "CEGUI" ||
+            d_moduleName.substr(0, 8) == "libCEGUI")
+        {
+            // strip .so extension before postfixing, will get added again below
+            if (d_moduleName.substr(d_moduleName.length() - 3, 3) == ".so")
+                d_moduleName = d_moduleName.substr(0, d_moduleName.length() - 3);
+            d_moduleName += "-";
+            d_moduleName += CEGUI_VERSION_SUFFIX;
+        }
+    #endif
     // dlopen() does not add .so to the filename, like windows does for .dll
     if (d_moduleName.substr(d_moduleName.length() - 3, 3) != ".so")
         d_moduleName += ".so";

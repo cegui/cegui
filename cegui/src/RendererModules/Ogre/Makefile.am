@@ -3,7 +3,7 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
             $(Ogre_CFLAGS)
 
 lib_LTLIBRARIES=libCEGUIOgreRenderer.la
-libCEGUIOgreRenderer_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIOgreRenderer_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 libCEGUIOgreRenderer_la_LIBADD = $(Ogre_LIBS) $(top_builddir)/cegui/src/libCEGUIBase.la
 
 if MINGW32_BUILD

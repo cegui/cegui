@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 
 lib_LTLIBRARIES=libCEGUIIrrlichtRenderer.la
 libCEGUIIrrlichtRenderer_la_LIBADD = $(Irrlicht_LIBS) $(top_builddir)/cegui/src/libCEGUIBase.la
-libCEGUIIrrlichtRenderer_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUIIrrlichtRenderer_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
 if MINGW32_BUILD
 libCEGUIIrrlichtRenderer_la_CPPFLAGS = -DIRRLICHT_GUIRENDERER_EXPORTS

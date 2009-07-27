@@ -8,7 +8,7 @@ libCEGUIFalagardWRBase_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EX
 libCEGUIFalagardWRBase_la_LDFLAGS += -no-undefined -avoid-version
 endif
 
-libCEGUIFalagardWRBase_la_LDFLAGS += -release @PACKAGE_VERSION@
+libCEGUIFalagardWRBase_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
 libCEGUIFalagardWRBase_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la
 

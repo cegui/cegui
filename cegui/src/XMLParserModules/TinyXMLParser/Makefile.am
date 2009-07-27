@@ -5,7 +5,7 @@ if MINGW32_BUILD
 libCEGUITinyXMLParser_la_CPPFLAGS = -DCEGUITINYXMLPARSER_EXPORTS
 libCEGUITinyXMLParser_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUITinyXMLParser_la_LDFLAGS = -release @PACKAGE_VERSION@
+libCEGUITinyXMLParser_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 lib_LTLIBRARIES=libCEGUITinyXMLParser.la
