@@ -1,24 +1,24 @@
 INCLUDES =  $(Lua_CFLAGS) \
             -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
 
-libCEGUItoluapp_la_LDFLAGS =
+libCEGUItoluapp@cegui_bsfx@_la_LDFLAGS =
 
 if MINGW32_BUILD
-libCEGUItoluapp_la_CPPFLAGS = -DTOLUA_EXPORTS
-libCEGUItoluapp_la_LDFLAGS += -no-undefined
+libCEGUItoluapp@cegui_bsfx@_la_CPPFLAGS = -DTOLUA_EXPORTS
+libCEGUItoluapp@cegui_bsfx@_la_LDFLAGS += -no-undefined
 endif
 
-libCEGUItoluapp_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
+libCEGUItoluapp@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
-lib_LTLIBRARIES = libCEGUItoluapp.la
+lib_LTLIBRARIES = libCEGUItoluapp@cegui_bsfx@.la
 
-libCEGUItoluapp_la_SOURCES = tolua_event.c \
+libCEGUItoluapp@cegui_bsfx@_la_SOURCES = tolua_event.c \
                              tolua_is.c \
                              tolua_map.c \
                              tolua_push.c \
                              tolua_to.c
 
-libCEGUItoluapp_la_LIBADD = $(Lua_LIBS)
+libCEGUItoluapp@cegui_bsfx@_la_LIBADD = $(Lua_LIBS)
 
 noinst_HEADERS = tolua_event.h
 

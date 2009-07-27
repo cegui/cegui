@@ -3,15 +3,15 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
          $(FreeImage_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUIFreeImageImageCodec_la_CPPFLAGS = -DCEGUIFREEIMAGEIMAGECODEC_EXPORTS
-libCEGUIFreeImageImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUIFREEIMAGEIMAGECODEC_EXPORTS
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIFreeImageImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUIFreeImageImageCodec_la_LIBADD = $(FreeImage_LIBS) \
-                                        $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_LIBADD = $(FreeImage_LIBS) \
+                                        $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUIFreeImageImageCodec.la
+lib_LTLIBRARIES=libCEGUIFreeImageImageCodec@cegui_bsfx@.la
 
-libCEGUIFreeImageImageCodec_la_SOURCES = CEGUIFreeImageImageCodec.cpp CEGUIFreeImageImageCodecModule.cpp
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_SOURCES = CEGUIFreeImageImageCodec.cpp CEGUIFreeImageImageCodecModule.cpp

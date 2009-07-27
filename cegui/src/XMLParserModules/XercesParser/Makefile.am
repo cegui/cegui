@@ -3,17 +3,17 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
            $(xerces_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUIXercesParser_la_CPPFLAGS = -DCEGUIXERCESPARSER_EXPORTS
-libCEGUIXercesParser_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUIXercesParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUIXERCESPARSER_EXPORTS
+libCEGUIXercesParser@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIXercesParser_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUIXercesParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUIXercesParser_la_LIBADD = $(xerces_LIBS) \
-                                 $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIXercesParser@cegui_bsfx@_la_LIBADD = $(xerces_LIBS) \
+                                 $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUIXercesParser.la
+lib_LTLIBRARIES=libCEGUIXercesParser@cegui_bsfx@.la
 
-libCEGUIXercesParser_la_SOURCES = CEGUIXercesParser.cpp \
+libCEGUIXercesParser@cegui_bsfx@_la_SOURCES = CEGUIXercesParser.cpp \
                                   CEGUIXercesParserModule.cpp \
                                   CEGUIXercesParserProperties.cpp

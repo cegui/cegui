@@ -8,25 +8,25 @@ INCLUDES += -I$(top_srcdir)/cegui/include \
             -I$(top_srcdir)/cegui/include/RendererModules/OpenGL \
             $(OpenGL_CFLAGS)
 
-libCEGUIOpenGLRenderer_la_LDFLAGS =
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_LDFLAGS =
 
 if MINGW32_BUILD
-libCEGUIOpenGLRenderer_la_CPPFLAGS = -DOPENGL_GUIRENDERER_EXPORTS
-libCEGUIOpenGLRenderer_la_LDFLAGS += -no-undefined
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_CPPFLAGS = -DOPENGL_GUIRENDERER_EXPORTS
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_LDFLAGS += -no-undefined
 
 if BUILD_USING_INTERNAL_GLEW
-libCEGUIOpenGLRenderer_la_CPPFLAGS += -DGLEW_STATIC
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_CPPFLAGS += -DGLEW_STATIC
 endif
 
 endif
 
-libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) \
-                                   $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_LIBADD = $(OpenGL_LIBS) \
+                                   $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-libCEGUIOpenGLRenderer_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
-lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
-libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp \
+lib_LTLIBRARIES=libCEGUIOpenGLRenderer@cegui_bsfx@.la
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp \
                                     CEGUIOpenGLGLXPBTextureTarget.cpp \
                                     CEGUIOpenGLGeometryBuffer.cpp \
                                     CEGUIOpenGLRenderer.cpp \
@@ -35,7 +35,7 @@ libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp \
                                     CEGUIOpenGLViewportTarget.cpp
 
 if BUILD_USING_INTERNAL_GLEW
-libCEGUIOpenGLRenderer_la_SOURCES += GLEW/src/glew.c
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_SOURCES += GLEW/src/glew.c
 endif
 
 noinst_HEADERS= GLEW/GL/glew.h \
