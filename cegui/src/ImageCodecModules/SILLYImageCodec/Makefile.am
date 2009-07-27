@@ -3,15 +3,15 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
          $(SILLY_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUISILLYImageCodec_la_CPPFLAGS = -DCEGUISILLYIMAGECODEC_EXPORTS
-libCEGUISILLYImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUISILLYImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUISILLYIMAGECODEC_EXPORTS
+libCEGUISILLYImageCodec@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUISILLYImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUISILLYImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUISILLYImageCodec_la_LIBADD = $(SILLY_LIBS) \
-                                    $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUISILLYImageCodec@cegui_bsfx@_la_LIBADD = $(SILLY_LIBS) \
+                                    $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUISILLYImageCodec.la
+lib_LTLIBRARIES=libCEGUISILLYImageCodec@cegui_bsfx@.la
 
-libCEGUISILLYImageCodec_la_SOURCES = CEGUISILLYImageCodec.cpp CEGUISILLYImageCodecModule.cpp
+libCEGUISILLYImageCodec@cegui_bsfx@_la_SOURCES = CEGUISILLYImageCodec.cpp CEGUISILLYImageCodecModule.cpp

@@ -1048,3 +1048,19 @@ AC_DEFUN([CEGUI_CHECK_VERSION_SUFFIX],[
 
     AC_SUBST(CEGUI_LIB_LINK_FLAGS)
 ])
+
+AC_DEFUN([CEGUI_CHECK_BUILD_SUFFIX],[
+    AC_ARG_WITH([build-suffix],
+                  AC_HELP_STRING([--with-build-suffix],
+                                 [Adds a custom suffix to the name of all binaries.]),
+                  [cegui_bsfx=$withval], [cegui_bsfx=""])
+
+    if test "x$cegui_bsfx" != "x"; then
+        AC_DEFINE(CEGUI_HAS_BUILD_SUFFIX, [], [Define if output names have an added suffix.])
+        AC_DEFINE_UNQUOTED(CEGUI_BUILD_SUFFIX, ["$cegui_bsfx"], [Defines the suffix appended to output binaries.])
+    fi
+
+    AC_SUBST(cegui_bsfx)
+])
+
+

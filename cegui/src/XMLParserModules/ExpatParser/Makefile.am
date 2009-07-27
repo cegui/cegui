@@ -3,17 +3,17 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
            $(expat_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUIExpatParser_la_CPPFLAGS = -DCEGUIEXPATPARSER_EXPORTS
-libCEGUIExpatParser_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUIExpatParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUIEXPATPARSER_EXPORTS
+libCEGUIExpatParser@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIExpatParser_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUIExpatParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUIExpatParser_la_LIBADD = $(expat_LIBS) \
-                                $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIExpatParser@cegui_bsfx@_la_LIBADD = $(expat_LIBS) \
+                                $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
 
-lib_LTLIBRARIES=libCEGUIExpatParser.la
+lib_LTLIBRARIES=libCEGUIExpatParser@cegui_bsfx@.la
 
-libCEGUIExpatParser_la_SOURCES = CEGUIExpatParser.cpp \
+libCEGUIExpatParser@cegui_bsfx@_la_SOURCES = CEGUIExpatParser.cpp \
                                  CEGUIExpatParserModule.cpp

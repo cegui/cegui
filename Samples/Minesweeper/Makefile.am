@@ -1,11 +1,11 @@
 INCLUDES = -I$(top_srcdir)/cegui/include -I$(top_srcdir)/Samples/common/include
 
-noinst_PROGRAMS = Minesweeper
+noinst_PROGRAMS = Minesweeper@cegui_bsfx@
 noinst_HEADERS=Minesweeper_Timer.h
 
-Minesweeper_SOURCES = Sample_Minesweeper.cpp Minesweeper_Timer.cpp
-Minesweeper_LDADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
-                    $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
+Minesweeper@cegui_bsfx@_SOURCES = Sample_Minesweeper.cpp Minesweeper_Timer.cpp
+Minesweeper@cegui_bsfx@_LDADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
+                    $(top_builddir)/Samples/common/src/libCEGUISampleHelper@cegui_bsfx@.la
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/Minesweeper$(EXEEXT) $(top_builddir)/bin/Minesweeper$(EXEEXT)
+	$(LN_S) -f `pwd`/.libs/Minesweeper@cegui_bsfx@$(EXEEXT) $(top_builddir)/bin/Minesweeper@cegui_bsfx@$(EXEEXT)

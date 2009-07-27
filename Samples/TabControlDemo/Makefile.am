@@ -1,10 +1,10 @@
 INCLUDES = -I$(top_srcdir)/cegui/include -I$(top_srcdir)/Samples/common/include
 
-noinst_PROGRAMS = TabControlDemo
+noinst_PROGRAMS = TabControlDemo@cegui_bsfx@
 
-TabControlDemo_SOURCES = Sample_TabControl.cpp
-TabControlDemo_LDADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
-                       $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
+TabControlDemo@cegui_bsfx@_SOURCES = Sample_TabControl.cpp
+TabControlDemo@cegui_bsfx@_LDADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
+                       $(top_builddir)/Samples/common/src/libCEGUISampleHelper@cegui_bsfx@.la
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/TabControlDemo$(EXEEXT) $(top_builddir)/bin/TabControlDemo$(EXEEXT)
+	$(LN_S) -f `pwd`/.libs/TabControlDemo@cegui_bsfx@$(EXEEXT) $(top_builddir)/bin/TabControlDemo@cegui_bsfx@$(EXEEXT)

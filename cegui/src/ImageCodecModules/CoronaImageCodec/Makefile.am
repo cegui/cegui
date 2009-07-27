@@ -3,15 +3,15 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
          $(Corona_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUICoronaImageCodec_la_CPPFLAGS = -DCEGUICORONAIMAGECODEC_EXPORTS
-libCEGUICoronaImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUICoronaImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUICORONAIMAGECODEC_EXPORTS
+libCEGUICoronaImageCodec@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUICoronaImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUICoronaImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUICoronaImageCodec_la_LIBADD = $(Corona_LIBS) \
-                                     $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUICoronaImageCodec@cegui_bsfx@_la_LIBADD = $(Corona_LIBS) \
+                                     $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUICoronaImageCodec.la
+lib_LTLIBRARIES=libCEGUICoronaImageCodec@cegui_bsfx@.la
 
-libCEGUICoronaImageCodec_la_SOURCES = CEGUICoronaImageCodec.cpp CEGUICoronaImageCodecModule.cpp
+libCEGUICoronaImageCodec@cegui_bsfx@_la_SOURCES = CEGUICoronaImageCodec.cpp CEGUICoronaImageCodecModule.cpp

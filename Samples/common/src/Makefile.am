@@ -2,49 +2,49 @@ INCLUDES = -I$(top_srcdir)/Samples/common/include \
            -I$(top_srcdir)/cegui/include \
            $(CEGUI_SAMPLES_CFLAGS)
 
-lib_LTLIBRARIES=libCEGUISampleHelper.la
+lib_LTLIBRARIES=libCEGUISampleHelper@cegui_bsfx@.la
 
-libCEGUISampleHelper_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUISampleHelper@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
-libCEGUISampleHelper_la_SOURCES = CEGuiBaseApplication.cpp \
+libCEGUISampleHelper@cegui_bsfx@_la_SOURCES = CEGuiBaseApplication.cpp \
                                   CEGuiRendererSelector.cpp \
                                   CEGuiSample.cpp \
                                   CLICEGuiRendererSelector.cpp
 
-libCEGUISampleHelper_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUISampleHelper@cegui_bsfx@_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
 if MINGW32_BUILD
-libCEGUISampleHelper_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
-libCEGUISampleHelper_la_LDFLAGS += -shared -no-undefined
-libCEGUISampleHelper_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
+libCEGUISampleHelper@cegui_bsfx@_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
+libCEGUISampleHelper@cegui_bsfx@_la_LDFLAGS += -shared -no-undefined
+libCEGUISampleHelper@cegui_bsfx@_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
 endif
 
 if CEGUI_USING_GTK2
     INCLUDES += $(GTK_CFLAGS)
-    libCEGUISampleHelper_la_LIBADD += $(GTK_LIBS)
-    libCEGUISampleHelper_la_SOURCES += GTK2CEGuiRendererSelector.cpp
+    libCEGUISampleHelper@cegui_bsfx@_la_LIBADD += $(GTK_LIBS)
+    libCEGUISampleHelper@cegui_bsfx@_la_SOURCES += GTK2CEGuiRendererSelector.cpp
 endif
 if CEGUI_SAMPLES_USE_OPENGL
-    libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OpenGL/libCEGUIOpenGLRenderer.la \
+    libCEGUISampleHelper@cegui_bsfx@_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
+    libCEGUISampleHelper@cegui_bsfx@_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OpenGL/libCEGUIOpenGLRenderer@cegui_bsfx@.la \
                                       $(OpenGL_LIBS)
 endif
 if CEGUI_SAMPLES_USE_OGRE
     INCLUDES += $(Ogre_CFLAGS) $(OIS_CFLAGS)
-    libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Ogre/libCEGUIOgreRenderer.la \
+    libCEGUISampleHelper@cegui_bsfx@_la_SOURCES += CEGuiOgreBaseApplication.cpp
+    libCEGUISampleHelper@cegui_bsfx@_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Ogre/libCEGUIOgreRenderer@cegui_bsfx@.la \
                                       $(Ogre_LIBS) $(OIS_LIBS)
 endif
 if CEGUI_SAMPLES_USE_IRRLICHT
     INCLUDES += $(Irrlicht_CFLAGS)
-    libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Irrlicht/libCEGUIIrrlichtRenderer.la \
+    libCEGUISampleHelper@cegui_bsfx@_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
+    libCEGUISampleHelper@cegui_bsfx@_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/Irrlicht/libCEGUIIrrlichtRenderer@cegui_bsfx@.la \
                                       $(Irrlicht_LIBS)
 endif
 if CEGUI_SAMPLES_USE_DIRECTFB
     INCLUDES += $(directfb_CFLAGS)
-    libCEGUISampleHelper_la_SOURCES += CEGuiDirectFBBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/DirectFB/libCEGUIDirectFBRenderer.la \
+    libCEGUISampleHelper@cegui_bsfx@_la_SOURCES += CEGuiDirectFBBaseApplication.cpp
+    libCEGUISampleHelper@cegui_bsfx@_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/DirectFB/libCEGUIDirectFBRenderer@cegui_bsfx@.la \
                                       $(directfb_LIBS)
 endif
 

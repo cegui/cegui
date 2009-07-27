@@ -3,21 +3,21 @@ SUBDIRS = . ImageCodecModules RendererModules ScriptingModules WindowRendererSet
 INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS) \
            $(fribidi_CFLAGS)
 
-libCEGUIBase_la_LDFLAGS =
-libCEGUIBase_la_LIBADD =
+libCEGUIBase@cegui_bsfx@_la_LDFLAGS =
+libCEGUIBase@cegui_bsfx@_la_LIBADD =
 
 if MINGW32_BUILD
-libCEGUIBase_la_CPPFLAGS = -DCEGUIBASE_EXPORTS
-libCEGUIBase_la_LDFLAGS += -shared -no-undefined
-libCEGUIBase_la_LIBADD += -lwinmm
+libCEGUIBase@cegui_bsfx@_la_CPPFLAGS = -DCEGUIBASE_EXPORTS
+libCEGUIBase@cegui_bsfx@_la_LDFLAGS += -shared -no-undefined
+libCEGUIBase@cegui_bsfx@_la_LIBADD += -lwinmm
 endif
 
-libCEGUIBase_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
-libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS) $(fribidi_LIBS)
+libCEGUIBase@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
+libCEGUIBase@cegui_bsfx@_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS) $(fribidi_LIBS)
 
-lib_LTLIBRARIES=libCEGUIBase.la
+lib_LTLIBRARIES=libCEGUIBase@cegui_bsfx@.la
 
-libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
+libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUIBasicRenderedStringParser.cpp \
                       CEGUIBoundSlot.cpp \
                       CEGUICentredRenderedString.cpp \
@@ -180,16 +180,16 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp
 
 if CEGUI_BUILD_FREETYPE_FONT
-libCEGUIBase_la_SOURCES += CEGUIFreeTypeFont.cpp
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIFreeTypeFont.cpp
 endif
 
 if CEGUI_BUILD_DEFAULT_LOGGER
-libCEGUIBase_la_SOURCES += CEGUIDefaultLogger.cpp
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIDefaultLogger.cpp
 endif
 
 if MACOSX_BUILD
 INCLUDES += -I$(top_srcdir)/src/implementations/mac
-libCEGUIBase_la_SOURCES += implementations/mac/macPlugins.cpp
+libCEGUIBase@cegui_bsfx@_la_SOURCES += implementations/mac/macPlugins.cpp
 endif
 
 EXTRA_DIST = implementations/mac/macPlugins.h

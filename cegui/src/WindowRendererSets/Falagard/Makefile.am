@@ -1,20 +1,20 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/WindowRendererSets/Falagard
 
-libCEGUIFalagardWRBase_la_LDFLAGS =
+libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS =
 
 if MINGW32_BUILD
-libCEGUIFalagardWRBase_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EXPORTS
-libCEGUIFalagardWRBase_la_LDFLAGS += -no-undefined -avoid-version
+libCEGUIFalagardWRBase@cegui_bsfx@_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EXPORTS
+libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS += -no-undefined -avoid-version
 endif
 
-libCEGUIFalagardWRBase_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
+libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
-libCEGUIFalagardWRBase_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIFalagardWRBase@cegui_bsfx@_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUIFalagardWRBase.la
+lib_LTLIBRARIES=libCEGUIFalagardWRBase@cegui_bsfx@.la
 
-libCEGUIFalagardWRBase_la_SOURCES = FalButton.cpp \
+libCEGUIFalagardWRBase@cegui_bsfx@_la_SOURCES = FalButton.cpp \
                                   FalToggleButton.cpp \
                                   FalDefault.cpp \
                                   FalEditbox.cpp \

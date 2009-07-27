@@ -3,15 +3,15 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
          $(DevIL_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUIDevILImageCodec_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
-libCEGUIDevILImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+libCEGUIDevILImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
+libCEGUIDevILImageCodec@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
 else
-libCEGUIDevILImageCodec_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+libCEGUIDevILImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
-libCEGUIDevILImageCodec_la_LIBADD = $(DevIL_LIBS) \
-                                    $(top_builddir)/cegui/src/libCEGUIBase.la
+libCEGUIDevILImageCodec@cegui_bsfx@_la_LIBADD = $(DevIL_LIBS) \
+                                    $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 
-lib_LTLIBRARIES=libCEGUIDevILImageCodec.la
+lib_LTLIBRARIES=libCEGUIDevILImageCodec@cegui_bsfx@.la
 
-libCEGUIDevILImageCodec_la_SOURCES = CEGUIDevILImageCodec.cpp CEGUIDevILImageCodecModule.cpp
+libCEGUIDevILImageCodec@cegui_bsfx@_la_SOURCES = CEGUIDevILImageCodec.cpp CEGUIDevILImageCodecModule.cpp
