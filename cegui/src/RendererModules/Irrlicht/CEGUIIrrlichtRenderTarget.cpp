@@ -77,8 +77,10 @@ const Rect& IrrlichtRenderTarget::getArea() const
 //----------------------------------------------------------------------------//
 void IrrlichtRenderTarget::activate()
 {
-    irr::core::rect<irr::s32> vp(d_area.d_left, d_area.d_top, 
-                                 d_area.d_right, d_area.d_bottom);
+    irr::core::rect<irr::s32> vp(static_cast<irr::s32>(d_area.d_left),
+                                 static_cast<irr::s32>(d_area.d_top),
+                                 static_cast<irr::s32>(d_area.d_right),
+                                 static_cast<irr::s32>(d_area.d_bottom));
     d_driver.setViewPort(vp);
 
     if (!d_matrixValid)
@@ -165,7 +167,7 @@ void IrrlichtRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const irr::f32 pn_dot_rv = pn.dotProduct(rv);
     const irr::f32 tmp = pn_dot_rv != 0.0 ?
                             (pn.dotProduct(r1) + dist) / pn_dot_rv :
-                             0.0;
+                             0.0f;
 
     p_out.d_x = static_cast<float>(r1.X - rv.X * tmp) * d_viewDistance;
     p_out.d_y = static_cast<float>(r1.Y - rv.Y * tmp) * d_viewDistance;
@@ -182,8 +184,8 @@ void IrrlichtRenderTarget::updateMatrix() const
     d_viewDistance = midx / (aspect * 0.267949192431123f);
 
     d_matrix.buildProjectionMatrixPerspectiveFovRH(0.523598776f, aspect,
-                                                   d_viewDistance * 0.5,
-                                                   d_viewDistance * 2);
+                                                   d_viewDistance * 0.5f,
+                                                   d_viewDistance * 2.0f);
 
     irr::core::matrix4 tmp;
     tmp.buildCameraLookAtMatrixRH(irr::core::vector3df(-midx, midy, -d_viewDistance),

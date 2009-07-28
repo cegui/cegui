@@ -22,4 +22,4 @@ library("Irrlicht")
 
 dependency("CEGUIBase")
 
-define("IRRRENDERER_EXPORTS")
+define("IRRLICHT_GUIRENDERER_EXPORTS")

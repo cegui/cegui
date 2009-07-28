@@ -64,7 +64,8 @@ void IrrlichtGeometryBuffer::draw() const
         (d_driver.getTransform(irr::video::ETS_PROJECTION));
 
     const Size csz(d_clipRect.getSize());
-    const Size tsz(target_vp.getWidth(), target_vp.getHeight());
+    const Size tsz(static_cast<float>(target_vp.getWidth()),
+                   static_cast<float>(target_vp.getHeight()));
 
     // set modified projection 'scissor' matix that negates scale and
     // translation that would be done by setting the viewport to the clip area.
@@ -81,8 +82,11 @@ void IrrlichtGeometryBuffer::draw() const
     d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
 
     // set new viewport for the clipping area
-    const irr::core::rect<irr::s32> vp(d_clipRect.d_left, d_clipRect.d_top,
-                                       d_clipRect.d_right, d_clipRect.d_bottom);
+    const irr::core::rect<irr::s32> vp(
+            static_cast<irr::s32>(d_clipRect.d_left),
+            static_cast<irr::s32>(d_clipRect.d_top),
+            static_cast<irr::s32>(d_clipRect.d_right),
+            static_cast<irr::s32>(d_clipRect.d_bottom));
     d_driver.setViewPort(vp);
 
     if (!d_matrixValid)

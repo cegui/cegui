@@ -45,8 +45,9 @@ void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
 
     if (d_texture)
     {
-        d_size = d_dataSize = Size(d_texture->getSize().Width,
-                                   d_texture->getSize().Height);
+        d_size = d_dataSize = Size(
+                static_cast<float>(d_texture->getSize().Width),
+                static_cast<float>(d_texture->getSize().Height));
 
         updateCachedScaleValues();
     }
@@ -113,7 +114,8 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
     freeIrrlichtTexture();
 
     d_texture = d_driver.addTexture(
-        core::dimension2d<s32>(buffer_size.d_width, buffer_size.d_height),
+        core::dimension2d<s32>(static_cast<s32>(buffer_size.d_width), 
+                               static_cast<s32>(buffer_size.d_height)),
         getUniqueName().c_str());
 
     // we now use ARGB all the time here, so throw if we get something else!
@@ -137,8 +139,8 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     d_texture->unlock();
 
-    d_size.d_width = d_texture->getSize().Width;
-    d_size.d_height = d_texture->getSize().Height;
+    d_size.d_width = static_cast<float>(d_texture->getSize().Width);
+    d_size.d_height = static_cast<float>(d_texture->getSize().Height);
     d_dataSize = buffer_size;
 
     updateCachedScaleValues();
@@ -180,10 +182,13 @@ IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
                                  const Size& size) :
     d_driver(driver),
     d_texture(d_driver.addTexture(
-                irr::core::dimension2d<irr::s32>(size.d_width, size.d_height),
+                irr::core::dimension2d<irr::s32>(
+                    static_cast<irr::s32>(size.d_width),
+                    static_cast<irr::s32>(size.d_height)),
                 getUniqueName().c_str(),
                 irr::video::ECF_A8R8G8B8)),
-    d_size(d_texture->getSize().Width, d_texture->getSize().Height),
+    d_size(static_cast<float>(d_texture->getSize().Width), 
+           static_cast<float>(d_texture->getSize().Height)),
     d_dataSize(size)
 {
     updateCachedScaleValues();
