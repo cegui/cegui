@@ -685,6 +685,9 @@
 		DAF3D22E0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */; };
 		DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */; };
 		DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */; };
+		DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */; };
+		DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */; };
+		DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2305,6 +2308,9 @@
 		DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWidgetComponent.h; path = ../../cegui/include/CEGUIRenderedStringWidgetComponent.h; sourceTree = SOURCE_ROOT; };
 		DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderedStringWidgetComponent.cpp; path = ../../cegui/src/CEGUIRenderedStringWidgetComponent.cpp; sourceTree = SOURCE_ROOT; };
 		DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFontGlyph.h; path = ../../cegui/include/CEGUIFontGlyph.h; sourceTree = SOURCE_ROOT; };
+		DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIPCRERegexMatcher.h; path = ../../cegui/include/CEGUIPCRERegexMatcher.h; sourceTree = SOURCE_ROOT; };
+		DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRegexMatcher.h; path = ../../cegui/include/CEGUIRegexMatcher.h; sourceTree = SOURCE_ROOT; };
+		DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIPCRERegexMatcher.cpp; path = ../../cegui/src/CEGUIPCRERegexMatcher.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3292,12 +3298,14 @@
 				DA1095680F6D5F9B00B8A582 /* CEGUIMemberFunctionSlot.h */,
 				DA1095690F6D5F9B00B8A582 /* CEGUIMouseCursor.h */,
 				DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */,
+				DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */,
 				DA10956A0F6D5F9B00B8A582 /* CEGUIPixmapFont.h */,
 				DA10956B0F6D5F9B00B8A582 /* CEGUIProperty.h */,
 				DA10956C0F6D5F9B00B8A582 /* CEGUIPropertyHelper.h */,
 				DA10956D0F6D5F9B00B8A582 /* CEGUIPropertySet.h */,
 				DA10956E0F6D5F9B00B8A582 /* CEGUIRect.h */,
 				DA10956F0F6D5F9B00B8A582 /* CEGUIRefCounted.h */,
+				DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */,
 				DAB26FCB0FCA9ACE00D9EE82 /* CEGUIRenderedString.h */,
 				DAB26F430FC945AB00D9EE82 /* CEGUIRenderedStringComponent.h */,
 				DAB26F590FC947B400D9EE82 /* CEGUIRenderedStringImageComponent.h */,
@@ -3398,6 +3406,7 @@
 				DA1095220F6D5F4100B8A582 /* CEGUILogger.cpp */,
 				DA1095230F6D5F4100B8A582 /* CEGUIMouseCursor.cpp */,
 				DAC1BE78101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp */,
+				DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */,
 				DA1095240F6D5F4100B8A582 /* CEGUIPixmapFont.cpp */,
 				DA1095250F6D5F4100B8A582 /* CEGUIProperty.cpp */,
 				DA1095260F6D5F4100B8A582 /* CEGUIPropertyHelper.cpp */,
@@ -4449,6 +4458,8 @@
 				DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */,
 				DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */,
 				DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */,
+				DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */,
+				DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5716,6 +5727,7 @@
 				DA00829B10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp in Sources */,
 				DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */,
 				DAC1BE79101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp in Sources */,
+				DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
