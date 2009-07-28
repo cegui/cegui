@@ -27,6 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "elements/CEGUIEditbox.h"
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
@@ -96,13 +100,19 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_caratPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),
-    d_validator(new PCRERegexMatcher),
+    d_validator(0),
 	d_dragging(false)
 {
 	addEditboxProperties();
 
-	// default to accepting all characters
-	setValidationString(".*");
+#ifdef CEGUI_HAS_PCRE_REGEX
+    d_validator = new PCRERegexMatcher;
+    // default to accepting all characters
+    setValidationString(".*");
+#else
+    // set copy of validation string to ".*" so getter returns something valid.
+    d_validationString = ".*";
+#endif
 }
 
 
@@ -199,9 +209,11 @@ void Editbox::setTextMasked(bool setting)
 *************************************************************************/
 void Editbox::setValidationString(const String& validation_string)
 {
-    if (d_validator->getRegexString() == validation_string)
+#ifdef CEGUI_HAS_PCRE_REGEX
+    if (validation_string == d_validationString)
         return;
 
+    d_validationString = validation_string;
     d_validator->setRegexString(validation_string);
 
     // notification
@@ -214,6 +226,11 @@ void Editbox::setValidationString(const String& validation_string)
         args.handled = false;
         onTextInvalidatedEvent(args);
     }
+#else
+    throw InvalidRequestException("Editbox::setValidationString: Unable to set "
+        "validation string because CEGUI was compiled without regular "
+        "expression support");
+#endif
 }
 
 
@@ -381,7 +398,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 *************************************************************************/
 bool Editbox::isStringValid(const String& str) const
 {
-    return d_validator->matchRegex(str);
+    return d_validator ? d_validator->matchRegex(str) : true;
 }
 
 

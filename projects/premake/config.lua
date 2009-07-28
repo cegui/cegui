@@ -32,6 +32,13 @@ CEGUI_LUA_VER = 51
 --- the use of freetype, set this to false.
 CEGUI_USE_FREETYPE = true
 
+--- PCRE library
+--- CEGUI uses the pcre library for it's regular expression based string
+--- validation as used in the Editbox (and derived classes, such as Spinner).
+--- To disable the use of PCRE (and therefore the validation factilities), set
+--- this to false.  (Attempts to set validation string will throw).
+CEGUI_USE_PCRE_REGEX = true
+
 --- CEGUI::DefaultLogger
 --- To disable compilation and use of the CEGUI::DefaultLogger, set this to
 --- false.

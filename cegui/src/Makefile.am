@@ -53,7 +53,6 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUINamedXMLResourceManager.cpp \
-                      CEGUIPCRERegexMatcher.cpp \
                       CEGUIPixmapFont.cpp \
                       CEGUIProperty.cpp \
                       CEGUIPropertyHelper.cpp \
@@ -186,6 +185,10 @@ endif
 
 if CEGUI_BUILD_DEFAULT_LOGGER
 libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIDefaultLogger.cpp
+endif
+
+if CEGUI_BUILD_PCRE_REGEX
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIPCRERegexMatcher.cpp
 endif
 
 if MACOSX_BUILD

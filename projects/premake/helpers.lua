@@ -262,7 +262,9 @@ function setup_static_samples()
     if CEGUI_USE_FREETYPE then
         library_static("freetype","","_D")
     end
-	library_static("pcre","", "_d")
+    if CEGUI_USE_PCRE_REGEX then
+	   library_static("pcre","", "_d")
+    end
 	
 	-- Warn user when both D3D9 and D3D10 are defined during static builds
 	if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then

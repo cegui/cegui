@@ -118,6 +118,15 @@ Each item in here has a comment to describe what it's for.
 #define CEGUI_HAS_FREETYPE
 
 //////////////////////////////////////////////////////////////////////////
+// PCRE library
+// CEGUI uses the pcre library for it's regular expression based string
+// validation as used in the Editbox (and derived classes, such as Spinner).
+// To disable the use of PCRE (and therefore the validation factilities),
+// comment the following line.  (Attempts to set validation string will throw).
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_HAS_PCRE_REGEX
+
+//////////////////////////////////////////////////////////////////////////
 // The following controls whether the default logger be (possibly) used.
 // If you want to build CEGUI so that it does not use the default logger,
 // comment the following line.
