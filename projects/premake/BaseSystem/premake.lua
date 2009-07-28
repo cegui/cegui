@@ -30,8 +30,13 @@ else
     library("freetype","_D")
 end
 
-library("pcre", "_d")
+if not CEGUI_USE_PCRE_REGEX then
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIPCRERegexMatcher.cpp")
+else
+    library("pcre", "_d")
+    define("PCRE_STATIC")
+end
+
 library("Winmm", "")
 
 define("CEGUIBASE_EXPORTS")
-define("PCRE_STATIC")

@@ -1063,4 +1063,24 @@ AC_DEFUN([CEGUI_CHECK_BUILD_SUFFIX],[
     AC_SUBST(cegui_bsfx)
 ])
 
+# Check if pcre is available and if it's been disabled
+AC_DEFUN([CEGUI_CHECK_PCRE],[
+    AC_ARG_ENABLE([pcre],
+                  AC_HELP_STRING([--disable-pcre],
+                                 [Disable the use of the PCRE library for regular expression support.]),
+                  [cegui_enable_pcre=$enableval], [cegui_enable_pcre=yes])
 
+    if test x$cegui_enable_pcre = xyes; then
+        PKG_CHECK_MODULES(pcre, libpcre >= 5.0,
+            [AC_DEFINE(CEGUI_HAS_PCRE_REGEX, [], [Define to enable PCRE regular expression support in CEGUI])
+             cegui_found_pcre=yes],
+            [AC_MSG_ERROR([PCRE library not found!  To continue anyway, rerun configure with the --disable-pcre option.])
+             cegui_found_pcre=no])
+    else
+        AC_MSG_NOTICE([PCRE regular expression support was disabled; hope you know what you're doing!?])
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_PCRE_REGEX], [test x$cegui_enable_pcre = xyes && test x$cegui_found_pcre=xyes])
+    AC_SUBST(pcre_CFLAGS)
+    AC_SUBST(pcre_LIBS)
+])

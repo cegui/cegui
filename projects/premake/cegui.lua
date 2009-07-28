@@ -218,6 +218,11 @@ do
         config_h.CEGUI_HAS_FREETYPE = ""
     end
 
+    -- Whether or not to use the pcre lib.
+    if CEGUI_USE_PCRE_REGEX then
+        config_h.CEGUI_HAS_PCRE_REGEX = ""
+    end
+
     -- Whether or not to build the CEGUI::DefaultLogger.
     if CEGUI_USE_DEFAULT_LOGGER then
         config_h.CEGUI_HAS_DEFAULT_LOGGER = ""
