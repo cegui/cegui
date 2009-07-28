@@ -244,8 +244,8 @@ const String& IrrlichtRenderer::getIdentifierString() const
 IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice& device) :
     d_device(device),
     d_driver(d_device.getVideoDriver()),
-    d_displaySize(d_driver->getScreenSize().Width,
-                  d_driver->getScreenSize().Height),
+    d_displaySize(static_cast<float>(d_driver->getScreenSize().Width),
+                  static_cast<float>(d_driver->getScreenSize().Height)),
     d_displayDPI(96, 96),
     d_defaultTarget(new IrrlichtWindowTarget(*this, *d_driver)),
     d_defaultRoot(new RenderingRoot(*d_defaultTarget)),

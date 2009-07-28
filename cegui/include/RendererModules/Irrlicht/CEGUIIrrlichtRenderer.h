@@ -35,11 +35,16 @@
 
 #include <vector>
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // forward reference irrlicht classes
 namespace irr
 {
 class IrrlichtDevice;
-class SEvent;
+struct SEvent;
 
 namespace video
 {
@@ -143,5 +148,9 @@ protected:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIIrrlichtRenderer_h_

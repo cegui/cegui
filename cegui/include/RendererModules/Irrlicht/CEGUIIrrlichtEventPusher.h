@@ -127,7 +127,8 @@ public :
             break;
             //! The mouse cursor changed its position.
         case EMIE_MOUSE_MOVED:
-            handled = CEGUI::System::getSingleton().injectMousePosition(x, y);
+            handled = CEGUI::System::getSingleton().injectMousePosition(
+                        static_cast<float>(x), static_cast<float>(y));
             break;
             //! The mouse wheel was moved. Use Wheel value in event data to find out
             //! in what direction and how fast.

@@ -102,7 +102,8 @@ void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
     cleanupTargetTexture();
 
     d_texture = d_driver.addRenderTargetTexture(
-        irr::core::dimension2d<irr::s32>(sz.d_width, sz.d_height),
+        irr::core::dimension2d<irr::s32>(static_cast<irr::s32>(sz.d_width),
+                                         static_cast<irr::s32>(sz.d_height)),
         IrrlichtTexture::getUniqueName().c_str());
 
     d_CEGUITexture->setIrrlichtTexture(d_texture);
