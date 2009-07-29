@@ -64,7 +64,13 @@ const WidgetLookFeel& WindowRenderer::getLookNFeel() const
 *************************************************************************/
 Rect WindowRenderer::getUnclippedInnerRect() const
 {
-    return d_window->getUnclippedPixelRect();
+    const WidgetLookFeel& lf(getLookNFeel());
+
+    if (lf.isNamedAreaDefined("inner_rect"))
+        return lf.getNamedArea("inner_rect").getArea().
+            getPixelRect(*d_window, d_window->getUnclippedPixelRect());
+    else
+        return d_window->getUnclippedPixelRect();
 }
 
 /************************************************************************
