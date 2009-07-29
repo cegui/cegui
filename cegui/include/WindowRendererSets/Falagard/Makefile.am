@@ -16,6 +16,7 @@ pkginclude_HEADERS = FalButton.h \
                  FalModule.h \
                  FalMultiColumnList.h \
                  FalMultiLineEditbox.h \
+                 FalMultiLineEditboxProperties.h \
                  FalPopupMenu.h \
                  FalProgressBar.h \
                  FalProgressBarProperties.h \

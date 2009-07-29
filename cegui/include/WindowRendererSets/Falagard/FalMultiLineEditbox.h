@@ -30,6 +30,7 @@
 
 #include "FalModule.h"
 #include "elements/CEGUIMultiLineEditbox.h"
+#include "FalMultiLineEditboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -39,139 +40,164 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-   /*!
+/*!
+\brief
+    MultiLineEditbox class for the FalagardBase module.
+
+    This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+
+    States:
+        - Enabled    - Rendering for when the editbox is in enabled and is in read-write mode.
+        - ReadOnly  - Rendering for when the editbox is in enabled and is in read-only mode.
+        - Disabled  - Rendering for when the editbox is disabled.
+
+    NamedAreas:
+        TextArea         - area where text, selection, and carat imagery will appear.
+        TextAreaHScroll  - TextArea when only horizontal scrollbar is visible.
+        TextAreaVScroll  - TextArea when only vertical scrollbar is visible.
+        TextAreaHVScroll - TextArea when both horizontal and vertical scrollbar is visible.
+
+    PropertyDefinitions (optional, defaults will be black):
+        - NormalTextColour        - property that accesses a colour value to be used to render normal unselected text.
+        - SelectedTextColour      - property that accesses a colour value to be used to render selected text.
+        - ActiveSelectionColour   - property that accesses a colour value to be used to render active selection highlight.
+        - InactiveSelectionColour - property that accesses a colour value to be used to render inactive selection highlight.
+
+    Imagery Sections:
+        - Carat
+
+    Child Widgets:
+        Scrollbar based widget with name suffix "__auto_vscrollbar__"
+        Scrollbar based widget with name suffix "__auto_hscrollbar__"
+
+*/
+class FALAGARDBASE_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
+{
+public:
+    static const utf8   TypeName[];     //! type name for this widget.
+    //! Name of property to use to obtain unselected text rendering colour.
+    static const String UnselectedTextColourPropertyName;
+    //! Name of property to use to obtain selected text rendering colour.
+    static const String SelectedTextColourPropertyName;
+    //! Name of property to use to obtain active selection rendering colour.
+    static const String ActiveSelectionColourPropertyName;
+    //! Name of property to use to obtain inactive selection rendering colour.
+    static const String InactiveSelectionColourPropertyName;
+    //! The default timeout (in seconds) used when blinking the caret.
+    static const float DefaultCaretBlinkTimeout;
+
+    /*!
     \brief
-        MultiLineEditbox class for the FalagardBase module.
-
-        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
-
-        States:
-            - Enabled    - Rendering for when the editbox is in enabled and is in read-write mode.
-            - ReadOnly  - Rendering for when the editbox is in enabled and is in read-only mode.
-            - Disabled  - Rendering for when the editbox is disabled.
-
-        NamedAreas:
-            TextArea         - area where text, selection, and carat imagery will appear.
-            TextAreaHScroll  - TextArea when only horizontal scrollbar is visible.
-            TextAreaVScroll  - TextArea when only vertical scrollbar is visible.
-            TextAreaHVScroll - TextArea when both horizontal and vertical scrollbar is visible.
-
-        PropertyDefinitions (optional, defaults will be black):
-            - NormalTextColour        - property that accesses a colour value to be used to render normal unselected text.
-            - SelectedTextColour      - property that accesses a colour value to be used to render selected text.
-            - ActiveSelectionColour   - property that accesses a colour value to be used to render active selection highlight.
-            - InactiveSelectionColour - property that accesses a colour value to be used to render inactive selection highlight.
-
-        Imagery Sections:
-            - Carat
-
-        Child Widgets:
-            Scrollbar based widget with name suffix "__auto_vscrollbar__"
-            Scrollbar based widget with name suffix "__auto_hscrollbar__"
-
+        Constructor
     */
-    class FALAGARDBASE_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
-    {
-    public:
-        static const utf8   TypeName[];     //! type name for this widget.
-        //! Name of property to use to obtain unselected text rendering colour.
-        static const String UnselectedTextColourPropertyName;
-        //! Name of property to use to obtain selected text rendering colour.
-        static const String SelectedTextColourPropertyName;
-        //! Name of property to use to obtain active selection rendering colour.
-        static const String ActiveSelectionColourPropertyName;
-        //! Name of property to use to obtain inactive selection rendering colour.
-        static const String InactiveSelectionColourPropertyName;
+    FalagardMultiLineEditbox(const String& type);
 
-        /*!
-        \brief
-            Constructor
-        */
-        FalagardMultiLineEditbox(const String& type);
+    // overridden from base classes.
+    Rect getTextRenderArea(void) const;
+    void render();
+    void update(float elapsed);
 
-        // overridden from base classes.
-        Rect getTextRenderArea(void) const;
-        void render();
+    //! return whether the blinking caret is enabled.
+    bool isCaretBlinkEnabled() const;
+    //! return the caret blink timeout period (only used if blink is enabled).
+    float getCaretBlinkTimeout() const;
+    //! set whether the blinking caret is enabled.
+    void setCaretBlinkEnabled(bool enable);
+    //! set the caret blink timeout period (only used if blink is enabled).
+    void setCaretBlinkTimeout(float seconds);
 
-    protected:
-        /*!
-        \brief
-            Perform rendering of the widget control frame and other 'static' areas.  This
-            method should not render the actual text.  Note that the text will be rendered
-            to layer 4 and the selection brush to layer 3, other layers can be used for
-            rendering imagery behind and infront of the text & selection..
+protected:
+    /*!
+    \brief
+        Perform rendering of the widget control frame and other 'static' areas.  This
+        method should not render the actual text.  Note that the text will be rendered
+        to layer 4 and the selection brush to layer 3, other layers can be used for
+        rendering imagery behind and infront of the text & selection..
 
-        \return
-            Nothing.
-        */
-        void cacheEditboxBaseImagery();
+    \return
+        Nothing.
+    */
+    void cacheEditboxBaseImagery();
 
-        /*!
-        \brief
-            Render the carat.
+    /*!
+    \brief
+        Render the carat.
 
-        \return
-            Nothing
-        */
-        void cacheCaratImagery(const Rect& textArea);
+    \return
+        Nothing
+    */
+    void cacheCaratImagery(const Rect& textArea);
 
-        /*!
-        \brief
-            Render text lines.
-        */
-        void cacheTextLines(const Rect& dest_area);
+    /*!
+    \brief
+        Render text lines.
+    */
+    void cacheTextLines(const Rect& dest_area);
 
-        /*!
-        \brief
-            return the colour to be used for rendering Editbox text oustside of the
-            selected region.
+    /*!
+    \brief
+        return the colour to be used for rendering Editbox text oustside of the
+        selected region.
 
-        \return
-            colour value describing the colour to be used.
-        */
-        colour getUnselectedTextColour() const;
+    \return
+        colour value describing the colour to be used.
+    */
+    colour getUnselectedTextColour() const;
 
-        /*!
-        \brief
-            return the colour to be used for rendering the selection highlight
-            when the editbox is active.
+    /*!
+    \brief
+        return the colour to be used for rendering the selection highlight
+        when the editbox is active.
 
-        \return
-            colour value describing the colour to be used.
-        */
-        colour getActiveSelectionColour() const;
+    \return
+        colour value describing the colour to be used.
+    */
+    colour getActiveSelectionColour() const;
 
-        /*!
-        \brief
-            return the colour to be used for rendering the selection highlight
-            when the editbox is inactive.
+    /*!
+    \brief
+        return the colour to be used for rendering the selection highlight
+        when the editbox is inactive.
 
-        \return
-            colour value describing the colour to be used.
-        */
-        colour getInactiveSelectionColour() const;
+    \return
+        colour value describing the colour to be used.
+    */
+    colour getInactiveSelectionColour() const;
 
-        /*!
-        \brief
-            return the colour to be used for rendering Editbox text falling within
-            the selected region.
+    /*!
+    \brief
+        return the colour to be used for rendering Editbox text falling within
+        the selected region.
 
-        \return
-            colour value describing the colour to be used.
-        */
-        colour getSelectedTextColour() const;
+    \return
+        colour value describing the colour to be used.
+    */
+    colour getSelectedTextColour() const;
 
-        /*!
-        \brief
-            Return a colour object fetched from the named property if it exists,
-            else a default colour (black).
+    /*!
+    \brief
+        Return a colour object fetched from the named property if it exists,
+        else a default colour (black).
 
-        \param propertyName
-            String object holding the name of the property to be accessed if it
-            exists.
-        */
-        colour getOptionalPropertyColour(const String& propertyName) const;
-    };
+    \param propertyName
+        String object holding the name of the property to be accessed if it
+        exists.
+    */
+    colour getOptionalPropertyColour(const String& propertyName) const;
+
+    // properties
+    static FalagardMultiLineEditboxProperties::BlinkCaret d_blinkCaretProperty;
+    static FalagardMultiLineEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
+
+    //! true if the caret imagery should blink.
+    bool d_blinkCaret;
+    //! time-out in seconds used for blinking the caret.
+    float d_caretBlinkTimeout;
+    //! current time elapsed since last caret blink state change.
+    float d_caretBlinkElapsed;
+    //! true if caret should be shown.
+    bool d_showCaret;
+};
 
 } // End of  CEGUI namespace section
 

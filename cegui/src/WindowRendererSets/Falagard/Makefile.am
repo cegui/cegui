@@ -31,6 +31,7 @@ libCEGUIFalagardWRBase@cegui_bsfx@_la_SOURCES = FalButton.cpp \
                                   FalModule.cpp \
                                   FalMultiColumnList.cpp \
                                   FalMultiLineEditbox.cpp \
+                                  FalMultiLineEditboxProperties.cpp \
                                   FalPopupMenu.cpp \
                                   FalProgressBar.cpp \
                                   FalProgressBarProperties.cpp \
