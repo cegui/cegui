@@ -134,6 +134,7 @@ public:
     // overridden from WindowRenderer class
     void update(float elapsed);
 
+protected:
     // properties
     static FalagardEditboxProperties::BlinkCaret d_blinkCaretProperty;
     static FalagardEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
