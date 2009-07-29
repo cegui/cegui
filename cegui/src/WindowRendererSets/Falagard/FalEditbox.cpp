@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,16 +35,19 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
 const utf8 FalagardEditbox::TypeName[] = "Falagard/Editbox";
 const String FalagardEditbox::UnselectedTextColourPropertyName("NormalTextColour");
 const String FalagardEditbox::SelectedTextColourPropertyName("SelectedTextColour");
 
+//----------------------------------------------------------------------------//
 FalagardEditbox::FalagardEditbox(const String& type) :
         EditboxWindowRenderer(type),
         d_lastTextOffset(0)
 {
 }
 
+//----------------------------------------------------------------------------//
 void FalagardEditbox::render()
 {
     Editbox* w = (Editbox*)d_window;
@@ -54,7 +57,8 @@ void FalagardEditbox::render()
     // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
     // try and get imagery for the approprite state.
-    imagery = &wlf.getStateImagery(w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
+    imagery = &wlf.getStateImagery(
+        w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
 
     // peform the rendering operation for the container.
     imagery->render(*w);
@@ -71,8 +75,9 @@ void FalagardEditbox::render()
     if (!font)
         return;
 
-    // This will point to the final string to be used for rendering.  Useful because it means we
-    // do not have to have duplicate code or be copying getText() for handling masked/unmasked text.
+    // This will point to the final string to be used for rendering.  Useful
+    // because it means we do not have to have duplicate code or be copying
+    // getText() for handling masked/unmasked text.
     String* editText;
 
     // Create a 'masked' version of the string if needed.
@@ -99,12 +104,14 @@ void FalagardEditbox::render()
     if ((editText->size() > 0) && (cartIndex > 0))
     {
         size_t curCartIndex = w->getCaratIndex();
-        TextUtils::BidiCharType charBeforeCartType = TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
+        TextUtils::BidiCharType charBeforeCartType =
+            TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
         // for neutral chars you decide by the char after
-        for (; TextUtils::bctNeutral == charBeforeCartType && (editText->size() > curCartIndex) ; curCartIndex++)
+        for (; TextUtils::bctNeutral == charBeforeCartType &&
+               (editText->size() > curCartIndex); curCartIndex++)
         {
-            charBeforeCartType = TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
-
+            charBeforeCartType =
+                TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
         }
 
         currCharIsRtl  = (TextUtils::bctRightToLeft == charBeforeCartType);
@@ -114,30 +121,25 @@ void FalagardEditbox::render()
 
     // the pos is by the char before
     if (!isFirstChar)
-    {
         cartIndex--;
-    }
 
     // we need to find the cart pos by the logical to visual map
     if (w->getV2lMapping().size() > cartIndex)
-    {
         cartIndex = w->getL2vMapping()[cartIndex];
-    }
 
     // for non RTL char - the cart pos is after the char
     if (!currCharIsRtl)
-    {
         cartIndex++;
-    }
 
     // if first char is not rtl - we need to stand at the start of the line
     if (isFirstChar)
     {
-        bool firstCharRtl = (editText->size() > 0) && (TextUtils::bctRightToLeft == TextUtils::getBidiCharType((*editText)[0]));
+        bool firstCharRtl =
+            (editText->size() > 0) &&
+            (TextUtils::bctRightToLeft == TextUtils::getBidiCharType((*editText)[0]));
+
         if (!firstCharRtl)
-        {
             cartIndex--;
-        }
     }
 #endif
 
@@ -150,24 +152,16 @@ void FalagardEditbox::render()
 
     // if box is inactive
     if (!w->hasInputFocus())
-    {
         textOffset = d_lastTextOffset;
-    }
     // if carat is to the left of the box
     else if ((d_lastTextOffset + extentToCarat) < 0)
-    {
         textOffset = -extentToCarat;
-    }
     // if carat is off to the right.
     else if ((d_lastTextOffset + extentToCarat) >= (textArea.getWidth() - caratWidth))
-    {
         textOffset = textArea.getWidth() - extentToCarat - caratWidth;
-    }
     // else carat is already within the box
     else
-    {
         textOffset = d_lastTextOffset;
-    }
 
     ColourRect colours;
     float alpha_comp = w->getEffectiveAlpha();
@@ -203,8 +197,8 @@ void FalagardEditbox::render()
     }
     else
     {
-        // there is highlighted text - because of the BiDi support - the highlighted
-        // can be in some cases nonconsecutive.
+        // there is highlighted text - because of the BiDi support - the
+        // highlighted area can be in some cases nonconsecutive.
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
         // we have highlighted text - not that common...)
@@ -221,7 +215,9 @@ void FalagardEditbox::render()
             }
 
             // check if it is in the highlighted region
-            bool highlighted = realPos >= w->getSelectionStartIndex() && realPos < w->getSelectionStartIndex() + w->getSelectionLength();
+            bool highlighted =
+                realPos >= w->getSelectionStartIndex() &&
+                realPos < w->getSelectionStartIndex() + w->getSelectionLength();
 
             float charAdvance = font->getGlyphData(currChar[0])->getAdvance(1.0f);
 
@@ -238,7 +234,9 @@ void FalagardEditbox::render()
                     hlarea.d_right = text_part_rect.d_left + charAdvance ;
 
                     // render the selection imagery.
-                    wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*w, hlarea, 0, &textArea);
+                    wlf.getStateImagery(active ? "ActiveSelection" :
+                                                 "InactiveSelection").
+                        render(*w, hlarea, 0, &textArea);
                 }
 
             }
@@ -262,8 +260,10 @@ void FalagardEditbox::render()
     if (w->getSelectionLength() != 0)
     {
         // calculate required start and end offsets of selection imagery.
-        float selStartOffset = font->getTextExtent(editText->substr(0, w->getSelectionStartIndex()));
-        float selEndOffset   = font->getTextExtent(editText->substr(0, w->getSelectionEndIndex()));
+        float selStartOffset =
+            font->getTextExtent(editText->substr(0, w->getSelectionStartIndex()));
+        float selEndOffset =
+            font->getTextExtent(editText->substr(0, w->getSelectionEndIndex()));
 
         // calculate area for selection imagery.
         Rect hlarea(textArea);
@@ -271,7 +271,9 @@ void FalagardEditbox::render()
         hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
 
         // render the selection imagery.
-        wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*w, hlarea, 0, &textArea);
+        wlf.getStateImagery(active ? "ActiveSelection" :
+                                     "InactiveSelection").
+            render(*w, hlarea, 0, &textArea);
     }
 
     // draw pre-highlight text
@@ -317,45 +319,48 @@ void FalagardEditbox::render()
     }
 }
 
+//----------------------------------------------------------------------------//
 size_t FalagardEditbox::getTextIndexFromPosition(const Point& pt) const
 {
-    Editbox* w = (Editbox*)d_window;
-    //
+    Editbox* w = static_cast<Editbox*>(d_window);
+
     // calculate final window position to be checked
-    //
     float wndx = CoordConverter::screenToWindowX(*w, pt.d_x);
 
     wndx -= d_lastTextOffset;
 
-    //
     // Return the proper index
-    //
     if (w->isTextMasked())
-    {
-        return w->getFont()->getCharAtPixel(String(w->getTextVisual().length(), w->getMaskCodePoint()), wndx);
-    }
+        return w->getFont()->getCharAtPixel(
+                String(w->getTextVisual().length(), w->getMaskCodePoint()),
+                wndx);
     else
-    {
         return w->getFont()->getCharAtPixel(w->getTextVisual(), wndx);
-    }
 }
 
-colour FalagardEditbox::getOptionalPropertyColour(const String& propertyName) const
+//----------------------------------------------------------------------------//
+colour FalagardEditbox::getOptionalPropertyColour(
+    const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper::stringToColour(d_window->getProperty(propertyName));
+        return PropertyHelper::stringToColour(
+            d_window->getProperty(propertyName));
     else
         return colour(0, 0, 0);
 }
 
+//----------------------------------------------------------------------------//
 colour FalagardEditbox::getUnselectedTextColour() const
 {
     return getOptionalPropertyColour(UnselectedTextColourPropertyName);
 }
 
+//----------------------------------------------------------------------------//
 colour FalagardEditbox::getSelectedTextColour() const
 {
     return getOptionalPropertyColour(SelectedTextColourPropertyName);
 }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
