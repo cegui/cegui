@@ -141,6 +141,9 @@ public:
     */
     virtual void getRenderingContext(RenderingContext& ctx) const;
 
+    //! perform any time based updates for this WindowRenderer.
+    virtual void update(float /*elapsed*/) {}
+
 protected:
     /*************************************************************************
         Implementation methods

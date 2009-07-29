@@ -1913,6 +1913,10 @@ void Window::updateSelf(float elapsed)
             }
         }
     }
+
+    // allow for updates within an assigned WindowRenderer
+    if (d_windowRenderer)
+        d_windowRenderer->update(elapsed);
 }
 
 bool Window::distributesCapturedInputs(void) const
