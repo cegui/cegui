@@ -18,6 +18,7 @@ libCEGUIFalagardWRBase@cegui_bsfx@_la_SOURCES = FalButton.cpp \
                                   FalToggleButton.cpp \
                                   FalDefault.cpp \
                                   FalEditbox.cpp \
+                                  FalEditboxProperties.cpp \
                                   FalFrameWindow.cpp \
                                   FalItemEntry.cpp \
 								  FalItemListbox.cpp \

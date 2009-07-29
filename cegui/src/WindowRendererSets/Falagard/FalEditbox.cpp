@@ -36,21 +36,32 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+FalagardEditboxProperties::BlinkCaret FalagardEditbox::d_blinkCaretProperty;
+FalagardEditboxProperties::BlinkCaretTimeout FalagardEditbox::d_blinkCaretTimeoutProperty;
+
+//----------------------------------------------------------------------------//
 const utf8 FalagardEditbox::TypeName[] = "Falagard/Editbox";
 const String FalagardEditbox::UnselectedTextColourPropertyName("NormalTextColour");
 const String FalagardEditbox::SelectedTextColourPropertyName("SelectedTextColour");
+const float FalagardEditbox::DefaultCaretBlinkTimeout(0.66f);
 
 //----------------------------------------------------------------------------//
 FalagardEditbox::FalagardEditbox(const String& type) :
-        EditboxWindowRenderer(type),
-        d_lastTextOffset(0)
+    EditboxWindowRenderer(type),
+    d_lastTextOffset(0),
+    d_blinkCaret(false),
+    d_caretBlinkTimeout(DefaultCaretBlinkTimeout),
+    d_caretBlinkElapsed(0.0f),
+    d_showCaret(true)
 {
+    registerProperty(&d_blinkCaretProperty);
+    registerProperty(&d_blinkCaretTimeoutProperty);
 }
 
 //----------------------------------------------------------------------------//
 void FalagardEditbox::render()
 {
-    Editbox* w = (Editbox*)d_window;
+    Editbox* w = static_cast<Editbox*>(d_window);
     const StateImagery* imagery;
 
     // draw container etc
@@ -310,7 +321,7 @@ void FalagardEditbox::render()
     //
     // Render carat
     //
-    if (active)
+    if (active && (!d_blinkCaret || d_showCaret))
     {
         Rect caratRect(textArea);
         caratRect.d_left += extentToCarat + textOffset;
@@ -359,6 +370,53 @@ colour FalagardEditbox::getUnselectedTextColour() const
 colour FalagardEditbox::getSelectedTextColour() const
 {
     return getOptionalPropertyColour(SelectedTextColourPropertyName);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::update(float elapsed)
+{
+    // do base class stuff
+    WindowRenderer::update(elapsed);
+
+    // only do the update if we absolutely have to
+    if (d_blinkCaret &&
+        !static_cast<Editbox*>(d_window)->isReadOnly() &&
+        static_cast<Editbox*>(d_window)->hasInputFocus())
+    {
+        d_caretBlinkElapsed += elapsed;
+
+        if (d_caretBlinkElapsed > d_caretBlinkTimeout)
+        {
+            d_caretBlinkElapsed = 0.0f;
+            d_showCaret ^= true;
+            // state changed, so need a redraw
+            d_window->invalidate();
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+bool FalagardEditbox::isCaretBlinkEnabled() const
+{
+    return d_blinkCaret;
+}
+
+//----------------------------------------------------------------------------//
+float FalagardEditbox::getCaretBlinkTimeout() const
+{
+    return d_caretBlinkTimeout;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setCaretBlinkEnabled(bool enable)
+{
+    d_blinkCaret = enable;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setCaretBlinkTimeout(float seconds)
+{
+    d_caretBlinkTimeout = seconds;
 }
 
 //----------------------------------------------------------------------------//

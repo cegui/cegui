@@ -30,6 +30,7 @@
 
 #include "FalModule.h"
 #include "elements/CEGUIEditbox.h"
+#include "FalEditboxProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -57,11 +58,13 @@ namespace CEGUI
     NamedAreas:
         - TextArea: area where text, selection, and carat imagery will appear.
 
-    PropertyDefinitions (optional, defaults will be black):
+    PropertyDefinitions (optional)
         - NormalTextColour: property that accesses a colour value to be used to
-                            render normal unselected text.
+                            render normal unselected text.  If this property is
+                            not defined, the colour defaults to black.
         - SelectedTextColour: property that accesses a colour value to be used
-                              to render selected text.
+                              to render selected text.  If this property is
+                              not defined, the colour defaults to black.
 
     Imagery Sections:
         - Carat
@@ -75,6 +78,8 @@ public:
     static const String UnselectedTextColourPropertyName;
     //! Name of property to access for selected text colour.
     static const String SelectedTextColourPropertyName;
+    //! The default timeout (in seconds) used when blinking the caret.
+    static const float DefaultCaretBlinkTimeout;
 
     /*!
     \brief
@@ -113,13 +118,36 @@ public:
     */
     colour getOptionalPropertyColour(const String& propertyName) const;
 
+    //! return whether the blinking caret is enabled.
+    bool isCaretBlinkEnabled() const;
+    //! return the caret blink timeout period (only used if blink is enabled).
+    float getCaretBlinkTimeout() const;
+    //! set whether the blinking caret is enabled.
+    void setCaretBlinkEnabled(bool enable);
+    //! set the caret blink timeout period (only used if blink is enabled).
+    void setCaretBlinkTimeout(float seconds);
+
     void render();
 
     // overridden from EditboxWindowRenderer base class.
     size_t getTextIndexFromPosition(const Point& pt) const;
+    // overridden from WindowRenderer class
+    void update(float elapsed);
+
+    // properties
+    static FalagardEditboxProperties::BlinkCaret d_blinkCaretProperty;
+    static FalagardEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
 
     //! x rendering offset used last time we drew the widget.
     float d_lastTextOffset;
+    //! true if the caret imagery should blink.
+    bool d_blinkCaret;
+    //! time-out in seconds used for blinking the caret.
+    float d_caretBlinkTimeout;
+    //! current time elapsed since last caret blink state change.
+    float d_caretBlinkElapsed;
+    //! true if caret should be shown.
+    bool d_showCaret;
 };
 
 } // End of  CEGUI namespace section

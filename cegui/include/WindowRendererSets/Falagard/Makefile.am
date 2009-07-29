@@ -3,6 +3,7 @@ pkginclude_HEADERS = FalButton.h \
                  FalToggleButton.h \
                  FalDefault.h \
                  FalEditbox.h \
+                 FalEditboxProperties.h \
                  FalFrameWindow.h \
                  FalItemEntry.h \
                  FalItemListbox.h \
