@@ -681,6 +681,8 @@
 		DAC4DE0E0F71005D000EF0AC /* CEGUIOgreWindowTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1096620F6D638C00B8A582 /* CEGUIOgreWindowTarget.cpp */; };
 		DAC4DE0F0F71005D000EF0AC /* CEGUIOgreWindowTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096690F6D639E00B8A582 /* CEGUIOgreWindowTarget.h */; };
 		DAC4DE130F7100A2000EF0AC /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DAC6D0CF10219276000602A5 /* FalEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CD10219276000602A5 /* FalEditboxProperties.cpp */; };
+		DAC6D0D010219276000602A5 /* FalMultiLineEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */; };
 		DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */; };
 		DAF3D22E0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */; };
 		DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */; };
@@ -2303,6 +2305,10 @@
 		DAC1BE78101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINamedXMLResourceManager.cpp; path = ../../cegui/src/CEGUINamedXMLResourceManager.cpp; sourceTree = SOURCE_ROOT; };
 		DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIOgreRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC4DDF20F70FFBD000EF0AC /* CEGUIOgreRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIOgreRenderer-Info.plist"; sourceTree = "<group>"; };
+		DAC6D0CB1021923F000602A5 /* FalEditboxProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FalEditboxProperties.h; path = ../../cegui/include/WindowRendererSets/Falagard/FalEditboxProperties.h; sourceTree = SOURCE_ROOT; };
+		DAC6D0CC1021923F000602A5 /* FalMultiLineEditboxProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FalMultiLineEditboxProperties.h; path = ../../cegui/include/WindowRendererSets/Falagard/FalMultiLineEditboxProperties.h; sourceTree = SOURCE_ROOT; };
+		DAC6D0CD10219276000602A5 /* FalEditboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalEditboxProperties.cpp; path = ../../cegui/src/WindowRendererSets/Falagard/FalEditboxProperties.cpp; sourceTree = SOURCE_ROOT; };
+		DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalMultiLineEditboxProperties.cpp; path = ../../cegui/src/WindowRendererSets/Falagard/FalMultiLineEditboxProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIXercesParserProperties.cpp; path = ../../cegui/src/XMLParserModules/XercesParser/CEGUIXercesParserProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
 		DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWidgetComponent.h; path = ../../cegui/include/CEGUIRenderedStringWidgetComponent.h; sourceTree = SOURCE_ROOT; };
@@ -3689,6 +3695,7 @@
 				DA10968F0F6D643A00B8A582 /* FalButton.h */,
 				DA1096900F6D643A00B8A582 /* FalDefault.h */,
 				DA1096910F6D643A00B8A582 /* FalEditbox.h */,
+				DAC6D0CB1021923F000602A5 /* FalEditboxProperties.h */,
 				DA1096920F6D643A00B8A582 /* FalFrameWindow.h */,
 				DA1096930F6D643A00B8A582 /* FalItemEntry.h */,
 				DA1096940F6D643A00B8A582 /* FalItemListbox.h */,
@@ -3701,6 +3708,7 @@
 				DA10969B0F6D643A00B8A582 /* FalModule.h */,
 				DA10969C0F6D643A00B8A582 /* FalMultiColumnList.h */,
 				DA10969D0F6D643A00B8A582 /* FalMultiLineEditbox.h */,
+				DAC6D0CC1021923F000602A5 /* FalMultiLineEditboxProperties.h */,
 				DA10969E0F6D643A00B8A582 /* FalPopupMenu.h */,
 				DA10969F0F6D643A00B8A582 /* FalProgressBar.h */,
 				DA1096A00F6D643A00B8A582 /* FalProgressBarProperties.h */,
@@ -3733,6 +3741,7 @@
 				DA10966A0F6D642000B8A582 /* FalButton.cpp */,
 				DA10966B0F6D642000B8A582 /* FalDefault.cpp */,
 				DA10966C0F6D642000B8A582 /* FalEditbox.cpp */,
+				DAC6D0CD10219276000602A5 /* FalEditboxProperties.cpp */,
 				DA10966D0F6D642000B8A582 /* FalFrameWindow.cpp */,
 				DA10966E0F6D642000B8A582 /* FalItemEntry.cpp */,
 				DA10966F0F6D642000B8A582 /* FalItemListbox.cpp */,
@@ -3745,6 +3754,7 @@
 				DA1096760F6D642000B8A582 /* FalModule.cpp */,
 				DA1096770F6D642000B8A582 /* FalMultiColumnList.cpp */,
 				DA1096780F6D642000B8A582 /* FalMultiLineEditbox.cpp */,
+				DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */,
 				DA1096790F6D642000B8A582 /* FalPopupMenu.cpp */,
 				DA10967A0F6D642000B8A582 /* FalProgressBar.cpp */,
 				DA10967B0F6D642000B8A582 /* FalProgressBarProperties.cpp */,
@@ -5787,6 +5797,8 @@
 				DA109A250F6D910500B8A582 /* FalToggleButton.cpp in Sources */,
 				DA109A260F6D910500B8A582 /* FalTooltip.cpp in Sources */,
 				DA109A270F6D910500B8A582 /* FalTree.cpp in Sources */,
+				DAC6D0CF10219276000602A5 /* FalEditboxProperties.cpp in Sources */,
+				DAC6D0D010219276000602A5 /* FalMultiLineEditboxProperties.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
