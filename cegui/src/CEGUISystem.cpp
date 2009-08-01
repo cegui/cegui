@@ -744,7 +744,7 @@ bool System::injectMouseButtonDown(MouseButton button)
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
-    ma.window = getTargetWindow(ma.position);
+    ma.window = getTargetWindow(ma.position, false);
 
     //
     // Handling for multi-click generation
@@ -822,7 +822,7 @@ bool System::injectMouseButtonUp(MouseButton button)
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
-    ma.window = getTargetWindow(ma.position);
+    ma.window = getTargetWindow(ma.position, false);
 
     // get the tracker that holds the number of down events seen so far for this button
     MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
@@ -926,7 +926,7 @@ bool System::injectMouseWheelChange(float delta)
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = delta;
     ma.clickCount = 0;
-    ma.window = getTargetWindow(ma.position);
+    ma.window = getTargetWindow(ma.position, false);
 
     // if there is no target window, input can not be handled.
     if (!ma.window)
@@ -986,7 +986,8 @@ bool System::injectTimePulse(float timeElapsed)
 /*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window* System::getTargetWindow(const Point& pt) const
+Window* System::getTargetWindow(const Point& pt,
+                                const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
     if (!d_activeSheet || !d_activeSheet->isVisible())
@@ -996,7 +997,8 @@ Window* System::getTargetWindow(const Point& pt) const
 
     if (!dest_window)
     {
-        dest_window = d_activeSheet->getTargetChildAtPosition(pt);
+        dest_window = d_activeSheet->
+            getTargetChildAtPosition(pt, allow_disabled);
 
         if (!dest_window)
             dest_window = d_activeSheet;
@@ -1005,7 +1007,8 @@ Window* System::getTargetWindow(const Point& pt) const
     {
         if (dest_window->distributesCapturedInputs())
         {
-            Window* child_window = dest_window->getTargetChildAtPosition(pt);
+            Window* child_window = dest_window->
+                getTargetChildAtPosition(pt, allow_disabled);
 
             if (child_window)
                 dest_window = child_window;
@@ -1604,7 +1607,7 @@ bool System::updateWindowContainingMouse()
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
 
-    Window* const curr_wnd_with_mouse = getTargetWindow(ma.position);
+    Window* const curr_wnd_with_mouse = getTargetWindow(ma.position, true);
 
     // exit if window containing mouse has not changed.
     if (curr_wnd_with_mouse == d_wndWithMouse)

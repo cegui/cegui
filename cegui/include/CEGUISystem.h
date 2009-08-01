@@ -922,10 +922,13 @@ private:
 	\param pt
 		Point object describing a screen location in pixels.
 
+    \param allow_disabled
+        Specifies whether a disabled window may be returned.
+
 	\return
 		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
 	*/
-	Window*	getTargetWindow(const Point& pt) const;
+	Window*	getTargetWindow(const Point& pt, const bool allow_disabled) const;
 
 
 	/*!
