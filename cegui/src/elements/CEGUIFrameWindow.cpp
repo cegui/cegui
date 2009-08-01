@@ -537,6 +537,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate();
     notifyClippingChanged();
+    notifyScreenAreaChanged(true);
 
 	fireEvent(EventRollupToggled, e, EventNamespace);
 }
