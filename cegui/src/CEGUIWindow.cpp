@@ -3029,8 +3029,8 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     if (tip)
         tip->setTargetWindow(0);
 
-    if (e.button == LeftButton)
-        e.handled |= doRiseOnClick();
+    if ((e.button == LeftButton) && doRiseOnClick())
+        ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking
     // the button that was just pushed (need this button check because
