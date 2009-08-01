@@ -1149,7 +1149,7 @@ bool Window::moveToFront_impl(bool wasClicked)
         {
             args.window = activeWnd;
             args.otherWindow = this;
-            args.handled = false;
+            args.handled = 0;
             activeWnd->onDeactivated(args);
         }
     }
@@ -1316,7 +1316,7 @@ void Window::setInheritsAlpha(bool setting)
         // if effective alpha has changed fire notification about that too
         if (oldAlpha != getEffectiveAlpha())
         {
-            args.handled = false;
+            args.handled = 0;
             onAlphaChanged(args);
         }
 
@@ -1403,7 +1403,7 @@ void Window::bufferGeometry(const RenderingContext&)
             populateGeometryBuffer();
 
         // signal rendering ended
-        args.handled = false;
+        args.handled = 0;
         onRenderingEnded(args);
 
         // mark ourselves as no longer needed a redraw.
@@ -2165,7 +2165,7 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLef
         {
             onMoved(args);
             // reset handled so 'sized' event can re-use (since  wo do not care about it)
-            args.handled = false;
+            args.handled = 0;
         }
 
         if (sized)
@@ -3004,17 +3004,21 @@ void Window::onMouseMove(MouseEventArgs& e)
     // perform tooltip control
     Tooltip* tip = getTooltip();
     if (tip)
-    {
         tip->resetTimer();
-    }
 
     fireEvent(EventMouseMove, e, EventNamespace);
+    // by default we now mark mouse events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 
 void Window::onMouseWheel(MouseEventArgs& e)
 {
     fireEvent(EventMouseWheel, e, EventNamespace);
+    // by default we now mark mouse events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 
@@ -3023,14 +3027,10 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     // perform tooltip control
     Tooltip* tip = getTooltip();
     if (tip)
-    {
         tip->setTargetWindow(0);
-    }
 
     if (e.button == LeftButton)
-    {
         e.handled |= doRiseOnClick();
-    }
 
     // if auto repeat is enabled and we are not currently tracking
     // the button that was just pushed (need this button check because
@@ -3049,6 +3049,9 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     }
 
     fireEvent(EventMouseButtonDown, e, EventNamespace);
+    // by default we now mark mouse events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 
@@ -3062,6 +3065,9 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
     }
 
     fireEvent(EventMouseButtonUp, e, EventNamespace);
+    // by default we now mark mouse events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 
@@ -3086,18 +3092,48 @@ void Window::onMouseTripleClicked(MouseEventArgs& e)
 void Window::onKeyDown(KeyEventArgs& e)
 {
     fireEvent(EventKeyDown, e, EventNamespace);
+
+    // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
+    // default we now do that here.  Generally speaking key handling widgets
+    // may need to override this behaviour to halt further propogation.
+    if (!e.handled && d_parent &&
+        d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onKeyDown(e);
+    }
 }
 
 
 void Window::onKeyUp(KeyEventArgs& e)
 {
     fireEvent(EventKeyUp, e, EventNamespace);
+
+    // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
+    // default we now do that here.  Generally speaking key handling widgets
+    // may need to override this behaviour to halt further propogation.
+    if (!e.handled && d_parent &&
+        d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onKeyUp(e);
+    }
 }
 
 
 void Window::onCharacter(KeyEventArgs& e)
 {
     fireEvent(EventCharacterKey, e, EventNamespace);
+
+    // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
+    // default we now do that here.  Generally speaking key handling widgets
+    // may need to override this behaviour to halt further propogation.
+    if (!e.handled && d_parent &&
+        this != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onCharacter(e);
+    }
 }
 
 void Window::onDragDropItemEnters(DragDropEventArgs& e)

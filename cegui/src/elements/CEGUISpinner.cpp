@@ -306,7 +306,7 @@ namespace CEGUI
             // done before doing base class processing so event subscribers see
             // 'updated' version.
             editbox->setText(getText());
-            e.handled = true;
+            ++e.handled;
 
             Window::onTextChanged(e);
         }

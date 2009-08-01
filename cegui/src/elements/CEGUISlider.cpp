@@ -198,7 +198,7 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 			setCurrentValue(d_value + (adj * d_step));
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -216,7 +216,7 @@ void Slider::onMouseWheel(MouseEventArgs& e)
 	setCurrentValue(d_value + d_step * e.wheelChange);
 
 	// ensure the message does not go to our parent.
-	e.handled = true;
+	++e.handled;
 }
 
 

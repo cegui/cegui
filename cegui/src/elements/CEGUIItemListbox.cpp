@@ -426,7 +426,7 @@ void ItemListbox::onKeyDown(KeyEventArgs& e)
         if (e.scancode == Key::A && (sysKeys&Control))
         {
             selectAllItems();
-            e.handled = true;
+            ++e.handled;
         }
     }
 }

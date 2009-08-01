@@ -1849,7 +1849,7 @@ void MultiColumnList::onSized(WindowEventArgs& e)
 
 	configureScrollbars();
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -1900,7 +1900,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			onSelectionChanged(args);
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1926,7 +1926,7 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 

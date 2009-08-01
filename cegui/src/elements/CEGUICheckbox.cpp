@@ -114,7 +114,7 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 	// default handling

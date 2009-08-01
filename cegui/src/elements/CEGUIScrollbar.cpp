@@ -266,7 +266,7 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 			setScrollPosition(d_position + ((d_pageSize - d_overlapSize) * adj));
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -284,7 +284,7 @@ void Scrollbar::onMouseWheel(MouseEventArgs& e)
 	setScrollPosition(d_position + d_stepSize * -e.wheelChange);
 
 	// ensure the message does not go to our parent.
-	e.handled = true;
+	++e.handled;
 }
 
 

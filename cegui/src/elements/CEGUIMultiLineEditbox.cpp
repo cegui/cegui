@@ -1101,7 +1101,7 @@ void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
 			setCaratIndex(d_dragAnchorIdx);
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1118,7 +1118,7 @@ void MultiLineEditbox::onMouseButtonUp(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		releaseInput();
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1140,7 +1140,7 @@ void MultiLineEditbox::onMouseDoubleClicked(MouseEventArgs& e)
 		// perform actual selection operation.
 		setSelection(d_dragAnchorIdx, d_caratPos);
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1186,7 +1186,7 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 		d_dragAnchorIdx = paraStart;
 		setCaratIndex(paraEnd);
 		setSelection(d_dragAnchorIdx, d_caratPos);
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1206,7 +1206,7 @@ void MultiLineEditbox::onMouseMove(MouseEventArgs& e)
 		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -1220,7 +1220,7 @@ void MultiLineEditbox::onCaptureLost(WindowEventArgs& e)
 	// base class processing
 	Window::onCaptureLost(e);
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -1229,8 +1229,13 @@ void MultiLineEditbox::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 {
-	// base class processing
-	Window::onCharacter(e);
+    // NB: We are not calling the base class handler here because it propogates
+    // inputs back up the window hierarchy, whereas, as a consumer of key
+    // events, we want such propogation to cease with us regardless of whether
+    // we actually handle the event.
+
+    // fire event.
+    fireEvent(EventCharacterKey, e, EventNamespace);
 
 	// only need to take notice if we have focus
 	if (hasInputFocus() && !isReadOnly() && getFont()->isCodepointAvailable(e.codepoint))
@@ -1250,7 +1255,7 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 			WindowEventArgs args(this);
 			onTextChanged(args);
 
-            e.handled = true;
+            ++e.handled;
 		}
 		else
 		{
@@ -1269,8 +1274,13 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 {
-	// base class processing
-	Window::onKeyDown(e);
+    // NB: We are not calling the base class handler here because it propogates
+    // inputs back up the window hierarchy, whereas, as a consumer of key
+    // events, we want such propogation to cease with us regardless of whether
+    // we actually handle the event.
+
+    // fire event.
+    fireEvent(EventKeyDown, e, EventNamespace);
 
 	if (hasInputFocus() && !isReadOnly())
 	{
@@ -1363,7 +1373,7 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
             return;
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -1399,7 +1409,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
     // may have changed the formatting of the text, it needs to be called again.
     ensureCaratIsVisible();
 
-    e.handled = true;
+    ++e.handled;
 }
 
 
@@ -1413,7 +1423,7 @@ void MultiLineEditbox::onSized(WindowEventArgs& e)
 	// base class handling
 	Window::onSized(e);
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -1437,7 +1447,7 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 

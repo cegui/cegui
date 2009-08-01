@@ -117,7 +117,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 		// move the window.  *** Again: Titlebar objects should only be attached to FrameWindow derived classes. ***
 		((FrameWindow*)d_parent)->offsetPixelPosition(delta);
 
-		e.handled = true;
+		++e.handled;
 	}
 }
 
@@ -163,7 +163,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 }
 
@@ -179,7 +179,7 @@ void Titlebar::onMouseButtonUp(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		releaseInput();
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -202,7 +202,7 @@ void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
 			((FrameWindow*)d_parent)->toggleRollup();
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }

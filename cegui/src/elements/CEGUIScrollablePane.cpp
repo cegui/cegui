@@ -445,7 +445,7 @@ namespace CEGUI
         configureScrollbars();
         updateContainerPosition();
 
-        e.handled = true;
+        ++e.handled;
     }
 
     void ScrollablePane::onMouseWheel(MouseEventArgs& e)
@@ -465,7 +465,7 @@ namespace CEGUI
             horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
         }
 
-        e.handled = true;
+        ++e.handled;
     }
 
     void ScrollablePane::addScrollablePaneProperties(void)

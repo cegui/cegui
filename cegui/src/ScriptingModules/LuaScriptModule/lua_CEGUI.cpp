@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Jul 25 14:47:29 2009.
+** Generated automatically by tolua++-1.0.92 on Sat Aug  1 12:24:37 2009.
 */
 
 #ifndef __cplusplus
@@ -11802,30 +11802,30 @@ static int tolua_CEGUI_CEGUI_FontIterator_new00_local(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* get function: handled of class  CEGUI::EventArgs */
-#ifndef TOLUA_DISABLE_tolua_get_CEGUI__EventArgs_handled
-static int tolua_get_CEGUI__EventArgs_handled(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__EventArgs_unsigned_handled
+static int tolua_get_CEGUI__EventArgs_unsigned_handled(lua_State* tolua_S)
 {
   CEGUI::EventArgs* self = (CEGUI::EventArgs*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'handled'",NULL);
 #endif
- tolua_pushboolean(tolua_S,(bool)self->handled);
+ tolua_pushnumber(tolua_S,(lua_Number)self->handled);
  return 1;
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* set function: handled of class  CEGUI::EventArgs */
-#ifndef TOLUA_DISABLE_tolua_set_CEGUI__EventArgs_handled
-static int tolua_set_CEGUI__EventArgs_handled(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__EventArgs_unsigned_handled
+static int tolua_set_CEGUI__EventArgs_unsigned_handled(lua_State* tolua_S)
 {
   CEGUI::EventArgs* self = (CEGUI::EventArgs*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'handled'",NULL);
- if (!tolua_isboolean(tolua_S,2,0,&tolua_err))
+ if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
  tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
 #endif
-  self->handled = ((bool)  tolua_toboolean(tolua_S,2,0))
+  self->handled = ((unsigned int)  tolua_tonumber(tolua_S,2,0))
 ;
  return 0;
 }
@@ -52758,7 +52758,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"EventArgs","CEGUI::EventArgs","",NULL);
   #endif
   tolua_beginmodule(tolua_S,"EventArgs");
-   tolua_variable(tolua_S,"handled",tolua_get_CEGUI__EventArgs_handled,tolua_set_CEGUI__EventArgs_handled);
+   tolua_variable(tolua_S,"handled",tolua_get_CEGUI__EventArgs_unsigned_handled,tolua_set_CEGUI__EventArgs_unsigned_handled);
    tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_EventArgs_new00);
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_EventArgs_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_EventArgs_new00_local);

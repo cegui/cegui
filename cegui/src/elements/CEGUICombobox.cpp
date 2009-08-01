@@ -678,7 +678,7 @@ void Combobox::onTextChanged(WindowEventArgs& e)
 	{
 		// done before doing base class processing so event subscribers see 'updated' version of this.
         editbox->setText(getText());
-		e.handled = true;
+		++e.handled;
 
 		Window::onTextChanged(e);
 	}

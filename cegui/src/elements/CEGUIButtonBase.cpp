@@ -108,7 +108,7 @@ void ButtonBase::onMouseMove(MouseEventArgs& e)
 	Window::onMouseMove(e);
 
 	updateInternalState(e.position);
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -130,7 +130,7 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 		}
 
 		// event was handled by us.
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -149,7 +149,7 @@ void ButtonBase::onMouseButtonUp(MouseEventArgs& e)
 		releaseInput();
 
 		// event was handled by us.
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -167,7 +167,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 	invalidate();
 
 	// event was handled by us.
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -182,7 +182,7 @@ void ButtonBase::onMouseLeaves(MouseEventArgs& e)
 	d_hovering = false;
 	invalidate();
 
-	e.handled = true;
+	++e.handled;
 }
 
 } // End of  CEGUI namespace section

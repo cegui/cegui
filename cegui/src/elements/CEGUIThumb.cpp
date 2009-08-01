@@ -238,7 +238,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -260,7 +260,7 @@ void Thumb::onMouseButtonDown(MouseEventArgs& e)
 		WindowEventArgs args(this);
 		onThumbTrackStarted(args);
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }

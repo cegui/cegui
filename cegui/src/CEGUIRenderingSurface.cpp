@@ -106,7 +106,7 @@ void RenderingSurface::draw()
 
     for ( ; d_queues.end() != i; ++i)
     {
-        evt_args.handled = false;
+        evt_args.handled = 0;
         evt_args.queueID = i->first;
         draw(i->second, evt_args);
     }
@@ -122,7 +122,7 @@ void RenderingSurface::draw(const RenderQueue& queue,
 
     d_target.draw(queue);
 
-    args.handled = false;
+    args.handled = 0;
     fireEvent(EventRenderQueueEnded, args, EventNamespace);
 }
 

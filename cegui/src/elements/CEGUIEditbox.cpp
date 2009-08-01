@@ -176,7 +176,7 @@ void Editbox::setValidationString(const String& validation_string)
     // also notify if text is now invalid.
     if (!isTextValid())
     {
-        args.handled = false;
+        args.handled = 0;
         onTextInvalidatedEvent(args);
     }
 #else
@@ -347,7 +347,7 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
             setCaratIndex(d_dragAnchorIdx);
         }
 
-        e.handled = true;
+        ++e.handled;
     }
 
 }
@@ -361,7 +361,7 @@ void Editbox::onMouseButtonUp(MouseEventArgs& e)
     if (e.button == LeftButton)
     {
         releaseInput();
-        e.handled = true;
+        ++e.handled;
     }
 
 }
@@ -392,7 +392,7 @@ void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
         // perform actual selection operation.
         setSelection(d_dragAnchorIdx, d_caratPos);
 
-        e.handled = true;
+        ++e.handled;
     }
 
 }
@@ -408,7 +408,7 @@ void Editbox::onMouseTripleClicked(MouseEventArgs& e)
         d_dragAnchorIdx = 0;
         setCaratIndex(getText().length());
         setSelection(d_dragAnchorIdx, d_caratPos);
-        e.handled = true;
+        ++e.handled;
     }
 
 }
@@ -433,7 +433,7 @@ void Editbox::onMouseMove(MouseEventArgs& e)
         setSelection(d_caratPos, d_dragAnchorIdx);
     }
 
-    e.handled = true;
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -444,14 +444,19 @@ void Editbox::onCaptureLost(WindowEventArgs& e)
     // base class processing
     Window::onCaptureLost(e);
 
-    e.handled = true;
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
 void Editbox::onCharacter(KeyEventArgs& e)
 {
-    // base class processing
-    Window::onCharacter(e);
+    // NB: We are not calling the base class handler here because it propogates
+    // inputs back up the window hierarchy, whereas, as a consumer of key
+    // events, we want such propogation to cease with us regardless of whether
+    // we actually handle the event.
+
+    // fire event.
+    fireEvent(EventCharacterKey, e, EventNamespace);
 
     // only need to take notice if we have focus
     if (hasInputFocus() &&
@@ -481,7 +486,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
                 setText(tmp);
 
                 // char was accepted into the Editbox - mark event as handled.
-                e.handled = true;
+                ++e.handled;
             }
             else
             {
@@ -506,8 +511,13 @@ void Editbox::onCharacter(KeyEventArgs& e)
 //----------------------------------------------------------------------------//
 void Editbox::onKeyDown(KeyEventArgs& e)
 {
-    // base class processing
-    Window::onKeyDown(e);
+    // NB: We are not calling the base class handler here because it propogates
+    // inputs back up the window hierarchy, whereas, as a consumer of key
+    // events, we want such propogation to cease with us regardless of whether
+    // we actually handle the event.
+
+    // fire event.
+    fireEvent(EventKeyDown, e, EventNamespace);
 
     if (hasInputFocus() && !isReadOnly())
     {
@@ -562,7 +572,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
             return;
         }
 
-        e.handled = true;
+        ++e.handled;
     }
 
 }
@@ -828,7 +838,7 @@ void Editbox::onTextChanged(WindowEventArgs& e)
     if (d_caratPos > getText().length())
         setCaratIndex(getText().length());
 
-    e.handled = true;
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
