@@ -48,4 +48,47 @@ GUISheet::GUISheet(const String& type, const String& name) :
     setSize(sz);
 }
 
+//----------------------------------------------------------------------------//
+void GUISheet::onMouseMove(MouseEventArgs& e)
+{
+    // always call the base class handler
+    Window::onMouseMove(e);
+    updateMouseEventHandled(e);
+}
+
+//----------------------------------------------------------------------------//
+void GUISheet::onMouseWheel(MouseEventArgs& e)
+{
+    // always call the base class handler
+    Window::onMouseWheel(e);
+    updateMouseEventHandled(e);
+}
+
+//----------------------------------------------------------------------------//
+void GUISheet::onMouseButtonDown(MouseEventArgs& e)
+{
+    // always call the base class handler
+    Window::onMouseButtonDown(e);
+    updateMouseEventHandled(e);
+}
+
+//----------------------------------------------------------------------------//
+void GUISheet::onMouseButtonUp(MouseEventArgs& e)
+{
+    // always call the base class handler
+    Window::onMouseButtonUp(e);
+    updateMouseEventHandled(e);
+}
+
+//----------------------------------------------------------------------------//
+void GUISheet::updateMouseEventHandled(MouseEventArgs& e) const
+{
+    // by default, if we are a root window (no parent) with pass-though enabled
+    // we do /not/ mark mouse events as handled.
+    if (!d_parent && e.handled && d_mousePassThroughEnabled)
+        --e.handled;
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

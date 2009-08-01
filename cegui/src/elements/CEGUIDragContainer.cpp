@@ -240,7 +240,7 @@ namespace CEGUI
                 d_leftMouseDown = true;
             }
 
-            e.handled = true;
+            ++e.handled;
         }
 
     }
@@ -272,7 +272,7 @@ namespace CEGUI
 
             // release our capture on the input data
             releaseInput();
-            e.handled = true;
+            ++e.handled;
         }
     }
 
@@ -326,7 +326,7 @@ namespace CEGUI
         d_leftMouseDown = false;
         d_dropTarget = 0;
 
-        e.handled = true;
+        ++e.handled;
     }
 
     void DragContainer::onAlphaChanged(WindowEventArgs& e)

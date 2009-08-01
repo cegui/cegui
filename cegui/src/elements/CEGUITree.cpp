@@ -1076,7 +1076,7 @@ void Tree::onSized(WindowEventArgs& e)
     
     configureScrollbars();
     
-    e.handled = true;
+    ++e.handled;
 }
 
 /*************************************************************************
@@ -1161,7 +1161,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
         }
         
         
-        e.handled = true;
+        ++e.handled;
     }
 }
 
@@ -1178,7 +1178,7 @@ void Tree::onMouseWheel(MouseEventArgs& e)
     else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
         d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
     
-    e.handled = true;
+    ++e.handled;
 }
 
 /*************************************************************************

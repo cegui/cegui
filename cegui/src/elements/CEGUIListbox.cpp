@@ -844,7 +844,7 @@ void Listbox::onSized(WindowEventArgs& e)
 
 	configureScrollbars();
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -895,7 +895,7 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			onSelectionChanged(args);
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -921,7 +921,7 @@ void Listbox::onMouseWheel(MouseEventArgs& e)
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 /*************************************************************************

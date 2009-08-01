@@ -366,7 +366,7 @@ void PopupMenu::onMouseButtonDown(MouseEventArgs& e)
 {
         MenuBase::onMouseButtonDown(e);
         // dont reach our parent
-        e.handled = true;
+        ++e.handled;
 }
 
 
@@ -377,7 +377,7 @@ void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
 {
         MenuBase::onMouseButtonUp(e);
         // dont reach our parent
-        e.handled = true;
+        ++e.handled;
 }
 
 

@@ -138,7 +138,7 @@ void ItemEntry::onMouseClicked(MouseEventArgs& e)
             d_ownerList->notifyItemClicked(this);
         else
             setSelected(!isSelected());
-        e.handled = true;
+        ++e.handled;
     }
 }
 

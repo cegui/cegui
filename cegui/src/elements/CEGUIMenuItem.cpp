@@ -320,7 +320,7 @@ void MenuItem::onMouseMove(MouseEventArgs& e)
 	ItemEntry::onMouseMove(e);
 
 	updateInternalState(e.position);
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -344,7 +344,7 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
 		}
 
 		// event was handled by us.
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -370,7 +370,7 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
 		}
 
 		// event was handled by us.
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -388,7 +388,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 	invalidate();
 
 	// event was handled by us.
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -403,7 +403,7 @@ void MenuItem::onMouseLeaves(MouseEventArgs& e)
 	d_hovering = false;
 	invalidate();
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -421,7 +421,7 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
 		static_cast<ItemListBase*>(parent)->handleUpdatedItemData();
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 

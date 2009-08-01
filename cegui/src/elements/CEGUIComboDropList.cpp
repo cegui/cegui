@@ -158,7 +158,7 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 			}
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 	// not within the list area
 	else
@@ -193,7 +193,7 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 			d_armed = true;
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -225,7 +225,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 			d_armed = true;
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -239,7 +239,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
 	Listbox::onCaptureLost(e);
 	d_armed = false;
 	hide();
-	e.handled = true;
+	++e.handled;
 
     // ensure 'sticky' selection remains.
     if ((d_lastClickSelected) && !d_lastClickSelected->isSelected())

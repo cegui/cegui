@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIRadioButton.cpp
-	created:	13/4/2004
-	author:		Paul D Turner
+    filename:   CEGUIRadioButton.cpp
+    created:    13/4/2004
+    author:     Paul D Turner
 
-	purpose:	Implementation of RadioButton widget base class
+    purpose:    Implementation of RadioButton widget base class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -37,33 +37,33 @@ const String RadioButton::WidgetTypeName("CEGUI/RadioButton");
 
 
 /*************************************************************************
-	Definitions of Properties for this class
+    Definitions of Properties for this class
 *************************************************************************/
-RadioButtonProperties::Selected	RadioButton::d_selectedProperty;
-RadioButtonProperties::GroupID	RadioButton::d_groupIDProperty;
+RadioButtonProperties::Selected RadioButton::d_selectedProperty;
+RadioButtonProperties::GroupID  RadioButton::d_groupIDProperty;
 
 
 /*************************************************************************
-	Event name constants
+    Event name constants
 *************************************************************************/
 // generated internally by Window
 const String RadioButton::EventSelectStateChanged( "SelectStateChanged" );
 
 
 /*************************************************************************
-	Constructor
+    Constructor
 *************************************************************************/
 RadioButton::RadioButton(const String& type, const String& name) :
-	ButtonBase(type, name),
-	d_selected(false),
-	d_groupID(0)
+    ButtonBase(type, name),
+    d_selected(false),
+    d_groupID(0)
 {
-	addRadioButtonProperties();
+    addRadioButtonProperties();
 }
 
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 RadioButton::~RadioButton(void)
 {
@@ -71,158 +71,158 @@ RadioButton::~RadioButton(void)
 
 
 /*************************************************************************
-	set whether the radio button is selected or not
+    set whether the radio button is selected or not
 *************************************************************************/
 void RadioButton::setSelected(bool select)
 {
-	if (select != d_selected)
-	{
-		d_selected = select;
-		invalidate();
+    if (select != d_selected)
+    {
+        d_selected = select;
+        invalidate();
 
-		// if new state is 'selected', we must de-select any selected radio buttons within our group.
-		if (d_selected)
-		{
-			deselectOtherButtonsInGroup();
-		}
+        // if new state is 'selected', we must de-select any selected radio buttons within our group.
+        if (d_selected)
+        {
+            deselectOtherButtonsInGroup();
+        }
 
-		WindowEventArgs args(this);
-		onSelectStateChanged(args);
-	}
+        WindowEventArgs args(this);
+        onSelectStateChanged(args);
+    }
 
 }
 
 
 /*************************************************************************
-	set the groupID for this radio button
+    set the groupID for this radio button
 *************************************************************************/
 void RadioButton::setGroupID(ulong group)
 {
-	d_groupID = group;
+    d_groupID = group;
 
-	if (d_selected)
-	{
-		deselectOtherButtonsInGroup();
-	}
+    if (d_selected)
+    {
+        deselectOtherButtonsInGroup();
+    }
 
 }
 
 
 /*************************************************************************
-	Deselect any selected radio buttons attached to the same parent
-	within the same group (but not do not deselect 'this').
+    Deselect any selected radio buttons attached to the same parent
+    within the same group (but not do not deselect 'this').
 *************************************************************************/
 void RadioButton::deselectOtherButtonsInGroup(void) const
 {
-	// nothing to do unless we are attached to another window.
-	if (d_parent)
-	{
-		size_t child_count = d_parent->getChildCount();
+    // nothing to do unless we are attached to another window.
+    if (d_parent)
+    {
+        size_t child_count = d_parent->getChildCount();
 
-		// scan all children
-		for (size_t child = 0; child < child_count; ++child)
-		{
-			// is this child same type as we are?
-			if (d_parent->getChildAtIdx(child)->getType() == getType())
-			{
-				RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
+        // scan all children
+        for (size_t child = 0; child < child_count; ++child)
+        {
+            // is this child same type as we are?
+            if (d_parent->getChildAtIdx(child)->getType() == getType())
+            {
+                RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
 
-				// is child same group, selected, but not 'this'?
-				if (rb->isSelected() && (rb != this) && (rb->getGroupID() == d_groupID))
-				{
-					// deselect the radio button.
-					rb->setSelected(false);
-				}
+                // is child same group, selected, but not 'this'?
+                if (rb->isSelected() && (rb != this) && (rb->getGroupID() == d_groupID))
+                {
+                    // deselect the radio button.
+                    rb->setSelected(false);
+                }
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
 }
 
 
 /*************************************************************************
-	event triggered internally when the select state of the button changes.
+    event triggered internally when the select state of the button changes.
 *************************************************************************/
 void RadioButton::onSelectStateChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSelectStateChanged, e, EventNamespace);
+    fireEvent(EventSelectStateChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when mouse button gets released
+    Handler called when mouse button gets released
 *************************************************************************/
 void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 {
-	if ((e.button == LeftButton) && isPushed())
-	{
-		Window* sheet = System::getSingleton().getGUISheet();
+    if ((e.button == LeftButton) && isPushed())
+    {
+        Window* sheet = System::getSingleton().getGUISheet();
 
-		if (sheet)
-		{
-			// if mouse was released over this widget
-			if (this == sheet->getTargetChildAtPosition(e.position))
-			{
-				// select this button & deselect all others in the same group.
-				setSelected(true);
-			}
+        if (sheet)
+        {
+            // if mouse was released over this widget
+            if (this == sheet->getTargetChildAtPosition(e.position))
+            {
+                // select this button & deselect all others in the same group.
+                setSelected(true);
+            }
 
-		}
+        }
 
-		e.handled = true;
-	}
+        ++e.handled;
+    }
 
-	// default handling
-	ButtonBase::onMouseButtonUp(e);
+    // default handling
+    ButtonBase::onMouseButtonUp(e);
 }
 
 
 /*************************************************************************
-	Return a pointer to the RadioButton object within the same group as
-	this RadioButton, that is currently selected.
+    Return a pointer to the RadioButton object within the same group as
+    this RadioButton, that is currently selected.
 *************************************************************************/
 RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 {
-	// Only search we we are a child window
-	if (d_parent)
-	{
-		size_t child_count = d_parent->getChildCount();
+    // Only search we we are a child window
+    if (d_parent)
+    {
+        size_t child_count = d_parent->getChildCount();
 
-		// scan all children
-		for (size_t child = 0; child < child_count; ++child)
-		{
-			// is this child same type as we are?
-			if (d_parent->getChildAtIdx(child)->getType() == getType())
-			{
-				RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
+        // scan all children
+        for (size_t child = 0; child < child_count; ++child)
+        {
+            // is this child same type as we are?
+            if (d_parent->getChildAtIdx(child)->getType() == getType())
+            {
+                RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
 
-				// is child same group and selected?
-				if (rb->isSelected() && (rb->getGroupID() == d_groupID))
-				{
-					// return the matching RadioButton pointer (may even be 'this').
-					return rb;
-				}
+                // is child same group and selected?
+                if (rb->isSelected() && (rb->getGroupID() == d_groupID))
+                {
+                    // return the matching RadioButton pointer (may even be 'this').
+                    return rb;
+                }
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	// no selected button attached to this window is in same group
-	return 0;
+    // no selected button attached to this window is in same group
+    return 0;
 }
 
 /*************************************************************************
-	Add properties for radio button
+    Add properties for radio button
 *************************************************************************/
 void RadioButton::addRadioButtonProperties(void)
 {
-	addProperty(&d_selectedProperty);
-	addProperty(&d_groupIDProperty);
+    addProperty(&d_selectedProperty);
+    addProperty(&d_groupIDProperty);
 }
 
 

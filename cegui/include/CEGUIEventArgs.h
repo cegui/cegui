@@ -55,14 +55,15 @@ public:
 	/*************************************************************************
 		Construction
 	*************************************************************************/
-	EventArgs(void) : handled(false) {}
+	EventArgs(void) : handled(0) {}
 	virtual ~EventArgs(void) {}
 
 
 	/*************************************************************************
 		Data members
 	*************************************************************************/
-	bool	handled;		//!< handlers should set this to true if they handled the event, or false otherwise.
+    //! handlers should increment this if they handled the event.
+    uint handled;
 };
 
 } // End of  CEGUI namespace section

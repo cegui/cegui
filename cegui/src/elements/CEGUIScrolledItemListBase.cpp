@@ -215,7 +215,7 @@ void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
     float pixH = d_pane->getUnclippedPixelRect().getHeight();
     float delta = (pixH/float(count)) * -e.wheelChange;
     v->setScrollPosition(v->getScrollPosition() + delta);
-    e.handled = true;
+    ++e.handled;
 }
 
 /************************************************************************

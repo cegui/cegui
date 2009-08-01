@@ -92,7 +92,7 @@ void TabButton::onMouseButtonDown(MouseEventArgs& e)
     if (e.button == MiddleButton)
     {
         captureInput ();
-        e.handled = true;
+        ++e.handled;
         d_dragging = true;
 
         fireEvent(EventDragged, e, EventNamespace);
@@ -119,13 +119,13 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 			}
 		}
 
-		e.handled = true;
+		++e.handled;
     }
     else if (e.button == MiddleButton)
     {
         d_dragging = false;
         releaseInput ();
-        e.handled = true;
+        ++e.handled;
     }
 
 	// default handling
@@ -137,7 +137,7 @@ void TabButton::onMouseMove(MouseEventArgs& e)
     if (d_dragging)
     {
         fireEvent(EventDragged, e, EventNamespace);
-        e.handled = true;
+        ++e.handled;
     }
 
 	// default handling

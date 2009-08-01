@@ -606,7 +606,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	}
 
 	// mark event as handled
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -634,7 +634,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 					// setup the 'dragging' state variables
 					d_beingSized = true;
 					d_dragPoint = localPos;
-					e.handled = true;
+					++e.handled;
 				}
 
 			}
@@ -658,7 +658,7 @@ void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
 	{
 		// release our capture on the input data
 		releaseInput();
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -675,7 +675,7 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 	// reset sizing state
 	d_beingSized = false;
 
-	e.handled = true;
+	++e.handled;
 }
 
 

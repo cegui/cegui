@@ -492,7 +492,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 
 	}
 
-	e.handled = true;
+	++e.handled;
 }
 
 
@@ -532,7 +532,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -564,7 +564,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 
 		// release our capture on the input data
 		releaseInput();
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -584,7 +584,7 @@ void ListHeaderSegment::onMouseDoubleClicked(MouseEventArgs& e)
 		WindowEventArgs args(this);
 		onSplitterDoubleClicked(args);
 
-		e.handled = true;
+		++e.handled;
 	}
 
 }
@@ -618,7 +618,7 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 	d_segmentPushed = false;
 	d_dragMoving = false;
 
-	e.handled = true;
+	++e.handled;
 }
 
 /*************************************************************************

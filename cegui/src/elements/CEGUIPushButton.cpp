@@ -89,7 +89,7 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 
 		}
 
-		e.handled = true;
+		++e.handled;
 	}
 
 	// default handling

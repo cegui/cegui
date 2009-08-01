@@ -683,27 +683,24 @@ void System::setMouseMoveScaling(float scaling)
 bool System::injectMouseMove(float delta_x, float delta_y)
 {
     MouseEventArgs ma(0);
-    MouseCursor& mouse = MouseCursor::getSingleton();
-
     ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
     ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
 
-    // only continue setup and injection if mouse position has changed
-    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
-    {
-        ma.sysKeys = d_sysKeys;
-        ma.wheelChange = 0;
-        ma.clickCount = 0;
-        ma.button = NoButton;
+    // no movement means no event
+    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+        return false;
 
-        // move the mouse cursor & update position in args.
-        mouse.offsetPosition(ma.moveDelta);
-        ma.position = mouse.getPosition();
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
 
-        return mouseMoveInjection_impl(ma);
-    }
+    // move the mouse cursor & update position in args.
+    MouseCursor& mouse(MouseCursor::getSingleton());
+    mouse.offsetPosition(ma.moveDelta);
+    ma.position = mouse.getPosition();
 
-    return false;
+    return mouseMoveInjection_impl(ma);
 }
 
 /*************************************************************************
@@ -729,7 +726,7 @@ bool System::injectMouseLeaves(void)
 		d_wndWithMouse = 0;
 	}
 
-	return ma.handled;
+	return ma.handled != 0;
 }
 
 
@@ -738,30 +735,28 @@ bool System::injectMouseLeaves(void)
 *************************************************************************/
 bool System::injectMouseButtonDown(MouseButton button)
 {
-	// update system keys
-	d_sysKeys |= mouseButtonToSyskey(button);
+    // update system keys
+    d_sysKeys |= mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = button;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = 0;
-
-    // find the likely destination for generated events.
-    Window* dest_window = getTargetWindow(ma.position);
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.window = getTargetWindow(ma.position);
 
     //
-	// Handling for multi-click generation
-	//
-	MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
+    // Handling for multi-click generation
+    //
+    MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
 
-	tkr.d_click_count++;
+    tkr.d_click_count++;
 
     // if multi-click requirements are not met
     if (((d_dblclick_timeout > 0) && (tkr.d_timer.elapsed() > d_dblclick_timeout)) ||
         (!tkr.d_click_area.isPointInRect(ma.position)) ||
-        (tkr.d_target_window != dest_window) ||
+        (tkr.d_target_window != ma.window) ||
         (tkr.d_click_count > 3))
     {
         // reset to single down event.
@@ -773,31 +768,28 @@ bool System::injectMouseButtonDown(MouseButton button)
         tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 
         // set target window for click events on this tracker
-        tkr.d_target_window = dest_window;
+        tkr.d_target_window = ma.window;
     }
 
-	// set click count in the event args
-	ma.clickCount = tkr.d_click_count;
+    // set click count in the event args
+    ma.clickCount = tkr.d_click_count;
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
-
-        if (dest_window->wantsMultiClickEvents())
+    if (ma.window)
+    {
+        if (ma.window->wantsMultiClickEvents())
         {
             switch (tkr.d_click_count)
             {
             case 1:
-                dest_window->onMouseButtonDown(ma);
+                ma.window->onMouseButtonDown(ma);
                 break;
 
             case 2:
-                dest_window->onMouseDoubleClicked(ma);
+                ma.window->onMouseDoubleClicked(ma);
                 break;
 
             case 3:
-                dest_window->onMouseTripleClicked(ma);
+                ma.window->onMouseTripleClicked(ma);
                 break;
             }
         }
@@ -805,16 +797,14 @@ bool System::injectMouseButtonDown(MouseButton button)
         // so just send a mouse down event instead.
         else
         {
-            dest_window->onMouseButtonDown(ma);
+            ma.window->onMouseButtonDown(ma);
         }
+    }
 
-		dest_window = getNextTargetWindow(dest_window);
-	}
+    // reset timer for this tracker.
+    tkr.d_timer.restart();
 
-	// reset timer for this tracker.
-	tkr.d_timer.restart();
-
-	return ma.handled;
+    return ma.handled != 0;
 }
 
 
@@ -823,53 +813,41 @@ bool System::injectMouseButtonDown(MouseButton button)
 *************************************************************************/
 bool System::injectMouseButtonUp(MouseButton button)
 {
-	// update system keys
-	d_sysKeys &= ~mouseButtonToSyskey(button);
+    // update system keys
+    d_sysKeys &= ~mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = button;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = 0;
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.window = getTargetWindow(ma.position);
 
     // get the tracker that holds the number of down events seen so far for this button
     MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
     // set click count in the event args
     ma.clickCount = tkr.d_click_count;
 
-    Window* const initial_dest_window = getTargetWindow(ma.position);
-	Window* dest_window = initial_dest_window;
+    // if there is no window, inputs can not be handled.
+    if (!ma.window)
+        return false;
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
-		dest_window->onMouseButtonUp(ma);
-		dest_window = getNextTargetWindow(dest_window);
-	}
+    // send 'up' input to the window
+    ma.window->onMouseButtonUp(ma);
+    // store whether the 'up' part was handled so we may reuse the EventArgs
+    const uint upHandled = ma.handled;
 
-	bool wasUpHandled = ma.handled;
-
-    // if requirements for click events are met
+    // send MouseClicked event if the requirements for that were met
     if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
-        (tkr.d_target_window == initial_dest_window))
+        (tkr.d_target_window == ma.window))
     {
-		ma.handled = false;
-        dest_window = initial_dest_window;
+        ma.handled = 0;
+        ma.window->onMouseClicked(ma);
+    }
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (dest_window != 0))
-		{
-			ma.window = dest_window;
-			dest_window->onMouseClicked(ma);
-			dest_window = getNextTargetWindow(dest_window);
-		}
-
-	}
-
-	return (ma.handled | wasUpHandled);
+    return (ma.handled + upHandled) != 0;
 }
 
 
@@ -878,29 +856,20 @@ bool System::injectMouseButtonUp(MouseButton button)
 *************************************************************************/
 bool System::injectKeyDown(uint key_code)
 {
-	// update system keys
-	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
+    // update system keys
+    d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
 
-	KeyEventArgs args(0);
+    KeyEventArgs args(getKeyboardTargetWindow());
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.scancode = (Key::Scan)key_code;
-		args.sysKeys = d_sysKeys;
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
 
-		Window* dest = getKeyboardTargetWindow();
+    args.scancode = (Key::Scan)key_code;
+    args.sysKeys = d_sysKeys;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onKeyDown(args);
-			dest = getNextTargetWindow(dest);
-		}
-
-	}
-
-	return args.handled;
+    args.window->onKeyDown(args);
+    return args.handled != 0;
 }
 
 
@@ -909,29 +878,20 @@ bool System::injectKeyDown(uint key_code)
 *************************************************************************/
 bool System::injectKeyUp(uint key_code)
 {
-	// update system keys
-	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
+    // update system keys
+    d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
 
-	KeyEventArgs args(0);
+    KeyEventArgs args(getKeyboardTargetWindow());
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.scancode = (Key::Scan)key_code;
-		args.sysKeys = d_sysKeys;
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
 
-		Window* dest = getKeyboardTargetWindow();
+    args.scancode = (Key::Scan)key_code;
+    args.sysKeys = d_sysKeys;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onKeyUp(args);
-			dest = getNextTargetWindow(dest);
-		}
-
-	}
-
-	return args.handled;
+    args.window->onKeyUp(args);
+    return args.handled != 0;
 }
 
 
@@ -940,26 +900,17 @@ bool System::injectKeyUp(uint key_code)
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
-	KeyEventArgs args(0);
+    KeyEventArgs args(getKeyboardTargetWindow());
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.codepoint = code_point;
-		args.sysKeys = d_sysKeys;
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
 
-		Window* dest = getKeyboardTargetWindow();
+    args.codepoint = code_point;
+    args.sysKeys = d_sysKeys;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onCharacter(args);
-			dest = getNextTargetWindow(dest);
-		}
-
-	}
-
-	return args.handled;
+    args.window->onCharacter(args);
+    return args.handled != 0;
 }
 
 
@@ -968,25 +919,21 @@ bool System::injectChar(utf32 code_point)
 *************************************************************************/
 bool System::injectMouseWheelChange(float delta)
 {
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = NoButton;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = delta;
-	ma.clickCount = 0;
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = NoButton;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = delta;
+    ma.clickCount = 0;
+    ma.window = getTargetWindow(ma.position);
 
-	Window* dest_window = getTargetWindow(ma.position);
+    // if there is no target window, input can not be handled.
+    if (!ma.window)
+        return false;
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
-		dest_window->onMouseWheel(ma);
-		dest_window = getNextTargetWindow(dest_window);
-	}
-
-	return ma.handled;
+    ma.window->onMouseWheel(ma);
+    return ma.handled != 0;
 }
 
 
@@ -995,30 +942,28 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-    Point new_position(x_pos, y_pos);
-    MouseCursor& mouse = MouseCursor::getSingleton();
+    const Point new_position(x_pos, y_pos);
+    MouseCursor& mouse(MouseCursor::getSingleton());
 
     // setup mouse movement event args object.
     MouseEventArgs ma(0);
     ma.moveDelta = new_position - mouse.getPosition();
 
-    // only continue setup and injection if mouse position has changed
-    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
-    {
-        ma.sysKeys = d_sysKeys;
-        ma.wheelChange = 0;
-        ma.clickCount = 0;
-        ma.button = NoButton;
+    // no movement means no event
+    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+        return false;
 
-        // move mouse cursor to new position
-        mouse.setPosition(new_position);
-        // update position in args (since actual position may be constrained)
-        ma.position = mouse.getPosition();
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
 
-        return mouseMoveInjection_impl(ma);
-    }
+    // move mouse cursor to new position
+    mouse.setPosition(new_position);
+    // update position in args (since actual position may be constrained)
+    ma.position = mouse.getPosition();
 
-    return false;
+    return mouseMoveInjection_impl(ma);
 }
 
 
@@ -1027,65 +972,52 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
-	if (d_activeSheet)
-	{
-		d_activeSheet->update(timeElapsed);
-	}
+    // if no visible active sheet, input can't be handled
+    if (!d_activeSheet || !d_activeSheet->isVisible())
+        return false;
 
-	return true;
+    // else pass to sheet for distribution.
+    d_activeSheet->update(timeElapsed);
+    // this input is then /always/ considered handled.
+    return true;
 }
 
 
 /*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window*	System::getTargetWindow(const Point& pt) const
+Window* System::getTargetWindow(const Point& pt) const
 {
-	Window* dest_window = 0;
+    // if there is no GUI sheet visible, then there is nowhere to send input
+    if (!d_activeSheet || !d_activeSheet->isVisible())
+        return 0;
 
-	// if there is no GUI sheet visible, then there is nowhere to send input
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		dest_window = Window::getCaptureWindow();
+    Window* dest_window = Window::getCaptureWindow();
 
-		if (!dest_window)
-		{
-			dest_window = d_activeSheet->getTargetChildAtPosition(pt);
+    if (!dest_window)
+    {
+        dest_window = d_activeSheet->getTargetChildAtPosition(pt);
 
-			if (!dest_window)
-			{
-				dest_window = d_activeSheet;
-			}
+        if (!dest_window)
+            dest_window = d_activeSheet;
+    }
+    else
+    {
+        if (dest_window->distributesCapturedInputs())
+        {
+            Window* child_window = dest_window->getTargetChildAtPosition(pt);
 
-		}
-		else
-		{
-            if (dest_window->distributesCapturedInputs())
-            {
-                Window* child_window = dest_window->getTargetChildAtPosition(pt);
+            if (child_window)
+                dest_window = child_window;
+        }
+    }
 
-                if (child_window)
-                {
-                    dest_window = child_window;
-                }
+    // modal target overrules
+    if (d_modalTarget && dest_window != d_modalTarget)
+        if (!dest_window->isAncestor(d_modalTarget))
+            dest_window = d_modalTarget;
 
-            }
-
-		}
-
-		// modal target overrules
-		if (d_modalTarget != 0 && dest_window != d_modalTarget)
-		{
-			if (!dest_window->isAncestor(d_modalTarget))
-			{
-				dest_window = d_modalTarget;
-			}
-
-		}
-
-	}
-
-	return dest_window;
+    return dest_window;
 }
 
 
@@ -1094,22 +1026,17 @@ Window*	System::getTargetWindow(const Point& pt) const
 *************************************************************************/
 Window* System::getKeyboardTargetWindow(void) const
 {
-	Window* target = 0;
+    // if no active sheet, there is no target widow.
+    if (!d_activeSheet || !d_activeSheet->isVisible())
+        return 0;
 
-	if (!d_modalTarget)
-	{
-		target = d_activeSheet->getActiveChild();
-	}
-	else
-	{
-		target = d_modalTarget->getActiveChild();
-		if (!target)
-		{
-			target = d_modalTarget;
-		}
-	}
+    // handle normal non-modal situations
+    if (!d_modalTarget)
+        return d_activeSheet->getActiveChild();
 
-	return target;
+    // handle possible modal window.
+    Window* const target = d_modalTarget->getActiveChild();
+    return target ? target : d_modalTarget;
 }
 
 
@@ -1340,7 +1267,7 @@ void System::onDefaultFontChanged(EventArgs& e)
             args.window = wnd;
             wnd->onFontChanged(args);
             // ensure 'handled' state is reset.
-            args.handled = false;
+            args.handled = 0;
         }
 
         ++iter;
@@ -1658,22 +1585,17 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 {
     updateWindowContainingMouse();
 
-    // inform appropriate window of the mouse movement event
-    if (Window* dest_window = d_wndWithMouse)
-    {
-        // ensure event starts as 'not handled'
-        ma.handled = false;
+    // input can't be handled if there is no window to handle it.
+    if (!d_wndWithMouse)
+        return false;
 
-        // loop backwards until event is handled or we run out of windows.
-        while ((!ma.handled) && (dest_window != 0))
-        {
-            ma.window = dest_window;
-            dest_window->onMouseMove(ma);
-            dest_window = getNextTargetWindow(dest_window);
-        }
-    }
+    // inform window about the input.
+    ma.window = d_wndWithMouse;
+    ma.handled = 0;
+    ma.window->onMouseMove(ma);
 
-    return ma.handled;
+    // return whether window handled the input.
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1706,7 +1628,7 @@ bool System::updateWindowContainingMouse()
     // inform window containing mouse that mouse has entered it
     if (d_wndWithMouse)
     {
-        ma.handled = false;
+        ma.handled = 0;
         ma.window = d_wndWithMouse;
         d_wndWithMouse->onMouseEnters(ma);
     }
