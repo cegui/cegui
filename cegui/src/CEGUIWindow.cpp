@@ -746,10 +746,10 @@ Rect Window::getUnclippedInnerRect_impl(void) const
 /*************************************************************************
     check if the given position would hit this window.
 *************************************************************************/
-bool Window::isHit(const Vector2& position) const
+bool Window::isHit(const Vector2& position, const bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
-    if (isDisabled())
+    if (!allow_disabled && isDisabled())
         return false;
 
     Rect clipped_area(getPixelRect());
@@ -800,7 +800,8 @@ Window* Window::getChildAtPosition(const Vector2& position) const
     return the child Window that is 'hit' by the given position, and
     does not have mouse pass through enabled.
 *************************************************************************/
-Window* Window::getTargetChildAtPosition(const Vector2& position) const
+Window* Window::getTargetChildAtPosition(const Vector2& position,
+                                         const bool allow_disabled) const
 {
     ChildList::const_reverse_iterator   child, end;
 
@@ -818,13 +819,14 @@ Window* Window::getTargetChildAtPosition(const Vector2& position) const
         if ((*child)->isVisible())
         {
             // recursively scan children of this child windows...
-            Window* wnd = (*child)->getTargetChildAtPosition(p);
+            Window* wnd = (*child)->getTargetChildAtPosition(p, allow_disabled);
 
             // return window pointer if we found a 'hit' down the chain somewhere
             if (wnd)
                 return wnd;
             // see if this child is hit and return it's pointer if it is
-            else if (!(*child)->isMousePassThroughEnabled() && (*child)->isHit(p))
+            else if (!(*child)->isMousePassThroughEnabled() &&
+                     (*child)->isHit(p, allow_disabled))
                 return (*child);
         }
     }

@@ -814,11 +814,16 @@ public:
         Vector2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
+    \param allow_disabled
+        - true specifies that the window may be 'hit' if it is disabled.
+        - false specifies that the window may only be hit if it is enabled.
+
     \return
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2& position) const;
+    virtual bool isHit(const Vector2& position,
+                       const bool allow_disabled = false) const;
 
     /*!
     \brief
@@ -843,11 +848,16 @@ public:
         Vector2 object describing the position to check.  The position
         describes a pixel offset from the top-left corner of the display.
 
+    \param allow_disabled
+        - true specifies that a disabled window may be returned as the target.
+        - false specifies that only enabled windows may be returned.
+
     \return
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2& position) const;
+    Window* getTargetChildAtPosition(const Vector2& position, 
+                                     const bool allow_disabled = false) const;
 
     /*!
     \brief
