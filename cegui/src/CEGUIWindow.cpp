@@ -157,95 +157,93 @@ WindowProperties::NonClient Window::d_nonClientProperty;
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name) :
+    // basic types and initial window name
     d_type(type),
-    d_name(name)
+    d_name(name),
+    d_autoWindow(d_name.rfind(AutoWidgetNameSuffix) != String::npos),
+
+    // basic state
+    d_initialising(false),
+    d_destructionStarted(false),
+    d_enabled(true),
+    d_visible(true),
+    d_active(false),
+
+    // parent related fields
+    d_parent(0),
+    d_destroyedByParent(true),
+
+    // clipping options
+    d_clippedByParent(true),
+    d_nonClientContent(false),
+
+    // rendering components and options
+    d_windowRenderer(0),
+    d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer()),
+    d_surface(0),
+    d_needsRedraw(true),
+    d_autoRenderingWindow(false),
+    d_mouseCursor((const Image*)DefaultMouseCursor),
+
+    // alpha transparency set up
+    d_alpha(1.0f),
+    d_inheritsAlpha(true),
+
+    // mouse input capture set up
+    d_oldCapture(0),
+    d_restoreOldCapture(false),
+    d_distCapturedInputs(false),
+
+    // text system set up
+    d_font(0),
+    d_renderedStringValid(false),
+    d_customStringParser(0),
+
+    // user specific data
+    d_ID(0),
+    d_userData(0),
+
+    // z-order related options
+    d_alwaysOnTop(false),
+    d_riseOnClick(true),
+    d_zOrderingEnabled(true),
+
+    // mouse input options
+    d_wantsMultiClicks(true),
+    d_mousePassThroughEnabled(false),
+    d_autoRepeat(false),
+    d_repeatDelay(0.3f),
+    d_repeatRate(0.06f),
+    d_repeatButton(NoButton),
+    d_repeating(false),
+    d_repeatElapsed(0.0f),
+
+    // drag and drop
+    d_dragDropTarget(true),
+
+    // tool tip related
+    d_customTip(0),
+    d_weOwnTip(false),
+    d_inheritsTipText(true),
+
+    // XML writing options
+    d_allowWriteXML(true),
+
+    // Window position, size, aligment, etc...
+    d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
+    d_pixelSize(0.0f, 0.0f),
+    d_minSize(cegui_reldim(0), cegui_reldim(0)),
+    d_maxSize(cegui_reldim(1), cegui_reldim(1)),
+    d_horzAlign(HA_LEFT),
+    d_vertAlign(VA_TOP),
+    d_rotation(0.0f, 0.0f, 0.0f),
+
+    // cached pixel rect validity flags
+    d_screenUnclippedRectValid(false),
+    d_screenUnclippedInnerRectValid(false),
+    d_screenRectValid(false),
+    d_screenInnerRectValid(false)
 {
-    d_surface = 0;
-    d_autoRenderingWindow = false;
-    d_geometry = &System::getSingleton().getRenderer()->createGeometryBuffer();
-    d_rotation = Vector3(0,0,0);
-
-    d_customStringParser = 0;
-    d_renderedStringValid = false;
-
-    // basic set-up
-    d_parent        = 0;
-    d_font          = 0;
-    d_ID            = 0;
-    d_alpha         = 1.0f;
-    d_mouseCursor   = (const Image*)DefaultMouseCursor;
-    d_userData      = 0;
-    d_needsRedraw   = true;
-
-    // basic settings
-    d_enabled           = true;
-    d_visible           = true;
-    d_active            = false;
-    d_clippedByParent   = true;
-    d_nonClientContent  = false;
-    d_destroyedByParent = true;
-    d_alwaysOnTop       = false;
-    d_inheritsAlpha     = true;
-    d_restoreOldCapture = false;
-    d_zOrderingEnabled  = true;
-    d_wantsMultiClicks  = true;
-    d_distCapturedInputs = false;
-    d_riseOnClick       = true;
-    d_dragDropTarget    = true;
-
-    // initialise mouse button auto-repeat state
-    d_repeatButton = NoButton;
-    d_autoRepeat   = false;
-    d_repeating    = false;
-    d_repeatDelay  = 0.3f;
-    d_repeatRate   = 0.06f;
-
-    // Tooltip setup
-    d_customTip = 0;
-    d_weOwnTip = false;
-    d_inheritsTipText = true;
-
-    // set initial min/max sizes.  These should normally be re-set in derived
-    // classes to something appropriate.
-    d_minSize = UVector2(cegui_reldim(0), cegui_reldim(0));
-    d_maxSize = UVector2(cegui_reldim(1), cegui_reldim(1));
-
-    // set initial window area.
-    d_area = URect(cegui_reldim(0), cegui_reldim(0),
-                   cegui_reldim(0), cegui_reldim(0));
-    d_pixelSize = Size(0, 0);
-
-    // set initial alignments
-    d_horzAlign = HA_LEFT;
-    d_vertAlign = VA_TOP;
-
-    // initialisation flags
-    d_initialising = false;
-    d_destructionStarted = false;
-
-    // event pass through
-    d_mousePassThroughEnabled = false;
-
-    // WindowRenderer
-    d_windowRenderer = 0;
-
-    // auto window flag
-    d_autoWindow = (d_name.rfind(AutoWidgetNameSuffix) != String::npos);
-
-    // allow writing XML flag
-    d_allowWriteXML = true;
-
-    // screen rect caching
-    d_screenUnclippedRectValid = false;
-    d_screenUnclippedInnerRectValid = false;
-    d_screenRectValid = false;
-    d_screenInnerRectValid = false;
-
-    d_screenUnclippedRect = Rect(0,0,0,0);
-    d_screenUnclippedInnerRect = Rect(0,0,0,0);
-    d_screenRect = Rect(0,0,0,0);
-    d_screenInnerRect = Rect(0,0,0,0);
-
     // add properties
     addStandardProperties();
 }
