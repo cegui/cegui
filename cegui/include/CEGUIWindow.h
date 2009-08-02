@@ -683,68 +683,90 @@ public:
 
     /*!
     \brief
-        return a Rect object describing the Window area in screen space.
+        Return a Rect that describes the unclipped outer rect area of the Window
+        in screen pixels.
+    */
+    Rect getUnclippedOuterRect() const;
 
-    \return
-        Rect object that describes the area covered by the Window.  The values
-        in the returned Rect are in screen pixels.  The returned Rect is clipped
-        as appropriate and depending upon the 'ClippedByParent' setting.
+    /*!
+    \brief
+        Return a Rect that describes the unclipped inner rect area of the Window
+        in screen pixels.
+    */
+    Rect getUnclippedInnerRect() const;
+
+    /*!
+    \brief
+        Return a Rect that describes the unclipped area covered by the Window.
+
+        This function can return either the inner or outer area dependant upon
+        the boolean values passed in.
+
+    \param inner
+        - true if the inner rect area should be returned.
+        - false if the outer rect area should be returned.
+    */
+    Rect getUnclippedRect(const bool inner) const;
+
+    /*!
+    \brief
+        Return a Rect that describes the rendering clipping rect based upon the
+        outer rect area of the window.
 
     \note
-        This has now been made virtual to ease some customisations that require
-        more specialised clipping requirements.
+        The area returned by this function gives you the correct clipping rect
+        for rendering within the Window's outer rect area.  The area described
+        may or may not correspond to the final visual clipping actually seen on
+        the display; this is intentional and neccessary due to the way that
+        imagery is cached under some configurations.
     */
-    Rect getPixelRect(void) const;
+    Rect getOuterRectClipper() const;
 
     /*!
     \brief
-        return a Rect object describing the Window area in screen space.
-
-    \return
-        Rect object that describes the area covered by the Window.  The values
-        in the returned Rect are in screen pixels.  The returned Rect is clipped
-        as appropriate and depending upon the 'ClippedByParent' setting.
+        Return a Rect that describes the rendering clipping rect based upon the
+        inner rect area of the window.
 
     \note
-        This has now been made virtual to ease some customisations that require
-        more specialised clipping requirements.
+        The area returned by this function gives you the correct clipping rect
+        for rendering within the Window's inner rect area.  The area described
+        may or may not correspond to the final visual clipping actually seen on
+        the display; this is intentional and neccessary due to the way that
+        imagery is cached under some configurations.
     */
-    virtual Rect getPixelRect_impl(void) const;
+    Rect getInnerRectClipper() const;
 
     /*!
     \brief
-        return a Rect object describing the clipped inner area for this window.
+        Return a Rect that describes the rendering clipping rect for the Window.
 
-    \return
-        Rect object that describes, in appropriately clipped screen pixel
-        co-ordinates, the window object's inner rect area.
+        This function can return the clipping rect for either the inner or outer
+        area dependant upon the boolean values passed in.
+
+    \note
+        The areas returned by this function gives you the correct clipping rects
+        for rendering within the Window's areas.  The area described may or may
+        not correspond to the final visual clipping actually seen on the
+        display; this is intentional and neccessary due to the way that imagery
+        is cached under some configurations.
+
+    \param non_client
+        - true to return the non-client clipping area (based on outer rect).
+        - false to return the client clipping area (based on inner rect).
     */
-    Rect getInnerRect(void) const;
+    Rect getClipRect(const bool non_client = false) const;
 
     /*!
     \brief
-        return a Rect object describing the Window area unclipped, in screen
-        space.
+        Return the Rect that descibes the clipped screen area that is used for
+        determining whether this window has been hit by a certain point.
 
-    \return
-        Rect object that describes the area covered by the Window.  The values
-        in the returned Rect are in screen pixels.  The returned rect is fully
-        unclipped.
+        The area returned by this function may also be useful for certain
+        calculations that require the clipped Window area as seen on the display
+        as opposed to what is used for rendering (since the actual rendering
+        clipper rects should not to be used if reliable results are desired).
     */
-    Rect getUnclippedPixelRect(void) const;
-
-    /*!
-    \brief
-        Return a Rect object that describes, unclipped, the inner rectangle for
-        this window.  The inner rectangle is typically an area that excludes
-        some frame or other rendering that should not be touched by subsequent
-        rendering.
-
-    \return
-        Rect object that describes, in unclipped screen pixel co-ordinates, the
-        window object's inner rect area.
-    */
-    Rect getUnclippedInnerRect(void) const;
+    Rect getHitTestRect() const;
 
     /*!
     \brief
@@ -3611,6 +3633,9 @@ protected:
     //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
     void transferChildSurfaces();
 
+    //! helper function for calculating clipping rectangles.
+    Rect getParentElementClipIntersection(const Rect& unclipped_area) const;
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
@@ -3817,18 +3842,22 @@ protected:
     //! Rotation angles for this window
     Vector3 d_rotation;
 
-    //! current unclipped screen rect in pixels
-    mutable Rect d_screenUnclippedRect;
-    mutable bool d_screenUnclippedRectValid;
-    //! current unclipped inner screen rect in pixels
-    mutable Rect d_screenUnclippedInnerRect;
-    mutable bool d_screenUnclippedInnerRectValid;
-    //! current fully clipped screen rect in pixels
-    mutable Rect d_screenRect;
-    mutable bool d_screenRectValid;
-    //! current fully clipped inner screen rect in pixels
-    mutable Rect d_screenInnerRect;
-    mutable bool d_screenInnerRectValid;
+    //! outer area rect in screen pixels
+    mutable Rect d_outerUnclippedRect;
+    //! inner area rect in screen pixels
+    mutable Rect d_innerUnclippedRect;
+    //! outer area clipping rect in screen pixels
+    mutable Rect d_outerRectClipper;
+    //! inner area clipping rect in screen pixels
+    mutable Rect d_innerRectClipper;
+    //! area rect used for hit-testing agains this window
+    mutable Rect d_hitTestRect;
+
+    mutable bool d_outerUnclippedRectValid;
+    mutable bool d_innerUnclippedRectValid;
+    mutable bool d_outerRectClipperValid;
+    mutable bool d_innerRectClipperValid;
+    mutable bool d_hitTestRectValid;
 
 private:
     /*************************************************************************

@@ -87,7 +87,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     
     if (parent)
     {
-        const CEGUI::Rect outer(parent->getUnclippedPixelRect());
+        const CEGUI::Rect outer(parent->getUnclippedOuterRect());
         const CEGUI::Rect inner(parent->getUnclippedInnerRect());
         x_adj = inner.d_left - outer.d_left;
         y_adj = inner.d_top - outer.d_top;

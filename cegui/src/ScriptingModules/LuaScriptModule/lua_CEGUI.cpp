@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Aug  1 12:24:37 2009.
+** Generated automatically by tolua++-1.0.92 on Sun Aug  2 16:04:54 2009.
 */
 
 #ifndef __cplusplus
@@ -16034,9 +16034,9 @@ static int tolua_CEGUI_CEGUI_Window_setZOrderingEnabled00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getPixelSize of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getPixelSize00
-static int tolua_CEGUI_CEGUI_Window_getPixelSize00(lua_State* tolua_S)
+/* method: getUnclippedOuterRect of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getUnclippedOuterRect00
+static int tolua_CEGUI_CEGUI_Window_getUnclippedOuterRect00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -16050,50 +16050,10 @@ static int tolua_CEGUI_CEGUI_Window_getPixelSize00(lua_State* tolua_S)
  {
   const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPixelSize'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUnclippedOuterRect'",NULL);
 #endif
  {
-  CEGUI::Size tolua_ret = (CEGUI::Size)  self->getPixelSize();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::Size(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Size));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getPixelSize'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getPixelRect of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getPixelRect00
-static int tolua_CEGUI_CEGUI_Window_getPixelRect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPixelRect'",NULL);
-#endif
- {
-  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getPixelRect();
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getUnclippedOuterRect();
  {
 #ifdef __cplusplus
  void* tolua_obj = new CEGUI::Rect(tolua_ret);
@@ -16108,87 +16068,7 @@ static int tolua_CEGUI_CEGUI_Window_getPixelRect00(lua_State* tolua_S)
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getPixelRect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getInnerRect of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getInnerRect00
-static int tolua_CEGUI_CEGUI_Window_getInnerRect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getInnerRect'",NULL);
-#endif
- {
-  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getInnerRect();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::Rect(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getInnerRect'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getUnclippedPixelRect of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getUnclippedPixelRect00
-static int tolua_CEGUI_CEGUI_Window_getUnclippedPixelRect00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUnclippedPixelRect'",NULL);
-#endif
- {
-  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getUnclippedPixelRect();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::Rect(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getUnclippedPixelRect'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getUnclippedOuterRect'.",&tolua_err);
  return 0;
 #endif
 }
@@ -16229,6 +16109,250 @@ static int tolua_CEGUI_CEGUI_Window_getUnclippedInnerRect00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getUnclippedInnerRect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getUnclippedRect of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getUnclippedRect00
+static int tolua_CEGUI_CEGUI_Window_getUnclippedRect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool inner = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUnclippedRect'",NULL);
+#endif
+ {
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getUnclippedRect(inner);
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Rect(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getUnclippedRect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getOuterRectClipper of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getOuterRectClipper00
+static int tolua_CEGUI_CEGUI_Window_getOuterRectClipper00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOuterRectClipper'",NULL);
+#endif
+ {
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getOuterRectClipper();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Rect(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getOuterRectClipper'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getInnerRectClipper of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getInnerRectClipper00
+static int tolua_CEGUI_CEGUI_Window_getInnerRectClipper00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getInnerRectClipper'",NULL);
+#endif
+ {
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getInnerRectClipper();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Rect(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getInnerRectClipper'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getClipRect of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getClipRect00
+static int tolua_CEGUI_CEGUI_Window_getClipRect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool non_client = ((bool)  tolua_toboolean(tolua_S,2,false));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getClipRect'",NULL);
+#endif
+ {
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getClipRect(non_client);
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Rect(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getClipRect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getHitTestRect of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getHitTestRect00
+static int tolua_CEGUI_CEGUI_Window_getHitTestRect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHitTestRect'",NULL);
+#endif
+ {
+  CEGUI::Rect tolua_ret = (CEGUI::Rect)  self->getHitTestRect();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Rect(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Rect));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Rect");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getHitTestRect'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getPixelSize of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getPixelSize00
+static int tolua_CEGUI_CEGUI_Window_getPixelSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getPixelSize'",NULL);
+#endif
+ {
+  CEGUI::Size tolua_ret = (CEGUI::Size)  self->getPixelSize();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Size(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Size));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Size");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getPixelSize'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53000,11 +53124,14 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"invalidate",tolua_CEGUI_CEGUI_Window_invalidate00);
    tolua_function(tolua_S,"isZOrderingEnabled",tolua_CEGUI_CEGUI_Window_isZOrderingEnabled00);
    tolua_function(tolua_S,"setZOrderingEnabled",tolua_CEGUI_CEGUI_Window_setZOrderingEnabled00);
-   tolua_function(tolua_S,"getPixelSize",tolua_CEGUI_CEGUI_Window_getPixelSize00);
-   tolua_function(tolua_S,"getPixelRect",tolua_CEGUI_CEGUI_Window_getPixelRect00);
-   tolua_function(tolua_S,"getInnerRect",tolua_CEGUI_CEGUI_Window_getInnerRect00);
-   tolua_function(tolua_S,"getUnclippedPixelRect",tolua_CEGUI_CEGUI_Window_getUnclippedPixelRect00);
+   tolua_function(tolua_S,"getUnclippedOuterRect",tolua_CEGUI_CEGUI_Window_getUnclippedOuterRect00);
    tolua_function(tolua_S,"getUnclippedInnerRect",tolua_CEGUI_CEGUI_Window_getUnclippedInnerRect00);
+   tolua_function(tolua_S,"getUnclippedRect",tolua_CEGUI_CEGUI_Window_getUnclippedRect00);
+   tolua_function(tolua_S,"getOuterRectClipper",tolua_CEGUI_CEGUI_Window_getOuterRectClipper00);
+   tolua_function(tolua_S,"getInnerRectClipper",tolua_CEGUI_CEGUI_Window_getInnerRectClipper00);
+   tolua_function(tolua_S,"getClipRect",tolua_CEGUI_CEGUI_Window_getClipRect00);
+   tolua_function(tolua_S,"getHitTestRect",tolua_CEGUI_CEGUI_Window_getHitTestRect00);
+   tolua_function(tolua_S,"getPixelSize",tolua_CEGUI_CEGUI_Window_getPixelSize00);
    tolua_function(tolua_S,"getParentPixelSize",tolua_CEGUI_CEGUI_Window_getParentPixelSize00);
    tolua_function(tolua_S,"getParentPixelWidth",tolua_CEGUI_CEGUI_Window_getParentPixelWidth00);
    tolua_function(tolua_S,"getParentPixelHeight",tolua_CEGUI_CEGUI_Window_getParentPixelHeight00);

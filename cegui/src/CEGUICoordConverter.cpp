@@ -171,7 +171,7 @@ float CoordConverter::getBaseXValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rect parent_rect(
-        parent ? window.isNonClientWindow() ? parent->getUnclippedPixelRect() :
+        parent ? window.isNonClientWindow() ? parent->getUnclippedOuterRect() :
                                               parent->getUnclippedInnerRect() :
                  Rect(Vector2(0, 0),
                       System::getSingleton().getRenderer()->getDisplaySize())
@@ -204,7 +204,7 @@ float CoordConverter::getBaseYValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rect parent_rect(
-        parent ? window.isNonClientWindow() ? parent->getUnclippedPixelRect() :
+        parent ? window.isNonClientWindow() ? parent->getUnclippedOuterRect() :
                                               parent->getUnclippedInnerRect() :
                  Rect(Vector2(0, 0),
                       System::getSingleton().getRenderer()->getDisplaySize())

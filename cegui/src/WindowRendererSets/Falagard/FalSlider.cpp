@@ -157,7 +157,7 @@ namespace CEGUI
     float FalagardSlider::getAdjustDirectionFromPoint(const Point& pt) const
     {
         Slider* w = (Slider*)d_window;
-        Rect absrect(w->getThumb()->getUnclippedPixelRect());
+        Rect absrect(w->getThumb()->getUnclippedOuterRect());
 
         if ((d_vertical && (pt.d_y < absrect.d_top)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))

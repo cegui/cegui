@@ -155,7 +155,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				}
 				else 
 				{
-					constrainArea = d_parent->getParent()->getInnerRect().getIntersection(d_oldCursorArea);
+					constrainArea = d_parent->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
 				MouseCursor::getSingleton().setConstraintArea(&constrainArea);

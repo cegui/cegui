@@ -486,7 +486,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
     // ensure root window is only used as owner if it really is.
     ctx.owner = root->getRenderingSurface() == ctx.surface ? root : 0;
     // ensure use of correct offset for the surface we're targetting
-    ctx.offset = ctx.owner ? ctx.owner->getPixelRect().getPosition() :
+    ctx.offset = ctx.owner ? ctx.owner->getOuterRectClipper().getPosition() :
                              Vector2(0, 0);
     // draw to overlay queue
     ctx.queue = RQ_OVERLAY;

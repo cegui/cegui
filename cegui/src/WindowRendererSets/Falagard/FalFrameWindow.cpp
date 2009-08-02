@@ -85,7 +85,7 @@ namespace CEGUI
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        return wlf.getNamedArea(areaName).getArea().getPixelRect(*w, w->getUnclippedPixelRect());
+        return wlf.getNamedArea(areaName).getArea().getPixelRect(*w, w->getUnclippedOuterRect());
     }
 
 } // End of  CEGUI namespace section
