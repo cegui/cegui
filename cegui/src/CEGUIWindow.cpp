@@ -567,8 +567,22 @@ Rect Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
     {
-        d_hitTestRect =
-            getParentElementClipIntersection(getUnclippedOuterRect());
+        // if clipped by parent wnd, hit test area is the intersection of our
+        // outer rect with the parent's hit test area intersected with the
+        // parent's clipper.
+        if (d_parent && d_clippedByParent)
+        {
+            d_hitTestRect = getUnclippedOuterRect().getIntersection(
+                d_parent->getHitTestRect().getIntersection(
+                    d_parent->getClipRect(d_nonClientContent)));
+        }
+        // not clipped to parent wnd, so get intersection with screen area.
+        else
+        {
+            d_hitTestRect = getUnclippedOuterRect().getIntersection(
+                Rect(Vector2(0, 0),
+                     System::getSingleton().getRenderer()->getDisplaySize()));
+        }
 
         d_hitTestRectValid = true;
     }
