@@ -125,11 +125,12 @@ public:
     /*************************************************************************
         Event name constants
     *************************************************************************/
-    //!< Namespace for global events
+    //! Namespace for global events
     static const String EventNamespace;
 
     // generated internally by Window
-    static const String EventWindowUpdated; //!< Event to signal the window is being updated. Used by lua system!
+    //! Signal the time based update of window.
+    static const String EventWindowUpdated;
     //! Parent of this Window has been re-sized.
     static const String EventParentSized;
     //! Window size has changed
@@ -234,9 +235,6 @@ public:
     static const String AutoWidgetNameSuffix;
 
 
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
     /*!
     \brief
         Constructor for Window base class
@@ -255,9 +253,6 @@ public:
     */
     virtual ~Window(void);
 
-    /*************************************************************************
-        Accessor functions
-    *************************************************************************/
     /*!
     \brief
         return a String object holding the type name for this Window.
@@ -1375,9 +1370,6 @@ public:
     */
     bool isNonClientWindow() const;
 
-    /*************************************************************************
-        Manipulator functions
-    *************************************************************************/
     /*!
     \brief
         Renames the window.
@@ -2814,10 +2806,9 @@ public:
     virtual RenderedStringParser& getRenderedStringParser() const;
 
 protected:
-    /*************************************************************************
-        System object can trigger events directly
-    *************************************************************************/
+    // friend classes for construction / initialisation purposes (for now)
     friend class System;
+    friend class WindowManager;
 
     /*************************************************************************
         Event trigger methods
@@ -3476,295 +3467,6 @@ protected:
     //! Helper to intialise the needed clipping for geometry and render surface.
     void initialiseClippers(const RenderingContext& ctx);
 
-    /*************************************************************************
-        Implementation Data
-    *************************************************************************/
-    // child stuff
-    typedef std::vector<Window*> ChildList;
-    //! The list of child Window objects attached to this.
-    ChildList d_children;
-
-    //! Child window objects arranged in rendering order.
-    ChildList d_drawList;
-
-    // general data
-    //! Window that has captured inputs
-    static Window* d_captureWindow;
-
-    //! The Window that previously had capture (used for restoreOldCapture mode)
-    Window* d_oldCapture;
-
-    //! Holds pointer to the parent window.
-    Window* d_parent;
-
-    //! Holds pointer to the Window objects current Font.
-    Font* d_font;
-
-    //! Holds the text / label / caption for this Window.
-    String d_textLogical;
-
-#ifdef CEGUI_BIDI_SUPPORT
-    TextUtils::StrIndexList d_l2vMapping;
-    TextUtils::StrIndexList d_v2lMapping;
-    String d_textVisual;
-#endif
-    //! RenderedString representation of text string as ouput from a parser.
-    mutable RenderedString d_renderedString;
-    //! true if d_renderedString is valid, false if needs re-parse.
-    mutable bool d_renderedStringValid;
-    //! Shared instance of a parser to be used in most instances.
-    static BasicRenderedStringParser d_basicStringParser;
-    //! Pointer to a custom (user assigned) RenderedStringParser object.
-    RenderedStringParser* d_customStringParser;
-
-    //! User ID assigned to this Window
-    uint d_ID;
-
-    //! Alpha transparency setting for the Window
-    float d_alpha;
-
-    //! This Window objects area as defined by a URect.
-    URect d_area;
-
-    //! Current constrained pixel size of the window.
-    Size d_pixelSize;
-
-    //! Rotation angles for this window
-    Vector3 d_rotation;
-
-    //! Holds pointer to the Window objects current mouse cursor image.
-    const Image* d_mouseCursor;
-
-    // user data
-    typedef std::map<String, String, String::FastLessCompare>   UserStringMap;
-
-    //! Holds a collection of named user string values.
-    UserStringMap d_userStrings;
-
-    //! Holds pointer to some user assigned data.
-    void* d_userData;
-
-    // positional alignments
-    //! Specifies the base for horizontal alignment.
-    HorizontalAlignment d_horzAlign;
-
-    //! Specifies the base for vertical alignment.
-    VerticalAlignment d_vertAlign;
-
-    // maximum and minimum sizes
-    //! current minimum size for the window.
-    UVector2 d_minSize;
-
-    //! current maximum size for the window.
-    UVector2 d_maxSize;
-
-    // settings
-    //! true when Window is enabled
-    bool d_enabled;
-
-    /*!
-    \brief
-        true when Window is visible (that is it will be rendered, but may be
-        obscured so no necesarily really visible)
-    */
-    bool d_visible;
-
-    //! true when Window is the active Window (receiving inputs).
-    bool d_active;
-
-    //! true when Window will be clipped by parent Window area Rect.
-    bool d_clippedByParent;
-
-    //! true if Window is in non-client (outside InnerRect) area of parent.
-    bool d_nonClientContent;
-
-    //! true when Window will be auto-destroyed by parent.
-    bool d_destroyedByParent;
-
-    //! true if Window will be drawn on top of all other Windows
-    bool d_alwaysOnTop;
-
-    //! true if the Window inherits alpha from the parent Window
-    bool d_inheritsAlpha;
-
-    /*!
-    \brief
-        true if the Window restores capture to the previous window when it
-        releases capture.
-    */
-    bool d_restoreOldCapture;
-
-    //! true if the Window responds to z-order change requests.
-    bool d_zOrderingEnabled;
-
-    //! true if the Window wishes to hear about multi-click mouse events.
-    bool d_wantsMultiClicks;
-
-    /*!
-    \brief
-        true if unhandled captured inputs should be distributed to child
-        windows.
-    */
-    bool d_distCapturedInputs;
-
-    /*!
-    \brief
-        True if the window should come to the front of the z order in response
-        to a left mouse button down event.
-    */
-    bool d_riseOnClick;
-
-    // mouse button autorepeat data
-    /*!
-    \brief
-        true if button will auto-repeat mouse button down events while mouse
-        button is held down.
-    */
-    bool d_autoRepeat;
-
-    //! seconds before first repeat event is fired
-    float d_repeatDelay;
-
-    //! secons between further repeats after delay has expired.
-    float d_repeatRate;
-
-    //! implements repeating - is true after delay has elapsed,
-    bool d_repeating;
-
-    //! implements repeating - tracks time elapsed.
-    float d_repeatElapsed;
-
-    /*!
-    \brief
-        Button we're tracking (implication of this is that we only support one
-        button at a time).
-    */
-    MouseButton d_repeatButton;
-
-    //! true if window will receive drag and drop related notifications
-    bool d_dragDropTarget;
-
-    // Tooltip stuff
-    //! Text string used as tip for this window.
-    String d_tooltipText;
-    //! Possible custom Tooltip for this window.
-    Tooltip* d_customTip;
-    //! true if this Window created the custom Tooltip.
-    bool d_weOwnTip;
-    /*!
-    \brief
-        true if the Window inherits tooltip text from its parent (when none set
-        for itself).
-    */
-    bool d_inheritsTipText;
-
-    // rendering
-    //! Object which acts as a cache of geometry drawn by this Window.
-    GeometryBuffer* d_geometry;
-    //! RenderingSurface owned by this window (may be 0)
-    RenderingSurface* d_surface;
-    //! true if window geometry cache needs to be regenerated.
-    mutable bool d_needsRedraw;
-    //! holds setting for automatic creation of of surface (RenderingWindow)
-    bool d_autoRenderingWindow;
-
-    // Look'N'Feel stuff
-    //! Name of the Look assigned to this window (if any).
-    String d_lookName;
-    //! The WindowRenderer module that implements the Look'N'Feel specification
-    WindowRenderer* d_windowRenderer;
-
-    //! true when this window is currently being initialised (creating children etc)
-    bool d_initialising;
-    //! true when this window is being destroyed.
-    bool d_destructionStarted;
-
-    // Event pass through
-    /*!
-    \brief
-        true if this window can never be "hit" by the cursor.
-        false for normal mouse event handling.
-    */
-    bool d_mousePassThroughEnabled;
-
-    //! true when this window is an auto-window (it's name contains __auto_)
-    bool d_autoWindow;
-
-    /*!
-    \brief
-        std::set used to determine whether a window should write a property to XML or not.
-        if the property name is present the property will not be written
-    */
-    typedef std::set<String, String::FastLessCompare> BannedXMLPropertySet;
-    BannedXMLPropertySet d_bannedXMLProperties;
-
-    //! true if this window is allowed to write XML, false if not
-    bool d_allowWriteXML;
-
-    //! current unclipped screen rect in pixels
-    mutable Rect d_screenUnclippedRect;
-    mutable bool d_screenUnclippedRectValid;
-    //! current unclipped inner screen rect in pixels
-    mutable Rect d_screenUnclippedInnerRect;
-    mutable bool d_screenUnclippedInnerRectValid;
-    //! current fully clipped screen rect in pixels
-    mutable Rect d_screenRect;
-    mutable bool d_screenRectValid;
-    //! current fully clipped inner screen rect in pixels
-    mutable Rect d_screenInnerRect;
-    mutable bool d_screenInnerRectValid;
-
-protected:
-    /*************************************************************************
-        Properties for Window base class
-    *************************************************************************/
-    static  WindowProperties::Alpha             d_alphaProperty;
-    static  WindowProperties::AlwaysOnTop       d_alwaysOnTopProperty;
-    static  WindowProperties::ClippedByParent   d_clippedByParentProperty;
-    static  WindowProperties::DestroyedByParent d_destroyedByParentProperty;
-    static  WindowProperties::Disabled          d_disabledProperty;
-    static  WindowProperties::Font              d_fontProperty;
-    static  WindowProperties::ID                d_IDProperty;
-    static  WindowProperties::InheritsAlpha     d_inheritsAlphaProperty;
-    static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    static  WindowProperties::RestoreOldCapture d_restoreOldCaptureProperty;
-    static  WindowProperties::Text              d_textProperty;
-    static  WindowProperties::Visible           d_visibleProperty;
-    static  WindowProperties::ZOrderChangeEnabled   d_zOrderChangeProperty;
-    static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
-    static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
-    static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
-    static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
-    static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
-    static  WindowProperties::CustomTooltipType d_tooltipTypeProperty;
-    static  WindowProperties::Tooltip           d_tooltipProperty;
-    static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
-    static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
-    static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
-    static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
-    static  WindowProperties::UnifiedAreaRect   d_unifiedAreaRectProperty;
-    static  WindowProperties::UnifiedPosition   d_unifiedPositionProperty;
-    static  WindowProperties::UnifiedXPosition  d_unifiedXPositionProperty;
-    static  WindowProperties::UnifiedYPosition  d_unifiedYPositionProperty;
-    static  WindowProperties::UnifiedSize       d_unifiedSizeProperty;
-    static  WindowProperties::UnifiedWidth      d_unifiedWidthProperty;
-    static  WindowProperties::UnifiedHeight     d_unifiedHeightProperty;
-    static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
-    static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
-    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
-    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
-    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
-    static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
-    static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
-    static  WindowProperties::Rotation d_rotationProperty;
-    static  WindowProperties::XRotation d_xRotationProperty;
-    static  WindowProperties::YRotation d_yRotationProperty;
-    static  WindowProperties::ZRotation d_zRotationProperty;
-    static  WindowProperties::NonClient d_nonClientProperty;
-
-    /*************************************************************************
-        implementation functions
-    *************************************************************************/
     /*!
     \brief
         Cleanup child windows
@@ -3849,7 +3551,8 @@ protected:
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
      */
-    void setArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
+    void setArea_impl(const UVector2& pos, const UVector2& size,
+                      bool topLeftSizing = false, bool fireEvents = true);
 
     /*!
     \brief
@@ -3913,28 +3616,226 @@ protected:
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
     /*************************************************************************
+        Properties for Window base class
+    *************************************************************************/
+    static  WindowProperties::Alpha             d_alphaProperty;
+    static  WindowProperties::AlwaysOnTop       d_alwaysOnTopProperty;
+    static  WindowProperties::ClippedByParent   d_clippedByParentProperty;
+    static  WindowProperties::DestroyedByParent d_destroyedByParentProperty;
+    static  WindowProperties::Disabled          d_disabledProperty;
+    static  WindowProperties::Font              d_fontProperty;
+    static  WindowProperties::ID                d_IDProperty;
+    static  WindowProperties::InheritsAlpha     d_inheritsAlphaProperty;
+    static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
+    static  WindowProperties::RestoreOldCapture d_restoreOldCaptureProperty;
+    static  WindowProperties::Text              d_textProperty;
+    static  WindowProperties::Visible           d_visibleProperty;
+    static  WindowProperties::ZOrderChangeEnabled   d_zOrderChangeProperty;
+    static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
+    static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
+    static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
+    static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
+    static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
+    static  WindowProperties::CustomTooltipType d_tooltipTypeProperty;
+    static  WindowProperties::Tooltip           d_tooltipProperty;
+    static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
+    static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
+    static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
+    static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
+    static  WindowProperties::UnifiedAreaRect   d_unifiedAreaRectProperty;
+    static  WindowProperties::UnifiedPosition   d_unifiedPositionProperty;
+    static  WindowProperties::UnifiedXPosition  d_unifiedXPositionProperty;
+    static  WindowProperties::UnifiedYPosition  d_unifiedYPositionProperty;
+    static  WindowProperties::UnifiedSize       d_unifiedSizeProperty;
+    static  WindowProperties::UnifiedWidth      d_unifiedWidthProperty;
+    static  WindowProperties::UnifiedHeight     d_unifiedHeightProperty;
+    static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
+    static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
+    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
+    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
+    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
+    static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
+    static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
+    static  WindowProperties::Rotation d_rotationProperty;
+    static  WindowProperties::XRotation d_xRotationProperty;
+    static  WindowProperties::YRotation d_yRotationProperty;
+    static  WindowProperties::ZRotation d_zRotationProperty;
+    static  WindowProperties::NonClient d_nonClientProperty;
+
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    //! definition of type used for the list of attached child windows.
+    typedef std::vector<Window*> ChildList;
+    //! definition of type used for the UserString dictionary.
+    typedef std::map<String, String, String::FastLessCompare> UserStringMap;
+    //! definition of type used to track properties banned from writing XML.
+    typedef std::set<String, String::FastLessCompare> BannedXMLPropertySet;
+
+    //! type of Window (also the name of the WindowFactory that created us)
+    const String d_type;
+    //! The name of the window (GUI system unique).
+    String d_name;
+    //! Type name of the window as defined in a Falagard mapping.
+    String d_falagardType;
+    //! true when this window is an auto-window (it's name contains __auto_)
+    bool d_autoWindow;
+
+    //! true when this window is currently being initialised (creating children etc)
+    bool d_initialising;
+    //! true when this window is being destroyed.
+    bool d_destructionStarted;
+    //! true when Window is enabled
+    bool d_enabled;
+    //! is window visible (i.e. it will be rendered, but may still be obscured)
+    bool d_visible;
+    //! true when Window is the active Window (receiving inputs).
+    bool d_active;
+
+    //! The list of child Window objects attached to this.
+    ChildList d_children;
+    //! Child window objects arranged in rendering order.
+    ChildList d_drawList;
+    //! Holds pointer to the parent window.
+    Window* d_parent;
+    //! true when Window will be auto-destroyed by parent.
+    bool d_destroyedByParent;
+
+    //! true when Window will be clipped by parent Window area Rect.
+    bool d_clippedByParent;
+    //! true if Window is in non-client (outside InnerRect) area of parent.
+    bool d_nonClientContent;
+
+    //! Name of the Look assigned to this window (if any).
+    String d_lookName;
+    //! The WindowRenderer module that implements the Look'N'Feel specification
+    WindowRenderer* d_windowRenderer;
+    //! Object which acts as a cache of geometry drawn by this Window.
+    GeometryBuffer* d_geometry;
+    //! RenderingSurface owned by this window (may be 0)
+    RenderingSurface* d_surface;
+    //! true if window geometry cache needs to be regenerated.
+    mutable bool d_needsRedraw;
+    //! holds setting for automatic creation of of surface (RenderingWindow)
+    bool d_autoRenderingWindow;
+
+    //! Holds pointer to the Window objects current mouse cursor image.
+    const Image* d_mouseCursor;
+
+    //! Alpha transparency setting for the Window
+    float d_alpha;
+    //! true if the Window inherits alpha from the parent Window
+    bool d_inheritsAlpha;
+
+    //! Window that has captured inputs
+    static Window* d_captureWindow;
+    //! The Window that previously had capture (used for restoreOldCapture mode)
+    Window* d_oldCapture;
+    //! Restore capture to the previous capture window when releasing capture.
+    bool d_restoreOldCapture;
+    //! Whether to distribute captured inputs to child windows.
+    bool d_distCapturedInputs;
+
+    //! Holds pointer to the Window objects current Font.
+    Font* d_font;
+    //! Holds the text / label / caption for this Window.
+    String d_textLogical;
+#ifdef CEGUI_BIDI_SUPPORT
+    TextUtils::StrIndexList d_l2vMapping;
+    TextUtils::StrIndexList d_v2lMapping;
+    String d_textVisual;
+#endif
+    //! RenderedString representation of text string as ouput from a parser.
+    mutable RenderedString d_renderedString;
+    //! true if d_renderedString is valid, false if needs re-parse.
+    mutable bool d_renderedStringValid;
+    //! Shared instance of a parser to be used in most instances.
+    static BasicRenderedStringParser d_basicStringParser;
+    //! Pointer to a custom (user assigned) RenderedStringParser object.
+    RenderedStringParser* d_customStringParser;
+
+    //! User ID assigned to this Window
+    uint d_ID;
+    //! Holds pointer to some user assigned data.
+    void* d_userData;
+    //! Holds a collection of named user string values.
+    UserStringMap d_userStrings;
+
+    //! true if Window will be drawn on top of all other Windows
+    bool d_alwaysOnTop;
+    //! whether window should rise in the z order when left clicked.
+    bool d_riseOnClick;
+    //! true if the Window responds to z-order change requests.
+    bool d_zOrderingEnabled;
+
+    //! true if the Window wishes to hear about multi-click mouse events.
+    bool d_wantsMultiClicks;
+    //! whether (most) mouse events pass through this window
+    bool d_mousePassThroughEnabled;
+    //! whether pressed mouse button will auto-repeat the down event.
+    bool d_autoRepeat;
+    //! seconds before first repeat event is fired
+    float d_repeatDelay;
+    //! secons between further repeats after delay has expired.
+    float d_repeatRate;
+    //! button we're tracking for auto-repeat purposes.
+    MouseButton d_repeatButton;
+    //! implements repeating - is true after delay has elapsed,
+    bool d_repeating;
+    //! implements repeating - tracks time elapsed.
+    float d_repeatElapsed;
+
+    //! true if window will receive drag and drop related notifications
+    bool d_dragDropTarget;
+
+    //! Text string used as tip for this window.
+    String d_tooltipText;
+    //! Possible custom Tooltip for this window.
+    Tooltip* d_customTip;
+    //! true if this Window created the custom Tooltip.
+    bool d_weOwnTip;
+    //! whether tooltip text may be inherited from parent.
+    bool d_inheritsTipText;
+
+    //! true if this window is allowed to write XML, false if not
+    bool d_allowWriteXML;
+    //! collection of properties not to be written to XML for this window.
+    BannedXMLPropertySet d_bannedXMLProperties;
+
+    //! This Window objects area as defined by a URect.
+    URect d_area;
+    //! Current constrained pixel size of the window.
+    Size d_pixelSize;
+    //! current minimum size for the window.
+    UVector2 d_minSize;
+    //! current maximum size for the window.
+    UVector2 d_maxSize;
+    //! Specifies the base for horizontal alignment.
+    HorizontalAlignment d_horzAlign;
+    //! Specifies the base for vertical alignment.
+    VerticalAlignment d_vertAlign;
+    //! Rotation angles for this window
+    Vector3 d_rotation;
+
+    //! current unclipped screen rect in pixels
+    mutable Rect d_screenUnclippedRect;
+    mutable bool d_screenUnclippedRectValid;
+    //! current unclipped inner screen rect in pixels
+    mutable Rect d_screenUnclippedInnerRect;
+    mutable bool d_screenUnclippedInnerRectValid;
+    //! current fully clipped screen rect in pixels
+    mutable Rect d_screenRect;
+    mutable bool d_screenRectValid;
+    //! current fully clipped inner screen rect in pixels
+    mutable Rect d_screenInnerRect;
+    mutable bool d_screenInnerRectValid;
+
+private:
+    /*************************************************************************
         May not copy or assign Window objects
     *************************************************************************/
     Window(const Window&) : PropertySet(), EventSet() {}
     Window& operator=(const Window&) {return *this;}
-
-    /*************************************************************************
-        Private implementation Data
-    *************************************************************************/
-    /*!
-    \brief
-        String holding the type name for the Window
-        (is also the name of the WindowFactory that created us)
-    */
-    const String    d_type;
-
-    //! The name of the window (GUI system unique).
-    String    d_name;
-
-    //! Type name of the window as defined in a Falagard mapping.
-    String    d_falagardType;
-
-    friend class WindowManager;
 };
 
 } // End of  CEGUI namespace section
