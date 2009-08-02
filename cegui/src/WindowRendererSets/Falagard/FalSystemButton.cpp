@@ -37,21 +37,4 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardSystemButton::getPixelRect(void) const
-    {
-        // clip to grand-parent as needed
-        if (d_window->getParent() && d_window->getParent()->getParent() && d_window->isClippedByParent())
-        {
-            return d_window->getParent()->getParent()->getInnerRect().getIntersection(d_window->getUnclippedPixelRect());
-        }
-        // clip to screen if no grand-parent, or if clipping has been disabled for us.
-        else
-        {
-            const Rect scrn(Vector2(0, 0),
-                    System::getSingleton().getRenderer()->getDisplaySize());
-
-            return scrn.getIntersection(d_window->getUnclippedPixelRect());
-        }
-    }
-
 } // End of  CEGUI namespace section

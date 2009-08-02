@@ -239,10 +239,11 @@ Window::Window(const String& type, const String& name) :
     d_rotation(0.0f, 0.0f, 0.0f),
 
     // cached pixel rect validity flags
-    d_screenUnclippedRectValid(false),
-    d_screenUnclippedInnerRectValid(false),
-    d_screenRectValid(false),
-    d_screenInnerRectValid(false)
+    d_outerUnclippedRectValid(false),
+    d_innerUnclippedRectValid(false),
+    d_outerRectClipperValid(false),
+    d_innerRectClipperValid(false),
+    d_hitTestRectValid(false)
 {
     // add properties
     addStandardProperties();
@@ -495,105 +496,101 @@ float Window::getEffectiveAlpha(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getPixelRect(void) const
+Rect Window::getUnclippedOuterRect() const
 {
-    if (!d_screenRectValid)
+    if (!d_outerUnclippedRectValid)
     {
-        d_screenRect = (d_windowRenderer != 0) ?
-            d_windowRenderer->getPixelRect()
-            : getPixelRect_impl();
-        d_screenRectValid = true;
+        const Rect local(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+        d_outerUnclippedRect = CoordConverter::windowToScreen(*this, local);
+        d_outerUnclippedRectValid = true;
     }
 
-    return d_screenRect;
+    return d_outerUnclippedRect;
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getPixelRect_impl(void) const
+Rect Window::getUnclippedInnerRect() const
 {
-    // in the case of rendering windows, clipping is done only to the bounds
-    // of the window owning the RenderingWindow.
-    if (d_surface && d_surface->isRenderingWindow())
-        return getUnclippedPixelRect();
-
-    // clip to parent?
-    if (d_parent && d_clippedByParent)
+    if (!d_innerUnclippedRectValid)
     {
-        return getUnclippedPixelRect().getIntersection(
-                    d_nonClientContent ? d_parent->getPixelRect() :
-                                         d_parent->getInnerRect());
-    }
-    // else, clip to screen
-    else
-    {
-        const Rect scrn(Vector2(0, 0),
-                        System::getSingleton().getRenderer()->getDisplaySize());
-
-        return getUnclippedPixelRect().getIntersection(scrn);
+        d_innerUnclippedRect = getUnclippedInnerRect_impl();
+        d_innerUnclippedRectValid = true;
     }
 
+    return d_innerUnclippedRect;
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getInnerRect(void) const
+Rect Window::getUnclippedRect(const bool inner) const
 {
-    if (!d_screenInnerRectValid)
-    {
-        // in the case of rendering windows, clipping is done only to the bounds
-        // of the inner rect of the window owning the RenderingWindow.
-        if (d_surface && d_surface->isRenderingWindow())
-             d_screenInnerRect = getUnclippedInnerRect();
-        // clip to parent?
-        else if (d_parent && d_clippedByParent)
-        {
-            d_screenInnerRect = getUnclippedInnerRect().getIntersection(
-                    d_nonClientContent ? d_parent->getPixelRect() :
-                                         d_parent->getInnerRect());
-        }
-        // else, clip to screen
-        else
-        {
-            const Rect scrn(Vector2(0, 0),
-                            System::getSingleton().getRenderer()->getDisplaySize());
-            d_screenInnerRect = getUnclippedInnerRect().getIntersection(scrn);
-        }
-
-        d_screenInnerRectValid = true;
-    }
-
-    return d_screenInnerRect;
+    return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedPixelRect(void) const
+Rect Window::getOuterRectClipper() const
 {
-    if (!d_screenUnclippedRectValid)
+    if (!d_outerRectClipperValid)
     {
-        Rect localArea(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
-        d_screenUnclippedRect = CoordConverter::windowToScreen(*this, localArea);
-        d_screenUnclippedRectValid = true;
+        d_outerRectClipper = (d_surface && d_surface->isRenderingWindow()) ?
+            getUnclippedOuterRect() :
+            getParentElementClipIntersection(getUnclippedOuterRect());
+
+        d_outerRectClipperValid = true;
     }
 
-    return d_screenUnclippedRect;
+    return d_outerRectClipper;
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedInnerRect(void) const
+Rect Window::getInnerRectClipper() const
 {
-    if (!d_screenUnclippedInnerRectValid)
+    if (!d_innerRectClipperValid)
     {
-        d_screenUnclippedInnerRect = getUnclippedInnerRect_impl();
-        d_screenUnclippedInnerRectValid = true;
+        d_innerRectClipper = (d_surface && d_surface->isRenderingWindow()) ?
+            getUnclippedInnerRect() :
+            getParentElementClipIntersection(getUnclippedInnerRect());
+
+        d_innerRectClipperValid = true;
     }
 
-    return d_screenUnclippedInnerRect;
+    return d_innerRectClipper;
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getClipRect(const bool non_client) const
+{
+    return non_client ? getOuterRectClipper() : getInnerRectClipper();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getHitTestRect() const
+{
+    if (!d_hitTestRectValid)
+    {
+        d_hitTestRect =
+            getParentElementClipIntersection(getUnclippedOuterRect());
+
+        d_hitTestRectValid = true;
+    }
+
+    return d_hitTestRect;
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getParentElementClipIntersection(const Rect& unclipped_area) const
+{
+    return unclipped_area.getIntersection(
+        (d_parent && d_clippedByParent) ?
+            d_parent->getClipRect(d_nonClientContent) :
+            Rect(Vector2(0, 0),
+                 System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 //----------------------------------------------------------------------------//
 Rect Window::getUnclippedInnerRect_impl(void) const
 {
     return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
-                              getUnclippedPixelRect();
+                              getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
@@ -603,12 +600,12 @@ bool Window::isHit(const Vector2& position, const bool allow_disabled) const
     if (!allow_disabled && isDisabled())
         return false;
 
-    const Rect clipped_area(getPixelRect());
+    const Rect test_area(getHitTestRect());
 
-    if (clipped_area.getWidth() == 0)
+    if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;
 
-    return clipped_area.isPointInRect(position);
+    return test_area.isPointInRect(position);
 }
 
 //----------------------------------------------------------------------------//
@@ -1733,10 +1730,11 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 {
     // we make sure the screen areas are recached when this is called as we need
     // it in most cases
-    d_screenUnclippedRectValid = false;
-    d_screenUnclippedInnerRectValid = false;
-    d_screenRectValid = false;
-    d_screenInnerRectValid = false;
+    d_outerUnclippedRectValid = false;
+    d_innerUnclippedRectValid = false;
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
 
     // notes of what we did
     bool moved = false, sized;
@@ -2967,8 +2965,9 @@ bool Window::isPropertyAtDefault(const Property* property) const
 //----------------------------------------------------------------------------//
 void Window::notifyClippingChanged(void)
 {
-    d_screenRectValid = false;
-    d_screenInnerRectValid = false;
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
 
     // inform children that their clipped screen areas must be updated
     const size_t num = d_children.size();
@@ -2980,10 +2979,11 @@ void Window::notifyClippingChanged(void)
 //----------------------------------------------------------------------------//
 void Window::notifyScreenAreaChanged(bool recursive /* = true */)
 {
-    d_screenUnclippedRectValid = false;
-    d_screenUnclippedInnerRectValid = false;
-    d_screenRectValid = false;
-    d_screenInnerRectValid = false;
+    d_outerUnclippedRectValid = false;
+    d_innerUnclippedRectValid = false;
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
 
     updateGeometryRenderSettings();
 
@@ -3006,13 +3006,13 @@ void Window::updateGeometryRenderSettings()
     if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
         static_cast<RenderingWindow*>(ctx.surface)->
-            setPosition(getUnclippedPixelRect().getPosition());
+            setPosition(getUnclippedOuterRect().getPosition());
     }
     // if we're not texture backed, update geometry position.
     else
     {
         // position is the offset of the window on the dest surface.
-        const Rect ucrect(getUnclippedPixelRect());
+        const Rect ucrect(getUnclippedOuterRect());
         d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
                                         ucrect.d_top - ctx.offset.d_y, 0.0f));
     }
@@ -3136,7 +3136,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     {
         ctx.surface = d_surface;
         ctx.owner = this;
-        ctx.offset = getUnclippedPixelRect().getPosition();
+        ctx.offset = getUnclippedOuterRect().getPosition();
         ctx.queue = RQ_BASE;
     }
     else if (d_parent)
@@ -3259,7 +3259,7 @@ void Window::allocateRenderingWindow()
         // set size and position of RenderingWindow
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
         static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedPixelRect().getPosition());
+            setPosition(getUnclippedOuterRect().getPosition());
 
         System::getSingleton().signalRedraw();
     }
@@ -3336,11 +3336,11 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 d_parent && d_clippedByParent ?
                     owner.isRenderingWindow() ?
                         d_nonClientContent ?
-                            d_parent->getUnclippedPixelRect() :
+                            d_parent->getUnclippedOuterRect() :
                             d_parent->getUnclippedInnerRect() :
                         d_nonClientContent ?
-                            d_parent->getPixelRect() :
-                            d_parent->getInnerRect() :
+                            d_parent->getOuterRectClipper() :
+                            d_parent->getInnerRectClipper() :
                     Rect(Vector2(0, 0),
                          System::getSingleton().getRenderer()->getDisplaySize())
             );
@@ -3351,8 +3351,8 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         else if(d_parent && d_clippedByParent)
         {
             Rect parent_area(d_nonClientContent ?
-                                d_parent->getPixelRect() :
-                                d_parent->getInnerRect()
+                                d_parent->getOuterRectClipper() :
+                                d_parent->getInnerRectClipper()
             );
 
             parent_area.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
@@ -3366,8 +3366,8 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         Rect geo_clip(
             d_clippedByParent && d_parent ?
                 d_nonClientContent ?
-                    d_parent->getPixelRect() :
-                    d_parent->getInnerRect() :
+                    d_parent->getOuterRectClipper() :
+                    d_parent->getInnerRectClipper() :
                 Rect(Vector2(0, 0),
                      System::getSingleton().getRenderer()->getDisplaySize())
         );

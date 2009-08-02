@@ -743,14 +743,16 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
     {
         // This is the middle-mouse-click event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (me.position.d_x - but_pane->getPixelRect ().d_left) -
+        d_btGrabPos = (me.position.d_x -
+            but_pane->getOuterRectClipper().d_left) -
             d_firstTabOffset;
     }
     else if (me.button == NoButton)
     {
         // Regular mouse move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (me.position.d_x - but_pane->getPixelRect ().d_left) -
+        float new_to = (me.position.d_x -
+            but_pane->getOuterRectClipper().d_left) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
             (new_to > d_firstTabOffset + 0.9))
@@ -768,7 +770,7 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
     const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
-    float delta = but_pane->getPixelRect ().getWidth () / 20;
+    float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
     d_firstTabOffset -= me.wheelChange * delta;
     performChildWindowLayout();

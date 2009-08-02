@@ -122,13 +122,6 @@ public:
 
     /*!
     \brief
-        Get actual pixel rectangle our window is to return from its
-        member function with the same name.
-    */
-    virtual Rect getPixelRect() const;
-
-    /*!
-    \brief
         Method called to perform extended laying out of the window's attached
         child windows.
     */

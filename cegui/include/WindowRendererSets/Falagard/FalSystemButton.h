@@ -58,8 +58,6 @@ namespace CEGUI
             Constructor
         */
         FalagardSystemButton(const String& type);
-
-        Rect getPixelRect(void) const;
     };
 
 } // End of  CEGUI namespace section

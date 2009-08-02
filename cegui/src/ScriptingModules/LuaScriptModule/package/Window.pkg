@@ -108,12 +108,15 @@ class Window //: public EventSet
 	bool isZOrderingEnabled() const;
 	void setZOrderingEnabled(bool setting);
 
-    Size getPixelSize() const;
-	Rect getPixelRect() const;
-	Rect getInnerRect() const;
-	Rect getUnclippedPixelRect() const;
-	Rect getUnclippedInnerRect() const;
+    Rect getUnclippedOuterRect() const;
+    Rect getUnclippedInnerRect() const;
+    Rect getUnclippedRect(bool inner) const;
+    Rect getOuterRectClipper() const;
+    Rect getInnerRectClipper() const;
+    Rect getClipRect(bool non_client = false) const;
+    Rect getHitTestRect() const;
 
+    Size getPixelSize() const;
     Size getParentPixelSize() const;
     float getParentPixelWidth() const;
     float getParentPixelHeight() const;

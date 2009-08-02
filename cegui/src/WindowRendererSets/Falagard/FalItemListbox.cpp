@@ -96,7 +96,7 @@ namespace CEGUI
     Rect FalagardItemListbox::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
-            return d_window->getUnclippedPixelRect();
+            return d_window->getUnclippedOuterRect();
 
         const Rect lr(getItemRenderArea());
         return CoordConverter::windowToScreen(*d_window, lr);
