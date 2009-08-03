@@ -714,7 +714,8 @@ bool System::injectMouseLeaves(void)
 	// there is nowhere to send input
 	if (d_wndWithMouse)
 	{
-		ma.position = MouseCursor::getSingleton().getPosition();
+		ma.position = d_wndWithMouse->
+          getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
 		ma.moveDelta = Vector2(0.0f, 0.0f);
 		ma.button = NoButton;
 		ma.sysKeys = d_sysKeys;
@@ -745,6 +746,9 @@ bool System::injectMouseButtonDown(MouseButton button)
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
     ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
 
     //
     // Handling for multi-click generation
@@ -823,6 +827,9 @@ bool System::injectMouseButtonUp(MouseButton button)
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
     ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
 
     // get the tracker that holds the number of down events seen so far for this button
     MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
@@ -927,6 +934,9 @@ bool System::injectMouseWheelChange(float delta)
     ma.wheelChange = delta;
     ma.clickCount = 0;
     ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
 
     // if there is no target window, input can not be handled.
     if (!ma.window)
@@ -1592,6 +1602,8 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
     if (!d_wndWithMouse)
         return false;
 
+    // make mouse position sane for this target window
+    ma.position = d_wndWithMouse->getUnprojectedPosition(ma.position);
     // inform window about the input.
     ma.window = d_wndWithMouse;
     ma.handled = 0;
@@ -1605,9 +1617,9 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    const Vector2 mouse_pos(MouseCursor::getSingleton().getPosition());
 
-    Window* const curr_wnd_with_mouse = getTargetWindow(ma.position, true);
+    Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
     // exit if window containing mouse has not changed.
     if (curr_wnd_with_mouse == d_wndWithMouse)
@@ -1625,6 +1637,7 @@ bool System::updateWindowContainingMouse()
     if (oldWindow)
     {
         ma.window = oldWindow;
+        ma.position = oldWindow->getUnprojectedPosition(mouse_pos);
         oldWindow->onMouseLeaves(ma);
     }
 
@@ -1633,6 +1646,7 @@ bool System::updateWindowContainingMouse()
     {
         ma.handled = 0;
         ma.window = d_wndWithMouse;
+        ma.position = d_wndWithMouse->getUnprojectedPosition(mouse_pos);
         d_wndWithMouse->onMouseEnters(ma);
     }
 

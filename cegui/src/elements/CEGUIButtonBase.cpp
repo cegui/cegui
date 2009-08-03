@@ -163,7 +163,8 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
-	updateInternalState(MouseCursor::getSingletonPtr()->getPosition());
+	updateInternalState(
+        getUnprojectedPosition(MouseCursor::getSingletonPtr()->getPosition()));
 	invalidate();
 
 	// event was handled by us.

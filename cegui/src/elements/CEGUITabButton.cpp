@@ -111,7 +111,9 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 		if (sheet)
 		{
 			// if mouse was released over this widget
-			if (this == sheet->getTargetChildAtPosition(e.position))
+            // (use mouse position, as e.position has been unprojected)
+			if (this == sheet->getTargetChildAtPosition(
+                                    MouseCursor::getSingleton().getPosition()))
 			{
 				// fire event
 				WindowEventArgs args(this);
