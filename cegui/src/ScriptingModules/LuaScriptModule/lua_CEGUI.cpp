@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Aug  2 16:04:54 2009.
+** Generated automatically by tolua++-1.0.92 on Mon Aug  3 11:32:18 2009.
 */
 
 #ifndef __cplusplus
@@ -19516,6 +19516,48 @@ static int tolua_CEGUI_CEGUI_Window_getGeometryBuffer00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getUnprojectedPosition of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00
+static int tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector2",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector2* pos = ((const CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUnprojectedPosition'",NULL);
+#endif
+ {
+  CEGUI::Vector2 tolua_ret = (CEGUI::Vector2)  self->getUnprojectedPosition(*pos);
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::Vector2(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Vector2");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::Vector2));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::Vector2");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getUnprojectedPosition'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53228,6 +53270,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isNonClientWindow",tolua_CEGUI_CEGUI_Window_isNonClientWindow00);
    tolua_function(tolua_S,"setNonClientWindow",tolua_CEGUI_CEGUI_Window_setNonClientWindow00);
    tolua_function(tolua_S,"getGeometryBuffer",tolua_CEGUI_CEGUI_Window_getGeometryBuffer00);
+   tolua_function(tolua_S,"getUnprojectedPosition",tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);
    tolua_function(tolua_S,"getPropertyDefault",tolua_CEGUI_CEGUI_Window_getPropertyDefault00);

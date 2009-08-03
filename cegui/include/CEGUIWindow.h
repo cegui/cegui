@@ -2827,6 +2827,9 @@ public:
     //! return the active RenderedStringParser to be used
     virtual RenderedStringParser& getRenderedStringParser() const;
 
+    //! return Vector2 \a pos after being fully unprojected for this Window.
+    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;

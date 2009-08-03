@@ -251,6 +251,8 @@ class Window //: public EventSet
 
     GeometryBuffer& getGeometryBuffer();
 
+    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(string name, string value);

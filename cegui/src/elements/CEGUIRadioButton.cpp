@@ -164,7 +164,9 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
         if (sheet)
         {
             // if mouse was released over this widget
-            if (this == sheet->getTargetChildAtPosition(e.position))
+            // (use mouse position, since e.position has been unprojected)
+            if (this == sheet->getTargetChildAtPosition(
+                                    MouseCursor::getSingleton().getPosition()))
             {
                 // select this button & deselect all others in the same group.
                 setSelected(true);

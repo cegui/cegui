@@ -1347,7 +1347,8 @@ void Window::setDestroyedByParent(bool setting)
 void Window::generateAutoRepeatEvent(MouseButton button)
 {
     MouseEventArgs ma(this);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position =
+        getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
     ma.moveDelta = Vector2(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = System::getSingleton().getSystemKeys();
@@ -3488,6 +3489,36 @@ void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 RenderedStringParser& Window::getRenderedStringParser() const
 {
     return d_customStringParser ? *d_customStringParser : d_basicStringParser;
+}
+
+//----------------------------------------------------------------------------//
+Vector2 Window::getUnprojectedPosition(const Vector2& pos) const
+{
+    RenderingSurface* rs = &getTargetRenderingSurface();
+
+    // if window is not backed by RenderingWindow, return same pos.
+    if (!rs->isRenderingWindow())
+        return pos;
+
+    // get first target RenderingWindow
+    RenderingWindow* rw = static_cast<RenderingWindow*>(rs);
+
+    // setup for loop
+    Vector2 out_pos(pos);
+
+    // while there are rendering windows
+    while (rw)
+    {
+        // unproject the point for the current rw
+        const Vector2 in_pos(out_pos);
+        rw->unprojectPoint(in_pos, out_pos);
+
+        // get next rendering window, if any
+        rw = (rs = &rw->getOwner())->isRenderingWindow() ?
+                static_cast<RenderingWindow*>(rs) : 0;
+    }
+
+    return out_pos;
 }
 
 //----------------------------------------------------------------------------//

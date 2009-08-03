@@ -896,7 +896,8 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
-	Point mousePos(MouseCursor::getSingleton().getPosition());
+	const Point mousePos(
+       getUnprojectedPosition(MouseCursor::getSingleton().getPosition()));
 
 	// segment must be dropped within the window
 	if (isHit(mousePos))
@@ -1001,7 +1002,9 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 
 	// get mouse position as something local
-	Point localMousePos(CoordConverter::screenToWindow(*this, MouseCursor::getSingleton().getPosition()));
+    const Point localMousePos(CoordConverter::screenToWindow(*this,
+        getUnprojectedPosition(
+            MouseCursor::getSingleton().getPosition())));
 
 	// scroll left?
 	if (localMousePos.d_x < 0.0f)
