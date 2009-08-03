@@ -56,7 +56,6 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
 
     // setup area and cause the initial texture to be generated.
     declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
-    clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -158,6 +157,7 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
