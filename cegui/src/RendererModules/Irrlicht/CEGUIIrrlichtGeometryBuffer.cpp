@@ -41,7 +41,9 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
     d_effect(0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_xViewDir(driver.getDriverType() != irr::video::EDT_OPENGL ? 1.0f : -1.0f),
+    d_texelOffset(driver.getDriverType() != irr::video::EDT_OPENGL ? -0.5f : 0.0f)
 {
     d_material.BackfaceCulling = false;
     d_material.Lighting = false;
@@ -72,7 +74,7 @@ void IrrlichtGeometryBuffer::draw() const
     irr::core::matrix4 scsr(irr::core::matrix4::EM4CONST_IDENTITY);
     scsr(0, 0) = tsz.d_width / csz.d_width;
     scsr(1, 1) = tsz.d_height / csz.d_height;
-    scsr(3, 0) = -(tsz.d_width + 2.0f *
+    scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
                    (target_vp.UpperLeftCorner.X -
                      (d_clipRect.d_left + csz.d_width * 0.5f))) / csz.d_width;
     scsr(3, 1) = -(tsz.d_height + 2.0f *
@@ -179,8 +181,8 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     for (uint i = 0; i < vertex_count; ++i)
     {
         const Vertex& vs = vbuff[i];
-        v.Pos.X     = vs.position.d_x;
-        v.Pos.Y     = vs.position.d_y;
+        v.Pos.X     = vs.position.d_x + d_texelOffset;
+        v.Pos.Y     = vs.position.d_y + d_texelOffset;
         v.Pos.Z     = vs.position.d_z;
         v.TCoords.X = vs.tex_coords.d_x;
         v.TCoords.Y = vs.tex_coords.d_y;

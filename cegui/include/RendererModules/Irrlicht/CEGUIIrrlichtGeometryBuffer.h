@@ -109,6 +109,10 @@ protected:
     VertexList d_vertices;
     //! container where added geometry indices are stored.
     IndexList d_indices;
+    //! a coefficient used to handle OpenGL / D3D projection variations.
+    const float d_xViewDir;
+    //! an offset applied to geometry to get correct texel to pixel mapping.
+    const float d_texelOffset;
 };
 
 
