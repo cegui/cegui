@@ -40,7 +40,8 @@ IrrlichtRenderTarget::IrrlichtRenderTarget(IrrlichtRenderer& owner,
     d_owner(owner),
     d_driver(driver),
     d_area(0, 0, 0, 0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_xViewDir(driver.getDriverType() != irr::video::EDT_OPENGL ? 1.0f : -1.0f)
 {
 }
 
@@ -188,9 +189,10 @@ void IrrlichtRenderTarget::updateMatrix() const
                                                    d_viewDistance * 2.0f);
 
     irr::core::matrix4 tmp;
-    tmp.buildCameraLookAtMatrixRH(irr::core::vector3df(-midx, midy, -d_viewDistance),
-                                  irr::core::vector3df(-midx, midy, 1),
-                                  irr::core::vector3df(0, -1, 0));
+    tmp.buildCameraLookAtMatrixRH(
+        irr::core::vector3df(d_xViewDir * midx, midy, -d_viewDistance),
+        irr::core::vector3df(d_xViewDir * midx, midy, 1),
+        irr::core::vector3df(0, -1, 0));
 
     d_matrix *= tmp;
 

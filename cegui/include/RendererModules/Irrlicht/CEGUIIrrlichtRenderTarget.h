@@ -79,6 +79,8 @@ protected:
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable float d_viewDistance;
+    //! a coefficient used to handle OpenGL / D3D projection variations.
+    const float d_xViewDir;
 };
 
 
