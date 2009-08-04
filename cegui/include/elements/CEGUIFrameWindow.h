@@ -453,7 +453,7 @@ public:
     void setNESWSizingCursorImage(const String& imageset, const String& image);
 
     // overridden from Window class
-    bool isHit(const Point& position, bool /*allow_disabled*/) const
+    bool isHit(const Point& position, const bool /*allow_disabled*/) const
         { return Window::isHit(position) && !d_rolledup; }
 
     /*!
