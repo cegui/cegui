@@ -49,8 +49,11 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_material.Lighting = false;
     d_material.ZBuffer = 0;
     d_material.ZWriteEnable = false;
-    d_material.MaterialType = irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-    d_material.MaterialTypeParam = 0;
+    d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
+    d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(
+            irr::video::EBF_SRC_ALPHA,
+            irr::video::EBF_ONE_MINUS_SRC_ALPHA,
+            irr::video::EMFN_MODULATE_1X);
 }
 
 //----------------------------------------------------------------------------//
