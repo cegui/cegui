@@ -185,7 +185,7 @@ String System::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 /*************************************************************************
     Constructor
 *************************************************************************/
-System::System(Renderer* renderer,
+System::System(Renderer& renderer,
                ResourceProvider* resourceProvider,
                XMLParser* xmlParser,
                ImageCodec* imageCodec,
@@ -193,7 +193,7 @@ System::System(Renderer* renderer,
                const String& configFile,
                const String& logFile)
 
-: d_renderer(renderer),
+: d_renderer(&renderer),
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_defaultFont(0),
@@ -1807,6 +1807,22 @@ void System::initialiseVersionString()
 #endif
 
     d_strVersion += ")";
+}
+
+//----------------------------------------------------------------------------//
+System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
+                       XMLParser* xmlParser, ImageCodec* imageCodec,
+                       ScriptModule* scriptModule, const String& configFile,
+                       const String& logFile)
+{
+    return *new System(renderer, resourceProvider, xmlParser, imageCodec,
+                       scriptModule, configFile, logFile);
+}
+
+//----------------------------------------------------------------------------//
+void System::destroy()
+{
+    delete System::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//

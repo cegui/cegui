@@ -142,7 +142,7 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
         &CEGUI::DirectFBRenderer::create(*pimpl->d_dfb, *pimpl->d_surface);
 
     // initialise the gui system
-    new CEGUI::System(pimpl->d_renderer);
+    CEGUI::System::create(*pimpl->d_renderer);
 
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
@@ -156,7 +156,7 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 CEGuiDirectFBBaseApplication::~CEGuiDirectFBBaseApplication()
 {
     // cleanup gui system
-    delete CEGUI::System::getSingletonPtr();
+    CEGUI::System::destroy();
     CEGUI::DirectFBRenderer::destroy(*pimpl->d_renderer);
 
     cleanupDirectFB();

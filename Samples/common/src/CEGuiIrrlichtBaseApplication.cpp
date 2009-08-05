@@ -76,7 +76,7 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     d_renderer = &CEGUI::IrrlichtRenderer::create(*d_device);
 
     // create the gui
-    new CEGUI::System(d_renderer);
+    CEGUI::System::create(*d_renderer);
 
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
@@ -121,7 +121,7 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
 CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 {
     // free the gui system
-    delete CEGUI::System::getSingletonPtr();
+    CEGUI::System::destroy();
 
     if (d_renderer)
         CEGUI::IrrlichtRenderer::destroy(*d_renderer);
