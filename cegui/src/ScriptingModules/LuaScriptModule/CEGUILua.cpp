@@ -58,63 +58,57 @@ namespace CEGUI
 /*************************************************************************
 	Constructor (creates Lua state)
 *************************************************************************/
-LuaScriptModule::LuaScriptModule() :
-    d_errFuncIndex(LUA_NOREF)
+LuaScriptModule::LuaScriptModule(lua_State* state) :
+    d_ownsState(state == 0),
+    d_state(state),
+    d_errFuncIndex(LUA_NOREF),
+    d_activeErrFuncIndex(LUA_NOREF)
 {
-    #if CEGUI_LUA_VER >= 51
-        static const luaL_Reg lualibs[] = {
-            {"", luaopen_base},
-            {LUA_LOADLIBNAME, luaopen_package},
-            {LUA_TABLIBNAME, luaopen_table},
-            {LUA_IOLIBNAME, luaopen_io},
-            {LUA_OSLIBNAME, luaopen_os},
-            {LUA_STRLIBNAME, luaopen_string},
-            {LUA_MATHLIBNAME, luaopen_math},
-        #if defined(DEBUG) || defined (_DEBUG)
-                {LUA_DBLIBNAME, luaopen_debug},
-        #endif
-            {0, 0}
-        };
-    #endif /* CEGUI_LUA_VER >= 51 */
+    // initialise and create a lua_State if one was not provided
+    if (!d_state)
+    {
+        #if CEGUI_LUA_VER >= 51
+            static const luaL_Reg lualibs[] = {
+                {"", luaopen_base},
+                {LUA_LOADLIBNAME, luaopen_package},
+                {LUA_TABLIBNAME, luaopen_table},
+                {LUA_IOLIBNAME, luaopen_io},
+                {LUA_OSLIBNAME, luaopen_os},
+                {LUA_STRLIBNAME, luaopen_string},
+                {LUA_MATHLIBNAME, luaopen_math},
+            #if defined(DEBUG) || defined (_DEBUG)
+                    {LUA_DBLIBNAME, luaopen_debug},
+            #endif
+                {0, 0}
+            };
+        #endif /* CEGUI_LUA_VER >= 51 */
 
-    // create a lua state
-    d_ownsState = true;
-    d_state = lua_open();
+        // create a lua state
+        d_ownsState = true;
+        d_state = lua_open();
 
-    // init all standard libraries
-    #if CEGUI_LUA_VER >= 51
-            const luaL_Reg *lib = lualibs;
-            for (; lib->func; lib++)
-            {
-                lua_pushcfunction(d_state, lib->func);
-                lua_pushstring(d_state, lib->name);
-                lua_call(d_state, 1, 0);
-            }
-    #else /* CEGUI_LUA_VER >= 51 */
-        luaopen_base(d_state);
-        luaopen_io(d_state);
-        luaopen_string(d_state);
-        luaopen_table(d_state);
-        luaopen_math(d_state);
-        #if defined(DEBUG) || defined (_DEBUG)
-            luaopen_debug(d_state);
-        #endif
-    #endif /* CEGUI_LUA_VER >= 51 */
+        // init all standard libraries
+        #if CEGUI_LUA_VER >= 51
+                const luaL_Reg *lib = lualibs;
+                for (; lib->func; lib++)
+                {
+                    lua_pushcfunction(d_state, lib->func);
+                    lua_pushstring(d_state, lib->name);
+                    lua_call(d_state, 1, 0);
+                }
+        #else /* CEGUI_LUA_VER >= 51 */
+            luaopen_base(d_state);
+            luaopen_io(d_state);
+            luaopen_string(d_state);
+            luaopen_table(d_state);
+            luaopen_math(d_state);
+            #if defined(DEBUG) || defined (_DEBUG)
+                luaopen_debug(d_state);
+            #endif
+        #endif /* CEGUI_LUA_VER >= 51 */
+    }
 
     setModuleIdentifierString();
-}
-
-
-/*************************************************************************
-	Constructor (uses given Lua state)
-*************************************************************************/
-LuaScriptModule::LuaScriptModule(lua_State* state)
-{
-	// just use the given state
-	d_ownsState = false;
-	d_state = state;
-
-	setModuleIdentifierString();
 }
 
 
@@ -692,6 +686,17 @@ void LuaScriptModule::executeString_impl(const String& str, const int err_idx,
 }
 
 //----------------------------------------------------------------------------//
+LuaScriptModule& LuaScriptModule::create(lua_State* state)
+{
+    return *new LuaScriptModule(state);
+}
 
+//----------------------------------------------------------------------------//
+void LuaScriptModule::destroy(LuaScriptModule& mod)
+{
+    delete &mod;
+}
+
+//----------------------------------------------------------------------------//
 
 } // namespace CEGUI
