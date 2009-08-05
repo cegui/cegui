@@ -228,6 +228,17 @@ do
         config_h.CEGUI_HAS_DEFAULT_LOGGER = ""
     end
 
+    -- BiDi configuration
+    if CEGUI_BIDI_SUPPORT then
+        config_h.CEGUI_BIDI_SUPPORT = ""
+
+        if CEGUI_USE_MINIBIDI then
+            config_h.CEGUI_USE_MINIBIDI = ""
+        else
+            config_h.CEGUI_USE_FRIBIDI = ""
+        end
+    end
+
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 

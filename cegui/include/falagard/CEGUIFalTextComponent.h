@@ -63,15 +63,8 @@ namespace CEGUI
         */
         const String& getText() const;
 
-#ifdef CEGUI_BIDI_SUPPORT
-        const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
-        const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
-
-        const String& getTextVisual(void) const   {return d_textVisual;}
-#else
-        // return unmodified text string when no bi-di support is compiled in.
-        const String& getTextVisual(void) const   {return getText();}
-#endif
+        //! return text string with \e visual ordering of glyphs.
+        const String& getTextVisual() const;
 
         /*!
         \brief
@@ -241,11 +234,10 @@ namespace CEGUI
                                   const RenderedString& rendered_string) const;
     private:
         String               d_textLogical;            //!< text rendered by this component.
-#ifdef CEGUI_BIDI_SUPPORT
-        TextUtils::StrIndexList d_l2vMapping;
-        TextUtils::StrIndexList d_v2lMapping;
-        String d_textVisual;
-#endif
+        //! pointer to bidirection support object
+        BiDiVisualMapping* d_bidiVisualMapping;
+        //! whether bidi visual mapping has been updated since last text change.
+        mutable bool d_bidiDataValid;
         //! RenderedString used when not using the one from the target Window.
         mutable RenderedString d_renderedString;
         //! FormattedRenderedString object that applies formatting to the string

@@ -37,6 +37,17 @@ else
     define("PCRE_STATIC")
 end
 
+if not CEGUI_BIDI_SUPPORT then
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIFribidiVisualMapping.cpp")
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIMinibidiVisualMapping.cpp")
+else
+    if CEGUI_USE_MINIBIDI
+        tinsert(package.excludes, rootdir.."cegui/src/CEGUIFribidiVisualMapping.cpp")
+    else
+        tinsert(package.excludes, rootdir.."cegui/src/CEGUIMinibidiVisualMapping.cpp")
+    end
+end
+
 library("Winmm", "")
 
 define("CEGUIBASE_EXPORTS")

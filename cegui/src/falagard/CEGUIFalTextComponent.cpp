@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "falagard/CEGUIFalTextComponent.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIFontManager.h"
@@ -38,10 +42,28 @@
 #include "CEGUIRenderedStringWordWrapper.h"
 #include <iostream>
 
+#if defined (CEGUI_USE_FRIBIDI)
+    #include "CEGUIFribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+    #include "CEGUIMinibidiVisualMapping.h"
+#else
+    #include "CEGUIBiDiVisualMapping.h"
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     TextComponent::TextComponent() :
+#ifndef CEGUI_BIDI_SUPPORT
+        d_bidiVisualMapping(0),
+#elif defined (CEGUI_USE_FRIBIDI)
+        d_bidiVisualMapping(new FribidiVisualMapping),
+#elif defined (CEGUI_USE_MINIBIDI)
+        d_bidiVisualMapping(new MinibidiVisualMapping),
+#else
+    #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+        d_bidiDataValid(false),
         d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
@@ -56,9 +78,7 @@ namespace CEGUI
     void TextComponent::setText(const String& text)
     {
         d_textLogical = text;
-#ifdef CEGUI_BIDI_SUPPORT
-        TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
-#endif
+        d_bidiDataValid = false;
     }
 
     const String& TextComponent::getFont() const
@@ -181,8 +201,8 @@ namespace CEGUI
             // fetch text & do bi-directional reordering as needed
             String vis;
             #ifdef CEGUI_BIDI_SUPPORT
-                TextUtils::StrIndexList l2v, v2l;
-                TextUtils::reorderFromLogicalToVisual(
+                BiDiVisualMapping::StrIndexList l2v, v2l;
+                d_bidiVisualMapping->reorderFromLogicalToVisual(
                     srcWindow.getProperty(d_textPropertyName), vis, l2v, v2l);
             #else
                 vis = srcWindow.getProperty(d_textPropertyName);
@@ -323,6 +343,21 @@ namespace CEGUI
     void TextComponent::setFontPropertySource(const String& property)
     {
         d_fontPropertyName = property;
+    }
+
+    const String& TextComponent::getTextVisual() const
+    {
+        // no bidi support
+        if (!d_bidiVisualMapping)
+            return d_textLogical;
+
+        if (!d_bidiDataValid)
+        {
+            d_bidiVisualMapping->updateVisual(d_textLogical);
+            d_bidiDataValid = true;
+        }
+
+        return d_bidiVisualMapping->getTextVisual();
     }
 
 } // End of  CEGUI namespace section

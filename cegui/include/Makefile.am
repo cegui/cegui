@@ -3,6 +3,7 @@ SUBDIRS = . elements falagard ImageCodecModules RendererModules ScriptingModules
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIBasicRenderedStringParser.h \
+                 CEGUIBiDiVisualMapping.h \
                  CEGUIBoundSlot.h \
                  CEGUICentredRenderedString.h \
                  CEGUIColourRect.h \
@@ -107,4 +108,6 @@ pkginclude_HEADERS = CEGUI.h \
 
 noinst_HEADERS = CEGUIFreeTypeFont.h \
                  CEGUIPixmapFont.h \
-                 CEGUIPCRERegexMatcher.h
+                 CEGUIPCRERegexMatcher.h \
+                 CEGUIFribidiVisualMapping.h \
+                 CEGUIMinibidiVisualMapping.h

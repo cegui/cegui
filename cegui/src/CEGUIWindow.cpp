@@ -27,6 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "CEGUIWindow.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
@@ -48,6 +52,14 @@
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
+
+#if defined (CEGUI_USE_FRIBIDI)
+    #include "CEGUIFribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+    #include "CEGUIMinibidiVisualMapping.h"
+#else
+    #include "CEGUIBiDiVisualMapping.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -196,6 +208,16 @@ Window::Window(const String& type, const String& name) :
 
     // text system set up
     d_font(0),
+#ifndef CEGUI_BIDI_SUPPORT
+    d_bidiVisualMapping(0),
+#elif defined (CEGUI_USE_FRIBIDI)
+    d_bidiVisualMapping(new FribidiVisualMapping),
+#elif defined (CEGUI_USE_MINIBIDI)
+    d_bidiVisualMapping(new MinibidiVisualMapping),
+#else
+    #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+    d_bidiDataValid(false),
     d_renderedStringValid(false),
     d_customStringParser(0),
 
@@ -255,6 +277,7 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
 
     System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometry);
+    delete d_bidiVisualMapping;
 }
 
 //----------------------------------------------------------------------------//
@@ -805,11 +828,8 @@ void Window::setText(const String& text)
 {
     d_textLogical = text;
     d_renderedStringValid = false;
+    d_bidiDataValid = false;
 
-#ifdef CEGUI_BIDI_SUPPORT
-    TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual,
-                                          d_l2vMapping, d_v2lMapping);
-#endif
     WindowEventArgs args(this);
     onTextChanged(args);
 }
@@ -3110,9 +3130,8 @@ bool Window::isTopOfZOrder() const
 //----------------------------------------------------------------------------//
 void Window::insertText(const String& text, const String::size_type position)
 {
-    String newText = getText();
-    newText.insert(position, text);
-    setText(newText);
+    d_textLogical.insert(position, text);
+    d_bidiDataValid = false;
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3121,9 +3140,8 @@ void Window::insertText(const String& text, const String::size_type position)
 //----------------------------------------------------------------------------//
 void Window::appendText(const String& text)
 {
-    String newText = getText();
-    newText.append(text);
-    setText(newText);
+    d_textLogical.append(text);
+    d_bidiDataValid = false;
 
     WindowEventArgs args(this);
     onTextChanged(args);
@@ -3519,6 +3537,22 @@ Vector2 Window::getUnprojectedPosition(const Vector2& pos) const
     }
 
     return out_pos;
+}
+
+//----------------------------------------------------------------------------//
+const String& Window::getTextVisual() const
+{
+    // no bidi support
+    if (!d_bidiVisualMapping)
+        return d_textLogical;
+
+    if (!d_bidiDataValid)
+    {
+        d_bidiVisualMapping->updateVisual(d_textLogical);
+        d_bidiDataValid = true;
+    }
+
+    return d_bidiVisualMapping->getTextVisual();
 }
 
 //----------------------------------------------------------------------------//

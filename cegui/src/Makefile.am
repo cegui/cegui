@@ -19,6 +19,7 @@ lib_LTLIBRARIES=libCEGUIBase@cegui_bsfx@.la
 
 libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUIBasicRenderedStringParser.cpp \
+                      CEGUIBiDiVisualMapping.cpp \
                       CEGUIBoundSlot.cpp \
                       CEGUICentredRenderedString.cpp \
                       CEGUIColourRect.cpp \
@@ -189,6 +190,14 @@ endif
 
 if CEGUI_BUILD_PCRE_REGEX
 libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIPCRERegexMatcher.cpp
+endif
+
+if CEGUI_BUILD_FRIBIDI_MAPPER
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIFribidiVisualMapping.cpp
+endif
+
+if CEGUI_BUILD_MINIBIDI_MAPPER
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIMinibidiVisualMapping.cpp
 endif
 
 if MACOSX_BUILD
