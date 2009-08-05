@@ -49,10 +49,10 @@ bool Demo8Sample::initialiseSample()
     using namespace CEGUI;
 
     // create a script module.
-    LuaScriptModule* scriptmod = new LuaScriptModule();
+    LuaScriptModule& scriptmod(LuaScriptModule::create());
 
     // tell CEGUI to use this scripting module
-    System::getSingleton().setScriptingModule(scriptmod);
+    System::getSingleton().setScriptingModule(&scriptmod);
 
     // execute the demo8 script which controls the rest of this demo
     System::getSingleton().executeScriptFile("demo8.lua");
@@ -66,6 +66,13 @@ bool Demo8Sample::initialiseSample()
 *************************************************************************/
 void Demo8Sample::cleanupSample()
 {
-    // This is a bit dangerous!
-    delete CEGUI::System::getSingleton().getScriptingModule();
+    using namespace CEGUI;
+
+    LuaScriptModule* script_mod = static_cast<LuaScriptModule*>(
+        System::getSingleton().getScriptingModule());
+
+    // clear script module, since we're going to destroy it.
+    System::getSingleton().setScriptingModule(0);
+
+    LuaScriptModule::destroy(*script_mod);
 }

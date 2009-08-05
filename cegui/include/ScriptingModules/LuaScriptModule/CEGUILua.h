@@ -63,28 +63,18 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	/*!
-	\brief
-		Constructor for LuaScriptModule class which create a lua_State
-	*/
-	LuaScriptModule();
+    /*!
+    \brief
+        Creates a LuaScriptModule object.
 
+    \param state
+        Pointer to the lua_State that the script module should attach to, if
+        this is 0 a lua_State will be created.
+    */
+    static LuaScriptModule& create(lua_State* state = 0);
 
-	/*!
-	\brief
-		Constructor for LuaScriptModule class which takes a lua_State
-
-	\param state
-		Pointer to the lua_State that the script module should attach to.
-	*/
-	LuaScriptModule(lua_State* state);
-
-
-	/*!
-	\brief
-		Destructor for LuaScriptModule class.
-	*/
-	~LuaScriptModule();
+    //! Destroys the given LuaScriptModule object.
+    static void destroy(LuaScriptModule& mod);
 
 
 	/*************************************************************************
@@ -600,6 +590,20 @@ private:
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
+    /*!
+    \brief
+        Constructor for LuaScriptModule class which takes a lua_State
+
+    \param state
+        Pointer to the lua_State that the script module should attach to, if 0
+        a new lua_State will be created.
+    */
+    LuaScriptModule(lua_State* state);
+
+    //! Destructor for LuaScriptModule class.
+    ~LuaScriptModule();
+
+
     void setModuleIdentifierString();
     /** Init the error handler function.  Return the lua stack index that
      *  should be passed to lua_pcall.  NB: This should be called prior to
