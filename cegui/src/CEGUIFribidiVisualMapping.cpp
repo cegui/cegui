@@ -25,6 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
+#include "CEGUIConfig.h"
+
+#ifdef CEGUI_USE_FRIBIDI
+
 #include "CEGUIFribidiVisualMapping.h"
 #include "CEGUILogger.h"
 #include <fribidi.h>
@@ -95,3 +103,5 @@ bool FribidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#endif // CEGUI_USE_FRIBIDI
