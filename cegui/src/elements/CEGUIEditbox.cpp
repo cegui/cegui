@@ -36,6 +36,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
 #include "CEGUIPCRERegexMatcher.h"
+#include "CEGUIBiDiVisualMapping.h"
 #include <string.h>
 
 // Start of CEGUI namespace section
@@ -339,10 +340,9 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
 #ifdef CEGUI_BIDI_SUPPORT
-            if (getV2lMapping().size() > d_dragAnchorIdx)
-            {
-                d_dragAnchorIdx = getV2lMapping()[d_dragAnchorIdx];
-            }
+            if (d_bidiVisualMapping->getV2lMapping().size() > d_dragAnchorIdx)
+                d_dragAnchorIdx =
+                    d_bidiVisualMapping->getV2lMapping()[d_dragAnchorIdx];
 #endif
             setCaratIndex(d_dragAnchorIdx);
         }
@@ -423,10 +423,8 @@ void Editbox::onMouseMove(MouseEventArgs& e)
     {
         size_t anchorIdx = getTextIndexFromPosition(e.position);
 #ifdef CEGUI_BIDI_SUPPORT
-        if (getV2lMapping().size() > anchorIdx)
-        {
-            anchorIdx = getV2lMapping()[anchorIdx];
-        }
+        if (d_bidiVisualMapping->getV2lMapping().size() > anchorIdx)
+            anchorIdx = d_bidiVisualMapping->getV2lMapping()[anchorIdx];
 #endif
         setCaratIndex(anchorIdx);
 
@@ -874,10 +872,8 @@ size_t Editbox::getCaratIndex(void) const
 {
 #ifdef CEGUI_BIDI_SUPPORT
     size_t caratPos = d_caratPos;
-    if (getL2vMapping().size() > caratPos)
-    {
-        caratPos = getL2vMapping()[caratPos];
-    }
+    if (d_bidiVisualMapping->getL2vMapping().size() > caratPos)
+        caratPos = d_bidiVisualMapping->getL2vMapping()[caratPos];
 #endif
 
     return d_caratPos;

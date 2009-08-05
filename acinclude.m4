@@ -980,6 +980,9 @@ AC_DEFUN([CEGUI_CHECK_BIDI],[
         fi
     fi
 
+    AM_CONDITIONAL([CEGUI_BUILD_FRIBIDI_MAPPER], [test x$cegui_enable_bidi = xyes && test x$cegui_with_minibidi != xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_MINIBIDI_MAPPER], [test x$cegui_enable_bidi = xyes && test x$cegui_with_minibidi = xyes])
+
     AC_SUBST(fribidi_CFLAGS)
     AC_SUBST(fribidi_LIBS)
 ])

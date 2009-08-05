@@ -27,11 +27,22 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUISystem.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 
+#if defined (CEGUI_USE_FRIBIDI)
+    #include "CEGUIFribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+    #include "CEGUIMinibidiVisualMapping.h"
+#else
+    #include "CEGUIBiDiVisualMapping.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,6 +56,15 @@ const colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 	Base class constructor
 *************************************************************************/
 ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
+#ifndef CEGUI_BIDI_SUPPORT
+    d_bidiVisualMapping(0),
+#elif defined (CEGUI_USE_FRIBIDI)
+    d_bidiVisualMapping(new FribidiVisualMapping),
+#elif defined (CEGUI_USE_MINIBIDI)
+    d_bidiVisualMapping(new MinibidiVisualMapping),
+#else
+    #error "BIDI Configuration is inconsistant, check your config!"
+#endif
 	d_itemID(item_id),
 	d_itemData(item_data),
     d_selected(false),
@@ -110,10 +130,25 @@ void ListboxItem::setSelectionColours(colour top_left_colour, colour top_right_c
 void ListboxItem::setText( const String& text )
 {
    d_textLogical = text;
-
-#ifdef CEGUI_BIDI_SUPPORT
-   TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
-#endif
+   d_bidiDataValid = false;
 }
+
+//----------------------------------------------------------------------------//
+const String& ListboxItem::getTextVisual() const
+{
+    // no bidi support
+    if (!d_bidiVisualMapping)
+        return d_textLogical;
+
+    if (!d_bidiDataValid)
+    {
+        d_bidiVisualMapping->updateVisual(d_textLogical);
+        d_bidiDataValid = true;
+    }
+
+    return d_bidiVisualMapping->getTextVisual();
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

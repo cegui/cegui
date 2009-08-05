@@ -38,26 +38,6 @@ Each item in here has a comment to describe what it's for.
 #ifndef _CEGUIConfig_h_
 #define _CEGUIConfig_h_
 
-// FIXME: Testing of BiDirectional text support.
-//
-// Note, on linux if you want to use fribidi, you still have to specify the
-// required options to the configure script, as well as specifying the right
-// options here (otherwise it will not find your headers and libs).
-//
-// By the time there is a release, these settings will again only be required
-// for use with Xcode.
-//
-// Uncomment the following line if you want to enable bi-directional text
-// support, then uncomment one of the other lines to select a library to use.
-//#define CEGUI_BIDI_SUPPORT
-//
-// Uncomment this to use the embedded minibidi library.
-//#define CEGUI_USE_MINIBIDI
-// - or -
-// Uncomment this to use an external fribidi library.
-//#define CEGUI_USE_FRIBIDI
-
-
 //////////////////////////////////////////////////////////////////////////
 // The following are intended for X-Code users.
 // 
@@ -136,6 +116,30 @@ Each item in here has a comment to describe what it's for.
 // CEGUI::System object.
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_HAS_DEFAULT_LOGGER
+
+//////////////////////////////////////////////////////////////////////////
+// The following defines control bidirectional text support.
+//
+// Uncomment the CEGUI_BIDI_SUPPORT definition to enable bidirectional
+// text in CEGUI.
+//
+// With bidirectional text support enabled, you must then choose to uncomment
+// either the CEGUI_USE_MINIBIDI or CEGUI_USE_FRIBIDI definitions (but you
+// should not uncomment both!)
+//
+// Uncommenting CEGUI_USE_MINIBIDI uses an integrated copy of minibidi to
+// provide the bidirectional support.
+//
+// Uncommenting CEGUI_USE_FRIBIDI uses an external copy of fribidi to
+// provide the bidirectional support (not supplied).
+//////////////////////////////////////////////////////////////////////////
+//#define CEGUI_BIDI_SUPPORT
+
+// Uncomment this to use the embedded minibidi library.
+//#define CEGUI_USE_MINIBIDI
+// - or -
+// Uncomment this to use an external fribidi library.
+//#define CEGUI_USE_FRIBIDI
 
 #endif // defined(__APPLE__)
 

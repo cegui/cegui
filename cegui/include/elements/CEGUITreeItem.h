@@ -201,15 +201,8 @@ public:
      */
     const String& getText() const {return d_textLogical;}
 
-#ifdef CEGUI_BIDI_SUPPORT
-    const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
-    const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
-
-    const String& getTextVisual(void) const   {return d_textVisual;}
-#else
-    // return unmodified text string when no bi-di support is compiled in.
-    const String& getTextVisual(void) const   {return getText();}
-#endif
+    //! return text string with \e visual ordering of glyphs.
+    const String& getTextVisual() const;
 
     /*!
     \brief
@@ -642,11 +635,10 @@ protected:
      *************************************************************************/
     //! Text for this tree item.  If not rendered, still used for sorting.
     String               d_textLogical;            //!< text rendered by this component.
-#ifdef CEGUI_BIDI_SUPPORT
-    TextUtils::StrIndexList d_l2vMapping;
-    TextUtils::StrIndexList d_v2lMapping;
-    String d_textVisual;
-#endif
+    //! pointer to bidirection support object
+    BiDiVisualMapping* d_bidiVisualMapping;
+    //! whether bidi visual mapping has been updated since last text change.
+    mutable bool d_bidiDataValid;
     //! Text for the individual tooltip of this item.
     String d_tooltipText;
     //! ID code assigned by client code.

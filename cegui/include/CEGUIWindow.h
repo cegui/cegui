@@ -59,6 +59,7 @@ namespace CEGUI
 {
 class RenderingSurface;
 struct RenderingContext;
+class BiDiVisualMapping;
 
 /*!
 \brief
@@ -631,15 +632,8 @@ public:
     */
     const String& getText(void) const {return d_textLogical;}
 
-#ifdef CEGUI_BIDI_SUPPORT
-    const TextUtils::StrIndexList getL2vMapping(void) const   {return d_l2vMapping;}
-    const TextUtils::StrIndexList getV2lMapping(void) const   {return d_v2lMapping;}
-
-    const String& getTextVisual(void) const   {return d_textVisual;}
-#else
-    // return unmodified text string when no bi-di support is compiled in.
-    const String& getTextVisual(void) const   {return getText();}
-#endif
+    //! return text string with \e visual ordering of glyphs.
+    const String& getTextVisual() const;
 
     /*!
     \brief
@@ -2830,6 +2824,10 @@ public:
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
+    //! return the pointer to the BiDiVisualMapping for this window, if any.
+    const BiDiVisualMapping* getBiDiVisualMapping() const
+        {return d_bidiVisualMapping;}
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3768,11 +3766,10 @@ protected:
     Font* d_font;
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
-#ifdef CEGUI_BIDI_SUPPORT
-    TextUtils::StrIndexList d_l2vMapping;
-    TextUtils::StrIndexList d_v2lMapping;
-    String d_textVisual;
-#endif
+    //! pointer to bidirection support object
+    BiDiVisualMapping* d_bidiVisualMapping;
+    //! whether bidi visual mapping has been updated since last text change.
+    mutable bool d_bidiDataValid;
     //! RenderedString representation of text string as ouput from a parser.
     mutable RenderedString d_renderedString;
     //! true if d_renderedString is valid, false if needs re-parse.

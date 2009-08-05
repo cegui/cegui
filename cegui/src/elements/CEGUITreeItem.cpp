@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "elements/CEGUITree.h"
 #include "elements/CEGUITreeItem.h"
 #include "CEGUISystem.h"
@@ -36,6 +40,13 @@
 #include "CEGUIImage.h"
 #include <algorithm>
 
+#if defined (CEGUI_USE_FRIBIDI)
+    #include "CEGUIFribidiVisualMapping.h"
+#elif defined (CEGUI_USE_MINIBIDI)
+    #include "CEGUIMinibidiVisualMapping.h"
+#else
+    #include "CEGUIBiDiVisualMapping.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,6 +65,16 @@ const colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
 *************************************************************************/
 TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
                    bool disabled, bool auto_delete) :
+#ifndef CEGUI_BIDI_SUPPORT
+    d_bidiVisualMapping(0),
+#elif defined (CEGUI_USE_FRIBIDI)
+    d_bidiVisualMapping(new FribidiVisualMapping),
+#elif defined (CEGUI_USE_MINIBIDI)
+    d_bidiVisualMapping(new MinibidiVisualMapping),
+#else
+    #error "BIDI Configuration is inconsistant, check your config!"
+#endif
+    d_bidiDataValid(false),
     d_itemID(item_id),
     d_itemData(item_data),
     d_selected(false),
@@ -319,10 +340,7 @@ void TreeItem::setTextColours(colour top_left_colour,
 void TreeItem::setText( const String& text )
 {
     d_textLogical = text;
-#ifdef CEGUI_BIDI_SUPPORT
-    TextUtils::reorderFromLogicalToVisual(d_textLogical, d_textVisual, d_l2vMapping, d_v2lMapping);
-#endif
-
+    d_bidiDataValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -332,6 +350,22 @@ void TreeItem::parseTextString() const
     d_stringParser.setInitialColours(d_textCols);
     d_renderedString = d_stringParser.parse(getTextVisual());
     d_renderedStringValid = true;
+}
+
+//----------------------------------------------------------------------------//
+const String& TreeItem::getTextVisual() const
+{
+    // no bidi support
+    if (!d_bidiVisualMapping)
+        return d_textLogical;
+
+    if (!d_bidiDataValid)
+    {
+        d_bidiVisualMapping->updateVisual(d_textLogical);
+        d_bidiDataValid = true;
+    }
+
+    return d_bidiVisualMapping->getTextVisual();
 }
 
 //----------------------------------------------------------------------------//

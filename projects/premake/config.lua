@@ -47,6 +47,15 @@ CEGUI_USE_PCRE_REGEX = true
 --- based class and instantiate it before creating the main CEGUI::System object.
 CEGUI_USE_DEFAULT_LOGGER = true
 
+--- BiDirectional text support.
+--- To enable support for bi-directional text in CEGUI, set CEGUI_BIDI_SUPPORT
+--- to true.
+--- With bidirectional support enabled, CEGUI_USE_MINIBIDI then controls whether
+--- that support is provided viaan embedded copy of minibidi (true) or an
+--- external copy of the fribidi library (false).
+CEGUI_BIDI_SUPPORT = false;
+CEGUI_USE_MINIBIDI = true;
+
 -------------
 -- Renderers
 -- this controls which renderer modules are built

@@ -25,12 +25,17 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "FalEditbox.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIFont.h"
+#include "CEGUIBiDiVisualMapping.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -115,17 +120,17 @@ void FalagardEditbox::render()
     if ((editText->size() > 0) && (cartIndex > 0))
     {
         size_t curCartIndex = w->getCaratIndex();
-        TextUtils::BidiCharType charBeforeCartType =
-            TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
+        BidiCharType charBeforeCartType = w->getBiDiVisualMapping()->
+            getBidiCharType((*editText)[curCartIndex - 1]);
         // for neutral chars you decide by the char after
-        for (; TextUtils::bctNeutral == charBeforeCartType &&
+        for (; BCT_NEUTRAL == charBeforeCartType &&
                (editText->size() > curCartIndex); curCartIndex++)
         {
-            charBeforeCartType =
-                TextUtils::getBidiCharType((*editText)[curCartIndex - 1]);
+            charBeforeCartType = w->getBiDiVisualMapping()->
+                getBidiCharType((*editText)[curCartIndex - 1]);
         }
 
-        currCharIsRtl  = (TextUtils::bctRightToLeft == charBeforeCartType);
+        currCharIsRtl  = (BCT_RIGHT_TO_LEFT == charBeforeCartType);
     }
 
     bool isFirstChar = cartIndex == 0;
@@ -135,8 +140,8 @@ void FalagardEditbox::render()
         cartIndex--;
 
     // we need to find the cart pos by the logical to visual map
-    if (w->getV2lMapping().size() > cartIndex)
-        cartIndex = w->getL2vMapping()[cartIndex];
+    if (w->getBiDiVisualMapping()->getV2lMapping().size() > cartIndex)
+        cartIndex = w->getBiDiVisualMapping()->getL2vMapping()[cartIndex];
 
     // for non RTL char - the cart pos is after the char
     if (!currCharIsRtl)
@@ -147,7 +152,8 @@ void FalagardEditbox::render()
     {
         bool firstCharRtl =
             (editText->size() > 0) &&
-            (TextUtils::bctRightToLeft == TextUtils::getBidiCharType((*editText)[0]));
+            (BCT_RIGHT_TO_LEFT == w->getBiDiVisualMapping()->
+                getBidiCharType((*editText)[0]));
 
         if (!firstCharRtl)
             cartIndex--;
@@ -220,9 +226,9 @@ void FalagardEditbox::render()
             size_t realPos = 0;
 
             // get he visual pos of the char
-            if (w->getV2lMapping().size() > i)
+            if (w->getBiDiVisualMapping()->getV2lMapping().size() > i)
             {
-                realPos = w->getV2lMapping()[i];
+                realPos = w->getBiDiVisualMapping()->getV2lMapping()[i];
             }
 
             // check if it is in the highlighted region

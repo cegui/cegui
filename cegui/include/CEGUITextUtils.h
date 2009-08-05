@@ -143,52 +143,6 @@ public:
     */
     static  void    trimTrailingChars(String& str, const String& chars);
 
-#ifdef CEGUI_BIDI_SUPPORT
-    /*!
-    \brief
-        Reorder a string from a logical (type order) bidi string to a
-        visual (the way it displayed) string.
-
-    \param logical
-        String object to be reordered.
-
-    \param visual
-        String object containing the result reordered string.
-
-    \param l2vMapping
-        List of integers that map the pos of each char from logical string in the visual string.
-
-    \param v2lMapping
-        List of integers that map the pos of each char from visual string in the logical string.
-
-    \return
-        success
-    */
-    typedef std::vector<int>    StrIndexList;
-    static  bool    reorderFromLogicalToVisual(const String& logical, String& visual,
-            StrIndexList& l2vMapping, StrIndexList& v2lMapping);
-
-    enum BidiCharType
-    {
-        bctRightToLeft,
-        bctLeftToRight,
-        bctNeutral
-    };
-
-    /*!
-    \brief
-        Gets the BiDi char type of a char.
-
-    \param charToCheck
-        a char that will be checked
-
-
-    \return
-        the BiDi char type
-    */
-    static BidiCharType getBidiCharType(const utf32 charToCheck);
-#endif
-
 private:
     /*************************************************************************
         Data
