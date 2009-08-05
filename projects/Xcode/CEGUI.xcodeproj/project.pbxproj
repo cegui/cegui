@@ -684,6 +684,12 @@
 		DAC6D0CF10219276000602A5 /* FalEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CD10219276000602A5 /* FalEditboxProperties.cpp */; };
 		DAC6D0D010219276000602A5 /* FalMultiLineEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */; };
 		DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */; };
+		DAE4B64E102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */; };
+		DAE4B64F102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */; };
+		DAE4B650102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */; };
+		DAE4B654102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */; };
+		DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */; };
+		DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B653102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp */; };
 		DAF3D22E0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */; };
 		DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */; };
 		DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */; };
@@ -2311,6 +2317,12 @@
 		DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalMultiLineEditboxProperties.cpp; path = ../../cegui/src/WindowRendererSets/Falagard/FalMultiLineEditboxProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIXercesParserProperties.cpp; path = ../../cegui/src/XMLParserModules/XercesParser/CEGUIXercesParserProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
+		DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBiDiVisualMapping.h; path = ../../cegui/include/CEGUIBiDiVisualMapping.h; sourceTree = SOURCE_ROOT; };
+		DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFribidiVisualMapping.h; path = ../../cegui/include/CEGUIFribidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
+		DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIMinibidiVisualMapping.h; path = ../../cegui/include/CEGUIMinibidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
+		DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBiDiVisualMapping.cpp; path = ../../cegui/src/CEGUIBiDiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
+		DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIFribidiVisualMapping.cpp; path = ../../cegui/src/CEGUIFribidiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
+		DAE4B653102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIMinibidiVisualMapping.cpp; path = ../../cegui/src/CEGUIMinibidiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
 		DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWidgetComponent.h; path = ../../cegui/include/CEGUIRenderedStringWidgetComponent.h; sourceTree = SOURCE_ROOT; };
 		DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderedStringWidgetComponent.cpp; path = ../../cegui/src/CEGUIRenderedStringWidgetComponent.cpp; sourceTree = SOURCE_ROOT; };
 		DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFontGlyph.h; path = ../../cegui/include/CEGUIFontGlyph.h; sourceTree = SOURCE_ROOT; };
@@ -3259,6 +3271,7 @@
 				DA1095420F6D5F9B00B8A582 /* CEGUI.h */,
 				DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */,
 				DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */,
+				DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */,
 				DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */,
 				DAB2700B0FCAE4F500D9EE82 /* CEGUICentredRenderedString.h */,
 				DA1095450F6D5F9B00B8A582 /* CEGUIcolour.h */,
@@ -3284,6 +3297,7 @@
 				DA1095560F6D5F9B00B8A582 /* CEGUIForwardRefs.h */,
 				DA1095570F6D5F9B00B8A582 /* CEGUIFreeFunctionSlot.h */,
 				DA1095580F6D5F9B00B8A582 /* CEGUIFreeTypeFont.h */,
+				DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */,
 				DA1095590F6D5F9B00B8A582 /* CEGUIFunctorCopySlot.h */,
 				DA10955A0F6D5F9B00B8A582 /* CEGUIFunctorPointerSlot.h */,
 				DA10955B0F6D5F9B00B8A582 /* CEGUIFunctorReferenceBinder.h */,
@@ -3302,6 +3316,7 @@
 				DAB270650FCAEFEF00D9EE82 /* CEGUILeftAlignedRenderedString.h */,
 				DA1095670F6D5F9B00B8A582 /* CEGUILogger.h */,
 				DA1095680F6D5F9B00B8A582 /* CEGUIMemberFunctionSlot.h */,
+				DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */,
 				DA1095690F6D5F9B00B8A582 /* CEGUIMouseCursor.h */,
 				DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */,
 				DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */,
@@ -3375,6 +3390,7 @@
 				DA1096B60F6D648C00B8A582 /* implementations */,
 				DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */,
 				DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */,
+				DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */,
 				DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */,
 				DAB270170FCAE58C00D9EE82 /* CEGUICentredRenderedString.cpp */,
 				DA1095070F6D5F4000B8A582 /* CEGUIcolour.cpp */,
@@ -3393,6 +3409,7 @@
 				DA1095130F6D5F4100B8A582 /* CEGUIEventSignalSet.cpp */,
 				DA1095140F6D5F4100B8A582 /* CEGUIExceptions.cpp */,
 				DA1095150F6D5F4100B8A582 /* CEGUIFactoryModule.cpp */,
+				DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */,
 				DA1095160F6D5F4100B8A582 /* CEGUIFont.cpp */,
 				DA1095170F6D5F4100B8A582 /* CEGUIFont_xmlHandler.cpp */,
 				DA1095180F6D5F4100B8A582 /* CEGUIFontManager.cpp */,
@@ -3410,6 +3427,7 @@
 				DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */,
 				DAB270710FCAEFFD00D9EE82 /* CEGUILeftAlignedRenderedString.cpp */,
 				DA1095220F6D5F4100B8A582 /* CEGUILogger.cpp */,
+				DAE4B653102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp */,
 				DA1095230F6D5F4100B8A582 /* CEGUIMouseCursor.cpp */,
 				DAC1BE78101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp */,
 				DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */,
@@ -4470,6 +4488,9 @@
 				DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */,
 				DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */,
 				DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */,
+				DAE4B64E102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h in Headers */,
+				DAE4B64F102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h in Headers */,
+				DAE4B650102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5738,6 +5759,9 @@
 				DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */,
 				DAC1BE79101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp in Sources */,
 				DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */,
+				DAE4B654102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp in Sources */,
+				DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */,
+				DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

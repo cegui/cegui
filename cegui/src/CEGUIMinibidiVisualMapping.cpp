@@ -25,6 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
+#include "CEGUIConfig.h"
+
+#ifdef CEGUI_USE_MINIBIDI
+
 #include "CEGUIMinibidiVisualMapping.h"
 #include "CEGUILogger.h"
 
@@ -86,3 +94,5 @@ bool MinibidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#endif // CEGUI_USE_MINIBIDI
