@@ -90,10 +90,10 @@ public:
 	*************************************************************************/
     /*!
     \brief
-        Construct a new System object
+        Create the System object and return a reference to it.
 
     \param renderer
-        Pointer to the valid Renderer object that will be used to render GUI
+        Reference to a valid Renderer object that will be used to render GUI
         imagery.
 
     \param resourceProvider
@@ -117,20 +117,16 @@ public:
     \param logFile
         String object containing the name to use for the log file.
     */
-    System(Renderer* renderer,
-           ResourceProvider* resourceProvider = 0,
-           XMLParser* xmlParser = 0,
-           ImageCodec* imageCodec = 0,
-           ScriptModule* scriptModule = 0,
-           const String& configFile = "",
-           const String& logFile = "CEGUI.log");
+    static System& create(Renderer& renderer,
+                          ResourceProvider* resourceProvider = 0,
+                          XMLParser* xmlParser = 0,
+                          ImageCodec* imageCodec = 0,
+                          ScriptModule* scriptModule = 0,
+                          const String& configFile = "",
+                          const String& logFile = "CEGUI.log");
 
-	/*!
-	\brief
-		Destructor for System objects.
-	*/
-	~System(void);
-
+    //! Destroy the System object.
+    static void destroy();
 
 	/*!
 	\brief
@@ -915,6 +911,46 @@ private:
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
+    /*!
+    \brief
+        Construct a new System object
+
+    \param renderer
+        Reference to a valid Renderer object that will be used to render GUI
+        imagery.
+
+    \param resourceProvider
+        Pointer to a ResourceProvider object, or NULL to use whichever default
+        the Renderer provides.
+
+    \param xmlParser
+        Pointer to a valid XMLParser object to be used when parsing XML files,
+        or NULL to use a default parser.
+
+    \param imageCodec
+        Pointer to a valid ImageCodec object to be used when loading image
+        files, or NULL to use a default image codec.
+
+    \param scriptModule
+        Pointer to a ScriptModule object.  may be NULL for none.
+
+    \param configFile
+        String object containing the name of a configuration file to use.
+
+    \param logFile
+        String object containing the name to use for the log file.
+    */
+    System(Renderer& renderer, ResourceProvider* resourceProvider,
+           XMLParser* xmlParser, ImageCodec* imageCodec,
+           ScriptModule* scriptModule, const String& configFile,
+           const String& logFile);
+
+    /*!
+    \brief
+        Destructor for System objects.
+    */
+    ~System(void);
+
 	/*!
 	\brief
 		Given Point \a pt, return a pointer to the Window that should receive a mouse input if \a pt is the mouse location.

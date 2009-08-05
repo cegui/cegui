@@ -145,7 +145,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutSetCursor(GLUT_CURSOR_NONE);
 
     d_renderer = &CEGUI::OpenGLRenderer::create();
-    new CEGUI::System(d_renderer);
+    CEGUI::System::create(*d_renderer);
 
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
     glutReshapeFunc(&CEGuiOpenGLBaseApplication::reshape);
@@ -196,7 +196,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 *************************************************************************/
 CEGuiOpenGLBaseApplication::~CEGuiOpenGLBaseApplication()
 {
-    delete CEGUI::System::getSingletonPtr();
+    CEGUI::System::destroy();
     CEGUI::OpenGLRenderer::destroy(*d_renderer);
 }
 
@@ -300,7 +300,7 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
         // cleanup cegui system
         CEGUI::OpenGLRenderer* renderer =
             static_cast<CEGUI::OpenGLRenderer*>(guiSystem.getRenderer());
-        delete CEGUI::System::getSingletonPtr();
+        CEGUI::System::destroy();
         CEGUI::OpenGLRenderer::destroy(*renderer);
 
         // exit

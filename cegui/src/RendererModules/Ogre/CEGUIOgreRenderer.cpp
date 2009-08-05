@@ -75,7 +75,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem()
     OgreRenderer& renderer = create();
     OgreResourceProvider& rp = createOgreResourceProvider();
     OgreImageCodec& ic = createOgreImageCodec();
-    new System(&renderer, &rp, static_cast<XMLParser*>(0), &ic);
+    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
     return renderer;
 }
@@ -90,7 +90,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target)
     OgreRenderer& renderer = OgreRenderer::create(target);
     OgreResourceProvider& rp = createOgreResourceProvider();
     OgreImageCodec& ic = createOgreImageCodec();
-    new System(&renderer, &rp, static_cast<XMLParser*>(0), &ic);
+    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
     return renderer;
 }
@@ -109,7 +109,7 @@ void OgreRenderer::destroySystem()
 
     OgreImageCodec* ic = &static_cast<OgreImageCodec&>(sys->getImageCodec());
 
-    delete sys;
+    System::destroy();
     destroyOgreImageCodec(*ic);
     destroyOgreResourceProvider(*rp);
     destroy(*renderer);
