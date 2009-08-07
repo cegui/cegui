@@ -41,7 +41,7 @@ if not CEGUI_BIDI_SUPPORT then
     tinsert(package.excludes, rootdir.."cegui/src/CEGUIFribidiVisualMapping.cpp")
     tinsert(package.excludes, rootdir.."cegui/src/CEGUIMinibidiVisualMapping.cpp")
 else
-    if CEGUI_USE_MINIBIDI
+    if CEGUI_USE_MINIBIDI then
         tinsert(package.excludes, rootdir.."cegui/src/CEGUIFribidiVisualMapping.cpp")
     else
         tinsert(package.excludes, rootdir.."cegui/src/CEGUIMinibidiVisualMapping.cpp")
