@@ -3,17 +3,15 @@ SUBDIRS = . ImageCodecModules RendererModules ScriptingModules WindowRendererSet
 INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS) \
            $(fribidi_CFLAGS)
 
-libCEGUIBase@cegui_bsfx@_la_LDFLAGS =
-libCEGUIBase@cegui_bsfx@_la_LIBADD =
+libCEGUIBase@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@ \
+                                      $(freetype2_LIBS) $(pcre_LIBS) \
+                                      $(fribidi_LIBS)
+
+libCEGUIBase@cegui_bsfx@_la_LIBADD = $(cegui_pc_platform_libs)
 
 if MINGW32_BUILD
 libCEGUIBase@cegui_bsfx@_la_CPPFLAGS = -DCEGUIBASE_EXPORTS
-libCEGUIBase@cegui_bsfx@_la_LDFLAGS += -shared -no-undefined
-libCEGUIBase@cegui_bsfx@_la_LIBADD += -lwinmm
 endif
-
-libCEGUIBase@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
-libCEGUIBase@cegui_bsfx@_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS) $(fribidi_LIBS)
 
 lib_LTLIBRARIES=libCEGUIBase@cegui_bsfx@.la
 

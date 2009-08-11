@@ -1,11 +1,10 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/XMLParserModules/TinyXMLParser
 
+libCEGUITinyXMLParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+
 if MINGW32_BUILD
 libCEGUITinyXMLParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUITINYXMLPARSER_EXPORTS
-libCEGUITinyXMLParser@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
-else
-libCEGUITinyXMLParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 lib_LTLIBRARIES=libCEGUITinyXMLParser@cegui_bsfx@.la

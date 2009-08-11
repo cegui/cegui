@@ -2,11 +2,10 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/XMLParserModules/LibxmlParser \
            $(libxml_CFLAGS)
 
+libCEGUILibxmlParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+
 if MINGW32_BUILD
 libCEGUILibxmlParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUILIBXMLPARSER_EXPORTS
-libCEGUILibxmlParser@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
-else
-libCEGUILibxmlParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 libCEGUILibxmlParser@cegui_bsfx@_la_LIBADD = $(libxml_LIBS) \

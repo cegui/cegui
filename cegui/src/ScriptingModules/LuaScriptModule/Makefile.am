@@ -3,16 +3,12 @@ SUBDIRS = package support
 INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule
 
-libCEGUILuaScriptModule@cegui_bsfx@_la_LDFLAGS =
+libCEGUILuaScriptModule@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS = $(Lua_CFLAGS)
 
 if MINGW32_BUILD
 libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS += -DCEGUILUA_EXPORTS
-libCEGUILuaScriptModule@cegui_bsfx@_la_LDFLAGS += -no-undefined -avoid-version
 endif
-
-libCEGUILuaScriptModule@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
-
 
 lib_LTLIBRARIES = libCEGUILuaScriptModule@cegui_bsfx@.la
 

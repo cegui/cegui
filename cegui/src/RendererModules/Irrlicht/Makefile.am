@@ -8,7 +8,6 @@ libCEGUIIrrlichtRenderer@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
 if MINGW32_BUILD
 libCEGUIIrrlichtRenderer@cegui_bsfx@_la_CPPFLAGS = -DIRRLICHT_GUIRENDERER_EXPORTS
-libCEGUIIrrlichtRenderer@cegui_bsfx@_la_LDFLAGS += -no-undefined
 endif
 
 libCEGUIIrrlichtRenderer@cegui_bsfx@_la_SOURCES = CEGUIIrrlichtGeometryBuffer.cpp \
