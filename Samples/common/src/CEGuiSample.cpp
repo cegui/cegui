@@ -76,10 +76,6 @@
 
 #include "CEGUI.h"
 
-#ifdef CEGUI_WITH_XERCES
-#   include "CEGUIXercesParser.h"
-#endif
-
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #else
