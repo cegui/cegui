@@ -407,10 +407,11 @@ void System::renderGUI(void)
 		{
             RenderingSurface& rs = d_activeSheet->getTargetRenderingSurface();
             rs.clearGeometry();
-			d_activeSheet->render();
 
             if (rs.isRenderingWindow())
                 static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
+
+			d_activeSheet->render();
 		}
 
 		d_gui_redraw = false;
