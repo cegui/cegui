@@ -1196,17 +1196,8 @@ void Window::queueGeometry(const RenderingContext& ctx)
 //----------------------------------------------------------------------------//
 void Window::setParent(Window* parent)
 {
-    if (d_surface && d_surface->isRenderingWindow())
-    {
-        RenderingSurface* target = parent ?
-            &parent->getTargetRenderingSurface() :
-            &System::getSingleton().getRenderer()->getDefaultRenderingRoot();
-
-        target->transferRenderingWindow(
-            static_cast<RenderingWindow&>(*d_surface));
-    }
-
     d_parent = parent;
+    transferChildSurfaces();
 }
 
 //----------------------------------------------------------------------------//
@@ -3326,11 +3317,13 @@ void Window::transferChildSurfaces()
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        const Window* const c = d_children[i];
+        Window* const c = d_children[i];
 
         if (c->d_surface && c->d_surface->isRenderingWindow())
             s.transferRenderingWindow(
                 *static_cast<RenderingWindow*>(c->d_surface));
+        else
+            c->transferChildSurfaces();
     }
 }
 
