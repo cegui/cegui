@@ -292,7 +292,7 @@ function setup_static_samples()
 		end
 		if XERCES_PARSER then
 		    dependency("CEGUIXercesParser")
-		    library_static("xerces-c_2","","D")
+		    library_static("xerces-c_3","","D")
 		end
 		if TINYXML_PARSER then
 		    dependency("CEGUITinyXMLParser")
@@ -351,7 +351,7 @@ function setup_static_samples()
 		end
     	      if DEFAULT_XML_PARSER == "xerces" then
 		    library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		    library_static("xerces-c_2","","D")
+		    library_static("xerces-c_3","","D")
 		end
   		if DEFAULT_XML_PARSER == "tinyxml" then
 		    library_static("CEGUITinyXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
