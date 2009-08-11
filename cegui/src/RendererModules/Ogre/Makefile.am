@@ -8,7 +8,6 @@ libCEGUIOgreRenderer@cegui_bsfx@_la_LIBADD = $(Ogre_LIBS) $(top_builddir)/cegui/
 
 if MINGW32_BUILD
 libCEGUIOgreRenderer@cegui_bsfx@_la_CPPFLAGS = -DOGRE_GUIRENDERER_EXPORTS
-libCEGUIOgreRenderer@cegui_bsfx@_la_LDFLAGS += -no-undefined
 endif
 
 libCEGUIOgreRenderer@cegui_bsfx@_la_SOURCES = CEGUIOgreGeometryBuffer.cpp \

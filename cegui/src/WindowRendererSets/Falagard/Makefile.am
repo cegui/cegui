@@ -1,14 +1,11 @@
 INCLUDES = -I$(top_srcdir)/cegui/include \
            -I$(top_srcdir)/cegui/include/WindowRendererSets/Falagard
 
-libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS =
+libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
 if MINGW32_BUILD
 libCEGUIFalagardWRBase@cegui_bsfx@_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EXPORTS
-libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS += -no-undefined -avoid-version
 endif
-
-libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS += @CEGUI_LIB_LINK_FLAGS@
 
 libCEGUIFalagardWRBase@cegui_bsfx@_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la
 

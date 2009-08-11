@@ -36,7 +36,7 @@ namespace CEGUI
 class Font;
 
 //! Handler class used to parse the Font XML files to create Font objects.
-class Font_xmlHandler : public XMLHandler
+class CEGUIEXPORT Font_xmlHandler : public XMLHandler
 {
 public:
     //! Filename of the XML schema used for validating Font files.

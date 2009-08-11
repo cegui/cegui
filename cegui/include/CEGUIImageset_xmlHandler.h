@@ -36,7 +36,7 @@ namespace CEGUI
 class Imageset;
 
 //! Class used to parse the Imageset XML files to create Imageset objects
-class Imageset_xmlHandler : public XMLHandler
+class CEGUIEXPORT Imageset_xmlHandler : public XMLHandler
 {
 public:
     //! Constructor.

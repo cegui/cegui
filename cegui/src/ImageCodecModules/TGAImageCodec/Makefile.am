@@ -1,11 +1,10 @@
 INCLUDES=-I$(top_srcdir)/cegui/include \
          -I$(top_srcdir)/cegui/include/ImageCodecModules/TGAImageCodec
 
+libCEGUITGAImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
+
 if MINGW32_BUILD
 libCEGUITGAImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUITGAIMAGECODEC_EXPORTS
-libCEGUITGAImageCodec@cegui_bsfx@_la_LDFLAGS = -no-undefined -avoid-version
-else
-libCEGUITGAImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 endif
 
 lib_LTLIBRARIES=libCEGUITGAImageCodec@cegui_bsfx@.la

@@ -1027,13 +1027,14 @@ AC_DEFUN([CEGUI_CHECK_DEFAULT_LOGGER],[
     AM_CONDITIONAL([CEGUI_BUILD_DEFAULT_LOGGER], [test x$cegui_enable_default_logger = xyes])
 ])
 
-AC_DEFUN([CEGUI_CHECK_VERSION_SUFFIX],[
+AC_DEFUN([CEGUI_LIBTOOL_OPTIONS],[
     AC_ARG_ENABLE([version-suffix],
                   AC_HELP_STRING([--disable-version-suffix],
                                  [Disable adding the release version to shared libraries.
-                                  Using this option leaves you with ABI versioning set at 0:0:0, so is probably
-                                  not what you want to do.  See also --with-version-suffix for how to modify
-                                  the version suffix used.]),
+                                  Using this option leaves you with no version suffix, so may not
+                                  be what you want to do (except for Win32 builds, perhaps).
+                                  See also --with-version-suffix for how to modify the version
+                                  suffix to be used.]),
                   [cegui_enable_version_suffix=$enableval], [cegui_enable_version_suffix=yes])
 
     AC_ARG_WITH([version-suffix],
@@ -1047,6 +1048,12 @@ AC_DEFUN([CEGUI_CHECK_VERSION_SUFFIX],[
         AC_DEFINE_UNQUOTED(CEGUI_VERSION_SUFFIX, ["$cegui_lib_version_suffix"], [Defines the shared library version suffix.])
 
         CEGUI_LIB_LINK_FLAGS="-release $cegui_lib_version_suffix"
+    else
+        CEGUI_LIB_LINK_FLAGS="-avoid-version"
+    fi
+
+    if test x$MINGW32 = xyes; then
+        CEGUI_LIB_LINK_FLAGS="$CEGUI_LIB_LINK_FLAGS -shared -no-undefined"
     fi
 
     AC_SUBST(CEGUI_LIB_LINK_FLAGS)
