@@ -12,7 +12,7 @@ package.files =
 
 include(rootdir.."cegui/include/"..pkgdir)
 
-library("xerces-c_2","D")
+library("xerces-c_3","D")
 
 dependency("CEGUIBase")
 
