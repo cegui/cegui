@@ -106,7 +106,15 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_ALWAYS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_SECONDARY_COLOR_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_FOG_COORDINATE_ARRAY);
+    glDisableClientState(GL_EDGE_FLAG_ARRAY);
+    glClearColor(0,0,0,0);
     disablePBuffer();
 }
 
@@ -147,8 +155,9 @@ bool OpenGLApplePBTextureTarget::isImageryCache() const
 void OpenGLApplePBTextureTarget::clear()
 {
     enablePBuffer();
-    glClearColor(0,0,0,0);
+    glDisable(GL_SCISSOR_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_SCISSOR_TEST);
     disablePBuffer();
 }
 
@@ -189,11 +198,11 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Size& sz)
                                 "- CGLSetPBuffer failed: " +
                                 String(CGLErrorString(err)));
 
+    clear();
+
     // make d_texture use the pbuffer as it's data source
-    enablePBuffer();
     glBindTexture(GL_TEXTURE_2D, d_texture);
-    err = CGLTexImagePBuffer(d_context, d_pbuffer, GL_FRONT);
-    disablePBuffer();
+    err = CGLTexImagePBuffer(CGLGetCurrentContext(), d_pbuffer, GL_FRONT);
 
     if (err)
         throw RendererException("OpenGLApplePBTextureTarget::declareRenderSize "
