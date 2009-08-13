@@ -266,149 +266,86 @@ function setup_static_samples()
 	   library_static("pcre","", "_d")
     end
 	
-	-- Warn user when both D3D9 and D3D10 are defined during static builds
-	if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then
-		print "D3D9 and D3D10 cannot both be defined for static builds, because it will result in a linker conflict."
-	end
+    -- Warn user when both D3D9 and D3D10 are defined during static builds
+    if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then
+        print "D3D9 and D3D10 cannot both be defined for static builds, because it will result in a linker conflict."
+    end
 	
-	if DIRECT3D9_RENDERER then
-		library_static("dxguid")
-		library_static("d3dx9")
-		library_static("dxerr9")
-	end
+    if DIRECT3D9_RENDERER then
+        library_static("dxguid")
+        library_static("d3dx9")
+        library_static("dxerr9")
+    end
 
-	if DIRECT3D10_RENDERER then
-		library_static("d3d10")
-		library_static("dxerr")
-		library_static("d3dx10")
-	end
-	
+    if DIRECT3D10_RENDERER then
+        library_static("d3d10")
+        library_static("dxerr")
+        library_static("d3dx10")
+    end
 
-	if CEGUI_CORE_LIBRARY_SOLUTION then
-		-- Link against any XML Parsers we are compiling
-		if EXPAT_PARSER then
-		    dependency("CEGUIExpatParser")
-		    library_static("expat","","_d")
-		end
-		if XERCES_PARSER then
-		    dependency("CEGUIXercesParser")
-		    library_static("xerces-c_3","","D")
-		end
-		if TINYXML_PARSER then
-		    dependency("CEGUITinyXMLParser")
-		end
-		if LIBXML_PARSER then
-		    dependency("CEGUILibXMLParser")
-		end
+    library_static("CEGUIBase","_Static", DEBUG_DLL_SUFFIX or "")
+
+    -- Link against the default xml parser
+    if DEFAULT_XML_PARSER == "expat" then
+        library_static("CEGUIExpatParser", "_Static", DEBUG_DLL_SUFFIX or "")
+        library_static("expat","","_d")
+    end
+    if DEFAULT_XML_PARSER == "xerces" then
+        library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
+        library_static("xerces-c_3","","D")
+    end
+    if DEFAULT_XML_PARSER == "tinyxml" then
+        library_static("CEGUITinyXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DEFAULT_XML_PARSER == "libxml" then
+        library_static("CEGUILibXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+
+    -- Link against the default image codec
+    if DEFAULT_IMAGE_CODEC == "tga" then
+        library_static("CEGUITGAImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DEFAULT_IMAGE_CODEC == "silly" then
+        library_static("CEGUISILLYImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+        library_static("SILLY","","_d")
+    end
+    if DEFAULT_IMAGE_CODEC == "devil" then
+        library_static("CEGUIDevILImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DEFAULT_IMAGE_CODEC == "freeimage" then
+        library_static("CEGUIFreeImageImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DEFAULT_IMAGE_CODEC == "corona" then
+        library_static("CEGUICoronaImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+
+    -- Renderers
+    if OPENGL_RENDERER then
+        library_static("CEGUIOpenGLRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DIRECT3D9_RENDERER then
+        library_static("CEGUIDirect3D9Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if DIRECT3D10_RENDERER then
+        library_static("CEGUIDirect3D10Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
+    end
+    if IRRLICHT_RENDERER then
+        library_static("CEGUIIrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+        if IRRLICHT_PATHS then
+            add_sdk_paths(IRRLICHT_PATHS)
+        end
+    end
+    if OGRE_RENDERER then
+        library_static("CEGUIOgreRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+        if OGRE_PATHS then
+            add_sdk_paths(OGRE_PATHS)
+        end
+    end
 		
-		-- Image Codecs
-		if TGA_IMAGE_CODEC then
-		    dependency("CEGUITGAImageCodec")
-		end
-		if SILLY_IMAGE_CODEC then
-		    dependency("CEGUISILLYImageCodec")
-		    library_static("SILLY","","_d")
-		end
-		if DEVIL_IMAGE_CODEC then
-		    dependency("CEGUIDevILImageCodec")
-		end
-		if FREEIMAGE_IMAGE_CODEC then
-		    dependency("CEGUIFreeImageImageCodec")
-		end
-		if CORONA_IMAGE_CODEC then
-		    dependency("CEGUICoronaImageCodec")
-		end
-		
-		-- Renderers
-	        if OPENGL_RENDERER then
-	           dependency("CEGUIOpenGLRenderer")
-		end
-		if DIRECT3D9_RENDERER then
-		    dependency("CEGUIDirect3D9Renderer")
-		end
-		if DIRECT3D10_RENDERER then
-		    dependency("CEGUIDirect3D10Renderer")
-		end
-		if IRRLICHT_RENDERER then
-		    dependency("CEGUIIrrlichtRenderer")
-		end
-		if OGRE_RENDERER then
-		    dependency("CEGUIOgreRenderer")
-		end
-		
-		--Window Renderers
-		if FALAGARD_WR then
-		    dependency("CEGUIFalagardWRBase")
-		end
-	else
-
-		library_static("CEGUIBase","_Static", DEBUG_DLL_SUFFIX or "")
-
-		-- Link against any XML Parsers we are compiling
-  		if DEFAULT_XML_PARSER == "expat" then
-		    library_static("CEGUIExpatParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		    library_static("expat","","_d")
-		end
-    	      if DEFAULT_XML_PARSER == "xerces" then
-		    library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		    library_static("xerces-c_3","","D")
-		end
-  		if DEFAULT_XML_PARSER == "tinyxml" then
-		    library_static("CEGUITinyXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-  		if DEFAULT_XML_PARSER == "libxml" then
-		    library_static("CEGUILibXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-
-		-- Image Codecs
-		if TGA_IMAGE_CODEC then
-		    library_static("CEGUITGAImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if SILLY_IMAGE_CODEC then
-		    library_static("CEGUISILLYImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
-		    library_static("SILLY","","_d")
-		end
-		if DEVIL_IMAGE_CODEC then
-		    library_static("CEGUIDevILImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if FREEIMAGE_IMAGE_CODEC then
-		    library_static("CEGUIFreeImageImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if CORONA_IMAGE_CODEC then
-		    library_static("CEGUICoronaImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-
-		-- Renderers
-	        if OPENGL_RENDERER then
-	            library_static("CEGUIOpenGLRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if DIRECT3D9_RENDERER then
-		    library_static("CEGUIDirect3D9Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if DIRECT3D10_RENDERER then
-		    library_static("CEGUIDirect3D10Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-		if IRRLICHT_RENDERER then
-		    library_static("CEGUIIrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-                if IRRLICHT_PATHS then
-                     add_sdk_paths(IRRLICHT_PATHS)
-                end
-		end
-		
-		if OGRE_RENDERER then
-		    library_static("CEGUIOgreRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-                if OGRE_PATHS then
-                     add_sdk_paths(OGRE_PATHS)
-                end
-		end
-		
-		--Window Renderers
-		if FALAGARD_WR then
-			library_static("CEGUIFalagardWRBase", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-	    
-	end
-	    
+    --Window Renderers
+    if FALAGARD_WR then
+        library_static("CEGUIFalagardWRBase", "_Static", DEBUG_DLL_SUFFIX or "")
+    end	    
 end
 
 --
