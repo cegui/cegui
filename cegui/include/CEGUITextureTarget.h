@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Texture;
-
 /*!
 \brief
     Specialisation of RenderTarget interface that should be used as the base

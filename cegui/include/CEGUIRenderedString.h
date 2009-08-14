@@ -40,11 +40,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderedStringComponent;
-class GeometryBuffer;
-class Vector2;
-class Rect;
-
 /*!
 \brief
     Class representing a rendered string of entities.

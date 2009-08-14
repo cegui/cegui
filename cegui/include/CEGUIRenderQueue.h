@@ -40,8 +40,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-
 /*!
 \brief
     Class that represents a queue of GeometryBuffer objects to be rendered.

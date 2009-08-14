@@ -43,8 +43,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class ImagerySection;   // forward declaration
-
 /*!
  \brief
     EventArgs based class that is used for objects passed to input event

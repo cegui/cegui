@@ -42,8 +42,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RegexMatcher;
-
 //! Base class for the EditboxWindowRenderer class
 class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
 {

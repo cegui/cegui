@@ -37,9 +37,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderTarget;
-class TextureTarget;
-class RenderingRoot;
 class DirectFBTexture;
 class DirectFBGeometryBuffer;
 

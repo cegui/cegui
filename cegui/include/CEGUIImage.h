@@ -50,8 +50,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-
 /*!
 \brief
 	Class that represents a single Image of an Imageset.

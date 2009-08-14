@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class String;
-
 //! Specifies interface for classes that parse text into RenderedString objects.
 class CEGUIEXPORT RenderedStringParser
 {

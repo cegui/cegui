@@ -33,12 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-class RenderQueue;
-class Rect;
-class Size;
-class Vector2;
-
 /*!
 \brief
     Defines interface to some surface that can be rendered to.  Concrete

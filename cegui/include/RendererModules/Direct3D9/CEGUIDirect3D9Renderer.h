@@ -54,8 +54,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderTarget;
-class RenderingRoot;
 class Direct3D9Texture;
 class Direct3D9GeometryBuffer;
 

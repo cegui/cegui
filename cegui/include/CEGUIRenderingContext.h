@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Window;
-
 /*!
 \brief
     struct that holds some context relating to a RenderingSurface object.

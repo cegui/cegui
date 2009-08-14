@@ -33,9 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderingWindow;
-class GeometryBuffer;
-
 /*!
 \brief
     Interface for objects that hook into RenderingWindow to affect the rendering

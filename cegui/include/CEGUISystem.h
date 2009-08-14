@@ -49,7 +49,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class ImageCodec;
 //! Implementation struct that tracks and controls multiclick for mouse buttons.
 struct MouseClickTrackerImpl;
 

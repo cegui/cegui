@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Font;
-
 //! Handler class used to parse the Font XML files to create Font objects.
 class CEGUIEXPORT Font_xmlHandler : public XMLHandler
 {

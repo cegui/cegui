@@ -57,10 +57,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderingSurface;
-struct RenderingContext;
-class BiDiVisualMapping;
-
 /*!
 \brief
     Enumerated type used when specifying vertical alignments.

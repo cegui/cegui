@@ -34,9 +34,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-// forward references
-class Event;
-
 /*!
 \brief
     Class that tracks a SubscriberSlot, its group, and the Event to which it was

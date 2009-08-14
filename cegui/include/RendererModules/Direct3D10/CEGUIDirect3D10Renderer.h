@@ -61,7 +61,6 @@ struct D3DXMATRIX;
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderTarget;
 class Direct3D10GeometryBuffer;
 class Direct3D10Texture;
 
