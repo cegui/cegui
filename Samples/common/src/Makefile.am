@@ -15,7 +15,6 @@ libCEGUISampleHelper@cegui_bsfx@_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIB
 
 if MINGW32_BUILD
 libCEGUISampleHelper@cegui_bsfx@_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
-libCEGUISampleHelper@cegui_bsfx@_la_LDFLAGS += -shared -no-undefined
 libCEGUISampleHelper@cegui_bsfx@_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
 endif
 
