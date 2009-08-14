@@ -45,7 +45,7 @@
 #include <sstream>
 #include <algorithm>
 
-#if defined(__linux__)
+#if defined(__linux__)  || defined(__FreeBSD__)
 #   include "CEGUIOpenGLGLXPBTextureTarget.h"
 #elif defined(_WIN32) || defined(__WIN32__)
 #   include "CEGUIOpenGLWGLPBTextureTarget.h"
@@ -457,8 +457,8 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
             new OGLTemplateTargetFactory<OpenGLFBOTextureTarget>;
     }
 
-#if defined(__linux__)
-    // on linux, we can try for GLX pbuffer support
+#if defined(__linux__) || defined(__FreeBSD__)
+    // on linux (etc), we can try for GLX pbuffer support
     else if (GLXEW_VERSION_1_3)
     {
         d_rendererID += "  TextureTarget support enabled via GLX pbuffers.";
