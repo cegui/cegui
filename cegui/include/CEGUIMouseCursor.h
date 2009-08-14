@@ -50,8 +50,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-
 /*!
 \brief
 	Enumeration of special values used for mouse cursor settings in Window objects.

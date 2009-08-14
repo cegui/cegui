@@ -35,10 +35,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class TextureTarget;
-class GeometryBuffer;
-class RenderEffect;
-
 /*!
 \brief
     RenderingWindow is a RenderingSurface that can be "drawn back" onto another

@@ -37,8 +37,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Vector2;
-
 /*!
 \brief
     Abstract base class specifying the required interface for Texture objects.

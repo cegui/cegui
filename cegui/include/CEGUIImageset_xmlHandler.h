@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Imageset;
-
 //! Class used to parse the Imageset XML files to create Imageset objects
 class CEGUIEXPORT Imageset_xmlHandler : public XMLHandler
 {

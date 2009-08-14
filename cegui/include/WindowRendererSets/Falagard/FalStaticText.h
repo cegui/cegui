@@ -43,8 +43,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class FormattedRenderedString;
-
     /*!
     \brief
         StaticText class for the FalagardBase module.

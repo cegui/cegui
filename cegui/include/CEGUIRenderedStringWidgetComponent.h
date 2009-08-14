@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Window;
-
 //! String component that moves a widget to appear as part of the string.
 class CEGUIEXPORT RenderedStringWidgetComponent : public RenderedStringComponent
 {

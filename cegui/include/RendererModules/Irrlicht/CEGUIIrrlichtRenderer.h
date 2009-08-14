@@ -65,7 +65,6 @@ class IrrlichtTexture;
 class IrrlichtGeometryBuffer;
 class IrrlichtResourceProvider;
 class IrrlichtEventPusher;
-class RenderTarget;
 
 //! CEGUI::Renderer implementation for the Irrlicht engine.
 class IRR_GUIRENDERER_API IrrlichtRenderer : public Renderer

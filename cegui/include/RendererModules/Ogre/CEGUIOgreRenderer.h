@@ -61,8 +61,6 @@ class RenderSystem;
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderTarget;
-class TextureTarget;
 class OgreGeometryBuffer;
 class OgreTexture;
 class OgreResourceProvider;

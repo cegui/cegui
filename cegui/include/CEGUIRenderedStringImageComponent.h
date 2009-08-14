@@ -34,8 +34,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Image;
-
 //! String component that draws an image.
 class CEGUIEXPORT RenderedStringImageComponent : public RenderedStringComponent
 {

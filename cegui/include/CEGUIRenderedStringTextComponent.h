@@ -35,8 +35,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Font;
-
 //! String component that draws an image.
 class CEGUIEXPORT RenderedStringTextComponent : public RenderedStringComponent
 {

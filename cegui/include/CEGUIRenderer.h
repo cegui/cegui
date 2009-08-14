@@ -35,14 +35,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-class RenderingRoot;
-class TextureTarget;
-class Size;
-class Vector2;
-
 //----------------------------------------------------------------------------//
-
 /*!
 \brief
     Enumerated type that contains the valid diagonal-mode that specify how a

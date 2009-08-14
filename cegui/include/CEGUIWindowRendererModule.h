@@ -39,9 +39,6 @@
 
 namespace CEGUI
 {
-class WRFactoryRegisterer;
-class String;
-
 //! Abstract interface for window renderer module objects.
 class CEGUIEXPORT WindowRendererModule
 {

@@ -33,11 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-// forward refs
-class Texture;
-class RenderEffect;
-struct Vertex;
-
 /*!
 \brief
     Abstract class defining the interface for objects that buffer geometry for

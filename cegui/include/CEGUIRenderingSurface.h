@@ -41,12 +41,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderTarget;
-class RenderingWindow;
-class TextureTarget;
-
 //----------------------------------------------------------------------------//
-
 //! Enumerated type for valid render queue IDs.
 enum RenderQueueID
 {

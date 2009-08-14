@@ -47,8 +47,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class WindowRendererModule;
-
 /*!
 \brief
 	A class that groups a set of GUI elements and initialises the system to access those elements.

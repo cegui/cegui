@@ -43,9 +43,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-class BiDiVisualMapping;
-
 /*!
 \brief
     Base class for list box items

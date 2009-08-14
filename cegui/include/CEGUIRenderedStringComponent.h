@@ -35,9 +35,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-class Vector2;
-
 /*!
 \brief
     Base class representing a part of a rendered string.  The 'part' represented

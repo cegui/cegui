@@ -33,8 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Scheme;
-
 //! Handler class used to parse the Scheme XML files using SAX2
 class CEGUIEXPORT Scheme_xmlHandler : public XMLHandler
 {

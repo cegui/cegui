@@ -33,11 +33,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class GeometryBuffer;
-class Vector2;
-class Rect;
-class Size;
-
 /*!
 \brief
     Root of a class hierarchy that wrap RenderedString objects and render them

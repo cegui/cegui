@@ -43,10 +43,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-class WidgetLookFeel;
-struct RenderingContext;
-
 /*!
 \brief
     Base-class for the assignable WindowRenderer object
