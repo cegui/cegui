@@ -28,8 +28,8 @@
 #ifndef _CEGUIItemListbox_h_
 #define _CEGUIItemListbox_h_
 
-#include "elements/CEGUIScrolledItemListBase.h"
-#include "elements/CEGUIItemListboxProperties.h"
+#include "CEGUIScrolledItemListBase.h"
+#include "CEGUIItemListboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

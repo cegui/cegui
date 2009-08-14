@@ -30,7 +30,7 @@
 #ifndef _CEGUIEditboxProperties_h_
 #define _CEGUIEditboxProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

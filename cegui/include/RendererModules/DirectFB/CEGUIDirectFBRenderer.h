@@ -28,9 +28,9 @@
 #ifndef _CEGUIDirectFBRenderer_h_
 #define _CEGUIDirectFBRenderer_h_
 
-#include "CEGUIRenderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 #include <directfb.h>
 #include <vector>
 

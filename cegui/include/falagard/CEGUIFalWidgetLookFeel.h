@@ -28,13 +28,13 @@
 #ifndef _CEGUIFalWidgetLookFeel_h_
 #define _CEGUIFalWidgetLookFeel_h_
 
-#include "falagard/CEGUIFalStateImagery.h"
-#include "falagard/CEGUIFalWidgetComponent.h"
-#include "falagard/CEGUIFalImagerySection.h"
-#include "falagard/CEGUIFalPropertyInitialiser.h"
-#include "falagard/CEGUIFalPropertyDefinition.h"
-#include "falagard/CEGUIFalPropertyLinkDefinition.h"
-#include "falagard/CEGUIFalNamedArea.h"
+#include "CEGUIFalStateImagery.h"
+#include "CEGUIFalWidgetComponent.h"
+#include "CEGUIFalImagerySection.h"
+#include "CEGUIFalPropertyInitialiser.h"
+#include "CEGUIFalPropertyDefinition.h"
+#include "CEGUIFalPropertyLinkDefinition.h"
+#include "CEGUIFalNamedArea.h"
 #include <map>
 
 #if defined(_MSC_VER)

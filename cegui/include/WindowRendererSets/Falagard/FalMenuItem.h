@@ -29,7 +29,7 @@
 #define _FalMenuItem_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIItemEntry.h"
+#include "../../elements/CEGUIItemEntry.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

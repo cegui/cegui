@@ -29,7 +29,7 @@
 #define _FalScrollablePane_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIScrollablePane.h"
+#include "../../elements/CEGUIScrollablePane.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,7 +30,7 @@
 #ifndef _CEGUITabControlProperties_h_
 #define _CEGUITabControlProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

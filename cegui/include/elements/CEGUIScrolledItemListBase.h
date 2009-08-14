@@ -24,9 +24,9 @@
 #ifndef _CEGUIScrolledItemListBase_h_
 #define _CEGUIScrolledItemListBase_h_
 
-#include "elements/CEGUIItemListBase.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIScrolledItemListBaseProperties.h"
+#include "CEGUIItemListBase.h"
+#include "CEGUIScrollbar.h"
+#include "CEGUIScrolledItemListBaseProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

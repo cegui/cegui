@@ -30,7 +30,7 @@
 #ifndef _CEGUIListboxProperties_h_
 #define _CEGUIListboxProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

@@ -30,9 +30,9 @@
 #ifndef _CEGUIMenubar_h_
 #define _CEGUIMenubar_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIMenuBase.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIMenuBase.h"
 
 
 #if defined(_MSC_VER)

@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyInitialiser_h_
 #define _CEGUIFalPropertyInitialiser_h_
 
-#include "CEGUIPropertySet.h"
+#include "../CEGUIPropertySet.h"
 
 
 // Start of CEGUI namespace section

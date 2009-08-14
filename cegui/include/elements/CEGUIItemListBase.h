@@ -30,10 +30,10 @@
 #ifndef _CEGUIItemListBase_h_
 #define _CEGUIItemListBase_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIItemListBaseProperties.h"
-#include "elements/CEGUIItemEntry.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIItemListBaseProperties.h"
+#include "CEGUIItemEntry.h"
 
 #include <vector>
 

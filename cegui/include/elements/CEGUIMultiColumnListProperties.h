@@ -30,7 +30,7 @@
 #ifndef _CEGUIMultiColumnListProperties_h_
 #define _CEGUIMultiColumnListProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

@@ -25,7 +25,7 @@
 #define _FalItemListbox_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIItemListBase.h"
+#include "../../elements/CEGUIItemListBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

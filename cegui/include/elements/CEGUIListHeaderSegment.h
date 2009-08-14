@@ -30,9 +30,9 @@
 #ifndef _CEGUIListHeaderSegment_h_
 #define _CEGUIListHeaderSegment_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIListHeaderSegmentProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIListHeaderSegmentProperties.h"
 
 
 #if defined(_MSC_VER)

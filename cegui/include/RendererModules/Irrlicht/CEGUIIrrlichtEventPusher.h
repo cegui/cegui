@@ -28,7 +28,7 @@
 #ifndef CCEGUIEVENTPUSHER_H_INCLUDED
 #define CCEGUIEVENTPUSHER_H_INCLUDED
 
-#include <CEGUI.h>
+#include "../../CEGUI.h"
 #include <irrlicht.h>
 
 namespace CEGUI

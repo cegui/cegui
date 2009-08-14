@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyLinkDefinition_h_
 #define _CEGUIFalPropertyLinkDefinition_h_
 
-#include "falagard/CEGUIFalPropertyDefinitionBase.h"
+#include "CEGUIFalPropertyDefinitionBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

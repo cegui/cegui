@@ -33,8 +33,8 @@
 #include <GL/wglew.h>
 
 #include "CEGUIOpenGLRenderTarget.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUITextureTarget.h"
+#include "../../CEGUIRect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

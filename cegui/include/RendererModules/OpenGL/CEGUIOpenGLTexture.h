@@ -28,9 +28,9 @@
 #ifndef _CEGUIOpenGLTexture_h_
 #define _CEGUIOpenGLTexture_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIRenderer.h"
-#include "CEGUITexture.h"
+#include "../../CEGUIBase.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUITexture.h"
 #include "CEGUIOpenGLRenderer.h"
 
 // Start of CEGUI namespace section

@@ -30,9 +30,9 @@
 #ifndef _CEGUICombobox_h_
 #define _CEGUICombobox_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIComboboxProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIComboboxProperties.h"
 
 
 #if defined(_MSC_VER)

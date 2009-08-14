@@ -28,7 +28,7 @@
 #ifndef _CEGUIDirectFBTexture_h_
 #define _CEGUIDirectFBTexture_h_
 
-#include "CEGUITexture.h"
+#include "../../CEGUITexture.h"
 #include "CEGUIDirectFBRenderer.h"
 
 // Start of CEGUI namespace section

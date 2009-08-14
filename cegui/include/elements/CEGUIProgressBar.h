@@ -30,9 +30,9 @@
 #ifndef _CEGUIProgressBar_h_
 #define _CEGUIProgressBar_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIProgressBarProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIProgressBarProperties.h"
 
 
 #if defined(_MSC_VER)

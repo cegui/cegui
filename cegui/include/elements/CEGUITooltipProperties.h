@@ -28,7 +28,7 @@
 #ifndef _CEGUITooltipProperties_h_
 #define _CEGUITooltipProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

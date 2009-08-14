@@ -30,9 +30,9 @@
 #ifndef _CEGUITabControl_h_
 #define _CEGUITabControl_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUITabControlProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUITabControlProperties.h"
 #include <vector>
 
 

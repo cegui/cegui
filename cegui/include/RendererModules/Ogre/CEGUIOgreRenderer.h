@@ -28,9 +28,9 @@
 #ifndef _CEGUIOgreRenderer_h_
 #define _CEGUIOgreRenderer_h_
 
-#include "CEGUIRenderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 
 #include <OgreBlendMode.h>
 #include <OgreTextureUnitState.h>

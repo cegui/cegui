@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalComponentBase_h_
 #define _CEGUIFalComponentBase_h_
 
-#include "falagard/CEGUIFalDimensions.h"
-#include "CEGUIWindow.h"
-#include "CEGUIColourRect.h"
+#include "CEGUIFalDimensions.h"
+#include "../CEGUIWindow.h"
+#include "../CEGUIColourRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

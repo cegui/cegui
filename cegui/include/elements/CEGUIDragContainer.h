@@ -28,9 +28,9 @@
 #ifndef _CEGUIDragContainer_h_
 #define _CEGUIDragContainer_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIWindowFactory.h"
-#include "elements/CEGUIDragContainerProperties.h"
+#include "../CEGUIWindow.h"
+#include "../CEGUIWindowFactory.h"
+#include "CEGUIDragContainerProperties.h"
 
 
 #if defined(_MSC_VER)

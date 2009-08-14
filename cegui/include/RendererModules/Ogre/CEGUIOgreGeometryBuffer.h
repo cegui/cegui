@@ -28,9 +28,9 @@
 #ifndef _CEGUIOgreGeometryBuffer_h_
 #define _CEGUIOgreGeometryBuffer_h_
 
-#include "CEGUIGeometryBuffer.h"
+#include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIOgreRenderer.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRect.h"
 
 #include <OgreMatrix4.h>
 #include <OgreColourValue.h>

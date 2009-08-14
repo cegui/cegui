@@ -32,7 +32,7 @@
 #include "FalStatic.h"
 #include "FalStaticTextProperties.h"
 #include "../../falagard/CEGUIFalEnums.h"
-#include "CEGUIColourRect.h"
+#include "../../CEGUIColourRect.h"
 #include <vector>
 
 #if defined(_MSC_VER)

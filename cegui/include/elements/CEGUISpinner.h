@@ -28,9 +28,9 @@
 #ifndef _CEGUISpinner_h_
 #define _CEGUISpinner_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUISpinnerProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUISpinnerProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

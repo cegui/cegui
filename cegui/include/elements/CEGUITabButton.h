@@ -30,8 +30,8 @@
 #ifndef _CEGUITabButton_h_
 #define _CEGUITabButton_h_
 
-#include "CEGUIBase.h"
-#include "elements/CEGUIButtonBase.h"
+#include "../CEGUIBase.h"
+#include "CEGUIButtonBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

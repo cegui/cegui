@@ -31,8 +31,8 @@
 #include <GL/glxew.h>
 
 #include "CEGUIOpenGLRenderTarget.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUITextureTarget.h"
+#include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

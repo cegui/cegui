@@ -30,8 +30,8 @@
 #ifndef _CEGUITitlebar_h_
 #define _CEGUITitlebar_h_
 
-#include "CEGUIWindow.h"
-#include "elements/CEGUITitlebarProperties.h"
+#include "../CEGUIWindow.h"
+#include "CEGUITitlebarProperties.h"
 
 
 #if defined(_MSC_VER)

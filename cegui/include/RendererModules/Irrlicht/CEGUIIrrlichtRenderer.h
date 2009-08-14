@@ -29,9 +29,9 @@
 #define _CEGUIIrrlichtRenderer_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUIRenderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 
 #include <vector>
 

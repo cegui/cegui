@@ -29,8 +29,8 @@
 #define _FalMultiColumnList_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIMultiColumnList.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "../../elements/CEGUIMultiColumnList.h"
+#include "../../falagard/CEGUIFalWidgetLookFeel.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

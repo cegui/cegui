@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalImagerySection_h_
 #define _CEGUIFalImagerySection_h_
 
-#include "falagard/CEGUIFalImageryComponent.h"
-#include "falagard/CEGUIFalTextComponent.h"
-#include "falagard/CEGUIFalFrameComponent.h"
-#include "CEGUIXMLSerializer.h" 
+#include "CEGUIFalImageryComponent.h"
+#include "CEGUIFalTextComponent.h"
+#include "CEGUIFalFrameComponent.h"
+#include "../CEGUIXMLSerializer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

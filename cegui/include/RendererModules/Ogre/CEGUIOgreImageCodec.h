@@ -28,7 +28,7 @@
 #ifndef _CEGUIOgreImageCodec_h_
 #define _CEGUIOgreImageCodec_h_
 
-#include "CEGUIImageCodec.h"
+#include "../../CEGUIImageCodec.h"
 #include "CEGUIOgreRenderer.h"
 
 // Start of CEGUI namespace section

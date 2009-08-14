@@ -28,7 +28,7 @@
 #ifndef _FalEditboxProperties_h_
 #define _FalEditboxProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../../CEGUIProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

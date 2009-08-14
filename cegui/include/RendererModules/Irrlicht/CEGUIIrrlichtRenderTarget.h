@@ -29,8 +29,8 @@
 #define _CEGUIIrrlichtRenderTarget_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUIRenderTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRenderTarget.h"
+#include "../../CEGUIRect.h"
 
 #include <irrlicht.h>
 

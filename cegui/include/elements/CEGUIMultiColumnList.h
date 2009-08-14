@@ -30,10 +30,10 @@
 #ifndef _CEGUIMultiColumnList_h_
 #define _CEGUIMultiColumnList_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
 #include "CEGUIListHeader.h"
-#include "elements/CEGUIMultiColumnListProperties.h"
+#include "CEGUIMultiColumnListProperties.h"
 
 
 #if defined(_MSC_VER)

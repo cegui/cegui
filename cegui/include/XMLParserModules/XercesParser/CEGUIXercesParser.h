@@ -28,7 +28,7 @@
 #ifndef _CEGUIXercesParser_h_
 #define _CEGUIXercesParser_h_
 
-#include "CEGUIXMLParser.h"
+#include "../../CEGUIXMLParser.h"
 #include "CEGUIXercesParserProperties.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)

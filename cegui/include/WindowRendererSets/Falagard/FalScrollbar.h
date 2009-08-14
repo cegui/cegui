@@ -29,7 +29,7 @@
 #define _FalScrollbar_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIScrollbar.h"
+#include "../../elements/CEGUIScrollbar.h"
 #include "FalScrollbarProperties.h"
 
 #if defined(_MSC_VER)

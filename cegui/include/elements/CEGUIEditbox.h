@@ -30,9 +30,9 @@
 #ifndef _CEGUIEditbox_h_
 #define _CEGUIEditbox_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIEditboxProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIEditboxProperties.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

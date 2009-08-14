@@ -30,8 +30,8 @@
 #ifndef _CEGUIButtonBase_h_
 #define _CEGUIButtonBase_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
 
 
 #if defined(_MSC_VER)

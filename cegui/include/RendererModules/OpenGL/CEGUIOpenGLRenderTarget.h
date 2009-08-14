@@ -29,8 +29,8 @@
 #define _CEGUIOpenGLRenderTarget_h_
 
 #include "CEGUIOpenGLRenderer.h"
-#include "CEGUIRenderTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRenderTarget.h"
+#include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

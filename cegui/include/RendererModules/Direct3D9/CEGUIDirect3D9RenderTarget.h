@@ -29,8 +29,8 @@
 #define _CEGUIDirect3D9RenderTarget_h_
 
 #include "CEGUIDirect3D9Renderer.h"
-#include "CEGUIRenderTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRenderTarget.h"
+#include "../../CEGUIRect.h"
 #include <d3dx9.h>
 
 #if defined(_MSC_VER)

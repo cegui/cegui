@@ -29,8 +29,8 @@ author:		Jonathan Welch (Based on Code by David Durant)
 #define _FalTree_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
-#include "elements/CEGUITree.h"
+#include "../../CEGUIWindowFactory.h"
+#include "../../elements/CEGUITree.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalDimensions_h_
 #define _CEGUIFalDimensions_h_
 
-#include "falagard/CEGUIFalEnums.h"
-#include "CEGUIString.h"
-#include "CEGUIUDim.h"
-#include "CEGUIXMLSerializer.h"
+#include "CEGUIFalEnums.h"
+#include "../CEGUIString.h"
+#include "../CEGUIUDim.h"
+#include "../CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,9 +30,9 @@
 #ifndef _CEGUIScrollbar_h_
 #define _CEGUIScrollbar_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIScrollbarProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIScrollbarProperties.h"
 
 
 #if defined(_MSC_VER)

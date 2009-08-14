@@ -29,9 +29,9 @@
 #define _CEGUIIrrlichtGeometryBuffer_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIRect.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIGeometryBuffer.h"
+#include "../../CEGUIRect.h"
+#include "../../CEGUIVector.h"
 #include <irrlicht.h>
 #include <vector>
 

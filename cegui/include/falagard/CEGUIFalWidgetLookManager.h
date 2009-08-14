@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalWidgetLookManager_h_
 #define _CEGUIFalWidgetLookManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUIString.h"
-#include "CEGUIExceptions.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "../CEGUISingleton.h"
+#include "../CEGUIString.h"
+#include "../CEGUIExceptions.h"
+#include "CEGUIFalWidgetLookFeel.h"
 #include <map>
 
 #if defined(_MSC_VER)

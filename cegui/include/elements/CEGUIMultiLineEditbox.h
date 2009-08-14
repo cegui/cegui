@@ -30,10 +30,10 @@
 #ifndef _CEGUIMultiLineEditbox_h_
 #define _CEGUIMultiLineEditbox_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "CEGUIFont.h"
-#include "elements/CEGUIMultiLineEditboxProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "../CEGUIFont.h"
+#include "CEGUIMultiLineEditboxProperties.h"
 
 #include <vector>
 
