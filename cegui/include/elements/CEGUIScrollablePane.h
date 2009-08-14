@@ -28,9 +28,9 @@
 #ifndef _CEGUIScrollablePane_h_
 #define _CEGUIScrollablePane_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIScrollablePaneProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIScrollablePaneProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

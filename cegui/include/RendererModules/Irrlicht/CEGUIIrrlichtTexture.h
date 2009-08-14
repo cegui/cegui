@@ -29,7 +29,7 @@
 #define _CEGUIIrrlichtTexture_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUITexture.h"
+#include "../../CEGUITexture.h"
 #include "CEGUIIrrlichtRenderer.h"
 #include <string>
 

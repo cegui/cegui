@@ -29,7 +29,7 @@
 #define _CEGUIDirect3D10TextureTarget_h_
 
 #include "CEGUIDirect3D10RenderTarget.h"
-#include "CEGUITextureTarget.h"
+#include "../../CEGUITextureTarget.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

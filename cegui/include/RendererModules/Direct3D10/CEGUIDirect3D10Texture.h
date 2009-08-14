@@ -28,10 +28,10 @@
 #ifndef _CEGUIDirect3D10Texture_h_
 #define _CEGUIDirect3D10Texture_h_
 
-#include "CEGUITexture.h"
+#include "../../CEGUITexture.h"
 #include "CEGUIDirect3D10Renderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 
 // d3d forward refs
 struct ID3D10Device;

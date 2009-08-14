@@ -45,7 +45,7 @@
 #endif
 
 
-#include "CEGUIScriptModule.h"
+#include "../../CEGUIScriptModule.h"
 
 struct lua_State;
 

@@ -30,9 +30,9 @@
 #ifndef _CEGUIFrameWindow_h_
 #define _CEGUIFrameWindow_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIFrameWindowProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIFrameWindowProperties.h"
 
 
 #if defined(_MSC_VER)

@@ -28,9 +28,9 @@
 #ifndef _CEGUIDirect3D10GeometryBuffer_h_
 #define _CEGUIDirect3D10GeometryBuffer_h_
 
-#include "CEGUIGeometryBuffer.h"
+#include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D10Renderer.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRect.h"
 
 #include <d3dx10.h>
 

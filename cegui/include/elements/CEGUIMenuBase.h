@@ -30,10 +30,10 @@
 #ifndef _CEGUIMenuBase_h_
 #define _CEGUIMenuBase_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIMenuBaseProperties.h"
-#include "elements/CEGUIItemListBase.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIMenuBaseProperties.h"
+#include "CEGUIItemListBase.h"
 
 
 #if defined(_MSC_VER)

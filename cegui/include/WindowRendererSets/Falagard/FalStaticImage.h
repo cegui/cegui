@@ -28,7 +28,7 @@
 #ifndef _FalStaticImage_h_
 #define _FalStaticImage_h_
 
-#include "CEGUIImage.h"
+#include "../../CEGUIImage.h"
 #include "FalModule.h"
 #include "FalStatic.h"
 #include "FalStaticImageProperties.h"

@@ -28,9 +28,9 @@
 #ifndef _CEGUIDirect3D9GeometryBuffer_h_
 #define _CEGUIDirect3D9GeometryBuffer_h_
 
-#include "CEGUIGeometryBuffer.h"
+#include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D9Renderer.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRect.h"
 #include <d3dx9.h>
 #include <utility>
 #include <vector>

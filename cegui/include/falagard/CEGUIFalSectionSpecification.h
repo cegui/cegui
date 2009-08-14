@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalSectionSpecification_h_
 #define _CEGUIFalSectionSpecification_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIColourRect.h"
+#include "../CEGUIWindow.h"
+#include "../CEGUIColourRect.h"
 
 
 // Start of CEGUI namespace section

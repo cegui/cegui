@@ -29,7 +29,7 @@
 #define _FalEditbox_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIEditbox.h"
+#include "../../elements/CEGUIEditbox.h"
 #include "FalEditboxProperties.h"
 
 // Start of CEGUI namespace section

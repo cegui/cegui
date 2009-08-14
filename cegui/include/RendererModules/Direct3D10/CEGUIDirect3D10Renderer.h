@@ -28,9 +28,9 @@
 #ifndef _CEGUIDirect3D10Renderer_h_
 #define _CEGUIDirect3D10Renderer_h_
 
-#include "CEGUIRenderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)

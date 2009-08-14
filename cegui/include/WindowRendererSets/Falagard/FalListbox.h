@@ -29,7 +29,7 @@
 #define _FalListbox_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIListbox.h"
+#include "../../elements/CEGUIListbox.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

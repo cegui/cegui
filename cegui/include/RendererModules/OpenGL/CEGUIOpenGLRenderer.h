@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLRenderer_h_
 #define _CEGUIOpenGLRenderer_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIRenderer.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
+#include "../../CEGUIBase.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUISize.h"
+#include "../../CEGUIVector.h"
 #include "CEGUIOpenGL.h"
 #include <vector>
 

@@ -30,8 +30,8 @@
 #ifndef _CEGUIGUISheet_h_
 #define _CEGUIGUISheet_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIWindowFactory.h"
+#include "../CEGUIWindow.h"
+#include "../CEGUIWindowFactory.h"
 
 
 // Start of CEGUI namespace section

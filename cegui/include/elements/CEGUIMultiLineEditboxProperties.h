@@ -30,7 +30,7 @@
 #ifndef _CEGUIMultiLineEditboxProperties_h_
 #define _CEGUIMultiLineEditboxProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

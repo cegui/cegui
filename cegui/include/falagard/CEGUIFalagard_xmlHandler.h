@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalagard_xmlHandler_h_
 #define _CEGUIFalagard_xmlHandler_h_
 
-#include "CEGUIXMLHandler.h"
-#include "CEGUIcolour.h"
-#include "falagard/CEGUIFalDimensions.h"
-#include "CEGUIWindow.h"
+#include "../CEGUIXMLHandler.h"
+#include "../CEGUIcolour.h"
+#include "CEGUIFalDimensions.h"
+#include "../CEGUIWindow.h"
 #include <vector>
 
 // Start of CEGUI namespace section

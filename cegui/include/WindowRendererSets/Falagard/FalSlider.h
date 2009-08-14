@@ -29,7 +29,7 @@
 #define _FalSlider_h_
 
 #include "FalModule.h"
-#include "elements/CEGUISlider.h"
+#include "../../elements/CEGUISlider.h"
 #include "FalSliderProperties.h"
 
 #if defined(_MSC_VER)

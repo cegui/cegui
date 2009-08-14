@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalXMLEnumHelper_h_
 #define _CEGUIFalXMLEnumHelper_h_
 
-#include "CEGUIString.h"
-#include "CEGUIWindow.h"
-#include "falagard/CEGUIFalEnums.h"
+#include "../CEGUIString.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIFalEnums.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

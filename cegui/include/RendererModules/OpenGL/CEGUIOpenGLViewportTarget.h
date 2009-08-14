@@ -29,7 +29,7 @@
 #define _CEGUIOpenGLViewportTarget_h_
 
 #include "CEGUIOpenGLRenderTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

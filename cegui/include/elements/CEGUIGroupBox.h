@@ -26,9 +26,9 @@
 #ifndef _CEGUIGroupBox_h_
 #define _CEGUIGroupBox_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindowFactory.h"
-#include "elements/CEGUIClippedContainer.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindowFactory.h"
+#include "CEGUIClippedContainer.h"
 #include <vector>
 
 

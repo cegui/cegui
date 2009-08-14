@@ -30,9 +30,9 @@
 #ifndef _CEGUIMenuItem_h_
 #define _CEGUIMenuItem_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIItemEntry.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIItemEntry.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

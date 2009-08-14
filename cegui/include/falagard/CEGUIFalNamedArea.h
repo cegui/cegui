@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalNamedArea_h_
 #define _CEGUIFalNamedArea_h_
 
-#include "falagard/CEGUIFalDimensions.h"
+#include "CEGUIFalDimensions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

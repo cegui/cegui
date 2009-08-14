@@ -30,7 +30,7 @@
 #ifndef _FalagardStaticTextProperties_h_
 #define _FalagardStaticTextProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

@@ -30,9 +30,9 @@
 #ifndef _CEGUIListbox_h_
 #define _CEGUIListbox_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIWindow.h"
-#include "elements/CEGUIListboxProperties.h"
+#include "../CEGUIBase.h"
+#include "../CEGUIWindow.h"
+#include "CEGUIListboxProperties.h"
 #include <vector>
 
 

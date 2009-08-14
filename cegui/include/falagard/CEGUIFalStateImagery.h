@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalStateImagery_h_
 #define _CEGUIFalStateImagery_h_
 
-#include "falagard/CEGUIFalLayerSpecification.h"
-#include "CEGUIWindow.h"
+#include "CEGUIFalLayerSpecification.h"
+#include "../CEGUIWindow.h"
 #include <set>
 
 #if defined(_MSC_VER)

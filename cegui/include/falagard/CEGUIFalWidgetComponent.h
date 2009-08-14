@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalWidgetComponent_h_
 #define _CEGUIFalWidgetComponent_h_
 
-#include "falagard/CEGUIFalDimensions.h"
-#include "falagard/CEGUIFalPropertyInitialiser.h"
-#include "CEGUIWindow.h"
+#include "CEGUIFalDimensions.h"
+#include "CEGUIFalPropertyInitialiser.h"
+#include "../CEGUIWindow.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

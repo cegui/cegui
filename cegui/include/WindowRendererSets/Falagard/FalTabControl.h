@@ -29,7 +29,7 @@
 #define _FalTabControl_h_
 
 #include "FalModule.h"
-#include "elements/CEGUITabControl.h"
+#include "../../elements/CEGUITabControl.h"
 #include "FalTabControlProperties.h"
 
 #if defined(_MSC_VER)

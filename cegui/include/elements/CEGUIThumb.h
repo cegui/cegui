@@ -32,7 +32,7 @@
 #define _CEGUIThumb_h_
 
 #include "CEGUIPushButton.h"
-#include "elements/CEGUIThumbProperties.h"
+#include "CEGUIThumbProperties.h"
 #include <utility>
 
 

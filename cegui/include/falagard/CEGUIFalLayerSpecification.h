@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalLayerSpecification_h_
 #define _CEGUIFalLayerSpecification_h_
 
-#include "falagard/CEGUIFalSectionSpecification.h"
-#include "CEGUIWindow.h"
+#include "CEGUIFalSectionSpecification.h"
+#include "../CEGUIWindow.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

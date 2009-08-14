@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalFrameComponent_h_
 #define _CEGUIFalFrameComponent_h_
 
-#include "falagard/CEGUIFalComponentBase.h"
-#include "CEGUIXMLSerializer.h"
+#include "CEGUIFalComponentBase.h"
+#include "../CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

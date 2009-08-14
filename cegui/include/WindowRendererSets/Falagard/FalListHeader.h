@@ -29,8 +29,8 @@
 #define _FalListHeader_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIListHeader.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "../../elements/CEGUIListHeader.h"
+#include "../../falagard/CEGUIFalWidgetLookFeel.h"
 #include "FalListHeaderProperties.h"
 
 #if defined(_MSC_VER)

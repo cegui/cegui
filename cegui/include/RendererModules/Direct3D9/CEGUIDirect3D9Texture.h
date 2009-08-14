@@ -28,9 +28,9 @@
 #ifndef _CEGUIDirect3D9Texture_h_
 #define _CEGUIDirect3D9Texture_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIRenderer.h"
-#include "CEGUITexture.h"
+#include "../../CEGUIBase.h"
+#include "../../CEGUIRenderer.h"
+#include "../../CEGUITexture.h"
 #include "CEGUIDirect3D9Renderer.h"
 
 // Start of CEGUI namespace section

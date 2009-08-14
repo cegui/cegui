@@ -31,7 +31,7 @@
 #define _CEGUIIrrlichtResourceProvider_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUIDefaultResourceProvider.h"
+#include "../../CEGUIDefaultResourceProvider.h"
 #include <IFileSystem.h>
 
 // Start of CEGUI namespace section

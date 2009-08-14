@@ -29,7 +29,7 @@
 #define _CEGUIIrrlichtTextureTarget_h_
 
 #include "CEGUIIrrlichtRendererDef.h"
-#include "CEGUITextureTarget.h"
+#include "../../CEGUITextureTarget.h"
 #include "CEGUIIrrlichtRenderTarget.h"
 
 #if defined(_MSC_VER)

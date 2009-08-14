@@ -30,9 +30,9 @@
 #ifndef _CEGUIRadioButton_h_
 #define _CEGUIRadioButton_h_
 
-#include "CEGUIBase.h"
-#include "elements/CEGUIButtonBase.h"
-#include "elements/CEGUIRadioButtonProperties.h"
+#include "../CEGUIBase.h"
+#include "CEGUIButtonBase.h"
+#include "CEGUIRadioButtonProperties.h"
 
 
 #if defined(_MSC_VER)

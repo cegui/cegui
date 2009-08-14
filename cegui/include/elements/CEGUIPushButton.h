@@ -30,8 +30,8 @@
 #ifndef _CEGUIPushButton_h_
 #define _CEGUIPushButton_h_
 
-#include "CEGUIBase.h"
-#include "elements/CEGUIButtonBase.h"
+#include "../CEGUIBase.h"
+#include "CEGUIButtonBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

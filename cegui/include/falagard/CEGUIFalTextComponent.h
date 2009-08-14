@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalTextComponent_h_
 #define _CEGUIFalTextComponent_h_
 
-#include "falagard/CEGUIFalComponentBase.h"
+#include "CEGUIFalComponentBase.h"
 #include "../CEGUIRenderedString.h"
 #include "../CEGUIRefCounted.h"
 #include "../CEGUIFormattedRenderedString.h"

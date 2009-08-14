@@ -28,8 +28,8 @@
 #ifndef _FalModule_h_
 #define _FalModule_h_
 
-#include "CEGUIWindowRendererModule.h"
-#include "CEGUIWindowRenderer.h"
+#include "../../CEGUIWindowRendererModule.h"
+#include "../../CEGUIWindowRenderer.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef FALAGARDWRBASE_EXPORTS

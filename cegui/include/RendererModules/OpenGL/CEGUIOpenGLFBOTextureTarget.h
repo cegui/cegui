@@ -29,8 +29,8 @@
 #define _CEGUIOpenGLFBOTextureTarget_h_
 
 #include "CEGUIOpenGLRenderTarget.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUITextureTarget.h"
+#include "../../CEGUIRect.h"
 #include "CEGUIOpenGL.h"
 
 #if defined(_MSC_VER)

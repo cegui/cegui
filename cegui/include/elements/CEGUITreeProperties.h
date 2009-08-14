@@ -28,7 +28,7 @@
 #ifndef _CEGUITreeProperties_h_
 #define _CEGUITreeProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

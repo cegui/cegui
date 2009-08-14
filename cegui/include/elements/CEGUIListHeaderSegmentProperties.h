@@ -30,7 +30,7 @@
 #ifndef _CEGUIListHeaderSegmentProperties_h_
 #define _CEGUIListHeaderSegmentProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 
 // Start of CEGUI namespace section

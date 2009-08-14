@@ -28,8 +28,8 @@
 #ifndef _CEGUIDirectFBRenderTarget_h_
 #define _CEGUIDirectFBRenderTarget_h_
 
-#include "CEGUIRenderTarget.h"
-#include "CEGUIRect.h"
+#include "../../CEGUIRenderTarget.h"
+#include "../../CEGUIRect.h"
 #include <directfb.h>
 
 // Start of CEGUI namespace section

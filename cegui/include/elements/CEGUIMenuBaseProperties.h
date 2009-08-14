@@ -28,7 +28,7 @@
 #ifndef _CEGUIMenuBaseProperties_h_
 #define _CEGUIMenuBaseProperties_h_
 
-#include "CEGUIProperty.h"
+#include "../CEGUIProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

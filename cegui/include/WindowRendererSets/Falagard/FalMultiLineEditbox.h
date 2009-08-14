@@ -29,7 +29,7 @@
 #define _FalMultiLineEditbox_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIMultiLineEditbox.h"
+#include "../../elements/CEGUIMultiLineEditbox.h"
 #include "FalMultiLineEditboxProperties.h"
 
 #if defined(_MSC_VER)
