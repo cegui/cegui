@@ -1391,7 +1391,6 @@
 /* Begin PBXFileReference section */
 		DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIJustifiedRenderedString.h; path = ../../cegui/include/CEGUIJustifiedRenderedString.h; sourceTree = SOURCE_ROOT; };
 		DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedString.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedString.cpp; sourceTree = SOURCE_ROOT; };
-		DA1093880F6D568600B8A582 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChangeLog; path = ../../doc/ChangeLog; sourceTree = SOURCE_ROOT; };
 		DA1093890F6D568600B8A582 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = ../../doc/COPYING; sourceTree = SOURCE_ROOT; };
 		DA10938A0F6D568600B8A582 /* GLEW-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "GLEW-LICENSE"; path = "../../doc/GLEW-LICENSE"; sourceTree = SOURCE_ROOT; };
 		DA10938B0F6D568600B8A582 /* PCRE-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "PCRE-LICENSE"; path = "../../doc/PCRE-LICENSE"; sourceTree = SOURCE_ROOT; };
@@ -1422,7 +1421,6 @@
 		DA1093AC0F6D583800B8A582 /* pcre-lic.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "pcre-lic.dox"; path = "../../doc/doxygen/pcre-lic.dox"; sourceTree = SOURCE_ROOT; };
 		DA1093AD0F6D583800B8A582 /* stringencoders-lic.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "stringencoders-lic.dox"; path = "../../doc/doxygen/stringencoders-lic.dox"; sourceTree = SOURCE_ROOT; };
 		DA1093AE0F6D583800B8A582 /* tinyxml-lic.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "tinyxml-lic.dox"; path = "../../doc/doxygen/tinyxml-lic.dox"; sourceTree = SOURCE_ROOT; };
-		DA1093AF0F6D583800B8A582 /* mitlic.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = mitlic.dox; path = ../../doc/doxygen/mitlic.dox; sourceTree = SOURCE_ROOT; };
 		DA1093B00F6D590B00B8A582 /* Sample_Demo6.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_Demo6.cpp; path = ../../Samples/Demo6/Sample_Demo6.cpp; sourceTree = SOURCE_ROOT; };
 		DA1093B10F6D590B00B8A582 /* Sample_Demo6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample_Demo6.h; path = ../../Samples/Demo6/Sample_Demo6.h; sourceTree = SOURCE_ROOT; };
 		DA1093B20F6D591900B8A582 /* Sample_Demo7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample_Demo7.h; path = ../../Samples/Demo7/Sample_Demo7.h; sourceTree = SOURCE_ROOT; };
@@ -2258,6 +2256,14 @@
 		DA61D59F0FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDefaultRenderedStringParser.cpp; path = ../../cegui/src/CEGUIDefaultRenderedStringParser.cpp; sourceTree = SOURCE_ROOT; };
 		DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBasicRenderedStringParser.h; path = ../../cegui/include/CEGUIBasicRenderedStringParser.h; sourceTree = SOURCE_ROOT; };
 		DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBasicRenderedStringParser.cpp; path = ../../cegui/src/CEGUIBasicRenderedStringParser.cpp; sourceTree = SOURCE_ROOT; };
+		DA674A191035D8A600872D1D /* compiling.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = compiling.dox; path = ../../doc/doxygen/compiling.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1A1035D8A600872D1D /* licensing.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = licensing.dox; path = ../../doc/doxygen/licensing.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1B1035D8A600872D1D /* porting6to7.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = porting6to7.dox; path = ../../doc/doxygen/porting6to7.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1C1035D8A600872D1D /* xml_confg.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_confg.dox; path = ../../doc/doxygen/xml_confg.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1D1035D8A600872D1D /* xml_font.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_font.dox; path = ../../doc/doxygen/xml_font.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1E1035D8A600872D1D /* xml_imageset.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_imageset.dox; path = ../../doc/doxygen/xml_imageset.dox; sourceTree = SOURCE_ROOT; };
+		DA674A1F1035D8A600872D1D /* xml_layout.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_layout.dox; path = ../../doc/doxygen/xml_layout.dox; sourceTree = SOURCE_ROOT; };
+		DA674A211035D8A600872D1D /* xml_scheme.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_scheme.dox; path = ../../doc/doxygen/xml_scheme.dox; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
 		DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedStringWordWrapper.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedStringWordWrapper.cpp; sourceTree = SOURCE_ROOT; };
@@ -2308,6 +2314,7 @@
 		DAB270650FCAEFEF00D9EE82 /* CEGUILeftAlignedRenderedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUILeftAlignedRenderedString.h; path = ../../cegui/include/CEGUILeftAlignedRenderedString.h; sourceTree = SOURCE_ROOT; };
 		DAB270710FCAEFFD00D9EE82 /* CEGUILeftAlignedRenderedString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUILeftAlignedRenderedString.cpp; path = ../../cegui/src/CEGUILeftAlignedRenderedString.cpp; sourceTree = SOURCE_ROOT; };
 		DAB2708A0FCAF1D000D9EE82 /* CEGUIRenderedStringWordWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWordWrapper.h; path = ../../cegui/include/CEGUIRenderedStringWordWrapper.h; sourceTree = SOURCE_ROOT; };
+		DABEE4C11036C3C5001B58DA /* downloading.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = downloading.dox; path = ../../doc/doxygen/downloading.dox; sourceTree = SOURCE_ROOT; };
 		DAC1BE78101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINamedXMLResourceManager.cpp; path = ../../cegui/src/CEGUINamedXMLResourceManager.cpp; sourceTree = SOURCE_ROOT; };
 		DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIOgreRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC4DDF20F70FFBD000EF0AC /* CEGUIOgreRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIOgreRenderer-Info.plist"; sourceTree = "<group>"; };
@@ -2645,7 +2652,6 @@
 			isa = PBXGroup;
 			children = (
 				DA1093870F6D562E00B8A582 /* doxygen */,
-				DA1093880F6D568600B8A582 /* ChangeLog */,
 				DA1093890F6D568600B8A582 /* COPYING */,
 				DA10938A0F6D568600B8A582 /* GLEW-LICENSE */,
 				DA10938B0F6D568600B8A582 /* PCRE-LICENSE */,
@@ -3175,18 +3181,26 @@
 			children = (
 				DA10938F0F6D56A700B8A582 /* falagard */,
 				DA1093900F6D56B800B8A582 /* tutorials */,
-				DA1093A60F6D583800B8A582 /* doxyfile */,
-				DA1093A80F6D583800B8A582 /* mainpage.dox */,
-				DA1093A90F6D583800B8A582 /* authors.dox */,
 				DA1093A40F6D583800B8A582 /* arch_overview.dox */,
-				DA1093A50F6D583800B8A582 /* code_standards.dox */,
-				DA1093A70F6D583800B8A582 /* devel.dox */,
+				DA1093A90F6D583800B8A582 /* authors.dox */,
 				DA1093AA0F6D583800B8A582 /* changelog.dox */,
+				DA1093A50F6D583800B8A582 /* code_standards.dox */,
+				DA674A191035D8A600872D1D /* compiling.dox */,
+				DA1093A70F6D583800B8A582 /* devel.dox */,
+				DA1093A60F6D583800B8A582 /* doxyfile */,
+				DABEE4C11036C3C5001B58DA /* downloading.dox */,
 				DA1093AB0F6D583800B8A582 /* glew-lic.dox */,
-				DA1093AF0F6D583800B8A582 /* mitlic.dox */,
+				DA674A1A1035D8A600872D1D /* licensing.dox */,
+				DA1093A80F6D583800B8A582 /* mainpage.dox */,
 				DA1093AC0F6D583800B8A582 /* pcre-lic.dox */,
+				DA674A1B1035D8A600872D1D /* porting6to7.dox */,
 				DA1093AD0F6D583800B8A582 /* stringencoders-lic.dox */,
 				DA1093AE0F6D583800B8A582 /* tinyxml-lic.dox */,
+				DA674A1C1035D8A600872D1D /* xml_confg.dox */,
+				DA674A1D1035D8A600872D1D /* xml_font.dox */,
+				DA674A1E1035D8A600872D1D /* xml_imageset.dox */,
+				DA674A1F1035D8A600872D1D /* xml_layout.dox */,
+				DA674A211035D8A600872D1D /* xml_scheme.dox */,
 			);
 			name = doxygen;
 			sourceTree = "<group>";

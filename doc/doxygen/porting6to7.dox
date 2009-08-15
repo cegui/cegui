@@ -1,0 +1,11 @@
+/**
+@page porting6to7 Porting from CEGUI 0.6.x to CEGUI 0.7.x
+@author Paul D Turner
+
+This page gives some general hints and tips for porting your code that uses
+CEGUI 0.6.x to CEGUI 0.7.x.  This is not an exhaustive list of changes made to
+the system, and there will be changes not covered here.
+
+TODO!
+
+*/

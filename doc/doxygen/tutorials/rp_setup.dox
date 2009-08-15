@@ -1,5 +1,5 @@
 /**
-@page rp_setup Resource Provider Setup
+@page rp_setup The Beginners Guide to Resource Groups
 @author Paul D Turner
 
 This article explains how to set up resource groups and directories in the DefaultResourceProvider (and also the IrrlichtResourceProvider - since that is a subclass of DefaultResourceProvider) and how to define default resource groups to be used by the system.  People with custom resource providers, like Ogre users, can skip to the @ref rp_setup_sec_2 section.
