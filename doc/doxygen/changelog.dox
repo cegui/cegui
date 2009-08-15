@@ -1,4 +1,773 @@
+namespace CEGUI{
 /**
 @page change_log Change Log
-@verbinclude ChangeLog
+The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
+
+
+<b>Release 0.7.0</b>
+- TODO!
+
+
+<b>Release 0.6.2</b>
+- Added: Support for TreeEventArgs in the lua scripting module (patch from kripken, http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3704)
+- Added: ScrolledItemListBase::ensureItemIsVisibleVert and ScrolledItemListBase::ensureItemIsVisibleHorz members to allow scrolling lists programmatically to ensure a specified item is visible.  See: http://www.cegui.org.uk/mantis/view.php?id=228
+- Added: Added ability to specify a function to be used as the error handler in calls to lua_pcall.  See: http://www.cegui.org.uk/mantis/view.php?id=239
+- Added: GUI Renderer module and supporting samples base app for DirectFB (http://www.directfb.org/).  Contributed by Keith Mok.  See: http://www.cegui.org.uk/mantis/view.php?id=233.  Needs additional testing!  SKIP ON MERGE - trunk will get it's own version via the mantis patch (then be rewritten for the new renderer model).
+- Added: Member to CEGUI::TreeItem to allow removal of sub-items.  see: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15563#15563
+- Added: Templatised addFactory static function to WindowFactory manager that allows the system to create - and therefore own - custom window factory objects; thus alleviating potential cleanup issues when using custom factories.  See: http://www.cegui.org.uk/mantis/view.php?id=249.
+
+- Modified: Modify Tree::setItemSelectState(TreeItem* item, bool state) to recurively check subitems also (else we fail when trying to set the selected state on a second level (or greater) item).  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=16197#16197
+- Modified: Forward CEGUI::ScriptException from within the CEGUI::System script execution functions as opposed to translating them into less useful CEGUI::GenericException.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3595
+- Modified: Enhanced existing logging to include memory addresses when an object is created or destroyed (for most objects).  See: http://www.cegui.org.uk/mantis/view.php?id=224
+- Modified: Added warning to WindowManager::loadWindowLayout documentation regarding possible invocation of incorrect overload when using a C string literal for the 'name_prefix'. (Issue is to be resolved in trunk.  Maintaining ABI and API compatibility with previous v0-6 releases prevents a fix in this branch).
+- Modified: Tree Code / documentation reformatting, correction and cleanup.
+- Modified: Mark Tree and related classes as deprecated.
+
+- Bug Fix: Issue in ComboDropList would cause InvalidRequestException whenever input capture was lost and the highlighted item was different to the last click-selected item.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3693.
+- Bug Fix: Disable MSVC++ 4251 warning coming from CEGUITreeItem.h
+- Bug Fix: Event connection objects returned to lua subscribeEvent calls did not have the connected or disconnect members available for use (making the connection object useless).
+- Bug Fix: TinyXML parse failures were going unchecked.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3688.
+- Bug Fix: Lua script module based 'executeScriptedEventHandler was still not returning correct value (missed when I did the LuaFunctor version of the same, see: http://www.cegui.org.uk/mantis/view.php?id=225 for original issue).
+- Bug Fix: Hopefully resolve issue where the use of FreeImage codec could result in pixel format of loaded data being incorrect.  See: http://www.cegui.org.uk/mantis/view.php?id=230.
+- Bug Fix: There was an issue where Windows could be created during system destruction - this fixes that by introducing a 'locked' state for WindowManager whereby any attempt to create a Window throws an InvalidRequestException.  See: http://www.cegui.org.uk/mantis/view.php?id=250.
+- Bug Fix: ScriptModule bindings were destroyed out of sequence meaning event handlers could still be fired that needed CEGUI bindings to exist.  See: http://www.cegui.org.uk/mantis/view.php?id=245.
+- Bug Fix: The functionality of the "rise on click" setting was totally broken (prize for longest standing issue?).  See: http://www.cegui.org.uk/mantis/view.php?id=244.
+- Bug Fix: When using the scrollwheel to change a CEGUI::Slider value, the direction of movement was the opposite to what would have been expected.  See: http://www.cegui.org.uk/mantis/view.php?id=238.
+- Bug Fix: PropertyDim documentation did not reflect the updated abilities of the class, and the documentation for the argument 'type' was not clear about how it should be used with regards to affecting interpretation of the property accessed.  Related to: http://www.cegui.org.uk/mantis/view.php?id=247.
+- Bug Fix: Endian problem with CEGUI::colour.  This change should fix this: http://www.cegui.org.uk/mantis/view.php?id=229
+- Bug Fix: The Window::getChild(const CEGUI::String&) function was incorrectly made recursive after the 0.5.x series of releases.  This fix restores the correct behaviour and adds a Window::getChildRecursive(const CEGUI::String&) function for the highly expensive recursive case.  See: http://www.cegui.org.uk/mantis/view.php?id=237
+- Bug Fix: The C++ side of the lua based event mechanism would always return true as if the event were handled, even if some other boolean value (i.e. false) were returned from the lua side.  See: http://www.cegui.org.uk/mantis/view.php?id=225
+- Bug Fix: Resolve issue where events were still being injected into an invisible GUI sheet / root window.  See: http://www.cegui.org.uk/mantis/view.php?id=226
+- Bug Fix: null window pointers to add/remove functions of TabControl were unchecked and would cause crashes.  See: http://www.cegui.org.uk/mantis/view.php?id=232
+- Bug Fix: Resolve incompatibility issue with Xerces-C++ 3.  See: http://www.cegui.org.uk/mantis/view.php?id=235
+- Bug Fix: Window::getChild and Window::recursiveChildSearch would use the starting window's prefix when testing the prefix + name case, this is incorrect and should have been using the prefix of the child being tested (load 2 windows from layouts, using different prefixes.  Add the second layout to the first as a child, then call getChild on the first layout window, passing the name of the second layout window, prior to the fix the call would have failed to find the child).
+- Bug Fix: Resolve inconsistency where Window::isChild did not consider the Window name prefix, whereas Window::getChild did. See: http://www.cegui.org.uk/mantis/view.php?id=215.
+- Bug Fix: Potential crash regarding sorted column ID, when queried by the property system.
+- Bug Fix: the value returned by System::getWindowContainingMouse was only updated when the mouse was moved, this caused potenial issues when windows were moved, sized, created, destroyed, or had their visible or enabled states changed.  See: http://www.cegui.org.uk/mantis/view.php?id=213.
+- Bug Fix: Programmatically made changes to Combobox selection were not reflected in the Editbox component of the Combobox.  See: http://www.cegui.org.uk/mantis/view.php?id=220.
+- Bug Fix: Vector out of bounds in Window::update (see: http://www.cegui.org.uk/mantis/view.php?id=221)
+- Bug Fix: Win32 helper did not consider window farme / decorations when creating windows, so the client area was always smaller than requested.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15524.
+- Bug Fix: 'else' within preprocessor conditional sections with no guarantee that there was a prior 'if'.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15524.
+- Bug Fix: Fix a couple of minor rendering issues with TaharezLook/ProgressBar.
+- Bug Fix: Resolves a bug where the progress content was drawn into, rather than clipped by, the intersection of the the full progress area and the current progress area.  NOTE: People relying on the old buggy behaviour can reproduce the same effect by multiplying appropriate part(s) of thier imagery area definitions by the "CurrentProgress" property in their looknfeel files.
+- Bug Fix: MinGW configure/make was not building with glew correctly.
+- Bug Fix: Issue with Tree related properties casting to Listbox.  See: http://www.cegui.org.uk/mantis/view.php?id=218
+- Bug Fix: Resolve issue where iterator at begining of range was decremented uncheked. See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3408
+
+
+<b>Release 0.6.1</b>
+- Added: Batch files to invoke premake for VC9 files (seems to work fine)
+- Added: Added a supported value to represent infinity to enable the click generation timouts to be set to "no timeout".  See: http://www.cegui.org.uk/mantis/view.php?id=208
+- Added: Added Window::appendText and Window::insertText member functions.  See: http://www.cegui.org.uk/mantis/view.php?id=195
+- Added: Initial version of a sample base application using Direct3D 10.
+- Added: Initial code for the D3D 10 GUI Renderer, originally contributed by Rajko Stojadinovic.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2919
+- Added: IrrlichRenderer had no facility for notifying of display size changes.  This adds a setDisplaySize member for that purpose.  (Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187).
+- Added: Logging of renderer resize event notifications (prelim work for issue: http://www.cegui.org.uk/mantis/view.php?id=187)
+- Added: New drag and drop demo.  Originally written to aid in debugging of an issue, but is otherwise useful as an example :)
+- Added: Added FPS readout in sample base app for Irrlicht.  (See: http://www.cegui.org.uk/mantis/view.php?id=176).
+
+- Modified: Changed Xcode build for the renderer frameworks so that headers retain their original subdirectory location; this aids in keeping client code portable.
+- Modified: Refactored tab removal code to eliminate repetition.
+- Modified: On linux, use installed system versions of tolua++ and TinyXML libraries if available (can be disabled to force continued use of internal versions).  See: http://www.cegui.org.uk/mantis/view.php?id=198
+
+- Major update of Mac Xcode project.  This attempts to achieve the following:
+    - Update all existing targets in relation to added and removed source files.
+    - Resolved some minor issues with custom scripts when rebuilding up to date targets.
+    - Added targets for Demo6, Demo7, Demo8, DragDropDemo, InstancedWindows, TextDemo and TreeDemo (completing the set).
+    - Added target for ceguitolua++ framework (needed for lua support and for lua samples to run).
+    - Use of precompiled dependencies package from within local tree (upload to follow shortly, pending resolution of final remaining issues).
+    - Dependency frameworks will now be embedded within whichever component uses them (as opposed to needing separate installation).
+    - Sample apps now correctly work with embedded CEGUI frameworks and so should run anywhere without additional installation.
+    - Modify samples app packaging to symlink the frameworks and datafiles, as opposed to actually copying - this vastly reduces the footprint of the development directory (at a small cost of flexibility).
+    - symlink the output sample apps into the ./Samples/bin directory (using subdirs for each config)
+    - Added required define in CEGUIConfig.h for Lua support
+    - Updated default ImageCodec in CEGUIConfig.h to be SILLY
+    - Big cleanup of the various targets so that common settings (virtually all settings, actually) can be set once at the project level rather than needing to be set separately on each target.
+
+- Bug Fix: Deleting/removing a menu item from a menu when the item had an active popup would result in a dangling pointer to the deleted/removed item.
+- Bug Fix: line endings and set missing svn:eol-style on all Tree related code files.
+- Bug Fix: Injection of mouse movements and mouse positions which did not actually reflect a change of mouse cursor position were still firing events and triggering side effects.  See: http://www.cegui.org.uk/mantis/view.php?id=202
+- Bug Fix: ItemListbox::removeItem() was not checking if removed item was the one referenced in d_lastSelected, so was leaving a dangling pointer.  See: http://www.cegui.org.uk/mantis/view.php?id=206
+- Bug Fix: The docs for the list widgets stated that the insert member would insert anitem after a given item, whereas the widget actually inserted the item before the given item.  See: http://www.cegui.org.uk/mantis/view.php?id=205
+- Bug Fix: Exception message in postD3DReset member of the D3D renderers was incorrectly stating the exception as coming from from preD3DReset.  See: http://www.cegui.org.uk/mantis/view.php?id=207
+- Bug Fix: double deletion issue in Corona based ImageCodec.
+- Bug Fix: MacRendererSelector had uninitialised member variable, causing incorrect behaviour.
+- Bug Fix: CEGUISamplesConfig.h is for Mac only now - removed conditionals that would bring in these options for Win32 (which uses premake).
+- Bug Fix: Fixed comment blocks to eliminate a constant stream of warnings (gcc) when building anything CEGUI related.
+- Bug Fix: Need to bring in CEGUIConfig.h when building CEGUILua.cpp in case we're on a Mac.
+- Bug Fix: Bug in CEGUIDevILImageCodec in which ILinfo structure is not inititalised to 0s prior to usage, causing random crashes.
+- Bug Fix: inclusion of config.h MUST be protected by a conditional that checks HAVE_CONFIG_H.
+- Bug Fix: Between the 0.5.0 and 0.6.0 releases the System::setDefaultXMLParserName function was bastardised to perform a function other than its intended purpose.  This fix restores the intended behaviour of setDefaultXMLParserName and adds functions for setting the XML parser after System instantiation correctly.  See: http://www.cegui.org.uk/mantis/view.php?id=186
+- Bug Fix: Issue of missing OpenGL render state initialisation when multitexture support is available.  See: http://www.cegui.org.uk/mantis/view.php?id=201.  NB: This also adds use of GLEW library (external (autotools) or embedded (all platforms)).
+- Bug Fix: uncomment part of cegui.lua configuration script that allows use of option to have Ogre in samples.
+- Bug Fix: pragmas for link libs in Ogre base app were incorrectly dependant on _WIN32 macro instead of _MSC_VER macro.
+- Bug Fix: Added extra pragma lines to bring in required OIS lib for the Ogre base app.
+- Bug Fix: Ogre base app now uses numKeyboards (was numKeyBoards) from OIS; this is what the OIS from the Ogre deps expects.
+- Bug Fix: Fixed documentation for MouseButton enumeration.  Thanks to 'alphasnd'.
+- Bug Fix: UpdateEventArgs::d_timeSinceLastFrame was not being initialised in constructor.
+- Bug Fix: Use linux SimpleTimer::currentTime for Apple Macs also.  Thanks go to alphasnd, see: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3247
+- Bug Fix: Resolve compilation issue on older gcc versions (gcc 3.x) where casting using functional notation is not good.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2317
+- Bug Fix: TabControl was subscribing to EventTextChanged on added content windows, but not releasing the connection when the content window was removed - causing UnknownObject exceptions and possible crashes when attempting to change the text on a window after it had been added to and then removed from a TabControl.  See: http://www.cegui.org.uk/mantis/view.php?id=192
+- Bug Fix: When linking on autotools based systems, ensure we explicitly link with the 'just built' versions of CEGUI libraries; this ensures that we are not inadvertently picking up old installed versions of the same libs.
+- Bug Fix: Updated Ogre base application to correctly respond to window resize events and inform the CEGUI renderer of the change.  Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187
+- Bug Fix: Fixed samples under D3D 8.1 and 9 so that they correctly notify CEGUI when the window size changes.  Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187.
+- Bug Fix: Under gcc/autotools the various libraries and modules were not linking against CEGUIBase (except on MinGW32).  See: http://www.cegui.org.uk/mantis/view.php?id=196
+- Bug Fix: Update Irrlicht sample base application to notify the renderer of the display size - in order that it may react properly to any changes.  (Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187).
+- Bug Fix: When injecting mouse position change information using the System::injectMousePosition member, the resulting MouseEventArgs structure passed to event handlers always had the positional change delta information set to 0.  See: http://www.cegui.org.uk/mantis/view.php?id=194
+- Bug Fix: FrameWindow types had no realistic default minimum size specified, meaning the user could resize these windows to such an extent that they totally disappeared and we no longer usable.  See: http://www.cegui.org.uk/mantis/view.php?id=193
+- Bug Fix: Issue with detection and usage of glut library under Msys/MinGW.  See: http://www.cegui.org.uk/mantis/view.php?id=184
+- Bug Fix: Can't get correct error string on Win32 platform when dynamic module load failed.  See: http://www.cegui.org.uk/mantis/view.php?id=178
+- Bug Fix: Missing winmm library dependency for MinGW32 autotool based builds.  See: http://www.cegui.org.uk/mantis/view.php?id=183
+- Bug Fix: Hiding the active window would leave the hidden window active and receiving inputs; it was also possible to activate a hidden window which is not logical.  See: http://www.cegui.org.uk/mantis/view.php?id=188
+- Bug Fix: Time pulse injection under DirectX sample base app was either missing (DX 8.1) or broken (DX 9).  (See: http://www.cegui.org.uk/mantis/view.php?id=177).
+- Bug Fix: TreeDemo - Missing header on some systems, update antiquated time.h to ctime.
+- Bug Fix: Typos in the configure summary (Irrlict -> Irrlicht)
+- Bug Fix: tolua++cegui generator missing Lua_CFLAGS in autotools build.
+
+
+<b>Release 0.6.0</b>
+- Added: New text demo (rewrite of Demo4)
+- Added: First attempt at mingw32 / cross-compile support.
+- Added: Extend support of CEGUI_SAMPLE_DATAPATH environment variable to Windows platforms too.
+- Added: Missing Samples/datafiles/Makefile.am file
+- Added: Levia's GroupBox to the Lua module.
+- Added: Warning log level to the Lua module.
+- Added: Levia's GroupBox to the code and looknfeel. Thanks :)
+- Added: Exception type, line and file info - See http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2799
+- Added: CEGUIDeadException Macro to required.h for this purpose.
+- Added: Static Build Support
+- Added: Imagesets Added
+- Added: Tree Widget Added
+- Added: ScriptWindowHelper Added
+- Added: Tree Demo Added
+- Added: Instanced Windows Demo Added
+- Added: Tree & TreeItem Packages Added
+- Added: ScriptWindowHelper Package Added
+- Added: (MacOS) Got most of the samples to build and run, except FalagardDemo1 and Minesweeper.
+- Added: support for Expat XML parser on the Mac.
+
+- Removed: XMLRefSchema/Makefile.am - this is now no longer needed.
+
+- Modified: Applied ticket #173
+- Modified: Renamed Demo4 to TextDemo (in progress).
+- Modified: linux (and mingw32) will try with and without the 'lib' prefix when loading dynamic modules.
+- Modified: Applied this patch: http://www.cegui.org.uk/mantis/view.php?id=168
+- Modified: datafiles are now installed on linux (e.g. /usr/local/share/CEGUI/)
+- Modified: Minor change to update a contact address (main purpose of this is actually to test the svn change notification system).
+- Modified: RTTI and Loggers - See http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2816
+- Modified: Updated samples with new exception code
+- Modified: Applied large patches. For details see this thread: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2766
+- Modified: setDefaultXMLParserName now unloads the default dynamic module and loads a new one provided you are not statically linking.
+- Modified: tolua++cegui changes in exception handlers.
+- Modified: Large Premake updates
+
+- Coding Standards: CEGUI does not use the NULL macro in code.
+- Coding Standards: the prefix used for data members on the CEGUI project is d_ and not m_
+
+- Bug Fix: Corona based image codec would not build.
+- Bug Fix: Resolve a thousand and one "deprecated conversion from string constant to 'char*'" warnings that spew forth from gcc 4.2.x.
+- Bug Fix: Lua 5.1 removes table.setn - update code to use alternate method of ensuring table is indeed empty.
+- Bug Fix: The CEGUIDeadException macro was causing the exceptions to be caught by value; this fixes it so they are caught by reference.
+- Bug Fix: Exception base class destructor should be public.
+- Bug Fix: Minor TextDemo fix - gcc does not like temporary objects passed as arguments for non-const function parameters.
+- Bug Fix: Autotool build fix for TextDemo.
+- Bug Fix: Small compile fix for VS
+- Bug Fix: Groupbox fix (disabled 'ristOnClick')
+- Bug Fix: Window::isTopOfZOrder had an incorrectly constructed loop control.  (http://www.cegui.org.uk/mantis/view.php?id=172)
+- Bug Fix: PixelAligned macro was incorrect when working with negative values.  (http://www.cegui.org.uk/mantis/view.php?id=167)
+- Bug Fix: Listbox and MulticolumnList were not re-sorting the list in resonse to calling handleUpdatedItemData which resulted in an incorrectly ordered list if items had changed in a manner that invalidated the current order (in the simplest case, just by changing an items text). (http://www.cegui.org.uk/mantis/view.php?id=162)
+- Bug Fix: The 'selected item' as returned by Combobox would revert to 0 after interaction with the user that did not end with a positive list selection - this is incorrect; any previous selection should be preserved if the user backs out of making a new selection in the list.  NB: A side effect of this fix is a change in the order that some events are fired.  Previously the droplist show/hide event came first (before any selection events), now the show/hide events come after any selection events. (http://www.cegui.org.uk/mantis/view.php?id=164).
+- Bug Fix: Slider thumb was not showing up when used within a TabControl.  Actual bug was related to thumb getting initialised with bad data caused by unchecked divide by zero in the Falagard window renderer. (http://www.cegui.org.uk/mantis/view.php?id=145)
+- Bug Fix: Invalidating only cached clipped areas for a window was not having the desired effect on child content.  Fix addresses http://www.cegui.org.uk/mantis/view.php?id=165
+- Bug Fix: Any window responding to a left mouse button down event would always report the event as 'unhandled' even though it may have taken action based on the event (thus, handling it).  Event is now marked as 'handled' if, but only if, the window has to take action such as activating the window or making a change in the z-order.  (http://www.cegui.org.uk/mantis/view.php?id=136)
+- Bug Fix: MultiLineEditbox::onCharacter should only say it handled the event if it really did.  (http://www.cegui.org.uk/mantis/view.php?id=155)
+- Bug Fix: Widgets with a push-button-esque behaviour were not behaving correctly as regards to being obscured by a window with mouse pass through enabled.(http://www.cegui.org.uk/mantis/view.php?id=154 and http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2971)
+- Bug Fix: We were incorrectly using the clock() function as a timer. (http://www.cegui.org.uk/mantis/view.php?id=153)
+- Bug Fix: Certain assign, append, and insert operations in CEGUI::String would illegally operate beyond the length of the object being assigned, appended or inserted. (http://www.cegui.org.uk/mantis/view.php?id=152)
+- Bug Fix: Bug where MultiColumnListProperties::MultiColumnListProperties::set was using String::substr incorrectly and accessing chars beyond the end of the string.  This fix is actually a total rewrite that makes the function a lot more robust, and removes a couple of other issues too.  (http://www.cegui.org.uk/mantis/view.php?id=171)
+- Bug Fix: Correctly check for dl and pthread libs. (http://www.cegui.org.uk/mantis/view.php?id=143)
+- Bug Fix: Lua was not correctly detected on (K)Ubuntu type systems (http://www.cegui.org.uk/mantis/view.php?id=138)
+- Bug Fix: Support lua 5.1 in CEGUILua.cpp (not sure of generator status with 5.1) (http://www.cegui.org.uk/mantis/view.php?id=161)
+- Bug Fix: CEGUIXercesParser was not compiling with 2.8 version of xerces-c++.  (http://www.cegui.org.uk/mantis/view.php?id=163).
+- Bug Fix: TaharezLook.looknfeel did not conform to the required schema (http://www.cegui.org.uk/mantis/view.php?id=163)
+- Bug Fix: Ogre and Irrlicht sample base apps still had CEGUI_SAMPLE_DATAPATH defines
+- Bug Fix: Demo8 restored to working state.
+- Bug Fix: Fixed bug in CreateWindow which would never allow empty name while having a prefix.
+- Bug Fix: Fixed/revamped TabControlDemo, because it didn't work anymore because of underlying code changes.
+- Bug Fix: Added re-sorting to a listbox after user 
+- Bug Fix: There was an incorrect compiler flag when bringing in the DevIL libs (autotools build).
+- Bug Fix: 'make dist' should now include everything required (on linux at least)
+- Bug Fix: Updated irrlicht support to 1.4 (and beyond?)
+- Bug Fix: Updated TreeDemo to build and run on linux
+- Bug Fix: Change TabPane into TabContentPane. Thanks to Liberator for pointing this inconsistency out.
+- Bug Fix: Autotools build was missing the CEGUIGroupBox files.
+- Bug Fix: Resorting of lists and trees happened High to Low. This should be the reverse i think.
+- Bug Fix: Resolved ticket 160: Missing #pragma warning(pop) in elements/CEGUISpinner.h 
+- Bug Fix: Resolved ticket 158: MultiColumnList Font NOT in ListHeaderSegment!
+- Bug Fix: Applied Liberator's tree fix patch.
+- Bug Fix: Applied ldb's OIS patch.
+- Bug Fix: Applied ldb's patch.
+- Bug Fix: Tree Node Button Fixes
+- Bug Fix: Static Call Fix in setDefaultXMLParserName
+- Bug Fix: Changed 'friend TreeItem;' into 'friend class TreeItem;' for non-MS compilers.  http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2598
+- Bug Fix: warnings of unused local variables in lua_CEGUI.cpp fixed.
+- Bug Fix: Fixed Memory Leak in Lua Scripting Module when it throws and helper object has already been created.
+- Bug Fix: Irrlicht Support Fixed
+- Bug Fix: (MacOS) Updated PCRE build to include UTF8 support so Minesweeper will run.  (PCRE project is separate from this.)
+- Bug Fix: (MacOS) Added some shell redirects so that the resource copy for the sample apps doesn't spit out false alarm errors about not being able to copy SVN files.
+- Bug Fix: (MacOS) Fixed a ID string that prevented the FalagardWRBase bundle from loading properly.
+- Bug Fix: Adjusted the pathing for GL sample application so it can find Mac resources.
+- Bug Fix: Updated OpenGLBaseApplication to look for Mac resources in the right place.
+- Bug Fix: Fixes to build options for Mac sample apps.
+- Bug Fix: Changes to v0-5 branch merged in.
+
+
+<b>Release 0.5.0 (Final)</b>
+- Added: TaharezLook was missing ItemListbox and ListboxItem windows & skin definitions.
+- Added: Partial CEGUI support for MingW. It is now possible to build CEGUI under mingw with support for OpenGL renderer. This approach is going to be generalized later to the other renderer and wiki page explaining the process will follows.
+- Added: Missing functions in WindowFactoryManager Lua bindings. Incomplete FalagardWindowMapping binding as well.
+- Added: Lua binding for OutStream: FileStream (minimal std::ofstream).
+- Added: XML writing function in Lua bindings.
+- Added: --enable-debug in configure script instead of using CPPFLAGS=-DDEBUG ./configure ...
+- Added: premake files for Minesweeper sample and minor fixes to make it run in windows.
+- Added: the minesweeper demo
+- Added: missing doxyfile in order to be in make dist
+- Added: ScrollablePane sample
+
+- Removed: Empty Font 'implData' header files we no longer use.
+- Removed: Falagard skinning manual is now a part of the CEGUI manuals sub-project, so is no longer included here as a pdf.
+
+- Modified: Changed Demo7 to use the layout XML file instead of hard-coded window creation.
+- Modified: Demo7Window.layout now uses the new ItemListbox, with items defined within the layout, as the Listbox as opposed to the old style list with hard-coded items.
+- Modified: Win32CEGuiRendererSelector:
+    - It is now possible to navigate to the Combobox via keyboard.
+    - First available renderer is pre-selected into the dialog.
+    - With a single renderer available, it is auto-selected and dialog is not shown.
+- Modified: Changed compile order under autotools so CEGUIBase is made before things that use it - related to forthcoming cross-compile support.
+- Modified Added some missing bits and a whole load of other stuff to 'make dist' to ease a more unified approach to creating packages for the various platforms.
+- Modified: Renamed tolua++bin/remake_pkg..bat to remove extra period
+- Modified: Changed Russian text in FontDemo sample - the old text apparently potentially offensive. Thanks to 'Sanya' for the updated text.
+- Modified: The RefCounted template now has the CEGUIEXPORT macro as it avoids warnings in client code when using MSVC.
+- Modified: Promote Expat to be the second prefered parser under linux in order to act the same under linux and Win32. Note that the prefered parser is still Xerces. The parser order is now the following : Xerces, Expat, Libxml, TinyXML.
+- Modified: WidgetComponent had a nasty misspelling of 'Alignemnt'.
+- Modified: MSVC no longer uses CEGUIConfig.h and CEGUISamplesConfig.h for anything
+- Modified: Premake scripts are now much more flexible.
+
+- Coding Standards: Removed various occurrences of the NULL macro.
+
+- Docs: Added note to docs for Spinner regarding the lame state of floating point support.
+
+- Bug Fix: ListHeader settings for sizing, moving, and clicking were not properly set on newly created segments.
+- Bug Fix: Resolved issue where the algorithm that ensured font textures were filled would actually end up trying to render every glyph within a font.
+- Bug Fix: ItemListBase::insertItem was not setting the ItemEntry::d_ownerList member correctly.
+- Bug Fix: Added another 'special case' to Spinner::getValueFromText to support typing an initial decimal point.
+- Bug Fix: Sometimes compound widgets did not get their components layed out properly when adding the widget to it's parent.
+- Bug Fix: The way in which properties would set a window to use the DefaultFont was incorrect; it explicitly set it to the name of the current default, as opposed to a 'floating default'.
+- Bug Fix: FontDim did not work correctly since re-calculation of the layout was not triggered in response to the font being changed.  Added this code to Window::onFontChanged - although more elegant / selective solutions might be considered later on.
+- Bug Fix: Added code so that all windows using default font get notified of a change in the default via the normal channel (Window::onFontChanged).
+- Bug Fix: There was an issue regarding auto-repeat of mouse button down events not getting their state reset if the mouse button was released outside of the window getting the auto-repeat events.
+- Bug Fix: CEGuiSample.cpp did not get all required includes with certain renderer combinations.
+- Bug Fix: Range emplyed by FreeTypeFont::rasterize was exclusive of the start element; first glyph of every page loaded was missed!
+- Bug Fix: CEGUI::Window did not properly clean-up a custom tooltip if it created one.
+- Bug Fix: Calculation of number of glyph pages in Font::setMaxCodepoint was incorrect.
+- Bug Fix: When the OpenGL renderer was disabled by ./configure, the SILLY codec was still being built.
+- Bug Fix: When the OpenGL renderer was disabled by ./configure, the requirement for a default ImageCodec was still enforced.
+- Bug Fix: case of included file in Win32CEGuiRendererSelector.cpp changed ready to support cross-compiling in post 0.5.0 versions.
+- Bug Fix: Support was broken in the Samples framework for newer versions of Ogre.
+- Bug Fix: The cegui_reldim and cegui_absdim macros were missing the CEGUI namespace qualifier.
+- Bug Fix: When a glyph failed to load in FreeTypeFont, although we logged the error we did not work around the issue of the missing glyph image, so a seg fault was generated upon attempted use of those missing images. This addresses the issue by creating dummy images for missing font glyphs which use a zero size. Mantis #0000125.
+- Bug Fix: RefCounted would call AddRef when the wrapped pointer and its counter were null.
+- Bug Fix: Event::ScopedConnection would call members of BoundSlot using a potentially null RefCounted pointer.
+- Bug Fix: In C++ a namespace does not have a semicolon after the closing brace.
+- Bug Fix: Nasty memory leak in DevIL image codec. thanx to mafm on IRC.
+- Bug Fix: fixed a small error in the comment of CEGUI_DECLARE_WINDOW_FACTORY
+- Bug Fix: Tab control did not require to hear about multi-clicks on the TabControl scroll buttons. Patch from zap. Mantis #0000117.
+- Bug Fix: Issue with utf8 missing conversion in TinyXML and libXML
+- Bug Fix: Added missing public visibility specifier to ScopedConnection class members.
+- Bug Fix: premake files were not enabling Xerces correctly in the samples.
+- Bug Fix: TabControlDemo layout split up. We dont allow multiple root windows in a layout when using a validating XML parser.
+- Bug Fix: Falagard.xsd was missing new type attribute for PropertyDim.
+- Bug Fix: PropertyLinkDefinition was not writing XML properly (no base class writing).
+- Bug Fix: Bugs in Falagard XML writing.
+- Bug Fix: Spinner would throw an exception when a lone minus sign was entered. Mantis ticket #110.
+- Bug Fix: Input capture bug that broke Combobx - introduced by patch #82.
+- Bug Fix: ScrollablePane would cause exceptions on destruction. Mantis ticket #83.
+- Bug Fix: a bug in the premake improvements where samples would not generate properly.
+- Bug Fix: A number of CEGUI exceptions were being caught by value instead of reference.
+- Bug Fix: OpenGL renderer now also disables texture coordinate generation.
+- Bug Fix: Irrlicht sample driver now quits on the escape key like the rest.
+- Bug Fix: Updates and fixes to resolve the NPOT texture source data issue (mantis #45) in a relatively consistent way - at least for the 0.5.x releases.
+
+
+<b>Release 0.5.0-RC2</b>
+- Added: single colour support to PropertyHelper::stringToColourRect
+- Added: missing support to Irrlicht renderer for creating a texture with a given size.
+- Added: Updates to renderers for D3D8.1 and D3D9 to report correct values for 'original' size and actual texture size.  (Related to Mantis ticket #45).
+- Added: Support for using user defined image codec by name (using dso) or directly throught a pointer to an existing image codec.
+- Added: Long property export (allows for properties containing multiple lines).
+- Added: Helper methods to Window to return EventSet::Iterator and PropertySet::Iterator objects.
+- Added: Reworked TabControl by zap.  Mantis #82.
+- Added: TabControlDemo sample.  Mantis #82.
+- Added: Danish language in the FontDemo sample.
+- Added: Output of summary of configure results (for configure based builds)
+- Added: Texture extra size information to CEGUI::Texture in order to be able to handle scaled/stretched textures within Imageset.
+- Added: Texture Scaling support in IrrlichRenderer 
+
+- Removed: Empty source file CEGUIVector.cpp
+- Removed: TabPane files.
+
+- Modified: Behaviour of Editbox so that EventCharacterKey events are only marked as handled if the key press actually resulted in a change to the Editbox text string. (Related to Mantis #59)
+- Modified: Replaced all getWindow<something> with get<something>
+- Modified: Replaced all setWindow<something> with set<something>
+- Modified: EventSet::EventIterator now known as EventSet::Iterator
+- Modified: PropertySet::PropertyIterator now known as PropertySet::Iterator
+- Modified: ImageCodec modules are now DynamicModule 
+- Modified: Falagard PropertyDim now supports a type attribute for UDim properties.  Mantis #82.
+- Modified: Improved TabControl imagery.  Mantis #82.
+- Modified: autotools makefiles now symlink the sample binaries (to avoid having to do 'make install').  Mantis #82.
+- Modified: PropertyHelper now uses snprintf instead of std::ostringstream again.  Mantis #82.
+- Modified: Removed static Makefile for tolua++cegui generator tool and switched to autotools style build, with enable/disable configure option, for tolua++cegui generator tool
+- Modified: Moved tolua++ into it's own dir, removed lua_and_tolua++
+- Modified: Externalised our use of the Lua library
+- Modified: premake updates
+- Modified: Updated AUTHORS file.
+- Modified: Remove exec file attribute on Falagard.xsd 
+- Modified: XMLRefSchema/Font.xsd for font rewrite
+- Modified: LuaScriptModule public headers no longer need include lua.h included.
+- Modified: Made a bunch of warnings go away in MSVC in the new font code.
+- Modified: Deleted the remaining old msvc project files.
+
+- Bug Fix: Clean the XMLSerialization code: remove empty autowindow 
+- Bug Fix: Added missing glDisable(GL_FOG); in gl renderer
+- Bug Fix: Irrlicht and D3D8.1 renderer modules would keep live pointers to Texture objects that failed to fully initialise (file or size errors for example)  Mantis #43.
+- Bug Fix: Disable texture stages we do not use in Direct3D renderers. (Mantis #95)
+- Bug Fix: Mouse cursor z value.  Mantis #49 
+- Bug Fix: Imagset XML attribute for image file name is 'Imagefile' and not 'Filename'.
+- Bug Fix: normal attributes use 'true', only properties sometimes use 'True'.
+- Bug Fix: Global default resource group was not being used by DefaultResourceProvider.
+- Bug Fix: XML output from CEGUI::Image class.
+- Bug Fix: Imageset scaling issue when renderer automatically scales the image #45 (this is currently a partial fix)
+- Bug Fix: IrrlichtRenderer - Mouse event error.  Mantis #98.
+- Bug Fix: IrrlichtRenderer - size error in addQuad.  Mantis #99.
+- Bug Fix: IrrlichtRenderer - Sample driver had linker lib name wrong for renderer module.  Mantis #100.
+- Bug Fix: TinyXMLParser bug.  Mantis Tracker #57 
+- Bug Fix: a bug in the openglrenderer cleanup related to image codec. 
+- Bug Fix: Install renderer module includes at the same place as in Win32 (linux / mac autotools) 
+- Bug Fix: OpenGL sample driver did not inject middle mouse up (injected it as down).  Mantis #82.
+- Bug Fix: Corrected some mistakes in the Falagard Lua bindings
+- Bug Fix: Apparently in some cases OpenGLRenderer needs NOMINMAX in Win32 (Mantis #63)
+- Bug Fix: FreeTypeFont did not free the font data properly, also fixes a potential infinite loop in FreeTypeFont (Mantis #60)
+- Bug Fix: FairChar font texture was not power of 2 (Mantis #64)
+- Bug Fix: SliderThumb incorrectly mapped in some schemes (mantis #88)
+- Bug Fix: Updated Irrlicht renderer to work with 0.5.0 codebase.
+- Bug Fix: some missing data 
+- Bug Fix: DirectX 8.1 sample driver
+- Bug Fix: some missing files in the make dist command (Mantis #89)
+- Bug Fix: Change the name of an enumeration value in schema Font.xsd.
+- Bug Fix: Memory leak in Font.
+- Bug Fix: Lua bindings was missing ImagesetManager::createImagesetFromImageFile + some missing tolua_throws modifiers
+
+
+<b>Release 0.5.0-RC1</b>
+- CEGUI MK2 has moved to the MIT license.
+
+- Various internal code cleanups:
+    - Removal of unrequired utf8* casts on string literals.
+    - Removed use of NULL macro from the library code.
+    - Code refactorings to Font class. Removes some instances of repeated code, and makes some methods shorter / cleaner.
+    - Split large methods in Scheme into smaller, more managable, chunks.
+    - Removed all the System constructor overloads and replaced with a single method.
+    - Removed string literals for component widget names which were scattered throughout the widget code.
+    - Replaced virtually all member fields holding pointers to component widgets with getter methods (which basically allows those widgets to be replaced without the parent knowing or caring).
+    - Refactoring of XML handler to remove huge if/else if/else construct.
+    - Refectored large if / else if / else constructs in all non-falagard XML handlers to use a member function for each element type (rather than having all code in one huge function).
+    - Event system has been rewritten from scratch.
+    - Font system has been rewritten.
+
+- Added "PushedOff" rendering state for button based widgets and MenuItem.
+- Added: Ability to rename windows.
+- Added: CEGUISamplesConfig.h file to allow configuration of samples framework independently of the main config (saves recompiling everything just to change some sample setting).
+- Added: FPS readout to OpenGL base app in the samples framework.
+- Added: "PropertyLinkDefinition" element for Falagard system.
+- Added: "controlPropery" attribute to SectionSpecififations under falagard to enable renering of section imagery to be controled via a named boolean property.
+- Added: mouse pass through feature in Window, to ignore mouse events. Nice for making a DefaultWindow transparent to the mouse regarding picking windows behind it.
+- Added: MSVC++ auto-linking for Ogre base app in samples framework.
+- Added: grab/restoreTextures in the OpenGL renderer to cache texture image data, and later restore it.
+- Added: Abstracted Logger interface to support user created custom loggers. (SF patch #1414121 by zap)
+- Added: DefaultLogger implementation (SF patch #1414121 by zap)
+- Added: page up/down key functionality to MultiLineEditbox (SF patch #1347376 by Dalfy)
+- Added: small script to recreate the binding generator for tolua++
+- Added: customized tolua++ binary. For exception handling support in generated binding code.
+- Added: missing exception definitions file needed to generate the bindings.
+- Added: README with instructions on how to generate the bindings.
+- Added: Documentation for some of the new features in the bundled tolua++ generator.
+- Added: When subscribing to events from "inside" Lua a self object can be registered as well to be passed along with the EventArgs.
+- Added: New WindowRenderer system, replacing previous system where the Window sub-class controlled the rendering process.
+- Added: Major update of the LuaScriptModule to support anonymous functions.
+- Added: Exception handling has been added for some functions.
+- Added: Falagard derivatives of DefaultWindow, DragContainer and ItemEntry with minimal StateImagery.
+- Added: executeEventHandler now accepts functions that are table fields.
+- Added: Text node support to both parser (Xerces and TinyXML)
+- Added: AutoWindow tag to xml layouts to fetch a window created by the look'n'feel or the base widget itself.
+- Added: Window::isAutoWindow member that returns true if the window has "__auto_" in its name. (a flag is set in the constructor). It's faster than checking the actual string.
+- Added: A setting to Window to specify that it should never write XML no matter what if activated. Tooltips get this set by default by System.
+- Added: A property ban list to provide a system for mapping which properties should (not) be written to XML. In the respective addProperties member functions checks have been added and some properties are banned if we are an auto window.
+- Added: Default resource group support to Xerces for use when loading schema files.
+- Added: Default resource group support to ScriptingModule, and implemented it's use in the CEGUILua module.
+- Added: DynamicModule class to wrap access to a dynamically linked / loaded module.
+- Added: New dynamic libraries for Xerces, Expat TinyXMLParser, and libxml Parsers.
+- Added: TextProperty and FontProperty elements for Falagard text components.
+- Added: New ItemListBase based ItemListbox widget. For Window based listbox items.
+- Added: XML Serialization class for all XML writing.
+- Added: Recursive versions of Window::getChild and isChild by ID. They are called getChildRecursive and isChildRecursive. Reason for the explicit naming is that it's a pretty expensive operation and should not be used unless necessary.
+- Added: Lots of missing members in the Lua bindings.
+- Added: setlocale(LC_NUMERIC, "C"); to the System constructor as we depend on this behaviour.
+- Added: setVisible member to CEGUI::MouseCursor.
+- Added: bat files to make it easier for Windows users to regenerate the Lua bindings and tolua++cegui.
+- Added: ImageCodec support to the OpenGL renderer. This allows users to easily write a custom image loader. TGA, SILLY, DevIL, Corona and FreeImage codecs are supplied.
+- Added: const version of getDataPtr in RawDataContainer.
+- Added: premake scripts to generate MSVC solutions.
+- Added: ClippedContainer for situations where more specialized clipping is required.
+
+- Modified: Placed the integrated TinyXML into its own namespace (CEGUITinyXML) to prevent clashes in projects using another copy of TinyXML. (Patch #1294002).
+- Modified: Changed EventSet to operate without needing events to be pre-added, much like GlabalEventSet always did.
+- Modified: Removal of mass pre-specification of events for all classes using events.
+- Modified: Cflags to add include dir for CEGUI in CEGUI.pc.in (allows use of <CEGUI/...> form of include statement).
+- Modified: The "Lua and tolua++" module has been made a DLL on Windows machines.
+- Modified: Renamed System::setTooltip to System::setDefaultTooltip (Mantis #1Cool.
+- Modified: In the lua module, updated Window with casting helpers as member functions. eg. w:toFrameWindow()
+- Modified: Removed the Static,StaticText and StaticImage from CEGUIBase and implemented them in FalagardBase instead.
+- Modified: Updated to tolua++ 1.0.92
+- Modified: Moved LuaFunctor into its own files
+- Modified: Reimplemented the "late binding" effect from the v04 Lua module. In v04 the function is always looked up by name. In CVS HEAD the actual Lua function is referenced, but now this will only occur the first time the event is triggered. This means that it's no longer necessary to have a function defined to subscribe it to an event. As long as the function has been created before the event occurs everything will be good Smile
+- Modified: Moved subscribeScriptedEvent into ScriptModule to allow more customized script subscription functionality.
+- Modified: Made the layout XML handler use subscribeScriptedEvent for Event tags instead of subscribeEvent with ScriptFunctor
+- Modified: Removal of "tolua_outside" stuff that was no longer needed.
+- Modified: Moved the declaration/definition of base window factories into its own files.
+- Modified: Removal of WidgetSets folder, and it's contents.
+- Modified: Removed unnecessary getSingleton and getSingletonPtr from manager classes.
+- Modified: The script module now throws ScriptException.
+- Modified: Removal of TextItem as falagard now handles that exclusively.
+- Modified: Moved all rendering member functions out of base classes an into Falagard rendering classes.
+- Modified: Removal of virtually all rendering and layout related Window properties from CEGUIBase - a few are moved to FalagardBase, the rest must be implemented via XML.
+- Modified: Removal of TaharezLook and WindowsLook modules from the system.
+- Modified: Removal of MetricsMode system, and all non-unified interface and properties from Window (and related fixes to other classes).
+- Modified: Elimination of RenderableElement and derived classes.
+- Modified: Moved to a C preprocessor macro system for widget module creation.
+- Modified: Removal of abstract createXXX methods from widget base classes - the looknfeel system now auto-creates these widgets when specified within the XML.
+- Modified: Updated to TinyXML 2.4.3 in order to allow CDATA section in XML text node (verbatim text)
+- Modified: GUILayout handler in order to support long value in properties.
+- Modified: Made the XML writing system aware of falagard when determining property default values.
+- Modified: Switched PropertyHelper to use std::ostringstream as the output is much nicer. Changed property default values to the new format where needed.
+- Modified: Better error reporting for dynamic module load failures.
+- Modified: Switched to using external pcre library. Removed embedded copy of pcre.
+- Modified: Switched system to use dynamic libs for XML parsers with programatically configurable default.
+- Modified: FactoryModule to use DynamicModule.
+- Modified: Resolved issue with unneeded member qualification (Patch #1454773).
+- Modified: Made String::ptr a public member.
+- Modified: The bundled tolua++cegui binding generator will now generate a lua_CEGUI.cpp that compiles out-of-the-box on Windows
+- Modified: Removed the DataContainer template class, and made it into just RawDataContainer, non templated.
+- Modified: Optimized FalagardMultiLineEditbox to only cache visible lines when rendering.
+- Modified: Optimized ButtonBase and MenuItem updateInternalState. Mantis #44
+- Modified: Moved the renderers to their own folder named RendererModules.
+- Modified: Optimized picking and rendering by caching screen space rectangles.
+- Modified: Applied zap's rewrite of the Font system. Patch #1508321
+- Modified: Texture::loadFromMemory now takes a Texture::PixelFormat parameter. RGB and RGBA are currently required. Fixes Patch #1455523 as well. 3rd party renderer modules needs to be updated.
+
+- Bug fix: OpenGLRenderer was producing errors and not cleaning up state changes properly (thanx muhkuh25)
+- Bug fix: OpenGLRenderer was broken when compiled for x86-64.
+- Bug Fix: ListboxItem::getOwnerWindow should be const
+- Bug Fix: ListboxItem::getOwnerWindow should not take a Window* argument.
+- Bug Fix: Scheme::resourcesLoaded was always returning true.
+- Bug Fix: PropertyHelper::stringToImage was not handling empty string case.
+- Bug Fix: Editbox::onCharacter was setting the event as handled even if nothing was done.
+- Bug Fix: Added shift/ctrl/alt support to the OpenGL sample driver (injects LeftXXX)
+- Bug Fix: The command line renderer selector does no longer ask if there is only one renderer available.
+- Bug Fix: Fixed window resizing for the OpenGL Sample driver.
+- Bug Fix: fixed const correctness for "String::utf8_stream_len" SF patch #1367423
+- Bug Fix: Detect "window->addChildWindow(window);" and do nothing instead of actually trying.
+- Bug Fix: Added missing performChildWindowLayout to Scrollbar::onScrollConfigChanged to allow making a look'n'feel with a thumb that sizes to indicate document size.
+- Bug fix: const correctness for Window::getLookNFeel
+- Bug fix: FrameWindow, isTitlebarEnabled and isCloseButtonEnabled were return the opposite of what they should.
+- Bug Fix: FrameWindow should do relayout if text changes to allow using a fontdim in the titlebar dimensions.
+- Bug Fix: Changing the default mouse cursor in the System object will now update the cursor immediately where appropriate. (Ticket #17).
+- Bug Fix: Fixed case in StaticText where default text area was always used if frame was disabled.
+- Bug Fix: Image offsets were'nt being properly handled for the corners in FrameComponent.
+- Bug Fix: MultiColumnList would always use item string when sorting, instead of vitual operators on users custom items.
+- Bug Fix: System::getWindowContainingMouse would return incorrect Window if called from within Window::EventMouseLeaves handlers.
+- Bug Fix: Order of static data creation in C++ is unspecified; we can't have globally defined static data that relies on other such static data within the same module.
+- Bug Fix: Falagard/ProgressBar was broken when vertical or reversed-horizontal.
+- Bug Fix: Corruption of window registry when rename failed (Patch #1450623).
+- Bug Fix: Initialisation issue with TabControl trying to access child widgets before they are created. (Patch #1391727).
+- Buf Fix: CEGUI::Window::setModalState(true) removes the modal state from a modal window. Mantis #42
+- Bug Fix: MultiColumnList getNextSelection bug. Mantis #47
+- Bug Fix: System subscriber to renderer event but does not unsubscribe on destruction. Mantis #48
+- Bug Fix: OpenGL and DirectX9 renderers were not handling error correctly when creating textures.
+- Bug Fix: Bug in LuaScriptModule where executeScriptFile did not unload the file data buffer correctly in case of an exception (thanks gcarlton).
+- Bug Fix: A bug in ItemListBase::resetList_impl where calling resetList would crash (thanks Turtle).
+- Bug Fix: Typo in TabPane::testClassName_impl ("Tabpane" instead of "TabPane").
+- Bug Fix: Big Endian inconsistency in CEGUI::colour.
+- Bug Fix: CEGUI::Window was not detaching the tooltip during destruction. Mantis #38
+- Bug Fix: FrameWindow was consuming all LeftButton up events. Down events were affected as well, and now only consume if the event started drag sizing.
+- Bug Fix: DragContainer would overwrite any new position applied to the DragContainer during the DragDropItemDropped event. Mantis #53
+- Bug Fix: The OpenGL sample driver could cause a stack overflow. Patch #1507826
+
+
+<b>Release 0.4.1</b>
+- Added: Window renaming functionality.
+- Added: Logging of error when trying to unload a non-existant scheme.
+- Added: "Lost device" handlers for OpenGLRenderer (grab/restoreTextures).
+
+- Modified: Updates to Xcode project to account for differing build paths and some link issues.
+- Modified: Updated version numbers, CPU tuning setting, deployment build paths and library build style for MacOS X builds.
+- Modified: Changed default settings for doxygen documentation - is now more minimal and thefore more readable.
+- Modified: Simplified required setup to use Ogre CEGUI Renderer with the samples (now just requires access to Ogre modules and a plugins.cfg).
+
+- Bug Fix: Endianness issues in OpenGL renderer on Mac. (patch #1309172)
+- Bug Fix: Typo in Falagard bundle plist (Mac) that prevented loading. (patch #1309172)
+- Bug Fix: Resolved some behavioural mis-match issues with TabControl; removeChildWindow can now be used as expected to remove content.
+- Bug Fix: Changing the default mouse cursor in the System object did not result in an immediate change when appropriate.
+- Bug Fix: Cleanup properly if layout loading fails when loading a sub-layout (imported layout).
+- Bug Fix: 'Vanilla' skin showed rendering artefacts when scaled.
+- Bug Fix: Lots of missing API docs.
+- Bug Fix: 'static const' <-> 'const static' issue in renderers (mainly affected parsing by binding generators).
+- Bug Fix: Win32 type issue in MSVC++ 8.
+- Bug Fix: Issue in sample framework with MSVC++ using Unicode character mode.
+- Bug Fix: FrameWindow does a re-layout of children when text changes to allow using a FontDim to set the titlebar dimensions.
+- Bug Fix: Issues when writing xml for Window / MCL properties (patch #1353395)
+- Bug Fix: Fixed various issues related to window type aliasing not working as expected in all cases.
+- Bug Fix: CEGUI::String stream output operator was not exported under MSVC++.
+- Bug Fix: Fixed a bug in String class
+- Bug Fix: 'click' based mouse events would be sent to the wrong window in various circumstances.
+- Bug Fix: The class name string compared in MultiLineEditbox::testClassName_impl has the wrong casing.  Added additional check using correct casing.
+- Bug Fix: Menubar in skin schemes was using PopupMenu WidgetLook
+- Bug Fix: Closing a popup not attached to a MenuItem was still using parent as a MenuItem even after discoving this was not the case.
+- Bug Fix: WindowsLook imageset had incorrect sizes for Editbox frame edges.
+- Bug Fix: Font::getRequiredTexture size would get it wrong sometimes.
+- Bug Fix: Full initialiser lists added for Font constructors (solves some potential issues with uninitialised class data).
+
+
+<b>Release 0.4.0</b>
+- Addition of "Falagard" XML skinning system.  Details as follows:
+    -   RenderCache system for Window - vastly reduces the need to perform total redraws when only one widget changes.
+    -   Core falagard support classes enabling xml skin data to be loaded and the results used for Window initialisation and rendering.
+    -   CEGUIFalagardBase module implementing core skinned widget behaviours.
+    -   LookNFeel (XML skin) loading via scheme files.
+    -   FalagardMapping scheme element to allow creation of 'new' widget types within a scheme file.
+    -   Full skinning system .pdf documentation 'mini-book'.
+    -   XML based version of TaharezLook - as an example and to allow easy migration to the new system.
+    -   XML based version of WindowsLook - as an example and to allow easy migration to the new system.
+    -   "Vanilla GUI" - a simple XML based skin.  Special thanks to Shane Parker for permission to use his imagery.
+
+- Added: 'Unified' co-ordinate system allowing specification of relative and absolute components simultaneously.
+- Added: Window alignment options allowing child windows to be positioned offset from centre, right, and bottom points as well as the usual left and top.
+- Added: Ability to create an imageset directly from an image file.
+- Added: Added line number to error message for Xerces XML parsing errors.
+- Added: Initial support for output of XML data for all core system data types (fonts, imagesets, window layouts, xml skins).
+- Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo4" in Samples.
+- Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo6" in Samples.
+- Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo7" in Samples.
+- Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo8" in Samples.
+- Added: Support to Window class for a collection of named user-data strings.
+- Added: Modal window feature.
+- Added: Missing Lua bindings for some System based Tooltip stuff.
+- Added: Missing Lua bindings for Menusystem widgets.
+- Added: Lua module 'toKeyEventArgs' helper 
+- Added: An attempt at protecting the code from min/max preprocessor macros; as defined in MS Windows headers.
+- Added: Logging of CEGUI version number.
+- Added: The 'look' modules now have the ability to register all available widget types; saves listing them all in a scheme!
+- Added: Support to the Lua module for FontFlags to allow direct loading of TTF fonts from script without using .font files.
+- Added: Base Window class virtual method 'performChildWindowLayout'.  Replacing many widget's own 'layoutChildComponents' methods.
+- Added: Facility for the system to auto-generate window names -  for use in cases where the user is too idle to think up names for themselves ;)
+
+- Modified: Relaxation of many ordering restrictions within validated XML data files.
+- Modified: Samples framework has had some minor improvments, and can now exit properly!
+- Modified: Various improvments and additional options for linux configure.
+- Modified: Lua scripting module renamed to CEGUILua (Win32 systems).
+- Modified: Switched AC_DISABLE_STATIC & AM_PROG_LIBTOOL around due to a warning.
+- Modified: Disabled building of static libraries under Linux.
+- Modified: Window::initialise method now called by WindowManager when it creates a window, rather than having each factory do this itself.
+- Modified: Major cleanup of the main file for the 'look' modules.
+- Modified: Changed CEGUIBASE_API to CEGUIEXPORT throughout the code.  This is in preparation for some Linux ABI improvements.
+- Modified: Various widget classes disregarded the alpha component of set colours; the alpha component of user specified colours is now respected.
+- Modified: Updated the WindowsLook caret-cursor to greatly improve visibility!
+- Modified: Made child window index positions stable.
+- Modified: Fixed hacky z-order change implementations.
+
+- Bug Fix: Issue on some distros caused by use of AC_FUNC_MALLOC macro in configure.ac
+- Bug Fix: Issues with samples framework not compiling when none of the renderer modules are available.
+- Bug Fix: linux makefiles updated so 'make dist' works properly again.
+- Bug Fix: Various fixes made to the MSVC++ 7.0 solution and projects.
+- Bug Fix: Unified the tests for linux platform to always check for definition of: __linux__
+- Bug Fix: Xerces based XML parser was not throwing exceptions, causing no useful logging to occur.
+- Bug Fix: Some tool-tip API docs were incorrect.
+- Bug Fix: Window::onEnabled & Window::onDisabled were not called when a window state changed via inherited state from an ancestor window.
+- Bug Fix: Font class modified to force auto-hinting use for rendering glyphs.
+- Bug Fix: Font class modified to properly render glyphs in mono mode (AA off)
+- Bug Fix: Fixed some uint/ColourRect/String CEGUILua issues.
+- Bug Fix: TinyXMLParser::parseXMLFile implementation was not reentrant, causing issues with nested loading of XML files (specifically static/bitmapped fonts).
+- Bug Fix: MultiLineEditbox would throw std::out_of_range sometimes when setting the text via setText().
+
+
+<b>Release 0.3.0</b>
+- Total refactoring of XML parsing system.  Details as follows:
+    -   Removed XMLHandlerHelper files.
+    -   Added XMLParser/XMLHandler abstract classes.
+    -   Added XMLAttributes class
+    -   Added optional embedded version of TinyXML - including efficiency fix (patch #1180435).
+    -   Added optional TinyXML based implementation of XMLParser.
+    -   Added optional Xerces-C++ based implementation of XMLParser.
+    -   Added overloaded System constructors allowing a custom XML parser to be used.
+
+- Added: Menu widget set (currently available for WindowsLook module only).
+- Added: Generic drag/drop support widgets.
+- Added: Write-only "ColumnHeader" property to MultiColumnList allowing specification of columns within XML layouts.
+- Added: Read-only "RowCount" property to MultiColumnList to return the number of rows in the list.
+- Added: Support for IDs to MultiColumnList rows, allowing easier access to rows (since index values can change).
+- Added: Lua based ScriptModule (including optional embedded lua and toloua++) for Win32 and Linux users.
+- Added: resourceGroup parameter to executeScriptFile methods.
+- Added: Scripted event handler support extensions plus typo fixes.  Special thanks to lindquist.
+- Added: Samples support framework (Win32 and Linux)
+- Added: 'FirstWindow' sample. (Win32 and Linux)
+- Added: OpenGLRenderer::setDisplaySize member function to enable display size changes to be notified.
+- Added: Config file setting to allow specification of logging level.
+- Added: Option to make the 'rise on click' default behaviour optional.  Based on idea from patch #1124682.
+- Added: Alt keys as a system key.  Patch #1170194.
+- Added: Irrlicht renderer for Linux users.
+- Added: Justified text formatting options (patch #1160562 from ChrisKang)
+- Added: typedef to define DefaultWindow (allowing use of new name in code rather than old DefaultGUISheet class)
+- Added: Image::getSourceTextureArea method.
+- Added: argb_t to represent ARGB colour values instead of ulong.
+- Added: Implementation of 'dead pool' for deferred deletion of Window objects (allows Window destruction from within own event handlers)
+- Added: New option to Window to state whether 'captured' inputs are distributed to child windows.  (Fixes various behavioural bugs)
+
+- Modified: Changed ResourceProvider system to support 'unloadRawDataContainer' method, to resolve various memory related issues (Patch #1176745)
+- Modified: Xerces schema loading to try to get the schema file from the same directory as the xml file being loaded when the default path fails.
+- Modified: Changed logger from using gmtime to localtime.
+- Modified: Changed CEGUIBASE_API to CEGUIEXPORT throughout the code.  This is in preparation for some Linux ABI improvements.
+- Modified: Changed FrameWindow titlebar imagery rendering under WindowsLook to look better when titlebar is larger than 'normal'.
+- Modified: MSVC build to fix alot of compile warnings when including CEGUI from outside the project.
+- Modified: occurances of 'const static' with 'static const' (via a patch from Clay)
+- Modified: Logging system so logging begins earlier in system creation.
+- Modified: EventSet::fireEvent so that global event is fired before the local instance event.  (Request #1144062).
+- Modified: FontManager now automatically sets the first Font created as the default.
+- Modified: Updated Irrlicht renderer components to take resourceGroup parameter.
+
+- Bug Fix: testClassName const correctness.
+- Bug Fix: Made System::handleDisplaySizeChange notify imageset manager and fontmanager of change.
+- Bug Fix: OpenGL types causing issues on MacOS X Tiger (patch #1200625)
+- Bug Fix: Added /usr/X11R6/include as a include search path for OSX
+- Bug Fix: Empty lines issue with word-wrapped text formatting (patch #1175118)
+- Bug Fix: Win32 fix (fabs -> fabsf to avoid double-to-float warning treated as error)
+- Bug Fix: MultiColumnList::setItem was setting owner on new item without checking new item was valid.
+- Bug Fix: MultiColumnList::setItem checking 'isAutoDeleted' on new item (which could also be null), instead of old item.
+- Bug Fix: Vertical scrollbar access properties were broken.
+- Bug Fix: Anti-alias setting for fonts.
+- Bug Fix: Issues where Logger was needed before it was created.
+- Bug Fix: Horizontal scrollbar would sometimes have wrong length.
+- Bug Fix: Issues with STLport where functions are not correctly in the std (_STL) namespace.
+- Bug Fix: Debug guard controlling Insane level logging was around the wrong way.
+
+
+<b>Release 0.2.1</b>
+- Added: Spinner widget.
+- Added: ScrollablePane widget.
+- Added: Tooltip widget.
+- Added: RPM spec file.
+
+- Modified: In the Xcode build, changed framework name to CEGUI instead of CEGUIBase (for Ogre's CEGUI renderer).
+- Modified: Promoted custom image properties for PushButton from 'look' modules into base class.
+
+- Bug Fix: Some delete/delete[] issues for String class fixed, moved all String delete usages into .cpp file.
+- Bug Fix: Modification to ensure stable index values for tab buttons and tab content.
+- Bug Fix: Spacing between non-autoscaled bitmapped font glyphs was incorrect.
+- Bug Fix: FrameWindow title bar and close button were still clipped when clippedByParent was false.
+- Bug Fix: Text extents calculations were incorrect under certain cicumstances.
+- Bug Fix: Added a work around for over-optimisation bug in MulticolumnList under VC++.
+- Bug Fix: WindowsLook titlebar was not using correct set caption colour.
+- Bug Fix: OpenGL configure options did not function correctly.
+- Bug Fix: In System constructors the logfile parameter was missing a const specifier.
+- Bug Fix: Direct3D renderers had missing cull mode state setting.
+- Bug Fix: SimpleTimer::elapsed was returning incorrect values.
+- Bug Fix: Removed incorrect usage of Win32 dll import/export construct from enums.
+- Bug Fix: List box items (ListboxTextItem) suffered from a cumulative alignment issue.
+- Bug Fix: Fixed a type conversion warning in CEGUIFont for MSVC++.
+- Bug Fix: Baseline and Linespacing calculations for bitmapped / static fonts was incorrect.
+- Bug Fix: 'make dist' fixed on linux.
+
+
+<b>Release 0.2.0</b>
+- Added: Support for resource provider resource groups to loading & parsing methods.
+- Added: MouseButtonDown event auto-repeat feature.
+- Added: System::getSystemKeys method to return current system keys value.
+- Added: New setting in Window to receive muliple mouse down events instead of double/triple clicks.
+- Added: Ability to define split direction of triangles used for quads
+- Added: Font::getFontHeight method to return pixel height of largest glyph.
+- Added: Error logging for when freetype fails to load a glyph.
+- Added: Various new methods to TabCrontrol base class.
+- Added: Callback support when setting properties loaded from XML layout files.
+- Added: Checking and inspection of default values for Properties system.
+- Added: Global events system.
+- Added: Vertical VU-Meter style progress bar to Taharez Look.
+- Added: Extensions to font system which give support for scaling the text output.
+- Added: Support for MSVC++ 6.0 native STL implementation.
+- Added: Font::getPointSize() method to return point size of a dynamic font.
+- Added: Mechanism for Direct3D renderers to detect display size changes and fire EventDisplaySizeChanged.
+- Added: Lost device recovery for both Direct3D renderer modules.
+- Added: SchemeManager::unloadAllSchemes method.
+- Added: Initial system for time based updates / window automation.
+- Added: CEGUI::System constructor overload to allow custom ResourceProvider to be specified when also using a ScriptModule.
+- Added: OpenGL renderer.
+- Added: uint32 and uint16 datatypes.
+
+- Modified: Layout loading code to properly throw CEGUI errors out of xercesc parser.
+- Modified: Fixed font support under AMD64.
+- Modified: Changed all const strings in the base library to be of type CEGUI::String instead of UTF-8 buffers.
+- Modified: Removed public dependency on xerces-c (still required for base library itself though).
+- Modified: Replaced dependency boost::regex with embedded copy of pcre.
+- Modified: Replaced dependency boost::timer with SimpleTimer class.
+- Modified: TabCobtrol widget now uses '__auto_' naming scheme for generated child widgets.
+- Modified: Global update of website, contact, and copyright information.
+
+- Bug Fix: moveToBack was operating upon and adding target window to its own child list instead of its parents.
+- Bug Fix: Editbox changed to allow text to be altered in onTextChanged/EventTextChanged without causing carat position to become invalid.
+- Bug Fix: Font updated to use correct values for Linespacing and Baseline.
+- Bug Fix: Added various missing includes.
+- Bug Fix: Minor adjustment to layout in TLComboEditbox to fix text clipping issue.
+- Bug Fix: Text alignment within gui elements.
+- Bug Fix: Drag-Sizing for segments would be incorrect if they had negative relative 'left' positions.
+- Bug Fix: Some component widget layouts were getting incorrect sizes.
+- Bug Fix: Fixed minor imagery alignment issue for Taharez frame window imagery.
+- Bug Fix: Child windows would sometimes 'jump' slightly upon initial activation of a parent window.
+- Bug Fix: System::setGUISheet updated to trigger re-calculation of relative co-ordinates when a new window is attached as root.
+- Bug Fix: removed use of void* in properties system to ensure correct casting behaviour.
+- Bug Fix: All imagery aligned to whole pixels resolving twinkling and blurring issues.
+- Bug Fix: Constructor overload and support methods to allow successful use of 'pure' D3D devices.
+- Bug Fix: Made sure events were added to the EventSet in Window before making any calls that may fire an event.
+- Bug Fix: Various other minor tweaks & fixes.
+
+- OgreGUIRenderer moved from CEGUI codebase into Ogre codebase (with the following initial changes):
+- Modified: Switched HBU_DYNAMIC_WRITE_ONLY for HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE in Ogre renderer to improve performance under D3D.
+- Modified: OGRE renderer to work under AMD64.
+- Modified: Ogre renderer to compile against OGRE 1.0 (Ogre >= 1.0.0 is now required)
+- Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer added.
+
+
+<b>Release 0.1.1</b>
+- Updated TODO file to reflect features already implemented in this branch.
+- Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer
+- Bug Fix: Removed erroneous use of D3DLOCK_DISCARD flag in D3D8 renderer (texture.cpp)
+- Bug Fix: Dates in the log were using incorrect value for the month.
+- Bug Fix: Added missing stdio.h include in CEGUIWindow.cpp.
+- Bug Fix: Font attribute "AntiAlias" was incorrectly documented as "AntiAliased".
+- Bug Fix: d_resourceProvider member in Renderer base class was not being initialised
+- Bug Fix: corrected version information in configure.ac.
+- Bug Fix: Resolved assert issues related to the Ogre debug memory manager.
+- Bug Fix: Y Spacing calculation on certain ttf fonts was incorrect.
+- Bug Fix: Added missing _STLP_DEBUG defines in the MSVC++ 7.0 projects.
+
+
+<b>Release 0.1.0</b>
+- Initial release.
 */
+}

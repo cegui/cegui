@@ -1,0 +1,46 @@
+/**
+@page compiling Supported systems and compilation.
+@author Paul D Turner
+
+@section compiling_sec_1 Supported Systems
+Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
+following systems:
+
+- Various flavors of Linux using gcc.
+- Microsoft Windows using Visal C++ versions 7.1 through 9 (both express and
+professional versions where applicable).
+- Apple Mac OS X running Xcode (tested on version 10.5.8 with Xcode 3.1).
+
+It is very possible that the system will compile with other compilers and run on
+other systems, though those mentioned above have been tested.
+
+
+@section compiling_sec_2 Requirements
+As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2
+can also make use of some third party external libraries.  These libraries are
+as follows:
+
+- Optionally: Freetype2 (http://www.freetype.org)
+- Optionally: PCRE (http://www.pcre.org)
+- Optionally: Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
+- Optionally: Expat XML parser (http://expat.sourceforge.net)
+- Optionally: LibXML XML parser (http://www.xmlsoft.org)
+- Optionally: DevIL image loading library (http://openil.sourceforge.net)
+- Optionally: Corona image loading library (http://corona.sourceforge.net)
+- Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
+- Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
+- Optionally: Lua programming language (http://www.lua.org/)
+
+
+@section compiling_sec_3 Compiling on Microsoft Windows with MSVC++
+TODO!
+
+
+@section compiling_sec_4 Compiling on GNU/Linux systems
+TODO!
+
+
+@section compiling_sec_5 Compiling on Mac OS X with Xcode
+TODO!
+
+*/

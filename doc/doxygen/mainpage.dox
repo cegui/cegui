@@ -2,39 +2,7 @@
 @mainpage Crazy Eddie's GUI System Mk-2: Developer Documentation
 http://www.cegui.org.uk
 
-Copyright (C)2004 - 2009 CEGUI Team & Contributing Authors
-
-This sofware uses the PCRE library by Philip Hazel.
-PCRE is Copyright (c) 1997-2008 University of Cambridge, All rights reserved.
-Please see @subpage pcre_lic for additional licensing information.
-
-This sofware can be compiled to optionally contain an embedded version of
-TinyXML.  Please see @subpage tinyxml_lic for additional licensing
-information.
-
-This software uses the Freetype2 library to provide most of the font loading and
-rendering support.  Freetype2 is a free, high-quality, and portable font engine;
-see http://www.freetype.org for more information.
-
-This software can be compiled to optionally contain an embedded copy of tolua++.
-Please see the file tolua++README in the directory
-./ScriptingModules/CEGUILua/lua_and_tolua++/ for additional licensing that may
-apply to the use of this library
-
-This software can be compiled in such a way that certain components contain an
-embedded copy of the OpenGL Extension Wrangler (GLEW) library.  Please see
-@subpage glew_lic for additional licensing that may apply to the use of this
-library.
-
-The Spinner widget contains some modified parts of the stringencoders library
-(http://code.google.com/p/stringencoders).  Please see
-@subpage stringencoders_lic for additional licensing that may apply to the use
-of this component.
-
-This software can be compiled to optionally include an embedded copy of the
-minibidi software from the Arabeyes project (http://www.arabeyes.org/).
-minibidi was written by Ahmad Khalifa and is licensed under the MIT license.
-
+Copyright (c) 2004 - 2009 Paul D Turner & The CEGUI Development Team
 
 This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and
 widgets for graphics APIs and engines where such functionality is not natively
@@ -47,56 +15,37 @@ to as both CEGUI (which is the main namespace name), and cegui_mk2 (which was th
 CVS module name of the Mk2 version of the system, and is now the root svn
 directory for this part of the system).
 
+@section main_sec_1 Documentation Sections
+The documentation for CEGUI is split into the following sections:
+- General Information
+    - @subpage licensing
+    - @subpage authors
+    - @subpage change_log
 
-The current version of CEGUI is licensed under the @subpage mit_license.
+- Code related topics
+    - @subpage downloading
+    - @subpage compiling
+    - @subpage arch_overview
+    - @subpage code_standards
+    - @subpage devel
 
-@section main_sec_1 Supported Systems
-Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the following systems:
+- Beginners Tutorials
+    - @subpage ce_guide_1
+    - @subpage rp_setup
+    - @subpage ce_guide_2
+    - @subpage ce_guide_3
+    - @subpage ce_guide_4
 
-- Various flavors of Linux using gcc.
-- Microsoft Windows running VC++7.0 up and until VC++9, both 'express' and 'professional' versions.
-- Apple Mac OS X running Xcode.
+- Porting Guides
+    - @subpage porting6to7
 
-It is very possible that the system will compile and run on other systems and compilers, though the above systems have been tested.
-
-NOTE: a long while ago VC6 support has been dropped.
-
-
-@section main_sec_2 Requirements
-As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2 also requires the use of some third party external libraries.  These libraries are as follows:
-
-- Freetype2 (http://www.freetype.org)
-- PCRE (http://www.pcre.org)
-
-- Optionally: Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
-- Optionally: Expat XML parser (http://expat.sourceforge.net)
-- Optionally: LibXML XML parser (http://www.xmlsoft.org)
-- Optionally: DevIL image loading library (http://openil.sourceforge.net)
-- Optionally: Corona image loading library (http://corona.sourceforge.net)
-- Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
-- Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
-- Optionally: Lua programming language (http://www.lua.org/)
-
-
-@section main_sec_3 Documentation Sections
-The documentation for CEGUI is split into the following sections:<br>
-- @subpage authors
-
-- @subpage arch_overview
-
-- @subpage code_standards
-- @subpage devel
-
-- @subpage ce_guide_1
-- @subpage ce_guide_2
-- @subpage ce_guide_3
-- @subpage ce_guide_4
-
-- @subpage rp_setup
-
-- @subpage handbook "The CEGUI Developer Handbook"
-
-- @subpage fal_man
+- Additional reference material
+    - @subpage xml_imageset
+    - @subpage xml_font
+    - @subpage xml_scheme
+    - @subpage xml_layout
+    - @subpage xml_config
+    - @subpage fal_man
 
 Have Fun!
 */
