@@ -15,7 +15,7 @@ OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
 OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
 
 --- Irrlicht SDK Version
---- 12 is 1.2 (or before?).  13 is 1.3 or 1.3.x, and 14 is 1.4 (and above?)
+--- 14 is means 1.4 or 1.5.x and 16 means 1.6 (and above?)
 CEGUI_IRR_SDK_VERSION = 14
 
 --- OIS API version to be used in the Ogre samples base app.

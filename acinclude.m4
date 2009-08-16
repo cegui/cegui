@@ -464,43 +464,8 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
     gotirrsdkver=no
     if test x$cegui_irr_h_found = xyes && test x$cegui_irr_l_found = xyes; then
         AC_MSG_NOTICE([Trying to determine Irrlicht SDK version])
-        AC_COMPILE_IFELSE(
-        [
-            #include <irrlicht.h>
-            class test : public irr::io::IReadFile
-            {
-            public:
-                bool seek(irr::s32 finalPos, bool relativeMovement = false) {return false; }
-                irr::s32 read(void* buffer, irr::s32 sizeToRead) {return 0;}
-                irr::s32 getSize() {return 0;}
-                irr::s32 getPos() {return 0;}
-                const irr::c8* getFileName() {return 0;}
-            };
-            int main(int argc, char** argv) { test x; return 0; }
-        ],
-        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[12],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
-        gotirrsdkver=yes])
 
-        if test $gotirrsdkver = no; then
-        AC_COMPILE_IFELSE(
-        [
-            #include <irrlicht.h>
-            class test : public irr::io::IReadFile
-            {
-            public:
-                bool seek(irr::s32 finalPos, bool relativeMovement = false) {return false; }
-                irr::s32 read(void* buffer, irr::u32 sizeToRead) {return 0;}
-                irr::s32 getSize() {return 0;}
-                irr::s32 getPos() {return 0;}
-                const irr::c8* getFileName() {return 0;}
-            };
-            int main(int argc, char** argv) { test x; return 0; }
-        ],
-        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[13],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
-        gotirrsdkver=yes])
-        fi
-
-        if test $gotirrsdkver = no; then
+        dnl ** Test for Irr SDK 1.4 or 1.5.x **
         AC_COMPILE_IFELSE(
         [
             #include <irrlicht.h>
@@ -515,7 +480,28 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
             };
             int main(int argc, char** argv) { test x; return 0; }
         ],
-        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[14],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
+        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[14],[Defines irrlicht SDK version.  14 is 1.4 or 1.5.x and 16 is 1.6 or later.])
+        gotirrsdkver=yes])
+
+        dnl ** Test for Irr SVN trunk (r2616) - to be SDK 1.6 (and above?) **
+        if test x$gotirrsdkver = xno; then
+        AC_COMPILE_IFELSE(
+        [
+            #include <irrlicht.h>
+            class test : public irr::io::IReadFile
+            {
+            public:
+                bool seek(long finalPos, bool relativeMovement = false) {return false; }
+                irr::s32 read(void* buffer, irr::u32 sizeToRead) {return 0;}
+                long getSize() const {return 0;}
+                long getPos() const {return 0;}
+                const irr::core::string<irr::c16>& getFileName() const {return filename;}
+            protected:
+                irr::core::string<irr::c16> filename;
+            };
+            int main(int argc, char** argv) { test x; return 0; }
+        ],
+        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[16],[Defines irrlicht SDK version.  14 is 1.4 or 1.5.x and 16 is 1.6 or later.])
         gotirrsdkver=yes],
         [AC_MSG_NOTICE([Unable to determine Irrlicht sdk version.])
         ])

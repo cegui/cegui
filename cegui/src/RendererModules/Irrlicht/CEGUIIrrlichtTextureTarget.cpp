@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "CEGUIIrrlichtTextureTarget.h"
 #include "CEGUIIrrlichtTexture.h"
 
@@ -101,10 +105,18 @@ void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
 
     cleanupTargetTexture();
 
+    #if CEGUI_IRR_SDK_VERSION >= 16
+        const irr::core::dimension2d<irr::u32> irr_sz(
+            static_cast<irr::u32>(sz.d_width),
+            static_cast<irr::u32>(sz.d_height));
+    #else
+        const irr::core::dimension2d<irr::s32> irr_sz(
+            static_cast<irr::s32>(sz.d_width),
+            static_cast<irr::s32>(sz.d_height));
+    #endif
+
     d_texture = d_driver.addRenderTargetTexture(
-        irr::core::dimension2d<irr::s32>(static_cast<irr::s32>(sz.d_width),
-                                         static_cast<irr::s32>(sz.d_height)),
-        IrrlichtTexture::getUniqueName().c_str());
+        irr_sz, IrrlichtTexture::getUniqueName().c_str());
 
     d_CEGUITexture->setIrrlichtTexture(d_texture);
     d_CEGUITexture->setOriginalDataSize(d_area.getSize());
