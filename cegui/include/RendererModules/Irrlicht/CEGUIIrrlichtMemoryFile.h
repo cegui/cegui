@@ -52,26 +52,23 @@ public:
                        uint32 size);
     virtual ~IrrlichtMemoryFile() {};
 
-#if CEGUI_IRR_SDK_VERSION == 14
-    virtual bool seek(long finalPos, bool relativeMovement = false);
-    virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
-    virtual long getSize() const;
-    virtual long getPos() const;
-    virtual const irr::c8* getFileName() const;
+    // implement required interface from IReadFile
+    irr::s32 read(void* buffer, irr::u32 sizeToRead);
+    long getSize() const;
+    long getPos() const;
+    bool seek(long finalPos, bool relativeMovement = false);
+#if CEGUI_IRR_SDK_VERSION >= 16
+    const irr::core::string<irr::c16>& getFileName() const;
 #else
-#if CEGUI_IRR_SDK_VERSION == 13
-    virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
-#else
-    virtual irr::s32 read(void* buffer, irr::s32 sizeToRead);
-#endif
-    virtual bool seek(irr::s32 finalPos, bool relativeMovement = false);
-    virtual irr::s32 getSize();
-    virtual irr::s32 getPos();
-    virtual const irr::c8* getFileName();
+    const irr::c8* getFileName() const;
 #endif
 
 protected:
+#if CEGUI_IRR_SDK_VERSION >= 16
+    irr::core::string<irr::c16> d_filename;
+#else
     String d_filename;
+#endif
     const unsigned char* d_buffer;
     uint32 d_size;
     uint32 d_position;

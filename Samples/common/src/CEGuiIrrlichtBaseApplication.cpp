@@ -54,8 +54,12 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
 
     // create a device
     d_device = irr::createDevice(video::EDT_OPENGL,
-                                 core::dimension2d<s32>(800, 600), 32,
-                                 false, true, false, this);
+                                 #if CEGUI_IRR_SDK_VERSION >= 16
+                                    core::dimension2d<u32>(800, 600),
+                                 #else
+                                    core::dimension2d<s32>(800, 600),
+                                 #endif
+                                 32, false, true, false, this);
 
     // set flags for texture creation
     d_device->getCursorControl()->setVisible(false);
@@ -216,7 +220,11 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
 //----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::checkWindowResize()
 {
-    irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
+    #if CEGUI_IRR_SDK_VERSION >= 16
+        irr::core::dimension2d<irr::u32> cur_size = d_driver->getScreenSize();
+    #else
+        irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
+    #endif
 
 //     CEGUI::System::getSingleton().notifyDisplaySizeChanged(
 //         CEGUI::Size(cur_size.Width, cur_size.Height));

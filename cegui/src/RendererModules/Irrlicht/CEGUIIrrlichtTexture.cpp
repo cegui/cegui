@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "CEGUIIrrlichtTexture.h"
 #include "CEGUIIrrlichtRenderer.h"
 #include "CEGUISystem.h"
@@ -113,10 +117,17 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     freeIrrlichtTexture();
 
-    d_texture = d_driver.addTexture(
-        core::dimension2d<s32>(static_cast<s32>(buffer_size.d_width), 
-                               static_cast<s32>(buffer_size.d_height)),
-        getUniqueName().c_str());
+    #if CEGUI_IRR_SDK_VERSION >= 16
+        const irr::core::dimension2d<irr::u32> irr_sz(
+            static_cast<irr::u32>(buffer_size.d_width),
+            static_cast<irr::u32>(buffer_size.d_height));
+    #else
+        const irr::core::dimension2d<irr::s32> irr_sz(
+            static_cast<irr::s32>(buffer_size.d_width),
+            static_cast<irr::s32>(buffer_size.d_height));
+    #endif
+
+    d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str());
 
     // we now use ARGB all the time here, so throw if we get something else!
     if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
@@ -182,9 +193,15 @@ IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
                                  const Size& size) :
     d_driver(driver),
     d_texture(d_driver.addTexture(
+        #if CEGUI_IRR_SDK_VERSION >= 16
+                irr::core::dimension2d<irr::u32>(
+                    static_cast<irr::u32>(size.d_width),
+                    static_cast<irr::u32>(size.d_height)),
+        #else
                 irr::core::dimension2d<irr::s32>(
                     static_cast<irr::s32>(size.d_width),
                     static_cast<irr::s32>(size.d_height)),
+        #endif
                 getUniqueName().c_str(),
                 irr::video::ECF_A8R8G8B8)),
     d_size(static_cast<float>(d_texture->getSize().Width), 
