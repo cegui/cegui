@@ -1,12 +1,12 @@
 /***********************************************************************
-filename: 	CEGUIExceptions.cpp
-created:	20/2/2004
-author:		Paul D Turner, Frederico Jeronimo (fjeronimo)
+    filename:   CEGUIExceptions.cpp
+    created:    20/2/2004
+    author:     Paul D Turner, Frederico Jeronimo (fjeronimo)
 
-purpose:	Implements the exception classes used within the system
+    purpose:    Implements the exception classes used within the system
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2007 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -27,46 +27,43 @@ purpose:	Implements the exception classes used within the system
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-
-//////////////////////////////////////////////////////////////////////////
-// INCLUDES
-//////////////////////////////////////////////////////////////////////////
-
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
 #include <iostream>
 
-//////////////////////////////////////////////////////////////////////////
-// CEGUI NAMESPACE
-//////////////////////////////////////////////////////////////////////////
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    //////////////////////////////////////////////////////////////////////////
-    // EXCEPTION FUNCTIONS
-    //////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------//
+Exception::Exception(const String& message, const String& name,
+                     const String& filename, int line) :
+    d_message(message),
+    d_filename(filename),
+    d_name(name),
+    d_line(line),
+    d_what(name + " in file " + filename  +
+           "(" + PropertyHelper::intToString(line) + ") : " + message)
+{
+    // Log exception or send it to error stream (if logger not available)
+    Logger* const logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent(d_what, Errors);
+    else
+        std::cerr << what() << std::endl;
+}
 
-    //------------------------------------------------------------------------
-    Exception::Exception(const String& message, const String& name, const String& filename, int line)
-        : d_message(message), d_filename(filename), d_name(name), d_line(line)
-    {
-        // Log exception or send it to error stream (if logger not available)
-        Logger* logger = Logger::getSingletonPtr();
-        if (logger)
-        {
-            logger->logEvent(name + " in file " + filename  + "(" + PropertyHelper::intToString(line) + ") : " + message, Errors);
-        }
-        else
-        {
-            std::cerr << name << " in file " << filename.c_str() << "(" << line << ") : " << message.c_str() << std::endl;
-        }
-    }
+//----------------------------------------------------------------------------//
+Exception::~Exception(void) throw()
+{
+}
 
-    //------------------------------------------------------------------------
-    Exception::~Exception(void)
-    {
-    }
+//----------------------------------------------------------------------------//
+const char* Exception::what() const throw()
+{
+    return d_what.c_str();
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
