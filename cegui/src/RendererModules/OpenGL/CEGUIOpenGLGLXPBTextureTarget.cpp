@@ -208,11 +208,18 @@ void OpenGLGLXPBTextureTarget::disablePBuffer() const
 //----------------------------------------------------------------------------//
 void OpenGLGLXPBTextureTarget::initialiseTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // create and setup texture which pbuffer content will be loaded to
     glGenTextures(1, &d_texture);
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
