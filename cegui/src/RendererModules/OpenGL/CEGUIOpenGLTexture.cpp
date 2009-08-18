@@ -109,7 +109,6 @@ void OpenGLTexture::loadFromFile(const String& filename,
     // implemented and that knowledge is relied upon in an unhealthy way; this
     // should be addressed at some stage.
 
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     // load file to memory via resource provider
     RawDataContainer texFile;
     System::getSingleton().getResourceProvider()->
@@ -158,19 +157,34 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
     d_dataSize = buffer_size;
     // update scale values
     updateCachedScaleValues();
+
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
                     format, GL_UNSIGNED_BYTE, buffer);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLTexture::saveToMemory(void* buffer)
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -190,12 +204,19 @@ void OpenGLTexture::setTextureSize(const Size& sz)
     if ((size.d_width > maxSize) || (size.d_height > maxSize))
         throw RendererException("OpenGLTexture::setTextureSize: size too big");
 
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                  static_cast<GLsizei>(size.d_width),
                  static_cast<GLsizei>(size.d_height),
                  0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 
     d_dataSize = d_size = size;
     updateCachedScaleValues();
@@ -204,6 +225,10 @@ void OpenGLTexture::setTextureSize(const Size& sz)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::grabTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // bind the texture we want to grab
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     // allocate the buffer for storing the image data
@@ -211,6 +236,9 @@ void OpenGLTexture::grabTexture()
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
     // delete the texture
     glDeleteTextures(1, &d_ogltexture);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
@@ -220,11 +248,21 @@ void OpenGLTexture::restoreTexture()
     {
         generateOpenGLTexture();
 
+        // save old texture binding
+        GLuint old_tex;
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
+        // bind the texture to restore to
+        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+
         // reload the saved image data
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                      static_cast<GLsizei>(d_size.d_width),
                      static_cast<GLsizei>(d_size.d_height),
                      0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
+
+        // restore previous texture binding.
+        glBindTexture(GL_TEXTURE_2D, old_tex);
 
         // free the grabbuffer
         delete [] d_grabBuffer;
@@ -284,6 +322,10 @@ float OpenGLTexture::getSizeNextPOT(float sz) const
 //----------------------------------------------------------------------------//
 void OpenGLTexture::generateOpenGLTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     glGenTextures(1, &d_ogltexture);
 
     // set some parameters for this texture.
@@ -293,6 +335,9 @@ void OpenGLTexture::generateOpenGLTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//

@@ -103,6 +103,10 @@ void OpenGLFBOTextureTarget::deactivate()
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::clear()
 {
+    // save old clear colour
+    GLfloat old_col[4];
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, old_col);
+
     // switch to our FBO
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
     // Clear it.
@@ -110,6 +114,9 @@ void OpenGLFBOTextureTarget::clear()
     glClear(GL_COLOR_BUFFER_BIT);
     // switch back to rendering to view port
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+    // restore previous clear colour
+    glClearColor(old_col[0], old_col[1], old_col[2], old_col[3]);
 }
 
 //----------------------------------------------------------------------------//
@@ -121,6 +128,10 @@ Texture& OpenGLFBOTextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::initialiseRenderTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // create FBO
     glGenFramebuffersEXT(1, &d_frameBuffer);
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
@@ -144,11 +155,18 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::resizeRenderTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     const Size sz(d_area.getSize());
 
     // set the texture to the required size
@@ -161,6 +179,9 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//

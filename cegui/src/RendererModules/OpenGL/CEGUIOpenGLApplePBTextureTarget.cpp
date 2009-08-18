@@ -201,8 +201,15 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Size& sz)
     clear();
 
     // make d_texture use the pbuffer as it's data source
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     glBindTexture(GL_TEXTURE_2D, d_texture);
     err = CGLTexImagePBuffer(CGLGetCurrentContext(), d_pbuffer, GL_FRONT);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 
     if (err)
         throw RendererException("OpenGLApplePBTextureTarget::declareRenderSize "
@@ -216,11 +223,18 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Size& sz)
 //----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::initialiseTexture()
 {
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
     // create and setup texture which pbuffer content will be loaded to
     glGenTextures(1, &d_texture);
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
