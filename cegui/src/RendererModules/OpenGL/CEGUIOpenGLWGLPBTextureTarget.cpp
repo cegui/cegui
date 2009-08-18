@@ -99,11 +99,18 @@ OpenGLWGLPBTextureTarget::~OpenGLWGLPBTextureTarget()
 void OpenGLWGLPBTextureTarget::activate()
 {
     enablePBuffer();
-
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_SECONDARY_COLOR_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_FOG_COORDINATE_ARRAY);
+    glDisableClientState(GL_EDGE_FLAG_ARRAY);
 
     OpenGLRenderTarget::activate();
 }
@@ -132,10 +139,24 @@ bool OpenGLWGLPBTextureTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 void OpenGLWGLPBTextureTarget::clear()
 {
+    // save the old clear colour
+    GLfloat old_colour[4];
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, old_colour);
+    // save old scissor state
+    GLboolean old_scissor;
+    glGetBooleanv(GL_SCISSOR_TEST, &old_scissor);
+
     enablePBuffer();
+    glDisable(GL_SCISSOR_TEST);
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
     disablePBuffer();
+    
+    // restore old scissor state
+    if (GL_TRUE == old_scissor)
+        glEnable(GL_SCISSOR_TEST);
+    // restore the old clear colour
+    glClearColor(old_colour[0], old_colour[1], old_colour[2], old_colour[3]);
 }
 
 //----------------------------------------------------------------------------//
