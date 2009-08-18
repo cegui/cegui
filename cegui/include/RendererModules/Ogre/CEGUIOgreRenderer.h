@@ -81,10 +81,11 @@ public:
         This will create and initialise the following objects for you:
         - CEGUI::OgreRenderer
         - CEGUI::OgreResourceProvider
+        - CEGUI::OgreImageCodec
         - CEGUI::System
 
     \return
-        The CEGUI::OgreRenderer object that was created.
+        Reference to the CEGUI::OgreRenderer object that was created.
 
     \note
         For this to succeed you must have initialised Ogre to auto create the
@@ -104,15 +105,15 @@ public:
         This will create and initialise the following objects for you:
         - CEGUI::OgreRenderer
         - CEGUI::OgreResourceProvider
+        - CEGUI::OgreImageCodec
         - CEGUI::System
 
-    \return
-        The CEGUI::OgreRenderer object that was created.
+    \param target
+        Reference to the Ogre::RenderTarget object that the created OgreRenderer
+        will use as the default rendering root.
 
-    \note
-        For this to succeed you must have initialised Ogre to auto create the
-        rendering window.  If you have not done this, then you'll be wanting to
-        use the overload that takes an Ogre::RenderTarget as input.
+    \return
+        Reference to the CEGUI::OgreRenderer object that was created.
     */
     static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target);
 
@@ -123,6 +124,7 @@ public:
 
         This function will destroy the following objects for you:
         - CEGUI::System
+        - CEGUI::OgreImageCodec
         - CEGUI::OgreResourceProvider
         - CEGUI::OgreRenderer
 
