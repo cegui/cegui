@@ -84,7 +84,15 @@ OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRenderer& owner) :
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_ALWAYS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_SECONDARY_COLOR_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_FOG_COORDINATE_ARRAY);
+    glDisableClientState(GL_EDGE_FLAG_ARRAY);
+    glClearColor(0,0,0,0);
 
     disablePBuffer();
 }
@@ -129,8 +137,9 @@ bool OpenGLGLXPBTextureTarget::isImageryCache() const
 void OpenGLGLXPBTextureTarget::clear()
 {
     enablePBuffer();
-    glClearColor(0,0,0,0);
+    glDisable(GL_SCISSOR_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_SCISSOR_TEST);
     disablePBuffer();
 }
 
