@@ -65,6 +65,7 @@ class IrrlichtTexture;
 class IrrlichtGeometryBuffer;
 class IrrlichtResourceProvider;
 class IrrlichtEventPusher;
+class IrrlichtImageCodec;
 
 //! CEGUI::Renderer implementation for the Irrlicht engine.
 class IRR_GUIRENDERER_API IrrlichtRenderer : public Renderer
@@ -118,6 +119,13 @@ public:
 
     //! Destroy a IrrlichtResourceProvider object.
     static void destroyIrrlichtResourceProvider(IrrlichtResourceProvider& rp);
+
+    //! function to create a CEGUI::IrrlichtImageCodec object.
+    static IrrlichtImageCodec& createIrrlichtImageCodec(
+                                    irr::video::IVideoDriver& driver);
+
+    //! function to destroy a CEGUI::IrrlichtImageCodec object.
+    static void destroyIrrlichtImageCodec(IrrlichtImageCodec& ic);
 
     //! inject irrlicht event to CEGUI system
     bool injectEvent(const irr::SEvent& event);

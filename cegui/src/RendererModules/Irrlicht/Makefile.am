@@ -11,6 +11,7 @@ libCEGUIIrrlichtRenderer@cegui_bsfx@_la_CPPFLAGS = -DIRRLICHT_GUIRENDERER_EXPORT
 endif
 
 libCEGUIIrrlichtRenderer@cegui_bsfx@_la_SOURCES = CEGUIIrrlichtGeometryBuffer.cpp \
+                                      CEGUIIrrlichtImageCodec.cpp \
                                       CEGUIIrrlichtMemoryFile.cpp \
                                       CEGUIIrrlichtRenderer.cpp \
                                       CEGUIIrrlichtRenderTarget.cpp \

@@ -33,6 +33,7 @@
 #include "CEGUIIrrlichtResourceProvider.h"
 #include "CEGUIRenderingRoot.h"
 #include "CEGUIIrrlichtEventPusher.h"
+#include "CEGUIIrrlichtImageCodec.h"
 
 #include <irrlicht.h>
 #include <algorithm>
@@ -53,11 +54,8 @@ IrrlichtRenderer& IrrlichtRenderer::bootstrapSystem(irr::IrrlichtDevice& device)
     IrrlichtRenderer& renderer = IrrlichtRenderer::create(device);
     IrrlichtResourceProvider& rp =
         createIrrlichtResourceProvider(*device.getFileSystem());
-//    IrrlichtImageCodec& ic = createIrrlichtImageCodec();
-//    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
-    System::create(renderer, &rp,
-                   static_cast<XMLParser*>(0),
-                   static_cast<ImageCodec*>(0));
+    IrrlichtImageCodec& ic = createIrrlichtImageCodec(*device.getVideoDriver());
+    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
     return renderer;
 }
@@ -74,11 +72,11 @@ void IrrlichtRenderer::destroySystem()
         static_cast<IrrlichtRenderer*>(sys->getRenderer());
     IrrlichtResourceProvider* const rp =
         static_cast<IrrlichtResourceProvider*>(sys->getResourceProvider());
-//    IrrlichtImageCodec* const ic =
-//        &static_cast<IrrlichtImageCodec&>(sys->getImageCodec());
+    IrrlichtImageCodec* const ic =
+        &static_cast<IrrlichtImageCodec&>(sys->getImageCodec());
 
     System::destroy();
-//    destroyIrrlichtImageCodec(*ic);
+    destroyIrrlichtImageCodec(*ic);
     destroyIrrlichtResourceProvider(*rp);
     destroy(*renderer);
 }
@@ -107,6 +105,19 @@ void
 IrrlichtRenderer::destroyIrrlichtResourceProvider(IrrlichtResourceProvider& rp)
 {
     delete &rp;
+}
+
+//----------------------------------------------------------------------------//
+IrrlichtImageCodec& IrrlichtRenderer::createIrrlichtImageCodec(
+                                        irr::video::IVideoDriver& driver)
+{
+    return *new IrrlichtImageCodec(driver);
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::destroyIrrlichtImageCodec(IrrlichtImageCodec& ic)
+{
+    delete &ic;
 }
 
 //----------------------------------------------------------------------------//

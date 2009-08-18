@@ -1,6 +1,7 @@
 pkgincludedir=$(prefix)/include/CEGUI/RendererModules/Irrlicht
 pkginclude_HEADERS = CEGUIIrrlichtEventPusher.h \
                      CEGUIIrrlichtGeometryBuffer.h \
+                     CEGUIIrrlichtImageCodec.h \
                      CEGUIIrrlichtMemoryFile.h \
                      CEGUIIrrlichtRenderer.h \
                      CEGUIIrrlichtRendererDef.h \
