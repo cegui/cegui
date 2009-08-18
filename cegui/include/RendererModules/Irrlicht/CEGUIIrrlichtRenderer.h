@@ -79,6 +79,7 @@ public:
         This will create and initialise the following objects for you:
         - CEGUI::IrrlichtRenderer
         - CEGUI::IrrlichtResourceProvider
+        - CEGUI::IrrlichtImageCodec
         - CEGUI::System
 
     \param device
@@ -97,6 +98,7 @@ public:
 
         This function will destroy the following objects for you:
         - CEGUI::System
+        - CEGUI::IrrlichtImageCodec
         - CEGUI::IrrlichtResourceProvider
         - CEGUI::IrrlichtRenderer
 
