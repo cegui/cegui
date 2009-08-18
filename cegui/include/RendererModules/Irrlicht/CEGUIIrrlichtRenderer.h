@@ -70,6 +70,42 @@ class IrrlichtEventPusher;
 class IRR_GUIRENDERER_API IrrlichtRenderer : public Renderer
 {
 public:
+    /*!
+    \brief
+        Convenience function that creates all the Irrlicht specific objects and
+        then initialises the CEGUI system with them.
+
+        This will create and initialise the following objects for you:
+        - CEGUI::IrrlichtRenderer
+        - CEGUI::IrrlichtResourceProvider
+        - CEGUI::System
+
+    \param device
+        Reference to the irr::IrrlichtDevice to be used when creating the
+        CEGUI::IrrlichtRenderer object.
+
+    \return
+        A reference to the CEGUI::IrrlichtRenderer object that was created.
+    */
+    static IrrlichtRenderer& bootstrapSystem(irr::IrrlichtDevice& device);
+
+    /*!
+    \brief
+        Convenience function to cleanup the CEGUI system and related objects
+        that were created by calling the bootstrapSystem function.
+
+        This function will destroy the following objects for you:
+        - CEGUI::System
+        - CEGUI::IrrlichtResourceProvider
+        - CEGUI::IrrlichtRenderer
+
+    \note
+        If you did not initialise CEGUI by calling the bootstrapSystem function,
+        you should \e not call this, but rather delete any objects you created
+        manually.
+    */
+    static void destroySystem();
+
     //! Function to create and return IrrlichtRenderer objects
     static IrrlichtRenderer& create(irr::IrrlichtDevice& device);
 

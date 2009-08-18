@@ -76,12 +76,10 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     d_driver = d_device->getVideoDriver();
     d_smgr = d_device->getSceneManager();
 
-    // create main renderer object
-    d_renderer = &CEGUI::IrrlichtRenderer::create(*d_device);
+    // bootstrap the CEGUI system.
+    d_renderer = &CEGUI::IrrlichtRenderer::bootstrapSystem(*d_device);
 
-    // create the gui
-    CEGUI::System::create(*d_renderer);
-
+    // resource system initialisation
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
@@ -124,11 +122,8 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
 //----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 {
-    // free the gui system
-    CEGUI::System::destroy();
-
-    if (d_renderer)
-        CEGUI::IrrlichtRenderer::destroy(*d_renderer);
+    // free the gui system and related objects
+    CEGUI::IrrlichtRenderer::destroySystem();
 
     if (d_device)
         d_device->drop();

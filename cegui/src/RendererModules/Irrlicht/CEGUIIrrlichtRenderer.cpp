@@ -44,6 +44,46 @@ String IrrlichtRenderer::d_rendererID("CEGUI::IrrlichtRenderer "
 "- Official Irrlicht based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
+IrrlichtRenderer& IrrlichtRenderer::bootstrapSystem(irr::IrrlichtDevice& device)
+{
+    if (System::getSingletonPtr())
+        throw InvalidRequestException("IrrlichtRenderer::bootstrapSystem: "
+            "CEGUI::System object is already initialised.");
+
+    IrrlichtRenderer& renderer = IrrlichtRenderer::create(device);
+    IrrlichtResourceProvider& rp =
+        createIrrlichtResourceProvider(*device.getFileSystem());
+//    IrrlichtImageCodec& ic = createIrrlichtImageCodec();
+//    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
+    System::create(renderer, &rp,
+                   static_cast<XMLParser*>(0),
+                   static_cast<ImageCodec*>(0));
+
+    return renderer;
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::destroySystem()
+{
+    System* const sys = System::getSingletonPtr();
+    if (!sys)
+        throw InvalidRequestException("IrrlichtRenderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed.");
+
+    IrrlichtRenderer* const renderer =
+        static_cast<IrrlichtRenderer*>(sys->getRenderer());
+    IrrlichtResourceProvider* const rp =
+        static_cast<IrrlichtResourceProvider*>(sys->getResourceProvider());
+//    IrrlichtImageCodec* const ic =
+//        &static_cast<IrrlichtImageCodec&>(sys->getImageCodec());
+
+    System::destroy();
+//    destroyIrrlichtImageCodec(*ic);
+    destroyIrrlichtResourceProvider(*rp);
+    destroy(*renderer);
+}
+
+//----------------------------------------------------------------------------//
 IrrlichtRenderer& IrrlichtRenderer::create(irr::IrrlichtDevice& device)
 {
     return *new IrrlichtRenderer(device);
