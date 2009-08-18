@@ -547,6 +547,8 @@
 		DA10A0220F6DB84700B8A582 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DA10A0230F6DB84700B8A582 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DA10A02A0F6DB88500B8A582 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093BA0F6D594000B8A582 /* Sample_FirstWindow.cpp */; };
+		DA485B22103B3E390013D18E /* CEGUIIrrlichtImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */; };
+		DA485B24103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */; };
 		DA54492E0F739EC100983E1A /* CEGUITplWindowFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */; };
 		DA54492F0F739EC200983E1A /* CEGUITplWindowRendererFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */; };
 		DA5449300F739EC300983E1A /* CEGUITplWRFactoryRegisterer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */; };
@@ -2242,6 +2244,8 @@
 		DA109FFB0F6DB73200B8A582 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DA10A0180F6DB83200B8A582 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA10A01A0F6DB83200B8A582 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIIrrlichtImageCodec.h; path = ../../cegui/include/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.h; sourceTree = SOURCE_ROOT; };
+		DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIIrrlichtImageCodec.cpp; path = ../../cegui/src/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowFactory.h; path = ../../cegui/include/CEGUITplWindowFactory.h; sourceTree = SOURCE_ROOT; };
 		DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowRendererFactory.h; path = ../../cegui/include/CEGUITplWindowRendererFactory.h; sourceTree = SOURCE_ROOT; };
 		DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWRFactoryRegisterer.h; path = ../../cegui/include/CEGUITplWRFactoryRegisterer.h; sourceTree = SOURCE_ROOT; };
@@ -4152,6 +4156,7 @@
 			children = (
 				DA1096510F6D637300B8A582 /* CEGUIIrrlichtEventPusher.h */,
 				DA1096520F6D637300B8A582 /* CEGUIIrrlichtGeometryBuffer.h */,
+				DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */,
 				DA1096530F6D637300B8A582 /* CEGUIIrrlichtMemoryFile.h */,
 				DA1096540F6D637300B8A582 /* CEGUIIrrlichtRenderer.h */,
 				DA1096550F6D637300B8A582 /* CEGUIIrrlichtRendererDef.h */,
@@ -4168,6 +4173,7 @@
 			isa = PBXGroup;
 			children = (
 				DA1096490F6D635E00B8A582 /* CEGUIIrrlichtGeometryBuffer.cpp */,
+				DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */,
 				DA10964A0F6D635E00B8A582 /* CEGUIIrrlichtMemoryFile.cpp */,
 				DA10964B0F6D635E00B8A582 /* CEGUIIrrlichtRenderer.cpp */,
 				DA10964C0F6D635E00B8A582 /* CEGUIIrrlichtRenderTarget.cpp */,
@@ -4573,6 +4579,7 @@
 				DAAF38A00F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.h in Headers */,
 				DAAF38A20F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.h in Headers */,
 				DAAF38A40F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.h in Headers */,
+				DA485B22103B3E390013D18E /* CEGUIIrrlichtImageCodec.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6073,6 +6080,7 @@
 				DAAF389F0F6FAD9C00EEADDB /* CEGUIIrrlichtTexture.cpp in Sources */,
 				DAAF38A10F6FAD9C00EEADDB /* CEGUIIrrlichtTextureTarget.cpp in Sources */,
 				DAAF38A30F6FAD9C00EEADDB /* CEGUIIrrlichtWindowTarget.cpp in Sources */,
+				DA485B24103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
