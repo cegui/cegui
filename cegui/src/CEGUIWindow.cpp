@@ -937,8 +937,7 @@ bool Window::moveToFront_impl(bool wasClicked)
     }
 
     // bring parent window to front of it's siblings
-    took_action = wasClicked ? d_parent->doRiseOnClick() :
-                               d_parent->moveToFront_impl(false);
+    took_action = d_parent->moveToFront_impl(wasClicked);
 
     // get immediate child of parent that is currently active (if any)
     Window* const activeWnd = getActiveSibling();
@@ -1742,12 +1741,6 @@ bool Window::inheritsTooltipText(void) const
 void Window::setInheritsTooltipText(bool setting)
 {
     d_inheritsTipText = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::doRiseOnClick(void)
-{
-    return moveToFront_impl(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -2708,7 +2701,7 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     if (tip)
         tip->setTargetWindow(0);
 
-    if ((e.button == LeftButton) && doRiseOnClick())
+    if ((e.button == LeftButton) && moveToFront_impl(true))
         ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking

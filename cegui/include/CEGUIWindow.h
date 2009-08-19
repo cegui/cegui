@@ -3528,20 +3528,6 @@ protected:
 
     /*!
     \brief
-        Implementation of rise on click functionality.
-
-    \deprecated
-        This function is redundant and will be removed for the 0.7.0 release.
-        To achieve what this function was supposed to do - but never actually
-        did - call Window::moveToFront_impl passing true as the parameter.
-
-    \return
-        true if we did something, false if there was nothing to do.
-    */
-    bool doRiseOnClick(void);
-
-    /*!
-    \brief
         Implementation method to modify window area while correctly applying
         min / max size processing, and firing any appropriate events.
 
