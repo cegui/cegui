@@ -150,7 +150,8 @@ size_t Tree::getSelectedCount(void) const
 *************************************************************************/
 TreeItem* Tree::getFirstSelectedItem(void) const
 {
-    return getNextSelectedItemFromList(d_listItems, 0, true);
+    bool found_first = true;
+    return getNextSelectedItemFromList(d_listItems, 0, found_first);
 }
 
 /*************************************************************************
@@ -158,14 +159,14 @@ TreeItem* Tree::getFirstSelectedItem(void) const
 *************************************************************************/
 TreeItem* Tree::getNextSelected(const TreeItem* start_item) const
 {
-    if (start_item == 0)
-        return getNextSelectedItemFromList(d_listItems, 0, true);
-    else
-        return getNextSelectedItemFromList(d_listItems, start_item, false);
+    bool found_first = (start_item == 0);
+    return getNextSelectedItemFromList(d_listItems, start_item, found_first);
 }
 
 // Recursive!
-TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList, const TreeItem* startItem, bool foundStartItem) const
+TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList,
+                                            const TreeItem* startItem,
+                                            bool& foundStartItem) const
 {
     size_t itemCount = itemList.size();
     

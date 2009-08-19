@@ -176,7 +176,7 @@ public:
     
     TreeItem* getNextSelectedItemFromList(const LBItemList &itemList,
                                           const TreeItem* start_item,
-                                          bool foundStartItem) const;
+                                          bool& foundStartItem) const;
 
     /*!
      \brief
