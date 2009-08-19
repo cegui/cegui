@@ -272,7 +272,6 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
 
     if (d_iconImage != 0)
     {
-        // Size iconSize = d_iconImage->getSize();
         Rect finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
@@ -290,7 +289,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     if (!font)
         return;
 
-    Vector2 draw_pos(targetRect.getPosition());
+    Vector2 draw_pos(finalRect.getPosition());
     draw_pos.d_y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
 
     if (!d_renderedStringValid)
