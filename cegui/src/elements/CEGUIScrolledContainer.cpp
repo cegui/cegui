@@ -194,6 +194,9 @@ void ScrolledContainer::onChildAdded(WindowEventArgs& e)
         e.window->subscribeEvent(Window::EventMoved,
             Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
 
+    // force window to update what it thinks it's screen / pixel areas are.
+    e.window->notifyScreenAreaChanged(false);
+
     // perform notification.
     WindowEventArgs args(this);
     onContentChanged(args);
