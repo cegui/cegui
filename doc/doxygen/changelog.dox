@@ -5,7 +5,133 @@ The following is a high-level view of changes made to Crazy Eddie's GUI System f
 
 
 <b>Release 0.7.0</b>
-- TODO!
+- Complete rendering subsystem / renderer module rewrite:
+    - Window system now caching at the geometry level, eliminating vast amounts of redraw calculations.
+    - Support for caching imagery to texture, eliminating large amounts of redraw work.
+    - Support for targeting Window sub-heirarchies to separate rendering surfaces (still many user-friendliness work and other fixes to do here).
+    - Support for a RenderEffect system allowing custom geometric and shader based effects for Window objects.
+    - Support for three axis rotation of texture backed Windows and other GeometryBuffer content.
+    - Additional notes:
+        - Removes: Support for D3D 8.1 based renderer.
+        - Removes: Support for compiling against Irrlicht versions below 1.4.
+        - DirectFB support currently broken.
+
+- Added new string rendering enhancements, current version provides:
+    - Extensible RenderedStringParser system.
+    - Base support for parsing formatting tags in strings:
+        - Support for [font] tag to enable multiple fonts per text string.
+        - Support for [colour] tag to enable multiple colours per text string.
+        - Support for [image] tag to enable embedding of images in strings.
+        - Support for [window] tag to enable aligning child window/widget content in-line with other string rendering.
+- Added: Added 'sticky' mode to DragContainer.  See: http://www.cegui.org.uk/mantis/view.php?id=129
+- Added: Common optional Falagard based NamedArea of 'inner_rect' that is looked up and used for the inner/client area of a window (unless other specific named areas are used by a specialised WindowRenderer).  Final addition for: http://www.cegui.org.uk/mantis/view.php?id=260.
+- Added: Option for the caret used with Editbox and MultiLineEditbox to blink with an adjustable timeout / blink period.  Implemented for: http://www.cegui.org.uk/mantis/view.php?id=227
+- Added: possibility for time based update of a WindowRenderer (allows WR based animation / automation).
+- Added: option to disable building the CEGUI::DefaultLogger object.  NB: In this case a suitable alternative must be provided and instantiated prior to creating the main CEGUI::System object.  See: http://www.cegui.org.uk/mantis/view.php?id=243
+- Added: Option to disable the use of the freetype2 external library.  See: http://www.cegui.org.uk/mantis/view.php?id=240
+- Added: Option to configure CEGUI so that it does not require the PCRE dependency (disabling this will cause attempts to set the validation string - such as what the spinner does in it's constructor - to throw InvalidRequestException).  See: http://www.cegui.org.uk/mantis/view.php?id=241
+- Added: Option to autotools build to enable some configuration of the version suffix that's now appended on those builds.
+- Added: Option to autotools build to specify a general suffix that's added to the name of binary output for autotools builds.  This enables the installation of multiple versions based upon different configuration and build options (similar to what we have with MSVC++ and the _d suffix for debug builds).  See: http://www.cegui.org.uk/mantis/view.php?id=274
+- Added: Facility for resource system to load all resources matching a given pattern from a specified resource group (on a per resource type basis).  For: http://www.cegui.org.uk/mantis/view.php?id=190
+- Added: Add property to XercesParser to access the default schema resource group (allows setting of this without needing to explicitly link to XercesParser module lib).
+- Added: Event notification via WindowManager for Window object creation and destruction.
+- Added: Added bi-directional text support contributed by Assaf Raman.  See: http://www.cegui.org.uk/mantis/view.php?id=268.  NB: Not supported by MultiLineEditbox (yet).
+- Added: Implementation of an ImageCodec that goes via the Ogre image loading facilities.  NB: This is provided as an 'integrated' class as opposed to a loadable module since it's a more consistent approach for an engine specific entity such as this.
+- Added: Implementation of an ImageCodec that goes via the Irrlicht image loading facilities.  NB: This is provided as an 'integrated' class as opposed to a loadable module since it's a more consistent approach for an engine specific entity such as this.
+- Added: Support for adding WindowRendererFactory objects via a template function to allow CEGUI to create and manage the factory instances (rather than having to have them pre-created).
+- Added: Dialog based implementation of a renderer selector for the Mac.
+- Added: MSVC++ 2008 batch files for project generation, cause the premake support seems to work.
+- Added: Event notifications for main resource actions (create, destroy, replace).
+- Added: Doxygen based supporting documentation and tutorials.
+- Added: Doxygen based version of Falagard skinning documentation (which will now become the only maintained version of that material).
+- Added: Template based system for WindowFactory creation:
+    - Removes the need to manually create supporting structure when adding new Window types.
+    - Dispenses with the need to use the macro nastiness previously employed.
+    - No longer need to have statically created factories laying around.
+- Added: Apply patch: http://www.cegui.org.uk/mantis/view.php?id=275 that adds some extra support for TreeItem to the lua module.
+
+- Removed: deprecated Window::doRiseOnClick function.
+- Removed: Formatting related functions from Font.
+- Removed: Duplicate text formatting enumerations - now using a single version (the HorizontalTextFormatting and VerticalTextFormatting enums in the CEGUIFalEnums.h file)
+- Removed: Apple specific version of resource setup in samples (no longer required due to other improvements).
+
+- Modified: CEGUI::Exception to derive from std::exception (for: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=5&t=4267 and others from waaay back).
+- Modified: Made CEGUI::LuaScriptModule constructor / destructor private - access is now via LuaScriptModule::create and LuaScriptModule::destroy static functions.
+- Modified: Made CEGUI::System constructor / destructor private - access is now via System::create and System::destroy static functions.  Additionally, first parameter changed from being a Renderer pointer to a Renderer reference (reinforces that it may not be 0).
+- Modified: Switched to a single unified constructor for LuaScriptModule.
+- Modified: Change names of renderer modules and libs produced under premake/MSVC++ to match those produced by other methods (i.e. CEGUIOpenGLRenderer instead of OpenGLGUIRenderer)
+- Modified: Change access protection on CEGUI::Tree::getItemAtPoint from protected to public.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15576#15576
+- Modified: Switch from libtool ABI versioning to release versioning.  This is related to this: http://www.cegui.org.uk/mantis/view.php?id=197 in reagrd to our continual breaking changes, but also solves issues of plugin/loadable module version conflicts, and effectively allows side-by-side installations of multiple versions of the binary.
+- Modified: Prevent copy and assignment for Singleton based objects (the compiler error helps people spot common usgae mistakes).  See: http://www.cegui.org.uk/mantis/view.php?id=203
+- Modified: Changed the system default 'single-click' timeout from 0.2 to 0 (infinite).  See: http://www.cegui.org.uk/mantis/view.php?id=209
+- Modified: Changed default state of inherited tooltip text from false to true.  See: http://www.cegui.org.uk/mantis/view.php?id=204
+- Modified: Replaced the old config file support with something more comprehensive and useful. See: http://www.cegui.org.uk/mantis/view.php?id=189
+- Modified: Disable optimisation in the ReleaseWithSymbols config. See: http://www.cegui.org.uk/mantis/view.php?id=293
+- Modified: Made ListboxItem::setText virtual.
+- Modified: FreeTypeFont to output more detailed error info when creating a font face fails.
+- Modified: XMLParser now becomes a PropertySet.
+- Modified: Relax requirement that the target of a window alias exists before creating the alias.
+- Modified: Relax requirement to have imageset / font names specified in schemes along with the names of files.
+- Modified: Simplify and (largely) unify resource group initialisation for sample base apps.
+- Modified: Added build and system information to the logged version string.
+- Modified: Window::isHit (and some other related funcs) has an added boolean to allow disabled windows to be correctly hit-tested when needed.
+- Modified: Changed the way that a 'Window Renderer Set' loadable module is composed.  Moving away from using a macro based approach to a class based approach.  This makes creation of these modules much easier and cleaner; it's also more transparent, since everyone understands classes, whereas probably nobody knew what was going on behind those macros!
+- Modified: Update the Falagard window renderer set to use the new class based specification system.
+- Modified: Completely replaced old Xcode project with a new one.
+- Modified: Rewrote Mac bundle loading to look in 'PlugIns' locations instead of 'Resources' locations.
+- Modified: Change Sample base application so that on that Mac it successfully fetches the path of the datafiles directory within the app bundles Resources (now we don't have to rely on working directory being unmodified).
+- Modified: Core resource loading (Scheme, Font, Imageset) to support differing actions based upon loading a resource with a name that already exists in the system.
+- Modified: Regular expression library use abstracted via CEGUI::RegexMatcher (available internally only at the moment!)
+- Modified: PCRE usage now via a PCRE based implementation of CEGUI::RegexMatcher.
+- Modified: Internal Window class changes to (try to) overcome confusing usage of all those d_screen* rect members and a bunch of getters with unclear names:
+    - getUnclippedPixelRect is renamed to getUnclippedOuterRect
+    - getUnclippedInnerRect is unchanged.
+    - getPixelRect is renamed to getOuterRectClipper and is intended only for the use of rendering calculations.
+    - getInnerRect is renamed to getInnerRectClipper and is (again) intended only for the use of rendering calculations.
+    - Added a getUnclippedRect function that can return either inner or outer area dependant upon the value passed.
+    - Added a getClipRect function that can return either inner or outer area dependant upon the values passed.
+    - Added a new area specifically for hit testing and such, fetched with getHitTestRect.  NB: This was added since the other area rects are not reliable for hit testing due to the fact things may or may not being clipped when rendered to a texture target.
+- Modified: Input injection and Event changes:
+    - CEGUI::System no longer propogates input events (those that are injected) recursively.  CEGUI::Window will however do this for key events by default.
+    - CEGUI::Window marks all mouse input events as handled by default.
+    - CEGUI::GUISheet (DefaultWindow) overrides the CEGUI::Window mouse handling to not mark events handled if the GUISheet is a root window with mouse passthrough enabled.
+    - EventArgs::handled member has changed type from bool to uint.
+- Modified: Complete restructuring of the source tree (for cleanup and improved consistency reasons, amongst other things).
+- Modified: FontDemo changes:
+    - Added Vietnamese example text.
+    - Added Japanese and Korean text + fonts
+    - Select a default valid font when selecting a different language
+    - Changed font in language list, because one was invisible (missing glyphs)
+- Modified: Warn user during samples premake, when both DX9 and DX10 are defined for static builds.
+
+- Bug Fix: issue with Tree::getNextSelectedItemFromList not processing branches correctly.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4239
+- Bug Fix: fixed up the relative paths used in local header include statements for public headers.
+- Bug Fix: static build issues with image codec choice.
+- Bug Fix: Ensure to initialise all LuaScriptModule fields in the constructor.
+- Bug Fix: Improve cleanup of script module in Demo8 to make it safe!
+- Bug Fix: permit mouse enters / mouse leaves type events for disabled windows.  Fixes: http://www.cegui.org.uk/mantis/view.php?id=292.
+- Bug Fix: Made implementation data in FalagardEditbox protected.
+- Bug Fix: Issue where use of lua 5.1 with the binding generator explicitly required lua to have been built with LUA_COMPAT_VARARG defined.  This fixes the issue, but removes compatibility with the old lua 5.0 version.  See: http://www.cegui.org.uk/mantis/view.php?id=211
+- Bug Fix: Isse where some Font accessor functions were non-const.  See: http://www.cegui.org.uk/mantis/view.php?id=199.
+- Bug Fix: resolve warnings about discarded return type qualifiers.
+- Bug Fix: resolved issue where spinner would use scientific notation, and also suffer various other precision related anomolies (now using modified function from stringencoders lib).  See: http://www.cegui.org.uk/mantis/view.php?id=123.
+- Bug Fix: Resolve a load of warnings and C++ standards compliancy issues.
+- Bug Fix: Correct a whole load of EOL issues.
+- Bug Fix: Issue where lua error function default state was not initialised in constructor taking an existing lua state.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=4023
+- Bug Fix: Issue where ToggleButton WindowRenderer was not correctly using defaults for missing states.  See: http://www.cegui.org.uk/mantis/view.php?id=291
+- Bug Fix: Resolve bug where menu system could be put into an inconsistent state causing segfaults and the like.  (http://www.cegui.org.uk/mantis/view.php?id=282).
+- Bug Fix: Resolve missing properties and functionality in Vanilla looknfeel.  (http://www.cegui.org.uk/mantis/view.php?id=281).
+- Bug Fix: PopupMenu was not resizing correctly in response to parent size changes; fix implemented in ItemListBase so should catch other similar issues too.  (http://www.cegui.org.uk/mantis/view.php?id=266).
+- Bug Fix: Changes to compile as cleanly as possible with "-Wall -Wextra -ansi -pedantic" options.  Basically inspired by: http://www.cegui.org.uk/mantis/view.php?id=257.
+- Bug Fix: Apply (most of) patch: http://www.cegui.org.uk/mantis/view.php?id=271 for FreeBSD support.
+- Bug Fix: Resolve robustness issue where DefaultResourceProvider would produce incorrect file names unless group directories were specified with a trailing path separator. (http://www.cegui.org.uk/mantis/view.php?id=270).
+- Bug Fix: Resolve issue where Xerces-C++ based XML parser was not processing property values from text nodes when compiled against Xerces-c++ >=3. (http://www.cegui.org.uk/mantis/view.php?id=269).
+- Bug Fix: Tweak parsing of unified property values to allow free use of whitespace between the various parts, thus making it a bit more robust and readable.  (http://www.cegui.org.uk/mantis/view.php?id=265).
+- Bug Fix: Resolve stack overflow issue when tooltip appears directly under the mouse (http://www.cegui.org.uk/mantis/view.php?id=264).
+- Bug Fix: Resolve issue where System would try to invoke member functions on a null tooltip.  (http://www.cegui.org.uk/mantis/view.php?id=263)
+- Bug Fix: Resolve issue caused by the removal of the ILvoid typedef from newer DevIL releases.  (http://www.cegui.org.uk/mantis/view.php?id=259)
+- Bug Fix: Issue with CEGUI::LuaFunctor usage where lua function references were getting released by accident.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3727
+- Bug Fix: Added a couple of missing member initialisers.  NB: This was almost always totally harmless, honest :-p
 
 
 <b>Release 0.6.2</b>
