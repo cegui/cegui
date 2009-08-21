@@ -30,7 +30,7 @@ The documentation for CEGUI is split into the following sections:
     - @subpage devel
 
 - Beginners Tutorials
-    - @subpage ce_guide_1
+    - @subpage rendering_tutorial
     - @subpage rp_setup
     - @subpage ce_guide_2
     - @subpage ce_guide_3
