@@ -18,34 +18,34 @@ directory for this part of the system).
 @section main_sec_1 Documentation Sections
 The documentation for CEGUI is split into the following sections:
 - General Information
-    - @subpage licensing
-    - @subpage authors
-    - @subpage change_log
+    - @ref licensing
+    - @ref authors
+    - @ref change_log
 
 - Code related topics
-    - @subpage downloading
-    - @subpage compiling
-    - @subpage arch_overview
-    - @subpage code_standards
-    - @subpage devel
+    - @ref downloading
+    - @ref compiling
+    - @ref arch_overview
+    - @ref code_standards
+    - @ref devel
 
 - Beginners Tutorials
-    - @subpage rendering_tutorial
-    - @subpage rp_setup
-    - @subpage ce_guide_2
-    - @subpage ce_guide_3
-    - @subpage ce_guide_4
+    - @ref rendering_tutorial
+    - @ref rp_setup
+    - @ref ce_guide_2
+    - @ref ce_guide_3
+    - @ref ce_guide_4
 
 - Porting Guides
-    - @subpage porting6to7
+    - @ref porting6to7
 
 - Additional reference material
-    - @subpage xml_imageset
-    - @subpage xml_font
-    - @subpage xml_scheme
-    - @subpage xml_layout
-    - @subpage xml_config
-    - @subpage fal_man
+    - @ref xml_imageset
+    - @ref xml_font
+    - @ref xml_scheme
+    - @ref xml_layout
+    - @ref xml_config
+    - @ref fal_man
 
 Have Fun!
 */
