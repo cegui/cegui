@@ -34,7 +34,7 @@ The documentation for CEGUI is split into the following sections:
     - @ref rp_setup
     - @ref datafile_tutorial
     - @ref window_tutorial
-    - @ref ce_guide_4
+    - @ref input_tutorial
 
 - Porting Guides
     - @ref porting6to7
