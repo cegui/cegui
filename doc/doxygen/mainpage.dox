@@ -32,7 +32,7 @@ The documentation for CEGUI is split into the following sections:
 - Beginners Tutorials
     - @ref rendering_tutorial
     - @ref rp_setup
-    - @ref ce_guide_2
+    - @ref datafile_tutorial
     - @ref ce_guide_3
     - @ref ce_guide_4
 
