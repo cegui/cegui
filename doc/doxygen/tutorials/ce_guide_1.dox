@@ -13,7 +13,7 @@ there are basically three steps that need to be performed:
 Obviously you also need to load some data and perform other basic initialisation,
 which is covered in @ref rp_setup and @ref datafile_tutorial.  You'll also need
 to get your inputs into the system so that you can interact with the GUI
-elements, this is covered in @ref ce_guide_4.
+elements, this is covered in @ref input_tutorial.
 
 For Ogre3D and Irrlicht users, there are helper 'bootstrap' functions to create
 the renderer, system and other related objects in one go.  These functions exist
