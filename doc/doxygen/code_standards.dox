@@ -9,29 +9,17 @@ Here we describe the requirements relating to files; their naming, layout and ar
 
 @subsection code_standards_sec_1_1 Naming and Directory Layout
 This section contains some general guidelines on naming and arranging files.
-<ul>
-    <li>The source code in general exists in two groups; the library code itself, and code for the sample applications:
-
-    <ul>
-        <li>The library code, beneath the @b cegui directory, is contained within dual directory trees - one beneath the @b src directory to contain all the implementation .cpp files, and one beneath the @b include directory to contain all the header .h files.  Within these directories, there should be a seperate subdirectory for each group of modules or subcomponents within the system.  For example there are subdirectories for @b RendererModules and @b XMLParserModules to hold the renderer module code and XML parser module code respectively; these directories then have further subdirectories for each individual module.
-
-        <li>The sample code, beneath the @b samples directory, has individual directories for each sample application.  The implementation and header files for the sample should both appear together in this directory; there should be no separate @b src and @b include subdirectories for the samples.
-    </ul>
-
-    <li>File names should not contain spaces, although the use of the underscore is acceptable where neccessary.
-
-    <li>File names should begin with the CEGUI prefix and then have the initial letter of all other words captialised.
-
-    <li>Files should generally be named after the class or module to which they relate.  For example, the file @b CEGUIMyClass.h would be the main header for the class named @b MyClass.
-
-    <li>Source files within CEGUI should use the following convention:
-    <ul>
-        <li>C++ header files should have the @b .h file extension.
-        <li>C++ source files should have the @b .cpp file extension.
-        <li>Lua source files should have the @b .lua file extension.
-        <li>Extra Doxygen documentation files should have the @b .dox file extentsion.
-    </ul>
-</ul>
+- The source code in general exists in two groups; the library code itself, and code for the sample applications:
+    - The library code, beneath the @b cegui directory, is contained within dual directory trees - one beneath the @b src directory to contain all the implementation .cpp files, and one beneath the @b include directory to contain all the header .h files.  Within these directories, there should be a seperate subdirectory for each group of modules or subcomponents within the system.  For example there are subdirectories for @b RendererModules and @b XMLParserModules to hold the renderer module code and XML parser module code respectively; these directories then have further subdirectories for each individual module.
+    - The sample code, beneath the @b samples directory, has individual directories for each sample application.  The implementation and header files for the sample should both appear together in this directory; there should be no separate @b src and @b include subdirectories for the samples.
+- File names should not contain spaces, although the use of the underscore is acceptable where neccessary.
+- File names should begin with the CEGUI prefix and then have the initial letter of all other words captialised.
+- Files should generally be named after the class or module to which they relate.  For example, the file @b CEGUIMyClass.h would be the main header for the class named @b MyClass.
+- Source files within CEGUI should use the following convention:
+    - C++ header files should have the @b .h file extension.
+    - C++ source files should have the @b .cpp file extension.
+    - Lua source files should have the @b .lua file extension.
+    - Extra Doxygen documentation files should have the @b .dox file extentsion.
 
 @subsection code_standards_sec_1_2 General Structure and Layout
 - All source files are required to have the basic file header that can bee seen in existing files.  The information in the header is the filename, the date the file was created, the name and email address of the person who created the file, and the standard copyright/license notice as follows:
@@ -42,7 +30,7 @@ This section contains some general guidelines on naming and arranging files.
     Author:   <name and email of the original file author>
 *******************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -69,7 +57,7 @@ This section contains some general guidelines on naming and arranging files.
 
 - Please ensure that all files have a newline at the end of them.  Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to includes.  Plus it gives loads of annoying warnings on gcc :)
 
-- Wherever possible preprocessor macros should @e not be used.  Always prefer the use of an actual language construct (such as typedef or enum) over a preprocessor @c \#define.
+- Wherever possible preprocessor macros should <em>not be used</em>.  Always prefer the use of an actual language construct (such as typedef or enum) over a preprocessor @c \#define.
 
 - Wherever possible header files should contain Doxygen documentation for all classes, data and functions.  There will be <em>very few</em>, if any, exceptions to this rule.
 
@@ -80,27 +68,23 @@ This section contains some general guidelines on naming and arranging files.
 
 - Implementation code belongs in the implementation .cpp files, not in the header files.  There are very few cases, such as for template implementation, where c++ code should appear in header files.
 
-The general content of a header file should be in the following order:
-<ul>
-    <li>File header.
-    <li>Include guard.
-    <li>#include statements (grouped according to library where appropriate).
-    <li>Preprocessor macro defines (especially try to avoid these in headers).
-    <li>Class forward references.
-    <li>Global declarations.
-    <li>Class declarations.
-    <li>Code implementaions - for example, for templatised functions.
-</ul>
+- The general content of a header file should be in the following order:
+    - File header.
+    - Include guard.
+    - #include statements (grouped according to library where appropriate).
+    - Preprocessor macro defines (especially try to avoid these in headers).
+    - Class forward references.
+    - Global declarations.
+    - Class declarations.
+    - Code implementaions - for example, for templatised functions.
 
-The general content of a source file should be in the following order:
-<ul>
-    <li>File header.
-    <li>#include statements (grouped according to library where appropriate).
-    <li>Preprocessor macro defines (avoid where possible).
-    <li>Global definitions.
-    <li>Class static data definitions.
-    <li>Class member function definitions.
-</ul>
+- The general content of a source file should be in the following order:
+    - File header.
+    - #include statements (grouped according to library where appropriate).
+    - Preprocessor macro defines (avoid where possible).
+    - Global definitions.
+    - Class static data definitions.
+    - Class member function definitions.
 
 @section code_standards_sec_2 Code Style and Layout
 The following details the general code style and layout that must be used.
@@ -183,23 +167,7 @@ namespace SomeNamespace
         SomeClass();
 @endcode
 
-- Switch case statements should be indented, as should the case code.  Braces should appear in line with the case to which they pertain, such as in:
-@code
-switch (somevar)
-{
-    case 1:
-        x = x + 1;
-        break;
-
-    case 2:
-    {
-        int y = 2;
-        x = x + y;
-        break;
-    }
-}
-@endcode
-It should not contain anything like you see here:
+- Switch case statements should not be indented, though the case code should.  Any required braces should appear in line with the case to which they pertain, such as in:
 @code
 switch (somevar)
 {
@@ -208,11 +176,27 @@ case 1:
     break;
 
 case 2:
-    {
-        int y = 2;
-        x = x + y;
+{
+    int y = 2;
+    x = x + y;
+    break;
+}
+}
+@endcode
+It should not contain anything like you see here:
+@code
+switch (somevar)
+{
+    case 1:
+        x = x + 1;
         break;
-    }
+
+    case 2:
+        {
+            int y = 2;
+            x = x + y;
+            break;
+        }
 }
 @endcode
 
