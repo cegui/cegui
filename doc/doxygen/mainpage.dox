@@ -31,7 +31,7 @@ The documentation for CEGUI is split into the following sections:
 
 - Beginners Tutorials
     - @ref rendering_tutorial
-    - @ref rp_setup
+    - @ref resprov_tutorial
     - @ref datafile_tutorial
     - @ref window_tutorial
     - @ref input_tutorial
