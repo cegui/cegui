@@ -6,7 +6,7 @@ namespace CEGUI {
 The purpose of this tutorial is to show you how to create a simple window and
 get it on screen.  Before continuing here, it is very important that you have
 already read and fully understood the articles @ref rendering_tutorial,
-@ref rp_setup and @ref datafile_tutorial because this tutorial builds upon the
+@ref resprov_tutorial and @ref datafile_tutorial because this tutorial builds upon the
 basic ideas introduced in those previous tutorials.
 
 <br>

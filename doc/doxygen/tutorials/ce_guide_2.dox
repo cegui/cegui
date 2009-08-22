@@ -7,7 +7,7 @@ It is assumed that prior to reading this tutorial you are already familiar with
 the concepts surrounding CEGUI's ResourceProvider and have correctly initialised
 your Renderer and the CEGUI System objects.  If you've not yet covered these
 topics, it is highly recommended that you read @ref rendering_tutorial and
-@ref rp_setup.
+@ref resprov_tutorial.
 
 <br>
 @section datafile_tutorial_intro Introduction
@@ -50,7 +50,7 @@ based XML parser, these .xsd files must be available to the ResourceProvider
 system; this is probably best achieved by setting up a resource group to the
 directory containing the schema files and setting that group as the default to
 be used by CEGUI::XercesParser when loading schema files (the specifics on how
-to do this are covered in @ref rp_setup).
+to do this are covered in @ref resprov_tutorial).
 
 <br>
 @section datafile_tutorial_files The Data Files
@@ -167,7 +167,7 @@ CEGUI::FontManager::getSingleton().create( "Commonwealth-10.font" );
 
 In the above code (and in the CEGUI samples) it is assumed that the resource
 group locations and the default groups have all been set up as described in
-@ref rp_setup.
+@ref resprov_tutorial.
 
 <br>
 @section datafile_tutorial_setup_defaults System Defaults Initialisation
