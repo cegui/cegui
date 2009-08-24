@@ -5,86 +5,53 @@ The following is a list of primary authors and contributors for Crazy Eddie's GU
 @section authors_sec_1 Current CEGUI Core Team Members
 - Paul D Turner (crayzed / CrazyEddie / ice-drezday)
 - Patrick Kooman (scriptkid)
-- Stephane (rackle)
-
 
 @section authors_sec_3 Current CEGUI Tools Team Members
-- Frederico Jeronimo (fjeronimo)
-
+- Patrick Kooman (scriptkid)
+- Paul D Turner (crayzed / CrazyEddie / ice-drezday)
 
 @section authors_sec_2 Retired or Semi-retired CEGUI Team Members
+- Frederico Jeronimo (fjeronimo)
+- Stephane (rackle)
 - Tomas Lindquist Olsen (lindquist)
 - Olivier Delannoy (Dalfy)
 - Paul Schifferer (Exsortis)
 - James O'Sullivan (_mental_)
 
-
+<br>
 @section authors_sec_4 Main Contributors
 The following have made large, important, or on-going contributions to the system (these people may have made additional contributions than those specifically mentioned):
+- 'Blakharaz':
+    - Initial XmlHandlerHelper class and general cleanup of original XML parsing code.
+- Jeff Leigh:
+    - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
+- Jose A Milan:
+    - Refactoring of XML handling classes to remove public dependency on Xerces-C++
+    - Initial updates to Ogre renderer to support Ogre 1.0.
+- Keith Mok:
+    - Original version of the DirectFB renderer module and supporting sample base application.
+- Magnus Osterlind:
+    - Original version of the Direct3D 9 GUI renderer module.
+- Assaf Raman:
+    - Support for bi-directional text.
+- Lars Rinde:
+    - Original TaharezLook graphics design.
+- Steve Streeting:
+    - TabControl widget base classes & related 'TaharezLook' classes.
+- Mark Strom:
+    - Original version of the OpenGL GUI renderer module.
+- Thomas Suter:
+    - Original version of the Irrlicht engine GUI renderer module.
+- Jonathan Welch:
+    - Static build support.
+    - Tree widget (based on original code by David Durant)
+    - Tree Demo.
+- Andrew Zabolotny:
+    - Font class rewrite.
 
-<ul>
-    <li>Lars Rinde:
-    <ul>
-        <li>Original TaharezLook graphics design.
-    </ul>
-
-    <li>'Blakharaz':
-    <ul>
-        <li>Initial XmlHandlerHelper class and general cleanup of original XML parsing code.
-    </ul>
-
-    <li>Jeff Leigh:
-    <ul>
-        <li>Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
-    </ul>
-
-    <li>Jose A Milan:
-    <ul>
-        <li>Refactoring of XML handling classes to remove public dependency on Xerces-C++
-        <li>Initial updates to Ogre renderer to support Ogre 1.0.
-    </ul>
-
-    <li>Keith Mok:
-    <ul>
-        <li>DirectFB renderer module and supporting sample base application.
-    </ul>
-
-    <li>Magnus Osterlind:
-    <ul>
-        <li>Original version of the Direct3D 9 GUI renderer module.
-    </ul>
-
-    <li>Steve Streeting:
-    <ul>
-        <li>TabControl widget base classes & related 'TaharezLook' classes.
-    </ul>
-
-    <li>Mark Strom:
-    <ul>
-        <li>Original version of the OpenGL GUI renderer module.
-    </ul>
-
-    <li>Thomas Suter:
-    <ul>
-        <li>Original version of the Irrlicht engine GUI renderer module.
-    </ul>
-
-    <li>Andrew Zabolotny:
-    <ul>
-        <li>Font class rewrite.
-    </ul>
-
-    <li>Jonathan Welch:
-    <ul>
-        <li>Static build support.
-        <li>Tree widget (based on code by David Durant)
-        <li>Tree Demo.
-    </ul>
-</ul>
-
+<br>
 @section authors_sec_5 Other Contributors
 The following have contributed patches, bug reports, and other such valuable things...
-
 - Tupone Alfredo
 - Geoff Carlton
 - Clay Culver
@@ -108,9 +75,9 @@ The following have contributed patches, bug reports, and other such valuable thi
 - Te'ja
 - Xavier
 
-
+<br>
 @section authors_sec_6 Special Thanks
-- Shawn Carroll   - For his tutorial series.
+- Shawn Carroll   - For his tutorial series (no longer available, though!).
 - Chris McGuirk   - For his C#.Net port.
 - Shane Parker    - For giving permission to use his "Vanilla GUI" imagery.
 
@@ -120,7 +87,7 @@ and gave constructive criticism.
 Everyone on the Ogre forums who encouraged the development of this Mk-2 version
 of the system.
 
-
+<br>
 @section authors_sec_7 Have We Missed You?
 If you feel that we have missed you from some section of this list, then please contact us (team@cegui.org.uk) and let us know who you are and what you did, and we'll correct the mistake as soon as possible.
 
