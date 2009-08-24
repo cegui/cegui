@@ -82,7 +82,7 @@ The reference for each element is arranged into sections, as described below:
 - Examples:
 
 <br>
-@section xml_font_font \<Mapping\> Element
+@section xml_font_mapping \<Mapping\> Element
 - Purpose:
     - The \<Mapping\> element is used only with Pixmap type fonts and defines a
       mapping between a UTF32 codepoint value and an Image defined on the
