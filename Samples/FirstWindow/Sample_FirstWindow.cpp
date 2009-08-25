@@ -49,22 +49,14 @@ bool FirstWindowSample::initialiseSample()
     // CEGUI relies on various systems being set-up, so this is what we do
     // here first.
     //
-    // Note that is is possible, and even usual, for most of these steps to
-    // be done automatically via a "scheme" definition, or even from the
-    // cegui.conf configuration file, however for completeness, and as an
-    // example, virtually everything is being done manually in this example
-    // code.
-
-    // Imagesets area a collection of named areas within a texture or image
-    // file.  Each area becomes an Image, and has a unique name by which it
-    // can be referenced.  This sample is using the TaharezLook widgets, and
-    // these rely upon the TaharezLook Imageset; so we must load this in
-    // before doing anything else.  Note that the Imageset would normally be
-    // specified as part of a scheme file, although as this example is
-    // demonstrating, it is not a requirement.
+    // The first thing to do is load a CEGUI 'scheme' this is basically a file
+    // that groups all the required resources and definitions for a particular
+    // skin so they can be loaded / initialised easily
     //
-    // Load TaharezLook imageset by making use of the ImagesetManager singleton.
-    Imageset& taharezImages = ImagesetManager::getSingleton().create("TaharezLook.imageset");
+    // So, we use the SchemeManager singleton to load in a scheme that loads the
+    // imagery and registers widgets for the TaharezLook skin.  This scheme also
+    // loads in a font that gets used as the system default.
+    SchemeManager::getSingleton().create("TaharezLook.scheme");
 
     // The next thing we do is to set a default mouse cursor image.  This is
     // not strictly essential, although it is nice to always have a visible
@@ -72,36 +64,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor(&taharezImages.getImage("MouseArrow"));
-
-    // Now we have the gui imagery side of thigs set up, we should load in a font.
-    // You should always load in at least one font, this is to ensure that there
-    // is a default available for any gui element which needs to draw text.
-    // The first font you load is automatically set as the initial default font,
-    // although you can change the default later on if so desired.  Again, it is
-    // possible to list fonts to be automatically loaded as part of a scheme, so
-    // this step may not usually be performed explicitly.
-    //
-    // Fonts are loaded via the FontManager singleton.
-    FontManager::getSingleton().create("Commonwealth-10.font");
-
-    // The widgets that we will be using for this sample are the TaharezLook widgets,
-    // and to enable us to use this 'skin' we must load the xml specification - which
-    // within cegui is known as a "looknfeel" file.
-    //
-    // We load the looknfeel via the WidgetLookManager singleton.
-    WidgetLookManager::getSingleton().parseLookNFeelSpecification("TaharezLook.looknfeel");
-
-    // The final step of basic initialisation that is usually peformed is
-    // registering some widgets with the system via a scheme file.  The scheme
-    // basically states the name of a dynamically loaded module that contains the
-    // widget classes that we wish to use.  As stated previously, a scheme can actually
-    // conatin much more information, though for the sake of this first example, we
-    // load a scheme which only contains what is required to register some widgets.
-    //
-    // Use the SchemeManager singleton to load in a scheme that registers widgets
-    // for TaharezLook.
-    SchemeManager::getSingleton().create("TaharezLookWidgets.scheme");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
