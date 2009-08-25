@@ -85,6 +85,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
                  CEGUITextureTarget.h \
+                 CEGUITplWindowFactory.h \
+                 CEGUITplWindowRendererFactory.h \
                  CEGUITplWRFactoryRegisterer.h \
                  CEGUIUDim.h \
                  CEGUIVector.h \
