@@ -699,7 +699,7 @@
             </Area>
             <Property name="AlwaysOnTop" value="False" />
         </Child>
-        <Child type="TaharezLook/SystemButton" nameSuffix="__auto_closebutton__">
+        <Child type="TaharezLook/ImageButton" nameSuffix="__auto_closebutton__">
             <Area>
                 <Dim type="LeftEdge" >
                     <UnifiedDim scale="1" type="LeftEdge">
