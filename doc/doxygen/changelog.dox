@@ -104,6 +104,7 @@ The following is a high-level view of changes made to Crazy Eddie's GUI System f
     - Changed font in language list, because one was invisible (missing glyphs)
 - Modified: Warn user during samples premake, when both DX9 and DX10 are defined for static builds.
 
+- Bug Fix: issue where invalid values were accepted by Window::setAlpha, causing renderer dependent problems.
 - Bug Fix: issue with Tree::getNextSelectedItemFromList not processing branches correctly.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4239
 - Bug Fix: fixed up the relative paths used in local header include statements for public headers.
 - Bug Fix: static build issues with image codec choice.
