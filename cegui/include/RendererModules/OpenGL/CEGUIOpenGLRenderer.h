@@ -66,11 +66,28 @@ class OGLTextureTargetFactory;
 class OPENGL_GUIRENDERER_API OpenGLRenderer : public Renderer
 {
 public:
+    //! Enumeration of valid texture target types.
+    enum TextureTargetType
+    {
+        //! Automatically choose the best type available.
+        TTT_AUTO,
+        //! Use targets based on frame buffer objects if available, else none.
+        TTT_FBO,
+        //! Use targets based on pbuffer support if available, else none.
+        TTT_PBUFFER,
+        //! Disable texture targets.
+        TTT_NONE
+    };
+
     /*!
     \brief
         Create an OpenGLRenderer object.
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.
     */
-    static OpenGLRenderer& create();
+    static OpenGLRenderer& create(const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
     \brief
@@ -78,8 +95,13 @@ public:
 
     \param display_size
         Size object describing the initial display resolution.
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.
     */
-    static OpenGLRenderer& create(const Size& display_size);
+    static OpenGLRenderer& create(const Size& display_size,
+                                  const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
     \brief
@@ -160,8 +182,12 @@ private:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.
     */
-    OpenGLRenderer();
+    OpenGLRenderer(const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -169,8 +195,12 @@ private:
 
     \param display_size
         Size object describing the initial display resolution.
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.
     */
-    OpenGLRenderer(const Size& display_size);
+    OpenGLRenderer(const Size& display_size, const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -185,7 +215,7 @@ private:
     void cleanupExtraStates();
 
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
-    void initialiseTextureTargetFactory();
+    void initialiseTextureTargetFactory(const TextureTargetType tt_type);
 
     //! String holding the renderer identification text.
     static String d_rendererID;

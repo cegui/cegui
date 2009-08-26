@@ -109,15 +109,16 @@ String OpenGLRenderer::d_rendererID(
 "CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create()
+OpenGLRenderer& OpenGLRenderer::create(const TextureTargetType tt_type)
 {
-    return *new OpenGLRenderer();
+    return *new OpenGLRenderer(tt_type);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create(const Size& display_size)
+OpenGLRenderer& OpenGLRenderer::create(const Size& display_size,
+                                       const TextureTargetType tt_type)
 {
-    return *new OpenGLRenderer(display_size);
+    return *new OpenGLRenderer(display_size, tt_type);
 }
 
 //----------------------------------------------------------------------------//
@@ -127,7 +128,7 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer() :
+OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
     d_displayDPI(96, 96),
     d_initExtraStates(false)
 {
@@ -142,14 +143,15 @@ OpenGLRenderer::OpenGLRenderer() :
     d_displaySize = Size(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
 
     initialiseGLExtensions();
-    initialiseTextureTargetFactory();
+    initialiseTextureTargetFactory(tt_type);
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const Size& display_size) :
+OpenGLRenderer::OpenGLRenderer(const Size& display_size,
+                               const TextureTargetType tt_type) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
     d_initExtraStates(false)
@@ -160,7 +162,7 @@ OpenGLRenderer::OpenGLRenderer(const Size& display_size) :
     d_maxTextureSize = max_tex_size;
 
     initialiseGLExtensions();
-    initialiseTextureTargetFactory();
+    initialiseTextureTargetFactory(tt_type);
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
@@ -447,10 +449,13 @@ void OpenGLRenderer::restoreTextures()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::initialiseTextureTargetFactory()
+void OpenGLRenderer::initialiseTextureTargetFactory(
+    const TextureTargetType tt_type)
 {
     // prefer FBO
-    if (GLEW_EXT_framebuffer_object)
+
+    if (((tt_type == TTT_AUTO) || (tt_type == TTT_FBO)) &&
+        GLEW_EXT_framebuffer_object)
     {
         d_rendererID += "  TextureTarget support enabled via FBO extension.";
         d_textureTargetFactory =
@@ -459,7 +464,8 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
 
 #if defined(__linux__) || defined(__FreeBSD__)
     // on linux (etc), we can try for GLX pbuffer support
-    else if (GLXEW_VERSION_1_3)
+    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+             GLXEW_VERSION_1_3)
     {
         d_rendererID += "  TextureTarget support enabled via GLX pbuffers.";
         d_textureTargetFactory =
@@ -467,7 +473,8 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
     }
 #elif defined(_WIN32) || defined(__WIN32__)
     // on Windows, we can try for WGL based pbuffer support
-    else if (WGLEW_ARB_pbuffer)
+    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+             WGLEW_ARB_pbuffer)
     {
         d_rendererID += "  TextureTarget support enabled via WGL_ARB_pbuffer.";
         d_textureTargetFactory =
@@ -475,7 +482,8 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
     }
 #elif defined(__APPLE__)
     // on Apple Mac, we can try for Apple's pbuffer support
-    else if (GLEW_APPLE_pixel_buffer)
+    else if (((tt_type == TTT_AUTO) || (tt_type == TTT_PBUFFER)) &&
+             GLEW_APPLE_pixel_buffer)
     {
         d_rendererID += "  TextureTarget support enabled via "
                         "GL_APPLE_pixel_buffer.";
