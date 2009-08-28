@@ -3493,7 +3493,10 @@ void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 //----------------------------------------------------------------------------//
 RenderedStringParser& Window::getRenderedStringParser() const
 {
-    return d_customStringParser ? *d_customStringParser : d_basicStringParser;
+    if (d_customStringParser)
+        return *d_customStringParser;
+    else
+        return d_basicStringParser;
 }
 
 //----------------------------------------------------------------------------//
