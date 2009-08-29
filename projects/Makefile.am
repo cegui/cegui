@@ -38,9 +38,9 @@ EXTRA_DIST = premake/README \
              premake/Samples/TabControlDemo/premake.lua \
              premake/Samples/TreeDemo/premake.lua \
              premake/Samples/common/premake.lua \
-             premake/ScriptingModules/CEGUILua/LuaScriptModule/premake.lua \
-             premake/ScriptingModules/CEGUILua/tolua++/premake.lua \
-             premake/ScriptingModules/CEGUILua/tolua++bin/premake.lua \
+             premake/ScriptingModules/LuaScriptModule/premake.lua \
+             premake/ScriptingModules/LuaScriptModule/support/tolua++/premake.lua \
+             premake/ScriptingModules/LuaScriptModule/support/tolua++bin/premake.lua \
              premake/WindowRendererSets/Falagard/premake.lua \
              premake/XMLParserModules/TinyXMLParser/premake.lua \
              premake/XMLParserModules/XercesParser/premake.lua \
