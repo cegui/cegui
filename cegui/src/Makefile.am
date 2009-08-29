@@ -203,4 +203,5 @@ INCLUDES += -I$(top_srcdir)/src/implementations/mac
 libCEGUIBase@cegui_bsfx@_la_SOURCES += implementations/mac/macPlugins.cpp
 endif
 
+EXTRA_libCEGUIBase@cegui_bsfx@_la_SOURCES = minibidi.cpp
 EXTRA_DIST = implementations/mac/macPlugins.h

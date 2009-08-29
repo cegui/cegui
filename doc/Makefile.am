@@ -1,40 +1,8 @@
+SUBDIRS = . doxygen
+
 EXTRA_DIST = COPYING \
              GLEW-LICENSE \
              PCRE-LICENSE \
              README \
              TinyXML-License \
-             stringencoders-license \
-             doxygen/BuildDocs.bat \
-             doxygen/arch_overview.dox \
-             doxygen/authors.dox \
-             doxygen/changelog.dox \
-             doxygen/code_standards.dox \
-             doxygen/compiling.dox \
-             doxygen/devel.dox \
-             doxygen/downloading.dox \
-             doxygen/doxyfile \
-             doxygen/glew-lic.dox \
-             doxygen/licensing.dox \
-             doxygen/mainpage.dox \
-             doxygen/pcre-lic.dox \
-             doxygen/porting6to7.dox \
-             doxygen/stringencoders-lic.dox \
-             doxygen/tinyxml-lic.dox \
-             doxygen/xml_confg.dox \
-             doxygen/xml_font.dox \
-             doxygen/xml_imageset.dox \
-             doxygen/xml_layout.dox \
-             doxygen/xml_scheme.dox \
-             doxygen/falagard/fal_baseclass_ref.dox \
-             doxygen/falagard/fal_element_ref.dox \
-             doxygen/falagard/fal_enum_ref.dox \
-             doxygen/falagard/fal_intro.dox \
-             doxygen/falagard/fal_main.dox \
-             doxygen/falagard/fal_tut1.dox \
-             doxygen/falagard/fal_wr_ref.dox \
-             doxygen/falagard/gnufdl.dox \
-             doxygen/tutorials/ce_guide_1.dox \
-             doxygen/tutorials/ce_guide_2.dox \
-             doxygen/tutorials/ce_guide_3.dox \
-             doxygen/tutorials/ce_guide_4.dox \
-             doxygen/tutorials/rp_setup.dox
+             stringencoders-license
