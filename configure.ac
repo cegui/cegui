@@ -22,6 +22,9 @@ AC_CANONICAL_HOST
 AC_PROG_CXX
 AC_PROG_CC
 
+AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [])
+AC_CHECK_PROG([DOXYGENDOT], [dot], [dot], [])
+
 # Disable building static library
 AC_DISABLE_STATIC
 
@@ -167,6 +170,8 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/XMLParserModules/XercesParser/Makefile
                  datafiles/Makefile
                  doc/Makefile
+                 doc/doxygen/doxyfile
+                 doc/doxygen/Makefile
                  projects/Makefile
                  Samples/common/include/Makefile
                  Samples/common/Makefile

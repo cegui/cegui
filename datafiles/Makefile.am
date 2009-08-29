@@ -1,3 +1,6 @@
+dist-hook:
+	mkdir $(distdir)/configs
+
 nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              fonts/Batang-26.font \
              fonts/Commonv2c.ttf \

@@ -45,4 +45,36 @@ EXTRA_DIST = premake/README \
              premake/XMLParserModules/TinyXMLParser/premake.lua \
              premake/XMLParserModules/XercesParser/premake.lua \
              premake/XMLParserModules/expatParser/premake.lua \
-             premake/XMLParserModules/libxmlParser/premake.lua
+             premake/XMLParserModules/libxmlParser/premake.lua \
+             Xcode/CEGUIBase-Info.plist \
+             Xcode/CEGUICoronaImageCodec-Info.plist \
+             Xcode/CEGUIDevILImageCodec-Info.plist \
+             Xcode/CEGUIExpatParser-Info.plist \
+             Xcode/CEGUIFalagardWRBase-Info.plist \
+             Xcode/CEGUIFreeImageImageCodec-Info.plist \
+             Xcode/CEGUIIrrlichtRenderer-Info.plist \
+             Xcode/CEGUILibxmlParser-Info.plist \
+             Xcode/CEGUILuaScriptModule-Info.plist \
+             Xcode/CEGUIOgreRenderer-Info.plist \
+             Xcode/CEGUIOpenGLRenderer-Info.plist \
+             Xcode/CEGUISampleHelper-Info.plist \
+             Xcode/CEGUISILLYImageCodec-Info.plist \
+             Xcode/CEGUITGAImageCodec-Info.plist \
+             Xcode/CEGUITinyXMLParser-Info.plist \
+             Xcode/ceguitolua++-Info.plist \
+             Xcode/CEGUIXercesParser-Info.plist \
+             Xcode/Demo6-Info.plist \
+             Xcode/Demo7-Info.plist \
+             Xcode/Demo8-Info.plist \
+             Xcode/DragDropDemo-Info.plist \
+             Xcode/FalagardDemo1-Info.plist \
+             Xcode/FirstWindow-Info.plist \
+             Xcode/FontDemo-Info.plist \
+             Xcode/InstancedWindows-Info.plist \
+             Xcode/Minesweeper-Info.plist \
+             Xcode/RendererSelector.xib \
+             Xcode/ScrollablePaneDemo-Info.plist \
+             Xcode/TabControlDemo-Info.plist \
+             Xcode/TextDemo-Info.plist \
+             Xcode/TreeDemo-Info.plist \
+             Xcode/CEGUI.xcodeproj/project.pbxproj
