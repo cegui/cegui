@@ -37,8 +37,8 @@ mantis tracker (http://mantis.cegui.org.uk/).  Posting patches on the forums is
 not advised and will virtually always result in your patch being lost and
 forgotten about.
 
-- Patches must be submitted in <em>unified format only</em>.  Patches submitted
-in any other form will be rejected as a matter of course.
+- Patches must be submitted in <em>unified diff format only</em>.  Patches
+submitted in any other form will be rejected as a matter of course.
 
 - Fudged patches that effectively replace every line in target files
 (this is usually caused by file-level whitespace changes) will be immediately
