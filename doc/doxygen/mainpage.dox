@@ -25,9 +25,9 @@ The documentation for CEGUI is split into the following sections:
 - Code related topics
     - @ref downloading
     - @ref compiling
-    - @ref arch_overview
     - @ref code_standards
     - @ref devel
+    - @ref arch_overview
 
 - Beginners Tutorials
     - @ref rendering_tutorial
