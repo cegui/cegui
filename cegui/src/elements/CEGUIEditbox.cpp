@@ -457,9 +457,8 @@ void Editbox::onCharacter(KeyEventArgs& e)
     fireEvent(EventCharacterKey, e, EventNamespace);
 
     // only need to take notice if we have focus
-    if (hasInputFocus() &&
-        getFont()->isCodepointAvailable(e.codepoint) &&
-        !isReadOnly())
+    if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
+        getFont()->isCodepointAvailable(e.codepoint))
     {
         // backup current text
         String tmp(getText());
@@ -517,7 +516,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
     // fire event.
     fireEvent(EventKeyDown, e, EventNamespace);
 
-    if (hasInputFocus() && !isReadOnly())
+    if (e.handled == 0 && hasInputFocus() && !isReadOnly())
     {
         WindowEventArgs args(this);
         switch (e.scancode)
