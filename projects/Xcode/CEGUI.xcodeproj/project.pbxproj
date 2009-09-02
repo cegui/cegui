@@ -5069,6 +5069,7 @@
 			buildConfigurationList = DAAAB98D0F6E50D60003BE03 /* Build configuration list for PBXNativeTarget "ceguitolua++" */;
 			buildPhases = (
 				DAAAB9840F6E50D60003BE03 /* Headers */,
+				DA54F7F6104E855400582155 /* Custom Header Setup */,
 				DAAAB9F00F6E521E0003BE03 /* Resources */,
 				DAAAB9860F6E50D60003BE03 /* Sources */,
 				DAAAB9870F6E50D60003BE03 /* Frameworks */,
@@ -5370,6 +5371,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
+		DA54F7F6104E855400582155 /* Custom Header Setup */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Custom Header Setup";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules/LuaScriptModule/support\" ]; then\n\tmkdir -p \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules/LuaScriptModule/support\"\nfi\nrsync -azC --delete --exclude=\"*.am\" ./ScriptingModules/LuaScriptModule/support/tolua++ \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules/LuaScriptModule/support\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
+		};
 		DAAAB8110F6E4B6F0003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5550,7 +5565,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=RendererModules --exclude=ScriptingModules --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\n";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=RendererModules --exclude=ScriptingModules --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 		DAAABC8D0F6E64A80003BE03 /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5564,7 +5579,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/OpenGL \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/OpenGL \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 		DAAABCE80F6E70AC0003BE03 /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5578,7 +5593,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=support --exclude=\"*.am\" ./ScriptingModules/LuaScriptModule \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=support --exclude=\"*.am\" ./ScriptingModules/LuaScriptModule \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 		DAAF3A100F6FBCC000EEADDB /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5592,7 +5607,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Irrlicht \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Irrlicht \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 		DAC4DE630F7101DA000EF0AC /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5606,7 +5621,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Ogre \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Ogre \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
