@@ -1238,7 +1238,8 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
     fireEvent(EventCharacterKey, e, EventNamespace);
 
 	// only need to take notice if we have focus
-	if (hasInputFocus() && !isReadOnly() && getFont()->isCodepointAvailable(e.codepoint))
+	if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
+        getFont()->isCodepointAvailable(e.codepoint))
 	{
 		// erase selected text
 		eraseSelectedText();
@@ -1282,7 +1283,7 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
     // fire event.
     fireEvent(EventKeyDown, e, EventNamespace);
 
-	if (hasInputFocus() && !isReadOnly())
+	if (e.handled == 0 && hasInputFocus() && !isReadOnly())
 	{
 		WindowEventArgs args(this);
 		switch (e.scancode)
