@@ -70,7 +70,7 @@ the same repository, the various parts are separated in to subdirectories; the
 subdirectory for CEGUI is named 'cegui_mk2'.
 
 Beneath this subdirectory, we maintain the main unstable code (as trunk) and
-a secondary branch for the current stable releases (which is v0-6 as of this
+a secondary branch for the current stable releases (which is v0-7 as of this
 writing), older branches are considered obsolete as newer stable code is
 branched from the trunk, although the older branch directories are left
 available for those who want or need that older code.
@@ -78,7 +78,7 @@ available for those who want or need that older code.
 To check out a copy of the current stable branch from subversion, you might use
 the following command (or copy the server string into your GUI based SVN client)
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/branches/v0-6 cegui-v0-6
+svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/branches/v0-7 cegui-v0-7
 @endverbatim
 
 Or, if you prefer the latest unstable code for testing purposes:
