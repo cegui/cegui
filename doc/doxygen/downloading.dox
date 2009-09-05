@@ -59,7 +59,7 @@ Currently all Mac OS X binary packages are provided as i386/ppc universal
 binaries.
 
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.0/CEGUI-0.7.0-mac-universal.zip/download">CEGUI-0.7.0-mac-universal.zip</a> Precompiled universal binary for Apple Mac OS X
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.0/CEGUI-SDK-0.7.0-mac.zip/download">CEGUI-SDK-0.7.0-mac.zip</a> Precompiled universal binary for Apple Mac OS X
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 Mac Dependencies/0.7.x/CEGUI-DEPS-0.7.x-mac.zip/download">CEGUI-DEPS-0.7.x-mac.zip</a> Precompiled dependency libraries for Apple Mac OS X
 
 <br>
