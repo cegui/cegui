@@ -6562,6 +6562,7 @@
 				CEGUI_VERSION = 0.6.9999;
 				COPY_PHASE_STRIP = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -6583,6 +6584,7 @@
 				CEGUI_OGRE_SDK_PATH = ../../../OgreSDK;
 				CEGUI_VERSION = 0.6.9999;
 				COPY_PHASE_STRIP = YES;
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
