@@ -2268,6 +2268,7 @@
 		DA674A1E1035D8A600872D1D /* xml_imageset.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_imageset.dox; path = ../../doc/doxygen/xml_imageset.dox; sourceTree = SOURCE_ROOT; };
 		DA674A1F1035D8A600872D1D /* xml_layout.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_layout.dox; path = ../../doc/doxygen/xml_layout.dox; sourceTree = SOURCE_ROOT; };
 		DA674A211035D8A600872D1D /* xml_scheme.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_scheme.dox; path = ../../doc/doxygen/xml_scheme.dox; sourceTree = SOURCE_ROOT; };
+		DA849D481052E5F700C07E33 /* futurechanges.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = futurechanges.dox; path = ../../doc/doxygen/futurechanges.dox; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
 		DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedStringWordWrapper.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedStringWordWrapper.cpp; sourceTree = SOURCE_ROOT; };
@@ -3193,6 +3194,7 @@
 				DA1093A70F6D583800B8A582 /* devel.dox */,
 				DA1093A60F6D583800B8A582 /* doxyfile */,
 				DABEE4C11036C3C5001B58DA /* downloading.dox */,
+				DA849D481052E5F700C07E33 /* futurechanges.dox */,
 				DA1093AB0F6D583800B8A582 /* glew-lic.dox */,
 				DA674A1A1035D8A600872D1D /* licensing.dox */,
 				DA1093A80F6D583800B8A582 /* mainpage.dox */,

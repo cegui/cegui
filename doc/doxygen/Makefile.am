@@ -8,6 +8,7 @@ EXTRA_DIST = BuildDocs.bat \
              downloading.dox \
              doxyfile \
              doxyfile.in \
+             futurechanges.dox \
              glew-lic.dox \
              licensing.dox \
              mainpage.dox \
