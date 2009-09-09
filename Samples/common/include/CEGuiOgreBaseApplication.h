@@ -102,10 +102,9 @@ protected:
     WndEvtListener* d_windowEventListener;
 
     // FPS stuff
+    int d_fps_frames;
     float d_fps_time;
-    float d_fps_frames;
-    float d_fps_value;
-    char d_fps_textbuff[16];
+	char d_fps_textbuff[16];
     CEGUI::GeometryBuffer* d_fps_geometry;
     CEGUI::GeometryBuffer* d_logo_geometry;
 };
