@@ -49,8 +49,12 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_renderer(0),
         d_initialised(false),
         d_frameListener(0),
-        d_windowEventListener(0)
+        d_windowEventListener(0),
+		d_fps_frames(0),
+		d_fps_time(0.0f)
 {
+	strcpy(d_fps_textbuff, "");
+
     using namespace Ogre;
 
     d_ogreRoot = new Root();
@@ -229,7 +233,7 @@ void CEGuiOgreBaseApplication::doFPSUpdate(float elapsed)
     if ((d_fps_time += elapsed) >= 1.0f)
     {
         // update FPS text to output
-        sprintf(d_fps_textbuff , "FPS: %g", d_fps_frames);
+        sprintf(d_fps_textbuff , "FPS: %d", d_fps_frames);
         // reset counter
         d_fps_frames    = 0;
         // update timer
