@@ -88,19 +88,9 @@ public:
     static const String DropListNameSuffix;   //!< Widget name suffix for the drop list component.
     static const String ButtonNameSuffix;           //!< Widget name suffix for the button component.
 
-	/*!
-	\brief
-		check if the given position would hit this window.
-
-	\param position
-		Point object describing the position to check in screen pixels
-
-	\return
-		true if \a position 'hits' this Window, else false.
-	*/
-	virtual bool isHit(const Point&, const bool allow_disabled = false) const
-        { return false; }
-
+    // override from Window class
+    bool isHit(const Vector2& position,
+               const bool allow_disabled = false) const;
 
 	/*!
 	\brief

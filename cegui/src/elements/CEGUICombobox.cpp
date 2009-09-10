@@ -937,6 +937,12 @@ void Combobox::itemSelectChangeTextUpdate(const ListboxItem* const item,
     }
 }
 
+//----------------------------------------------------------------------------//
+bool Combobox::isHit(const Vector2& /*position*/,
+                     const bool /*allow_disabled*/) const
+{
+    return false;
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
