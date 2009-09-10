@@ -98,7 +98,8 @@ public:
 	\return
 		true if \a position 'hits' this Window, else false.
 	*/
-	virtual bool	isHit(const Point&) const		{return false;}
+	virtual bool isHit(const Point&, const bool allow_disabled = false) const
+        { return false; }
 
 
 	/*!
