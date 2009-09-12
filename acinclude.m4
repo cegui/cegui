@@ -370,8 +370,13 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
 
 AC_DEFUN([CEGUI_ENABLE_DIRECTFB_RENDERER], [
     PKG_CHECK_MODULES(directfb, directfb >= 1.2.0, [cegui_found_directfb=yes], [cegui_found_directfb=no])
-    AC_ARG_ENABLE([directfb-renderer], AC_HELP_STRING([--disable-directfb-renderer], [Disable the DirectFB renderer]),
-        [cegui_enable_directfb=$enableval],[cegui_enable_directfb=yes])
+    AC_ARG_ENABLE([directfb-renderer],
+                  AC_HELP_STRING([--enable-directfb-renderer],
+                                 [Enable the DirectFB renderer.  This renderer
+                                  is currently broken and incomplete; it should
+                                  only be enabled for development and/or testing
+                                  purposes.]),
+        [cegui_enable_directfb=$enableval],[cegui_enable_directfb=no])
 
     dnl decide if we will actually build the DirectFB Renderer
     if test x$cegui_enable_directfb = xyes && test x$cegui_found_directfb = xyes; then
