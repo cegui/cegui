@@ -1650,6 +1650,8 @@ void Window::destroy(void)
         d_parent->removeChildWindow(this);
 
     cleanupChildren();
+
+    releaseRenderingWindow();
 }
 
 //----------------------------------------------------------------------------//
