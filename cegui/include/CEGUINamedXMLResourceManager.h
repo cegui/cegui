@@ -238,7 +238,10 @@ void NamedXMLResourceManager<T, U>::destroy(const T& object)
     typename ObjectRegistry::iterator i(d_objects.begin());
     for (; i != d_objects.end(); ++i)
         if (i->second == &object)
+        {
             destroyObject(i);
+            return;
+        }
 }
 
 //----------------------------------------------------------------------------//
