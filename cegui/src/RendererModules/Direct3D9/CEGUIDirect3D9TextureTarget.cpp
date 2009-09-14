@@ -178,5 +178,42 @@ bool Direct3D9TextureTarget::isRenderingInverted() const
 }
 
 //----------------------------------------------------------------------------//
+void Direct3D9TextureTarget::preD3DReset()
+{
+    if (d_surface)
+    {
+        d_surface->Release();
+        d_surface = 0;
+    }
+
+    if (d_CEGUITexture)
+        d_CEGUITexture->preD3DReset();
+
+    if (d_texture)
+    {
+        d_texture->Release();
+        d_texture = 0;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9TextureTarget::postD3DReset()
+{
+    if (!d_CEGUITexture)
+        return;
+
+    // this will recreate the texture
+    d_CEGUITexture->postD3DReset();
+    // we now obtain a reference to that created texture
+    d_texture = d_CEGUITexture->getDirect3D9Texture();
+    if (d_texture)
+    {
+        d_texture->AddRef();
+        // now obtain the surface
+        d_texture->GetSurfaceLevel(0, &d_surface);
+    }
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
