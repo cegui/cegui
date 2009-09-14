@@ -38,7 +38,7 @@ using namespace CEGUI;
 
 static const char *FontList [] =
 {
-    "DejaVuSans-10",
+	"DejaVuSans-10",
     "Commonwealth-10",
     "Iconified-12",
     "fkp-16",
@@ -115,7 +115,13 @@ public:
         SchemeManager::getSingleton().create("TaharezLook.scheme");
         System::getSingleton().setDefaultMouseCursor ("TaharezLook", "MouseArrow");
 
-        // load all the fonts except Commonwealth which has been already loaded
+		// Create a custom font which we use to draw the list items. This custom
+		// font won't get effected by the scaler and such.
+		FontManager::getSingleton().createFreeTypeFont("DefaultFont", 10/*pt*/, true, "DejaVuSans.ttf");
+		// Set it as the default
+		System::getSingleton().setDefaultFont("DefaultFont");
+
+        // load all the fonts (if they are not loaded yet)
         for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
             FontManager::getSingleton().create(String(FontList [i]) + ".font");
 
@@ -143,6 +149,7 @@ public:
 
         // Add the font names to the listbox
         Listbox *lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/FontList"));
+		lbox->setFont("DefaultFont");
         for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
             lbox->addItem (new MyListItem (FontList [i]));
         // set up the font listbox callback
@@ -153,6 +160,7 @@ public:
 
         // Add language list to the listbox
         lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/LangList"));
+		lbox->setFont("DefaultFont");
         for (size_t i = 0; i < (sizeof (LangList) / sizeof (LangList [0])); i++)
             lbox->addItem (new MyListItem (LangList [i].Language));
         // set up the language listbox callback
@@ -210,33 +218,36 @@ public:
             static_cast<const WindowEventArgs&> (e).window);
 
         if (lbox->getFirstSelectedItem ())
-		{	// Read the fontname
-            Font *f = &FontManager::getSingleton ().get(
+		{	// Read the fontname and get the font by that name
+            Font *font = &FontManager::getSingleton ().get(
                 lbox->getFirstSelectedItem ()->getText ());
 
 			// Tell the textbox to use the newly selected font
             WindowManager& winMgr = WindowManager::getSingleton ();
-            winMgr.getWindow("FontDemo/FontSample")->setFont (f);
+            winMgr.getWindow("FontDemo/FontSample")->setFont (font);
 
-            bool b = f->isPropertyPresent ("AutoScaled");
+            bool b = font->isPropertyPresent ("AutoScaled");
             Checkbox *cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/AutoScaled"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (f->getProperty ("AutoScaled")));
+                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("AutoScaled")));
 
-            b = f->isPropertyPresent ("Antialiased");
+            b = font->isPropertyPresent ("Antialiased");
             cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/Antialiased"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (f->getProperty ("Antialiased")));
+                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("Antialiased")));
 
-            b = f->isPropertyPresent ("PointSize");
+            b = font->isPropertyPresent ("PointSize");
             Scrollbar *sb = static_cast<Scrollbar *> (
                 winMgr.getWindow("FontDemo/PointSize"));
             sb->setEnabled (b);
-            if (b)
-                sb->setScrollPosition (
-                    PropertyHelper::stringToFloat (f->getProperty ("PointSize")) - MIN_POINT_SIZE);
+			
+			// Set the textbox' font to have the current scale
+			if (font->isPropertyPresent("PointSize"))
+				font->setProperty ("PointSize",
+                        PropertyHelper::intToString (
+                            int (MIN_POINT_SIZE + sb->getScrollPosition ())));
 
             setFontDesc ();
 		}
@@ -319,7 +330,7 @@ public:
 			else if (idx == 5)	// Korean
 			{
 				fontIdx = 6;
-			}			
+			}
             WindowManager& winMgr = WindowManager::getSingleton ();
 			// Access the font list
 			Listbox *fontList = static_cast<Listbox*>(winMgr.getWindow ("FontDemo/FontList"));
@@ -346,11 +357,13 @@ public:
         // needed because no facility currently exists for a font to notify that
         // it's internal size or state has changed (ideally all affected windows
         // should receive EventFontChanged - this should be a TODO item!)
-        eb->setWordWrapping(false);
-        eb->setWordWrapping(true);
-        // inform list of updated data
+		eb->setWordWrapping(false);
+		eb->setWordWrapping(true);
+        // inform lists of updated data too
         Listbox* lb = static_cast<Listbox*>(winMgr.getWindow("FontDemo/LangList"));
-        lb->handleUpdatedItemData();
+		lb->handleUpdatedItemData();
+        lb = static_cast<Listbox*>(winMgr.getWindow("FontDemo/FontList"));
+		lb->handleUpdatedItemData();
     }
 };
 
