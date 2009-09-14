@@ -34,6 +34,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIDirect3D9ViewportTarget.h"
 #include "CEGUIDirect3D9TextureTarget.h"
+#include "CEGUISystem.h"
 
 #include <algorithm>
 
@@ -311,15 +312,32 @@ Size Direct3D9Renderer::getViewportSize()
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::preD3DReset()
 {
-    throw RendererException("Direct3D9Renderer::preD3DReset - "
-                            "Function is currently unimplemented!");
+    // perform pre-reset on texture targets
+    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
+    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
+        static_cast<Direct3D9TextureTarget*>(*target_iterator)->preD3DReset();
+
+    // perform pre-reset on textures
+    TextureList::iterator texture_iterator = d_textures.begin();
+    for (; texture_iterator != d_textures.end(); ++texture_iterator)
+        (*texture_iterator)->preD3DReset();
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::postD3DReset()
 {
-    throw RendererException("Direct3D9Renderer::postD3DReset - "
-                            "Function is currently unimplemented!");
+    // perform post-reset on textures
+    TextureList::iterator texture_iterator = d_textures.begin();
+    for (; texture_iterator != d_textures.end(); ++texture_iterator)
+        (*texture_iterator)->postD3DReset();
+
+    // perform post-reset on texture targets
+    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
+    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
+        static_cast<Direct3D9TextureTarget*>(*target_iterator)->postD3DReset();
+
+    // notify system about the (possibly) new viewport size.
+    System::getSingleton().notifyDisplaySizeChanged(getViewportSize());
 }
 
 //----------------------------------------------------------------------------//
