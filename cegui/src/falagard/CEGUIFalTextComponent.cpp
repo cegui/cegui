@@ -208,13 +208,14 @@ namespace CEGUI
                 vis = srcWindow.getProperty(d_textPropertyName);
             #endif
             // parse string using parser from Window.
-            d_renderedString = srcWindow.getRenderedStringParser().parse(vis);
+            d_renderedString =
+                srcWindow.getRenderedStringParser().parse(vis, font, modColours);
         }
         // do we use a static text string from the looknfeel
         else if (!getTextVisual().empty())
             // parse string using parser from Window.
-            d_renderedString = 
-                srcWindow.getRenderedStringParser().parse(getTextVisual());
+            d_renderedString = srcWindow.getRenderedStringParser().
+                parse(getTextVisual(), font, modColours);
         // use ready-made RenderedString from the Window itself
         else
             rs = &srcWindow.getRenderedString();

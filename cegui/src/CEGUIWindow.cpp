@@ -838,6 +838,7 @@ void Window::setText(const String& text)
 void Window::setFont(Font* font)
 {
     d_font = font;
+    d_renderedStringValid = false;
     WindowEventArgs args(this);
     onFontChanged(args);
 }
@@ -3473,7 +3474,8 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
-        d_renderedString = getRenderedStringParser().parse(getTextVisual());
+        d_renderedString = getRenderedStringParser().parse(
+            getTextVisual(), getFont(), 0);
         d_renderedStringValid = true;
     }
 

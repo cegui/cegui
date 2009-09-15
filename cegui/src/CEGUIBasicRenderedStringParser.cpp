@@ -31,6 +31,7 @@
 #include "CEGUIRenderedStringWidgetComponent.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -57,9 +58,21 @@ BasicRenderedStringParser::~BasicRenderedStringParser()
 }
 
 //----------------------------------------------------------------------------//
-RenderedString BasicRenderedStringParser::parse(const String& input_string)
+RenderedString BasicRenderedStringParser::parse(const String& input_string,
+                                                Font* initial_font,
+                                                const ColourRect* initial_colours)
 {
-    initialiseDefaultState();
+    // set up initial font.
+    if (initial_font)
+        d_fontName = initial_font->getName();
+    else
+        d_fontName = d_initialFontName;
+
+    // set up initial colours.
+    if (initial_colours)
+        d_colours = *initial_colours;
+    else
+        d_colours = d_initialColours;
 
     RenderedString rs;
     String curr_section;
