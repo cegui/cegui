@@ -2656,7 +2656,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
-    if (tip)
+    if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
     fireEvent(EventMouseEnters, e, EventNamespace);
@@ -2666,8 +2666,9 @@ void Window::onMouseEnters(MouseEventArgs& e)
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
+    const Window* const mw = System::getSingleton().getWindowContainingMouse();
     Tooltip* const tip = getTooltip();
-    if (tip && System::getSingleton().getWindowContainingMouse() != tip)
+    if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
 
     fireEvent(EventMouseLeaves, e, EventNamespace);
