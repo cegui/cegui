@@ -216,6 +216,10 @@ namespace CEGUI
             // parse string using parser from Window.
             d_renderedString = srcWindow.getRenderedStringParser().
                 parse(getTextVisual(), font, modColours);
+        // do we have to override the font?
+        else if (font != srcWindow.getFont())
+            d_renderedString = srcWindow.getRenderedStringParser().
+                parse(srcWindow.getTextVisual(), font, modColours);
         // use ready-made RenderedString from the Window itself
         else
             rs = &srcWindow.getRenderedString();
