@@ -44,10 +44,18 @@ public:
     \param input_string
         String object holding the text that is to be parsed.
 
+    \param initial_font
+        Pointer to the initial font to be used for text (0 for system default).
+
+    \param initial_colours
+        Pointer to the initial colours to be used (0 for default).
+
     \return
         RenderedString object holding the result of the parse operation.
     */
-    virtual RenderedString parse(const String& input_string) = 0;
+    virtual RenderedString parse(const String& input_string,
+                                 Font* initial_font,
+                                 const ColourRect* initial_colours) = 0;
 };
 
 } // End of  CEGUI namespace section
