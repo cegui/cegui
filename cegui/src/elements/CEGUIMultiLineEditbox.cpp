@@ -1235,7 +1235,7 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
     // we actually handle the event.
 
     // fire event.
-    fireEvent(EventCharacterKey, e, EventNamespace);
+    fireEvent(EventCharacterKey, e, Window::EventNamespace);
 
 	// only need to take notice if we have focus
 	if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
@@ -1281,7 +1281,7 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
     // we actually handle the event.
 
     // fire event.
-    fireEvent(EventKeyDown, e, EventNamespace);
+    fireEvent(EventKeyDown, e, Window::EventNamespace);
 
 	if (e.handled == 0 && hasInputFocus() && !isReadOnly())
 	{
