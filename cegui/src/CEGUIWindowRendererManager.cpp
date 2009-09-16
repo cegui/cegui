@@ -129,6 +129,13 @@ void WindowRendererManager::removeFactory(const String& name)
 {
     WR_Registry::iterator i = d_wrReg.find(name);
 
+	// non-existing or already removed? The latter can happen when more then one Scheme
+	// was loaded using the same renderer.
+	if (i == d_wrReg.end())
+	{
+		return;
+	}
+
     // see if we own this factory
     OwnedFactoryList::iterator j = std::find(d_ownedFactories.begin(),
                                              d_ownedFactories.end(),

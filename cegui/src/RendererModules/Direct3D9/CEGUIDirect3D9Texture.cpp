@@ -41,7 +41,8 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner) :
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_savedSurfaceDescValid(false)
 {
 }
 
@@ -53,7 +54,8 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_savedSurfaceDescValid(false)
 {
     loadFromFile(filename, resourceGroup);
 }
@@ -64,7 +66,8 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz) :
     d_texture(0),
     d_size(0, 0),
     d_dataSize(sz),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_savedSurfaceDescValid(false)
 {
     Size tex_sz(d_owner.getAdjustedSize(sz));
 
@@ -90,7 +93,8 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_savedSurfaceDescValid(false)
 {
     setDirect3D9Texture(tex);
 }
@@ -337,6 +341,43 @@ void Direct3D9Texture::setOriginalDataSize(const Size& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Texture::preD3DReset()
+{
+    // if already saved surface info, or we have no texture, do nothing
+    if (d_savedSurfaceDescValid || !d_texture)
+        return;
+
+    // get info about our texture
+    d_texture->GetLevelDesc(0, &d_savedSurfaceDesc);
+
+    // if texture is managed, we have nothing more to do
+    if (d_savedSurfaceDesc.Pool == D3DPOOL_MANAGED)
+        return;
+
+    // otherwise release texture.
+    d_texture->Release();
+    d_texture = 0;
+    d_savedSurfaceDescValid = true;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Texture::postD3DReset()
+{
+    // if texture has no saved surface info, we do nothing.
+    if (!d_savedSurfaceDescValid)
+        return;
+
+    // otherwise, create a new texture using saved details.
+    d_owner.getDevice()->
+        CreateTexture(d_savedSurfaceDesc.Width,
+                      d_savedSurfaceDesc.Height,
+                      1, d_savedSurfaceDesc.Usage, d_savedSurfaceDesc.Format,
+                      d_savedSurfaceDesc.Pool, &d_texture, 0);
+
+    d_savedSurfaceDescValid = false;
 }
 
 //----------------------------------------------------------------------------//

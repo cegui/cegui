@@ -345,9 +345,8 @@ void TreeItem::setText( const String& text )
 //----------------------------------------------------------------------------//
 void TreeItem::parseTextString() const
 {
-    d_stringParser.setInitialFontName(getFont()->getName());
-    d_stringParser.setInitialColours(d_textCols);
-    d_renderedString = d_stringParser.parse(getTextVisual());
+    d_renderedString =
+        d_stringParser.parse(getTextVisual(), getFont(), &d_textCols);
     d_renderedStringValid = true;
 }
 

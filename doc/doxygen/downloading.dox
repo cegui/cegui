@@ -59,7 +59,7 @@ Currently all Mac OS X binary packages are provided as i386/ppc universal
 binaries.
 
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.0/CEGUI-0.7.0-mac-universal.zip/download">CEGUI-0.7.0-mac-universal.zip</a> Precompiled universal binary for Apple Mac OS X
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.0/CEGUI-SDK-0.7.0-mac.zip/download">CEGUI-SDK-0.7.0-mac.zip</a> Precompiled universal binary for Apple Mac OS X
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 Mac Dependencies/0.7.x/CEGUI-DEPS-0.7.x-mac.zip/download">CEGUI-DEPS-0.7.x-mac.zip</a> Precompiled dependency libraries for Apple Mac OS X
 
 <br>
@@ -70,7 +70,7 @@ the same repository, the various parts are separated in to subdirectories; the
 subdirectory for CEGUI is named 'cegui_mk2'.
 
 Beneath this subdirectory, we maintain the main unstable code (as trunk) and
-a secondary branch for the current stable releases (which is v0-6 as of this
+a secondary branch for the current stable releases (which is v0-7 as of this
 writing), older branches are considered obsolete as newer stable code is
 branched from the trunk, although the older branch directories are left
 available for those who want or need that older code.
@@ -78,7 +78,7 @@ available for those who want or need that older code.
 To check out a copy of the current stable branch from subversion, you might use
 the following command (or copy the server string into your GUI based SVN client)
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/branches/v0-6 cegui-v0-6
+svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/branches/v0-7 cegui-v0-7
 @endverbatim
 
 Or, if you prefer the latest unstable code for testing purposes:

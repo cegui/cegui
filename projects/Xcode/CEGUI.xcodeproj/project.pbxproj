@@ -599,7 +599,7 @@
 		DAAAB98F0F6E50F90003BE03 /* lua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAAB98E0F6E50F90003BE03 /* lua.framework */; };
 		DAAAB9DE0F6E51F10003BE03 /* INFO in Resources */ = {isa = PBXBuildFile; fileRef = DA1097490F6D66F700B8A582 /* INFO */; };
 		DAAAB9DF0F6E51F10003BE03 /* README in Resources */ = {isa = PBXBuildFile; fileRef = DA10974A0F6D66F700B8A582 /* README */; };
-		DAAAB9E00F6E51F10003BE03 /* tolua++.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097720F6D675000B8A582 /* tolua++.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAAB9E00F6E51F10003BE03 /* tolua++.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097720F6D675000B8A582 /* tolua++.h */; settings = {ATTRIBUTES = (); }; };
 		DAAAB9E10F6E51F10003BE03 /* tolua_event.c in Sources */ = {isa = PBXBuildFile; fileRef = DA10974B0F6D66F700B8A582 /* tolua_event.c */; };
 		DAAAB9E20F6E51F10003BE03 /* tolua_event.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10974C0F6D66F700B8A582 /* tolua_event.h */; };
 		DAAAB9E30F6E51F10003BE03 /* tolua_is.c in Sources */ = {isa = PBXBuildFile; fileRef = DA10974D0F6D66F700B8A582 /* tolua_is.c */; };
@@ -608,9 +608,9 @@
 		DAAAB9E60F6E51F10003BE03 /* tolua_to.c in Sources */ = {isa = PBXBuildFile; fileRef = DA1097500F6D66F700B8A582 /* tolua_to.c */; };
 		DAAABA120F6E53510003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DAAABA8B0F6E54AC0003BE03 /* CEGUILua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1097410F6D669400B8A582 /* CEGUILua.cpp */; };
-		DAAABA8C0F6E54AC0003BE03 /* CEGUILua.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097460F6D66D900B8A582 /* CEGUILua.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAABA8C0F6E54AC0003BE03 /* CEGUILua.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097460F6D66D900B8A582 /* CEGUILua.h */; settings = {ATTRIBUTES = (); }; };
 		DAAABA8D0F6E54AC0003BE03 /* CEGUILuaFunctor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1097420F6D669400B8A582 /* CEGUILuaFunctor.cpp */; };
-		DAAABA8E0F6E54AC0003BE03 /* CEGUILuaFunctor.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097470F6D66D900B8A582 /* CEGUILuaFunctor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAABA8E0F6E54AC0003BE03 /* CEGUILuaFunctor.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097470F6D66D900B8A582 /* CEGUILuaFunctor.h */; settings = {ATTRIBUTES = (); }; };
 		DAAABA8F0F6E54AC0003BE03 /* lua_CEGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1097430F6D669400B8A582 /* lua_CEGUI.cpp */; };
 		DAAABA900F6E54AC0003BE03 /* required.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1097440F6D669400B8A582 /* required.cpp */; };
 		DAAABA910F6E54AC0003BE03 /* required.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1097450F6D669400B8A582 /* required.h */; };
@@ -625,7 +625,7 @@
 		DAAABCBF0F6E6F5F0003BE03 /* CEGUIOpenGLApplePBTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096400F6D633B00B8A582 /* CEGUIOpenGLApplePBTextureTarget.h */; };
 		DAAABCC00F6E6F5F0003BE03 /* CEGUIOpenGLFBOTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096410F6D633B00B8A582 /* CEGUIOpenGLFBOTextureTarget.h */; };
 		DAAABCC10F6E6F5F0003BE03 /* CEGUIOpenGLGeometryBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096420F6D633B00B8A582 /* CEGUIOpenGLGeometryBuffer.h */; };
-		DAAABCC30F6E6F5F0003BE03 /* CEGUIOpenGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096440F6D633B00B8A582 /* CEGUIOpenGLRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAABCC30F6E6F5F0003BE03 /* CEGUIOpenGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096440F6D633B00B8A582 /* CEGUIOpenGLRenderer.h */; settings = {ATTRIBUTES = (); }; };
 		DAAABCC40F6E6F5F0003BE03 /* CEGUIOpenGLRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096450F6D633B00B8A582 /* CEGUIOpenGLRenderTarget.h */; };
 		DAAABCC50F6E6F5F0003BE03 /* CEGUIOpenGLTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096460F6D633B00B8A582 /* CEGUIOpenGLTexture.h */; };
 		DAAABCC60F6E6F5F0003BE03 /* CEGUIOpenGLViewportTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096470F6D633B00B8A582 /* CEGUIOpenGLViewportTarget.h */; };
@@ -636,7 +636,7 @@
 		DAAF38960F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964A0F6D635E00B8A582 /* CEGUIIrrlichtMemoryFile.cpp */; };
 		DAAF38970F6FAD9C00EEADDB /* CEGUIIrrlichtMemoryFile.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096530F6D637300B8A582 /* CEGUIIrrlichtMemoryFile.h */; };
 		DAAF38980F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964B0F6D635E00B8A582 /* CEGUIIrrlichtRenderer.cpp */; };
-		DAAF38990F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096540F6D637300B8A582 /* CEGUIIrrlichtRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAAF38990F6FAD9C00EEADDB /* CEGUIIrrlichtRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096540F6D637300B8A582 /* CEGUIIrrlichtRenderer.h */; settings = {ATTRIBUTES = (); }; };
 		DAAF389A0F6FAD9C00EEADDB /* CEGUIIrrlichtRendererDef.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096550F6D637300B8A582 /* CEGUIIrrlichtRendererDef.h */; };
 		DAAF389B0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10964C0F6D635E00B8A582 /* CEGUIIrrlichtRenderTarget.cpp */; };
 		DAAF389C0F6FAD9C00EEADDB /* CEGUIIrrlichtRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096560F6D637300B8A582 /* CEGUIIrrlichtRenderTarget.h */; };
@@ -671,7 +671,7 @@
 		DAC4DE020F71005D000EF0AC /* CEGUIOgreGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10965C0F6D638C00B8A582 /* CEGUIOgreGeometryBuffer.cpp */; };
 		DAC4DE030F71005D000EF0AC /* CEGUIOgreGeometryBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096630F6D639E00B8A582 /* CEGUIOgreGeometryBuffer.h */; };
 		DAC4DE040F71005D000EF0AC /* CEGUIOgreRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10965D0F6D638C00B8A582 /* CEGUIOgreRenderer.cpp */; };
-		DAC4DE050F71005D000EF0AC /* CEGUIOgreRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096640F6D639E00B8A582 /* CEGUIOgreRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAC4DE050F71005D000EF0AC /* CEGUIOgreRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096640F6D639E00B8A582 /* CEGUIOgreRenderer.h */; settings = {ATTRIBUTES = (); }; };
 		DAC4DE060F71005D000EF0AC /* CEGUIOgreRenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10965E0F6D638C00B8A582 /* CEGUIOgreRenderTarget.cpp */; };
 		DAC4DE070F71005D000EF0AC /* CEGUIOgreRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1096650F6D639E00B8A582 /* CEGUIOgreRenderTarget.h */; };
 		DAC4DE080F71005D000EF0AC /* CEGUIOgreResourceProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10965F0F6D638C00B8A582 /* CEGUIOgreResourceProvider.cpp */; };
@@ -2268,6 +2268,7 @@
 		DA674A1E1035D8A600872D1D /* xml_imageset.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_imageset.dox; path = ../../doc/doxygen/xml_imageset.dox; sourceTree = SOURCE_ROOT; };
 		DA674A1F1035D8A600872D1D /* xml_layout.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_layout.dox; path = ../../doc/doxygen/xml_layout.dox; sourceTree = SOURCE_ROOT; };
 		DA674A211035D8A600872D1D /* xml_scheme.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_scheme.dox; path = ../../doc/doxygen/xml_scheme.dox; sourceTree = SOURCE_ROOT; };
+		DA849D481052E5F700C07E33 /* futurechanges.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = futurechanges.dox; path = ../../doc/doxygen/futurechanges.dox; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
 		DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedStringWordWrapper.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedStringWordWrapper.cpp; sourceTree = SOURCE_ROOT; };
@@ -3193,6 +3194,7 @@
 				DA1093A70F6D583800B8A582 /* devel.dox */,
 				DA1093A60F6D583800B8A582 /* doxyfile */,
 				DABEE4C11036C3C5001B58DA /* downloading.dox */,
+				DA849D481052E5F700C07E33 /* futurechanges.dox */,
 				DA1093AB0F6D583800B8A582 /* glew-lic.dox */,
 				DA674A1A1035D8A600872D1D /* licensing.dox */,
 				DA1093A80F6D583800B8A582 /* mainpage.dox */,
@@ -4626,7 +4628,6 @@
 			buildConfigurationList = DA10998F0F6D8D4200B8A582 /* Build configuration list for PBXNativeTarget "CEGUIOpenGLRenderer" */;
 			buildPhases = (
 				DA1099860F6D8D4100B8A582 /* Headers */,
-				DAAABC8D0F6E64A80003BE03 /* Custom Header Setup */,
 				DA1099880F6D8D4100B8A582 /* Sources */,
 				DA1099890F6D8D4100B8A582 /* Frameworks */,
 			);
@@ -5087,7 +5088,6 @@
 			buildConfigurationList = DAAABA0F0F6E53330003BE03 /* Build configuration list for PBXNativeTarget "CEGUILuaScriptModule" */;
 			buildPhases = (
 				DAAABA060F6E53320003BE03 /* Headers */,
-				DAAABCE80F6E70AC0003BE03 /* Custom Header Setup */,
 				DAAABAC10F6E56680003BE03 /* Copy Bundle Frameworks */,
 				DAAABA080F6E53320003BE03 /* Sources */,
 				DAAABA090F6E53320003BE03 /* Frameworks */,
@@ -5129,7 +5129,6 @@
 			buildConfigurationList = DAAF38850F6FACF900EEADDB /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */;
 			buildPhases = (
 				DAAF387C0F6FACF800EEADDB /* Headers */,
-				DAAF3A100F6FBCC000EEADDB /* Custom Header Setup */,
 				DAAF387D0F6FACF800EEADDB /* Resources */,
 				DAAF387E0F6FACF800EEADDB /* Sources */,
 				DAAF387F0F6FACF800EEADDB /* Frameworks */,
@@ -5149,7 +5148,6 @@
 			buildConfigurationList = DAC4DDF50F70FFBE000EF0AC /* Build configuration list for PBXNativeTarget "CEGUIOgreRenderer" */;
 			buildPhases = (
 				DAC4DDEC0F70FFBD000EF0AC /* Headers */,
-				DAC4DE630F7101DA000EF0AC /* Custom Header Setup */,
 				DAC4DDEE0F70FFBD000EF0AC /* Sources */,
 				DAC4DDEF0F70FFBD000EF0AC /* Frameworks */,
 			);
@@ -5368,7 +5366,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8110F6E4B6F0003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5382,7 +5380,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8350F6E4C020003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5396,7 +5394,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8580F6E4C870003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5410,7 +5408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8750F6E4CF50003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5424,7 +5422,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8920F6E4D660003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5438,7 +5436,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8B50F6E4DD40003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5452,7 +5450,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8D80F6E4E360003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5466,7 +5464,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8F90F6E4EC90003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5480,7 +5478,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB91E0F6E4F3C0003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5494,7 +5492,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB93B0F6E4FE90003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5508,7 +5506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAABAB30F6E564B0003BE03 /* Strip Embedded Framework Headers */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5536,7 +5534,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_SDK_PATH}/Dependencies/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAABC680F6E5FB20003BE03 /* Custom Header Setup */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5550,63 +5548,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=RendererModules --exclude=ScriptingModules --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\n";
-		};
-		DAAABC8D0F6E64A80003BE03 /* Custom Header Setup */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Custom Header Setup";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/OpenGL \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
-		};
-		DAAABCE80F6E70AC0003BE03 /* Custom Header Setup */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Custom Header Setup";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=support --exclude=\"*.am\" ./ScriptingModules/LuaScriptModule \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/ScriptingModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
-		};
-		DAAF3A100F6FBCC000EEADDB /* Custom Header Setup */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Custom Header Setup";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Irrlicht \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
-		};
-		DAC4DE630F7101DA000EF0AC /* Custom Header Setup */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Custom Header Setup";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --delete --exclude=\"*.am\" ./RendererModules/Ogre \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules\"\nrm \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"/*.h";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=ScriptingModules/*/support --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -6536,17 +6478,18 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
-				CEGUI_IRR_LINK_FLAGS = "-lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_FWK_PATH = "../../../Irrlicht-1.5";
+				CEGUI_IRR_LINK_FLAGS = "-framework Irrlicht";
 				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
-				CEGUI_IRR_SDK_PATH = "../../../Irrlicht-1.5";
 				CEGUI_IRR_SDK_VERSION = 14;
 				CEGUI_OGRE_ARCHS = i386;
+				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
-				CEGUI_OGRE_SDK_PATH = ../../../OgreSDK;
-				CEGUI_VERSION = 0.6.9999;
+				CEGUI_VERSION = 0.7.0;
 				COPY_PHASE_STRIP = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -6558,16 +6501,17 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
-				CEGUI_IRR_LINK_FLAGS = "-lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_FWK_PATH = "../../../Irrlicht-1.5";
+				CEGUI_IRR_LINK_FLAGS = "-framework Irrlicht";
 				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
-				CEGUI_IRR_SDK_PATH = "../../../Irrlicht-1.5";
 				CEGUI_IRR_SDK_VERSION = 14;
 				CEGUI_OGRE_ARCHS = i386;
+				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
-				CEGUI_OGRE_SDK_PATH = ../../../OgreSDK;
-				CEGUI_VERSION = 0.6.9999;
+				CEGUI_VERSION = 0.7.0;
 				COPY_PHASE_STRIP = YES;
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -7296,7 +7240,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_SDK_PATH)/Dependencies\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_FWK_PATH)\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -7309,17 +7253,14 @@
 					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/Ogre.framework/Headers",
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/include/OIS",
-					"$(CEGUI_IRR_SDK_PATH)/include",
+					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
+					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
 					../../cegui/include,
 				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/lib/Release",
-				);
+				LIBRARY_SEARCH_PATHS = "$(CEGUI_OGRE_FWK_PATH)/lib/Release";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -7341,7 +7282,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_SDK_PATH)/Dependencies\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_FWK_PATH)\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
@@ -7352,17 +7293,14 @@
 					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/Ogre.framework/Headers",
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/include/OIS",
-					"$(CEGUI_IRR_SDK_PATH)/include",
+					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
+					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
 					../../cegui/include,
 				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
-					"$(CEGUI_OGRE_SDK_PATH)/Dependencies/lib/Release",
-				);
+				LIBRARY_SEARCH_PATHS = "$(CEGUI_OGRE_FWK_PATH)/lib/Release";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -8184,6 +8122,10 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_FWK_PATH)",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -8197,14 +8139,10 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_IRR_SDK_PATH)/include",
+					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
 				);
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
-				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -8223,6 +8161,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(CEGUI_IRR_FWK_PATH)",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
@@ -8234,14 +8176,10 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_IRR_SDK_PATH)/include",
+					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
 				);
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
-				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -8262,7 +8200,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_SDK_PATH)/dependencies",
+					"$(CEGUI_OGRE_FWK_PATH)",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -8273,7 +8211,7 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_SDK_PATH)/dependencies/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
 				);
 				INFOPLIST_FILE = "CEGUIOgreRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -8297,7 +8235,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_SDK_PATH)/dependencies",
+					"$(CEGUI_OGRE_FWK_PATH)",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -8306,7 +8244,7 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_SDK_PATH)/dependencies/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
 				);
 				INFOPLIST_FILE = "CEGUIOgreRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";

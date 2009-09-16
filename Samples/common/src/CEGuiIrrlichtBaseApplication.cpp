@@ -48,7 +48,8 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     d_driver(0),
     d_smgr(0),
     d_renderer(0),
-    d_fps_value(0)
+    d_fps_value(0),
+    d_lastDisplaySize(800, 600)
 {
     using namespace irr;
 
@@ -221,8 +222,14 @@ void CEGuiIrrlichtBaseApplication::checkWindowResize()
         irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
     #endif
 
-//     CEGUI::System::getSingleton().notifyDisplaySizeChanged(
-//         CEGUI::Size(cur_size.Width, cur_size.Height));
+    if ((static_cast<float>(cur_size.Width) != d_lastDisplaySize.d_width) ||
+        (static_cast<float>(cur_size.Height) != d_lastDisplaySize.d_height))
+    {
+        d_lastDisplaySize.d_width = static_cast<float>(cur_size.Width);
+        d_lastDisplaySize.d_height = static_cast<float>(cur_size.Height);
+        CEGUI::System::getSingleton().
+            notifyDisplaySizeChanged(d_lastDisplaySize);
+    }
 }
 
 //----------------------------------------------------------------------------//

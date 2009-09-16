@@ -413,6 +413,9 @@ void System::renderGUI(void)
 
 			d_activeSheet->render();
 		}
+        // no sheet, so ensure default surface geometry is cleared
+        else
+            d_renderer->getDefaultRenderingRoot().clearGeometry();
 
 		d_gui_redraw = false;
 	}

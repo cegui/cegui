@@ -838,6 +838,7 @@ void Window::setText(const String& text)
 void Window::setFont(Font* font)
 {
     d_font = font;
+    d_renderedStringValid = false;
     WindowEventArgs args(this);
     onFontChanged(args);
 }
@@ -1650,6 +1651,8 @@ void Window::destroy(void)
         d_parent->removeChildWindow(this);
 
     cleanupChildren();
+
+    releaseRenderingWindow();
 }
 
 //----------------------------------------------------------------------------//
@@ -2654,7 +2657,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
-    if (tip)
+    if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
     fireEvent(EventMouseEnters, e, EventNamespace);
@@ -2664,8 +2667,9 @@ void Window::onMouseEnters(MouseEventArgs& e)
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
+    const Window* const mw = System::getSingleton().getWindowContainingMouse();
     Tooltip* const tip = getTooltip();
-    if (tip && System::getSingleton().getWindowContainingMouse() != tip)
+    if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
 
     fireEvent(EventMouseLeaves, e, EventNamespace);
@@ -3470,7 +3474,8 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
-        d_renderedString = getRenderedStringParser().parse(getTextVisual());
+        d_renderedString = getRenderedStringParser().parse(
+            getTextVisual(), getFont(), 0);
         d_renderedStringValid = true;
     }
 

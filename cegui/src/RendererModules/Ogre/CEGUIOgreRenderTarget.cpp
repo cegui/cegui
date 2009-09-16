@@ -45,13 +45,15 @@ OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
     d_renderTarget(0),
     d_viewport(0),
     d_matrix(Ogre::Matrix3::ZERO),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_viewportValid(false)
 {
 }
 
 //----------------------------------------------------------------------------//
 OgreRenderTarget::~OgreRenderTarget()
 {
+    delete d_viewport;
 }
 
 //----------------------------------------------------------------------------//
@@ -71,6 +73,7 @@ void OgreRenderTarget::setArea(const Rect& area)
 {
     d_area = area;
     d_matrixValid = false;
+    d_viewportValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -84,6 +87,9 @@ void OgreRenderTarget::activate()
 {
     if (!d_matrixValid)
         updateMatrix();
+
+    if (!d_viewportValid)
+        updateViewport();
 
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem._setProjectionMatrix(d_matrix);
@@ -186,6 +192,17 @@ void OgreRenderTarget::updateMatrix() const
     d_renderSystem._convertProjectionMatrix(tmp, d_matrix);
 
     d_matrixValid = true;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderTarget::updateViewport()
+{
+    if (d_viewport)
+        d_viewport->_updateDimensions();
+    else
+        d_viewport = new Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
+
+    d_viewportValid = true;
 }
 
 //----------------------------------------------------------------------------//

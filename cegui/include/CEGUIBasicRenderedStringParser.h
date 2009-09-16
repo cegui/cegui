@@ -93,7 +93,9 @@ public:
     const ColourRect& getInitialColours() const;
 
     // implement required interface from RenderedStringParser
-    RenderedString parse(const String& input_string);
+    RenderedString parse(const String& input_string,
+                         Font* initial_font,
+                         const ColourRect* initial_colours);
 
 protected:
     //! append the text string \a text to the RenderedString \a rs.

@@ -52,6 +52,12 @@ public:
     Direct3D9TextureTarget(Direct3D9Renderer& owner);
     virtual ~Direct3D9TextureTarget();
 
+    //! auto called via the Renderer prior to Reset on the Direct3DDevice9.
+    void preD3DReset();
+
+    //! auto called via the Renderer after Reset on the Direct3DDevice9.
+    void postD3DReset();
+
     // overrides from Direct3D9RenderTarget
     void activate();
     void deactivate();

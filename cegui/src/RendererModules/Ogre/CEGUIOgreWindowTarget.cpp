@@ -46,14 +46,11 @@ OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
     );
 
     setArea(init_area);
-
-    d_viewport = new Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
 }
 
 //----------------------------------------------------------------------------//
 OgreWindowTarget::~OgreWindowTarget()
 {
-    delete d_viewport;
 }
 
 //----------------------------------------------------------------------------//

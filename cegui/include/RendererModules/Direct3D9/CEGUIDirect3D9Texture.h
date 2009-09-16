@@ -65,6 +65,12 @@ public:
     */
     void setOriginalDataSize(const Size& sz);
 
+    //! auto called via the Renderer prior to Reset on the Direct3DDevice9.
+    void preD3DReset();
+
+    //! auto called via the Renderer after Reset on the Direct3DDevice9.
+    void postD3DReset();
+
     // implement abstract members from base class.
     const Size& getSize() const;
     const Size& getOriginalDataSize() const;
@@ -111,6 +117,10 @@ protected:
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2 d_texelScaling;
+    //! holds info about the texture surface before we released it for reset.
+    D3DSURFACE_DESC d_savedSurfaceDesc;
+    //! true when d_savedSurfaceDesc is valid and texture can be restored.
+    bool d_savedSurfaceDescValid;
 };
 
 } // End of  CEGUI namespace section
