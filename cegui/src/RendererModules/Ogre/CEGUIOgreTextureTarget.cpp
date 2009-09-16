@@ -55,7 +55,6 @@ OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
 //----------------------------------------------------------------------------//
 OgreTextureTarget::~OgreTextureTarget()
 {
-    delete d_viewport;
     d_owner.destroyTexture(*d_CEGUITexture);
 }
 
@@ -68,6 +67,9 @@ bool OgreTextureTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 void OgreTextureTarget::clear()
 {
+    if (!d_viewportValid)
+        updateViewport();
+
     Ogre::Viewport* old_vp = d_renderSystem._getViewport();
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
@@ -104,8 +106,10 @@ void OgreTextureTarget::declareRenderSize(const Size& sz)
 
     setArea(init_area);
 
+    // delete viewport and reset ptr so a new one is generated.  This is
+    // required because we have changed d_renderTarget so need a new VP also.
     delete d_viewport;
-    d_viewport = new Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
+    d_viewport = 0;
 
     // because Texture takes ownership, the act of setting the new ogre texture
     // also ensures any previous ogre texture is released.

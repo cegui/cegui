@@ -32,10 +32,18 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-RenderedString DefaultRenderedStringParser::parse(const String& input_string)
+RenderedString DefaultRenderedStringParser::parse(
+                                        const String& input_string,
+                                        Font* initial_font,
+                                        const ColourRect* initial_colours)
 {
     RenderedString rs;
-    rs.appendComponent(RenderedStringTextComponent(input_string));
+    RenderedStringTextComponent rstc(input_string, initial_font);
+
+    if (initial_colours)
+        rstc.setColours(*initial_colours);
+
+    rs.appendComponent(rstc);
     return rs;
 }
 

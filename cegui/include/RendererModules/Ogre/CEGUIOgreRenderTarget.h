@@ -59,6 +59,8 @@ public:
 protected:
     //! helper that initialises the cached matrix
     void updateMatrix() const;
+    //! helper that initialises the viewport
+    void updateViewport();
 
     //! OgreRenderer object that owns this RenderTarget
     OgreRenderer& d_owner;
@@ -76,6 +78,8 @@ protected:
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable float d_viewDistance;
+    //! true when d_viewport is up to date and valid.
+    bool d_viewportValid;
 };
 
 } // End of  CEGUI namespace section

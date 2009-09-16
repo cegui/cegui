@@ -88,6 +88,8 @@ protected:
     CEGUI::GeometryBuffer* d_fps_geometry;
     CEGUI::GeometryBuffer* d_logo_geometry;
 
+    //! size of display last time a change was detected.
+    CEGUI::Size d_lastDisplaySize;
 };
 
 

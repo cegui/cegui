@@ -142,8 +142,8 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-                 static_cast<GLsizei>(d_area.d_right),
-                 static_cast<GLsizei>(d_area.d_bottom),
+                 static_cast<GLsizei>(DEFAULT_SIZE),
+                 static_cast<GLsizei>(DEFAULT_SIZE),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
                               GL_TEXTURE_2D, d_texture, 0);

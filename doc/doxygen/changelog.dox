@@ -55,6 +55,7 @@ The following is a high-level view of changes made to Crazy Eddie's GUI System f
 - Removed: Duplicate text formatting enumerations - now using a single version (the HorizontalTextFormatting and VerticalTextFormatting enums in the CEGUIFalEnums.h file)
 - Removed: Apple specific version of resource setup in samples (no longer required due to other improvements).
 
+- Modified: Changed key handling in editbox classes to allow user subscribed events to 'consume' keys and prevent the usual processing from occuring.
 - Modified: CEGUI::Exception to derive from std::exception (for: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=5&t=4267 and others from waaay back).
 - Modified: Made CEGUI::LuaScriptModule constructor / destructor private - access is now via LuaScriptModule::create and LuaScriptModule::destroy static functions.
 - Modified: Made CEGUI::System constructor / destructor private - access is now via System::create and System::destroy static functions.  Additionally, first parameter changed from being a Renderer pointer to a Renderer reference (reinforces that it may not be 0).
