@@ -274,7 +274,7 @@ function setup_static_samples()
     if DIRECT3D9_RENDERER then
         library_static("dxguid")
         library_static("d3dx9")
-        library_static("dxerr9")
+        library_static("dxerr")
     end
 
     if DIRECT3D10_RENDERER then
