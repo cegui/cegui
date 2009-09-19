@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,6 +35,10 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIGeometryBuffer.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIRenderTarget.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -49,10 +53,157 @@
 *************************************************************************/
 const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
 
+//----------------------------------------------------------------------------//
+CEGuiBaseApplication::CEGuiBaseApplication() :
+    d_quitting(false),
+    d_renderer(0),
+    d_imageCodec(0),
+    d_resourceProvider(0),
+    d_logoGeometry(0),
+    d_FPSGeometry(0),
+    d_FPSElapsed(0.0f),
+    d_FPSFrames(0),
+    d_FPSValue(0)
+{
+}
 
-/***********************************************************************
-    Return env var value that tells us where data should be
-*************************************************************************/
+//----------------------------------------------------------------------------//
+CEGuiBaseApplication::~CEGuiBaseApplication()
+{
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
+{
+    CEGUI::System& gui_system(CEGUI::System::getSingleton());
+
+    gui_system.injectTimePulse(elapsed);
+    updateFPS(elapsed);
+    updateLogo(elapsed);
+
+    beginRendering(elapsed);
+    gui_system.renderGUI();
+    endRendering();
+}
+
+//----------------------------------------------------------------------------//
+bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
+{
+    if (!d_renderer)
+        throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
+            "Base application subclass did not create Renderer!");
+
+    // start up CEGUI system using objects created in subclass constructor.
+    CEGUI::System::create(*d_renderer, d_resourceProvider, 0, d_imageCodec);
+
+    // initialise resource system
+    initialiseResourceGroupDirectories();
+    initialiseDefaultResourceGroups();
+
+    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
+
+    // setup for FPS value
+    d_FPSGeometry = &d_renderer->createGeometryBuffer();
+    d_FPSGeometry->setClippingRegion(scrn);
+
+    // setup for spinning logo
+    d_logoGeometry = &d_renderer->createGeometryBuffer();
+    d_logoGeometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
+    positionLogo();
+
+    // create logo imageset and draw the image (we only ever draw this once)
+    CEGUI::ImagesetManager::getSingleton().
+        createFromImageFile("cegui_logo", "logo.png", "imagesets");
+    CEGUI::ImagesetManager::getSingleton().get("cegui_logo").
+        getImage("full_image").draw(*d_logoGeometry, CEGUI::Rect(0, 0, 100, 69.5f), 0);
+
+    // clearing this queue actually makes sure it's created(!)
+    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    d_renderer->getDefaultRenderingRoot().
+        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+            CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
+                                     this));
+
+    // subscribe handler to reposition logo when window is sized.
+    CEGUI::System::getSingleton().subscribeEvent(
+        CEGUI::System::EventDisplaySizeChanged,
+        CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
+                                 this));
+
+    return execute_impl(sampleApp);
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::cleanup()
+{
+    cleanup_impl();
+
+    CEGUI::ImagesetManager::getSingleton().destroy("cegui_logo");
+    d_renderer->destroyGeometryBuffer(*d_logoGeometry);
+    d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
+    CEGUI::System::destroy();
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::setQuitting(bool quit)
+{
+    d_quitting = quit;
+}
+
+//----------------------------------------------------------------------------//
+bool CEGuiBaseApplication::isQuitting() const
+{
+    return d_quitting;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::initialiseResourceGroupDirectories()
+{
+    // initialise the required dirs for the DefaultResourceProvider
+    CEGUI::DefaultResourceProvider* rp =
+        static_cast<CEGUI::DefaultResourceProvider*>
+            (CEGUI::System::getSingleton().getResourceProvider());
+
+    const char* dataPathPrefix = getDataPathPrefix();
+    char resourcePath[PATH_MAX];
+
+    // for each resource type, set a resource group directory
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
+    rp->setResourceGroupDirectory("schemes", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
+    rp->setResourceGroupDirectory("imagesets", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
+    rp->setResourceGroupDirectory("fonts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
+    rp->setResourceGroupDirectory("layouts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
+    rp->setResourceGroupDirectory("looknfeels", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
+    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
+    rp->setResourceGroupDirectory("schemas", resourcePath);   
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::initialiseDefaultResourceGroups()
+{
+    // set the default resource groups to be used
+    CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+    CEGUI::Font::setDefaultResourceGroup("fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+    CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+    CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+
+    // setup default group for validation schemas
+    CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
+    if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+        parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+}
+
+//----------------------------------------------------------------------------//
 const char* CEGuiBaseApplication::getDataPathPrefix() const
 {
     static char dataPathPrefix[PATH_MAX];
@@ -85,48 +236,82 @@ const char* CEGuiBaseApplication::getDataPathPrefix() const
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::initialiseResourceGroupDirectories()
+bool CEGuiBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
 {
-    // initialise the required dirs for the DefaultResourceProvider
-    CEGUI::DefaultResourceProvider* rp =
-        static_cast<CEGUI::DefaultResourceProvider*>
-            (CEGUI::System::getSingleton().getResourceProvider());
-    
-    const char* dataPathPrefix = getDataPathPrefix();
-    char resourcePath[PATH_MAX];
+    using namespace CEGUI;
 
-    // for each resource type, set a resource group directory
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
-    rp->setResourceGroupDirectory("schemes", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
-    rp->setResourceGroupDirectory("imagesets", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
-    rp->setResourceGroupDirectory("fonts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
-    rp->setResourceGroupDirectory("layouts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
-    rp->setResourceGroupDirectory("looknfeels", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
-    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    rp->setResourceGroupDirectory("schemas", resourcePath);   
+    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+        return false;
+
+    // draw the logo
+    d_logoGeometry->draw();
+    // draw FPS value
+    d_FPSGeometry->draw();
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::initialiseDefaultResourceGroups()
+void CEGuiBaseApplication::updateFPS(const float elapsed)
 {
-    // set the default resource groups to be used
-    CEGUI::Imageset::setDefaultResourceGroup("imagesets");
-    CEGUI::Font::setDefaultResourceGroup("fonts");
-    CEGUI::Scheme::setDefaultResourceGroup("schemes");
-    CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
-    CEGUI::WindowManager::setDefaultResourceGroup("layouts");
-    CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
-    
-    // setup default group for validation schemas
-    CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
-    if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
-        parser->setProperty("SchemaDefaultResourceGroup", "schemas");        
+    // another frame
+    ++d_FPSFrames;
+
+    if ((d_FPSElapsed += elapsed) >= 1.0f)
+    {
+        if (d_FPSFrames != d_FPSValue)
+        {
+            d_FPSValue = d_FPSFrames;
+
+            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultFont();
+            if (!fnt)
+                return;
+
+            // update FPS imagery
+            char fps_textbuff[16];
+            sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
+
+            d_FPSGeometry->reset();
+            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2(0, 0), 0,
+                        CEGUI::colour(0xFFFFFFFF));
+        }
+
+        // reset counter state
+        d_FPSFrames = 0;
+        d_FPSElapsed = 0.0f;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::updateLogo(const float elapsed)
+{
+    static float rot = 0.0f;
+    d_logoGeometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+    rot += 180.0f * elapsed;
+    if (rot > 360.0f)
+        rot -= 360.0f;
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::positionLogo()
+{
+    const CEGUI::Rect scrn(d_renderer->getDefaultRenderingRoot().
+        getRenderTarget().getArea());
+
+    d_logoGeometry->setClippingRegion(scrn);
+    d_logoGeometry->setTranslation(
+        CEGUI::Vector3(10.0f, scrn.getSize().d_height - 80.0f, 0.0f));
+}
+
+//----------------------------------------------------------------------------//
+bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
+{
+    // clear FPS geometry and see that it gets recreated in the next frame
+    d_FPSGeometry->reset();
+    d_FPSValue = 0;
+
+    positionLogo();
+    return true;
 }
 
 //----------------------------------------------------------------------------//
