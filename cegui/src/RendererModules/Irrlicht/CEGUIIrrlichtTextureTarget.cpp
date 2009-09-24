@@ -93,8 +93,10 @@ Texture& IrrlichtTextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
 {
-    bool realloc = ((d_area.getWidth() < sz.d_width) ||
-                    (d_area.getHeight() < sz.d_height));
+    const bool realloc =
+                !d_texture ||
+                static_cast<float>(d_texture->getSize().Width) < sz.d_width ||
+                static_cast<float>(d_texture->getSize().Height) < sz.d_height;
 
     // update area to render into.
     setArea(Rect(d_area.getPosition(), sz));
@@ -103,16 +105,19 @@ void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
     if (!realloc)
         return;
 
+    // get adjusted size - to account for device capabilities
+    const Size final_sz(d_owner.getAdjustedTextureSize(sz));
+
     cleanupTargetTexture();
 
     #if CEGUI_IRR_SDK_VERSION >= 16
         const irr::core::dimension2d<irr::u32> irr_sz(
-            static_cast<irr::u32>(sz.d_width),
-            static_cast<irr::u32>(sz.d_height));
+            static_cast<irr::u32>(final_sz.d_width),
+            static_cast<irr::u32>(final_sz.d_height));
     #else
         const irr::core::dimension2d<irr::s32> irr_sz(
-            static_cast<irr::s32>(sz.d_width),
-            static_cast<irr::s32>(sz.d_height));
+            static_cast<irr::s32>(final_sz.d_width),
+            static_cast<irr::s32>(final_sz.d_height));
     #endif
 
     d_texture = d_driver.addRenderTargetTexture(
