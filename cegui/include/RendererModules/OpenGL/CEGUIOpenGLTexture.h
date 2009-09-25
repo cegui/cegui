@@ -112,13 +112,14 @@ protected:
     friend void OpenGLRenderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    OpenGLTexture();
+    OpenGLTexture(OpenGLRenderer& owner);
     //! Constructor that creates a Texture from an image file.
-    OpenGLTexture(const String& filename, const String& resourceGroup);
+    OpenGLTexture(OpenGLRenderer& owner,
+                  const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLTexture(const Size& size);
+    OpenGLTexture(OpenGLRenderer& owner, const Size& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(GLuint tex, const Size& size);
+    OpenGLTexture(OpenGLRenderer& owner, GLuint tex, const Size& size);
     //! Destructor.
     virtual ~OpenGLTexture();
 
@@ -127,9 +128,6 @@ protected:
 
     //! updates cached scale value used to map pixels to texture co-ords.
     void updateCachedScaleValues();
-
-    //! returns next power of 2 size if \a size is not power of 2
-    float getSizeNextPOT(float sz) const;
 
     //! clean up the GL texture, or the grab buffer if it had been grabbed
     void cleanupOpenGLTexture();
@@ -144,6 +142,8 @@ protected:
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2 d_texelScaling;
+    //! OpenGLRenderer that created and owns this OpenGLTexture
+    OpenGLRenderer& d_owner;
 };
 
 } // End of  CEGUI namespace section
