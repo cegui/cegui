@@ -78,12 +78,12 @@ available for those who want or need that older code.
 To check out a copy of the current stable branch from subversion, you might use
 the following command (or copy the server string into your GUI based SVN client)
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/branches/v0-7 cegui-v0-7
+svn co https://crayzedsgui.svn.sourceforge.net/svnroot/crayzedsgui/cegui_mk2/branches/v0-7 cegui-v0-7
 @endverbatim
 
 Or, if you prefer the latest unstable code for testing purposes:
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/cegui_mk2/trunk cegui-trunk
+svn co https://crayzedsgui.svn.sourceforge.net/svnroot/crayzedsgui/cegui_mk2/trunk cegui-trunk
 @endverbatim
 
 You can also browse the repository from your web browser here:
