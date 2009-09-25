@@ -178,6 +178,26 @@ public:
     */
     void restoreTextures();
 
+    /*!
+    \brief
+        Helper to return a valid texture size according to reported OpenGL
+        capabilities.
+
+    \param sz
+        Size object containing input size.
+
+    \return
+        Size object containing - possibly different - output size.
+    */
+    Size getAdjustedTextureSize(const Size& sz) const;
+
+    /*!
+    \brief
+        Utility function that will return \a f if it's a power of two, or the
+        next power of two up from \a f if it's not.
+    */
+    static float getNextPOTSize(const float f);
+
 private:
     /*!
     \brief
