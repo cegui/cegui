@@ -865,7 +865,7 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, ui
 	// if sorting is enabled, use add instead of insert
 	if (getSortDirection() != ListHeaderSegment::None)
 	{
-		return addRow(item, col_id);
+		return addRow(item, col_id, row_id);
 	}
 	else
 	{
