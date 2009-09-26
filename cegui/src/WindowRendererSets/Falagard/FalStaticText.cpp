@@ -51,6 +51,8 @@ namespace CEGUI
     FalagardStaticTextProperties::HorzFormatting    FalagardStaticText::d_horzFormattingProperty;
     FalagardStaticTextProperties::VertScrollbar     FalagardStaticText::d_vertScrollbarProperty;
     FalagardStaticTextProperties::HorzScrollbar     FalagardStaticText::d_horzScrollbarProperty;
+    FalagardStaticTextProperties::HorzExtent        FalagardStaticText::d_horzExtentProperty;
+    FalagardStaticTextProperties::VertExtent        FalagardStaticText::d_vertExtentProperty;
 
     /*************************************************************************
         Child Widget name suffix constants
@@ -68,13 +70,16 @@ namespace CEGUI
         d_textCols(0xFFFFFFFF),
         d_enableVertScrollbar(false),
         d_enableHorzScrollbar(false),
-        d_formattedRenderedString(0)
+        d_formattedRenderedString(0),
+        d_formatValid(false)
     {
         registerProperty(&d_textColoursProperty);
         registerProperty(&d_vertFormattingProperty);
         registerProperty(&d_horzFormattingProperty);
         registerProperty(&d_vertScrollbarProperty);
         registerProperty(&d_horzScrollbarProperty);
+        registerProperty(&d_horzExtentProperty);
+        registerProperty(&d_vertExtentProperty);
     }
 
 //----------------------------------------------------------------------------//
@@ -90,10 +95,6 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::render()
     {
-        // create formatter if needed
-        if (!d_formattedRenderedString && d_window)
-            setupStringFormatter();
-
         // base class rendering
         FalagardStatic::render();
 
@@ -110,7 +111,8 @@ namespace CEGUI
         const Rect clipper(getTextRenderArea());
         Rect absarea(clipper);
 
-        d_formattedRenderedString->format(clipper.getSize());
+        if (!d_formatValid)
+            updateFormatting(clipper.getSize());
 
         // see if we may need to adjust horizontal position
         const Scrollbar* const horzScrollbar = getHorzScrollbar();
@@ -237,7 +239,9 @@ namespace CEGUI
         if (!d_formattedRenderedString)
             return Size(0, 0);
 
-        d_formattedRenderedString->format(renderArea.getSize());
+        if (!d_formatValid)
+            updateFormatting(renderArea.getSize());
+
         return Size(d_formattedRenderedString->getHorizontalExtent(),
                     d_formattedRenderedString->getVerticalExtent());
     }
@@ -357,6 +361,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::onTextChanged(const EventArgs&)
     {
+        d_formatValid = false;
         configureScrollbars();
         d_window->invalidate();
         return true;
@@ -368,6 +373,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::onSized(const EventArgs&)
     {
+        d_formatValid = false;
         configureScrollbars();
         return true;
     }
@@ -378,6 +384,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::onFontChanged(const EventArgs&)
     {
+        d_formatValid = false;
         configureScrollbars();
         d_window->invalidate();
         return true;
@@ -466,11 +473,12 @@ namespace CEGUI
     }
 
 //----------------------------------------------------------------------------//
-    void FalagardStaticText::setupStringFormatter()
+    void FalagardStaticText::setupStringFormatter() const
     {
         // delete any existing formatter
         delete d_formattedRenderedString;
         d_formattedRenderedString = 0;
+        d_formatValid = false;
 
         // create new formatter of whichever type...
         switch(d_horzFormatting)
@@ -520,6 +528,50 @@ namespace CEGUI
             break;
         }
     }
+
+//----------------------------------------------------------------------------//
+float FalagardStaticText::getHorizontalTextExtent() const
+{
+    if (!d_formatValid)
+        updateFormatting();
+
+    return d_formattedRenderedString ?
+        d_formattedRenderedString->getHorizontalExtent() :
+        0.0f;
+}
+
+//----------------------------------------------------------------------------//
+float FalagardStaticText::getVerticalTextExtent() const
+{
+    if (!d_formatValid)
+        updateFormatting();
+
+    return d_formattedRenderedString ?
+        d_formattedRenderedString->getVerticalExtent() :
+        0.0f;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::updateFormatting() const
+{
+    updateFormatting(getTextRenderArea().getSize());
+}
+
+//----------------------------------------------------------------------------//
+void FalagardStaticText::updateFormatting(const Size& sz) const
+{
+    if (!d_window)
+        return;
+
+    if (!d_formattedRenderedString)
+        setupStringFormatter();
+
+    // 'touch' the window's rendered string to ensure it's re-parsed if needed.
+    d_window->getRenderedString();
+
+    d_formattedRenderedString->format(sz);
+    d_formatValid = true;
+}
 
 //----------------------------------------------------------------------------//
 
