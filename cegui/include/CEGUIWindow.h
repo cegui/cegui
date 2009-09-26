@@ -44,6 +44,7 @@
 #include "CEGUIWindowRenderer.h"
 #include "CEGUITextUtils.h"
 #include "CEGUIBasicRenderedStringParser.h"
+#include "CEGUIDefaultRenderedStringParser.h"
 #include <vector>
 #include <set>
 
@@ -196,6 +197,8 @@ public:
     static const String EventRotated;
     //! Window non-client setting was changed
     static const String EventNonClientChanged;
+    //! Window text parsing setting was changed
+    static const String EventTextParsingChanged;
 
     // generated externally (inputs)
     //! Mouse cursor has entered the Window.
@@ -2816,6 +2819,10 @@ public:
     void setCustomRenderedStringParser(RenderedStringParser* parser);
     //! return the active RenderedStringParser to be used
     virtual RenderedStringParser& getRenderedStringParser() const;
+    //! return whether text parsing is enabled for this window.
+    bool isTextParsingEnabled() const;
+    //! set whether text parsing is enabled for this window.
+    void setTextParsingEnabled(const bool setting);
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
@@ -3341,6 +3348,18 @@ protected:
     */
     virtual void onNonClientChanged(WindowEventArgs& e);
 
+    /*!
+    \brief
+        Handler called when the window's setting for whether text parsing is
+        enabled is changed.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onTextParsingChanged(WindowEventArgs& e);
+
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
@@ -3669,6 +3688,7 @@ protected:
     static  WindowProperties::YRotation d_yRotationProperty;
     static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
+    static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
 
     /*************************************************************************
         Implementation Data
@@ -3758,8 +3778,12 @@ protected:
     mutable bool d_renderedStringValid;
     //! Shared instance of a parser to be used in most instances.
     static BasicRenderedStringParser d_basicStringParser;
+    //! Shared instance of a parser to be used when rendering text verbatim.
+    static DefaultRenderedStringParser d_defaultStringParser;
     //! Pointer to a custom (user assigned) RenderedStringParser object.
     RenderedStringParser* d_customStringParser;
+    //! true if use of parser other than d_defaultStringParser is enabled
+    bool d_textParsingEnabled;
 
     //! User ID assigned to this Window
     uint d_ID;

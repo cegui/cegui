@@ -88,6 +88,9 @@ Editbox::Editbox(const String& type, const String& name) :
 {
     addEditboxProperties();
 
+    // override default and disable text parsing
+    d_textParsingEnabled = false;
+
 #ifdef CEGUI_HAS_PCRE_REGEX
     d_validator = new PCRERegexMatcher;
     // default to accepting all characters

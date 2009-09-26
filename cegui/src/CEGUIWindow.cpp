@@ -101,6 +101,7 @@ const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventRotated("Rotated");
 const String Window::EventNonClientChanged("NonClientChanged");
+const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMouseEnters("MouseEnter");
 const String Window::EventMouseLeaves("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
@@ -121,6 +122,7 @@ const String Window::AutoWidgetNameSuffix("__auto_");
 //----------------------------------------------------------------------------//
 Window* Window::d_captureWindow     = 0;
 BasicRenderedStringParser Window::d_basicStringParser;
+DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
 WindowProperties::Alpha             Window::d_alphaProperty;
@@ -166,6 +168,8 @@ WindowProperties::XRotation Window::d_xRotationProperty;
 WindowProperties::YRotation Window::d_yRotationProperty;
 WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
+WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
+
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name) :
@@ -220,6 +224,7 @@ Window::Window(const String& type, const String& name) :
     d_bidiDataValid(false),
     d_renderedStringValid(false),
     d_customStringParser(0),
+    d_textParsingEnabled(true),
 
     // user specific data
     d_ID(0),
@@ -1414,6 +1419,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_yRotationProperty);
     addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
+    addProperty(&d_textParsingEnabledProperty);
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -3498,7 +3504,9 @@ void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 //----------------------------------------------------------------------------//
 RenderedStringParser& Window::getRenderedStringParser() const
 {
-    if (d_customStringParser)
+    if (!d_textParsingEnabled)
+        return d_defaultStringParser;
+    else if (d_customStringParser)
         return *d_customStringParser;
     else
         return d_basicStringParser;
@@ -3548,6 +3556,28 @@ const String& Window::getTextVisual() const
     }
 
     return d_bidiVisualMapping->getTextVisual();
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isTextParsingEnabled() const
+{
+    return d_textParsingEnabled;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setTextParsingEnabled(const bool setting)
+{
+    d_textParsingEnabled = setting;
+    d_renderedStringValid = false;
+
+    WindowEventArgs args(this);
+    onTextParsingChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onTextParsingChanged(WindowEventArgs& e)
+{
+    fireEvent(EventTextParsingChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

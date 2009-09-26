@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Aug  3 11:32:18 2009.
+** Generated automatically by tolua++-1.0.92 on Sat Sep 26 18:10:22 2009.
 */
 
 #ifndef __cplusplus
@@ -19516,6 +19516,71 @@ static int tolua_CEGUI_CEGUI_Window_getGeometryBuffer00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getGeometryBuffer'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isTextParsingEnabled of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isTextParsingEnabled00
+static int tolua_CEGUI_CEGUI_Window_isTextParsingEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isTextParsingEnabled'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isTextParsingEnabled();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isTextParsingEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setTextParsingEnabled of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setTextParsingEnabled00
+static int tolua_CEGUI_CEGUI_Window_setTextParsingEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool setting = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTextParsingEnabled'",NULL);
+#endif
+ {
+  self->setTextParsingEnabled(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setTextParsingEnabled'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53270,6 +53335,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isNonClientWindow",tolua_CEGUI_CEGUI_Window_isNonClientWindow00);
    tolua_function(tolua_S,"setNonClientWindow",tolua_CEGUI_CEGUI_Window_setNonClientWindow00);
    tolua_function(tolua_S,"getGeometryBuffer",tolua_CEGUI_CEGUI_Window_getGeometryBuffer00);
+   tolua_function(tolua_S,"isTextParsingEnabled",tolua_CEGUI_CEGUI_Window_isTextParsingEnabled00);
+   tolua_function(tolua_S,"setTextParsingEnabled",tolua_CEGUI_CEGUI_Window_setTextParsingEnabled00);
    tolua_function(tolua_S,"getUnprojectedPosition",tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);

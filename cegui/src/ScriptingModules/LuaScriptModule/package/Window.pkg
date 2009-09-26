@@ -251,6 +251,9 @@ class Window //: public EventSet
 
     GeometryBuffer& getGeometryBuffer();
 
+    bool isTextParsingEnabled() const;
+    void setTextParsingEnabled(bool setting);
+
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
 	//////////////////////////////////////////////
