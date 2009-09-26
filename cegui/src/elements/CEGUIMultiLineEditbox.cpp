@@ -124,6 +124,9 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	d_selectionBrush(0)
 {
 	addMultiLineEditboxProperties();
+
+    // override default and disable text parsing
+    d_textParsingEnabled = false;
 }
 
 

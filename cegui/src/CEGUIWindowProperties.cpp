@@ -697,6 +697,20 @@ void NonClient::set(PropertyReceiver* receiver, const String& value)
 }
 
 //----------------------------------------------------------------------------//
+String TextParsingEnabled::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const Window*>(receiver)->isTextParsingEnabled());
+}
+
+//----------------------------------------------------------------------------//
+void TextParsingEnabled::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->
+        setTextParsingEnabled(PropertyHelper::stringToBool(value));
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  WindowProperties namespace section
 
