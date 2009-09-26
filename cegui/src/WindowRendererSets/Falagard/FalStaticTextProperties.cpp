@@ -30,6 +30,7 @@
 #include "FalStaticTextProperties.h"
 #include "FalStaticText.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -214,6 +215,42 @@ void	HorzScrollbar::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->getWindowRenderer());
     wr->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
 }
+
+//----------------------------------------------------------------------------//
+String HorzExtent::get(const PropertyReceiver* receiver) const
+{
+    FalagardStaticText* wr = static_cast<FalagardStaticText*>(
+    static_cast<const Window*>(receiver)->getWindowRenderer());
+    return PropertyHelper::floatToString(wr->getHorizontalTextExtent());
+}
+
+//----------------------------------------------------------------------------//
+void HorzExtent::set(PropertyReceiver* receiver, const String& value)
+{
+    Logger::getSingleton().logEvent("Attempt to set value of '" + value + "' "
+        " to read only property 'HorzExtent' on window: " +
+        static_cast<Window*>(receiver)->getName(),
+        Errors);
+}
+
+//----------------------------------------------------------------------------//
+String VertExtent::get(const PropertyReceiver* receiver) const
+{
+    FalagardStaticText* wr = static_cast<FalagardStaticText*>(
+    static_cast<const Window*>(receiver)->getWindowRenderer());
+    return PropertyHelper::floatToString(wr->getVerticalTextExtent());
+}
+
+//----------------------------------------------------------------------------//
+void VertExtent::set(PropertyReceiver* receiver, const String& value)
+{
+    Logger::getSingleton().logEvent("Attempt to set value of '" + value + "' "
+        " to read only property 'VertExtent' on window: " +
+        static_cast<Window*>(receiver)->getName(),
+        Errors);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  FalagardStaticTextProperties namespace section
 

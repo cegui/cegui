@@ -155,9 +155,20 @@ namespace CEGUI
         */
         void    setHorizontalScrollbarEnabled(bool setting);
 
+        //! return the current horizontal formatted text extent in pixels.
+        float getHorizontalTextExtent() const;
+
+        //! return the current vertical formatted text extent in pixels.
+        float getVerticalTextExtent() const;
+
         void render(void);
 
     protected:
+        //! update string formatting (gets area size to use from looknfeel)
+        void updateFormatting() const;
+        //! update string formatting using given area size.
+        void updateFormatting(const Size& sz) const;
+
         // overridden from FalagardStatic base class
         void onLookNFeelAssigned();
         void onLookNFeelUnassigned();
@@ -169,7 +180,7 @@ namespace CEGUI
         Scrollbar* getHorzScrollbar(void) const;
         Rect getTextRenderArea(void) const;
         Size getDocumentSize(const Rect& renderArea) const;
-        void setupStringFormatter();
+        void setupStringFormatter() const;
 
         // overridden event handlers
         bool onTextChanged(const EventArgs& e);
@@ -186,6 +197,8 @@ namespace CEGUI
         static FalagardStaticTextProperties::HorzFormatting d_horzFormattingProperty;
         static FalagardStaticTextProperties::VertScrollbar  d_vertScrollbarProperty;
         static FalagardStaticTextProperties::HorzScrollbar  d_horzScrollbarProperty;
+        static FalagardStaticTextProperties::HorzExtent     d_horzExtentProperty;
+        static FalagardStaticTextProperties::VertExtent     d_vertExtentProperty;
 
         // implementation data
         //! Horizontal formatting to be applied to the text.
@@ -197,10 +210,13 @@ namespace CEGUI
         bool            d_enableHorzScrollbar;  //!< true if horizontal scroll bar is enabled.
 
         //! Class that renders RenderedString with some formatting.
-        FormattedRenderedString* d_formattedRenderedString;
+        mutable FormattedRenderedString* d_formattedRenderedString;
 
         typedef std::vector<Event::Connection> ConnectionList;
         ConnectionList  d_connections;
+
+        //! true when string formatting is up to date.
+        mutable bool d_formatValid;
     };
 
 } // End of  CEGUI namespace section
