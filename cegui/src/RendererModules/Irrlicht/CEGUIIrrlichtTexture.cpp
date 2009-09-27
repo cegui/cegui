@@ -30,7 +30,6 @@
 #endif
 
 #include "CEGUIIrrlichtTexture.h"
-#include "CEGUIIrrlichtRenderer.h"
 #include "CEGUISystem.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIImageCodec.h"
@@ -117,17 +116,25 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     freeIrrlichtTexture();
 
+    const Size tex_sz(d_owner.getAdjustedTextureSize(buffer_size));
+
     #if CEGUI_IRR_SDK_VERSION >= 16
         const irr::core::dimension2d<irr::u32> irr_sz(
-            static_cast<irr::u32>(buffer_size.d_width),
-            static_cast<irr::u32>(buffer_size.d_height));
+            static_cast<irr::u32>(tex_sz.d_width),
+            static_cast<irr::u32>(tex_sz.d_height));
     #else
         const irr::core::dimension2d<irr::s32> irr_sz(
-            static_cast<irr::s32>(buffer_size.d_width),
-            static_cast<irr::s32>(buffer_size.d_height));
+            static_cast<irr::s32>(tex_sz.d_width),
+            static_cast<irr::s32>(tex_sz.d_height));
     #endif
 
     d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str());
+
+    d_size.d_width = static_cast<float>(d_texture->getSize().Width);
+    d_size.d_height = static_cast<float>(d_texture->getSize().Height);
+    d_dataSize = buffer_size;
+
+    updateCachedScaleValues();
 
     // we now use ARGB all the time here, so throw if we get something else!
     if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
@@ -135,26 +142,26 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
                                 "not have the correct format (ARGB)");
 
     const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
-    const char* const src = static_cast<const char*>(buffer);
-    char* const dest = static_cast<char*>(d_texture->lock());
+    const char* src = static_cast<const char*>(buffer);
+    char* dest = static_cast<char*>(d_texture->lock());
 
     // copy data into texture, swapping red & blue and creating alpha channel
     // values as needed.
-    for (int i = 0; i < buffer_size.d_width * buffer_size.d_height; ++i)
+    for (int j = 0; j < buffer_size.d_height; ++j)
     {
-        dest[i * 4 + 0] = src[i * pix_sz + 2];
-        dest[i * 4 + 1] = src[i * pix_sz + 1];
-        dest[i * 4 + 2] = src[i * pix_sz + 0];
-        dest[i * 4 + 3] = (pix_sz == 3) ? 0xFF : src[i * pix_sz + 3];
+        for (int i = 0; i < buffer_size.d_width; ++i)
+        {
+            dest[i * 4 + 0] = src[i * pix_sz + 2];
+            dest[i * 4 + 1] = src[i * pix_sz + 1];
+            dest[i * 4 + 2] = src[i * pix_sz + 0];
+            dest[i * 4 + 3] = (pix_sz == 3) ? 0xFF : src[i * pix_sz + 3];
+        }
+
+        src += static_cast<int>(buffer_size.d_width * pix_sz);
+        dest += static_cast<int>(d_size.d_width * 4);
     }
 
     d_texture->unlock();
-
-    d_size.d_width = static_cast<float>(d_texture->getSize().Width);
-    d_size.d_height = static_cast<float>(d_texture->getSize().Height);
-    d_dataSize = buffer_size;
-
-    updateCachedScaleValues();
 }
 
 //----------------------------------------------------------------------------//
@@ -169,45 +176,57 @@ void IrrlichtTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver) :
+IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
+                                 irr::video::IVideoDriver& driver) :
     d_driver(driver),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_owner(owner)
 {
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
+IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
+                                 irr::video::IVideoDriver& driver,
                                  const String& filename,
                                  const String& resourceGroup) :
     d_driver(driver),
-    d_texture(0)
+    d_texture(0),
+    d_owner(owner)
+
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-IrrlichtTexture::IrrlichtTexture(irr::video::IVideoDriver& driver,
+IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
+                                 irr::video::IVideoDriver& driver,
                                  const Size& size) :
     d_driver(driver),
-    d_texture(d_driver.addTexture(
-        #if CEGUI_IRR_SDK_VERSION >= 16
-                irr::core::dimension2d<irr::u32>(
-                    static_cast<irr::u32>(size.d_width),
-                    static_cast<irr::u32>(size.d_height)),
-        #else
-                irr::core::dimension2d<irr::s32>(
-                    static_cast<irr::s32>(size.d_width),
-                    static_cast<irr::s32>(size.d_height)),
-        #endif
-                getUniqueName().c_str(),
-                irr::video::ECF_A8R8G8B8)),
-    d_size(static_cast<float>(d_texture->getSize().Width), 
-           static_cast<float>(d_texture->getSize().Height)),
-    d_dataSize(size)
+    d_dataSize(size),
+    d_owner(owner)
+
 {
+    const Size tex_sz(d_owner.getAdjustedTextureSize(size));
+
+    #if CEGUI_IRR_SDK_VERSION >= 16
+        const irr::core::dimension2d<irr::u32> irr_sz(
+            static_cast<irr::u32>(tex_sz.d_width),
+            static_cast<irr::u32>(tex_sz.d_height));
+    #else
+        const irr::core::dimension2d<irr::s32> irr_sz(
+            static_cast<irr::s32>(tex_sz.d_width),
+            static_cast<irr::s32>(tex_sz.d_height));
+    #endif
+
+    d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str(),
+                                    irr::video::ECF_A8R8G8B8);
+
+    d_size.d_width = static_cast<float>(d_texture->getSize().Width);
+    d_size.d_height = static_cast<float>(d_texture->getSize().Height);
+
     updateCachedScaleValues();
 }
 

@@ -132,6 +132,25 @@ public:
     //! inject irrlicht event to CEGUI system
     bool injectEvent(const irr::SEvent& event);
 
+    /*!
+    \brief
+        Helper to return a valid texture size according to device capabilities.
+
+    \param sz
+        Size object containing input size.
+
+    \return
+        Size object containing - possibly different - output size.
+    */
+    Size getAdjustedTextureSize(const Size& sz) const;
+
+    /*!
+    \brief
+        Utility function that will return \a f if it's a power of two, or the
+        next power of two up from \a f if it's not.
+    */
+    static float getNextPOTSize(const float f);
+
     // implement Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -189,7 +208,10 @@ protected:
     uint d_maxTextureSize;
     //! ptr to helper object that aids in injection of events from Irrlicht.
     IrrlichtEventPusher* d_eventPusher;
-
+    //! true if driver supports non square textures
+    bool d_supportsNSquareTextures;
+    //! true if driver supports non power of two textures
+    bool d_supportsNPOTTextures;
 };
 
 } // End of  CEGUI namespace section

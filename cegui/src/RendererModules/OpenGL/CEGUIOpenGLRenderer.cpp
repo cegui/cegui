@@ -247,7 +247,7 @@ void OpenGLRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture()
 {
-    OpenGLTexture* tex = new OpenGLTexture;
+    OpenGLTexture* tex = new OpenGLTexture(*this);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -256,7 +256,7 @@ Texture& OpenGLRenderer::createTexture()
 Texture& OpenGLRenderer::createTexture(const String& filename,
     const String& resourceGroup)
 {
-    OpenGLTexture* tex = new OpenGLTexture(filename, resourceGroup);
+    OpenGLTexture* tex = new OpenGLTexture(*this, filename, resourceGroup);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -264,7 +264,7 @@ Texture& OpenGLRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture(const Size& size)
 {
-    OpenGLTexture* tex = new OpenGLTexture(size);
+    OpenGLTexture* tex = new OpenGLTexture(*this, size);
     d_textures.push_back(tex);
     return *tex;
 }
@@ -369,7 +369,7 @@ const String& OpenGLRenderer::getIdentifierString() const
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture(GLuint tex, const Size& sz)
 {
-    OpenGLTexture* t = new OpenGLTexture(tex, sz);
+    OpenGLTexture* t = new OpenGLTexture(*this, tex, sz);
     d_textures.push_back(t);
     return *t;
 }
@@ -497,6 +497,42 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
         d_rendererID += "  TextureTarget support is not available :(";
         d_textureTargetFactory = new OGLTextureTargetFactory;
     }
+}
+
+//----------------------------------------------------------------------------//
+Size OpenGLRenderer::getAdjustedTextureSize(const Size& sz) const
+{
+    Size out(sz);
+
+    // if we can't support non power of two sizes, get appropriate POT values.
+    if (!GLEW_ARB_texture_non_power_of_two)
+    {
+        out.d_width = getNextPOTSize(out.d_width);
+        out.d_height = getNextPOTSize(out.d_height);
+    }
+
+    return out;
+}
+
+//----------------------------------------------------------------------------//
+float OpenGLRenderer::getNextPOTSize(const float f)
+{
+    uint size = static_cast<uint>(f);
+
+    // if not power of 2
+    if ((size & (size - 1)) || !size)
+    {
+        int log = 0;
+
+        // get integer log of 'size' to base 2
+        while (size >>= 1)
+            ++log;
+
+        // use log to calculate value to use as size.
+        size = (2 << log);
+    }
+
+    return static_cast<float>(size);
 }
 
 //----------------------------------------------------------------------------//

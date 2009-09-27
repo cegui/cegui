@@ -1224,11 +1224,36 @@ public:
     void    set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access window text parsing enabled setting.
 
+    This property offers access to the text parsing setting for the window that
+    specifies whether parsing will be done or whether text will be rendered
+    verbatim.
 
+    \par Usage:
+        - Name: TextParsingEnabled
+        - Format: "[text]".
 
+    \par Where [Text] is:
+        - "True" to indicate some form of parsing of window text is to occur.
+        - "False" to indicate that text should not be parsed, but be rendered
+          verbatim.
+*/
+class TextParsingEnabled : public Property
+{
+public:
+    TextParsingEnabled() : Property(
+        "TextParsingEnabled",
+        "Property to get/set the text parsing setting for the Window.  "
+        "Value is either \"True\" or \"False\".",
+        "True")
+    {}
 
-
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
 
 } // End of  WindowProperties namespace section
 

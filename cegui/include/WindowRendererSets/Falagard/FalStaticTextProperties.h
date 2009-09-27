@@ -183,6 +183,52 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Read-only property to access the current horizontal extent of the formatted
+    StaticText string.
+
+    \par Usage:
+        - Name: HorzExtent
+        - Format: float value indicating the pixel extent.
+*/
+class HorzExtent : public Property
+{
+public:
+    HorzExtent() : Property(
+        "HorzExtent",
+        "Property to get the current horizontal extent of the formatted text "
+        "string.  Value is a float indicating the pixel extent.",
+        "0")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Read-only property to access the current vertical extent of the formatted
+    StaticText string.
+
+    \par Usage:
+        - Name: VertExtent
+        - Format: float value indicating the pixel extent.
+*/
+class VertExtent : public Property
+{
+public:
+    VertExtent() : Property(
+        "VertExtent",
+        "Property to get the current vertical extent of the formatted text "
+        "string.  Value is a float indicating the pixel extent.",
+        "0")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  FalagardStaticTextProperties namespace section
 
 } // End of  CEGUI namespace section
