@@ -206,6 +206,14 @@ void RenderedString::split(const size_t line, float split_point,
             ++left.d_lines[left_line].second;
         }
     }
+    // can't split, so xfer the whole component to the left (FIX #306)
+    else
+    {
+        left.d_components.push_back(d_components[0]);
+        d_components.erase(d_components.begin());
+        ++left.d_lines[left_line].second;
+        --d_lines[0].second;
+    }
 
     // fix up lines in this object
     for (size_t comp = 0, i = 0; i < d_lines.size(); ++i)
