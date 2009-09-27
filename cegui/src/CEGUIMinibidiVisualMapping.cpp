@@ -75,20 +75,11 @@ bool MinibidiVisualMapping::reorderFromLogicalToVisual(const String& logical,
     l2v.resize(logical.length());
     v2l.resize(logical.length());
 
-    const int res = doBidi(visual.ptr(), static_cast<int>(logical.length()),
-                           true, false,
-                           &v2l[0], &l2v[0]);
+    doBidi(visual.ptr(), static_cast<int>(logical.length()),
+           true, false,
+           &v2l[0], &l2v[0]);
 
-    // success?
-    if (res)
-        return true;
-
-    // log failure and continue anyway :-p
-    Logger::getSingleton().logEvent(
-        "MinibidiVisualMapping::reorderFromLogicalToVisual: doBidi call failed "
-        "on logical string: " + logical, Errors);
-
-    return false;
+    return true;
 }
 
 //----------------------------------------------------------------------------//

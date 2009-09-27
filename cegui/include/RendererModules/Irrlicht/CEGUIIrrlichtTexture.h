@@ -86,12 +86,13 @@ protected:
     friend void IrrlichtRenderer::destroyTexture(Texture&);
 
     //! Construct a basic texture
-    IrrlichtTexture(irr::video::IVideoDriver& driver);
+    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver);
     //! Construct a texture from the specified file.
-    IrrlichtTexture(irr::video::IVideoDriver& driver, const String& filename,
-                    const String& resourceGroup);
+    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
+                    const String& filename, const String& resourceGroup);
     //! Construct a texture with the given size.
-    IrrlichtTexture(irr::video::IVideoDriver& driver, const Size& size);
+    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
+                    const Size& size);
     //! destructor.
     ~IrrlichtTexture();
 
@@ -113,6 +114,8 @@ protected:
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2 d_texelScaling;
+    //! reference to the IrrlichtRenderer that created this texture
+    IrrlichtRenderer& d_owner;
 };
 
 } // End of  CEGUI namespace section

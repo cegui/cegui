@@ -198,7 +198,7 @@ void IrrlichtRenderer::destroyAllTextureTargets()
 //----------------------------------------------------------------------------//
 Texture& IrrlichtRenderer::createTexture()
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*d_driver);
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver);
     d_textures.push_back(t);
     return *t;
 }
@@ -207,7 +207,7 @@ Texture& IrrlichtRenderer::createTexture()
 Texture& IrrlichtRenderer::createTexture(const String& filename,
                                          const String& resourceGroup)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*d_driver, filename,
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, filename,
                                              resourceGroup);
     d_textures.push_back(t);
     return *t;
@@ -216,7 +216,7 @@ Texture& IrrlichtRenderer::createTexture(const String& filename,
 //----------------------------------------------------------------------------//
 Texture& IrrlichtRenderer::createTexture(const Size& size)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*d_driver, size);
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, size);
     d_textures.push_back(t);
     return *t;
 }
@@ -301,8 +301,14 @@ IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice& device) :
     d_defaultTarget(new IrrlichtWindowTarget(*this, *d_driver)),
     d_defaultRoot(new RenderingRoot(*d_defaultTarget)),
     d_maxTextureSize(2048),
-    d_eventPusher(new IrrlichtEventPusher(d_device.getCursorControl()))
+    d_eventPusher(new IrrlichtEventPusher(d_device.getCursorControl())),
+    d_supportsNSquareTextures(d_driver->queryFeature(irr::video::EVDF_TEXTURE_NSQUARE)),
+    d_supportsNPOTTextures(d_driver->queryFeature(irr::video::EVDF_TEXTURE_NPOT))
 {
+    if (d_driver->queryFeature(video::EVDF_RENDER_TO_TARGET))
+        d_rendererID += String("  RenderTarget support is enabled.");
+    else
+        d_rendererID += String("  RenderTarget support is unavailable :(");
 }
 
 //----------------------------------------------------------------------------//
@@ -315,6 +321,46 @@ IrrlichtRenderer::~IrrlichtRenderer()
     delete d_eventPusher;
     delete d_defaultRoot;
     delete d_defaultTarget;
+}
+
+//----------------------------------------------------------------------------//
+Size IrrlichtRenderer::getAdjustedTextureSize(const Size& sz) const
+{
+    Size out(sz);
+
+    // if we can't support non power of two sizes, get appropriate POT values.
+    if (!d_supportsNPOTTextures)
+    {
+        out.d_width = getNextPOTSize(out.d_width);
+        out.d_height = getNextPOTSize(out.d_height);
+    }
+
+    // if we can't support non square textures, make size square.
+    if (!d_supportsNSquareTextures)
+        out.d_width = out.d_height = ceguimax(out.d_width, out.d_height);
+
+    return out;
+}
+
+//----------------------------------------------------------------------------//
+float IrrlichtRenderer::getNextPOTSize(const float f)
+{
+    uint size = static_cast<uint>(f);
+
+    // if not power of 2
+    if ((size & (size - 1)) || !size)
+    {
+        int log = 0;
+
+        // get integer log of 'size' to base 2
+        while (size >>= 1)
+            ++log;
+
+        // use log to calculate value to use as size.
+        size = (2 << log);
+    }
+
+    return static_cast<float>(size);
 }
 
 //----------------------------------------------------------------------------//

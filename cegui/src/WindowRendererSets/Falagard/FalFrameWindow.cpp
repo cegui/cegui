@@ -50,7 +50,7 @@ namespace CEGUI
 
         // build state name
         String stateName(w->isDisabled() ? "Disabled" : (w->isActive() ? "Active" : "Inactive"));
-        stateName += w->getTitlebar()->isVisible() ? "WithTitle" : "NoTitle";
+        stateName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
         stateName += w->isFrameEnabled() ? "WithFrame" : "NoFrame";
 
         const StateImagery* imagery;
@@ -80,7 +80,7 @@ namespace CEGUI
 
         // build name of area to fetch
         String areaName("Client");
-        areaName += w->getTitlebar()->isVisible() ? "WithTitle" : "NoTitle";
+        areaName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
         areaName += w->isFrameEnabled() ? "WithFrame" : "NoFrame";
 
         // get WidgetLookFeel for the assigned look.

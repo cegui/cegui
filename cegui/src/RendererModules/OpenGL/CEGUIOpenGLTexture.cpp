@@ -35,42 +35,47 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture() :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_owner(owner)
 {
     generateOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(const String& filename,
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& filename,
                              const String& resourceGroup) :
     d_size(0, 0),
     d_grabBuffer(0),
-    d_dataSize(0, 0)
+    d_dataSize(0, 0),
+    d_owner(owner)
 {
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(const Size& size) :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const Size& size) :
     d_size(0, 0),
     d_grabBuffer(0),
-    d_dataSize(0, 0)
+    d_dataSize(0, 0),
+    d_owner(owner)
 {
     generateOpenGLTexture();
     setTextureSize(size);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(GLuint tex, const Size& size) :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, GLuint tex,
+                             const Size& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
-    d_dataSize(size)
+    d_dataSize(size),
+    d_owner(owner)
 {
     updateCachedScaleValues();
 }
@@ -190,13 +195,7 @@ void OpenGLTexture::saveToMemory(void* buffer)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::setTextureSize(const Size& sz)
 {
-    Size size(sz);
-    // handle case where hardware can't do NPOT textures by rounding size up.
-    if (!GLEW_ARB_texture_non_power_of_two)
-    {
-        size.d_width = getSizeNextPOT(sz.d_width);
-        size.d_height = getSizeNextPOT(sz.d_height);
-    }
+    const Size size(d_owner.getAdjustedTextureSize(sz));
 
     // make sure size is within boundaries
     GLfloat maxSize;
@@ -296,27 +295,6 @@ void OpenGLTexture::updateCachedScaleValues()
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
     d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
-}
-
-//----------------------------------------------------------------------------//
-float OpenGLTexture::getSizeNextPOT(float sz) const
-{
-    uint size = static_cast<uint>(sz);
-
-    // if not power of 2
-    if ((size & (size - 1)) || !size)
-    {
-        int log = 0;
-
-        // get integer log of 'size' to base 2
-        while (size >>= 1)
-            ++log;
-
-        // use log to calculate value to use as size.
-        size = (2 << log);
-    }
-
-    return static_cast<float>(size);
 }
 
 //----------------------------------------------------------------------------//

@@ -157,7 +157,7 @@ void OpenGLGLXPBTextureTarget::declareRenderSize(const Size& sz)
         (d_area.getHeight() >= sz.d_height))
             return;
 
-    setArea(Rect(d_area.getPosition(), sz));
+    setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     initialisePBuffer();
     clear();
 }

@@ -95,7 +95,10 @@ function cegui_dynamic(name, lang, kind)
         "CEGUI_STATIC",
         "TOLUA_STATIC"
     }
-	debug.buildflags = {}
+    debug_static.buildflags = 
+    {   -- Static build means static runtimes! (/MTd)
+        "static-runtime"
+    }
 
 	-- release with symbols
 	release_sym = package.config.ReleaseWithSymbols
@@ -142,6 +145,8 @@ function cegui_dynamic(name, lang, kind)
 	    "no-symbols",
 	    "optimize-speed",
 	    "no-frame-pointer",
+        -- Static build means static runtimes! (/MT)
+        "static-runtime"
 	}
 	
 end
@@ -274,7 +279,7 @@ function setup_static_samples()
     if DIRECT3D9_RENDERER then
         library_static("dxguid")
         library_static("d3dx9")
-        library_static("dxerr9")
+        library_static("dxerr")
     end
 
     if DIRECT3D10_RENDERER then

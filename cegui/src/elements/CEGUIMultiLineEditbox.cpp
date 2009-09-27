@@ -50,6 +50,20 @@ MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& nam
 {
 }
 
+//----------------------------------------------------------------------------//
+void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
+{
+    assert(d_window != 0);
+
+    // ensure window's text has a terminating \n
+    String text(d_window->getText());
+    if (text.empty() || text[text.length() - 1] != '\n')
+    {
+        text.append(1, '\n');
+        d_window->setText(text);
+    }
+}
+
 /*************************************************************************
 	TODO:
 
@@ -111,11 +125,8 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 {
 	addMultiLineEditboxProperties();
 
-	// we always need a terminating \n
-// FIXME: This may not be done like this until a window renderer is assigned.
-//     String newText = getText();
-//     newText.append(1, '\n');
-//     setText(newText);
+    // override default and disable text parsing
+    d_textParsingEnabled = false;
 }
 
 
