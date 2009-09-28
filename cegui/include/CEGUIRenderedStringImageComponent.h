@@ -55,6 +55,10 @@ public:
     void setColours(const colour& c);
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const;
+    //! set the size for rendering the image (0s mean 'normal' size)
+    void setSize(const Size& sz);
+    //! return the size for rendering the image (0s mean 'normal' size)
+    const Size& getSize() const;
 
     // implementation of abstract base interface
     void draw(GeometryBuffer& buffer, const Vector2& position,
@@ -71,6 +75,8 @@ protected:
     const Image* d_image;
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours;
+    //! target size to render the image at (0s mean natural size)
+    Size d_size;
 };
 
 } // End of  CEGUI namespace section

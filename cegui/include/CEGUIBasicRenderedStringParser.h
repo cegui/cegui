@@ -33,18 +33,58 @@
 #include "CEGUIRect.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIString.h"
+#include "falagard/CEGUIFalEnums.h"
+#include <map>
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-    Basic RenderedStringParser class that offers support for 'colour', 'font',
-    'image' and 'window' control tags.
+    Basic RenderedStringParser class that offers support for the following tags:
+    - 'colour' value is a CEGUI colour property value.
+    - 'font' value is the name of a font.
+    - 'image' value is a CEGUI image property value.
+    - 'window' value is the name of a window.
+    - 'vert-alignment' value is either top, bottom, centre or stretch.
+    - 'padding' value is a CEGUI Rect property value.
+    - 'top-padding' value is a float.
+    - 'bottom-padding' value is a float.
+    - 'left-padding' value is a float.
+    - 'right-padding' value is a float.
+    - 'image-size' value is a CEGUI size property value.
+    - 'image-width' value is a float.
+    - 'image-height' value is a float.
+    - 'aspect-lock' value is a boolean (NB: this currently has no effect).
 */
 class CEGUIEXPORT BasicRenderedStringParser : public RenderedStringParser
 {
 public:
+    // Strings for supported tags
+    static const String ColourTagName;
+    static const String FontTagName;
+    static const String ImageTagName;
+    static const String WindowTagName;
+    static const String VertAlignmentTagName;
+    static const String PaddingTagName;
+    static const String TopPaddingTagName;
+    static const String BottomPaddingTagName;
+    static const String LeftPaddingTagName;
+    static const String RightPaddingTagName;
+    static const String AspectLockTagName;
+    static const String ImageSizeTagName;
+    static const String ImageWidthTagName;
+    static const String ImageHeightTagName;
+    static const String TopAlignedValueName;
+    static const String BottomAlignedValueName;
+    static const String CentreAlignedValueName;
+    static const String StretchAlignedValueName;
+
     //! Constructor.
     BasicRenderedStringParser();
     /*!
@@ -107,6 +147,25 @@ protected:
     //! initialise the default state
     virtual void initialiseDefaultState();
 
+    //! initialise tag handlers
+    void initialiseTagHandlers();
+
+    //! handlers for the various tags supported
+    void handleColour(RenderedString& rs, const String& value);
+    void handleFont(RenderedString& rs, const String& value);
+    void handleImage(RenderedString& rs, const String& value);
+    void handleWindow(RenderedString& rs, const String& value);
+    void handleVertAlignment(RenderedString& rs, const String& value);
+    void handlePadding(RenderedString& rs, const String& value);
+    void handleTopPadding(RenderedString& rs, const String& value);
+    void handleBottomPadding(RenderedString& rs, const String& value);
+    void handleLeftPadding(RenderedString& rs, const String& value);
+    void handleRightPadding(RenderedString& rs, const String& value);
+    void handleAspectLock(RenderedString& rs, const String& value);
+    void handleImageSize(RenderedString& rs, const String& value);
+    void handleImageWidth(RenderedString& rs, const String& value);
+    void handleImageHeight(RenderedString& rs, const String& value);
+
     //! initial font name
     String d_initialFontName;
     //! initial colours
@@ -117,9 +176,28 @@ protected:
     ColourRect d_colours;
     //! active font.
     String d_fontName;
+    //! active vertical alignment
+    VerticalFormatting d_vertAlignment;
+    //! active image size
+    Size d_imageSize;
+    //! active 'aspect lock' state
+    bool d_aspectLock;
 
+    //! true if handlers have been registered
+    bool d_initialised;
+    //! definition of type used for handler functions
+    typedef void (BasicRenderedStringParser::*TagHandler)(RenderedString&,
+                                                          const String&);
+    //! definition of type used to despatch tag handler functions
+    typedef std::map<String, TagHandler, String::FastLessCompare> TagHandlerMap;
+    //! Collection to map tag names to their handler functions.
+    TagHandlerMap d_tagHandlers;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif // end of guard _CEGUIBasicRenderedStringParser_h_
