@@ -4,8 +4,8 @@
 
 -- omit some things if we are part of a single solution along with the core libs
 if not CEGUI_CORE_LIBRARY_SOLUTION then
-    require("helpers.lua")
-    require("config.lua")
+    require("helpers")
+    require("config")
 
     --
     -- project setup
