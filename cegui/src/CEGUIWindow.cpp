@@ -1829,6 +1829,11 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 
     if (moved || sized)
         System::getSingleton().updateWindowContainingMouse();
+
+    // update geometry position and clipping if nothing from above appears to
+    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
+    if (!d_outerUnclippedRectValid)
+        updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
