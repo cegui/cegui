@@ -3509,12 +3509,24 @@ void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 //----------------------------------------------------------------------------//
 RenderedStringParser& Window::getRenderedStringParser() const
 {
+    // if parsing is disabled, we use a DefaultRenderedStringParser that creates
+    // a RenderedString to renderi the input text verbatim (i.e. no parsing).
     if (!d_textParsingEnabled)
         return d_defaultStringParser;
-    else if (d_customStringParser)
+
+    // Next prefer a custom RenderedStringParser assigned to this Window.
+    if (d_customStringParser)
         return *d_customStringParser;
-    else
-        return d_basicStringParser;
+
+    // Next prefer any globally set RenderedStringParser.
+    RenderedStringParser* const global_parser =
+        CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser();
+    if (global_parser)
+        return *global_parser;
+
+    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
+    // use the system's BasicRenderedStringParser to do the parsing.
+    return d_basicStringParser;
 }
 
 //----------------------------------------------------------------------------//
