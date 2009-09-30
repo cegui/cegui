@@ -67,6 +67,8 @@ FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorP
 // additional event names for this window
 const String FrameWindow::EventRollupToggled( "RollupToggled" );
 const String FrameWindow::EventCloseClicked( "CloseClicked" );
+const String FrameWindow::EventDragSizingStarted("DragSizingStarted");
+const String FrameWindow::EventDragSizingEnded("DragSizingEnded");
 
 // other bits
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;
@@ -635,6 +637,11 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 					// setup the 'dragging' state variables
 					d_beingSized = true;
 					d_dragPoint = localPos;
+
+                    // do drag-sizing started notification
+                    WindowEventArgs args(this);
+                    onDragSizingStarted(args);
+
 					++e.handled;
 				}
 
@@ -675,6 +682,10 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 
 	// reset sizing state
 	d_beingSized = false;
+
+    // do drag-sizing ended notification
+    WindowEventArgs args(this);
+    onDragSizingEnded(args);
 
 	++e.handled;
 }
@@ -862,5 +873,19 @@ PushButton* FrameWindow::getCloseButton() const
     return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
                                     getName() + CloseButtonNameSuffix));
 }
+
+//----------------------------------------------------------------------------//
+void FrameWindow::onDragSizingStarted(WindowEventArgs& e)
+{
+	fireEvent(EventDragSizingStarted, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
+{
+	fireEvent(EventDragSizingEnded, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
