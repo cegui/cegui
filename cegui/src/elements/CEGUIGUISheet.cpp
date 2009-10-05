@@ -90,5 +90,16 @@ void GUISheet::updateMouseEventHandled(MouseEventArgs& e) const
 }
 
 //----------------------------------------------------------------------------//
+bool GUISheet::moveToFront_impl(bool wasClicked)
+{
+    const bool took_action = Window::moveToFront_impl(wasClicked);
+
+    if (!d_parent && d_mousePassThroughEnabled)
+        return false;
+    else
+        return took_action;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
