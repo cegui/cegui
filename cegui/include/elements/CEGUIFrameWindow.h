@@ -512,7 +512,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window smaller.
 	*/
-	void	moveLeftEdge(float delta);
+	bool	moveLeftEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -522,7 +522,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window larger.
 	*/
-	void	moveRightEdge(float delta);
+	bool	moveRightEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -532,7 +532,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window smaller.
 	*/
-	void	moveTopEdge(float delta);
+	bool	moveTopEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -542,7 +542,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window larger.
 	*/
-	void	moveBottomEdge(float delta);
+	bool	moveBottomEdge(float delta, URect& out_area);
 
 
 	/*!

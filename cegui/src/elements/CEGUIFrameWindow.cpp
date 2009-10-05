@@ -308,10 +308,9 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 	move the window's left edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.	
 *************************************************************************/
-void FrameWindow::moveLeftEdge(float delta)
+bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
 {
     float orgWidth = d_pixelSize.d_width;
-    URect area(d_area);
 
     // ensure that we only size to the set constraints.
     //
@@ -332,29 +331,28 @@ void FrameWindow::moveLeftEdge(float delta)
 
     if (d_horzAlign == HA_RIGHT)
     {
-        area.d_max.d_x.d_offset -= adjustment;
+        out_area.d_max.d_x.d_offset -= adjustment;
     }
     else if (d_horzAlign == HA_CENTRE)
     {
-        area.d_max.d_x.d_offset -= adjustment * 0.5f;
-        area.d_min.d_x.d_offset += adjustment * 0.5f;
+        out_area.d_max.d_x.d_offset -= adjustment * 0.5f;
+        out_area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
     else
     {
-        area.d_min.d_x.d_offset += adjustment;
+        out_area.d_min.d_x.d_offset += adjustment;
     }
 
-    setArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
+    return d_horzAlign == HA_LEFT;
 }
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.
 *************************************************************************/
-void FrameWindow::moveRightEdge(float delta)
+bool FrameWindow::moveRightEdge(float delta, URect& out_area)
 {
     // store this so we can work out how much size actually changed
     float orgWidth = d_pixelSize.d_width;
-    URect area(d_area);
 
     // ensure that we only size to the set constraints.
     //
@@ -373,33 +371,32 @@ void FrameWindow::moveRightEdge(float delta)
     // ensure adjustment will be whole pixel
     float adjustment = PixelAligned(delta);
 
-    area.d_max.d_x.d_offset += adjustment;
+    out_area.d_max.d_x.d_offset += adjustment;
 
     if (d_horzAlign == HA_RIGHT)
     {
-        area.d_max.d_x.d_offset += adjustment;
-        area.d_min.d_x.d_offset += adjustment;
+        out_area.d_max.d_x.d_offset += adjustment;
+        out_area.d_min.d_x.d_offset += adjustment;
     }
     else if (d_horzAlign == HA_CENTRE)
     {
-        area.d_max.d_x.d_offset += adjustment * 0.5f;
-        area.d_min.d_x.d_offset += adjustment * 0.5f;
+        out_area.d_max.d_x.d_offset += adjustment * 0.5f;
+        out_area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
-    setArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
-
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
+    d_dragPoint.d_x += adjustment;
+
+    return d_horzAlign == HA_RIGHT;
 }
 
 /*************************************************************************
 	move the window's top edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.
 *************************************************************************/
-void FrameWindow::moveTopEdge(float delta)
+bool FrameWindow::moveTopEdge(float delta, URect& out_area)
 {
     float orgHeight = d_pixelSize.d_height;
-    URect area(d_area);
 
     // ensure that we only size to the set constraints.
     //
@@ -420,19 +417,19 @@ void FrameWindow::moveTopEdge(float delta)
 
     if (d_vertAlign == VA_BOTTOM)
     {
-        area.d_max.d_y.d_offset -= adjustment;
+        out_area.d_max.d_y.d_offset -= adjustment;
     }
     else if (d_vertAlign == VA_CENTRE)
     {
-        area.d_max.d_y.d_offset -= adjustment * 0.5f;
-        area.d_min.d_y.d_offset += adjustment * 0.5f;
+        out_area.d_max.d_y.d_offset -= adjustment * 0.5f;
+        out_area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
     else
     {
-        area.d_min.d_y.d_offset += adjustment;
+        out_area.d_min.d_y.d_offset += adjustment;
     }
 
-    setArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
+    return d_vertAlign == VA_TOP;
 }
 
 
@@ -440,11 +437,10 @@ void FrameWindow::moveTopEdge(float delta)
 	move the window's bottom edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.	
 *************************************************************************/
-void FrameWindow::moveBottomEdge(float delta)
+bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
 {
     // store this so we can work out how much size actually changed
     float orgHeight = d_pixelSize.d_height;
-    URect area(d_area);
 
     // ensure that we only size to the set constraints.
     //
@@ -463,23 +459,23 @@ void FrameWindow::moveBottomEdge(float delta)
     // ensure adjustment will be whole pixel
     float adjustment = PixelAligned(delta);
 
-    area.d_max.d_y.d_offset += adjustment;
+    out_area.d_max.d_y.d_offset += adjustment;
 
     if (d_vertAlign == VA_BOTTOM)
     {
-        area.d_max.d_y.d_offset += adjustment;
-        area.d_min.d_y.d_offset += adjustment;
+        out_area.d_max.d_y.d_offset += adjustment;
+        out_area.d_min.d_y.d_offset += adjustment;
     }
     else if (d_vertAlign == VA_CENTRE)
     {
-        area.d_max.d_y.d_offset += adjustment * 0.5f;
-        area.d_min.d_y.d_offset += adjustment * 0.5f;
+        out_area.d_max.d_y.d_offset += adjustment * 0.5f;
+        out_area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
-    setArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
-
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_y += d_pixelSize.d_height - orgHeight;
+    d_dragPoint.d_y += adjustment;
+
+    return d_vertAlign == VA_BOTTOM;
 }
 
 
@@ -580,26 +576,29 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 			float	deltaX = localMousePos.d_x - d_dragPoint.d_x;
 			float	deltaY = localMousePos.d_y - d_dragPoint.d_y;
 
+            URect new_area(d_area);
+            bool top_left_sizing = false;
 			// size left or right edges
 			if (isLeftSizingLocation(dragEdge))
 			{
-				moveLeftEdge(deltaX);
+				top_left_sizing |= moveLeftEdge(deltaX, new_area);
 			}
 			else if (isRightSizingLocation(dragEdge))
 			{
-				moveRightEdge(deltaX);
+				top_left_sizing |= moveRightEdge(deltaX, new_area);
 			}
 
 			// size top or bottom edges
 			if (isTopSizingLocation(dragEdge))
 			{
-				moveTopEdge(deltaY);
+				top_left_sizing |= moveTopEdge(deltaY, new_area);
 			}
 			else if (isBottomSizingLocation(dragEdge))
 			{
-				moveBottomEdge(deltaY);
+				top_left_sizing |= moveBottomEdge(deltaY, new_area);
 			}
 
+            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
 		}
 		else
 		{
