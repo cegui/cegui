@@ -1513,6 +1513,7 @@ void System::setupXMLParser()
         d_xmlParser = createParser();
         // make sure we know to cleanup afterwards.
         d_ourXmlParser = true;
+		d_xmlParser->initialise();
 #endif
     }
     // parser object already set, just initialise it.
