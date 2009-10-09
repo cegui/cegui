@@ -16,3 +16,5 @@ library("FreeImage", "d")
 
 dependency("CEGUIBase")
 define("CEGUIFREEIMAGEIMAGECODEC_EXPORTS")
+define("FREEIMAGE_LIB", "Debug_Static")
+define("FREEIMAGE_LIB", "Release_Static")
