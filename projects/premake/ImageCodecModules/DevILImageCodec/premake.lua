@@ -12,9 +12,10 @@ package.files =
 
 include(rootdir.."cegui/include/"..pkgdir)
 
-library("DevIL")
-library("ILU")
-library("ILUT")
+library("DevIL", "_d")
+library("ILU", "_d")
 
 dependency("CEGUIBase")
 define("CEGUIDEVILIMAGECODEC_EXPORTS")
+define("IL_STATIC_LIB", "Debug_Static")
+define("IL_STATIC_LIB", "Release_Static")
