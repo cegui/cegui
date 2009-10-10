@@ -79,7 +79,7 @@ long IrrlichtMemoryFile::getPos() const
 }
 
 #if CEGUI_IRR_SDK_VERSION >= 16
-const irr::core::string<irr::c16>& IrrlichtMemoryFile::getFileName() const
+const irr::io::path& IrrlichtMemoryFile::getFileName() const
 {
     return d_filename;
 }
