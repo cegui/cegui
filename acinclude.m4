@@ -488,7 +488,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[14],[Defines irrlicht SDK version.  14 is 1.4 or 1.5.x and 16 is 1.6 or later.])
         gotirrsdkver=yes])
 
-        dnl ** Test for Irr SVN trunk (r2616) - to be SDK 1.6 (and above?) **
+        dnl ** Test for Irr SDK 1.6 (and above?) **
         if test x$gotirrsdkver = xno; then
         AC_COMPILE_IFELSE(
         [
@@ -500,9 +500,9 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
                 irr::s32 read(void* buffer, irr::u32 sizeToRead) {return 0;}
                 long getSize() const {return 0;}
                 long getPos() const {return 0;}
-                const irr::core::string<irr::c16>& getFileName() const {return filename;}
+                const irr::io::path& getFileName() const {return filename;}
             protected:
-                irr::core::string<irr::c16> filename;
+                irr::io::path filename;
             };
             int main(int argc, char** argv) { test x; return 0; }
         ],

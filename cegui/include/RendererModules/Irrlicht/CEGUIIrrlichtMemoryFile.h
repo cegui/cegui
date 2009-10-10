@@ -58,14 +58,14 @@ public:
     long getPos() const;
     bool seek(long finalPos, bool relativeMovement = false);
 #if CEGUI_IRR_SDK_VERSION >= 16
-    const irr::core::string<irr::c16>& getFileName() const;
+    const irr::io::path& getFileName() const;
 #else
     const irr::c8* getFileName() const;
 #endif
 
 protected:
 #if CEGUI_IRR_SDK_VERSION >= 16
-    irr::core::string<irr::c16> d_filename;
+    irr::io::path d_filename;
 #else
     String d_filename;
 #endif
