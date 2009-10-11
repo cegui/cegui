@@ -3661,6 +3661,9 @@ protected:
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
 
+    //! helper to return whether the inner rect size has changed
+    bool isInnerRectSizeChanged() const;
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;

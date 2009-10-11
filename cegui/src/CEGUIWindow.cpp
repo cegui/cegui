@@ -2640,7 +2640,8 @@ void Window::onParentSized(WindowEventArgs& e)
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
          (d_horzAlign != HA_LEFT) || (d_vertAlign != VA_TOP));
     const bool sized =
-        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0));
+        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0) ||
+         isInnerRectSizeChanged());
 
     // now see if events should be fired.
     if (moved)
@@ -3622,5 +3623,11 @@ void Window::onTextParsingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+bool Window::isInnerRectSizeChanged() const
+{
+    const Size old_sz(d_innerUnclippedRect.getSize());
+    d_innerUnclippedRectValid = false;
+    return old_sz != getUnclippedInnerRect().getSize();
+}
 
 } // End of  CEGUI namespace section
