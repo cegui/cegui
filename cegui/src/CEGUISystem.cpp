@@ -1334,6 +1334,11 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 	{
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
+
+        // regardless of what is done above, invalidate all windows.  This is
+        // required since geometry can be wrong with referenced textures no
+        // longer existing due to auto-scaling effect (mainly affects fonts).
+        d_activeSheet->invalidate(true);
 	}
 
     // Fire event
