@@ -1118,9 +1118,28 @@ void Window::setInheritsAlpha(bool setting)
 //----------------------------------------------------------------------------//
 void Window::invalidate(void)
 {
+    invalidate(false);
+}
+
+//----------------------------------------------------------------------------//
+void Window::invalidate(const bool recursive)
+{
+    invalidate_impl(recursive);
+    System::getSingleton().signalRedraw();
+}
+
+//----------------------------------------------------------------------------//
+void Window::invalidate_impl(const bool recursive)
+{
     d_needsRedraw = true;
     invalidateRenderingSurface();
-    System::getSingleton().signalRedraw();
+
+    if (recursive)
+    {
+        const size_t child_count = getChildCount();
+        for (size_t i = 0; i < child_count; ++i)
+            d_children[i]->invalidate_impl(true);
+    }
 }
 
 //----------------------------------------------------------------------------//
