@@ -6486,7 +6486,7 @@
 				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
-				CEGUI_VERSION = 0.7.0;
+				CEGUI_VERSION = 0.7.9999;
 				COPY_PHASE_STRIP = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -6510,7 +6510,7 @@
 				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
-				CEGUI_VERSION = 0.7.0;
+				CEGUI_VERSION = 0.7.9999;
 				COPY_PHASE_STRIP = YES;
 				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;

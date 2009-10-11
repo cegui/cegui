@@ -1118,9 +1118,28 @@ void Window::setInheritsAlpha(bool setting)
 //----------------------------------------------------------------------------//
 void Window::invalidate(void)
 {
+    invalidate(false);
+}
+
+//----------------------------------------------------------------------------//
+void Window::invalidate(const bool recursive)
+{
+    invalidate_impl(recursive);
+    System::getSingleton().signalRedraw();
+}
+
+//----------------------------------------------------------------------------//
+void Window::invalidate_impl(const bool recursive)
+{
     d_needsRedraw = true;
     invalidateRenderingSurface();
-    System::getSingleton().signalRedraw();
+
+    if (recursive)
+    {
+        const size_t child_count = getChildCount();
+        for (size_t i = 0; i < child_count; ++i)
+            d_children[i]->invalidate_impl(true);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1829,6 +1848,11 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 
     if (moved || sized)
         System::getSingleton().updateWindowContainingMouse();
+
+    // update geometry position and clipping if nothing from above appears to
+    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
+    if (!d_outerUnclippedRectValid)
+        updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
@@ -2359,6 +2383,14 @@ void Window::onSized(WindowEventArgs& e)
     // more selectively with child Window cases.
     notifyScreenAreaChanged(false);
 
+    // we need to layout loonfeel based content first, in case anything is
+    // relying on that content for size or positioning info (i.e. some child
+    // is used to establish inner-rect position or size).
+    //
+    // TODO: The subsequent onParentSized notification for those windows cause
+    // additional - unneccessary - work; we should look to optimise that.
+    performChildWindowLayout();
+
     // inform children their parent has been re-sized
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
@@ -2367,7 +2399,6 @@ void Window::onSized(WindowEventArgs& e)
         d_children[i]->onParentSized(args);
     }
 
-    performChildWindowLayout();
     invalidate();
 
     fireEvent(EventSized, e, EventNamespace);
@@ -2613,9 +2644,11 @@ void Window::onParentSized(WindowEventArgs& e)
     setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
     const bool moved =
-        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0));
+        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
+         (d_horzAlign != HA_LEFT) || (d_vertAlign != VA_TOP));
     const bool sized =
-        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0));
+        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0) ||
+         isInnerRectSizeChanged());
 
     // now see if events should be fired.
     if (moved)
@@ -2840,12 +2873,16 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
 {
+    notifyScreenAreaChanged();
+
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
 {
+    notifyScreenAreaChanged();
+
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
 
@@ -3504,12 +3541,24 @@ void Window::setCustomRenderedStringParser(RenderedStringParser* parser)
 //----------------------------------------------------------------------------//
 RenderedStringParser& Window::getRenderedStringParser() const
 {
+    // if parsing is disabled, we use a DefaultRenderedStringParser that creates
+    // a RenderedString to renderi the input text verbatim (i.e. no parsing).
     if (!d_textParsingEnabled)
         return d_defaultStringParser;
-    else if (d_customStringParser)
+
+    // Next prefer a custom RenderedStringParser assigned to this Window.
+    if (d_customStringParser)
         return *d_customStringParser;
-    else
-        return d_basicStringParser;
+
+    // Next prefer any globally set RenderedStringParser.
+    RenderedStringParser* const global_parser =
+        CEGUI::System::getSingleton().getDefaultCustomRenderedStringParser();
+    if (global_parser)
+        return *global_parser;
+
+    // if parsing is enabled and no custom RenderedStringParser is set anywhere,
+    // use the system's BasicRenderedStringParser to do the parsing.
+    return d_basicStringParser;
 }
 
 //----------------------------------------------------------------------------//
@@ -3581,5 +3630,11 @@ void Window::onTextParsingChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+bool Window::isInnerRectSizeChanged() const
+{
+    const Size old_sz(d_innerUnclippedRect.getSize());
+    d_innerUnclippedRectValid = false;
+    return old_sz != getUnclippedInnerRect().getSize();
+}
 
 } // End of  CEGUI namespace section

@@ -34,7 +34,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
-    d_verticalFormatting(VF_BOTTOM_ALIGNED)
+    d_verticalFormatting(VF_BOTTOM_ALIGNED),
+    d_aspectLock(false)
 {
 }
 
@@ -113,6 +114,18 @@ float RenderedStringComponent::getTopPadding() const
 float RenderedStringComponent::getBottomPadding() const
 {
     return d_padding.d_bottom;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedStringComponent::setAspectLock(const bool setting)
+{
+    d_aspectLock = setting;
+}
+
+//----------------------------------------------------------------------------//
+bool RenderedStringComponent::getAspectLock() const
+{
+    return d_aspectLock;
 }
 
 //----------------------------------------------------------------------------//

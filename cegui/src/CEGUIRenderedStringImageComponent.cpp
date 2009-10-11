@@ -37,14 +37,16 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent() :
     d_image(0),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_size(0, 0)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent(
         const String& imageset, const String& image) :
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_size(0, 0)
 {
     setImage(imageset, image);
 }
@@ -52,7 +54,8 @@ RenderedStringImageComponent::RenderedStringImageComponent(
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
     d_image(image),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_size(0, 0)
 {
 }
 
@@ -139,7 +142,14 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
                 "unknown VerticalFormatting option specified.");
     }
 
-    dest.setSize(Size(d_image->getWidth(), d_image->getHeight() * y_scale));
+    Size sz(d_image->getSize());
+    if (d_size.d_width != 0.0)
+        sz.d_width = d_size.d_width;
+    if (d_size.d_height != 0.0)
+        sz.d_height = d_size.d_height;
+    
+    sz.d_height *= y_scale;
+    dest.setSize(sz);
 
     // apply padding to position
     dest.offset(d_padding.getPosition());
@@ -161,6 +171,10 @@ Size RenderedStringImageComponent::getPixelSize() const
     if (d_image)
     {
         sz = d_image->getSize();
+        if (d_size.d_width != 0.0)
+            sz.d_width = d_size.d_width;
+        if (d_size.d_height != 0.0)
+            sz.d_height = d_size.d_height;
         sz.d_width += (d_padding.d_left + d_padding.d_right);
         sz.d_height += (d_padding.d_top + d_padding.d_bottom);
     }
@@ -193,6 +207,18 @@ size_t RenderedStringImageComponent::getSpaceCount() const
 {
     // images do not have spaces.
     return 0;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedStringImageComponent::setSize(const Size& sz)
+{
+    d_size = sz;
+}
+
+//----------------------------------------------------------------------------//
+const Size& RenderedStringImageComponent::getSize() const
+{
+    return d_size;
 }
 
 //----------------------------------------------------------------------------//
