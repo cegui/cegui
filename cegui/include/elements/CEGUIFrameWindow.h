@@ -60,6 +60,10 @@ public:
 	// additional event names for this window
 	static const String EventRollupToggled;		//!< Fired when the rollup (shade) state of the window changes
 	static const String EventCloseClicked;		//!< Fired when the close button for the window is clicked.
+    //! Fired when drag-sizing of the window starts.
+    static const String EventDragSizingStarted;
+    //! Fired when drag-sizing of the window ends.
+    static const String EventDragSizingEnded;
 
 	// other bits
 	static const float	DefaultSizingBorderSize;	//!< Default size for the sizing border (in pixels)
@@ -508,7 +512,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window smaller.
 	*/
-	void	moveLeftEdge(float delta);
+	bool	moveLeftEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -518,7 +522,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window larger.
 	*/
-	void	moveRightEdge(float delta);
+	bool	moveRightEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -528,7 +532,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window smaller.
 	*/
-	void	moveTopEdge(float delta);
+	bool	moveTopEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -538,7 +542,7 @@ protected:
 	\param delta
 		float value that specifies the amount to move the window edge, and in which direction.  Positive values make window larger.
 	*/
-	void	moveBottomEdge(float delta);
+	bool	moveBottomEdge(float delta, URect& out_area);
 
 
 	/*!
@@ -664,6 +668,11 @@ protected:
 	*/
 	virtual void	onCloseClicked(WindowEventArgs& e);
 
+    //! Handler called when drag-sizing of the FrameWindow starts.
+    virtual void onDragSizingStarted(WindowEventArgs& e);
+
+    //! Handler called when drag-sizing of the FrameWindow ends.
+    virtual void onDragSizingEnded(WindowEventArgs& e);
 
 	/*************************************************************************
 		Overridden event handlers

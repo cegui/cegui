@@ -56,10 +56,6 @@ function cegui_dynamic(name, lang, kind)
 		rootdir.."cegui/include",
 		rootdir.."dependencies/include",
 	}
-	package.libpaths =
-	{
-		rootdir.."dependencies/lib",
-	}
 	package.defines =
 	{
 		"_CRT_SECURE_NO_DEPRECATE",
@@ -74,6 +70,11 @@ function cegui_dynamic(name, lang, kind)
         "_DEBUG"
     }
 	debug.buildflags = {}
+
+	debug.libpaths =
+	{
+		rootdir.."dependencies/lib/dynamic",
+	}
 	
 	-- debug_static
 	debug_static = package.config.Debug_Static
@@ -100,6 +101,11 @@ function cegui_dynamic(name, lang, kind)
         "static-runtime"
     }
 
+	debug_static.libpaths =
+	{
+		rootdir.."dependencies/lib/static",
+	}
+
 	-- release with symbols
 	release_sym = package.config.ReleaseWithSymbols
 	release_sym.defines = {}
@@ -110,6 +116,10 @@ function cegui_dynamic(name, lang, kind)
 --    "optimize-speed",
 	}
 
+	release_sym.libpaths =
+	{
+		rootdir.."dependencies/lib/dynamic",
+	}
 
 	-- release (no symbols)
 	release = package.config.Release
@@ -119,6 +129,11 @@ function cegui_dynamic(name, lang, kind)
 	    "no-symbols",
 	    "optimize-speed",
 	    "no-frame-pointer",
+	}
+
+	release.libpaths =
+	{
+		rootdir.."dependencies/lib/dynamic",
 	}
 	
 	-- release_static (no symbols)
@@ -148,7 +163,11 @@ function cegui_dynamic(name, lang, kind)
         -- Static build means static runtimes! (/MT)
         "static-runtime"
 	}
-	
+
+	release_static.libpaths =
+	{
+		rootdir.."dependencies/lib/static",
+	}
 end
 
 --
@@ -275,6 +294,10 @@ function setup_static_samples()
     if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then
         print "D3D9 and D3D10 cannot both be defined for static builds, because it will result in a linker conflict."
     end
+
+    if OPENGL_RENDERER then
+        library_static("freeglut", "", "_d")
+    end
 	
     if DIRECT3D9_RENDERER then
         library_static("dxguid")
@@ -307,7 +330,7 @@ function setup_static_samples()
 		else
 	        library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
-        library_static("xerces-c_3","","D")
+        library_static("xerces-c_static_3","","D")
     end
     if DEFAULT_XML_PARSER == "tinyxml" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then
@@ -339,6 +362,9 @@ function setup_static_samples()
 	        library_static("CEGUISILLYImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
         library_static("SILLY","","_d")
+        library_static("libpng","","_d")
+        library_static("jpeg","","_d")
+        library_static("zlib","","_d")
     end
     if DEFAULT_IMAGE_CODEC == "devil" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then
@@ -346,8 +372,13 @@ function setup_static_samples()
 		else
 	        library_static("CEGUIDevILImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
-        library_static("DevIL")
-        library_static("ILU")
+        library_static("DevIL", "", "_d")
+        library_static("ILU", "", "_d")
+        library_static("libpng","","_d")
+        library_static("libmng","","_d")
+        library_static("libtiff","","_d")
+        library_static("jpeg","","_d")
+        library_static("zlib","","_d")
     end
     if DEFAULT_IMAGE_CODEC == "freeimage" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then

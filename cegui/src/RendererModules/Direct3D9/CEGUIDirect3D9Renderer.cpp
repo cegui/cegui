@@ -47,6 +47,15 @@ String Direct3D9Renderer::d_rendererID(
 "module.");
 
 //----------------------------------------------------------------------------//
+static const D3DMATRIX s_identityMatrix =
+{
+    1.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 1.0
+};
+
+//----------------------------------------------------------------------------//
 Direct3D9Renderer& Direct3D9Renderer::create(LPDIRECT3DDEVICE9 device)
 {
     return *new Direct3D9Renderer(device);
@@ -213,6 +222,9 @@ void Direct3D9Renderer::beginRendering()
     d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
     d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
     d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+    // set view matrix back to identity.
+    d_device->SetTransform(D3DTS_VIEW, &s_identityMatrix);
 }
 
 //----------------------------------------------------------------------------//

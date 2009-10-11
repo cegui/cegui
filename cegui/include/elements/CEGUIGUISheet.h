@@ -95,6 +95,9 @@ protected:
     //! helper to update mouse input handled state
     void updateMouseEventHandled(MouseEventArgs& e) const;
 
+    // overridden functions from Window base class
+    bool moveToFront_impl(bool wasClicked);
+
     // override the mouse event handlers
     void onMouseMove(MouseEventArgs& e);
     void onMouseWheel(MouseEventArgs& e);

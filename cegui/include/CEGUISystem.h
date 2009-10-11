@@ -83,6 +83,8 @@ public:
 	static const String EventMouseMoveScalingChanged;		//!< Name of event fired when the mouse move scaling factor changes.
     //! Name of event fired for display size changes (as notified by client).
     static const String EventDisplaySizeChanged;
+    //! Name of event fired when global custom RenderedStringParser is set.
+    static const String EventRenderedStringParserChanged;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -757,6 +759,37 @@ public:
     */
     void notifyDisplaySizeChanged(const Size& new_size);
 
+    /*!
+    \brief
+        Return pointer to the currently set global default custom
+        RenderedStringParser object.
+
+        The returned RenderedStringParser is used for all windows that have
+        parsing enabled and no custom RenderedStringParser set on the window
+        itself.
+
+        If this global custom RenderedStringParser is set to 0, then all windows
+        with parsing enabled and no custom RenderedStringParser set on the
+        window itself will use the systems BasicRenderedStringParser. 
+    */
+    RenderedStringParser* getDefaultCustomRenderedStringParser() const;
+
+    /*!
+    \brief
+        Set the global default custom RenderedStringParser object.  This change
+        is reflected the next time an affected window reparses it's text.  This
+        may be set to 0 for no system wide custom parser (which is the default).
+
+        The set RenderedStringParser is used for all windows that have
+        parsing enabled and no custom RenderedStringParser set on the window
+        itself.
+
+        If this global custom RenderedStringParser is set to 0, then all windows
+        with parsing enabled and no custom RenderedStringParser set on the
+        window itself will use the systems BasicRenderedStringParser. 
+    */
+    void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -1160,6 +1193,8 @@ private:
     static String d_defaultImageCodecName;
     //! true when we created the CEGUI::Logger based object.
     bool d_ourLogger;
+    //! currently set global RenderedStringParser.
+    RenderedStringParser* d_customRenderedStringParser;
 };
 
 } // End of  CEGUI namespace section

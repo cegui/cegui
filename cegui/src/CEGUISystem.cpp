@@ -175,6 +175,7 @@ const String System::EventDefaultFontChanged( "DefaultFontChanged" );
 const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
 const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
+const String System::EventRenderedStringParserChanged("RenderedStringParserChanged");
 
 // Holds name of default XMLParser
 String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
@@ -221,7 +222,8 @@ System::System(Renderer& renderer,
   d_weOwnTooltip(false),
   d_imageCodec(imageCodec),
   d_imageCodecModule(0),
-  d_ourLogger(Logger::getSingletonPtr() == 0)
+  d_ourLogger(Logger::getSingletonPtr() == 0),
+  d_customRenderedStringParser(0)
 {
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
@@ -1332,6 +1334,11 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 	{
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
+
+        // regardless of what is done above, invalidate all windows.  This is
+        // required since geometry can be wrong with referenced textures no
+        // longer existing due to auto-scaling effect (mainly affects fonts).
+        d_activeSheet->invalidate(true);
 	}
 
     // Fire event
@@ -1511,6 +1518,7 @@ void System::setupXMLParser()
         d_xmlParser = createParser();
         // make sure we know to cleanup afterwards.
         d_ourXmlParser = true;
+		d_xmlParser->initialise();
 #endif
     }
     // parser object already set, just initialise it.
@@ -1827,6 +1835,25 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
 void System::destroy()
 {
     delete System::getSingletonPtr();
+}
+
+//----------------------------------------------------------------------------//
+RenderedStringParser* System::getDefaultCustomRenderedStringParser() const
+{
+    return d_customRenderedStringParser;
+}
+
+//----------------------------------------------------------------------------//
+void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
+{
+    if (parser != d_customRenderedStringParser)
+    {
+        d_customRenderedStringParser = parser;
+        
+        // fire event
+        EventArgs args;
+        fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
+    }
 }
 
 //----------------------------------------------------------------------------//

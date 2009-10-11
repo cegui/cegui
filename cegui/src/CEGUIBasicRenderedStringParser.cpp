@@ -37,8 +37,32 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+const String BasicRenderedStringParser::ColourTagName("colour");
+const String BasicRenderedStringParser::FontTagName("font");
+const String BasicRenderedStringParser::ImageTagName("image");
+const String BasicRenderedStringParser::WindowTagName("window");
+const String BasicRenderedStringParser::VertAlignmentTagName("vert-alignment");
+const String BasicRenderedStringParser::PaddingTagName("padding");
+const String BasicRenderedStringParser::TopPaddingTagName("top-padding");
+const String BasicRenderedStringParser::BottomPaddingTagName("bottom-padding");
+const String BasicRenderedStringParser::LeftPaddingTagName("left-padding");
+const String BasicRenderedStringParser::RightPaddingTagName("right-padding");
+const String BasicRenderedStringParser::AspectLockTagName("aspect-lock");
+const String BasicRenderedStringParser::ImageSizeTagName("image-size");
+const String BasicRenderedStringParser::ImageWidthTagName("image-width");
+const String BasicRenderedStringParser::ImageHeightTagName("image-height");
+const String BasicRenderedStringParser::TopAlignedValueName("top");
+const String BasicRenderedStringParser::BottomAlignedValueName("bottom");
+const String BasicRenderedStringParser::CentreAlignedValueName("centre");
+const String BasicRenderedStringParser::StretchAlignedValueName("stretch");
+
+//----------------------------------------------------------------------------//
 BasicRenderedStringParser::BasicRenderedStringParser() :
-    d_initialColours(0xFFFFFFFF)
+    d_initialColours(0xFFFFFFFF),
+    d_vertAlignment(VF_BOTTOM_ALIGNED),
+    d_imageSize(0, 0),
+    d_aspectLock(false),
+    d_initialised(false)
 {
     initialiseDefaultState();
 }
@@ -47,7 +71,11 @@ BasicRenderedStringParser::BasicRenderedStringParser() :
 BasicRenderedStringParser::BasicRenderedStringParser(const String& initial_font,
                                             const ColourRect& initial_colours) :
     d_initialFontName(initial_font),
-    d_initialColours(initial_colours)
+    d_initialColours(initial_colours),
+    d_vertAlignment(VF_BOTTOM_ALIGNED),
+    d_imageSize(0, 0),
+    d_aspectLock(false),
+    d_initialised(false)
 {
     initialiseDefaultState();
 }
@@ -62,17 +90,19 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string,
                                                 Font* initial_font,
                                                 const ColourRect* initial_colours)
 {
-    // set up initial font.
+    // first-time initialisation (due to issues with static creation order)
+    if (!d_initialised)
+        initialiseTagHandlers();
+
+    initialiseDefaultState();
+
+    // maybe override initial font.
     if (initial_font)
         d_fontName = initial_font->getName();
-    else
-        d_fontName = d_initialFontName;
 
-    // set up initial colours.
+    // maybe override initial colours.
     if (initial_colours)
         d_colours = *initial_colours;
-    else
-        d_colours = d_initialColours;
 
     RenderedString rs;
     String curr_section;
@@ -153,6 +183,8 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
             RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
             rtc.setPadding(d_padding);
             rtc.setColours(d_colours);
+            rtc.setVerticalFormatting(d_vertAlignment);
+            rtc.setAspectLock(d_aspectLock);
             rs.appendComponent(rtc);
         }
 
@@ -175,7 +207,7 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
     {
         Logger::getSingleton().logEvent(
             "BasicRenderedStringParser::processControlString: unable to make "
-            "sense of control string '" + ctrl_str + "'.  Ingoring!");
+            "sense of control string '" + ctrl_str + "'.  Ignoring!");
         
         return;
     }
@@ -184,34 +216,18 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
     char val_buf[128];
     sscanf(ctrl_str.c_str(), " %127[^ =] = '%127[^']", var_buf, val_buf);
 
-    String var_str(var_buf);
-    String val_str(val_buf);
+    const String var_str(var_buf);
+    const String val_str(val_buf);
 
-    if (var_str == "colour")
-        d_colours.setColours(PropertyHelper::stringToColour(val_str));
-    else if (var_str == "font")
-        d_fontName = val_str;
-    else if (var_str == "image")
-    {
-        RenderedStringImageComponent ric(
-            PropertyHelper::stringToImage(val_str));
-        ric.setPadding(d_padding);
-        ric.setColours(d_colours);
-        rs.appendComponent(ric);
-    }
-    else if (var_str == "window")
-    {
-        RenderedStringWidgetComponent rwc(val_str);
-        rwc.setPadding(d_padding);
-        rs.appendComponent(rwc);
-    }
+    // look up handler function
+    TagHandlerMap::iterator i = d_tagHandlers.find(var_str);
+    // despatch handler, or log error
+    if (i != d_tagHandlers.end())
+        (this->*(*i).second)(rs, val_str);
     else
         Logger::getSingleton().logEvent(
             "BasicRenderedStringParser::processControlString: unknown "
-            "control variable '" + var_str + "'.  Ingoring!");
-
-    // TODO: Add support for parsing vert formatting specifications.
-    // TODO: Add support for parsing padding specifications.
+            "control variable '" + var_str + "'.  Ignoring!");
 }
 
 //----------------------------------------------------------------------------//
@@ -220,6 +236,9 @@ void BasicRenderedStringParser::initialiseDefaultState()
     d_padding = Rect(0, 0, 0, 0);
     d_colours = d_initialColours;
     d_fontName = d_initialFontName;
+    d_imageSize.d_width = d_imageSize.d_height = 0.0f;
+    d_vertAlignment = VF_BOTTOM_ALIGNED;
+    d_aspectLock = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -244,6 +263,142 @@ const String& BasicRenderedStringParser::getInitialFontName() const
 const ColourRect& BasicRenderedStringParser::getInitialColours() const
 {
     return d_initialColours;
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::initialiseTagHandlers()
+{
+    d_tagHandlers[ColourTagName] = &BasicRenderedStringParser::handleColour;
+    d_tagHandlers[FontTagName] = &BasicRenderedStringParser::handleFont;
+    d_tagHandlers[ImageTagName] = &BasicRenderedStringParser::handleImage;
+    d_tagHandlers[WindowTagName] = &BasicRenderedStringParser::handleWindow;
+    d_tagHandlers[VertAlignmentTagName] = &BasicRenderedStringParser::handleVertAlignment;
+    d_tagHandlers[PaddingTagName] = &BasicRenderedStringParser::handlePadding;
+    d_tagHandlers[TopPaddingTagName] = &BasicRenderedStringParser::handleTopPadding;
+    d_tagHandlers[BottomPaddingTagName] = &BasicRenderedStringParser::handleBottomPadding;
+    d_tagHandlers[LeftPaddingTagName] = &BasicRenderedStringParser::handleLeftPadding;
+    d_tagHandlers[RightPaddingTagName] = &BasicRenderedStringParser::handleRightPadding;
+    d_tagHandlers[AspectLockTagName] = &BasicRenderedStringParser::handleAspectLock;
+    d_tagHandlers[ImageSizeTagName] = &BasicRenderedStringParser::handleImageSize;
+    d_tagHandlers[ImageWidthTagName] = &BasicRenderedStringParser::handleImageWidth;
+    d_tagHandlers[ImageHeightTagName] = &BasicRenderedStringParser::handleImageHeight;
+
+    d_initialised = true;
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleColour(RenderedString& rs, const String& value)
+{
+    d_colours.setColours(PropertyHelper::stringToColour(value));
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleFont(RenderedString& rs, const String& value)
+{
+    d_fontName = value;
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& value)
+{
+    RenderedStringImageComponent ric(
+        PropertyHelper::stringToImage(value));
+    ric.setPadding(d_padding);
+    ric.setColours(d_colours);
+    ric.setVerticalFormatting(d_vertAlignment);
+    ric.setSize(d_imageSize);
+    ric.setAspectLock(d_aspectLock);
+    rs.appendComponent(ric);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& value)
+{
+    RenderedStringWidgetComponent rwc(value);
+    rwc.setPadding(d_padding);
+    rwc.setVerticalFormatting(d_vertAlignment);
+    rwc.setAspectLock(d_aspectLock);
+    rs.appendComponent(rwc);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const String& value)
+{
+    if (value == TopAlignedValueName)
+        d_vertAlignment = VF_TOP_ALIGNED;
+    else if (value == BottomAlignedValueName)
+        d_vertAlignment = VF_BOTTOM_ALIGNED;
+    else if (value == CentreAlignedValueName)
+        d_vertAlignment = VF_CENTRE_ALIGNED;
+    else if (value == StretchAlignedValueName)
+        d_vertAlignment = VF_STRETCHED;
+    else
+        Logger::getSingleton().logEvent(
+            "BasicRenderedStringParser::handleVertAlignment: unknown "
+            "vertical alignment '" + value + "'.  Ignoring!");
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handlePadding(RenderedString& rs,
+                                              const String& value)
+{
+    d_padding = PropertyHelper::stringToRect(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleTopPadding(RenderedString& rs,
+                                                 const String& value)
+{
+    d_padding.d_top = PropertyHelper::stringToFloat(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleBottomPadding(RenderedString& rs,
+                                                    const String& value)
+{
+    d_padding.d_bottom = PropertyHelper::stringToFloat(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleLeftPadding(RenderedString& rs,
+                                                  const String& value)
+{
+    d_padding.d_left = PropertyHelper::stringToFloat(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleRightPadding(RenderedString& rs,
+                                                   const String& value)
+{
+    d_padding.d_right = PropertyHelper::stringToFloat(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleAspectLock(RenderedString& rs,
+                                                 const String& value)
+{
+    d_aspectLock = PropertyHelper::stringToBool(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleImageSize(RenderedString& rs,
+                                                const String& value)
+{
+    d_imageSize = PropertyHelper::stringToSize(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleImageWidth(RenderedString& rs,
+                                                 const String& value)
+{
+    d_imageSize.d_width = PropertyHelper::stringToFloat(value);
+}
+
+//----------------------------------------------------------------------------//
+void BasicRenderedStringParser::handleImageHeight(RenderedString& rs,
+                                                  const String& value)
+{
+    d_imageSize.d_height = PropertyHelper::stringToFloat(value);
 }
 
 //----------------------------------------------------------------------------//
