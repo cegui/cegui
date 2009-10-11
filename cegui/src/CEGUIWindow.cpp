@@ -2618,7 +2618,8 @@ void Window::onParentSized(WindowEventArgs& e)
     setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
     const bool moved =
-        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0));
+        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
+         (d_horzAlign != HA_LEFT) || (d_vertAlign != VA_TOP));
     const bool sized =
         ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0));
 
@@ -2845,12 +2846,16 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
 {
+    notifyScreenAreaChanged();
+
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
 {
+    notifyScreenAreaChanged();
+
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
 
