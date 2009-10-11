@@ -2383,6 +2383,14 @@ void Window::onSized(WindowEventArgs& e)
     // more selectively with child Window cases.
     notifyScreenAreaChanged(false);
 
+    // we need to layout loonfeel based content first, in case anything is
+    // relying on that content for size or positioning info (i.e. some child
+    // is used to establish inner-rect position or size).
+    //
+    // TODO: The subsequent onParentSized notification for those windows cause
+    // additional - unneccessary - work; we should look to optimise that.
+    performChildWindowLayout();
+
     // inform children their parent has been re-sized
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
@@ -2391,7 +2399,6 @@ void Window::onSized(WindowEventArgs& e)
         d_children[i]->onParentSized(args);
     }
 
-    performChildWindowLayout();
     invalidate();
 
     fireEvent(EventSized, e, EventNamespace);
