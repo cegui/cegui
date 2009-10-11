@@ -1824,8 +1824,28 @@ public:
 
     \return
         Nothing
+
+    \deprecated
+        This function is deprecated in favour of the version taking a boolean.
     */
     void invalidate(void);
+
+    /*!
+    \brief
+        Invalidate this window and - dependant upon \a recursive - all child
+        content, causing affected windows to be redrawn during the next
+        rendering pass.
+
+    \param recursive
+        Boolean value indicating whether attached child content should also be
+        invalidated.
+        - true will cause all child content to be invalidated also.
+        - false will just invalidate this single window.
+
+    \return
+        Nothing
+    */
+    void invalidate(const bool recursive);
 
     /*!
     \brief
@@ -3637,6 +3657,9 @@ protected:
 
     //! helper function for calculating clipping rectangles.
     Rect getParentElementClipIntersection(const Rect& unclipped_area) const;
+
+    //! helper function to invalidate window and optionally child windows.
+    void invalidate_impl(const bool recursive);
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
