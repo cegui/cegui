@@ -194,7 +194,7 @@ float CoordConverter::getBaseXValue(const Window& window)
             break;
     }
 
-    return baseX;
+    return PixelAligned(baseX);
 }
 
 //----------------------------------------------------------------------------//
@@ -227,7 +227,7 @@ float CoordConverter::getBaseYValue(const Window& window)
             break;
     }
 
-    return baseY;
+    return PixelAligned(baseY);
 }
 
 //----------------------------------------------------------------------------//
