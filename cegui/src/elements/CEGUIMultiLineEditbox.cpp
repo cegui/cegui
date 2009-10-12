@@ -722,9 +722,8 @@ void MultiLineEditbox::handleBackspace(void)
 		{
             String newText = getText();
             newText.erase(d_caratPos - 1, 1);
+            setCaratIndex(d_caratPos - 1);
             setText(newText);
-
-			setCaratIndex(d_caratPos - 1);
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
