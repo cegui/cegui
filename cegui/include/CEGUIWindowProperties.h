@@ -942,7 +942,7 @@ class UnifiedMaxSize : public Property
 		UnifiedMaxSize() : Property(
 		"UnifiedMaxSize",
 		"Property to get/set the windows unified maximum size.  Value is a \"UVector2\".",
-		"{{0,0},{0,0}}")
+		"{{1,0},{1,0}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
