@@ -56,13 +56,26 @@ namespace CEGUI
 
         UDim operator+(const UDim& other) const     { return UDim(d_scale + other.d_scale, d_offset + other.d_offset); }
         UDim operator-(const UDim& other) const     { return UDim(d_scale - other.d_scale, d_offset - other.d_offset); }
-        UDim operator/(const UDim& other) const     { return UDim(d_scale / other.d_scale, d_offset / other.d_offset); }
         UDim operator*(const UDim& other) const     { return UDim(d_scale * other.d_scale, d_offset * other.d_offset); }
+        UDim operator/(const UDim& other) const
+        {
+            // division by zero sets component to zero.  Not technically correct
+            // but probably better than exceptions and/or NaN values.
+            return UDim(other.d_scale == 0.0f ? 0.0f : d_scale / other.d_scale,
+                        other.d_offset == 0.0f ? 0.0f : d_offset / other.d_offset);
+        }
 
         const UDim& operator+=(const UDim& other)   { d_scale += other.d_scale; d_offset += other.d_offset; return *this; }
         const UDim& operator-=(const UDim& other)   { d_scale -= other.d_scale; d_offset -= other.d_offset; return *this; }
-        const UDim& operator/=(const UDim& other)   { d_scale /= other.d_scale; d_offset /= other.d_offset; return *this; }
         const UDim& operator*=(const UDim& other)   { d_scale *= other.d_scale; d_offset *= other.d_offset; return *this; }
+        const UDim& operator/=(const UDim& other)
+        {
+            // division by zero sets component to zero.  Not technically correct
+            // but probably better than exceptions and/or NaN values.
+            d_scale = (other.d_scale == 0.0f ? 0.0f : d_scale / other.d_scale);
+            d_offset = (other.d_offset == 0.0f ? 0.0f : d_offset / other.d_offset);
+            return *this;
+        }
 
         bool operator==(const UDim& other) const    { return d_scale == other.d_scale && d_offset == other.d_offset; }
         bool operator!=(const UDim& other) const    { return !operator==(other); }
@@ -94,6 +107,16 @@ namespace CEGUI
         const UVector2& operator-=(const UVector2& other)   { d_x -= other.d_x; d_y -= other.d_y; return *this; }
         const UVector2& operator/=(const UVector2& other)   { d_x /= other.d_x; d_y /= other.d_y; return *this; }
         const UVector2& operator*=(const UVector2& other)   { d_x *= other.d_x; d_y *= other.d_y; return *this; }
+
+        UVector2 operator+(const UDim& dim) const     { return UVector2(d_x + dim, d_y + dim); }
+        UVector2 operator-(const UDim& dim) const     { return UVector2(d_x - dim, d_y - dim); }
+        UVector2 operator/(const UDim& dim) const     { return UVector2(d_x / dim, d_y / dim); }
+        UVector2 operator*(const UDim& dim) const     { return UVector2(d_x * dim, d_y * dim); }
+
+        const UVector2& operator+=(const UDim& dim)   { d_x += dim; d_y += dim; return *this; }
+        const UVector2& operator-=(const UDim& dim)   { d_x -= dim; d_y -= dim; return *this; }
+        const UVector2& operator/=(const UDim& dim)   { d_x /= dim; d_y /= dim; return *this; }
+        const UVector2& operator*=(const UDim& dim)   { d_x *= dim; d_y *= dim; return *this; }
         
         bool operator==(const UVector2& other) const    { return d_x == other.d_x && d_y == other.d_y; }
         bool operator!=(const UVector2& other) const    { return !operator==(other); }
