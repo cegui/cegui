@@ -4,7 +4,7 @@
     <Window Type="TaharezLook/FrameWindow" Name="Frame" >
         <Property Name="Text" Value="Tab Control Demo" />
         <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />
-        <Property Name="TitlebarFont" Value="Commonwealth-10" />
+        <Property Name="TitlebarFont" Value="DejaVuSans-10" />
         <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
         <Property Name="TitlebarEnabled" Value="True" />
