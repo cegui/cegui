@@ -92,7 +92,8 @@ static struct
 class MyListItem : public ListboxTextItem
 {
 public:
-    MyListItem (const String& text) : ListboxTextItem(text)
+    MyListItem (const String& text, CEGUI::uint item_id = 0) :
+        ListboxTextItem(text, item_id)
     {
         setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
     }
@@ -168,7 +169,7 @@ public:
         for (size_t i = 0; i < (sizeof (LangList) / sizeof (LangList [0])); i++)
             // only add a language if 'preferred' font is available
             if (FontManager::getSingleton().isDefined(String(LangList[i].Font)))
-                lbox->addItem (new MyListItem (LangList [i].Language));
+                lbox->addItem (new MyListItem (LangList [i].Language, i));
         // set up the language listbox callback
         lbox->subscribeEvent (Listbox::EventSelectionChanged,
                               Event::Subscriber (&FontDemo::handleLangSelection, this));
@@ -326,7 +327,8 @@ public:
 
         if (lbox->getFirstSelectedItem ())
         {
-            size_t idx = lbox->getItemIndex (lbox->getFirstSelectedItem ());
+            ListboxItem* sel_item = lbox->getFirstSelectedItem();
+            size_t idx = sel_item ? sel_item->getID() : 0;
             const String fontName(LangList[idx].Font);
 
             WindowManager& winMgr = WindowManager::getSingleton ();
