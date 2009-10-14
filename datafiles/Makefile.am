@@ -3,22 +3,12 @@ dist-hook:
 
 nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              fonts/Batang-26.font \
-             fonts/Commonv2c.ttf \
-             fonts/Commonwealth-10.font \
              fonts/DejaVuSans-10.font \
              fonts/DejaVuSans.ttf \
              fonts/FairChar-30.font \
              fonts/fkp-16.font \
              fonts/fkp.de.pcf \
-             fonts/Iconified-12.font \
-             fonts/Iconiv2.ttf \
-             fonts/Sword.ttf \
-             fonts/Sword-26.font \
-             fonts/README \
              fonts/baemuk.txt \
-             fonts/common.txt \
-             fonts/icon.txt \
-             fonts/sword.txt \
              fonts/Legal.txt \
              imagesets/DriveIcons.imageset \
              imagesets/DriveIcons.png \
