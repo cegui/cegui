@@ -56,23 +56,31 @@ namespace CEGUI
             String area_name("ItemRenderingArea");
 
             if (h_visible)
-            {
                 area_name += "H";
-            }
             if (v_visible)
-            {
                 area_name += "V";
-            }
             area_name += "Scroll";
 
             if (wlf.isNamedAreaDefined(area_name))
-            {
                 return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
-            }
+
+            // since that did not exist, try optional alternative base name
+            area_name = "ItemRenderArea";
+            if (h_visible)
+                area_name += "H";
+            if (v_visible)
+                area_name += "V";
+            area_name += "Scroll";
+
+            if (wlf.isNamedAreaDefined(area_name))
+                return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
         }
 
         // default to plain ItemRenderingArea
-        return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*lb);
+        if (wlf.isNamedAreaDefined("ItemRenderingArea"))
+            return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*lb);
+        else
+            return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*lb);
     }
 
     void FalagardListbox::render()
