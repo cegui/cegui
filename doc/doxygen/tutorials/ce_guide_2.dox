@@ -162,7 +162,7 @@ CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
 // that the scheme might have already loaded a font, so there may already
 // be a default set - if we want the "Commonweath-10" font to definitely
 // be the default, we should set the default explicitly afterwards.
-CEGUI::FontManager::getSingleton().create( "Commonwealth-10.font" );
+CEGUI::FontManager::getSingleton().create( "DejaVuSans-10.font" );
 @endcode
 
 In the above code (and in the CEGUI samples) it is assumed that the resource
@@ -179,7 +179,7 @@ The FontManager automatically sets the first loaded font as the system default.
 If this is not the default font you require, or if you can not guarantee the
 order fonts are loaded, you should set the default explicitly, as in this code:
 @code
-System::getSingleton().setDefaultFont( "Commonwealth-10" );
+System::getSingleton().setDefaultFont( "DejaVuSans-10" );
 @endcode
 
 Another default object you'll normally set is a mouse cursor.  This ensures

@@ -130,7 +130,7 @@ bool TreeDemoSample::initialiseSample()
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 
-    FontManager::getSingleton().create("Iconified-12.font");
+    FontManager::getSingleton().create("DejaVuSans-10.font");
 //	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
 //		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
