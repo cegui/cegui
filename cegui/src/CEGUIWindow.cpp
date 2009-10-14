@@ -528,8 +528,7 @@ Rect Window::getUnclippedOuterRect() const
 {
     if (!d_outerUnclippedRectValid)
     {
-        const Rect local(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
-        d_outerUnclippedRect = CoordConverter::windowToScreen(*this, local);
+        d_outerUnclippedRect = getUnclippedOuterRect_impl();
         d_outerUnclippedRectValid = true;
     }
 
@@ -559,10 +558,7 @@ Rect Window::getOuterRectClipper() const
 {
     if (!d_outerRectClipperValid)
     {
-        d_outerRectClipper = (d_surface && d_surface->isRenderingWindow()) ?
-            getUnclippedOuterRect() :
-            getParentElementClipIntersection(getUnclippedOuterRect());
-
+        d_outerRectClipper = getOuterRectClipper_impl();
         d_outerRectClipperValid = true;
     }
 
@@ -574,10 +570,7 @@ Rect Window::getInnerRectClipper() const
 {
     if (!d_innerRectClipperValid)
     {
-        d_innerRectClipper = (d_surface && d_surface->isRenderingWindow()) ?
-            getUnclippedInnerRect() :
-            getParentElementClipIntersection(getUnclippedInnerRect());
-
+        d_innerRectClipper = getInnerRectClipper_impl();
         d_innerRectClipperValid = true;
     }
 
@@ -595,23 +588,7 @@ Rect Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
     {
-        // if clipped by parent wnd, hit test area is the intersection of our
-        // outer rect with the parent's hit test area intersected with the
-        // parent's clipper.
-        if (d_parent && d_clippedByParent)
-        {
-            d_hitTestRect = getUnclippedOuterRect().getIntersection(
-                d_parent->getHitTestRect().getIntersection(
-                    d_parent->getClipRect(d_nonClientContent)));
-        }
-        // not clipped to parent wnd, so get intersection with screen area.
-        else
-        {
-            d_hitTestRect = getUnclippedOuterRect().getIntersection(
-                Rect(Vector2(0, 0),
-                     System::getSingleton().getRenderer()->getDisplaySize()));
-        }
-
+        d_hitTestRect = getHitTestRect_impl();
         d_hitTestRectValid = true;
     }
 
@@ -629,10 +606,54 @@ Rect Window::getParentElementClipIntersection(const Rect& unclipped_area) const
 }
 
 //----------------------------------------------------------------------------//
+Rect Window::getUnclippedOuterRect_impl() const
+{
+    const Rect local(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+    return CoordConverter::windowToScreen(*this, local);
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getOuterRectClipper_impl() const
+{
+    return (d_surface && d_surface->isRenderingWindow()) ?
+        getUnclippedOuterRect() :
+        getParentElementClipIntersection(getUnclippedOuterRect());
+}
+
+//----------------------------------------------------------------------------//
 Rect Window::getUnclippedInnerRect_impl(void) const
 {
     return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
                               getUnclippedOuterRect();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getInnerRectClipper_impl() const
+{
+    return (d_surface && d_surface->isRenderingWindow()) ?
+        getUnclippedInnerRect() :
+        getParentElementClipIntersection(getUnclippedInnerRect());
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getHitTestRect_impl() const
+{
+    // if clipped by parent wnd, hit test area is the intersection of our
+    // outer rect with the parent's hit test area intersected with the
+    // parent's clipper.
+    if (d_parent && d_clippedByParent)
+    {
+        return getUnclippedOuterRect().getIntersection(
+            d_parent->getHitTestRect().getIntersection(
+                d_parent->getClipRect(d_nonClientContent)));
+    }
+    // not clipped to parent wnd, so get intersection with screen area.
+    else
+    {
+        return getUnclippedOuterRect().getIntersection(
+            Rect(Vector2(0, 0),
+                 System::getSingleton().getRenderer()->getDisplaySize()));
+    }
 }
 
 //----------------------------------------------------------------------------//

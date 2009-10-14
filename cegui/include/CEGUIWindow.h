@@ -771,6 +771,11 @@ public:
     \return
         Rect object that describes, in unclipped screen pixel co-ordinates, the
         window object's inner rect area.
+
+    \note
+        This function is going to change from public visibility to pretected.
+        All code accessing the area rects via external code should be using the
+        regular getUnclippedInnerRect function.
     */
     virtual Rect getUnclippedInnerRect_impl(void) const;
 
@@ -3663,6 +3668,15 @@ protected:
 
     //! helper to return whether the inner rect size has changed
     bool isInnerRectSizeChanged() const;
+
+    //! Default implementation of function to return Window outer rect area.
+    virtual Rect getUnclippedOuterRect_impl() const;
+    //! Default implementation of function to return Window outer clipper area.
+    virtual Rect getOuterRectClipper_impl() const;
+    //! Default implementation of function to return Window inner clipper area.
+    virtual Rect getInnerRectClipper_impl() const;
+    //! Default implementation of function to return Window hit-test area.
+    virtual Rect getHitTestRect_impl() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
