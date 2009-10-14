@@ -182,6 +182,8 @@ protected:
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) {};
+    Rect getInnerRectClipper_impl() const;
+    Rect getHitTestRect_impl() const;
     void onChildAdded(WindowEventArgs& e);
     void onChildRemoved(WindowEventArgs& e);
     void onParentSized(WindowEventArgs& e);
