@@ -36,50 +36,47 @@
 
 using namespace CEGUI;
 
-static const char *FontList [] =
-{
-	"DejaVuSans-10",
-    "Commonwealth-10",
-    "Iconified-12",
-    "fkp-16",
-    "FairChar-30",
-	"Sword-26",
-	"Batang-26",
-};
-
 static struct
 {
     utf8 *Language;
+    utf8* Font;
 	utf8 *Text;
 } LangList [] =
 {
 	// A list of strings in different languages
 	// Feel free to add your own language here (UTF-8 ONLY!)...
     { (utf8 *)"English",
+      (utf8*)"DejaVuSans-10",
 	  (utf8 *)"THIS IS SOME TEXT IN UPPERCASE\n"
               "and this is lowercase...\n"
               "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog" },
     { (utf8 *)"Русский",
+      (utf8*)"DejaVuSans-10",
 	  (utf8 *)"Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств.\n"
               "\nЗавершён ежегодный съезд эрудированных школьников, мечтающих глубоко проникнуть в тайны физических явлений и химических реакций.\n"
               "\nавтор панграмм -- Андрей Николаев\n" },
     { (utf8 *)"Română",
+      (utf8*)"DejaVuSans-10",
       (utf8 *)"CEI PATRU APOSTOLI\n"
               "au fost trei:\n"
               "Luca şi Matfei\n" },
     { (utf8 *)"Dansk",
+      (utf8*)"DejaVuSans-10",
       (utf8 *)"FARLIGE STORE BOGSTAVER\n"
               "og flere men små...\n"
               "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" },
 	{ (utf8 *)"Japanese",
+      (utf8*)"Sword-26",
       (utf8 *)"日本語を選択\n"
               "トリガー検知\n"
               "鉱石備蓄不足\n" },
 	{ (utf8 *)"Korean",
+      (utf8*)"Batang-26",
       (utf8 *)"한국어를 선택\n"
               "트리거 검지\n"
               "광석 비축부족\n" },
     { (utf8 *)"Việt",
+      (utf8*)"DejaVuSans-10",
       (utf8 *)"Chào CrazyEddie !\n"
               "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
               "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
@@ -122,8 +119,7 @@ public:
 		System::getSingleton().setDefaultFont("DefaultFont");
 
         // load all the fonts (if they are not loaded yet)
-        for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
-            FontManager::getSingleton().create(String(FontList [i]) + ".font");
+        FontManager::getSingleton().createAll("*.font", "fonts");
 
         // load an image to use as a background
         ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -150,8 +146,16 @@ public:
         // Add the font names to the listbox
         Listbox *lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/FontList"));
 		lbox->setFont("DefaultFont");
-        for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
-            lbox->addItem (new MyListItem (FontList [i]));
+
+        FontManager::FontIterator fi = FontManager::getSingleton().getIterator();    
+        while (!fi.isAtEnd())
+        {
+            // exclude the special DefaultFont!
+            if (fi.getCurrentKey() != String("DefaultFont"))
+                lbox->addItem(new MyListItem(fi.getCurrentKey()));
+            ++fi;
+        }
+
         // set up the font listbox callback
         lbox->subscribeEvent (Listbox::EventSelectionChanged,
                               Event::Subscriber (&FontDemo::handleFontSelection, this));
@@ -162,7 +166,9 @@ public:
         lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/LangList"));
 		lbox->setFont("DefaultFont");
         for (size_t i = 0; i < (sizeof (LangList) / sizeof (LangList [0])); i++)
-            lbox->addItem (new MyListItem (LangList [i].Language));
+            // only add a language if 'preferred' font is available
+            if (FontManager::getSingleton().isDefined(String(LangList[i].Font)))
+                lbox->addItem (new MyListItem (LangList [i].Language));
         // set up the language listbox callback
         lbox->subscribeEvent (Listbox::EventSelectionChanged,
                               Event::Subscriber (&FontDemo::handleLangSelection, this));
@@ -321,23 +327,16 @@ public:
         if (lbox->getFirstSelectedItem ())
         {
             size_t idx = lbox->getItemIndex (lbox->getFirstSelectedItem ());
-			// Set default font to avoid initial glyph errors
-			size_t fontIdx = 0;	// Default to DejaVu Sans for the non-Asian fonts
-			if (idx == 4)	// Japanese
-			{
-				fontIdx = 5;
-			}
-			else if (idx == 5)	// Korean
-			{
-				fontIdx = 6;
-			}
+            const String fontName(LangList[idx].Font);
+
             WindowManager& winMgr = WindowManager::getSingleton ();
 			// Access the font list
 			Listbox *fontList = static_cast<Listbox*>(winMgr.getWindow ("FontDemo/FontList"));
+            ListboxItem* lbi = fontList->findItemWithText(fontName, 0);
 			// Select correct font when not set already
-			if (!fontList->isItemSelected(fontIdx))
+			if (lbi && !lbi->isSelected())
 			{	// This will cause 'handleFontSelection' to get called(!)
-				fontList->setItemSelectState(fontIdx, true);
+				fontList->setItemSelectState(lbi, true);
 			}
 
 			// Finally, set the sample text for the selected language
