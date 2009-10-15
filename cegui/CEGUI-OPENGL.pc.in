@@ -8,4 +8,4 @@ Name: CEGUI OpenGL Renderer
 Description: OpenGL based renderer module for CEGUI.
 Version: @VERSION@
 Requires: CEGUI = @VERSION@
-Libs: -lCEGUIOpenGLRenderer
+Libs: -lCEGUIOpenGLRenderer@cegui_bsfx@

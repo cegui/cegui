@@ -7,5 +7,5 @@ datafiles=@datarootdir@/@PACKAGE@
 Name: CEGUI
 Description: The free GUI library for games and multi-media development.
 Version: @VERSION@
-Libs: -L${libdir} -lCEGUIBase @cegui_pc_platform_libs@
+Libs: -L${libdir} -lCEGUIBase@cegui_bsfx@ @cegui_pc_platform_libs@
 Cflags: -I${includedir} -I${includedir}/@PACKAGE@
