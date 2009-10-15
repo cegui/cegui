@@ -224,6 +224,10 @@ void OpenGLTexture::setTextureSize(const Size& sz)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::grabTexture()
 {
+    // if texture has already been grabbed, do nothing.
+    if (d_grabBuffer)
+        return;
+
     // save old texture binding
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));

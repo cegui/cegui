@@ -30,8 +30,7 @@
 
 #include <GL/glxew.h>
 
-#include "CEGUIOpenGLRenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUIOpenGLTextureTarget.h"
 #include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
@@ -44,8 +43,7 @@ class OpenGLTexture;
     OpenGLGLXPBTextureTarget - allows rendering to an OpenGL texture via the
     pbuffer provided in GLX 1.3 and above.
 */
-class OPENGL_GUIRENDERER_API OpenGLGLXPBTextureTarget : public OpenGLRenderTarget,
-                                                        public TextureTarget
+class OPENGL_GUIRENDERER_API OpenGLGLXPBTextureTarget : public OpenGLTextureTarget
 {
 public:
     OpenGLGLXPBTextureTarget(OpenGLRenderer& owner);
@@ -54,13 +52,12 @@ public:
     // overrides from OpenGLRenderTarget
     void activate();
     void deactivate();
-    // implementation of RenderTarget interface
-    bool isImageryCache() const;
     // implementation of TextureTarget interface
     void clear();
-    Texture& getTexture() const;
     void declareRenderSize(const Size& sz);
-    bool isRenderingInverted() const;
+    // specialise functions from OpenGLTextureTarget
+    void grabTexture();
+    void restoreTexture();
 
 protected:
     //! default size of created texture objects
@@ -98,10 +95,6 @@ protected:
     mutable GLXDrawable d_prevDrawable;
     //! stores previous GLX context when switching to pbuffer
     mutable GLXContext d_prevContext;
-    //! Associated OpenGL texture ID
-    GLuint d_texture;
-    //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
-    OpenGLTexture* d_CEGUITexture;
 };
 
 } // End of  CEGUI namespace section

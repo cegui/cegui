@@ -57,22 +57,17 @@ int pbAttrs[] =
 
 //----------------------------------------------------------------------------//
 OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
+    OpenGLTextureTarget(owner),
     d_pixfmt(0),
     d_pbuffer(0),
     d_context(0),
     d_hdc(0),
     d_prevContext(0),
-    d_prevDC(0),
-    d_texture(0)
+    d_prevDC(0)
 {
     if (!WGLEW_ARB_pbuffer)
         throw RendererException("WGL_ARB_pbuffer extension is needed to use "
             "OpenGLWGLPBTextureTarget!");
-
-    // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
 
     HDC hdc = wglGetCurrentDC();
 
@@ -131,12 +126,6 @@ void OpenGLWGLPBTextureTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLWGLPBTextureTarget::isImageryCache() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLWGLPBTextureTarget::clear()
 {
     // save the old clear colour
@@ -157,12 +146,6 @@ void OpenGLWGLPBTextureTarget::clear()
         glEnable(GL_SCISSOR_TEST);
     // restore the old clear colour
     glClearColor(old_colour[0], old_colour[1], old_colour[2], old_colour[3]);
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLWGLPBTextureTarget::getTexture() const
-{
-    return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
@@ -275,9 +258,18 @@ void OpenGLWGLPBTextureTarget::initialiseTexture()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLWGLPBTextureTarget::isRenderingInverted() const
+void OpenGLWGLPBTextureTarget::grabTexture()
 {
-    return true;
+    releasePBuffer();
+    OpenGLTextureTarget::grabTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLWGLPBTextureTarget::restoreTexture()
+{
+    OpenGLTextureTarget::restoreTexture();
+    initialiseTexture();
+    initialisePBuffer();
 }
 
 //----------------------------------------------------------------------------//

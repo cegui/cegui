@@ -29,8 +29,7 @@
 #define _CEGUIOpenGLApplePBTextureTarget_h_
 
 #include <OpenGL/OpenGL.h>
-#include "CEGUIOpenGLRenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUIOpenGLTextureTarget.h"
 #include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
@@ -43,8 +42,7 @@ class OpenGLTexture;
     OpenGLApplePBTextureTarget - allows rendering to an OpenGL texture via the
     Apple pbuffer extension.
 */
-class OpenGLApplePBTextureTarget : public OpenGLRenderTarget,
-                                   public TextureTarget
+class OpenGLApplePBTextureTarget : public OpenGLTextureTarget
 {
 public:
     OpenGLApplePBTextureTarget(OpenGLRenderer& owner);
@@ -53,13 +51,12 @@ public:
     // overrides from OpenGLRenderTarget
     void activate();
     void deactivate();
-    // implementation of RenderTarget interface
-    bool isImageryCache() const;
     // implementation of TextureTarget interface
     void clear();
-    Texture& getTexture() const;
     void declareRenderSize(const Size& sz);
-    bool isRenderingInverted() const;
+    // specialise functions from OpenGLTextureTarget
+    void grabTexture();
+    void restoreTexture();
 
 protected:
     //! default size of created texture objects
@@ -82,10 +79,6 @@ protected:
     long d_screen;
     //! Context that was active before ours was activated.
     mutable CGLContextObj d_prevContext;
-    //! Associated OpenGL texture ID
-    GLuint d_texture;
-    //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
-    OpenGLTexture* d_CEGUITexture;
 };
 
 } // End of  CEGUI namespace section

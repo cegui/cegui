@@ -38,6 +38,7 @@ libCEGUIOpenGLRenderer@cegui_bsfx@_la_SOURCES = CEGUIOpenGLFBOTextureTarget.cpp 
                                     CEGUIOpenGLRenderer.cpp \
                                     CEGUIOpenGLRenderTarget.cpp \
                                     CEGUIOpenGLTexture.cpp \
+                                    CEGUIOpenGLTextureTarget.cpp \
                                     CEGUIOpenGLViewportTarget.cpp
 
 if BUILD_USING_INTERNAL_GLEW
