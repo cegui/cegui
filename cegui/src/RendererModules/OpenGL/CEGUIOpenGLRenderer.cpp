@@ -429,23 +429,29 @@ void OpenGLRenderer::cleanupExtraStates()
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::grabTextures()
 {
-    TextureList::iterator i = d_textures.begin();
-    while (i != d_textures.end())
-    {
-        (*i)->grabTexture();
-        i++;
-    }
+    // perform grab operations for texture targets
+    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
+    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
+        static_cast<OpenGLTextureTarget*>(*target_iterator)->grabTexture();
+
+    // perform grab on regular textures
+    TextureList::iterator texture_iterator = d_textures.begin();
+    for (; texture_iterator != d_textures.end(); ++texture_iterator)
+        (*texture_iterator)->grabTexture();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::restoreTextures()
 {
-    TextureList::iterator i = d_textures.begin();
-    while (i != d_textures.end())
-    {
-        (*i)->restoreTexture();
-        i++;
-    }
+    // perform restore on textures
+    TextureList::iterator texture_iterator = d_textures.begin();
+    for (; texture_iterator != d_textures.end(); ++texture_iterator)
+        (*texture_iterator)->restoreTexture();
+
+    // perform restore operations for texture targets
+    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
+    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
+        static_cast<OpenGLTextureTarget*>(*target_iterator)->restoreTexture();
 }
 
 //----------------------------------------------------------------------------//
