@@ -223,7 +223,8 @@ System::System(Renderer& renderer,
   d_imageCodec(imageCodec),
   d_imageCodecModule(0),
   d_ourLogger(Logger::getSingletonPtr() == 0),
-  d_customRenderedStringParser(0)
+  d_customRenderedStringParser(0),
+  d_generateMouseClickEvents(true)
 {
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
@@ -786,7 +787,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     if (ma.window)
     {
-        if (ma.window->wantsMultiClickEvents())
+        if (d_generateMouseClickEvents && ma.window->wantsMultiClickEvents())
         {
             switch (tkr.d_click_count)
             {
@@ -803,8 +804,8 @@ bool System::injectMouseButtonDown(MouseButton button)
                 break;
             }
         }
-        // current target window does not want multi-clicks,
-        // so just send a mouse down event instead.
+        // click generation disabled, or current target window does not want
+        // multi-clicks, so just send a mouse down event instead.
         else
         {
             ma.window->onMouseButtonDown(ma);
@@ -852,7 +853,8 @@ bool System::injectMouseButtonUp(MouseButton button)
     const uint upHandled = ma.handled;
 
     // send MouseClicked event if the requirements for that were met
-    if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
+    if (d_generateMouseClickEvents &&
+        ((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
         (tkr.d_target_window == ma.window))
     {
@@ -1854,6 +1856,87 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
     }
+}
+
+//----------------------------------------------------------------------------//
+bool System::isMouseClickEventGenerationEnabled() const
+{
+    return d_generateMouseClickEvents;
+}
+
+//----------------------------------------------------------------------------//
+void System::setMouseClickEventGenerationEnabled(const bool enable)
+{
+    d_generateMouseClickEvents = enable;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window)
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseClicked(ma);
+    }
+
+    return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonDoubleClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseDoubleClicked(ma);
+    }
+
+    return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonTripleClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseTripleClicked(ma);
+    }
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
