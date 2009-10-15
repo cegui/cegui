@@ -698,6 +698,8 @@
 		DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */; };
 		DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */; };
 		DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */; };
+		DAFB3C3310874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DAFB3C3210874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h */; };
+		DAFB3C3510874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3C3410874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1477,24 +1479,14 @@
 		DA1093EB0F6D5A0800B8A582 /* CEGuiD3D10BaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGuiD3D10BaseApplication.h; path = ../../Samples/common/include/CEGuiD3D10BaseApplication.h; sourceTree = SOURCE_ROOT; };
 		DA1093EC0F6D5A0800B8A582 /* Win32CEGuiRendererSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Win32CEGuiRendererSelector.h; path = ../../Samples/common/include/Win32CEGuiRendererSelector.h; sourceTree = SOURCE_ROOT; };
 		DA1093ED0F6D5B8900B8A582 /* FairChar-30.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "FairChar-30.font"; path = "../../datafiles/fonts/FairChar-30.font"; sourceTree = SOURCE_ROOT; };
-		DA1093EE0F6D5B8900B8A582 /* common.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = common.txt; path = ../../datafiles/fonts/common.txt; sourceTree = SOURCE_ROOT; };
-		DA1093EF0F6D5B8900B8A582 /* Commonv2c.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Commonv2c.ttf; path = ../../datafiles/fonts/Commonv2c.ttf; sourceTree = SOURCE_ROOT; };
 		DA1093F00F6D5B8900B8A582 /* fkp.de.pcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = fkp.de.pcf; path = ../../datafiles/fonts/fkp.de.pcf; sourceTree = SOURCE_ROOT; };
 		DA1093F10F6D5B8900B8A582 /* fkp-16.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "fkp-16.font"; path = "../../datafiles/fonts/fkp-16.font"; sourceTree = SOURCE_ROOT; };
-		DA1093F20F6D5B8900B8A582 /* Iconiv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Iconiv2.ttf; path = ../../datafiles/fonts/Iconiv2.ttf; sourceTree = SOURCE_ROOT; };
 		DA1093F30F6D5B8900B8A582 /* Legal.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Legal.txt; path = ../../datafiles/fonts/Legal.txt; sourceTree = SOURCE_ROOT; };
 		DA1093F40F6D5B8900B8A582 /* Batang-26.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Batang-26.font"; path = "../../datafiles/fonts/Batang-26.font"; sourceTree = SOURCE_ROOT; };
 		DA1093F50F6D5B8900B8A582 /* baemuk.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = baemuk.txt; path = ../../datafiles/fonts/baemuk.txt; sourceTree = SOURCE_ROOT; };
 		DA1093F60F6D5B8900B8A582 /* DejaVuSans-10.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "DejaVuSans-10.font"; path = "../../datafiles/fonts/DejaVuSans-10.font"; sourceTree = SOURCE_ROOT; };
-		DA1093F70F6D5B8900B8A582 /* Sword-26.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Sword-26.font"; path = "../../datafiles/fonts/Sword-26.font"; sourceTree = SOURCE_ROOT; };
-		DA1093F80F6D5B8900B8A582 /* sword.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sword.txt; path = ../../datafiles/fonts/sword.txt; sourceTree = SOURCE_ROOT; };
 		DA1093F90F6D5B8900B8A582 /* batang.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = batang.ttf; path = ../../datafiles/fonts/batang.ttf; sourceTree = SOURCE_ROOT; };
-		DA1093FA0F6D5B8900B8A582 /* Iconified-12.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Iconified-12.font"; path = "../../datafiles/fonts/Iconified-12.font"; sourceTree = SOURCE_ROOT; };
-		DA1093FB0F6D5B8900B8A582 /* Commonwealth-10.font */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Commonwealth-10.font"; path = "../../datafiles/fonts/Commonwealth-10.font"; sourceTree = SOURCE_ROOT; };
-		DA1093FC0F6D5B8900B8A582 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README; path = ../../datafiles/fonts/README; sourceTree = SOURCE_ROOT; };
-		DA1093FD0F6D5B8900B8A582 /* Sword.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Sword.ttf; path = ../../datafiles/fonts/Sword.ttf; sourceTree = SOURCE_ROOT; };
 		DA1093FE0F6D5B8900B8A582 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSans.ttf; path = ../../datafiles/fonts/DejaVuSans.ttf; sourceTree = SOURCE_ROOT; };
-		DA1093FF0F6D5B8900B8A582 /* icon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = icon.txt; path = ../../datafiles/fonts/icon.txt; sourceTree = SOURCE_ROOT; };
 		DA1094000F6D5C0E00B8A582 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../../datafiles/imagesets/logo.png; sourceTree = SOURCE_ROOT; };
 		DA1094010F6D5C0E00B8A582 /* Vanilla.imageset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Vanilla.imageset; path = ../../datafiles/imagesets/Vanilla.imageset; sourceTree = SOURCE_ROOT; };
 		DA1094020F6D5C0E00B8A582 /* FairChar.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = FairChar.tga; path = ../../datafiles/imagesets/FairChar.tga; sourceTree = SOURCE_ROOT; };
@@ -2341,6 +2333,8 @@
 		DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIPCRERegexMatcher.h; path = ../../cegui/include/CEGUIPCRERegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRegexMatcher.h; path = ../../cegui/include/CEGUIRegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIPCRERegexMatcher.cpp; path = ../../cegui/src/CEGUIPCRERegexMatcher.cpp; sourceTree = SOURCE_ROOT; };
+		DAFB3C3210874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGLTextureTarget.h; path = ../../cegui/include/RendererModules/OpenGL/CEGUIOpenGLTextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DAFB3C3410874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOpenGLTextureTarget.cpp; path = ../../cegui/src/RendererModules/OpenGL/CEGUIOpenGLTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3092,24 +3086,14 @@
 		DA1093810F6D55DF00B8A582 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				DA1093FC0F6D5B8900B8A582 /* README */,
 				DA1093F50F6D5B8900B8A582 /* baemuk.txt */,
-				DA1093EE0F6D5B8900B8A582 /* common.txt */,
-				DA1093FF0F6D5B8900B8A582 /* icon.txt */,
 				DA1093F30F6D5B8900B8A582 /* Legal.txt */,
-				DA1093F80F6D5B8900B8A582 /* sword.txt */,
 				DA1093F40F6D5B8900B8A582 /* Batang-26.font */,
-				DA1093FB0F6D5B8900B8A582 /* Commonwealth-10.font */,
 				DA1093F60F6D5B8900B8A582 /* DejaVuSans-10.font */,
 				DA1093ED0F6D5B8900B8A582 /* FairChar-30.font */,
-				DA1093FA0F6D5B8900B8A582 /* Iconified-12.font */,
-				DA1093F70F6D5B8900B8A582 /* Sword-26.font */,
 				DA1093F10F6D5B8900B8A582 /* fkp-16.font */,
 				DA1093F90F6D5B8900B8A582 /* batang.ttf */,
-				DA1093EF0F6D5B8900B8A582 /* Commonv2c.ttf */,
 				DA1093FE0F6D5B8900B8A582 /* DejaVuSans.ttf */,
-				DA1093F20F6D5B8900B8A582 /* Iconiv2.ttf */,
-				DA1093FD0F6D5B8900B8A582 /* Sword.ttf */,
 				DA1093F00F6D5B8900B8A582 /* fkp.de.pcf */,
 			);
 			name = fonts;
@@ -4228,6 +4212,7 @@
 				DA1096440F6D633B00B8A582 /* CEGUIOpenGLRenderer.h */,
 				DA1096450F6D633B00B8A582 /* CEGUIOpenGLRenderTarget.h */,
 				DA1096460F6D633B00B8A582 /* CEGUIOpenGLTexture.h */,
+				DAFB3C3210874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h */,
 				DA1096470F6D633B00B8A582 /* CEGUIOpenGLViewportTarget.h */,
 				DA1096480F6D633B00B8A582 /* CEGUIOpenGLWGLPBTextureTarget.h */,
 			);
@@ -4245,6 +4230,7 @@
 				DA1096330F6D631D00B8A582 /* CEGUIOpenGLRenderer.cpp */,
 				DA1096340F6D631D00B8A582 /* CEGUIOpenGLRenderTarget.cpp */,
 				DA1096350F6D631D00B8A582 /* CEGUIOpenGLTexture.cpp */,
+				DAFB3C3410874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp */,
 				DA1096360F6D631D00B8A582 /* CEGUIOpenGLViewportTarget.cpp */,
 				DA1096370F6D631D00B8A582 /* CEGUIOpenGLWGLPBTextureTarget.cpp */,
 			);
@@ -4529,6 +4515,7 @@
 				DAAABCC40F6E6F5F0003BE03 /* CEGUIOpenGLRenderTarget.h in Headers */,
 				DAAABCC50F6E6F5F0003BE03 /* CEGUIOpenGLTexture.h in Headers */,
 				DAAABCC60F6E6F5F0003BE03 /* CEGUIOpenGLViewportTarget.h in Headers */,
+				DAFB3C3310874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5740,6 +5727,7 @@
 				DA10999F0F6D8DCF00B8A582 /* CEGUIOpenGLTexture.cpp in Sources */,
 				DA1099A10F6D8DCF00B8A582 /* CEGUIOpenGLViewportTarget.cpp in Sources */,
 				DA1099A30F6D8DCF00B8A582 /* glew.c in Sources */,
+				DAFB3C3510874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
