@@ -2811,18 +2811,33 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 void Window::onMouseClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseClick, e, EventNamespace);
+
+    // if event was directly injected, mark as handled to be consistent with
+    // other mouse button injectors
+    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
 void Window::onMouseDoubleClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseDoubleClick, e, EventNamespace);
+
+    // if event was directly injected, mark as handled to be consistent with
+    // other mouse button injectors
+    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
 void Window::onMouseTripleClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseTripleClick, e, EventNamespace);
+
+    // if event was directly injected, mark as handled to be consistent with
+    // other mouse button injectors
+    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
+        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
