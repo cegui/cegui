@@ -2139,20 +2139,12 @@
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <FontDim type="LineSpacing">
-                                <DimOperator op="Multiply">
-                                    <AbsoluteDim value="1.5" />
-                                </DimOperator>
-                            </FontDim>
+                            <FontDim type="LineSpacing" padding="10" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="Height" >
-                    <FontDim type="LineSpacing">
-                        <DimOperator op="Multiply">
-                            <AbsoluteDim value="1.5" />
-                        </DimOperator>
-                    </FontDim>
+                    <FontDim type="LineSpacing" padding="10" />
                 </Dim>
             </Area>
         </Child>
