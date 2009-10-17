@@ -505,5 +505,33 @@ void DragContainer::setStickyModeEnabled(bool setting)
 }
 
 //----------------------------------------------------------------------------//
+bool DragContainer::pickUp(const bool force_sticky /*= false*/)
+{
+    // check if we're already picked up.
+    if (d_pickedUp)
+        return true;
+
+    // see if we need to force sticky mode switch
+    if (!d_stickyMode && force_sticky)
+        setStickyModeEnabled(true);
+
+    // can only pick up if sticky
+    if (d_stickyMode)
+    {
+        // force immediate release of any current input capture (unless it's us)
+        if (d_captureWindow && d_captureWindow != this)
+            d_captureWindow->releaseInput();
+        // activate ourselves and try to capture input
+        activate();
+        if (captureInput())
+        {
+            // initialise the dragging state
+            initialiseDragging();
+            d_pickedUp = true;
+        }
+    }
+
+    return d_pickedUp;
+}
 
 } // End of  CEGUI namespace section
