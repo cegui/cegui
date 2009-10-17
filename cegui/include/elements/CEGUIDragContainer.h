@@ -266,6 +266,24 @@ namespace CEGUI
         */
         void setStickyModeEnabled(bool setting);
 
+        /*!
+        \brief
+            Immediately pick up the DragContainer and optionally set the sticky
+            mode in order to allow this to happen.  Any current interaction
+            (i.e. mouse capture) will be interrupted.
+
+        \param force_sticky
+            - true to automatically enable the sticky mode in order to
+            facilitate picking up the DragContainer.
+            - false to ignore the pick up request if the sticky mode is not
+            alraedy enabled (default).
+
+        \return
+            - true if the DragContainer was successfully picked up.
+            - false if the DragContainer was not picked up.
+        */
+        bool pickUp(const bool force_sticky = false);
+
         // Window class overrides.
         void getRenderingContext_impl(RenderingContext& ctx) const;
 
