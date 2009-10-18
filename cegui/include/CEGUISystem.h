@@ -1291,6 +1291,8 @@ private:
 
     //! Holds a pointer to the image codec to use.
     ImageCodec* d_imageCodec;
+    //! true when we created the image codec.
+    bool d_ourImageCodec;
     /** Holds a pointer to the image codec module. If d_imageCodecModule is 0 we
      *  are not owner of the image codec object
      */

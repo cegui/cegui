@@ -221,6 +221,7 @@ System::System(Renderer& renderer,
   d_defaultTooltip(0),
   d_weOwnTooltip(false),
   d_imageCodec(imageCodec),
+  d_ourImageCodec(false),
   d_imageCodecModule(0),
   d_ourLogger(Logger::getSingletonPtr() == 0),
   d_customRenderedStringParser(0),
@@ -1684,6 +1685,7 @@ void System::setImageCodec(ImageCodec& codec)
 {
     cleanupImageCodec();
     d_imageCodec = &codec;
+    d_ourImageCodec = false;
     d_imageCodecModule = 0;
 }
 
@@ -1691,59 +1693,47 @@ void System::setImageCodec(ImageCodec& codec)
 void System::setupImageCodec(const String& codecName)
 {
     // Cleanup the old image codec
-    if (d_imageCodec)
-        cleanupImageCodec();
+    cleanupImageCodec();
 
-    // Test whether we should use the default codec or not
-    if (codecName.empty())
-        // when statically linked the default codec is already in the system
-        #if defined(CEGUI_STATIC)
-            d_imageCodecModule = 0;
-        #else
-            d_imageCodecModule =
-                new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
-        #endif
-    else
-        d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
+    #if defined(CEGUI_STATIC)
+        // for static build use static createImageCodec to create codec object
+        d_imageCodec = createImageCodec();
+    #else
+        // load the appropriate image codec module
+        d_imageCodecModule = codecName.empty() ?
+            new DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
+            new DynamicModule(String("CEGUI") + codecName);
 
-    //Check to make sure we have a module...
-    if (d_imageCodecModule)
-    {
-        // Create the codec object itself
-        ImageCodec*(*createFunc)(void) =
-            (ImageCodec*(*)(void))d_imageCodecModule->
-                getSymbolAddress("createImageCodec");
-        d_imageCodec = createFunc();
-    }
-    else
-    {
-        #if defined(CEGUI_STATIC)
-            d_imageCodec = createImageCodec();
-        #else
-            throw InvalidRequestException("Unable to load codec " + codecName);
-        #endif
-    }
+        // use function from module to create the codec object.
+        d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
+            getSymbolAddress("createImageCodec"))();
+    #endif
+
+    // make sure we mark this as our own object so we can clean it up later.
+    d_ourImageCodec = true;
 }
 
 //----------------------------------------------------------------------------//
 void System::cleanupImageCodec()
 {
-    if (d_imageCodec && d_imageCodecModule)
+    // bail out if no codec, or if we did not create it.
+    if (!d_imageCodec || !d_ourImageCodec)
+        return;
+
+    if (d_imageCodecModule)
     {
-        void(*deleteFunc)(ImageCodec*) =
-            (void(*)(ImageCodec*))d_imageCodecModule->
-                getSymbolAddress("destroyImageCodec");
-        deleteFunc(d_imageCodec);
-        d_imageCodec = 0;
+        ((void(*)(ImageCodec*))d_imageCodecModule->
+            getSymbolAddress("destroyImageCodec"))(d_imageCodec);
+
         delete d_imageCodecModule;
         d_imageCodecModule = 0;
     }
+#if defined(CEGUI_STATIC)
     else
-    {
-        #if defined(CEGUI_STATIC)
-            destroyImageCodec(d_imageCodec);
-        #endif
-    }
+        destroyImageCodec(d_imageCodec);
+#endif
+
+    d_imageCodec = 0;
 }
 
 //----------------------------------------------------------------------------//
