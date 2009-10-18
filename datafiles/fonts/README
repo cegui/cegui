@@ -1,4 +1,0 @@
-The fonts in this directory were obtained from Iconian Fonts and may be freely used for all non-commercial uses.
-
-http://www.iconian.com/
- 

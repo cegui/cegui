@@ -50,10 +50,6 @@ bool TextDemo::initialiseSample()
     {
 		System::getSingleton().setDefaultFont("DejaVuSans-10");
     }
-    else if(FontManager::getSingleton().isDefined("Commonwealth-10"))
-    {
-		System::getSingleton().setDefaultFont("Commonwealth-10");
-    }
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");

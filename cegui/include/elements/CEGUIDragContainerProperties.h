@@ -162,6 +162,69 @@ namespace DragContainerProperties
         void set(PropertyReceiver* receiver, const String& value);
     };
 
+    /*!
+    \brief
+        Property to access the state of the fixed dragging offset setting.
+
+        \par Usage:
+            - Name: FixedDragOffset
+    		- Format: "{{[xs],[xo]},{[ys],[yo]}}"
+
+	    \par Where:
+		    - [xs] is a floating point value describing the relative scale
+              value for the position x-coordinate.
+		    - [xo] is a floating point value describing the absolute offset
+              value for the position x-coordinate.
+		    - [ys] is a floating point value describing the relative scale
+              value for the position y-coordinate.
+		    - [yo] is a floating point value describing the absolute offset
+              value for the position y-coordinate.
+    */
+    class FixedDragOffset : public Property
+    {
+    public:
+        FixedDragOffset() : Property(
+            "FixedDragOffset",
+            "Property to get/set the state of the fixed dragging offset "
+                "setting for the DragContainer.  "
+                "Value is a UVector2 property value.",
+            "{{0,0},{0,0}}")
+        {}
+
+        String get(const PropertyReceiver* receiver) const;
+        void set(PropertyReceiver* receiver, const String& value);
+    };
+
+    /*!
+    \brief
+        Property to access the setting that controls whether the fixed drag
+        offset will be used.
+
+        \par Usage:
+            - Name: UseFixedDragOffset
+            - Format: "[text]".
+
+        \par Where [Text] is:
+            - "True" to indicate that the fixed dragging offset will be used.
+            - "False" to indicate that the fixed dragging offset will not be
+              used.
+    */
+    class UseFixedDragOffset : public Property
+    {
+    public:
+        UseFixedDragOffset() : Property(
+            "UseFixedDragOffset",
+            "Property to get/set the setting that control whether the fixed "
+                "dragging offset will be used.  "
+                "Value is either \"True\" or \"False\".",
+            "False")
+        {}
+
+        String get(const PropertyReceiver* receiver) const;
+        void set(PropertyReceiver* receiver, const String& value);
+    };
+
+
 } // End of  DragContainerProperties namespace section
 } // End of  CEGUI namespace section
 

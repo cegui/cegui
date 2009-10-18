@@ -23,4 +23,11 @@ class DragContainer : public Window
 
     bool isStickyModeEnabled() const;
     void setStickyModeEnabled(bool setting);
+
+    bool pickUp(bool force_sticky = false);
+
+    void setFixedDragOffset(const UVector2& offset);
+    const UVector2& getFixedDragOffset() const;
+    void setUsingFixedDragOffset(bool enable);
+    bool isUsingFixedDragOffset() const;
 };

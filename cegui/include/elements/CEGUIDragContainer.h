@@ -266,6 +266,78 @@ namespace CEGUI
         */
         void setStickyModeEnabled(bool setting);
 
+        /*!
+        \brief
+            Immediately pick up the DragContainer and optionally set the sticky
+            mode in order to allow this to happen.  Any current interaction
+            (i.e. mouse capture) will be interrupted.
+
+        \param force_sticky
+            - true to automatically enable the sticky mode in order to
+            facilitate picking up the DragContainer.
+            - false to ignore the pick up request if the sticky mode is not
+            alraedy enabled (default).
+
+        \return
+            - true if the DragContainer was successfully picked up.
+            - false if the DragContainer was not picked up.
+        */
+        bool pickUp(const bool force_sticky = false);
+
+        /*!
+        \brief
+            Set the fixed mouse cursor dragging offset to be used for this
+            DragContainer.
+
+        \param offset
+            UVector2 describing the fixed offset to be used when dragging this
+            DragContainer.
+
+        \note
+            This offset is only used if it's use is enabled via the
+            setUsingFixedDragOffset function.
+        */
+        void setFixedDragOffset(const UVector2& offset);
+
+        /*!
+        \brief
+            Return the fixed mouse cursor dragging offset to be used for this
+            DragContainer.
+
+        \return
+            UVector2 describing the fixed offset used when dragging this
+            DragContainer.
+
+        \note
+            This offset is only used if it's use is enabled via the
+            setUsingFixedDragOffset function.
+        */
+        const UVector2& getFixedDragOffset() const;
+
+        /*!
+        \brief
+            Set whether the fixed dragging offset - as set with the
+            setFixedDragOffset - function will be used, or whether the built-in
+            positioning will be used.
+
+        \param enable
+            - true to enabled the use of the fixed offset.
+            - false to use the regular logic.
+        */
+        void setUsingFixedDragOffset(const bool enable);
+
+        /*!
+        \brief
+            Return whether the fixed dragging offset - as set with the
+            setFixedDragOffset function - will be used, or whether the built-in
+            positioning will be used.
+
+        \param enable
+            - true to enabled the use of the fixed offset.
+            - false to use the regular logic.
+        */
+        bool isUsingFixedDragOffset() const;
+
         // Window class overrides.
         void getRenderingContext_impl(RenderingContext& ctx) const;
 
@@ -462,6 +534,10 @@ namespace CEGUI
         bool d_stickyMode;
         //! true after been picked-up / dragged via sticky mode
         bool d_pickedUp;
+        //! true if fixed mouse offset is used for dragging position.
+        bool d_usingFixedDragOffset;
+        //! current fixed mouse offset value.
+        UVector2 d_fixedDragOffset;
 
     private:
         /*************************************************************************
@@ -472,6 +548,8 @@ namespace CEGUI
         static DragContainerProperties::DraggingEnabled d_dragEnabledProperty;
         static DragContainerProperties::DragThreshold   d_dragThresholdProperty;
         static DragContainerProperties::StickyMode      d_stickyModeProperty;
+        static DragContainerProperties::FixedDragOffset d_fixedDragOffsetProperty;
+        static DragContainerProperties::UseFixedDragOffset d_useFixedDragOffsetProperty;
 
         /*************************************************************************
         	Implementation methods

@@ -52,20 +52,15 @@ static CGLPixelFormatAttribute fmtAttrs[] =
 
 //----------------------------------------------------------------------------//
 OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
+    OpenGLTextureTarget(owner),
     d_pbuffer(0),
-    d_context(0),
-    d_texture(0)
+    d_context(0)
 {
     if (!GLEW_APPLE_pixel_buffer)
         throw RendererException("GL_APPLE_pixel_buffer extension is needed to "
             "use OpenGLApplePBTextureTarget!");
 
     initialiseTexture();
-
-    // create CEGUI::Texture to wrap GL texture
-    d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
 
     CGLError err;
     CGLContextObj cctx = CGLGetCurrentContext();
@@ -126,8 +121,6 @@ OpenGLApplePBTextureTarget::~OpenGLApplePBTextureTarget()
 
     if (d_pbuffer)
         CGLDestroyPBuffer(d_pbuffer);
-
-    d_owner.destroyTexture(*d_CEGUITexture);
 }
 
 //----------------------------------------------------------------------------//
@@ -146,12 +139,6 @@ void OpenGLApplePBTextureTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLApplePBTextureTarget::isImageryCache() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::clear()
 {
     enablePBuffer();
@@ -159,12 +146,6 @@ void OpenGLApplePBTextureTarget::clear()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST);
     disablePBuffer();
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLApplePBTextureTarget::getTexture() const
-{
-    return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
@@ -255,9 +236,26 @@ void OpenGLApplePBTextureTarget::disablePBuffer() const
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLApplePBTextureTarget::isRenderingInverted() const
+void OpenGLApplePBTextureTarget::grabTexture()
 {
-    return true;
+    if (d_pbuffer)
+    {
+        CGLDestroyPBuffer(d_pbuffer);
+        d_pbuffer = 0;
+    }
+
+    OpenGLTextureTarget::grabTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLApplePBTextureTarget::restoreTexture()
+{
+    const Size sz(d_area.getSize());
+    d_area.setSize(Size(0.0f, 0.0f));
+
+    OpenGLTextureTarget::restoreTexture();
+    initialiseTexture();
+    declareRenderSize(sz);
 }
 
 //----------------------------------------------------------------------------//

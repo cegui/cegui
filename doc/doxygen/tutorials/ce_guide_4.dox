@@ -38,6 +38,12 @@ CEGUI::System class - there is one member function for each type of base input:
 - bool System::injectMouseWheelChange( float delta );
 - bool System::injectTimePulse( float timeElapsed );
 
+And also some optional functions for click and multi-click events (which are
+normally automatically generated internally by the system):
+- bool System::injectMouseButtonClick( MouseButton button );
+- bool System::injectMouseButtonDoubleClick( MouseButton button );
+- bool System::injectMouseButtonTripleClick( MouseButton button );
+
 Yes, that's quite a collection!  The first thing that you might notice is that
 there appears to be some repetition - things like 'mouse move' and
 'mouse position', 'key down' and 'char'.  For the mouse, we offer the
@@ -161,6 +167,39 @@ last time the injector was called (or since CEGUI was started).  The use of this
 function is becoming more and more important - it now controls things such as
 fades and timing for tool-tip widgets, menus, and also auto-repeat for
 mouse buttons.
+
+@subsection input_tutorial_click bool System::injectMouseButtonClick( MouseButton button )
+This is an optional injection function that informs CEGUI that a mouse button
+click has occurred; normally that is a down -> up sequence.  Calling this
+function is only neccessary if the built-in automatic generation of click and
+multi-click events is unsuitable for your needs.  If you decide you need to use
+this function you will normally disable the automatic event generation first by
+way of the System::setMouseClickEventGenerationEnabled function.  While it is
+possible to call this injection function \e without disabling the auto generated
+events, it will affect the behaviour as to the way events are marked as
+'handled' and therefore the return code from this function.
+
+@subsection input_tutorial_doubleclick bool System::injectMouseButtonDoubleClick( MouseButton button )
+This is an optional injection function that informs CEGUI that a mouse button
+double-click has occurred; normally that is a down -> up -> down sequence.
+Calling this function is only neccessary if the built-in automatic generation of
+click and multi-click events is unsuitable for your needs.  If you decide you
+need to use this function you will normally disable the automatic event
+generation first by way of the System::setMouseClickEventGenerationEnabled
+function.  While it is possible to call this injection function \e without
+disabling the auto generated events, it will affect the behaviour as to the way
+events are marked as 'handled' and therefore the return code from this function.
+
+@subsection input_tutorial_tripleclick bool System::injectMouseButtonTripleClick( MouseButton button )
+This is an optional injection function that informs CEGUI that a mouse button
+triple-click has occurred; normally that is a down -> up -> down -> up -> down
+sequence.  Calling this function is only neccessary if the built-in automatic
+generation of click and multi-click events is unsuitable for your needs.  If you
+decide you need to use this function you will normally disable the automatic
+event generation first by way of the System::setMouseClickEventGenerationEnabled
+function.  While it is possible to call this injection function \e without
+disabling the auto generated events, it will affect the behaviour as to the way
+events are marked as 'handled' and therefore the return code from this function.
 
 <br>
 @section input_tutorial_conclusion Conclusion

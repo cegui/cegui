@@ -56,17 +56,12 @@ int pbAttrs[] =
 
 //----------------------------------------------------------------------------//
 OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
-    d_pbuffer(0),
-    d_texture(0)
+    OpenGLTextureTarget(owner),
+    d_pbuffer(0)
 {
     if (!GLXEW_VERSION_1_3)
         throw InvalidRequestException("System does not support GLX >= 1.3 "
             "required by CEGUI pbuffer usage under GLX");
-
-    // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
 
     d_dpy = glXGetCurrentDisplay();
 
@@ -128,12 +123,6 @@ void OpenGLGLXPBTextureTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLGLXPBTextureTarget::isImageryCache() const
-{
-    return true;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGLXPBTextureTarget::clear()
 {
     enablePBuffer();
@@ -141,12 +130,6 @@ void OpenGLGLXPBTextureTarget::clear()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST);
     disablePBuffer();
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLGLXPBTextureTarget::getTexture() const
-{
-    return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
@@ -258,9 +241,23 @@ void OpenGLGLXPBTextureTarget::createContext()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLGLXPBTextureTarget::isRenderingInverted() const
+void OpenGLGLXPBTextureTarget::grabTexture()
 {
-    return true;
+    if (d_pbuffer)
+    {
+        glXDestroyPbuffer(d_dpy, d_pbuffer);
+        d_pbuffer = 0;
+    }
+
+    OpenGLTextureTarget::grabTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGLXPBTextureTarget::restoreTexture()
+{
+    OpenGLTextureTarget::restoreTexture();
+    initialiseTexture();
+    initialisePBuffer();
 }
 
 //----------------------------------------------------------------------------//

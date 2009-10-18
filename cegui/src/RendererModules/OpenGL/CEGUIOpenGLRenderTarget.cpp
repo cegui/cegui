@@ -189,7 +189,6 @@ void OpenGLRenderTarget::updateMatrix() const
     // Projection matrix abuse!
     gluLookAt(midx, midy, -d_viewDistance, midx, midy, 1, 0, -1, 0);
     glGetDoublev(GL_PROJECTION_MATRIX, d_matrix);
-    glTranslated(0.375, 0.375, 0);
     glPopMatrix();
 
     d_matrixValid = true;
