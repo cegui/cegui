@@ -346,7 +346,7 @@ void ScrollablePane::updateContainerPosition(void)
                      cegui_absdim(-getVertScrollbar()->getScrollPosition()));
     
     // this bias is the absolute position that 0 on the scrollbars represent.
-    // effectively removes un-used empty space from the pane.
+    // Allows the pane to function correctly with negatively positioned content.
     UVector2 bias(cegui_absdim(d_contentRect.d_left),
                   cegui_absdim(d_contentRect.d_top));
     

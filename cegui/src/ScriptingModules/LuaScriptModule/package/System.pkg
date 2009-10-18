@@ -24,6 +24,8 @@ class System : public EventSet
 	double getSingleClickTimeout() const;
 	double getMultiClickTimeout() const;
 	const Size& getMultiClickToleranceAreaSize() const;
+    bool isMouseClickEventGenerationEnabled() const;
+    void setMouseClickEventGenerationEnabled(bool enable);
 
 	void setDefaultMouseCursor(MouseCursorImage image);
 	void setDefaultMouseCursor(const Image* image);
@@ -61,6 +63,9 @@ class System : public EventSet
 	bool injectMouseWheelChange(float delta);
 	bool injectMousePosition(float x, float y);
 	bool injectTimePulse(float timeElapsed);
+	bool injectMouseButtonClick(MouseButton btn);
+	bool injectMouseButtonDoubleClick(MouseButton btn);
+	bool injectMouseButtonTripleClick(MouseButton btn);
 
     tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

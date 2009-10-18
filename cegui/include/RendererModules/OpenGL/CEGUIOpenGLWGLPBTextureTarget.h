@@ -32,8 +32,7 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
-#include "CEGUIOpenGLRenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUIOpenGLTextureTarget.h"
 #include "../../CEGUIRect.h"
 
 #if defined(_MSC_VER)
@@ -51,8 +50,7 @@ class OpenGLTexture;
     OpenGLWGLPBTextureTarget - allows rendering to an OpenGL texture via the
     pbuffer WGL extension.
 */
-class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLRenderTarget,
-                                                        public TextureTarget
+class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
     OpenGLWGLPBTextureTarget(OpenGLRenderer& owner);
@@ -61,13 +59,12 @@ public:
     // overrides from OpenGLRenderTarget
     void activate();
     void deactivate();
-    // implementation of RenderTarget interface
-    bool isImageryCache() const;
     // implementation of TextureTarget interface
     void clear();
-    Texture& getTexture() const;
     void declareRenderSize(const Size& sz);
-    bool isRenderingInverted() const;
+    // specialise functions from OpenGLTextureTarget
+    void grabTexture();
+    void restoreTexture();
 
 protected:
     //! default size of created texture objects
@@ -100,10 +97,6 @@ protected:
     mutable HGLRC d_prevContext;
     //! Handle to the device context in use when we switched to the pbuffer.
     mutable HDC d_prevDC;
-    //! Associated OpenGL texture ID
-    GLuint d_texture;
-    //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
-    OpenGLTexture* d_CEGUITexture;
 };
 
 } // End of  CEGUI namespace section

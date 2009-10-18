@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "elements/CEGUIScrolledContainer.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIRenderingSurface.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -98,39 +99,31 @@ void ScrolledContainer::setContentArea(const Rect& area)
 //----------------------------------------------------------------------------//
 Rect ScrolledContainer::getChildExtentsArea(void) const
 {
-    size_t childCount = getChildCount();
+    Rect extents(0, 0, 0, 0);
 
-    // set up initial content area to match first child.
-    if (childCount != 0)
-    {
-        Window* wnd = getChildAtIdx(0);
-        Rect extents(wnd->getArea().asAbsolute(d_pixelSize));
-
-        // control var starts at 1 since we already dealt with 0 above
-        for (size_t i = 1; i < childCount; ++i)
-        {
-            wnd = getChildAtIdx(i);
-            Rect area(wnd->getArea().asAbsolute(d_pixelSize));
-
-            if (area.d_left < extents.d_left)
-                extents.d_left = area.d_left;
-
-            if (area.d_top < extents.d_top)
-                extents.d_top = area.d_top;
-
-            if (area.d_right > extents.d_right)
-                extents.d_right = area.d_right;
-
-            if (area.d_bottom > extents.d_bottom)
-                extents.d_bottom = area.d_bottom;
-        }
-
+    const size_t childCount = getChildCount();
+    if (childCount == 0)
         return extents;
-    }
-    else
+
+    for (size_t i = 0; i < childCount; ++i)
     {
-        return Rect(0, 0, 0, 0);
+        const Window* const wnd = getChildAtIdx(i);
+        const Rect area(wnd->getArea().asAbsolute(d_pixelSize));
+
+        if (area.d_left < extents.d_left)
+            extents.d_left = area.d_left;
+
+        if (area.d_top < extents.d_top)
+            extents.d_top = area.d_top;
+
+        if (area.d_right > extents.d_right)
+            extents.d_right = area.d_right;
+
+        if (area.d_bottom > extents.d_bottom)
+            extents.d_bottom = area.d_bottom;
     }
+
+    return extents;
 }
 
 //----------------------------------------------------------------------------//
@@ -177,8 +170,29 @@ bool ScrolledContainer::handleChildMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 Rect ScrolledContainer::getUnclippedInnerRect_impl(void) const
 {
-    // return the size of our content as our inner rect.
-    return CoordConverter::windowToScreen(*this, d_contentArea);
+    if (!d_parent)
+        return Window::getUnclippedInnerRect_impl();
+    else
+        return Rect(getUnclippedOuterRect().getPosition(),
+                    d_parent->getUnclippedInnerRect().getSize());
+}
+
+//----------------------------------------------------------------------------//
+Rect ScrolledContainer::getInnerRectClipper_impl() const
+{
+    if (!d_parent)
+        return Window::getInnerRectClipper_impl();
+    else
+        return (d_surface && d_surface->isRenderingWindow()) ?
+                    Window::getUnclippedInnerRect_impl() :
+                    d_parent->getInnerRectClipper();
+}
+
+//----------------------------------------------------------------------------//
+Rect ScrolledContainer::getHitTestRect_impl() const
+{
+    return d_parent ? d_parent->getHitTestRect() :
+                      Window::getHitTestRect_impl();
 }
 
 //----------------------------------------------------------------------------//

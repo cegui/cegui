@@ -630,36 +630,12 @@
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height">
-                                <DimOperator op="Add">
-                                    <ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height">
-                                        <DimOperator op="Add">
-                                            <FontDim type="LineSpacing">
-                                                <DimOperator op="Multiply">
-                                                    <AbsoluteDim value="1.5" />
-                                                </DimOperator>
-                                            </FontDim>
-                                        </DimOperator>
-                                    </ImageDim>
-                                </DimOperator>
-                            </ImageDim>
+                            <FontDim type="LineSpacing" padding="10" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="Height" >
-                    <ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height">
-                        <DimOperator op="Add">
-                            <ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height">
-                                <DimOperator op="Add">
-                                    <FontDim type="LineSpacing">
-                                        <DimOperator op="Multiply">
-                                            <AbsoluteDim value="1.5" />
-                                        </DimOperator>
-                                    </FontDim>
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </ImageDim>
+                    <FontDim type="LineSpacing" padding="10" />
                 </Dim>
             </Area>
         </Child>

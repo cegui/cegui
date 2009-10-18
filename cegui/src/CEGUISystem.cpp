@@ -221,9 +221,11 @@ System::System(Renderer& renderer,
   d_defaultTooltip(0),
   d_weOwnTooltip(false),
   d_imageCodec(imageCodec),
+  d_ourImageCodec(false),
   d_imageCodecModule(0),
   d_ourLogger(Logger::getSingletonPtr() == 0),
-  d_customRenderedStringParser(0)
+  d_customRenderedStringParser(0),
+  d_generateMouseClickEvents(true)
 {
     // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
@@ -786,7 +788,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     if (ma.window)
     {
-        if (ma.window->wantsMultiClickEvents())
+        if (d_generateMouseClickEvents && ma.window->wantsMultiClickEvents())
         {
             switch (tkr.d_click_count)
             {
@@ -803,8 +805,8 @@ bool System::injectMouseButtonDown(MouseButton button)
                 break;
             }
         }
-        // current target window does not want multi-clicks,
-        // so just send a mouse down event instead.
+        // click generation disabled, or current target window does not want
+        // multi-clicks, so just send a mouse down event instead.
         else
         {
             ma.window->onMouseButtonDown(ma);
@@ -852,7 +854,8 @@ bool System::injectMouseButtonUp(MouseButton button)
     const uint upHandled = ma.handled;
 
     // send MouseClicked event if the requirements for that were met
-    if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
+    if (d_generateMouseClickEvents &&
+        ((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
         (tkr.d_target_window == ma.window))
     {
@@ -1682,6 +1685,7 @@ void System::setImageCodec(ImageCodec& codec)
 {
     cleanupImageCodec();
     d_imageCodec = &codec;
+    d_ourImageCodec = false;
     d_imageCodecModule = 0;
 }
 
@@ -1689,59 +1693,47 @@ void System::setImageCodec(ImageCodec& codec)
 void System::setupImageCodec(const String& codecName)
 {
     // Cleanup the old image codec
-    if (d_imageCodec)
-        cleanupImageCodec();
+    cleanupImageCodec();
 
-    // Test whether we should use the default codec or not
-    if (codecName.empty())
-        // when statically linked the default codec is already in the system
-        #if defined(CEGUI_STATIC)
-            d_imageCodecModule = 0;
-        #else
-            d_imageCodecModule =
-                new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
-        #endif
-    else
-        d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
+    #if defined(CEGUI_STATIC)
+        // for static build use static createImageCodec to create codec object
+        d_imageCodec = createImageCodec();
+    #else
+        // load the appropriate image codec module
+        d_imageCodecModule = codecName.empty() ?
+            new DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
+            new DynamicModule(String("CEGUI") + codecName);
 
-    //Check to make sure we have a module...
-    if (d_imageCodecModule)
-    {
-        // Create the codec object itself
-        ImageCodec*(*createFunc)(void) =
-            (ImageCodec*(*)(void))d_imageCodecModule->
-                getSymbolAddress("createImageCodec");
-        d_imageCodec = createFunc();
-    }
-    else
-    {
-        #if defined(CEGUI_STATIC)
-            d_imageCodec = createImageCodec();
-        #else
-            throw InvalidRequestException("Unable to load codec " + codecName);
-        #endif
-    }
+        // use function from module to create the codec object.
+        d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
+            getSymbolAddress("createImageCodec"))();
+    #endif
+
+    // make sure we mark this as our own object so we can clean it up later.
+    d_ourImageCodec = true;
 }
 
 //----------------------------------------------------------------------------//
 void System::cleanupImageCodec()
 {
-    if (d_imageCodec && d_imageCodecModule)
+    // bail out if no codec, or if we did not create it.
+    if (!d_imageCodec || !d_ourImageCodec)
+        return;
+
+    if (d_imageCodecModule)
     {
-        void(*deleteFunc)(ImageCodec*) =
-            (void(*)(ImageCodec*))d_imageCodecModule->
-                getSymbolAddress("destroyImageCodec");
-        deleteFunc(d_imageCodec);
-        d_imageCodec = 0;
+        ((void(*)(ImageCodec*))d_imageCodecModule->
+            getSymbolAddress("destroyImageCodec"))(d_imageCodec);
+
         delete d_imageCodecModule;
         d_imageCodecModule = 0;
     }
+#if defined(CEGUI_STATIC)
     else
-    {
-        #if defined(CEGUI_STATIC)
-            destroyImageCodec(d_imageCodec);
-        #endif
-    }
+        destroyImageCodec(d_imageCodec);
+#endif
+
+    d_imageCodec = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1854,6 +1846,87 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
     }
+}
+
+//----------------------------------------------------------------------------//
+bool System::isMouseClickEventGenerationEnabled() const
+{
+    return d_generateMouseClickEvents;
+}
+
+//----------------------------------------------------------------------------//
+void System::setMouseClickEventGenerationEnabled(const bool enable)
+{
+    d_generateMouseClickEvents = enable;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window)
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseClicked(ma);
+    }
+
+    return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonDoubleClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseDoubleClicked(ma);
+    }
+
+    return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool System::injectMouseButtonTripleClick(const MouseButton button)
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseTripleClicked(ma);
+    }
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//

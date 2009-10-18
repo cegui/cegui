@@ -110,7 +110,8 @@ CEGUI_LIBTOOL_OPTIONS
 CEGUI_CHECK_BUILD_SUFFIX
 
 dnl Create the makefiles
-AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
+AC_CONFIG_FILES([cegui/CEGUI-OGRE.pc
+                 cegui/CEGUI-OPENGL.pc
                  cegui/CEGUI.pc
                  cegui/CEGUI.spec
                  cegui/Makefile

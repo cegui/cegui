@@ -6,6 +6,7 @@ pkginclude_HEADERS = CEGUIOpenGL.h \
                      CEGUIOpenGLRenderer.h \
                      CEGUIOpenGLRenderTarget.h \
                      CEGUIOpenGLTexture.h \
+                     CEGUIOpenGLTextureTarget.h \
                      CEGUIOpenGLViewportTarget.h
 
 EXTRA_DIST = CEGUIOpenGLApplePBTextureTarget.h \

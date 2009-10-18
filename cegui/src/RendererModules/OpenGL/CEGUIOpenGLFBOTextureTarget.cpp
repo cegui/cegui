@@ -42,15 +42,10 @@ const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
 OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
-    d_texture(0)
+    OpenGLTextureTarget(owner)
 {
     if (!GLEW_EXT_framebuffer_object)
         throw InvalidRequestException("Hardware does not support FBO");
-
-    // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
 
     initialiseRenderTexture();
 
@@ -62,7 +57,6 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
 OpenGLFBOTextureTarget::~OpenGLFBOTextureTarget()
 {
     glDeleteFramebuffersEXT(1, &d_frameBuffer);
-    d_owner.destroyTexture(*d_CEGUITexture);
 }
 
 //----------------------------------------------------------------------------//
@@ -74,12 +68,6 @@ void OpenGLFBOTextureTarget::declareRenderSize(const Size& sz)
 
     setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     resizeRenderTexture();
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLFBOTextureTarget::isImageryCache() const
-{
-    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -117,12 +105,6 @@ void OpenGLFBOTextureTarget::clear()
 
     // restore previous clear colour
     glClearColor(old_col[0], old_col[1], old_col[2], old_col[3]);
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLFBOTextureTarget::getTexture() const
-{
-    return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
@@ -185,9 +167,21 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLFBOTextureTarget::isRenderingInverted() const
+void OpenGLFBOTextureTarget::grabTexture()
 {
-    return true;
+    glDeleteFramebuffersEXT(1, &d_frameBuffer);
+    d_frameBuffer = 0;
+
+    OpenGLTextureTarget::grabTexture();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLFBOTextureTarget::restoreTexture()
+{
+    OpenGLTextureTarget::restoreTexture();
+
+    initialiseRenderTexture();
+    resizeRenderTexture();
 }
 
 //----------------------------------------------------------------------------//

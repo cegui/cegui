@@ -53,6 +53,8 @@ namespace CEGUI
     DragContainerProperties::DraggingEnabled DragContainer::d_dragEnabledProperty;
     DragContainerProperties::DragThreshold   DragContainer::d_dragThresholdProperty;
     DragContainerProperties::StickyMode      DragContainer::d_stickyModeProperty;
+    DragContainerProperties::FixedDragOffset DragContainer::d_fixedDragOffsetProperty;
+    DragContainerProperties::UseFixedDragOffset DragContainer::d_useFixedDragOffsetProperty;
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +69,9 @@ namespace CEGUI
         d_dragCursorImage((const Image*)DefaultMouseCursor),
         d_dropflag(false),
         d_stickyMode(false),
-        d_pickedUp(false)
+        d_pickedUp(false),
+        d_usingFixedDragOffset(false),
+        d_fixedDragOffset(UDim(0, 0), UDim(0, 0))
     {
         addDragContainerProperties();
     }
@@ -170,6 +174,8 @@ namespace CEGUI
         addProperty(&d_dragThresholdProperty);
         addProperty(&d_dragCursorImageProperty);
         addProperty(&d_stickyModeProperty);
+        addProperty(&d_fixedDragOffsetProperty);
+        addProperty(&d_useFixedDragOffsetProperty);
     }
 
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
@@ -207,8 +213,7 @@ namespace CEGUI
     {
         // calculate amount to move
         UVector2 offset(cegui_absdim(local_mouse.d_x), cegui_absdim(local_mouse.d_y));
-        offset -= d_dragPoint;
-
+        offset -= (d_usingFixedDragOffset) ? d_fixedDragOffset : d_dragPoint;
         // set new position
         setPosition(getPosition() + offset);
 
@@ -502,6 +507,70 @@ bool DragContainer::isStickyModeEnabled() const
 void DragContainer::setStickyModeEnabled(bool setting)
 {
     d_stickyMode = setting;
+}
+
+//----------------------------------------------------------------------------//
+bool DragContainer::pickUp(const bool force_sticky /*= false*/)
+{
+    // check if we're already picked up or if dragging is disabled.
+    if (d_pickedUp || !d_draggingEnabled)
+        return true;
+
+    // see if we need to force sticky mode switch
+    if (!d_stickyMode && force_sticky)
+        setStickyModeEnabled(true);
+
+    // can only pick up if sticky
+    if (d_stickyMode)
+    {
+        // force immediate release of any current input capture (unless it's us)
+        if (d_captureWindow && d_captureWindow != this)
+            d_captureWindow->releaseInput();
+        // activate ourselves and try to capture input
+        activate();
+        if (captureInput())
+        {
+            // set the dragging point to the centre of the container.
+            d_dragPoint.d_x = cegui_absdim(d_pixelSize.d_width / 2);
+            d_dragPoint.d_y = cegui_absdim(d_pixelSize.d_height / 2);
+
+            // initialise the dragging state
+            initialiseDragging();
+
+            // get position of mouse as co-ordinates local to this window.
+            const Vector2 localMousePos(CoordConverter::screenToWindow(*this,
+                MouseCursor::getSingleton().getPosition()));
+            doDragging(localMousePos);
+
+            d_pickedUp = true;
+        }
+    }
+
+    return d_pickedUp;
+}
+
+//----------------------------------------------------------------------------//
+void DragContainer::setFixedDragOffset(const UVector2& offset)
+{
+    d_fixedDragOffset = offset;
+}
+
+//----------------------------------------------------------------------------//
+const UVector2& DragContainer::getFixedDragOffset() const
+{
+    return d_fixedDragOffset;
+}
+
+//----------------------------------------------------------------------------//
+void DragContainer::setUsingFixedDragOffset(const bool enable)
+{
+    d_usingFixedDragOffset = enable;
+}
+
+//----------------------------------------------------------------------------//
+bool DragContainer::isUsingFixedDragOffset() const
+{
+    return d_usingFixedDragOffset;
 }
 
 //----------------------------------------------------------------------------//

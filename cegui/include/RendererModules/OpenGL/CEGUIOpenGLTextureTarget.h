@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLFBOTextureTarget.h
-    created:    Sun Jan 11 2009
-    author:     Paul D Turner
+    filename:   CEGUIOpenGLTextureTarget.h
+    created:    Thu Oct 15 2009
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
@@ -25,57 +25,58 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLFBOTextureTarget_h_
-#define _CEGUIOpenGLFBOTextureTarget_h_
+#ifndef _CEGUIOpenGLTextureTarget_h_
+#define _CEGUIOpenGLTextureTarget_h_
 
-#include "CEGUIOpenGLTextureTarget.h"
-#include "../../CEGUIRect.h"
-#include "CEGUIOpenGL.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4250)
-#endif
+#include "CEGUIOpenGLRenderTarget.h"
+#include "../../CEGUITextureTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class OpenGLTexture;
-
-//! OpenGLFBOTextureTarget - allows rendering to an OpenGL texture via FBO.
-class OPENGL_GUIRENDERER_API OpenGLFBOTextureTarget : public OpenGLTextureTarget
+/*!
+\brief
+    OpenGLTextureTarget - Common base class for all OpenGL render targets
+    based on some form of RTT support.
+*/
+class OPENGL_GUIRENDERER_API OpenGLTextureTarget : public OpenGLRenderTarget,
+                                                   public TextureTarget
 {
 public:
-    OpenGLFBOTextureTarget(OpenGLRenderer& owner);
-    virtual ~OpenGLFBOTextureTarget();
+    //! constructor.
+    OpenGLTextureTarget(OpenGLRenderer& owner);
+    //! destructor
+    virtual ~OpenGLTextureTarget();
 
-    // overrides from OpenGLRenderTarget
-    void activate();
-    void deactivate();
-    // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Size& sz);
-    // specialise functions from OpenGLTextureTarget
-    void grabTexture();
-    void restoreTexture();
+    // implementation of RenderTarget interface
+    bool isImageryCache() const;
+    // implementation of parts of TextureTarget interface
+    Texture& getTexture() const;
+    bool isRenderingInverted() const;
+
+    /*!
+    \brief
+        Grab the texture to a local buffer.
+
+        This will destroy the OpenGL texture, and restoreTexture must be called
+        before using it again.
+    */
+    virtual void grabTexture();
+
+    /*!
+    \brief
+        Restore the texture from the locally buffered copy previously create by
+        a call to grabTexture.
+    */
+    virtual void restoreTexture();
 
 protected:
-    //! default size of created texture objects
-    static const float DEFAULT_SIZE;
-
-    //! allocate and set up the texture used with the FBO.
-    void initialiseRenderTexture();
-    //! resize the texture
-    void resizeRenderTexture();
-
-    //! Frame buffer object.
-    GLuint d_frameBuffer;
+    //! Associated OpenGL texture ID
+    GLuint d_texture;
+    //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
+    OpenGLTexture* d_CEGUITexture;
 };
 
 } // End of  CEGUI namespace section
 
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
-
-#endif  // end of guard _CEGUIOpenGLFBOTextureTarget_h_
+#endif  // end of guard _CEGUIOpenGLTextureTarget_h_
