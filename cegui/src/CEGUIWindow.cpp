@@ -1243,7 +1243,22 @@ void Window::queueGeometry(const RenderingContext& ctx)
 void Window::setParent(Window* parent)
 {
     d_parent = parent;
-    transferChildSurfaces();
+
+    // if we do not have a surface, xfer any surfaces from our children to
+    // whatever our target surface now is.
+    if (!d_surface)
+        transferChildSurfaces();
+    // else, since we have a surface, child surfaces stay with us.  Though we
+    // must now ensure /our/ surface is xferred if it is a RenderingWindow.
+    else if (d_surface->isRenderingWindow())
+    {
+        // target surface is eihter the parent's target, or the default root.
+        RenderingSurface& tgt = d_parent ?
+            d_parent->getTargetRenderingSurface() :
+            System::getSingleton().getRenderer()->getDefaultRenderingRoot();
+
+        tgt.transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -3110,6 +3125,11 @@ void Window::updateGeometryRenderSettings()
     {
         static_cast<RenderingWindow*>(ctx.surface)->
             setPosition(getUnclippedOuterRect().getPosition());
+        static_cast<RenderingWindow*>(d_surface)->setPivot(
+            Vector3(d_pixelSize.d_width / 2.0f,
+                    d_pixelSize.d_height / 2.0f,
+                    0.0f));
+        d_geometry->setTranslation(Vector3(0.0f, 0.0f, 0.0f));
     }
     // if we're not texture backed, update geometry position.
     else
