@@ -99,6 +99,35 @@ namespace DragContainerProperties
             setStickyModeEnabled(PropertyHelper::stringToBool(value));
     }
 
+    //////////////////////////////////////////////////////////////////////////
+
+    String FixedDragOffset::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::uvector2ToString(
+            static_cast<const DragContainer*>(receiver)->getFixedDragOffset());
+    }
+
+    void FixedDragOffset::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<DragContainer*>(receiver)->
+            setFixedDragOffset(PropertyHelper::stringToUVector2(value));
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+
+    String UseFixedDragOffset::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::boolToString(
+            static_cast<const DragContainer*>(receiver)->
+                isUsingFixedDragOffset());
+    }
+
+    void UseFixedDragOffset::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<DragContainer*>(receiver)->
+            setUsingFixedDragOffset(PropertyHelper::stringToBool(value));
+    }
+
 } // End of  DragContainerProperties namespace section
 
 
