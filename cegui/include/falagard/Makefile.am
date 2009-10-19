@@ -1,4 +1,4 @@
-pkgincludedir=$(prefix)/include/CEGUI/falagard
+pkgincludedir=$(includedir)/CEGUI/falagard
 pkginclude_HEADERS = CEGUIFalEnums.h \
                      CEGUIFalComponentBase.h \
                      CEGUIFalDimensions.h \

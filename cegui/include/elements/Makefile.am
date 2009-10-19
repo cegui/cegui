@@ -1,4 +1,4 @@
-pkgincludedir=$(prefix)/include/CEGUI/elements
+pkgincludedir=$(includedir)/CEGUI/elements
 pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIButtonBase.h \
                      CEGUICheckbox.h \

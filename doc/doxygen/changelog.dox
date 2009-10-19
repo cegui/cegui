@@ -4,6 +4,7 @@ namespace CEGUI{
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
 <b>Release 0.7.1</b>
+- Bug Fix: Ensure --includedir configure option is respected.
 - Bug Fix: Issue of Window's local GeometryBuffer translation not being reset when Window gets given a surface after initial creation.
 - Bug Fix: Issue of Window's RenderingWindow rotation pivot point not getting updated as window's area size changes.
 - Bug Fix: Issue of rendering window surfaces not getting correctly transferred under all circumstances.
