@@ -1,4 +1,4 @@
-pkgincludedir=$(prefix)/include/CEGUI/RendererModules/Irrlicht
+pkgincludedir=$(includedir)/CEGUI/RendererModules/Irrlicht
 pkginclude_HEADERS = CEGUIIrrlichtEventPusher.h \
                      CEGUIIrrlichtGeometryBuffer.h \
                      CEGUIIrrlichtImageCodec.h \
