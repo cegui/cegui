@@ -206,12 +206,14 @@ void RenderedString::split(const size_t line, float split_point,
             ++left.d_lines[left_line].second;
         }
     }
-    // can't split, so xfer the whole component to the left (FIX #306)
-    else
+    // can't split, if component width is >= split_point xfer the whole
+    // component to it's own line in the left part (FIX #306)
+    else if (c->getPixelSize().d_width >= split_point)
     {
+        left.appendLineBreak();
         left.d_components.push_back(d_components[0]);
         d_components.erase(d_components.begin());
-        ++left.d_lines[left_line].second;
+        ++left.d_lines[left_line + 1].second;
         --d_lines[0].second;
     }
 
