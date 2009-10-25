@@ -1,4 +1,4 @@
-pkgincludedir=$(prefix)/include/CEGUI/elements
+pkgincludedir=$(includedir)/CEGUI/elements
 pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIButtonBase.h \
                      CEGUICheckbox.h \
@@ -21,8 +21,6 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIItemListBaseProperties.h \
                      CEGUIItemListbox.h \
                      CEGUIItemListboxProperties.h \
-                     CEGUIListHeader.h \
-                     CEGUIListHeaderProperties.h \
                      CEGUIListbox.h \
                      CEGUIListboxItem.h \
                      CEGUIListboxProperties.h \
