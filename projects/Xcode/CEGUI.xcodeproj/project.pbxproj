@@ -5535,7 +5535,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=ScriptingModules/*/support --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nif [ ! -L CEGUI ]; then\n\tln -s . CEGUI\nfi\n";
+			shellScript = "cd \"${SRCROOT}/../../cegui/include\"\nrsync -azC --exclude=*.am --exclude=ScriptingModules/*/support --exclude=WindowRendererSets --exclude=ImageCodecModules --exclude=XMLParserModules . \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\ncd \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

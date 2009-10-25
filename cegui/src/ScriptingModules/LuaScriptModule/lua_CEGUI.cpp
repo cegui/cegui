@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Fri Oct 16 12:53:48 2009.
+** Generated automatically by tolua++-1.0.92 on Sun Oct 18 18:10:20 2009.
 */
 
 #ifndef __cplusplus
@@ -31500,6 +31500,170 @@ static int tolua_CEGUI_CEGUI_DragContainer_setStickyModeEnabled00(lua_State* tol
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: pickUp of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_pickUp00
+static int tolua_CEGUI_CEGUI_DragContainer_pickUp00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::DragContainer* self = (CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+  bool force_sticky = ((bool)  tolua_toboolean(tolua_S,2,false));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'pickUp'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->pickUp(force_sticky);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'pickUp'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setFixedDragOffset of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_setFixedDragOffset00
+static int tolua_CEGUI_CEGUI_DragContainer_setFixedDragOffset00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::UVector2",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::DragContainer* self = (CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::UVector2* offset = ((const CEGUI::UVector2*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setFixedDragOffset'",NULL);
+#endif
+ {
+  self->setFixedDragOffset(*offset);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setFixedDragOffset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getFixedDragOffset of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_getFixedDragOffset00
+static int tolua_CEGUI_CEGUI_DragContainer_getFixedDragOffset00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::DragContainer* self = (const CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFixedDragOffset'",NULL);
+#endif
+ {
+  const CEGUI::UVector2& tolua_ret = (const CEGUI::UVector2&)  self->getFixedDragOffset();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::UVector2");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getFixedDragOffset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setUsingFixedDragOffset of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_setUsingFixedDragOffset00
+static int tolua_CEGUI_CEGUI_DragContainer_setUsingFixedDragOffset00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::DragContainer* self = (CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+  bool enable = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setUsingFixedDragOffset'",NULL);
+#endif
+ {
+  self->setUsingFixedDragOffset(enable);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setUsingFixedDragOffset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isUsingFixedDragOffset of class  CEGUI::DragContainer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_DragContainer_isUsingFixedDragOffset00
+static int tolua_CEGUI_CEGUI_DragContainer_isUsingFixedDragOffset00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::DragContainer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::DragContainer* self = (const CEGUI::DragContainer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isUsingFixedDragOffset'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isUsingFixedDragOffset();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isUsingFixedDragOffset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getDocumentSize of class  CEGUI::Scrollbar */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_getDocumentSize00
 static int tolua_CEGUI_CEGUI_Scrollbar_getDocumentSize00(lua_State* tolua_S)
@@ -53975,6 +54139,11 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getCurrentDropTarget",tolua_CEGUI_CEGUI_DragContainer_getCurrentDropTarget00);
    tolua_function(tolua_S,"isStickyModeEnabled",tolua_CEGUI_CEGUI_DragContainer_isStickyModeEnabled00);
    tolua_function(tolua_S,"setStickyModeEnabled",tolua_CEGUI_CEGUI_DragContainer_setStickyModeEnabled00);
+   tolua_function(tolua_S,"pickUp",tolua_CEGUI_CEGUI_DragContainer_pickUp00);
+   tolua_function(tolua_S,"setFixedDragOffset",tolua_CEGUI_CEGUI_DragContainer_setFixedDragOffset00);
+   tolua_function(tolua_S,"getFixedDragOffset",tolua_CEGUI_CEGUI_DragContainer_getFixedDragOffset00);
+   tolua_function(tolua_S,"setUsingFixedDragOffset",tolua_CEGUI_CEGUI_DragContainer_setUsingFixedDragOffset00);
+   tolua_function(tolua_S,"isUsingFixedDragOffset",tolua_CEGUI_CEGUI_DragContainer_isUsingFixedDragOffset00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Scrollbar","CEGUI::Scrollbar","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"Scrollbar");

@@ -3,7 +3,12 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
-<b>Release 0.7.1 (SVN)</b>
+<b>Release 0.7.1</b>
+- Bug Fix: Ensure --includedir configure option is respected.
+- Bug Fix: Issue of Window's local GeometryBuffer translation not being reset when Window gets given a surface after initial creation.
+- Bug Fix: Issue of Window's RenderingWindow rotation pivot point not getting updated as window's area size changes.
+- Bug Fix: Issue of rendering window surfaces not getting correctly transferred under all circumstances.
+- Bug Fix: Double-deletion of non-system created ImageCodec when linking statically.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=4414
 - Bug Fix: Do not log non-errors as errors when using minibidi.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=4356
 - Bug Fix: MultiColumnList bug where row inserted into sorted list was not passing on input row_id value.
 - Bug Fix: Static builds linked (incorrectly) against runtime DLLs. This is now fixed.
@@ -59,6 +64,8 @@ The following is a high-level view of changes made to Crazy Eddie's GUI System f
 - Modified: Optimise FrameWidow drag-sizing code so that Window::setArea_impl is not called twice when a sizing operaion involves two edges.
 - Modified: Some optimisations in Falagard StaticText renderer to reduce unneccessary text formatting calls (which have the potential to be very expensive).
 
+- Added: Functions to DragContainer to support a custom fixed offset from which the container will always be dragged from.
+- Added: DragContainer::pickUp function to allow user code to programatically pick up a sticky mode DragContainer.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=4406
 - Added: Definitions for Combobox and Progressbar in Vanilla looknfeel and scheme.
 - Added: Optional extended input event injectors for mouse button click, double-click and triple-click events.  NB: Lua bindind needs regenerating.  See: http://www.cegui.org.uk/mantis/view.php?id=299.
 - Added: Setting to System to disable the automatic generation of mouse button click, double-click and triple-click events.
