@@ -1585,7 +1585,12 @@ void Window::update(float elapsed)
 
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
-        d_children[i]->update(elapsed);
+    {
+        if (d_children[i]->isVisible(true))
+        {
+            d_children[i]->update(elapsed);
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
