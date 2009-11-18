@@ -1586,10 +1586,11 @@ void Window::update(float elapsed)
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
     {
-        if (d_children[i]->isVisible(true))
-        {
-            d_children[i]->update(elapsed);
-        }
+        // scriptkid: we need to re-think this optimization, see http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4500
+        //if (d_children[i]->isVisible(true)) 
+        //{
+        d_children[i]->update(elapsed);
+        //}
     }
 }
 
