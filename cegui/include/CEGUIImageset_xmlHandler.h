@@ -29,6 +29,7 @@
 #define _CEGUIImageset_xmlHandler_h_
 
 #include "CEGUIXMLHandler.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
