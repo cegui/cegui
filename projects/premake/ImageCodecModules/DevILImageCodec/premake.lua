@@ -17,5 +17,8 @@ library("ILU", "_d")
 
 dependency("CEGUIBase")
 define("CEGUIDEVILIMAGECODEC_EXPORTS")
-define("IL_STATIC_LIB", "Debug_Static")
-define("IL_STATIC_LIB", "Release_Static")
+
+if WANT_STATIC_BUILD then
+	define("IL_STATIC_LIB", "Debug_Static")
+	define("IL_STATIC_LIB", "Release_Static")
+end

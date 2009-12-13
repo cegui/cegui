@@ -11,14 +11,23 @@ dofile("config.lua")
 project.name = "CEGUI"
 project.bindir = rootdir.."bin"
 project.libdir = rootdir.."lib"
-project.configs =
+
+cegui_configs = 
 {
     "Debug",
-    "Debug_Static",
-    "ReleaseWithSymbols",
     "Release",
-    "Release_Static"
 }
+
+if WANT_RELEASE_WITH_SYMBOLS_BUILD then
+	tinsert(cegui_configs, "ReleaseWithSymbols")
+end
+
+if WANT_STATIC_BUILD then
+	tinsert(cegui_configs, "Debug_Static")
+	tinsert(cegui_configs, "Release_Static")
+end
+
+project.configs = cegui_configs
 
 --
 -- Package table

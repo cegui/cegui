@@ -42,8 +42,10 @@ if OPENGL_RENDERER and SAMPLES_GL then
         library("CEGUIOpenGLRenderer", DEBUG_DLL_SUFFIX or "")
     end
 
-	define("FREEGLUT_STATIC", "Release_Static")
-	define("FREEGLUT_STATIC", "Debug_Static")
+	if WANT_STATIC_BUILD then
+		define("FREEGLUT_STATIC", "Release_Static")
+		define("FREEGLUT_STATIC", "Debug_Static")
+	end
 end
 
 if DIRECT3D9_RENDERER and SAMPLES_DX9 then
