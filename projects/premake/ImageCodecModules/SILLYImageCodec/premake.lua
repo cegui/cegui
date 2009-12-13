@@ -16,5 +16,8 @@ library("SILLY", "_d")
 
 dependency("CEGUIBase")
 define("CEGUISILLYIMAGECODEC_EXPORTS")
-define("SILLY_STATIC", "Release_Static")
-define("SILLY_STATIC", "Debug_Static")
+
+if WANT_STATIC_BUILD then
+	define("SILLY_STATIC", "Release_Static")
+	define("SILLY_STATIC", "Debug_Static")
+end
