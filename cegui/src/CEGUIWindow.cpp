@@ -1303,8 +1303,9 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Window* wnd)
 {
     // if window is already attached, detach it first (will fire normal events)
-    if (wnd->getParent())
-        wnd->getParent()->removeChildWindow(wnd);
+    Window* const old_parent = wnd->getParent();
+    if (old_parent)
+        old_parent->removeChildWindow(wnd);
 
     addWindowToDrawList(*wnd);
 
@@ -1314,10 +1315,16 @@ void Window::addChild_impl(Window* wnd)
     // set the parent window
     wnd->setParent(this);
 
-    // Force and update for the area Rects for 'wnd' so they're correct for it's
-    // new parent.
-    WindowEventArgs args(this);
-    wnd->onParentSized(args);
+    // update area rects and content for the added window
+    wnd->notifyScreenAreaChanged(true);
+    wnd->invalidate(true);
+    
+    // correctly call parent sized notification if needed.
+    if (!old_parent || old_parent->getPixelSize() != getPixelSize())
+    {
+        WindowEventArgs args(this);
+        wnd->onParentSized(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1585,7 +1592,13 @@ void Window::update(float elapsed)
 
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
+    {
+        // scriptkid: we need to re-think this optimization, see http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4500
+        //if (d_children[i]->isVisible(true)) 
+        //{
         d_children[i]->update(elapsed);
+        //}
+    }
 }
 
 //----------------------------------------------------------------------------//
