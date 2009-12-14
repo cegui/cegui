@@ -69,7 +69,7 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
                                 "CGLGetVirtualScreen failed: " +
                                 String(CGLErrorString(err)));
 
-    long fmt_count;
+    GLint fmt_count;
     CGLPixelFormatObj pix_fmt;
     if (err = CGLChoosePixelFormat(fmtAttrs, &pix_fmt, &fmt_count))
         throw RendererException("OpenGLApplePBTextureTarget - "
