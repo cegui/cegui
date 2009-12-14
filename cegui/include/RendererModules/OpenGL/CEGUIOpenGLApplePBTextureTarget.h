@@ -76,7 +76,7 @@ protected:
     //! The GL context that's used by this TextureTarget.
     CGLContextObj d_context;
     //! virtual screen used by the "parent" context
-    long d_screen;
+    GLint d_screen;
     //! Context that was active before ours was activated.
     mutable CGLContextObj d_prevContext;
 };
