@@ -31,7 +31,7 @@ const char shaderSource[] =
 "	AlphaToCoverageEnable = false;\n"
 "	BlendEnable[0] = true;\n"
 "	SrcBlendAlpha = SRC_ALPHA;\n"
-"	DestBlendAlpha = INV_SRC_ALPHA;\n"
+"	DestBlendAlpha = ONE;\n"
 "	SrcBlend = SRC_ALPHA;\n"
 "	DestBlend = INV_SRC_ALPHA;\n"
 "};\n"
