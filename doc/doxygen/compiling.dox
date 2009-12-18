@@ -40,8 +40,9 @@ so that you end up with a new directory named 'dependencies'.
 
 If you're using code directly from subversion you will need a copy of the
 premake executable (currently you need version 3.6, which is available
-<a href="http://sourceforge.net/projects/premake/files/Premake/3.6/premake-win32-3.6.zip/download">here</a>.  This executable should either be placed in the <tt>projects/premake</tt>
-directory or somewhere one your path.
+<a href="http://sourceforge.net/projects/premake/files/Premake/3.6/premake-win32-3.6.zip/download">here</a>.
+This executable should either be placed in the <tt>projects/premake</tt>
+directory or somewhere on your path.
 
 Now you should navigate to the <tt>projects/premake</tt> directory in the source
 and open the <tt>config.lua</tt> file in a text editor of some kind.  Take a few

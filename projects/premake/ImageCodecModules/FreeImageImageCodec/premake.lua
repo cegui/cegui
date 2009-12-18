@@ -16,5 +16,8 @@ library("FreeImage", "d")
 
 dependency("CEGUIBase")
 define("CEGUIFREEIMAGEIMAGECODEC_EXPORTS")
-define("FREEIMAGE_LIB", "Debug_Static")
-define("FREEIMAGE_LIB", "Release_Static")
+
+if WANT_STATIC_BUILD then
+	define("FREEIMAGE_LIB", "Debug_Static")
+	define("FREEIMAGE_LIB", "Release_Static")
+end

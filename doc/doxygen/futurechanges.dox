@@ -19,9 +19,6 @@ via a new attribute in Falagard mappings and/or maybe a window property.
 - Various enhancements to the Falagard skinning system (to be detailed elsewhere
 some time soon!)
 - Sizer / Layout control widgets to assist in laying out windows.
-- Additional, but optional, input injection functions for click, doubleclick and
-tripleclick for those occasions where the integrated generation of these events
-is unsuitable.
 - Add functions for better control of z-ordering of sibling windows.
 - Refactoring cleanup and other enhancements to the samples framework.
 

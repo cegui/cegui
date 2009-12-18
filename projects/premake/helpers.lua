@@ -77,49 +77,53 @@ function cegui_dynamic(name, lang, kind)
 	}
 	
 	-- debug_static
-	debug_static = package.config.Debug_Static
-	debug_static.target = name.."_Static"..(DEBUG_DLL_SUFFIX or "")
+	if WANT_STATIC_BUILD then
+		debug_static = package.config.Debug_Static
+		debug_static.target = name.."_Static"..(DEBUG_DLL_SUFFIX or "")
 
-	if kind == "dll" then
-		debug_static.kind = "lib"
-	elseif kind == "" then
-	    debug_static.kind = "lib"
-	elseif not kind then
-	    debug_static.kind = "lib"
-	else
-	    debug_static.kind = kind
+		if kind == "dll" then
+			debug_static.kind = "lib"
+		elseif kind == "" then
+			debug_static.kind = "lib"
+		elseif not kind then
+			debug_static.kind = "lib"
+		else
+			debug_static.kind = kind
+		end
+		
+		debug_static.defines =
+		{
+			"_DEBUG",
+			"CEGUI_STATIC",
+			"TOLUA_STATIC"
+		}
+		debug_static.buildflags = 
+		{   -- Static build means static runtimes! (/MTd)
+			"static-runtime"
+		}
+
+		debug_static.libpaths =
+		{
+			rootdir.."dependencies/lib/static",
+		}
 	end
-	
-	debug_static.defines =
-    {
-        "_DEBUG",
-        "CEGUI_STATIC",
-        "TOLUA_STATIC"
-    }
-    debug_static.buildflags = 
-    {   -- Static build means static runtimes! (/MTd)
-        "static-runtime"
-    }
-
-	debug_static.libpaths =
-	{
-		rootdir.."dependencies/lib/static",
-	}
 
 	-- release with symbols
-	release_sym = package.config.ReleaseWithSymbols
-	release_sym.defines = {}
-	release_sym.buildflags =
-	{
---    Optimisation disabled for mantis #293
---    (http://www.cegui.org.uk/mantis/view.php?id=293)
---    "optimize-speed",
-	}
+	if WANT_RELEASE_WITH_SYMBOLS_BUILD then
+		release_sym = package.config.ReleaseWithSymbols
+		release_sym.defines = {}
+		release_sym.buildflags =
+		{
+	--    Optimisation disabled for mantis #293
+	--    (http://www.cegui.org.uk/mantis/view.php?id=293)
+	--    "optimize-speed",
+		}
 
-	release_sym.libpaths =
-	{
-		rootdir.."dependencies/lib/dynamic",
-	}
+		release_sym.libpaths =
+		{
+			rootdir.."dependencies/lib/dynamic",
+		}
+	end
 
 	-- release (no symbols)
 	release = package.config.Release
@@ -137,37 +141,39 @@ function cegui_dynamic(name, lang, kind)
 	}
 	
 	-- release_static (no symbols)
-	release_static = package.config.Release_Static
-	release_static.target = name.."_Static"
+	if WANT_STATIC_BUILD then
+		release_static = package.config.Release_Static
+		release_static.target = name.."_Static"
 
-	if kind == "dll" then
-	    release_static.kind = "lib"
-	elseif kind == "" then
-	    release_static.kind = "lib"
-	elseif not kind then
-	    release_static.kind = "lib"
-	else
-		release_static.kind = kind
+		if kind == "dll" then
+			release_static.kind = "lib"
+		elseif kind == "" then
+			release_static.kind = "lib"
+		elseif not kind then
+			release_static.kind = "lib"
+		else
+			release_static.kind = kind
+		end
+		
+		release_static.defines =
+		{
+			"CEGUI_STATIC",
+			"TOLUA_STATIC"
+		}
+		release_static.buildflags =
+		{
+			"no-symbols",
+			"optimize-speed",
+			"no-frame-pointer",
+			-- Static build means static runtimes! (/MT)
+			"static-runtime"
+		}
+
+		release_static.libpaths =
+		{
+			rootdir.."dependencies/lib/static",
+		}
 	end
-	
-	release_static.defines =
-	{
-		"CEGUI_STATIC",
-		"TOLUA_STATIC"
-	}
-	release_static.buildflags =
-	{
-	    "no-symbols",
-	    "optimize-speed",
-	    "no-frame-pointer",
-        -- Static build means static runtimes! (/MT)
-        "static-runtime"
-	}
-
-	release_static.libpaths =
-	{
-		rootdir.."dependencies/lib/static",
-	}
 end
 
 --
@@ -176,15 +182,20 @@ end
 function library(name, debugsuffix)
 	tinsert(debug.links, name..(debugsuffix or ""))
 	tinsert(release.links, name)
-	tinsert(release_sym.links, name)
+	
+	if WANT_RELEASE_WITH_SYMBOLS_BUILD then
+		tinsert(release_sym.links, name)
+	end
 end
 
 --
 -- adds a CEGUI Static Lib to the current pkg
 --
 function library_static(name, staticstr, debugsuffix)
-	tinsert(release_static.links,name..(staticstr or ""))
-	tinsert(debug_static.links,name..(staticstr or "")..(debugsuffix or ""))
+	if WANT_STATIC_BUILD then
+		tinsert(release_static.links,name..(staticstr or ""))
+		tinsert(debug_static.links,name..(staticstr or "")..(debugsuffix or ""))
+	end
 end
 
 --

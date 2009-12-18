@@ -307,7 +307,12 @@ void OpenGLRenderer::beginRendering()
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    if (GLEW_VERSION_1_4)
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                            GL_SRC_ALPHA, GL_ONE);
+    else
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // enable arrays that we'll be using in the batches
     glEnableClientState(GL_VERTEX_ARRAY);

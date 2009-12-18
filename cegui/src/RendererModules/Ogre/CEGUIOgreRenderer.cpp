@@ -307,8 +307,10 @@ void OgreRenderer::beginRendering()
     d_renderSystem->_setPolygonMode(PM_SOLID);
 
     // enable alpha blending
-    d_renderSystem->_setSceneBlending(SBF_SOURCE_ALPHA,
-                                      SBF_ONE_MINUS_SOURCE_ALPHA);
+    d_renderSystem->_setSeparateSceneBlending(SBF_SOURCE_ALPHA,
+                                              SBF_ONE_MINUS_SOURCE_ALPHA,
+                                              SBF_SOURCE_ALPHA,
+                                              SBF_ONE);
 
     d_renderSystem->_beginFrame();
 }
