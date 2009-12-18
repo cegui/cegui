@@ -528,6 +528,6 @@ And for Disabled we again specify some additional colours:
 </StateImagery>
 @endcode
 
-This concludes the introduction tutorial. For full examples of this, and all the other WidgetLook specifications, see the example 'looknfeel' files in the CEGUI distribution, in the directory: @e cegui_mk2/Samples/datafiles/looknfeel/ 
+This concludes the introduction tutorial. For full examples of this, and all the other WidgetLook specifications, see the example 'looknfeel' files in the CEGUI distribution, in the directory: @e cegui_mk2/datafiles/looknfeel/ 
 
 */
