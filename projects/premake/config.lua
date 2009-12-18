@@ -2,6 +2,12 @@
 -- CEGUI premake configuration script
 --
 
+--- These control whether certain build configurations will be available in the
+--- generated solutions.  You can set to false (or comment) any build configs
+--- you will not be using.
+WANT_RELEASE_WITH_SYMBOLS_BUILD = true
+WANT_STATIC_BUILD = true
+
 -- comment this to disable debug suffixes for dynamic module dlls
 -- if you want to use another suffix, just change the string :)
 -- all the debug cegui libraries are built with this suffix

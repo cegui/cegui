@@ -17,5 +17,8 @@ library("xerces-c_3","D")
 dependency("CEGUIBase")
 
 define("CEGUIXERCESPARSER_EXPORTS")
-define("XERCES_STATIC_LIBRARY", "Debug_Static")
-define("XERCES_STATIC_LIBRARY", "Release_Static")
+
+if WANT_STATIC_BUILD then
+	define("XERCES_STATIC_LIBRARY", "Debug_Static")
+	define("XERCES_STATIC_LIBRARY", "Release_Static")
+end

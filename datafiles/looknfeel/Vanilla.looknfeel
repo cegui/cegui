@@ -284,6 +284,7 @@
                 <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
+            <Property name="NonClient" value="True" />
             <Property name="AlwaysOnTop" value="True" />
         </Child>
         <ImagerySection name="withtitle_frame">
