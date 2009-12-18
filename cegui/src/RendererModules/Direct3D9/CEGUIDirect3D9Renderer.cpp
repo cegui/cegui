@@ -220,8 +220,11 @@ void Direct3D9Renderer::beginRendering()
 
     // setup scene alpha blending
     d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+    d_device->SetRenderState(D3DRS_SEPARATEALPHABLENDENABLE, TRUE);
     d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
     d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+    d_device->SetRenderState(D3DRS_SRCBLENDALPHA, D3DBLEND_SRCALPHA);
+    d_device->SetRenderState(D3DRS_DESTBLENDALPHA, D3DBLEND_ONE);
 
     // set view matrix back to identity.
     d_device->SetTransform(D3DTS_VIEW, &s_identityMatrix);
