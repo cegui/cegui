@@ -44,8 +44,38 @@ public:
     //! Constructor.
     OgreImageCodec();
 
+    /*!
+    \brief
+        Set the file-type identifier that will be used for future load
+        operations.
+
+        This allows us to pass the type on to Ogre when we process the image
+        data (because it's just file data; we do not have a filename nor file
+        extension).  Ogre needs this sometimes in order to correctly select the
+        right codec to use for the final decoding of the data.  If this value
+        is not set, loading may still succeed, though that will depend upon the
+        specific libraries and codecs that the Ogre installation has available
+        to it.
+
+    \param type
+        String object that describes the type of file data that will be passed
+        in subsequent load operations.  Note that this type will typically be
+        the file extension (or equivalent).
+    */
+    void setImageFileDataType(const String& type);
+
+    /*!
+    \brief
+        Return the string descibing the currently set file type.
+    */
+    const String& getImageFileDataType() const;
+
     // implement required function from ImageCodec.
     Texture* load(const RawDataContainer& data, Texture* result);
+
+protected:
+    //! Holds currently set file data type specifier (i.e. the file extension).
+    String d_dataTypeID;
 };
 
 } // End of  CEGUI namespace section
