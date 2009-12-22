@@ -38,6 +38,18 @@ OgreImageCodec::OgreImageCodec() :
 }
 
 //----------------------------------------------------------------------------//
+void OgreImageCodec::setImageFileDataType(const String& type)
+{
+    d_dataTypeID = type;
+}
+
+//----------------------------------------------------------------------------//
+const String& OgreImageCodec::getImageFileDataType() const
+{
+    return d_dataTypeID;
+}
+
+//----------------------------------------------------------------------------//
 Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 {
     using namespace Ogre;
@@ -50,19 +62,26 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // load the image
     Ogre::Image image;
-    image.load(stream);
+    image.load(stream, d_dataTypeID.c_str());
 
     // discover the pixel format and number of pixel components
     Texture::PixelFormat format;
     int components;
+    bool rbswap = false;
     switch (image.getFormat())
     {
         case PF_R8G8B8:
+            rbswap = true;
+            // intentional fall through
+        case PF_B8G8R8:
             format = Texture::PF_RGB;
             components = 3;
             break;
 
         case PF_A8R8G8B8:
+            rbswap = true;
+            // intentional fall through
+        case PF_A8B8G8R8:
             format = Texture::PF_RGBA;
             components = 4;
             break;
@@ -73,20 +92,21 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
             break;
     }
 
-    // do the old switcharoo on R and B...
-    // (we could 'fix' this in the CEGUI::OgreTexture, but that would break all
-    // the other ImageCodecs when used with the Ogre renderer, hence we don't)
-    uchar* dat = image.getData();
-    for (uint j = 0; j < image.getHeight(); ++j)
+    // do the old switcharoo on R and B if needed
+    if (rbswap)
     {
-        for (uint i = 0; i < image.getWidth(); ++i)
+        uchar* dat = image.getData();
+        for (uint j = 0; j < image.getHeight(); ++j)
         {
-            uchar tmp = dat[i * components + 0];
-            dat[i * components + 0] = dat[i * components + 2];
-            dat[i * components + 2] = tmp;
-        }
+            for (uint i = 0; i < image.getWidth(); ++i)
+            {
+                uchar tmp = dat[i * components + 0];
+                dat[i * components + 0] = dat[i * components + 2];
+                dat[i * components + 2] = tmp;
+            }
 
-        dat += image.getRowSpan();
+            dat += image.getRowSpan();
+        }
     }
 
     // load the resulting image into the texture
