@@ -145,6 +145,12 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
 
+    // we _really_ need separate rgb/alpha blend modes, if this support is not
+    // available, add a note to the renderer ID string so that this fact is
+    // logged.
+    if (!GLEW_VERSION_1_4 && !GLEW_EXT_blend_func_separate)
+        d_rendererID += "  No glBlendFuncSeparate(EXT) support.";
+
     d_defaultTarget = new OpenGLViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
 }
@@ -311,6 +317,9 @@ void OpenGLRenderer::beginRendering()
     if (GLEW_VERSION_1_4)
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
                             GL_SRC_ALPHA, GL_ONE);
+    else if (GLEW_EXT_blend_func_separate)
+        glBlendFuncSeparateEXT(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                               GL_SRC_ALPHA, GL_ONE);
     else
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

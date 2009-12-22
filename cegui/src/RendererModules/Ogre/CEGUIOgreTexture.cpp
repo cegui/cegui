@@ -28,7 +28,7 @@
 #include "CEGUIOgreTexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
-#include "CEGUIImageCodec.h"
+#include "CEGUIOgreImageCodec.h"
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 
@@ -81,6 +81,18 @@ void OgreTexture::loadFromFile(const String& filename,
     RawDataContainer texFile;
     sys->getResourceProvider()->loadRawDataContainer(filename, texFile,
                                                      resourceGroup);
+
+    ImageCodec& ic(sys->getImageCodec());
+
+    // if we're using the integrated Ogre codec, set the file-type hint string
+    if (ic.getIdentifierString().substr(0, 14)  == "OgreImageCodec")
+    {
+        String type;
+        String::size_type i = filename.find_last_of(".");
+        if (i != String::npos && filename.length() - i > 1)
+            type = filename.substr(i+1);
+        static_cast<OgreImageCodec&>(ic).setImageFileDataType(type);
+    }
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
