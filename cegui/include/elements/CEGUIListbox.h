@@ -551,6 +551,19 @@ public:
     float   getWidestItemWidth(void) const;
 
 
+	/*!
+	\brief
+		Return a pointer to the ListboxItem attached to this Listbox at the
+        given screen pixel co-ordinate.
+
+	\return
+		Pointer to the ListboxItem attached to this Listbox that is at screen
+        position \a pt, or 0 if no ListboxItem attached to this Listbox is at
+        that position.
+	*/
+    ListboxItem* getItemAtPoint(const Point& pt) const;
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -609,17 +622,6 @@ protected:
 		true if some selections were cleared, false nothing was changed.
 	*/
 	bool	clearAllSelections_impl(void);
-
-
-	/*!
-	\brief
-		Return the ListboxItem under the given window local pixel co-ordinate.
-
-	\return
-		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
-		item is under that position.
-	*/
-	ListboxItem*	getItemAtPoint(const Point& pt) const;
 
 
 	/*!
