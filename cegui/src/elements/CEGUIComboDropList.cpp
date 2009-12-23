@@ -137,13 +137,8 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 
 			if (d_armed)
 			{
-				//
-				// Convert mouse position to absolute window pixels
-				//
-				Point localPos(CoordConverter::screenToWindow(*this, e.position));
-
 				// check for an item under the mouse
-				ListboxItem* selItem = getItemAtPoint(localPos);
+				ListboxItem* selItem = getItemAtPoint(e.position);
 
 				// if an item is under mouse, select it
 				if (selItem)
