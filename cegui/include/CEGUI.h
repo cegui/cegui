@@ -64,6 +64,7 @@
 #include "CEGUIRenderedStringWidgetComponent.h"
 #include "CEGUIRenderedStringWordWrapper.h"
 #include "CEGUIRenderEffect.h"
+#include "CEGUIRenderEffectManager.h"
 #include "CEGUIRenderer.h"
 #include "CEGUIRenderingContext.h"
 #include "CEGUIRenderingRoot.h"
