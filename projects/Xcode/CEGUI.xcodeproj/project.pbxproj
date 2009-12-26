@@ -547,6 +547,9 @@
 		DA10A0220F6DB84700B8A582 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DA10A0230F6DB84700B8A582 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DA10A02A0F6DB88500B8A582 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093BA0F6D594000B8A582 /* Sample_FirstWindow.cpp */; };
+		DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */; };
+		DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */; };
+		DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */; };
 		DA485B22103B3E390013D18E /* CEGUIIrrlichtImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */; };
 		DA485B24103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */; };
 		DA54492E0F739EC100983E1A /* CEGUITplWindowFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */; };
@@ -2236,6 +2239,9 @@
 		DA109FFB0F6DB73200B8A582 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DA10A0180F6DB83200B8A582 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA10A01A0F6DB83200B8A582 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectFactory.h; path = ../../cegui/include/CEGUIRenderEffectFactory.h; sourceTree = SOURCE_ROOT; };
+		DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectManager.h; path = ../../cegui/include/CEGUIRenderEffectManager.h; sourceTree = SOURCE_ROOT; };
+		DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderEffectManager.cpp; path = ../../cegui/src/CEGUIRenderEffectManager.cpp; sourceTree = SOURCE_ROOT; };
 		DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIIrrlichtImageCodec.h; path = ../../cegui/include/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.h; sourceTree = SOURCE_ROOT; };
 		DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIIrrlichtImageCodec.cpp; path = ../../cegui/src/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowFactory.h; path = ../../cegui/include/CEGUITplWindowFactory.h; sourceTree = SOURCE_ROOT; };
@@ -3294,8 +3300,8 @@
 				DA1095510F6D5F9B00B8A582 /* CEGUIExceptions.h */,
 				DA1095520F6D5F9B00B8A582 /* CEGUIFactoryModule.h */,
 				DA1095530F6D5F9B00B8A582 /* CEGUIFont.h */,
-				DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */,
 				DA1095540F6D5F9B00B8A582 /* CEGUIFont_xmlHandler.h */,
+				DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */,
 				DA1095550F6D5F9B00B8A582 /* CEGUIFontManager.h */,
 				DAB26FFF0FCAE2AB00D9EE82 /* CEGUIFormattedRenderedString.h */,
 				DA1095560F6D5F9B00B8A582 /* CEGUIForwardRefs.h */,
@@ -3339,6 +3345,8 @@
 				DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */,
 				DAB2708A0FCAF1D000D9EE82 /* CEGUIRenderedStringWordWrapper.h */,
 				DA1095700F6D5F9B00B8A582 /* CEGUIRenderEffect.h */,
+				DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */,
+				DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */,
 				DA1095710F6D5F9B00B8A582 /* CEGUIRenderer.h */,
 				DA1095720F6D5F9B00B8A582 /* CEGUIRenderingContext.h */,
 				DA1095730F6D5F9B00B8A582 /* CEGUIRenderingRoot.h */,
@@ -3413,13 +3421,13 @@
 				DA1095130F6D5F4100B8A582 /* CEGUIEventSignalSet.cpp */,
 				DA1095140F6D5F4100B8A582 /* CEGUIExceptions.cpp */,
 				DA1095150F6D5F4100B8A582 /* CEGUIFactoryModule.cpp */,
-				DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */,
 				DA1095160F6D5F4100B8A582 /* CEGUIFont.cpp */,
 				DA1095170F6D5F4100B8A582 /* CEGUIFont_xmlHandler.cpp */,
 				DA1095180F6D5F4100B8A582 /* CEGUIFontManager.cpp */,
 				DA1095190F6D5F4100B8A582 /* CEGUIFontProperties.cpp */,
 				DAB2702A0FCAE75D00D9EE82 /* CEGUIFormattedRenderedString.cpp */,
 				DA10951A0F6D5F4100B8A582 /* CEGUIFreeTypeFont.cpp */,
+				DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */,
 				DA10951B0F6D5F4100B8A582 /* CEGUIGlobalEventSet.cpp */,
 				DA10951C0F6D5F4100B8A582 /* CEGUIGUILayout_xmlHandler.cpp */,
 				DA10951D0F6D5F4100B8A582 /* CEGUIImage.cpp */,
@@ -3445,6 +3453,7 @@
 				DAB26F650FC947C200D9EE82 /* CEGUIRenderedStringImageComponent.cpp */,
 				DAB26FA80FCA951000D9EE82 /* CEGUIRenderedStringTextComponent.cpp */,
 				DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */,
+				DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */,
 				DA1095290F6D5F4100B8A582 /* CEGUIRenderingRoot.cpp */,
 				DA10952A0F6D5F4100B8A582 /* CEGUIRenderingSurface.cpp */,
 				DA10952B0F6D5F4100B8A582 /* CEGUIRenderingWindow.cpp */,
@@ -4499,6 +4508,8 @@
 				DAE4B64E102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h in Headers */,
 				DAE4B64F102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h in Headers */,
 				DAE4B650102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h in Headers */,
+				DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */,
+				DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5712,6 +5723,7 @@
 				DAE4B654102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp in Sources */,
 				DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */,
 				DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */,
+				DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
