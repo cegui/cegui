@@ -30,8 +30,6 @@
 
 #include "CEGuiSample.h"
 #include "CEGUI.h"
-#include "CEGUIRenderEffect.h"
-#include "CEGUIVertex.h"
 
 // Sample subclass for CEGUI::RenderEffect.  This particluar implementation
 // provides a basic 'wobbly window' type effect.
@@ -83,13 +81,6 @@ protected:
     bool handleSlider(const CEGUI::EventArgs& e);
     bool handleRadio(const CEGUI::EventArgs& e);
     bool handleCheck(const CEGUI::EventArgs& e);
-
-    // RenderEffect objects - one for each window.  Other efects may not need
-    // to maintain local state, and so it would be possible to share a single
-    // RenderEffect based object between multiple windows.
-    MyEffect d_effect_win1;
-    MyEffect d_effect_win2;
-    MyEffect d_effect_win3;
 };
 
 

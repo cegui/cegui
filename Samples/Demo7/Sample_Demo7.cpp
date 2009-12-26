@@ -29,10 +29,6 @@
 #include "CEGUI.h"
 #include "CEGuiBaseApplication.h"
 
-#include "CEGUIRenderingWindow.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIGeometryBuffer.h"
-
 #include <cstdlib>
 
 int main(int /*argc*/, char* /*argv*/[])
@@ -255,6 +251,9 @@ bool Demo7Sample::initialiseSample()
 {
     using namespace CEGUI;
 
+    // Register our effect with the system
+    RenderEffectManager::getSingleton().addEffect<MyEffect>("WobblyWindow");
+
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -292,17 +291,20 @@ bool Demo7Sample::initialiseSample()
     Window* w = winMgr.getWindow("Demo7/Window1");
     if (w && w->getRenderingSurface())
         static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&d_effect_win1);
+            setRenderEffect(&RenderEffectManager::getSingleton().
+                create("WobblyWindow"));
 
     w = winMgr.getWindow("Demo7/Window2");
     if (w && w->getRenderingSurface())
         static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&d_effect_win2);
+            setRenderEffect(&RenderEffectManager::getSingleton().
+                create("WobblyWindow"));
 
     w = winMgr.getWindow("Demo7/Window3");
     if (w && w->getRenderingSurface())
         static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&d_effect_win3);
+            setRenderEffect(&RenderEffectManager::getSingleton().
+                create("WobblyWindow"));
 
     // success!
     return true;
