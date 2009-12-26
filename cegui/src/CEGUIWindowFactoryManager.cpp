@@ -283,13 +283,18 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 
 }
 
-void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName, const String& renderer)
+void WindowFactoryManager::addFalagardWindowMapping(const String& newType,
+                                                    const String& targetType,
+                                                    const String& lookName,
+                                                    const String& renderer,
+                                                    const String& effectName)
 {
     WindowFactoryManager::FalagardWindowMapping mapping;
     mapping.d_windowType = newType;
     mapping.d_baseType   = targetType;
     mapping.d_lookName   = lookName;
     mapping.d_rendererType = renderer;
+    mapping.d_effectName = effectName;
 
     // see if the type we're creating already exists
     if (d_falagardRegistry.find(newType) != d_falagardRegistry.end())
@@ -302,7 +307,8 @@ void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const
     sprintf(addr_buff, "(%p)", static_cast<void*>(&mapping));
     Logger::getSingleton().logEvent("Creating falagard mapping for type '" +
         newType + "' using base type '" + targetType + "', window renderer '" +
-        renderer + "' and Look'N'Feel '" + lookName + "'. " + addr_buff);
+        renderer + "' Look'N'Feel '" + lookName + "' and RenderEffect '" +
+        effectName + "'. " + addr_buff);
 
     d_falagardRegistry[newType] = mapping;
 }

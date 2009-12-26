@@ -57,6 +57,7 @@ const String Scheme_xmlHandler::LookNFeelAttribute("LookNFeel");
 const String Scheme_xmlHandler::WindowRendererSetElement("WindowRendererSet");
 const String Scheme_xmlHandler::WindowRendererFactoryElement("WindowRendererFactory");
 const String Scheme_xmlHandler::WindowRendererAttribute("Renderer");
+const String Scheme_xmlHandler::RenderEffectAttribute("RenderEffect");
 
 //----------------------------------------------------------------------------//
 Scheme_xmlHandler::Scheme_xmlHandler(const String& filename,
@@ -249,6 +250,7 @@ void Scheme_xmlHandler::elementFalagardMappingStart(
     fmap.targetName = attributes.getValueAsString(TargetTypeAttribute);
     fmap.lookName   = attributes.getValueAsString(LookNFeelAttribute);
     fmap.rendererName = attributes.getValueAsString(WindowRendererAttribute);
+    fmap.effectName = attributes.getValueAsString(RenderEffectAttribute);
 
     d_scheme->d_falagardMappings.push_back(fmap);
 }

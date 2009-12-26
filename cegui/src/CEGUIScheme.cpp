@@ -423,7 +423,11 @@ void Scheme::loadFalagardMappings()
         }
 
         // create a new mapping entry
-        wfmgr.addFalagardWindowMapping((*falagard).windowName, (*falagard).targetName, (*falagard).lookName, (*falagard).rendererName);
+        wfmgr.addFalagardWindowMapping((*falagard).windowName,
+                                       (*falagard).targetName,
+                                       (*falagard).lookName,
+                                       (*falagard).rendererName,
+                                       (*falagard).effectName);
     }
 }
 
@@ -785,10 +789,11 @@ bool Scheme::areFalagardMappingsLoaded() const
         // if the mapping exists
         if (!iter.isAtEnd())
         {
-            // if the current target and looks match
+            // if the current target, effect and looks match
             if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
                 (iter.getCurrentValue().d_rendererType == (*falagard).rendererName) &&
-                (iter.getCurrentValue().d_lookName == (*falagard).lookName))
+                (iter.getCurrentValue().d_lookName == (*falagard).lookName) &&
+                (iter.getCurrentValue().d_effectName == (*falagard).effectName))
             {
                 // assume this mapping is ours and skip to next
                 continue;

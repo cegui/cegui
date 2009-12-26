@@ -97,6 +97,8 @@ private:
     static const String WindowRendererFactoryElement;
     //! Attribute specifying the type name of a window renderer.
     static const String WindowRendererAttribute;
+    //! Attribute specifying the name of a registered RenderEffect.
+    static const String RenderEffectAttribute;
 
     //! Function that handles the opening GUIScheme XML element.
     void elementGUISchemeStart(const XMLAttributes& attributes);
