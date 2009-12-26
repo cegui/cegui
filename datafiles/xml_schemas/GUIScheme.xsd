@@ -50,5 +50,6 @@
         <xsd:attribute name="TargetType" type="xsd:string" use="required" />
 		<xsd:attribute name="Renderer" type="xsd:string" use="required" />
         <xsd:attribute name="LookNFeel" type="xsd:string" use="required" />
+        <xsd:attribute name="RenderEffect" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
 </xsd:schema>
