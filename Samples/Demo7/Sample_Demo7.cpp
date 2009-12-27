@@ -254,6 +254,20 @@ bool Demo7Sample::initialiseSample()
     // Register our effect with the system
     RenderEffectManager::getSingleton().addEffect<MyEffect>("WobblyWindow");
 
+    // Now we make a Falagard mapping for a frame window that uses this effect.
+    // We create a type "TaharezLook/WobblyFrameWindow", which is subsequently
+    // referenced in the layout file loaded below.  Note that it wold be more
+    // usual for this mapping to be specified in the scheme xml file, though
+    // here we are doing in manually to save from needing either multiple
+    // versions of the schemes or from having demo specific definitions in
+    // the schemes.
+    WindowFactoryManager::getSingleton().addFalagardWindowMapping(
+        "TaharezLook/WobblyFrameWindow",    // type to create
+        "CEGUI/FrameWindow",                // 'base' widget type
+        "TaharezLook/FrameWindow",          // WidgetLook to use.
+        "Falagard/FrameWindow",             // WindowRenderer to use.
+        "WobblyWindow");                    // effect to use.
+
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -286,25 +300,6 @@ bool Demo7Sample::initialiseSample()
     createListContent();
     // initialise the event handling.
     initDemoEventWiring();
-
-    // attach RenderEffects
-    Window* w = winMgr.getWindow("Demo7/Window1");
-    if (w && w->getRenderingSurface())
-        static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&RenderEffectManager::getSingleton().
-                create("WobblyWindow"));
-
-    w = winMgr.getWindow("Demo7/Window2");
-    if (w && w->getRenderingSurface())
-        static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&RenderEffectManager::getSingleton().
-                create("WobblyWindow"));
-
-    w = winMgr.getWindow("Demo7/Window3");
-    if (w && w->getRenderingSurface())
-        static_cast<RenderingWindow*>(w->getRenderingSurface())->
-            setRenderEffect(&RenderEffectManager::getSingleton().
-                create("WobblyWindow"));
 
     // success!
     return true;

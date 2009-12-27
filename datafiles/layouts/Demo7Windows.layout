@@ -3,7 +3,7 @@
     <Window Type="DefaultWindow" Name="root">
         <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window1" >
+        <Window Type="TaharezLook/WobblyFrameWindow" Name="Demo7/Window1" >
             <Property Name="Text" Value="Demo 7 - Window 1" />
             <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
@@ -70,7 +70,7 @@
                 <Property Name="UnifiedAreaRect" Value="{{0.9,0},{0.555,0},{0.93,0},{0.855,0}}" />
             </Window>
         </Window>
-        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window2" >
+        <Window Type="TaharezLook/WobblyFrameWindow" Name="Demo7/Window2" >
             <Property Name="Text" Value="Demo 7 - Window 2" />
             <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
@@ -133,7 +133,7 @@
                 <Property Name="BackgroundEnabled" Value="False" />
             </Window>
         </Window>
-        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window3" >
+        <Window Type="TaharezLook/WobblyFrameWindow" Name="Demo7/Window3" >
             <Property Name="Text" Value="Demo 7 - Window 3" />
             <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
