@@ -33,7 +33,7 @@
 #include "CEGUISystem.h"
 
 #include <d3dx9.h>
-#include <dxerr9.h>
+#include <dxerr.h>
 #undef max
 
 // Start of CEGUI namespace section
@@ -109,7 +109,7 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
 	}
 	else
 	{
-		throw RendererException("Failed to create Texture object from file '" + filename + "'.  Additional Info: " + DXGetErrorString9(hr));
+		throw RendererException("Failed to create Texture object from file '" + filename + "'.  Additional Info: " + DXGetErrorString(hr));
 	}
 
 }
