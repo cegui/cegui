@@ -70,6 +70,7 @@ public:
         String  d_lookName;
         String  d_baseType;
         String  d_rendererType;
+        String  d_effectName;
     };
 
     /*!
@@ -323,10 +324,17 @@ public:
     \param renderer
         The type of window renderer to assign for windows of this type.
 
+    \param effectName
+        The identifier of the RenderEffect to attempt to set up for windows of this type.
+
     \return
         Nothing.
     */
-    void addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName, const String& renderer);
+    void addFalagardWindowMapping(const String& newType,
+                                  const String& targetType,
+                                  const String& lookName,
+                                  const String& renderer,
+                                  const String& effectName = String(""));
 
     /*!
     \brief

@@ -39,6 +39,7 @@
 #include "CEGUITplWindowFactory.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUISchemeManager.h"
+#include "CEGUIRenderEffectManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
@@ -1493,6 +1494,7 @@ void System::createSingletons()
     new GlobalEventSet();
     new WidgetLookManager();
     new WindowRendererManager();
+    new RenderEffectManager();
 }
 
 void System::destroySingletons()
@@ -1502,6 +1504,7 @@ void System::destroySingletons()
     delete  WindowFactoryManager::getSingletonPtr();
     delete  WidgetLookManager::getSingletonPtr();
     delete  WindowRendererManager::getSingletonPtr();
+    delete  RenderEffectManager::getSingletonPtr();
     delete  FontManager::getSingletonPtr();
     delete  MouseCursor::getSingletonPtr();
     delete  ImagesetManager::getSingletonPtr();

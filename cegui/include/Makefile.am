@@ -64,6 +64,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIRenderedStringWordWrapper.h \
                  CEGUIRenderer.h \
                  CEGUIRenderEffect.h \
+				 CEGUIRenderEffectFactory.h \
+				 CEGUIRenderEffectManager.h \
                  CEGUIRenderTarget.h \
                  CEGUIRenderingContext.h \
                  CEGUIRenderQueue.h \

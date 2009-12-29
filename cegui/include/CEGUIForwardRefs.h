@@ -81,6 +81,7 @@ class RenderedStringTextComponent;
 class RenderedStringWidgetComponent;
 class Renderer;
 class RenderEffect;
+class RenderEffectManager;
 struct RenderingContext;
 class RenderingRoot;
 class RenderingSurface;

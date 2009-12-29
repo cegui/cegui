@@ -740,25 +740,26 @@ bool Listbox::clearAllSelections_impl(void)
 
 
 /*************************************************************************
-	Return the ListboxItem under the given window local pixel co-ordinate.
+	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
 ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 {
-	Rect renderArea(getListRenderArea());
+    const Point local_pos(CoordConverter::screenToWindow(*this, pt));
+	const Rect renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
-	if (renderArea.isPointInRect(pt))
+	if (renderArea.isPointInRect(local_pos))
 	{
 		float y = renderArea.d_top - getVertScrollbar()->getScrollPosition();
 
 		// test if point is above first item
-		if (pt.d_y >= y)
+		if (local_pos.d_y >= y)
 		{
 			for (size_t i = 0; i < getItemCount(); ++i)
 			{
 				y += d_listItems[i]->getPixelSize().d_height;
 
-				if (pt.d_y < y)
+				if (local_pos.d_y < y)
 				{
 					return d_listItems[i];
 				}
@@ -866,9 +867,7 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Point localPos(CoordConverter::screenToWindow(*this, e.position));
-
-		ListboxItem* item = getItemAtPoint(localPos);
+		ListboxItem* item = getItemAtPoint(e.position);
 
 		if (item)
 		{
@@ -933,8 +932,7 @@ void Listbox::onMouseMove(MouseEventArgs& e)
     {
         static ListboxItem* lastItem = 0;
 
-        Point posi( CoordConverter::screenToWindow(*this, e.position) );
-        ListboxItem* item = getItemAtPoint(posi);
+        ListboxItem* item = getItemAtPoint(e.position);
         if (item != lastItem)
         {
             if (item)

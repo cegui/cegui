@@ -424,6 +424,9 @@ private:
     */
     String generateUniqueWindowName();
 
+    //! function to set up RenderEffect on a window
+    void initialiseRenderEffect(Window* wnd, const String& effect) const;
+
 	/*************************************************************************
 		Implementation Constants
 	*************************************************************************/
