@@ -65,6 +65,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUIRenderingRoot.cpp \
                       CEGUIRenderingSurface.cpp \
                       CEGUIRenderingWindow.cpp \
+					  CEGUIRenderEffectManager.cpp \
                       CEGUIRenderQueue.cpp \
                       CEGUIRightAlignedRenderedString.cpp \
                       CEGUIScheme.cpp \

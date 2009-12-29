@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Oct 18 18:10:20 2009.
+** Generated automatically by tolua++-1.0.92 on Sat Dec 26 14:28:18 2009.
 */
 
 #ifndef __cplusplus
@@ -23194,6 +23194,36 @@ static int tolua_set_CEGUI__FalagardWindowMapping_rendererType(lua_State* tolua_
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: d_effectName of class  CEGUI::FalagardWindowMapping */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__FalagardWindowMapping_effectName
+static int tolua_get_CEGUI__FalagardWindowMapping_effectName(lua_State* tolua_S)
+{
+  CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_effectName'",NULL);
+#endif
+ tolua_pushcppstring(tolua_S,(const char*)self->d_effectName);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: d_effectName of class  CEGUI::FalagardWindowMapping */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__FalagardWindowMapping_effectName
+static int tolua_set_CEGUI__FalagardWindowMapping_effectName(lua_State* tolua_S)
+{
+  CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_effectName'",NULL);
+ if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->d_effectName = ((string)  tolua_tocppstring(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getTypeName of class  CEGUI::WindowFactory */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactory_getTypeName00
 static int tolua_CEGUI_CEGUI_WindowFactory_getTypeName00(lua_State* tolua_S)
@@ -23370,7 +23400,8 @@ static int tolua_CEGUI_CEGUI_WindowFactoryManager_addFalagardWindowMapping00(lua
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
+ !tolua_iscppstring(tolua_S,6,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -23381,11 +23412,12 @@ static int tolua_CEGUI_CEGUI_WindowFactoryManager_addFalagardWindowMapping00(lua
   string targetType = ((string)  tolua_tocppstring(tolua_S,3,0));
   string lookName = ((string)  tolua_tocppstring(tolua_S,4,0));
   string renderer = ((string)  tolua_tocppstring(tolua_S,5,0));
+  string effectName = ((string)  tolua_tocppstring(tolua_S,6,""));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addFalagardWindowMapping'",NULL);
 #endif
  {
-  self->addFalagardWindowMapping(newType,targetType,lookName,renderer);
+  self->addFalagardWindowMapping(newType,targetType,lookName,renderer,effectName);
  }
  }
  return 0;
@@ -38395,6 +38427,40 @@ static int tolua_CEGUI_CEGUI_Listbox_getTotalItemsHeight00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getTotalItemsHeight'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getItemAtPoint of class  CEGUI::Listbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Listbox_getItemAtPoint00
+static int tolua_CEGUI_CEGUI_Listbox_getItemAtPoint00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Listbox",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Vector2",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Listbox* self = (const CEGUI::Listbox*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Vector2* pt = ((const CEGUI::Vector2*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getItemAtPoint'",NULL);
+#endif
+ {
+  CEGUI::ListboxItem* tolua_ret = (CEGUI::ListboxItem*)  self->getItemAtPoint(*pt);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ListboxItem");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getItemAtPoint'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53791,6 +53857,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"lookName",tolua_get_CEGUI__FalagardWindowMapping_lookName,tolua_set_CEGUI__FalagardWindowMapping_lookName);
    tolua_variable(tolua_S,"baseType",tolua_get_CEGUI__FalagardWindowMapping_baseType,tolua_set_CEGUI__FalagardWindowMapping_baseType);
    tolua_variable(tolua_S,"rendererType",tolua_get_CEGUI__FalagardWindowMapping_rendererType,tolua_set_CEGUI__FalagardWindowMapping_rendererType);
+   tolua_variable(tolua_S,"effectName",tolua_get_CEGUI__FalagardWindowMapping_effectName,tolua_set_CEGUI__FalagardWindowMapping_effectName);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"WindowFactory","CEGUI::WindowFactory","",NULL);
   tolua_beginmodule(tolua_S,"WindowFactory");
@@ -54390,6 +54457,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getHorzScrollbar",tolua_CEGUI_CEGUI_Listbox_getHorzScrollbar00);
    tolua_function(tolua_S,"getWidestItemWidth",tolua_CEGUI_CEGUI_Listbox_getWidestItemWidth00);
    tolua_function(tolua_S,"getTotalItemsHeight",tolua_CEGUI_CEGUI_Listbox_getTotalItemsHeight00);
+   tolua_function(tolua_S,"getItemAtPoint",tolua_CEGUI_CEGUI_Listbox_getItemAtPoint00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ComboDropList","CEGUI::ComboDropList","CEGUI::Listbox",NULL);
   tolua_beginmodule(tolua_S,"ComboDropList");

@@ -230,10 +230,11 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-// #if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined (DEBUG)
-//     paramList.insert(std::make_pair(std::string("x11_mouse_grab"), "false"));
-//     paramList.insert(std::make_pair(std::string("x11_mouse_hide"), "false"));
-// #endif
+#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined (DEBUG)
+    paramList.insert(std::make_pair(std::string("x11_keyboard_grab"), "false"));
+    paramList.insert(std::make_pair(std::string("x11_mouse_grab"), "false"));
+    paramList.insert(std::make_pair(std::string("x11_mouse_hide"), "false"));
+#endif
 
     // create input system
     d_inputManager = OIS::InputManager::createInputSystem(paramList);

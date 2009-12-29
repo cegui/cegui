@@ -334,6 +334,7 @@ private:
         String targetName;
         String rendererName;
         String lookName;
+        String effectName;
     };
 
 	/*************************************************************************

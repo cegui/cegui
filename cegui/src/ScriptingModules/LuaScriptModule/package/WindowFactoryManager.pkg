@@ -7,6 +7,7 @@ class FalagardWindowMapping
     string d_lookName @ lookName;
     string d_baseType @ baseType;
     string d_rendererType @ rendererType;
+    string d_effectName @ effectName;
 };
 
 class WindowFactory
@@ -21,7 +22,7 @@ class WindowFactoryManager
     bool isFactoryPresent(string name) const;
     void addWindowTypeAlias(string aliasName, string targetType);
     void removeWindowTypeAlias(string aliasName, string targetType);
-    void addFalagardWindowMapping(string newType, string targetType, string lookName, string renderer);
+    void addFalagardWindowMapping(string newType, string targetType, string lookName, string renderer, string effectName = "");
     void removeFalagardWindowMapping(string type);
     bool isFalagardMappedType(string type) const;
     string getMappedLookForType(string type) const;

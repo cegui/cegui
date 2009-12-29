@@ -34,6 +34,8 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIRenderEffectManager.h"
+#include "CEGUIRenderingWindow.h"
 #include <iostream>
 #include <sstream>
 
@@ -124,6 +126,8 @@ Window* WindowManager::createWindow(const String& type, const String& name)
         newWindow->d_falagardType = type;
         newWindow->setWindowRenderer(fwm.d_rendererType);
         newWindow->setLookNFeel(fwm.d_lookName);
+
+        initialiseRenderEffect(newWindow, fwm.d_effectName);
     }
 
 	d_windowRegistry[finalName] = newWindow;
@@ -135,6 +139,54 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 	return newWindow;
 }
 
+//---------------------------------------------------------------------------//
+void WindowManager::initialiseRenderEffect(
+        Window* wnd, const String& effect) const
+{
+    Logger& logger(Logger::getSingleton());
+
+    // nothing to do if effect is empty string
+    if (effect.empty())
+        return;
+
+    // if requested RenderEffect is not available, log that and continue
+    if (!RenderEffectManager::getSingleton().isEffectAvailable(effect))
+    {
+        logger.logEvent("Missing RenderEffect '" + effect + "' requested for "
+            "window '" + wnd->getName() + "' - continuing without effect...",
+            Errors);
+
+       return;
+    }
+
+    // If we do not have a RenderingSurface, enable AutoRenderingSurface to
+    // try and create one
+    if (!wnd->getRenderingSurface())
+    {
+        logger.logEvent("Enabling AutoRenderingSurface on '" +
+            wnd->getName() + "' for RenderEffect support.");
+
+        wnd->setUsingAutoRenderingSurface(true);
+    }
+
+    // If we have a RenderingSurface and it's a RenderingWindow
+    if (wnd->getRenderingSurface() &&
+        wnd->getRenderingSurface()->isRenderingWindow())
+    {
+        // Set an instance of the requested RenderEffect
+        static_cast<RenderingWindow*>(wnd->getRenderingSurface())->
+                setRenderEffect(&RenderEffectManager::getSingleton().
+                        create(effect));
+    }
+    // log fact that we could not get a usable RenderingSurface
+    else
+    {
+        logger.logEvent("Unable to set effect for window '" +
+            wnd->getName() + "' since RenderingSurface is either missing "
+            "or of wrong type (i.e. not a RenderingWindow).",
+            Errors);
+    }
+}
 
 /*************************************************************************
 	Destroy the given window by pointer
