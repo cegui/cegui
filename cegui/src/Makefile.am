@@ -199,10 +199,23 @@ if CEGUI_BUILD_MINIBIDI_MAPPER
 libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIMinibidiVisualMapping.cpp
 endif
 
+if CEGUI_BUILD_EXPRESSION_DIM
+libCEGUIBase@cegui_bsfx@_la_SOURCES += falagard/CEGUIFalExpressionDim.cpp \
+									   falagard/CEGUIFalExpressionDimParser.cpp \
+									   falagard/CEGUIFalExpressionDimScanner.cpp \
+									   falagard/CEGUIFalExpressionDimParser.hpp \
+									   falagard/location.hh \
+									   falagard/position.hh \
+									   falagard/stack.hh
+endif
+
 if MACOSX_BUILD
 INCLUDES += -I$(top_srcdir)/src/implementations/mac
 libCEGUIBase@cegui_bsfx@_la_SOURCES += implementations/mac/macPlugins.cpp
 endif
 
 EXTRA_libCEGUIBase@cegui_bsfx@_la_SOURCES = minibidi.cpp
-EXTRA_DIST = implementations/mac/macPlugins.h
+EXTRA_DIST = implementations/mac/macPlugins.h \
+			 falagard/CEGUIFalExpressionDimParser.y \
+			 falagard/CEGUIFalExpressionDimScanner.l
+

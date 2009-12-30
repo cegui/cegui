@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "falagard/CEGUIFalagard_xmlHandler.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
@@ -35,6 +39,9 @@
 #include "falagard/CEGUIFalPropertyDefinition.h"
 #include "falagard/CEGUIFalPropertyLinkDefinition.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
+#ifdef CEGUI_HAS_EXPRESSION_DIM
+#   include "falagard/CEGUIFalExpressionDim.h"
+#endif
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include <sstream>
@@ -69,6 +76,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
     const String Falagard_xmlHandler::FontDimElement("FontDim");
     const String Falagard_xmlHandler::PropertyDimElement("PropertyDim");
+    const String Falagard_xmlHandler::ExpressionDimElement("ExpressionDim");
     const String Falagard_xmlHandler::TextElement("Text");
     const String Falagard_xmlHandler::ColourPropertyElement("ColourProperty");
     const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
@@ -157,6 +165,7 @@ namespace CEGUI
         registerElementStartHandler(WidgetDimElement, &Falagard_xmlHandler::elementWidgetDimStart);
         registerElementStartHandler(FontDimElement, &Falagard_xmlHandler::elementFontDimStart);
         registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
+        registerElementStartHandler(ExpressionDimElement, &Falagard_xmlHandler::elementExpressionDimStart);
         registerElementStartHandler(TextElement, &Falagard_xmlHandler::elementTextStart);
         registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourPropertyStart);
         registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
@@ -190,6 +199,7 @@ namespace CEGUI
         registerElementEndHandler(WidgetDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(FontDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(PropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(ExpressionDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaEnd);
     }
 
@@ -632,6 +642,21 @@ namespace CEGUI
                          type);
 
         doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening ExpressionDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementExpressionDimStart(const XMLAttributes& attributes)
+    {
+#ifdef CEGUI_HAS_EXPRESSION_DIM
+        ExpressionDim base(attributes.getValueAsString(ValueAttribute, "0.0"));
+        doBaseDimStart(&base);
+#else
+        throw InvalidRequestException(
+            "Falagard_xmlHandler::elementExpressionDimStart: CEGUI was built "
+            "without ExpressionDim support.");
+#endif
     }
 
     /*************************************************************************

@@ -1085,3 +1085,21 @@ AC_DEFUN([CEGUI_CHECK_PCRE],[
     AC_SUBST(pcre_CFLAGS)
     AC_SUBST(pcre_LIBS)
 ])
+
+# See if we want to compile the CEGUI::ExpressionDim support.
+AC_DEFUN([CEGUI_CHECK_EXPRESSIONDIM],[
+    AC_ARG_ENABLE([expression-dim],
+                  AC_HELP_STRING([--disable-expression-dim],
+                                 [Disable the experimental ExpressionDim support.  ExpressionDim allows
+                                  the use of text based mathematical expressions within looknfeel skin
+                                  definitions, with support for correct operator precedence and such.
+                                  ExpressionDim may eventually replace the non-intuitive DimOperator.]),
+                  [cegui_enable_expression_dim=$enableval], [cegui_enable_expression_dim=yes])
+
+    AM_CONDITIONAL([CEGUI_BUILD_EXPRESSION_DIM], [test x$cegui_enable_expression_dim = xyes])
+
+    if test x$cegui_enable_expression_dim = xyes; then
+        AC_DEFINE(CEGUI_HAS_EXPRESSION_DIM, [], [Define if you're building the ExpressionDim support.])
+    fi
+])
+
