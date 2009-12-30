@@ -19,4 +19,8 @@ pkginclude_HEADERS = CEGUIFalEnums.h \
                      CEGUIFalWidgetLookManager.h \
                      CEGUIFalXMLEnumHelper.h
 
+if CEGUI_BUILD_EXPRESSION_DIM
+pkginclude_HEADERS += CEGUIFalExpressionDim.h
+endif
+
 noinst_HEADERS = CEGUIFalagard_xmlHandler.h

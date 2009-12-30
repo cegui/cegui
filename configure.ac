@@ -64,6 +64,8 @@ CEGUI_CHECK_PCRE
 CEGUI_CHECK_XML_PARSERS
 CEGUI_CHECK_IMAGE_CODECS
 
+CEGUI_CHECK_EXPRESSIONDIM
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([limits.h locale.h malloc.h stddef.h stdlib.h string.h])
@@ -202,6 +204,7 @@ echo "* Library Release Version:                              CEGUI_RELEASE_VERS
 echo "*"
 echo "* Code options:"
 echo "*         Building CEGUI in debug mode:                 ${cegui_enable_debug-no}"
+echo "*         Compiling experimental ExpressionDim support: ${cegui_enable_expression_dim-no}"
 echo "*"
 echo "* Bi-directional text support:                          ${cegui_enable_bidi-no}"
 if test x$cegui_enable_bidi = xyes; then

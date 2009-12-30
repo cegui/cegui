@@ -202,6 +202,7 @@
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
+            <xsd:element name="ExpressionDim" type="expressionDimType" />
 		</xsd:choice>
 		<xsd:attribute name="type" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
@@ -251,6 +252,12 @@
         </xsd:sequence>
 		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
+	</xsd:complexType>
+   	<xsd:complexType name="expressionDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+		<xsd:attribute name="value" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="settingByPropertyType">
         <xsd:attribute name="name" type="xsd:string" use="required" />
