@@ -68,7 +68,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"imagedim("[^,]+","[^,]+","[^,)]+")" {
+"imagedim("[^,)]+","[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
     char imageset[128];
@@ -85,7 +85,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"widgetdim("[^,]+","[^),]+")" {
+"widgetdim("[^,)]+","[^),]+")" {
     prepareString(yytext);
 
     char widget[256];
@@ -114,7 +114,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"fontdim("[^,]+","[^,]+","[^,]+","[^,)]+")" {
+"fontdim("[^,)]+","[^,)]+","[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
     char widget[256];
@@ -135,7 +135,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"fontdim("[^,]+","[^,)]+")" {
+"fontdim("[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
     char type[32];
@@ -170,7 +170,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"propertydim("[^,]+","[^,]+","[^,)]+")" {
+"propertydim("[^,)]+","[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
     char widget[256];
@@ -187,7 +187,7 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"propertydim("[^,]+","[^,)]+")" {
+"propertydim("[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
     char property[128];
