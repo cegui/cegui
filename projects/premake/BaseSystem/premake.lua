@@ -48,6 +48,22 @@ else
     end
 end
 
+if not CEGUI_USE_EXPRESSION_DIM then
+    tinsert(package.excludes, matchfiles(rootdir.."cegui/src/falagard/CEGUIFalExpressionDim*"))
+    tinsert(package.excludes, matchfiles(rootdir.."cegui/include/falagard/CEGUIFalExpressionDim*"))
+else
+    -- match the additional bison generated c++ parser skeleton files
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/falagard/*.hh"))
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/falagard/*.hpp"))
+    -- match the bison / flex input sources
+    -- (this way they show up in the files list for easy editing)
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/falagard/*.y"))
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/falagard/*.l"))
+end
+
 library("Winmm", "")
 
 define("CEGUIBASE_EXPORTS")
+
+-- always define this (even though we way not compile what uses it)
+define("YY_NO_UNISTD_H")
