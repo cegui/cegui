@@ -248,6 +248,11 @@ do
         end
     end
 
+    -- ExpressionDim configuration
+    if CEGUI_USE_EXPRESSION_DIM then
+        config_h.CEGUI_HAS_EXPRESSION_DIM = ""
+    end
+
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 

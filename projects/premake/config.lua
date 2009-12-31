@@ -59,8 +59,13 @@ CEGUI_USE_DEFAULT_LOGGER = true
 --- With bidirectional support enabled, CEGUI_USE_MINIBIDI then controls whether
 --- that support is provided viaan embedded copy of minibidi (true) or an
 --- external copy of the fribidi library (false).
-CEGUI_BIDI_SUPPORT = false;
-CEGUI_USE_MINIBIDI = true;
+CEGUI_BIDI_SUPPORT = false
+CEGUI_USE_MINIBIDI = true
+
+--- Option to build support for CEGUI::ExpressionDim.
+--- This is currently considered experimental, though
+--- enabled by default.
+CEGUI_USE_EXPRESSION_DIM = true
 
 -------------
 -- Renderers

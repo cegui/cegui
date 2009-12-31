@@ -34,7 +34,7 @@
 namespace CEGUI
 {
 // forward declare implementation data struct (used internally only)
-class ExpressionDim_impl;
+struct ExpressionDim_impl;
 
 //! Dimension class that encapsulates a text based expression.
 class CEGUIEXPORT ExpressionDim : public BaseDim
