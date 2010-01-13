@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -132,6 +132,7 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+    void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
 
     /*!
     \brief
@@ -265,6 +266,8 @@ private:
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
+    //! What blend mode we think is active.
+    BlendMode d_activeBlendMode;
   };
 
 } // End of  CEGUI namespace section
