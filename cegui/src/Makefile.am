@@ -39,6 +39,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUIFontProperties.cpp \
                       CEGUIFont_xmlHandler.cpp \
                       CEGUIFormattedRenderedString.cpp \
+					  CEGUIGeometryBuffer.cpp \
                       CEGUIGlobalEventSet.cpp \
                       CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \

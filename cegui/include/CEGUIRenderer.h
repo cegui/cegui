@@ -53,6 +53,23 @@ enum QuadSplitMode
 
 /*!
 \brief
+    Enumerated type that contains the valid options that specify the type of
+    blending that is to be performed for subsequent rendering operations.
+*/
+enum BlendMode
+{
+    //! Invalid mode indicator.
+    BM_INVALID,
+    //! Use normal blending mode.
+    BM_NORMAL,
+    //! Use blending mode suitable for textures with premultiplied colours.
+    BM_RTT_PREMULTIPLIED
+};
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
     Abstract class defining the basic required interface for Renderer objects.
 
     Objects derived from Renderer are the means by which the GUI system
@@ -276,6 +293,24 @@ public:
 
     //! Destructor.
     virtual ~Renderer() {}
+
+    /*!
+    \brief
+        Set up the blending mode so it's appropriate for the the given
+        BlendMode enumerated value.
+
+    \param mode
+        One of the BlendMode enumerated values indicating the type of rendering
+        that is going to be performed.
+
+    \param force
+        Boolean value indicating whether to force the setting of blend related
+        render states and ignore any possible optimisation that might be in
+        effect that would otherwise have caused no action to be taken.
+        Defaults to false.
+    */
+    virtual void setupRenderingBlendMode(const BlendMode mode,
+                                         const bool force = false) = 0;
 };
 
 } // End of  CEGUI namespace section
