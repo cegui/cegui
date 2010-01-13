@@ -199,7 +199,7 @@ public:
         One of the BlendMode enumerated values indicating the blending mode to
         be used.
     */
-    void setBlendMode(const BlendMode mode);
+    virtual void setBlendMode(const BlendMode mode);
 
     /*!
     \brief
@@ -210,7 +210,7 @@ public:
         that will be used when rendering all geometry added to this
         GeometryBuffer object.
     */
-    BlendMode getBlendMode() const;
+    virtual BlendMode getBlendMode() const;
 
 protected:
     //! Constructor.
