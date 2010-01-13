@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,7 +35,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLGeometryBuffer::OpenGLGeometryBuffer() :
+OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
+    d_owner(&owner),
     d_activeTexture(0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -68,6 +69,9 @@ void OpenGLGeometryBuffer::draw() const
 
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixd(d_matrix);
+
+    // activate desired blending mode
+    d_owner->setupRenderingBlendMode(d_blendMode);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
@@ -247,3 +251,4 @@ void OpenGLGeometryBuffer::updateMatrix() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

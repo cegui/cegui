@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -130,7 +130,8 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 //----------------------------------------------------------------------------//
 OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
     d_displayDPI(96, 96),
-    d_initExtraStates(false)
+    d_initExtraStates(false),
+    d_activeBlendMode(BM_INVALID)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -160,7 +161,8 @@ OpenGLRenderer::OpenGLRenderer(const Size& display_size,
                                const TextureTargetType tt_type) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
-    d_initExtraStates(false)
+    d_initExtraStates(false),
+    d_activeBlendMode(BM_INVALID)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -195,7 +197,7 @@ RenderingRoot& OpenGLRenderer::getDefaultRenderingRoot()
 //----------------------------------------------------------------------------//
 GeometryBuffer& OpenGLRenderer::createGeometryBuffer()
 {
-    OpenGLGeometryBuffer* b= new OpenGLGeometryBuffer;
+    OpenGLGeometryBuffer* b= new OpenGLGeometryBuffer(*this);
     d_geometryBuffers.push_back(b);
     return *b;
 }
@@ -314,14 +316,8 @@ void OpenGLRenderer::beginRendering()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
-    if (GLEW_VERSION_1_4)
-        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
-                            GL_SRC_ALPHA, GL_ONE);
-    else if (GLEW_EXT_blend_func_separate)
-        glBlendFuncSeparateEXT(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
-                               GL_SRC_ALPHA, GL_ONE);
-    else
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // force set blending ops to get to a known state.
+    setupRenderingBlendMode(BM_NORMAL, true);
 
     // enable arrays that we'll be using in the batches
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -557,6 +553,34 @@ float OpenGLRenderer::getNextPOTSize(const float f)
 }
 
 //----------------------------------------------------------------------------//
+void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
+                                             const bool force)
+{
+    // exit if mode is already set up (and update not forced)
+    if ((d_activeBlendMode == mode) && !force)
+        return;
+
+    d_activeBlendMode = mode;
+
+    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+    {
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    else
+    {
+        if (GLEW_VERSION_1_4)
+            glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                                GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+        else if (GLEW_EXT_blend_func_separate)
+            glBlendFuncSeparateEXT(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                                   GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+        else
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+}
+
+//----------------------------------------------------------------------------//
+
 void initialiseGLExtensions()
 {
     // initialise GLEW
