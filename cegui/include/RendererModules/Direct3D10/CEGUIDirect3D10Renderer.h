@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -87,7 +87,7 @@ public:
     ID3D10Device& getDirect3DDevice() const;
 
     //! low-level function that binds the technique pass ready for use
-    void bindTechniquePass();
+    void bindTechniquePass(const BlendMode mode);
     //! low-level function to set the texture shader resource view to be used.
     void setCurrentTextureShaderResource(ID3D10ShaderResourceView* srv); 
     //! low-level function to set the projection matrix to be used.
@@ -115,6 +115,8 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+    void setupRenderingBlendMode(const BlendMode mode,
+                                 const bool force = false);
 
 protected:
     //! constructor
@@ -152,8 +154,10 @@ protected:
     TextureList d_textures;
     //! Effect (shader) used when rendering.
     ID3D10Effect* d_effect;
-    //! The rendering technique extratced from the shader effect.
-    ID3D10EffectTechnique* d_technique;
+    //! Rendering technique that supplies BM_NORMAL type rendering
+    ID3D10EffectTechnique* d_normalTechnique;
+    //! Rendering technique that supplies BM_RTT_PREMULTIPLIED type rendering
+    ID3D10EffectTechnique* d_premultipliedTechnique;
     //! D3D10 input layout describing the vertex format we use.
     ID3D10InputLayout* d_inputLayout;
     //! Variable to access current texture (actually shader resource view)
