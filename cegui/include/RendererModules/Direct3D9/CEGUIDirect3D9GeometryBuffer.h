@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -53,7 +53,7 @@ class DIRECT3D9_GUIRENDERER_API Direct3D9GeometryBuffer : public GeometryBuffer
 {
 public:
     //! Constructor
-    Direct3D9GeometryBuffer(LPDIRECT3DDEVICE9 device);
+    Direct3D9GeometryBuffer(Direct3D9Renderer& owner, LPDIRECT3DDEVICE9 device);
 
     //! return pointer to D3DXMATRIX used as world transform.
     const D3DXMATRIX* getMatrix() const;
@@ -91,6 +91,8 @@ protected:
         float tu, tv;
     };
 
+    //! Owning Direct3D9Renderer object
+    Direct3D9Renderer& d_owner;
     //! last texture that was set as active
     Direct3D9Texture* d_activeTexture;
     //! type to track info for per-texture sub batches of geometry
