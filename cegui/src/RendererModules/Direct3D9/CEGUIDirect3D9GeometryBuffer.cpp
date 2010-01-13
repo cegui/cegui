@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,7 +36,9 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(LPDIRECT3DDEVICE9 device) :
+Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(Direct3D9Renderer& owner,
+                                                 LPDIRECT3DDEVICE9 device) :
+    d_owner(owner),
     d_activeTexture(0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
@@ -63,6 +65,8 @@ void Direct3D9GeometryBuffer::draw() const
         updateMatrix();
 
     d_device->SetTransform(D3DTS_WORLD, &d_matrix);
+
+    d_owner.setupRenderingBlendMode(d_blendMode);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)

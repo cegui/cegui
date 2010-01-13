@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -120,6 +120,8 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+    void setupRenderingBlendMode(const BlendMode mode,
+                                 const bool force = false);
 
 private:
     //! Constructor for Direct3D9 Renderer objects.
@@ -163,6 +165,8 @@ private:
     bool d_supportNPOTTex;
     //! whether the hardware supports non-square textures.
     bool d_supportNonSquareTex;
+    //! What we think is the active blendine mode
+    BlendMode d_activeBlendMode;
   };
 
 } // End of  CEGUI namespace section
