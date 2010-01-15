@@ -132,7 +132,6 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-    void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
 
     /*!
     \brief
@@ -198,6 +197,9 @@ public:
         next power of two up from \a f if it's not.
     */
     static float getNextPOTSize(const float f);
+
+    //! set the render states for the specified BlendMode.
+    void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
 
 private:
     /*!

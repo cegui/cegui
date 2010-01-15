@@ -364,16 +364,5 @@ float IrrlichtRenderer::getNextPOTSize(const float f)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtRenderer::setupRenderingBlendMode(const BlendMode mode,
-                                               const bool force)
-{
-    Logger::getSingleton().logEvent(
-        "IrrlichtRenderer::setupRenderingBlendMode: Setting the blend mode "
-        "directly is not supported with Irrlicht; blend modes are implemented "
-        "via Irrlicht materials used with GeometryBuffer objects instead.",
-        Errors);
-}
-
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

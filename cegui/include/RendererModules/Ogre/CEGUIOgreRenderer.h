@@ -191,6 +191,10 @@ public:
     */
     Texture& createTexture(Ogre::TexturePtr& tex, bool take_ownership = false);
 
+    //! set the render states for the specified BlendMode.
+    void setupRenderingBlendMode(const BlendMode mode,
+                                 const bool force = false);
+
     // implement CEGUI::Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -211,8 +215,6 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-    void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
 
 protected:
     //! default constructor.

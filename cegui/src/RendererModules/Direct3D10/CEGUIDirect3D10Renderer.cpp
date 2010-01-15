@@ -357,15 +357,5 @@ void Direct3D10Renderer::setWorldMatrix(D3DXMATRIX& matrix)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Renderer::setupRenderingBlendMode(const BlendMode mode,
-                                                 const bool force)
-{
-    Logger::getSingleton().logEvent(
-        "Direct3D10Renderer::setupRenderingBlendMode: Function not used with "
-        "Direct3D 10.  Look at the Direct3D10Renderer::bindTechniquePass "
-        "function instead.", Errors);
-}
-
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

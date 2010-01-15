@@ -115,8 +115,6 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-    void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
 
 protected:
     //! constructor
