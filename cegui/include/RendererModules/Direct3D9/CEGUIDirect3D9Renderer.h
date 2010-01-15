@@ -100,6 +100,10 @@ public:
     //! returns Size object from \a sz adjusted for hardware capabilities.
     Size getAdjustedSize(const Size& sz);
 
+    //! set the render states for the specified BlendMode.
+    void setupRenderingBlendMode(const BlendMode mode,
+                                 const bool force = false);
+
     // implement Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -120,8 +124,6 @@ public:
     const Vector2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-    void setupRenderingBlendMode(const BlendMode mode,
-                                 const bool force = false);
 
 private:
     //! Constructor for Direct3D9 Renderer objects.

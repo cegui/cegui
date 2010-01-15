@@ -293,24 +293,6 @@ public:
 
     //! Destructor.
     virtual ~Renderer() {}
-
-    /*!
-    \brief
-        Set up the blending mode so it's appropriate for the the given
-        BlendMode enumerated value.
-
-    \param mode
-        One of the BlendMode enumerated values indicating the type of rendering
-        that is going to be performed.
-
-    \param force
-        Boolean value indicating whether to force the setting of blend related
-        render states and ignore any possible optimisation that might be in
-        effect that would otherwise have caused no action to be taken.
-        Defaults to false.
-    */
-    virtual void setupRenderingBlendMode(const BlendMode mode,
-                                         const bool force = false) = 0;
 };
 
 } // End of  CEGUI namespace section
