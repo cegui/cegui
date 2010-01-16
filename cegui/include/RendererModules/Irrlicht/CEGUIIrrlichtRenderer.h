@@ -212,8 +212,6 @@ protected:
     bool d_supportsNSquareTextures;
     //! true if driver supports non power of two textures
     bool d_supportsNPOTTextures;
-    //! What we think the active texture blend mode is.
-    BlendMode d_activeBlendMode;
 };
 
 } // End of  CEGUI namespace section
