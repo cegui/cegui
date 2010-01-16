@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,6 +29,7 @@
 #define _CEGUIGeometryBuffer_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIRenderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -42,8 +43,7 @@ class CEGUIEXPORT GeometryBuffer
 {
 public:
     //! Destructor
-    virtual ~GeometryBuffer()
-    {}
+    virtual ~GeometryBuffer();
 
     /*!
     \brief
@@ -186,6 +186,38 @@ public:
         or 0 if none.
     */
     virtual RenderEffect* getRenderEffect() = 0;
+
+    /*!
+    \brief
+        Set the blend mode option to use when rendering this GeometryBuffer.
+
+    \note
+        The blend mode setting is not a 'state' setting, but is used for \e all
+        geometry added to the buffer regardless of when the blend mode is set.
+
+    \param mode
+        One of the BlendMode enumerated values indicating the blending mode to
+        be used.
+    */
+    virtual void setBlendMode(const BlendMode mode);
+
+    /*!
+    \brief
+        Return the blend mode that is set to be used for this GeometryBuffer.
+
+    \return
+        One of the BlendMode enumerated values indicating the blending mode
+        that will be used when rendering all geometry added to this
+        GeometryBuffer object.
+    */
+    virtual BlendMode getBlendMode() const;
+
+protected:
+    //! Constructor.
+    GeometryBuffer();
+
+    //! The BlendMode to use when rendering this GeometryBuffer.
+    BlendMode d_blendMode;
 };
 
 } // End of  CEGUI namespace section

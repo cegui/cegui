@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -53,7 +53,7 @@ class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public GeometryBuffer
 {
 public:
     //! Constructor
-    OpenGLGeometryBuffer();
+    OpenGLGeometryBuffer(OpenGLRenderer& owner);
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
@@ -89,6 +89,8 @@ protected:
         float position[3];
     };
 
+    //! OpenGLRenderer object that owns the GeometryBuffer.
+    OpenGLRenderer* d_owner;
     //! last texture that was set as active
     OpenGLTexture* d_activeTexture;
     //! type to track info for per-texture sub batches of geometry

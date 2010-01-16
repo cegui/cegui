@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -191,6 +191,10 @@ public:
     */
     Texture& createTexture(Ogre::TexturePtr& tex, bool take_ownership = false);
 
+    //! set the render states for the specified BlendMode.
+    void setupRenderingBlendMode(const BlendMode mode,
+                                 const bool force = false);
+
     // implement CEGUI::Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -254,6 +258,8 @@ protected:
     Ogre::Root* d_ogreRoot;
     //! Pointer to the render system for Ogre.
     Ogre::RenderSystem* d_renderSystem;
+    //! What we think is the current blend mode to use
+    BlendMode d_activeBlendMode;
 };
 
 

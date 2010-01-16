@@ -1,6 +1,6 @@
 /***********************************************************************
     filename:   CEGUIDirect3D10GeometryBuffer.cpp
-    created:    Sat Mar 7 2009
+    created:    Sat Mar 7 2010
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
@@ -98,7 +98,7 @@ void Direct3D10GeometryBuffer::draw() const
             d_owner.setCurrentTextureShaderResource(
                     const_cast<ID3D10ShaderResourceView*>((*i).first));
             // Draw this batch
-            d_owner.bindTechniquePass();
+            d_owner.bindTechniquePass(d_blendMode);
             d_device.Draw((*i).second, pos);
             pos += (*i).second;
         }

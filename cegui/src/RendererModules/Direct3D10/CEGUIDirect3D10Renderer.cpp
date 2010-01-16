@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,6 +33,7 @@
 #include "CEGUIDirect3D10Texture.h"
 #include "CEGUIRenderingRoot.h"
 #include "CEGUIExceptions.h"
+#include "CEGUILogger.h"
 #include <algorithm>
 
 #include "CEGUIDirect3D10RendererShader.txt"
@@ -227,7 +228,8 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
     d_defaultTarget(0),
     d_defaultRoot(0),
     d_effect(0),
-    d_technique(0),
+    d_normalTechnique(0),
+    d_premultipliedTechnique(0),
     d_inputLayout(0),
     d_boundTextureVariable(0),
     d_worldMatrixVariable(0),
@@ -245,8 +247,11 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
         throw RendererException(msg);
     }
 
-    // extract the rendering technique
-    d_technique = d_effect->GetTechniqueByName("CEGUIRendering");
+    // extract the rendering techniques
+    d_normalTechnique =
+            d_effect->GetTechniqueByName("BM_NORMAL_Rendering");
+    d_premultipliedTechnique =
+            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Rendering");
 
     // Get the variables from the shader we need to be able to access
     d_boundTextureVariable =
@@ -267,7 +272,7 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
     const UINT element_count = sizeof(vertex_layout) / sizeof(vertex_layout[0]);
 
     D3D10_PASS_DESC pass_desc;
-    if (FAILED(d_technique->GetPassByIndex(0)->GetDesc(&pass_desc)))
+    if (FAILED(d_normalTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
         throw RendererException("Direct3D10Renderer: failed to obtain technique "
                                 "description for pass 0.");
 
@@ -325,9 +330,12 @@ ID3D10Device& Direct3D10Renderer::getDirect3DDevice() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Renderer::bindTechniquePass()
+void Direct3D10Renderer::bindTechniquePass(const BlendMode mode)
 {
-    d_technique->GetPassByIndex(0)->Apply(0);
+    if (mode == BM_RTT_PREMULTIPLIED)
+        d_premultipliedTechnique->GetPassByIndex(0)->Apply(0);
+    else
+        d_normalTechnique->GetPassByIndex(0)->Apply(0);
 }
 
 //----------------------------------------------------------------------------//

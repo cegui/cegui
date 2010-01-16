@@ -53,6 +53,23 @@ enum QuadSplitMode
 
 /*!
 \brief
+    Enumerated type that contains the valid options that specify the type of
+    blending that is to be performed for subsequent rendering operations.
+*/
+enum BlendMode
+{
+    //! Invalid mode indicator.
+    BM_INVALID,
+    //! Use normal blending mode.
+    BM_NORMAL,
+    //! Use blending mode suitable for textures with premultiplied colours.
+    BM_RTT_PREMULTIPLIED
+};
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
     Abstract class defining the basic required interface for Renderer objects.
 
     Objects derived from Renderer are the means by which the GUI system
