@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -76,7 +76,7 @@ RenderingRoot& Direct3D9Renderer::getDefaultRenderingRoot()
 //----------------------------------------------------------------------------//
 GeometryBuffer& Direct3D9Renderer::createGeometryBuffer()
 {
-    Direct3D9GeometryBuffer* b = new Direct3D9GeometryBuffer(d_device);
+    Direct3D9GeometryBuffer* b = new Direct3D9GeometryBuffer(*this, d_device);
     d_geometryBuffers.push_back(b);
     return *b;
 }
@@ -220,11 +220,9 @@ void Direct3D9Renderer::beginRendering()
 
     // setup scene alpha blending
     d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-    d_device->SetRenderState(D3DRS_SEPARATEALPHABLENDENABLE, TRUE);
-    d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-    d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-    d_device->SetRenderState(D3DRS_SRCBLENDALPHA, D3DBLEND_SRCALPHA);
-    d_device->SetRenderState(D3DRS_DESTBLENDALPHA, D3DBLEND_ONE);
+
+    // put alpha blend operations into a known state
+    setupRenderingBlendMode(BM_NORMAL, true);
 
     // set view matrix back to identity.
     d_device->SetTransform(D3DTS_VIEW, &s_identityMatrix);
@@ -417,6 +415,32 @@ float Direct3D9Renderer::getSizeNextPOT(float sz) const
     }
 
     return static_cast<float>(size);
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::setupRenderingBlendMode(const BlendMode mode,
+                                                const bool force)
+{
+    // exit if no change (and setup not forced)
+    if ((d_activeBlendMode == mode) && !force)
+        return;
+
+    d_activeBlendMode = mode;
+
+    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+    {
+        d_device->SetRenderState(D3DRS_SEPARATEALPHABLENDENABLE, FALSE);
+        d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+        d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+    }
+    else
+    {
+        d_device->SetRenderState(D3DRS_SEPARATEALPHABLENDENABLE, TRUE);
+        d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+        d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+        d_device->SetRenderState(D3DRS_SRCBLENDALPHA, D3DBLEND_INVDESTALPHA);
+        d_device->SetRenderState(D3DRS_DESTBLENDALPHA, D3DBLEND_ONE);
+    }
 }
 
 //----------------------------------------------------------------------------//

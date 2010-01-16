@@ -49,6 +49,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_size(0, 0),
     d_rotation(0, 0, 0)
 {
+    d_geometry->setBlendMode(BM_RTT_PREMULTIPLIED);
 }
 
 //----------------------------------------------------------------------------//

@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -179,7 +179,7 @@ RenderingRoot& OgreRenderer::getDefaultRenderingRoot()
 GeometryBuffer& OgreRenderer::createGeometryBuffer()
 {
     OgreGeometryBuffer* gb =
-        new OgreGeometryBuffer(*d_renderSystem);
+        new OgreGeometryBuffer(*this, *d_renderSystem);
 
     d_geometryBuffers.push_back(gb);
     return *gb;
@@ -306,11 +306,8 @@ void OgreRenderer::beginRendering()
     d_renderSystem->setShadingType(SO_GOURAUD);
     d_renderSystem->_setPolygonMode(PM_SOLID);
 
-    // enable alpha blending
-    d_renderSystem->_setSeparateSceneBlending(SBF_SOURCE_ALPHA,
-                                              SBF_ONE_MINUS_SOURCE_ALPHA,
-                                              SBF_SOURCE_ALPHA,
-                                              SBF_ONE);
+    // set alpha blending to known state
+    setupRenderingBlendMode(BM_NORMAL, true);
 
     d_renderSystem->_beginFrame();
 }
@@ -350,7 +347,8 @@ OgreRenderer::OgreRenderer() :
     d_displayDPI(96, 96),
     // TODO: should be set to correct value
     d_maxTextureSize(2048),
-    d_ogreRoot(Ogre::Root::getSingletonPtr())
+    d_ogreRoot(Ogre::Root::getSingletonPtr()),
+    d_activeBlendMode(BM_INVALID)
 {
     checkOgreInitialised();
 
@@ -370,7 +368,8 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
     d_displayDPI(96, 96),
     // TODO: should be set to correct value
     d_maxTextureSize(2048),
-    d_ogreRoot(Ogre::Root::getSingletonPtr())
+    d_ogreRoot(Ogre::Root::getSingletonPtr()),
+    d_activeBlendMode(BM_INVALID)
 {
     checkOgreInitialised();
 
@@ -431,6 +430,27 @@ void OgreRenderer::setDisplaySize(const Size& sz)
         d_defaultTarget->setArea(area);
     }
 
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
+                                           const bool force)
+{
+    using namespace Ogre;
+
+    // do nothing if mode appears current (and is not forced)
+    if ((d_activeBlendMode == mode) && !force)
+        return;
+
+    d_activeBlendMode = mode;
+
+    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+        d_renderSystem->_setSceneBlending(SBF_ONE, SBF_ONE_MINUS_SOURCE_ALPHA);
+    else
+        d_renderSystem->_setSeparateSceneBlending(SBF_SOURCE_ALPHA,
+                                                  SBF_ONE_MINUS_SOURCE_ALPHA,
+                                                  SBF_ONE_MINUS_DEST_ALPHA,
+                                                  SBF_ONE);
 }
 
 //----------------------------------------------------------------------------//
