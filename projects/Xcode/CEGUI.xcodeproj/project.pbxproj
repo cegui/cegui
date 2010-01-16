@@ -547,6 +547,7 @@
 		DA10A0220F6DB84700B8A582 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DA10A0230F6DB84700B8A582 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DA10A02A0F6DB88500B8A582 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1093BA0F6D594000B8A582 /* Sample_FirstWindow.cpp */; };
+		DA2F8A651101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */; };
 		DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */; };
 		DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */; };
 		DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */; };
@@ -2239,6 +2240,7 @@
 		DA109FFB0F6DB73200B8A582 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DA10A0180F6DB83200B8A582 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA10A01A0F6DB83200B8A582 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGeometryBuffer.cpp; path = ../../cegui/src/CEGUIGeometryBuffer.cpp; sourceTree = SOURCE_ROOT; };
 		DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectFactory.h; path = ../../cegui/include/CEGUIRenderEffectFactory.h; sourceTree = SOURCE_ROOT; };
 		DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectManager.h; path = ../../cegui/include/CEGUIRenderEffectManager.h; sourceTree = SOURCE_ROOT; };
 		DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderEffectManager.cpp; path = ../../cegui/src/CEGUIRenderEffectManager.cpp; sourceTree = SOURCE_ROOT; };
@@ -3428,6 +3430,7 @@
 				DAB2702A0FCAE75D00D9EE82 /* CEGUIFormattedRenderedString.cpp */,
 				DA10951A0F6D5F4100B8A582 /* CEGUIFreeTypeFont.cpp */,
 				DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */,
+				DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */,
 				DA10951B0F6D5F4100B8A582 /* CEGUIGlobalEventSet.cpp */,
 				DA10951C0F6D5F4100B8A582 /* CEGUIGUILayout_xmlHandler.cpp */,
 				DA10951D0F6D5F4100B8A582 /* CEGUIImage.cpp */,
@@ -5724,6 +5727,7 @@
 				DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */,
 				DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */,
 				DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */,
+				DA2F8A651101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
