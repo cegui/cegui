@@ -78,8 +78,8 @@ namespace CEGUI
         registerProperty(&d_horzFormattingProperty);
         registerProperty(&d_vertScrollbarProperty);
         registerProperty(&d_horzScrollbarProperty);
-        registerProperty(&d_horzExtentProperty);
-        registerProperty(&d_vertExtentProperty);
+        registerProperty(&d_horzExtentProperty, true);
+        registerProperty(&d_vertExtentProperty, true);
     }
 
 //----------------------------------------------------------------------------//
