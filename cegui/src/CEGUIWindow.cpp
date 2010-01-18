@@ -3026,23 +3026,55 @@ String Window::getWindowRendererName(void) const
     return String();
 }
 
+
+//----------------------------------------------------------------------------//
+void Window::banPropertyFromXML(const String& property_name)
+{
+    // check if the insertion failed
+    if (!d_bannedXMLProperties.insert(property_name).second)
+        // just log the incidence
+        // PDT: Hmmm, comment here says just log, yet we throw! I Wonder why?!   
+        AlreadyExistsException("Window::banPropertyFromXML: The property '" +
+            property_name + "' is already banned in window '" +
+            d_name + "'");
+}
+
+//----------------------------------------------------------------------------//
+void Window::unbanPropertyFromXML(const String& property_name)
+{
+    d_bannedXMLProperties.erase(property_name);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isPropertyBannedFromXML(const String& property_name) const
+{
+    const BannedXMLPropertySet::const_iterator i =
+        d_bannedXMLProperties.find(property_name);
+
+    return (i != d_bannedXMLProperties.end());
+}
+
 //----------------------------------------------------------------------------//
 void Window::banPropertyFromXML(const Property* property)
 {
-    // check if the insertion failed
-    if (!d_bannedXMLProperties.insert(property->getName()).second)
-        // just log the incidence
-        AlreadyExistsException("Window::banPropertyFromXML: The property '" +
-            property->getName() + "' is already banned in window '" +
-            d_name + "'");
+    if (property)
+        banPropertyFromXML(property->getName());
+}
+
+//----------------------------------------------------------------------------//
+void Window::unbanPropertyFromXML(const Property* property)
+{
+    if (property)
+        unbanPropertyFromXML(property->getName());
 }
 
 //----------------------------------------------------------------------------//
 bool Window::isPropertyBannedFromXML(const Property* property) const
 {
-    const BannedXMLPropertySet::const_iterator i =
-        d_bannedXMLProperties.find(property->getName());
-    return (i != d_bannedXMLProperties.end());
+    if (property)
+        return isPropertyBannedFromXML(property->getName());
+    else
+        return false;
 }
 
 //----------------------------------------------------------------------------//

@@ -2856,6 +2856,24 @@ public:
     const BiDiVisualMapping* getBiDiVisualMapping() const
         {return d_bidiVisualMapping;}
 
+    //! Add the named property to the XML ban list for this window.
+    void banPropertyFromXML(const String& property_name);
+
+    //! Remove the named property from the XML ban list for this window.
+    void unbanPropertyFromXML(const String& property_name);
+
+    //! Return whether the named property is banned from XML
+    bool isPropertyBannedFromXML(const String& property_name) const;
+
+    //! Add the given property to the XML ban list for this window.
+    void banPropertyFromXML(const Property* property);
+
+    //! Remove the given property from the XML ban list for this window.
+    void unbanPropertyFromXML(const Property* property);
+
+    //! Return whether the given property is banned from XML
+    bool isPropertyBannedFromXML(const Property* property) const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3493,18 +3511,6 @@ protected:
         False if not.
     */
     virtual bool validateWindowRenderer(const String& name) const;
-
-    /*!
-    \brief
-        Adds a property to the XML ban list
-    */
-    void banPropertyFromXML(const Property* property);
-
-    /*!
-    \brief
-        Returns whether a property is banned from XML
-    */
-    bool isPropertyBannedFromXML(const Property* property) const;
 
     /*!
     \brief

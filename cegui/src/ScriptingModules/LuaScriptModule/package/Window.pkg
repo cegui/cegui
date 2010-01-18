@@ -256,6 +256,10 @@ class Window //: public EventSet
 
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
+    void banPropertyFromXML(string property_name);
+    void unbanPropertyFromXML(string property_name);
+    bool isPropertyBannedFromXML(string property_name) const;
+
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(string name, string value);
