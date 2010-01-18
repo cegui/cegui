@@ -70,9 +70,11 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
                            const bool anti_aliased, const String& font_filename,
                            const String& resource_group, const bool auto_scaled,
                            const float native_horz_res,
-                           const float native_vert_res) :
+                           const float native_vert_res,
+                           const float specific_line_spacing) :
     Font(font_name, Font_xmlHandler::FontTypeFreeType, font_filename,
          resource_group, auto_scaled, native_horz_res, native_vert_res),
+    d_specificLineSpacing(specific_line_spacing),
     d_ptSize(point_size),
     d_antiAliased(anti_aliased),
     d_fontFace(0)
@@ -427,6 +429,11 @@ void FreeTypeFont::updateFont()
         d_height = d_fontFace->size->metrics.height * float(FT_POS_COEF);
     }
 
+    if (d_specificLineSpacing > 0.0f)
+    {
+        d_height = d_specificLineSpacing;
+    }
+
     // Create an empty FontGlyph structure for every glyph of the font
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
@@ -460,6 +467,10 @@ void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
                          PropertyHelper::floatToString(d_ptSize));
     if (!d_antiAliased)
         xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "False");
+
+    if (d_specificLineSpacing > 0.0f)
+        xml_stream.attribute(Font_xmlHandler::FontLineSpacingAttribute,
+                             PropertyHelper::floatToString(d_specificLineSpacing));
 }
 
 //----------------------------------------------------------------------------//

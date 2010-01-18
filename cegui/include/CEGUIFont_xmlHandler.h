@@ -58,6 +58,8 @@ public:
     static const String FontNativeHorzResAttribute;
     //! Attribute name that stores the vertical native resolution.
     static const String FontNativeVertResAttribute;
+    //! Attribute name that stores the line height that we'll report for this font.
+    static const String FontLineSpacingAttribute;
     //! Attribute name that stores the font point size.
     static const String FontSizeAttribute;
     //! Attribute name that stores the font anti-aliasing setting.
