@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Dec 26 14:28:18 2009.
+** Generated automatically by tolua++-1.0.92 on Mon Jan 18 12:17:44 2010.
 */
 
 #ifndef __cplusplus
@@ -19623,6 +19623,106 @@ static int tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getUnprojectedPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: banPropertyFromXML of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_banPropertyFromXML00
+static int tolua_CEGUI_CEGUI_Window_banPropertyFromXML00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string property_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'banPropertyFromXML'",NULL);
+#endif
+ {
+  self->banPropertyFromXML(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'banPropertyFromXML'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: unbanPropertyFromXML of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_unbanPropertyFromXML00
+static int tolua_CEGUI_CEGUI_Window_unbanPropertyFromXML00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string property_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unbanPropertyFromXML'",NULL);
+#endif
+ {
+  self->unbanPropertyFromXML(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'unbanPropertyFromXML'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isPropertyBannedFromXML of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isPropertyBannedFromXML00
+static int tolua_CEGUI_CEGUI_Window_isPropertyBannedFromXML00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string property_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isPropertyBannedFromXML'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isPropertyBannedFromXML(property_name);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isPropertyBannedFromXML'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53735,6 +53835,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isTextParsingEnabled",tolua_CEGUI_CEGUI_Window_isTextParsingEnabled00);
    tolua_function(tolua_S,"setTextParsingEnabled",tolua_CEGUI_CEGUI_Window_setTextParsingEnabled00);
    tolua_function(tolua_S,"getUnprojectedPosition",tolua_CEGUI_CEGUI_Window_getUnprojectedPosition00);
+   tolua_function(tolua_S,"banPropertyFromXML",tolua_CEGUI_CEGUI_Window_banPropertyFromXML00);
+   tolua_function(tolua_S,"unbanPropertyFromXML",tolua_CEGUI_CEGUI_Window_unbanPropertyFromXML00);
+   tolua_function(tolua_S,"isPropertyBannedFromXML",tolua_CEGUI_CEGUI_Window_isPropertyBannedFromXML00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);
    tolua_function(tolua_S,"getPropertyDefault",tolua_CEGUI_CEGUI_Window_getPropertyDefault00);
