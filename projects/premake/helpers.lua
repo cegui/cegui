@@ -62,6 +62,15 @@ function cegui_dynamic(name, lang, kind)
 		"HAVE_CONFIG_H",
 	}
 
+	-- Extract extra include and lib search paths for this project
+	if CEGUI_EXTRA_PATHS then
+		for i,v in ipairs(CEGUI_EXTRA_PATHS) do
+			if not v[4] or v[4] == name or v[4] == "" then
+				add_sdk_paths(v)
+			end
+		end
+	end
+
 	-- debug
 	debug = package.config.Debug
 	debug.target = name..(DEBUG_DLL_SUFFIX or "")

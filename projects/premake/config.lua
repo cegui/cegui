@@ -27,6 +27,25 @@ IRRLICHT_PATHS = { "irrlicht-1.4", "include", "lib/Win32-visualstudio" }
 OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
 OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
 
+-- Extra SDK / dependency paths.
+--
+-- Here you can set up any additional paths you require for the various projects
+-- in CEGUI.  This is useful if, for example, you are using some SDK that has
+-- additional external dependencies of it's own (for example, boost used with
+-- Ogre).  All you need to do is add an entry in the following table to indicate
+-- the base directory, include sub-directory, library-subdirectory, and optionally
+-- the name of the CEGUI project to add the paths to (if no project is given, the
+-- paths are added to /all/ projects).
+--
+-- NB: Each entry should be surrounded by curly braces, and be separated with a
+-- comma.
+--
+-- e.g to add some boost paths to build for the Ogre renderer module, you could add:
+--	{ "C:/boost", "include", "lib", "CEGUIOgreRenderer" }
+--
+CEGUI_EXTRA_PATHS = {
+}
+
 --- Irrlicht SDK Version
 --- 14 is means 1.4 or 1.5.x and 16 means 1.6 (and above?)
 CEGUI_IRR_SDK_VERSION = 14
