@@ -8,6 +8,13 @@
 WANT_RELEASE_WITH_SYMBOLS_BUILD = true
 WANT_STATIC_BUILD = true
 
+--- This controls which version of the C/C++ runtime and which version of the
+--- dependencies are used when linking the static build configurations.
+---
+--- false: use the static c/c++ runtime option and the 'static' dependencies.
+--- true: use the DLL c/c++ runtime option and the 'dynamic' dependencies.
+STATIC_BUILD_WITH_DYNAMIC_DEPS = false
+
 -- comment this to disable debug suffixes for dynamic module dlls
 -- if you want to use another suffix, just change the string :)
 -- all the debug cegui libraries are built with this suffix

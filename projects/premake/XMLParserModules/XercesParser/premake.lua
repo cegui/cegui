@@ -18,7 +18,7 @@ dependency("CEGUIBase")
 
 define("CEGUIXERCESPARSER_EXPORTS")
 
-if WANT_STATIC_BUILD then
+if WANT_STATIC_BUILD and not STATIC_BUILD_WITH_DYNAMIC_DEPS then
 	define("XERCES_STATIC_LIBRARY", "Debug_Static")
 	define("XERCES_STATIC_LIBRARY", "Release_Static")
 end
