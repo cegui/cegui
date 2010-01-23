@@ -946,16 +946,16 @@ public:
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
         - true if z-order changes are enabled for this window.
-          moveToFront/moveToBack work normally as expected.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
         - false: z-order changes are disabled for this window.
-          moveToFront/moveToBack are ignored for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
     */
     bool isZOrderingEnabled(void) const;
 
@@ -1079,9 +1079,9 @@ public:
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
@@ -1748,6 +1748,37 @@ public:
 
     /*!
     \brief
+        Move this window immediately above it's sibling \a window in the z order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved in front of.
+    */
+    void moveInFront(const Window* const window);
+
+    /*!
+    \brief
+        Move this window immediately behind it's sibling \a window in the z
+        order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved behind.
+    */
+    void moveBehind(const Window* const window);
+
+    /*!
+    \brief
         Captures input to this window
 
     \return
@@ -1923,16 +1954,16 @@ public:
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
         - true if z-order changes are enabled for this window.
-          moveToFront/moveToBack work normally as expected.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
         - false: z-order changes are disabled for this window.
-          moveToFront/moveToBack are ignored for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
 
     \return
         Nothing.
@@ -2117,9 +2148,9 @@ public:
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
