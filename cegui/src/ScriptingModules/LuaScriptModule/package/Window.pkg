@@ -147,6 +147,8 @@ class Window //: public EventSet
 
 	void moveToFront();
 	void moveToBack();
+    void moveInFront(const Window* window);
+    void moveBehind(const Window* window);
 
 	bool wantsMultiClickEvents() const;
 	bool isMouseAutoRepeatEnabled() const;
