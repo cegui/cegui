@@ -3738,4 +3738,70 @@ bool Window::isInnerRectSizeChanged() const
     return old_sz != getUnclippedInnerRect().getSize();
 }
 
+//----------------------------------------------------------------------------//
+void Window::moveInFront(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+            return;
+
+    // find our position in the parent child draw list
+    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          this));
+    // sanity checK that we were attached to our parent.
+    assert(p != d_parent->d_drawList.end());
+
+    // erase us from our current position
+    d_parent->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                    d_parent->d_drawList.end(),
+                                    window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != d_parent->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    d_parent->d_drawList.insert(++i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Window::moveBehind(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+            return;
+
+    // find our position in the parent child draw list
+    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          this));
+    // sanity checK that we were attached to our parent.
+    assert(p != d_parent->d_drawList.end());
+
+    // erase us from our current position
+    d_parent->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    const ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != d_parent->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    d_parent->d_drawList.insert(i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section
