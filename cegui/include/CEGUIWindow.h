@@ -106,6 +106,24 @@ enum HorizontalAlignment
 
 /*!
 \brief
+    Enumerated type used for specifying Window::update mode to be used.  Note
+    that the setting specified will also have an effect on child window
+    content; for WUM_NEVER and WUM_VISIBLE, if the parent's update function is
+    not called, then no child window will have it's update function called
+    either - even if it specifies WUM_ALWAYS as it's WindowUpdateMode.
+*/
+enum WindowUpdateMode
+{
+    //! Always call the Window::update function for this window.
+    WUM_ALWAYS,
+    //! Never call the Window::update function for this window.
+    WUM_NEVER,
+    //! Only call the Window::update function for this window if it is visible.
+    WUM_VISIBLE
+};
+
+/*!
+\brief
     An abstract base class providing common functionality and specifying the
     required interface for derived classes.
 
@@ -2905,6 +2923,44 @@ public:
     //! Return whether the given property is banned from XML
     bool isPropertyBannedFromXML(const Property* property) const;
 
+    /*!
+    \brief
+        Set the window update mode.  This mode controls the behaviour of the
+        Window::update member function such that updates are processed for
+        this window (and therefore it's child content) according to the set
+        mode.
+
+    \note
+        Disabling updates can have negative effects on the behaviour of CEGUI
+        windows and widgets; updates should be disabled selectively and
+        cautiously - if you are unsure of what you are doing, leave the mode
+        set to WUM_ALWAYS.
+    
+    \param mode
+        One of the WindowUpdateMode enumerated values indicating the mode to
+        set for this Window.
+    */
+    void setUpdateMode(const WindowUpdateMode mode);
+
+    /*!
+    \brief
+        Return the current window update mode that is set for this Window.
+        This mode controls the behaviour of the Window::update member function
+        such that updates are processed for this window (and therefore it's
+        child content) according to the set mode.
+
+    \note
+        Disabling updates can have negative effects on the behaviour of CEGUI
+        windows and widgets; updates should be disabled selectively and
+        cautiously - if you are unsure of what you are doing, leave the mode
+        set to WUM_ALWAYS.
+    
+    \return
+        One of the WindowUpdateMode enumerated values indicating the current
+        mode set for this Window.
+    */
+    WindowUpdateMode getUpdateMode() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3766,6 +3822,7 @@ protected:
     static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
+    static  WindowProperties::UpdateMode d_updateModeProperty;
 
     /*************************************************************************
         Implementation Data
@@ -3941,6 +3998,9 @@ protected:
     mutable bool d_outerRectClipperValid;
     mutable bool d_innerRectClipperValid;
     mutable bool d_hitTestRectValid;
+
+    //! The mode to use for calling Window::update
+    WindowUpdateMode d_updateMode;
 
 private:
     /*************************************************************************
