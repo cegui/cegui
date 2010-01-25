@@ -711,6 +711,37 @@ void TextParsingEnabled::set(PropertyReceiver* receiver, const String& value)
 }
 
 //----------------------------------------------------------------------------//
+String UpdateMode::get(const PropertyReceiver* receiver) const
+{
+    switch(static_cast<const Window*>(receiver)->getUpdateMode())
+    {
+        case WUM_ALWAYS:
+            return String("Always");
+
+        case WUM_NEVER:
+            return String("Never");
+
+        default:
+            return String("Visible");
+    }
+}
+
+//----------------------------------------------------------------------------//
+void UpdateMode::set(PropertyReceiver* receiver, const String& value)
+{
+    CEGUI::WindowUpdateMode m;
+
+    if (value == "Always")
+        m = WUM_ALWAYS;
+    else if (value == "Never")
+        m = WUM_NEVER;
+    else
+        m = WUM_VISIBLE;
+    
+    static_cast<Window*>(receiver)->setUpdateMode(m);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  WindowProperties namespace section
 

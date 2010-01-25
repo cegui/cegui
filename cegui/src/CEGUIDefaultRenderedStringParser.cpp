@@ -32,18 +32,43 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+void appendSubstring(RenderedString& rs,
+                     const String& string,
+                     Font* initial_font,
+                     const ColourRect* initial_colours)
+{
+    RenderedStringTextComponent rstc(string, initial_font);
+
+    if (initial_colours)
+        rstc.setColours(*initial_colours);
+
+    rs.appendComponent(rstc);
+}
+
+//----------------------------------------------------------------------------//
 RenderedString DefaultRenderedStringParser::parse(
                                         const String& input_string,
                                         Font* initial_font,
                                         const ColourRect* initial_colours)
 {
     RenderedString rs;
-    RenderedStringTextComponent rstc(input_string, initial_font);
 
-    if (initial_colours)
-        rstc.setColours(*initial_colours);
+    size_t epos, spos = 0;
 
-    rs.appendComponent(rstc);
+    while ((epos = input_string.find('\n', spos)) != String::npos)
+    {
+        appendSubstring(rs, input_string.substr(spos, epos - spos),
+                        initial_font, initial_colours);
+        rs.appendLineBreak();
+
+        // set new start position (skipping the previous \n we found)
+        spos = epos + 1;
+    }
+
+    if (spos < input_string.length())
+        appendSubstring(rs, input_string.substr(spos),
+                        initial_font, initial_colours);
+
     return rs;
 }
 

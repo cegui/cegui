@@ -42,7 +42,7 @@ if OPENGL_RENDERER and SAMPLES_GL then
         library("CEGUIOpenGLRenderer", DEBUG_DLL_SUFFIX or "")
     end
 
-	if WANT_STATIC_BUILD then
+	if WANT_STATIC_BUILD and not STATIC_BUILD_WITH_DYNAMIC_DEPS then
 		define("FREEGLUT_STATIC", "Release_Static")
 		define("FREEGLUT_STATIC", "Debug_Static")
 	end

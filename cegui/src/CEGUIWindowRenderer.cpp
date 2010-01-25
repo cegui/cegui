@@ -76,9 +76,16 @@ Rect WindowRenderer::getUnclippedInnerRect() const
 /************************************************************************
     Register property with window renderer
 *************************************************************************/
+void WindowRenderer::registerProperty(Property* property,
+                                      const bool ban_from_xml)
+{
+    d_properties.push_back(std::make_pair(property, ban_from_xml));
+}
+
+//----------------------------------------------------------------------------//
 void WindowRenderer::registerProperty(Property* property)
 {
-    d_properties.push_back(property);
+    registerProperty(property, false);
 }
 
 /************************************************************************
@@ -89,7 +96,11 @@ void WindowRenderer::onAttach()
     PropertyList::iterator i = d_properties.begin();
     while (i != d_properties.end())
     {
-        d_window->addProperty(*i);
+        d_window->addProperty((*i).first);
+        // ban from xml if neccessary
+        if ((*i).second)
+            d_window->banPropertyFromXML((*i).first);
+
         ++i;
     }
 }
@@ -102,7 +113,11 @@ void WindowRenderer::onDetach()
     PropertyList::reverse_iterator i = d_properties.rbegin();
     while (i != d_properties.rend())
     {
-        d_window->removeProperty((*i)->getName());
+        // unban from xml if neccessary
+        if ((*i).second)
+            d_window->unbanPropertyFromXML((*i).first);
+
+        d_window->removeProperty((*i).first->getName());
         ++i;
     }
 }

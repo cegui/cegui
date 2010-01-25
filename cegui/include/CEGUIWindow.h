@@ -106,6 +106,24 @@ enum HorizontalAlignment
 
 /*!
 \brief
+    Enumerated type used for specifying Window::update mode to be used.  Note
+    that the setting specified will also have an effect on child window
+    content; for WUM_NEVER and WUM_VISIBLE, if the parent's update function is
+    not called, then no child window will have it's update function called
+    either - even if it specifies WUM_ALWAYS as it's WindowUpdateMode.
+*/
+enum WindowUpdateMode
+{
+    //! Always call the Window::update function for this window.
+    WUM_ALWAYS,
+    //! Never call the Window::update function for this window.
+    WUM_NEVER,
+    //! Only call the Window::update function for this window if it is visible.
+    WUM_VISIBLE
+};
+
+/*!
+\brief
     An abstract base class providing common functionality and specifying the
     required interface for derived classes.
 
@@ -946,16 +964,16 @@ public:
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
         - true if z-order changes are enabled for this window.
-          moveToFront/moveToBack work normally as expected.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
         - false: z-order changes are disabled for this window.
-          moveToFront/moveToBack are ignored for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
     */
     bool isZOrderingEnabled(void) const;
 
@@ -1079,9 +1097,9 @@ public:
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
@@ -1748,6 +1766,37 @@ public:
 
     /*!
     \brief
+        Move this window immediately above it's sibling \a window in the z order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved in front of.
+    */
+    void moveInFront(const Window* const window);
+
+    /*!
+    \brief
+        Move this window immediately behind it's sibling \a window in the z
+        order.
+
+        No action will be taken under the following conditions:
+        - \a window is 0.
+        - \a window is not a sibling of this window.
+        - \a window and this window have different AlwaysOnTop settings.
+        - z ordering is disabled for this window.
+
+    \param window
+        The sibling window that this window will be moved behind.
+    */
+    void moveBehind(const Window* const window);
+
+    /*!
+    \brief
         Captures input to this window
 
     \return
@@ -1923,16 +1972,16 @@ public:
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
         - true if z-order changes are enabled for this window.
-          moveToFront/moveToBack work normally as expected.
+          moveToFront, moveToBack, moveInFront and moveBehind work normally.
         - false: z-order changes are disabled for this window.
-          moveToFront/moveToBack are ignored for this window.
+          moveToFront, moveToBack, moveInFront and moveBehind are ignored.
 
     \return
         Nothing.
@@ -2117,9 +2166,9 @@ public:
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
         the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront or
-        moveToBack member functions.  Whereas if z ordering is disabled the
-        functions moveToFront and moveToBack are also precluded from affecting
+        programatically alter the Window z-order by calling the moveToFront,
+        moveToBack, moveInFront and moveBehind member functions.  Whereas if z
+        ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
@@ -2856,6 +2905,62 @@ public:
     const BiDiVisualMapping* getBiDiVisualMapping() const
         {return d_bidiVisualMapping;}
 
+    //! Add the named property to the XML ban list for this window.
+    void banPropertyFromXML(const String& property_name);
+
+    //! Remove the named property from the XML ban list for this window.
+    void unbanPropertyFromXML(const String& property_name);
+
+    //! Return whether the named property is banned from XML
+    bool isPropertyBannedFromXML(const String& property_name) const;
+
+    //! Add the given property to the XML ban list for this window.
+    void banPropertyFromXML(const Property* property);
+
+    //! Remove the given property from the XML ban list for this window.
+    void unbanPropertyFromXML(const Property* property);
+
+    //! Return whether the given property is banned from XML
+    bool isPropertyBannedFromXML(const Property* property) const;
+
+    /*!
+    \brief
+        Set the window update mode.  This mode controls the behaviour of the
+        Window::update member function such that updates are processed for
+        this window (and therefore it's child content) according to the set
+        mode.
+
+    \note
+        Disabling updates can have negative effects on the behaviour of CEGUI
+        windows and widgets; updates should be disabled selectively and
+        cautiously - if you are unsure of what you are doing, leave the mode
+        set to WUM_ALWAYS.
+    
+    \param mode
+        One of the WindowUpdateMode enumerated values indicating the mode to
+        set for this Window.
+    */
+    void setUpdateMode(const WindowUpdateMode mode);
+
+    /*!
+    \brief
+        Return the current window update mode that is set for this Window.
+        This mode controls the behaviour of the Window::update member function
+        such that updates are processed for this window (and therefore it's
+        child content) according to the set mode.
+
+    \note
+        Disabling updates can have negative effects on the behaviour of CEGUI
+        windows and widgets; updates should be disabled selectively and
+        cautiously - if you are unsure of what you are doing, leave the mode
+        set to WUM_ALWAYS.
+    
+    \return
+        One of the WindowUpdateMode enumerated values indicating the current
+        mode set for this Window.
+    */
+    WindowUpdateMode getUpdateMode() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3496,18 +3601,6 @@ protected:
 
     /*!
     \brief
-        Adds a property to the XML ban list
-    */
-    void banPropertyFromXML(const Property* property);
-
-    /*!
-    \brief
-        Returns whether a property is banned from XML
-    */
-    bool isPropertyBannedFromXML(const Property* property) const;
-
-    /*!
-    \brief
         Returns whether a property is at it's default value.
         This function is different from Property::isDefatult as it takes the assigned look'n'feel
         (if the is one) into account.
@@ -3729,6 +3822,7 @@ protected:
     static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
+    static  WindowProperties::UpdateMode d_updateModeProperty;
 
     /*************************************************************************
         Implementation Data
@@ -3904,6 +3998,9 @@ protected:
     mutable bool d_outerRectClipperValid;
     mutable bool d_innerRectClipperValid;
     mutable bool d_hitTestRectValid;
+
+    //! The mode to use for calling Window::update
+    WindowUpdateMode d_updateMode;
 
 private:
     /*************************************************************************

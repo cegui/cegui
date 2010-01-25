@@ -62,6 +62,15 @@ function cegui_dynamic(name, lang, kind)
 		"HAVE_CONFIG_H",
 	}
 
+	-- Extract extra include and lib search paths for this project
+	if CEGUI_EXTRA_PATHS then
+		for i,v in ipairs(CEGUI_EXTRA_PATHS) do
+			if not v[4] or v[4] == name or v[4] == "" then
+				add_sdk_paths(v)
+			end
+		end
+	end
+
 	-- debug
 	debug = package.config.Debug
 	debug.target = name..(DEBUG_DLL_SUFFIX or "")
@@ -97,15 +106,22 @@ function cegui_dynamic(name, lang, kind)
 			"CEGUI_STATIC",
 			"TOLUA_STATIC"
 		}
-		debug_static.buildflags = 
-		{   -- Static build means static runtimes! (/MTd)
-			"static-runtime"
-		}
 
-		debug_static.libpaths =
-		{
-			rootdir.."dependencies/lib/static",
-		}
+		if STATIC_BUILD_WITH_DYNAMIC_DEPS then
+			debug_static.libpaths =
+			{
+				rootdir.."dependencies/lib/dynamic",
+			}
+		else
+			debug_static.buildflags = 
+			{   -- Static build means static runtimes! (/MTd)
+				"static-runtime"
+			}
+			debug_static.libpaths =
+			{
+				rootdir.."dependencies/lib/static",
+			}
+		end
 	end
 
 	-- release with symbols
@@ -165,14 +181,22 @@ function cegui_dynamic(name, lang, kind)
 			"no-symbols",
 			"optimize-speed",
 			"no-frame-pointer",
-			-- Static build means static runtimes! (/MT)
-			"static-runtime"
 		}
 
-		release_static.libpaths =
-		{
-			rootdir.."dependencies/lib/static",
-		}
+		if STATIC_BUILD_WITH_DYNAMIC_DEPS then
+			release_static.libpaths =
+			{
+				rootdir.."dependencies/lib/dynamic",
+			}
+		else
+			-- Static build means static runtimes! (/MTd)
+			tinsert(release_static.buildflags, "static-runtime")
+
+			release_static.libpaths =
+			{
+				rootdir.."dependencies/lib/static",
+			}
+		end
 	end
 end
 
@@ -341,7 +365,11 @@ function setup_static_samples()
 		else
 	        library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
-        library_static("xerces-c_static_3","","D")
+		if STATIC_BUILD_WITH_DYNAMIC_DEPS then
+			library_static("xerces-c_3","","D")
+		else
+			library_static("xerces-c_static_3","","D")
+		end
     end
     if DEFAULT_XML_PARSER == "tinyxml" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then
@@ -373,9 +401,12 @@ function setup_static_samples()
 	        library_static("CEGUISILLYImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
         library_static("SILLY","","_d")
-        library_static("libpng","","_d")
-        library_static("jpeg","","_d")
-        library_static("zlib","","_d")
+
+		if not STATIC_BUILD_WITH_DYNAMIC_DEPS then
+			library_static("libpng","","_d")
+			library_static("jpeg","","_d")
+			library_static("zlib","","_d")
+		end
     end
     if DEFAULT_IMAGE_CODEC == "devil" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then
@@ -385,11 +416,13 @@ function setup_static_samples()
 		end
         library_static("DevIL", "", "_d")
         library_static("ILU", "", "_d")
-        library_static("libpng","","_d")
-        library_static("libmng","","_d")
-        library_static("libtiff","","_d")
-        library_static("jpeg","","_d")
-        library_static("zlib","","_d")
+		if not STATIC_BUILD_WITH_DYNAMIC_DEPS then
+			library_static("libpng","","_d")
+			library_static("libmng","","_d")
+			library_static("libtiff","","_d")
+			library_static("jpeg","","_d")
+			library_static("zlib","","_d")
+		end
     end
     if DEFAULT_IMAGE_CODEC == "freeimage" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then

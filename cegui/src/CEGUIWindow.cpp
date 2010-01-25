@@ -169,6 +169,7 @@ WindowProperties::YRotation Window::d_yRotationProperty;
 WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
+WindowProperties::UpdateMode Window::d_updateModeProperty;
 
 
 //----------------------------------------------------------------------------//
@@ -270,7 +271,10 @@ Window::Window(const String& type, const String& name) :
     d_innerUnclippedRectValid(false),
     d_outerRectClipperValid(false),
     d_innerRectClipperValid(false),
-    d_hitTestRectValid(false)
+    d_hitTestRectValid(false),
+
+    // Initial update mode
+    d_updateMode(WUM_VISIBLE)
 {
     // add properties
     addStandardProperties();
@@ -1482,6 +1486,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
+    addProperty(&d_updateModeProperty);
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -1579,7 +1584,7 @@ void Window::setAutoRepeatRate(float rate)
 
 //----------------------------------------------------------------------------//
 void Window::update(float elapsed)
-{
+{       
     // perform update for 'this' Window
     updateSelf(elapsed);
 
@@ -1593,11 +1598,13 @@ void Window::update(float elapsed)
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
     {
-        // scriptkid: we need to re-think this optimization, see http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4500
-        //if (d_children[i]->isVisible(true)) 
-        //{
-        d_children[i]->update(elapsed);
-        //}
+        // update children based on their WindowUpdateMode setting.
+        if (d_children[i]->d_updateMode == WUM_ALWAYS ||
+                (d_children[i]->d_updateMode == WUM_VISIBLE &&
+                 d_children[i]->isVisible(true)))
+        {
+            d_children[i]->update(elapsed);
+        }
     }
 }
 
@@ -3026,23 +3033,55 @@ String Window::getWindowRendererName(void) const
     return String();
 }
 
+
+//----------------------------------------------------------------------------//
+void Window::banPropertyFromXML(const String& property_name)
+{
+    // check if the insertion failed
+    if (!d_bannedXMLProperties.insert(property_name).second)
+        // just log the incidence
+        // PDT: Hmmm, comment here says just log, yet we throw! I Wonder why?!   
+        AlreadyExistsException("Window::banPropertyFromXML: The property '" +
+            property_name + "' is already banned in window '" +
+            d_name + "'");
+}
+
+//----------------------------------------------------------------------------//
+void Window::unbanPropertyFromXML(const String& property_name)
+{
+    d_bannedXMLProperties.erase(property_name);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isPropertyBannedFromXML(const String& property_name) const
+{
+    const BannedXMLPropertySet::const_iterator i =
+        d_bannedXMLProperties.find(property_name);
+
+    return (i != d_bannedXMLProperties.end());
+}
+
 //----------------------------------------------------------------------------//
 void Window::banPropertyFromXML(const Property* property)
 {
-    // check if the insertion failed
-    if (!d_bannedXMLProperties.insert(property->getName()).second)
-        // just log the incidence
-        AlreadyExistsException("Window::banPropertyFromXML: The property '" +
-            property->getName() + "' is already banned in window '" +
-            d_name + "'");
+    if (property)
+        banPropertyFromXML(property->getName());
+}
+
+//----------------------------------------------------------------------------//
+void Window::unbanPropertyFromXML(const Property* property)
+{
+    if (property)
+        unbanPropertyFromXML(property->getName());
 }
 
 //----------------------------------------------------------------------------//
 bool Window::isPropertyBannedFromXML(const Property* property) const
 {
-    const BannedXMLPropertySet::const_iterator i =
-        d_bannedXMLProperties.find(property->getName());
-    return (i != d_bannedXMLProperties.end());
+    if (property)
+        return isPropertyBannedFromXML(property->getName());
+    else
+        return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -3705,5 +3744,83 @@ bool Window::isInnerRectSizeChanged() const
     d_innerUnclippedRectValid = false;
     return old_sz != getUnclippedInnerRect().getSize();
 }
+
+//----------------------------------------------------------------------------//
+void Window::moveInFront(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+            return;
+
+    // find our position in the parent child draw list
+    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          this));
+    // sanity checK that we were attached to our parent.
+    assert(p != d_parent->d_drawList.end());
+
+    // erase us from our current position
+    d_parent->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                    d_parent->d_drawList.end(),
+                                    window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != d_parent->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    d_parent->d_drawList.insert(++i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Window::moveBehind(const Window* const window)
+{
+    if (!window || !window->d_parent || window->d_parent != d_parent ||
+        window == this || window->d_alwaysOnTop != d_alwaysOnTop ||
+        !d_zOrderingEnabled)
+            return;
+
+    // find our position in the parent child draw list
+    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          this));
+    // sanity checK that we were attached to our parent.
+    assert(p != d_parent->d_drawList.end());
+
+    // erase us from our current position
+    d_parent->d_drawList.erase(p);
+
+    // find window we're to be moved in front of in parent's draw list
+    const ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                          d_parent->d_drawList.end(),
+                                          window));
+    // sanity check that target window was also attached to correct parent.
+    assert(i != d_parent->d_drawList.end());
+
+    // reinsert ourselves at the right location
+    d_parent->d_drawList.insert(i, this);
+
+    // handle event notifications for affected windows.
+    onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setUpdateMode(const WindowUpdateMode mode)
+{
+    d_updateMode = mode;
+}
+
+//----------------------------------------------------------------------------//
+WindowUpdateMode Window::getUpdateMode() const
+{
+    return d_updateMode;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

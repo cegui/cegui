@@ -8,6 +8,13 @@
 WANT_RELEASE_WITH_SYMBOLS_BUILD = true
 WANT_STATIC_BUILD = true
 
+--- This controls which version of the C/C++ runtime and which version of the
+--- dependencies are used when linking the static build configurations.
+---
+--- false: use the static c/c++ runtime option and the 'static' dependencies.
+--- true: use the DLL c/c++ runtime option and the 'dynamic' dependencies.
+STATIC_BUILD_WITH_DYNAMIC_DEPS = false
+
 -- comment this to disable debug suffixes for dynamic module dlls
 -- if you want to use another suffix, just change the string :)
 -- all the debug cegui libraries are built with this suffix
@@ -19,6 +26,25 @@ DEBUG_DLL_SUFFIX = "_d"
 IRRLICHT_PATHS = { "irrlicht-1.4", "include", "lib/Win32-visualstudio" }
 OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
 OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
+
+-- Extra SDK / dependency paths.
+--
+-- Here you can set up any additional paths you require for the various projects
+-- in CEGUI.  This is useful if, for example, you are using some SDK that has
+-- additional external dependencies of it's own (for example, boost used with
+-- Ogre).  All you need to do is add an entry in the following table to indicate
+-- the base directory, include sub-directory, library-subdirectory, and optionally
+-- the name of the CEGUI project to add the paths to (if no project is given, the
+-- paths are added to /all/ projects).
+--
+-- NB: Each entry should be surrounded by curly braces, and be separated with a
+-- comma.
+--
+-- e.g to add some boost paths to build for the Ogre renderer module, you could add:
+--	{ "C:/boost", "include", "lib", "CEGUIOgreRenderer" }
+--
+CEGUI_EXTRA_PATHS = {
+}
 
 --- Irrlicht SDK Version
 --- 14 is means 1.4 or 1.5.x and 16 means 1.6 (and above?)

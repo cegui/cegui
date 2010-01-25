@@ -30,5 +30,6 @@
 		<xsd:attribute name="NativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />
 		<xsd:attribute name="AutoScaled" type="xsd:boolean" use="optional" default="false" />
 		<xsd:attribute name="AntiAlias" type="xsd:boolean" use="optional" default="true" />
+		<xsd:attribute name="LineSpacing" type="xsd:decimal" use="optional" default="0" />
 	</xsd:attributeGroup>
 </xsd:schema>
