@@ -19,6 +19,15 @@ enum HorizontalAlignment
 	HA_RIGHT
 };
 
+/****************************************
+	Window update call modes
+*****************************************/
+enum WindowUpdateMode
+{
+    WUM_ALWAYS,
+    WUM_NEVER,
+    WUM_VISIBLE
+};
 
 /****************************************
 	Window
@@ -147,6 +156,8 @@ class Window //: public EventSet
 
 	void moveToFront();
 	void moveToBack();
+    void moveInFront(const Window* window);
+    void moveBehind(const Window* window);
 
 	bool wantsMultiClickEvents() const;
 	bool isMouseAutoRepeatEnabled() const;
@@ -255,6 +266,13 @@ class Window //: public EventSet
     void setTextParsingEnabled(bool setting);
 
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
+
+    void banPropertyFromXML(string property_name);
+    void unbanPropertyFromXML(string property_name);
+    bool isPropertyBannedFromXML(string property_name) const;
+
+    void setUpdateMode(WindowUpdateMode mode);
+    WindowUpdateMode getUpdateMode() const;
 
 	//////////////////////////////////////////////
 	// PropertySet

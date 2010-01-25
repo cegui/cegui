@@ -33,6 +33,7 @@
 #include "CEGUIWindow.h"
 #include "CEGUIProperty.h"
 #include <vector>
+#include <utility>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -145,6 +146,22 @@ protected:
     \param property
         Pointer to a static Property object that will be added to the target
         window.
+
+    \param ban_from_xml
+        - true if this property should be added to the 'ban' list so that it is
+          not written in XML output.
+        - false if this property is not banned and should appear in XML output.
+    */
+    void registerProperty(Property* property, const bool ban_from_xml);
+
+    /*!
+    \brief
+        Register a property class that will be properly managed by this window
+        renderer.
+
+    \param property
+        Pointer to a static Property object that will be added to the target
+        window.
     */
     void registerProperty(Property* property);
 
@@ -181,7 +198,10 @@ protected:
     const String d_name;    //!< Name of the factory type used to create this window renderer.
     const String d_class;   //!< Name of the widget class that is the "minimum" requirement.
 
-    typedef std::vector<Property*> PropertyList;
+    //! type used for entries in the PropertyList.
+    typedef std::pair<Property*, bool> PropertyEntry;
+    //! type to use for the property list.
+    typedef std::vector<PropertyEntry> PropertyList;
     PropertyList d_properties;  //!< The list of properties that this windowrenderer will be handling.
 
     // Window is friend so it can manipulate our 'd_window' member directly.

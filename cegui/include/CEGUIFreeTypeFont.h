@@ -87,13 +87,19 @@ public:
     \param native_vert_res
         The vertical native resolution value.  This is only significant when
         auto scaling is enabled.
+
+	\param specific_line_spacing
+        If specified (non-zero), this will be the line spacing that we will
+        report for this font, regardless of what is mentioned in the font file
+        itself.
     */
     FreeTypeFont(const String& font_name, const float point_size,
                  const bool anti_aliased, const String& font_filename,
                  const String& resource_group = "",
                  const bool auto_scaled = false,
                  const float native_horz_res = 640.0f,
-                 const float native_vert_res = 480.0f);
+                 const float native_vert_res = 480.0f,
+                 const float specific_line_spacing = 0.0f);
 
     //! Destructor.
     ~FreeTypeFont();
@@ -150,6 +156,8 @@ protected:
     void updateFont();
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
 
+    //! If non-zero, the overridden line spacing that we're to report.
+    float d_specificLineSpacing;
     //! Point size of font.
     float d_ptSize;
     //! True if the font should be rendered as anti-alaised by freeType.

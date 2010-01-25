@@ -70,6 +70,9 @@ namespace CEGUI
         setClippedByParent(false);
         setDestroyedByParent(false);
         setAlwaysOnTop(true);
+        
+        // we need updates even when not visible
+        setUpdateMode(WUM_ALWAYS);
 
         switchToInactiveState();
     }

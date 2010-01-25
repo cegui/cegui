@@ -55,6 +55,7 @@ const String Font_xmlHandler::FontResourceGroupAttribute("ResourceGroup");
 const String Font_xmlHandler::FontAutoScaledAttribute("AutoScaled");
 const String Font_xmlHandler::FontNativeHorzResAttribute("NativeHorzRes");
 const String Font_xmlHandler::FontNativeVertResAttribute("NativeVertRes");
+const String Font_xmlHandler::FontLineSpacingAttribute("LineSpacing");
 const String Font_xmlHandler::FontSizeAttribute("Size");
 const String Font_xmlHandler::FontAntiAliasedAttribute("AntiAlias");
 const String Font_xmlHandler::FontTypeFreeType("FreeType");
@@ -197,7 +198,8 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         filename, resource_group,
         attributes.getValueAsBool(FontAutoScaledAttribute, false),
         attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
-        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f),
+        attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f));
 #else
     throw InvalidRequestException("Font_xmlHandler::createFreeTypeFont: "
         "CEGUI was compiled without freetype support.");

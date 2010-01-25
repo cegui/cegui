@@ -73,6 +73,12 @@ The reference for each element is arranged into sections, as described below:
       screen resolution that will result in an unscaled, one-to-one mapping of
       pixels from the source image to the destination surface.
       Optional attribute, default is 480.
+    - @c LineSpacing: Specifies a line spacing value to be used in preference
+      to what is extracted from the underlying font file (useful if the font
+      file is made with a bad line spacing value).  If set to zero, the value
+      from the underlying font file is used instead.  This setting only affects
+      FreeType type fonts.
+      Optional attribute, default is 0.
 
 - Usage:
     - The \<Font> element is the root element for font files.
