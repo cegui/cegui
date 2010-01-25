@@ -272,7 +272,7 @@ class Window //: public EventSet
     bool isPropertyBannedFromXML(string property_name) const;
 
     void setUpdateMode(WindowUpdateMode mode);
-    WindowUpdateMode getWindowUpdateMode() const;
+    WindowUpdateMode getUpdateMode() const;
 
 	//////////////////////////////////////////////
 	// PropertySet
