@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Jan 23 17:44:54 2010.
+** Generated automatically by tolua++-1.0.92 on Mon Jan 25 11:25:35 2010.
 */
 
 #ifndef __cplusplus
@@ -19789,6 +19789,71 @@ static int tolua_CEGUI_CEGUI_Window_isPropertyBannedFromXML00(lua_State* tolua_S
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'isPropertyBannedFromXML'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setUpdateMode of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_setUpdateMode00
+static int tolua_CEGUI_CEGUI_Window_setUpdateMode00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::WindowUpdateMode mode = ((CEGUI::WindowUpdateMode) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setUpdateMode'",NULL);
+#endif
+ {
+  self->setUpdateMode(mode);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setUpdateMode'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getUpdateMode of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getUpdateMode00
+static int tolua_CEGUI_CEGUI_Window_getUpdateMode00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUpdateMode'",NULL);
+#endif
+ {
+  CEGUI::WindowUpdateMode tolua_ret = (CEGUI::WindowUpdateMode)  self->getUpdateMode();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getUpdateMode'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53729,6 +53794,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_constant(tolua_S,"HA_LEFT",CEGUI::HA_LEFT);
   tolua_constant(tolua_S,"HA_CENTRE",CEGUI::HA_CENTRE);
   tolua_constant(tolua_S,"HA_RIGHT",CEGUI::HA_RIGHT);
+  tolua_constant(tolua_S,"WUM_ALWAYS",CEGUI::WUM_ALWAYS);
+  tolua_constant(tolua_S,"WUM_NEVER",CEGUI::WUM_NEVER);
+  tolua_constant(tolua_S,"WUM_VISIBLE",CEGUI::WUM_VISIBLE);
   tolua_cclass(tolua_S,"Window","CEGUI::Window","",NULL);
   tolua_beginmodule(tolua_S,"Window");
    tolua_function(tolua_S,"getType",tolua_CEGUI_CEGUI_Window_getType00);
@@ -53906,6 +53974,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"banPropertyFromXML",tolua_CEGUI_CEGUI_Window_banPropertyFromXML00);
    tolua_function(tolua_S,"unbanPropertyFromXML",tolua_CEGUI_CEGUI_Window_unbanPropertyFromXML00);
    tolua_function(tolua_S,"isPropertyBannedFromXML",tolua_CEGUI_CEGUI_Window_isPropertyBannedFromXML00);
+   tolua_function(tolua_S,"setUpdateMode",tolua_CEGUI_CEGUI_Window_setUpdateMode00);
+   tolua_function(tolua_S,"getUpdateMode",tolua_CEGUI_CEGUI_Window_getUpdateMode00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);
    tolua_function(tolua_S,"getPropertyDefault",tolua_CEGUI_CEGUI_Window_getPropertyDefault00);
