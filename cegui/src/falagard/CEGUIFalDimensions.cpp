@@ -278,7 +278,7 @@ namespace CEGUI
     float ImageDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         // This dimension type does not alter when whithin a container Rect.
-        return getValue(wnd);
+        return getValue_impl(wnd);
     }
 
 
@@ -382,7 +382,7 @@ namespace CEGUI
     float WidgetDim::getValue_impl(const Window& wnd, const Rect&) const
     {
         // This dimension type does not alter when whithin a container Rect.
-        return getValue(wnd);
+        return getValue_impl(wnd);
     }
 
     BaseDim* WidgetDim::clone_impl() const
@@ -449,7 +449,7 @@ namespace CEGUI
 
     float FontDim::getValue_impl(const Window& wnd, const Rect&) const
     {
-        return getValue(wnd);
+        return getValue_impl(wnd);
     }
 
     BaseDim* FontDim::clone_impl() const
@@ -517,7 +517,7 @@ namespace CEGUI
 
     float PropertyDim::getValue_impl(const Window& wnd, const Rect&) const
     {
-        return getValue(wnd);
+        return getValue_impl(wnd);
     }
 
     BaseDim* PropertyDim::clone_impl() const
