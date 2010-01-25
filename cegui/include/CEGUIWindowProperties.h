@@ -1255,6 +1255,34 @@ public:
     void    set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access the update mode setting for the window.
+
+    \par Usage:
+        - Name: UpdateMode
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "Always" to indicate the update function should always be called.
+        - "Never" to indicate the update function should never be called.
+        - "Visible" to indicate the update function should only be called when
+          the window is visible (i.e. State of Visible property set to True).
+*/
+class UpdateMode : public Property
+{
+    public:
+        UpdateMode() : Property(
+        "UpdateMode",
+        "Property to get/set the window update mode setting.  "
+        "Value is one of \"Always\", \"Never\" or \"Visible\".",
+        "Visible")
+        {}
+
+        String get(const PropertyReceiver* receiver) const;
+        void set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  WindowProperties namespace section
 
 

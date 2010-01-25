@@ -169,6 +169,7 @@ WindowProperties::YRotation Window::d_yRotationProperty;
 WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
+WindowProperties::UpdateMode Window::d_updateModeProperty;
 
 
 //----------------------------------------------------------------------------//
@@ -270,7 +271,10 @@ Window::Window(const String& type, const String& name) :
     d_innerUnclippedRectValid(false),
     d_outerRectClipperValid(false),
     d_innerRectClipperValid(false),
-    d_hitTestRectValid(false)
+    d_hitTestRectValid(false),
+
+    // Initial update mode
+    d_updateMode(WUM_VISIBLE)
 {
     // add properties
     addStandardProperties();
@@ -1482,6 +1486,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
+    addProperty(&d_updateModeProperty);
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -1579,7 +1584,7 @@ void Window::setAutoRepeatRate(float rate)
 
 //----------------------------------------------------------------------------//
 void Window::update(float elapsed)
-{
+{       
     // perform update for 'this' Window
     updateSelf(elapsed);
 
@@ -1593,11 +1598,13 @@ void Window::update(float elapsed)
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
     {
-        // scriptkid: we need to re-think this optimization, see http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=4500
-        //if (d_children[i]->isVisible(true)) 
-        //{
-        d_children[i]->update(elapsed);
-        //}
+        // update children based on their WindowUpdateMode setting.
+        if (d_children[i]->d_updateMode == WUM_ALWAYS ||
+                (d_children[i]->d_updateMode == WUM_VISIBLE &&
+                 d_children[i]->isVisible(true)))
+        {
+            d_children[i]->update(elapsed);
+        }
     }
 }
 
@@ -3800,6 +3807,18 @@ void Window::moveBehind(const Window* const window)
 
     // handle event notifications for affected windows.
     onZChange_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setUpdateMode(const WindowUpdateMode mode)
+{
+    d_updateMode = mode;
+}
+
+//----------------------------------------------------------------------------//
+WindowUpdateMode Window::getUpdateMode() const
+{
+    return d_updateMode;
 }
 
 //----------------------------------------------------------------------------//
