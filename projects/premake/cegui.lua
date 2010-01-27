@@ -12,14 +12,16 @@ project.name = "CEGUI"
 project.bindir = rootdir.."bin"
 project.libdir = rootdir.."lib"
 
+-- minimal setup
 cegui_configs = 
 {
     "Debug",
     "Release",
 }
 
+-- optional setup
 if WANT_RELEASE_WITH_SYMBOLS_BUILD then
-	tinsert(cegui_configs, "ReleaseWithSymbols")
+	tinsert(cegui_configs, "ReleaseWithSymbols")	
 end
 
 if WANT_STATIC_BUILD then
@@ -27,7 +29,15 @@ if WANT_STATIC_BUILD then
 	tinsert(cegui_configs, "Release_Static")
 end
 
+-- copy to premake configs
 project.configs = cegui_configs
+
+-- Set config specific output folders to avoid the problem where a ReleaseWithSymbols build would overwrite
+-- the Release files.
+if WANT_RELEASE_WITH_SYMBOLS_BUILD then
+	project.config["ReleaseWithSymbols"].bindir = rootdir.. "bin/" .. "ReleaseWithSymbols"
+	project.config["ReleaseWithSymbols"].libdir = rootdir.. "lib/" .. "ReleaseWithSymbols"
+end
 
 --
 -- Package table
