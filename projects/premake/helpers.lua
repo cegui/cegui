@@ -133,6 +133,9 @@ function cegui_dynamic(name, lang, kind)
 	--    Optimisation disabled for mantis #293
 	--    (http://www.cegui.org.uk/mantis/view.php?id=293)
 	--    "optimize-speed",
+			-- Custom option by the cegui team to support release builds without optimizations
+		  "no-optimize-release",
+		  "no-edit-and-continue",
 		}
 
 		release_sym.libpaths =
