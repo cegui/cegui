@@ -3497,55 +3497,31 @@ void Window::setRotation(const Vector3& rotation)
 //----------------------------------------------------------------------------//
 void Window::initialiseClippers(const RenderingContext& ctx)
 {
-    if (ctx.surface->isRenderingWindow())
+    if (ctx.surface->isRenderingWindow() && ctx.owner == this)
     {
-        Rect geo_clip(Vector2(0,0),
-                       static_cast<RenderingWindow*>(ctx.surface)->getSize());
+        RenderingWindow* const rendering_window =
+            static_cast<RenderingWindow*>(ctx.surface);
 
-        if (ctx.owner == this)
-        {
-            RenderingSurface& owner =
-                static_cast<RenderingWindow*>(d_surface)->getOwner();
-
-            Rect surface_clip(
-                d_parent && d_clippedByParent ?
-                    owner.isRenderingWindow() ?
-                        d_nonClientContent ?
-                            d_parent->getUnclippedOuterRect() :
-                            d_parent->getUnclippedInnerRect() :
-                        d_nonClientContent ?
-                            d_parent->getOuterRectClipper() :
-                            d_parent->getInnerRectClipper() :
-                    Rect(Vector2(0, 0),
-                         System::getSingleton().getRenderer()->getDisplaySize())
-            );
-
-            static_cast<RenderingWindow*>(d_surface)->
-                setClippingRegion(surface_clip);
-        }
-        else if(d_parent && d_clippedByParent)
-        {
-            Rect parent_area(d_nonClientContent ?
-                                d_parent->getOuterRectClipper() :
-                                d_parent->getInnerRectClipper()
-            );
-
-            parent_area.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
-            geo_clip = parent_area.getIntersection(geo_clip);
-        }
-
-        d_geometry->setClippingRegion(geo_clip);
-    }
-    else
-    {
-        Rect geo_clip(
-            d_clippedByParent && d_parent ?
-                d_nonClientContent ?
-                    d_parent->getOuterRectClipper() :
-                    d_parent->getInnerRectClipper() :
+        const Rect surface_clip(
+            d_parent && d_clippedByParent ?
+                rendering_window->getOwner().isRenderingWindow() ?
+                    d_nonClientContent ?
+                        d_parent->getUnclippedOuterRect() :
+                        d_parent->getUnclippedInnerRect() :
+                    d_nonClientContent ?
+                        d_parent->getOuterRectClipper() :
+                        d_parent->getInnerRectClipper() :
                 Rect(Vector2(0, 0),
                      System::getSingleton().getRenderer()->getDisplaySize())
         );
+
+        rendering_window->setClippingRegion(surface_clip);
+        d_geometry->setClippingRegion(Rect(Vector2(0,0),
+                                           rendering_window->getSize()));
+    }
+    else
+    {
+        Rect geo_clip(getOuterRectClipper());
 
         geo_clip.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
         d_geometry->setClippingRegion(geo_clip);
