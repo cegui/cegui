@@ -86,21 +86,57 @@ public:
         Constants
      *************************************************************************/
     // event names
-    //! Event triggered when the contents of the tree is changed.
+    /** Event fired when the content of the tree is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose content has changed.
+     */
     static const String EventListContentsChanged;
-    //! Event triggered when there is a change to the currently selected item(s).
+    /** Event fired when there is a change to the currently selected item(s).
+     * Handlers are passed a const TreeEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose item selection has changed,
+     * and TreeEventArgs::treeItem is set to the (last) item to be selected, or
+     * 0 if none.
+     */
     static const String EventSelectionChanged;
-    //! Event triggered when the sort mode setting changes.
+    /** Event fired when the sort mode setting for the Tree is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose sort mode has been
+     * changed.
+     */
     static const String EventSortModeChanged;
-    //! Event triggered when the multi-select mode setting changes.
+    /** Event fired when the multi-select mode setting for the Tree changes.
+     * Handlers are passed a const TreeEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose setting has changed.
+     * TreeEventArgs::treeItem is always set to 0.
+     */
     static const String EventMultiselectModeChanged;
-    //! Event triggered when the vertical scroll bar 'force' setting changes.
+    /** Event fired when the mode setting that forces the display of the
+     * vertical scroll bar for the tree is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose vertical scrollbar mode has
+     * been changed.
+     */
     static const String EventVertScrollbarModeChanged;
-    //! Event triggered when the horizontal scroll bar 'force' setting changes.
+    /** Event fired when the mode setting that forces the display of the
+     * horizontal scroll bar for the tree is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Tree whose horizontal scrollbar mode
+     * has been changed.
+     */
     static const String EventHorzScrollbarModeChanged;
-    //! Event triggered when a branch of the tree is opened by the user.
+    /** Event fired when a branch of the tree is opened by the user.
+     * Handlers are passed a const TreeEventArgs reference with
+     * WindowEventArgs::window set to the Tree containing the branch that has
+     * been opened and TreeEventArgs::treeItem set to the TreeItem at the head
+     * of the opened branch.
+     */
     static const String EventBranchOpened;
-    //! Event triggered when a branch of the tree is closed by the user.
+    /** Event fired when a branch of the tree is closed by the user.
+     * Handlers are passed a const TreeEventArgs reference with
+     * WindowEventArgs::window set to the Tree containing the branch that has
+     * been closed and TreeEventArgs::treeItem set to the TreeItem at the head
+     * of the closed branch.
+     */
     static const String EventBranchClosed;
 
     //Render the actual tree

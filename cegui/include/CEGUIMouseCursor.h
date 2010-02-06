@@ -76,7 +76,13 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by MouseCursor
-	static const String EventImageChanged;			//!< The cursor image of the widget has changed.
+    /** Event fired when the mouse cursor image is changed.
+     * Handlers are passed a const MouseCursorEventArgs reference with
+     * MouseCursorEventArgs::mouseCursor set to the MouseCursor that has
+     * had it's image changed, and MouseCursorEventArgs::image set to the
+     * Image that is now set for the MouseCursor (may be 0).
+     */
+	static const String EventImageChanged;
 
 
 	/*!
