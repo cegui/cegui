@@ -60,8 +60,16 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventPopupOpened;					//!< A MenuItem attached to this menu opened a PopupMenu
-	static const String EventPopupClosed;					//!< A MenuItem attached to this menu opened a PopupMenu
+    /** Event fired when a MenuItem attached to this menu opened a PopupMenu.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the PopupMenu that was opened.
+     */
+	static const String EventPopupOpened;
+    /** Event fired when a MenuItem attached to this menu closed a PopupMenu.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the PopupMenu that was closed.
+     */
+	static const String EventPopupClosed;
 
 
 	/*************************************************************************

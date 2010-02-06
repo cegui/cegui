@@ -58,11 +58,26 @@ class CEGUIEXPORT ResourceEventSet : public EventSet
 public:
     //! Namespace name for all resource managers
     static const String EventNamespace;
-    //! Name of event fired when a resource is created by this manager.
+    /** Name of event fired when a resource is created by this manager.
+     * Handlers are passed a const ResourceEventArgs reference with
+     * ResourceEventArgs::resourceType String set to the type of resource that
+     * the event is related to, and ResourceEventArgs::resourceName String set
+     * to the name of the resource that the event is related to.
+     */
     static const String EventResourceCreated;
-    //! Name of event fired when a resource is destroyed by this manager.
+    /** Name of event fired when a resource is destroyed by this manager.
+     * Handlers are passed a const ResourceEventArgs reference with
+     * ResourceEventArgs::resourceType String set to the type of resource that
+     * the event is related to, and ResourceEventArgs::resourceName String set
+     * to the name of the resource that the event is related to.
+     */
     static const String EventResourceDestroyed;
-    //! Name of event fired when a resource is replaced by this manager.
+    /** Name of event fired when a resource is replaced by this manager.
+     * Handlers are passed a const ResourceEventArgs reference with
+     * ResourceEventArgs::resourceType String set to the type of resource that
+     * the event is related to, and ResourceEventArgs::resourceName String set
+     * to the name of the resource that the event is related to.
+     */
     static const String EventResourceReplaced;
 };
 

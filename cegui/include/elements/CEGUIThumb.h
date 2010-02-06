@@ -63,9 +63,23 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventThumbPositionChanged;		//!< The position of the thumb widget has changed.
-	static const String EventThumbTrackStarted;			//!< Name of the event fired when the user begins dragging the thumb.
-	static const String EventThumbTrackEnded;				//!< Name of the event fired when the user releases the thumb.
+    /** Event fired when the position of the thumb widget has changed (this
+     * event is only fired when hot tracking is enabled).
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Thumb whose position has changed.
+     */
+	static const String EventThumbPositionChanged;
+    /** Event fired when the user begins dragging the thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Thumb that has started to be dragged
+     * by the user.
+     */
+	static const String EventThumbTrackStarted;
+    /** Event fired when the user releases the thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Thumb that has been released.
+     */
+	static const String EventThumbTrackEnded;
 
 
 	/*************************************************************************
