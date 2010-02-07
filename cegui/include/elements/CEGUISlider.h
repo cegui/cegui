@@ -106,9 +106,22 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const String EventValueChanged;		//!< Event fired when the slider value changes.
-	static const String EventThumbTrackStarted;	//!< Name of the event fired when the user begins dragging the thumb.
-	static const String EventThumbTrackEnded;		//!< Name of the event fired when the user releases the thumb.
+    /** Event fired when the slider value changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Slider whose value has changed.
+     */
+	static const String EventValueChanged;
+    /** Event fired when the user begins dragging the thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Slider whose thumb has started to
+     * be dragged.
+     */
+	static const String EventThumbTrackStarted;
+    /** Event fired when the user releases the thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Slider whose thumb has been released.
+     */
+	static const String EventThumbTrackEnded;
 
     /*************************************************************************
         Child Widget name suffix constants

@@ -57,8 +57,18 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const String EventProgressChanged;		//!< Event fired whenever the progress value changes.
-	static const String EventProgressDone;		//!< Event fired when the progress bar reaches 100%.	
+    /** Event fired whenever the progress value is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ProgressBar whose value has been
+     * changed.
+     */
+	static const String EventProgressChanged;
+    /** Event fired when the progress bar's value reaches 100%.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ProgressBar whose progress value
+     * has reached 100%.
+     */
+	static const String EventProgressDone;
 
 
 	/************************************************************************
