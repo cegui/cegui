@@ -52,7 +52,11 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventClicked;					//!< The menu item was clicked.
+    /** Event fired when the menu item is clicked.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MenuItem that was clicked.
+     */
+	static const String EventClicked;
 
 
 	/*************************************************************************

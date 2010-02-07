@@ -106,17 +106,72 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const String EventSelectionModeChanged;		//!< Event fired when the selection mode for the list box changes.
-	static const String EventNominatedSelectColumnChanged;//!< Event fired when the nominated select column changes.
-	static const String EventNominatedSelectRowChanged;	//!< Event fired when the nominated select row changes.
-	static const String EventVertScrollbarModeChanged;	//!< Event fired when the vertical scroll bar 'force' setting changes.
-	static const String EventHorzScrollbarModeChanged;	//!< Event fired when the horizontal scroll bar 'force' setting changes.
-	static const String EventSelectionChanged;			//!< Event fired when the current selection(s) within the list box changes.
-	static const String EventListContentsChanged;			//!< Event fired when the contents of the list box changes.
-	static const String EventSortColumnChanged;			//!< Event fired when the sort column changes.
-	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction changes.
-	static const String EventListColumnSized;				//!< Event fired when the width of a column in the list changes.
-	static const String EventListColumnMoved;				//!< Event fired when the column order changes.
+    /** Event fired when the selection mode for the list box changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose selection mode
+     * has been changed.
+     */
+	static const String EventSelectionModeChanged;
+    /** Event fired when the nominated select column changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose nominated
+     * selection column has been changed.
+     */
+	static const String EventNominatedSelectColumnChanged;
+    /** Event fired when the nominated select row changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose nominated
+     * selection row has been changed.
+     */
+	static const String EventNominatedSelectRowChanged;
+    /** Event fired when the vertical scroll bar 'force' setting changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose vertical scroll
+     * bar mode has been changed.
+     */
+	static const String EventVertScrollbarModeChanged;
+    /** Event fired when the horizontal scroll bar 'force' setting changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose horizontal
+     * scroll bar mode has been changed.
+     */
+	static const String EventHorzScrollbarModeChanged;
+    /** Event fired when the current selection(s) within the list box changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose current
+     * selection has changed.
+     */
+	static const String EventSelectionChanged;
+    /** Event fired when the contents of the list box changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose contents has
+     * changed.
+     */
+	static const String EventListContentsChanged;
+    /** Event fired when the sort column changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose sort column has
+     * been changed.
+     */
+	static const String EventSortColumnChanged;
+    /** Event fired when the sort direction changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList whose sort direction
+     * has been changed.
+     */
+	static const String EventSortDirectionChanged;
+    /** Event fired when the width of a column in the list changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList for which a column
+     * width has changed.
+     */
+	static const String EventListColumnSized;
+    /** Event fired when the column order changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the MultiColumnList for which the order
+     * of columns has been changed.
+     */
+	static const String EventListColumnMoved;
 
     /*************************************************************************
         Child Widget name suffix constants

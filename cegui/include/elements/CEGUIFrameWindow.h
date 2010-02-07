@@ -58,11 +58,29 @@ public:
 		Constants	
 	*************************************************************************/
 	// additional event names for this window
-	static const String EventRollupToggled;		//!< Fired when the rollup (shade) state of the window changes
-	static const String EventCloseClicked;		//!< Fired when the close button for the window is clicked.
-    //! Fired when drag-sizing of the window starts.
+    /** Event fired when the rollup (shade) state of the window is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the FrameWindow whose rolled up state
+     * has been changed.
+     */
+	static const String EventRollupToggled;
+    /** Event fired when the close button for the window is clicked.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the FrameWindow whose close button was
+     * clicked.
+     */
+	static const String EventCloseClicked;
+    /** Event fired when drag-sizing of the window starts.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the FrameWindow that has started to be
+     * drag sized.
+     */
     static const String EventDragSizingStarted;
-    //! Fired when drag-sizing of the window ends.
+    /** Event fired when drag-sizing of the window ends.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the FrameWindow for which drag sizing has
+     * ended.
+     */
     static const String EventDragSizingEnded;
 
 	// other bits

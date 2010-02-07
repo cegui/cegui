@@ -52,9 +52,22 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventClicked;					//!< The button was clicked.
-	static const String EventDragged;					//!< Attempt to drag the button with middle button.
-	static const String EventScrolled;					//!< Scroll wheel activated on top of the button.
+    /** Event fired when the button is clicked.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the TabButton that was clicked.
+     */
+	static const String EventClicked;
+    /** Event fired when use user attempts to drag the button with middle mouse
+     * button.
+     * Handlers are passed a const MouseEventArgs reference with all fields
+     * valid.
+     */
+	static const String EventDragged;
+    /** Event fired when the scroll wheel is used on top of the button.
+     * Handlers are passed a const MouseEventArgs reference with all fields
+     * valid.
+     */
+	static const String EventScrolled;
 
 	/*************************************************************************
 		Construction and Destruction
