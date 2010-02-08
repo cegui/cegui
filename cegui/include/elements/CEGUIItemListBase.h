@@ -100,9 +100,24 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const String EventListContentsChanged;			//!< Event triggered when the contents of the list is changed.
-    static const String EventSortEnabledChanged; //!< Event fired when the sort enabled state changes.
-    static const String EventSortModeChanged; //!< Event fired when the sort mode changes.
+    /** Event fired when the contents of the list is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemListBase whose contents
+     * has changed.
+     */
+	static const String EventListContentsChanged;
+    /** Event fired when the sort enabled state of the list is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemListBase whose sort enabled mode
+     * has been changed.
+     */
+    static const String EventSortEnabledChanged;
+    /** Event fired when the sort mode of the list is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemListBase whose sorting mode
+     * has been changed.
+     */
+    static const String EventSortModeChanged;
 
 	/*************************************************************************
 		Accessor Methods

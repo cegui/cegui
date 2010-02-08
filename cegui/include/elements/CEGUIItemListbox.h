@@ -53,8 +53,18 @@ public:
     /************************************************************************
         Constants
     *************************************************************************/
-    static const String EventSelectionChanged; //!< Event fired when the selection changes.
-    static const String EventMultiSelectModeChanged; //!< Event fired when the multiselect mode changes.
+    /** Event fired when the list selection changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemListbox whose current selection
+     * has been changed.
+     */
+    static const String EventSelectionChanged;
+    /** Event fired when the multiselect mode of the list box is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemListbox whose multiselect mode
+     * has been changed.
+     */
+    static const String EventMultiSelectModeChanged;
 
     /************************************************************************
         Accessors

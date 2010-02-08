@@ -56,8 +56,18 @@ public:
     static const String HorzScrollbarNameSuffix; //!< Name suffix for horizontal scrollbar component
     static const String ContentPaneNameSuffix;   //!< Name suffix for the content pane component
 
-    static const String EventVertScrollbarModeChanged; //!< Event fired when the vertical scroll bar mode changes.
-    static const String EventHorzScrollbarModeChanged; //!< Event fired when the horizontal scroll bar mode change.
+    /** Event fired when the vertical scroll bar mode changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrolledItemListBase whose vertical
+     * scroll bar mode has been changed.
+     */
+    static const String EventVertScrollbarModeChanged;
+    /** Event fired when the horizontal scroll bar mode change.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrolledItemListBase whose horizontal
+     * scroll bar mode has been changed.
+     */
+    static const String EventHorzScrollbarModeChanged;
 
     /************************************************************************
         Accessors

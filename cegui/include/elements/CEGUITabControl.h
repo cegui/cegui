@@ -93,7 +93,12 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const String EventSelectionChanged;			//!< Event triggered when there is a change to the currently selected tab.
+    /** Event fired when a different tab is selected.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the TabControl that has a newly
+     * selected tab.
+     */
+	static const String EventSelectionChanged;
 
     /*************************************************************************
         Child Widget name suffix constants

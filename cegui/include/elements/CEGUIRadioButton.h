@@ -59,7 +59,12 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventSelectStateChanged;			//!< The selected state of the widget has changed.
+    /** Event fired when the selected state of the radio button changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the RadioButton whose selected state has
+     * changed.
+     */
+	static const String EventSelectStateChanged;
 
 
 	/*************************************************************************

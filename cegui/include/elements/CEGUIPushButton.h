@@ -55,7 +55,11 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventClicked;					//!< The button was clicked.
+    /** Event fired when the button is clicked.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the PushButton that was clicked.
+     */
+	static const String EventClicked;
 
 	/*************************************************************************
 		Construction and Destruction

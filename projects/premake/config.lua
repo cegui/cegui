@@ -20,6 +20,14 @@ STATIC_BUILD_WITH_DYNAMIC_DEPS = false
 -- all the debug cegui libraries are built with this suffix
 DEBUG_DLL_SUFFIX = "_d"
 
+-- Iterator debugging setting
+--
+-- This controls the level of debugging and other checks done for STL iterators
+-- in the debug build for the MSVC++ compilers.
+-- Setting this to false can improve performance of debug builds at the expense
+-- of safety / debug checks on iterators.
+FULLY_CHECKED_DEBUG_ITERATORS = true
+
 -- SDK / dependency paths
 -- { base, include_suffix, library_suffix }
 -- base can be absolute or relative to the root cegui_mk2 dir
@@ -101,6 +109,7 @@ DIRECT3D9_RENDERER = true
 DIRECT3D10_RENDERER = false
 IRRLICHT_RENDERER = false
 OGRE_RENDERER = false
+NULL_RENDERER = false
 
 ----------------
 -- Image Codecs
