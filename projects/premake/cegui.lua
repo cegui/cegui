@@ -105,6 +105,10 @@ if OGRE_RENDERER then
     tinsert(pkg_table.RendererModules, "Ogre")
 end
 
+if NULL_RENDERER then
+    tinsert(pkg_table.RendererModules, "Null")
+end
+
 --
 -- Image codec modules
 --
