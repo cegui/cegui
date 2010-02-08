@@ -78,6 +78,12 @@ function cegui_dynamic(name, lang, kind)
     {
         "_DEBUG"
     }
+
+    if not FULLY_CHECKED_DEBUG_ITERATORS then
+        tinsert(debug.defines, "_HAS_ITERATOR_DEBUGGING=0" )
+        tinsert(debug.defines, "_SECURE_SCL=0" )
+    end
+
 	debug.buildflags = {}
 
 	debug.libpaths =
@@ -106,6 +112,11 @@ function cegui_dynamic(name, lang, kind)
 			"CEGUI_STATIC",
 			"TOLUA_STATIC"
 		}
+
+        if not FULLY_CHECKED_DEBUG_ITERATORS then
+            tinsert(debug_static.defines, "_HAS_ITERATOR_DEBUGGING=0" )
+            tinsert(debug_static.defines, "_SECURE_SCL=0" )
+        end
 
 		if STATIC_BUILD_WITH_DYNAMIC_DEPS then
 			debug_static.libpaths =
