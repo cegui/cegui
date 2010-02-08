@@ -96,6 +96,7 @@ DIRECT3D9_RENDERER = true
 DIRECT3D10_RENDERER = false
 IRRLICHT_RENDERER = false
 OGRE_RENDERER = false
+NULL_RENDERER = false
 
 ----------------
 -- Image Codecs

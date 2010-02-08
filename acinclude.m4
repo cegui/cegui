@@ -315,6 +315,14 @@ to load a custom made image codec module as the default.]),
     AM_CONDITIONAL([CEGUI_BUILD_TGA_IMAGE_CODEC], [test x$cegui_with_tga = xyes])
 ])
 
+AC_DEFUN([CEGUI_ENABLE_NULL_RENDERER], [
+    AC_ARG_ENABLE([null-renderer], AC_HELP_STRING([--enable-null-renderer],
+                  [Enable building the Null renderer module]),
+                  [cegui_enable_null=$enableval], [cegui_enable_null=no])
+
+    AM_CONDITIONAL([BUILD_NULL_RENDERER], [test x$cegui_enable_null = xyes])
+])
+
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
     AC_ARG_ENABLE([ogre-renderer], AC_HELP_STRING([--disable-ogre-renderer],
                   [Disable building the Ogre renderer module]),

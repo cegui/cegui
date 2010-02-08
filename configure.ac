@@ -88,6 +88,7 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
 CEGUI_ENABLE_OGRE_RENDERER
+CEGUI_ENABLE_NULL_RENDERER
 CEGUI_ENABLE_IRRLICHT_RENDERER
 CEGUI_ENABLE_DIRECTFB_RENDERER
 
@@ -110,7 +111,8 @@ CEGUI_LIBTOOL_OPTIONS
 CEGUI_CHECK_BUILD_SUFFIX
 
 dnl Create the makefiles
-AC_CONFIG_FILES([cegui/CEGUI-OGRE.pc
+AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
+                 cegui/CEGUI-OGRE.pc
                  cegui/CEGUI-OPENGL.pc
                  cegui/CEGUI.pc
                  cegui/CEGUI.spec
@@ -128,6 +130,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OGRE.pc
                  cegui/include/RendererModules/Direct3D9/Makefile
                  cegui/include/RendererModules/DirectFB/Makefile
                  cegui/include/RendererModules/Irrlicht/Makefile
+                 cegui/include/RendererModules/Null/Makefile
                  cegui/include/RendererModules/Ogre/Makefile
                  cegui/include/RendererModules/OpenGL/Makefile
                  cegui/include/RendererModules/Makefile
@@ -153,6 +156,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OGRE.pc
                  cegui/src/RendererModules/Direct3D9/Makefile
                  cegui/src/RendererModules/DirectFB/Makefile
                  cegui/src/RendererModules/Irrlicht/Makefile
+                 cegui/src/RendererModules/Null/Makefile
                  cegui/src/RendererModules/Ogre/Makefile
                  cegui/src/RendererModules/OpenGL/Makefile
                  cegui/src/RendererModules/Makefile
@@ -218,6 +222,7 @@ echo "*             Using external GLEW library:              ${cegui_found_glew
 echo "*         Building Ogre Renderer:                       ${cegui_enable_ogre-no}"
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
+echo "*         Building Null Renderer:                       ${cegui_enable_null-no}"
 echo "*"
 echo "* Image Loading Codec Modules:"
 echo "*         Building Corona Image Codec:                  ${cegui_with_corona-no}"

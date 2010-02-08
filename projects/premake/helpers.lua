@@ -486,6 +486,14 @@ function setup_static_samples()
             add_sdk_paths(OGRE_PATHS)
         end
     end
+    if NULL_RENDERER then
+	    if CEGUI_CORE_LIBRARY_SOLUTION then
+		    dependency("CEGUINullRenderer")
+	    else
+		    library_static("CEGUINullRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+	    end
+    end
+
 		
     --Window Renderers
     if FALAGARD_WR then
