@@ -59,16 +59,65 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const String EventSegmentClicked;				//!< Event fired when the segment is clicked.
-	static const String EventSplitterDoubleClicked;		//!< Event fired when the sizer/splitter is double-clicked.
-	static const String EventSizingSettingChanged;		//!< Event fired when the sizing setting changes.
-	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction value changes.
-	static const String EventMovableSettingChanged;		//!< Event fired when the movable setting changes.
-	static const String EventSegmentDragStart;			//!< Event fired when the segment has started to be dragged.
-	static const String EventSegmentDragStop;				//!< Event fired when segment dragging has stopped (via mouse release).
-	static const String EventSegmentDragPositionChanged;	//!< Event fired when the segment drag position has changed.
-	static const String EventSegmentSized;				//!< Event fired when the segment is sized.
-	static const String EventClickableSettingChanged;		//!< Event fired when the clickable state of the segment changes.
+    /** Event fired when the segment is clicked.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that was clicked.
+     */
+	static const String EventSegmentClicked;
+    /** Event fired when the sizer/splitter is double-clicked.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose
+     * sizer / splitter area was double-clicked.
+     */
+	static const String EventSplitterDoubleClicked;
+    /** Event fired when the user drag-sizable setting is changed.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose user sizable
+     * setting has been changed.
+     */
+	static const String EventSizingSettingChanged;
+    /** Event fired when the sort direction value is changed.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose sort direction
+     * has been changed.
+     */
+	static const String EventSortDirectionChanged;
+    /** Event fired when the user drag-movable setting is changed.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose user
+     * drag-movable setting has been changed.
+     */
+	static const String EventMovableSettingChanged;
+    /** Event fired when the segment has started to be dragged.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that has started to
+     * be dragged.
+     */
+	static const String EventSegmentDragStart;
+    /** Event fired when segment dragging has stopped (via mouse release).
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that is no longer
+     * being dragged.
+     */
+	static const String EventSegmentDragStop;
+    /** Event fired when the segment drag position has changed.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose position has
+     * changed due to being dragged.
+     */
+	static const String EventSegmentDragPositionChanged;
+    /** Event fired when the segment is sized by the user.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that has been
+     * resized by the user dragging.
+     */
+	static const String EventSegmentSized;
+    /** Event fired when the clickable setting for the segment is changed.
+     * Hanlders are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose setting that
+     * controls whether the segment is clickable has been changed.
+     */
+	static const String EventClickableSettingChanged;
 
 	// Defaults
 	static const float	DefaultSizingArea;		//!< Default size of the sizing area.

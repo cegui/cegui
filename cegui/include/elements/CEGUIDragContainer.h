@@ -53,14 +53,55 @@ namespace CEGUI
         *************************************************************************/
         static const String WidgetTypeName;     //!< Type name for DragContainer.
         static const String EventNamespace;     //!< Namespace for global events
-        static const String EventDragStarted;   //!< Name of the event fired when the user begins dragging the thumb.
-        static const String EventDragEnded;     //!< Name of the event fired when the user releases the thumb.
-        static const String EventDragPositionChanged;   //!< Event fired when the drag position has changed.
-        static const String EventDragEnabledChanged;    //!< Event fired when dragging is enabled or disabled.
-        static const String EventDragAlphaChanged;      //!< Event fired when the alpha value used when dragging is changed.
-        static const String EventDragMouseCursorChanged;//!< Event fired when the mouse cursor used when dragging is changed.
-        static const String EventDragThresholdChanged;  //!< Event fired when the drag pixel threshold is changed.
-        static const String EventDragDropTargetChanged; //!< Event fired when the drop target changes.
+        /** Event fired when the user begins dragging the DragContainer.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer that the user
+         * has started to drag.
+         */
+        static const String EventDragStarted;
+        /** Event fired when the user releases the DragContainer.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer that the user has
+         * released.
+         */
+        static const String EventDragEnded;
+        /** Event fired when the drag position has changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer whose position has
+         * changed due to the user dragging it.
+         */
+        static const String EventDragPositionChanged;
+        /** Event fired when dragging is enabled or disabled.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer whose setting has
+         * been changed.
+         */
+        static const String EventDragEnabledChanged;
+        /** Event fired when the alpha value used when dragging is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer whose drag alpha
+         * value has been changed.
+         */
+        static const String EventDragAlphaChanged;
+        /** Event fired when the mouse cursor to used when dragging is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer whose dragging
+         * mouse cursor image has been changed.
+         */
+        static const String EventDragMouseCursorChanged;
+        /** Event fired when the drag pixel threshold is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the DragContainer whose dragging pixel
+         * threshold has been changed.
+         */
+        static const String EventDragThresholdChanged;
+        /** Event fired when the drop target changes.
+         * Handlers are passed a const DragDropEventArgs reference with
+         * WindowEventArgs::window set to the Window that is now the target
+         * window  and DragDropEventArgs::dragDropItem set to the DragContainer
+         * whose target has changed.
+         */
+        static const String EventDragDropTargetChanged;
 
         /*************************************************************************
             Object Construction and Destruction

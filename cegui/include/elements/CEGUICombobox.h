@@ -59,27 +59,119 @@ public:
 		Constants
 	*************************************************************************/
 	// event names from edit box
-	static const String EventReadOnlyModeChanged;			//!< The read-only mode for the edit box has been changed.
-	static const String EventValidationStringChanged;		//!< The validation string has been changed.
-	static const String EventMaximumTextLengthChanged;	//!< The maximum allowable string length has been changed.
-	static const String EventTextInvalidated;				//!< Some operation has made the current text invalid with regards to the validation string.
-	static const String EventInvalidEntryAttempted;		//!< The user attempted to modify the text in a way that would have made it invalid.
-	static const String EventCaratMoved;					//!< The text carat (insert point) has changed.
-	static const String EventTextSelectionChanged;		//!< The current text selection has changed.
-	static const String EventEditboxFull;					//!< The number of characters in the edit box has reached the current maximum.
-	static const String EventTextAccepted;				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
+    /** Event fired when the read-only mode for the edit box is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose read only mode
+     * has been changed.
+     */
+	static const String EventReadOnlyModeChanged;
+    /** Event fired when the edix box validation string is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose validation
+     * string was changed.
+     */
+	static const String EventValidationStringChanged;
+    /** Event fired when the maximum string length is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose maximum edit box
+     * string length has been changed.
+     */
+	static const String EventMaximumTextLengthChanged;
+    /** Event fired when an operation has made the current edit box text invalid
+     * as regards to the current validation string.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose edit box text has
+     * become invalid.
+     */
+	static const String EventTextInvalidated;
+    /** Event fired when the user attempts to modify the edit box text in a way
+     * that would make it invalid.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox in which the user's input
+     * would have invalidated the text.
+     */
+	static const String EventInvalidEntryAttempted;
+    /** Event fired when the edit box text insertion position is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose caret position has
+     * been changed.
+     */
+	static const String EventCaratMoved;
+    /** Event fired when the current edit box text selection is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose edit box text selection
+     * has been changed.
+     */
+	static const String EventTextSelectionChanged;
+    /** Event fired when the number of characters in the edit box has reached
+     * the currently set maximum.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose edit box has become
+     * full.
+     */
+	static const String EventEditboxFull;
+    /** Event fired when the user accepts the current edit box text by pressing
+     * Return, Enter, or Tab.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose edit box text has been
+     * accepted / confirmed by the user.
+     */
+	static const String EventTextAccepted;
 
 	// event names from list box
-	static const String EventListContentsChanged;			//!< Event triggered when the contents of the list is changed.
-	static const String EventListSelectionChanged;		//!< Event triggered when there is a change to the currently selected item(s).
-	static const String EventSortModeChanged;				//!< Event triggered when the sort mode setting changes.
-	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+    /** Event fired when the contents of the list is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose list content has
+     * changed.
+     */
+	static const String EventListContentsChanged;
+    /** Event fired when there is a change to the currently selected item in the
+     * list.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose currently selected list
+     * item has changed.
+     */
+	static const String EventListSelectionChanged;
+    /** Event fired when the sort mode setting of the list is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose list sorting mode has
+     * been changed.
+     */
+	static const String EventSortModeChanged;
+    /** Event fired when the vertical scroll bar 'force' setting for the list is
+     * changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose vertical scroll bar
+     * setting is changed.
+     */
+	static const String EventVertScrollbarModeChanged;
+    /** Event fired when the horizontal scroll bar 'force' setting for the list
+     * is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose horizontal scroll bar
+     * setting has been changed.
+     */
+	static const String EventHorzScrollbarModeChanged;
 
 	// events we produce / generate ourselves
-	static const String EventDropListDisplayed;			//!< Event triggered when the drop-down list is displayed
-	static const String EventDropListRemoved;				//!< Event triggered when the drop-down list is removed / hidden.
-	static const String EventListSelectionAccepted;		//!< Event triggered when the user accepts a selection from the drop-down list
+    /** Event fired when the drop-down list is displayed
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose drop down list has
+     * been displayed.
+     */
+	static const String EventDropListDisplayed;
+    /** Event fired when the drop-down list is removed / hidden.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox whose drop down list has
+     * been hidden.
+     */
+	static const String EventDropListRemoved;
+    /** Event fired when the user accepts a selection from the drop-down list
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Combobox in which the user has
+     * confirmed a selection from the drop down list.
+     */
+	static const String EventListSelectionAccepted;
 
     /*************************************************************************
         Child Widget name suffix constants
