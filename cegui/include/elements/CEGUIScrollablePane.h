@@ -73,15 +73,34 @@ public:
     static const String WidgetTypeName;
     //! Namespace for global events
     static const String EventNamespace;
-    //! Event fired when an area on the content pane has been updated.
+    /** Event fired when an area on the content pane has been updated.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrollablePane whose content pane
+     * has been updated.
+     */
     static const String EventContentPaneChanged;
-    //! Event triggered when the vertical scroll bar 'force' setting changes.
+    /** Event fired when the vertical scroll bar 'force' setting is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrollablePane whose vertical scroll
+     * bar mode has been changed.
+     */
     static const String EventVertScrollbarModeChanged;
-    //! Event triggered when the horizontal scroll bar 'force' setting changes.
+    /** Event fired when the horizontal scroll bar 'force' setting is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrollablePane whose horizontal scroll
+     * bar mode has been changed.
+     */
     static const String EventHorzScrollbarModeChanged;
-    //! Event fired when the auto size setting changes.
+    /** Event fired when the auto size setting for the pane is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrollablePane whose auto size
+     * setting has been changed.
+     */
     static const String EventAutoSizeSettingChanged;
-    //! Event fired when the pane gets scrolled.
+    /** Event fired when the pane gets scrolled.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ScrollablePane that has been scrolled.
+     */
     static const String EventContentPaneScrolled;
     //! Widget name suffix for the vertical scrollbar component.
     static const String VertScrollbarNameSuffix;

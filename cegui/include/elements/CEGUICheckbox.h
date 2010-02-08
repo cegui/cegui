@@ -58,8 +58,11 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	// generated internally by Window
-	static const String EventCheckStateChanged;			//!< The check-state of the widget has changed.
+    /** Event fired when then checked state of the Checkbox changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Checkbox whose state has changed.
+     */
+	static const String EventCheckStateChanged;
 
 
 	/*************************************************************************

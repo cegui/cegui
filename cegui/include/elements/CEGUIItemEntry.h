@@ -82,7 +82,12 @@ public:
         Constants
     *************************************************************************/
     static const String WidgetTypeName;             //!< Window factory name
-    static const String EventSelectionChanged;    //!< Event fired when selection state changes.
+    /** Event fired when the item's selection state changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ItemEntry whose selection state has
+     * changed.
+     */
+    static const String EventSelectionChanged;
 
 	/*************************************************************************
 		Accessors

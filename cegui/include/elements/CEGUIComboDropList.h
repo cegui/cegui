@@ -57,7 +57,12 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const String EventListSelectionAccepted;		//!< Event fired when the user confirms the selection by clicking the mouse.
+    /** Event fired when the user confirms the selection by clicking the mouse.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ComboDropList whose selection has been
+     * confirmed by the user.
+     */
+	static const String EventListSelectionAccepted;
 
 
 	/*!

@@ -78,6 +78,12 @@ function cegui_dynamic(name, lang, kind)
     {
         "_DEBUG"
     }
+
+    if not FULLY_CHECKED_DEBUG_ITERATORS then
+        tinsert(debug.defines, "_HAS_ITERATOR_DEBUGGING=0" )
+        tinsert(debug.defines, "_SECURE_SCL=0" )
+    end
+
 	debug.buildflags = {}
 
 	debug.libpaths =
@@ -107,6 +113,11 @@ function cegui_dynamic(name, lang, kind)
 			"TOLUA_STATIC"
 		}
 
+        if not FULLY_CHECKED_DEBUG_ITERATORS then
+            tinsert(debug_static.defines, "_HAS_ITERATOR_DEBUGGING=0" )
+            tinsert(debug_static.defines, "_SECURE_SCL=0" )
+        end
+
 		if STATIC_BUILD_WITH_DYNAMIC_DEPS then
 			debug_static.libpaths =
 			{
@@ -133,6 +144,9 @@ function cegui_dynamic(name, lang, kind)
 	--    Optimisation disabled for mantis #293
 	--    (http://www.cegui.org.uk/mantis/view.php?id=293)
 	--    "optimize-speed",
+			-- Custom option by the cegui team to support release builds without optimizations
+		  "no-optimize-release",
+		  "no-edit-and-continue",
 		}
 
 		release_sym.libpaths =
@@ -483,6 +497,14 @@ function setup_static_samples()
             add_sdk_paths(OGRE_PATHS)
         end
     end
+    if NULL_RENDERER then
+	    if CEGUI_CORE_LIBRARY_SOLUTION then
+		    dependency("CEGUINullRenderer")
+	    else
+		    library_static("CEGUINullRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+	    end
+    end
+
 		
     --Window Renderers
     if FALAGARD_WR then

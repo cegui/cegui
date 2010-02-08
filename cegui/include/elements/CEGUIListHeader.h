@@ -114,18 +114,81 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const String EventSortColumnChanged;			//!< Event fired when the current sort column changes.
-	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction changes.
-	static const String EventSegmentSized;				//!< Event fired when a segment has been sized by the user (e.window is the segment).
-	static const String EventSegmentClicked;				//!< Event fired when a segment has been clicked by the user (e.window is the segment).
-	static const String EventSplitterDoubleClicked;		//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
-	static const String EventSegmentSequenceChanged;		//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
-	static const String EventSegmentAdded;				//!< Event fired when a segment is added to the header.
-	static const String EventSegmentRemoved;				//!< Event fired when a segment is removed from the header.
-	static const String EventSortSettingChanged;			//!< Event fired when setting that controls user modification to sort configuration changes.
-	static const String EventDragMoveSettingChanged;		//!< Event fired when setting that controls user drag & drop of segments changes.
-	static const String EventDragSizeSettingChanged;		//!< Event fired when setting that controls user sizing of segments changes.
-	static const String EventSegmentRenderOffsetChanged;	//!< Event fired when the rendering offset for the segments changes.
+    /** Event fired when the current sort column of the header is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose sort column has
+     * been changed.
+     */
+	static const String EventSortColumnChanged;
+    /** Event fired when the sort direction of the header is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose sort direction had
+     * been changed.
+     */
+	static const String EventSortDirectionChanged;
+    /** Event fired when a segment of the header is sized by the user.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that has been sized.
+     */
+	static const String EventSegmentSized;
+    /** Event fired when a segment of the header is clicked by the user.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment that was clicked.
+     */
+	static const String EventSegmentClicked;
+    /** Event fired when a segment splitter of the header is double-clicked.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeaderSegment whose splitter area
+     * was double-clicked.
+     */
+	static const String EventSplitterDoubleClicked;
+    /** Event fired when the order of the segments in the header has changed.
+     * Handlers are passed a const HeaderSequenceEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose segments have changed
+     * sequence, HeaderSequenceEventArgs::d_oldIdx is the original index of the
+     * segment that has moved, and HeaderSequenceEventArgs::d_newIdx is the new
+     * index of the segment that has moved.
+     */
+	static const String EventSegmentSequenceChanged;
+    /** Event fired when a segment is added to the header.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader that has had a new segment
+     * added.
+     */
+	static const String EventSegmentAdded;
+    /** Event fired when a segment is removed from the header.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader that has had a segment
+     * removed.
+     */
+	static const String EventSegmentRemoved;
+    /** Event fired when setting that controls user modification to sort
+     * configuration is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose user sort control
+     * setting has been changed.
+     */
+	static const String EventSortSettingChanged;
+    /** Event fired when setting that controls user drag & drop of segments is
+     * changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose drag & drop enabled
+     * setting has changed.
+     */
+	static const String EventDragMoveSettingChanged;
+    /** Event fired when setting that controls user sizing of segments is
+     * changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose user sizing setting
+     * has changed.
+     */
+	static const String EventDragSizeSettingChanged;
+    /** Event fired when the rendering offset for the segments changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the ListHeader whose segment rendering
+     * offset has changed.
+     */
+	static const String EventSegmentRenderOffsetChanged;
 
 	// values
 	static const float	ScrollSpeed;				//!< Speed to scroll at when dragging outside header.

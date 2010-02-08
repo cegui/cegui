@@ -3,7 +3,7 @@
     <Image Name="ClientBrush" XPos="2" YPos="2" Width="64" Height="64" />
     <Image Name="GenericBrush" XPos="9" YPos="71" Width="1" Height="1" />
 	<Image Name="WindowLeftEdge" XPos="6" YPos="95" Width="1" Height="22" XOffset="4" />
-	<Image Name="WindowRightEdge" XPos="34" YPos="95" Width="1" Height="22" XOffset="-5" />
+	<Image Name="WindowRightEdge" XPos="34" YPos="95" Width="1" Height="22" XOffset="-4" />
 	<Image Name="WindowTopEdge" XPos="9" YPos="68" Width="23" Height="1" />
 	<Image Name="WindowBottomEdge" XPos="9" YPos="143" Width="23" Height="1" />
 	<Image Name="WindowTopLeft" XPos="2" YPos="68" Width="5" Height="24" />

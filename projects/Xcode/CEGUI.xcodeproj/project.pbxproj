@@ -706,6 +706,17 @@
 		DAEEBFE110ECA5F6005CD344 /* location.hh in Headers */ = {isa = PBXBuildFile; fileRef = DAEEBFD610ECA5F6005CD344 /* location.hh */; };
 		DAEEBFE210ECA5F6005CD344 /* position.hh in Headers */ = {isa = PBXBuildFile; fileRef = DAEEBFD710ECA5F6005CD344 /* position.hh */; };
 		DAEEBFE310ECA5F6005CD344 /* stack.hh in Headers */ = {isa = PBXBuildFile; fileRef = DAEEBFD810ECA5F6005CD344 /* stack.hh */; };
+		DAE8AB7511206FAC0091DDF3 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DAE8ABA91120724E0091DDF3 /* CEGUINullGeometryBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE8ABA41120724E0091DDF3 /* CEGUINullGeometryBuffer.h */; };
+		DAE8ABAA1120724E0091DDF3 /* CEGUINullRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE8ABA51120724E0091DDF3 /* CEGUINullRenderer.h */; };
+		DAE8ABAB1120724E0091DDF3 /* CEGUINullRenderTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE8ABA61120724E0091DDF3 /* CEGUINullRenderTarget.h */; };
+		DAE8ABAC1120724E0091DDF3 /* CEGUINullTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE8ABA71120724E0091DDF3 /* CEGUINullTexture.h */; };
+		DAE8ABAD1120724E0091DDF3 /* CEGUINullTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE8ABA81120724E0091DDF3 /* CEGUINullTextureTarget.h */; };
+		DAE8ABB31120726A0091DDF3 /* CEGUINullGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE8ABAE1120726A0091DDF3 /* CEGUINullGeometryBuffer.cpp */; };
+		DAE8ABB41120726A0091DDF3 /* CEGUINullRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE8ABAF1120726A0091DDF3 /* CEGUINullRenderer.cpp */; };
+		DAE8ABB51120726A0091DDF3 /* CEGUINullRenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE8ABB01120726A0091DDF3 /* CEGUINullRenderTarget.cpp */; };
+		DAE8ABB61120726A0091DDF3 /* CEGUINullTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE8ABB11120726A0091DDF3 /* CEGUINullTexture.cpp */; };
+		DAE8ABB71120726A0091DDF3 /* CEGUINullTextureTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE8ABB21120726A0091DDF3 /* CEGUINullTextureTarget.cpp */; };
 		DAF3D22E0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */; };
 		DAF3D23A0FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */; };
 		DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */; };
@@ -1306,6 +1317,13 @@
 			remoteInfo = CEGUIBase;
 		};
 		DAC4DE110F710097000EF0AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
+			remoteInfo = CEGUIBase;
+		};
+		DAE8AB7F112070170091DDF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
@@ -2357,6 +2375,18 @@
 		DAEEBFD610ECA5F6005CD344 /* location.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = location.hh; path = ../../cegui/src/falagard/location.hh; sourceTree = SOURCE_ROOT; };
 		DAEEBFD710ECA5F6005CD344 /* position.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = position.hh; path = ../../cegui/src/falagard/position.hh; sourceTree = SOURCE_ROOT; };
 		DAEEBFD810ECA5F6005CD344 /* stack.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = stack.hh; path = ../../cegui/src/falagard/stack.hh; sourceTree = SOURCE_ROOT; };
+		DAE8AB6911206F9E0091DDF3 /* CEGUINullRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUINullRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAE8AB7111206F9E0091DDF3 /* CEGUINullRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUINullRenderer-Info.plist"; sourceTree = "<group>"; };
+		DAE8ABA41120724E0091DDF3 /* CEGUINullGeometryBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINullGeometryBuffer.h; path = ../../cegui/include/RendererModules/Null/CEGUINullGeometryBuffer.h; sourceTree = SOURCE_ROOT; };
+		DAE8ABA51120724E0091DDF3 /* CEGUINullRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINullRenderer.h; path = ../../cegui/include/RendererModules/Null/CEGUINullRenderer.h; sourceTree = SOURCE_ROOT; };
+		DAE8ABA61120724E0091DDF3 /* CEGUINullRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINullRenderTarget.h; path = ../../cegui/include/RendererModules/Null/CEGUINullRenderTarget.h; sourceTree = SOURCE_ROOT; };
+		DAE8ABA71120724E0091DDF3 /* CEGUINullTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINullTexture.h; path = ../../cegui/include/RendererModules/Null/CEGUINullTexture.h; sourceTree = SOURCE_ROOT; };
+		DAE8ABA81120724E0091DDF3 /* CEGUINullTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINullTextureTarget.h; path = ../../cegui/include/RendererModules/Null/CEGUINullTextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DAE8ABAE1120726A0091DDF3 /* CEGUINullGeometryBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINullGeometryBuffer.cpp; path = ../../cegui/src/RendererModules/Null/CEGUINullGeometryBuffer.cpp; sourceTree = SOURCE_ROOT; };
+		DAE8ABAF1120726A0091DDF3 /* CEGUINullRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINullRenderer.cpp; path = ../../cegui/src/RendererModules/Null/CEGUINullRenderer.cpp; sourceTree = SOURCE_ROOT; };
+		DAE8ABB01120726A0091DDF3 /* CEGUINullRenderTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINullRenderTarget.cpp; path = ../../cegui/src/RendererModules/Null/CEGUINullRenderTarget.cpp; sourceTree = SOURCE_ROOT; };
+		DAE8ABB11120726A0091DDF3 /* CEGUINullTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINullTexture.cpp; path = ../../cegui/src/RendererModules/Null/CEGUINullTexture.cpp; sourceTree = SOURCE_ROOT; };
+		DAE8ABB21120726A0091DDF3 /* CEGUINullTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINullTextureTarget.cpp; path = ../../cegui/src/RendererModules/Null/CEGUINullTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
 		DAF3D22D0FCD49550096617C /* CEGUIRenderedStringWidgetComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWidgetComponent.h; path = ../../cegui/include/CEGUIRenderedStringWidgetComponent.h; sourceTree = SOURCE_ROOT; };
 		DAF3D2390FCD49640096617C /* CEGUIRenderedStringWidgetComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderedStringWidgetComponent.cpp; path = ../../cegui/src/CEGUIRenderedStringWidgetComponent.cpp; sourceTree = SOURCE_ROOT; };
 		DAF7623B1013B84E001DD9EB /* CEGUIFontGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFontGlyph.h; path = ../../cegui/include/CEGUIFontGlyph.h; sourceTree = SOURCE_ROOT; };
@@ -2627,6 +2657,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAE8AB6711206F9E0091DDF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAE8AB7511206FAC0091DDF3 /* CEGUIBase.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -2731,6 +2769,7 @@
 				DA10936E0F6D542A00B8A582 /* Direct3D9Renderer */,
 				DA1093700F6D543D00B8A582 /* DirectFBRenderer */,
 				DA1093610F6D52FB00B8A582 /* IrrlichtRenderer */,
+				DAE8ABA1112071A90091DDF3 /* NullRenderer */,
 				DA1093620F6D530300B8A582 /* OgreRenderer */,
 				DA10935B0F6D525F00B8A582 /* OpenGLRenderer */,
 			);
@@ -4288,6 +4327,7 @@
 			children = (
 				DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */,
 				DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */,
+				DAE8AB6911206F9E0091DDF3 /* CEGUINullRenderer.framework */,
 				DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */,
 				DA10998B0F6D8D4100B8A582 /* CEGUIOpenGLRenderer.framework */,
 				DAAABA0B0F6E53320003BE03 /* CEGUILuaScriptModule.framework */,
@@ -4336,6 +4376,40 @@
 				DA109E8C0F6DAA1F00B8A582 /* libxml2.dylib */,
 			);
 			name = "External Frameworks and Libs";
+			sourceTree = "<group>";
+		};
+		DAE8ABA1112071A90091DDF3 /* NullRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				DAE8AB7111206F9E0091DDF3 /* CEGUINullRenderer-Info.plist */,
+				DAE8ABA3112071CF0091DDF3 /* include */,
+				DAE8ABA2112071C90091DDF3 /* src */,
+			);
+			name = NullRenderer;
+			sourceTree = "<group>";
+		};
+		DAE8ABA2112071C90091DDF3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DAE8ABAE1120726A0091DDF3 /* CEGUINullGeometryBuffer.cpp */,
+				DAE8ABAF1120726A0091DDF3 /* CEGUINullRenderer.cpp */,
+				DAE8ABB01120726A0091DDF3 /* CEGUINullRenderTarget.cpp */,
+				DAE8ABB11120726A0091DDF3 /* CEGUINullTexture.cpp */,
+				DAE8ABB21120726A0091DDF3 /* CEGUINullTextureTarget.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		DAE8ABA3112071CF0091DDF3 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DAE8ABA41120724E0091DDF3 /* CEGUINullGeometryBuffer.h */,
+				DAE8ABA51120724E0091DDF3 /* CEGUINullRenderer.h */,
+				DAE8ABA61120724E0091DDF3 /* CEGUINullRenderTarget.h */,
+				DAE8ABA71120724E0091DDF3 /* CEGUINullTexture.h */,
+				DAE8ABA81120724E0091DDF3 /* CEGUINullTextureTarget.h */,
+			);
+			name = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4639,6 +4713,18 @@
 				DAC4DE0B0F71005D000EF0AC /* CEGUIOgreTexture.h in Headers */,
 				DAC4DE0D0F71005D000EF0AC /* CEGUIOgreTextureTarget.h in Headers */,
 				DAC4DE0F0F71005D000EF0AC /* CEGUIOgreWindowTarget.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAE8AB6411206F9E0091DDF3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAE8ABA91120724E0091DDF3 /* CEGUINullGeometryBuffer.h in Headers */,
+				DAE8ABAA1120724E0091DDF3 /* CEGUINullRenderer.h in Headers */,
+				DAE8ABAB1120724E0091DDF3 /* CEGUINullRenderTarget.h in Headers */,
+				DAE8ABAC1120724E0091DDF3 /* CEGUINullTexture.h in Headers */,
+				DAE8ABAD1120724E0091DDF3 /* CEGUINullTextureTarget.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5203,6 +5289,25 @@
 			productReference = DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		DAE8AB6811206F9E0091DDF3 /* CEGUINullRenderer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DAE8AB7411206FA00091DDF3 /* Build configuration list for PBXNativeTarget "CEGUINullRenderer" */;
+			buildPhases = (
+				DAE8AB6411206F9E0091DDF3 /* Headers */,
+				DAE8AB6511206F9E0091DDF3 /* Resources */,
+				DAE8AB6611206F9E0091DDF3 /* Sources */,
+				DAE8AB6711206F9E0091DDF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DAE8AB80112070170091DDF3 /* PBXTargetDependency */,
+			);
+			name = CEGUINullRenderer;
+			productName = CEGUINullRenderer;
+			productReference = DAE8AB6911206F9E0091DDF3 /* CEGUINullRenderer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -5225,6 +5330,7 @@
 				DA1097A20F6D838D00B8A582 /* CEGUIBase */,
 				DAAF38800F6FACF800EEADDB /* CEGUIIrrlichtRenderer */,
 				DAAABA0A0F6E53320003BE03 /* CEGUILuaScriptModule */,
+				DAE8AB6811206F9E0091DDF3 /* CEGUINullRenderer */,
 				DAC4DDF00F70FFBD000EF0AC /* CEGUIOgreRenderer */,
 				DA10998A0F6D8D4100B8A582 /* CEGUIOpenGLRenderer */,
 				DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */,
@@ -5292,6 +5398,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAAF3BC60F6FF2A600EEADDB /* RendererSelector.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAE8AB6511206F9E0091DDF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6089,6 +6202,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAE8AB6611206F9E0091DDF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAE8ABB31120726A0091DDF3 /* CEGUINullGeometryBuffer.cpp in Sources */,
+				DAE8ABB41120726A0091DDF3 /* CEGUINullRenderer.cpp in Sources */,
+				DAE8ABB51120726A0091DDF3 /* CEGUINullRenderTarget.cpp in Sources */,
+				DAE8ABB61120726A0091DDF3 /* CEGUINullTexture.cpp in Sources */,
+				DAE8ABB71120726A0091DDF3 /* CEGUINullTextureTarget.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -6516,6 +6641,11 @@
 			isa = PBXTargetDependency;
 			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
 			targetProxy = DAC4DE110F710097000EF0AC /* PBXContainerItemProxy */;
+		};
+		DAE8AB80112070170091DDF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			targetProxy = DAE8AB7F112070170091DDF3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8314,6 +8444,56 @@
 			};
 			name = Release;
 		};
+		DAE8AB7211206FA00091DDF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUINullRenderer-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUINullRenderer;
+			};
+			name = Debug;
+		};
+		DAE8AB7311206FA00091DDF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUINullRenderer-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUINullRenderer;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -8637,6 +8817,15 @@
 			buildConfigurations = (
 				DAC4DDF30F70FFBE000EF0AC /* Debug */,
 				DAC4DDF40F70FFBE000EF0AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAE8AB7411206FA00091DDF3 /* Build configuration list for PBXNativeTarget "CEGUINullRenderer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAE8AB7211206FA00091DDF3 /* Debug */,
+				DAE8AB7311206FA00091DDF3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

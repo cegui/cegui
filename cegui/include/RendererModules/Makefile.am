@@ -10,5 +10,8 @@ endif
 if BUILD_DIRECTFB_RENDERER
 DIRECTFB=DirectFB
 endif
+if BUILD_NULL_RENDERER
+NULLREND=Null
+endif
 SUBDIRS = . $(OPENGL) $(OGRE) $(IRRLICHT) $(DIRECTFB) \
-          Direct3D9 Direct3D10
+          $(NULLREND) Direct3D9 Direct3D10

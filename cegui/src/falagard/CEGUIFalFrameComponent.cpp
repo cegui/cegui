@@ -151,7 +151,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_TOP_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // top-right image
@@ -182,7 +182,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_TOP_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom-left image
@@ -213,7 +213,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_BOTTOM_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom-right image
@@ -243,7 +243,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // top image
@@ -272,7 +272,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_TOP_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom image
@@ -301,7 +301,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_BOTTOM_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // left image
@@ -330,7 +330,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_LEFT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_LEFT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // right image
@@ -359,7 +359,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_RIGHT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
+            d_frameImages[FIC_RIGHT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         if (d_frameImages[FIC_BACKGROUND])

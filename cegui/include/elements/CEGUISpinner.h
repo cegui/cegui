@@ -69,11 +69,36 @@ namespace CEGUI
         *************************************************************************/
         static const String WidgetTypeName;                 //!< Window factory name
         static const String EventNamespace;                 //!< Namespace for global events
-        static const String EventValueChanged;              //!< Event fired when the spinner value changes.
-        static const String EventStepChanged;               //!< Event fired when the step value changes.
-        static const String EventMaximumValueChanged;       //!< Event fired when the maximum spinner value changes.
-        static const String EventMinimumValueChanged;       //!< Event fired when the minimum spinner value changes.
-        static const String EventTextInputModeChanged;      //!< Event fired when the input/display mode is changed.
+        /** Event fired when the spinner current value changes.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the Spinner whose current value has
+         * changed.
+         */
+        static const String EventValueChanged;
+        /** Event fired when the spinner step value is changed.
+         * Handlers area passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the Spinner whose step value has
+         * changed.
+         */
+        static const String EventStepChanged;
+        /** Event fired when the maximum spinner value is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the Spinner whose maximum value has
+         * been changed.
+         */
+        static const String EventMaximumValueChanged;
+        /** Event fired when the minimum spinner value is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::windows set to the Spinner whose minimum value has
+         * been changed.
+         */
+        static const String EventMinimumValueChanged;
+        /** Event fired when the spinner text input & display mode is changed.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the Spinner whose text mode has been
+         * changed.
+         */
+        static const String EventTextInputModeChanged;
 
         /*************************************************************************
             Component widget name suffix strings

@@ -68,9 +68,15 @@ public:
     static const String GeneratedWindowNameBase;      //!< Base name to use for generated window names.
     //! Namespace for global events.
     static const String EventNamespace;
-    //! Event fired when a new Window object is created.
+    /** Event fired when a new Window object is created.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window that has just been created.
+     */
     static const String EventWindowCreated;
-    //! Event fired when a Window object is destroyed.
+    /** Event fired when a Window object is destroyed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window that has been destroyed.
+     */
     static const String EventWindowDestroyed;
 
 	/*!

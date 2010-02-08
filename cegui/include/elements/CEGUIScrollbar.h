@@ -105,10 +105,30 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const String EventScrollPositionChanged;		//!< Name of the event fired when the scroll bar position value changes
-	static const String EventThumbTrackStarted;			//!< Name of the event fired when the user begins dragging the thumb.
-	static const String EventThumbTrackEnded;				//!< Name of the event fired when the user releases the thumb.
-	static const String EventScrollConfigChanged;			//!< Name of the event fired when the scroll bar configuration data changes.
+    /** Event fired when the scroll bar position value changes.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Scrollbar whose position value had
+     * changed.
+     */
+	static const String EventScrollPositionChanged;
+    /** Event fired when the user begins dragging the scrollbar thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Scrollbar whose thumb is being
+     * dragged.
+     */
+	static const String EventThumbTrackStarted;
+    /** Event fired when the user releases the scrollbar thumb.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Scrollbar whose thumb has been
+     * released.
+     */
+	static const String EventThumbTrackEnded;
+    /** Event fired when the scroll bar configuration data is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Scrollbar whose configuration
+     * has been changed.
+     */
+	static const String EventScrollConfigChanged;
 
     /*************************************************************************
         Child Widget name suffix constants

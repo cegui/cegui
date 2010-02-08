@@ -111,9 +111,20 @@ class CEGUIEXPORT RenderingSurface : public EventSet
 public:
     //! Namespace for global events from RenderingSurface objects.
     static const String EventNamespace;
-    //! Event that signals the start of rendering for a queue.
+    /** Event fired when rendering of a RenderQueue begins for the
+     * RenderingSurface.
+     * Handlers are passed a const RenderQueueEventArgs reference with
+     * RenderQueueEventArgs::queueID set to one of the ::RenderQueueID
+     * enumerated values indicating the queue that is about to start
+     * rendering.
+     */
     static const String EventRenderQueueStarted;
-    //! Event that signals the end of rendering for a queue.
+    /** Event fired when rendering of a RenderQueue completes for the
+     * RenderingSurface.
+     * Handlers are passed a const RenderQueueEventArgs reference with
+     * RenderQueueEventArgs::queueID set to one of the ::RenderQueueID
+     * enumerated values indicating the queue that has completed rendering.
+     */
     static const String EventRenderQueueEnded;
 
     /*!
