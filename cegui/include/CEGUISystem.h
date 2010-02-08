@@ -74,16 +74,45 @@ public:
 	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
-	static const String EventGUISheetChanged;				//!< Name of event fired whenever the GUI sheet is changed.
-	static const String EventSingleClickTimeoutChanged;	//!< Name of event fired when the single-click timeout is changed.
-	static const String EventMultiClickTimeoutChanged;	//!< Name of event fired when the multi-click timeout is changed.
-	static const String EventMultiClickAreaSizeChanged;	//!< Name of event fired when the size of the multi-click tolerance area is changed.
-	static const String EventDefaultFontChanged;			//!< Name of event fired when the default font changes.
-	static const String EventDefaultMouseCursorChanged;	//!< Name of event fired when the default mouse cursor changes.
-	static const String EventMouseMoveScalingChanged;		//!< Name of event fired when the mouse move scaling factor changes.
-    //! Name of event fired for display size changes (as notified by client).
+    /** Event fired whenever the GUI sheet is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the @e old GUI sheet (the new one is
+     * obtained by querying System).
+     */
+	static const String EventGUISheetChanged;
+    /** Event fired when the single-click timeout is changed.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventSingleClickTimeoutChanged;
+    /** Event fired when the multi-click timeout is changed.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventMultiClickTimeoutChanged;
+    /** Event fired when the size of the multi-click tolerance area is changed.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventMultiClickAreaSizeChanged;
+    /** Event fired when the default font changes.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventDefaultFontChanged;
+    /** Event fired when the default mouse cursor changes.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventDefaultMouseCursorChanged;
+    /** Event fired when the mouse move scaling factor changes.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventMouseMoveScalingChanged;
+    /** Event fired for display size changes (as notified by client code).
+     * Handlers are passed a const DisplayEventArgs reference with
+     * DisplayEventArgs::size set to the pixel size that was notifiied to the
+     * system.
+     */
     static const String EventDisplaySizeChanged;
-    //! Name of event fired when global custom RenderedStringParser is set.
+    /** Event fired when global custom RenderedStringParser is set.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
     static const String EventRenderedStringParserChanged;
 
 	/*************************************************************************

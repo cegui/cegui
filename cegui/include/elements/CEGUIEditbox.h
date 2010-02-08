@@ -74,27 +74,74 @@ public:
     static const String EventNamespace;
     //! Window factory name
     static const String WidgetTypeName;
-    //! The read-only mode for the edit box has been changed.
+    /** Event fired when the read-only mode for the edit box is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose read only setting
+     * has been changed.
+     */
     static const String EventReadOnlyModeChanged;
-    //! The masked rendering mode (password mode) has been changed.
+    /** Event fired when the masked rendering mode (password mode) is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox that has been put into or
+     * taken out of masked text (password) mode.
+     */
     static const String EventMaskedRenderingModeChanged;
-    //! The code point (character) to use for masked text has been changed.
+    /** Event fired whrn the code point (character) used for masked text is
+     * changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose text masking codepoint
+     * has been changed.
+     */
     static const String EventMaskCodePointChanged;
-    //! The validation string has been changed.
+    /** Event fired when the validation string is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose validation string has
+     * been changed.
+     */
     static const String EventValidationStringChanged;
-    //! The maximum allowable string length has been changed.
+    /** Event fired when the maximum allowable string length is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose maximum string length
+     * has been changed.
+     */
     static const String EventMaximumTextLengthChanged;
-    //! The current text has become invalid as regards to the validation string.
+    /** Event fired when the current text has become invalid as regards to the
+     * validation string.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose text has become invalid.
+     */
     static const String EventTextInvalidated;
-    //! The user attempted to chage the text in a way that was invalid.
+    /** Event fired when the user attempts to chage the text in a way that would
+     * make it invalid as regards to the validation string.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox in which the users input would
+     * have invalidated the text.
+     */
     static const String EventInvalidEntryAttempted;
-    //! The text carat (insert point) has changed.
+    /** Event fired when the text caret position / insertion point is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose current insertion point
+     * has changed.
+     */
     static const String EventCaratMoved;
-    //! The current text selection has changed.
+    /** Event fired when the current text selection is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox whose current text selection
+     * was changed.
+     */
     static const String EventTextSelectionChanged;
-    //! The number of characters in the edit box reached the current maximum.
+    /** Event fired when the number of characters in the edit box reaches the
+     * currently set maximum.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox that has become full.
+     */
     static const String EventEditboxFull;
-    //! The user accepted the current text by pressing Return, Enter, or Tab.
+    /** Event fired when the user accepts the current text by pressing Return,
+     * Enter, or Tab.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Editbox in which the user has accepted
+     * the current text.
+     */
     static const String EventTextAccepted;
 
     /*!
