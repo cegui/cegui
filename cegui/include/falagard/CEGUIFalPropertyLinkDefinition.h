@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,6 +29,7 @@
 #define _CEGUIFalPropertyLinkDefinition_h_
 
 #include "CEGUIFalPropertyDefinitionBase.h"
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -42,6 +43,11 @@ namespace CEGUI
     {
     public:
         PropertyLinkDefinition(const String& propertyName, const String& widgetNameSuffix, const String& targetProperty, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+
+        //! add a new link target to \a property on \a widget (name suffix).
+        void addLinkTarget(const String& widget, const String& property);
+        //! clear all link targets from this link definition.
+        void clearLinkTargets();
 
         // override members from PropertyDefinitionBase
         String get(const PropertyReceiver* receiver) const;
@@ -58,12 +64,42 @@ namespace CEGUI
 
         \exception UnknownObjectException
             thrown if no such target window exists within the system.
+
+        \deprecated
+            This will be removed in 0.8.x.  Use the version taking a suffix
+            string instead!
         */
         const Window* getTargetWindow(const PropertyReceiver* receiver) const;
+
+        /*!
+        \deprecated
+            This will be removed in 0.8.x.  Use the version taking a suffix
+            string instead!
+        */
         Window* getTargetWindow(PropertyReceiver* receiver);
 
-        String d_widgetNameSuffix;
-        String d_targetProperty;
+        //! Return a reference to the child with the given suffix.
+        const Window& getTargetWindow(const PropertyReceiver* receiver,
+                                      const String& name_suffix) const;
+
+        //! Return a reference to the child with the given suffix.
+        Window& getTargetWindow(PropertyReceiver* receiver,
+                                const String& name_suffix);
+
+        //! Internal struct used to keep track of targets.
+        struct LinkTarget
+        {
+            //! name suffix of the target widget.
+            String d_widgetNameSuffix;
+            //! the property to use on the target widget.
+            String d_targetProperty;
+        };
+
+        //! type used for the collection of targets.
+        typedef std::vector<LinkTarget> LinkTargetCollection;
+
+        //! collection of targets for this PropertyLinkDefinition.
+        LinkTargetCollection d_targets;
     };
 
 } // End of  CEGUI namespace section

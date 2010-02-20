@@ -51,6 +51,7 @@ namespace CEGUI
     class TextComponent;
     class NamedArea;
     class FrameComponent;
+    class PropertyLinkDefinition;
 
     /*!
     \brief
@@ -125,6 +126,7 @@ namespace CEGUI
         static const String NamedAreaElement;           //!< Tag name for named area elements.
         static const String PropertyDefinitionElement;  //!< Tag name for property definition elements.
         static const String PropertyLinkDefinitionElement;  //!< Tag name for property link elements.
+        static const String PropertyLinkTargetElement;  //!< Tag name for property link target elements.
         static const String DimOperatorElement;         //!< Tag name for dimension operator elements.
         static const String VertFormatPropertyElement;  //!< Tag name for element that specifies a vertical formatting property.
         static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
@@ -163,6 +165,7 @@ namespace CEGUI
         static const String TargetPropertyAttribute;    //!< Attribute name that stores a name of a target property.
         static const String ControlPropertyAttribute;   //!< Attribute name that stores a name of a property to control rendering of a section.
         static const String ColourAttribute;            //!< Attribute name that stores colour for all corners.
+        static const String PropertyAttribute;          //!< Attribute name that stores the name of a property.
 
         /*************************************************************************
             helper methods
@@ -415,6 +418,9 @@ namespace CEGUI
         */
         void elementColourStart(const XMLAttributes& attributes);
 
+        //! Function to handle PropertyLinkTarget elements.
+        void elementPropertyLinkTargetStart(const XMLAttributes& attributes);
+
         /*!
         \brief
             Method that handles the closing Falagard XML element.
@@ -493,6 +499,9 @@ namespace CEGUI
         */
         void elementAnyDimEnd();
 
+        //! Function to handle closing PropertyLinkDefinition XML element.
+        void elementPropertyLinkDefinitionEnd();
+
         /*!
         \brief
             Register a handler for the opening tag of an XML element
@@ -532,6 +541,8 @@ namespace CEGUI
         FrameComponent*  d_framecomponent;
 
         std::vector<BaseDim*>    d_dimStack;
+
+        PropertyLinkDefinition* d_propertyLink;
     };
 
 } // End of  CEGUI namespace section
