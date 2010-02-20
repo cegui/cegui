@@ -116,7 +116,10 @@ void Direct3D9GeometryBuffer::setPivot(const Vector3& p)
 //----------------------------------------------------------------------------//
 void Direct3D9GeometryBuffer::setClippingRegion(const Rect& region)
 {
-    d_clipRect = region;
+    d_clipRect.d_top    = PixelAligned(region.d_top);
+    d_clipRect.d_bottom = PixelAligned(region.d_bottom);
+    d_clipRect.d_left   = PixelAligned(region.d_left);
+    d_clipRect.d_right  = PixelAligned(region.d_right);
 }
 
 //----------------------------------------------------------------------------//
