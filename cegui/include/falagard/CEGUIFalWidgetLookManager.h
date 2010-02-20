@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -74,10 +74,10 @@ namespace CEGUI
 
 	      /*!
 	      \brief
-		        Return pointer to singleton WindowFactoryManager object
+		        Return pointer to singleton WidgetLookManager object
 
 	      \return
-		        Pointer to singleton WindowFactoryManager object
+		        Pointer to singleton WidgetLookManager object
 	      */
 	      static	WidgetLookManager*	getSingletonPtr(void);
 
@@ -114,8 +114,8 @@ namespace CEGUI
             String object holding the name of a widget look to test for.
 
         \return
-            - true if a WindowLookFeel named \a widget is available.
-            - false if so such WindowLookFeel is currently available.
+            - true if a WidgetLookFeel named \a widget is available.
+            - false if so such WidgetLookFeel is currently available.
         */
         bool isWidgetLookAvailable(const String& widget) const;
 
@@ -130,7 +130,7 @@ namespace CEGUI
         \return
             const reference to the requested WidgetLookFeel object.
 
-        \exception UnknownObjectException   thrown if no WindowLookFeel is available with the requested name.
+        \exception UnknownObjectException   thrown if no WidgetLookFeel is available with the requested name.
         */
         const WidgetLookFeel& getWidgetLook(const String& widget) const;
 
@@ -140,7 +140,7 @@ namespace CEGUI
             Erase the WidgetLookFeel that has the specified name.
 
         \param widget
-            String object holding the name of a widget look to be erased.  If no such WindowLookFeel exists, nothing
+            String object holding the name of a widget look to be erased.  If no such WidgetLookFeel exists, nothing
             happens.
 
         \return
