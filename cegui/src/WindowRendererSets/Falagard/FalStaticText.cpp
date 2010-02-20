@@ -235,10 +235,6 @@ namespace CEGUI
     *************************************************************************/
     Size FalagardStaticText::getDocumentSize(const Rect& renderArea) const
     {
-        // we need a formatted string to really measure anything
-        if (!d_formattedRenderedString)
-            return Size(0, 0);
-
         if (!d_formatValid)
             updateFormatting(renderArea.getSize());
 
