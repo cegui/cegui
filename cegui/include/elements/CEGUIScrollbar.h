@@ -416,6 +416,46 @@ public:
     */
     void setScrollPosition(float position);
 
+    /*!
+    \brief
+        Sets multiple scrollbar configuration parameters simultaneously.
+
+        This function is provided in order to be able to minimise the number
+        of internal state updates that occur when modifying the scrollbar
+        parameters.
+
+    \param document_size
+        Pointer to a float value holding the new value to be used for the
+        scroll bar document size.  If this is 0 the document size is left
+        unchanged.
+
+    \param page_size
+        Pointer to a float value holding the new value to be used for the scroll
+        bar page size.  If this is 0 the page size is left unchanged.
+
+    \param step_size
+        Pointer to a float value holding the new value to be used for the scroll
+        bar step size.  If this is 0 the step size is left unchanged.
+
+    \param overlap_size
+        Pointer to a float value holding the new value to be used for the scroll
+        bar overlap size.  If this is 0 then overlap size is left unchanged.
+
+    \param position
+        Pointer to a float value holding the new value to be used for the scroll
+        bar current scroll position.  If this is 0 then the current position is
+        left unchanged.
+
+    \note
+        Even if \a position is 0, the scrollbar position may still change
+        depending on how the other changes affect the scrollbar.
+    */
+    void setConfig(const float* const document_size,
+                   const float* const page_size,
+                   const float* const step_size,
+                   const float* const overlap_size,
+                   const float* const position);
+
     //! Constructor for Scrollbar objects
     Scrollbar(const String& type, const String& name);
 
@@ -455,6 +495,11 @@ protected:
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
     float getAdjustDirectionFromPoint(const Point& pt) const;
+
+    /** implementation func that updates scroll position value, returns true if
+     * value was changed.  NB: Fires no events and does no other updates.
+     */
+    bool setScrollPosition_impl(const float position);
 
     //! handler function for when thumb moves.
     bool handleThumbMoved(const EventArgs& e);

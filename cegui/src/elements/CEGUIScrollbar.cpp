@@ -164,23 +164,11 @@ void Scrollbar::setOverlapSize(float overlap_size)
 //----------------------------------------------------------------------------//
 void Scrollbar::setScrollPosition(float position)
 {
-    const float old_pos = d_position;
-
-    // max position is (docSize - pageSize)
-    // but must be at least 0 (in case doc size is very small)
-    const float max_pos = ceguimax((d_documentSize - d_pageSize), 0.0f);
-
-    // limit position to valid range:  0 <= position <= max_pos
-    d_position = (position >= 0) ?
-                    ((position <= max_pos) ?
-                        position :
-                        max_pos) :
-                    0.0f;
-
+    const bool modified = setScrollPosition_impl(position);
     updateThumb();
 
     // notification if required
-    if (d_position != old_pos)
+    if (modified)
     {
         WindowEventArgs args(this);
         onScrollPositionChanged(args);
@@ -379,6 +367,83 @@ float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
 
     return static_cast<ScrollbarWindowRenderer*>(
         d_windowRenderer)->getAdjustDirectionFromPoint(pt);
+}
+
+//----------------------------------------------------------------------------//
+bool Scrollbar::setScrollPosition_impl(const float position)
+{
+    const float old_pos = d_position;
+
+    // max position is (docSize - pageSize)
+    // but must be at least 0 (in case doc size is very small)
+    const float max_pos = ceguimax((d_documentSize - d_pageSize), 0.0f);
+
+    // limit position to valid range:  0 <= position <= max_pos
+    d_position = (position >= 0) ?
+                    ((position <= max_pos) ?
+                        position :
+                        max_pos) :
+                    0.0f;
+
+    return d_position != old_pos;
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::setConfig(const float* const document_size,
+                          const float* const page_size,
+                          const float* const step_size,
+                          const float* const overlap_size,
+                          const float* const position)
+{
+    bool config_changed = false;
+    bool position_changed = false;
+
+    if (document_size && (d_documentSize != *document_size))
+    {
+        d_documentSize = *document_size;
+        config_changed = true;
+    }
+
+    if (page_size && (d_pageSize != *page_size))
+    {
+        d_pageSize = *page_size;
+        config_changed = true;
+    }
+
+    if (step_size && (d_stepSize != *step_size))
+    {
+        d_stepSize = *step_size;
+        config_changed = true;
+    }
+    
+    if (overlap_size && (d_overlapSize != *overlap_size))
+    {
+        d_overlapSize = *overlap_size;
+        config_changed = true;
+    }
+
+    if (position)
+        position_changed = setScrollPosition_impl(*position);
+
+    // _always_ update the thumb to keep things in sync.  (though this
+    // can cause a double-trigger of EventScrollPositionChanged, which
+    // also happens with setScrollPosition anyway).
+    updateThumb();
+
+    //
+    // Fire appropriate events based on actions we took.
+    //
+    if (config_changed)
+    {
+        WindowEventArgs args(this);
+        onScrollConfigChanged(args);
+    }
+
+    if (position_changed)
+    {
+        WindowEventArgs args(this);
+        onScrollPositionChanged(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
