@@ -50,6 +50,24 @@ std::wstring Utf8ToUtf16(const std::string& utf8text)
 }
 
 //----------------------------------------------------------------------------//
+CEGUI::String Utf16ToString(const wchar_t* const utf16text)
+{
+    const int len = WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
+                                        0, 0, 0, 0);
+    if (!len)
+        throw CEGUI::InvalidRequestException(
+            "Utf16ToUtf8 - WideCharToMultiByte failed");
+
+    CEGUI::utf8* buff = new CEGUI::utf8[len + 1];
+    WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
+                        reinterpret_cast<char*>(buff), len, 0, 0);
+    const CEGUI::String result(buff);
+    delete[] buff;
+
+    return result;
+}
+
+//----------------------------------------------------------------------------//
 #else
 #   include <sys/types.h>
 #   include <sys/stat.h>
@@ -193,19 +211,19 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
 // Win32 code.
 #if defined(__WIN32__) || defined(_WIN32)
     intptr_t f;
-    struct _finddata_t fd;
+    struct _wfinddata_t fd;
 
-    if ((f = _findfirst((dir_name + file_pattern).c_str(), &fd)) != -1)
+    if ((f = _wfindfirst(Utf8ToUtf16((dir_name + file_pattern).c_str()).c_str(), &fd)) != -1)
     {
         do
         {
             if ((fd.attrib & _A_SUBDIR))
                 continue;
 
-            out_vec.push_back(fd.name);
+            out_vec.push_back(Utf16ToString(fd.name));
             ++entries;
         }
-        while (_findnext(f, &fd) == 0);
+        while (_wfindnext(f, &fd) == 0);
 
         _findclose(f);
     }
