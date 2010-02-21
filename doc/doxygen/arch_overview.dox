@@ -64,7 +64,7 @@ manager objects that are subsequently used to interact with various parts of
 CEGUI.  The main group of managers - as used in the majority of applications -
 are the ImagesetManager, the FontManager, the SchemeManager and the
 WindowManager.  The remaining manager objects, the WindowRendererManager, the
-WindowFactoryManager and the WindowLookManager are generally only needed by
+WindowFactoryManager and the WidgetLookManager are generally only needed by
 library users when they come to extend or customise the windows and widgets
 available to the system.
 

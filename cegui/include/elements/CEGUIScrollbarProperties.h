@@ -167,6 +167,32 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access the end lock mode setting for the Scrollbar.
+
+    \par Usage:
+        - Name: EndLockEnabled
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate end lock mode is enabled.
+        - "False" to indicate end lock mode is disabled.
+*/
+class EndLockEnabled : public Property
+{
+public:
+    EndLockEnabled() : Property(
+        "EndLockEnabled",
+        "Property to get/set the 'end lock' mode setting for the Scrollbar. "
+        "Value is either \"True\" or \"False\".",
+        "False")
+	{}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  ScrollbarProperties namespace section
 
 } // End of  CEGUI namespace section
