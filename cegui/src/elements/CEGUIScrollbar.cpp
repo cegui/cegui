@@ -43,6 +43,7 @@ ScrollbarProperties::PageSize       Scrollbar::d_pageSizeProperty;
 ScrollbarProperties::StepSize       Scrollbar::d_stepSizeProperty;
 ScrollbarProperties::OverlapSize    Scrollbar::d_overlapSizeProperty;
 ScrollbarProperties::ScrollPosition Scrollbar::d_scrollPositionProperty;
+ScrollbarProperties::EndLockEnabled Scrollbar::d_endLockEnabledProperty;
 
 //----------------------------------------------------------------------------//
 const String Scrollbar::EventScrollPositionChanged("ScrollPosChanged");
@@ -68,7 +69,8 @@ Scrollbar::Scrollbar(const String& type, const String& name) :
     d_pageSize(0.0f),
     d_stepSize(1.0f),
     d_overlapSize(0.0f),
-    d_position(0.0f)
+    d_position(0.0f),
+    d_endLockPosition(false)
 {
     addScrollbarProperties();
 }
@@ -116,8 +118,14 @@ void Scrollbar::setDocumentSize(float document_size)
 {
     if (d_documentSize != document_size)
     {
+        const bool reset_max_position = d_endLockPosition && isAtEnd();
+
         d_documentSize = document_size;
-        updateThumb();
+
+        if (reset_max_position)
+            setScrollPosition(getMaxScrollPosition());
+        else
+            updateThumb();
 
         WindowEventArgs args(this);
         onScrollConfigChanged(args);
@@ -129,8 +137,14 @@ void Scrollbar::setPageSize(float page_size)
 {
     if (d_pageSize != page_size)
     {
+        const bool reset_max_position = d_endLockPosition && isAtEnd();
+
         d_pageSize = page_size;
-        updateThumb();
+
+        if (reset_max_position)
+            setScrollPosition(getMaxScrollPosition());
+        else
+            updateThumb();
 
         WindowEventArgs args(this);
         onScrollConfigChanged(args);
@@ -297,6 +311,7 @@ void Scrollbar::addScrollbarProperties(void)
     addProperty(&d_stepSizeProperty);
     addProperty(&d_overlapSizeProperty);
     addProperty(&d_scrollPositionProperty);
+    addProperty(&d_endLockEnabledProperty);
 
     // we ban all these properties from xml for auto windows
     if (isAutoWindow())
@@ -373,10 +388,7 @@ float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
 bool Scrollbar::setScrollPosition_impl(const float position)
 {
     const float old_pos = d_position;
-
-    // max position is (docSize - pageSize)
-    // but must be at least 0 (in case doc size is very small)
-    const float max_pos = ceguimax((d_documentSize - d_pageSize), 0.0f);
+    const float max_pos = getMaxScrollPosition();
 
     // limit position to valid range:  0 <= position <= max_pos
     d_position = (position >= 0) ?
@@ -395,6 +407,7 @@ void Scrollbar::setConfig(const float* const document_size,
                           const float* const overlap_size,
                           const float* const position)
 {
+    const bool reset_max_position = d_endLockPosition && isAtEnd();
     bool config_changed = false;
     bool position_changed = false;
 
@@ -424,6 +437,8 @@ void Scrollbar::setConfig(const float* const document_size,
 
     if (position)
         position_changed = setScrollPosition_impl(*position);
+    else if (reset_max_position)
+        position_changed = setScrollPosition_impl(getMaxScrollPosition());
 
     // _always_ update the thumb to keep things in sync.  (though this
     // can cause a double-trigger of EventScrollPositionChanged, which
@@ -444,6 +459,32 @@ void Scrollbar::setConfig(const float* const document_size,
         WindowEventArgs args(this);
         onScrollPositionChanged(args);
     }
+}
+
+//----------------------------------------------------------------------------//
+float Scrollbar::getMaxScrollPosition() const
+{
+    // max position is (docSize - pageSize)
+    // but must be at least 0 (in case doc size is very small)
+    return ceguimax((d_documentSize - d_pageSize), 0.0f);
+}
+
+//----------------------------------------------------------------------------//
+bool Scrollbar::isAtEnd() const
+{
+    return d_position >= getMaxScrollPosition(); 
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::setEndLockEnabled(const bool enabled)
+{
+    d_endLockPosition = enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool Scrollbar::isEndLockEnabled() const
+{
+    return d_endLockPosition;
 }
 
 //----------------------------------------------------------------------------//

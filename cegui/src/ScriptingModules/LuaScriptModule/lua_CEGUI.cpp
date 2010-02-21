@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Jan 25 11:25:35 2010.
+** Generated automatically by tolua++-1.0.92 on Sun Feb 21 19:16:04 2010.
 */
 
 #ifndef __cplusplus
@@ -32087,6 +32087,38 @@ static int tolua_CEGUI_CEGUI_Scrollbar_getScrollPosition00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isEndLockEnabled of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00
+static int tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Scrollbar* self = (const CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isEndLockEnabled'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isEndLockEnabled();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isEndLockEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setDocumentSize of class  CEGUI::Scrollbar */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_setDocumentSize00
 static int tolua_CEGUI_CEGUI_Scrollbar_setDocumentSize00(lua_State* tolua_S)
@@ -32247,6 +32279,39 @@ static int tolua_CEGUI_CEGUI_Scrollbar_setScrollPosition00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setScrollPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setEndLockEnabled of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00
+static int tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+  bool enabled = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setEndLockEnabled'",NULL);
+#endif
+ {
+  self->setEndLockEnabled(enabled);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setEndLockEnabled'.",&tolua_err);
  return 0;
 #endif
 }
@@ -54460,11 +54525,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getStepSize",tolua_CEGUI_CEGUI_Scrollbar_getStepSize00);
    tolua_function(tolua_S,"getOverlapSize",tolua_CEGUI_CEGUI_Scrollbar_getOverlapSize00);
    tolua_function(tolua_S,"getScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_getScrollPosition00);
+   tolua_function(tolua_S,"isEndLockEnabled",tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00);
    tolua_function(tolua_S,"setDocumentSize",tolua_CEGUI_CEGUI_Scrollbar_setDocumentSize00);
    tolua_function(tolua_S,"setPageSize",tolua_CEGUI_CEGUI_Scrollbar_setPageSize00);
    tolua_function(tolua_S,"setStepSize",tolua_CEGUI_CEGUI_Scrollbar_setStepSize00);
    tolua_function(tolua_S,"setOverlapSize",tolua_CEGUI_CEGUI_Scrollbar_setOverlapSize00);
    tolua_function(tolua_S,"setScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_setScrollPosition00);
+   tolua_function(tolua_S,"setEndLockEnabled",tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ScrolledContainer","CEGUI::ScrolledContainer","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"ScrolledContainer");

@@ -456,6 +456,39 @@ public:
                    const float* const overlap_size,
                    const float* const position);
 
+    /*!
+    \brief
+        Enable or disable the 'end lock' mode for the scrollbar.
+
+        When enabled and the current position of the scrollbar is at the end of
+        it's travel, the end lock mode of the scrollbar will automatically
+        update the position when the document and/or page size change in order
+        that the scroll position will remain at the end of it's travel.  This
+        can be used to implement auto-scrolling in certain other widget types.
+
+    \param enabled
+        - true to indicate that end lock mode should be enabled.
+        - false to indicate that end lock mode should be disabled.
+    */
+    void setEndLockEnabled(const bool enabled);
+
+    /*!
+    \brief
+        Returns whether the 'end lock'mode for the scrollbar is enabled.
+
+        When enabled, and the current position of the scrollbar is at the end of
+        it's travel, the end lock mode of the scrollbar will automatically
+        update the scrollbar position when the document and/or page size change
+        in order that the scroll position will remain at the end of it's travel.
+        This can be used to implement auto-scrolling in certain other widget
+        types.
+
+    \return
+        - true to indicate that the end lock mode is enabled.
+        - false to indicate that the end lock mode is disabled.
+    */
+    bool isEndLockEnabled() const;
+
     //! Constructor for Scrollbar objects
     Scrollbar(const String& type, const String& name);
 
@@ -500,6 +533,12 @@ protected:
      * value was changed.  NB: Fires no events and does no other updates.
      */
     bool setScrollPosition_impl(const float position);
+
+    //! return whether the current scroll position is at the end of the range.
+    bool isAtEnd() const;
+
+    //! return the max allowable scroll position value
+    float getMaxScrollPosition() const;
 
     //! handler function for when thumb moves.
     bool handleThumbMoved(const EventArgs& e);
@@ -568,6 +607,8 @@ protected:
     float d_overlapSize;
     //! Current scroll position.
     float d_position;
+    //! whether 'end lock' mode is enabled.
+    bool d_endLockPosition;
 
 private:
     // Static Properties for this class
@@ -576,6 +617,7 @@ private:
     static ScrollbarProperties::StepSize        d_stepSizeProperty;
     static ScrollbarProperties::OverlapSize     d_overlapSizeProperty;
     static ScrollbarProperties::ScrollPosition  d_scrollPositionProperty;
+    static ScrollbarProperties::EndLockEnabled  d_endLockEnabledProperty;
 
     //! Adds scrollbar specific properties.
     void addScrollbarProperties(void);

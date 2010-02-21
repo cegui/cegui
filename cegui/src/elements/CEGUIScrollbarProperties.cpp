@@ -98,6 +98,19 @@ void	ScrollPosition::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Scrollbar*>(receiver)->setScrollPosition(PropertyHelper::stringToFloat(value));
 }
 
+String EndLockEnabled::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const Scrollbar*>(receiver)->isEndLockEnabled());
+}
+
+
+void EndLockEnabled::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Scrollbar*>(receiver)->
+        setEndLockEnabled(PropertyHelper::stringToBool(value));
+}
+
 } // End of  ScrollbarProperties namespace section
 
 } // End of  CEGUI namespace section
