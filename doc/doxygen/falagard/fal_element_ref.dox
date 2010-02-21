@@ -31,6 +31,7 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_25 <br>
 @ref fal_elem_ref_sec_26 <br>
 @ref fal_elem_ref_sec_27 <br>
+@ref fal_elem_propertylinktarget <br>
 @ref fal_elem_ref_sec_28 <br>
 @ref fal_elem_ref_sec_29 <br>
 @ref fal_elem_ref_sec_30 <br>
@@ -1160,12 +1161,12 @@ In this example, within the WidgetLook we create a new property named 'Scrollbar
 @section fal_elem_ref_sec_27 \<PropertyLinkDefinition\> Element
 
 @subsection fal_elem_ref_sec_27_1 Purpose:
-The @c \<PropertyLinkDefinition\> element creates a new named property for the widget being defined, and links this property to a specified property on a child widget, allowing properties on a child widget to be directly exposed to clients of this widget.  The defined property may be accessed via any means that a 'normal' property may.
+The @c \<PropertyLinkDefinition\> element creates a new named property for the widget being defined that is linked to one or more properties on child widget components.  The target widgets and properties can be specified either as attributes (for example if the link is to be a one to one mapping), or via \<PropertyLinkTarget\> elements (if there is to be a one to many mapping).  This allows properties on child widgets to be directly exposed to clients of the widget being defined.  The defined property may be accessed via any means that a 'normal' property may.
 
 @subsection fal_elem_ref_sec_27_2 Attributes:
 @arg @c name  specifies the name to use for the new property. Required attribute.
-@arg @c widget  specifies the name suffix of the child widget containing the property that is to be linked to the property being defined. Required attribute.
-@arg @c targetProperty  specifies the name of the property on the child widget that is to be linked to the property being defined. If this is omitted, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
+@arg @c widget  specifies the name suffix of the child widget containing the first property to be linked to the property being defined. Optional attribute.
+@arg @c targetProperty  specifies the name of the property on the child widget that is to be the first property linked to the new property being defined. If this is omitted but @c widget is specified, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
 @arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
@@ -1173,8 +1174,8 @@ The @c \<PropertyLinkDefinition\> element creates a new named property for the w
 
 @subsection fal_elem_ref_sec_27_3 Usage:
 <ul>
-    <li>The @c \<PropertyLinkDefinition\> element may not contain sub-elements.</li>
-    <li>The @c \<PropertyLinkDefinition\> element must appear as a sub-element within @c \<WidgetLook\> elements.</li>
+    <li>The @c \<PropertyLinkDefinition\> element may contain any number of @c \<PropertyLinkTarget\> sub-elements.</li>
+    <li>The @c \<PropertyLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_27_4 Examples:
@@ -1188,6 +1189,34 @@ In this example we create a new property named 'CaptionTextColour'.  This is lin
     initialValue="FFFF3333"
     layoutOnWrite="true"
   />
+  ...
+</WidgetLook>
+@endcode
+
+
+@section fal_elem_propertylinktarget \<PropertyLinkTarget\> Element
+
+@subsection fal_elem_propertylinktargetr_1 Purpose:
+The @c \<PropertyLinkTarget\> element specifies a target widget suffix and property name to be used with a @c \<PropertyLinkDefinition\>.  Whenever the property defined by the enclosing @c \<PropertyLinkDefinition\> is written to, the property specified in the @c \<PropertyLinkTarget\> will be written also.  If the @c \<PropertyLinkTarget\> is the first linked target it will also be used as the 'master linked target' and will be used as the source for read accesses to the property defined by the enclosing @c \<PropertyLinkDefinition\> element.
+
+@subsection fal_elem_propertylinktarget_2 Attributes:
+@arg @c widget specifies the name suffix of the child widget containing the property that is to be linked to the property being defined by the enclosing @c \<PropertyLinkDefinition\> element. Required attribute.
+@arg @c property specifies the name of the property on the child widget that is to be linked to the property being defined by the enclosing @c \<PropertyLinkDefinition\>. If this is omitted, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
+
+@subsection fal_elem_propertylinktarget_3 Usage:
+<ul>
+    <li>The @c \<PropertyLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<PropertyLinkTarget\> element may only appear as a sub-element within @c \<PropertyLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_propertylinktarget_4 Examples:
+In this example we create a new property named 'TextColour'.  This is linked to separate properties on two different child components.  A property named 'LabelColour' on a child widget with name suffix '__auto_button1__', and a property named 'ContentColour' on a child widget with name suffix '__auto_content_panel__.  Writing to the property 'TextColour' will cause both 'LabelColour' and 'ContentColour' to be updated, while reading the property 'TextColour' will fetch the value of 'LabelColour' (because it appears first, it is treated as the master target).
+@code
+<WidgetLook name="PropertyLinkTargetExample">
+  <PropertyLinkDefinition name="TextColour" initialValue="FFFF00FF" >
+    <PropertyLinkTarget widget="__auto_button1__" property="LabelColour" />
+    <PropertyLinkTarget widget="__auto_content_panel__" property="ContentColour" />
+  </PropertyLinkDefinition>
   ...
 </WidgetLook>
 @endcode

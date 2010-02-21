@@ -27,6 +27,9 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalPropertyDefinition.h"
 #include "CEGUIWindow.h"
+#include "CEGUIExceptions.h"
+#include "CEGUILogger.h"
+#include "CEGUIWindowManager.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -47,7 +50,31 @@ namespace CEGUI
     // abstract members from Property
     String PropertyDefinition::get(const PropertyReceiver* receiver) const
     {
-        return static_cast<const Window*>(receiver)->getUserString(d_userStringName);
+        const Window* const wnd = static_cast<const Window*>(receiver);
+
+        // the try/catch is used instead of querying the existence of the user
+        // string in order that for the 'usual' case - where the user string
+        // exists - there is basically no additional overhead, and that any
+        // overhead is incurred only for the initial creation of the user
+        // string.
+        // Maybe the only negative here is that an error gets logged, though
+        // this can be treated as a 'soft' error.
+        try
+        {
+            return wnd->getUserString(d_userStringName);
+        }
+        catch (UnknownObjectException&)
+        {
+            Logger::getSingleton().logEvent(
+                "PropertyDefiniton::get: Defining new user string: " +
+                d_userStringName);
+
+            // get a non-const reference to target window.
+            WindowManager::getSingleton().getWindow(wnd->getName())->
+                setUserString(d_userStringName, d_default);
+
+            return d_default;
+        }
     }
 
     void PropertyDefinition::set(PropertyReceiver* receiver, const String& value)
