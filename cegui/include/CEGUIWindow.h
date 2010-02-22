@@ -3970,6 +3970,11 @@ protected:
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
+    // constrain given UVector2 to window's min size, return if size changed.
+    bool constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz);
+    // constrain given UVector2 to window's max size, return if size changed.
+    bool constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz);
+
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
