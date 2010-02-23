@@ -49,10 +49,13 @@
 #   include "config.h"
 #endif
 
+// Declare a function to return a WindowRendererModule as extern when
+// statically linking.
 #if defined(CEGUI_STATIC)
-#	if defined(CEGUI_FALAGARD_RENDERER)
-#		include "WindowRendererSets/Falagard/FalModule.h"
-#	endif
+extern "C"
+{
+CEGUI::WindowRendererModule& getWindowRendererModule();
+}
 #endif
 
 
