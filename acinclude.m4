@@ -1034,7 +1034,14 @@ AC_DEFUN([CEGUI_LIBTOOL_OPTIONS],[
                                   be what you want to do (except for Win32 builds, perhaps).
                                   See also --with-version-suffix for how to modify the version
                                   suffix to be used.]),
-                  [cegui_enable_version_suffix=$enableval], [cegui_enable_version_suffix=yes])
+                  [cegui_enable_version_suffix=$enableval],
+                  [
+                      if test x$MINGW32 = xyes; then
+                          cegui_enable_version_suffix=no
+                      else
+                          cegui_enable_version_suffix=yes
+                      fi
+                  ])
 
     AC_ARG_WITH([version-suffix],
                   AC_HELP_STRING([--with-version-suffix],
