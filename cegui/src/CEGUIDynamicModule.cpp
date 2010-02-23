@@ -92,11 +92,19 @@ DynamicModule::DynamicModule(const String& name) :
 #endif
     // Optionally add a _d to the module name for the debug config on Win32
 #if defined(__WIN32__) || defined(_WIN32)
-#   if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
     // if name has .dll extension, assume it's complete and do not touch it.
     if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")
-        d_moduleName += CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
-#   endif
+    {
+        #ifdef CEGUI_HAS_BUILD_SUFFIX
+            // append a suffix (like _d for debug builds, etc)
+            d_moduleName += CEGUI_BUILD_SUFFIX;
+        #endif
+
+        #ifdef CEGUI_HAS_VERSION_SUFFIX
+            d_moduleName += "-";
+            d_moduleName += CEGUI_VERSION_SUFFIX;
+        #endif
+    }
 #endif
 
     d_handle = DYNLIB_LOAD(d_moduleName.c_str());
