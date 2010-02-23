@@ -63,30 +63,18 @@
 #include <ctime>
 #include <clocale>
 
-//This block includes the proper headers when static linking
+// declare create / destroy functions used for XMLParser and ImageCodec
+// modules as extern when static linking
 #if defined(CEGUI_STATIC)
-    // XML Parser
-	#ifdef CEGUI_WITH_EXPAT
-		#include "XMLParserModules/ExpatParser/CEGUIExpatParserModule.h"
-	#elif CEGUI_WITH_TINYXML
-		#include "XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
-	#elif CEGUI_WITH_XERCES
-		#include "XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
-	#endif
-    // Image codec
-    #if defined(CEGUI_CODEC_SILLY)
-        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_TGA)
-        #include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_CORONA)
-        #include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_DEVIL)
-        #include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_FREEIMAGE)
-        #include "ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
-    #else //Make Silly the default
-        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-    #endif
+extern "C"
+{
+// XML Parser
+CEGUI::XMLParser* createParser(void);
+void destroyParser(CEGUI::XMLParser* parser);
+// Image codec
+CEGUI::ImageCodec* createImageCodec(void);
+void destroyImageCodec(CEGUI::ImageCodec* imageCodec);
+}
 #endif
 
 #define S_(X) #X
