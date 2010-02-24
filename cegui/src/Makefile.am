@@ -9,8 +9,12 @@ libCEGUIBase@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@ \
 
 libCEGUIBase@cegui_bsfx@_la_LIBADD = $(cegui_pc_platform_libs)
 
+if CEGUI_BUILD_STATIC
+libCEGUIBase@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUIBase@cegui_bsfx@_la_CPPFLAGS = -DCEGUIBASE_EXPORTS
+endif
 endif
 
 lib_LTLIBRARIES=libCEGUIBase@cegui_bsfx@.la
