@@ -4,8 +4,12 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 
 libCEGUIFreeImageImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUIFreeImageImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUIFreeImageImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUIFREEIMAGEIMAGECODEC_EXPORTS
+endif
 endif
 
 libCEGUIFreeImageImageCodec@cegui_bsfx@_la_LIBADD = $(FreeImage_LIBS) \
