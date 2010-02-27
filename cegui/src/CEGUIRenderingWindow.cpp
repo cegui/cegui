@@ -321,5 +321,11 @@ void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
 }
 
 //----------------------------------------------------------------------------//
+void RenderingWindow::invalidateGeometry()
+{
+    d_geometryValid = false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
