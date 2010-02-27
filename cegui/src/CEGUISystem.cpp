@@ -1327,10 +1327,22 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
 
-        // regardless of what is done above, invalidate all windows.  This is
-        // required since geometry can be wrong with referenced textures no
-        // longer existing due to auto-scaling effect (mainly affects fonts).
-        d_activeSheet->invalidate(true);
+        // regardless of what is done above, invalidate all windows and their
+        // associated RenderingWindows.  This is required since cached geometry
+        // could reference textures that no longer exist.
+        WindowManager::WindowIterator wi(
+            WindowManager::getSingleton().getIterator());
+
+        for ( ; !wi.isAtEnd(); ++wi)
+        {
+            Window* const wnd(wi.getCurrentValue());
+            // invalidate window itself
+            wnd->invalidate();
+            // if window has rendering window surface, invalidate it's geometry
+            RenderingSurface* rs;
+            if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
+                static_cast<RenderingWindow*>(rs)->invalidateGeometry();
+        }
 	}
 
     // Fire event
