@@ -46,6 +46,21 @@ public:
     //! Destructor
     virtual ~OgreRenderTarget();
 
+    /*!
+    \brief
+        Set the underlying viewport area directly - bypassing what the
+        RenderTarget considers to be it's area - thus allowing the view port
+        area used for rendering to be different to the area set for the target.
+
+    \param area
+        Rect object describing the area to use in pixels.
+
+    \deprecated
+        This function is deprecated and will be removed or changed considerably
+        in future releases.
+    */
+    void setOgreViewportDimensions(const Rect& area);
+
     // implement parts of CEGUI::RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
