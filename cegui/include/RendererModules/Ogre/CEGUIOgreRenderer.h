@@ -195,6 +195,44 @@ public:
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
 
+    /*!
+    \brief
+        Controls whether rendering done by CEGUI will be wrapped with calls to
+        Ogre::RenderSystem::_beginFrame and Ogre::RenderSystem::_endFrame.
+
+        This defaults to enabled and is required when using the default hook
+        that automatically calls CEGUI::System::renderGUI via a frame listener.
+        If you disable this setting, the automated rendering will also be
+        disabled, which is useful when you wish to perform your own calls to the
+        CEGUI::System::renderGUI function (and is the sole purpose for this
+        setting).
+
+    \param enabled
+        - true if _beginFrame and _endFrame should be called.
+        - false if _beginFrame and _endFrame should not be called (also disables
+          default renderGUI call).
+    */
+    void setFrameControlExecutionEnabled(const bool enabled);
+
+    /*!
+    \brief
+        Returns whether rendering done by CEGUI will be wrapped with calls to
+        Ogre::RenderSystem::_beginFrame and Ogre::RenderSystem::_endFrame.
+
+        This defaults to enabled and is required when using the default hook
+        that automatically calls CEGUI::System::renderGUI via a frame listener.
+        If you disable this setting, the automated rendering will also be
+        disabled, which is useful when you wish to perform your own calls to the
+        CEGUI::System::renderGUI function (and is the sole purpose for this
+        setting).
+
+    \return
+        - true if _beginFrame and _endFrame will be called.
+        - false if _beginFrame and _endFrame will not be called (also means
+          default renderGUI call will not be made).
+    */
+    bool isFrameControlExecutionEnabled() const;
+
     // implement CEGUI::Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -260,6 +298,8 @@ protected:
     Ogre::RenderSystem* d_renderSystem;
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
+    //! Whether _beginFrame and _endFrame will be called.
+    bool d_makeFrameControlCalls;
 };
 
 

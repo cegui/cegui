@@ -72,8 +72,29 @@ void OgreRenderTarget::draw(const RenderQueue& queue)
 void OgreRenderTarget::setArea(const Rect& area)
 {
     d_area = area;
+    setOgreViewportDimensions(area);
+
     d_matrixValid = false;
-    d_viewportValid = false;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderTarget::setOgreViewportDimensions(const Rect& area)
+{
+    if (d_viewport)
+    {
+        Ogre::RenderTarget* rt = d_viewport->getTarget();
+
+        if (rt)
+        {
+            d_viewport->setDimensions(
+                area.d_left / rt->getWidth(),
+                area.d_top / rt->getHeight(),
+                area.getWidth() / rt->getWidth(),
+                area.getHeight() / rt->getHeight());
+        }
+
+        d_viewportValid = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
