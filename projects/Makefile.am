@@ -1,9 +1,7 @@
 EXTRA_DIST = premake/README \
-             premake/build_samples_vs2002.bat \
              premake/build_samples_vs2003.bat \
              premake/build_samples_vs2005.bat \
              premake/build_samples_vs2008.bat \
-             premake/build_vs2002.bat \
              premake/build_vs2003.bat \
              premake/build_vs2005.bat \
              premake/build_vs2008.bat \
