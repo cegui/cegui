@@ -20,6 +20,7 @@ EXTRA_DIST = premake/README \
              premake/RendererModules/Direct3D10/premake.lua \
              premake/RendererModules/Direct3D9/premake.lua \
              premake/RendererModules/Irrlicht/premake.lua \
+             premake/RendererModules/Null/premake.lua \
              premake/RendererModules/Ogre/premake.lua \
              premake/RendererModules/OpenGL/premake.lua \
              premake/Samples/TextDemo/premake.lua \
