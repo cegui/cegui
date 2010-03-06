@@ -6617,9 +6617,9 @@
 				CEGUI_IRR_SDK_PATH = "../../../../../SDKs/irrlicht-1.7.1";
 				CEGUI_IRR_SDK_VERSION = 16;
 				CEGUI_OGRE_ARCHS = i386;
-				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
-				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
+				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
+				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
 				CEGUI_VERSION = 0.7.1;
 				COPY_PHASE_STRIP = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6641,9 +6641,9 @@
 				CEGUI_IRR_SDK_PATH = "../../../../../SDKs/irrlicht-1.7.1";
 				CEGUI_IRR_SDK_VERSION = 16;
 				CEGUI_OGRE_ARCHS = i386;
-				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
-				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -lois";
+				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
+				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
 				CEGUI_VERSION = 0.7.1;
 				COPY_PHASE_STRIP = YES;
 				GCC_VERSION = 4.0;
@@ -7371,11 +7371,7 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_FWK_PATH)\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -7388,8 +7384,9 @@
 					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
-					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/boost_1_42",
+					"$(CEGUI_OGRE_SDK_PATH)/include/OIS",
 					"$(CEGUI_IRR_SDK_PATH)/include",
 					../../cegui/include,
 				);
@@ -7416,11 +7413,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CEGUI_OGRE_FWK_PATH)\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
@@ -7431,8 +7424,9 @@
 					"CEGUI_IRR_SDK_VERSION=$(CEGUI_IRR_SDK_VERSION)",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
-					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/boost_1_42",
+					"$(CEGUI_OGRE_SDK_PATH)/include/OIS",
 					"$(CEGUI_IRR_SDK_PATH)/include",
 					../../cegui/include,
 				);
@@ -8328,12 +8322,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(CEGUI_OGRE_ARCHS)";
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_FWK_PATH)",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -8344,7 +8339,8 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/boost_1_42",
 				);
 				INFOPLIST_FILE = "CEGUIOgreRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -8362,13 +8358,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(CEGUI_OGRE_ARCHS)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_FWK_PATH)",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -8377,7 +8374,8 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/lib/release/Ogre.framework/Headers",
+					"$(CEGUI_OGRE_SDK_PATH)/boost_1_42",
 				);
 				INFOPLIST_FILE = "CEGUIOgreRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
