@@ -6612,10 +6612,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
-				CEGUI_IRR_FWK_PATH = "../../../Irrlicht-1.5";
-				CEGUI_IRR_LINK_FLAGS = "-framework Irrlicht";
-				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
-				CEGUI_IRR_SDK_VERSION = 14;
+				CEGUI_IRR_LINK_FLAGS = "";
+				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit -lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_SDK_PATH = "../../../../../SDKs/irrlicht-1.7.1";
+				CEGUI_IRR_SDK_VERSION = 16;
 				CEGUI_OGRE_ARCHS = i386;
 				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
@@ -6636,10 +6636,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				CEGUI_COMPANY_ID = net.sourceforge.crayzedsgui;
-				CEGUI_IRR_FWK_PATH = "../../../Irrlicht-1.5";
-				CEGUI_IRR_LINK_FLAGS = "-framework Irrlicht";
-				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit";
-				CEGUI_IRR_SDK_VERSION = 14;
+				CEGUI_IRR_LINK_FLAGS = "";
+				CEGUI_IRR_SAMPLE_LINK_FLAGS = "-framework AppKit -framework IOKit -lIrrlicht -read_only_relocs suppress";
+				CEGUI_IRR_SDK_PATH = "../../../../../SDKs/irrlicht-1.7.1";
+				CEGUI_IRR_SDK_VERSION = 16;
 				CEGUI_OGRE_ARCHS = i386;
 				CEGUI_OGRE_FWK_PATH = ../../../OgreSDK/dependencies;
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
@@ -7390,12 +7390,15 @@
 				HEADER_SEARCH_PATHS = (
 					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
 					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
-					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
+					"$(CEGUI_IRR_SDK_PATH)/include",
 					../../cegui/include,
 				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(CEGUI_OGRE_FWK_PATH)/lib/Release";
+				LIBRARY_SEARCH_PATHS = (
+					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
+					"$(CEGUI_OGRE_FWK_PATH)/lib/Release",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -7430,12 +7433,15 @@
 				HEADER_SEARCH_PATHS = (
 					"$(CEGUI_OGRE_FWK_PATH)/Ogre.framework/Headers",
 					"$(CEGUI_OGRE_FWK_PATH)/include/OIS",
-					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
+					"$(CEGUI_IRR_SDK_PATH)/include",
 					../../cegui/include,
 				);
 				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(CEGUI_OGRE_FWK_PATH)/lib/Release";
+				LIBRARY_SEARCH_PATHS = (
+					"$(CEGUI_IRR_SDK_PATH)/lib/MacOSX",
+					"$(CEGUI_OGRE_FWK_PATH)/lib/Release",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -8257,10 +8263,6 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(CEGUI_IRR_FWK_PATH)",
-				);
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -8274,7 +8276,7 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
+					"$(CEGUI_IRR_SDK_PATH)/include",
 				);
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -8296,10 +8298,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(CEGUI_IRR_FWK_PATH)",
-				);
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
@@ -8311,7 +8309,7 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(CEGUI_IRR_FWK_PATH)/Irrlicht.framework/Headers",
+					"$(CEGUI_IRR_SDK_PATH)/include",
 				);
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
