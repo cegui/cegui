@@ -3,8 +3,12 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 
 libCEGUITinyXMLParser@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUITinyXMLParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUITinyXMLParser@cegui_bsfx@_la_CPPFLAGS = -DCEGUITINYXMLPARSER_EXPORTS
+endif
 endif
 
 lib_LTLIBRARIES=libCEGUITinyXMLParser@cegui_bsfx@.la

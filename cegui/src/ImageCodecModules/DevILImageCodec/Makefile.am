@@ -4,8 +4,12 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 
 libCEGUIDevILImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUIDevILImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUIDevILImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
+endif
 endif
 
 libCEGUIDevILImageCodec@cegui_bsfx@_la_LIBADD = $(DevIL_LIBS) \

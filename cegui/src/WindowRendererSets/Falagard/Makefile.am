@@ -3,8 +3,12 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 
 libCEGUIFalagardWRBase@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUIFalagardWRBase@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUIFalagardWRBase@cegui_bsfx@_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EXPORTS
+endif
 endif
 
 libCEGUIFalagardWRBase@cegui_bsfx@_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la

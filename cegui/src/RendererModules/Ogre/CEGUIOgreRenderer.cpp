@@ -309,13 +309,15 @@ void OgreRenderer::beginRendering()
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
 
-    d_renderSystem->_beginFrame();
+    if (d_makeFrameControlCalls)
+        d_renderSystem->_beginFrame();
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::endRendering()
 {
-    d_renderSystem->_endFrame();
+    if (d_makeFrameControlCalls)
+        d_renderSystem->_endFrame();
 }
 
 //----------------------------------------------------------------------------//
@@ -369,7 +371,8 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
     // TODO: should be set to correct value
     d_maxTextureSize(2048),
     d_ogreRoot(Ogre::Root::getSingletonPtr()),
-    d_activeBlendMode(BM_INVALID)
+    d_activeBlendMode(BM_INVALID),
+    d_makeFrameControlCalls(true)
 {
     checkOgreInitialised();
 
@@ -451,6 +454,24 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
                                                   SBF_ONE_MINUS_SOURCE_ALPHA,
                                                   SBF_ONE_MINUS_DEST_ALPHA,
                                                   SBF_ONE);
+}
+
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::setFrameControlExecutionEnabled(const bool enabled)
+{
+    d_makeFrameControlCalls = enabled;
+
+    // default rendering requires _beginFrame and _endFrame calls be made,
+    // so if we're disabling those we must also disable default rendering.
+    if (!d_makeFrameControlCalls)
+        setRenderingEnabled(false);
+}
+
+//----------------------------------------------------------------------------//
+bool OgreRenderer::isFrameControlExecutionEnabled() const
+{
+    return d_makeFrameControlCalls;
 }
 
 //----------------------------------------------------------------------------//

@@ -1161,11 +1161,21 @@ In this example, within the WidgetLook we create a new property named 'Scrollbar
 @section fal_elem_ref_sec_27 \<PropertyLinkDefinition\> Element
 
 @subsection fal_elem_ref_sec_27_1 Purpose:
-The @c \<PropertyLinkDefinition\> element creates a new named property for the widget being defined that is linked to one or more properties on child widget components.  The target widgets and properties can be specified either as attributes (for example if the link is to be a one to one mapping), or via \<PropertyLinkTarget\> elements (if there is to be a one to many mapping).  This allows properties on child widgets to be directly exposed to clients of the widget being defined.  The defined property may be accessed via any means that a 'normal' property may.
+The @c \<PropertyLinkDefinition\> element creates a new named property for the
+widget being defined that is linked to one or more properties on either child
+widget components, or on the parent widget.  The target widgets and properties
+can be specified either as attributes (for example if the link is to be a one to
+one mapping), or via \<PropertyLinkTarget\> elements (if there is to be a one to
+many mapping).  This allows properties on child widgets to be directly exposed
+to clients of the widget being defined, as well as allowing the widget being
+defined to make use of properties defined on a parent widget.  The defined
+property may be accessed via any means that a 'normal' property may.
 
 @subsection fal_elem_ref_sec_27_2 Attributes:
 @arg @c name  specifies the name to use for the new property. Required attribute.
-@arg @c widget  specifies the name suffix of the child widget containing the first property to be linked to the property being defined. Optional attribute.
+@arg @c widget  specifies either the name suffix of the child widget containing
+the first property to be linked to the property being defined, or the special
+value @c "__parent__" to indicate a back-link to the parent. Optional attribute.
 @arg @c targetProperty  specifies the name of the property on the child widget that is to be the first property linked to the new property being defined. If this is omitted but @c widget is specified, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
 @arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
@@ -1197,10 +1207,19 @@ In this example we create a new property named 'CaptionTextColour'.  This is lin
 @section fal_elem_propertylinktarget \<PropertyLinkTarget\> Element
 
 @subsection fal_elem_propertylinktargetr_1 Purpose:
-The @c \<PropertyLinkTarget\> element specifies a target widget suffix and property name to be used with a @c \<PropertyLinkDefinition\>.  Whenever the property defined by the enclosing @c \<PropertyLinkDefinition\> is written to, the property specified in the @c \<PropertyLinkTarget\> will be written also.  If the @c \<PropertyLinkTarget\> is the first linked target it will also be used as the 'master linked target' and will be used as the source for read accesses to the property defined by the enclosing @c \<PropertyLinkDefinition\> element.
+The @c \<PropertyLinkTarget\> element specifies a target widget suffix and
+property name to be used with a @c \<PropertyLinkDefinition\>.  Whenever the
+property defined by the enclosing @c \<PropertyLinkDefinition\> is written to,
+the property specified in the @c \<PropertyLinkTarget\> will be written also.
+If the @c \<PropertyLinkTarget\> is the first linked target it will also be used
+as the 'master linked target' and will be used as the source for read accesses
+to the property defined by the enclosing @c \<PropertyLinkDefinition\> element.
 
 @subsection fal_elem_propertylinktarget_2 Attributes:
-@arg @c widget specifies the name suffix of the child widget containing the property that is to be linked to the property being defined by the enclosing @c \<PropertyLinkDefinition\> element. Required attribute.
+@arg @c widget specifies either the name suffix of the child widget containing
+the property that is to be linked to the property being defined by the enclosing
+@c \<PropertyLinkDefinition\> element, or the special value @c "__parent__" to
+indicate a back-link to the parent. Required attribute.
 @arg @c property specifies the name of the property on the child widget that is to be linked to the property being defined by the enclosing @c \<PropertyLinkDefinition\>. If this is omitted, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
 
 @subsection fal_elem_propertylinktarget_3 Usage:
@@ -1295,7 +1314,23 @@ The @c \<Section\> element is used to name an ImagerySection to be included for 
 @subsection fal_elem_ref_sec_29_2 Attributes:
 @arg @c look  specifies the name of a WidgetLook that contains the ImagerySection to be referenced. If this is omitted, the WidgetLook currently being defined is used. Optional attribute.
 @arg @c section  specifies the name of an ImagerySection from the chosen WidgetLook to be referenced. Required attribute.
-@arg @c controlProperty  specifies the name of a boolean property that will be accessed to determine whether or not to render this section.  Optional attribute.
+@arg @c controlProperty  specifies the name of a property that will be accessed
+to determine whether or not to render this section (see @c controlValue below
+for details of how it is determined whether or not the secion will be drawn).
+Optional attribute.
+@arg @c controlValue  specifies a value that will be compared to the value
+fetched from @c controlProperty in order to decide whether to draw the section.
+If @c controlValue is not specified, or is specified as the empty string, then
+the property named in @c controlProperty is treated as a boolean value. Otherwise
+the value fetched from the property named in @c controlPropery must exactly match
+the value specified in @c controlValue for the imagery section to be drawn.
+Optional attribute.
+@arg @c controlWidget  specifies either the name suffix of a child widget, or
+the special value @c "__parent__", to indicate a widget that will be used as the
+source of the property named in @c controlProperty.  If @c controlWidget is not
+specified, or is specified as the empty string, then the widget with WidgetLook
+assigned to it will be used as the source (matching the previous / default
+behaviour).  Optional attribute.
 
 @subsection fal_elem_ref_sec_29_3 Usage:
 <ul>

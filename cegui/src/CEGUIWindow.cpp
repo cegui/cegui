@@ -1921,7 +1921,19 @@ void Window::setArea(const UDim& xpos, const UDim& ypos,
 //----------------------------------------------------------------------------//
 void Window::setArea(const UVector2& pos, const UVector2& size)
 {
-    setArea_impl(pos, size);
+    // Limit the value we set to something that's within the constraints
+    // specified via the min and max size settings.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Size base_sz((d_parent && !d_nonClientContent) ?
+                            d_parent->getUnclippedInnerRect().getSize() :
+                            getParentPixelSize());
+
+    UVector2 newsz(size);
+    constrainUVector2ToMinSize(base_sz, newsz);
+    constrainUVector2ToMaxSize(base_sz, newsz);
+
+    setArea_impl(pos, newsz);
 }
 
 //----------------------------------------------------------------------------//
@@ -1951,19 +1963,32 @@ void Window::setYPosition(const UDim& y)
 //----------------------------------------------------------------------------//
 void Window::setSize(const UVector2& size)
 {
-    setArea_impl(d_area.getPosition(), size);
+    // Limit the value we set to something that's within the constraints
+    // specified via the min and max size settings.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Size base_sz((d_parent && !d_nonClientContent) ?
+                            d_parent->getUnclippedInnerRect().getSize() :
+                            getParentPixelSize());
+
+    UVector2 newsz(size);
+    constrainUVector2ToMinSize(base_sz, newsz);
+    constrainUVector2ToMaxSize(base_sz, newsz);
+
+    // set the new size.
+    setArea_impl(d_area.getPosition(), newsz);
 }
 
 //----------------------------------------------------------------------------//
 void Window::setWidth(const UDim& width)
 {
-    setArea_impl(d_area.getPosition(), UVector2(width, d_area.getSize().d_y));
+    setSize(UVector2(width, d_area.getSize().d_y));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setHeight(const UDim& height)
 {
-    setArea_impl(d_area.getPosition(), UVector2(d_area.getSize().d_x, height));
+    setSize(UVector2(d_area.getSize().d_x, height));
 }
 
 //----------------------------------------------------------------------------//
@@ -1971,9 +1996,21 @@ void Window::setMaxSize(const UVector2& size)
 {
     d_maxSize = size;
 
-    // set window area back on itself to cause new maximum size to be applied if
-    // required.
-    setArea(d_area);
+    // Apply set maximum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Size base_sz((d_parent && !d_nonClientContent) ?
+                            d_parent->getUnclippedInnerRect().getSize() :
+                            getParentPixelSize());
+
+    UVector2 wnd_sz(getSize());
+
+    if (constrainUVector2ToMaxSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
 }
 
 //----------------------------------------------------------------------------//
@@ -1981,9 +2018,21 @@ void Window::setMinSize(const UVector2& size)
 {
     d_minSize = size;
 
-    // set window area back on itself to cause new minimum size to be applied if
-    // required.
-    setArea(d_area);
+    // Apply set minimum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Size base_sz((d_parent && !d_nonClientContent) ?
+                            d_parent->getUnclippedInnerRect().getSize() :
+                            getParentPixelSize());
+
+    UVector2 wnd_sz(getSize());
+
+    if (constrainUVector2ToMinSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
 }
 
 //----------------------------------------------------------------------------//
@@ -3798,5 +3847,78 @@ WindowUpdateMode Window::getUpdateMode() const
 }
 
 //----------------------------------------------------------------------------//
+bool Window::constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz)
+{
+    const Vector2 pixel_sz(sz.asAbsolute(base_sz));
+    const Vector2 min_sz(d_minSize.asAbsolute(
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    bool size_changed = false;
+
+    // check width is not less than the minimum
+    if (pixel_sz.d_x < min_sz.d_x)
+    {
+        sz.d_x.d_offset = ceguimin(sz.d_x.d_offset, d_minSize.d_x.d_offset);
+
+        sz.d_x.d_scale = (base_sz.d_width != 0.0f) ?
+            (min_sz.d_x - sz.d_x.d_offset) / base_sz.d_width :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    // check height is not less than the minimum
+    if (pixel_sz.d_y < min_sz.d_y)
+    {
+        sz.d_y.d_offset = ceguimin(sz.d_y.d_offset, d_minSize.d_y.d_offset);
+
+        sz.d_y.d_scale = (base_sz.d_height != 0.0f) ?
+            (min_sz.d_y - sz.d_y.d_offset) / base_sz.d_height :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    return size_changed;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz)
+{
+    const Vector2 pixel_sz(sz.asAbsolute(base_sz));
+    const Vector2 max_sz(d_maxSize.asAbsolute(
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    bool size_changed = false;
+
+    // check width is not greater than the maximum
+    if (pixel_sz.d_x > max_sz.d_x)
+    {
+        sz.d_x.d_offset = ceguimax(sz.d_x.d_offset, d_maxSize.d_x.d_offset);
+
+        sz.d_x.d_scale = (base_sz.d_width != 0.0f) ?
+            (max_sz.d_x - sz.d_x.d_offset) / base_sz.d_width :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    // check height is not greater than the maximum
+    if (pixel_sz.d_y > max_sz.d_y)
+    {
+        sz.d_y.d_offset = ceguimax(sz.d_y.d_offset, d_maxSize.d_y.d_offset);
+
+        sz.d_y.d_scale = (base_sz.d_height != 0.0f) ?
+            (max_sz.d_y - sz.d_y.d_offset) / base_sz.d_height :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    return size_changed;
+}
+
+//----------------------------------------------------------------------------//
+
 
 } // End of  CEGUI namespace section

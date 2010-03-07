@@ -1034,7 +1034,14 @@ AC_DEFUN([CEGUI_LIBTOOL_OPTIONS],[
                                   be what you want to do (except for Win32 builds, perhaps).
                                   See also --with-version-suffix for how to modify the version
                                   suffix to be used.]),
-                  [cegui_enable_version_suffix=$enableval], [cegui_enable_version_suffix=yes])
+                  [cegui_enable_version_suffix=$enableval],
+                  [
+                      if test x$MINGW32 = xyes; then
+                          cegui_enable_version_suffix=no
+                      else
+                          cegui_enable_version_suffix=yes
+                      fi
+                  ])
 
     AC_ARG_WITH([version-suffix],
                   AC_HELP_STRING([--with-version-suffix],
@@ -1052,7 +1059,11 @@ AC_DEFUN([CEGUI_LIBTOOL_OPTIONS],[
     fi
 
     if test x$MINGW32 = xyes; then
-        CEGUI_LIB_LINK_FLAGS="$CEGUI_LIB_LINK_FLAGS -shared -no-undefined"
+        if test x$enable_shared = xyes; then
+            CEGUI_LIB_LINK_FLAGS="$CEGUI_LIB_LINK_FLAGS -shared -no-undefined"
+        else
+            CEGUI_LIB_LINK_FLAGS="$CEGUI_LIB_LINK_FLAGS -static"
+        fi
     fi
 
     AC_SUBST(CEGUI_LIB_LINK_FLAGS)
@@ -1109,5 +1120,50 @@ AC_DEFUN([CEGUI_CHECK_EXPRESSIONDIM],[
     if test x$cegui_enable_expression_dim = xyes; then
         AC_DEFINE(CEGUI_HAS_EXPRESSION_DIM, [], [Define if you're building the ExpressionDim support.])
     fi
+])
+
+# check and initialise static build setup.
+# MUST be done after checks for XMLParser and ImageCodec modules
+# since we need to know about the default parsers to link in for
+# the samples.
+AC_DEFUN([CEGUI_CHECK_STATIC],[
+    if test x$enable_static = xyes && test x$enable_shared = xyes; then
+            AC_MSG_ERROR([
+You have enabled the static build, this can not be used at the same time as
+shared builds due to the different configurations requiring different build
+options.  You should add the --disable-shared option also if you wish to
+continue with the static build.])
+    fi
+
+    if test x$enable_static = xyes; then
+        SAMPLE_STATIC_LDFLAGS='$(top_builddir)'"/cegui/src/WindowRendererSets/Falagard/libCEGUIFalagardWRBase${cegui_bsfx}.la "
+
+        case $cegui_default_image_codec in
+            FreeImageImageCodec ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/ImageCodecModules/FreeImageImageCodec/libCEGUIFreeImageImageCodec${cegui_bsfx}.la "
+                                    ;;
+            SILLYImageCodec ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/ImageCodecModules/SILLYImageCodec/libCEGUISILLYImageCodec${cegui_bsfx}.la "
+                                    ;;
+            DevILImageCodec ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/ImageCodecModules/DevILImageCodec/libCEGUIDevILImageCodec${cegui_bsfx}.la "
+                                    ;;
+            CoronaImageCodec ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/ImageCodecModules/CoronaImageCodec/libCEGUICoronaImageCodec${cegui_bsfx}.la "
+                                    ;;
+            TGAImageCodec ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/ImageCodecModules/TGAImageCodec/libCEGUITGAImageCodec${cegui_bsfx}.la "
+                                    ;;
+        esac
+
+        case $cegui_default_parser in
+            ExpatParser ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/XMLParserModules/ExpatParser/libCEGUIExpatParser${cegui_bsfx}.la "
+                                    ;;
+            LibxmlParser ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/XMLParserModules/LibxmlParser/libCEGUILibxmlParser${cegui_bsfx}.la "
+                                    ;;
+            TinyXMLParser ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/XMLParserModules/TinyXMLParser/libCEGUITinyXMLParser${cegui_bsfx}.la "
+                                    ;;
+            XercesParser ) SAMPLE_STATIC_LDFLAGS+='$(top_builddir)'"/cegui/src/XMLParserModules/XercesParser/libCEGUIXercesParser${cegui_bsfx}.la "
+                                    ;;
+        esac
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_STATIC], [test x$enable_static = xyes && test x$enable_shared != xyes])
+    AC_SUBST(SAMPLE_STATIC_LDFLAGS)
 ])
 

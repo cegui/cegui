@@ -10,8 +10,14 @@ INCLUDES += -I$(top_srcdir)/cegui/include \
 
 libCEGUIOpenGLRenderer@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUIOpenGLRenderer@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+endif
+
 if MINGW32_BUILD
+if !CEGUI_BUILD_STATIC
 libCEGUIOpenGLRenderer@cegui_bsfx@_la_CPPFLAGS = -DOPENGL_GUIRENDERER_EXPORTS
+endif
 
 if BUILD_USING_INTERNAL_GLEW
 libCEGUIOpenGLRenderer@cegui_bsfx@_la_CPPFLAGS += -DGLEW_STATIC

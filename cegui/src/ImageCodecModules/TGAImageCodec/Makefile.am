@@ -3,8 +3,12 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 
 libCEGUITGAImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUITGAImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUITGAImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUITGAIMAGECODEC_EXPORTS
+endif
 endif
 
 lib_LTLIBRARIES=libCEGUITGAImageCodec@cegui_bsfx@.la
