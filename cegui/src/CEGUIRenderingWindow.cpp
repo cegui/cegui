@@ -95,7 +95,8 @@ void RenderingWindow::setPosition(const Vector2& position)
 //----------------------------------------------------------------------------//
 void RenderingWindow::setSize(const Size& size)
 {
-    d_size = size;
+    d_size.d_width = PixelAligned(size.d_width);
+    d_size.d_height = PixelAligned(size.d_height);
     d_geometryValid = false;
 
     d_textarget.declareRenderSize(d_size);
