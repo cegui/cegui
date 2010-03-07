@@ -83,12 +83,12 @@ namespace CEGUI
         */
         Window* getTargetWindow(PropertyReceiver* receiver);
 
-        //! Return a reference to the child with the given suffix.
-        const Window& getTargetWindow(const PropertyReceiver* receiver,
+        //! Return a pointer to the target window with the given suffix.
+        const Window* getTargetWindow(const PropertyReceiver* receiver,
                                       const String& name_suffix) const;
 
-        //! Return a reference to the child with the given suffix.
-        Window& getTargetWindow(PropertyReceiver* receiver,
+        //! Return a pointer to the target window with the given suffix.
+        Window* getTargetWindow(PropertyReceiver* receiver,
                                 const String& name_suffix);
 
         //! Internal struct used to keep track of targets.

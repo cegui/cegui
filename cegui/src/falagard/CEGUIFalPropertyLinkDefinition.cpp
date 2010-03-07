@@ -33,6 +33,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    // Static string holding parent link identifier
+    static const String S_parentIdentifier("__parent__");
+
+
     PropertyLinkDefinition::PropertyLinkDefinition(
                                 const String& propertyName,
                                 const String& widgetNameSuffix,
@@ -44,7 +48,8 @@ namespace CEGUI
         : PropertyDefinitionBase(propertyName,
                                  "Falagard property link definition - links a "
                                      "property on this window to properties "
-                                     "defined on one or more child windows.",
+                                     "defined on one or more child windows, or "
+                                     "the parent window.",
                                  initialValue,
                                  redrawOnWrite,
                                  layoutOnWrite)
@@ -57,17 +62,20 @@ namespace CEGUI
 
     String PropertyLinkDefinition::get(const PropertyReceiver* receiver) const
     {
-        // if no targets, just return the default value
-        if (d_targets.empty())
-            return d_default;
-
         const LinkTargetCollection::const_iterator i(d_targets.begin());
+
+        const Window* const target_wnd =
+            getTargetWindow(receiver, (*i).d_widgetNameSuffix);
+
+        // if no target, or target (currently) invalid, return the default value
+        if (d_targets.empty() || !target_wnd)
+            return d_default;
 
         // otherwise return the value of the property for first target, since
         // this is considered the 'master' target for get operations.
-        return getTargetWindow(receiver, (*i).d_widgetNameSuffix).
-                               getProperty((*i).d_targetProperty.empty() ?
-                                    d_name : (*i).d_targetProperty);
+        return target_wnd->getProperty((*i).d_targetProperty.empty() ?
+                                                d_name :
+                                                (*i).d_targetProperty);
     }
 
     void PropertyLinkDefinition::set(PropertyReceiver* receiver, const String& value)
@@ -75,9 +83,14 @@ namespace CEGUI
         LinkTargetCollection::iterator i = d_targets.begin();
         for ( ; i != d_targets.end(); ++i)
         {
-            getTargetWindow(receiver, (*i).d_widgetNameSuffix).
-                setProperty((*i).d_targetProperty.empty() ?
-                    d_name : (*i).d_targetProperty, value);
+            Window* target_wnd = getTargetWindow(receiver,
+                                                 (*i).d_widgetNameSuffix);
+
+            // only try to set property if target is currently valid.
+            if (target_wnd)
+                target_wnd->setProperty((*i).d_targetProperty.empty() ?
+                                                d_name :
+                                                (*i).d_targetProperty, value);
         }
 
         // base handles things like ensuring redraws and such happen
@@ -89,8 +102,8 @@ namespace CEGUI
         if (d_targets.empty())
             return static_cast<const Window*>(receiver);
 
-        return &getTargetWindow(receiver,
-                                (*d_targets.begin()).d_widgetNameSuffix);
+        return getTargetWindow(receiver,
+                               (*d_targets.begin()).d_widgetNameSuffix);
     }
 
     Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver)
@@ -112,21 +125,25 @@ namespace CEGUI
         d_targets.clear();
     }
 
-    const Window& PropertyLinkDefinition::getTargetWindow(
+    const Window* PropertyLinkDefinition::getTargetWindow(
                                             const PropertyReceiver* receiver,
                                             const String& name_suffix) const
     {
         if (name_suffix.empty())
-            return *static_cast<const Window*>(receiver);
+            return static_cast<const Window*>(receiver);
 
-        return *WindowManager::getSingleton().getWindow(
+        // handle link back to parent.  Return receiver if no parent.
+        if (name_suffix == S_parentIdentifier)
+            return static_cast<const Window*>(receiver)->getParent();
+
+        return WindowManager::getSingleton().getWindow(
             static_cast<const Window*>(receiver)->getName() + name_suffix);
     }
 
-    Window& PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver,
+    Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver,
                                                     const String& name_suffix)
     {
-        return const_cast<Window&>(
+        return const_cast<Window*>(
             static_cast<const PropertyLinkDefinition*>(this)->
                 getTargetWindow(receiver, name_suffix));
     }
