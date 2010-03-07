@@ -166,6 +166,8 @@ namespace CEGUI
         static const String ControlPropertyAttribute;   //!< Attribute name that stores a name of a property to control rendering of a section.
         static const String ColourAttribute;            //!< Attribute name that stores colour for all corners.
         static const String PropertyAttribute;          //!< Attribute name that stores the name of a property.
+        static const String ControlValueAttribute;      //!< Attribute name that stores a test value to control rendering of a section.
+        static const String ControlWidgetAttribute;   //!< Attribute name that stores a widget identifier used to control rendering of a section.
 
         /*************************************************************************
             helper methods

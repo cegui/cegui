@@ -1222,7 +1222,23 @@ The @c \<Section\> element is used to name an ImagerySection to be included for 
 @subsection fal_elem_ref_sec_29_2 Attributes:
 @arg @c look  specifies the name of a WidgetLook that contains the ImagerySection to be referenced. If this is omitted, the WidgetLook currently being defined is used. Optional attribute.
 @arg @c section  specifies the name of an ImagerySection from the chosen WidgetLook to be referenced. Required attribute.
-@arg @c controlProperty  specifies the name of a boolean property that will be accessed to determine whether or not to render this section.  Optional attribute.
+@arg @c controlProperty  specifies the name of a property that will be accessed
+to determine whether or not to render this section (see @c controlValue below
+for details of how it is determined whether or not the secion will be drawn).
+Optional attribute.
+@arg @c controlValue  specifies a value that will be compared to the value
+fetched from @c controlProperty in order to decide whether to draw the section.
+If @c controlValue is not specified, or is specified as the empty string, then
+the property named in @c controlProperty is treated as a boolean value. Otherwise
+the value fetched from the property named in @c controlPropery must exactly match
+the value specified in @c controlValue for the imagery section to be drawn.
+Optional attribute.
+@arg @c controlWidget  specifies either the name suffix of a child widget, or
+the special value @c "__parent__", to indicate a widget that will be used as the
+source of the property named in @c controlProperty.  If @c controlWidget is not
+specified, or is specified as the empty string, then the widget with WidgetLook
+assigned to it will be used as the source (matching the previous / default
+behaviour).  Optional attribute.
 
 @subsection fal_elem_ref_sec_29_3 Usage:
 <ul>
