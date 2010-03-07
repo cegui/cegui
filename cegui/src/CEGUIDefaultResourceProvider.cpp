@@ -28,6 +28,8 @@
 #include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIExceptions.h"
 
+#include <stdio.h>
+
 #if defined(__WIN32__) || defined(_WIN32)
 #   include <io.h>
 #   include <windows.h>

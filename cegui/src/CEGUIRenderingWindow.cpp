@@ -95,7 +95,8 @@ void RenderingWindow::setPosition(const Vector2& position)
 //----------------------------------------------------------------------------//
 void RenderingWindow::setSize(const Size& size)
 {
-    d_size = size;
+    d_size.d_width = PixelAligned(size.d_width);
+    d_size.d_height = PixelAligned(size.d_height);
     d_geometryValid = false;
 
     d_textarget.declareRenderSize(d_size);
@@ -318,6 +319,12 @@ void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
     d_owner->getRenderTarget().unprojectPoint(*d_geometry, in, p_out);
     p_out.d_x += d_position.d_x;
     p_out.d_y += d_position.d_y;
+}
+
+//----------------------------------------------------------------------------//
+void RenderingWindow::invalidateGeometry()
+{
+    d_geometryValid = false;
 }
 
 //----------------------------------------------------------------------------//

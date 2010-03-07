@@ -46,7 +46,7 @@
 #   include "macPlugins.h"
 #endif
 
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
 #   include "dlfcn.h"
 #endif
 
@@ -64,7 +64,7 @@ DynamicModule::DynamicModule(const String& name) :
 		return;
 	} // if(name.empty())
 
-#if defined(__linux__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
     #if defined(CEGUI_HAS_VERSION_SUFFIX) || defined(CEGUI_HAS_BUILD_SUFFIX)
         // check if we are being asked to open a CEGUI .so, if so postfix the
         // name with our package version
@@ -92,16 +92,24 @@ DynamicModule::DynamicModule(const String& name) :
 #endif
     // Optionally add a _d to the module name for the debug config on Win32
 #if defined(__WIN32__) || defined(_WIN32)
-#   if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
     // if name has .dll extension, assume it's complete and do not touch it.
     if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")
-        d_moduleName += CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
-#   endif
+    {
+        #ifdef CEGUI_HAS_BUILD_SUFFIX
+            // append a suffix (like _d for debug builds, etc)
+            d_moduleName += CEGUI_BUILD_SUFFIX;
+        #endif
+
+        #ifdef CEGUI_HAS_VERSION_SUFFIX
+            d_moduleName += "-";
+            d_moduleName += CEGUI_VERSION_SUFFIX;
+        #endif
+    }
 #endif
 
     d_handle = DYNLIB_LOAD(d_moduleName.c_str());
 
-#if defined(__linux__) || defined(__MINGW32__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__)
     if (!d_handle)
     {
         // see if we need to add the leading 'lib'
@@ -142,7 +150,7 @@ void* DynamicModule::getSymbolAddress(const String& symbol) const
 String DynamicModule::getFailureString() const
 {
     String retMsg;
-#if defined(__linux__) || defined (__APPLE_CC__) || defined(__FreeBSD__)
+#if defined(__linux__) || defined (__APPLE_CC__) || defined(__FreeBSD__) || defined(__NetBSD__)
     retMsg = DYNLIB_ERROR();
 #elif defined(__WIN32__) || defined(_WIN32)
     LPVOID msgBuffer;

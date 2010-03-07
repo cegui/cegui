@@ -1,9 +1,7 @@
 EXTRA_DIST = premake/README \
-             premake/build_samples_vs2002.bat \
              premake/build_samples_vs2003.bat \
              premake/build_samples_vs2005.bat \
              premake/build_samples_vs2008.bat \
-             premake/build_vs2002.bat \
              premake/build_vs2003.bat \
              premake/build_vs2005.bat \
              premake/build_vs2008.bat \
@@ -22,6 +20,7 @@ EXTRA_DIST = premake/README \
              premake/RendererModules/Direct3D10/premake.lua \
              premake/RendererModules/Direct3D9/premake.lua \
              premake/RendererModules/Irrlicht/premake.lua \
+             premake/RendererModules/Null/premake.lua \
              premake/RendererModules/Ogre/premake.lua \
              premake/RendererModules/OpenGL/premake.lua \
              premake/Samples/TextDemo/premake.lua \

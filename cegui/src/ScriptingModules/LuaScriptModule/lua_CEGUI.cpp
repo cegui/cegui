@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Feb 21 19:16:04 2010.
+** Generated automatically by tolua++-1.0.92 on Sun Mar  7 19:21:59 2010.
 */
 
 #ifndef __cplusplus
@@ -49829,7 +49829,9 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new00(lua_State* tolua_S)
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,5,&tolua_err)
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -49838,8 +49840,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new00(lua_State* tolua_S)
   string owner = ((string)  tolua_tocppstring(tolua_S,2,0));
   string sectionName = ((string)  tolua_tocppstring(tolua_S,3,0));
   const string controlPropertySource = ((const string)  tolua_tocppstring(tolua_S,4,0));
+  const string controlPropertyValue = ((const string)  tolua_tocppstring(tolua_S,5,0));
+  const string controlPropertyWidget = ((const string)  tolua_tocppstring(tolua_S,6,0));
  {
-  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource);
+  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,controlPropertyValue,controlPropertyWidget);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::SectionSpecification");
  }
  }
@@ -49863,7 +49867,9 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new00_local(lua_State* tolua_S
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,5,&tolua_err)
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -49872,8 +49878,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new00_local(lua_State* tolua_S
   string owner = ((string)  tolua_tocppstring(tolua_S,2,0));
   string sectionName = ((string)  tolua_tocppstring(tolua_S,3,0));
   const string controlPropertySource = ((const string)  tolua_tocppstring(tolua_S,4,0));
+  const string controlPropertyValue = ((const string)  tolua_tocppstring(tolua_S,5,0));
+  const string controlPropertyWidget = ((const string)  tolua_tocppstring(tolua_S,6,0));
  {
-  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource);
+  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,controlPropertyValue,controlPropertyWidget);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::SectionSpecification");
  }
  }
@@ -49896,8 +49904,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new01(lua_State* tolua_S)
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,7,"const CEGUI::ColourRect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,8,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -49905,9 +49915,11 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new01(lua_State* tolua_S)
   string owner = ((string)  tolua_tocppstring(tolua_S,2,0));
   string sectionName = ((string)  tolua_tocppstring(tolua_S,3,0));
   string controlPropertySource = ((string)  tolua_tocppstring(tolua_S,4,0));
-  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
+  const string controlPropertyValue = ((const string)  tolua_tocppstring(tolua_S,5,0));
+  const string controlPropertyWidget = ((const string)  tolua_tocppstring(tolua_S,6,0));
+  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,7,0));
  {
-  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,*cols);
+  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,controlPropertyValue,controlPropertyWidget,*cols);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::SectionSpecification");
  }
  }
@@ -49927,8 +49939,10 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new01_local(lua_State* tolua_S
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
- !tolua_isusertype(tolua_S,5,"const CEGUI::ColourRect",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,6,&tolua_err)
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,6,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,7,"const CEGUI::ColourRect",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,8,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -49936,9 +49950,11 @@ static int tolua_CEGUI_CEGUI_SectionSpecification_new01_local(lua_State* tolua_S
   string owner = ((string)  tolua_tocppstring(tolua_S,2,0));
   string sectionName = ((string)  tolua_tocppstring(tolua_S,3,0));
   string controlPropertySource = ((string)  tolua_tocppstring(tolua_S,4,0));
-  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,5,0));
+  const string controlPropertyValue = ((const string)  tolua_tocppstring(tolua_S,5,0));
+  const string controlPropertyWidget = ((const string)  tolua_tocppstring(tolua_S,6,0));
+  const CEGUI::ColourRect* cols = ((const CEGUI::ColourRect*)  tolua_tousertype(tolua_S,7,0));
  {
-  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,*cols);
+  CEGUI::SectionSpecification* tolua_ret = (CEGUI::SectionSpecification*)  new CEGUI::SectionSpecification(owner,sectionName,controlPropertySource,controlPropertyValue,controlPropertyWidget,*cols);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::SectionSpecification");
  }
  }

@@ -59,10 +59,27 @@ namespace CEGUI
             String holding the name of the target section.
 
         \param controlPropertySource
-            String holding the name of a boolean property that will control if
-            the rendering for this secion will actually occur or not.
+            String holding the name of a property that will control whether
+            rendering for this secion will actually occur or not.
+
+        \param controlPropertyValue
+            String holding the value to be tested for from the property named in
+            controlPropertySource.  If this is empty, then controlPropertySource
+            will be accessed as a boolean property, otherwise rendering will
+            only occur when the value returned via controlPropertySource matches
+            the value specified here.
+
+        \param controlPropertyWidget
+            String holding either a widget name suffix or the special value of
+            '__parent__' indicating the window upon which the property named
+            in controlPropertySource should be accessed.  If this is empty then
+            the window itself is used as the source, rather than a child or the
+            parent.
         */
-        SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource);
+        SectionSpecification(const String& owner, const String& sectionName,
+                             const String& controlPropertySource,
+                             const String& controlPropertyValue,
+                             const String& controlPropertyWidget);
 
         /*!
         \brief
@@ -75,13 +92,31 @@ namespace CEGUI
             String holding the name of the target section.
 
         \param controlPropertySource
-            String holding the name of a boolean property that will control if
-            the rendering for this secion will actually occur or not.
+            String holding the name of a property that will control whether
+            rendering for this secion will actually occur or not.
+
+        \param controlPropertyValue
+            String holding the value to be tested for from the property named in
+            controlPropertySource.  If this is empty, then controlPropertySource
+            will be accessed as a boolean property, otherwise rendering will
+            only occur when the value returned via controlPropertySource matches
+            the value specified here.
+
+        \param controlPropertyWidget
+            String holding either a widget name suffix or the special value of
+            '__parent__' indicating the window upon which the property named
+            in controlPropertySource should be accessed.  If this is empty then
+            the window itself is used as the source, rather than a child or the
+            parent.
 
         \param cols
             Override colours to be used (modulates sections master colours).
         */
-        SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource, const ColourRect& cols);
+        SectionSpecification(const String& owner, const String& sectionName,
+                             const String& controlPropertySource,
+                             const String& controlPropertyValue,
+                             const String& controlPropertyWidget,
+                             const ColourRect& cols);
 
         /*!
         \brief
@@ -213,6 +248,35 @@ namespace CEGUI
 
         /*!
         \brief
+            Set the test value used when determining whether to render this
+            section.
+            
+            The value set here will be compared to the current value of the
+            property named as the render control property, if they match the
+            secion will be drawn, otherwise the section will not be drawn.  If
+            this value is set to the empty string, the control property will
+            instead be treated as a boolean property.
+        */
+        void setRenderControlValue(const String& value);
+
+        /*!
+        \brief
+            Set the widget what will be used as the source of the property
+            named as the control property.
+
+            The value of this setting will be interpreted as follows:
+            - empty string: The target widget being drawn will be the source of
+              the property value.
+            - '__parent__': The parent of the widget being drawn will be the
+              source of the property value.
+            - any other value: The value will be taken as a name suffix and
+              a window with the name of the widget being drawn with the
+              specified suffix will be the source of the property value.
+        */
+        void setRenderControlWidget(const String& widget);
+
+        /*!
+        \brief
             Writes an xml representation of this SectionSpecification to \a out_stream.
 
         \param xml_stream
@@ -237,6 +301,11 @@ namespace CEGUI
         */
         void initColourRectForOverride(const Window& wnd, ColourRect& cr) const;
 
+        /** return whether the section should be drawn, based upon the
+         * render control property and associated items.
+         */
+        bool shouldBeDrawn(const Window& wnd) const;
+
     private:
         String          d_owner;                //!< Name of the WidgetLookFeel containing the required section.
         String          d_sectionName;          //!< Name of the required section within the specified WidgetLookFeel.
@@ -244,7 +313,12 @@ namespace CEGUI
         bool            d_usingColourOverride;  //!< true if colour override is enabled.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
         bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
-        String          d_renderControlProperty;    //!< Name of a 'boolean' property that controls whether to actually draw this section.
+        //! Name of a property to control whether to draw this section.
+        String d_renderControlProperty;
+        //! Comparison value to test against d_renderControlProperty.
+        String d_renderControlValue;
+        //! Widget upon which d_renderControlProperty is to be accessed.
+        String d_renderControlWidget;
     };
 
 

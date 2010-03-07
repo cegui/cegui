@@ -244,6 +244,18 @@ public:
 
     /*!
     \brief
+        Mark the geometry used when rendering the RenderingWindow back to it's
+        owning RenderingSurface as invalid so that it gets regenerated on the
+        next rendering pass.
+
+        This is separate from the main invalidate() function because in most
+        cases invalidating the cached imagery will not require the potentially
+        expensive regeneration of the geometry for the RenderingWindow itself.
+    */
+    void invalidateGeometry();
+
+    /*!
+    \brief
         Return the RenderingSurface that owns the RenderingWindow.  This is
         also the RenderingSurface that will be used when the RenderingWindow
         renders back it's cached imagery content.

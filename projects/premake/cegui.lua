@@ -176,9 +176,6 @@ do
     config_h.CEGUI_DEFAULT_XMLPARSER = parsers[DEFAULT_XML_PARSER]
     config_h.CEGUI_DEFAULT_IMAGE_CODEC = codecs[DEFAULT_IMAGE_CODEC]
 
-    config_h.CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG = DEBUG_DLL_SUFFIX and "1" or "0"
-    config_h.CEGUI_LOAD_MODULE_DEBUG_SUFFIX = '"'..(DEBUG_DLL_SUFFIX or "")..'"'
-
     if OPENGL_RENDERER and SAMPLES_GL then
         config_h.CEGUI_SAMPLES_USE_OPENGL = ""
     end
@@ -278,6 +275,15 @@ do
 
     for k,v in pairs(config_h) do
         f:write("#define ",k," ",v,"\n")
+    end
+
+    -- The build suffix stuff is getting unified with how it's done on linux systems
+    -- As such, the defines that affect this need a conditional around them to only apply to debug builds (for now)
+    if DEBUG_DLL_SUFFIX then
+        f:write("#if defined(_DEBUG) || defined(DEBUG)\n")
+        f:write("#   define CEGUI_HAS_BUILD_SUFFIX\n")
+        f:write("#   define CEGUI_BUILD_SUFFIX \""..DEBUG_DLL_SUFFIX.."\"\n")
+        f:write("#endif\n")
     end
 
     f:close()

@@ -4,8 +4,12 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 
 libCEGUICoronaImageCodec@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 
+if CEGUI_BUILD_STATIC
+libCEGUICoronaImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUICoronaImageCodec@cegui_bsfx@_la_CPPFLAGS = -DCEGUICORONAIMAGECODEC_EXPORTS
+endif
 endif
 
 libCEGUICoronaImageCodec@cegui_bsfx@_la_LIBADD = $(Corona_LIBS) \

@@ -63,30 +63,18 @@
 #include <ctime>
 #include <clocale>
 
-//This block includes the proper headers when static linking
+// declare create / destroy functions used for XMLParser and ImageCodec
+// modules as extern when static linking
 #if defined(CEGUI_STATIC)
-    // XML Parser
-	#ifdef CEGUI_WITH_EXPAT
-		#include "XMLParserModules/ExpatParser/CEGUIExpatParserModule.h"
-	#elif CEGUI_WITH_TINYXML
-		#include "XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
-	#elif CEGUI_WITH_XERCES
-		#include "XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
-	#endif
-    // Image codec
-    #if defined(CEGUI_CODEC_SILLY)
-        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_TGA)
-        #include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_CORONA)
-        #include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_DEVIL)
-        #include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
-    #elif defined(CEGUI_CODEC_FREEIMAGE)
-        #include "ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
-    #else //Make Silly the default
-        #include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-    #endif
+extern "C"
+{
+// XML Parser
+CEGUI::XMLParser* createParser(void);
+void destroyParser(CEGUI::XMLParser* parser);
+// Image codec
+CEGUI::ImageCodec* createImageCodec(void);
+void destroyImageCodec(CEGUI::ImageCodec* imageCodec);
+}
 #endif
 
 #define S_(X) #X
@@ -121,7 +109,7 @@ double SimpleTimer::currentTime()
     return timeGetTime() / 1000.0;
 }
 
-#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)
 #include <sys/time.h>
 double SimpleTimer::currentTime()
 {
@@ -1339,10 +1327,22 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
 
-        // regardless of what is done above, invalidate all windows.  This is
-        // required since geometry can be wrong with referenced textures no
-        // longer existing due to auto-scaling effect (mainly affects fonts).
-        d_activeSheet->invalidate(true);
+        // regardless of what is done above, invalidate all windows and their
+        // associated RenderingWindows.  This is required since cached geometry
+        // could reference textures that no longer exist.
+        WindowManager::WindowIterator wi(
+            WindowManager::getSingleton().getIterator());
+
+        for ( ; !wi.isAtEnd(); ++wi)
+        {
+            Window* const wnd(wi.getCurrentValue());
+            // invalidate window itself
+            wnd->invalidate();
+            // if window has rendering window surface, invalidate it's geometry
+            RenderingSurface* rs;
+            if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
+                static_cast<RenderingWindow*>(rs)->invalidateGeometry();
+        }
 	}
 
     // Fire event

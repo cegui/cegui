@@ -4,9 +4,14 @@ noinst_PROGRAMS = Demo7@cegui_bsfx@
 
 noinst_HEADERS =  Sample_Demo7.h
 
+if CEGUI_BUILD_STATIC
+Demo7@cegui_bsfx@_CPPFLAGS = -DCEGUI_STATIC
+endif
+
 Demo7@cegui_bsfx@_SOURCES = Sample_Demo7.cpp
 Demo7@cegui_bsfx@_LDADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
-              $(top_builddir)/Samples/common/src/libCEGUISampleHelper@cegui_bsfx@.la
+              $(top_builddir)/Samples/common/src/libCEGUISampleHelper@cegui_bsfx@.la \
+			  $(SAMPLE_STATIC_LDFLAGS)
 
 
 install-exec-local:

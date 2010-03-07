@@ -6,8 +6,12 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 libCEGUILuaScriptModule@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@
 libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS = $(Lua_CFLAGS)
 
+if CEGUI_BUILD_STATIC
+libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS += -DCEGUI_STATIC
+else
 if MINGW32_BUILD
 libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS += -DCEGUILUA_EXPORTS
+endif
 endif
 
 lib_LTLIBRARIES = libCEGUILuaScriptModule@cegui_bsfx@.la
