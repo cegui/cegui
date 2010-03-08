@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export WANT_AUTOMAKE='1.9'
+export WANT_AUTOMAKE='1.10'
 export WANT_AUTOCONF_2_5=1
 
 libtoolize --force && aclocal $ACLOCAL_FLAGS && autoheader && automake --include-deps --add-missing --foreign && autoconf 
