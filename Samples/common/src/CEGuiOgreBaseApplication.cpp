@@ -380,7 +380,7 @@ bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
     CEGUI::System& cegui = CEGUI::System::getSingleton();
 
     cegui.injectMouseMove(e.state.X.rel, e.state.Y.rel);
-    cegui.injectMouseWheelChange(e.state.Z.rel * 0.03);
+    cegui.injectMouseWheelChange(e.state.Z.rel / 120.0f);
 
     return true;
 }
