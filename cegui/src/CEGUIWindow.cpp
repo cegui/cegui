@@ -266,6 +266,13 @@ Window::Window(const String& type, const String& name) :
     d_vertAlign(VA_TOP),
     d_rotation(0.0f, 0.0f, 0.0f),
 
+    // initialise area cache rects
+    d_outerUnclippedRect(0, 0, 0, 0),
+    d_innerUnclippedRect(0, 0, 0, 0),
+    d_outerRectClipper(0, 0, 0, 0),
+    d_innerRectClipper(0, 0, 0, 0),
+    d_hitTestRect(0, 0, 0, 0),
+
     // cached pixel rect validity flags
     d_outerUnclippedRectValid(false),
     d_innerUnclippedRectValid(false),
