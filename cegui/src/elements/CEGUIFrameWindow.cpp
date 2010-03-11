@@ -533,7 +533,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-    invalidate();
+    invalidate(true);
     notifyClippingChanged();
     notifyScreenAreaChanged(true);
 
