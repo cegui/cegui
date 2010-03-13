@@ -233,6 +233,16 @@ public:
     */
     bool isFrameControlExecutionEnabled() const;
 
+    /*!
+    \brief
+        Sets all the required render states needed for CEGUI rendering.
+
+        This is a low-level function intended for certain advanced concepts; in
+        general it will not be required to call this function directly, since it
+        is called automatically by the system when rendering is done.
+    */
+    void initialiseRenderStateSettings();
+
     // implement CEGUI::Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
