@@ -44,14 +44,26 @@ namespace CEGUI
 
     void FalagardComponentBase::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
-        Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, modColours, clipper, clipToDisplay);
+        Rect dest_rect(d_area.getPixelRect(srcWindow));
+
+        if (!clipper)
+            clipper = &dest_rect;
+
+        const Rect final_clip_rect(dest_rect.getIntersection(*clipper));
+        render_impl(srcWindow, dest_rect, modColours,
+                    &final_clip_rect, clipToDisplay);
     }
 
     void FalagardComponentBase::render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
-        Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, modColours, clipper, clipToDisplay);
+        Rect dest_rect(d_area.getPixelRect(srcWindow, baseRect));
+
+        if (!clipper)
+            clipper = &dest_rect;
+
+        const Rect final_clip_rect(dest_rect.getIntersection(*clipper));
+        render_impl(srcWindow, dest_rect, modColours,
+                    &final_clip_rect, clipToDisplay);
     }
 
     const ComponentArea& FalagardComponentBase::getComponentArea() const

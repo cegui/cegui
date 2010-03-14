@@ -292,22 +292,7 @@ void OgreRenderer::destroyAllTextures()
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-    using namespace Ogre;
-
-    // initialise render settings
-    d_renderSystem->setLightingEnabled(false);
-    d_renderSystem->_setDepthBufferParams(false, false);
-    d_renderSystem->_setDepthBias(0, 0);
-    d_renderSystem->_setCullingMode(CULL_NONE);
-    d_renderSystem->_setFog(FOG_NONE);
-    d_renderSystem->_setColourBufferWriteEnabled(true, true, true, true);
-    d_renderSystem->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
-    d_renderSystem->unbindGpuProgram(GPT_VERTEX_PROGRAM);
-    d_renderSystem->setShadingType(SO_GOURAUD);
-    d_renderSystem->_setPolygonMode(PM_SOLID);
-
-    // set alpha blending to known state
-    setupRenderingBlendMode(BM_NORMAL, true);
+    initialiseRenderStateSettings();
 
     if (d_makeFrameControlCalls)
         d_renderSystem->_beginFrame();
@@ -472,6 +457,27 @@ void OgreRenderer::setFrameControlExecutionEnabled(const bool enabled)
 bool OgreRenderer::isFrameControlExecutionEnabled() const
 {
     return d_makeFrameControlCalls;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::initialiseRenderStateSettings()
+{
+    using namespace Ogre;
+
+    // initialise render settings
+    d_renderSystem->setLightingEnabled(false);
+    d_renderSystem->_setDepthBufferParams(false, false);
+    d_renderSystem->_setDepthBias(0, 0);
+    d_renderSystem->_setCullingMode(CULL_NONE);
+    d_renderSystem->_setFog(FOG_NONE);
+    d_renderSystem->_setColourBufferWriteEnabled(true, true, true, true);
+    d_renderSystem->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
+    d_renderSystem->unbindGpuProgram(GPT_VERTEX_PROGRAM);
+    d_renderSystem->setShadingType(SO_GOURAUD);
+    d_renderSystem->_setPolygonMode(PM_SOLID);
+
+    // set alpha blending to known state
+    setupRenderingBlendMode(BM_NORMAL, true);
 }
 
 //----------------------------------------------------------------------------//

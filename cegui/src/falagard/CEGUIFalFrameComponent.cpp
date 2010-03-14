@@ -32,6 +32,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include <iostream>
+#include <cstdlib>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -404,7 +405,8 @@ namespace CEGUI
 
             case HF_TILED:
                 xpos = destRect.d_left;
-                horzTiles = (uint)((destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width);
+                horzTiles = std::abs(static_cast<int>(
+                    (destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width));
                 break;
 
             case HF_LEFT_ALIGNED:
@@ -437,7 +439,8 @@ namespace CEGUI
 
             case VF_TILED:
                 ypos = destRect.d_top;
-                vertTiles = (uint)((destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height);
+                vertTiles = std::abs(static_cast<int>(
+                    (destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height));
                 break;
 
             case VF_TOP_ALIGNED:
