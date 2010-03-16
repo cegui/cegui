@@ -100,6 +100,9 @@ void ScrolledItemListBase::initialiseComponents()
 
         // set up clipping
         static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
+        // allow propagation back to us
+        d_pane->setMouseInputPropagationEnabled(true);
+
         addChildWindow(d_pane);
     }
 
