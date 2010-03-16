@@ -274,6 +274,9 @@ class Window //: public EventSet
     void setUpdateMode(WindowUpdateMode mode);
     WindowUpdateMode getUpdateMode() const;
 
+    void setMouseInputPropagationEnabled(bool enabled);
+    bool isMouseInputPropagationEnabled() const;
+
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(string name, string value);

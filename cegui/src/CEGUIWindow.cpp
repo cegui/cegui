@@ -170,7 +170,7 @@ WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
 WindowProperties::UpdateMode Window::d_updateModeProperty;
-
+WindowProperties::MouseInputPropagationEnabled Window::d_mouseInputPropagationProperty;
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name) :
@@ -281,7 +281,10 @@ Window::Window(const String& type, const String& name) :
     d_hitTestRectValid(false),
 
     // Initial update mode
-    d_updateMode(WUM_VISIBLE)
+    d_updateMode(WUM_VISIBLE),
+
+    // Don't propagate mouse inputs by default.
+    d_propagateMouseInputs(false)
 {
     // add properties
     addStandardProperties();
@@ -1494,6 +1497,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
     addProperty(&d_updateModeProperty);
+    addProperty(&d_mouseInputPropagationProperty);
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -2835,6 +2839,17 @@ void Window::onMouseMove(MouseEventArgs& e)
         tip->resetTimer();
 
     fireEvent(EventMouseMove, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseMove(e);
+
+        return;
+    }
+
     // by default we now mark mouse events as handled
     // (derived classes may override, of course!)
     ++e.handled;
@@ -2844,6 +2859,17 @@ void Window::onMouseMove(MouseEventArgs& e)
 void Window::onMouseWheel(MouseEventArgs& e)
 {
     fireEvent(EventMouseWheel, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseWheel(e);
+
+        return;
+    }
+
     // by default we now mark mouse events as handled
     // (derived classes may override, of course!)
     ++e.handled;
@@ -2877,6 +2903,17 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     }
 
     fireEvent(EventMouseButtonDown, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseButtonDown(e);
+
+        return;
+    }
+
     // by default we now mark mouse events as handled
     // (derived classes may override, of course!)
     ++e.handled;
@@ -2893,6 +2930,17 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
     }
 
     fireEvent(EventMouseButtonUp, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseButtonUp(e);
+
+        return;
+    }
+
     // by default we now mark mouse events as handled
     // (derived classes may override, of course!)
     ++e.handled;
@@ -2902,6 +2950,16 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 void Window::onMouseClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseClick, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseClicked(e);
+
+        return;
+    }
 
     // if event was directly injected, mark as handled to be consistent with
     // other mouse button injectors
@@ -2914,6 +2972,16 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseDoubleClick, e, EventNamespace);
 
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseDoubleClicked(e);
+
+        return;
+    }
+
     // if event was directly injected, mark as handled to be consistent with
     // other mouse button injectors
     if (!System::getSingleton().isMouseClickEventGenerationEnabled())
@@ -2924,6 +2992,16 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 void Window::onMouseTripleClicked(MouseEventArgs& e)
 {
     fireEvent(EventMouseTripleClick, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && d_parent != System::getSingleton().getModalTarget())
+    {
+        e.window = d_parent;
+        d_parent->onMouseTripleClicked(e);
+
+        return;
+    }
 
     // if event was directly injected, mark as handled to be consistent with
     // other mouse button injectors
@@ -3926,6 +4004,17 @@ bool Window::constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz)
 }
 
 //----------------------------------------------------------------------------//
+void Window::setMouseInputPropagationEnabled(const bool enabled)
+{
+    d_propagateMouseInputs = enabled;
+}
 
+//----------------------------------------------------------------------------//
+bool Window::isMouseInputPropagationEnabled() const
+{
+    return d_propagateMouseInputs;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
