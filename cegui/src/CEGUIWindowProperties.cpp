@@ -742,6 +742,21 @@ void UpdateMode::set(PropertyReceiver* receiver, const String& value)
 }
 
 //----------------------------------------------------------------------------//
+String MouseInputPropagationEnabled::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->
+        isMouseInputPropagationEnabled());
+}
+
+//----------------------------------------------------------------------------//
+void MouseInputPropagationEnabled::set(PropertyReceiver* receiver,
+                                       const String& value)
+{
+    static_cast<Window*>(receiver)->
+        setMouseInputPropagationEnabled(PropertyHelper::stringToBool(value));
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  WindowProperties namespace section
 
