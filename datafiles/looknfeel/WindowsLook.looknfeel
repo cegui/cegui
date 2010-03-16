@@ -1461,6 +1461,7 @@
 		<PropertyDefinition name="SelectionBrush" initialValue="set:WindowsLook image:Background" redrawOnWrite="true" />
 		<PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" />
 		<Property name="Selectable" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
 		<NamedArea name="ContentSize">
 			<Area>
 				<Dim type="LeftEdge" >
@@ -1898,6 +1899,7 @@
     <WidgetLook name="WindowsLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="set:WindowsLook image:MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="set:WindowsLook image:MouseMoveCursor" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="segment">
             <ImageryComponent>
                 <Area>
@@ -2056,6 +2058,7 @@
     -->
     <WidgetLook name="WindowsLook/ListHeader">
         <Property name="SegmentWidgetType" value="WindowsLook/ListHeaderSegment" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
@@ -2722,6 +2725,7 @@
     <WidgetLook name="WindowsLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
         <Property name="UnifiedMinSize" value="{{0,0},{0,16}}" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3009,6 +3013,7 @@
     <WidgetLook name="WindowsLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
         <Property name="UnifiedMinSize" value="{{0,16},{0,0}}" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3288,6 +3293,7 @@
     -->
     <WidgetLook name="WindowsLook/SliderThumb">
         <Property name="HorzFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
