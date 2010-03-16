@@ -335,7 +335,8 @@ OgreRenderer::OgreRenderer() :
     // TODO: should be set to correct value
     d_maxTextureSize(2048),
     d_ogreRoot(Ogre::Root::getSingletonPtr()),
-    d_activeBlendMode(BM_INVALID)
+    d_activeBlendMode(BM_INVALID),
+    d_makeFrameControlCalls(true)
 {
     checkOgreInitialised();
 
