@@ -44,6 +44,21 @@ _basic_ctype = {
  state = "lua_State*",
 }
 
+-------------------------------------------------------------------------------
+-- Start of changes for CEGUI
+--
+-- Add a utf8 string type.
+--
+-- utf8string should be typedeffed to a real type in C++ somewhere, like:
+--
+-- typedef CEGUI::utf8* utf8string;
+-------------------------------------------------------------------------------
+_basic['utf8string'] = 'utf8string'
+_basic_ctype.utf8string = 'const utf8string'
+-------------------------------------------------------------------------------
+--End of changes for CEGUI
+-------------------------------------------------------------------------------
+
 -- functions the are used to do a 'raw push' of basic types
 _basic_raw_push = {}
 
