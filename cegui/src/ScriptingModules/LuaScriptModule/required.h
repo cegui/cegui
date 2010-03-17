@@ -52,6 +52,7 @@
 #endif
 
 typedef CEGUI::String string;
+typedef CEGUI::utf8* utf8string;
 
 namespace CEGUI
 {
