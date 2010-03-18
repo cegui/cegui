@@ -19,7 +19,7 @@ class Editbox : public Window
 
 	void setReadOnly(bool setting);
 	void setTextMasked(bool setting);
-	void setValidationString(string validation_string);
+	void setValidationString(utf8string validation_string);
 	void setCaratIndex(unsigned long carat_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaskCodePoint(unsigned long code_point);

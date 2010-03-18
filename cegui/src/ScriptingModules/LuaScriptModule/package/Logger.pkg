@@ -22,5 +22,5 @@ class Logger
 	void setLoggingLevel(LoggingLevel level);
 	LoggingLevel getLoggingLevel() const;
 
-	void logEvent(string message, LoggingLevel level=Standard);
+	void logEvent(utf8string message, LoggingLevel level=Standard);
 };

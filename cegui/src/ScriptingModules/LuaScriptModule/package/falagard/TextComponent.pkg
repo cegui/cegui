@@ -4,9 +4,9 @@
 class TextComponent : public FalagardComponentBase 
 {
     string getText() const;
-    void setText(string text);
+    void setText(utf8string text);
     string getFont() const;
-    void setFont(string font);
+    void setFont(utf8string font);
     VerticalTextFormatting getVerticalFormatting() const;
     void setVerticalFormatting(VerticalTextFormatting fmt);
     HorizontalTextFormatting getHorizontalFormatting() const;
@@ -14,9 +14,9 @@ class TextComponent : public FalagardComponentBase
     //void writeXMLToStream(OutStream& out_stream) const;
     bool isTextFetchedFromProperty() const;
     string getTextPropertySource() const;
-    void setTextPropertySource(string property);
+    void setTextPropertySource(utf8string property);
     bool isFontFetchedFromProperty() const;
     string getFontPropertySource() const;
-    void setFontPropertySource(string property);
+    void setFontPropertySource(utf8string property);
     TextComponent();
 };

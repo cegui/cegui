@@ -10,8 +10,8 @@ class FalagardComponentBase
   void setComponentArea(const ComponentArea& area);
   const ColourRect& getColours() const;
   void setColours(const ColourRect& cols);
-  void setColoursPropertySource(string property);
+  void setColoursPropertySource(utf8string property);
   void setColoursPropertyIsColourRect(bool setting = true);
-  void setVertFormattingPropertySource(string property);
-  void setHorzFormattingPropertySource(string property);
+  void setVertFormattingPropertySource(utf8string property);
+  void setHorzFormattingPropertySource(utf8string property);
 };

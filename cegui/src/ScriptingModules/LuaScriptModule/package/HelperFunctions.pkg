@@ -246,11 +246,11 @@ $]
 	Helper to create a ListboxTextItem.
 	Mimics the constructor
 *****************************************************/
-ListboxTextItem* ceguiLua_createListboxTextItem @ createListboxTextItem(string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
+ListboxTextItem* ceguiLua_createListboxTextItem @ createListboxTextItem(utf8string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
 
 /****************************************************
 	Helper to create a TreeItem.
 	Mimics the constructor
 *****************************************************/
-TreeItem* ceguiLua_createTreeItem @ createTreeItem(string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
+TreeItem* ceguiLua_createTreeItem @ createTreeItem(utf8string text, unsigned int item_id=0, void* item_data=0, bool disabled=false, bool auto_delete=true);
 
