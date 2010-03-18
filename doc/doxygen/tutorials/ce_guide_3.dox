@@ -39,7 +39,7 @@ needed, or where certain advanced management techniques are to be used.
 
 <br>
 @section window_tutorial_creating_intro Creating the windows
-Enough of the waffle!  Lets create a window.
+Enough of the waffle!  Let's create a window.
 
 There are two ways of doing this, via C++ code and XML layout files.  Each
 approach is discussed below.
@@ -52,7 +52,7 @@ using namespace CEGUI;
 WindowManager& wmgr = WindowManager::getSingleton();
 @endcode
 
-In general, you will be using what is known as a DefaultWindow (or to use it's
+In general, you will be using what is known as a DefaultWindow (or to use its
 old name, DefaultGUISheet) as the 'root' window in your GUI.  This is not
 required, but is the accepted pattern of usage for CEGUI and, once you start
 adding more top-level windows, helps simplify laying things out.
