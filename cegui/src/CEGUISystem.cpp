@@ -837,10 +837,16 @@ bool System::injectMouseButtonUp(MouseButton button)
     if (!ma.window)
         return false;
 
+    // store original window becase we re-use the event args.
+    Window* const tgt_wnd = ma.window;
+
     // send 'up' input to the window
     ma.window->onMouseButtonUp(ma);
     // store whether the 'up' part was handled so we may reuse the EventArgs
     const uint upHandled = ma.handled;
+
+    // restore target window (because Window::on* may have propagated input)
+    ma.window = tgt_wnd;
 
     // send MouseClicked event if the requirements for that were met
     if (d_generateMouseClickEvents &&
