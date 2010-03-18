@@ -56,7 +56,6 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     else 
     {
-        flipImageTGA(img);
         Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PF_RGB : Texture::PF_RGBA;
         result->loadFromMemory(img->data, Size(img->sizeX, img->sizeY), fmt);
         if (img->data)
@@ -68,10 +67,11 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     }
     return result;
 }
+
 /*************************************************************************
-	flips data for tImageTGA 'img'	
+	flips data vertically for tImageTGA 'img'	
 *************************************************************************/
-void TGAImageCodec::flipImageTGA(ImageTGA* img)
+void TGAImageCodec::flipVertImageTGA(ImageTGA* img)
 {
     
 	int pitch = img->sizeX * img->channels;
@@ -91,6 +91,33 @@ void TGAImageCodec::flipImageTGA(ImageTGA* img)
 
 	}
 }
+
+//----------------------------------------------------------------------------//
+void TGAImageCodec::flipHorzImageTGA(ImageTGA* img)
+{
+	const int pitch = img->sizeX * img->channels;
+    
+	for (int line = 0; line < img->sizeY; ++line)
+	{
+		int srcOffset = (line * pitch);
+		int dstOffest = srcOffset + pitch - img->channels;
+
+		for (int pix = 0; pix < img->sizeX / 2; ++pix)
+		{
+            for (int c = 0; c < img->channels; ++c)
+            {
+                const uchar tmp = img->data[dstOffest + c];
+                img->data[dstOffest + c] = img->data[srcOffset + c];
+                img->data[srcOffset + c] = tmp;
+            }
+
+            srcOffset += img->channels;
+            dstOffest -= img->channels;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------//
 /*************************************************************************
    convert a 24 bits Image to a 32 bit one
    This function is a temporary hack used to convert all image to 
@@ -177,6 +204,10 @@ void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 #endif
 	memcpy(&bits, buffer, sizeof(byte));
 	buffer += sizeof(byte);
+
+    // see where and what we might need to flip
+    const bool flip_horz = (buffer[0] & 16) == 16;
+    const bool flip_vert = !((buffer[0] & 32) == 32);
 
 	// Now we move the file pointer to the pixel data
 	buffer += length + 1;
@@ -358,6 +389,13 @@ void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 	pImageData->channels = channels;
 	pImageData->sizeX    = width;
 	pImageData->sizeY    = height;
+
+    // now we've read the data, do required flips so that origin is top-left
+    if (flip_vert)
+        flipVertImageTGA(pImageData);
+
+    if (flip_horz)
+        flipHorzImageTGA(pImageData);
 
 	// Return the TGA data (remember, you must free this data after you are done)
 	return pImageData;
