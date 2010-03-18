@@ -3,5 +3,5 @@
 ***********************************************************************/
 class GroupBox : public Window
 {
-	bool drawAroundWidget(string name);
+	bool drawAroundWidget(utf8string name);
 };

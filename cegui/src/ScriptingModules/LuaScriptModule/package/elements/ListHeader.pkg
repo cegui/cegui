@@ -12,7 +12,7 @@ class ListHeader : public Window
 	unsigned int getColumnFromSegment(const ListHeaderSegment& segment) const;
 	unsigned int getColumnFromID(unsigned int id) const;
 	unsigned int getSortColumn() const;
-	unsigned int getColumnWithText(string text) const;
+	unsigned int getColumnWithText(utf8string text) const;
 
 	float getPixelOffsetToSegment(const ListHeaderSegment& segment) const;
 	float getPixelOffsetToColumn(unsigned int column) const;
@@ -36,10 +36,10 @@ class ListHeader : public Window
 
 	void setColumnSizingEnabled(bool setting);
 	void setColumnDraggingEnabled(bool setting);
-	void addColumn(string text, unsigned int id, const UDim& width);
+	void addColumn(utf8string text, unsigned int id, const UDim& width);
 
-	void insertColumn(string text, unsigned int id, const UDim& width, unsigned int position);
-	void insertColumn(string text, unsigned int id, const UDim& width, const ListHeaderSegment& position);
+	void insertColumn(utf8string text, unsigned int id, const UDim& width, unsigned int position);
+	void insertColumn(utf8string text, unsigned int id, const UDim& width, const ListHeaderSegment& position);
 	void removeColumn(unsigned int column);
 	void removeSegment(const ListHeaderSegment& segment);
 

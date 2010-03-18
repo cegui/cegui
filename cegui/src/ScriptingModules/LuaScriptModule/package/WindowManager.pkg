@@ -5,28 +5,28 @@ class WindowManager : public EventSet
 {
 	static WindowManager& getSingleton();
 
-	tolua_throws|CEGUI::AlreadyExistsException,nil|CEGUI::InvalidRequestException,nil| Window* createWindow(string type, string name="");
-	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(string filename, string name_prefix="", string resourcegroup="");
+	tolua_throws|CEGUI::AlreadyExistsException,nil|CEGUI::InvalidRequestException,nil| Window* createWindow(utf8string type, utf8string name="");
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(utf8string filename, utf8string name_prefix="", utf8string resourcegroup="");
 
-    void writeWindowLayoutToStream(string window, OutStream& out, bool writeParent=false) const;
+    void writeWindowLayoutToStream(utf8string window, OutStream& out, bool writeParent=false) const;
     void writeWindowLayoutToStream(const Window& window, OutStream& out, bool writeParent=false) const;
 
-	void destroyWindow(string name);
+	void destroyWindow(utf8string name);
 	void destroyWindow(Window* window);
 	void destroyAllWindows();
 
-	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getWindow(string name) const;
-	bool isWindowPresent(string name) const;
+	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getWindow(utf8string name) const;
+	bool isWindowPresent(utf8string name) const;
 
 	bool isDeadPoolEmpty() const;
 	void cleanDeadPool();
 
-    void renameWindow(Window* window, string  new_name);
-    void renameWindow(string window, string new_name);
+    void renameWindow(Window* window, utf8string  new_name);
+    void renameWindow(utf8string window, utf8string new_name);
 
     WindowIterator getIterator() const;
 
-    static void setDefaultResourceGroup(string resourceGroup);
+    static void setDefaultResourceGroup(utf8string resourceGroup);
     static string& getDefaultResourceGroup();
 
     void lock();

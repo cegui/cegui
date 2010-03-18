@@ -5,17 +5,17 @@ class Font //: public PropertySet
 {
 	//////////////////////////////////////////////
 	// PropertySet
-	void setProperty(string name, string value);
-	string getProperty(string name) const;
-	string getPropertyDefault(string name) const;
-	string getPropertyHelp(string name) const;
+	void setProperty(utf8string name, utf8string value);
+	string getProperty(utf8string name) const;
+	string getPropertyDefault(utf8string name) const;
+	string getPropertyHelp(utf8string name) const;
 
-	bool isPropertyPresent(string name) const;
-	bool isPropertyDefault(string name) const;
+	bool isPropertyPresent(utf8string name) const;
+	bool isPropertyDefault(utf8string name) const;
 
     tolua_outside PropertyIterator ceguiLua_getPropertyIterator @ getPropertyIterator() const;
 
-    static void setDefaultResourceGroup(string resourceGroup);
+    static void setDefaultResourceGroup(utf8string resourceGroup);
     static string getDefaultResourceGroup();
 
 	bool isCodepointAvailable(unsigned long cp) const;
@@ -23,10 +23,10 @@ class Font //: public PropertySet
 	void setNativeResolution(const Size& sz);
 	void notifyDisplaySizeChanged(const Size& sz);
 
-	float getTextExtent(string text, float xscale=1);
+	float getTextExtent(utf8string text, float xscale=1);
 	float getLineSpacing(float yscale=1) const;
 	float getFontHeight(float yscale=1) const;
 
-	unsigned long getCharAtPixel(string text, unsigned long start_char, float pixel, float xscale=1);
-	unsigned long getCharAtPixel(string text, float pixel, float xscale=1);
+	unsigned long getCharAtPixel(utf8string text, unsigned long start_char, float pixel, float xscale=1);
+	unsigned long getCharAtPixel(utf8string text, float pixel, float xscale=1);
 };

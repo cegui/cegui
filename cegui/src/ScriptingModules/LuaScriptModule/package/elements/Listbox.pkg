@@ -9,7 +9,7 @@ class Listbox : public Window
 	ListboxItem* getNextSelected(const ListboxItem* start_item) const;
 	ListboxItem* getListboxItemFromIndex(unsigned long index) const;
 	unsigned long getItemIndex(const ListboxItem* item) const;
-	ListboxItem* findItemWithText(string text, const ListboxItem* start_item);
+	ListboxItem* findItemWithText(utf8string text, const ListboxItem* start_item);
 	bool isSortEnabled() const;
 	bool isMultiselectEnabled() const;
 	bool isItemSelected(unsigned long index) const;

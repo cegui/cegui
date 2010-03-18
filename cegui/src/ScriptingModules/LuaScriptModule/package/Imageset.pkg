@@ -6,18 +6,18 @@ class Imageset
 	Texture* getTexture() const;
 	string getName() const;
 	unsigned int getImageCount() const;
-	bool isImageDefined(string name) const;
-	const Image& getImage(string name) const;
-	void undefineImage(string name);
+	bool isImageDefined(utf8string name) const;
+	const Image& getImage(utf8string name) const;
+	void undefineImage(utf8string name);
 	void undefineAllImages();
-	Size getImageSize(string name) const;
-	float getImageWidth(string name) const;
-	float getImageHeight(string name) const;
-	Vector2 getImageOffset(string name) const;
-	float getImageOffsetX(string name) const;
-	float getImageOffsetY(string name) const;
-	void defineImage(string name, const Vector2& pos, const Size& size, const Vector2& render_offset);
-	void defineImage(string name, const Rect& rect, const Vector2& render_offset);
+	Size getImageSize(utf8string name) const;
+	float getImageWidth(utf8string name) const;
+	float getImageHeight(utf8string name) const;
+	Vector2 getImageOffset(utf8string name) const;
+	float getImageOffsetX(utf8string name) const;
+	float getImageOffsetY(utf8string name) const;
+	void defineImage(utf8string name, const Vector2& pos, const Size& size, const Vector2& render_offset);
+	void defineImage(utf8string name, const Rect& rect, const Vector2& render_offset);
 	bool isAutoScaled() const;
 	void setAutoScalingEnabled(bool setting);
 	Size getNativeResolution() const;
@@ -26,6 +26,6 @@ class Imageset
 
     ImageIterator getIterator() const;
 
-    static void setDefaultResourceGroup(string resourceGroup);
+    static void setDefaultResourceGroup(utf8string resourceGroup);
     static string getDefaultResourceGroup();
 };

@@ -9,6 +9,6 @@ class NamedArea
   //void writeXMLToStream(OutStream& out_stream) const;
 
   NamedArea();
-  NamedArea(string name);
+  NamedArea(utf8string name);
 };
 

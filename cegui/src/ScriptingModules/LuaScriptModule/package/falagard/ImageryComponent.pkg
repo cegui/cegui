@@ -6,7 +6,7 @@ class ImageryComponent : public FalagardComponentBase
 {
   const Image* getImage() const;
   void setImage(const Image* image);
-  void setImage(string imageset, string image);
+  void setImage(utf8string imageset, utf8string image);
   VerticalFormatting getVerticalFormatting() const;
   void setVerticalFormatting(VerticalFormatting fmt);
   HorizontalFormatting getHorizontalFormatting() const;
@@ -14,6 +14,6 @@ class ImageryComponent : public FalagardComponentBase
   //void writeXMLToStream(OutStream& out_stream) const;
   bool isImageFetchedFromProperty() const;
   string getImagePropertySource() const;
-  void setImagePropertySource(string property);
+  void setImagePropertySource(utf8string property);
   ImageryComponent();
 };

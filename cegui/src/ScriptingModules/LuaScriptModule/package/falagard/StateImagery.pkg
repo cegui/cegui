@@ -13,7 +13,7 @@ class StateImagery
   bool isClippedToDisplay() const;
   void setClippedToDisplay(bool setting);
   //void writeXMLToStream(OutStream& out_stream) const;
-  StateImagery(string name);
+  StateImagery(utf8string name);
   StateImagery();
 };
 

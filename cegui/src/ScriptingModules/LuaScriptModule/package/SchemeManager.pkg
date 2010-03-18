@@ -5,10 +5,10 @@ class SchemeManager
 {
 	static SchemeManager& getSingleton();
 
-	Scheme& create(string filename, string resourcegroup="");
-	void destroy(string name);
-	bool isDefined(string name) const;
-	Scheme& get(string name) const;
+	Scheme& create(utf8string filename, utf8string resourcegroup="");
+	void destroy(utf8string name);
+	bool isDefined(utf8string name) const;
+	Scheme& get(utf8string name) const;
 	void destroyAll();
 
     SchemeIterator getIterator() const;

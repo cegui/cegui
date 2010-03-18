@@ -14,7 +14,7 @@ class Renderer
     //void destroyAllTextureTargets();
 
     Texture& createTexture();
-    Texture& createTexture(string filename, string resourceGroup);
+    Texture& createTexture(utf8string filename, utf8string resourceGroup);
     Texture& createTexture(const Size& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
