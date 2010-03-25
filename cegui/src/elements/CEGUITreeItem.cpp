@@ -340,6 +340,7 @@ void TreeItem::setText( const String& text )
 {
     d_textLogical = text;
     d_bidiDataValid = false;
+    d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//
