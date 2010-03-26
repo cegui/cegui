@@ -61,7 +61,7 @@ CEGUI_IRR_SDK_VERSION = 16
 --- OIS API version to be used in the Ogre samples base app.
 --- true: use older numKeyboards / numMice
 --- false: use getNumberOfDevices
-CEGUI_OLD_OIS_API = true
+CEGUI_OLD_OIS_API = false
 
 --- Lua version
 --- 51 is 5.1 (and above?) From 0.7.0 onwards, lua 5.0 is no longer supported.
@@ -95,6 +95,14 @@ CEGUI_USE_DEFAULT_LOGGER = true
 --- external copy of the fribidi library (false).
 CEGUI_BIDI_SUPPORT = false;
 CEGUI_USE_MINIBIDI = true;
+
+--- MinizipResourceProvider
+--- To enable compilation and inclusion into CEGUIBase of the MinizipResourceProvider
+--- set the following to true.
+---
+--- The MinizipResourceProvider enables resources to be loaded from a zip compressed
+--- archive.
+MINIZIP_RESOURCE_PROVIDER = true
 
 -------------
 -- Renderers
