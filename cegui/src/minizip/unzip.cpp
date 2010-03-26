@@ -1,3 +1,9 @@
+#ifdef __APPLE__
+#   include <CEGUIConfig.h>
+#endif
+
+#if !defined(__APPLE__) || defined(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
+
 /* unzip.c -- IO for uncompress .zip files using zlib
    Version 1.1, February 14h, 2010
    part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
@@ -2128,3 +2134,4 @@ extern int ZEXPORT unzSetOffset (unzFile file, uLong pos)
 
 } // namespace CEGUI
 
+#endif

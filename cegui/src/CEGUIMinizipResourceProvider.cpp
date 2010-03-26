@@ -31,19 +31,22 @@
 #include "CEGUILogger.h"
 #include "CEGUIExceptions.h"
 
+// exclude code on apple unless feature macro is defined.
+#if !defined(__APPLE__) || defined(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
+
 #include "minizip/unzip.h"
 
 #include <fstream>
 
-#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
-#   include <fnmatch.h>
-#   define FNMATCH(p, s)    fnmatch(p, s, FNM_PATHNAME)
-#elif defined (__WIN32__) || defined(_WIN32)
+#if defined (__WIN32__) || defined(_WIN32)
 #   include <Shlwapi.h>
 #   define FNMATCH(p, s)    PathMatchSpec(s, p)
 #   ifdef _MSC_VER
 #       pragma comment(lib, "shlwapi.lib")
 #   endif
+#else
+#   include <fnmatch.h>
+#   define FNMATCH(p, s)    fnmatch(p, s, FNM_PATHNAME)
 #endif
 
 // Start of CEGUI namespace section
@@ -278,3 +281,4 @@ size_t MinizipResourceProvider::getResourceGroupFileNames(
 
 } // End of  CEGUI namespace section
 
+#endif

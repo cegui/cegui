@@ -141,6 +141,16 @@ Each item in here has a comment to describe what it's for.
 // Uncomment this to use an external fribidi library.
 //#define CEGUI_USE_FRIBIDI
 
+//////////////////////////////////////////////////////////////////////////
+// The following controls whether the MinizipResourceProvider will be
+// built into the CEGUIBase library.  You can uncomment the following line
+// to include this code (and it's dependency code).
+// 
+// The MinizipResourceProvider provides the ability to load resource files
+// from locations within .zip files.
+//////////////////////////////////////////////////////////////////////////
+//#define CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
+
 #endif // defined(__APPLE__)
 
 #endif	// end of guard _CEGUIConfig_h_
