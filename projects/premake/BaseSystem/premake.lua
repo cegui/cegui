@@ -48,6 +48,15 @@ else
     end
 end
 
+if not MINIZIP_RESOURCE_PROVIDER then
+    tinsert(package.excludes, rootdir.."cegui/src/CEGUIMinizipResourceProvider.cpp")
+    tinsert(package.excludes, rootdir.."cegui/include/CEGUIMinizipResourceProvider.h")
+else
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/minizip/*.cpp"))
+    tinsert(package.files, matchfiles(rootdir.."cegui/src/minizip/*.h"))
+    library("zlib", "_d")
+end
+
 library("Winmm", "")
 
 define("CEGUIBASE_EXPORTS")

@@ -259,6 +259,11 @@ do
         end
     end
 
+    -- MinizipResourceProvider
+    if MINIZIP_RESOURCE_PROVIDER then
+        config_h.CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER = ""
+    end
+
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 
