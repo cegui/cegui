@@ -1,11 +1,11 @@
 SUBDIRS = . ImageCodecModules RendererModules ScriptingModules WindowRendererSets XMLParserModules
 
 INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS) \
-           $(fribidi_CFLAGS)
+           $(fribidi_CFLAGS) $(ZLIB_CFLAGS)
 
 libCEGUIBase@cegui_bsfx@_la_LDFLAGS = @CEGUI_LIB_LINK_FLAGS@ \
                                       $(freetype2_LIBS) $(pcre_LIBS) \
-                                      $(fribidi_LIBS)
+                                      $(fribidi_LIBS) $(ZLIB_LIBS)
 
 libCEGUIBase@cegui_bsfx@_la_LIBADD = $(cegui_pc_platform_libs)
 
@@ -204,10 +204,16 @@ if CEGUI_BUILD_MINIBIDI_MAPPER
 libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIMinibidiVisualMapping.cpp
 endif
 
+if CEGUI_BUILD_MINIZIP_RESOURCE_PROVIDER
+libCEGUIBase@cegui_bsfx@_la_SOURCES += CEGUIMinizipResourceProvider.cpp minizip/ioapi.cpp minizip/unzip.cpp
+endif
+
 if MACOSX_BUILD
 INCLUDES += -I$(top_srcdir)/src/implementations/mac
 libCEGUIBase@cegui_bsfx@_la_SOURCES += implementations/mac/macPlugins.cpp
 endif
 
 EXTRA_libCEGUIBase@cegui_bsfx@_la_SOURCES = minibidi.cpp
-EXTRA_DIST = implementations/mac/macPlugins.h
+EXTRA_DIST = implementations/mac/macPlugins.h \
+             minizip/ioapi.h minizip/iowin32.cpp minizip/iowin32.h minizip/unzip.h minizip/README
+

@@ -1150,4 +1150,78 @@ continue with the static build.])
     AC_SUBST(SAMPLE_STATIC_LDFLAGS)
 ])
 
+AC_DEFUN([CEGUI_CHECK_MINIZIP_RESOURCE_PROVIDER],[
+    AC_ARG_ENABLE([minizip-resource-provider],
+                  AC_HELP_STRING([--enable-minizip-resource-provider],
+                                 [Build the Minizip resource provider.]),
+                  [cegui_enable_minizip_rp=$enableval], [cegui_enable_minizip_rp=no])
+
+    if test "x$cegui_enable_minizip_rp" = "xyes"; then
+        CEGUI_CHECK_ZLIB()
+        if test "x$HAVE_ZLIB" = "xyes"; then
+            AC_DEFINE(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER, [], [Defined when the resource provider with minizip support is built.])
+        else
+            cegui_enable_minizip_rp=no
+            AC_MSG_ERROR([MiniZip resource provider requested but zlib was not found!  You can specfy zlib's location with the --with-zlib option.])
+        fi
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_MINIZIP_RESOURCE_PROVIDER], [test "x$cegui_enable_minizip_rp" = "xyes" && test "x$HAVE_ZLIB" = "xyes"])
+])
+
+dnl This was borrowed and modified from the SILLY acinclude.m4 file ;)
+AC_DEFUN([CEGUI_CHECK_ZLIB], [
+dnl save environment 
+cegui_zlib_save_CPPFLAGS="$CPPFLAGS"
+cegui_zlib_save_LDFLAGS="$LDFLAGS"
+AC_LANG_PUSH(C)
+
+dnl clear these so as to isolate the zlib specific parts
+CPPFLAGS=""
+LDFLAGS=""
+
+dnl define search path 
+cegui_zlib_search="/usr/local /usr"
+AC_ARG_WITH([zlib],
+    AC_HELP_STRING([--with-zlib=DIR], [root directory path of zlib installation]), 
+    [if test "$withval" != no ; then
+        cegui_zlib_search="$withval $zlib_search"
+    fi], 
+    [])
+
+dnl search in all path 
+HAVE_ZLIB=no
+for dir in $cegui_zlib_search  
+do 
+    if  test "$HAVE_ZLIB"  = "no" ; then 
+        cegui_zlib_home="$dir"
+        cegui_zlib_cppflags="-I$cegui_zlib_home/include" 
+        cegui_zlib_ldflags="-L$cegui_zlib_home/lib" 
+      	if test -f "${cegui_zlib_home}/include/zlib.h" ; then 
+            CPPFLAGS="$cegui_zlib_cppflags $cegui_zlib_save_CPPFLAGS"
+            LDFALGS="$cegui_zlib_ldflags $cegui_zlib_save_LDFLAGS"
+            AC_CHECK_HEADER(zlib.h, [cegui_zlib_cv_zlib_h=yes], [cegui_zlib_cv_zlib_h=no])
+            AC_CHECK_LIB(z, inflateEnd, [cegui_zlib_cv_libz=yes], [cegui_zlib_cv_libz=no])
+            if  test "$cegui_zlib_cv_libz" = "yes" -a "$cegui_zlib_cv_zlib_h" = "yes" ; then 
+                HAVE_ZLIB=yes
+                ZLIB_CFLAGS="$cegui_zlib_cflags"
+                ZLIB_LIBS="$cegui_zlib_ldflags -lz"
+            fi
+        fi
+    fi
+done
+
+dnl if found update env 
+if test "$HAVE_ZLIB" = "yes" ; then 
+    AC_DEFINE_UNQUOTED([HAVE_ZLIB], [1], [zlib is available])
+    AC_SUBST(HAVE_ZLIB)
+    AC_SUBST(ZLIB_CFLAGS)
+    AC_SUBST(ZLIB_LIBS)
+fi
+
+dnl restore previous environment 
+AC_LANG_POP(C)
+CPPFLAGS="$cegui_zlib_save_CPPFLAGS"
+LDFLAGS="$cegui_zlib_save_LDFLAGS"
+])
 
