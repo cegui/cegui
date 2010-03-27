@@ -70,6 +70,57 @@ namespace CEGUI
         d_horzFormatting(HTF_LEFT_ALIGNED)
     {}
 
+    TextComponent::~TextComponent()
+    {
+        delete d_bidiVisualMapping;
+    }
+
+    TextComponent::TextComponent(const TextComponent& obj) :
+        FalagardComponentBase(obj),
+        d_textLogical(obj.d_textLogical),
+#ifndef CEGUI_BIDI_SUPPORT
+        d_bidiVisualMapping(0),
+#elif defined (CEGUI_USE_FRIBIDI)
+        d_bidiVisualMapping(new FribidiVisualMapping),
+#elif defined (CEGUI_USE_MINIBIDI)
+        d_bidiVisualMapping(new MinibidiVisualMapping),
+#endif
+        d_bidiDataValid(false),
+        d_renderedString(obj.d_renderedString),
+        d_formattedRenderedString(obj.d_formattedRenderedString),
+        d_lastHorzFormatting(obj.d_lastHorzFormatting),
+        d_font(obj.d_font),
+        d_vertFormatting(obj.d_vertFormatting),
+        d_horzFormatting(obj.d_horzFormatting),
+        d_textPropertyName(obj.d_textPropertyName),
+        d_fontPropertyName(obj.d_fontPropertyName)
+    {
+    }
+
+    TextComponent& TextComponent::operator=(const TextComponent& other)
+    {
+        if (this == &other)
+            return *this;
+
+        FalagardComponentBase::operator=(other);
+
+        d_textLogical = other.d_textLogical;
+        // note we do not assign the BiDiVisualMapping object, we just mark our
+        // existing one as invalid so it's data gets regenerated next time it's
+        // needed.
+        d_bidiDataValid = false;
+        d_renderedString = other.d_renderedString;
+        d_formattedRenderedString = other.d_formattedRenderedString;
+        d_lastHorzFormatting = other.d_lastHorzFormatting;
+        d_font = other.d_font;
+        d_vertFormatting = other.d_vertFormatting;
+        d_horzFormatting = other.d_horzFormatting;
+        d_textPropertyName = other.d_textPropertyName;
+        d_fontPropertyName = other.d_fontPropertyName;
+
+        return *this;
+    }
+
     const String& TextComponent::getText() const
     {
         return d_textLogical;
