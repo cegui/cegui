@@ -83,11 +83,11 @@ namespace CEGUI
     {
         assert(part < FIC_FRAME_IMAGE_COUNT);
 
-        try
+        CEGUI_TRY
         {
             d_frameImages[part] = &ImagesetManager::getSingleton().get(imageset).getImage(image);
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             d_frameImages[part] = 0;
         }
@@ -425,7 +425,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("FrameComponent::doBackgroundRender - An unknown HorizontalFormatting value was specified.");
+                CEGUI_THROW(InvalidRequestException("FrameComponent::doBackgroundRender - An unknown HorizontalFormatting value was specified."));
         }
 
         // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -459,7 +459,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("FrameComponent::doBackgroundRender - An unknown VerticalFormatting value was specified.");
+                CEGUI_THROW(InvalidRequestException("FrameComponent::doBackgroundRender - An unknown VerticalFormatting value was specified."));
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)

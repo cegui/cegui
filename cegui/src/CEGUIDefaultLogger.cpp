@@ -147,7 +147,7 @@ namespace CEGUI
 
         if (!d_ostream)
         {
-            throw "Logger::setLogFilename - Failed to open file.";
+            CEGUI_THROW("Logger::setLogFilename - Failed to open file.");
         }
 
         // initialise width for date & time alignment.

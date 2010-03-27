@@ -93,7 +93,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)\
         ++entry;\
     }\
 \
-    throw CEGUI::UnknownObjectException("::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");\
+    CEGUI_THROW(CEGUI::UnknownObjectException("::registerFactory - The window factory for type '" + type_name + "' is not known in this module."));\
 }\
 \
 extern "C" CEGUI::uint registerAllFactories(void)\

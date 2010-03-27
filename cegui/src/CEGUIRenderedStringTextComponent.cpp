@@ -153,8 +153,8 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
         break;
 
     default:
-        throw InvalidRequestException("RenderedStringTextComponent::draw: "
-                "unknown VerticalFormatting option specified.");
+        CEGUI_THROW(InvalidRequestException("RenderedStringTextComponent::draw: "
+                "unknown VerticalFormatting option specified."));
     }
 
     // apply padding to position:
@@ -202,8 +202,9 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.
     if (!fnt)
-        throw InvalidRequestException("RenderedStringTextComponent::split: "
-                                      "unable to split with no font set.");
+        CEGUI_THROW(InvalidRequestException(
+            "RenderedStringTextComponent::split: "
+            "unable to split with no font set."));
 
     // create 'left' side of split and clone our basic configuration
     RenderedStringTextComponent* lhs = new RenderedStringTextComponent;

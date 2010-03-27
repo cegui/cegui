@@ -116,24 +116,24 @@ CEGuiSample::~CEGuiSample()
 *************************************************************************/
 int CEGuiSample::run()
 {
-    try
+    CEGUI_TRY
     {
         if (initialise())
             cleanup();
     }
-    catch (CEGUI::Exception& exc)
+    CEGUI_CATCH (CEGUI::Exception& exc)
     {
         outputExceptionMessage(exc.getMessage().c_str());
     }
-    catch (std::exception& exc)
+    CEGUI_CATCH (std::exception& exc)
     {
         outputExceptionMessage(exc.what());
     }
-    catch (const char* exc)
+    CEGUI_CATCH (const char* exc)
     {
         outputExceptionMessage(exc);
     }
-    catch(...)
+    CEGUI_CATCH(...)
     {
         outputExceptionMessage("Unknown exception was caught!");
     }
@@ -233,7 +233,7 @@ bool CEGuiSample::initialise()
 #endif
 
         default:
-            throw CEGUI::GenericException("No renderer was selected!");
+            CEGUI_THROW(CEGUI::GenericException("No renderer was selected!"));
             break;
         }
 

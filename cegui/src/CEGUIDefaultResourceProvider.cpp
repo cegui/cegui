@@ -42,8 +42,8 @@ std::wstring Utf8ToUtf16(const std::string& utf8text)
                                             utf8text.size() + 1, 0, 0);
 
     if (textLen == 0)
-        throw CEGUI::InvalidRequestException(
-            "Utf8ToUtf16 - MultiByteToWideChar failed");
+        CEGUI_THROW(CEGUI::InvalidRequestException(
+            "Utf8ToUtf16 - MultiByteToWideChar failed"));
 
     std::wstring wideStr(textLen, 0);
     MultiByteToWideChar(CP_UTF8, 0, utf8text.c_str(), utf8text.size() + 1,
@@ -57,8 +57,8 @@ CEGUI::String Utf16ToString(const wchar_t* const utf16text)
     const int len = WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
                                         0, 0, 0, 0);
     if (!len)
-        throw CEGUI::InvalidRequestException(
-            "Utf16ToUtf8 - WideCharToMultiByte failed");
+        CEGUI_THROW(CEGUI::InvalidRequestException(
+            "Utf16ToUtf8 - WideCharToMultiByte failed"));
 
     CEGUI::utf8* buff = new CEGUI::utf8[len + 1];
     WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
@@ -87,8 +87,8 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
                                                    const String& resourceGroup)
 {
     if (filename.empty())
-        throw InvalidRequestException("DefaultResourceProvider::load: "
-            "Filename supplied for data loading must be valid");
+        CEGUI_THROW(InvalidRequestException("DefaultResourceProvider::load: "
+            "Filename supplied for data loading must be valid"));
 
     const String final_filename(getFinalFilename(filename, resourceGroup));
 
@@ -99,8 +99,8 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #endif
 
     if (file == 0)
-        throw InvalidRequestException("DefaultResourceProvider::load: " +
-            final_filename + " does not exist");
+        CEGUI_THROW(InvalidRequestException("DefaultResourceProvider::load: " +
+            final_filename + " does not exist"));
 
     fseek(file, 0, SEEK_END);
     const long size = ftell(file);
@@ -114,8 +114,9 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     if (size_read != size)
     {
         delete[] buffer;
-        throw GenericException("DefaultResourceProvider::loadRawDataContainer: "
-            "A problem occurred while reading file: " + final_filename);
+        CEGUI_THROW(GenericException(
+            "DefaultResourceProvider::loadRawDataContainer: "
+            "A problem occurred while reading file: " + final_filename));
     }
 
     output.setData(buffer);

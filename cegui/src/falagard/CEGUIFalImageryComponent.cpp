@@ -58,11 +58,11 @@ namespace CEGUI
 
     void ImageryComponent::setImage(const String& imageset, const String& image)
     {
-        try
+        CEGUI_TRY
         {
             d_image = &ImagesetManager::getSingleton().get(imageset).getImage(image);
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             d_image = 0;
         }
@@ -145,7 +145,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("ImageryComponent::render - An unknown HorizontalFormatting value was specified.");
+                CEGUI_THROW(InvalidRequestException("ImageryComponent::render - An unknown HorizontalFormatting value was specified."));
         }
 
         // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -179,7 +179,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("ImageryComponent::render - An unknown VerticalFormatting value was specified.");
+                CEGUI_THROW(InvalidRequestException("ImageryComponent::render - An unknown VerticalFormatting value was specified."));
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)

@@ -126,7 +126,7 @@ ListHeaderSegment& ListHeader::getSegmentFromColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::getSegmentFromColumn - requested column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::getSegmentFromColumn - requested column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -151,7 +151,7 @@ ListHeaderSegment& ListHeader::getSegmentFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException("ListHeader::getSegmentFromID - no segment with the requested ID is attached to this ListHeader.");
+	CEGUI_THROW(InvalidRequestException("ListHeader::getSegmentFromID - no segment with the requested ID is attached to this ListHeader."));
 }
 
 
@@ -162,7 +162,7 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 {
 	if (!d_sortSegment)
 	{
-		throw	InvalidRequestException("ListHeader::getSortSegment - Sort segment was invalid!  (No segments are attached to the ListHeader?)");
+		CEGUI_THROW(InvalidRequestException("ListHeader::getSortSegment - Sort segment was invalid!  (No segments are attached to the ListHeader?)"));
 	}
 	else
 	{
@@ -187,7 +187,7 @@ uint ListHeader::getColumnFromSegment(const ListHeaderSegment& segment) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException("ListHeader::getColumnFromSegment - the given ListHeaderSegment is not attached to this ListHeader.");
+	CEGUI_THROW(InvalidRequestException("ListHeader::getColumnFromSegment - the given ListHeaderSegment is not attached to this ListHeader."));
 }
 
 
@@ -206,7 +206,7 @@ uint ListHeader::getColumnFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException("ListHeader::getColumnFromID - no column with the requested ID is available on this ListHeader.");
+	CEGUI_THROW(InvalidRequestException("ListHeader::getColumnFromID - no column with the requested ID is available on this ListHeader."));
 }
 
 
@@ -235,7 +235,7 @@ uint ListHeader::getColumnWithText(const String& text) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException("ListHeader::getColumnWithText - no column with the text '" + text + "' is attached to this ListHeader.");
+	CEGUI_THROW(InvalidRequestException("ListHeader::getColumnWithText - no column with the text '" + text + "' is attached to this ListHeader."));
 }
 
 
@@ -257,7 +257,7 @@ float ListHeader::getPixelOffsetToSegment(const ListHeaderSegment& segment) cons
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException("ListHeader::getPixelOffsetToSegment - the given ListHeaderSegment is not attached to this ListHeader.");
+	CEGUI_THROW(InvalidRequestException("ListHeader::getPixelOffsetToSegment - the given ListHeaderSegment is not attached to this ListHeader."));
 }
 
 
@@ -268,7 +268,7 @@ float ListHeader::getPixelOffsetToColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::getPixelOffsetToColumn - requested column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::getPixelOffsetToColumn - requested column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -308,7 +308,7 @@ UDim ListHeader::getColumnWidth(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::getColumnWidth - requested column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::getColumnWidth - requested column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -416,7 +416,7 @@ void ListHeader::setSortColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::setSortColumn - specified column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::setSortColumn - specified column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -546,7 +546,7 @@ void ListHeader::removeColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::removeColumn - specified column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::removeColumn - specified column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -596,7 +596,7 @@ void ListHeader::moveColumn(uint column, uint position)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::moveColumn - specified column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::moveColumn - specified column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -695,7 +695,7 @@ void ListHeader::setColumnWidth(uint column, const UDim& width)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::setColumnWidth - specified column index is out of range for this ListHeader.");
+		CEGUI_THROW(InvalidRequestException("ListHeader::setColumnWidth - specified column index is out of range for this ListHeader."));
 	}
 	else
 	{
@@ -1057,7 +1057,7 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
     else
     {
         //return createNewSegment_impl(name);
-        throw InvalidRequestException("ListHeader::createNewSegment - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("ListHeader::createNewSegment - This function must be implemented by the window renderer module"));
     }
 }
 
@@ -1074,7 +1074,7 @@ void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
     else
     {
         //return destroyListSegment_impl(segment);
-        throw InvalidRequestException("ListHeader::destroyListSegment - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("ListHeader::destroyListSegment - This function must be implemented by the window renderer module"));
     }
 }
 

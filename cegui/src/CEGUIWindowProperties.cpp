@@ -84,7 +84,7 @@ String Font::get(const PropertyReceiver* receiver) const
 
 void Font::set(PropertyReceiver* receiver, const String& value)
 {
-	try
+	CEGUI_TRY
 	{
 		if (value.empty())
 		{
@@ -95,7 +95,7 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 			static_cast<Window*>(receiver)->setFont(value);
 		}
 	}
-	catch (UnknownObjectException&)
+	CEGUI_CATCH (UnknownObjectException&)
 	{ }
 }
 

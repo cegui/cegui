@@ -210,8 +210,8 @@ public:
         utf32 codepoint;
         float adv;
         if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
-            throw InvalidRequestException(
-                "Bad glyph Mapping specified: " + value);
+            CEGUI_THROW(InvalidRequestException(
+                "Bad glyph Mapping specified: " + value));
         static_cast<PixmapFont*>(receiver)->defineMapping(codepoint, img, adv);
     }
 };

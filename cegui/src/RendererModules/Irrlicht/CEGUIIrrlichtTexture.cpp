@@ -87,8 +87,8 @@ void IrrlichtTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("IrrlichtTexture::loadFromFile: "
-                                "CEGUI::System object has not been created!");
+        CEGUI_THROW(RendererException("IrrlichtTexture::loadFromFile: "
+            "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -102,9 +102,9 @@ void IrrlichtTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        throw RendererException("IrrlichtTexture::loadFromFile: " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("IrrlichtTexture::loadFromFile: " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -138,8 +138,9 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     // we now use ARGB all the time here, so throw if we get something else!
     if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
-        throw RendererException("IrrlichtTexture::loadFromMemory: texture did "
-                                "not have the correct format (ARGB)");
+        CEGUI_THROW(RendererException(
+            "IrrlichtTexture::loadFromMemory: texture did "
+            "not have the correct format (ARGB)"));
 
     const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
     const char* src = static_cast<const char*>(buffer);

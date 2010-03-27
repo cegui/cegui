@@ -96,14 +96,14 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         ilPopAttrib();
 
         // create cegui texture
-        try
+        CEGUI_TRY
         {
             result->loadFromMemory(tmpBuff, Size(width, height), cefmt);
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
             delete [] tmpBuff;
-            throw;
+            CEGUI_THROW();
         }
 
         // free temp buffer

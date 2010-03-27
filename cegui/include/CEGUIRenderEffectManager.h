@@ -172,9 +172,9 @@ template <typename T>
 void RenderEffectManager::addEffect(const String& name)
 {
     if (isEffectAvailable(name))
-        throw AlreadyExistsException("RenderEffectManager::addEffect: "
+        CEGUI_THROW(AlreadyExistsException("RenderEffectManager::addEffect: "
             "A RenderEffect is already registered under the name '" +
-            name + "'");
+            name + "'"));
 
     // create an instance of a factory to create effects of type T
     d_effectRegistry[name] = new TplRenderEffectFactory<T>;
