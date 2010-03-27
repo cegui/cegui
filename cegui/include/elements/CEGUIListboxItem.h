@@ -70,7 +70,7 @@ public:
     \brief
         base class destructor
     */
-    virtual ~ListboxItem(void) {}
+    virtual ~ListboxItem(void);
 
 
     /*************************************************************************
