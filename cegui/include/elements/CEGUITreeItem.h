@@ -82,7 +82,7 @@ public:
      \brief
         base class destructor
      */
-    virtual ~TreeItem(void) {}
+    virtual ~TreeItem(void);
 
     /*************************************************************************
         Accessors
