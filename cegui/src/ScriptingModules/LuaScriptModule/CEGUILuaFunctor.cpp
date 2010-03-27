@@ -179,7 +179,7 @@ bool LuaFunctor::operator()(const EventArgs& args) const
     {
         String errStr(lua_tostring(L, -1));
         lua_pop(L, 1);
-        throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
+        CEGUI_THROW(ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n"));
     }
 
     // retrieve result
@@ -219,7 +219,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
         if (!lua_istable(L,-1))
         {
             lua_settop(L,top);
-            throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as first part is not a table");
+            CEGUI_THROW(ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as first part is not a table"));
         }
 
         // if there is more than two parts, we have more tables to go through
@@ -236,7 +236,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
                 if (!lua_istable(L,-1))
                 {
                     lua_settop(L,top);
-                    throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper::uintToString(uint(vi+1))+" ("+parts[vi]+") is not a table");
+                    CEGUI_THROW(ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper::uintToString(uint(vi+1))+" ("+parts[vi]+") is not a table"));
                 }
                 // get rid of the last table and move on
                 lua_remove(L,-2);
@@ -259,7 +259,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
     if (!lua_isfunction(L,-1))
     {
         lua_settop(L,top);
-        throw ScriptException("The Lua event handler: '"+handler_name+"' does not represent a Lua function");
+        CEGUI_THROW(ScriptException("The Lua event handler: '"+handler_name+"' does not represent a Lua function"));
     }
 }
 

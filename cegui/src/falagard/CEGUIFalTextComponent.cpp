@@ -179,13 +179,13 @@ namespace CEGUI
         // get font to use
         Font* font;
 
-        try
+        CEGUI_TRY
         {
             font = d_fontPropertyName.empty() ?
                 (d_font.empty() ? srcWindow.getFont() : &FontManager::getSingleton().get(d_font))
                 : &FontManager::getSingleton().get(srcWindow.getProperty(d_fontPropertyName));
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             font = 0;
         }

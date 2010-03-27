@@ -186,10 +186,10 @@ void Scheme::loadXMLImagesets()
         if (realname != (*pos).name)
         {
             ismgr.destroy(iset);
-            throw InvalidRequestException("Scheme::loadResources: "
+            CEGUI_THROW(InvalidRequestException("Scheme::loadResources: "
                 "The Imageset created by file '" + (*pos).filename +
                 "' is named '" + realname + "', not '" + (*pos).name +
-                "' as required by Scheme '" + d_name + "'.");
+                "' as required by Scheme '" + d_name + "'."));
         }
     }
 }
@@ -245,10 +245,10 @@ void Scheme::loadFonts()
         if (realname != (*pos).name)
         {
             fntmgr.destroy(font);
-            throw InvalidRequestException("Scheme::loadResources: "
+            CEGUI_THROW(InvalidRequestException("Scheme::loadResources: "
                 "The Font created by file '" + (*pos).filename +
                 "' is named '" + realname + "', not '" + (*pos).name +
-                "' as required by Scheme '" + d_name + "'.");
+                "' as required by Scheme '" + d_name + "'."));
         }
     }
 }
@@ -328,10 +328,10 @@ void Scheme::loadWindowRendererFactories()
                         getSymbolAddress("getWindowRendererModule"));
 
             if (!getWRModuleFunc)
-                throw InvalidRequestException(
+                CEGUI_THROW(InvalidRequestException(
                     "Scheme::loadWindowRendererFactories: Required function "
                     "export 'WindowRendererModule& getWindowRendererModule()' "
-                    "was not found in module '" + (*cmod).name + "'.");
+                    "was not found in module '" + (*cmod).name + "'."));
 
             // get the WindowRendererModule object for this module.
             (*cmod).wrModule = &getWRModuleFunc();

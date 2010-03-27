@@ -51,7 +51,7 @@ Image::Image(const Imageset* owner, const String& name, const Rect& area, const 
 {
 	if (!d_owner)
 	{
-		throw NullObjectException("Image::Image - Imageset pointer passed to Image constructor must be valid.");
+		CEGUI_THROW(NullObjectException("Image::Image - Imageset pointer passed to Image constructor must be valid."));
 	}
 
 	// setup initial image scaling

@@ -274,9 +274,9 @@ T& NamedXMLResourceManager<T, U>::get(const String& object_name) const
     typename ObjectRegistry::const_iterator i(d_objects.find(object_name));
 
     if (i == d_objects.end())
-        throw UnknownObjectException("NamedXMLResourceManager::get: "
+        CEGUI_THROW(UnknownObjectException("NamedXMLResourceManager::get: "
             "No object of type '" + d_resourceType + "' named '" + object_name +
-            "' is present in the collection.");
+            "' is present in the collection."));
 
     return *i->second;
 }
@@ -340,16 +340,16 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
 
         case XREA_THROW:
             delete object;
-            throw AlreadyExistsException(
+            CEGUI_THROW(AlreadyExistsException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "an object of type '" + d_resourceType + "' named '" +
-                object_name + "' already exists in the collection.");
+                object_name + "' already exists in the collection."));
 
         default:
             delete object;
-            throw InvalidRequestException(
+            CEGUI_THROW(InvalidRequestException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
-                "Invalid CEGUI::XMLResourceExistsAction was specified.");
+                "Invalid CEGUI::XMLResourceExistsAction was specified."));
         }
     }
     else

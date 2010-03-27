@@ -78,9 +78,9 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz) :
                                    &d_texture);
 
     if (FAILED(hr))
-        throw RendererException(
+        CEGUI_THROW(RendererException(
             "Direct3D9Texture - Failed to create texture of specified size: "
-            "D3D Texture creation failed.");
+            "D3D Texture creation failed."));
 
     updateTextureSize();
     updateCachedScaleValues();
@@ -154,8 +154,8 @@ void Direct3D9Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("Direct3D9Texture::loadFromFile - "
-                                "CEGUI::System object has not been created!");
+        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromFile - "
+            "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -169,9 +169,9 @@ void Direct3D9Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        throw RendererException("Direct3D9Texture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString() +
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromFile - " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -193,8 +193,8 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
         pixfmt = D3DFMT_A8B8G8R8;
         break;
     default:
-        throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-                                "Invalid PixelFormat value specified.");
+        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromMemory failed: "
+            "Invalid PixelFormat value specified."));
     }
 
     Size tex_sz(d_owner.getAdjustedSize(buffer_size));
@@ -205,8 +205,8 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
                                    1, 0, pixfmt, D3DPOOL_MANAGED, &d_texture);
 
     if (FAILED(hr))
-        throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-                                "Direct3D9 texture creation failed.");
+        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromMemory failed: "
+            "Direct3D9 texture creation failed."));
 
     d_dataSize = buffer_size;
     updateTextureSize();
@@ -221,8 +221,8 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
         d_texture->Release();
         d_texture = 0;
 
-        throw RendererException("Direct3D9Texture::loadFromMemory failed: "
-                                "IDirect3DTexture9::LockRect failed.");
+        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromMemory failed: "
+            "IDirect3DTexture9::LockRect failed."));
     }
 
     // copy data from buffer into texture
@@ -278,7 +278,8 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 void Direct3D9Texture::saveToMemory(void* buffer)
 {
     // TODO:
-    throw RendererException("Direct3D9Texture::saveToMemory - Unimplemented!");
+    CEGUI_THROW(RendererException(
+        "Direct3D9Texture::saveToMemory - Unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//

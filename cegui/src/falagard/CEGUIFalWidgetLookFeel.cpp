@@ -44,7 +44,7 @@ namespace CEGUI
 
         if (imagery == d_stateImagery.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getStateImagery - unknown state '" + state + "' in look '" + d_lookName + "'.");
+            CEGUI_THROW(UnknownObjectException("WidgetLookFeel::getStateImagery - unknown state '" + state + "' in look '" + d_lookName + "'."));
         }
 
         return (*imagery).second;
@@ -57,7 +57,7 @@ namespace CEGUI
 
         if (imgSect == d_imagerySections.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getImagerySection - unknown imagery section '" + section +  "' in look '" + d_lookName + "'.");
+            CEGUI_THROW(UnknownObjectException("WidgetLookFeel::getImagerySection - unknown imagery section '" + section +  "' in look '" + d_lookName + "'."));
         }
 
         return (*imgSect).second;
@@ -165,10 +165,10 @@ namespace CEGUI
     {
         if (widget.getLookNFeel() != getName())
         {
-            throw InvalidRequestException(
+            CEGUI_THROW(InvalidRequestException(
                 "WidgetLookFeel::cleanUpWidget - The window '"
                 + widget.getName() +
-                "' does not have this look'n'feel assigned");
+                "' does not have this look'n'feel assigned"));
         }
 
         // remove added child widgets
@@ -219,7 +219,7 @@ namespace CEGUI
 
         if (area == d_namedAreas.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getNamedArea - unknown named area: '" + name +  "' in look '" + d_lookName + "'.");
+            CEGUI_THROW(UnknownObjectException("WidgetLookFeel::getNamedArea - unknown named area: '" + name +  "' in look '" + d_lookName + "'."));
         }
 
         return (*area).second;

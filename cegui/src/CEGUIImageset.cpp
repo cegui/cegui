@@ -63,7 +63,7 @@ Imageset::Imageset(const String& name, Texture& texture) :
 {
 	if (!d_texture)
 	{
-		throw NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must be valid.");
+		CEGUI_THROW(NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must be valid."));
 	}
 	// defaults for scaling options
 	d_autoScale = false;
@@ -114,7 +114,7 @@ void Imageset::setTexture(Texture* texture)
 {
 	if (!d_texture)
 	{
-		throw NullObjectException("Imageset::setTexture - Texture object supplied for Imageset creation must be valid.");
+		CEGUI_THROW(NullObjectException("Imageset::setTexture - Texture object supplied for Imageset creation must be valid."));
 	}
 
 	d_texture = texture;
@@ -130,7 +130,7 @@ const Image& Imageset::getImage(const String& name) const
 
 	if (pos == d_images.end())
 	{
-		throw	UnknownObjectException("Imageset::getImage - The Image named '" + name + "' could not be found in Imageset '" + d_name + "'.");
+		CEGUI_THROW(UnknownObjectException("Imageset::getImage - The Image named '" + name + "' could not be found in Imageset '" + d_name + "'."));
 	}
 
 	return pos->second;
@@ -144,7 +144,7 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 {
 	if (isImageDefined(name))
 	{
-		throw AlreadyExistsException("Imageset::defineImage - An image with the name '" + name + "' already exists in Imageset '" + d_name + "'.");
+		CEGUI_THROW(AlreadyExistsException("Imageset::defineImage - An image with the name '" + name + "' already exists in Imageset '" + d_name + "'."));
 	}
 
 	// get scaling factors

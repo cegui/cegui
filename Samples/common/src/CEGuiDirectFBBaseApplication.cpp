@@ -101,15 +101,15 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 
     ret = DirectFBInit(0, 0);
     if (ret) {
-        throw std::runtime_error("DirectFB application failed to "
-                             "initialise. [DirectFBInit]");
+        CEGUI_THROW(std::runtime_error("DirectFB application failed to "
+            "initialise. [DirectFBInit]"));
     }
 
     ret = DirectFBCreate(&pimpl->d_dfb);
     if (ret) {
         pimpl->d_dfb = 0;
-        throw std::runtime_error("DirectFB application failed to "
-                             "initialise. [DirectFBCreate]");
+        CEGUI_THROW(std::runtime_error("DirectFB application failed to "
+            "initialise. [DirectFBCreate]"));
     }
 
     ret = pimpl->d_dfb->GetDisplayLayer(pimpl->d_dfb, DLID_PRIMARY, &pimpl->d_layer);
@@ -117,13 +117,13 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
         pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
         pimpl->d_dfb = 0;
-        throw std::runtime_error("DirectFB application failed to "
-                             "initialise. [GetDisplayLayer]");
+        CEGUI_THROW(std::runtime_error("DirectFB application failed to "
+            "initialise. [GetDisplayLayer]"));
     }
 
     if(initialiseDirectFB(800, 600, true)) {
-        throw std::runtime_error("DirectFB application failed to "
-                             "initialise. [initialiseDirectFB]");
+        CEGUI_THROW(std::runtime_error("DirectFB application failed to "
+            "initialise. [initialiseDirectFB]"));
     }
 
     ret = pimpl->d_window->CreateEventBuffer(pimpl->d_window, &pimpl->d_event_buffer);
@@ -132,8 +132,8 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
         pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
         pimpl->d_dfb = 0;
-        throw std::runtime_error("DirectFB application failed to "
-                             "initialise. [CreateEventBuffer]");
+        CEGUI_THROW(std::runtime_error("DirectFB application failed to "
+            "initialise. [CreateEventBuffer]"));
     }
 
     pimpl->d_window->GetSurface(pimpl->d_window, &pimpl->d_surface);

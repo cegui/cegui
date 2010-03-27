@@ -125,9 +125,9 @@ void MinizipResourceProvider::openArchive()
 
     if (d_pimpl->d_zfile == 0)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "MinizipResourceProvider::openArchive: '" +
-            d_pimpl->d_archive + "' does not exist");
+            d_pimpl->d_archive + "' does not exist"));
     }
 }
 
@@ -165,16 +165,16 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
 
     if (d_pimpl->d_zfile == 0)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "MinizipResourceProvider::load: '" + final_filename + "' cannot be "
-            "loaded because the archive has not been set");
+            "loaded because the archive has not been set"));
     }
 
     if (unzLocateFile(d_pimpl->d_zfile, final_filename.c_str(), 0) != UNZ_OK)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "MinizipResourceProvider::load: '" + final_filename +
-            "' does not exist");
+            "' does not exist"));
     }
 
     unz_file_info file_info;
@@ -182,16 +182,16 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
     if (unzGetCurrentFileInfo(d_pimpl->d_zfile, &file_info,
                               0, 0, 0, 0, 0, 0) != UNZ_OK)
     {
-        throw FileIOException(
+        CEGUI_THROW(FileIOException(
             "MinizipResourceProvider::load: '" + final_filename +
-            "' error reading file header");
+            "' error reading file header"));
     }
 
     if (unzOpenCurrentFile(d_pimpl->d_zfile) != Z_OK)
     {
-        throw FileIOException(
+        CEGUI_THROW(FileIOException(
             "MinizipResourceProvider::load: '" + final_filename +
-            "' error opening file");
+            "' error opening file"));
     }
 
     ulong size = file_info.uncompressed_size;
@@ -199,16 +199,16 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
 
     if (unzReadCurrentFile(d_pimpl->d_zfile, buffer, size) < 0)
     {
-        throw FileIOException(
+        CEGUI_THROW(FileIOException(
             "MinizipResourceProvider::load: '" + final_filename +
-            "' error reading file");
+            "' error reading file"));
     }
 
     if (unzCloseCurrentFile(d_pimpl->d_zfile) != UNZ_OK)
     {
-        throw GenericException(
+        CEGUI_THROW(GenericException(
             "MinizipResourceProvider::load: '" + final_filename +
-            "' error validating file");
+            "' error validating file"));
     }
 
     output.setData(buffer);

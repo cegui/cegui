@@ -127,7 +127,7 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
         MessageBox(0, Win32AppHelper::CREATE_WINDOW_ERROR, Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
     }
 
-    throw std::runtime_error("Win32 DirectX 9 application failed to initialise.");
+    CEGUI_THROW(std::runtime_error("Win32 DirectX 9 application failed to initialise."));
 }
 
 /*************************************************************************

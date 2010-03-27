@@ -388,9 +388,8 @@ Window* Window::getChild(const String& name) const
         if (d_children[i]->getName() == name)
             return d_children[i];
 
-    throw UnknownObjectException("Window::getChild - The Window object named '"
-                                 + name + "' is not attached to Window '" +
-                                 d_name + "'.");
+    CEGUI_THROW(UnknownObjectException("Window::getChild - The Window object "
+        "named '" + name + "' is not attached to Window '" + d_name + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -404,8 +403,8 @@ Window* Window::getChild(uint ID) const
 
     char strbuf[16];
     sprintf(strbuf, "%X", ID);
-    throw UnknownObjectException("Window::getChild: A Window with ID: '" +
-        std::string(strbuf) + "' is not attached to Window '" + d_name + "'.");
+    CEGUI_THROW(UnknownObjectException("Window::getChild: A Window with ID: '" +
+        std::string(strbuf) + "' is not attached to Window '" + d_name + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -1786,14 +1785,14 @@ void Window::setTooltipType(const String& tooltipType)
     }
     else
     {
-        try
+        CEGUI_TRY
         {
             d_customTip = static_cast<Tooltip*>(
                 WindowManager::getSingleton().createWindow(
                     tooltipType, getName() + TooltipNameSuffix));
             d_weOwnTip = true;
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             d_customTip = 0;
             d_weOwnTip = false;
@@ -2134,9 +2133,9 @@ const String& Window::getLookNFeel() const
 void Window::setLookNFeel(const String& look)
 {
     if (!d_windowRenderer)
-        throw NullObjectException("Window::setLookNFeel: There must be a "
+        CEGUI_THROW(NullObjectException("Window::setLookNFeel: There must be a "
             "window renderer assigned to the window '" + d_name +
-            "' to set its look'n'feel");
+            "' to set its look'n'feel"));
 
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
@@ -2187,14 +2186,14 @@ void Window::performChildWindowLayout()
         return;
 
     // here we just grab the look and feel and get it to layout it's children
-    try
+    CEGUI_TRY
     {
         const WidgetLookFeel& wlf =
             WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         // get look'n'feel to layout any child windows it created.
         wlf.layoutChildWidgets(*this);
     }
-    catch (UnknownObjectException&)
+    CEGUI_CATCH (UnknownObjectException&)
     {
         Logger::getSingleton().logEvent("Window::performChildWindowLayout: "
             "assigned widget look was not found.", Errors);
@@ -2210,8 +2209,9 @@ const String& Window::getUserString(const String& name) const
     UserStringMap::const_iterator iter = d_userStrings.find(name);
 
     if (iter == d_userStrings.end())
-        throw UnknownObjectException("Window::getUserString: a user string "
-            "named '" + name + "' is not defined for Window '" + d_name + "'.");
+        CEGUI_THROW(UnknownObjectException(
+            "Window::getUserString: a user string named '" + name +
+            "' is not defined for Window '" + d_name + "'."));
 
     return (*iter).second;
 }
@@ -2263,7 +2263,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
         // first we check to make sure the property is'nt banned from XML
         if (!isPropertyBannedFromXML(iter.getCurrentValue()))
         {
-            try
+            CEGUI_TRY
             {
                 // only write property if it's not at the default state
                 if (!isPropertyAtDefault(iter.getCurrentValue()))
@@ -2272,7 +2272,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                     ++propertiesWritten;
                 }
             }
-            catch (InvalidRequestException&)
+            CEGUI_CATCH (InvalidRequestException&)
             {
                 // This catches errors from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent(
@@ -2447,9 +2447,9 @@ void Window::rename(const String& new_name)
     }
 
     if (winMgr.isWindowPresent(new_name))
-        throw AlreadyExistsException("Window::rename - Failed to rename "
+        CEGUI_THROW(AlreadyExistsException("Window::rename - Failed to rename "
             "Window: " + d_name + " as: " + new_name + ".  A Window named:" +
-            new_name + "' already exists within the system.");
+            new_name + "' already exists within the system."));
 
     // rename Falagard created child windows
     if (!d_lookName.empty())
@@ -3115,8 +3115,9 @@ void Window::setWindowRenderer(const String& name)
         onWindowRendererAttached(e);
     }
     else
-        throw InvalidRequestException("Window::setWindowRenderer: Attempt to "
-            "assign a 'null' window renderer to window '" + d_name + "'.");
+        CEGUI_THROW(InvalidRequestException(
+            "Window::setWindowRenderer: Attempt to "
+            "assign a 'null' window renderer to window '" + d_name + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -3129,15 +3130,17 @@ WindowRenderer* Window::getWindowRenderer(void) const
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer->getClass()))
-        throw InvalidRequestException("Window::onWindowRendererAttached: The "
+        CEGUI_THROW(InvalidRequestException(
+            "Window::onWindowRendererAttached: The "
             "window renderer '" + d_windowRenderer->getName() + "' is not "
-            "compatible with this widget type (" + getType() + ")");
+            "compatible with this widget type (" + getType() + ")"));
 
     if (!testClassName(d_windowRenderer->getClass()))
-        throw InvalidRequestException("Window::onWindowRendererAttached: The "
+        CEGUI_THROW(InvalidRequestException(
+            "Window::onWindowRendererAttached: The "
             "window renderer '" + d_windowRenderer->getName() + "' is not "
             "compatible with this widget type (" + getType() + "). It requires "
-            "a '" + d_windowRenderer->getClass() + "' based window type.");
+            "a '" + d_windowRenderer->getClass() + "' based window type."));
 
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();
@@ -3174,7 +3177,6 @@ void Window::banPropertyFromXML(const String& property_name)
     // check if the insertion failed
     if (!d_bannedXMLProperties.insert(property_name).second)
         // just log the incidence
-        // PDT: Hmmm, comment here says just log, yet we throw! I Wonder why?!   
         AlreadyExistsException("Window::banPropertyFromXML: The property '" +
             property_name + "' is already banned in window '" +
             d_name + "'");

@@ -64,8 +64,8 @@ void DirectFBTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("DirectFBTexture::loadFromFile - "
-                                "CEGUI::System object has not been created!");
+        CEGUI_THROW(RendererException("DirectFBTexture::loadFromFile - "
+            "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -79,9 +79,9 @@ void DirectFBTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        throw RendererException("DirectFBTexture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("DirectFBTexture::loadFromFile - " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -99,8 +99,8 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
     desc.pixelformat = DSPF_ARGB;
 
     if (d_directfb.CreateSurface(&d_directfb, &desc, &d_texture))
-        throw RendererException("DirectFBTexture::loadFromMemory: Failed to "
-                                "create texture.");
+        CEGUI_THROW(RendererException(
+            "DirectFBTexture::loadFromMemory: Failed to create texture."));
 
     char* dest;
     int pitch;
@@ -109,8 +109,8 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
     {
         d_texture->Release(d_texture);
         d_texture = 0;
-        throw RendererException("DirectFBTexture::loadFromMemory: "
-                                "Directfb::Lock failed.");
+        CEGUI_THROW(RendererException(
+            "DirectFBTexture::loadFromMemory: Directfb::Lock failed."));
     }
 
     // Copy data in.
@@ -186,8 +186,8 @@ DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const Size& size) :
     desc.pixelformat = DSPF_ARGB;
 
     if (d_directfb.CreateSurface(&d_directfb, &desc, &d_texture))
-        throw RendererException("DirectFBTexture: Failed to create texture of "
-                                "specified size.");
+        CEGUI_THROW(RendererException(
+            "DirectFBTexture: Failed to create texture of specified size."));
 
     d_size = d_dataSize = size;
     updateCachedScaleValues();

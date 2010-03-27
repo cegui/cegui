@@ -283,8 +283,9 @@ Direct3D9Renderer::Direct3D9Renderer(LPDIRECT3DDEVICE9 device) :
     device->GetDeviceCaps(&caps);
 
     if (!caps.RasterCaps && D3DPRASTERCAPS_SCISSORTEST)
-        throw RendererException("Direct3D9Renderer: Hardware does not support "
-                                "D3DPRASTERCAPS_SCISSORTEST.  Unable to proceed.");
+        CEGUI_THROW(RendererException(
+            "Direct3D9Renderer: Hardware does not support "
+            "D3DPRASTERCAPS_SCISSORTEST.  Unable to proceed."));
 
     d_maxTextureSize = ceguimin(caps.MaxTextureHeight, caps.MaxTextureWidth);
 
@@ -314,9 +315,9 @@ Size Direct3D9Renderer::getViewportSize()
     D3DVIEWPORT9 vp;
 
     if (FAILED(d_device->GetViewport(&vp)))
-        throw RendererException("Direct3D9Renderer::getViewportSize - Unable "
-                                "to access required view port information from "
-                                "Direct3DDevice9.");
+        CEGUI_THROW(RendererException(
+            "Direct3D9Renderer::getViewportSize - Unable to access required "
+            "view port information from Direct3DDevice9."));
     else
         return Size(static_cast<float>(vp.Width),
                     static_cast<float>(vp.Height));

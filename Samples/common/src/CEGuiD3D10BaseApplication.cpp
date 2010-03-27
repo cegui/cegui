@@ -122,8 +122,8 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
                    Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
     }
 
-    throw std::runtime_error("Windows Direct3D 10 application failed to "
-                             "initialise.");
+    CEGUI_THROW(std::runtime_error("Windows Direct3D 10 application failed to "
+        "initialise."));
 }
 
 //----------------------------------------------------------------------------//

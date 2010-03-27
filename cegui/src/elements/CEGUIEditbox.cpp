@@ -184,9 +184,9 @@ void Editbox::setValidationString(const String& validation_string)
         onTextInvalidatedEvent(args);
     }
 #else
-    throw InvalidRequestException("Editbox::setValidationString: Unable to set "
-        "validation string because CEGUI was compiled without regular "
-        "expression support");
+    CEGUI_THROW(InvalidRequestException("Editbox::setValidationString: Unable "
+        "to set validation string because CEGUI was compiled without regular "
+        "expression support"));
 #endif
 }
 
@@ -864,8 +864,8 @@ size_t Editbox::getTextIndexFromPosition(const Point& pt) const
     }
     else
     {
-        throw InvalidRequestException("Editbox::getTextIndexFromPosition: "
-            "This function must be implemented by the window renderer");
+        CEGUI_THROW(InvalidRequestException("Editbox::getTextIndexFromPosition: "
+            "This function must be implemented by the window renderer"));
     }
 }
 

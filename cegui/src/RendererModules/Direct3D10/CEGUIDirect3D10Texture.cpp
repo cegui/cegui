@@ -99,8 +99,8 @@ void Direct3D10Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("Direct3D10Texture::loadFromFile - "
-                                "CEGUI::System object has not been created!");
+        CEGUI_THROW(RendererException("Direct3D10Texture::loadFromFile - "
+            "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -114,9 +114,9 @@ void Direct3D10Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        throw RendererException("Direct3D10Texture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("Direct3D10Texture::loadFromFile - " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -168,8 +168,9 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
         delete[] img_src;
 
     if (FAILED(hr))
-        throw RendererException("Direct3D10Texture::loadFromMemory: Failed to "
-                                "create texture from memory buffer.");
+        CEGUI_THROW(RendererException(
+            "Direct3D10Texture::loadFromMemory: Failed to "
+            "create texture from memory buffer."));
 
     initialiseShaderResourceView();
 
@@ -182,7 +183,8 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 void Direct3D10Texture::saveToMemory(void* buffer)
 {
     // TODO:
-    throw RendererException("Direct3D10Texture::saveToMemory: unimplemented!");
+    CEGUI_THROW(RendererException(
+        "Direct3D10Texture::saveToMemory: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -292,8 +294,8 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size& sz) :
     tex_desc.MipLevels = 1;
 
     if (FAILED(d_device.CreateTexture2D(&tex_desc, 0, &d_texture)))
-        throw RendererException("Direct3D10Texture: Failed to create texture "
-                                "with specified size.");
+        CEGUI_THROW(RendererException(
+            "Direct3D10Texture: Failed to create texture with specified size."));
 
     initialiseShaderResourceView();
 

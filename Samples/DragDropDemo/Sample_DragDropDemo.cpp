@@ -86,7 +86,7 @@ void DragDropDemo::subscribeEvents()
     /*
      * Subscribe handler to deal with user closing the frame window
      */
-    try
+    CEGUI_TRY
     {
         Window* main_wnd = wmgr.getWindow("Root/MainWindow");
         main_wnd->subscribeEvent(
@@ -94,7 +94,7 @@ void DragDropDemo::subscribeEvents()
             Event::Subscriber(&DragDropDemo::handle_CloseButton, this));
     }
     // if something goes wrong, log the issue but do not bomb!
-    catch(CEGUI::Exception&)
+    CEGUI_CATCH(CEGUI::Exception&)
     {}
 
     /*
@@ -104,7 +104,7 @@ void DragDropDemo::subscribeEvents()
 
     for (int i = 1; i <= 12; ++i)
     {
-        try
+        CEGUI_TRY
         {
             // get the window pointer for this slot
             Window* wnd =
@@ -116,7 +116,7 @@ void DragDropDemo::subscribeEvents()
                 Event::Subscriber(&DragDropDemo::handle_ItemDropped, this));
         }
         // if something goes wrong, log the issue but do not bomb!
-        catch(CEGUI::Exception&)
+        CEGUI_CATCH(CEGUI::Exception&)
         {}
     }
 }

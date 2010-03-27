@@ -48,8 +48,8 @@ String IrrlichtRenderer::d_rendererID("CEGUI::IrrlichtRenderer "
 IrrlichtRenderer& IrrlichtRenderer::bootstrapSystem(irr::IrrlichtDevice& device)
 {
     if (System::getSingletonPtr())
-        throw InvalidRequestException("IrrlichtRenderer::bootstrapSystem: "
-            "CEGUI::System object is already initialised.");
+        CEGUI_THROW(InvalidRequestException("IrrlichtRenderer::bootstrapSystem: "
+            "CEGUI::System object is already initialised."));
 
     IrrlichtRenderer& renderer = IrrlichtRenderer::create(device);
     IrrlichtResourceProvider& rp =
@@ -65,8 +65,8 @@ void IrrlichtRenderer::destroySystem()
 {
     System* const sys = System::getSingletonPtr();
     if (!sys)
-        throw InvalidRequestException("IrrlichtRenderer::destroySystem: "
-            "CEGUI::System object is not created or was already destroyed.");
+        CEGUI_THROW(InvalidRequestException("IrrlichtRenderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed."));
 
     IrrlichtRenderer* const renderer =
         static_cast<IrrlichtRenderer*>(sys->getRenderer());
