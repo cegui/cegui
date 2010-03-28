@@ -77,6 +77,11 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
    setText(text);
 }
 
+//----------------------------------------------------------------------------//
+ListboxItem::~ListboxItem(void)
+{
+    delete d_bidiVisualMapping;
+}
 
 /*************************************************************************
 	Set the selection highlighting brush image.

@@ -13,7 +13,7 @@ class ItemListBase : public Window
 	unsigned int getItemCount() const;
 	ItemEntry* getItemFromIndex(unsigned int index) const;
 	unsigned int getItemIndex(const ItemEntry* item) const;
-	ItemEntry* findItemWithText(string text, const ItemEntry* start_item);
+	ItemEntry* findItemWithText(utf8string text, const ItemEntry* start_item);
 	bool isItemInList(const ItemEntry* item) const;
 	bool isAutoResizeEnabled() const;
 	bool isSortEnabled() const;

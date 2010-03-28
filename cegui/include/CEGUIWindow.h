@@ -3156,6 +3156,30 @@ public:
     */
     WindowUpdateMode getUpdateMode() const;
 
+    /*!
+    \brief
+        Set whether mouse input that is not directly handled by this Window
+        (including it's event subscribers) should be propagated back to the
+        Window's parent.
+
+    \param enabled
+        - true if unhandled mouse input should be propagated to the parent.
+        - false if unhandled mouse input should not be propagated.
+    */
+    void setMouseInputPropagationEnabled(const bool enabled);
+
+    /*!
+    \brief
+        Return whether mouse input that is not directly handled by this Window
+        (including it's event subscribers) should be propagated back to the
+        Window's parent.
+
+    \return
+        - true if unhandled mouse input will be propagated to the parent.
+        - false if unhandled mouse input will not be propagated.
+    */
+    bool isMouseInputPropagationEnabled() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -4023,6 +4047,7 @@ protected:
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
     static  WindowProperties::UpdateMode d_updateModeProperty;
+    static  WindowProperties::MouseInputPropagationEnabled d_mouseInputPropagationProperty;
 
     /*************************************************************************
         Implementation Data
@@ -4201,6 +4226,9 @@ protected:
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
+    //! specifies whether mouse inputs should be propagated to parent(s)
+    bool d_propagateMouseInputs;
+
 
 private:
     /*************************************************************************

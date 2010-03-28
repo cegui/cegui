@@ -48,8 +48,8 @@ String NullRenderer::d_rendererID(
 NullRenderer& NullRenderer::bootstrapSystem()
 {
     if (System::getSingletonPtr())
-        throw InvalidRequestException("NullRenderer::bootstrapSystem: "
-            "CEGUI::System object is already initialised.");
+        CEGUI_THROW(InvalidRequestException("NullRenderer::bootstrapSystem: "
+            "CEGUI::System object is already initialised."));
 
 	NullRenderer& renderer = create();
 	
@@ -67,8 +67,8 @@ void NullRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        throw InvalidRequestException("NullRenderer::destroySystem: "
-            "CEGUI::System object is not created or was already destroyed.");
+        CEGUI_THROW(InvalidRequestException("NullRenderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed."));
 
     NullRenderer* renderer = static_cast<NullRenderer*>(sys->getRenderer());
     ResourceProvider* rp = sys->getResourceProvider();

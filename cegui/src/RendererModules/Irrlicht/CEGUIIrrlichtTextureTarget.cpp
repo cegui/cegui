@@ -67,7 +67,7 @@ void IrrlichtTextureTarget::activate()
 void IrrlichtTextureTarget::deactivate()
 {
     IrrlichtRenderTarget::deactivate();
-    d_driver.setRenderTarget(0);
+    d_driver.setRenderTarget(0, false, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -81,7 +81,7 @@ void IrrlichtTextureTarget::clear()
 {
     d_driver.setRenderTarget(d_texture, true, false,
                              irr::video::SColor(0, 0, 0, 0));
-    d_driver.setRenderTarget(0);
+    d_driver.setRenderTarget(0, false, false);
 }
 
 //----------------------------------------------------------------------------//

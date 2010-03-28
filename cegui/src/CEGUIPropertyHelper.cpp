@@ -137,11 +137,11 @@ const Image* PropertyHelper::stringToImage(const String& str)
 
 	const Image* image;
 
-	try
+	CEGUI_TRY
 	{
 		image = &ImagesetManager::getSingleton().get(imageSet).getImage(imageName);
 	}
-	catch (UnknownObjectException&)
+	CEGUI_CATCH (UnknownObjectException&)
 	{
 		image = 0;
 	}

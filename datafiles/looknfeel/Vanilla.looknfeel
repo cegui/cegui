@@ -507,6 +507,7 @@
 
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -540,6 +541,7 @@
 
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>

@@ -320,9 +320,9 @@ void FreeTypeFont::drawGlyphToBuffer(argb_t *buffer, uint buf_width) const
             break;
 
         default:
-            throw InvalidRequestException("Font::drawGlyphToBuffer: "
+            CEGUI_THROW(InvalidRequestException("Font::drawGlyphToBuffer: "
                 "The glyph could not be drawn because the pixel mode is "
-                "unsupported.");
+                "unsupported."));
             break;
         }
 
@@ -362,18 +362,18 @@ void FreeTypeFont::updateFont()
     if ((error = FT_New_Memory_Face(ft_lib, d_fontData.getDataPtr(),
                            static_cast<FT_Long>(d_fontData.getSize()), 0,
                            &d_fontFace)) != 0)
-        throw GenericException("FreeTypeFont::updateFont: Failed to create "
-            "face from font file '" + d_filename + "' error was: " +
-            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error"));
+        CEGUI_THROW(GenericException("FreeTypeFont::updateFont: Failed to "
+            "create face from font file '" + d_filename + "' error was: " +
+            ((error < FT_Err_Max) ? ft_errors[error] : "unknown error")));
 
     // check that default Unicode character map is available
     if (!d_fontFace->charmap)
     {
         FT_Done_Face(d_fontFace);
         d_fontFace = 0;
-        throw GenericException("FreeTypeFont::updateFont: "
+        CEGUI_THROW(GenericException("FreeTypeFont::updateFont: "
             "The font '" + d_name + "' does not have a Unicode charmap, and "
-            "cannot be used.");
+            "cannot be used."));
     }
 
     uint horzdpi = System::getSingleton().getRenderer()->getDisplayDPI().d_x;
@@ -410,7 +410,7 @@ void FreeTypeFont::updateFont()
         {
             char size [20];
             snprintf(size, sizeof(size), "%g", d_ptSize);
-            throw GenericException("FreeTypeFont::load - The font '" + d_name + "' cannot be rasterised at a size of " + size + " points, and cannot be used.");
+            CEGUI_THROW(GenericException("FreeTypeFont::load - The font '" + d_name + "' cannot be rasterised at a size of " + size + " points, and cannot be used."));
         }
     }
 

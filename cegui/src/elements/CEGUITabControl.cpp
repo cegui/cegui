@@ -170,7 +170,7 @@ size_t TabControl::getSelectedTabIndex() const
         if (d_tabButtonVector [i]->isSelected ())
             return i;
 
-	throw UnknownObjectException("TabControl::getSelectedTabIndex - Current tab not in list?");
+	CEGUI_THROW(UnknownObjectException("TabControl::getSelectedTabIndex - Current tab not in list?"));
 }
 
 /*************************************************************************
@@ -326,7 +326,7 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
         if (d_tabButtonVector [i]->getTargetWindow () == wnd)
             return d_tabButtonVector [i];
 
-	throw UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents.");
+	CEGUI_THROW(UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents."));
 }
 /*************************************************************************
 Remove tab button
@@ -689,7 +689,7 @@ TabButton* TabControl::createTabButton(const String& name) const
     else
     {
         //return createTabButton_impl(name);
-        throw InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module"));
     }
 }
 

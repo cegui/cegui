@@ -87,8 +87,8 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
             break;
 
         default:
-            throw FileIOException("OgreImageCodec::load: File data was of an "
-                                  "unsupported format.");
+            CEGUI_THROW(FileIOException("OgreImageCodec::load: File data was "
+                "of an unsupported format."));
             break;
     }
 

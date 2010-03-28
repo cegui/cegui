@@ -42,8 +42,8 @@ Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner) :
     // initialise renderer size
     D3DVIEWPORT9 vp;
     if (FAILED(d_owner.getDevice()->GetViewport(&vp)))
-        throw RendererException("Direct3D9RenderTarget: Unable to access "
-        "required view port information from Direct3DDevice9.");
+        CEGUI_THROW(RendererException("Direct3D9RenderTarget: Unable to access "
+            "required view port information from Direct3DDevice9."));
 
     Rect area(
         Point(static_cast<float>(vp.X), static_cast<float>(vp.Y)),

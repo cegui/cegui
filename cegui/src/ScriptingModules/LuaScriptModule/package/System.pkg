@@ -7,7 +7,7 @@ class System : public EventSet
 
 	Renderer* getRenderer() const;
 
-	void setDefaultFont(string name);
+	void setDefaultFont(utf8string name);
 	void setDefaultFont(Font* font);
     Font* getDefaultFont() const;
 
@@ -29,14 +29,14 @@ class System : public EventSet
 
 	void setDefaultMouseCursor(MouseCursorImage image);
 	void setDefaultMouseCursor(const Image* image);
-	void setDefaultMouseCursor(string imageset_name, string image_name);
+	void setDefaultMouseCursor(utf8string imageset_name, utf8string image_name);
 	const Image* getDefaultMouseCursor() const;
 
 	Window* getWindowContainingMouse() const;
 
-	void executeScriptFile(string filename) const;
-	int executeScriptGlobal(string global_name) const;
-	void executeScriptString(string lua_string) const;
+	void executeScriptFile(utf8string filename) const;
+	int executeScriptGlobal(utf8string global_name) const;
+	void executeScriptString(utf8string lua_string) const;
 
 	float getMouseMoveScaling() const;
 	void setMouseMoveScaling(float scaling);
@@ -48,7 +48,7 @@ class System : public EventSet
 	tolua_outside bool ceguiLua_System_isSystemKeyDown @ isSystemKeyDown(SystemKey k) const;
 
 	void setDefaultTooltip(Tooltip* tooltip);
-	void setDefaultTooltip(string tooltipType);
+	void setDefaultTooltip(utf8string tooltipType);
 	Tooltip* getDefaultTooltip(void) const;
 
     void notifyDisplaySizeChanged(const Size& new_size);

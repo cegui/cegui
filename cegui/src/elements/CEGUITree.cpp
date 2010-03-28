@@ -372,7 +372,7 @@ void Tree::insertItem(TreeItem* item, const TreeItem* position)
             // throw if item 'position' is not in the list
             if (ins_pos == d_listItems.end())
             {
-                throw InvalidRequestException((utf8*)"Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree.");
+                CEGUI_THROW(InvalidRequestException((utf8*)"Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree."));
             }
         }
         
@@ -538,8 +538,8 @@ void Tree::setItemSelectState(TreeItem* item, bool state)
     }
     else
     {
-        throw InvalidRequestException("Tree::setItemSelectState - the "
-            "specified TreeItem is not attached to this Tree or not visible.");
+        CEGUI_THROW(InvalidRequestException("Tree::setItemSelectState - the "
+            "specified TreeItem is not attached to this Tree or not visible."));
     }
     }
 
@@ -589,7 +589,7 @@ void Tree::setItemSelectState(size_t item_index, bool state)
     }
     else
     {
-        throw InvalidRequestException((utf8*)"Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree.");
+        CEGUI_THROW(InvalidRequestException((utf8*)"Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree."));
     }
     
 }
@@ -1249,69 +1249,35 @@ bool Tree::getHeightToItemInList(const LBItemList &itemList, const TreeItem *tre
 *************************************************************************/
 void Tree::ensureItemIsVisible(const TreeItem *treeItem)
 {
-    // TODO: finish this (make it work!)
-    
     if (!treeItem)
         return;
     
-    float bottom;
     float top = 0;
-    
     if (!getHeightToItemInList(d_listItems, treeItem, 0, &top))
         return;  // treeItem wasn't found by getHeightToItemInList
     
     // calculate height to bottom of item
-    bottom = top + treeItem->getPixelSize().d_height;
+    float bottom = top + treeItem->getPixelSize().d_height;
     
     // account for current scrollbar value
-    float currPos = d_vertScrollbar->getScrollPosition();
+    const float currPos = d_vertScrollbar->getScrollPosition();
     top      -= currPos;
     bottom   -= currPos;
     
+    const float listHeight = getTreeRenderArea().getHeight();
     
-#if 0
-    // handle simple "scroll to the bottom" case
-    if (item_index >= getItemCount())
+    // if top is above the view area, or if item is too big to fit
+    if ((top < 0.0f) || ((bottom - top) > listHeight))
     {
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getDocumentSize() - d_vertScrollbar->getPageSize());
+        // scroll top of item to top of box.
+        d_vertScrollbar->setScrollPosition(currPos + top);
     }
-    else
+    // if bottom is below the view area
+    else if (bottom >= listHeight)
     {
-        float bottom;
-        float listHeight = getTreeRenderArea().getHeight();
-        float top = 0;
-        
-        // get height to top of item
-        size_t i;
-        for (i = 0; i < item_index; ++i)
-        {
-            top += d_listItems[i]->getPixelSize().d_height;
-        }
-        
-        // calculate height to bottom of item
-        bottom = top + d_listItems[i]->getPixelSize().d_height;
-        
-        // account for current scrollbar value
-        float currPos = d_vertScrollbar->getScrollPosition();
-        top      -= currPos;
-        bottom   -= currPos;
-        
-        // if top is above the view area, or if item is too big to fit
-        if ((top < 0.0f) || ((bottom - top) > listHeight))
-        {
-            // scroll top of item to top of box.
-            d_vertScrollbar->setScrollPosition(currPos + top);
-        }
-        // if bottom is below the view area
-        else if (bottom >= listHeight)
-        {
-            // position bottom of item at the bottom of the list
-            d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
-        }
-        
-        // Item is already fully visible - nothing more to do.
+        // position bottom of item at the bottom of the list
+        d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
     }
-#endif
 }
 
 /*************************************************************************

@@ -270,7 +270,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("ImageDim::getValue - unknown or unsupported DimensionType encountered.");
+                CEGUI_THROW(InvalidRequestException("ImageDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
         }
     }
@@ -374,7 +374,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("WidgetDim::getValue - unknown or unsupported DimensionType encountered.");
+                CEGUI_THROW(InvalidRequestException("WidgetDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
         }
     }
@@ -436,7 +436,7 @@ namespace CEGUI
                     return fontObj->getTextExtent(d_text.empty() ? sourceWindow.getText() : d_text) + d_padding;
                     break;
                 default:
-                    throw InvalidRequestException("FontDim::getValue - unknown or unsupported FontMetricType encountered.");
+                    CEGUI_THROW(InvalidRequestException("FontDim::getValue - unknown or unsupported FontMetricType encountered."));
                     break;
             }
         }
@@ -511,7 +511,7 @@ namespace CEGUI
                 return d.asAbsolute(s.d_height);
 
             default:
-                throw InvalidRequestException("PropertyDim::getValue - unknown or unsupported DimensionType encountered.");
+                CEGUI_THROW(InvalidRequestException("PropertyDim::getValue - unknown or unsupported DimensionType encountered."));
         }
     }
 
@@ -640,7 +640,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("UnifiedDim::getValue - unknown or unsupported DimensionType encountered.");
+                CEGUI_THROW(InvalidRequestException("UnifiedDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
         }
     }
@@ -666,7 +666,7 @@ namespace CEGUI
                 break;
 
             default:
-                throw InvalidRequestException("UnifiedDim::getValue - unknown or unsupported DimensionType encountered.");
+                CEGUI_THROW(InvalidRequestException("UnifiedDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
         }
     }

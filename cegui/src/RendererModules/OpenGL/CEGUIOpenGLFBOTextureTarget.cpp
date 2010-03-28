@@ -45,7 +45,7 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
     OpenGLTextureTarget(owner)
 {
     if (!GLEW_EXT_framebuffer_object)
-        throw InvalidRequestException("Hardware does not support FBO");
+        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
 
     initialiseRenderTexture();
 

@@ -74,8 +74,8 @@ void OgreTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("OgreTexture::loadFromFile: "
-                                "CEGUI::System object has not been created!");
+        CEGUI_THROW(RendererException("OgreTexture::loadFromFile: "
+            "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
     RawDataContainer texFile;
@@ -101,9 +101,9 @@ void OgreTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        throw RendererException("OgreTexture::loadFromFile: " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("OgreTexture::loadFromFile: " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -147,8 +147,8 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        throw RendererException("OgreTexture::loadFromMemory: Failed to create "
-                                "Texture object from memory.");
+        CEGUI_THROW(RendererException("OgreTexture::loadFromMemory: Failed to "
+            "create Texture object from memory."));
 
     d_size.d_width = d_texture->getWidth();
     d_size.d_height = d_texture->getHeight();
@@ -165,8 +165,8 @@ void OgreTexture::saveToMemory(void* buffer)
     Ogre::HardwarePixelBufferSharedPtr src = d_texture->getBuffer();
 
     if (src.isNull())
-        throw RendererException("OgreTexture::saveToMemory: unable to obtain "
-                                "hardware pixel buffer pointer.");
+        CEGUI_THROW(RendererException("OgreTexture::saveToMemory: unable to "
+            "obtain hardware pixel buffer pointer."));
 
     const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
     src->readData(0, sz, buffer);
@@ -208,8 +208,8 @@ OgreTexture::OgreTexture(const Size& sz) :
     
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        throw RendererException("OgreTexture: Failed to create Texture object "
-                                "with spcecified size.");
+        CEGUI_THROW(RendererException("OgreTexture: Failed to create Texture "
+            "object with spcecified size."));
     
     d_size.d_width = d_texture->getWidth();
     d_size.d_height = d_texture->getHeight();

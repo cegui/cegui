@@ -46,6 +46,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUILeftAlignedRenderedString.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
+				 CEGUIMinizipResourceProvider.h \
                  CEGUIMouseCursor.h \
                  CEGUINamedXMLResourceManager.h \
                  CEGUIPixmapFont.h \

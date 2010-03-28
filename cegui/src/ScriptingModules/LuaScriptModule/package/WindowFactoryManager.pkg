@@ -19,16 +19,16 @@ class WindowFactoryManager
 {
     static WindowFactoryManager& getSingleton();
 
-    bool isFactoryPresent(string name) const;
-    void addWindowTypeAlias(string aliasName, string targetType);
-    void removeWindowTypeAlias(string aliasName, string targetType);
-    void addFalagardWindowMapping(string newType, string targetType, string lookName, string renderer, string effectName = "");
-    void removeFalagardWindowMapping(string type);
-    bool isFalagardMappedType(string type) const;
-    string getMappedLookForType(string type) const;
-    string getMappedRendererForType(string type) const;
-    String getDereferencedAliasType(string type) const;
-    const FalagardWindowMapping& getFalagardMappingForType(string type) const;
+    bool isFactoryPresent(utf8string name) const;
+    void addWindowTypeAlias(utf8string aliasName, utf8string targetType);
+    void removeWindowTypeAlias(utf8string aliasName, utf8string targetType);
+    void addFalagardWindowMapping(utf8string newType, utf8string targetType, utf8string lookName, utf8string renderer, utf8string effectName = "");
+    void removeFalagardWindowMapping(utf8string type);
+    bool isFalagardMappedType(utf8string type) const;
+    string getMappedLookForType(utf8string type) const;
+    string getMappedRendererForType(utf8string type) const;
+    String getDereferencedAliasType(utf8string type) const;
+    const FalagardWindowMapping& getFalagardMappingForType(utf8string type) const;
 
     WindowFactoryIterator getIterator() const;
     FalagardMappingIterator getFalagardMappingIterator() const;

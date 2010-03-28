@@ -69,8 +69,8 @@ String OgreRenderer::d_rendererID(
 OgreRenderer& OgreRenderer::bootstrapSystem()
 {
     if (System::getSingletonPtr())
-        throw InvalidRequestException("OgreRenderer::bootstrapSystem: "
-            "CEGUI::System object is already initialised.");
+        CEGUI_THROW(InvalidRequestException("OgreRenderer::bootstrapSystem: "
+            "CEGUI::System object is already initialised."));
 
     OgreRenderer& renderer = create();
     OgreResourceProvider& rp = createOgreResourceProvider();
@@ -84,8 +84,8 @@ OgreRenderer& OgreRenderer::bootstrapSystem()
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target)
 {
     if (System::getSingletonPtr())
-        throw InvalidRequestException("OgreRenderer::bootstrapSystem: "
-            "CEGUI::System object is already initialised.");
+        CEGUI_THROW(InvalidRequestException("OgreRenderer::bootstrapSystem: "
+            "CEGUI::System object is already initialised."));
 
     OgreRenderer& renderer = OgreRenderer::create(target);
     OgreResourceProvider& rp = createOgreResourceProvider();
@@ -100,8 +100,8 @@ void OgreRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        throw InvalidRequestException("OgreRenderer::destroySystem: "
-            "CEGUI::System object is not created or was already destroyed.");
+        CEGUI_THROW(InvalidRequestException("OgreRenderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed."));
 
     OgreRenderer* renderer = static_cast<OgreRenderer*>(sys->getRenderer());
     OgreResourceProvider* rp =
@@ -335,17 +335,18 @@ OgreRenderer::OgreRenderer() :
     // TODO: should be set to correct value
     d_maxTextureSize(2048),
     d_ogreRoot(Ogre::Root::getSingletonPtr()),
-    d_activeBlendMode(BM_INVALID)
+    d_activeBlendMode(BM_INVALID),
+    d_makeFrameControlCalls(true)
 {
     checkOgreInitialised();
 
     // get auto created window
     Ogre::RenderWindow* rwnd = d_ogreRoot->getAutoCreatedWindow();
     if (!rwnd)
-        throw RendererException("Ogre was not initialised to automatically "
-                                "create a window, you should therefore be "
-                                "explicitly specifying a Ogre::RenderTarget in "
-                                "the OgreRenderer::create function.");
+        CEGUI_THROW(RendererException(
+            "Ogre was not initialised to automatically create a window, you "
+            "should therefore be explicitly specifying a Ogre::RenderTarget in "
+            "the OgreRenderer::create function."));
 
     constructor_impl(*rwnd);
 }
@@ -381,12 +382,12 @@ OgreRenderer::~OgreRenderer()
 void OgreRenderer::checkOgreInitialised()
 {
     if (!d_ogreRoot)
-        throw RendererException("The Ogre::Root object has not been created. "
-                                "You must initialise Ogre first!");
+        CEGUI_THROW(RendererException("The Ogre::Root object has not been "
+            "created. You must initialise Ogre first!"));
 
     if (!d_ogreRoot->isInitialised())
-        throw RendererException("Ogre has not been initialised. You must "
-                                "initialise Ogre first!");
+        CEGUI_THROW(RendererException("Ogre has not been initialised. You must "
+            "initialise Ogre first!"));
 }
 
 //----------------------------------------------------------------------------//

@@ -209,6 +209,6 @@ class String
 
     String();
     String(unsigned long num, unsigned long codepoint);
-    String(string s);
+    String(utf8string s);
     String(const String& s);
 };

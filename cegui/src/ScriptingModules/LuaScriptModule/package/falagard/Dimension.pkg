@@ -27,9 +27,9 @@ class AbsoluteDim : public BaseDim
 ******************************************************************************/
 class ImageDim : public BaseDim 
 {
-  void setSourceImage(string imageset, string image);
+  void setSourceImage(utf8string imageset, utf8string image);
   void setSourceDimension(DimensionType dim);
-  ImageDim(string imageset, string image, DimensionType dim);
+  ImageDim(utf8string imageset, utf8string image, DimensionType dim);
 };
 
 /******************************************************************************
@@ -37,9 +37,9 @@ class ImageDim : public BaseDim
 ******************************************************************************/
 class WidgetDim : public BaseDim
 {
-  void setWidgetName(string name);
+  void setWidgetName(utf8string name);
   void setSourceDimension(DimensionType dim); 
-  WidgetDim(string name, DimensionType dim);
+  WidgetDim(utf8string name, DimensionType dim);
 };
 
 /******************************************************************************
@@ -55,7 +55,7 @@ class UnifiedDim : public BaseDim
 ******************************************************************************/
 class FontDim : public BaseDim
 {
-  FontDim(string name, string font, string text, FontMetricType metric, float padding = 0);
+  FontDim(utf8string name, utf8string font, utf8string text, FontMetricType metric, float padding = 0);
 };
 
 /******************************************************************************
@@ -63,7 +63,7 @@ class FontDim : public BaseDim
 ******************************************************************************/
 class PropertyDim : public BaseDim
 {
-  PropertyDim(string name, string property, DimensionType type);
+  PropertyDim(utf8string name, utf8string property, DimensionType type);
 };
 
 /******************************************************************************
@@ -93,7 +93,7 @@ class ComponentArea
   //void writeXMLToStream(OutStream& out_stream) const;
   bool isAreaFetchedFromProperty() const;
   string getAreaPropertySource() const;
-  void setAreaPropertySource(string property);
+  void setAreaPropertySource(utf8string property);
   Dimension d_left;
   Dimension d_top;
   Dimension d_right_or_width;

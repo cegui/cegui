@@ -83,24 +83,24 @@ namespace CEGUI
             System::getSingleton().getResourceProvider()->
                 unloadRawDataContainer(rawXMLData);
             // throw exception
-            throw FileIOException("TinyXMLParser: an error occurred while "
-                                  "parsing the XML document '" + filename +
-                                  "' - check it for potential errors!.");
+            CEGUI_THROW(FileIOException("TinyXMLParser: an error occurred while "
+                "parsing the XML document '" + filename +
+                "' - check it for potential errors!."));
         }
 
         const CEGUI_TINYXML_NAMESPACE::TiXmlElement* currElement = doc.RootElement();
         if (currElement)
         {
-            try
+            CEGUI_TRY
             {
                 // function called recursively to parse xml data
                 processElement(currElement);
             }
-            catch(...)
+            CEGUI_CATCH(...)
             {
                 delete [] buf;
                 System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
-                throw;
+                CEGUI_THROW();
             }
         } // if (currElement)
 

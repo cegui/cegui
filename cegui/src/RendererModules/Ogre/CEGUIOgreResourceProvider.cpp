@@ -60,10 +60,10 @@ void OgreResourceProvider::loadRawDataContainer(const String& filename,
         openResource(filename.c_str(), orpGroup.c_str());
 
     if (input.isNull())
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "OgreCEGUIResourceProvider::loadRawDataContainer: Unable to open "
             "resource file '" + filename + "' in resource group '" + orpGroup +
-            "'.");
+            "'."));
 
     Ogre::String buf = input->getAsString();
     const size_t memBuffSize = buf.length();

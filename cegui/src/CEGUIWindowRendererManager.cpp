@@ -99,7 +99,7 @@ WindowRendererFactory* WindowRendererManager::getFactory(const String& name) con
     {
         return (*i).second;
     }
-    throw UnknownObjectException("There is no WindowRendererFactory named '"+name+"' available");
+    CEGUI_THROW(UnknownObjectException("There is no WindowRendererFactory named '"+name+"' available"));
 }
 
 /*************************************************************************
@@ -113,7 +113,7 @@ void WindowRendererManager::addFactory(WindowRendererFactory* wr)
     }
     if (d_wrReg.insert(std::make_pair(wr->getName(), wr)).second == false)
     {
-        throw AlreadyExistsException("A WindowRendererFactory named '"+wr->getName()+"' already exist");
+        CEGUI_THROW(AlreadyExistsException("A WindowRendererFactory named '"+wr->getName()+"' already exist"));
     }
 
     char addr_buff[32];

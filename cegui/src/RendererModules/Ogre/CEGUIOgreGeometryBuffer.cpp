@@ -115,7 +115,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
     d_effect(0),
-    d_texelOffset(rs.getHorizontalTexelOffset(), -rs.getVerticalTexelOffset()),
+    d_texelOffset(rs.getHorizontalTexelOffset(), rs.getVerticalTexelOffset()),
     d_matrixValid(false),
     d_sync(false)
 {

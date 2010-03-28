@@ -47,9 +47,9 @@ const StateImagery& WidgetLookFeel::getStateImagery(
     StateList::const_iterator imagery = d_stateImagery.find(state);
 
     if (imagery == d_stateImagery.end())
-        throw UnknownObjectException(
+        CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getStateImagery - unknown state '" + state +
-            "' in look '" + d_lookName + "'.");
+            "' in look '" + d_lookName + "'."));
 
     return (*imagery).second;
 }
@@ -61,9 +61,9 @@ const ImagerySection& WidgetLookFeel::getImagerySection(
     ImageryList::const_iterator imgSect = d_imagerySections.find(section);
 
     if (imgSect == d_imagerySections.end())
-        throw UnknownObjectException(
+        CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getImagerySection - unknown imagery section '" +
-            section +  "' in look '" + d_lookName + "'.");
+            section +  "' in look '" + d_lookName + "'."));
 
     return (*imgSect).second;
 }
@@ -185,10 +185,10 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
 {
     if (widget.getLookNFeel() != getName())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "WidgetLookFeel::cleanUpWidget - The window '"
             + widget.getName() +
-            "' does not have this look'n'feel assigned");
+            "' does not have this look'n'feel assigned"));
     }
 
     // remove added child widgets
@@ -249,9 +249,9 @@ const NamedArea& WidgetLookFeel::getNamedArea(const String& name) const
     NamedAreaList::const_iterator area = d_namedAreas.find(name);
 
     if (area == d_namedAreas.end())
-        throw UnknownObjectException(
+        CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getNamedArea - unknown named area: '" + name +
-            "' in look '" + d_lookName + "'.");
+            "' in look '" + d_lookName + "'."));
 
     return (*area).second;
 }

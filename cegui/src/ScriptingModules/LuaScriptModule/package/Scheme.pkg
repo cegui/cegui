@@ -8,6 +8,6 @@ class Scheme
 	bool resourcesLoaded() const;
 	string getName() const;
 
-    static void setDefaultResourceGroup(string resourceGroup);
+    static void setDefaultResourceGroup(utf8string resourceGroup);
     static string getDefaultResourceGroup();
 };

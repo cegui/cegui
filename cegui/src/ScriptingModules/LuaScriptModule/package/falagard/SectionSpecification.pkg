@@ -13,10 +13,10 @@ class SectionSpecification
   void setOverrideColours(const ColourRect& cols);
   bool isUsingOverrideColours() const;
   void setUsingOverrideColours(bool setting = true);
-  void setOverrideColoursPropertySource(string property);
+  void setOverrideColoursPropertySource(utf8string property);
   void setOverrideColoursPropertyIsColourRect(bool setting = true);  
-  void setRenderControlPropertySource(string property);
+  void setRenderControlPropertySource(utf8string property);
   // void writeXMLToStream(OutStream& out_stream) const;
-  SectionSpecification(string owner, string sectionName, const string controlPropertySource, const string controlPropertyValue, const string controlPropertyWidget);
-  SectionSpecification(string owner, string sectionName, string controlPropertySource, const string controlPropertyValue, const string controlPropertyWidget, const ColourRect& cols);
+  SectionSpecification(utf8string owner, utf8string sectionName, const string controlPropertySource, const string controlPropertyValue, const string controlPropertyWidget);
+  SectionSpecification(utf8string owner, utf8string sectionName, utf8string controlPropertySource, const string controlPropertyValue, const string controlPropertyWidget, const ColourRect& cols);
 };

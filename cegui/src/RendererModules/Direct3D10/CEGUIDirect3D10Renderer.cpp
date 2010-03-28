@@ -244,7 +244,7 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
         std::string msg(static_cast<const char*>(errors->GetBufferPointer()),
                         errors->GetBufferSize());
         errors->Release();
-        throw RendererException(msg);
+        CEGUI_THROW(RendererException(msg));
     }
 
     // extract the rendering techniques
@@ -273,16 +273,17 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
 
     D3D10_PASS_DESC pass_desc;
     if (FAILED(d_normalTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
-        throw RendererException("Direct3D10Renderer: failed to obtain technique "
-                                "description for pass 0.");
+        CEGUI_THROW(RendererException(
+            "Direct3D10Renderer: failed to obtain technique "
+            "description for pass 0."));
 
     if (FAILED(d_device->CreateInputLayout(vertex_layout, element_count,
                                             pass_desc.pIAInputSignature,
                                             pass_desc.IAInputSignatureSize,
                                             &d_inputLayout)))
     {
-        throw RendererException("Direct3D10Renderer: failed to create D3D 10 "
-                                "input layout.");
+        CEGUI_THROW(RendererException(
+            "Direct3D10Renderer: failed to create D3D 10 input layout."));
     }
 
     d_defaultTarget = new Direct3D10ViewportTarget(*this);
@@ -316,8 +317,9 @@ Size Direct3D10Renderer::getViewportSize()
     d_device->RSGetViewports(&vp_count, &vp);
 
     if (vp_count != 1)
-        throw RendererException("Direct3D10Renderer::getViewportSize: Unable "
-            "to access required view port information from IDirect3DDevice10.");
+        CEGUI_THROW(RendererException(
+            "Direct3D10Renderer::getViewportSize: Unable "
+            "to access required view port information from IDirect3DDevice10."));
     else
         return Size(static_cast<float>(vp.Width),
                     static_cast<float>(vp.Height));

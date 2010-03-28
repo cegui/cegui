@@ -591,7 +591,7 @@ void initialiseGLExtensions()
         err_string << "OpenGLRenderer failed to initialise the GLEW library. "
         << glewGetErrorString(err);
 
-        throw RendererException(err_string.str());
+        CEGUI_THROW(RendererException(err_string.str()));
     }
 
     // GL 1.3 has multi-texture support natively

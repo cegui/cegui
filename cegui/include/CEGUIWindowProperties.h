@@ -1283,6 +1283,36 @@ class UpdateMode : public Property
         void set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access the setting that controls whether mouse input not handled
+    directly by the window will be propagated back to the parent window.
+
+    \par Usage:
+        - Name: MouseInputPropagationEnabled
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate that unhandled mouse input should be propagated to
+          the Window's parent.
+        - "False" to indicate that unhandled mouse input should not be
+          propagated to the window's parent.
+*/
+class MouseInputPropagationEnabled : public Property
+{
+public:
+    MouseInputPropagationEnabled() : Property(
+        "MouseInputPropagationEnabled",
+        "Property to get/set whether unhandled mouse inputs should be "
+        "propagated back to the Window's parent.  "
+        "Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  WindowProperties namespace section
 
 

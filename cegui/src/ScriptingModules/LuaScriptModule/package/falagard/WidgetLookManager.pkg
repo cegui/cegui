@@ -6,17 +6,17 @@ class WidgetLookManager
 {
   static WidgetLookManager& getSingleton(void);
 
-  void parseLookNFeelSpecification(string filename, string resourceGroup = "");
-  bool isWidgetLookAvailable(string widget) const;
-  const WidgetLookFeel& getWidgetLook(string widget) const;
-  void eraseWidgetLook(string widget);
+  void parseLookNFeelSpecification(utf8string filename, utf8string resourceGroup = "");
+  bool isWidgetLookAvailable(utf8string widget) const;
+  const WidgetLookFeel& getWidgetLook(utf8string widget) const;
+  void eraseWidgetLook(utf8string widget);
   void addWidgetLook(WidgetLookFeel& look);
 
-  void writeWidgetLookToStream(string name, OutStream& out_stream) const;
-  void writeWidgetLookSeriesToStream(string prefix, OutStream& out_stream) const;
+  void writeWidgetLookToStream(utf8string name, OutStream& out_stream) const;
+  void writeWidgetLookSeriesToStream(utf8string prefix, OutStream& out_stream) const;
 
   WidgetLookManager();
 
-  static void setDefaultResourceGroup(string resourceGroup);
+  static void setDefaultResourceGroup(utf8string resourceGroup);
   static string getDefaultResourceGroup();
 };

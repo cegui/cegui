@@ -124,18 +124,18 @@ void WindowRendererManager::addFactory()
                                         factory->getName() +
                                         "' WindowRenderers.");
         // add the factory we just created
-        try
+        CEGUI_TRY
         {
             WindowRendererManager::getSingleton().addFactory(factory);
         }
-        catch (Exception&)
+        CEGUI_CATCH (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowRendererFactory for "
                                             "'" + factory->getName() +
                                             "' WindowRenderers.");
             // delete the factory object
             delete factory;
-            throw;
+            CEGUI_THROW();
         }
     }
 

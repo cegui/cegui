@@ -54,6 +54,15 @@ namespace CEGUI
         */
         TextComponent();
 
+        //! Destructor
+        ~TextComponent();
+
+        //! Copy constructor
+        TextComponent(const TextComponent& obj);
+
+        //! Assignment
+        TextComponent& operator=(const TextComponent& other);
+
         /*!
         \brief
             Return the text object that will be rendered by this TextComponent.

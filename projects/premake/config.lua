@@ -31,7 +31,7 @@ FULLY_CHECKED_DEBUG_ITERATORS = true
 -- SDK / dependency paths
 -- { base, include_suffix, library_suffix }
 -- base can be absolute or relative to the root cegui_mk2 dir
-IRRLICHT_PATHS = { "irrlicht-1.4", "include", "lib/Win32-visualstudio" }
+IRRLICHT_PATHS = { "irrlicht-1.7.1", "include", "lib/Win32-visualstudio" }
 OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
 OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
 
@@ -55,13 +55,13 @@ CEGUI_EXTRA_PATHS = {
 }
 
 --- Irrlicht SDK Version
---- 14 is means 1.4 or 1.5.x and 16 means 1.6 (and above?)
-CEGUI_IRR_SDK_VERSION = 14
+--- 14 is means 1.4 or 1.5.x and 16 means 1.6 or 1.7.x (and above?)
+CEGUI_IRR_SDK_VERSION = 16
 
 --- OIS API version to be used in the Ogre samples base app.
 --- true: use older numKeyboards / numMice
 --- false: use getNumberOfDevices
-CEGUI_OLD_OIS_API = true
+CEGUI_OLD_OIS_API = false
 
 --- Lua version
 --- 51 is 5.1 (and above?) From 0.7.0 onwards, lua 5.0 is no longer supported.
@@ -100,6 +100,14 @@ CEGUI_USE_MINIBIDI = true
 --- This is currently considered experimental, though
 --- enabled by default.
 CEGUI_USE_EXPRESSION_DIM = true
+
+--- MinizipResourceProvider
+--- To enable compilation and inclusion into CEGUIBase of the MinizipResourceProvider
+--- set the following to true.
+---
+--- The MinizipResourceProvider enables resources to be loaded from a zip compressed
+--- archive.
+MINIZIP_RESOURCE_PROVIDER = true
 
 -------------
 -- Renderers
