@@ -281,7 +281,10 @@ void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 		}	
 		// Else return a NULL for a bad or unsupported pixel format
 		else
+        {
+            delete pImageData;
 			return 0;
+        }
 	}
 	// Else, it must be Run-Length Encoded (RLE)
 	else
