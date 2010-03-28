@@ -10,5 +10,5 @@ class PropertyInitialiser
   string getTargetPropertyName() const;
   string getInitialiserValue() const;
   //void writeXMLToStream(OutStream& out_stream) const;
-  PropertyInitialiser(string property, string value);
+  PropertyInitialiser(utf8string property, utf8string value);
 };

@@ -73,14 +73,14 @@ namespace CEGUI
         // create parser
         SAX2XMLReader* reader = createReader(xercesHandler);
 
-        try
+        CEGUI_TRY
         {
             // set up schema
             initialiseSchema(reader, schemaName, filename, resourceGroup);
             // do parse
             doParse(reader, filename, resourceGroup);
         }
-        catch(const XMLException& exc)
+        CEGUI_CATCH(const XMLException& exc)
         {
             if (exc.getCode() != XMLExcepts::NoError)
             {
@@ -91,11 +91,11 @@ namespace CEGUI
                 message += excmsg;
                 XMLString::release(&excmsg);
 
-                throw FileIOException(message);
+                CEGUI_THROW(FileIOException(message));
             }
 
         }
-        catch(const SAXParseException& exc)
+        CEGUI_CATCH(const SAXParseException& exc)
         {
             delete reader;
 
@@ -104,14 +104,14 @@ namespace CEGUI
             message += excmsg;
             XMLString::release(&excmsg);
 
-            throw FileIOException(message);
+            CEGUI_THROW(FileIOException(message));
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
             delete reader;
 
             Logger::getSingleton().logEvent("XercesParser::parseXMLFile - An unexpected error occurred while parsing XML file '" + filename + "'.", Errors);
-            throw;
+            CEGUI_THROW();
         }
 
         // cleanup
@@ -123,11 +123,11 @@ namespace CEGUI
         XERCES_CPP_NAMESPACE_USE;
 
         // initialise Xerces-C XML system
-        try
+        CEGUI_TRY
         {
             XMLPlatformUtils::Initialize();
         }
-        catch(XMLException& exc)
+        CEGUI_CATCH(XMLException& exc)
         {
             // prepare a message about the failure
             char* excmsg = XMLString::transcode(exc.getMessage());
@@ -136,7 +136,7 @@ namespace CEGUI
             XMLString::release(&excmsg);
 
             // throw a C string (because it won't try and use logger, which may not be available)
-            throw message.c_str();
+            CEGUI_THROW(message.c_str());
         }
 
         return true;
@@ -201,7 +201,7 @@ namespace CEGUI
         }
         else
         {
-            throw GenericException("XercesParser::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder.");
+            CEGUI_THROW(GenericException("XercesParser::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder."));
         }
 
     }
@@ -218,14 +218,14 @@ namespace CEGUI
         // load in the raw schema data
         RawDataContainer rawSchemaData;
         // try base filename first, from default resource group
-        try
+        CEGUI_TRY
         {
             Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
             System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
         }
         // oops, no file.  Try an alternative instead, using base path and
         // resource group from the XML file we're going to be processing.
-        catch(InvalidRequestException)
+        CEGUI_CATCH(InvalidRequestException)
         {
             // get path from filename
             String schemaFilename;
@@ -288,16 +288,16 @@ namespace CEGUI
             false);
 
          // perform parse
-         try
+         CEGUI_TRY
          {
              parser->parse(fileData);
          }
-         catch(...)
+         CEGUI_CATCH(...)
          {
              // use resource provider to release loaded XML source (if it supports this)
              System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
 
-             throw;
+             CEGUI_THROW();
          }
 
          // use resource provider to release loaded XML source (if it supports this)
@@ -357,12 +357,12 @@ namespace CEGUI
 
     void XercesHandler::error (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
-        throw exc;
+        CEGUI_THROW(exc);
     }
 
     void XercesHandler::fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
-        throw exc;
+        CEGUI_THROW(exc);
     }
 
 } // End of  CEGUI namespace section

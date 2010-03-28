@@ -13,8 +13,8 @@ class Tree : public Window
 	bool	isMultiselectEnabled(void) const;
 	bool	isItemTooltipsEnabled(void) const;
 	
-	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findFirstItemWithText(string text);
-	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findNextItemWithText(string text, const TreeItem* start_item);
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findFirstItemWithText(utf8string text);
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findNextItemWithText(utf8string text, const TreeItem* start_item);
 	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findFirstItemWithID(unsigned int searchID);
 	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| TreeItem*	findNextItemWithID(unsigned int searchID, const TreeItem* start_item);
 	

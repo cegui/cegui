@@ -158,7 +158,7 @@ namespace CEGUI
 
     void WidgetComponent::layout(const Window& owner) const
     {
-        try
+        CEGUI_TRY
         {
             Rect pixelArea(d_area.getPixelRect(owner));
             URect window_area(cegui_absdim(pixelArea.d_left),
@@ -170,7 +170,7 @@ namespace CEGUI
             wnd->setArea(window_area);
             wnd->notifyScreenAreaChanged();
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {}
     }
 

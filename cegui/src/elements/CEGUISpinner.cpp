@@ -201,7 +201,7 @@ namespace CEGUI
                 getEditbox()->setValidationString(OctalValidator);
                 break;
             default:
-                throw InvalidRequestException("Spinner::setTextInputMode - An unknown TextInputMode was specified.");
+                CEGUI_THROW(InvalidRequestException("Spinner::setTextInputMode - An unknown TextInputMode was specified."));
             }
 
             d_inputMode = mode;
@@ -252,7 +252,7 @@ namespace CEGUI
             val = static_cast<double>(utmp);
             break;
         default:
-            throw InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered.");
+            CEGUI_THROW(InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered."));
         }
 
         if (res)
@@ -260,7 +260,7 @@ namespace CEGUI
             return val;
         }
 
-        throw InvalidRequestException("Spinner::getValueFromText - The string '" + getEditbox()->getText() + "' can not be converted to numerical representation.");
+        CEGUI_THROW(InvalidRequestException("Spinner::getValueFromText - The string '" + getEditbox()->getText() + "' can not be converted to numerical representation."));
     }
 
     String Spinner::getTextFromValue(void) const
@@ -282,7 +282,7 @@ namespace CEGUI
             tmp << std::oct << static_cast<int>(d_currentValue);
             break;
         default:
-            throw InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered.");
+            CEGUI_THROW(InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered."));
         }
 
         return String(tmp.str());

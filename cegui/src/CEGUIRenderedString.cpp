@@ -107,8 +107,8 @@ void RenderedString::split(const size_t line, float split_point,
     // On the plus side, it does seem to work though ;)
 
     if (line >= getLineCount())
-        throw InvalidRequestException("RenderedString::split: "
-            "line number specified is invalid.");
+        CEGUI_THROW(InvalidRequestException("RenderedString::split: "
+            "line number specified is invalid."));
 
     left.clearComponents();
 
@@ -244,8 +244,8 @@ size_t RenderedString::getLineCount() const
 Size RenderedString::getPixelSize(const size_t line) const
 {
     if (line >= getLineCount())
-        throw InvalidRequestException("RenderedString::getPixelSize: "
-            "line number specified is invalid.");
+        CEGUI_THROW(InvalidRequestException("RenderedString::getPixelSize: "
+            "line number specified is invalid."));
 
     Size sz(0, 0);
 
@@ -266,8 +266,8 @@ Size RenderedString::getPixelSize(const size_t line) const
 size_t RenderedString::getSpaceCount(const size_t line) const
 {
     if (line >= getLineCount())
-        throw InvalidRequestException("RenderedString::getSpaceCount: "
-            "line number specified is invalid.");
+        CEGUI_THROW(InvalidRequestException("RenderedString::getSpaceCount: "
+            "line number specified is invalid."));
 
     size_t space_count = 0;
 
@@ -285,8 +285,8 @@ void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
                           const float space_extra) const
 {
     if (line >= getLineCount())
-        throw InvalidRequestException("RenderedString::draw: "
-            "line number specified is invalid.");
+        CEGUI_THROW(InvalidRequestException("RenderedString::draw: "
+            "line number specified is invalid."));
 
     const float render_height = getPixelSize(line).d_height;
 

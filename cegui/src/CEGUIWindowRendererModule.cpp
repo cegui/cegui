@@ -49,8 +49,8 @@ void WindowRendererModule::registerFactory(const String& type_name)
         }
     }
 
-    throw UnknownObjectException("No factory for WindowRenderere type '" +
-                                    type_name + "' in this module.");
+    CEGUI_THROW(UnknownObjectException("No factory for WindowRenderere type '" +
+        type_name + "' in this module."));
 }
 
 //----------------------------------------------------------------------------//

@@ -561,8 +561,8 @@ ScrolledContainer* ScrollablePane::getScrolledContainer() const
 Rect ScrollablePane::getViewableArea() const
 {
     if (!d_windowRenderer)
-        throw InvalidRequestException("ScrollablePane::getViewableArea: "
-            "This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("ScrollablePane::getViewableArea: "
+            "This function must be implemented by the window renderer module"));
     
     ScrollablePaneWindowRenderer* wr =
         static_cast<ScrollablePaneWindowRenderer*>(d_windowRenderer);

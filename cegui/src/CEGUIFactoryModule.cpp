@@ -89,8 +89,8 @@ void FactoryModule::registerFactory(const String& type) const
 		// are we attempting to use a missing function export
 		if (!d_regFunc)
 		{
-			throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
-				d_module->getModuleName() + "'.");
+			CEGUI_THROW(InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
+				d_module->getModuleName() + "'."));
 		}
 
 		d_regFunc(type);
@@ -112,8 +112,8 @@ uint FactoryModule::registerAllFactories() const
 		// are we attempting to use a missing function export
 		if (!d_regAllFunc)
 		{
-			throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
-				d_module->getModuleName() + "'.");
+			CEGUI_THROW(InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
+				d_module->getModuleName() + "'."));
 		}
 
 		return d_regAllFunc();

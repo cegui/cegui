@@ -479,18 +479,18 @@ void WindowFactoryManager::addFactory()
                                         factory->getTypeName() +
                                         "' windows.");
         // add the factory we just created
-        try
+        CEGUI_TRY
         {
             WindowFactoryManager::getSingleton().addFactory(factory);
         }
-        catch (Exception&)
+        CEGUI_CATCH (Exception&)
         {
             Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
                                             factory->getTypeName() +
                                             "' windows.");
             // delete the factory object
             delete factory;
-            throw;
+            CEGUI_THROW();
         }
     }
 

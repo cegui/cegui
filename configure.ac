@@ -108,6 +108,7 @@ CEGUI_CHECK_BIDI
 
 CEGUI_CODE_OPTIONS
 CEGUI_CHECK_DEFAULT_LOGGER
+CEGUI_CHECK_MINIZIP_RESOURCE_PROVIDER
 
 CEGUI_LIBTOOL_OPTIONS
 CEGUI_CHECK_BUILD_SUFFIX
@@ -219,6 +220,8 @@ echo "*         Using: internal minibidi library"
 echo "*         Using: external fribidi library"
     fi
 fi
+echo "*"
+echo "* Building MinizipResourceProvider:                     ${cegui_enable_minizip_rp-no}"
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"

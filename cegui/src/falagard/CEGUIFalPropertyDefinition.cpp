@@ -59,11 +59,11 @@ namespace CEGUI
         // string.
         // Maybe the only negative here is that an error gets logged, though
         // this can be treated as a 'soft' error.
-        try
+        CEGUI_TRY
         {
             return wnd->getUserString(d_userStringName);
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent(
                 "PropertyDefiniton::get: Defining new user string: " +

@@ -3,19 +3,19 @@
 ***********************************************************************/
 class PropertyHelper
 {
-	static	float			stringToFloat(string str);
-	static	unsigned int	stringToUint(string str);
-	static	bool			stringToBool(string str);
-	static	Size			stringToSize(string str);
-	static	Vector2			stringToPoint(string str);
-	static	Rect			stringToRect(string str);
-	static	const Image*	stringToImage(string str);
-	static	colour			stringToColour(string str);
-	static	ColourRect		stringToColourRect(string str);
+	static	float			stringToFloat(utf8string str);
+	static	unsigned int	stringToUint(utf8string str);
+	static	bool			stringToBool(utf8string str);
+	static	Size			stringToSize(utf8string str);
+	static	Vector2			stringToPoint(utf8string str);
+	static	Rect			stringToRect(utf8string str);
+	static	const Image*	stringToImage(utf8string str);
+	static	colour			stringToColour(utf8string str);
+	static	ColourRect		stringToColourRect(utf8string str);
 
-	static	UDim			stringToUDim(string str);
-	static	UVector2		stringToUVector2(string str);
-	static	URect			stringToURect(string str);
+	static	UDim			stringToUDim(utf8string str);
+	static	UVector2		stringToUVector2(utf8string str);
+	static	URect			stringToURect(utf8string str);
 
 	static string	floatToString(float val);
 	static string	uintToString(unsigned int val);

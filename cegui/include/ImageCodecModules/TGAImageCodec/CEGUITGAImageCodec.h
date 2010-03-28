@@ -65,11 +65,11 @@ class CEGUITGAIMAGECODEC_API TGAImageCodec : public ImageCodec
         unsigned char *data; //!< The image pixel data
     };
     
-    /*!
-      \brief 
-      flips data for tImageTGA 'img'
-    */
-    static void flipImageTGA(ImageTGA* img);
+    //! vertically flip data for tImageTGA 'img'
+    static void flipVertImageTGA(ImageTGA* img);
+    //! horizontally flip data for tImageTGA 'img'
+    static void flipHorzImageTGA(ImageTGA* img);
+
     /*!
       \brief 
       load a TGA from a byte buffer 

@@ -54,7 +54,7 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
 
     if (! parser)
     {
-        throw GenericException("ExpatParser::parseXMLFile - Unable to create a new Expat Parser");
+        CEGUI_THROW(GenericException("ExpatParser::parseXMLFile - Unable to create a new Expat Parser"));
     }
 
     XML_SetUserData(parser, (void*)&handler); // Initialise user data
@@ -75,7 +75,7 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
                           PropertyHelper::uintToString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
-        throw GenericException(exception);
+        CEGUI_THROW(GenericException(exception));
     }
 
     // Release resource

@@ -61,7 +61,7 @@ void EventSet::addEvent(const String& name)
 {
 	if (isEventPresent(name))
 	{
-		throw AlreadyExistsException("An event named '" + name + "' already exists in the EventSet.");
+		CEGUI_THROW(AlreadyExistsException("An event named '" + name + "' already exists in the EventSet."));
 	}
 
 	d_events[name] = new Event(name);
@@ -119,7 +119,7 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, const Str
 	ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
 	if (!sm)
 	{
-	   throw InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available");
+	   CEGUI_THROW(InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available"));
 	}
 	return sm->subscribeEvent(this, name, subscriber_name);
 }
@@ -134,7 +134,7 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Gr
         ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
 	if (!sm)
 	{
-	   throw InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available");
+	   CEGUI_THROW(InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available"));
 	}
 	return sm->subscribeEvent(this, name, group, subscriber_name);
 }

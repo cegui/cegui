@@ -105,6 +105,24 @@
 #    define ceguimax	std::max
 #endif
 
+// CEGUI's Exception macros
+// This provides a mechanism to override how exception handling is used.  Note
+// that in general this facility _should not be used_.  Attempts to use this
+// to disable exceptions to 'make things easier' are doomed to failure.  CEGUI
+// becomes less robust without exceptions (because they are used internally by
+// CEGUI).  In addition, overriding the exception mechanism will also cause
+// memory leaks in various places.  This is your only warning about such things,
+// if you decide to continue anyway you hereby waive any right to complain :-p
+#ifndef CEGUI_TRY
+#   define CEGUI_TRY try
+#endif
+#ifndef CEGUI_CATCH
+#   define CEGUI_CATCH(e) catch (e)
+#endif
+#ifndef CEGUI_THROW
+#   define CEGUI_THROW(e) throw e
+#endif
+
 /*************************************************************************
 	Documentation for the CEGUI namespace itself
 *************************************************************************/

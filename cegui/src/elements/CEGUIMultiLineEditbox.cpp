@@ -660,7 +660,7 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 
 	}
 
-	throw InvalidRequestException("MultiLineEditbox::getLineNumberFromIndex - Unable to identify a line from the given, invalid, index.");
+	CEGUI_THROW(InvalidRequestException("MultiLineEditbox::getLineNumberFromIndex - Unable to identify a line from the given, invalid, index."));
 }
 
 
@@ -1613,7 +1613,7 @@ Rect MultiLineEditbox::getTextRenderArea() const
     else
     {
         //return getTextRenderArea_impl();
-        throw InvalidRequestException("MultiLineEditbox::getTextRenderArea - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("MultiLineEditbox::getTextRenderArea - This function must be implemented by the window renderer module"));
     }
 }
 

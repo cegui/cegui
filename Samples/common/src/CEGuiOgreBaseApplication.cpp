@@ -129,11 +129,11 @@ bool CEGuiOgreBaseApplication::execute_impl(CEGuiSample* sampleApp)
     sampleApp->initialiseSample();
 
     // start rendering via Ogre3D engine.
-    try
+    CEGUI_TRY
     {
         d_ogreRoot->startRendering();
     }
-    catch(...)
+    CEGUI_CATCH(...)
     {}
 
     return true;

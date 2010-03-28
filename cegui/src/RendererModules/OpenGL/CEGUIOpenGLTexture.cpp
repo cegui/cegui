@@ -122,9 +122,9 @@ void OpenGLTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System (needed to access ImageCodec)
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("OpenGLTexture::loadFromFile - "
-                                "CEGUI::System object has not been created: "
-                                "unable to access ImageCodec.");
+        CEGUI_THROW(RendererException("OpenGLTexture::loadFromFile - "
+            "CEGUI::System object has not been created: "
+            "unable to access ImageCodec."));
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
@@ -134,9 +134,9 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        throw RendererException("OpenGLTexture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("OpenGLTexture::loadFromFile - " +
+            sys->getImageCodec().getIdentifierString() +
+            " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -201,7 +201,8 @@ void OpenGLTexture::setTextureSize(const Size& sz)
     GLfloat maxSize;
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
     if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        throw RendererException("OpenGLTexture::setTextureSize: size too big");
+        CEGUI_THROW(RendererException(
+            "OpenGLTexture::setTextureSize: size too big"));
 
     // save old texture binding
     GLuint old_tex;

@@ -225,7 +225,7 @@ void ItemListbox::setMultiSelectEnabled(bool state)
 ************************************************************************/
 void ItemListbox::notifyItemClicked(ItemEntry* li)
 {
-    bool sel_state = !li->isSelected();
+    bool sel_state = !(li->isSelected() && d_multiSelect);
     bool skip = false;
 
     // multiselect enabled
@@ -314,7 +314,7 @@ bool ItemListbox::isItemSelected(size_t index) const
 {
     if (index >= d_listItems.size())
     {
-        throw InvalidRequestException("ItemListbox::isItemSelected - The index given is out of range for this ItemListbox");
+        CEGUI_THROW(InvalidRequestException("ItemListbox::isItemSelected - The index given is out of range for this ItemListbox"));
     }
     ItemEntry *li = d_listItems[index];
     return li->isSelected();

@@ -60,7 +60,7 @@ void IrrlichtResourceProvider::loadRawDataContainer(const String& filename,
         String sMsg("IrrlichtResourceProvider::loadRawDataContainer: "
                     "Filename supplied for loading must be valid");
         sMsg += " [" + final_filename + "]";
-        throw InvalidRequestException(sMsg);
+        CEGUI_THROW(InvalidRequestException(sMsg));
     }
 
     irr::u8* input;

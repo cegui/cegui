@@ -82,7 +82,7 @@ public:
      \brief
         base class destructor
      */
-    virtual ~TreeItem(void) {}
+    virtual ~TreeItem(void);
 
     /*************************************************************************
         Accessors
@@ -148,7 +148,7 @@ public:
         Nothing.
      */
     void setTextColours(const ColourRect& cols)
-    { d_textCols = cols; }
+    { d_textCols = cols; d_renderedStringValid = false; }
 
     /*!
      \brief

@@ -187,7 +187,7 @@ ListboxItem* Listbox::getListboxItemFromIndex(size_t index) const
 	}
 	else
 	{
-		throw InvalidRequestException("Listbox::getListboxItemFromIndex - the specified index is out of range for this Listbox.");
+		CEGUI_THROW(InvalidRequestException("Listbox::getListboxItemFromIndex - the specified index is out of range for this Listbox."));
 	}
 }
 
@@ -205,7 +205,7 @@ size_t Listbox::getItemIndex(const ListboxItem* item) const
 	}
 	else
 	{
-		throw InvalidRequestException("Listbox::getItemIndex - the specified ListboxItem is not attached to this Listbox.");
+		CEGUI_THROW(InvalidRequestException("Listbox::getItemIndex - the specified ListboxItem is not attached to this Listbox."));
 	}
 
 }
@@ -222,7 +222,7 @@ bool Listbox::isItemSelected(size_t index) const
 	}
 	else
 	{
-		throw InvalidRequestException("Listbox::isItemSelected - the specified index is out of range for this Listbox.");
+		CEGUI_THROW(InvalidRequestException("Listbox::isItemSelected - the specified index is out of range for this Listbox."));
 	}
 
 }
@@ -339,7 +339,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 			// throw if item 'position' is not in the list
 			if (ins_pos == d_listItems.end())
 			{
-				throw InvalidRequestException("Listbox::insertItem - the specified ListboxItem for parameter 'position' is not attached to this Listbox.");
+				CEGUI_THROW(InvalidRequestException("Listbox::insertItem - the specified ListboxItem for parameter 'position' is not attached to this Listbox."));
 			}
 
 		}
@@ -516,7 +516,7 @@ void Listbox::setItemSelectState(ListboxItem* item, bool state)
 	}
 	else
 	{
-		throw InvalidRequestException("Listbox::setItemSelectState - the specified ListboxItem is not attached to this Listbox.");
+		CEGUI_THROW(InvalidRequestException("Listbox::setItemSelectState - the specified ListboxItem is not attached to this Listbox."));
 	}
 }
 
@@ -545,7 +545,7 @@ void Listbox::setItemSelectState(size_t item_index, bool state)
 	}
 	else
 	{
-		throw InvalidRequestException("Listbox::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Listbox.");
+		CEGUI_THROW(InvalidRequestException("Listbox::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Listbox."));
 	}
 
 }
@@ -1132,7 +1132,7 @@ Rect Listbox::getListRenderArea() const
     }
     else
     {
-        throw InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module"));
     }
 }
 

@@ -248,18 +248,18 @@ System::System(Renderer& renderer,
     Config_xmlHandler config;
     if (!configFile.empty())
     {
-        try
+        CEGUI_TRY
         {
             d_xmlParser->parseXMLFile(config, configFile,
                                       config.CEGUIConfigSchemaName,
                                       "");
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
             delete d_xmlParser;
-            throw;
+            CEGUI_THROW();
         }
     }
 
@@ -333,11 +333,11 @@ System::~System(void)
 	// execute shut-down script
 	if (!d_termScriptName.empty())
 	{
-		try
+		CEGUI_TRY
 		{
 			executeScriptFile(d_termScriptName);
 		}
-		catch (...) {}  // catch all exceptions and continue system shutdown
+		CEGUI_CATCH (...) {}  // catch all exceptions and continue system shutdown
 
 	}
 
@@ -567,18 +567,18 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 {
 	if (d_scriptModule)
 	{
-		try
+		CEGUI_TRY
 		{
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
         // Forward script exceptions with line number and file info
-        catch(ScriptException& e)
+        CEGUI_CATCH(ScriptException& e)
         {
-            throw e;
+            CEGUI_THROW(e);
         }
-		catch(...)
+		CEGUI_CATCH(...)
 		{
-			throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
+			CEGUI_THROW(GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file."));
 		}
 
 	}
@@ -598,18 +598,18 @@ int	System::executeScriptGlobal(const String& function_name) const
 {
 	if (d_scriptModule)
 	{
-		try
+		CEGUI_TRY
 		{
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
         // Forward script exceptions with line number and file info
-        catch(ScriptException& e)
+        CEGUI_CATCH(ScriptException& e)
         {
-            throw e;
+            CEGUI_THROW(e);
         }
-		catch(...)
+		CEGUI_CATCH(...)
 		{
-			throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
+			CEGUI_THROW(GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function."));
 		}
 
 	}
@@ -630,18 +630,18 @@ void System::executeScriptString(const String& str) const
 {
     if (d_scriptModule)
     {
-        try
+        CEGUI_TRY
         {
             d_scriptModule->executeString(str);
         }
         // Forward script exceptions with line number and file info
-        catch(ScriptException& e)
+        CEGUI_CATCH(ScriptException& e)
         {
-            throw e;
+            CEGUI_THROW(e);
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
-            throw GenericException("System::executeScriptString - An exception was thrown during execution of the script code.");
+            CEGUI_THROW(GenericException("System::executeScriptString - An exception was thrown during execution of the script code."));
         }
 
     }
@@ -837,10 +837,16 @@ bool System::injectMouseButtonUp(MouseButton button)
     if (!ma.window)
         return false;
 
+    // store original window becase we re-use the event args.
+    Window* const tgt_wnd = ma.window;
+
     // send 'up' input to the window
     ma.window->onMouseButtonUp(ma);
     // store whether the 'up' part was handled so we may reuse the EventArgs
     const uint upHandled = ma.handled;
+
+    // restore target window (because Window::on* may have propagated input)
+    ma.window = tgt_wnd;
 
     // send MouseClicked event if the requirements for that were met
     if (d_generateMouseClickEvents &&
@@ -1090,7 +1096,7 @@ SystemKey System::mouseButtonToSyskey(MouseButton btn) const
 		return X2Mouse;
 
 	default:
-		throw InvalidRequestException("System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
+		CEGUI_THROW(InvalidRequestException("System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value."));
 	}
 }
 
@@ -1406,13 +1412,13 @@ void System::setDefaultTooltip(const String& tooltipType)
     }
     else
     {
-        try
+        CEGUI_TRY
         {
             d_defaultTooltip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, "CEGUI::System::default__auto_tooltip__"));
             d_weOwnTooltip = true;
             d_defaultTooltip->setWritingXMLAllowed(false);
         }
-        catch(UnknownObjectException x)
+        CEGUI_CATCH(UnknownObjectException x)
         {
             d_defaultTooltip = 0;
             d_weOwnTooltip = false;

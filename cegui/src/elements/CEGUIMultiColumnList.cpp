@@ -256,7 +256,7 @@ uint MultiColumnList::getItemRowIndex(const ListboxItem* item) const
 	}
 
 	// item is not attached to the list box, throw...
-	throw InvalidRequestException("MultiColumnList::getItemRowIndex - the given ListboxItem is not attached to this MultiColumnList.");
+	CEGUI_THROW(InvalidRequestException("MultiColumnList::getItemRowIndex - the given ListboxItem is not attached to this MultiColumnList."));
 }
 
 
@@ -275,7 +275,7 @@ uint MultiColumnList::getItemColumnIndex(const ListboxItem* item) const
 	}
 
 	// item is not attached to the list box, throw...
-	throw InvalidRequestException("MultiColumnList::getItemColumnIndex - the given ListboxItem is not attached to this MultiColumnList.");
+	CEGUI_THROW(InvalidRequestException("MultiColumnList::getItemColumnIndex - the given ListboxItem is not attached to this MultiColumnList."));
 }
 
 
@@ -297,11 +297,11 @@ ListboxItem* MultiColumnList::getItemAtGridReference(const MCLGridRef& grid_ref)
 	// check for invalid grid ref
 	if (grid_ref.column >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::getItemAtGridReference - the column given in the grid reference is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::getItemAtGridReference - the column given in the grid reference is out of range."));
 	}
 	else if (grid_ref.row >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::getItemAtGridReference - the row given in the grid reference is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::getItemAtGridReference - the row given in the grid reference is out of range."));
 	}
 	else
 	{
@@ -319,7 +319,7 @@ bool MultiColumnList::isListboxItemInColumn(const ListboxItem* item, uint col_id
 	// check for invalid index
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::isListboxItemInColumn - the column index given is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::isListboxItemInColumn - the column index given is out of range."));
 	}
 	else
 	{
@@ -347,7 +347,7 @@ bool MultiColumnList::isListboxItemInRow(const ListboxItem* item, uint row_idx) 
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::isListboxItemInRow - the row index given is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::isListboxItemInRow - the row index given is out of range."));
 	}
 	else
 	{
@@ -399,7 +399,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	// ensure column is valid
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::findColumnItemWithText - specified column index is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::findColumnItemWithText - specified column index is out of range."));
 	}
 
 	// find start position for search
@@ -430,7 +430,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	// ensure row is valid
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::findRowItemWithText - specified row index is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::findRowItemWithText - specified row index is out of range."));
 	}
 
 	// find start position for search
@@ -724,7 +724,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::removeColumn - the specified column index is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::removeColumn - the specified column index is out of range."));
 	}
 	else
 	{
@@ -909,7 +909,7 @@ void MultiColumnList::removeRow(uint row_idx)
 	// ensure row exists
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::removeRow - The specified row index is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::removeRow - The specified row index is out of range."));
 	}
 	else
 	{
@@ -951,11 +951,11 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	// validate grid ref
 	if (position.column >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::setItem - the specified column index is invalid.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::setItem - the specified column index is invalid."));
 	}
 	else if (position.row >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::setItem - the specified row index is invalid.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::setItem - the specified row index is invalid."));
 	}
 
 	// delete old item as required
@@ -1083,7 +1083,7 @@ void MultiColumnList::setSelectionMode(MultiColumnList::SelectionMode sel_mode)
 			break;
 
 		default:
-			throw InvalidRequestException("MultiColumnList::setSelectionMode - invalid or unknown SelectionMode value supplied.");
+			CEGUI_THROW(InvalidRequestException("MultiColumnList::setSelectionMode - invalid or unknown SelectionMode value supplied."));
 			break;
 
 		}
@@ -1427,7 +1427,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 {
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::getWidestColumnItemWidth - specified column is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::getWidestColumnItemWidth - specified column is out of range."));
 	}
 	else
 	{
@@ -1468,7 +1468,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 {
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::getHighestRowItemHeight - specified row is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::getHighestRowItemHeight - specified row is out of range."));
 	}
 	else
 	{
@@ -1584,11 +1584,11 @@ bool MultiColumnList::setItemSelectState_impl(const MCLGridRef grid_ref, bool st
 	// validate grid ref
 	if (grid_ref.column >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::setItemSelectState - the specified column index is invalid.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::setItemSelectState - the specified column index is invalid."));
 	}
 	else if (grid_ref.row >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::setItemSelectState - the specified row index is invalid.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::setItemSelectState - the specified row index is invalid."));
 	}
 
 	// only do this if the setting is changing
@@ -1680,7 +1680,7 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 	// ensure index is valid, and throw if not.
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::moveColumn - the specified source column index is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::moveColumn - the specified source column index is out of range."));
 	}
 	else
 	{
@@ -2095,7 +2095,7 @@ uint MultiColumnList::getRowID(uint row_idx) const
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::getRowID - the row index given is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::getRowID - the row index given is out of range."));
 	}
 	else
 	{
@@ -2118,7 +2118,7 @@ uint MultiColumnList::getRowWithID(uint row_id) const
 	}
 
 	// No such row found, throw exception
-	throw InvalidRequestException("MultiColumnList::getRowWithID - no row with the requested ID is present.");
+	CEGUI_THROW(InvalidRequestException("MultiColumnList::getRowWithID - no row with the requested ID is present."));
 }
 
 
@@ -2220,7 +2220,7 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 	// check for invalid index
 	if (col_idx >= getColumnCount())
 	{
-		throw InvalidRequestException("MultiColumnList::isListboxItemInColumn - the column index given is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::isListboxItemInColumn - the column index given is out of range."));
 	}
 	else
 	{
@@ -2242,7 +2242,7 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 	// check for invalid index
 	if (row_idx >= getRowCount())
 	{
-		throw InvalidRequestException("MultiColumnList::setRowID - the row index given is out of range.");
+		CEGUI_THROW(InvalidRequestException("MultiColumnList::setRowID - the row index given is out of range."));
 	}
 	else
 	{
@@ -2319,7 +2319,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     }
 
     // write out SortColumnID property, if any(!)
-		try
+		CEGUI_TRY
 		{
 			uint sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
@@ -2331,7 +2331,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			    ++propCnt;
 			}
 		}
-		catch (InvalidRequestException&)
+		CEGUI_CATCH (InvalidRequestException&)
 		{
 			// This catches error(s) from the MultiLineColumnList for example
 			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", Errors);
@@ -2355,7 +2355,7 @@ Rect MultiColumnList::getListRenderArea() const
     else
     {
         //return getListRenderArea_impl();
-        throw InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module");
+        CEGUI_THROW(InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module"));
     }
 }
 

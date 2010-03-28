@@ -95,6 +95,12 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
     setText(text);
 }
 
+//----------------------------------------------------------------------------//
+TreeItem::~TreeItem(void)
+{
+    delete d_bidiVisualMapping;
+}
+
 /*************************************************************************
     Set the selection highlighting brush image.
 *************************************************************************/
@@ -340,6 +346,7 @@ void TreeItem::setText( const String& text )
 {
     d_textLogical = text;
     d_bidiDataValid = false;
+    d_renderedStringValid = false;
 }
 
 //----------------------------------------------------------------------------//

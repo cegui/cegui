@@ -4,8 +4,8 @@
 
 class WidgetLookFeel
 {
-    StateImagery& getStateImagery(string state) const;
-    ImagerySection& getImagerySection(string section) const;
+    StateImagery& getStateImagery(utf8string state) const;
+    ImagerySection& getImagerySection(utf8string section) const;
     string getName() const;
     void addImagerySection(const ImagerySection& section);
     void addWidgetComponent(const WidgetComponent& widget);
@@ -16,22 +16,22 @@ class WidgetLookFeel
     void clearStateSpecifications();
     void clearPropertyInitialisers();
     void initialiseWidget(Window& widget) const;
-    bool isStateImageryPresent(string state) const;
+    bool isStateImageryPresent(utf8string state) const;
     void addNamedArea(const NamedArea& area);
     void clearNamedAreas();
-    const NamedArea& getNamedArea(string name) const;
-    bool isNamedAreaDefined(string name) const;
+    const NamedArea& getNamedArea(utf8string name) const;
+    bool isNamedAreaDefined(utf8string name) const;
     void layoutChildWidgets(const Window& owner) const;
     void addPropertyDefinition(const PropertyDefinition& propdef);
     void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
     void clearPropertyDefinitions();
     void clearPropertyLinkDefinitions();
     //void writeXMLToStream(XMLSerializer& out_stream) const;
-    void renameChildren(const Window& widget, string newBaseName) const;
+    void renameChildren(const Window& widget, utf8string newBaseName) const;
 
-    const PropertyInitialiser* findPropertyInitialiser(string propertyName) const;
-    const WidgetComponent* findWidgetComponent(string nameSuffix) const;
+    const PropertyInitialiser* findPropertyInitialiser(utf8string propertyName) const;
+    const WidgetComponent* findWidgetComponent(utf8string nameSuffix) const;
 
-    WidgetLookFeel(string name);
+    WidgetLookFeel(utf8string name);
     WidgetLookFeel();
 };

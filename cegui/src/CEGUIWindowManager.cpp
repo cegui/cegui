@@ -97,14 +97,14 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 {
     // only allow creation of Window objects if we are in unlocked state
     if (isLocked())
-        throw InvalidRequestException("WindowManager::createWindow - "
-                                      "WindowManager is in the locked state.");
+        CEGUI_THROW(InvalidRequestException("WindowManager::createWindow - "
+            "WindowManager is in the locked state."));
 
     String finalName(name.empty() ? generateUniqueWindowName() : name);
 
 	if (isWindowPresent(finalName))
 	{
-		throw AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + finalName +"' already exists within the system.");
+		CEGUI_THROW(AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + finalName +"' already exists within the system."));
 	}
 
     WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
@@ -253,7 +253,7 @@ Window* WindowManager::getWindow(const String& name) const
 
 	if (pos == d_windowRegistry.end())
 	{
-		throw UnknownObjectException("WindowManager::getWindow - A Window object with the name '" + name +"' does not exist within the system");
+		CEGUI_THROW(UnknownObjectException("WindowManager::getWindow - A Window object with the name '" + name +"' does not exist within the system"));
 	}
 
 	return pos->second;
@@ -292,7 +292,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 {
 	if (filename.empty())
 	{
-		throw InvalidRequestException("WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid.");
+		CEGUI_THROW(InvalidRequestException("WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid."));
 	}
 
 	// log the fact we are about to load a layout
@@ -302,15 +302,15 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
     GUILayout_xmlHandler handler(name_prefix, callback, userdata);
 
 	// do parse (which uses handler to create actual data)
-	try
+	CEGUI_TRY
 	{
         System::getSingleton().getXMLParser()->parseXMLFile(handler,
             filename, GUILayoutSchemaName, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 	}
-	catch(...)
+	CEGUI_CATCH(...)
 	{
         Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from file '" + filename +"' failed.", Errors);
-        throw;
+        CEGUI_THROW();
 	}
 
     // log the completion of loading
@@ -398,18 +398,18 @@ void WindowManager::renameWindow(Window* window, const String& new_name)
             // erase old window name from registry
             d_windowRegistry.erase(pos);
 
-            try
+            CEGUI_TRY
             {
                 // attempt to rename the window
                 window->rename(new_name);
             }
             // rename fails if target name already exists
-            catch (AlreadyExistsException&)
+            CEGUI_CATCH (AlreadyExistsException&)
             {
                 // re-add window to registry under it's old name
                 d_windowRegistry[window->getName()] = window;
                 // rethrow exception.
-                throw;
+                CEGUI_THROW();
             }
 
             // add window to registry under new name

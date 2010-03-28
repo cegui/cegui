@@ -82,8 +82,8 @@ Scheme_xmlHandler::~Scheme_xmlHandler()
 const String& Scheme_xmlHandler::getObjectName() const
 {
     if (!d_scheme)
-        throw InvalidRequestException("Scheme_xmlHandler::getName: "
-            "Attempt to access null object.");
+        CEGUI_THROW(InvalidRequestException("Scheme_xmlHandler::getName: "
+            "Attempt to access null object."));
 
     return d_scheme->getName();
 }
@@ -92,8 +92,8 @@ const String& Scheme_xmlHandler::getObjectName() const
 Scheme& Scheme_xmlHandler::getObject() const
 {
     if (!d_scheme)
-        throw InvalidRequestException("Scheme_xmlHandler::getObject: "
-            "Attempt to access null object.");
+        CEGUI_THROW(InvalidRequestException("Scheme_xmlHandler::getObject: "
+            "Attempt to access null object."));
 
     d_objectRead = true;
     return *d_scheme;
@@ -269,8 +269,9 @@ void Scheme_xmlHandler::elementLookNFeelStart(const XMLAttributes& attributes)
 void Scheme_xmlHandler::elementGUISchemeEnd()
 {
     if (!d_scheme)
-        throw InvalidRequestException("Scheme_xmlHandler::elementGUISchemeEnd: "
-            "Attempt to access null object.");
+        CEGUI_THROW(InvalidRequestException(
+            "Scheme_xmlHandler::elementGUISchemeEnd: "
+            "Attempt to access null object."));
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_scheme));

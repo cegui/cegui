@@ -1371,6 +1371,7 @@
     -->
     <WidgetLook name="TaharezLook/SliderThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -1480,6 +1481,7 @@
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -1622,6 +1624,7 @@
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -2593,6 +2596,7 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="set:TaharezLook image:MouseMoveCursor" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
             <ImageryComponent>
@@ -2777,6 +2781,7 @@
     -->
     <WidgetLook name="TaharezLook/ListHeader">
         <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
@@ -4176,6 +4181,7 @@
     -->
     <WidgetLook name="TaharezLook/LargeVerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -4627,6 +4633,7 @@
         <PropertyDefinition name="SelectionBrush" initialValue="set:TaharezLook image:ListboxSelectionBrush" redrawOnWrite="true" />
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" />
         <Property name="Selectable" value="True" />
+        <Property name="MouseInputPropagationEnabled" value="True" />
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge" >

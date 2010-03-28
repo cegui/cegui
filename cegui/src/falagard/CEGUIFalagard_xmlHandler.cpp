@@ -287,7 +287,7 @@ namespace CEGUI
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
-                throw InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Invalid DimensionType specified for area component.");
+                CEGUI_THROW(InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Invalid DimensionType specified for area component."));
             }
         }
     }

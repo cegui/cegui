@@ -289,11 +289,11 @@ public:
                     continue;
 
                 Window *pg = NULL;
-                try
+                CEGUI_TRY
                 {
                     pg = winMgr.loadWindowLayout ("TabPage.layout", CEGUI::String(prefix.str ()));
                 }
-                catch (CEGUI::Exception&)
+                CEGUI_CATCH (CEGUI::Exception&)
                 {
                     outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile." );
                     break;

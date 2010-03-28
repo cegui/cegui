@@ -5,9 +5,9 @@
 class PropertyDefinition : public PropertyDefinitionBase
 {
   //string get(const PropertyReceiver* receiver) const;
-  //void set(PropertyReceiver* receiver, string value);
+  //void set(PropertyReceiver* receiver, utf8string value);
   string get(const Window* receiver) const;
-  void set(Window* receiver, string value);
+  void set(Window* receiver, utf8string value);
 
-  PropertyDefinition(string name, string initialValue, bool redrawOnWrite, bool layoutOnWrite);
+  PropertyDefinition(utf8string name, utf8string initialValue, bool redrawOnWrite, bool layoutOnWrite);
 };

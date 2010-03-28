@@ -79,23 +79,23 @@ namespace CEGUI
         // valid filenames are required!
         if (filename.empty())
         {
-            throw InvalidRequestException("WidgetLookManager::parseLookNFeelSpecification - Filename supplied for look & feel file must be valid");
+            CEGUI_THROW(InvalidRequestException("WidgetLookManager::parseLookNFeelSpecification - Filename supplied for look & feel file must be valid"));
         }
 
         // create handler object
         Falagard_xmlHandler handler(this);
 
         // perform parse of XML data
-        try
+        CEGUI_TRY
         {
             System::getSingleton().getXMLParser()->parseXMLFile(
                 handler, filename, FalagardSchemaName,
                 resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
         }
-        catch(...)
+        CEGUI_CATCH(...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", Errors);
-            throw;
+            CEGUI_THROW();
         }
     }
 
@@ -113,7 +113,7 @@ namespace CEGUI
             return (*wlf).second;
         }
 
-        throw UnknownObjectException("WidgetLookManager::getWidgetLook - Widget look and feel '" + widget + "' does not exist.");
+        CEGUI_THROW(UnknownObjectException("WidgetLookManager::getWidgetLook - Widget look and feel '" + widget + "' does not exist."));
     }
 
     void WidgetLookManager::eraseWidgetLook(const String& widget)
@@ -148,12 +148,12 @@ namespace CEGUI
         XMLSerializer xml(out_stream);
         // output root element
         xml.openTag("Falagard");
-        try
+        CEGUI_TRY
         {
             // output the desired widget look data
             getWidgetLook(name).writeXMLToStream(xml);
         }
-        catch (UnknownObjectException&)
+        CEGUI_CATCH (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::writeWidgetLookToStream - Failed to write widget look XML data to stream.", Errors);
         }

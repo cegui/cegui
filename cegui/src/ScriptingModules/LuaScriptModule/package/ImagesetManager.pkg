@@ -5,16 +5,16 @@ class ImagesetManager
 {
 	static ImagesetManager& getSingleton();
 
-    tolua_throws|CEGUI::Exception,error| Imageset& create(string filename, string resourcegroup="", XMLResourceExistsAction action = XREA_RETURN);
-	tolua_throws|CEGUI::Exception,error| Imageset& create(string name, Texture& texture);
-	tolua_throws|CEGUI::Exception,error| Imageset& createFromImageFile(string name, string filename, string resourcegroup="");
+    tolua_throws|CEGUI::Exception,error| Imageset& create(utf8string filename, utf8string resourcegroup="", XMLResourceExistsAction action = XREA_RETURN);
+	tolua_throws|CEGUI::Exception,error| Imageset& create(utf8string name, Texture& texture);
+	tolua_throws|CEGUI::Exception,error| Imageset& createFromImageFile(utf8string name, utf8string filename, utf8string resourcegroup="");
 
 	void destroy(Imageset& imageset);
-	void destroy(string name);
+	void destroy(utf8string name);
 	void destroyAll();
 
-	tolua_throws|CEGUI::Exception,nil| Imageset& get(string name) const;
-	bool isDefined(string name) const;
+	tolua_throws|CEGUI::Exception,nil| Imageset& get(utf8string name) const;
+	bool isDefined(utf8string name) const;
 
 	void notifyDisplaySizeChanged(const Size& size);
 

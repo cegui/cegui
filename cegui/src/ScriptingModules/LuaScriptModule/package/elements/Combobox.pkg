@@ -28,7 +28,7 @@ class Combobox : public Window
 	ListboxItem* getListboxItemFromIndex(unsigned long index) const;
 	unsigned long getItemIndex(const ListboxItem* item) const;
 	bool isItemSelected(unsigned long index) const;
-	ListboxItem* findItemWithText(string text, const ListboxItem* start_item);
+	ListboxItem* findItemWithText(utf8string text, const ListboxItem* start_item);
 	bool isListboxItemInList(const ListboxItem* item) const;
 
 	void resetList();
@@ -52,7 +52,7 @@ class Combobox : public Window
 	void setSingleClickEnabled(bool setting);
 
 	void setReadOnly(bool setting);
-	void setValidationString(string validation_string);
+	void setValidationString(utf8string validation_string);
 	void setCaratIndex(unsigned long carat_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaxTextLength(unsigned long max_len);

@@ -119,8 +119,8 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
         break;
 
     default:
-        throw InvalidRequestException("RenderedStringTextComponent::draw: "
-                "unknown VerticalFormatting option specified.");
+        CEGUI_THROW(InvalidRequestException("RenderedStringTextComponent::draw: "
+                "unknown VerticalFormatting option specified."));
     }
 
     // we do not actually draw the widget, we just move it into position.
@@ -155,8 +155,9 @@ bool RenderedStringWidgetComponent::canSplit() const
 RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
     float /*split_point*/, bool /*first_component*/)
 {
-    throw InvalidRequestException("RenderedStringWidgetComponent::split: this "
-                                  "component does not support being split.");
+    CEGUI_THROW(InvalidRequestException(
+        "RenderedStringWidgetComponent::split: this "
+        "component does not support being split."));
 }
 
 //----------------------------------------------------------------------------//
