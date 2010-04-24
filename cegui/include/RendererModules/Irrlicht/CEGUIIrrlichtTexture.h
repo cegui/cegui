@@ -96,6 +96,9 @@ protected:
     //! destructor.
     ~IrrlichtTexture();
 
+    //! create the underlying Irrlicht texture with the given size
+    void createIrrlichtTexture(const Size& sz);
+
     //! release the underlying irrlicht texture currently used.
     void freeIrrlichtTexture();
 
