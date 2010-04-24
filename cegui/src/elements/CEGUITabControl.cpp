@@ -591,7 +591,7 @@ void TabControl::performChildWindowLayout()
         --i;
         float xmax = d_tabButtonVector [i]->getXPosition ().d_offset +
             d_tabButtonVector [i]->getPixelSize ().d_width;
-        float width = tabContentPane->getPixelSize ().d_width;
+        float width = tabButtonPane->getPixelSize ().d_width;
 
         // If right button margin exceeds right window margin,
         // or leftmost button is at offset 0, finish
