@@ -2670,7 +2670,7 @@
                     <Dim type="Width" ><ImageDim imageset="TaharezLook" image="HeaderBarSortUp" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="TaharezLook" image="HeaderBarSortUp" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="HeaderBarSortUp" />
+                <Image imageset="TaharezLook" image="HeaderBarSortDown" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="descend_icon">
@@ -2681,7 +2681,7 @@
                     <Dim type="Width" ><ImageDim imageset="TaharezLook" image="HeaderBarSortDown" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="TaharezLook" image="HeaderBarSortDown" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="HeaderBarSortDown" />
+                <Image imageset="TaharezLook" image="HeaderBarSortUp" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="label">
