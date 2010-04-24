@@ -103,7 +103,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         CEGUI_CATCH(...)
         {
             delete [] tmpBuff;
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
 
         // free temp buffer

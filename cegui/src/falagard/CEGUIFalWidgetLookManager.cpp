@@ -95,7 +95,7 @@ namespace CEGUI
         CEGUI_CATCH(...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", Errors);
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
     }
 
