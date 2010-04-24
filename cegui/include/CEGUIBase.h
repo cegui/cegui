@@ -122,6 +122,9 @@
 #ifndef CEGUI_THROW
 #   define CEGUI_THROW(e) throw e
 #endif
+#ifndef CEGUI_RETHROW
+#   define CEGUI_RETHROW throw
+#endif
 
 /*************************************************************************
 	Documentation for the CEGUI namespace itself
