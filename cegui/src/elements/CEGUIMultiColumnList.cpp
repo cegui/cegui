@@ -831,8 +831,8 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 	{
         // calculate where the row should be inserted
         ListItemGrid::iterator ins_pos = dir == ListHeaderSegment::Descending ?
-            std::upper_bound(d_grid.begin(), d_grid.end(), row) :
-            std::upper_bound(d_grid.begin(), d_grid.end(), row, pred_descend);
+            std::upper_bound(d_grid.begin(), d_grid.end(), row, pred_descend) :
+            std::upper_bound(d_grid.begin(), d_grid.end(), row);
         // insert item and get final inserted position.
         ListItemGrid::iterator final_pos = d_grid.insert(ins_pos, row);
 		// get final inserted position as an uint.
@@ -2424,11 +2424,11 @@ void MultiColumnList::resortList()
 
     if (dir == ListHeaderSegment::Descending)
     {
-        std::sort(d_grid.begin(), d_grid.end());
+        std::sort(d_grid.begin(), d_grid.end(), pred_descend);
     }
     else if (dir == ListHeaderSegment::Ascending)
     {
-        std::sort(d_grid.begin(), d_grid.end(), pred_descend);
+        std::sort(d_grid.begin(), d_grid.end());
     }
     // else no (or invalid) direction, so do not sort.
 }

@@ -1940,7 +1940,7 @@
                     <Dim type="Width" ><ImageDim imageset="WindowsLook" image="SmallUpArrow" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SmallUpArrow" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SmallUpArrow" />
+                <Image imageset="WindowsLook" image="SmallDownArrow" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="descend_icon">
@@ -1951,7 +1951,7 @@
                     <Dim type="Width" ><ImageDim imageset="WindowsLook" image="SmallDownArrow" dimension="Width" /></Dim>
                     <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SmallDownArrow" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SmallDownArrow" />
+                <Image imageset="WindowsLook" image="SmallUpArrow" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="label">

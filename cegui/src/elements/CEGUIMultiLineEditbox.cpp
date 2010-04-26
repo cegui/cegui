@@ -147,10 +147,18 @@ void MultiLineEditbox::initialiseComponents(void)
 	Scrollbar* vertScrollbar = getVertScrollbar();
 	Scrollbar* horzScrollbar = getHorzScrollbar();
 
+    vertScrollbar->subscribeEvent(
+        Window::EventShown, Event::Subscriber(
+            &MultiLineEditbox::handle_vertScrollbarVisibilityChanged, this));
+
+    vertScrollbar->subscribeEvent(
+        Window::EventHidden, Event::Subscriber(
+            &MultiLineEditbox::handle_vertScrollbarVisibilityChanged, this));
+
     vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
     horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
 
-	formatText();
+	formatText(true);
 	performChildWindowLayout();
 }
 
@@ -360,7 +368,7 @@ void MultiLineEditbox::setWordWrapping(bool setting)
 	if (setting != d_wordWrap)
 	{
 		d_wordWrap = setting;
-		formatText();
+		formatText(true);
 
 		WindowEventArgs args(this);
 		onWordWrapModeChanged(args);
@@ -375,67 +383,50 @@ void MultiLineEditbox::setWordWrapping(bool setting)
 *************************************************************************/
 void MultiLineEditbox::configureScrollbars(void)
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-	float totalHeight	= (float)d_lines.size() * getFont()->getLineSpacing();
-	float widestItem	= d_widestExtent;
+    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
+    const float lspc = getFont()->getLineSpacing();
 
-	//
-	// First show or hide the scroll bars as needed (or requested)
-	//
-	// show or hide vertical scroll bar as required (or as specified by option)
-	if ((totalHeight > getTextRenderArea().getHeight()) || d_forceVertScroll)
-	{
-		vertScrollbar->show();
+    //
+    // First show or hide the scroll bars as needed (or requested)
+    //
+    // show or hide vertical scroll bar as required (or as specified by option)
+    if (d_forceVertScroll ||
+        (static_cast<float>(d_lines.size()) * lspc > getTextRenderArea().getHeight()))
+    {
+        vertScrollbar->show();
 
-		// show or hide horizontal scroll bar as required (or as specified by option)
-		if ((widestItem > getTextRenderArea().getWidth()) || d_forceHorzScroll)
-		{
-			horzScrollbar->show();
-		}
-		else
-		{
-			horzScrollbar->hide();
-		}
+        // show or hide horizontal scroll bar as required (or as specified by option)
+        horzScrollbar->setVisible(d_forceHorzScroll ||
+                                  (d_widestExtent > getTextRenderArea().getWidth()));
+    }
+    // show or hide horizontal scroll bar as required (or as specified by option)
+    else if (d_forceHorzScroll ||
+             (d_widestExtent > getTextRenderArea().getWidth()))
+    {
+        horzScrollbar->show();
 
-	}
-	else
-	{
-		// show or hide horizontal scroll bar as required (or as specified by option)
-		if ((widestItem > getTextRenderArea().getWidth()) || d_forceHorzScroll)
-		{
-			horzScrollbar->show();
-
-			// show or hide vertical scroll bar as required (or as specified by option)
-			if ((totalHeight > getTextRenderArea().getHeight()) || d_forceVertScroll)
-			{
-				vertScrollbar->show();
-			}
-			else
-			{
-				vertScrollbar->hide();
-			}
-
-		}
-		else
-		{
-			vertScrollbar->hide();
-			horzScrollbar->hide();
-		}
-
-	}
+        // show or hide vertical scroll bar as required (or as specified by option)
+        vertScrollbar->setVisible(d_forceVertScroll ||
+            (static_cast<float>(d_lines.size()) * lspc > getTextRenderArea().getHeight()));
+    }
+    else
+    {
+        vertScrollbar->hide();
+        horzScrollbar->hide();
+    }
 
 	//
 	// Set up scroll bar values
 	//
 	Rect renderArea(getTextRenderArea());
 
-	vertScrollbar->setDocumentSize(totalHeight);
+	vertScrollbar->setDocumentSize(static_cast<float>(d_lines.size()) * lspc);
 	vertScrollbar->setPageSize(renderArea.getHeight());
 	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
 	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
-	horzScrollbar->setDocumentSize(widestItem);
+	horzScrollbar->setDocumentSize(d_widestExtent);
 	horzScrollbar->setPageSize(renderArea.getWidth());
 	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
 	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
@@ -446,6 +437,12 @@ void MultiLineEditbox::configureScrollbars(void)
 	Format the text into lines as needed by the current formatting options.
 *************************************************************************/
 void MultiLineEditbox::formatText(void)
+{
+    formatText(true);
+}
+
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::formatText(const bool update_scrollbars)
 {
     // TODO: ASSAF - todo
 	// clear old formatting data
@@ -555,7 +552,9 @@ void MultiLineEditbox::formatText(void)
 
 	}
 
-	configureScrollbars();
+    if (update_scrollbars)
+        configureScrollbars();
+
 	invalidate();
 }
 
@@ -1410,7 +1409,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
     // clear selection
     clearSelection();
     // layout new text
-    formatText();
+    formatText(true);
     // layout child windows (scrollbars) since text layout may have changed
     performChildWindowLayout();
     // ensure carat is still within the text
@@ -1429,7 +1428,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onSized(WindowEventArgs& e)
 {
-	formatText();
+	formatText(true);
 
 	// base class handling
 	Window::onSized(e);
@@ -1642,5 +1641,15 @@ void MultiLineEditbox::setShowVertScrollbar(bool setting)
 		onVertScrollbarModeChanged(args);
 	}
 }
+
+//----------------------------------------------------------------------------//
+bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
+{
+    if (d_wordWrap)
+        formatText(false);
+
+    return true;
+}
+
 
 } // End of  CEGUI namespace section

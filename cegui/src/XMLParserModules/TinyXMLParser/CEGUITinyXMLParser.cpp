@@ -100,7 +100,7 @@ namespace CEGUI
             {
                 delete [] buf;
                 System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
-                CEGUI_THROW();
+                CEGUI_RETHROW;
             }
         } // if (currElement)
 
