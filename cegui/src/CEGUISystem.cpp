@@ -259,7 +259,7 @@ System::System(Renderer& renderer,
             // cleanup XML stuff
             d_xmlParser->cleanup();
             delete d_xmlParser;
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
     }
 

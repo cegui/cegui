@@ -115,32 +115,13 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
     using namespace irr;
 
     freeIrrlichtTexture();
-
-    const Size tex_sz(d_owner.getAdjustedTextureSize(buffer_size));
-
-    #if CEGUI_IRR_SDK_VERSION >= 16
-        const irr::core::dimension2d<irr::u32> irr_sz(
-            static_cast<irr::u32>(tex_sz.d_width),
-            static_cast<irr::u32>(tex_sz.d_height));
-    #else
-        const irr::core::dimension2d<irr::s32> irr_sz(
-            static_cast<irr::s32>(tex_sz.d_width),
-            static_cast<irr::s32>(tex_sz.d_height));
-    #endif
-
-    d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str());
+    createIrrlichtTexture(buffer_size);
 
     d_size.d_width = static_cast<float>(d_texture->getSize().Width);
     d_size.d_height = static_cast<float>(d_texture->getSize().Height);
     d_dataSize = buffer_size;
 
     updateCachedScaleValues();
-
-    // we now use ARGB all the time here, so throw if we get something else!
-    if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
-        CEGUI_THROW(RendererException(
-            "IrrlichtTexture::loadFromMemory: texture did "
-            "not have the correct format (ARGB)"));
 
     const size_t pix_sz = (pixel_format == PF_RGB) ? 3 : 4;
     const char* src = static_cast<const char*>(buffer);
@@ -210,20 +191,7 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
     d_owner(owner)
 
 {
-    const Size tex_sz(d_owner.getAdjustedTextureSize(size));
-
-    #if CEGUI_IRR_SDK_VERSION >= 16
-        const irr::core::dimension2d<irr::u32> irr_sz(
-            static_cast<irr::u32>(tex_sz.d_width),
-            static_cast<irr::u32>(tex_sz.d_height));
-    #else
-        const irr::core::dimension2d<irr::s32> irr_sz(
-            static_cast<irr::s32>(tex_sz.d_width),
-            static_cast<irr::s32>(tex_sz.d_height));
-    #endif
-
-    d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str(),
-                                    irr::video::ECF_A8R8G8B8);
+    createIrrlichtTexture(size);
 
     d_size.d_width = static_cast<float>(d_texture->getSize().Width);
     d_size.d_height = static_cast<float>(d_texture->getSize().Height);
@@ -235,6 +203,64 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 IrrlichtTexture::~IrrlichtTexture()
 {
     freeIrrlichtTexture();
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTexture::createIrrlichtTexture(const Size& sz)
+{
+    using namespace irr;
+
+    const Size tex_sz(d_owner.getAdjustedTextureSize(sz));
+
+    #if CEGUI_IRR_SDK_VERSION >= 16
+        const core::dimension2d<u32> irr_sz(
+            static_cast<u32>(tex_sz.d_width),
+            static_cast<u32>(tex_sz.d_height));
+    #else
+        const core::dimension2d<s32> irr_sz(
+            static_cast<s32>(tex_sz.d_width),
+            static_cast<s32>(tex_sz.d_height));
+    #endif
+
+    // save texture creation state
+    video::E_TEXTURE_CREATION_FLAG fmtflg;
+
+    if (d_driver.getTextureCreationFlag(video::ETCF_ALWAYS_32_BIT))
+        fmtflg = video::ETCF_ALWAYS_32_BIT;
+    else if (d_driver.getTextureCreationFlag(video::ETCF_OPTIMIZED_FOR_QUALITY))
+        fmtflg = video::ETCF_OPTIMIZED_FOR_QUALITY;
+    else if (d_driver.getTextureCreationFlag(video::ETCF_OPTIMIZED_FOR_SPEED))
+        fmtflg = video::ETCF_OPTIMIZED_FOR_SPEED;
+    else
+        fmtflg = video::ETCF_ALWAYS_16_BIT;
+
+    const bool tfmips =
+        d_driver.getTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS);
+    const bool tfalpha =
+        d_driver.getTextureCreationFlag(video::ETCF_NO_ALPHA_CHANNEL);
+    const bool tfnpot =
+        d_driver.getTextureCreationFlag(video::ETCF_ALLOW_NON_POWER_2);
+
+    // explicitly set all states to what we want
+    d_driver.setTextureCreationFlag(video::ETCF_ALWAYS_32_BIT, true);
+    d_driver.setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
+    d_driver.setTextureCreationFlag(video::ETCF_NO_ALPHA_CHANNEL, false);
+    d_driver.setTextureCreationFlag(video::ETCF_ALLOW_NON_POWER_2, true);
+
+    d_texture = d_driver.addTexture(irr_sz, getUniqueName().c_str(),
+                                    irr::video::ECF_A8R8G8B8);
+
+    // restore previous texture creation state
+    d_driver.setTextureCreationFlag(fmtflg, true);
+    d_driver.setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, tfmips);
+    d_driver.setTextureCreationFlag(video::ETCF_NO_ALPHA_CHANNEL, tfalpha);
+    d_driver.setTextureCreationFlag(video::ETCF_ALLOW_NON_POWER_2, tfnpot);
+
+    // we use ARGB all the time for now, so throw if we gut something else!
+    if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
+        CEGUI_THROW(RendererException(
+            "IrrlichtTexture::loadFromMemory: texture did "
+            "not have the correct format (ARGB)"));
 }
 
 //----------------------------------------------------------------------------//

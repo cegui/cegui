@@ -310,7 +310,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	CEGUI_CATCH(...)
 	{
         Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from file '" + filename +"' failed.", Errors);
-        CEGUI_THROW();
+        CEGUI_RETHROW;
 	}
 
     // log the completion of loading
@@ -409,7 +409,7 @@ void WindowManager::renameWindow(Window* window, const String& new_name)
                 // re-add window to registry under it's old name
                 d_windowRegistry[window->getName()] = window;
                 // rethrow exception.
-                CEGUI_THROW();
+                CEGUI_RETHROW;
             }
 
             // add window to registry under new name

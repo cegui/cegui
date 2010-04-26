@@ -113,7 +113,7 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
         // cleanup when there's an exception
         image->unlock();
         image->drop();
-        CEGUI_THROW();
+        CEGUI_RETHROW;
     }
 
     // cleanup.

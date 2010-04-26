@@ -459,9 +459,20 @@ protected:
 	/*!
 	\brief
 		Format the text into lines as needed by the current formatting options.
+    \deprecated
+        This is deprecated in favour of the version taking a boolean.
 	*/
 	void	formatText(void);
 
+    /*!
+    \brief
+        Format the text into lines as dictated by the formatting options.
+
+    \param update_scrollbars 
+        - true if scrollbar configuration should be performed.
+        - false if scrollbar configuration should not be performed.
+    */
+    void formatText(const bool update_scrollbars);
 
 	/*!
 	\brief
@@ -644,6 +655,9 @@ protected:
 	   Internal handler that is triggered when the user interacts with the scrollbars.
     */
     bool handle_scrollChange(const EventArgs& args);
+
+    // handler triggered when vertical scrollbar is shown or hidden
+    bool handle_vertScrollbarVisibilityChanged(const EventArgs&);
 
     // validate window renderer
     virtual bool validateWindowRenderer(const String& name) const

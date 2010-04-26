@@ -89,7 +89,7 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
     CEGUI_CATCH(...)
     {
         CGLDestroyContext(d_context);
-        CEGUI_THROW();
+        CEGUI_RETHROW;
     }
 
     // set these states one-time since we have our own context

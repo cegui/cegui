@@ -111,7 +111,7 @@ namespace CEGUI
             delete reader;
 
             Logger::getSingleton().logEvent("XercesParser::parseXMLFile - An unexpected error occurred while parsing XML file '" + filename + "'.", Errors);
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
 
         // cleanup
@@ -297,7 +297,7 @@ namespace CEGUI
              // use resource provider to release loaded XML source (if it supports this)
              System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
 
-             CEGUI_THROW();
+             CEGUI_RETHROW;
          }
 
          // use resource provider to release loaded XML source (if it supports this)
