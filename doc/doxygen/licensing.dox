@@ -2,12 +2,17 @@
 @page licensing CEGUI License (and other licensing considerations)
 @author Paul D Turner
 
-@section licensing_sec_1 CEGUI License
+@section licensing_sec_1 CEGUI library licensing
 The current version of CEGUI is licensed under the MIT License:
 @verbinclude COPYING
 
+Note that this license generally only covers the CEGUI code - either compiled
+or in source code form.  For licensing information regarding the data and media
+files that accompany CEGUI (under the datafiles directory), please see
+@subpage datafile_licensing for additional information.
+
 <br>
-@section licensing_sec_2 Dependency licensing
+@section licensing_sec_3 Dependency licensing
 - This sofware can be compiled to use the PCRE library by Philip Hazel.
 PCRE is Copyright (c) 1997-2009 University of Cambridge, All rights reserved.
 Please see @subpage pcre_lic for additional licensing information.
@@ -35,7 +40,7 @@ modified) from the Minizip project.  The original Minizip code may be found at
 http://www.winimage.com/zLibDll/minizip.html
 
 <br>
-@section licensing_sec_3 Licensing 101: What it all means!
+@section licensing_sec_4 Licensing 101: What it all means!
 While CEGUI itself is licensed under the MIT license, it is important that users
 understand that you're probably not only using the CEGUI code, but also that of
 certain other libraries that CEGUI is built on top of - this means that you may
