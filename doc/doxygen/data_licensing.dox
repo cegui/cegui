@@ -29,7 +29,10 @@ CEGUI project and are released under the same license as the CEGUI library.
 @section data_lic_imagesets Imageset imagery files
 The following list covers the tga and png image files within the imagsets
 directory.
-- @b DriveIcons.png:
+- @b DriveIcons.png: Imagery created by Paul D Turner and made available
+under the same license as the CEGUI library (does not apply to version in
+releases up to and including 0.7.1 which appeared to contain non-free imagery
+and so was removed).
 - @b FairChar.tga: File contributed by Andrew Zabolotny.  Original author is
 unknown.  If you know, or indeed are, the original creator plase contacts us!
 - @b GPN-2000-001437.tga: Original photograph was obtained from GRIN
