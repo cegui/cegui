@@ -2351,6 +2351,10 @@
 		DAB2708A0FCAF1D000D9EE82 /* CEGUIRenderedStringWordWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringWordWrapper.h; path = ../../cegui/include/CEGUIRenderedStringWordWrapper.h; sourceTree = SOURCE_ROOT; };
 		DABEE4C11036C3C5001B58DA /* downloading.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = downloading.dox; path = ../../doc/doxygen/downloading.dox; sourceTree = SOURCE_ROOT; };
 		DAC1BE78101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUINamedXMLResourceManager.cpp; path = ../../cegui/src/CEGUINamedXMLResourceManager.cpp; sourceTree = SOURCE_ROOT; };
+		DAC332E21192BA48009031FB /* OgreTray.imageset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = OgreTray.imageset; path = ../../datafiles/imagesets/OgreTray.imageset; sourceTree = SOURCE_ROOT; };
+		DAC332E31192BA48009031FB /* OgreTrayImages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OgreTrayImages.png; path = ../../datafiles/imagesets/OgreTrayImages.png; sourceTree = SOURCE_ROOT; };
+		DAC332E41192BA83009031FB /* OgreTray.looknfeel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = OgreTray.looknfeel; path = ../../datafiles/looknfeel/OgreTray.looknfeel; sourceTree = SOURCE_ROOT; };
+		DAC332E51192BAA8009031FB /* OgreTray.scheme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = OgreTray.scheme; path = ../../datafiles/schemes/OgreTray.scheme; sourceTree = SOURCE_ROOT; };
 		DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIOgreRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC4DDF20F70FFBD000EF0AC /* CEGUIOgreRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIOgreRenderer-Info.plist"; sourceTree = "<group>"; };
 		DAC6D0CB1021923F000602A5 /* FalEditboxProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FalEditboxProperties.h; path = ../../cegui/include/WindowRendererSets/Falagard/FalEditboxProperties.h; sourceTree = SOURCE_ROOT; };
@@ -3129,16 +3133,18 @@
 				DA1094030F6D5C0E00B8A582 /* ReadMe.txt */,
 				DA1094040F6D5C0E00B8A582 /* DriveIcons.imageset */,
 				DA1094080F6D5C0E00B8A582 /* FairChar.imageset */,
+				DAC332E21192BA48009031FB /* OgreTray.imageset */,
 				DA1094060F6D5C0E00B8A582 /* TaharezLook.imageset */,
 				DA1094010F6D5C0E00B8A582 /* Vanilla.imageset */,
 				DA1094050F6D5C0E00B8A582 /* WindowsLook.imageset */,
 				DA1094090F6D5C0E00B8A582 /* DriveIcons.png */,
 				DA1094020F6D5C0E00B8A582 /* FairChar.tga */,
+				DA1094070F6D5C0E00B8A582 /* GPN-2000-001437.tga */,
+				DA1094000F6D5C0E00B8A582 /* logo.png */,
+				DAC332E31192BA48009031FB /* OgreTrayImages.png */,
 				DA10940A0F6D5C0E00B8A582 /* TaharezLook.tga */,
 				DA10940C0F6D5C0E00B8A582 /* vanilla.tga */,
 				DA10940B0F6D5C0E00B8A582 /* WindowsLook.tga */,
-				DA1094070F6D5C0E00B8A582 /* GPN-2000-001437.tga */,
-				DA1094000F6D5C0E00B8A582 /* logo.png */,
 			);
 			name = imagesets;
 			sourceTree = "<group>";
@@ -3182,6 +3188,7 @@
 		DA1093830F6D55F200B8A582 /* looknfeel */ = {
 			isa = PBXGroup;
 			children = (
+				DAC332E41192BA83009031FB /* OgreTray.looknfeel */,
 				DA10941B0F6D5CAB00B8A582 /* TaharezLook.looknfeel */,
 				DA10941C0F6D5CAB00B8A582 /* Vanilla.looknfeel */,
 				DA10941A0F6D5CAB00B8A582 /* WindowsLook.looknfeel */,
@@ -3201,6 +3208,7 @@
 			isa = PBXGroup;
 			children = (
 				DA1094250F6D5CE800B8A582 /* Demo8.scheme */,
+				DAC332E51192BAA8009031FB /* OgreTray.scheme */,
 				DA1094240F6D5CE800B8A582 /* TaharezLook.scheme */,
 				DA1094260F6D5CE800B8A582 /* TaharezLookWidgetAliases.scheme */,
 				DA1094230F6D5CE800B8A582 /* TaharezLookWidgets.scheme */,
