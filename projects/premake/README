@@ -1,5 +1,5 @@
-To generate the project files you must download premake 3.1 from:
-http://sourceforge.net/project/showfiles.php?group_id=71616
+To generate the project files you must download premake from:
+http://prdownloads.sourceforge.net/crayzedsgui/premake-3.7-custom.zip
 and place the executable (premake.exe) in this directory.
 
 First you should edit config.lua to make sure you get what you need.
