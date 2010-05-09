@@ -38,14 +38,7 @@ OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
                                    Ogre::RenderTarget& target) :
     OgreRenderTarget(owner, rs)
 {
-    d_renderTarget = &target;
-
-    Rect init_area(
-        Vector2(0, 0),
-        Size(d_renderTarget->getWidth(), d_renderTarget->getHeight())
-    );
-
-    setArea(init_area);
+    initRenderTarget(target);
 }
 
 //----------------------------------------------------------------------------//
@@ -54,9 +47,33 @@ OgreWindowTarget::~OgreWindowTarget()
 }
 
 //----------------------------------------------------------------------------//
+void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
+{
+    // cleanup viewport since it's RT dependent.
+    delete d_viewport;
+    d_viewport = 0;
+    d_viewportValid = false;
+
+    initRenderTarget(target);
+}
+
+//----------------------------------------------------------------------------//
 bool OgreWindowTarget::isImageryCache() const
 {
     return false;
+}
+
+//----------------------------------------------------------------------------//
+void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
+{
+    d_renderTarget = &target;
+
+    Rect init_area(
+        Vector2(0, 0),
+        Size(d_renderTarget->getWidth(), d_renderTarget->getHeight())
+    );
+
+    setArea(init_area);
 }
 
 //----------------------------------------------------------------------------//

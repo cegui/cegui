@@ -482,6 +482,12 @@ void OgreRenderer::initialiseRenderStateSettings()
 }
 
 //----------------------------------------------------------------------------//
+void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
+{
+    d_defaultTarget->setOgreRenderTarget(target);
+}
+
+//----------------------------------------------------------------------------//
 OgreGUIFrameListener::OgreGUIFrameListener() :
     d_enabled(true)
 {

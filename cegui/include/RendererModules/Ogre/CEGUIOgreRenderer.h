@@ -65,6 +65,7 @@ class OgreGeometryBuffer;
 class OgreTexture;
 class OgreResourceProvider;
 class OgreImageCodec;
+class OgreWindowTarget;
 
 //! CEGUI::Renderer implementation for the Ogre engine.
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
@@ -243,6 +244,17 @@ public:
     */
     void initialiseRenderStateSettings();
 
+    /*!
+    \brief
+        Sets the Ogre::RenderTarget that should be targetted by the default
+        RenderingRoot.
+
+    \param target
+        Reference to the Ogre::RenderTarget object that is to be used as the
+        target for output from the default RenderingRoot.
+    */
+    void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
+
     // implement CEGUI::Renderer interface
     RenderingRoot& getDefaultRenderingRoot();
     GeometryBuffer& createGeometryBuffer();
@@ -287,7 +299,7 @@ protected:
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
-    RenderTarget* d_defaultTarget;
+    OgreWindowTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
