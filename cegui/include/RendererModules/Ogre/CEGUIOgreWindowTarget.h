@@ -44,8 +44,23 @@ public:
     //! Destructor
     virtual ~OgreWindowTarget();
 
+    /*!
+    \brief
+        Set the Ogre::RenderTarget that the output from the OgreWindowTarget
+        should be rendered to.
+
+    \param target
+        Reference to an Ogre::RenderTarget object that will receive the rendered
+        output.
+    */
+    void setOgreRenderTarget(Ogre::RenderTarget& target);
+
     // implement parts of CEGUI::RenderTarget interface
     bool isImageryCache() const;
+
+protected:
+    //! helper function to initialise the render target details
+    void initRenderTarget(Ogre::RenderTarget& target);
 };
 
 } // End of  CEGUI namespace section

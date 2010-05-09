@@ -278,6 +278,12 @@ size_t MinizipResourceProvider::getResourceGroupFileNames(
 }
 
 //----------------------------------------------------------------------------//
+void MinizipResourceProvider::setLoadLocal(bool load)
+{
+    d_pimpl->d_loadLocal = load;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 
