@@ -36,5 +36,8 @@ class MouseCursor : public EventSet
     void setVisible(bool visible);
 	bool isVisible() const;
 
+    void setExplicitRenderSize(const Size& size);
+    const Size& getExplicitRenderSize() const;
+
     tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

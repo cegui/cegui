@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Thu Mar 18 09:53:21 2010.
+** Generated automatically by tolua++-1.0.92 on Sat May 15 15:15:54 2010.
 */
 
 #ifndef __cplusplus
@@ -13960,6 +13960,71 @@ static int tolua_CEGUI_CEGUI_MouseCursor_isVisible00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'isVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setExplicitRenderSize of class  CEGUI::MouseCursor */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MouseCursor_setExplicitRenderSize00
+static int tolua_CEGUI_CEGUI_MouseCursor_setExplicitRenderSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MouseCursor",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MouseCursor* self = (CEGUI::MouseCursor*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size* size = ((const CEGUI::Size*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setExplicitRenderSize'",NULL);
+#endif
+ {
+  self->setExplicitRenderSize(*size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setExplicitRenderSize'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getExplicitRenderSize of class  CEGUI::MouseCursor */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MouseCursor_getExplicitRenderSize00
+static int tolua_CEGUI_CEGUI_MouseCursor_getExplicitRenderSize00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::MouseCursor",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::MouseCursor* self = (const CEGUI::MouseCursor*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getExplicitRenderSize'",NULL);
+#endif
+ {
+  const CEGUI::Size& tolua_ret = (const CEGUI::Size&)  self->getExplicitRenderSize();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::Size");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getExplicitRenderSize'.",&tolua_err);
  return 0;
 #endif
 }
@@ -53932,6 +53997,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"show",tolua_CEGUI_CEGUI_MouseCursor_show00);
    tolua_function(tolua_S,"setVisible",tolua_CEGUI_CEGUI_MouseCursor_setVisible00);
    tolua_function(tolua_S,"isVisible",tolua_CEGUI_CEGUI_MouseCursor_isVisible00);
+   tolua_function(tolua_S,"setExplicitRenderSize",tolua_CEGUI_CEGUI_MouseCursor_setExplicitRenderSize00);
+   tolua_function(tolua_S,"getExplicitRenderSize",tolua_CEGUI_CEGUI_MouseCursor_getExplicitRenderSize00);
    tolua_function(tolua_S,"getEventIterator",tolua_CEGUI_CEGUI_MouseCursor_getEventIterator00);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"VA_TOP",CEGUI::VA_TOP);
