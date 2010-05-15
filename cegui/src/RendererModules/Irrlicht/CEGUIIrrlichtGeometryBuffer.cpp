@@ -280,5 +280,16 @@ void IrrlichtGeometryBuffer::updateMatrix() const
 }
 
 //----------------------------------------------------------------------------//
+irr::video::SMaterial& IrrlichtGeometryBuffer::getMaterial()
+{
+    return const_cast<irr::video::SMaterial&>(
+        static_cast<const IrrlichtGeometryBuffer*>(this)->getMaterial());
+}
+
+//----------------------------------------------------------------------------//
+const irr::video::SMaterial& IrrlichtGeometryBuffer::getMaterial() const
+{
+    return d_material;
+}
 
 } // End of  CEGUI namespace section
