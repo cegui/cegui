@@ -39,17 +39,10 @@ class IrrlichtEventPusher
 {
     gui::ICursorControl* d_cursorctrl;
 
-    core::position2d<s32> d_pos;
-    core::position2d<s32> d_dpos;
-
 public :
     IrrlichtEventPusher(irr::gui::ICursorControl* ctrl) :
         d_cursorctrl(ctrl)
     {
-        d_cursorctrl->setPosition(0.5f, 0.5f);
-        d_pos = d_cursorctrl->getPosition();
-        d_dpos.X = 0;
-        d_dpos.Y = 0;
         initCodes();
     };
 

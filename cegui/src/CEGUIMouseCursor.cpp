@@ -47,7 +47,8 @@ const String MouseCursor::EventNamespace("MouseCursor");
 *************************************************************************/
 // singleton instance pointer
 template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= 0;
-
+bool MouseCursor::s_initialPositionSet = false;
+Point MouseCursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
@@ -67,12 +68,15 @@ MouseCursor::MouseCursor(void) :
                           System::getSingleton().getRenderer()->getDisplaySize());
     d_geometry->setClippingRegion(screenArea);
 
-	// mouse defaults to middle of the constrained area
-	d_position.d_x = screenArea.getWidth() / 2;
-	d_position.d_y = screenArea.getHeight() / 2;
-
 	// default constraint is to whole screen
 	setConstraintArea(&screenArea);
+
+    if (s_initialPositionSet)
+        setPosition(s_initialPosition);
+    else
+    	// mouse defaults to middle of the constrained area
+        setPosition(Point(screenArea.getWidth() / 2,
+                          screenArea.getHeight() / 2));
 
 	// mouse defaults to visible
 	d_visible = true;
@@ -316,6 +320,13 @@ void MouseCursor::calculateCustomOffset()
         d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
     d_customOffset.d_y =
         d_customSize.d_height / sz.d_height * offset.d_y - offset.d_y;
+}
+
+//----------------------------------------------------------------------------//
+void MouseCursor::setInitialMousePosition(const Point& position)
+{
+    s_initialPosition = position; 
+    s_initialPositionSet = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
