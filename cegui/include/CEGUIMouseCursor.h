@@ -338,6 +338,22 @@ public:
     */
     const Size& getExplicitRenderSize() const;
 
+    /*!
+    \brief
+        Static function to pre-initialise the mouse cursor position (prior to
+        MouseCursor instantiation).
+        
+        Calling this function prior to instantiating MouseCursor will prevent
+        the mouse having it's position set to the middle of the initial view.
+        Calling this function after the MouseCursor is instantiated will have
+        no effect.
+
+    \param position
+        Reference to a point object describing the initial pixel position to
+        be used for the mouse cursor.
+    */
+    static void setInitialMousePosition(const Point& position);
+
 protected:
 	/*************************************************************************
 		New event handlers
@@ -378,6 +394,10 @@ private:
     Size d_customSize;
     //! correctly scaled offset used when using custom image size.
     Point d_customOffset;
+    //! true if the mouse initial position has been pre-set
+    static bool s_initialPositionSet;
+    //! value set as initial position (if any)
+    static Point s_initialPosition;
 };
 
 } // End of  CEGUI namespace section
