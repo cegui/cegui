@@ -314,6 +314,46 @@ public:
     */
     void notifyDisplaySizeChanged(const Size& new_size);
 
+    /*!
+    \brief
+        Set an explicit size for the mouse cursor image to be drawn at.
+
+        This will override the size that is usually obtained directly from the
+        mouse cursor image and will stay in effect across changes to the mouse
+        cursor image.
+
+        Setting this size to (0, 0) will revert back to using the size as
+        obtained from the Image itself.
+
+    \param size
+        Reference to a Size object that describes the size at which the cursor
+        image should be drawn in pixels.
+    */
+    void setExplicitRenderSize(const Size& size);
+
+    /*!
+    \brief
+        Return the explicit render size currently set.  A return size of (0, 0)
+        indicates that the real image size will be used.
+    */
+    const Size& getExplicitRenderSize() const;
+
+    /*!
+    \brief
+        Static function to pre-initialise the mouse cursor position (prior to
+        MouseCursor instantiation).
+        
+        Calling this function prior to instantiating MouseCursor will prevent
+        the mouse having it's position set to the middle of the initial view.
+        Calling this function after the MouseCursor is instantiated will have
+        no effect.
+
+    \param position
+        Reference to a point object describing the initial pixel position to
+        be used for the mouse cursor.
+    */
+    static void setInitialMousePosition(const Point& position);
+
 protected:
 	/*************************************************************************
 		New event handlers
@@ -335,6 +375,12 @@ private:
 	*/
 	void	constrainPosition(void);
 
+    //! updates the cached geometry.
+    void cacheGeometry();
+
+    //! calculate offset for custom image size so 'hot spot' is maintained.
+    void calculateCustomOffset();
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -344,6 +390,14 @@ private:
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
     //! buffer to hold geometry for mouse cursor imagery.
     GeometryBuffer* d_geometry;
+    //! custom explicit size to render the cursor image at
+    Size d_customSize;
+    //! correctly scaled offset used when using custom image size.
+    Point d_customOffset;
+    //! true if the mouse initial position has been pre-set
+    static bool s_initialPositionSet;
+    //! value set as initial position (if any)
+    static Point s_initialPosition;
 };
 
 } // End of  CEGUI namespace section

@@ -55,6 +55,12 @@ public:
     //! return the transformation matrix used for this buffer.
     const irr::core::matrix4& getMatrix() const;
 
+    //! return reference to the Irrlicht material used with this GeometryBuffer.
+    irr::video::SMaterial& getMaterial();
+    //! return reference to the Irrlicht material used with this GeometryBuffer.
+    const irr::video::SMaterial& getMaterial() const;
+
+
     // implement GeometryBuffer interface
     void draw() const;
     void setTranslation(const Vector3& v);
