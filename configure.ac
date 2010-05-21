@@ -129,6 +129,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
                  cegui/include/RendererModules/Direct3D10/Makefile
+                 cegui/include/RendererModules/Direct3D11/Makefile
                  cegui/include/RendererModules/Direct3D9/Makefile
                  cegui/include/RendererModules/DirectFB/Makefile
                  cegui/include/RendererModules/Irrlicht/Makefile
@@ -155,6 +156,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
                  cegui/src/RendererModules/Direct3D10/Makefile
+                 cegui/src/RendererModules/Direct3D11/Makefile
                  cegui/src/RendererModules/Direct3D9/Makefile
                  cegui/src/RendererModules/DirectFB/Makefile
                  cegui/src/RendererModules/Irrlicht/Makefile

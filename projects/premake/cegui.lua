@@ -89,6 +89,10 @@ if OPENGL_RENDERER then
     tinsert(pkg_table.RendererModules, "OpenGL")
 end
 
+if DIRECT3D11_RENDERER then
+    tinsert(pkg_table.RendererModules, "Direct3D11")
+end
+
 if DIRECT3D10_RENDERER then
     tinsert(pkg_table.RendererModules, "Direct3D10")
 end
