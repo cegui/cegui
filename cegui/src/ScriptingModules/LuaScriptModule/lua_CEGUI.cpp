@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat May 15 15:15:54 2010.
+** Generated automatically by tolua++-1.0.92 on Fri May 21 13:23:30 2010.
 */
 
 #ifndef __cplusplus
@@ -29477,19 +29477,19 @@ static int tolua_CEGUI_CEGUI_TreeItem_setFont01(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::String* font_name = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  utf8string font_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setFont'",NULL);
 #endif
  {
-  self->setFont(*font_name);
+  self->setFont(font_name);
  }
  }
  return 0;
@@ -29612,8 +29612,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getText00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getText'",NULL);
 #endif
  {
-  const CEGUI::String& tolua_ret = (const CEGUI::String&)  self->getText();
- tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::String");
+  string tolua_ret = (string)  self->getText();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
  }
  }
  return 1;
@@ -29644,8 +29644,8 @@ static int tolua_CEGUI_CEGUI_TreeItem_getTooltipText00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTooltipText'",NULL);
 #endif
  {
-  const CEGUI::String& tolua_ret = (const CEGUI::String&)  self->getTooltipText();
- tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::String");
+  string tolua_ret = (string)  self->getTooltipText();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
  }
  }
  return 1;
@@ -29929,7 +29929,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setText00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -29937,12 +29937,12 @@ static int tolua_CEGUI_CEGUI_TreeItem_setText00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::String* text = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  utf8string text = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setText'",NULL);
 #endif
  {
-  self->setText(*text);
+  self->setText(text);
  }
  }
  return 0;
@@ -29962,7 +29962,7 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTooltipText00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -29970,12 +29970,12 @@ static int tolua_CEGUI_CEGUI_TreeItem_setTooltipText00(lua_State* tolua_S)
 #endif
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::String* text = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  utf8string text = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltipText'",NULL);
 #endif
  {
-  self->setTooltipText(*text);
+  self->setTooltipText(text);
  }
  }
  return 0;
@@ -30320,21 +30320,21 @@ static int tolua_CEGUI_CEGUI_TreeItem_setSelectionBrushImage01(lua_State* tolua_
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::TreeItem",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,3,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
  {
   CEGUI::TreeItem* self = (CEGUI::TreeItem*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::String* imageset = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
-  const CEGUI::String* image = ((const CEGUI::String*)  tolua_tousertype(tolua_S,3,0));
+  utf8string imageset = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string image = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelectionBrushImage'",NULL);
 #endif
  {
-  self->setSelectionBrushImage(*imageset,*image);
+  self->setSelectionBrushImage(imageset,image);
  }
  }
  return 0;
