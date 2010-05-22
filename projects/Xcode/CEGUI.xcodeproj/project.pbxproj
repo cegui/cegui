@@ -2263,6 +2263,19 @@
 		DA109FFB0F6DB73200B8A582 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DA10A0180F6DB83200B8A582 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA10A01A0F6DB83200B8A582 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		DA18457811A7C9C300906D7B /* CEGUIDirect3D11GeometryBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11GeometryBuffer.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11GeometryBuffer.h; sourceTree = SOURCE_ROOT; };
+		DA18457911A7C9C300906D7B /* CEGUIDirect3D11Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11Renderer.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11Renderer.h; sourceTree = SOURCE_ROOT; };
+		DA18457A11A7C9C300906D7B /* CEGUIDirect3D11RenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11RenderTarget.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11RenderTarget.h; sourceTree = SOURCE_ROOT; };
+		DA18457B11A7C9C300906D7B /* CEGUIDirect3D11Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11Texture.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11Texture.h; sourceTree = SOURCE_ROOT; };
+		DA18457C11A7C9C300906D7B /* CEGUIDirect3D11TextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11TextureTarget.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11TextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DA18457D11A7C9C300906D7B /* CEGUIDirect3D11ViewportTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIDirect3D11ViewportTarget.h; path = ../../cegui/include/RendererModules/Direct3D11/CEGUIDirect3D11ViewportTarget.h; sourceTree = SOURCE_ROOT; };
+		DA18457E11A7C9EC00906D7B /* CEGUIDirect3D11GeometryBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11GeometryBuffer.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11GeometryBuffer.cpp; sourceTree = SOURCE_ROOT; };
+		DA18457F11A7C9EC00906D7B /* CEGUIDirect3D11Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11Renderer.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11Renderer.cpp; sourceTree = SOURCE_ROOT; };
+		DA18458011A7C9EC00906D7B /* CEGUIDirect3D11RendererShader.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CEGUIDirect3D11RendererShader.txt; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11RendererShader.txt; sourceTree = SOURCE_ROOT; };
+		DA18458111A7C9EC00906D7B /* CEGUIDirect3D11RenderTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11RenderTarget.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11RenderTarget.cpp; sourceTree = SOURCE_ROOT; };
+		DA18458211A7C9EC00906D7B /* CEGUIDirect3D11Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11Texture.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11Texture.cpp; sourceTree = SOURCE_ROOT; };
+		DA18458311A7C9EC00906D7B /* CEGUIDirect3D11TextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11TextureTarget.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11TextureTarget.cpp; sourceTree = SOURCE_ROOT; };
+		DA18458411A7C9EC00906D7B /* CEGUIDirect3D11ViewportTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDirect3D11ViewportTarget.cpp; path = ../../cegui/src/RendererModules/Direct3D11/CEGUIDirect3D11ViewportTarget.cpp; sourceTree = SOURCE_ROOT; };
 		DA19375B115CEE53003850DF /* CEGUIMinizipResourceProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIMinizipResourceProvider.h; path = ../../cegui/include/CEGUIMinizipResourceProvider.h; sourceTree = SOURCE_ROOT; };
 		DA19375C115CEE99003850DF /* CEGUIMinizipResourceProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIMinizipResourceProvider.cpp; path = ../../cegui/src/CEGUIMinizipResourceProvider.cpp; sourceTree = SOURCE_ROOT; };
 		DA19375E115CEEF6003850DF /* ioapi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ioapi.cpp; path = ../../cegui/src/minizip/ioapi.cpp; sourceTree = SOURCE_ROOT; };
@@ -2761,6 +2774,7 @@
 			isa = PBXGroup;
 			children = (
 				DA10936F0F6D543300B8A582 /* Direct3D10Renderer */,
+				DA18457511A7C98100906D7B /* Direct3D11Renderer */,
 				DA10936E0F6D542A00B8A582 /* Direct3D9Renderer */,
 				DA1093700F6D543D00B8A582 /* DirectFBRenderer */,
 				DA1093610F6D52FB00B8A582 /* IrrlichtRenderer */,
@@ -4367,6 +4381,42 @@
 				DA193781115CF406003850DF /* libz.dylib */,
 			);
 			name = "External Frameworks and Libs";
+			sourceTree = "<group>";
+		};
+		DA18457511A7C98100906D7B /* Direct3D11Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				DA18457711A7C9A000906D7B /* include */,
+				DA18457611A7C99900906D7B /* src */,
+			);
+			name = Direct3D11Renderer;
+			sourceTree = "<group>";
+		};
+		DA18457611A7C99900906D7B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DA18457E11A7C9EC00906D7B /* CEGUIDirect3D11GeometryBuffer.cpp */,
+				DA18457F11A7C9EC00906D7B /* CEGUIDirect3D11Renderer.cpp */,
+				DA18458011A7C9EC00906D7B /* CEGUIDirect3D11RendererShader.txt */,
+				DA18458111A7C9EC00906D7B /* CEGUIDirect3D11RenderTarget.cpp */,
+				DA18458211A7C9EC00906D7B /* CEGUIDirect3D11Texture.cpp */,
+				DA18458311A7C9EC00906D7B /* CEGUIDirect3D11TextureTarget.cpp */,
+				DA18458411A7C9EC00906D7B /* CEGUIDirect3D11ViewportTarget.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		DA18457711A7C9A000906D7B /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DA18457811A7C9C300906D7B /* CEGUIDirect3D11GeometryBuffer.h */,
+				DA18457911A7C9C300906D7B /* CEGUIDirect3D11Renderer.h */,
+				DA18457A11A7C9C300906D7B /* CEGUIDirect3D11RenderTarget.h */,
+				DA18457B11A7C9C300906D7B /* CEGUIDirect3D11Texture.h */,
+				DA18457C11A7C9C300906D7B /* CEGUIDirect3D11TextureTarget.h */,
+				DA18457D11A7C9C300906D7B /* CEGUIDirect3D11ViewportTarget.h */,
+			);
+			name = include;
 			sourceTree = "<group>";
 		};
 		DA19375D115CEECA003850DF /* minizip */ = {
