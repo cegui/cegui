@@ -32,22 +32,28 @@ project / solution files.
 We currently provide precompiled binary versions of CEGUI compiled for use with
 either MSVC++ 2005 SP1 (version 8) or MSVC++ 2008 (version 9)
 
-For users who wish to compile the code themselves, we also provide binary
-packages containing the precompiled dependency libraries that CEGUI uses.  These
-are available for for MSVC++ .Net 2003 (version 7.1), MSVC++ 2005 SP1 (version
-8) and MSVC++ 2008 (version 9).
-
 The current packages are available here:
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-vc8.zip/download">CEGUI-SDK-0.7.1-vc8.zip</a> Precompiled binary SDK for MSVC++ 2005(SP1)
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-vc9.zip/download">CEGUI-SDK-0.7.1-vc9.zip</a> Precompiled binary SDK for MSVC++ 2008
+
+For users who wish to compile the code themselves, we also provide binary
+packages containing the precompiled dependency libraries that CEGUI uses.  These
+are available for for MSVC++ .Net 2003 (version 7.1), MSVC++ 2005 SP1 (version
+8), MSVC++ 2008 (version 9) and MSVC++ 2010 (version 10).
+
+The current packages are available here:
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r1-vc71.zip/download">CEGUI-DEPS-0.7.x-r1-vc71.zip</a> Precompiled dependency libraries for MSVC++ .Net 2003
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r1-vc8.zip/download">CEGUI-DEPS-0.7.x-r1-vc8.zip</a> Precompiled dependency libraries for MSVC++ 2005(SP1)
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r1-vc9.zip/download">CEGUI-DEPS-0.7.x-r1-vc9.zip</a> Precompiled dependency libraries for MSVC++ 2008
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r2-vc8.zip/download">CEGUI-DEPS-0.7.x-r2-vc8.zip</a> Precompiled dependency libraries for MSVC++ 2005(SP1)
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r2-vc9.zip/download">CEGUI-DEPS-0.7.x-r2-vc9.zip</a> Precompiled dependency libraries for MSVC++ 2008
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 MSVC++ Dependencies/0.7.x/CEGUI-DEPS-0.7.x-r2-vc10.zip/download">CEGUI-DEPS-0.7.x-r2-vc10.zip</a> Precompiled dependency libraries for MSVC++ 2010
 
 <br>
 @section dl_mac_bin Precompiled Binary packages for Apple OS X
 We currently provide precompiled binary versions of CEGUI compiled for use with
 Apple Mac OS X users running Xcode.
+
+The current packages are available here:
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-mac.zip/download">CEGUI-SDK-0.7.1-mac.zip</a> Precompiled universal binary for Apple Mac OS X
 
 For users who wish to compile the code themselves, we also provide binary
 packages containing the precompiled dependency libraries that CEGUI uses.  These
@@ -55,12 +61,10 @@ are custom built frameworks that have the install path set to an appropriate
 place for the final app bundle - thus allowing the app to be packaged together
 in the most end-user friendly way.
 
-Currently all Mac OS X binary packages are provided as i386/ppc universal
-binaries.
-
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-mac.zip/download">CEGUI-SDK-0.7.1-mac.zip</a> Precompiled universal binary for Apple Mac OS X
 - <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2 Mac Dependencies/0.7.x/CEGUI-DEPS-0.7.x-mac.zip/download">CEGUI-DEPS-0.7.x-mac.zip</a> Precompiled dependency libraries for Apple Mac OS X
+
+All Mac OS X binary packages are provided as 32bit i386/ppc universal binaries.
 
 <br>
 @section dl_svn Subversion Source Code Repository
