@@ -135,7 +135,7 @@ void WindowRendererManager::addFactory()
                                             "' WindowRenderers.");
             // delete the factory object
             delete factory;
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
     }
 
