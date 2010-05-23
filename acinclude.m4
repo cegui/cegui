@@ -56,6 +56,7 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     PKG_CHECK_MODULES(libxml, libxml-2.0 >= 2.6, [cegui_found_libxml=yes], [cegui_found_libxml=no])
     CEGUI_CHECK_XERCES(xerces, [cegui_found_xerces=yes], [cegui_found_xerces=no])
     CEGUI_CHECK_EXPAT(expat, [cegui_found_expat=yes], [cegui_found_expat=no])
+    CEGUI_CHECK_RAPIDXML(rapidxml, [cegui_found_rapidxml=yes], [cegui_found_rapidxml=no])
 
     dnl Make some decisions about how to go about using TinyXML
     AC_ARG_ENABLE([external-tinyxml], AC_HELP_STRING([--disable-external-tinyxml], [Disables the use of any external tinyxml library, forcing the use of the version that accompanies CEGUI.]),
@@ -80,12 +81,15 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     AC_ARG_ENABLE([expat], AC_HELP_STRING([--disable-expat], [Disables building of the expat XML parser module.]),
                 [cegui_with_expat=$enableval], [cegui_with_expat=yes])
 
+    AC_ARG_ENABLE([rapidxml], AC_HELP_STRING([--disable-rapidxml], [Disables building of the RapidXML parser module.]),
+                [cegui_with_rapidxml=$enableval], [cegui_with_rapidxml=yes])
+
     AC_ARG_ENABLE([tinyxml], AC_HELP_STRING([--disable-tinyxml], [Disables building of the tinyXML parser module.]),
                 [cegui_with_tinyxml=$enableval], [cegui_with_tinyxml=yes])
 
     dnl Find out which paser user wants as a default
     AC_ARG_WITH([default-xml-parser], AC_HELP_STRING([--with-default-xml-parser[=PARSER]], [Sets the default XML parser module.
-Typically this will be one of XercesParser, ExpatParser, LibxmlParser or TinyXMLParser, though you can set it to anything to
+Typically this will be one of XercesParser, ExpatParser, LibxmlParser, RapidXMLParser or TinyXMLParser, though you can set it to anything to
 load a custom made parser module as the default.]),
                 [cegui_default_parser=$withval], [cegui_default_parser=none])
 
@@ -105,6 +109,11 @@ load a custom made parser module as the default.]),
     else
         cegui_with_expat=no
     fi
+    if test x$cegui_found_rapidxml = xyes && test x$cegui_with_rapidxml = xyes; then
+        cegui_with_rapidxml=yes
+    else
+        cegui_with_rapidxml=no
+    fi
 
     dnl reset default parser to 'none' if current selection will not be built
     if test x$cegui_default_parser = xXercesParser && test x$cegui_with_xerces = xno; then
@@ -114,6 +123,9 @@ load a custom made parser module as the default.]),
         cegui_default_parser=none
     fi
     if test x$cegui_default_parser = xLibxmlParser && test x$cegui_with_libxml = xno; then
+        cegui_default_parser=none
+    fi
+    if test x$cegui_default_parser = xRapidXMLParser && test x$cegui_with_rapidxml = xno; then
         cegui_default_parser=none
     fi
     if test x$cegui_default_parser = xTinyXMLParser && test x$cegui_with_tinyxml = xno; then
@@ -131,10 +143,14 @@ load a custom made parser module as the default.]),
                 if test x$cegui_with_libxml = xyes; then
                     cegui_default_parser=LibxmlParser
                 else
-                    if test x$cegui_with_tinyxml = xyes; then
-                        cegui_default_parser=TinyXMLParser
+                    if test x$cegui_with_rapidxml = xyes; then
+                        cegui_default_parser=RapidXMLParser
                     else
-                        AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue.  Either enable a parser or set a custom default.])
+                        if test x$cegui_with_tinyxml = xyes; then
+                            cegui_default_parser=TinyXMLParser
+                        else
+                            AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue.  Either enable a parser or set a custom default.])
+                        fi
                     fi
                 fi
             fi
@@ -149,6 +165,7 @@ load a custom made parser module as the default.]),
     AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_with_xerces = xyes])
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_with_libxml = xyes])
     AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_with_expat = xyes])
+    AM_CONDITIONAL([BUILD_RAPIDXML_PARSER], [test x$cegui_with_tinyxml = xyes])
     AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
     AM_CONDITIONAL([BUILD_USING_INTERNAL_TINYXML], [test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno])
 
@@ -167,6 +184,7 @@ load a custom made parser module as the default.]),
     AC_SUBST(expat_LIBS)
     AC_SUBST(tinyxml_CFLAGS)
     AC_SUBST(tinyxml_LIBS)
+    AC_SUBST(rapidxml_CFLAGS)
 ])
 
 AC_DEFUN([CEGUI_CHECK_IMAGE_CODECS], [
@@ -731,6 +749,42 @@ AC_DEFUN([CEGUI_CHECK_EXPAT],[
     else
         ifelse([$3], [], :, [$3])
     fi
+])
+
+# CEGUI_CHECK_RAPIDXML(variable, [action-if-found], [action-if-not-found])
+# checks for RapidXML headers in some common places.
+AC_DEFUN([CEGUI_CHECK_RAPIDXML],[
+    AC_ARG_WITH([rapidxml-incdir], AC_HELP_STRING([--with-rapidxml-incdir=DIR], [Optionally specifies location of the RapidXML header files.]),
+        [cegui_rapidxml_incdir=$withval],[cegui_rapidxml_incdir=[.]])
+    cegui_inc_paths="$cegui_rapidxml_incdir /usr/local/include/rapidxml /usr/include/rapidxml /usr/local/include /usr/include"
+
+    AC_LANG_PUSH([C++])
+
+    $1_CFLAGS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <rapidxml.hpp>],
+            [cegui_rapidxml_h_found=yes; cegui_rapidxml_flags="$cegui_path"; break],
+            [cegui_rapidxml_h_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+
+    if test x$cegui_rapidxml_h_found = xyes; then
+        if test x$cegui_rapidxml_flags != x.; then
+            $1_CFLAGS="-I$cegui_rapidxml_flags"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+
+    AC_LANG_POP([C++])
 ])
 
 AC_DEFUN([CEGUI_CHECK_LUA],[

@@ -131,6 +131,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
                  cegui/include/RendererModules/Direct3D10/Makefile
+                 cegui/include/RendererModules/Direct3D11/Makefile
                  cegui/include/RendererModules/Direct3D9/Makefile
                  cegui/include/RendererModules/DirectFB/Makefile
                  cegui/include/RendererModules/Irrlicht/Makefile
@@ -147,6 +148,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/include/XMLParserModules/ExpatParser/Makefile
                  cegui/include/XMLParserModules/LibxmlParser/Makefile
                  cegui/include/XMLParserModules/Makefile
+                 cegui/include/XMLParserModules/RapidXMLParser/Makefile
                  cegui/include/XMLParserModules/TinyXMLParser/Makefile
                  cegui/include/XMLParserModules/XercesParser/Makefile
                  cegui/src/ImageCodecModules/CoronaImageCodec/Makefile
@@ -157,6 +159,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
                  cegui/src/RendererModules/Direct3D10/Makefile
+                 cegui/src/RendererModules/Direct3D11/Makefile
                  cegui/src/RendererModules/Direct3D9/Makefile
                  cegui/src/RendererModules/DirectFB/Makefile
                  cegui/src/RendererModules/Irrlicht/Makefile
@@ -175,6 +178,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/src/XMLParserModules/ExpatParser/Makefile
                  cegui/src/XMLParserModules/LibxmlParser/Makefile
                  cegui/src/XMLParserModules/Makefile
+                 cegui/src/XMLParserModules/RapidXMLParser/Makefile
                  cegui/src/XMLParserModules/TinyXMLParser/Makefile
                  cegui/src/XMLParserModules/XercesParser/Makefile
                  datafiles/Makefile
@@ -263,15 +267,18 @@ fi
 echo "*         Building ExpatParser:                         ${cegui_with_expat-no}"
 echo "*         Building LibXMLParser:                        ${cegui_with_libxml-no}"
 echo "*         Building XercesParser:                        ${cegui_with_xerces-no}"
+echo "*         Building RapidXMLParser:                      ${cegui_with_rapidxml-no}"
 echo "*"
 echo "*         Default XML Parser is:                        ${cegui_default_parser-none}"
 if test x"$cegui_default_parser" != x"XercesParser" &&
    test x"$cegui_default_parser" != x"ExpatParser" &&
    test x"$cegui_default_parser" != x"LibxmlParser" &&
+   test x"$cegui_default_parser" != x"RapidXMLParser" &&
    test x"$cegui_default_parser" != x"TinyXMLParser"; then
 echo "*"
 echo "*         WARNING!  Default parser is not set to one of the pre-made parsers:"
-echo "*         WARNING!  XercesParser, ExpatParser, LibxmlParser, or TinyXMLParser."
+echo "*         WARNING!  XercesParser, ExpatParser, LibxmlParser, RapidXMLParser"
+echo "*         WARNING!  or TinyXMLParser."
 echo "*         WARNING!"
 echo "*         WARNING!  This is fine if you meant to do this and are using a custom"
 echo "*         WARNING!  parser as the 'hard-coded' default, else you should go back"

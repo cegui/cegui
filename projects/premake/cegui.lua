@@ -80,6 +80,10 @@ if TINYXML_PARSER then
     tinsert(pkg_table.XMLParserModules, "TinyXMLParser")
 end
 
+if RAPIDXML_PARSER then
+    tinsert(pkg_table.XMLParserModules, "RapidXMLParser")
+end
+
 --
 -- Renderer modules
 --
@@ -87,6 +91,10 @@ pkg_table.RendererModules = {}
 
 if OPENGL_RENDERER then
     tinsert(pkg_table.RendererModules, "OpenGL")
+end
+
+if DIRECT3D11_RENDERER then
+    tinsert(pkg_table.RendererModules, "Direct3D11")
 end
 
 if DIRECT3D10_RENDERER then
@@ -157,10 +165,11 @@ createpackages(pkg_table)
 do
     local parsers =
     {
-        expat   = "ExpatParser",
-        xerces  = "XercesParser",
-        libxml  = "LibxmlParser",
-        tinyxml = "TinyXMLParser",
+        expat    = "ExpatParser",
+        xerces   = "XercesParser",
+        libxml   = "LibxmlParser",
+        rapidxml = "RapidXMLParser",
+        tinyxml  = "TinyXMLParser",
     }
 
     local codecs =
