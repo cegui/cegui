@@ -34,6 +34,8 @@ FULLY_CHECKED_DEBUG_ITERATORS = true
 IRRLICHT_PATHS = { "irrlicht-1.7.1", "include", "lib/Win32-visualstudio" }
 OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
 OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
+-- Set this to where your RapidXML package headers are to be found
+RAPIDXML_PATHS = { "rapidxml-1.13", "", "" }
 
 -- Extra SDK / dependency paths.
 --
@@ -115,6 +117,7 @@ MINIZIP_RESOURCE_PROVIDER = true
 OPENGL_RENDERER = true
 DIRECT3D9_RENDERER = true
 DIRECT3D10_RENDERER = false
+DIRECT3D11_RENDERER = false
 IRRLICHT_RENDERER = false
 OGRE_RENDERER = false
 NULL_RENDERER = false
@@ -151,10 +154,11 @@ DEFAULT_WINDOW_RENDERER = "falagard"
 EXPAT_PARSER = true
 XERCES_PARSER = false
 TINYXML_PARSER = false
+RAPIDXML_PARSER = false
 LIBXML_PARSER = false
 
 -- this selects the default XML parser module
--- can be either "expat", "xerces", "tinyxml" or "libxml"
+-- can be either "expat", "xerces", "tinyxml", "rapidxml" or "libxml"
 DEFAULT_XML_PARSER = "expat"
 
 

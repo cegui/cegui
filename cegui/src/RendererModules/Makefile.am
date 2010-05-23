@@ -14,4 +14,4 @@ if BUILD_NULL_RENDERER
 NULLREND=Null
 endif
 SUBDIRS = . $(OPENGL) $(OGRE) $(IRRLICHT) $(DIRECTFB) \
-         $(NULLREND)  Direct3D9 Direct3D10
+         $(NULLREND)  Direct3D9 Direct3D10 Direct3D11
