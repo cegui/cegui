@@ -80,6 +80,10 @@ if TINYXML_PARSER then
     tinsert(pkg_table.XMLParserModules, "TinyXMLParser")
 end
 
+if RAPIDXML_PARSER then
+    tinsert(pkg_table.XMLParserModules, "RapidXMLParser")
+end
+
 --
 -- Renderer modules
 --
@@ -161,10 +165,11 @@ createpackages(pkg_table)
 do
     local parsers =
     {
-        expat   = "ExpatParser",
-        xerces  = "XercesParser",
-        libxml  = "LibxmlParser",
-        tinyxml = "TinyXMLParser",
+        expat    = "ExpatParser",
+        xerces   = "XercesParser",
+        libxml   = "LibxmlParser",
+        rapidxml = "RapidXMLParser",
+        tinyxml  = "TinyXMLParser",
     }
 
     local codecs =
