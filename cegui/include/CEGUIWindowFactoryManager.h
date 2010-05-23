@@ -490,7 +490,7 @@ void WindowFactoryManager::addFactory()
                                             "' windows.");
             // delete the factory object
             delete factory;
-            CEGUI_THROW();
+            CEGUI_RETHROW;
         }
     }
 
