@@ -552,6 +552,9 @@
 		DA19376F115CF175003850DF /* CEGUIMinizipResourceProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA19375C115CEE99003850DF /* CEGUIMinizipResourceProvider.cpp */; };
 		DA193770115CF187003850DF /* CEGUIMinizipResourceProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = DA19375B115CEE53003850DF /* CEGUIMinizipResourceProvider.h */; };
 		DA193782115CF406003850DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA193781115CF406003850DF /* libz.dylib */; };
+		DA29EA7A11AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA29EA7811AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp */; };
+		DA29EA7B11AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA29EA7911AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp */; };
+		DA29EAA411AA8CA3000FAC6A /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DA2F8A651101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */; };
 		DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */; };
 		DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */; };
@@ -820,6 +823,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DA109FDA0F6DB65000B8A582;
 			remoteInfo = CEGUISampleHelper;
+		};
+		DA29EA7C11AA8B3D000FAC6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
 		};
 		DAAAB8050F6E4AC40003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2283,6 +2293,12 @@
 		DA193760115CEEF6003850DF /* unzip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unzip.cpp; path = ../../cegui/src/minizip/unzip.cpp; sourceTree = SOURCE_ROOT; };
 		DA193761115CEEF6003850DF /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = ../../cegui/src/minizip/unzip.h; sourceTree = SOURCE_ROOT; };
 		DA193781115CF406003850DF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		DA29EA6911AA8899000FAC6A /* CEGUIRapidXMLParser.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIRapidXMLParser.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA29EA6A11AA8899000FAC6A /* CEGUIRapidXMLParser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIRapidXMLParser-Info.plist"; sourceTree = "<group>"; };
+		DA29EA7611AA8ACB000FAC6A /* CEGUIRapidXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRapidXMLParser.h; path = ../../cegui/include/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParser.h; sourceTree = SOURCE_ROOT; };
+		DA29EA7711AA8ACB000FAC6A /* CEGUIRapidXMLParserModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRapidXMLParserModule.h; path = ../../cegui/include/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParserModule.h; sourceTree = SOURCE_ROOT; };
+		DA29EA7811AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRapidXMLParser.cpp; path = ../../cegui/src/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParser.cpp; sourceTree = SOURCE_ROOT; };
+		DA29EA7911AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRapidXMLParserModule.cpp; path = ../../cegui/src/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParserModule.cpp; sourceTree = SOURCE_ROOT; };
 		DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGeometryBuffer.cpp; path = ../../cegui/src/CEGUIGeometryBuffer.cpp; sourceTree = SOURCE_ROOT; };
 		DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectFactory.h; path = ../../cegui/include/CEGUIRenderEffectFactory.h; sourceTree = SOURCE_ROOT; };
 		DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectManager.h; path = ../../cegui/include/CEGUIRenderEffectManager.h; sourceTree = SOURCE_ROOT; };
@@ -2528,6 +2544,14 @@
 			files = (
 				DA10A0220F6DB84700B8A582 /* CEGUIBase.framework in Frameworks */,
 				DA10A0230F6DB84700B8A582 /* CEGUISampleHelper.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA29EA6711AA8899000FAC6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA29EAA411AA8CA3000FAC6A /* CEGUIBase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2790,6 +2814,7 @@
 			children = (
 				DA10936A0F6D53F400B8A582 /* ExpatParser */,
 				DA10936B0F6D53FD00B8A582 /* LibxmlParser */,
+				DA29EA7511AA8A8B000FAC6A /* RapidXMLParser */,
 				DA10936C0F6D540A00B8A582 /* TinyXMLParser */,
 				DA10936D0F6D541500B8A582 /* XercesParser */,
 			);
@@ -4359,6 +4384,7 @@
 				DAAAB90B0F6E4F120003BE03 /* TextDemo.app */,
 				DAAAB92C0F6E4FBD0003BE03 /* TreeDemo.app */,
 				DAAABAC60F6E56BF0003BE03 /* Demo8.app */,
+				DA29EA6911AA8899000FAC6A /* CEGUIRapidXMLParser.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4428,6 +4454,18 @@
 				DA193761115CEEF6003850DF /* unzip.h */,
 			);
 			name = minizip;
+			sourceTree = "<group>";
+		};
+		DA29EA7511AA8A8B000FAC6A /* RapidXMLParser */ = {
+			isa = PBXGroup;
+			children = (
+				DA29EA6A11AA8899000FAC6A /* CEGUIRapidXMLParser-Info.plist */,
+				DA29EA7611AA8ACB000FAC6A /* CEGUIRapidXMLParser.h */,
+				DA29EA7711AA8ACB000FAC6A /* CEGUIRapidXMLParserModule.h */,
+				DA29EA7811AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp */,
+				DA29EA7911AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp */,
+			);
+			name = RapidXMLParser;
 			sourceTree = "<group>";
 		};
 		DAE8ABA1112071A90091DDF3 /* NullRenderer */ = {
@@ -5039,6 +5077,24 @@
 			productReference = DA10A0180F6DB83200B8A582 /* FirstWindow.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DA29EA6811AA8899000FAC6A /* CEGUIRapidXMLParser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA29EA6D11AA889B000FAC6A /* Build configuration list for PBXNativeTarget "CEGUIRapidXMLParser" */;
+			buildPhases = (
+				DA29EA6511AA8899000FAC6A /* Resources */,
+				DA29EA6611AA8899000FAC6A /* Sources */,
+				DA29EA6711AA8899000FAC6A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA29EA7D11AA8B3D000FAC6A /* PBXTargetDependency */,
+			);
+			name = CEGUIRapidXMLParser;
+			productName = CEGUIRapidXMLParser;
+			productReference = DA29EA6911AA8899000FAC6A /* CEGUIRapidXMLParser.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		DAAAB7FC0F6E4A970003BE03 /* Demo7 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAAAB8020F6E4A980003BE03 /* Build configuration list for PBXNativeTarget "Demo7" */;
@@ -5383,6 +5439,7 @@
 				DAAAB9880F6E50D60003BE03 /* ceguitolua++ */,
 				DA1099FB0F6D90BC00B8A582 /* CEGUIFalagardWRBase */,
 				DA109AA20F6D99BB00B8A582 /* CEGUIExpatParser */,
+				DA29EA6811AA8899000FAC6A /* CEGUIRapidXMLParser */,
 				DA109B350F6DA46800B8A582 /* CEGUITinyXMLParser */,
 				DA109B4C0F6DA5AF00B8A582 /* CEGUIXercesParser */,
 				DA109E820F6DA9C900B8A582 /* CEGUILibxmlParser */,
@@ -5416,6 +5473,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DA109E7F0F6DA9C900B8A582 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA29EA6511AA8899000FAC6A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6105,6 +6169,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA29EA6611AA8899000FAC6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA29EA7A11AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp in Sources */,
+				DA29EA7B11AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAAAB7FA0F6E4A970003BE03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6332,6 +6405,11 @@
 			isa = PBXTargetDependency;
 			target = DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */;
 			targetProxy = DA10A0200F6DB83A00B8A582 /* PBXContainerItemProxy */;
+		};
+		DA29EA7D11AA8B3D000FAC6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			targetProxy = DA29EA7C11AA8B3D000FAC6A /* PBXContainerItemProxy */;
 		};
 		DAAAB8060F6E4AC40003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6710,6 +6788,7 @@
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
 				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
+				CEGUI_RAPIDXML_PATH = "../../../../../SDKs/rapidxml-1.13";
 				CEGUI_VERSION = 0.7.1;
 				COPY_PHASE_STRIP = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6734,6 +6813,7 @@
 				CEGUI_OGRE_LINK_FLAGS = "-framework Ogre";
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
 				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
+				CEGUI_RAPIDXML_PATH = "../../../../../SDKs/rapidxml-1.13";
 				CEGUI_VERSION = 0.7.1;
 				COPY_PHASE_STRIP = YES;
 				GCC_VERSION = 4.0;
@@ -7586,6 +7666,60 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = FirstWindow;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		DA29EA6B11AA889B000FAC6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(CEGUI_RAPIDXML_PATH)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CEGUIRapidXMLParser-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUIRapidXMLParser;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		DA29EA6C11AA889B000FAC6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(CEGUI_RAPIDXML_PATH)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CEGUIRapidXMLParser-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUIRapidXMLParser;
+				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -8664,6 +8798,15 @@
 			buildConfigurations = (
 				DA10A01B0F6DB83300B8A582 /* Debug */,
 				DA10A01C0F6DB83300B8A582 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA29EA6D11AA889B000FAC6A /* Build configuration list for PBXNativeTarget "CEGUIRapidXMLParser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA29EA6B11AA889B000FAC6A /* Debug */,
+				DA29EA6C11AA889B000FAC6A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
