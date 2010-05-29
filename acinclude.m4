@@ -165,7 +165,7 @@ load a custom made parser module as the default.]),
     AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_with_xerces = xyes])
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_with_libxml = xyes])
     AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_with_expat = xyes])
-    AM_CONDITIONAL([BUILD_RAPIDXML_PARSER], [test x$cegui_with_tinyxml = xyes])
+    AM_CONDITIONAL([BUILD_RAPIDXML_PARSER], [test x$cegui_with_rapidxml = xyes])
     AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
     AM_CONDITIONAL([BUILD_USING_INTERNAL_TINYXML], [test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno])
 
