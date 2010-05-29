@@ -18,6 +18,7 @@ EXTRA_DIST = premake/README \
              premake/ImageCodecModules/SILLYImageCodec/premake.lua \
              premake/ImageCodecModules/TGAImageCodec/premake.lua \
              premake/RendererModules/Direct3D10/premake.lua \
+             premake/RendererModules/Direct3D11/premake.lua \
              premake/RendererModules/Direct3D9/premake.lua \
              premake/RendererModules/Irrlicht/premake.lua \
              premake/RendererModules/Null/premake.lua \
@@ -56,6 +57,7 @@ EXTRA_DIST = premake/README \
              Xcode/CEGUILuaScriptModule-Info.plist \
              Xcode/CEGUIOgreRenderer-Info.plist \
              Xcode/CEGUIOpenGLRenderer-Info.plist \
+             Xcode/CEGUIRapidXMLParser-Info.plist \
              Xcode/CEGUISampleHelper-Info.plist \
              Xcode/CEGUISILLYImageCodec-Info.plist \
              Xcode/CEGUITGAImageCodec-Info.plist \
