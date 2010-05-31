@@ -144,8 +144,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutCreateWindow("Crazy Eddie's GUI Mk-2 - Sample Application");
     glutSetCursor(GLUT_CURSOR_NONE);
 
-    d_renderer = &CEGUI::OpenGLRenderer::create();
-    CEGUI::System::create(*d_renderer);
+    d_renderer = &CEGUI::OpenGLRenderer::bootstrapSystem();
 
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
     glutReshapeFunc(&CEGuiOpenGLBaseApplication::reshape);
@@ -196,8 +195,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 *************************************************************************/
 CEGuiOpenGLBaseApplication::~CEGuiOpenGLBaseApplication()
 {
-    CEGUI::System::destroy();
-    CEGUI::OpenGLRenderer::destroy(*d_renderer);
+    CEGUI::OpenGLRenderer::destroySystem();
 }
 
 bool CEGuiOpenGLBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
@@ -297,11 +295,7 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     // way of checking when to exit.  And this is it...
     if (d_quitFlag)
     {
-        // cleanup cegui system
-        CEGUI::OpenGLRenderer* renderer =
-            static_cast<CEGUI::OpenGLRenderer*>(guiSystem.getRenderer());
-        CEGUI::System::destroy();
-        CEGUI::OpenGLRenderer::destroy(*renderer);
+        CEGUI::OpenGLRenderer::destroySystem();
 
         // exit
         exit(0);
