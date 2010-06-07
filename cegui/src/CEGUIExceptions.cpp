@@ -45,12 +45,13 @@ Exception::Exception(const String& message, const String& name,
     d_what(name + " in file " + filename  +
            "(" + PropertyHelper::intToString(line) + ") : " + message)
 {
-    // Log exception or send it to error stream (if logger not available)
+    // Log exception if possible
     Logger* const logger = Logger::getSingletonPtr();
     if (logger)
         logger->logEvent(d_what, Errors);
-    else
-        std::cerr << what() << std::endl;
+
+    // always output to stderr, since nobody seems to look in their log file!
+    std::cerr << what() << std::endl;
 }
 
 //----------------------------------------------------------------------------//
