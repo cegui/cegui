@@ -190,7 +190,7 @@ Size RenderedStringTextComponent::getPixelSize() const
 //----------------------------------------------------------------------------//
 bool RenderedStringTextComponent::canSplit() const
 {
-    return true;
+    return d_text.length() > 1;
 }
 
 //----------------------------------------------------------------------------//
