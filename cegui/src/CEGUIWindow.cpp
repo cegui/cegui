@@ -2801,6 +2801,8 @@ void Window::onChildRemoved(WindowEventArgs& e)
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
     System::getSingleton().signalRedraw();
+    // Though we do need to invalidate the rendering surface!
+    getTargetRenderingSurface().invalidate();
     fireEvent(EventChildRemoved, e, EventNamespace);
 }
 
