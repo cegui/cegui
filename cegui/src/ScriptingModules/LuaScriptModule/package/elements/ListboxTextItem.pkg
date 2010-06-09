@@ -18,4 +18,7 @@ class ListboxTextItem : public ListboxItem
 	void setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
 	void setTextColours(const ColourRect& cols);
 	void setTextColours(colour col);
+
+    void setTextParsingEnabled(const bool enable);
+    bool isTextParsingEnabled() const;
 };
