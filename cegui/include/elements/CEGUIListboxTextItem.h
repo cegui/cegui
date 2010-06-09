@@ -31,6 +31,7 @@
 #define _CEGUIListboxTextItem_h_
 #include "CEGUIListboxItem.h"
 #include "../CEGUIBasicRenderedStringParser.h"
+#include "../CEGUIDefaultRenderedStringParser.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -167,6 +168,20 @@ public:
 	*/
 	void	setTextColours(colour col)		{setTextColours(col, col, col, col);}
 
+    /*!
+    \brief
+        Set whether the the ListboxTextItem will have it's text parsed via the
+        BasicRenderedStringParser or not.
+
+    \param enable
+        - true if the ListboxTextItem text will be parsed.
+        - false if the ListboxTextItem text will be used verbatim.
+    */
+    void setTextParsingEnabled(const bool enable);
+
+    //! return whether text parsing is enabled for this ListboxTextItem.
+    bool isTextParsingEnabled() const;
+
     // base class overrides
     void setText(const String& text);
 
@@ -191,6 +206,10 @@ protected:
     mutable RenderedString  d_renderedString;
     //! boolean used to track when item state changes (and needs re-parse)
     mutable bool d_renderedStringValid;
+    //! Parser used when parsing is off.  Basically just does linebreaks.
+    static DefaultRenderedStringParser d_noTagsStringParser;
+    //! boolean that specifies whether text parsing is enabled for the item.
+    bool d_textParsingEnabled;
 };
 
 } // End of  CEGUI namespace section
