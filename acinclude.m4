@@ -207,6 +207,9 @@ to load a custom made image codec module as the default.]),
 
     dnl DevIL
     if test x$cegui_with_devil = xyes; then
+        cegui_saved_LIBS="$LIBS"
+        cegui_saved_CFLAGS="$CFLAGS"
+
         AC_CHECK_LIB(IL, ilLoadL, [cegui_with_il_lib=yes], [cegui_with_il_lib=no], [])
         AC_CHECK_LIB(ILU, iluFlipImage, [cegui_with_ilu_lib=yes],[cegui_with_ilu_lib=no], [-lIL])
         if test x$cegui_with_il_lib = xyes -a x$cegui_with_ilu_lib = xyes ; then
@@ -220,6 +223,9 @@ to load a custom made image codec module as the default.]),
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
             cegui_with_devil=no
         fi
+
+        LIBS="$cegui_saved_LIBS"
+        CFLAGS="$cegui_saved_CFLAGS"
     else
         AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
         cegui_with_devil=no
@@ -227,6 +233,9 @@ to load a custom made image codec module as the default.]),
 
     dnl FreeImage
     if test x$cegui_with_freeimage = xyes ; then
+        cegui_saved_LIBS="$LIBS"
+        cegui_saved_CFLAGS="$CFLAGS"
+
         AC_LANG_PUSH(C++)
         AC_SEARCH_LIBS(FreeImage_GetVersion, freeimage, [cegui_with_freeimage_lib=yes], [cegui_with_freeimage_lib=no])
         AC_LANG_POP(C++)
@@ -241,7 +250,10 @@ to load a custom made image codec module as the default.]),
             else
             AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
             cegui_with_freeimage=no
-            fi
+        fi
+
+        LIBS="$cegui_saved_LIBS"
+        CFLAGS="$cegui_saved_CFLAGS"
     else
         AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
     fi
