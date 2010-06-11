@@ -602,7 +602,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         AC_SEARCH_LIBS(gluOrtho2D, MesaGLU GLU, cegui_found_lib_GLU=yes,  cegui_found_lib_GLU=no)
         AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
         OpenGL_CFLAGS="$X_CFLAGS"
-        OpenGL_LIBS=$LIBS
+        OpenGL_LIBS="$LIBS"
         ;;
     esac
 
@@ -611,7 +611,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         [cegui_use_external_glew=$enableval], [cegui_use_external_glew=yes])
     if test x$cegui_use_external_glew = xyes; then
         CEGUI_CHECK_GLEW([GLEW],
-            [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="OpenGL_LIBS $GLEW_LIBS"],
+            [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="$OpenGL_LIBS $GLEW_LIBS"],
             [cegui_found_glew=no])
     else
         cegui_found_glew=no
@@ -970,8 +970,8 @@ AC_DEFUN([CEGUI_CHECK_GLEW],[
     $1_CFLAGS=
     $1_LIBS=
 
-    cegui_saved_CFLAGS="$CPPFLAGS"
-    cegui_saved_LIBS="$LIBS"
+    cegui_glew_saved_CFLAGS="$CPPFLAGS"
+    cegui_glew_saved_LIBS="$LIBS"
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
@@ -988,8 +988,8 @@ AC_DEFUN([CEGUI_CHECK_GLEW],[
             [cegui_glew_l_found=no])
     done
 
-    CPPFLAGS="$cegui_saved_CFLAGS"
-    LIBS="$cegui_saved_LIBS"
+    CPPFLAGS="$cegui_glew_saved_CFLAGS"
+    LIBS="$cegui_glew_saved_LIBS"
 
     if test x$cegui_glew_h_found = xyes && test x$cegui_glew_l_found = xyes; then
         if test x$cegui_glew_flags != x.; then
