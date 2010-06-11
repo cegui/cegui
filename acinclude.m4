@@ -68,9 +68,6 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
         cegui_found_tinyxml=no
     fi
 
-    dnl save lots of linker aggro ;)
-    LIBS="$xerces_LIBS $LIBS"
-
     dnl Find out what user disabled as far as parsers go
     AC_ARG_ENABLE([xerces-c], AC_HELP_STRING([--disable-xerces-c], [Disables building of the Xerces-C++ XML parser module.]),
                 [cegui_with_xerces=$enableval], [cegui_with_xerces=yes])
