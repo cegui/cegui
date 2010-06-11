@@ -25,6 +25,11 @@ AC_PROG_CC
 AC_CHECK_PROG([DOXYGEN], [doxygen], [doxygen], [])
 AC_CHECK_PROG([DOXYGENDOT], [dot], [dot], [])
 
+PKG_PROG_PKG_CONFIG
+if test -z "$PKG_CONFIG"; then
+    AC_MSG_ERROR([pkg-config was not found.  Please ensure pkg-config is installed and / or set the PKG_CONFIG variable])
+fi
+
 # Disable building static library
 AC_DISABLE_STATIC
 
