@@ -354,6 +354,13 @@ public:
     */
     static void setInitialMousePosition(const Point& position);
 
+    /*!
+    \brief
+        Mark the cached geometry as invalid so it will be recached next time the
+        mouse cursor is drawn.
+    */
+    void invalidate();
+
 protected:
 	/*************************************************************************
 		New event handlers
@@ -376,10 +383,10 @@ private:
 	void	constrainPosition(void);
 
     //! updates the cached geometry.
-    void cacheGeometry();
+    void cacheGeometry() const;
 
     //! calculate offset for custom image size so 'hot spot' is maintained.
-    void calculateCustomOffset();
+    void calculateCustomOffset() const;
 
 	/*************************************************************************
 		Implementation Data
@@ -393,11 +400,13 @@ private:
     //! custom explicit size to render the cursor image at
     Size d_customSize;
     //! correctly scaled offset used when using custom image size.
-    Point d_customOffset;
+    mutable Point d_customOffset;
     //! true if the mouse initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
     static Point s_initialPosition;
+    //! boolean indicating whether cached pointer geometry is valid.
+    mutable bool d_cachedGeometryValid;
 };
 
 } // End of  CEGUI namespace section
