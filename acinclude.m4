@@ -860,7 +860,7 @@ AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
     cegui_saved_LIBS="$LIBS"
 
     for cegui_path in $cegui_inc_paths; do
-        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS $Lua_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS $Lua_CFLAGS")
         AC_PREPROC_IFELSE(
             [#include <tolua++.h>],
             [cegui_tolua_h_found=yes; cegui_tolua_flags="$cegui_path"; break],
@@ -868,10 +868,16 @@ AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
     done
 
     for cegui_path in $cegui_lib_paths; do
-        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
-        AC_CHECK_LIB([tolua++], [tolua_endmodule],
-            [cegui_tolua_l_found=yes; cegui_tolua_libs="$cegui_path"; break],
-            [cegui_tolua_l_found=no])
+        for cegui_lib in tolua++ tolua++5.1 tolua++-5.1; do
+            ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+            AC_CHECK_LIB([$cegui_lib], [tolua_endmodule],
+                [cegui_tolua_l_found=yes; cegui_tolua_libs="$cegui_path"; cegui_tolua_libname="$cegui_lib"; break],
+                [cegui_tolua_l_found=no],
+                [$Lua_LIBS])
+        done
+        if test x"$cegui_tolua_l_found" = "xyes"; then
+            break
+        fi
     done
 
     CPPFLAGS="$cegui_saved_CFLAGS"
@@ -882,9 +888,9 @@ AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
             $1_CFLAGS="-I$cegui_tolua_flags"
         fi
         if test x$cegui_tolua_libs = x.; then
-            $1_LIBS="-ltolua++"
+            $1_LIBS="-l$cegui_tolua_libname"
         else
-            $1_LIBS="-L$cegui_tolua_libs -ltolua++"
+            $1_LIBS="-L$cegui_tolua_libs -l$cegui_tolua_libname"
         fi
 
         ifelse([$2], [], :, [$2])

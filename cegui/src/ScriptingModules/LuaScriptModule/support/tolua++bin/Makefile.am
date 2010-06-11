@@ -29,10 +29,12 @@ EXTRA_DIST = MANUAL README remake_pkg.bat remake_pkg.sh tolua_scons.pkg \
              lua/variable.lua \
              lua/verbatim.lua
 
+tolua__cegui@cegui_bsfx@_LDADD = $(Lua_LIBS)
+
 if CEGUI_BUILD_TOLUAPPLIB
 INCLUDES += -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
-tolua__cegui@cegui_bsfx@_LDADD = $(top_builddir)/cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/libCEGUItoluapp@cegui_bsfx@.la
+tolua__cegui@cegui_bsfx@_LDADD += $(top_builddir)/cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/libCEGUItoluapp@cegui_bsfx@.la
 else
 INCLUDES += $(toluapp_CFLAGS)
-tolua__cegui@cegui_bsfx@_LDADD = $(toluapp_LIBS)
+tolua__cegui@cegui_bsfx@_LDADD += $(toluapp_LIBS)
 endif
