@@ -1332,24 +1332,9 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 	{
 		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
+    }
 
-        // regardless of what is done above, invalidate all windows and their
-        // associated RenderingWindows.  This is required since cached geometry
-        // could reference textures that no longer exist.
-        WindowManager::WindowIterator wi(
-            WindowManager::getSingleton().getIterator());
-
-        for ( ; !wi.isAtEnd(); ++wi)
-        {
-            Window* const wnd(wi.getCurrentValue());
-            // invalidate window itself
-            wnd->invalidate();
-            // if window has rendering window surface, invalidate it's geometry
-            RenderingSurface* rs;
-            if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
-                static_cast<RenderingWindow*>(rs)->invalidateGeometry();
-        }
-	}
+    invalidateAllWindows();
 
     // Fire event
     DisplayEventArgs args(new_size);
@@ -1936,6 +1921,31 @@ bool System::injectMouseButtonTripleClick(const MouseButton button)
     }
 
     return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+void System::invalidateAllCachedRendering()
+{
+    invalidateAllWindows();
+    MouseCursor::getSingleton().invalidate();
+}
+
+//----------------------------------------------------------------------------//
+void System::invalidateAllWindows()
+{
+    WindowManager::WindowIterator wi(
+        WindowManager::getSingleton().getIterator());
+
+    for ( ; !wi.isAtEnd(); ++wi)
+    {
+        Window* const wnd(wi.getCurrentValue());
+        // invalidate window itself
+        wnd->invalidate();
+        // if window has rendering window surface, invalidate it's geometry
+        RenderingSurface* rs;
+        if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
+            static_cast<RenderingWindow*>(rs)->invalidateGeometry();
+    }
 }
 
 //----------------------------------------------------------------------------//

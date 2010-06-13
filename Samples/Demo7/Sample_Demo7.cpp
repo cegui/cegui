@@ -373,8 +373,6 @@ void Demo7Sample::createListContent(void)
     mclbox->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
     mclbox->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
     mclbox->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
-
-    mclbox->setProperty("Font", "fkp-16");
 }
 
 
