@@ -4973,26 +4973,31 @@ private:
 		{
 			tcp = *buf++;
 			++count;
+			size_type size = 0;
 
 			if (tcp < 0x80)
 			{
 			}
 			else if (tcp < 0xE0)
 			{
-				--len;
+				size = 1;
 				++buf;
 			}
 			else if (tcp < 0xF0)
 			{
-				len -= 2;
+				size = 2;
 				buf += 2;
 			}
 			else
 			{
-				len -= 2;
+				size = 3;
 				buf += 3;
 			}
 
+			if (len >= size)
+				len -= size;
+			else 
+				break;
 		}
 
 		return count;

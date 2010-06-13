@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Wed Jun  2 13:05:10 2010.
+** Generated automatically by tolua++-1.0.92 on Wed Jun  9 12:10:45 2010.
 */
 
 #ifndef __cplusplus
@@ -36377,6 +36377,71 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setTextParsingEnabled of class  CEGUI::ListboxTextItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ListboxTextItem_setTextParsingEnabled00
+static int tolua_CEGUI_CEGUI_ListboxTextItem_setTextParsingEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ListboxTextItem",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ListboxTextItem* self = (CEGUI::ListboxTextItem*)  tolua_tousertype(tolua_S,1,0);
+  const bool enable = ((const bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTextParsingEnabled'",NULL);
+#endif
+ {
+  self->setTextParsingEnabled(enable);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setTextParsingEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isTextParsingEnabled of class  CEGUI::ListboxTextItem */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ListboxTextItem_isTextParsingEnabled00
+static int tolua_CEGUI_CEGUI_ListboxTextItem_isTextParsingEnabled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ListboxTextItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ListboxTextItem* self = (const CEGUI::ListboxTextItem*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isTextParsingEnabled'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isTextParsingEnabled();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isTextParsingEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getSingleClickEnabled of class  CEGUI::Combobox */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_getSingleClickEnabled00
 static int tolua_CEGUI_CEGUI_Combobox_getSingleClickEnabled00(lua_State* tolua_S)
@@ -54833,6 +54898,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_ListboxTextItem_setTextColours00);
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_ListboxTextItem_setTextColours01);
    tolua_function(tolua_S,"setTextColours",tolua_CEGUI_CEGUI_ListboxTextItem_setTextColours02);
+   tolua_function(tolua_S,"setTextParsingEnabled",tolua_CEGUI_CEGUI_ListboxTextItem_setTextParsingEnabled00);
+   tolua_function(tolua_S,"isTextParsingEnabled",tolua_CEGUI_CEGUI_ListboxTextItem_isTextParsingEnabled00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Combobox","CEGUI::Combobox","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"Combobox");

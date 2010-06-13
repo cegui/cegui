@@ -848,6 +848,18 @@ public:
     */
     void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
 
+    /*!
+    \brief
+        Invalidate all imagery and geometry caches for CEGUI managed elements.
+
+        This function will invalidate the caches used for both imagery and
+        geometry for all content that is managed by the core CEGUI manager
+        objects, causing a full and total redraw of that content.  This
+        includes Window object's cached geometry, rendering surfaces and
+        rendering windows and the mouse pointer geometry.
+    */
+    void invalidateAllCachedRendering();
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -1216,6 +1228,9 @@ private:
 
     //! Set the CEGUI version string that gets output to the log.
     void initialiseVersionString();
+
+    //! invalidate all windows and any rendering surfaces they may be using.
+    void invalidateAllWindows();
 
 	/*************************************************************************
 		Handlers for System events
