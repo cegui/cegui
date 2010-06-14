@@ -168,8 +168,9 @@ void OgreTexture::saveToMemory(void* buffer)
         CEGUI_THROW(RendererException("OgreTexture::saveToMemory: unable to "
             "obtain hardware pixel buffer pointer."));
 
-    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
-    src->readData(0, sz, buffer);
+    Ogre::PixelBox pb(Ogre::Box(0, 0, d_size.d_width, d_size.d_height),
+                      Ogre::PF_A8R8G8B8, buffer);
+    src->blitToMemory(pb);
 }
 
 //----------------------------------------------------------------------------//
