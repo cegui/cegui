@@ -78,10 +78,7 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
             if (Win32AppHelper::initialiseDirectInput(pimpl->d_window, pimpl->d_directInput))
             {
                 pimpl->d_renderer =
-                        &CEGUI::Direct3D9Renderer::create(pimpl->d_3DDevice);
-
-                // initialise the gui system
-                CEGUI::System::create(*pimpl->d_renderer);
+                    &CEGUI::Direct3D9Renderer::bootstrapSystem(pimpl->d_3DDevice);
 
                 initialiseResourceGroupDirectories();
                 initialiseDefaultResourceGroups();
@@ -138,8 +135,7 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
     Win32AppHelper::mouseLeaves();
 
     // cleanup gui system
-    CEGUI::System::destroy();
-    CEGUI::Direct3D9Renderer::destroy(*pimpl->d_renderer);
+    CEGUI::Direct3D9Renderer::destroySystem();
 
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
