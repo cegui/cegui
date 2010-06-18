@@ -35,6 +35,7 @@
 #include "CEGUIDirect3D9ViewportTarget.h"
 #include "CEGUIDirect3D9TextureTarget.h"
 #include "CEGUISystem.h"
+#include "CEGUIDefaultResourceProvider.h"
 
 #include <algorithm>
 
@@ -54,6 +55,39 @@ static const D3DMATRIX s_identityMatrix =
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 };
+
+//----------------------------------------------------------------------------//
+Direct3D9Renderer& Direct3D9Renderer::bootstrapSystem(LPDIRECT3DDEVICE9 device)
+{
+    if (System::getSingletonPtr())
+        CEGUI_THROW(InvalidRequestException(
+            "Direct3D9Renderer::bootstrapSystem: CEGUI::System object is "
+            "already initialised."));
+
+    Direct3D9Renderer& renderer(create(device));
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
+    System::create(renderer, rp);
+
+    return renderer;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::destroySystem()
+{
+    System* sys;
+    if (!(sys = System::getSingletonPtr()))
+        CEGUI_THROW(InvalidRequestException("Direct3D9Renderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed."));
+
+    Direct3D9Renderer* renderer =
+        static_cast<Direct3D9Renderer*>(sys->getRenderer());
+    DefaultResourceProvider* rp =
+        static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
+
+    System::destroy();
+    delete rp;
+    destroy(*renderer);
+}
 
 //----------------------------------------------------------------------------//
 Direct3D9Renderer& Direct3D9Renderer::create(LPDIRECT3DDEVICE9 device)
