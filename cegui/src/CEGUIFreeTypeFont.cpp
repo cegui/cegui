@@ -87,7 +87,7 @@ FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
     updateFont();
 
     char tmp[50];
-    snprintf(tmp, sizeof(tmp), "Succsessfully loaded %d glyphs",
+    snprintf(tmp, sizeof(tmp), "Successfully loaded %d glyphs",
              static_cast<int>(d_cp_map.size()));
     Logger::getSingleton().logEvent(tmp, Informative);
 }

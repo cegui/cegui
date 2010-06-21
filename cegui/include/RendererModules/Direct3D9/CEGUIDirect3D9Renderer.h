@@ -66,6 +66,42 @@ class DIRECT3D9_GUIRENDERER_API Direct3D9Renderer : public Renderer
 public:
     /*!
     \brief
+        Convenience function that creates the required objects to initialise the
+        CEGUI system.
+
+        This will create and initialise the following objects for you:
+        - CEGUI::Direct3D9Renderer
+        - CEGUI::DefaultResourceProvider
+        - CEGUI::System
+
+    \param device
+        LPDIRECT3DDEVICE9 of the device that is to be used for CEGUI
+        rendering operations.
+
+    \return
+        Reference to the CEGUI::Direct3D9Renderer object that was created.
+    */
+    static Direct3D9Renderer& bootstrapSystem(LPDIRECT3DDEVICE9 device);
+
+    /*!
+    \brief
+        Convenience function to cleanup the CEGUI system and related objects
+        that were created by calling the bootstrapSystem function.
+
+        This function will destroy the following objects for you:
+        - CEGUI::System
+        - CEGUI::DefaultResourceProvider
+        - CEGUI::Direct3D9Renderer
+
+    \note
+        If you did not initialise CEGUI by calling the bootstrapSystem function,
+        you should \e not call this, but rather delete any objects you created
+        manually.
+    */
+    static void destroySystem();
+
+    /*!
+    \brief
         Create an Direct3D9Renderer object.
     */
     static Direct3D9Renderer& create(LPDIRECT3DDEVICE9 device);
