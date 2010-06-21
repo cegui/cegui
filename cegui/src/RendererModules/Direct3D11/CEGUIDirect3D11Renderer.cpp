@@ -32,7 +32,8 @@
 #include "CEGUIDirect3D11Texture.h"
 #include "CEGUIRenderingRoot.h"
 #include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
+#include "CEGUISystem.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <algorithm>
 
 #include "d3dx11effect.h"
@@ -48,6 +49,42 @@ namespace CEGUI
 String Direct3D11Renderer::d_rendererID(
 "CEGUI::Direct3D11Renderer - Official Direct3D 11 based 2nd generation renderer"
 " module.");
+
+//----------------------------------------------------------------------------//
+Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(
+                                                   ID3D11Device* device,
+                                                   ID3D11DeviceContext* context)
+{
+    if (System::getSingletonPtr())
+        CEGUI_THROW(InvalidRequestException(
+            "Direct3D11Renderer::bootstrapSystem: CEGUI::System object is "
+            "already initialised."));
+
+    Direct3D11Renderer& renderer(create(device, context));
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
+    System::create(renderer, rp);
+
+    return renderer;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::destroySystem()
+{
+    System* sys;
+    if (!(sys = System::getSingletonPtr()))
+        CEGUI_THROW(InvalidRequestException(
+            "Direct3D11Renderer::destroySystem: CEGUI::System object is not "
+            "created or was already destroyed."));
+
+    Direct3D11Renderer* renderer =
+        static_cast<Direct3D11Renderer*>(sys->getRenderer());
+    DefaultResourceProvider* rp =
+        static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
+
+    System::destroy();
+    delete rp;
+    destroy(*renderer);
+}
 
 //----------------------------------------------------------------------------//
 Direct3D11Renderer& Direct3D11Renderer::create(ID3D11Device* device,ID3D11DeviceContext *context)

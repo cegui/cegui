@@ -47,11 +47,16 @@ RAPIDXML_PATHS = { "rapidxml-1.13", "", "" }
 -- the name of the CEGUI project to add the paths to (if no project is given, the
 -- paths are added to /all/ projects).
 --
--- NB: Each entry should be surrounded by curly braces, and be separated with a
--- comma.
+-- NB: Each entry should be surrounded by curly braces, with each entry
+-- separated with a comma and appearing within the existing braces.
 --
--- e.g to add some boost paths to build for the Ogre renderer module, you could add:
---	{ "C:/boost", "include", "lib", "CEGUIOgreRenderer" }
+-- For example, to add the OgreSDK boost paths to build for the Ogre renderer
+-- module and sample helper with Ogre support, you might have:
+--
+-- CEGUI_EXTRA_PATHS = {
+--     { "../OgreSDK/boost_1_42", "", "lib", "CEGUIOgreRenderer" },
+--     { "../OgreSDK/boost_1_42", "", "lib", "CEGUISampleHelper" }
+-- }
 --
 CEGUI_EXTRA_PATHS = {
 }
