@@ -20,8 +20,6 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUIItemListBaseProperties.h \
                      CEGUIItemListbox.h \
                      CEGUIItemListboxProperties.h \
-                     CEGUIListHeader.h \
-                     CEGUIListHeaderProperties.h \
                      CEGUIListbox.h \
                      CEGUIListboxItem.h \
                      CEGUIListboxProperties.h \
