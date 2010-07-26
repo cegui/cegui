@@ -47,6 +47,17 @@ namespace CEGUI
     {
     }
 
+    PropertyDefinition::PropertyDefinition(const String& name,
+                                           const String& initialValue,
+                                           const String& help,
+                                           bool redrawOnWrite,
+                                           bool layoutOnWrite)
+        : PropertyDefinitionBase(name, help, initialValue, redrawOnWrite,
+                                 layoutOnWrite),
+          d_userStringName(name + "_fal_auto_prop__")
+    {
+    }
+
     // abstract members from Property
     String PropertyDefinition::get(const PropertyReceiver* receiver) const
     {
