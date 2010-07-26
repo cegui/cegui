@@ -168,6 +168,8 @@ namespace CEGUI
         static const String PropertyAttribute;          //!< Attribute name that stores the name of a property.
         static const String ControlValueAttribute;      //!< Attribute name that stores a test value to control rendering of a section.
         static const String ControlWidgetAttribute;   //!< Attribute name that stores a widget identifier used to control rendering of a section.
+        //! Attribute name that stores a help string.
+        static const String HelpStringAttribute;
 
         /*************************************************************************
             helper methods

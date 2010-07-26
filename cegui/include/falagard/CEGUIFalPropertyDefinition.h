@@ -40,7 +40,17 @@ namespace CEGUI
     class CEGUIEXPORT PropertyDefinition : public PropertyDefinitionBase
     {
     public:
+        /*!
+        \deprecated
+            This version of the constructor is deprecated in favour of the
+            version taking a help string.
+        */
         PropertyDefinition(const String& name, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+
+        //! Constructor.
+        PropertyDefinition(const String& name, const String& initialValue,
+                           const String& help, bool redrawOnWrite,
+                           bool layoutOnWrite);
 
         // abstract members from Property
         String get(const PropertyReceiver* receiver) const;
