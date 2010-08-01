@@ -976,6 +976,27 @@ public:
 
     /*!
     \brief
+        Return a Rect that describes the area that is used to position
+        and - for scale values - size child content attached to this Window.
+
+        By and large the area returned here will be the same as the unclipped
+        inner rect (for client content) or the unclipped outer rect (for non
+        client content), although certain advanced uses will require
+        alternative Rects to be returned.
+
+    \note
+        The behaviour of this function is modified by overriding the
+        protected Window::getClientChildWindowContentArea_impl and/or
+        Window::getNonClientChildWindowContentArea_impl functions.
+
+    \param non_client
+        - true to return the non-client child content area.
+        - false to return the client child content area (default).
+    */
+    Rect getChildWindowContentArea(const bool non_client = false) const;
+
+    /*!
+    \brief
         Return a Rect object that describes, unclipped, the inner rectangle for
         this window.  The inner rectangle is typically an area that excludes
         some frame or other rendering that should not be touched by subsequent
@@ -3989,6 +4010,10 @@ protected:
     virtual Rect getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
     virtual Rect getHitTestRect_impl() const;
+    //! Default implementation of function to return non-client content area
+    virtual Rect getNonClientChildWindowContentArea_impl() const;
+    //! Default implementation of function to return client content area
+    virtual Rect getClientChildWindowContentArea_impl() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
