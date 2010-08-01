@@ -3640,22 +3640,15 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         RenderingWindow* const rendering_window =
             static_cast<RenderingWindow*>(ctx.surface);
 
-        const Rect surface_clip(
-            d_parent && d_clippedByParent ?
-                rendering_window->getOwner().isRenderingWindow() ?
-                    d_nonClientContent ?
-                        d_parent->getUnclippedOuterRect() :
-                        d_parent->getUnclippedInnerRect() :
-                    d_nonClientContent ?
-                        d_parent->getOuterRectClipper() :
-                        d_parent->getInnerRectClipper() :
+        if (d_clippedByParent && d_parent)
+            rendering_window->setClippingRegion(
+                d_parent->getInnerRectClipper());
+        else
+            rendering_window->setClippingRegion(
                 Rect(Vector2(0, 0),
-                     System::getSingleton().getRenderer()->getDisplaySize())
-        );
+                     System::getSingleton().getRenderer()->getDisplaySize()));
 
-        rendering_window->setClippingRegion(surface_clip);
-        d_geometry->setClippingRegion(Rect(Vector2(0,0),
-                                           rendering_window->getSize()));
+        d_geometry->setClippingRegion(Rect(Vector2(0, 0), d_pixelSize));
     }
     else
     {
@@ -4017,6 +4010,26 @@ void Window::setMouseInputPropagationEnabled(const bool enabled)
 bool Window::isMouseInputPropagationEnabled() const
 {
     return d_propagateMouseInputs;
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getChildWindowContentArea(const bool non_client) const
+{
+    return non_client ?
+        getNonClientChildWindowContentArea_impl() :
+        getClientChildWindowContentArea_impl();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getNonClientChildWindowContentArea_impl() const
+{
+    return getUnclippedOuterRect_impl();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getClientChildWindowContentArea_impl() const
+{
+    return getUnclippedInnerRect_impl();
 }
 
 //----------------------------------------------------------------------------//
