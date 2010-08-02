@@ -3005,7 +3005,7 @@ public:
 	*/
 	String& replace(iterator iter_beg, iterator iter_end, const_iterator iter_newBeg, const_iterator iter_newEnd)
 	{
-		if (iter_beg == iter_end)
+		if (iter_newBeg == iter_newEnd)
 		{
 			erase(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg));
 		}
