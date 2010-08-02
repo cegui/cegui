@@ -70,7 +70,7 @@ namespace CEGUI
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
         {
-            float height = progressClipper.getHeight() * w->getProgress();
+            float height = PixelAligned(progressClipper.getHeight() * w->getProgress());
 
             if (d_reversed)
             {
@@ -83,7 +83,7 @@ namespace CEGUI
         }
         else
         {
-            float width = progressClipper.getWidth() * w->getProgress();
+            float width = PixelAligned(progressClipper.getWidth() * w->getProgress());
 
             if (d_reversed)
             {
