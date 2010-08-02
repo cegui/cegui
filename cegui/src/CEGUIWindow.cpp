@@ -3409,6 +3409,7 @@ bool Window::isTopOfZOrder() const
 void Window::insertText(const String& text, const String::size_type position)
 {
     d_textLogical.insert(position, text);
+    d_renderedStringValid = false;
     d_bidiDataValid = false;
 
     WindowEventArgs args(this);
@@ -3419,6 +3420,7 @@ void Window::insertText(const String& text, const String::size_type position)
 void Window::appendText(const String& text)
 {
     d_textLogical.append(text);
+    d_renderedStringValid = false;
     d_bidiDataValid = false;
 
     WindowEventArgs args(this);
