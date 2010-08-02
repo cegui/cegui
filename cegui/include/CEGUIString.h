@@ -2433,8 +2433,8 @@ public:
 	*/
 	String& erase(size_type idx, size_type len = npos)
 	{
-		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range foe CEGUI::String"));
+		if (d_cplength <= idx)
+			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
 
 		if (len == npos)
 			len = d_cplength - idx;
