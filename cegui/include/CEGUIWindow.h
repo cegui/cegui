@@ -360,6 +360,12 @@ public:
      * changed.
      */
     static const String EventTextParsingChanged;
+    /** Event fired when the Window's margin has changed (any of the four margins)
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window whose margin was
+     * changed.
+     */
+    static const String EventMarginChanged;
 
     // generated externally (inputs)
     /** Event fired when the mouse cursor has entered the Window's area.
@@ -3114,6 +3120,11 @@ public:
     //! set whether text parsing is enabled for this window.
     void setTextParsingEnabled(const bool setting);
 
+    //! set margin
+    virtual void setMargin(const UBox& margin);
+    //! retrieves currently set margin
+    const UBox& getMargin() const;
+
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
@@ -3730,6 +3741,8 @@ protected:
     */
     virtual void onTextParsingChanged(WindowEventArgs& e);
 
+    virtual void onMarginChanged(WindowEventArgs& e);
+
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
@@ -4071,6 +4084,7 @@ protected:
     static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
+    static  WindowProperties::Margin d_marginProperty;
     static  WindowProperties::UpdateMode d_updateModeProperty;
     static  WindowProperties::MouseInputPropagationEnabled d_mouseInputPropagationProperty;
 
@@ -4168,6 +4182,9 @@ protected:
     RenderedStringParser* d_customStringParser;
     //! true if use of parser other than d_defaultStringParser is enabled
     bool d_textParsingEnabled;
+
+	//! Margin, only used when the Window is inside LayoutContainer class
+    UBox d_margin;
 
     //! User ID assigned to this Window
     uint d_ID;
@@ -4271,3 +4288,4 @@ private:
 #endif
 
 #endif  // end of guard _CEGUIWindow_h_
+

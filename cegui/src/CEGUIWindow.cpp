@@ -102,6 +102,7 @@ const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventRotated("Rotated");
 const String Window::EventNonClientChanged("NonClientChanged");
 const String Window::EventTextParsingChanged("TextParsingChanged");
+const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEnters("MouseEnter");
 const String Window::EventMouseLeaves("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
@@ -169,6 +170,7 @@ WindowProperties::YRotation Window::d_yRotationProperty;
 WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
+WindowProperties::Margin Window:: d_marginProperty;
 WindowProperties::UpdateMode Window::d_updateModeProperty;
 WindowProperties::MouseInputPropagationEnabled Window::d_mouseInputPropagationProperty;
 
@@ -226,6 +228,9 @@ Window::Window(const String& type, const String& name) :
     d_renderedStringValid(false),
     d_customStringParser(0),
     d_textParsingEnabled(true),
+
+    // margin
+    d_margin(UBox(UDim(0, 0))),
 
     // user specific data
     d_ID(0),
@@ -1495,6 +1500,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
+    addProperty(&d_marginProperty);
     addProperty(&d_updateModeProperty);
     addProperty(&d_mouseInputPropagationProperty);
 
@@ -3841,9 +3847,30 @@ void Window::setTextParsingEnabled(const bool setting)
 }
 
 //----------------------------------------------------------------------------//
+void Window::setMargin(const UBox& margin)
+{
+    d_margin = margin;
+
+    WindowEventArgs args(this);
+    onMarginChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+const UBox& Window::getMargin() const
+{
+    return d_margin;
+}
+
+//----------------------------------------------------------------------------//
 void Window::onTextParsingChanged(WindowEventArgs& e)
 {
     fireEvent(EventTextParsingChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMarginChanged(WindowEventArgs& e)
+{
+    fireEvent(EventMarginChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
