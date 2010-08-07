@@ -2850,7 +2850,7 @@ void Window::onMouseMove(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseMove(e);
@@ -2870,7 +2870,7 @@ void Window::onMouseWheel(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseWheel(e);
@@ -2914,7 +2914,7 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseButtonDown(e);
@@ -2941,7 +2941,7 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseButtonUp(e);
@@ -2961,7 +2961,7 @@ void Window::onMouseClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseClicked(e);
@@ -2982,7 +2982,7 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseDoubleClicked(e);
@@ -3003,7 +3003,7 @@ void Window::onMouseTripleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseTripleClicked(e);
@@ -3026,7 +3026,7 @@ void Window::onKeyDown(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        d_parent != System::getSingleton().getModalTarget())
+        this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onKeyDown(e);
@@ -3042,7 +3042,7 @@ void Window::onKeyUp(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        d_parent != System::getSingleton().getModalTarget())
+        this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onKeyUp(e);
