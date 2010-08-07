@@ -2433,6 +2433,10 @@ public:
 	*/
 	String& erase(size_type idx, size_type len = npos)
 	{
+        // cover the no-op case.
+        if (len == 0)
+            return *this;
+
 		if (d_cplength <= idx)
 			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
 
