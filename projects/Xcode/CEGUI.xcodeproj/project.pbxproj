@@ -575,6 +575,18 @@
 		DA61D5A00FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA61D59F0FCEA28300EC1A0C /* CEGUIDefaultRenderedStringParser.cpp */; };
 		DA61D5B00FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h in Headers */ = {isa = PBXBuildFile; fileRef = DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */; };
 		DA61D5BC0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */; };
+		DA831179120D6F8F006D045E /* CEGUIGridLayoutContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */; };
+		DA83117A120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */; };
+		DA83117B120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */; };
+		DA83117C120D6F8F006D045E /* CEGUILayoutContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831176120D6F8F006D045E /* CEGUILayoutContainer.h */; };
+		DA83117D120D6F8F006D045E /* CEGUISequentialLayoutContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831177120D6F8F006D045E /* CEGUISequentialLayoutContainer.h */; };
+		DA83117E120D6F8F006D045E /* CEGUIVerticalLayoutContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA831178120D6F8F006D045E /* CEGUIVerticalLayoutContainer.h */; };
+		DA831187120D707C006D045E /* CEGUIGridLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831181120D707C006D045E /* CEGUIGridLayoutContainer.cpp */; };
+		DA831188120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831182120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp */; };
+		DA831189120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831183120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp */; };
+		DA83118A120D707C006D045E /* CEGUILayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831184120D707C006D045E /* CEGUILayoutContainer.cpp */; };
+		DA83118B120D707C006D045E /* CEGUISequentialLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831185120D707C006D045E /* CEGUISequentialLayoutContainer.cpp */; };
+		DA83118C120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831186120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp */; };
 		DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */; };
 		DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */; };
 		DAAAB8070F6E4ACC0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
@@ -828,7 +840,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 		DAAAB8050F6E4AC40003BE03 /* PBXContainerItemProxy */ = {
@@ -2327,6 +2339,23 @@
 		DA674A1E1035D8A600872D1D /* xml_imageset.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_imageset.dox; path = ../../doc/doxygen/xml_imageset.dox; sourceTree = SOURCE_ROOT; };
 		DA674A1F1035D8A600872D1D /* xml_layout.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_layout.dox; path = ../../doc/doxygen/xml_layout.dox; sourceTree = SOURCE_ROOT; };
 		DA674A211035D8A600872D1D /* xml_scheme.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_scheme.dox; path = ../../doc/doxygen/xml_scheme.dox; sourceTree = SOURCE_ROOT; };
+		DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainer.h; sourceTree = "<group>"; };
+		DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainerProperties.h; sourceTree = "<group>"; };
+		DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIHorizontalLayoutContainer.h; sourceTree = "<group>"; };
+		DA831176120D6F8F006D045E /* CEGUILayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUILayoutContainer.h; sourceTree = "<group>"; };
+		DA831177120D6F8F006D045E /* CEGUISequentialLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUISequentialLayoutContainer.h; sourceTree = "<group>"; };
+		DA831178120D6F8F006D045E /* CEGUIVerticalLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIVerticalLayoutContainer.h; sourceTree = "<group>"; };
+		DA831181120D707C006D045E /* CEGUIGridLayoutContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGridLayoutContainer.cpp; path = ../../cegui/src/elements/CEGUIGridLayoutContainer.cpp; sourceTree = SOURCE_ROOT; };
+		DA831182120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGridLayoutContainerProperties.cpp; path = ../../cegui/src/elements/CEGUIGridLayoutContainerProperties.cpp; sourceTree = SOURCE_ROOT; };
+		DA831183120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIHorizontalLayoutContainer.cpp; path = ../../cegui/src/elements/CEGUIHorizontalLayoutContainer.cpp; sourceTree = SOURCE_ROOT; };
+		DA831184120D707C006D045E /* CEGUILayoutContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUILayoutContainer.cpp; path = ../../cegui/src/elements/CEGUILayoutContainer.cpp; sourceTree = SOURCE_ROOT; };
+		DA831185120D707C006D045E /* CEGUISequentialLayoutContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISequentialLayoutContainer.cpp; path = ../../cegui/src/elements/CEGUISequentialLayoutContainer.cpp; sourceTree = SOURCE_ROOT; };
+		DA831186120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIVerticalLayoutContainer.cpp; path = ../../cegui/src/elements/CEGUIVerticalLayoutContainer.cpp; sourceTree = SOURCE_ROOT; };
+		DA83118F120D70A8006D045E /* GridLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GridLayoutContainer.pkg; sourceTree = "<group>"; };
+		DA831190120D70A8006D045E /* HorizontalLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HorizontalLayoutContainer.pkg; sourceTree = "<group>"; };
+		DA831191120D70A8006D045E /* LayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LayoutContainer.pkg; sourceTree = "<group>"; };
+		DA831192120D70A8006D045E /* SequentialLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SequentialLayoutContainer.pkg; sourceTree = "<group>"; };
+		DA831193120D70A8006D045E /* VerticalLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalLayoutContainer.pkg; sourceTree = "<group>"; };
 		DA849D481052E5F700C07E33 /* futurechanges.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = futurechanges.dox; path = ../../doc/doxygen/futurechanges.dox; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
@@ -3633,14 +3662,18 @@
 				DA1094B80F6D5EFD00B8A582 /* CEGUIEditboxProperties.cpp */,
 				DA1094B90F6D5EFD00B8A582 /* CEGUIFrameWindow.cpp */,
 				DA1094BA0F6D5EFD00B8A582 /* CEGUIFrameWindowProperties.cpp */,
+				DA831181120D707C006D045E /* CEGUIGridLayoutContainer.cpp */,
+				DA831182120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp */,
 				DA1094BB0F6D5EFD00B8A582 /* CEGUIGroupBox.cpp */,
 				DA1094BC0F6D5EFD00B8A582 /* CEGUIGUISheet.cpp */,
+				DA831183120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp */,
 				DA1094BD0F6D5EFD00B8A582 /* CEGUIItemEntry.cpp */,
 				DA1094BE0F6D5EFD00B8A582 /* CEGUIItemEntryProperties.cpp */,
 				DA1094BF0F6D5EFD00B8A582 /* CEGUIItemListBase.cpp */,
 				DA1094C00F6D5EFD00B8A582 /* CEGUIItemListBaseProperties.cpp */,
 				DA1094C10F6D5EFD00B8A582 /* CEGUIItemListbox.cpp */,
 				DA1094C20F6D5EFD00B8A582 /* CEGUIItemListboxProperties.cpp */,
+				DA831184120D707C006D045E /* CEGUILayoutContainer.cpp */,
 				DA1094C30F6D5EFD00B8A582 /* CEGUIListbox.cpp */,
 				DA1094C40F6D5EFD00B8A582 /* CEGUIListboxItem.cpp */,
 				DA1094C50F6D5EFD00B8A582 /* CEGUIListboxProperties.cpp */,
@@ -3672,6 +3705,7 @@
 				DA1094DF0F6D5EFD00B8A582 /* CEGUIScrolledContainerProperties.cpp */,
 				DA1094E00F6D5EFD00B8A582 /* CEGUIScrolledItemListBase.cpp */,
 				DA1094E10F6D5EFD00B8A582 /* CEGUIScrolledItemListBaseProperties.cpp */,
+				DA831185120D707C006D045E /* CEGUISequentialLayoutContainer.cpp */,
 				DA1094E20F6D5EFD00B8A582 /* CEGUISlider.cpp */,
 				DA1094E30F6D5EFD00B8A582 /* CEGUISliderProperties.cpp */,
 				DA1094E40F6D5EFD00B8A582 /* CEGUISpinner.cpp */,
@@ -3688,6 +3722,7 @@
 				DA1094EF0F6D5EFD00B8A582 /* CEGUITree.cpp */,
 				DA1094F00F6D5EFD00B8A582 /* CEGUITreeItem.cpp */,
 				DA1094F10F6D5EFD00B8A582 /* CEGUITreeProperties.cpp */,
+				DA831186120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp */,
 			);
 			name = elements;
 			sourceTree = "<group>";
@@ -3709,14 +3744,18 @@
 				DA1095A50F6D5F9B00B8A582 /* CEGUIEditboxProperties.h */,
 				DA1095A60F6D5F9B00B8A582 /* CEGUIFrameWindow.h */,
 				DA1095A70F6D5F9B00B8A582 /* CEGUIFrameWindowProperties.h */,
+				DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */,
+				DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */,
 				DA1095A80F6D5F9B00B8A582 /* CEGUIGroupBox.h */,
 				DA1095A90F6D5F9B00B8A582 /* CEGUIGUISheet.h */,
+				DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */,
 				DA1095AA0F6D5F9B00B8A582 /* CEGUIItemEntry.h */,
 				DA1095AB0F6D5F9B00B8A582 /* CEGUIItemEntryProperties.h */,
 				DA1095AC0F6D5F9B00B8A582 /* CEGUIItemListBase.h */,
 				DA1095AD0F6D5F9B00B8A582 /* CEGUIItemListBaseProperties.h */,
 				DA1095AE0F6D5F9B00B8A582 /* CEGUIItemListbox.h */,
 				DA1095AF0F6D5F9B00B8A582 /* CEGUIItemListboxProperties.h */,
+				DA831176120D6F8F006D045E /* CEGUILayoutContainer.h */,
 				DA1095B00F6D5F9B00B8A582 /* CEGUIListbox.h */,
 				DA1095B10F6D5F9B00B8A582 /* CEGUIListboxItem.h */,
 				DA1095B20F6D5F9B00B8A582 /* CEGUIListboxProperties.h */,
@@ -3748,6 +3787,7 @@
 				DA1095CC0F6D5F9B00B8A582 /* CEGUIScrolledContainerProperties.h */,
 				DA1095CD0F6D5F9B00B8A582 /* CEGUIScrolledItemListBase.h */,
 				DA1095CE0F6D5F9B00B8A582 /* CEGUIScrolledItemListBaseProperties.h */,
+				DA831177120D6F8F006D045E /* CEGUISequentialLayoutContainer.h */,
 				DA1095CF0F6D5F9B00B8A582 /* CEGUISlider.h */,
 				DA1095D00F6D5F9B00B8A582 /* CEGUISliderProperties.h */,
 				DA1095D10F6D5F9B00B8A582 /* CEGUISpinner.h */,
@@ -3764,6 +3804,7 @@
 				DA1095DC0F6D5F9B00B8A582 /* CEGUITree.h */,
 				DA1095DD0F6D5F9B00B8A582 /* CEGUITreeItem.h */,
 				DA1095DE0F6D5F9B00B8A582 /* CEGUITreeProperties.h */,
+				DA831178120D6F8F006D045E /* CEGUIVerticalLayoutContainer.h */,
 			);
 			name = elements;
 			path = ../../cegui/include/elements;
@@ -4012,11 +4053,14 @@
 				DA1096DF0F6D660E00B8A582 /* DragContainer.pkg */,
 				DA1096E00F6D660E00B8A582 /* Editbox.pkg */,
 				DA1096E10F6D660E00B8A582 /* FrameWindow.pkg */,
+				DA83118F120D70A8006D045E /* GridLayoutContainer.pkg */,
 				DA1096E20F6D660E00B8A582 /* GroupBox.pkg */,
 				DA1096E30F6D660E00B8A582 /* GUISheet.pkg */,
+				DA831190120D70A8006D045E /* HorizontalLayoutContainer.pkg */,
 				DA1096E40F6D660E00B8A582 /* ItemEntry.pkg */,
 				DA1096E50F6D660E00B8A582 /* ItemListBase.pkg */,
 				DA1096E60F6D660E00B8A582 /* ItemListbox.pkg */,
+				DA831191120D70A8006D045E /* LayoutContainer.pkg */,
 				DA1096E70F6D660E00B8A582 /* Listbox.pkg */,
 				DA1096E80F6D660E00B8A582 /* ListboxItem.pkg */,
 				DA1096E90F6D660E00B8A582 /* ListboxTextItem.pkg */,
@@ -4035,6 +4079,7 @@
 				DA1096F60F6D660E00B8A582 /* Scrollbar.pkg */,
 				DA1096F70F6D660E00B8A582 /* ScrolledContainer.pkg */,
 				DA1096F80F6D660E00B8A582 /* ScrolledItemListBase.pkg */,
+				DA831192120D70A8006D045E /* SequentialLayoutContainer.pkg */,
 				DA1096F90F6D660E00B8A582 /* Slider.pkg */,
 				DA1096FA0F6D660E00B8A582 /* Spinner.pkg */,
 				DA1096FB0F6D660E00B8A582 /* TabButton.pkg */,
@@ -4044,6 +4089,7 @@
 				DA1096FF0F6D660E00B8A582 /* Tooltip.pkg */,
 				DA1097000F6D660E00B8A582 /* Tree.pkg */,
 				DA1097010F6D660E00B8A582 /* TreeItem.pkg */,
+				DA831193120D70A8006D045E /* VerticalLayoutContainer.pkg */,
 			);
 			name = elements;
 			path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/elements;
@@ -4712,6 +4758,12 @@
 				DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */,
 				DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */,
 				DA193770115CF187003850DF /* CEGUIMinizipResourceProvider.h in Headers */,
+				DA831179120D6F8F006D045E /* CEGUIGridLayoutContainer.h in Headers */,
+				DA83117A120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h in Headers */,
+				DA83117B120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h in Headers */,
+				DA83117C120D6F8F006D045E /* CEGUILayoutContainer.h in Headers */,
+				DA83117D120D6F8F006D045E /* CEGUISequentialLayoutContainer.h in Headers */,
+				DA83117E120D6F8F006D045E /* CEGUIVerticalLayoutContainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5995,6 +6047,12 @@
 				DA19376D115CF175003850DF /* ioapi.cpp in Sources */,
 				DA19376E115CF175003850DF /* unzip.cpp in Sources */,
 				DA19376F115CF175003850DF /* CEGUIMinizipResourceProvider.cpp in Sources */,
+				DA831187120D707C006D045E /* CEGUIGridLayoutContainer.cpp in Sources */,
+				DA831188120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp in Sources */,
+				DA831189120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp in Sources */,
+				DA83118A120D707C006D045E /* CEGUILayoutContainer.cpp in Sources */,
+				DA83118B120D707C006D045E /* CEGUISequentialLayoutContainer.cpp in Sources */,
+				DA83118C120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
