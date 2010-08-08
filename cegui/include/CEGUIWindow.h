@@ -360,6 +360,12 @@ public:
      * changed.
      */
     static const String EventTextParsingChanged;
+    /** Event fired when the Window's margin has changed (any of the four margins)
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window whose margin was
+     * changed.
+     */
+    static const String EventMarginChanged;
 
     // generated externally (inputs)
     /** Event fired when the mouse cursor has entered the Window's area.
@@ -973,6 +979,27 @@ public:
         clipper rects should not to be used if reliable results are desired).
     */
     Rect getHitTestRect() const;
+
+    /*!
+    \brief
+        Return a Rect that describes the area that is used to position
+        and - for scale values - size child content attached to this Window.
+
+        By and large the area returned here will be the same as the unclipped
+        inner rect (for client content) or the unclipped outer rect (for non
+        client content), although certain advanced uses will require
+        alternative Rects to be returned.
+
+    \note
+        The behaviour of this function is modified by overriding the
+        protected Window::getClientChildWindowContentArea_impl and/or
+        Window::getNonClientChildWindowContentArea_impl functions.
+
+    \param non_client
+        - true to return the non-client child content area.
+        - false to return the client child content area (default).
+    */
+    Rect getChildWindowContentArea(const bool non_client = false) const;
 
     /*!
     \brief
@@ -3093,6 +3120,11 @@ public:
     //! set whether text parsing is enabled for this window.
     void setTextParsingEnabled(const bool setting);
 
+    //! set margin
+    virtual void setMargin(const UBox& margin);
+    //! retrieves currently set margin
+    const UBox& getMargin() const;
+
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
@@ -3709,6 +3741,8 @@ protected:
     */
     virtual void onTextParsingChanged(WindowEventArgs& e);
 
+    virtual void onMarginChanged(WindowEventArgs& e);
+
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
@@ -3989,6 +4023,10 @@ protected:
     virtual Rect getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
     virtual Rect getHitTestRect_impl() const;
+    //! Default implementation of function to return non-client content area
+    virtual Rect getNonClientChildWindowContentArea_impl() const;
+    //! Default implementation of function to return client content area
+    virtual Rect getClientChildWindowContentArea_impl() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
@@ -4046,6 +4084,7 @@ protected:
     static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
+    static  WindowProperties::Margin d_marginProperty;
     static  WindowProperties::UpdateMode d_updateModeProperty;
     static  WindowProperties::MouseInputPropagationEnabled d_mouseInputPropagationProperty;
 
@@ -4143,6 +4182,9 @@ protected:
     RenderedStringParser* d_customStringParser;
     //! true if use of parser other than d_defaultStringParser is enabled
     bool d_textParsingEnabled;
+
+	//! Margin, only used when the Window is inside LayoutContainer class
+    UBox d_margin;
 
     //! User ID assigned to this Window
     uint d_ID;
@@ -4246,3 +4288,4 @@ private:
 #endif
 
 #endif  // end of guard _CEGUIWindow_h_
+

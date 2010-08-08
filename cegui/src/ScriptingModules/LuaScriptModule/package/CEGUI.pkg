@@ -103,6 +103,12 @@ $pfile "elements/ItemListbox.pkg"
 
 $pfile "elements/GroupBox.pkg"
 
+$pfile "elements/LayoutContainer.pkg"
+$pfile "elements/SequentialLayoutContainer.pkg"
+$pfile "elements/HorizontalLayoutContainer.pkg"
+$pfile "elements/VerticalLayoutContainer.pkg"
+$pfile "elements/GridLayoutContainer.pkg"
+
 $pfile "falagard/Enums.pkg"
 $pfile "falagard/Dimension.pkg"
 $pfile "falagard/NamedArea.pkg"

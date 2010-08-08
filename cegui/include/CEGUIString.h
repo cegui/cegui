@@ -2433,8 +2433,12 @@ public:
 	*/
 	String& erase(size_type idx, size_type len = npos)
 	{
-		if (d_cplength < idx)
-			CEGUI_THROW(std::out_of_range("Index is out of range foe CEGUI::String"));
+        // cover the no-op case.
+        if (len == 0)
+            return *this;
+
+		if (d_cplength <= idx)
+			CEGUI_THROW(std::out_of_range("Index is out of range for CEGUI::String"));
 
 		if (len == npos)
 			len = d_cplength - idx;
@@ -3005,7 +3009,7 @@ public:
 	*/
 	String& replace(iterator iter_beg, iterator iter_end, const_iterator iter_newBeg, const_iterator iter_newEnd)
 	{
-		if (iter_beg == iter_end)
+		if (iter_newBeg == iter_newEnd)
 		{
 			erase(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg));
 		}

@@ -16,6 +16,8 @@ nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              imagesets/FairChar.tga \
              imagesets/GPN-2000-001437.tga \
              imagesets/logo.png \
+			 imagesets/OgreTray.imageset \
+			 imagesets/OgreTrayImages.png \
              imagesets/ReadMe.txt \
              imagesets/TaharezLook.imageset \
              imagesets/TaharezLook.tga \
@@ -36,11 +38,13 @@ nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              layouts/TreeDemoTaharez.layout \
              layouts/VanillaConsole.layout \
              layouts/VanillaWindows.layout \
+			 looknfeel/OgreTray.looknfeel \
              looknfeel/TaharezLook.looknfeel \
              looknfeel/Vanilla.looknfeel \
              looknfeel/WindowsLook.looknfeel \
              lua_scripts/demo8.lua \
              schemes/Demo8.scheme \
+			 schemes/OgreTray.scheme \
              schemes/TaharezLook.scheme \
              schemes/TaharezLookWidgetAliases.scheme \
              schemes/TaharezLookWidgets.scheme \

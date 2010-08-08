@@ -13,14 +13,18 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIEditboxProperties.h \
                      CEGUIFrameWindow.h \
                      CEGUIFrameWindowProperties.h \
+                     CEGUIGridLayoutContainer.h \
+                     CEGUIGridLayoutContainerProperties.h \
                      CEGUIGroupBox.h \
                      CEGUIGUISheet.h \
+                     CEGUIHorizontalLayoutContainer.h \
                      CEGUIItemEntry.h \
                      CEGUIItemEntryProperties.h \
                      CEGUIItemListBase.h \
                      CEGUIItemListBaseProperties.h \
                      CEGUIItemListbox.h \
                      CEGUIItemListboxProperties.h \
+                     CEGUILayoutContainer.h \
                      CEGUIListbox.h \
                      CEGUIListboxItem.h \
                      CEGUIListboxProperties.h \
@@ -52,6 +56,7 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIScrolledContainerProperties.h \
                      CEGUIScrolledItemListBase.h \
                      CEGUIScrolledItemListBaseProperties.h \
+					 CEGUISequentialLayoutContainer.h \
                      CEGUISlider.h \
                      CEGUISliderProperties.h \
                      CEGUISpinner.h \
@@ -67,4 +72,5 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUITooltipProperties.h \
                      CEGUITree.h \
                      CEGUITreeItem.h \
-                     CEGUITreeProperties.h
+                     CEGUITreeProperties.h \
+                     CEGUIVerticalLayoutContainer.h

@@ -125,6 +125,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::PropertyAttribute("property");
     const String Falagard_xmlHandler::ControlValueAttribute("controlValue");
     const String Falagard_xmlHandler::ControlWidgetAttribute("controlWidget");
+    const String Falagard_xmlHandler::HelpStringAttribute("help");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -767,6 +768,9 @@ namespace CEGUI
         PropertyDefinition prop(
             attributes.getValueAsString(NameAttribute),
             attributes.getValueAsString(InitialValueAttribute),
+            attributes.getValueAsString(HelpStringAttribute,
+                                        "Falagard custom property definition - "
+                                        "gets/sets a named user string."),
             attributes.getValueAsBool(RedrawOnWriteAttribute, false),
             attributes.getValueAsBool(LayoutOnWriteAttribute, false)
         );

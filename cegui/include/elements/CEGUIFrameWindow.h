@@ -510,7 +510,7 @@ public:
 	\brief
 		Constructor for FrameWindow objects.
 	*/
-	FrameWindow(const String& name, const String& type);
+	FrameWindow(const String& type, const String& name);
 
 	/*!
 	\brief

@@ -57,6 +57,7 @@ public:
 	static	UDim	stringToUDim(const String& str);
 	static	UVector2	stringToUVector2(const String& str);
 	static	URect	stringToURect(const String& str);
+	static	UBox	stringToUBox(const String& str);
 
 	static String	floatToString(float val);
 	static String	uintToString(uint val);
@@ -72,6 +73,7 @@ public:
 	static String	udimToString(const UDim& val);
 	static String	uvector2ToString(const UVector2& val);
 	static String	urectToString(const URect& val);
+	static String	uboxToString(const UBox& val);
 };
 
 } // End of  CEGUI namespace section
