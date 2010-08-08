@@ -102,6 +102,7 @@ const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventRotated("Rotated");
 const String Window::EventNonClientChanged("NonClientChanged");
 const String Window::EventTextParsingChanged("TextParsingChanged");
+const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEnters("MouseEnter");
 const String Window::EventMouseLeaves("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
@@ -169,6 +170,7 @@ WindowProperties::YRotation Window::d_yRotationProperty;
 WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
+WindowProperties::Margin Window:: d_marginProperty;
 WindowProperties::UpdateMode Window::d_updateModeProperty;
 WindowProperties::MouseInputPropagationEnabled Window::d_mouseInputPropagationProperty;
 
@@ -226,6 +228,9 @@ Window::Window(const String& type, const String& name) :
     d_renderedStringValid(false),
     d_customStringParser(0),
     d_textParsingEnabled(true),
+
+    // margin
+    d_margin(UBox(UDim(0, 0))),
 
     // user specific data
     d_ID(0),
@@ -1495,6 +1500,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
+    addProperty(&d_marginProperty);
     addProperty(&d_updateModeProperty);
     addProperty(&d_mouseInputPropagationProperty);
 
@@ -2844,7 +2850,7 @@ void Window::onMouseMove(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseMove(e);
@@ -2864,7 +2870,7 @@ void Window::onMouseWheel(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseWheel(e);
@@ -2908,7 +2914,7 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseButtonDown(e);
@@ -2935,7 +2941,7 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseButtonUp(e);
@@ -2955,7 +2961,7 @@ void Window::onMouseClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseClicked(e);
@@ -2976,7 +2982,7 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseDoubleClicked(e);
@@ -2997,7 +3003,7 @@ void Window::onMouseTripleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && d_parent != System::getSingleton().getModalTarget())
+        d_parent && this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onMouseTripleClicked(e);
@@ -3020,7 +3026,7 @@ void Window::onKeyDown(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        d_parent != System::getSingleton().getModalTarget())
+        this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onKeyDown(e);
@@ -3036,7 +3042,7 @@ void Window::onKeyUp(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        d_parent != System::getSingleton().getModalTarget())
+        this != System::getSingleton().getModalTarget())
     {
         e.window = d_parent;
         d_parent->onKeyUp(e);
@@ -3409,6 +3415,7 @@ bool Window::isTopOfZOrder() const
 void Window::insertText(const String& text, const String::size_type position)
 {
     d_textLogical.insert(position, text);
+    d_renderedStringValid = false;
     d_bidiDataValid = false;
 
     WindowEventArgs args(this);
@@ -3419,6 +3426,7 @@ void Window::insertText(const String& text, const String::size_type position)
 void Window::appendText(const String& text)
 {
     d_textLogical.append(text);
+    d_renderedStringValid = false;
     d_bidiDataValid = false;
 
     WindowEventArgs args(this);
@@ -3640,22 +3648,15 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         RenderingWindow* const rendering_window =
             static_cast<RenderingWindow*>(ctx.surface);
 
-        const Rect surface_clip(
-            d_parent && d_clippedByParent ?
-                rendering_window->getOwner().isRenderingWindow() ?
-                    d_nonClientContent ?
-                        d_parent->getUnclippedOuterRect() :
-                        d_parent->getUnclippedInnerRect() :
-                    d_nonClientContent ?
-                        d_parent->getOuterRectClipper() :
-                        d_parent->getInnerRectClipper() :
+        if (d_clippedByParent && d_parent)
+            rendering_window->setClippingRegion(
+                d_parent->getInnerRectClipper());
+        else
+            rendering_window->setClippingRegion(
                 Rect(Vector2(0, 0),
-                     System::getSingleton().getRenderer()->getDisplaySize())
-        );
+                     System::getSingleton().getRenderer()->getDisplaySize()));
 
-        rendering_window->setClippingRegion(surface_clip);
-        d_geometry->setClippingRegion(Rect(Vector2(0,0),
-                                           rendering_window->getSize()));
+        d_geometry->setClippingRegion(Rect(Vector2(0, 0), d_pixelSize));
     }
     else
     {
@@ -3846,9 +3847,30 @@ void Window::setTextParsingEnabled(const bool setting)
 }
 
 //----------------------------------------------------------------------------//
+void Window::setMargin(const UBox& margin)
+{
+    d_margin = margin;
+
+    WindowEventArgs args(this);
+    onMarginChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+const UBox& Window::getMargin() const
+{
+    return d_margin;
+}
+
+//----------------------------------------------------------------------------//
 void Window::onTextParsingChanged(WindowEventArgs& e)
 {
     fireEvent(EventTextParsingChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMarginChanged(WindowEventArgs& e)
+{
+    fireEvent(EventMarginChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -4017,6 +4039,26 @@ void Window::setMouseInputPropagationEnabled(const bool enabled)
 bool Window::isMouseInputPropagationEnabled() const
 {
     return d_propagateMouseInputs;
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getChildWindowContentArea(const bool non_client) const
+{
+    return non_client ?
+        getNonClientChildWindowContentArea_impl() :
+        getClientChildWindowContentArea_impl();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getNonClientChildWindowContentArea_impl() const
+{
+    return getUnclippedOuterRect_impl();
+}
+
+//----------------------------------------------------------------------------//
+Rect Window::getClientChildWindowContentArea_impl() const
+{
+    return getUnclippedInnerRect_impl();
 }
 
 //----------------------------------------------------------------------------//

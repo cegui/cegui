@@ -109,14 +109,18 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
+                      elements/CEGUIGridLayoutContainer.cpp \
+                      elements/CEGUIGridLayoutContainerProperties.cpp \
                       elements/CEGUIGroupBox.cpp \
                       elements/CEGUIGUISheet.cpp \
+                      elements/CEGUIHorizontalLayoutContainer.cpp \
                       elements/CEGUIItemEntry.cpp \
                       elements/CEGUIItemEntryProperties.cpp \
                       elements/CEGUIItemListBase.cpp \
                       elements/CEGUIItemListBaseProperties.cpp \
                       elements/CEGUIItemListbox.cpp \
-                      elements/CEGUIItemListboxProperties.cpp\
+                      elements/CEGUIItemListboxProperties.cpp \
+                      elements/CEGUILayoutContainer.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxProperties.cpp \
@@ -148,6 +152,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIScrolledContainerProperties.cpp \
                       elements/CEGUIScrolledItemListBase.cpp \
                       elements/CEGUIScrolledItemListBaseProperties.cpp \
+					  elements/CEGUISequentialLayoutContainer.cpp \
                       elements/CEGUISlider.cpp \
                       elements/CEGUISliderProperties.cpp \
                       elements/CEGUISpinner.cpp \
@@ -164,6 +169,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITree.cpp \
                       elements/CEGUITreeProperties.cpp \
                       elements/CEGUITreeItem.cpp \
+                      elements/CEGUIVerticalLayoutContainer.cpp \
                       falagard/CEGUIFalComponentBase.cpp \
                       falagard/CEGUIFalDimensions.cpp \
                       falagard/CEGUIFalFrameComponent.cpp \

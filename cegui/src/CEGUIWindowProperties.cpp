@@ -711,6 +711,20 @@ void TextParsingEnabled::set(PropertyReceiver* receiver, const String& value)
 }
 
 //----------------------------------------------------------------------------//
+String Margin::get(const PropertyReceiver* receiver) const
+{
+	return PropertyHelper::uboxToString(
+        static_cast<const Window*>(receiver)->getMargin());
+}
+
+//----------------------------------------------------------------------------//
+void Margin::set(PropertyReceiver* receiver, const String& value)
+{
+	static_cast<Window*>(receiver)->
+        setMargin(PropertyHelper::stringToUBox(value));
+}
+
+//----------------------------------------------------------------------------//
 String UpdateMode::get(const PropertyReceiver* receiver) const
 {
     switch(static_cast<const Window*>(receiver)->getUpdateMode())
