@@ -1626,6 +1626,50 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 }
 
 //----------------------------------------------------------------------------//
+Window* System::getCommonAncestor(Window* w1, Window* w2)
+{
+    if (w1 == w2)
+        return w1;
+
+    // make sure w1 is always further up
+    if (w1 && w1->isAncestor(w2))
+    {
+        Window* t = w1;
+        w1 = w2;
+        w2 = t;
+    }
+
+    while (w1)
+    {
+        if (w2->isAncestor(w1))
+            break;
+
+        w1 = w1->getParent();
+    }
+
+    return w1;
+}
+
+//----------------------------------------------------------------------------//
+void System::notifyMouseTransition(Window* top, Window* bottom,
+                                   void (Window::*func)(MouseEventArgs&),
+                                   MouseEventArgs& args)
+{
+    if (top == bottom)
+        return;
+    
+    Window* const parent = bottom->getParent();
+
+    if (parent && parent != top)
+        notifyMouseTransition(top, parent, func, args);
+
+    args.handled = 0;
+    args.window = bottom;
+
+    (bottom->*func)(args);
+}
+
+//----------------------------------------------------------------------------//
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
@@ -1661,6 +1705,15 @@ bool System::updateWindowContainingMouse()
         ma.position = d_wndWithMouse->getUnprojectedPosition(mouse_pos);
         d_wndWithMouse->onMouseEnters(ma);
     }
+
+    // do the 'area' version of the events
+    Window* root = getCommonAncestor(oldWindow, d_wndWithMouse);
+
+    if (oldWindow)
+        notifyMouseTransition(root, oldWindow, &Window::onMouseLeavesArea, ma);
+
+    if (d_wndWithMouse)
+        notifyMouseTransition(root, d_wndWithMouse, &Window::onMouseEntersArea, ma);
 
     return true;
 }

@@ -372,10 +372,32 @@ public:
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseEnters;
+    static const String EventMouseEntersArea;
     /** Event fired when themouse cursor has left the Window's area.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
+     */
+    static const String EventMouseLeavesArea;
+    /** Event fired when the mouse cursor enters the Window's area.
+     * Handlers are passed a const MouseEventArgs reference with all fields
+     * valid.
+     *\note This event is fired if - and only if - the mouse cursor is actually
+     * over some part of this Window's surface area, and will not fire for
+     * example if the location of the mouse is over some child window (even
+     * though the mouse is technically also within the area of this Window).
+     * For an alternative version of this event see the
+     * Window::EventMouseEntersArea event.
+     */
+    static const String EventMouseEnters;
+    /** Event fired when the mouse cursor is no longer over the Window's surface
+     * area.
+     * Handlers are passed a const MouseEventArgs reference with all fields
+     * valid.
+     *\note This event will fire whenever the mouse is no longer actually over
+     * some part of this Window's surface area, for example if the mouse is
+     * moved over some child window (even though technically the mouse has not
+     * actually 'left' this Window's area).  For an alternative version of this
+     * event see the Window::EventMouseLeavesArea event.
      */
     static const String EventMouseLeaves;
     /** Event fired when the mouse cursor moves within the area of the Window.
@@ -3504,7 +3526,7 @@ protected:
     \param e
         MouseEventArgs object.  All fields are valid.
     */
-    virtual void onMouseEnters(MouseEventArgs& e);
+    virtual void onMouseEntersArea(MouseEventArgs& e);
 
     /*!
     \brief
@@ -3512,6 +3534,38 @@ protected:
 
     \param e
         MouseEventArgs object.  All fields are valid.
+    */
+    virtual void onMouseLeavesArea(MouseEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the mouse cursor has entered this window's area and
+        is actually over some part of this windows surface and not, for
+        instance over a child window - even though technically in those cases
+        the mouse is also within this Window's area, the handler will not be
+        called.
+
+    \param e
+        MouseEventArgs object.  All fields are valid.
+
+    \see
+        Window::onMouseEntersArea
+    */
+    virtual void onMouseEnters(MouseEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the mouse cursor is no longer over this window's
+        surface area.  This will be called when the mouse is not over a part
+        of this Window's actual surface - even though technically the mouse is
+        still within the Window's area, for example if the mouse moves over a
+        child window.
+
+    \param e
+        MouseEventArgs object.  All fields are valid.
+
+    \see
+        Window::onMouseLeavesArea
     */
     virtual void onMouseLeaves(MouseEventArgs& e);
 
