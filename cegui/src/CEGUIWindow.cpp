@@ -103,6 +103,8 @@ const String Window::EventRotated("Rotated");
 const String Window::EventNonClientChanged("NonClientChanged");
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
+const String Window::EventMouseEntersArea("MouseEntersArea");
+const String Window::EventMouseLeavesArea("MouseLeavesArea");
 const String Window::EventMouseEnters("MouseEnter");
 const String Window::EventMouseLeaves("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
@@ -2810,6 +2812,18 @@ void Window::onChildRemoved(WindowEventArgs& e)
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
     fireEvent(EventChildRemoved, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMouseEntersArea(MouseEventArgs& e)
+{
+    fireEvent(EventMouseEntersArea, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMouseLeavesArea(MouseEventArgs& e)
+{
+    fireEvent(EventMouseLeavesArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
