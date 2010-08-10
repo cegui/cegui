@@ -1633,11 +1633,7 @@ Window* System::getCommonAncestor(Window* w1, Window* w2)
 
     // make sure w1 is always further up
     if (w1 && w1->isAncestor(w2))
-    {
-        Window* t = w1;
-        w1 = w2;
-        w2 = t;
-    }
+        return w2;
 
     while (w1)
     {
