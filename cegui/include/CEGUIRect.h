@@ -204,14 +204,17 @@ public:
     Rect operator*(float scalar) const      { return Rect(d_left * scalar, d_top * scalar, d_right * scalar, d_bottom * scalar); }
     const Rect& operator*=(float scalar)    { d_left *= scalar; d_top *= scalar; d_right *= scalar; d_bottom *= scalar; return *this; }
 
+	Rect operator+(const Rect& r) const		{ return Rect(d_left + r.d_left, d_top + r.d_top, d_right + r.d_right, d_bottom + r.d_bottom); }
+
 
 	/*************************************************************************
 		Data Fields
 	*************************************************************************/
-	float	d_top, d_bottom, d_left, d_right;
+	float	d_left, d_top, d_right, d_bottom;
 };
 
 } // End of  CEGUI namespace section
 
 
 #endif	// end of guard _CEGUIRect_h_
+

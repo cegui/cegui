@@ -37,6 +37,7 @@
 #include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
+#include "CEGUIAnimation_xmlHandler.h"
 #include <sstream>
 
 // Start of CEGUI namespace section
@@ -178,6 +179,7 @@ namespace CEGUI
         registerElementStartHandler(FontPropertyElement, &Falagard_xmlHandler::elementFontPropertyStart);
         registerElementStartHandler(ColourElement, &Falagard_xmlHandler::elementColourStart);
         registerElementStartHandler(PropertyLinkTargetElement, &Falagard_xmlHandler::elementPropertyLinkTargetStart);
+        registerElementStartHandler(AnimationDefinitionHandler::ElementName, &Falagard_xmlHandler::elementAnimationDefinitionStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -207,7 +209,7 @@ namespace CEGUI
     /*************************************************************************
         Handle an opening XML element tag.
     *************************************************************************/
-    void Falagard_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementStartLocal(const String& element, const XMLAttributes& attributes)
     {
         // find registered handler for this element.
         ElementStartHandlerMap::const_iterator iter = d_startHandlersMap.find(element);
@@ -228,7 +230,7 @@ namespace CEGUI
     /*************************************************************************
         Handle a closing XML element tag
     *************************************************************************/
-    void Falagard_xmlHandler::elementEnd(const String& element)
+    void Falagard_xmlHandler::elementEndLocal(const String& element)
     {
         // find registered handler for this element.
         ElementEndHandlerMap::const_iterator iter = d_endHandlersMap.find(element);
@@ -1116,6 +1118,25 @@ namespace CEGUI
                         " on widget: " + w);
         }
     }
+
+    void Falagard_xmlHandler::elementAnimationDefinitionStart(
+                                            const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook != 0);
+
+        String anim_name_prefix(d_widgetlook->getName());
+        anim_name_prefix.append("/");
+
+        d_chainedHandler = new AnimationDefinitionHandler(
+            attributes, anim_name_prefix);
+
+        // This is a little bit of abuse here, ideally we would get the name
+        // somewhere else.
+        d_widgetlook->addAnimationName(
+            anim_name_prefix +
+            attributes.getValueAsString("name"));
+    }
+
 
     /*************************************************************************
         register a handler for the opening tag of an XML element

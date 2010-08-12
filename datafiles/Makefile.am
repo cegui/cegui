@@ -1,7 +1,8 @@
 dist-hook:
 	mkdir $(distdir)/configs
 
-nobase_dist_pkgdata_DATA = fonts/batang.ttf \
+nobase_dist_pkgdata_DATA = animations/example.xml \
+             fonts/batang.ttf \
              fonts/Batang-26.font \
              fonts/DejaVuSans-10.font \
              fonts/DejaVuSans.ttf \
@@ -51,6 +52,7 @@ nobase_dist_pkgdata_DATA = fonts/batang.ttf \
              schemes/VanillaSkin.scheme \
              schemes/WindowsLook.scheme \
              schemes/WindowsLookWidgets.scheme \
+             xml_schemas/Animation.xsd \
              xml_schemas/CEGUIConfig.xsd \
              xml_schemas/Falagard.xsd \
              xml_schemas/Font.xsd \

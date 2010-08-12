@@ -35,6 +35,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIAnimationManager.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -110,6 +111,8 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
     rp->setResourceGroupDirectory("lua_scripts", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     rp->setResourceGroupDirectory("schemas", resourcePath);   
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
+    rp->setResourceGroupDirectory("animations", resourcePath);   
 }
 
 //----------------------------------------------------------------------------//
@@ -122,6 +125,7 @@ void CEGuiBaseApplication::initialiseDefaultResourceGroups()
     CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
     CEGUI::WindowManager::setDefaultResourceGroup("layouts");
     CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+    CEGUI::AnimationManager::setDefaultResourceGroup("animations");
     
     // setup default group for validation schemas
     CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
