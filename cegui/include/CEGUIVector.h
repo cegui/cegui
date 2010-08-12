@@ -95,6 +95,11 @@ public:
         return Vector2(d_x * vec.d_x, d_y * vec.d_y);
     }
 
+	Vector2 operator*(float c) const
+    {
+        return Vector2(d_x * c, d_y * c);
+    }
+
     bool operator==(const Vector2& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y));
@@ -137,6 +142,15 @@ public:
         return !(operator==(vec));
     }
 
+	Vector3 operator*(float c) const
+	{
+		return Vector3(d_x * c, d_y * c, d_z * c);
+	}
+
+	Vector3 operator+(const Vector3& v) const
+	{
+		return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
+	}
 
     float d_x, d_y, d_z;
 };
@@ -145,3 +159,4 @@ public:
 
 
 #endif	// end of guard _CEGUIVector_h_
+

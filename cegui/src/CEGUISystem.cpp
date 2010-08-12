@@ -40,6 +40,7 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUIRenderEffectManager.h"
+#include "CEGUIAnimationManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
@@ -986,6 +987,8 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
+    AnimationManager::getSingleton().stepInstances(timeElapsed);
+
     // if no visible active sheet, input can't be handled
     if (!d_activeSheet || !d_activeSheet->isVisible())
         return false;
@@ -1486,6 +1489,7 @@ void System::createSingletons()
     new SchemeManager();
     new MouseCursor();
     new GlobalEventSet();
+    new AnimationManager();
     new WidgetLookManager();
     new WindowRendererManager();
     new RenderEffectManager();
@@ -1498,6 +1502,7 @@ void System::destroySingletons()
     delete  WindowFactoryManager::getSingletonPtr();
     delete  WidgetLookManager::getSingletonPtr();
     delete  WindowRendererManager::getSingletonPtr();
+    delete  AnimationManager::getSingletonPtr();
     delete  RenderEffectManager::getSingletonPtr();
     delete  FontManager::getSingletonPtr();
     delete  MouseCursor::getSingletonPtr();
@@ -2003,3 +2008,4 @@ void System::invalidateAllWindows()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

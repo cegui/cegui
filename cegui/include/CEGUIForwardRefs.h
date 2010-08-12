@@ -36,6 +36,10 @@ namespace CEGUI
 /*************************************************************************
     Forward declare majority of core classes
 *************************************************************************/
+class Affector;
+class Animation;
+class AnimationInstance;
+class AnimationManager;
 class BasicRenderedStringParser;
 class BiDiVisualMapping;
 class CentredRenderedString;
@@ -62,7 +66,9 @@ class ImageCodec;
 class ImagerySection;
 class Imageset;
 class ImagesetManager;
+class Interpolator;
 class JustifiedRenderedString;
+class KeyFrame;
 class LeftAlignedRenderedString;
 class Logger;
 class MouseCursor;
@@ -188,3 +194,4 @@ class WindowEventArgs;
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIForwardRefs_h_
+

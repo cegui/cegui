@@ -303,6 +303,17 @@ namespace CEGUI
 
         /*!
         \brief
+            Add the name of an animation that is associated with the
+            WidgetLookFeel.
+
+        \param anim_name
+            Reference to a String object that contains the name of the animation
+            to be associated with this WidgetLookFeel.
+        */
+        void addAnimationName(const String& anim_name);
+
+        /*!
+        \brief
             Writes an xml representation of this WidgetLookFeel to \a out_stream.
 
         \param xml_stream
@@ -378,6 +389,8 @@ namespace CEGUI
         typedef std::map<String, ImagerySection, String::FastLessCompare>  ImageryList;
         typedef std::map<String, NamedArea, String::FastLessCompare>       NamedAreaList;
         typedef std::vector<WidgetComponent>      WidgetList;
+        typedef std::vector<String> AnimationList;
+	    typedef std::multimap<Window*, AnimationInstance*> AnimationInstanceMap;
 
         CEGUI::String   d_lookName;         //!< Name of this WidgetLookFeel.
         ImageryList     d_imagerySections;  //!< Collection of ImagerySection objects.
@@ -387,6 +400,10 @@ namespace CEGUI
         NamedAreaList   d_namedAreas;       //!< Collection of NamedArea objects.
         mutable PropertyDefinitionList  d_propertyDefinitions;  //!< Collection of PropertyDefinition objects.
         mutable PropertyLinkDefinitionList d_propertyLinkDefinitions;  //!< Collection of PropertyLinkDefinition objects.
+        //! Collection of animation names associated with this WidgetLookFeel.
+        AnimationList d_animations;
+        //! map of windows and their associated animation instances
+        mutable AnimationInstanceMap d_animationInstances;
     };
 
 

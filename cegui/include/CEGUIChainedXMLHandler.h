@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUISize.h
-	created:	14/3/2004
-	author:		Paul D Turner
-	
-	purpose:	Defines interface for Size class
+    filename:   CEGUIChainedXMLHandler.h
+    created:    Wed Aug 11 2010
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,43 +25,46 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUISize_h_
-#define _CEGUISize_h_
+#ifndef _CEGUIChainedXMLHandler_h_
+#define _CEGUIChainedXMLHandler_h_
 
-#include "CEGUIBase.h"
+#include "CEGUIXMLHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*!
-\brief
-	Class that holds the size (width & height) of something.
-*/
-class CEGUIEXPORT Size
+//! Abstract XMLHandler based class
+class CEGUIEXPORT ChainedXMLHandler : public XMLHandler
 {
 public:
-	Size(void) {}
-	Size(float width, float height) : d_width(width), d_height(height) {}
+    ChainedXMLHandler();
+    virtual ~ChainedXMLHandler();
 
-	bool operator==(const Size& other) const;
-	bool operator!=(const Size& other) const;
+    // XMLHandler overrides
+    void elementStart(const String& element, const XMLAttributes& attributes);
+    void elementEnd(const String& element);
 
-	float d_width, d_height;
+    //! returns whether this chained handler has completed.
+    bool completed() const;
 
-	Size operator*(float c) const
-	{
-		return Size(d_width * c, d_height * c);
-	}
+protected:
+    //! Function that handles elements locally (used at end of handler chain)
+    virtual void elementStartLocal(const String& element,
+                                   const XMLAttributes& attributes) = 0;
+    //! Function that handles elements locally (used at end of handler chain)
+    virtual void elementEndLocal(const String& element) = 0;
 
-	Size operator+(const Size& s) const
-	{
-		return Size(d_width + s.d_width, d_height + s.d_height);
-	}
+    //! clean up any chained handler.
+    void cleanupChainedHandler();
+
+    //! chained xml handler object.
+    ChainedXMLHandler* d_chainedHandler;
+    //! is the chaind handler completed.
+    bool d_completed;
 };
+
 
 } // End of  CEGUI namespace section
 
-
-#endif	// end of guard _CEGUISize_h_
+#endif  // end of guard _CEGUIChainedXMLHandler_h_
 
