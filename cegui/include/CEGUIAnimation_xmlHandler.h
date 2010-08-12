@@ -29,6 +29,7 @@
 #define _CEGUIAnimation_xmlHandler_h_
 
 #include "CEGUIChainedXMLHandler.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
