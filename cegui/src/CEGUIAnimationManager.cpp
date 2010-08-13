@@ -166,9 +166,9 @@ void AnimationManager::destroyAnimation(const String& name)
 
     if (it == d_animations.end())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationManager::destroyAnimation: Animation with given name not "
-            "found.");
+            "found."));
     }
 
     Animation* animation = it->second;
@@ -185,9 +185,9 @@ Animation* AnimationManager::getAnimation(const String& name) const
 
     if (it == d_animations.end())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationManager::getAnimation: Animation with given name not "
-            "found.");
+            "found."));
     }
 
     return it->second;
@@ -198,8 +198,8 @@ Animation* AnimationManager::getAnimationAtIdx(size_t index) const
 {
     if (index >= d_animations.size())
     {
-        throw InvalidRequestException(
-            "AnimationManager::getAnimationAtIdx: Out of bounds.");
+        CEGUI_THROW(InvalidRequestException(
+            "AnimationManager::getAnimationAtIdx: Out of bounds."));
     }
 
     AnimationMap::const_iterator it = d_animations.begin();
@@ -245,9 +245,9 @@ void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
         }
     }
 
-    throw InvalidRequestException(
+    CEGUI_THROW(InvalidRequestException(
         "AnimationManager::destroyAnimationInstance: Given animation instance "
-        "not found.");
+        "not found."));
 }
 
 //----------------------------------------------------------------------------//
@@ -271,8 +271,8 @@ AnimationInstance* AnimationManager::getAnimationInstanceAtIdx(size_t index) con
 {
     if (index >= d_animationInstances.size())
     {
-        throw InvalidRequestException(
-            "AnimationManager::getAnimationInstanceAtIdx: Out of bounds.");
+        CEGUI_THROW(InvalidRequestException(
+            "AnimationManager::getAnimationInstanceAtIdx: Out of bounds."));
     }
 
     AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
