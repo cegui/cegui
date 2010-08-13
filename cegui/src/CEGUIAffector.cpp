@@ -105,10 +105,10 @@ KeyFrame* Affector::createKeyFrame(float position)
 {
     if (d_keyFrames.find(position) != d_keyFrames.end())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "Affector::createKeyFrame: Unable to create KeyFrame "
             "at given position, there already is a KeyFrame "
-            "on that position.");
+            "on that position."));
     }
 
     KeyFrame* ret = new KeyFrame(this, position);
@@ -136,9 +136,9 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
 
     if (it == d_keyFrames.end())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "Affector::destroyKeyFrame: Unable to destroy given KeyFrame! "
-            "No such KeyFrame was found.");
+            "No such KeyFrame was found."));
     }
 
     d_keyFrames.erase(it);
@@ -151,9 +151,9 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
 
     if (it == d_keyFrames.end())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "Affector::getKeyFrameAtPosition: Can't find a KeyFrame with given "
-            "position.");
+            "position."));
     }
 
     return it->second;
@@ -164,8 +164,8 @@ KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 {
     if (index >= d_keyFrames.size())
     {
-        throw InvalidRequestException(
-            "Affector::getKeyFrameAtIdx: Out of bounds!");
+        CEGUI_THROW(InvalidRequestException(
+            "Affector::getKeyFrameAtIdx: Out of bounds!"));
     }
 
     KeyFrameMap::const_iterator it = d_keyFrames.begin();

@@ -142,10 +142,10 @@ void AnimationInstance::setPosition(float position)
 {
     if (position < 0.0 || position > d_definition->getDuration())
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationInstance::setPosition: Unable to set position "
             "of this animation instace because given position isn't "
-            "in interval [0.0, duration of animation].");
+            "in interval [0.0, duration of animation]."));
     }
 
     d_position = position;
@@ -163,16 +163,16 @@ void AnimationInstance::setSpeed(float speed)
     // first sort out the adventurous users
     if (speed < 0.0f)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationInstance::setSpeed: You can't set playback speed "
-            "to a value that's lower than 0.0");
+            "to a value that's lower than 0.0"));
     }
 
     if (speed == 0.0f)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationInstance::setSpeed: You can't set playback speed "
-            "to zero, please use AnimationInstance::pause instead");
+            "to zero, please use AnimationInstance::pause instead"));
     }
 
     d_speed = speed;
@@ -244,10 +244,10 @@ void AnimationInstance::step(float delta)
 
     if (delta < 0.0f)
     {
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "AnimationInstance::step: You can't step the Animation Instance "
             "with negative delta! You can't reverse the flow of time, stop "
-            "trying!");
+            "trying!"));
     }
 
     const float duration = d_definition->getDuration();
