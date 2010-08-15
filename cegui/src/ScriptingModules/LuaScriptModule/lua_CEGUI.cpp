@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Fri Aug 13 11:27:00 2010.
+** Generated automatically by tolua++-1.0.92 on Sun Aug 15 20:31:38 2010.
 */
 
 #ifndef __cplusplus
@@ -58237,7 +58237,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_constant(tolua_S,"Insert",CEGUI::Key::Insert);
    tolua_constant(tolua_S,"Delete",CEGUI::Key::Delete);
    tolua_constant(tolua_S,"LeftWindows",CEGUI::Key::LeftWindows);
-   tolua_constant(tolua_S,"RightWindow",CEGUI::Key::RightWindow);
+   tolua_constant(tolua_S,"RightWindows",CEGUI::Key::RightWindows);
    tolua_constant(tolua_S,"AppMenu",CEGUI::Key::AppMenu);
    tolua_constant(tolua_S,"Power",CEGUI::Key::Power);
    tolua_constant(tolua_S,"Sleep",CEGUI::Key::Sleep);
