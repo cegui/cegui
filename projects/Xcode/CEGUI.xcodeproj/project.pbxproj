@@ -2456,6 +2456,12 @@
 		DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalMultiLineEditboxProperties.cpp; path = ../../cegui/src/WindowRendererSets/Falagard/FalMultiLineEditboxProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIXercesParserProperties.cpp; path = ../../cegui/src/XMLParserModules/XercesParser/CEGUIXercesParserProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
+		DAD7DF3A1218707A00E4CFCD /* Affector.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Affector.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Affector.pkg; sourceTree = SOURCE_ROOT; };
+		DAD7DF3B1218707A00E4CFCD /* Animation.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Animation.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Animation.pkg; sourceTree = SOURCE_ROOT; };
+		DAD7DF3C1218707A00E4CFCD /* AnimationInstance.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AnimationInstance.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/AnimationInstance.pkg; sourceTree = SOURCE_ROOT; };
+		DAD7DF3D1218707A00E4CFCD /* AnimationManager.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AnimationManager.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/AnimationManager.pkg; sourceTree = SOURCE_ROOT; };
+		DAD7DF3E1218707A00E4CFCD /* Interpolator.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Interpolator.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Interpolator.pkg; sourceTree = SOURCE_ROOT; };
+		DAD7DF3F1218707A00E4CFCD /* KeyFrame.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KeyFrame.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/KeyFrame.pkg; sourceTree = SOURCE_ROOT; };
 		DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBiDiVisualMapping.h; path = ../../cegui/include/CEGUIBiDiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFribidiVisualMapping.h; path = ../../cegui/include/CEGUIFribidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIMinibidiVisualMapping.h; path = ../../cegui/include/CEGUIMinibidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
@@ -4048,12 +4054,15 @@
 			children = (
 				DA1096DA0F6D660E00B8A582 /* elements */,
 				DA1097040F6D660E00B8A582 /* falagard */,
-				DA1097270F6D660E00B8A582 /* README */,
-				DA1097030F6D660E00B8A582 /* exceptions.lua */,
+				DAD7DF3A1218707A00E4CFCD /* Affector.pkg */,
+				DAD7DF3B1218707A00E4CFCD /* Animation.pkg */,
+				DAD7DF3C1218707A00E4CFCD /* AnimationInstance.pkg */,
+				DAD7DF3D1218707A00E4CFCD /* AnimationManager.pkg */,
 				DA1096D70F6D660E00B8A582 /* Basic.pkg */,
 				DA1096D80F6D660E00B8A582 /* CEGUI.pkg */,
 				DA1096D90F6D660E00B8A582 /* CoordConverter.pkg */,
 				DA1097020F6D660E00B8A582 /* EventSet.pkg */,
+				DA1097030F6D660E00B8A582 /* exceptions.lua */,
 				DA1097170F6D660E00B8A582 /* Font.pkg */,
 				DA1097180F6D660E00B8A582 /* FontManager.pkg */,
 				DA1097190F6D660E00B8A582 /* GeometryBuffer.pkg */,
@@ -4062,12 +4071,15 @@
 				DA10971C0F6D660E00B8A582 /* Imageset.pkg */,
 				DA10971D0F6D660E00B8A582 /* ImagesetManager.pkg */,
 				DA10971E0F6D660E00B8A582 /* InputEvent.pkg */,
+				DAD7DF3E1218707A00E4CFCD /* Interpolator.pkg */,
 				DA10971F0F6D660E00B8A582 /* Iterators.pkg */,
 				DA1097200F6D660E00B8A582 /* Key.pkg */,
+				DAD7DF3F1218707A00E4CFCD /* KeyFrame.pkg */,
 				DA1097210F6D660E00B8A582 /* Logger.pkg */,
 				DA1097240F6D660E00B8A582 /* MouseCursor.pkg */,
 				DA1097250F6D660E00B8A582 /* OutStream.pkg */,
 				DA1097260F6D660E00B8A582 /* PropertyHelper.pkg */,
+				DA1097270F6D660E00B8A582 /* README */,
 				DA1097280F6D660E00B8A582 /* RenderEffect.pkg */,
 				DA1097290F6D660E00B8A582 /* Renderer.pkg */,
 				DA10972A0F6D660E00B8A582 /* RenderingContext.pkg */,
