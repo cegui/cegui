@@ -223,7 +223,7 @@ protected:
         irr2ceCODE[KEY_KEY_Y     ] = Key::Y;  // Y key
         irr2ceCODE[KEY_KEY_Z     ] = Key::Z;  // Z key
         irr2ceCODE[KEY_LWIN      ] = Key::LeftWindows;  // Left Windows key (Microsoft� Natural� keyboard)
-        irr2ceCODE[KEY_RWIN      ] = Key::RightWindow;  // Right Windows key (Natural keyboard)
+        irr2ceCODE[KEY_RWIN      ] = Key::RightWindows;  // Right Windows key (Natural keyboard)
         irr2ceCODE[KEY_APPS      ] = Key::AppMenu;  //Applications key (Natural keyboard)
         irr2ceCODE[KEY_SLEEP     ] = Key::Sleep;  // Computer Sleep key
         irr2ceCODE[KEY_NUMPAD0   ] = Key::Numpad0;  // Numeric keypad 0 key
