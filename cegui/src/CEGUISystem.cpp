@@ -1633,6 +1633,9 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 //----------------------------------------------------------------------------//
 Window* System::getCommonAncestor(Window* w1, Window* w2)
 {
+    if (!w2)
+        return w2;
+
     if (w1 == w2)
         return w1;
 
