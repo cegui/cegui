@@ -317,6 +317,47 @@ public:
 
     /*!
     \brief
+        Save a full XML window layout, starting at the given Window, to a file
+        with the given file name.
+
+    \param window
+        String holding the name of the Window object to become the root of the
+        layout.
+
+    \param filename
+        The name of the file to which the XML will be written.  Note that this
+        does not use any part of the ResourceProvider system, but rather will
+        write directly to disk.  If this is not desirable, you should prefer the
+        OutStream based writeWindowLayoutToStream functions.
+
+    \param writeParent
+        If the starting window has a parent window, specifies whether to write
+        the parent name into the Parent attribute of the GUILayout XML element.
+    */
+    void saveWindowLayout(const String& window, const String& filename, const bool writeParent = false) const;
+
+    /*!
+    \brief
+        Save a full XML window layout, starting at the given Window, to a file
+        with the given file name.
+
+    \param window
+        Window object to become the root of the layout.
+
+    \param filename
+        The name of the file to which the XML will be written.  Note that this
+        does not use any part of the ResourceProvider system, but rather will
+        write directly to disk.  If this is not desirable, you should prefer the
+        OutStream based writeWindowLayoutToStream functions.
+
+    \param writeParent
+        If the starting window has a parent window, specifies whether to write
+        the parent name into the Parent attribute of the GUILayout XML element.
+    */
+    void saveWindowLayout(const Window& window, const String& filename, const bool writeParent = false) const;
+
+    /*!
+    \brief
         Rename a window.
 
     \param window
