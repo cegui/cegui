@@ -47,6 +47,7 @@ class CEGUIEXPORT Vector2
 public:
     Vector2(void) {}
     Vector2(float x, float y) : d_x(x), d_y(y) {}
+    Vector2(const Vector2& v) : d_x(v.d_x), d_y(v.d_y) {}
 
     Vector2& operator*=(const Vector2& vec)
     {
@@ -131,6 +132,7 @@ class CEGUIEXPORT Vector3
 public:
     Vector3(void) {}
     Vector3(float x, float y, float z) : d_x(x), d_y(y), d_z(z) {}
+    Vector3(const Vector3& v) : d_x(v.d_x), d_y(v.d_y), d_z(v.d_z) {}
 
     bool operator==(const Vector3& vec) const
     {

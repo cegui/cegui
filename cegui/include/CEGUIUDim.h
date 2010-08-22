@@ -49,6 +49,7 @@ class CEGUIEXPORT UDim
 public:
     UDim() {}
     UDim(float scale, float offset) : d_scale(scale), d_offset(offset) {}
+    UDim(const UDim& v): d_scale(v.d_scale), d_offset(v.d_offset) {}
     ~UDim() {}
 
     float asAbsolute(float base) const
@@ -129,6 +130,7 @@ class CEGUIEXPORT UVector2
 public:
     UVector2() {}
     UVector2(const UDim& x, const UDim& y) : d_x(x), d_y(y) {}
+    UVector2(const UVector2& v): d_x(v.d_x), d_y(v.d_y) {}
     ~UVector2() {}
 
     Vector2 asAbsolute(const Size& base) const
@@ -254,6 +256,8 @@ public:
         d_max.d_x = right;
         d_max.d_y = bottom;
     }
+
+    URect(const URect& v): d_min(v.d_min), d_max(v.d_max) {}
 
     ~URect() {}
 
