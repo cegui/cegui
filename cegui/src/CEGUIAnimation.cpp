@@ -131,7 +131,7 @@ void Animation::destroyAffector(Affector* affector)
     if (it == d_affectors.end())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Animation::destroyAffector: Given affector not found!"));
+                        "Animation::destroyAffector: Given affector not found!"));
     }
 
     d_affectors.erase(it);
@@ -143,7 +143,7 @@ Affector* Animation::getAffectorAtIdx(size_t index) const
     if (index >= d_affectors.size())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Animation::getAffectorAtIdx: Out of bounds."));
+                        "Animation::getAffectorAtIdx: Out of bounds."));
     }
 
     AffectorList::const_iterator it = d_affectors.begin();
@@ -169,9 +169,9 @@ void Animation::defineAutoSubscription(const String& eventName,
         if (it->second == action)
         {
             CEGUI_THROW(InvalidRequestException(
-                "Animation::defineAutoSubscription: Unable to define "
-                "given Auto Subscription - exactly the same auto subscription "
-                "is already there!"));
+                            "Animation::defineAutoSubscription: Unable to define "
+                            "given Auto Subscription - exactly the same auto subscription "
+                            "is already there!"));
         }
 
         ++it;
@@ -182,7 +182,7 @@ void Animation::defineAutoSubscription(const String& eventName,
 
 //----------------------------------------------------------------------------//
 void Animation::undefineAutoSubscription(const String& eventName,
-                                         const String& action)
+        const String& action)
 {
     SubscriptionMap::iterator it = d_autoSubscriptions.find(eventName);
 
@@ -198,8 +198,8 @@ void Animation::undefineAutoSubscription(const String& eventName,
     }
 
     CEGUI_THROW(InvalidRequestException(
-        "Animation::undefineAutoSubscription: Unable to undefine "
-        "given Auto Subscription - not found!"));
+                    "Animation::undefineAutoSubscription: Unable to undefine "
+                    "given Auto Subscription - not found!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -219,7 +219,7 @@ void Animation::autoSubscribe(AnimationInstance* instance)
     }
 
     for (SubscriptionMap::const_iterator it = d_autoSubscriptions.begin();
-         it != d_autoSubscriptions.end(); ++it)
+            it != d_autoSubscriptions.end(); ++it)
     {
         const String& e = it->first;
         const String& a = it->second;
@@ -254,8 +254,8 @@ void Animation::autoSubscribe(AnimationInstance* instance)
         else
         {
             CEGUI_THROW(InvalidRequestException(
-                "Animation::autoSubscribe: Unable to auto subscribe! "
-                "'" + a + "' is not a valid action."));
+                            "Animation::autoSubscribe: Unable to auto subscribe! "
+                            "'" + a + "' is not a valid action."));
         }
 
         instance->addAutoConnection(connection);
@@ -270,10 +270,20 @@ void Animation::autoUnsubscribe(AnimationInstance* instance)
 }
 
 //----------------------------------------------------------------------------//
+void Animation::savePropertyValues(AnimationInstance* instance)
+{
+    for (AffectorList::const_iterator it = d_affectors.begin();
+            it != d_affectors.end(); ++it)
+    {
+        (*it)->savePropertyValues(instance);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Animation::apply(AnimationInstance* instance)
 {
     for (AffectorList::const_iterator it = d_affectors.begin();
-         it != d_affectors.end(); ++it)
+            it != d_affectors.end(); ++it)
     {
         (*it)->apply(instance);
     }

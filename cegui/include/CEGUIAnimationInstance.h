@@ -255,12 +255,41 @@ public:
     */
     bool handleTogglePause(const CEGUI::EventArgs& e);
 
-private:
-    // allow Affector to purge and get base values if needed
-    friend class Affector;
-    // allow animation to register auto connections
-    friend class Animation;
+    /*!
+    \brief
+        Internal method, saves given property (called before it's affected)
+    */
+    void savePropertyValue(const String& propertyName);
 
+    /** this purges all saved values forcing this class to gather new ones fresh
+     * from the properties
+     */
+    void purgeSavedPropertyValues(void);
+
+    /** retrieves saved value, if it isn't cached already, it retrieves it fresh
+     * from the properties
+     */
+    const String& getSavedPropertyValue(const String& propertyName);
+
+    /*!
+    \brief
+        Internal method, adds reference to created auto connection
+
+    \par
+        DO NOT USE THIS DIRECTLY
+    */
+    void addAutoConnection(Event::Connection conn);
+
+    /*!
+    \brief
+        Internal method, unsubscribes auto connections
+
+    \par
+        DO NOT USE THIS DIRECTLY
+    */
+    void unsubscribeAutoConnections();
+
+private:
     //! applies this animation instance
     void apply();
 
@@ -277,20 +306,6 @@ private:
     void onAnimationEnded();
     //! this is called when animation loops (in RM_Loop or RM_Bounce mode)
     void onAnimationLooped();
-
-    /** this purges all base values forcing this class to gather new ones fresh
-     * from the properties
-     */
-    void purgeBaseValues(void);
-    /** retrieves base value, if it isn't cached already, it retrieves it fresh
-     * from the properties
-     */
-    const String& getBaseValue(Affector* affector);
-
-    //! add a reference to subscribed connection
-    void addAutoConnection(Event::Connection conn);
-    //! removes all auto subscribed connections
-    void unsubscribeAutoConnections();
 
     //! parent Animation definition
     Animation* d_definition;
@@ -316,11 +331,11 @@ private:
     //! true if this animation is unpaused
     bool d_running;
 
-    typedef std::map<Affector*, String> BaseValueMap;
-    /** cached base values, used for relative application method, see Affector
-     * class
+    typedef std::map<String, String> PropertyValueMap;
+    /** cached saved values, used for relative application method
+     *  and keyframe property source, see Affector and KeyFrame classes
      */
-    BaseValueMap d_baseValues;
+    PropertyValueMap d_savedPropertyValues;
 
     typedef std::vector<Event::Connection> ConnectionTracker;
     //! tracks auto event connections we make.

@@ -195,7 +195,7 @@ public:
         - Unpause
         - TogglePause
 
-        eventName is the name of the event we want to subscri
+        eventName is the name of the event we want to subscribe to
     */
     void defineAutoSubscription(const String& eventName, const String& action);
 
@@ -237,6 +237,17 @@ public:
         This is internal method! Only use if you know what you're doing!
     */
     void autoUnsubscribe(AnimationInstance* instance);
+
+    /*!
+     \brief
+        Internal method, causes all properties that are used by this animation
+        and it's affectors to be saved
+
+    \par
+        So their values are still known after
+        they've been affected.
+     */
+    void savePropertyValues(AnimationInstance* instance);
 
     /*!
     \brief

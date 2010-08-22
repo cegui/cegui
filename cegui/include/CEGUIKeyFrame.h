@@ -82,6 +82,12 @@ public:
 
     /*!
     \brief
+        Moves this keyframe to a new given position
+    */
+    void moveToPosition(float newPosition);
+
+    /*!
+    \brief
         Retrieves position of this key frame in the animation (in seconds)
     */
     float getPosition() const;
@@ -89,6 +95,12 @@ public:
     /*!
     \brief
         Sets the value of this key frame
+
+    \par
+        This is only used if source property is empty!
+
+    \see
+        KeyFrame::setSourceProperty
     */
     void setValue(const String& value);
 
@@ -97,6 +109,39 @@ public:
         Retrieves value of this key frame
     */
     const String& getValue() const;
+
+    /*!
+    \brief
+        Sets the source property of this key frame
+
+    \par
+        Key frame can get it's value from 2 places, it's either stored inside
+        it (setValue, getValue methods) or it's linked to a property
+        (setSourcePropery, getSourceProperty).
+
+        The decision about what value is used is simple, if there is a source
+        property (sourceProperty is not empty, it's used)
+    */
+    void setSourceProperty(const String& sourceProperty);
+
+    /*!
+    \brief
+        Gets the source property of this key frame
+    */
+    const String& getSourceProperty() const;
+
+    /*!
+    \brief
+        Retrieves value of this for use when animating
+
+    \par
+        This is an internal method! Only use if you know what you're doing!
+
+    \par
+        This returns the base property value if source property is set on this
+        keyframe, it works the same as getValue() if source property is empty
+    */
+    const String& getValueForAnimation(AnimationInstance* instance) const;
 
     /*!
     \brief
@@ -125,6 +170,25 @@ public:
     */
     float alterInterpolationPosition(float position);
 
+    /*!
+    \brief
+        Internal method, if this keyframe is using source property, this
+        saves it's value to given instance before it's affected
+    */
+    void savePropertyValue(AnimationInstance* instance);
+
+    /*!
+    \brief
+        internal method, notifies this keyframe that it has been moved
+
+    \par
+        DO NOT CALL DIRECTLY, should only be used by Affector class
+
+    \see
+        KeyFrame::moveToPosition
+    */
+    void notifyPositionChanged(float newPosition);
+
 private:
     //! parent affector
     Affector* d_parent;
@@ -133,6 +197,8 @@ private:
 
     //! value of this key frame - key value
     String d_value;
+    //! source property
+    String d_sourceProperty;
     //! progression method used towards this key frame
     Progression d_progression;
 };

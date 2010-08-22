@@ -61,10 +61,16 @@ public:
     {
         //! applies values as absolutes
         AM_Absolute,
+
         /** saves a base value after the animation is started and applies
          * relatively to that
          */
-        AM_Relative
+        AM_Relative,
+
+        /** saves a base value after the animation is started and applies
+         * by multiplying this base value with key frame floats
+         */
+        AM_RelativeMultiply
     };
 
     /** internal constructor, please construct Affectors via
@@ -145,7 +151,8 @@ public:
         the KeyFrame
     */
     KeyFrame* createKeyFrame(float position, const String& value,
-                        KeyFrame::Progression progression = KeyFrame::P_Linear);
+                             KeyFrame::Progression progression = KeyFrame::P_Linear,
+                             const String& sourceProperty = "");
 
     /*!
     \brief
@@ -170,6 +177,29 @@ public:
         Returns number of key frames defined in this affector
     */
     size_t getNumKeyFrames() const;
+
+    /*!
+    \brief
+        Moves given key frame to given new position
+    */
+    void moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition);
+
+    /*!
+    \brief
+        Moves key frame at given old position to given new position
+    */
+    void moveKeyFrameToPosition(float oldPosition, float newPosition);
+
+    /*!
+     \brief
+        Internal method, causes all properties that are used by this affector
+        and it's keyframes to be saved
+
+    \par
+        So their values are still known after
+        they've been affected.
+     */
+    void savePropertyValues(AnimationInstance* instance);
 
     /*!
     \brief
