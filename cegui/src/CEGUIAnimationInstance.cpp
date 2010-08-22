@@ -81,7 +81,7 @@ void AnimationInstance::setTarget(PropertySet* target)
 {
     d_target = target;
 
-    purgeBaseValues();
+    purgeSavedPropertyValues();
 
     if (d_definition->getAutoStart() && !isRunning())
     {
@@ -143,9 +143,9 @@ void AnimationInstance::setPosition(float position)
     if (position < 0.0 || position > d_definition->getDuration())
     {
         CEGUI_THROW(InvalidRequestException(
-            "AnimationInstance::setPosition: Unable to set position "
-            "of this animation instace because given position isn't "
-            "in interval [0.0, duration of animation]."));
+                        "AnimationInstance::setPosition: Unable to set position "
+                        "of this animation instace because given position isn't "
+                        "in interval [0.0, duration of animation]."));
     }
 
     d_position = position;
@@ -164,15 +164,15 @@ void AnimationInstance::setSpeed(float speed)
     if (speed < 0.0f)
     {
         CEGUI_THROW(InvalidRequestException(
-            "AnimationInstance::setSpeed: You can't set playback speed "
-            "to a value that's lower than 0.0"));
+                        "AnimationInstance::setSpeed: You can't set playback speed "
+                        "to a value that's lower than 0.0"));
     }
 
     if (speed == 0.0f)
     {
         CEGUI_THROW(InvalidRequestException(
-            "AnimationInstance::setSpeed: You can't set playback speed "
-            "to zero, please use AnimationInstance::pause instead"));
+                        "AnimationInstance::setSpeed: You can't set playback speed "
+                        "to zero, please use AnimationInstance::pause instead"));
     }
 
     d_speed = speed;
@@ -245,9 +245,9 @@ void AnimationInstance::step(float delta)
     if (delta < 0.0f)
     {
         CEGUI_THROW(InvalidRequestException(
-            "AnimationInstance::step: You can't step the Animation Instance "
-            "with negative delta! You can't reverse the flow of time, stop "
-            "trying!"));
+                        "AnimationInstance::step: You can't step the Animation Instance "
+                        "with negative delta! You can't reverse the flow of time, stop "
+                        "trying!"));
     }
 
     const float duration = d_definition->getDuration();
@@ -364,6 +364,56 @@ bool AnimationInstance::handleTogglePause(const CEGUI::EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+void AnimationInstance::savePropertyValue(const String& propertyName)
+{
+    assert(d_target);
+
+    d_savedPropertyValues[propertyName] = d_target->getProperty(propertyName);
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::purgeSavedPropertyValues(void)
+{
+    d_savedPropertyValues.clear();
+}
+
+//----------------------------------------------------------------------------//
+const String& AnimationInstance::getSavedPropertyValue(const String& propertyName)
+{
+    PropertyValueMap::iterator it = d_savedPropertyValues.find(propertyName);
+
+    if (it == d_savedPropertyValues.end())
+    {
+        // even though we explicitly save all used property values when
+        // starting the animation, this can happen when user changes
+        // animation definition whilst the animation is running
+        // (Yes, it's nasty, but people do nasty things)
+        savePropertyValue(propertyName);
+        return getSavedPropertyValue(propertyName);
+    }
+
+    return it->second;
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::addAutoConnection(Event::Connection conn)
+{
+    d_autoConnections.push_back(conn);
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::unsubscribeAutoConnections()
+{
+    for (ConnectionTracker::iterator it = d_autoConnections.begin();
+            it != d_autoConnections.end(); ++it)
+    {
+        (*it)->disconnect();
+    }
+
+    d_autoConnections.clear();
+}
+
+//----------------------------------------------------------------------------//
 void AnimationInstance::apply()
 {
     if (d_target)
@@ -375,7 +425,8 @@ void AnimationInstance::apply()
 //----------------------------------------------------------------------------//
 void AnimationInstance::onAnimationStarted()
 {
-    purgeBaseValues();
+    purgeSavedPropertyValues();
+    d_definition->savePropertyValues(this);
 
     if (d_eventReceiver)
     {
@@ -432,46 +483,6 @@ void AnimationInstance::onAnimationLooped()
         AnimationEventArgs args(this);
         d_eventReceiver->fireEvent(EventAnimationLooped, args, EventNamespace);
     }
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::purgeBaseValues(void)
-{
-    d_baseValues.clear();
-}
-
-//----------------------------------------------------------------------------//
-const String& AnimationInstance::getBaseValue(Affector* affector)
-{
-    BaseValueMap::iterator it = d_baseValues.find(affector);
-
-    if (it == d_baseValues.end())
-    {
-        d_baseValues[affector] =
-            d_target->getProperty(affector->getTargetProperty());
-
-        return d_baseValues[affector];
-    }
-
-    return it->second;
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::addAutoConnection(Event::Connection conn)
-{
-    d_autoConnections.push_back(conn);
-}
-
-//----------------------------------------------------------------------------//
-void AnimationInstance::unsubscribeAutoConnections()
-{
-    for (ConnectionTracker::iterator it = d_autoConnections.begin();
-            it != d_autoConnections.end(); ++it)
-    {
-        (*it)->disconnect();
-    }
-
-    d_autoConnections.clear();
 }
 
 //----------------------------------------------------------------------------//

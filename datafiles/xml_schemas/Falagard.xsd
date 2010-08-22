@@ -430,6 +430,7 @@
 		<xsd:attribute name="position" type="xsd:decimal" use="required" />
 		<xsd:attribute name="value" type="xsd:string" use="required" />
 		<xsd:attribute name="progression" type="xsd:string" use="optional" default="" />
+		<xsd:attribute name="sourceProperty" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 	<xsd:complexType name="animSubscriptionType">
 		<xsd:attribute name="event" type="xsd:string" use="required" />
@@ -446,6 +447,7 @@
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="absolute" />
             <xsd:enumeration value="relative" />
+            <xsd:enumeration value="relative multiply" />
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:simpleType name="animProgressionEnum">

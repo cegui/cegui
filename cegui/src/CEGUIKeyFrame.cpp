@@ -28,6 +28,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIKeyFrame.h"
+#include "CEGUIAnimationInstance.h"
+#include "CEGUIAffector.h"
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -53,6 +55,14 @@ Affector* KeyFrame::getParent() const
 }
 
 //----------------------------------------------------------------------------//
+void KeyFrame::moveToPosition(float newPosition)
+{
+    assert(d_parent);
+
+    d_parent->moveKeyFrameToPosition(d_position, newPosition);
+}
+
+//----------------------------------------------------------------------------//
 float KeyFrame::getPosition() const
 {
     return d_position;
@@ -68,6 +78,31 @@ void KeyFrame::setValue(const String& value)
 const String& KeyFrame::getValue() const
 {
     return d_value;
+}
+
+//----------------------------------------------------------------------------//
+void KeyFrame::setSourceProperty(const String& sourceProperty)
+{
+    d_sourceProperty = sourceProperty;
+}
+
+//----------------------------------------------------------------------------//
+const String& KeyFrame::getSourceProperty() const
+{
+    return d_sourceProperty;
+}
+
+//----------------------------------------------------------------------------//
+const String& KeyFrame::getValueForAnimation(AnimationInstance* instance) const
+{
+    if (!d_sourceProperty.empty())
+    {
+        return instance->getSavedPropertyValue(d_sourceProperty);
+    }
+    else
+    {
+        return d_value;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -103,6 +138,21 @@ float KeyFrame::alterInterpolationPosition(float position)
     // todo: more progression methods?
     assert(0);
     return position;
+}
+
+//----------------------------------------------------------------------------//
+void KeyFrame::savePropertyValue(AnimationInstance* instance)
+{
+    if (!d_sourceProperty.empty())
+    {
+        instance->savePropertyValue(d_sourceProperty);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void KeyFrame::notifyPositionChanged(float newPosition)
+{
+    d_position = newPosition;
 }
 
 //----------------------------------------------------------------------------//

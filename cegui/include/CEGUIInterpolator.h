@@ -70,6 +70,7 @@ public:
     virtual String interpolateAbsolute(const String& value1,
                                        const String& value2,
                                        float position) = 0;
+
     /** this is used when Affector is set to apply values in relative mode
      * (application method == AM_Relative)
      */
@@ -77,6 +78,14 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position) = 0;
+
+    /** this is used when Affector is set to apply values in relative multiply
+     * mode (application method == AM_RelativeMultiply)
+     */
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position) = 0;
 
 };
 

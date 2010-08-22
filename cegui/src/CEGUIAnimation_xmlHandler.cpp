@@ -60,6 +60,7 @@ static const String PropertyAttribute("property");
 static const String InterpolatorAttribute("interpolator");
 static const String PositionAttribute("position");
 static const String ValueAttribute("value");
+static const String SourcePropertyAttribute("sourceProperty");
 static const String ProgressionAttribute("progression");
 static const String EventAttribute("event");
 static const String ActionAttribute("action");
@@ -74,6 +75,7 @@ static const String ReplayModeBounce("bounce");
 // Internal strings for the XML enumeration for application methods.
 static const String ApplicationMethodAbsolute("absolute");
 static const String ApplicationMethodRelative("relative");
+static const String ApplicationMethodRelativeMultiply("relative multiply");
 
 //----------------------------------------------------------------------------//
 // Internal strings for the XML enumeration for progression types.
@@ -209,6 +211,11 @@ AnimationAffectorHandler::AnimationAffectorHandler(
     {
         d_affector->setApplicationMethod(Affector::AM_Relative);
     }
+	else if (attributes.getValueAsString(ApplicationMethodAttribute) ==
+        ApplicationMethodRelativeMultiply)
+    {
+        d_affector->setApplicationMethod(Affector::AM_RelativeMultiply);
+    }
     else
     {
         d_affector->setApplicationMethod(Affector::AM_Absolute);
@@ -275,7 +282,8 @@ AnimationKeyFrameHandler::AnimationKeyFrameHandler(
     affector.createKeyFrame(
         attributes.getValueAsFloat(PositionAttribute),
         attributes.getValueAsString(ValueAttribute),
-        progression);
+        progression,
+        attributes.getValueAsString(SourcePropertyAttribute));
     
     if (affector.getNumKeyFrames() == 1 && !progressionStr.empty())
         Logger::getSingleton().logEvent(

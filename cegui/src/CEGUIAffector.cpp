@@ -106,9 +106,9 @@ KeyFrame* Affector::createKeyFrame(float position)
     if (d_keyFrames.find(position) != d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Affector::createKeyFrame: Unable to create KeyFrame "
-            "at given position, there already is a KeyFrame "
-            "on that position."));
+                        "Affector::createKeyFrame: Unable to create KeyFrame "
+                        "at given position, there already is a KeyFrame "
+                        "on that position."));
     }
 
     KeyFrame* ret = new KeyFrame(this, position);
@@ -120,11 +120,12 @@ KeyFrame* Affector::createKeyFrame(float position)
 
 //----------------------------------------------------------------------------//
 KeyFrame* Affector::createKeyFrame(float position, const String& value,
-                                   KeyFrame::Progression progression)
+                                   KeyFrame::Progression progression, const String& sourceProperty)
 {
     KeyFrame* ret = createKeyFrame(position);
     ret->setValue(value);
     ret->setProgression(progression);
+    ret->setSourceProperty(sourceProperty);
 
     return ret;
 }
@@ -137,8 +138,8 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
     if (it == d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Affector::destroyKeyFrame: Unable to destroy given KeyFrame! "
-            "No such KeyFrame was found."));
+                        "Affector::destroyKeyFrame: Unable to destroy given KeyFrame! "
+                        "No such KeyFrame was found."));
     }
 
     d_keyFrames.erase(it);
@@ -152,8 +153,8 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
     if (it == d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Affector::getKeyFrameAtPosition: Can't find a KeyFrame with given "
-            "position."));
+                        "Affector::getKeyFrameAtPosition: Can't find a KeyFrame with given "
+                        "position."));
     }
 
     return it->second;
@@ -165,7 +166,7 @@ KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
     if (index >= d_keyFrames.size())
     {
         CEGUI_THROW(InvalidRequestException(
-            "Affector::getKeyFrameAtIdx: Out of bounds!"));
+                        "Affector::getKeyFrameAtIdx: Out of bounds!"));
     }
 
     KeyFrameMap::const_iterator it = d_keyFrames.begin();
@@ -178,6 +179,47 @@ KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 size_t Affector::getNumKeyFrames() const
 {
     return d_keyFrames.size();
+}
+
+//----------------------------------------------------------------------------//
+void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
+{
+    moveKeyFrameToPosition(keyframe->getPosition(), newPosition);
+}
+
+//----------------------------------------------------------------------------//
+void Affector::moveKeyFrameToPosition(float oldPosition, float newPosition)
+{
+    KeyFrame* kf = getKeyFrameAtPosition(oldPosition);
+
+    // no need to check for existance, getKeyFrameAtPosition already
+    // does that for us (and throws an exception when kf is not found)
+    d_keyFrames.erase(d_keyFrames.find(oldPosition));
+    d_keyFrames.insert(std::make_pair(newPosition, kf));
+
+    kf->notifyPositionChanged(newPosition);
+}
+
+//----------------------------------------------------------------------------//
+void Affector::savePropertyValues(AnimationInstance* instance)
+{
+    switch (d_applicationMethod)
+    {
+    case AM_Relative:
+    case AM_RelativeMultiply:
+        instance->savePropertyValue(d_targetProperty);
+        break;
+
+    default:
+        break;
+    }
+
+    // now let all keyframes save their desired property values too
+    for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
+            it != d_keyFrames.end(); ++it)
+    {
+        it->second->savePropertyValue(instance);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -211,7 +253,7 @@ void Affector::apply(AnimationInstance* instance)
 
     // find 2 neighbouring keyframes
     for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
-         it != d_keyFrames.end(); ++it)
+            it != d_keyFrames.end(); ++it)
     {
         KeyFrame* current = it->second;
 
@@ -266,8 +308,8 @@ void Affector::apply(AnimationInstance* instance)
     if (d_applicationMethod == AM_Absolute)
     {
         const String result = d_interpolator->interpolateAbsolute(
-                                  left->getValue(),
-                                  right->getValue(),
+                                  left->getValueForAnimation(instance),
+                                  right->getValueForAnimation(instance),
                                   interpolationPosition);
 
         target->setProperty(d_targetProperty, result);
@@ -275,12 +317,25 @@ void Affector::apply(AnimationInstance* instance)
     // relative application method
     else if (d_applicationMethod == AM_Relative)
     {
-        const String& base = instance->getBaseValue(this);
+        const String& base = instance->getSavedPropertyValue(getTargetProperty());
 
         const String result = d_interpolator->interpolateRelative(
                                   base,
-                                  left->getValue(),
-                                  right->getValue(),
+                                  left->getValueForAnimation(instance),
+                                  right->getValueForAnimation(instance),
+                                  interpolationPosition);
+
+        target->setProperty(d_targetProperty, result);
+    }
+    // relative multiply application method
+    else if (d_applicationMethod == AM_RelativeMultiply)
+    {
+        const String& base = instance->getSavedPropertyValue(getTargetProperty());
+
+        const String result = d_interpolator->interpolateRelativeMultiply(
+                                  base,
+                                  left->getValueForAnimation(instance),
+                                  right->getValueForAnimation(instance),
                                   interpolationPosition);
 
         target->setProperty(d_targetProperty, result);

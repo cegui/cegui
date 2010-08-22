@@ -52,6 +52,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT FloatInterpolator : public Interpolator
@@ -68,6 +72,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT UintInterpolator : public Interpolator
@@ -84,6 +92,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT IntInterpolator : public Interpolator
@@ -100,6 +112,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 // this does no interpolation! it just chooses left or right value based on
@@ -118,6 +134,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT SizeInterpolator : public Interpolator
@@ -134,6 +154,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT PointInterpolator : public Interpolator
@@ -150,6 +174,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT Vector3Interpolator : public Interpolator
@@ -166,6 +194,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT RectInterpolator : public Interpolator
@@ -182,6 +214,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT ColourInterpolator : public Interpolator
@@ -198,6 +234,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT ColourRectInterpolator : public Interpolator
@@ -214,6 +254,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT UDimInterpolator : public Interpolator
@@ -230,6 +274,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT UVector2Interpolator : public Interpolator
@@ -246,6 +294,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT URectInterpolator : public Interpolator
@@ -262,6 +314,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 class CEGUIEXPORT UBoxInterpolator : public Interpolator
@@ -278,6 +334,10 @@ public:
                                        const String& value1,
                                        const String& value2,
                                        float position);
+    virtual String interpolateRelativeMultiply(const String& base,
+            const String& value1,
+            const String& value2,
+            float position);
 };
 
 } // End of  CEGUI namespace section
