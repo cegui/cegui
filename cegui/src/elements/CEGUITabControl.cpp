@@ -356,8 +356,7 @@ String TabControl::makeButtonName(Window* wnd)
     // Create the button name as "'auto' parent + 'auto' button + tab name"
     String buttonName = getTabButtonPane()->getName();
     buttonName.append(TabButtonNameSuffix);
-    size_t pathEndPos = wnd->getName().find_last_of("/");
-    buttonName.append(wnd->getName().substr(pathEndPos == String::npos ? 0 : pathEndPos + 1));
+    buttonName.append(wnd->getName());
     return buttonName;
 }
 /*************************************************************************
