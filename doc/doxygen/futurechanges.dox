@@ -13,13 +13,8 @@ Development Discussion</a> forum.
 <br>
 @section futurechanges_shortterm Changes for the short term
 - Further tuning and refinement of new rendering systems.
-- Effect manager and related falagard mapping extentions to allow RenderEffect
-based effects to be registered with the system and automatically used either
-via a new attribute in Falagard mappings and/or maybe a window property.
 - Various enhancements to the Falagard skinning system (to be detailed elsewhere
 some time soon!)
-- Sizer / Layout control widgets to assist in laying out windows.
-- Add functions for better control of z-ordering of sibling windows.
 - Refactoring cleanup and other enhancements to the samples framework.
 
 <br>
