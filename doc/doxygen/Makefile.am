@@ -4,6 +4,7 @@ EXTRA_DIST = BuildDocs.bat \
              changelog.dox \
              code_standards.dox \
              compiling.dox \
+             data_licensing.dox \
              devel.dox \
              downloading.dox \
              doxyfile \
