@@ -202,7 +202,14 @@ UVector2 LayoutContainer::getOffsetForWindow(Window* window) const
 //----------------------------------------------------------------------------//
 UVector2 LayoutContainer::getBoundingSizeForWindow(Window* window) const
 {
-    const UVector2 size = window->getSize();
+    const Size& pixelSize = window->getPixelSize();
+
+    // we rely on pixelSize rather than mixed absolute and relative getSize
+    // this seems to solve problems when windows overlap because their size
+    // is constrained by min size
+    const UVector2 size(UDim(0, pixelSize.d_width), UDim(0, pixelSize.d_height));
+    // todo: we still do mixed absolute/relative margin, should we convert the
+    //       value to absolute?
     const UBox& margin = window->getMargin();
 
     return UVector2(
