@@ -2462,6 +2462,9 @@
 		DAD7DF3D1218707A00E4CFCD /* AnimationManager.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AnimationManager.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/AnimationManager.pkg; sourceTree = SOURCE_ROOT; };
 		DAD7DF3E1218707A00E4CFCD /* Interpolator.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Interpolator.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Interpolator.pkg; sourceTree = SOURCE_ROOT; };
 		DAD7DF3F1218707A00E4CFCD /* KeyFrame.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = KeyFrame.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/KeyFrame.pkg; sourceTree = SOURCE_ROOT; };
+		DAE198311227EF0E00DAC4F8 /* data_licensing.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = data_licensing.dox; path = ../../doc/doxygen/data_licensing.dox; sourceTree = SOURCE_ROOT; };
+		DAE198321227EF0E00DAC4F8 /* tolua++README.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "tolua++README.dox"; path = "../../doc/doxygen/tolua++README.dox"; sourceTree = SOURCE_ROOT; };
+		DAE198331227EF0E00DAC4F8 /* xml_animation.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = xml_animation.dox; path = ../../doc/doxygen/xml_animation.dox; sourceTree = SOURCE_ROOT; };
 		DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBiDiVisualMapping.h; path = ../../cegui/include/CEGUIBiDiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFribidiVisualMapping.h; path = ../../cegui/include/CEGUIFribidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIMinibidiVisualMapping.h; path = ../../cegui/include/CEGUIMinibidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
@@ -3353,6 +3356,7 @@
 				DA1093AA0F6D583800B8A582 /* changelog.dox */,
 				DA1093A50F6D583800B8A582 /* code_standards.dox */,
 				DA674A191035D8A600872D1D /* compiling.dox */,
+				DAE198311227EF0E00DAC4F8 /* data_licensing.dox */,
 				DA1093A70F6D583800B8A582 /* devel.dox */,
 				DA1093A60F6D583800B8A582 /* doxyfile */,
 				DABEE4C11036C3C5001B58DA /* downloading.dox */,
@@ -3364,6 +3368,8 @@
 				DA674A1B1035D8A600872D1D /* porting6to7.dox */,
 				DA1093AD0F6D583800B8A582 /* stringencoders-lic.dox */,
 				DA1093AE0F6D583800B8A582 /* tinyxml-lic.dox */,
+				DAE198321227EF0E00DAC4F8 /* tolua++README.dox */,
+				DAE198331227EF0E00DAC4F8 /* xml_animation.dox */,
 				DA674A1C1035D8A600872D1D /* xml_confg.dox */,
 				DA674A1D1035D8A600872D1D /* xml_font.dox */,
 				DA674A1E1035D8A600872D1D /* xml_imageset.dox */,
