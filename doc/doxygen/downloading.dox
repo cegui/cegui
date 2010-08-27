@@ -20,8 +20,8 @@ Source code from the stable subversion branch is released at various points in
 time and made available as source code packages.
 
 The current stable packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-0.7.1.tar.gz/download">CEGUI-0.7.1.tar.gz</a> Source code package for GNU/Linux and Apple Mac
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-0.7.1.zip/download">CEGUI-0.7.1.zip</a> Source code package for Microsoft Windows
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.2/CEGUI-0.7.2.tar.gz/download">CEGUI-0.7.2.tar.gz</a> Source code package for GNU/Linux and Apple Mac
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.2/CEGUI-0.7.2.zip/download">CEGUI-0.7.2.zip</a> Source code package for Microsoft Windows
 
 These archives are identical with the exception that the .zip file
 contains a copy of the premake executable which is used to generate the MSVC++
@@ -33,8 +33,8 @@ We currently provide precompiled binary versions of CEGUI compiled for use with
 either MSVC++ 2005 SP1 (version 8) or MSVC++ 2008 (version 9)
 
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-vc8.zip/download">CEGUI-SDK-0.7.1-vc8.zip</a> Precompiled binary SDK for MSVC++ 2005(SP1)
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-vc9.zip/download">CEGUI-SDK-0.7.1-vc9.zip</a> Precompiled binary SDK for MSVC++ 2008
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.2/CEGUI-SDK-0.7.2-vc8.zip/download">CEGUI-SDK-0.7.2-vc8.zip</a> Precompiled binary SDK for MSVC++ 2005(SP1)
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.2/CEGUI-SDK-0.7.2-vc9.zip/download">CEGUI-SDK-0.7.2-vc9.zip</a> Precompiled binary SDK for MSVC++ 2008
 
 For users who wish to compile the code themselves, we also provide binary
 packages containing the precompiled dependency libraries that CEGUI uses.  These
@@ -53,7 +53,7 @@ We currently provide precompiled binary versions of CEGUI compiled for use with
 Apple Mac OS X users running Xcode.
 
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.1/CEGUI-SDK-0.7.1-mac.zip/download">CEGUI-SDK-0.7.1-mac.zip</a> Precompiled universal binary for Apple Mac OS X
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.2/CEGUI-SDK-0.7.2-mac.zip/download">CEGUI-SDK-0.7.2-mac.zip</a> Precompiled universal binary for Apple Mac OS X
 
 For users who wish to compile the code themselves, we also provide binary
 packages containing the precompiled dependency libraries that CEGUI uses.  These

@@ -17,6 +17,7 @@ EXTRA_DIST = BuildDocs.bat \
              stringencoders-lic.dox \
              tinyxml-lic.dox \
              tolua++README.dox \
+			 xml_animation.dox \
              xml_confg.dox \
              xml_font.dox \
              xml_imageset.dox \
