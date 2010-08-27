@@ -15,13 +15,71 @@ which is covered in @ref resprov_tutorial and @ref datafile_tutorial.  You'll al
 to get your inputs into the system so that you can interact with the GUI
 elements, this is covered in @ref input_tutorial.
 
-For Ogre3D and Irrlicht users, there are helper 'bootstrap' functions to create
-the renderer, system and other related objects in one go.  These functions exist
-because those engines have additional supporting objects (engine specific
-ResourceProvider and ImageCodec implementations) that will be desired by most
-users, most of the time, so these helpers offer a simplified interface for
-getting the system up and running on those engines.  As such Ogre3D and Irrlicht
-users can skip to @ref rendering_tutorial_bootstrap.
+<br>
+@section rendering_tutorial_bootstrap The Easy Way: Renderer 'bootstrapSystem' functions
+This section describes the quickset and easiest way to get CEGUI up and running,
+and that is to use the static 'bootstrap' helper functions that are available on the
+Renderer class for your chosen API or engine.  Unless you're doing something advanced or
+otherwise unusual, these are the fuctions you'll want to use, since they enable the
+creation of all the initial CEGUI objects in a single call.
+
+Note that the Renderers also have destroySystem functions for cleaning up afterwards.
+
+The Ogre3D and Irrlicht engines each have their own intergrated file loading and
+image parsing functionality which CEGUI can seamlessly make use of via custom
+implementations of the CEGUI::ResourceProvider and CEGUI::ImageCodec interfaces.
+In order to make use of these implementations, the user would typically be
+required to create instances of these objects and pass them, along with the
+CEGUI::Renderer, to the System::create function.  Since this over-complicates
+system construction for even the most simplest of uses, the bootstrapSystem
+functions for those Renderers will creates all these supporting objects automatically.
+
+As stated above, when using the boostrapSystem functions, starting up CEGUI is
+as simple as a single function call:
+
+@subsection rendering_tutorial_bootstrap_opengl OpenGL
+@code
+// Bootstrap CEGUI::System with an OpenGLRenderer object that uses the
+// current GL viewport, the DefaultResourceProvider, and the default
+// ImageCodec.
+CEGUI::OpenGLRenderer& myRenderer =
+    CEGUI::OpenGLRenderer::bootstrapSystem();
+@endcode
+
+@subsection rendering_tutorial_bootstrap_d3d Direct3D
+Note that this code shows the D3D9 renderer, but the D3D10 and D3D11
+renderers are largely the same.
+@code
+// Bootstrap CEGUI::System with a Direct3D9Renderer object that uses the
+// DefaultResourceProvider, and the default ImageCodec.
+CEGUI::Direct3D9Renderer& myRenderer =
+    CEGUI::Direct3D9Renderer::bootstrapSystem( myD3D9Device );
+@endcode
+
+@subsection rendering_tutorial_bootstrap_ogre Ogre3D
+@code
+// Bootstrap CEGUI::System with an OgreRenderer object that uses the
+// default Ogre rendering window as the default output surface, an Ogre based
+// ResourceProvider, and an Ogre based ImageCodec.
+CEGUI::OgreRenderer& myRenderer =
+    CEGUI::OgreRenderer::bootstrapSystem();
+@endcode
+
+@subsection rendering_tutorial_bootstrap_irrlicht Irrlicht
+@code
+// Bootstrap CEGUI::System with an IrrlichtRenderer object, an Irrlicht based
+// ResourceProvider, and an Irrlicht based ImageCodec.
+CEGUI::IrrlichtRenderer& myRenderer =
+    CEGUI::IrrlichtRenderer::bootstrapSystem( myIrrlichtDevice );
+@endcode
+
+<br>
+@section rendering_tutorial_nonbootstrap The Hard Way: Manual object creation.
+If for some reason you don't want to use the bootstrapSystem functions, you
+can still, of course, create all the required objects manually.  The following
+describes the creation of the Renderer and System objects via separate calls.
+Note that if you have already used the boostrapSystem function, you do not need
+to perform the following steps, and can instead skip to @ref rendering_tutorial_draw
 
 <br>
 @section rendering_tutorial_renderer Create an instance of a CEGUI::Renderer based object
@@ -163,46 +221,9 @@ myDirectFBSurface->Flip(myDirectFBSurface, 0, (DFBSurfaceFlipFlags)0);
 @endcode
 
 <br>
-@section rendering_tutorial_bootstrap Ogre3D and Irrlicht 'bootstrapSystem' functions
-This section describes the Ogre3D and Irrlicht specific 'bootstrap' helper
-functions.  Unless you're using one of these engines, you can probably skip
-to @ref rendering_tutorial_conclusion.
-
-The Ogre3D and Irrlicht engines each have their own intergrated file loading and
-image parsing functionality which CEGUI can seamlessly make use of via custom
-implementations of the CEGUI::ResourceProvider and CEGUI::ImageCodec interfaces.
-In order to make use of these implementations, the user would typically be
-required to create instances of these objects and pass them, along with the
-CEGUI::Renderer, to the System::create function.  Since this over-complicates
-system construction for even the most simplest of uses, the renderer for each
-of these engines provides one or more bootstrapSystem functions that creates all
-those supporting objects automatically (there are also destroySystem functions
-for cleaning up afterwards).
-
-When using the boostrapSystem functions, starting up CEGUI is as simple as a
-single function call:
-
-@subsection rendering_tutorial_bootstrap_ogre Ogre3D
-@code
-// Bootstrap CEGUI::System with an OgreRenderer object that uses the
-// default Ogre rendering window as the default output surface, an Ogre based
-// ResourceProvider, and an Ogre based ImageCodec.
-CEGUI::OgreRenderer& myRenderer =
-    CEGUI::OgreRenderer::bootstrapSystem();
-@endcode
-
-@subsection rendering_tutorial_bootstrap_irrlicht Irrlicht
-@code
-// Bootstrap CEGUI::System with an IrrlichtRenderer object, an Irrlicht based
-// ResourceProvider, and an Irrlicht based ImageCodec.
-CEGUI::IrrlichtRenderer& myRenderer =
-    CEGUI::IrrlichtRenderer::bootstrapSystem( myIrrlichtDevice );
-@endcode
-
-<br>
 @section rendering_tutorial_conclusion Conclusion
 This is the <em>most basic</em> introduction to setting up CEGUI to render.
-There are things not covered here, such as using different scene managers in
+There are things not covered here, such as using different rendering targets in
 Ogre and advanced options such as user specified resource providers, and so on.
 
 */ 
