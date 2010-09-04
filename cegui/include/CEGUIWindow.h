@@ -2916,7 +2916,7 @@ public:
     \return
         Nothing.
     */
-    void update(float elapsed);
+    virtual void update(float elapsed);
 
     /*!
     \brief

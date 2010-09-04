@@ -106,6 +106,9 @@ public:
     /// @copydoc Window::getUnclippedInnerRect_impl
     virtual Rect getUnclippedInnerRect_impl(void) const;
 
+    /// @copydoc Window::update
+    virtual void update(float elapsed);
+
 protected:
     /// @copydoc Window::getClientChildWindowContentArea_impl
     virtual Rect getClientChildWindowContentArea_impl() const;
@@ -124,8 +127,6 @@ protected:
     virtual void addChild_impl(Window* wnd);
     /// @copydoc Window::removeChild_impl
     virtual void removeChild_impl(Window* wnd);
-    /// @copydoc Window::drawSelf
-    virtual void drawSelf(const RenderingContext& ctx);
 
     /*************************************************************************
         Event trigger methods
