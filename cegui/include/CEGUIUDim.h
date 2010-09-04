@@ -49,6 +49,7 @@ class CEGUIEXPORT UDim
 public:
     UDim() {}
     UDim(float scale, float offset) : d_scale(scale), d_offset(offset) {}
+    UDim(const UDim& v): d_scale(v.d_scale), d_offset(v.d_offset) {}
     ~UDim() {}
 
     float asAbsolute(float base) const
@@ -129,6 +130,7 @@ class CEGUIEXPORT UVector2
 public:
     UVector2() {}
     UVector2(const UDim& x, const UDim& y) : d_x(x), d_y(y) {}
+    UVector2(const UVector2& v): d_x(v.d_x), d_y(v.d_y) {}
     ~UVector2() {}
 
     Vector2 asAbsolute(const Size& base) const
@@ -255,6 +257,8 @@ public:
         d_max.d_y = bottom;
     }
 
+    URect(const URect& v): d_min(v.d_min), d_max(v.d_max) {}
+
     ~URect() {}
 
     Rect asAbsolute(const Size& base) const
@@ -321,6 +325,16 @@ public:
         d_max += sz;
     }
 
+    URect operator*(const UDim& dim) const
+    {
+        return URect(d_min * dim, d_max * dim);
+    }
+
+    URect operator+(const URect& r) const
+    {
+        return URect(d_min + r.d_min, d_max + r.d_max);
+    }
+
     UVector2 d_min, d_max;
 };
 
@@ -338,31 +352,31 @@ class CEGUIEXPORT UBox
 {
 public:
     UBox():
-        d_top(),
-        d_left(),
-        d_bottom(),
-        d_right()
+            d_top(),
+            d_left(),
+            d_bottom(),
+            d_right()
     {}
 
     UBox(const UDim& margin):
-        d_top(margin),
-        d_left(margin),
-        d_bottom(margin),
-        d_right(margin)
+            d_top(margin),
+            d_left(margin),
+            d_bottom(margin),
+            d_right(margin)
     {}
 
     UBox(const UDim& top, const UDim& left, const UDim& bottom, const UDim& right):
-        d_top(top),
-        d_left(left),
-        d_bottom(bottom),
-        d_right(right)
+            d_top(top),
+            d_left(left),
+            d_bottom(bottom),
+            d_right(right)
     {}
 
     UBox(const UBox& b):
-        d_top(b.d_top),
-        d_left(b.d_left),
-        d_bottom(b.d_bottom),
-        d_right(b.d_right)
+            d_top(b.d_top),
+            d_left(b.d_left),
+            d_bottom(b.d_bottom),
+            d_right(b.d_right)
     {}
 
     /*************************************************************************
@@ -389,6 +403,20 @@ public:
         d_right = rhs.d_right;
 
         return *this;
+    }
+
+    UBox operator*(const UDim& dim) const
+    {
+        return UBox(
+                   d_top * dim, d_left * dim,
+                   d_bottom * dim, d_right * dim);
+    }
+
+    UBox operator+(const UBox& b) const
+    {
+        return UBox(
+                   d_top + b.d_top, d_left + b.d_left,
+                   d_bottom + b.d_bottom, d_right + b.d_right);
     }
 
     /*************************************************************************

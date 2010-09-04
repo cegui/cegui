@@ -103,6 +103,8 @@ const String Window::EventRotated("Rotated");
 const String Window::EventNonClientChanged("NonClientChanged");
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
+const String Window::EventMouseEntersArea("MouseEntersArea");
+const String Window::EventMouseLeavesArea("MouseLeavesArea");
 const String Window::EventMouseEnters("MouseEnter");
 const String Window::EventMouseLeaves("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
@@ -1720,6 +1722,10 @@ void Window::destroy(void)
         return;
     }
 
+    // signal our imminent destruction
+    WindowEventArgs args(this);
+    onDestructionStarted(args);
+
     releaseInput();
 
     // let go of the tooltip if we have it
@@ -1730,6 +1736,14 @@ void Window::destroy(void)
     // ensure custom tooltip is cleaned up
     setTooltip(static_cast<Tooltip*>(0));
 
+    // clean up looknfeel related things
+    if (!d_lookName.empty())
+    {
+        d_windowRenderer->onLookNFeelUnassigned();
+        WidgetLookManager::getSingleton().getWidgetLook(d_lookName).
+            cleanUpWidget(*this);
+    }
+
     // free any assigned WindowRenderer
     if (d_windowRenderer != 0)
     {
@@ -1738,10 +1752,6 @@ void Window::destroy(void)
             destroyWindowRenderer(d_windowRenderer);
         d_windowRenderer = 0;
     }
-
-    // signal our imminent destruction
-    WindowEventArgs args(this);
-    onDestructionStarted(args);
 
     // double check we are detached from parent
     if (d_parent)
@@ -2810,6 +2820,18 @@ void Window::onChildRemoved(WindowEventArgs& e)
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
     fireEvent(EventChildRemoved, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMouseEntersArea(MouseEventArgs& e)
+{
+    fireEvent(EventMouseEntersArea, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onMouseLeavesArea(MouseEventArgs& e)
+{
+    fireEvent(EventMouseLeavesArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

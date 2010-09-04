@@ -11,6 +11,9 @@ class WindowManager : public EventSet
     void writeWindowLayoutToStream(utf8string window, OutStream& out, bool writeParent=false) const;
     void writeWindowLayoutToStream(const Window& window, OutStream& out, bool writeParent=false) const;
 
+    void saveWindowLayout(utf8string window, utf8string filename, bool writeParent = false) const;
+    void saveWindowLayout(const Window& window, utf8string filename, bool writeParent = false) const;
+
 	void destroyWindow(utf8string name);
 	void destroyWindow(Window* window);
 	void destroyAllWindows();

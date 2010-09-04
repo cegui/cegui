@@ -29,7 +29,10 @@
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIAnimationManager.h"
+#include "CEGUIAnimationInstance.h"
 #include <iostream>
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -178,6 +181,15 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
         (*prop).apply(widget);
     }
 
+    // create animation instances
+    for (AnimationList::const_iterator anim = d_animations.begin(); anim != d_animations.end(); ++anim)
+    {
+        AnimationInstance* instance =
+            AnimationManager::getSingleton().instantiateAnimation(*anim);
+
+        d_animationInstances.insert(std::make_pair(&widget, instance));
+        instance->setTargetWindow(&widget);
+    }
 }
 
 //---------------------------------------------------------------------------//
@@ -216,6 +228,14 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
     {
         // remove the property from the window
         widget.removeProperty((*linkdef).getName());
+    }
+
+    // clean up animation instances assoicated wit the window.
+    AnimationInstanceMap::iterator anim;
+    while ((anim = d_animationInstances.find(&widget)) != d_animationInstances.end())
+    {
+        AnimationManager::getSingleton().destroyAnimationInstance(anim->second);
+        d_animationInstances.erase(anim);
     }
 }
 
@@ -427,6 +447,17 @@ const WidgetComponent* WidgetLookFeel::findWidgetComponent(
     }
 
     return 0;
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::addAnimationName(const String& anim_name)
+{
+    AnimationList::iterator it = std::find(d_animations.begin(),
+                                           d_animations.end(),
+                                           anim_name);
+
+    if (it == d_animations.end())
+        d_animations.push_back(anim_name);
 }
 
 //---------------------------------------------------------------------------//

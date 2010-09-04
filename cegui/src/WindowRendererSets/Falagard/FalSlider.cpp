@@ -74,8 +74,11 @@ namespace CEGUI
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
+        const Size w_pixel_size(w->getPixelSize());
+
         // get base location for thumb widget
-        UVector2 thumbPosition(cegui_absdim(area.d_left), cegui_absdim(area.d_top));
+        UVector2 thumbPosition(cegui_reldim(area.d_left / w_pixel_size.d_width),
+                               cegui_reldim(area.d_top / w_pixel_size.d_height));
 
         // Is this a vertical slider
         if (d_vertical)
@@ -84,18 +87,18 @@ namespace CEGUI
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
 
             // Set range of motion for the thumb widget
-            if (w->getPixelSize().d_height != 0.0f)
-                theThumb->setVertRange(area.d_top  / w->getPixelSize().d_height,
-                                       (area.d_top + slideExtent) / w->getPixelSize().d_height);
+            if (w_pixel_size.d_height != 0.0f)
+                theThumb->setVertRange(area.d_top  / w_pixel_size.d_height,
+                                       (area.d_top + slideExtent) / w_pixel_size.d_height);
             else
                 theThumb->setVertRange(0.0f, 0.0f);
 
             // calculate vertical positon for thumb
             float thumbOffset = w->getCurrentValue() * (slideExtent / w->getMaxValue());
 
-            if (w->getPixelSize().d_height != 0.0f)
+            if (w_pixel_size.d_height != 0.0f)
                 thumbPosition.d_y.d_scale +=
-                    (d_reversed ? thumbOffset : slideExtent - thumbOffset) / w->getPixelSize().d_height;
+                    (d_reversed ? thumbOffset : slideExtent - thumbOffset) / w_pixel_size.d_height;
         }
         // Horizontal slider
         else
@@ -104,9 +107,9 @@ namespace CEGUI
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
 
             // Set range of motion for the thumb widget
-            if (w->getPixelSize().d_width != 0.0f)
-                theThumb->setHorzRange(area.d_left / w->getPixelSize().d_width,
-                                       (area.d_left + slideExtent) / w->getPixelSize().d_width);
+            if (w_pixel_size.d_width != 0.0f)
+                theThumb->setHorzRange(area.d_left / w_pixel_size.d_width,
+                                       (area.d_left + slideExtent) / w_pixel_size.d_width);
             else
                 theThumb->setHorzRange(0.0f, 0.0f);
 
@@ -114,9 +117,9 @@ namespace CEGUI
             // calculate horizontal positon for thumb
             float thumbOffset = w->getCurrentValue() * (slideExtent / w->getMaxValue());
 
-            if (w->getPixelSize().d_width != 0.0f)
+            if (w_pixel_size.d_width != 0.0f)
                 thumbPosition.d_x.d_scale +=
-                    (d_reversed ? slideExtent - thumbOffset : thumbOffset)  / w->getPixelSize().d_width;
+                    (d_reversed ? slideExtent - thumbOffset : thumbOffset)  / w_pixel_size.d_width;
         }
 
         // set new position for thumb.

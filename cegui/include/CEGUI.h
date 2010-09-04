@@ -31,6 +31,11 @@
 #define _CEGUI_h_
 
 // base stuff
+#include "CEGUIAffector.h"
+#include "CEGUIAnimation.h"
+#include "CEGUIAnimationInstance.h"
+#include "CEGUIAnimationManager.h"
+#include "CEGUIBasicInterpolators.h"
 #include "CEGUIBasicRenderedStringParser.h"
 #include "CEGUIBiDiVisualMapping.h"
 #include "CEGUICentredRenderedString.h"
@@ -50,7 +55,9 @@
 #include "CEGUIImageCodec.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIInputEvent.h"
+#include "CEGUIInterpolator.h"
 #include "CEGUIJustifiedRenderedString.h"
+#include "CEGUIKeyFrame.h"
 #include "CEGUILeftAlignedRenderedString.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIPropertyHelper.h"
@@ -106,3 +113,4 @@
 #include "elements/CEGUIAll.h"
 
 #endif	// end of guard _CEGUI_h_
+

@@ -47,6 +47,14 @@ $pfile "RenderingWindow.pkg"
 $pfile "Renderer.pkg"
 $pfile "Texture.pkg"
 
+// Animation system classes
+$pfile "KeyFrame.pkg"
+$pfile "Affector.pkg"
+$pfile "AnimationInstance.pkg"
+$pfile "Animation.pkg"
+$pfile "AnimationManager.pkg"
+$pfile "Interpolator.pkg"
+
 // elements
 $pfile "elements/GUISheet.pkg"
 $pfile "elements/Tree.pkg"

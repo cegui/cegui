@@ -192,7 +192,6 @@ protected:
     // if true, we will relayout before rendering of this window starts
     bool d_needsLayouting;
 
-    // no need for multimap
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;

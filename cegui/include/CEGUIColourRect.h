@@ -198,6 +198,26 @@ public:
     */
     ColourRect& operator*=(const ColourRect& other);
 
+	inline ColourRect operator*(const float val) const
+    {       
+        return ColourRect(
+            d_top_left * val, 
+            d_top_right * val, 
+            d_bottom_left * val,
+            d_bottom_right * val 
+        );  
+    }
+
+	inline ColourRect operator+(const ColourRect& val) const
+    {       
+        return ColourRect(
+            d_top_left + val.d_top_left, 
+            d_top_right + val.d_top_right, 
+            d_bottom_left + val.d_bottom_left,
+            d_bottom_right + val.d_bottom_right 
+        );  
+    }
+
 
 	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };

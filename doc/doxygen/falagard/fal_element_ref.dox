@@ -1714,6 +1714,7 @@ Note: the sub-elements should appear in the order that they are defined here.
         <li>Any number of @c \<Child\> sub-elements defining component child widgets.</li>
         <li>Any number of @c \<ImagerySection\> sub-elements defining imagery for the widget.</li>
         <li>Any number of @c \<StateImagery\> sub-elements defining what to draw for widget states.</li>
+        <li>Any number of @c \<AnimationDefinition\> sub-elements defining animations for the WidgetLook.  See: @ref xml_animation</li>
     </ul>
 
     <li>The @c \<WidgetLook\> element may only appear as sub-elements of the root @c \<Falagard\> element.</li>
