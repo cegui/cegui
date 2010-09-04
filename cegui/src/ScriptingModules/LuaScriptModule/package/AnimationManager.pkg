@@ -1,0 +1,38 @@
+/***********************************************************************
+    AnimationManager
+*************************************************************************/
+
+class AnimationManager
+{
+    static AnimationManager& getSingleton();
+
+    void addInterpolator(Interpolator* interpolator);
+    void removeInterpolator(Interpolator* interpolator);
+    Interpolator* getInterpolator(utf8string name) const;
+
+    Animation* createAnimation(utf8string name);
+    tolua_throws|CEGUI::InvalidRequestException,error| void destroyAnimation(Animation* animation);
+    tolua_throws|CEGUI::InvalidRequestException,error| void destroyAnimation(utf8string name);
+    tolua_throws|CEGUI::InvalidRequestException,nil| Animation* getAnimation(utf8string name) const;
+    tolua_throws|CEGUI::InvalidRequestException,nil| Animation* getAnimationAtIdx(size_t index) const;
+
+    size_t getNumAnimations() const;
+
+    tolua_throws|CEGUI::InvalidRequestException,nil| AnimationInstance* instantiateAnimation(Animation* animation);
+    tolua_throws|CEGUI::InvalidRequestException,nil| AnimationInstance* instantiateAnimation(utf8string name);
+    tolua_throws|CEGUI::InvalidRequestException,error| void destroyAnimationInstance(AnimationInstance* instance);
+    void destroyAllInstancesOfAnimation(Animation* animation);
+
+    tolua_throws|CEGUI::InvalidRequestException,nil| AnimationInstance* getAnimationInstanceAtIdx(size_t index) const;
+
+    size_t getNumAnimationInstances() const;
+
+    void stepInstances(float delta);
+
+    void loadAnimationsFromXML(utf8string filename,
+                               utf8string resourceGroup = "");
+
+    static void setDefaultResourceGroup(utf8string resourceGroup);
+    static string getDefaultResourceGroup();
+};
+

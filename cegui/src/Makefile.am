@@ -19,11 +19,19 @@ endif
 
 lib_LTLIBRARIES=libCEGUIBase@cegui_bsfx@.la
 
-libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
+libCEGUIBase@cegui_bsfx@_la_SOURCES = \
+                      CEGUIAffector.cpp \
+                      CEGUIAnimation.cpp \
+                      CEGUIAnimationInstance.cpp \
+                      CEGUIAnimationManager.cpp \
+                      CEGUIAnimation_xmlHandler.cpp \
+                      CEGUIBase.cpp \
+                      CEGUIBasicInterpolators.cpp \
                       CEGUIBasicRenderedStringParser.cpp \
                       CEGUIBiDiVisualMapping.cpp \
                       CEGUIBoundSlot.cpp \
                       CEGUICentredRenderedString.cpp \
+                      CEGUIChainedXMLHandler.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
@@ -54,6 +62,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = CEGUIBase.cpp \
                       CEGUIJustifiedRenderedString.cpp \
                       CEGUIJustifiedRenderedStringWordWrapper.cpp \
                       CEGUILeftAlignedRenderedString.cpp \
+                      CEGUIKeyFrame.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUINamedXMLResourceManager.cpp \

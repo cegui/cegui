@@ -226,7 +226,7 @@ public:
 	*/
 	bool	operator!=(const ConstBaseIterator<T>& rhs) const
 	{
-		return !this == rhs;
+		return !operator==(rhs);
 	}
 
 

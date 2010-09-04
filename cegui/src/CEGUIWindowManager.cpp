@@ -463,5 +463,27 @@ bool WindowManager::isLocked() const
 }
 
 //----------------------------------------------------------------------------//
+void WindowManager::saveWindowLayout(const String& window,
+                                     const String& filename,
+                                     const bool writeParent) const
+{
+    saveWindowLayout(*getWindow(window), filename, writeParent);
+}
+
+//----------------------------------------------------------------------------//
+void WindowManager::saveWindowLayout(const Window& window,
+                                     const String& filename,
+                                     const bool writeParent) const
+{
+    std::ofstream stream(filename.c_str());
+
+    if (!stream.good())
+        CEGUI_THROW(FileIOException("WindowManager::saveWindowLayout: "
+            "failed to create stream for writing."));
+
+    writeWindowLayoutToStream(window, stream, writeParent);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

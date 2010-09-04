@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalagard_xmlHandler_h_
 #define _CEGUIFalagard_xmlHandler_h_
 
-#include "../CEGUIXMLHandler.h"
+#include "../CEGUIChainedXMLHandler.h"
 #include "../CEGUIcolour.h"
 #include "CEGUIFalDimensions.h"
 #include "../CEGUIWindow.h"
@@ -57,7 +57,7 @@ namespace CEGUI
     \brief
         Handler class used to parse look & feel XML files used by the Falagard system.
     */
-    class Falagard_xmlHandler : public XMLHandler
+    class Falagard_xmlHandler : public ChainedXMLHandler
     {
     public:
         /*!
@@ -72,11 +72,13 @@ namespace CEGUI
         */
         ~Falagard_xmlHandler();
 
+    protected:
         /*************************************************************************
-            XMLHandler base class overrides
+            ChainedXMLHandler base class overrides
         *************************************************************************/
-        void elementStart(const String& element, const XMLAttributes& attributes);
-        void elementEnd(const String& element);
+        void elementStartLocal(const String& element,
+                               const XMLAttributes& attributes);
+        void elementEndLocal(const String& element);
 
     private:
         /*************************************************************************
@@ -431,6 +433,9 @@ namespace CEGUI
 
         //! Function to handle PropertyLinkTarget elements.
         void elementPropertyLinkTargetStart(const XMLAttributes& attributes);
+        
+        //! Function to handle AnimationDefinition elements
+        void elementAnimationDefinitionStart(const XMLAttributes& attributes);
 
         /*!
         \brief
@@ -560,3 +565,4 @@ namespace CEGUI
 
 
 #endif  // end of guard _CEGUIFalagard_xmlHandler_h_
+

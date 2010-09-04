@@ -297,7 +297,7 @@ public:
 		iterator operator+(difference_type offset) const
 		{
 			iterator temp = *this;
-			return temp + offset;
+			return temp += offset;
 		}
 
 		iterator& operator-=(difference_type offset)

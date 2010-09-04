@@ -60,8 +60,8 @@ namespace CEGUI
         Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
         Rect wndArea(w->getArea().asAbsolute(w->getParentPixelSize()));
 
-        sz.d_width  += wndArea.getWidth() - textArea.getWidth();
-        sz.d_height += wndArea.getHeight() - textArea.getHeight();
+        sz.d_width  = PixelAligned(sz.d_width + wndArea.getWidth() - textArea.getWidth());
+        sz.d_height = PixelAligned(sz.d_height + wndArea.getHeight() - textArea.getHeight());
         return sz;
     }
 

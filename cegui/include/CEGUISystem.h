@@ -1232,6 +1232,14 @@ private:
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
 
+    //! return common ancestor of two windows.
+    Window* getCommonAncestor(Window* w1, Window* w2);
+
+    //! call some function for a chain of windows: (top, bottom]
+    void notifyMouseTransition(Window* top, Window* bottom,
+                               void (Window::*func)(MouseEventArgs&),
+                               MouseEventArgs& args);
+
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/

@@ -1,4 +1,8 @@
-EXTRA_DIST = Basic.pkg \
+EXTRA_DIST = Affector.pkg \
+             AnimationInstance.pkg \
+             AnimationManager.pkg \
+             Animation.pkg \
+             Basic.pkg \
              CEGUI.pkg \
              CoordConverter.pkg \
              EventSet.pkg \
@@ -10,8 +14,10 @@ EXTRA_DIST = Basic.pkg \
              Imageset.pkg \
              ImagesetManager.pkg \
              InputEvent.pkg \
+             Interpolator.pkg \
              Iterators.pkg \
              Key.pkg \
+             KeyFrame.pkg \
              Logger.pkg \
              MouseCursor.pkg \
              OutStream.pkg \

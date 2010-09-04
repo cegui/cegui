@@ -37,7 +37,7 @@ namespace CEGUI
     for use by the Events system to track when to delete slot bindings.
 */
 template<typename T>
-class CEGUIEXPORT RefCounted
+class RefCounted
 {
 public:
     /*!
