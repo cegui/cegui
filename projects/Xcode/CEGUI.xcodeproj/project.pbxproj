@@ -6943,7 +6943,7 @@
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
 				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
 				CEGUI_RAPIDXML_PATH = "../../../../../SDKs/rapidxml-1.13";
-				CEGUI_VERSION = 0.7.1;
+				CEGUI_VERSION = 0.7.3;
 				COPY_PHASE_STRIP = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -6968,7 +6968,7 @@
 				CEGUI_OGRE_SAMPLE_LINK_FLAGS = "-framework IOKit -L$(CEGUI_OGRE_SDK_PATH)/lib/release -framework Ogre -lois";
 				CEGUI_OGRE_SDK_PATH = ../../../../../SDKs/OgreSDK;
 				CEGUI_RAPIDXML_PATH = "../../../../../SDKs/rapidxml-1.13";
-				CEGUI_VERSION = 0.7.1;
+				CEGUI_VERSION = 0.7.3;
 				COPY_PHASE_STRIP = YES;
 				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
