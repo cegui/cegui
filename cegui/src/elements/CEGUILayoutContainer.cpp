@@ -93,6 +93,14 @@ Rect LayoutContainer::getUnclippedInnerRect_impl(void) const
 }
 
 //----------------------------------------------------------------------------//
+void LayoutContainer::update(float elapsed)
+{
+    Window::update(elapsed);
+
+    layoutIfNecessary();
+}
+
+//----------------------------------------------------------------------------//
 Rect LayoutContainer::getClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
@@ -146,14 +154,6 @@ void LayoutContainer::removeChild_impl(Window* wnd)
     }
 
     Window::removeChild_impl(wnd);
-}
-
-//----------------------------------------------------------------------------//
-void LayoutContainer::drawSelf(const RenderingContext& ctx)
-{
-    layoutIfNecessary();
-
-    Window::drawSelf(ctx);
 }
 
 //----------------------------------------------------------------------------//
