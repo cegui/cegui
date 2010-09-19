@@ -46,13 +46,16 @@ EXTRA_DIST = Affector.pkg \
              elements/DragContainer.pkg \
              elements/Editbox.pkg \
              elements/FrameWindow.pkg \
+             elements/GridLayoutContainer.pkg \
              elements/GroupBox.pkg \
              elements/GUISheet.pkg \
+             elements/HorizontalLayoutContainer.pkg \
              elements/ItemEntry.pkg \
              elements/ItemListBase.pkg \
              elements/ItemListbox.pkg \
-             elements/Listbox.pkg \
+             elements/LayoutContainer.pkg \
              elements/ListboxItem.pkg \
+             elements/Listbox.pkg \
              elements/ListboxTextItem.pkg \
              elements/ListHeader.pkg \
              elements/ListHeaderSegment.pkg \
@@ -69,6 +72,7 @@ EXTRA_DIST = Affector.pkg \
              elements/Scrollbar.pkg \
              elements/ScrolledContainer.pkg \
              elements/ScrolledItemListBase.pkg \
+             elements/SequentialLayoutContainer.pkg \
              elements/Slider.pkg \
              elements/Spinner.pkg \
              elements/TabButton.pkg \
@@ -76,8 +80,9 @@ EXTRA_DIST = Affector.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
              elements/Tooltip.pkg \
-             elements/Tree.pkg \
              elements/TreeItem.pkg \
+             elements/Tree.pkg \
+             elements/VerticalLayoutContainer.pkg \
              falagard/Dimension.pkg \
              falagard/Enums.pkg \
              falagard/FalagardComponentBase.pkg \
