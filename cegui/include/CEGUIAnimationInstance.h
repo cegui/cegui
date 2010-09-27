@@ -181,12 +181,75 @@ public:
 
     /*!
     \brief
+        Controls whether the next time step is skipped
+    */
+    void setSkipNextStep(bool skip);
+
+    /*!
+    \brief
+        Returns true if the next step is *going* to be skipped
+
+    \par
+        If it was skipped already, this returns false as step resets
+        it to false after it skips one step.
+    */
+    bool getSkipNextStep() const;
+
+    /*!
+    \brief
+        Sets the max delta before step skipping occurs
+
+    \param
+        maxDelta delta in seconds, if this value is reached, the step is skipped
+                 (use -1.0f if you never want to skip - this is the default)
+
+    \par
+        If you want to ensure your animation is not skipped entirely after layouts
+        are loaded or other time consuming operations are done, use this method.
+
+        For example setMaxStepDeltaSkip(1.0f / 25.0f) ensures that if FPS drops
+        below 25, the animation just stops progressing and waits till FPS raises.
+    */
+    void setMaxStepDeltaSkip(float maxDelta);
+
+    /*!
+    \brief
+        Gets the max delta before step skipping occurs
+    */
+    float getMaxStepDeltaSkip() const;
+
+    /*!
+    \brief
+        Sets the max delta before step clamping occurs
+
+    \param
+        maxDelta delta in seconds, if this value is reached, the step is clamped.
+                 (use -1.0f if you never want to clamp - this is the default)
+
+    \par
+        If you want to ensure the animation steps at most 1.0 / 60.0 seconds at a timem
+        you should call setMaxStepDeltaClamp(1.0f / 60.0f). This essentially slows
+        the animation down in case the FPS drops below 60.
+    */
+    void setMaxStepDeltaClamp(float maxDelta);
+
+    /*!
+    \brief
+        Gets the max delta before step clamping occurs
+    */
+    float getMaxStepDeltaClamp() const;
+
+    /*!
+    \brief
         Starts this animation instance - sets position to 0.0 and unpauses
+
+    \param
+        skipNextStep if true the next injected time pulse is skipped
 
     \par
         This also causes base values to be purged!
     */
-    void start();
+    void start(bool skipNextStep = true);
 
     /*!
     \brief
@@ -203,14 +266,21 @@ public:
     /*!
     \brief
        Unpauses this animation instance - allows it to step forward again
+
+    \param
+        skipNextStep if true the next injected time pulse is skipped
     */
-    void unpause();
+    void unpause(bool skipNextStep = true);
 
     /*!
     \brief
        Pauses the animation if it's running and unpauses it if it isn't
+
+       \param
+        skipNextStep if true the next injected time pulse is skipped
+                       (only applies when unpausing!)
     */
-    void togglePause();
+    void togglePause(bool skipNextStep = true);
 
     /*!
     \brief
@@ -330,6 +400,12 @@ private:
     bool d_bounceBackwards;
     //! true if this animation is unpaused
     bool d_running;
+    //! skip next update (true if the next update should be skipped entirely)
+    bool d_skipNextStep;
+    //! skip the update if the step is larger than this value
+    float d_maxStepDeltaSkip;
+    //! always clamp step delta to this value
+    float d_maxStepDeltaClamp;
 
     typedef std::map<String, String> PropertyValueMap;
     /** cached saved values, used for relative application method

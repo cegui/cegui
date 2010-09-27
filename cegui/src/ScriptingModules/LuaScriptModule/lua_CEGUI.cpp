@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Aug 22 20:12:38 2010.
+** Generated automatically by tolua++-1.0.92 on Mon Sep 27 19:57:26 2010.
 */
 
 #ifndef __cplusplus
@@ -28694,18 +28694,20 @@ static int tolua_CEGUI_CEGUI_AnimationInstance_start00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::AnimationInstance",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   CEGUI::AnimationInstance* self = (CEGUI::AnimationInstance*)  tolua_tousertype(tolua_S,1,0);
+  bool skipNextStep = ((bool)  tolua_toboolean(tolua_S,2,true));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'start'",NULL);
 #endif
  {
-  self->start();
+  self->start(skipNextStep);
  }
  }
  return 0;
@@ -28787,18 +28789,20 @@ static int tolua_CEGUI_CEGUI_AnimationInstance_unpause00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::AnimationInstance",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   CEGUI::AnimationInstance* self = (CEGUI::AnimationInstance*)  tolua_tousertype(tolua_S,1,0);
+  bool skipNextStep = ((bool)  tolua_toboolean(tolua_S,2,true));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unpause'",NULL);
 #endif
  {
-  self->unpause();
+  self->unpause(skipNextStep);
  }
  }
  return 0;
@@ -28818,18 +28822,20 @@ static int tolua_CEGUI_CEGUI_AnimationInstance_togglePause00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::AnimationInstance",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   CEGUI::AnimationInstance* self = (CEGUI::AnimationInstance*)  tolua_tousertype(tolua_S,1,0);
+  bool skipNextStep = ((bool)  tolua_toboolean(tolua_S,2,true));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'togglePause'",NULL);
 #endif
  {
-  self->togglePause();
+  self->togglePause(skipNextStep);
  }
  }
  return 0;

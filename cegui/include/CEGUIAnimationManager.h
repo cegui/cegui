@@ -92,9 +92,9 @@ public:
 
     /*!
     \brief
-        Retrieves interpolator by name
+        Retrieves interpolator by type
     */
-    Interpolator* getInterpolator(const String& name) const;
+    Interpolator* getInterpolator(const String& type) const;
 
     /*!
     \brief
