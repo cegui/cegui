@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Sep 27 19:57:26 2010.
+** Generated automatically by tolua++-1.0.92 on Mon Sep 27 20:10:45 2010.
 */
 
 #ifndef __cplusplus
@@ -29584,9 +29584,14 @@ static int tolua_CEGUI_CEGUI_AnimationManager_addInterpolator00(lua_State* tolua
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addInterpolator'",NULL);
 #endif
+ try
  {
   self->addInterpolator(interpolator);
  }
+catch(CEGUI::AlreadyExistsException CEGUIDeadException(&e))
+{
+ return 0;
+}
  }
  return 0;
 #ifndef TOLUA_RELEASE
@@ -29617,9 +29622,14 @@ static int tolua_CEGUI_CEGUI_AnimationManager_removeInterpolator00(lua_State* to
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeInterpolator'",NULL);
 #endif
+ try
  {
   self->removeInterpolator(interpolator);
  }
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
+{
+ return 0;
+}
  }
  return 0;
 #ifndef TOLUA_RELEASE
@@ -29650,10 +29660,15 @@ static int tolua_CEGUI_CEGUI_AnimationManager_getInterpolator00(lua_State* tolua
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getInterpolator'",NULL);
 #endif
+ try
  {
   CEGUI::Interpolator* tolua_ret = (CEGUI::Interpolator*)  self->getInterpolator(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Interpolator");
  }
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
+{
+ return 0;
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -29684,10 +29699,15 @@ static int tolua_CEGUI_CEGUI_AnimationManager_createAnimation00(lua_State* tolua
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createAnimation'",NULL);
 #endif
+ try
  {
   CEGUI::Animation* tolua_ret = (CEGUI::Animation*)  self->createAnimation(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Animation");
  }
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
+{
+ return 0;
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -29718,19 +29738,13 @@ static int tolua_CEGUI_CEGUI_AnimationManager_destroyAnimation00(lua_State* tolu
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAnimation'",NULL);
 #endif
- char errorBuffer[512];
- bool errorDoIt = false;
  try
  {
   self->destroyAnimation(animation);
  }
-catch(CEGUI::InvalidRequestException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::InvalidRequestException' was thrown by function 'destroyAnimation'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- if (errorDoIt) {
- luaL_error(tolua_S,errorBuffer);
+ return 0;
 }
  }
  return 0;
@@ -29760,19 +29774,13 @@ static int tolua_CEGUI_CEGUI_AnimationManager_destroyAnimation01(lua_State* tolu
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAnimation'",NULL);
 #endif
- char errorBuffer[512];
- bool errorDoIt = false;
  try
  {
   self->destroyAnimation(name);
  }
-catch(CEGUI::InvalidRequestException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::InvalidRequestException' was thrown by function 'destroyAnimation'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- if (errorDoIt) {
- luaL_error(tolua_S,errorBuffer);
+ return 0;
 }
  }
  return 0;
@@ -29806,7 +29814,7 @@ static int tolua_CEGUI_CEGUI_AnimationManager_getAnimation00(lua_State* tolua_S)
   CEGUI::Animation* tolua_ret = (CEGUI::Animation*)  self->getAnimation(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Animation");
  }
-catch(CEGUI::InvalidRequestException CEGUIDeadException(&e))
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -29924,7 +29932,7 @@ static int tolua_CEGUI_CEGUI_AnimationManager_instantiateAnimation00(lua_State* 
   CEGUI::AnimationInstance* tolua_ret = (CEGUI::AnimationInstance*)  self->instantiateAnimation(animation);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::AnimationInstance");
  }
-catch(CEGUI::InvalidRequestException CEGUIDeadException(&e))
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -29961,7 +29969,7 @@ static int tolua_CEGUI_CEGUI_AnimationManager_instantiateAnimation01(lua_State* 
   CEGUI::AnimationInstance* tolua_ret = (CEGUI::AnimationInstance*)  self->instantiateAnimation(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::AnimationInstance");
  }
-catch(CEGUI::InvalidRequestException CEGUIDeadException(&e))
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -29992,19 +30000,13 @@ static int tolua_CEGUI_CEGUI_AnimationManager_destroyAnimationInstance00(lua_Sta
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyAnimationInstance'",NULL);
 #endif
- char errorBuffer[512];
- bool errorDoIt = false;
  try
  {
   self->destroyAnimationInstance(instance);
  }
-catch(CEGUI::InvalidRequestException&e)
+catch(CEGUI::InvalidRequestException CEGUIDeadException(&e))
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::InvalidRequestException' was thrown by function 'destroyAnimationInstance'\nMessage: %s",e.getMessage().c_str());
- errorDoIt = true;
-}
- if (errorDoIt) {
- luaL_error(tolua_S,errorBuffer);
+ return 0;
 }
  }
  return 0;
