@@ -76,6 +76,8 @@ protected:
     void updateMatrix() const;
     //! helper that initialises the viewport
     void updateViewport();
+    //! helper to update the actual Ogre viewport dimensions
+    void updateOgreViewportDimensions(const Ogre::RenderTarget* const rt);
 
     //! OgreRenderer object that owns this RenderTarget
     OgreRenderer& d_owner;
@@ -95,6 +97,8 @@ protected:
     mutable float d_viewDistance;
     //! true when d_viewport is up to date and valid.
     bool d_viewportValid;
+    //! holds set Ogre viewport dimensions
+    Rect d_ogreViewportDimensions;
 };
 
 } // End of  CEGUI namespace section
