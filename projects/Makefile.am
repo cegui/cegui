@@ -61,6 +61,7 @@ EXTRA_DIST = premake/README \
              Xcode/CEGUIRapidXMLParser-Info.plist \
              Xcode/CEGUISampleHelper-Info.plist \
              Xcode/CEGUISILLYImageCodec-Info.plist \
+             Xcode/CEGUISTBImageCodec-Info.plist \
              Xcode/CEGUITGAImageCodec-Info.plist \
              Xcode/CEGUITinyXMLParser-Info.plist \
              Xcode/ceguitolua++-Info.plist \
