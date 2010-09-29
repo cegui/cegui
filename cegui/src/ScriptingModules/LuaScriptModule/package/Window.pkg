@@ -277,6 +277,8 @@ class Window //: public EventSet
     void setMouseInputPropagationEnabled(bool enabled);
     bool isMouseInputPropagationEnabled() const;
 
+    Window* clone(utf8string newName, bool deepCopy = true) const;
+
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(utf8string name, utf8string value);
