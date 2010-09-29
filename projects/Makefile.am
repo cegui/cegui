@@ -16,6 +16,7 @@ EXTRA_DIST = premake/README \
              premake/ImageCodecModules/DevILImageCodec/premake.lua \
              premake/ImageCodecModules/FreeImageImageCodec/premake.lua \
              premake/ImageCodecModules/SILLYImageCodec/premake.lua \
+             premake/ImageCodecModules/STBImageCodec/premake.lua \
              premake/ImageCodecModules/TGAImageCodec/premake.lua \
              premake/RendererModules/Direct3D10/premake.lua \
              premake/RendererModules/Direct3D11/premake.lua \

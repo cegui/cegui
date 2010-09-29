@@ -408,6 +408,13 @@ function setup_static_samples()
 	        library_static("CEGUITGAImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end
+    if DEFAULT_IMAGE_CODEC == "stb" then
+		if CEGUI_CORE_LIBRARY_SOLUTION then
+			dependency("CEGUISTBImageCodec")
+		else
+	        library_static("CEGUISTBImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+    end
     if DEFAULT_IMAGE_CODEC == "silly" then
 		if CEGUI_CORE_LIBRARY_SOLUTION then
 			dependency("CEGUISILLYImageCodec")

@@ -130,9 +130,10 @@ SILLY_IMAGE_CODEC = true
 DEVIL_IMAGE_CODEC = true
 FREEIMAGE_IMAGE_CODEC = true
 CORONA_IMAGE_CODEC = true
+STB_IMAGE_CODEC = true
 
 -- this setting selects the default image codec module
--- can be either "tga", "silly", "devil", "freeimage" or "corona"
+-- can be either "tga", "silly", "devil", "freeimage", "stb" or "corona"
 -- SILLY was written for CEGUI
 DEFAULT_IMAGE_CODEC = "silly"
 
