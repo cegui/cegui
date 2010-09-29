@@ -38,6 +38,9 @@ Please see the @ref toluapp_readme for additional information.
 - This software can be compiled to optionally contain unzip code taken (and
 modified) from the Minizip project.  The original Minizip code may be found at 
 http://www.winimage.com/zLibDll/minizip.html
+- This software can be compiled to contain an embedded version of the
+stb_image.c code, which has been released into the public domain by it's author
+Sean Barrett (http://nothings.org/).
 
 <br>
 @section licensing_sec_4 Licensing 101: What it all means!

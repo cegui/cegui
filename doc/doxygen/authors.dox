@@ -39,10 +39,13 @@ The following have made large, important, or on-going contributions to the syste
 - Martin Preisler:
     - Layout Container classes.
     - Animation system.
+    - Window::clone functionality.
 - Assaf Raman:
     - Support for bi-directional text.
 - Lars Rinde:
     - Original TaharezLook graphics design.
+- Tobias Schlegel:
+    - STBImageCodec module.
 - Steve Streeting:
     - TabControl widget base classes & related 'TaharezLook' classes.
 - Mark Strom:

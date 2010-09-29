@@ -142,6 +142,10 @@ if SILLY_IMAGE_CODEC then
     tinsert(pkg_table.ImageCodecModules, "SILLYImageCodec")
 end
 
+if STB_IMAGE_CODEC then
+    tinsert(pkg_table.ImageCodecModules, "STBImageCodec")
+end
+
 --
 -- Scripting modules
 --
@@ -179,6 +183,7 @@ do
         freeimage = "FreeImageImageCodec",
         tga       = "TGAImageCodec",
         silly     = "SILLYImageCodec",
+        stb       = "STBImageCodec",
     }
 
     config_h = {}
@@ -227,6 +232,8 @@ do
 		config_h.CEGUI_CODEC_DEVIL = "1"
 	elseif DEFAULT_IMAGE_CODEC == "freeimage" then
 		config_h.CEGUI_CODEC_FREEIMAGE = "1"
+	elseif DEFAULT_IMAGE_CODEC == "stb" then
+		config_h.CEGUI_CODEC_STB = "1"
 	end
 
 	-- Lua library version
