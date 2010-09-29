@@ -3234,6 +3234,27 @@ public:
     */
     bool isMouseInputPropagationEnabled() const;
 
+    /*!
+    \brief
+        Clones this Window and returns the result
+
+    \param 
+        newName new name of the cloned window
+
+    \param
+        deepCopy if true, even children are copied (the old name prefix will
+        be replaced with new name prefix)
+
+    \return
+        the cloned Window
+    */
+    Window* clone(const String& newName, const bool deepCopy = true) const;
+
+    //! copies this widget's properties to given target widget
+    virtual void clonePropertiesTo(Window& target) const;
+    //! copies this widget's child widgets to given target widget
+    virtual void cloneChildWidgetsTo(Window& target) const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
