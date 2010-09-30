@@ -124,6 +124,11 @@ OpenGLApplePBTextureTarget::~OpenGLApplePBTextureTarget()
 void OpenGLApplePBTextureTarget::activate()
 {
     enablePBuffer();
+
+    // we clear the blend mode here so the next setupRenderingBlendMode call
+    // is forced to update states for our local context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
+
     OpenGLRenderTarget::activate();
 }
 
@@ -132,6 +137,11 @@ void OpenGLApplePBTextureTarget::deactivate()
 {
     glFlush();
     OpenGLRenderTarget::deactivate();
+
+    // Clear the blend mode again so the next setupRenderingBlendMode call
+    // is forced to update states for the main / previous context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
+
     disablePBuffer();
 }
 
