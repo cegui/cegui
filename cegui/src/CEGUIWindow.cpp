@@ -4064,6 +4064,108 @@ bool Window::isMouseInputPropagationEnabled() const
 }
 
 //----------------------------------------------------------------------------//
+Window* Window::clone(const String& newName, const bool deepCopy) const
+{
+    Window* ret =
+        WindowManager::getSingleton().createWindow(getType(), newName);
+
+    // always copy properties
+    clonePropertiesTo(*ret);
+
+    // if user requested deep copy, we should copy children as well
+    if (deepCopy)
+        cloneChildWidgetsTo(*ret);
+
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+void Window::clonePropertiesTo(Window& target) const
+{
+    PropertySet::Iterator propertyIt = getPropertyIterator();
+
+    for (PropertySet::Iterator propertyIt = getPropertyIterator();
+         !propertyIt.isAtEnd();
+         ++propertyIt) 
+    {
+        const String& propertyName = propertyIt.getCurrentKey();
+        const String propertyValue = getProperty(propertyName);
+
+        // we never copy stuff that doesn't get written into XML
+        if (isPropertyBannedFromXML(propertyName))
+            continue;
+
+        // some cases when propertyValue is "" could lead to exception throws
+        if (propertyValue.empty())
+        {
+            // special case, this causes exception throw when no window renderer
+            // is assigned to the window
+            if (propertyName == "LookNFeel")
+                continue;
+
+            // special case, this causes exception throw because we are setting
+            // 'null' window renderer
+            if (propertyName == "WindowRenderer")
+                continue;
+        }
+
+        target.setProperty(propertyName, getProperty(propertyName));
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Window::cloneChildWidgetsTo(Window& target) const
+{
+    const String& oldName = getName();
+    const String& newName = target.getName();
+
+    // todo: ChildWindowIterator?
+    for (size_t childI = 0; childI < getChildCount(); ++childI)
+    {
+        Window* child = getChildAtIdx(childI);
+        if (child->isAutoWindow())
+        {
+            // we skip auto windows, they are already created
+            // automatically
+
+            // note: some windows store non auto windows inside auto windows,
+            //       standard solution is to copy these non-auto windows to
+            //       the parent window
+            //
+            //       If you need alternative behaviour, you have to override
+            //       this method!
+
+            // so just copy it's child widgets
+            child->cloneChildWidgetsTo(target);
+            // and skip the auto widget
+            continue;
+        }
+
+        String newChildName = child->getName();
+        String::size_type idxBegin = newChildName.find(oldName + "/");
+        if (idxBegin == String::npos)
+        {
+            // not found, user is using non-standard naming
+            // use a pretty safe but long and non readable new name
+            newChildName = newChildName + "_clone_" + newName;
+        }
+        else
+        {
+            // +1 because of the "/"
+            String::size_type idxEnd = idxBegin + oldName.length() + 1;
+
+            // we replace the first occurence of the old parent's name with the new name
+            // this works great in case user uses the default recommended naming scheme
+            // like this: "Parent/ChildWindow/ChildChildWindow"
+            newChildName.replace(idxBegin, idxEnd, newName + "/");
+        }
+
+        Window* newChild = child->clone(newChildName, true);
+        target.addChildWindow(newChild);
+    }
+}
+
+//----------------------------------------------------------------------------//
 Rect Window::getChildWindowContentArea(const bool non_client) const
 {
     return non_client ?

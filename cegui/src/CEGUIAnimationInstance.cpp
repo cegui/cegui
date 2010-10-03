@@ -49,16 +49,21 @@ const String AnimationInstance::EventAnimationLooped("AnimationLooped");
 
 //----------------------------------------------------------------------------//
 AnimationInstance::AnimationInstance(Animation* definition):
-        d_definition(definition),
+    d_definition(definition),
 
-        d_target(0),
-        d_eventReceiver(0),
-        d_eventSender(0),
+    d_target(0),
+    d_eventReceiver(0),
+    d_eventSender(0),
 
-        d_position(0.0),
-        d_speed(1.0),
-        d_bounceBackwards(false),
-        d_running(false)
+    d_position(0.0),
+    d_speed(1.0),
+    d_bounceBackwards(false),
+    d_running(false),
+    d_skipNextStep(false),
+    // default behaviour is to never skip
+    d_maxStepDeltaSkip(-1.0f),
+    // default behaviour is to never clamp
+    d_maxStepDeltaClamp(-1.0f)
 {}
 
 //----------------------------------------------------------------------------//
@@ -185,10 +190,47 @@ float AnimationInstance::getSpeed() const
 }
 
 //----------------------------------------------------------------------------//
-void AnimationInstance::start()
+void AnimationInstance::setSkipNextStep(bool skip)
+{
+    d_skipNextStep = skip;
+}
+
+//----------------------------------------------------------------------------//
+bool AnimationInstance::getSkipNextStep() const
+{
+    return d_skipNextStep;
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::setMaxStepDeltaSkip(float maxDelta)
+{
+    d_maxStepDeltaSkip = maxDelta;
+}
+
+//----------------------------------------------------------------------------//
+float AnimationInstance::getMaxStepDeltaSkip() const
+{
+    return d_maxStepDeltaSkip;
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::setMaxStepDeltaClamp(float maxDelta)
+{
+    d_maxStepDeltaClamp = maxDelta;
+}
+
+//----------------------------------------------------------------------------//
+float AnimationInstance::getMaxStepDeltaClamp() const
+{
+    return d_maxStepDeltaClamp;
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::start(bool skipNextStep)
 {
     setPosition(0.0);
     d_running = true;
+    d_skipNextStep = skipNextStep;
     onAnimationStarted();
 }
 
@@ -208,14 +250,15 @@ void AnimationInstance::pause()
 }
 
 //----------------------------------------------------------------------------//
-void AnimationInstance::unpause()
+void AnimationInstance::unpause(bool skipNextStep)
 {
     d_running = true;
+    d_skipNextStep = skipNextStep;
     onAnimationUnpaused();
 }
 
 //----------------------------------------------------------------------------//
-void AnimationInstance::togglePause()
+void AnimationInstance::togglePause(bool skipNextStep)
 {
     if (isRunning())
     {
@@ -223,7 +266,7 @@ void AnimationInstance::togglePause()
     }
     else
     {
-        unpause();
+        unpause(skipNextStep);
     }
 }
 
@@ -250,9 +293,36 @@ void AnimationInstance::step(float delta)
                         "trying!"));
     }
 
+    // first we deal with delta size
+    if (d_maxStepDeltaSkip > 0.0f && delta > d_maxStepDeltaSkip)
+    {
+        // skip the step entirely if delta gets over the threshold
+        // note that default value is 0.0f which means this never gets triggered
+        delta = 0.0f;
+    }
+
+    if (d_maxStepDeltaClamp > 0.0f)
+    {
+        // clamp to threshold, note that default value is -1.0f which means
+        // this line does nothing (delta should always be larger or equal than 0.0f
+        delta = std::min(delta, d_maxStepDeltaClamp);
+    }
+
+    // if asked to do so, we skip this step, but mark that the next one
+    // shouldn't be skipped
+    // NB: This gets rid of annoying animation skips when FPS gets too low
+    //     after complex layout loading, etc...
+    if (d_skipNextStep)
+    {
+        d_skipNextStep = false;
+        // we skip the step by setting delta to 0, this doesn't step the time
+        // but still sets the animation position accordingly
+        delta = 0.0f;
+    }
+
     const float duration = d_definition->getDuration();
 
-    // we modifty the delta according to playback speed
+    // we modify the delta according to playback speed
     delta *= d_speed;
 
     // the position could have gotten out of the desired range, we have to
@@ -405,7 +475,7 @@ void AnimationInstance::addAutoConnection(Event::Connection conn)
 void AnimationInstance::unsubscribeAutoConnections()
 {
     for (ConnectionTracker::iterator it = d_autoConnections.begin();
-            it != d_autoConnections.end(); ++it)
+         it != d_autoConnections.end(); ++it)
     {
         (*it)->disconnect();
     }

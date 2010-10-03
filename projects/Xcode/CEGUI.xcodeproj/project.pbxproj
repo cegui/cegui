@@ -30,6 +30,7 @@
 				DAAABB3F0F6E58860003BE03 /* PBXTargetDependency */,
 				DAAABB410F6E58860003BE03 /* PBXTargetDependency */,
 				DAAABB430F6E58860003BE03 /* PBXTargetDependency */,
+				DAFA3D8212536A8F00148B7B /* PBXTargetDependency */,
 				DAAABB450F6E58860003BE03 /* PBXTargetDependency */,
 			);
 			name = "ImageCodec Modules";
@@ -760,6 +761,10 @@
 		DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */; };
 		DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */; };
 		DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */; };
+		DAFA3D711253694500148B7B /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DAFA3D7E12536A4B00148B7B /* CEGUISTBImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAFA3D7B12536A4B00148B7B /* CEGUISTBImageCodec.cpp */; };
+		DAFA3D7F12536A4B00148B7B /* CEGUISTBImageCodecModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAFA3D7C12536A4B00148B7B /* CEGUISTBImageCodecModule.cpp */; };
+		DAFA3D8012536A4B00148B7B /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAFA3D7D12536A4B00148B7B /* stb_image.cpp */; };
 		DAFB3C3310874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DAFB3C3210874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h */; };
 		DAFB3C3510874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3C3410874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp */; };
 /* End PBXBuildFile section */
@@ -1373,6 +1378,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
+		};
+		DAFA3D721253694A00148B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		DAFA3D8112536A8F00148B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAFA3D641253692300148B7B /* CEGUISTBImageCodec */;
+			remoteInfo = CEGUISTBImageCodec;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2511,6 +2530,13 @@
 		DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIPCRERegexMatcher.h; path = ../../cegui/include/CEGUIPCRERegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRegexMatcher.h; path = ../../cegui/include/CEGUIRegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIPCRERegexMatcher.cpp; path = ../../cegui/src/CEGUIPCRERegexMatcher.cpp; sourceTree = SOURCE_ROOT; };
+		DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CEGUISTBImageCodec.bundle; path = build/Debug/CEGUISTBImageCodec.bundle; sourceTree = "<group>"; };
+		DAFA3D661253692300148B7B /* CEGUISTBImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUISTBImageCodec-Info.plist"; sourceTree = "<group>"; };
+		DAFA3D7912536A3100148B7B /* CEGUISTBImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISTBImageCodec.h; path = ../../cegui/include/ImageCodecModules/STBImageCodec/CEGUISTBImageCodec.h; sourceTree = SOURCE_ROOT; };
+		DAFA3D7A12536A3100148B7B /* CEGUISTBImageCodecModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISTBImageCodecModule.h; path = ../../cegui/include/ImageCodecModules/STBImageCodec/CEGUISTBImageCodecModule.h; sourceTree = SOURCE_ROOT; };
+		DAFA3D7B12536A4B00148B7B /* CEGUISTBImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISTBImageCodec.cpp; path = ../../cegui/src/ImageCodecModules/STBImageCodec/CEGUISTBImageCodec.cpp; sourceTree = SOURCE_ROOT; };
+		DAFA3D7C12536A4B00148B7B /* CEGUISTBImageCodecModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUISTBImageCodecModule.cpp; path = ../../cegui/src/ImageCodecModules/STBImageCodec/CEGUISTBImageCodecModule.cpp; sourceTree = SOURCE_ROOT; };
+		DAFA3D7D12536A4B00148B7B /* stb_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stb_image.cpp; path = ../../cegui/src/ImageCodecModules/STBImageCodec/stb_image.cpp; sourceTree = SOURCE_ROOT; };
 		DAFB3C3210874CFC00B2A98A /* CEGUIOpenGLTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGLTextureTarget.h; path = ../../cegui/include/RendererModules/OpenGL/CEGUIOpenGLTextureTarget.h; sourceTree = SOURCE_ROOT; };
 		DAFB3C3410874D2500B2A98A /* CEGUIOpenGLTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOpenGLTextureTarget.cpp; path = ../../cegui/src/RendererModules/OpenGL/CEGUIOpenGLTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -2792,6 +2818,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAFA3D631253692300148B7B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAFA3D711253694500148B7B /* CEGUIBase.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -2924,6 +2958,7 @@
 				DA1093630F6D532700B8A582 /* DevILImageCodec */,
 				DA1093650F6D534200B8A582 /* FreeImageImageCodec */,
 				DA1093660F6D538D00B8A582 /* SILLYImageCodec */,
+				DAFA3D78125369E500148B7B /* STBImageCodec */,
 				DA1093670F6D539600B8A582 /* TGAImageCodec */,
 			);
 			name = ImageCodecModules;
@@ -4536,6 +4571,7 @@
 				DAAAB92C0F6E4FBD0003BE03 /* TreeDemo.app */,
 				DAAABAC60F6E56BF0003BE03 /* Demo8.app */,
 				DA29EA6911AA8899000FAC6A /* CEGUIRapidXMLParser.bundle */,
+				DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4659,6 +4695,19 @@
 				DAE8ABA81120724E0091DDF3 /* CEGUINullTextureTarget.h */,
 			);
 			name = include;
+			sourceTree = "<group>";
+		};
+		DAFA3D78125369E500148B7B /* STBImageCodec */ = {
+			isa = PBXGroup;
+			children = (
+				DAFA3D661253692300148B7B /* CEGUISTBImageCodec-Info.plist */,
+				DAFA3D7912536A3100148B7B /* CEGUISTBImageCodec.h */,
+				DAFA3D7A12536A3100148B7B /* CEGUISTBImageCodecModule.h */,
+				DAFA3D7B12536A4B00148B7B /* CEGUISTBImageCodec.cpp */,
+				DAFA3D7C12536A4B00148B7B /* CEGUISTBImageCodecModule.cpp */,
+				DAFA3D7D12536A4B00148B7B /* stb_image.cpp */,
+			);
+			name = STBImageCodec;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5591,6 +5640,23 @@
 			productReference = DAE8AB6911206F9E0091DDF3 /* CEGUINullRenderer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		DAFA3D641253692300148B7B /* CEGUISTBImageCodec */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DAFA3D691253692400148B7B /* Build configuration list for PBXNativeTarget "CEGUISTBImageCodec" */;
+			buildPhases = (
+				DAFA3D621253692300148B7B /* Sources */,
+				DAFA3D631253692300148B7B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DAFA3D731253694A00148B7B /* PBXTargetDependency */,
+			);
+			name = CEGUISTBImageCodec;
+			productName = CEGUISTBImageCodec;
+			productReference = DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -5628,6 +5694,7 @@
 				DA109EDD0F6DAD0600B8A582 /* CEGUIDevILImageCodec */,
 				DA109F100F6DAE4900B8A582 /* CEGUIFreeImageImageCodec */,
 				DA109F3E0F6DB11E00B8A582 /* CEGUISILLYImageCodec */,
+				DAFA3D641253692300148B7B /* CEGUISTBImageCodec */,
 				DA109F750F6DB20A00B8A582 /* CEGUITGAImageCodec */,
 				DAAAB8210F6E4BC30003BE03 /* Demo6 */,
 				DAAAB7FC0F6E4A970003BE03 /* Demo7 */,
@@ -6531,6 +6598,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAFA3D621253692300148B7B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAFA3D7E12536A4B00148B7B /* CEGUISTBImageCodec.cpp in Sources */,
+				DAFA3D7F12536A4B00148B7B /* CEGUISTBImageCodecModule.cpp in Sources */,
+				DAFA3D8012536A4B00148B7B /* stb_image.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -6968,6 +7045,16 @@
 			isa = PBXTargetDependency;
 			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
 			targetProxy = DAE8AB7F112070170091DDF3 /* PBXContainerItemProxy */;
+		};
+		DAFA3D731253694A00148B7B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			targetProxy = DAFA3D721253694A00148B7B /* PBXContainerItemProxy */;
+		};
+		DAFA3D8212536A8F00148B7B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAFA3D641253692300148B7B /* CEGUISTBImageCodec */;
+			targetProxy = DAFA3D8112536A8F00148B7B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8868,6 +8955,52 @@
 			};
 			name = Release;
 		};
+		DAFA3D671253692400148B7B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUISTBImageCodec-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISTBImageCodec;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		DAFA3D681253692400148B7B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUISTBImageCodec-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISTBImageCodec;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -9209,6 +9342,15 @@
 			buildConfigurations = (
 				DAE8AB7211206FA00091DDF3 /* Debug */,
 				DAE8AB7311206FA00091DDF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAFA3D691253692400148B7B /* Build configuration list for PBXNativeTarget "CEGUISTBImageCodec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAFA3D671253692400148B7B /* Debug */,
+				DAFA3D681253692400148B7B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

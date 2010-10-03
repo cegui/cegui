@@ -19,3 +19,7 @@ endif
 if CEGUI_BUILD_TGA_IMAGE_CODEC
 SUBDIRS+=TGAImageCodec
 endif 
+
+if CEGUI_BUILD_STB_IMAGE_CODEC
+SUBDIRS+=STBImageCodec
+endif 

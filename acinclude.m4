@@ -197,9 +197,11 @@ AC_DEFUN([CEGUI_CHECK_IMAGE_CODECS], [
         [cegui_with_silly=$enableval], [cegui_with_silly=yes])
     AC_ARG_ENABLE([tga], AC_HELP_STRING([--enable-tga], [Enable basic TGA loading ImageCodec module (auto)]),
         [cegui_with_tga=$enableval], [cegui_with_tga=yes])
-    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=CODEC]], [Sets the default image codec used by the OpenGL renderer.
-Typically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything
-to load a custom made image codec module as the default.]),
+    AC_ARG_ENABLE([stb], AC_HELP_STRING([--enable-stb], [Enable STB based ImageCodec module (auto)]),
+        [cegui_with_stb=$enableval], [cegui_with_stb=yes])
+    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=CODEC]], [Sets the default image codec.
+Typically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec or STBImageCodec,
+though you can set it to anything to load a custom made image codec module as the default.]),
     [cegui_default_image_codec=$withval], [cegui_default_image_codec=none])
 
     dnl DevIL
@@ -323,7 +325,11 @@ to load a custom made image codec module as the default.]),
                         if test x$cegui_with_tga = xyes ; then
                             cegui_default_image_codec=TGAImageCodec
                         else
-                            AC_MSG_ERROR([None of the ImageCodec are going to be built - unable to continue. Either enable an image codec or set a custom default.])
+                            if test x$cegui_with_stb = xyes ; then
+                                cegui_default_image_codec=STBImageCodec
+                            else
+                                AC_MSG_ERROR([None of the ImageCodec are going to be built - unable to continue. Either enable an image codec or set a custom default.])
+                            fi
                         fi
                     fi
                 fi
@@ -332,7 +338,7 @@ to load a custom made image codec module as the default.]),
     fi
 
     dnl define macro for the class of the default image codec  to be used
-    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_IMAGE_CODEC, $cegui_default_image_codec, [Set this to the default ImageCodec to be used (CoronaImageCodec, DevILImageCodec FreeImageImageCode, SILLYImageCodec, TGAImageCodec).])
+    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_IMAGE_CODEC, $cegui_default_image_codec, [Set this to the default ImageCodec to be used (CoronaImageCodec, DevILImageCodec FreeImageImageCode, SILLYImageCodec, TGAImageCodec, STBImageCodec).])
     AC_MSG_NOTICE([Default ImageCodec will be: $cegui_default_image_codec])
 
     AM_CONDITIONAL([CEGUI_BUILD_DEVIL_IMAGE_CODEC], [test x$cegui_with_devil = xyes])
@@ -340,6 +346,7 @@ to load a custom made image codec module as the default.]),
     AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_FREE_IMAGE_IMAGE_CODEC], [test x$cegui_with_freeimage = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_TGA_IMAGE_CODEC], [test x$cegui_with_tga = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_STB_IMAGE_CODEC], [test x$cegui_with_stb = xyes])
 ])
 
 AC_DEFUN([CEGUI_ENABLE_NULL_RENDERER], [

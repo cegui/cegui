@@ -104,6 +104,10 @@ void OpenGLGLXPBTextureTarget::activate()
 {
     enablePBuffer();
 
+    // we clear the blend mode here so the next setupRenderingBlendMode call
+    // is forced to update states for our local context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
+
     OpenGLRenderTarget::activate();
 }
 
@@ -118,6 +122,10 @@ void OpenGLGLXPBTextureTarget::deactivate()
                      static_cast<GLsizei>(d_area.d_bottom), 0);
 
     disablePBuffer();
+
+    // Clear the blend mode again so the next setupRenderingBlendMode call
+    // is forced to update states for the main / previous context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
 
     OpenGLRenderTarget::deactivate();
 }

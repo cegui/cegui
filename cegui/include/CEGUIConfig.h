@@ -60,7 +60,7 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 // Set this to the default ImageCodec to be used.
 // CoronaImageCodec, DevILImageCodec, FreeImageImageCodec,
-// SILLYImageCodec, TGAImageCodec 
+// SILLYImageCodec, TGAImageCodec or STBImageCodec
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_IMAGE_CODEC
 #   define CEGUI_DEFAULT_IMAGE_CODEC SILLYImageCodec
