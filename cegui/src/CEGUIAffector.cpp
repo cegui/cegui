@@ -42,10 +42,10 @@ namespace CEGUI
 
 //----------------------------------------------------------------------------//
 Affector::Affector(Animation* parent):
-        d_parent(parent),
-        d_applicationMethod(AM_Absolute),
-        d_targetProperty(""),
-        d_interpolator(0)
+    d_parent(parent),
+    d_applicationMethod(AM_Absolute),
+    d_targetProperty(""),
+    d_interpolator(0)
 {}
 
 //----------------------------------------------------------------------------//
@@ -112,7 +112,6 @@ KeyFrame* Affector::createKeyFrame(float position)
     }
 
     KeyFrame* ret = new KeyFrame(this, position);
-    // todo: checking
     d_keyFrames.insert(std::make_pair(position, ret));
 
     return ret;
@@ -216,7 +215,7 @@ void Affector::savePropertyValues(AnimationInstance* instance)
 
     // now let all keyframes save their desired property values too
     for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
-            it != d_keyFrames.end(); ++it)
+         it != d_keyFrames.end(); ++it)
     {
         it->second->savePropertyValue(instance);
     }
@@ -253,7 +252,7 @@ void Affector::apply(AnimationInstance* instance)
 
     // find 2 neighbouring keyframes
     for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
-            it != d_keyFrames.end(); ++it)
+         it != d_keyFrames.end(); ++it)
     {
         KeyFrame* current = it->second;
 

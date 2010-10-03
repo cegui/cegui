@@ -16,6 +16,7 @@ EXTRA_DIST = premake/README \
              premake/ImageCodecModules/DevILImageCodec/premake.lua \
              premake/ImageCodecModules/FreeImageImageCodec/premake.lua \
              premake/ImageCodecModules/SILLYImageCodec/premake.lua \
+             premake/ImageCodecModules/STBImageCodec/premake.lua \
              premake/ImageCodecModules/TGAImageCodec/premake.lua \
              premake/RendererModules/Direct3D10/premake.lua \
              premake/RendererModules/Direct3D11/premake.lua \
@@ -60,6 +61,7 @@ EXTRA_DIST = premake/README \
              Xcode/CEGUIRapidXMLParser-Info.plist \
              Xcode/CEGUISampleHelper-Info.plist \
              Xcode/CEGUISILLYImageCodec-Info.plist \
+             Xcode/CEGUISTBImageCodec-Info.plist \
              Xcode/CEGUITGAImageCodec-Info.plist \
              Xcode/CEGUITinyXMLParser-Info.plist \
              Xcode/ceguitolua++-Info.plist \

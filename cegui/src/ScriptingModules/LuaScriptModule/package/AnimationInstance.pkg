@@ -28,11 +28,11 @@ class AnimationInstance
     tolua_throws|CEGUI::InvalidRequestException,error| void setSpeed(float speed);
     float getSpeed() const;
 
-    void start();
+    void start(bool skipNextStep = true);
     void stop();
     void pause();
-    void unpause();
-    void togglePause();
+    void unpause(bool skipNextStep = true);
+    void togglePause(bool skipNextStep = true);
 
     bool isRunning() const;
 

@@ -133,6 +133,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/include/ImageCodecModules/FreeImageImageCodec/Makefile
                  cegui/include/ImageCodecModules/Makefile
                  cegui/include/ImageCodecModules/SILLYImageCodec/Makefile
+                 cegui/include/ImageCodecModules/STBImageCodec/Makefile
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
                  cegui/include/RendererModules/Direct3D10/Makefile
@@ -161,6 +162,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/src/ImageCodecModules/FreeImageImageCodec/Makefile
                  cegui/src/ImageCodecModules/Makefile
                  cegui/src/ImageCodecModules/SILLYImageCodec/Makefile
+                 cegui/src/ImageCodecModules/STBImageCodec/Makefile
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
                  cegui/src/RendererModules/Direct3D10/Makefile
@@ -245,6 +247,7 @@ echo "*         Building Corona Image Codec:                  ${cegui_with_coron
 echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
 echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
 echo "*         Building SILLY Image Codec:                   ${cegui_with_silly-no}"
+echo "*         Building STB Image Codec:                     ${cegui_with_stb-no}"
 echo "*         Building TGA Image Codec:                     ${cegui_with_tga-no}"
 echo "*"
 echo "*         Default Image Codec will be:                  ${cegui_default_image_codec}"
@@ -252,11 +255,12 @@ if test x"$cegui_default_image_codec" != x"DevILImageCodec" &&
    test x"$cegui_default_image_codec" != x"FreeImageImageCodec" &&
    test x"$cegui_default_image_codec" != x"SILLYImageCodec" &&
    test x"$cegui_default_image_codec" != x"CoronaImageCodec" &&
+   test x"$cegui_default_image_codec" != x"STBImageCodec" &&
    test x"$cegui_default_image_codec" != x"TGAImageCodec"; then
 echo "*"
 echo "*         WARNING!  Default codec is not set to one of the pre-made codecs:"
 echo "*         WARNING!      DevILImageCodec, FreeImageImageCodec, SILLYImageCodec,"
-echo "*         WARNING!      CoronaImageCodec, or TGAImageCodec."
+echo "*         WARNING!      CoronaImageCodec, STBImageCodec or TGAImageCodec."
 echo "*         WARNING!"
 echo "*         WARNING!  This is fine if you meant to do this and are using a custom"
 echo "*         WARNING!  codec as the 'hard-coded' default, else you should go back"

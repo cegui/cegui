@@ -127,6 +127,13 @@ AnimationManager::~AnimationManager(void)
 //----------------------------------------------------------------------------//
 void AnimationManager::addInterpolator(Interpolator* interpolator)
 {
+    if (d_interpolators.find(interpolator->getType()) != d_interpolators.end())
+    {
+        CEGUI_THROW(AlreadyExistsException(
+            "AnimationManager::addInterpolator: Interpolator of given type "
+            "already exists."));
+    }
+
     d_interpolators.insert(
         std::make_pair(interpolator->getType(), interpolator));
 }
@@ -134,20 +141,44 @@ void AnimationManager::addInterpolator(Interpolator* interpolator)
 //----------------------------------------------------------------------------//
 void AnimationManager::removeInterpolator(Interpolator* interpolator)
 {
-    d_interpolators.erase(d_interpolators.find(interpolator->getType()));
+    InterpolatorMap::iterator it = d_interpolators.find(interpolator->getType());
+
+    if (it == d_interpolators.end())
+    {
+        CEGUI_THROW(UnknownObjectException(
+            "AnimationManager::removeInterpolator: Interpolator of given type "
+            "not found."));
+    }
+
+    d_interpolators.erase(it);
 }
 
 //----------------------------------------------------------------------------//
-Interpolator* AnimationManager::getInterpolator(const String& name) const
+Interpolator* AnimationManager::getInterpolator(const String& type) const
 {
-    return d_interpolators.find(name)->second;
+    InterpolatorMap::const_iterator it = d_interpolators.find(type);
+
+    if (it == d_interpolators.end())
+    {
+        CEGUI_THROW(UnknownObjectException(
+            "AnimationManager::getInterpolator: Interpolator of given type "
+            "not found."));
+    }
+
+    return it->second;
 }
 
 //----------------------------------------------------------------------------//
 Animation* AnimationManager::createAnimation(const String& name)
 {
+    if (d_animations.find(name) != d_animations.end())
+    {
+        CEGUI_THROW(UnknownObjectException(
+            "AnimationManager::createAnimation: Animation with given name "
+            "already exists."));
+    }
+
     Animation* ret = new Animation(name);
-    // todo: checking
     d_animations.insert(std::make_pair(name, ret));
 
     return ret;
@@ -166,7 +197,7 @@ void AnimationManager::destroyAnimation(const String& name)
 
     if (it == d_animations.end())
     {
-        CEGUI_THROW(InvalidRequestException(
+        CEGUI_THROW(UnknownObjectException(
             "AnimationManager::destroyAnimation: Animation with given name not "
             "found."));
     }
@@ -185,7 +216,7 @@ Animation* AnimationManager::getAnimation(const String& name) const
 
     if (it == d_animations.end())
     {
-        CEGUI_THROW(InvalidRequestException(
+        CEGUI_THROW(UnknownObjectException(
             "AnimationManager::getAnimation: Animation with given name not "
             "found."));
     }
@@ -218,7 +249,6 @@ size_t AnimationManager::getNumAnimations() const
 AnimationInstance* AnimationManager::instantiateAnimation(Animation* animation)
 {
     AnimationInstance* ret = new AnimationInstance(animation);
-    // todo: checking
     d_animationInstances.insert(std::make_pair(animation, ret));
 
     return ret;
@@ -320,7 +350,7 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
     {
         Logger::getSingleton().logEvent(
             "AnimationManager::loadAnimationsFromXML: "
-            "loading of animations from file '" + filename +"' has failed.",
+            "loading of animations from file '" + filename + "' has failed.",
             Errors);
 
         CEGUI_RETHROW;

@@ -97,7 +97,6 @@ void OpenGLWGLPBTextureTarget::activate()
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -106,6 +105,10 @@ void OpenGLWGLPBTextureTarget::activate()
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_FOG_COORDINATE_ARRAY);
     glDisableClientState(GL_EDGE_FLAG_ARRAY);
+
+    // we clear the blend mode here so the next setupRenderingBlendMode call
+    // is forced to update states for our local context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
 
     OpenGLRenderTarget::activate();
 }
@@ -121,6 +124,10 @@ void OpenGLWGLPBTextureTarget::deactivate()
                      static_cast<GLsizei>(d_area.d_bottom), 0);
 
     disablePBuffer();
+
+    // Clear the blend mode again so the next setupRenderingBlendMode call
+    // is forced to update states for the main / previous context.
+    d_owner.setupRenderingBlendMode(BM_INVALID);
 
     OpenGLRenderTarget::deactivate();
 }

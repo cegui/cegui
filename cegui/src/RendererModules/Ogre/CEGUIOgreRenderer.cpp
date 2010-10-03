@@ -292,6 +292,7 @@ void OgreRenderer::destroyAllTextures()
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
+    d_defaultRoot->getRenderTarget().activate();
     initialiseRenderStateSettings();
 
     if (d_makeFrameControlCalls)
@@ -303,6 +304,8 @@ void OgreRenderer::endRendering()
 {
     if (d_makeFrameControlCalls)
         d_renderSystem->_endFrame();
+
+    d_defaultRoot->getRenderTarget().deactivate();
 }
 
 //----------------------------------------------------------------------------//

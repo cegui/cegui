@@ -46,7 +46,8 @@ OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
     d_viewport(0),
     d_matrix(Ogre::Matrix3::ZERO),
     d_matrixValid(false),
-    d_viewportValid(false)
+    d_viewportValid(false),
+    d_ogreViewportDimensions(0, 0, 0, 0)
 {
 }
 
@@ -80,20 +81,25 @@ void OgreRenderTarget::setArea(const Rect& area)
 //----------------------------------------------------------------------------//
 void OgreRenderTarget::setOgreViewportDimensions(const Rect& area)
 {
+    d_ogreViewportDimensions = area;
+
     if (d_viewport)
+        updateOgreViewportDimensions(d_viewport->getTarget());
+
+    d_viewportValid = false;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderTarget::updateOgreViewportDimensions(
+                                            const Ogre::RenderTarget* const rt)
+{
+    if (rt)
     {
-        Ogre::RenderTarget* rt = d_viewport->getTarget();
-
-        if (rt)
-        {
-            d_viewport->setDimensions(
-                area.d_left / rt->getWidth(),
-                area.d_top / rt->getHeight(),
-                area.getWidth() / rt->getWidth(),
-                area.getHeight() / rt->getHeight());
-        }
-
-        d_viewportValid = false;
+        d_viewport->setDimensions(
+            d_ogreViewportDimensions.d_left / rt->getWidth(),
+            d_ogreViewportDimensions.d_top / rt->getHeight(),
+            d_ogreViewportDimensions.getWidth() / rt->getWidth(),
+            d_ogreViewportDimensions.getHeight() / rt->getHeight());
     }
 }
 
@@ -218,11 +224,13 @@ void OgreRenderTarget::updateMatrix() const
 //----------------------------------------------------------------------------//
 void OgreRenderTarget::updateViewport()
 {
-    if (d_viewport)
-        d_viewport->_updateDimensions();
-    else
+    if (!d_viewport)
+    {
         d_viewport = new Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
+        updateOgreViewportDimensions(d_renderTarget);
+    }
 
+    d_viewport->_updateDimensions();
     d_viewportValid = true;
 }
 
