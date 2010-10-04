@@ -2408,7 +2408,7 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	String& erase(size_type idx, size_type len = npos)
+	String& erase(size_type idx, size_type len)
 	{
         // cover the no-op case.
         if (len == 0)
