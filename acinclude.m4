@@ -819,9 +819,20 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
                 [cegui_with_lua=$enableval], [cegui_with_lua=yes])
     AC_ARG_ENABLE([toluacegui], AC_HELP_STRING([--enable-toluacegui], [Enables building of our custom tolua++ based binding generator tool, tolua++cegui.]),
                 [cegui_build_toluatool=$enableval], [cegui_build_toluatool=no])
+    AC_ARG_ENABLE([safe-lua-module], AC_HELP_STRING([--enable-safe-lua-module],
+                                                    [Enable building the Lua binding with extra safety checks
+                                                     enabled at the expense of size and speed.  If you build
+                                                     with debug enabled, these checks are also enabled
+                                                     automatically.]),
+        [cegui_enable_safe_lua=$enableval], [cegui_enable_safe_lua=no])
 
     if test x$cegui_found_lua = xyes && test x$cegui_with_lua = xyes; then
         cegui_with_lua=yes
+
+        dnl if this is a debug build, we want to force the use of the 'safe' module
+        if test x$cegui_enable_debug = xyes; then
+            cegui_enable_safe_lua=yes
+        fi
 
         dnl Decide which tolua++ library to use
         AC_ARG_ENABLE([external-toluapp], AC_HELP_STRING([--disable-external-toluapp], [Disables the use of any external tolua++ library, forcing the use of the version that accompanies CEGUI.]),
@@ -849,6 +860,7 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
         AC_MSG_NOTICE([Building of tolua++cegui generator tool is disabled.])
     fi
 
+    AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE_UNSAFE], [test x$cegui_enable_safe_lua = xno])
     AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE], [test x$cegui_with_lua = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_TOLUAPPLIB], [test x$cegui_found_toluapp = xno])
     AM_CONDITIONAL([CEGUI_BUILD_TOLUACEGUI], [test x$cegui_build_toluatool = xyes])
