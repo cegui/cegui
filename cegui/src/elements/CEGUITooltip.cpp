@@ -59,7 +59,8 @@ namespace CEGUI
 
     //////////////////////////////////////////////////////////////////////////
     Tooltip::Tooltip(const String& type, const String& name) :
-            Window(type, name)
+            Window(type, name),
+            d_inPositionSelf(false)
     {
         d_hoverTime     = 0.4f;
         d_displayTime   = 7.5f;
@@ -82,6 +83,12 @@ namespace CEGUI
 
     void Tooltip::positionSelf(void)
     {
+        // no recusion allowed for this function!
+        if (d_inPositionSelf)
+            return;
+
+        d_inPositionSelf = true;
+
         MouseCursor& cursor = MouseCursor::getSingleton();
         Rect screen(Vector2(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
         Rect tipRect(getUnclippedOuterRect());
@@ -116,6 +123,8 @@ namespace CEGUI
         setPosition(
             UVector2(cegui_absdim(tmpPos.d_x),
                      cegui_absdim(tmpPos.d_y)));
+
+        d_inPositionSelf = false;
     }
 
     void Tooltip::sizeSelf(void)
