@@ -95,9 +95,7 @@ void GUISheet::onMouseDoubleClicked(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseDoubleClicked(e);
-    // only adjust the handled state if event was directly injected
-    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
-        updateMouseEventHandled(e);
+    updateMouseEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -105,9 +103,7 @@ void GUISheet::onMouseTripleClicked(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseTripleClicked(e);
-    // only adjust the handled state if event was directly injected
-    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
-        updateMouseEventHandled(e);
+    updateMouseEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
