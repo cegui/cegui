@@ -3012,10 +3012,7 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
         return;
     }
 
-    // if event was directly injected, mark as handled to be consistent with
-    // other mouse button injectors
-    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
-        ++e.handled;
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -3033,10 +3030,7 @@ void Window::onMouseTripleClicked(MouseEventArgs& e)
         return;
     }
 
-    // if event was directly injected, mark as handled to be consistent with
-    // other mouse button injectors
-    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
-        ++e.handled;
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
