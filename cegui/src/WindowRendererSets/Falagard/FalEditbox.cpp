@@ -88,7 +88,12 @@ void FalagardEditbox::render()
     const float caret_width = caret_imagery.getBoundingRect(*d_window, text_area).getWidth();
     const float text_offset = calculateTextOffset(text_area, caret_width, extent_to_caret);
 
-    renderText(wlf, visual_text, text_area, text_offset);
+#ifdef CEGUI_BIDI_SUPPORT
+    renderTextBidi(wlf, visual_text, text_area, text_offset);
+#else
+    renderTextNoBidi(wlf, visual_text, text_area, text_offset);
+#endif
+
     renderCaret(caret_imagery, text_area, text_offset, extent_to_caret);
 }
 
@@ -192,18 +197,13 @@ float FalagardEditbox::calculateTextOffset(const Rect& text_area,
 }
 
 //----------------------------------------------------------------------------//
-void FalagardEditbox::renderText(const WidgetLookFeel& wlf,
-                                 const String& text,
-                                 const Rect& text_area,
-                                 float text_offset)
+void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
+                                       const String& text,
+                                       const Rect& text_area,
+                                       float text_offset)
 {
     Font* const font = d_window->getFont();
-    ColourRect colours;
-    float alpha_comp = d_window->getEffectiveAlpha();
 
-    //
-    // Draw label text
-    //
     // setup initial rect for text formatting
     Rect text_part_rect(text_area);
     // allow for scroll position
@@ -211,14 +211,88 @@ void FalagardEditbox::renderText(const WidgetLookFeel& wlf,
     // centre text vertically within the defined text area
     text_part_rect.d_top += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
+    ColourRect colours;
+    const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
     const colour unselectedColour(getUnselectedTextColour());
-
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
 
+    if (w->getSelectionLength() != 0)
+    {
+        // calculate required start and end offsets of selection imagery.
+        float selStartOffset =
+            font->getTextExtent(text.substr(0, w->getSelectionStartIndex()));
+        float selEndOffset =
+            font->getTextExtent(text.substr(0, w->getSelectionEndIndex()));
+
+        // calculate area for selection imagery.
+        Rect hlarea(text_area);
+        hlarea.d_left += text_offset + selStartOffset;
+        hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
+
+        // render the selection imagery.
+        wlf.getStateImagery(active ? "ActiveSelection" :
+                                     "InactiveSelection").
+            render(*w, hlarea, 0, &text_area);
+    }
+
+    // draw pre-highlight text
+    String sect = text.substr(0, w->getSelectionStartIndex());
+    colours.setColours(unselectedColour);
+    colours.modulateAlpha(alpha_comp);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &text_area, colours);
+
+    // adjust rect for next section
+    text_part_rect.d_left += font->getTextExtent(sect);
+
+    // draw highlight text
+    sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
+    colours.setColours(getSelectedTextColour());
+    colours.modulateAlpha(alpha_comp);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &text_area, colours);
+
+    // adjust rect for next section
+    text_part_rect.d_left += font->getTextExtent(sect);
+
+    // draw post-highlight text
+    sect = text.substr(w->getSelectionEndIndex());
+    colours.setColours(unselectedColour);
+    colours.modulateAlpha(alpha_comp);
+    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
+                   &text_area, colours);
+
+    // remember this for next time.
+    d_lastTextOffset = text_offset;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
+                                     const String& text,
+                                     const Rect& text_area,
+                                     float text_offset)
+{
 #ifdef CEGUI_BIDI_SUPPORT
+    Font* const font = d_window->getFont();
+
+    // setup initial rect for text formatting
+    Rect text_part_rect(text_area);
+    // allow for scroll position
+    text_part_rect.d_left += text_offset;
+    // centre text vertically within the defined text area
+    text_part_rect.d_top += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
+
+    ColourRect colours;
+    const float alpha_comp = d_window->getEffectiveAlpha();
+    // get unhighlighted text colour (saves accessing property twice)
+    const colour unselectedColour(getUnselectedTextColour());
+    // see if the editbox is active or inactive.
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    const bool active = editboxIsFocussed();
+
     if (w->getSelectionLength() == 0)
     {
         // no highlighted text - we can draw the whole thing
@@ -289,58 +363,6 @@ void FalagardEditbox::renderText(const WidgetLookFeel& wlf,
 
         }
     }
-#else
-    //
-    // Render selection imagery.
-    //
-    if (w->getSelectionLength() != 0)
-    {
-        // calculate required start and end offsets of selection imagery.
-        float selStartOffset =
-            font->getTextExtent(text.substr(0, w->getSelectionStartIndex()));
-        float selEndOffset =
-            font->getTextExtent(text.substr(0, w->getSelectionEndIndex()));
-
-        // calculate area for selection imagery.
-        Rect hlarea(text_area);
-        hlarea.d_left += text_offset + selStartOffset;
-        hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
-
-        // render the selection imagery.
-        wlf.getStateImagery(active ? "ActiveSelection" :
-                                     "InactiveSelection").
-            render(*w, hlarea, 0, &text_area);
-    }
-
-    // draw pre-highlight text
-    String sect = text.substr(0, w->getSelectionStartIndex());
-    colours.setColours(unselectedColour);
-    colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
-
-    // adjust rect for next section
-    text_part_rect.d_left += font->getTextExtent(sect);
-
-    // draw highlight text
-    sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
-    colours.setColours(getSelectedTextColour());
-    colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
-
-    // adjust rect for next section
-    text_part_rect.d_left += font->getTextExtent(sect);
-
-    // draw post-highlight text
-    sect = text.substr(w->getSelectionEndIndex());
-    colours.setColours(unselectedColour);
-    colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
-
-    // remember this for next time.
-    d_lastTextOffset = text_offset;
 #endif
 }
 
