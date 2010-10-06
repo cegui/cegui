@@ -66,138 +66,157 @@ FalagardEditbox::FalagardEditbox(const String& type) :
 //----------------------------------------------------------------------------//
 void FalagardEditbox::render()
 {
-    Editbox* w = static_cast<Editbox*>(d_window);
-    const StateImagery* imagery;
-
-    // draw container etc
-    // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
-    // try and get imagery for the approprite state.
-    imagery = &wlf.getStateImagery(
-        w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
 
-    // peform the rendering operation for the container.
-    imagery->render(*w);
-
-    // get destination area for text
-    const Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-
-    //
-    // Required preliminary work for text rendering operations
-    //
-    Font* font = w->getFont();
+    renderBaseImagery(wlf);
 
     // no font == no more rendering
+    Font* const font = d_window->getFont();
     if (!font)
         return;
 
-    // This will point to the final string to be used for rendering.  Useful
-    // because it means we do not have to have duplicate code or be copying
-    // getText() for handling masked/unmasked text.
-    String* editText;
+    String visual_text;
+    setupVisualString(visual_text);
 
-    // Create a 'masked' version of the string if needed.
-    String maskedText, windowText;
+    const ImagerySection& caret_imagery = wlf.getImagerySection("Carat");
+
+    // get destination area for text
+    const Rect text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+
+    const size_t caret_index = getCaretIndex(visual_text);
+    const float extent_to_caret = font->getTextExtent(visual_text.substr(0, caret_index));
+    const float caret_width = caret_imagery.getBoundingRect(*d_window, text_area).getWidth();
+    const float text_offset = calculateTextOffset(text_area, caret_width, extent_to_caret);
+
+    renderText(wlf, visual_text, text_area, text_offset);
+    renderCaret(caret_imagery, text_area, text_offset, extent_to_caret);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
+{
+    Editbox* w = static_cast<Editbox*>(d_window);
+
+    const StateImagery* imagery = &wlf.getStateImagery(
+        w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
+
+    imagery->render(*w);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setupVisualString(String& visual) const
+{
+    Editbox* w = static_cast<Editbox*>(d_window);
+
     if (w->isTextMasked())
-    {
-        maskedText.insert(0, w->getText().length(), w->getMaskCodePoint());
-        editText = &maskedText;
-    }
-    // text not masked to editText will be the windows getText() String.
+        visual.assign(w->getMaskCodePoint(), w->getText().length());
     else
-    {
-        windowText = w->getTextVisual();
-        editText = &windowText;
-    }
+        visual.assign(w->getTextVisual());
+}
 
-    // calculate best position to render text to ensure carat is always visible
-    float textOffset;
-    size_t cartIndex = w->getCaratIndex();
+//----------------------------------------------------------------------------//
+size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
+{
+    Editbox* w = static_cast<Editbox*>(d_window);
+
+    size_t caretIndex = w->getCaratIndex();
 
 #ifdef CEGUI_BIDI_SUPPORT
-    // the char before the cart bidi type
+    // the char before the caret bidi type
     bool currCharIsRtl = false;
-    if ((editText->size() > 0) && (cartIndex > 0))
+    if ((visual_text.size() > 0) && (caretIndex > 0))
     {
-        size_t curCartIndex = w->getCaratIndex();
-        BidiCharType charBeforeCartType = w->getBiDiVisualMapping()->
-            getBidiCharType((*editText)[curCartIndex - 1]);
+        size_t curCaretIndex = w->getCaratIndex();
+        BidiCharType charBeforeCaretType = w->getBiDiVisualMapping()->
+            getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
-        for (; BCT_NEUTRAL == charBeforeCartType &&
-               (editText->size() > curCartIndex); curCartIndex++)
+        for (; BCT_NEUTRAL == charBeforeCaretType &&
+               (visual_text.size() > curCaretIndex); curCaretIndex++)
         {
-            charBeforeCartType = w->getBiDiVisualMapping()->
-                getBidiCharType((*editText)[curCartIndex - 1]);
+            charBeforeCaretType = w->getBiDiVisualMapping()->
+                getBidiCharType(visual_text[curCaretIndex - 1]);
         }
 
-        currCharIsRtl  = (BCT_RIGHT_TO_LEFT == charBeforeCartType);
+        currCharIsRtl  = (BCT_RIGHT_TO_LEFT == charBeforeCaretType);
     }
 
-    bool isFirstChar = cartIndex == 0;
+    const bool isFirstChar = caretIndex == 0;
 
     // the pos is by the char before
     if (!isFirstChar)
-        cartIndex--;
+        caretIndex--;
 
-    // we need to find the cart pos by the logical to visual map
-    if (w->getBiDiVisualMapping()->getV2lMapping().size() > cartIndex)
-        cartIndex = w->getBiDiVisualMapping()->getL2vMapping()[cartIndex];
+    // we need to find the caret pos by the logical to visual map
+    if (w->getBiDiVisualMapping()->getV2lMapping().size() > caretIndex)
+        caretIndex = w->getBiDiVisualMapping()->getL2vMapping()[caretIndex];
 
-    // for non RTL char - the cart pos is after the char
+    // for non RTL char - the caret pos is after the char
     if (!currCharIsRtl)
-        cartIndex++;
+        caretIndex++;
 
     // if first char is not rtl - we need to stand at the start of the line
     if (isFirstChar)
     {
         bool firstCharRtl =
-            (editText->size() > 0) &&
+            (visual_text.size() > 0) &&
             (BCT_RIGHT_TO_LEFT == w->getBiDiVisualMapping()->
-                getBidiCharType((*editText)[0]));
+                getBidiCharType(visual_text[0]));
 
         if (!firstCharRtl)
-            cartIndex--;
+            caretIndex--;
     }
 #endif
 
-    float extentToCarat = font->getTextExtent(editText->substr(0, cartIndex));
+    return caretIndex;
+}
 
-    // get carat imagery
-    const ImagerySection& caratImagery = wlf.getImagerySection("Carat");
-    // store carat width
-    float caratWidth = caratImagery.getBoundingRect(*w, textArea).getWidth();
-
+//----------------------------------------------------------------------------//
+float FalagardEditbox::calculateTextOffset(const Rect& text_area,
+                                           const float caret_width,
+                                           const float extent_to_caret)
+{
     // if box is inactive
-    if (!w->hasInputFocus())
-        textOffset = d_lastTextOffset;
-    // if carat is to the left of the box
-    else if ((d_lastTextOffset + extentToCarat) < 0)
-        textOffset = -extentToCarat;
-    // if carat is off to the right.
-    else if ((d_lastTextOffset + extentToCarat) >= (textArea.getWidth() - caratWidth))
-        textOffset = textArea.getWidth() - extentToCarat - caratWidth;
-    // else carat is already within the box
-    else
-        textOffset = d_lastTextOffset;
+    if (!static_cast<Editbox*>(d_window)->hasInputFocus())
+        return d_lastTextOffset;
 
+    // if carat is to the left of the box
+    if ((d_lastTextOffset + extent_to_caret) < 0)
+        return -extent_to_caret;
+
+    // if carat is off to the right.
+    if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
+        return text_area.getWidth() - extent_to_caret - caret_width;
+
+    // else carat is already within the box
+    return d_lastTextOffset;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::renderText(const WidgetLookFeel& wlf,
+                                 const String& text,
+                                 const Rect& text_area,
+                                 float text_offset)
+{
+    Font* const font = d_window->getFont();
     ColourRect colours;
-    float alpha_comp = w->getEffectiveAlpha();
+    float alpha_comp = d_window->getEffectiveAlpha();
 
     //
     // Draw label text
     //
     // setup initial rect for text formatting
-    Rect text_part_rect(textArea);
+    Rect text_part_rect(text_area);
     // allow for scroll position
-    text_part_rect.d_left += textOffset;
+    text_part_rect.d_left += text_offset;
     // centre text vertically within the defined text area
-    text_part_rect.d_top += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
+    text_part_rect.d_top += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     // get unhighlighted text colour (saves accessing property twice)
-    colour unselectedColour(getUnselectedTextColour());
+    const colour unselectedColour(getUnselectedTextColour());
 
     // see if the editbox is active or inactive.
-    bool active = (!w->isReadOnly()) && w->hasInputFocus();
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    const bool active = editboxIsFocussed();
 
 #ifdef CEGUI_BIDI_SUPPORT
     if (w->getSelectionLength() == 0)
@@ -205,11 +224,11 @@ void FalagardEditbox::render()
         // no highlighted text - we can draw the whole thing
         colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
-        font->drawText(w->getGeometryBuffer(), *editText,
-                       text_part_rect.getPosition(), &textArea, colours);
+        font->drawText(w->getGeometryBuffer(), text,
+                       text_part_rect.getPosition(), &text_area, colours);
 
         // adjust rect for next section
-        text_part_rect.d_left += font->getTextExtent(*editText);
+        text_part_rect.d_left += font->getTextExtent(text);
 
     }
     else
@@ -219,10 +238,10 @@ void FalagardEditbox::render()
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
         // we have highlighted text - not that common...)
-        for (size_t i = 0 ; i < editText->size() ; i++)
+        for (size_t i = 0 ; i < text.size() ; i++)
         {
             // get the char
-            String currChar = editText->substr(i, 1);
+            String currChar = text.substr(i, 1);
             size_t realPos = 0;
 
             // get he visual pos of the char
@@ -246,14 +265,14 @@ void FalagardEditbox::render()
                 {
 
                     // calculate area for selection imagery.
-                    Rect hlarea(textArea);
+                    Rect hlarea(text_area);
                     hlarea.d_left = text_part_rect.d_left ;
                     hlarea.d_right = text_part_rect.d_left + charAdvance ;
 
                     // render the selection imagery.
                     wlf.getStateImagery(active ? "ActiveSelection" :
                                                  "InactiveSelection").
-                        render(*w, hlarea, 0, &textArea);
+                        render(*w, hlarea, 0, &text_area);
                 }
 
             }
@@ -263,7 +282,7 @@ void FalagardEditbox::render()
                 colours.modulateAlpha(alpha_comp);
             }
             font->drawText(w->getGeometryBuffer(), currChar,
-                           text_part_rect.getPosition(), &textArea, colours);
+                           text_part_rect.getPosition(), &text_area, colours);
 
             // adjust rect for next section
             text_part_rect.d_left += charAdvance;
@@ -278,61 +297,72 @@ void FalagardEditbox::render()
     {
         // calculate required start and end offsets of selection imagery.
         float selStartOffset =
-            font->getTextExtent(editText->substr(0, w->getSelectionStartIndex()));
+            font->getTextExtent(text.substr(0, w->getSelectionStartIndex()));
         float selEndOffset =
-            font->getTextExtent(editText->substr(0, w->getSelectionEndIndex()));
+            font->getTextExtent(text.substr(0, w->getSelectionEndIndex()));
 
         // calculate area for selection imagery.
-        Rect hlarea(textArea);
-        hlarea.d_left += textOffset + selStartOffset;
+        Rect hlarea(text_area);
+        hlarea.d_left += text_offset + selStartOffset;
         hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
 
         // render the selection imagery.
         wlf.getStateImagery(active ? "ActiveSelection" :
                                      "InactiveSelection").
-            render(*w, hlarea, 0, &textArea);
+            render(*w, hlarea, 0, &text_area);
     }
 
     // draw pre-highlight text
-    String sect = editText->substr(0, w->getSelectionStartIndex());
+    String sect = text.substr(0, w->getSelectionStartIndex());
     colours.setColours(unselectedColour);
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &textArea, colours);
+                   &text_area, colours);
 
     // adjust rect for next section
     text_part_rect.d_left += font->getTextExtent(sect);
 
     // draw highlight text
-    sect = editText->substr(w->getSelectionStartIndex(), w->getSelectionLength());
+    sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     colours.setColours(getSelectedTextColour());
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &textArea, colours);
+                   &text_area, colours);
 
     // adjust rect for next section
     text_part_rect.d_left += font->getTextExtent(sect);
 
     // draw post-highlight text
-    sect = editText->substr(w->getSelectionEndIndex());
+    sect = text.substr(w->getSelectionEndIndex());
     colours.setColours(unselectedColour);
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &textArea, colours);
+                   &text_area, colours);
 
     // remember this for next time.
-    d_lastTextOffset = textOffset;
+    d_lastTextOffset = text_offset;
 #endif
+}
 
-    //
-    // Render carat
-    //
-    if (active && (!d_blinkCaret || d_showCaret))
+//----------------------------------------------------------------------------//
+bool FalagardEditbox::editboxIsFocussed() const
+{
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    return (!w->isReadOnly()) && w->hasInputFocus();
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::renderCaret(const ImagerySection& imagery,
+                                  const Rect& text_area,
+                                  const float text_offset,
+                                  const float extent_to_caret) const
+{
+    if (editboxIsFocussed() && (!d_blinkCaret || d_showCaret))
     {
-        Rect caratRect(textArea);
-        caratRect.d_left += extentToCarat + textOffset;
+        Rect caratRect(text_area);
+        caratRect.d_left += extent_to_caret + text_offset;
 
-        caratImagery.render(*w, caratRect, 0, &textArea);
+        imagery.render(*d_window, caratRect, 0, &text_area);
     }
 }
 
