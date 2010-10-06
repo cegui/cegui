@@ -144,6 +144,24 @@ protected:
     static FalagardEditboxProperties::BlinkCaret d_blinkCaretProperty;
     static FalagardEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
 
+    //! helper to draw the base imagery (container and what have you)
+    void renderBaseImagery(const WidgetLookFeel& wlf) const;
+    //! helper to set 'visual' to the string we will render (part of)
+    void setupVisualString(String& visual) const;
+    size_t getCaretIndex(const String& visual_string) const;
+    float calculateTextOffset(const Rect& text_area,
+                              const float caret_width,
+                              const float extent_to_caret);
+    void renderText(const WidgetLookFeel& wlf,
+                    const String& text,
+                    const Rect& text_area,
+                    float text_offset);
+    bool editboxIsFocussed() const;
+    void renderCaret(const ImagerySection& imagery,
+                     const Rect& text_area,
+                     const float text_offset,
+                     const float extent_to_caret) const;
+
     //! x rendering offset used last time we drew the widget.
     float d_lastTextOffset;
     //! true if the caret imagery should blink.
