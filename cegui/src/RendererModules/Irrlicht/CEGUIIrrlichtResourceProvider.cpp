@@ -55,7 +55,11 @@ void IrrlichtResourceProvider::loadRawDataContainer(const String& filename,
 {
     String final_filename(getFinalFilename(filename, resourceGroup));
 
-    if (!d_fsys.existFile(final_filename.c_str()))
+    irr::u8* input;
+    irr::u32 input_size;
+    irr::io::IReadFile* f = d_fsys.createAndOpenFile(final_filename.c_str());
+
+    if (!f)
     {
         String sMsg("IrrlichtResourceProvider::loadRawDataContainer: "
                     "Filename supplied for loading must be valid");
@@ -63,9 +67,6 @@ void IrrlichtResourceProvider::loadRawDataContainer(const String& filename,
         CEGUI_THROW(InvalidRequestException(sMsg));
     }
 
-    irr::u8* input;
-    irr::u32 input_size;
-    irr::io::IReadFile* f = d_fsys.createAndOpenFile(final_filename.c_str());
     input_size = f->getSize();
     input = new irr::u8[input_size];
     f->read(input, input_size);
