@@ -152,10 +152,14 @@ protected:
     float calculateTextOffset(const Rect& text_area,
                               const float caret_width,
                               const float extent_to_caret);
-    void renderText(const WidgetLookFeel& wlf,
-                    const String& text,
-                    const Rect& text_area,
-                    float text_offset);
+    void renderTextNoBidi(const WidgetLookFeel& wlf,
+                          const String& text,
+                          const Rect& text_area,
+                          float text_offset);
+    void renderTextBidi(const WidgetLookFeel& wlf,
+                        const String& text,
+                        const Rect& text_area,
+                        float text_offset);
     bool editboxIsFocussed() const;
     void renderCaret(const ImagerySection& imagery,
                      const Rect& text_area,
