@@ -37,12 +37,15 @@
 #include "CEGUIFont.h"
 #include "CEGUIBiDiVisualMapping.h"
 
+#include <stdio.h>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 FalagardEditboxProperties::BlinkCaret FalagardEditbox::d_blinkCaretProperty;
 FalagardEditboxProperties::BlinkCaretTimeout FalagardEditbox::d_blinkCaretTimeoutProperty;
+FalagardEditboxProperties::TextFormatting FalagardEditbox::d_textFormattingProperty;
 
 //----------------------------------------------------------------------------//
 const utf8 FalagardEditbox::TypeName[] = "Falagard/Editbox";
@@ -57,10 +60,12 @@ FalagardEditbox::FalagardEditbox(const String& type) :
     d_blinkCaret(false),
     d_caretBlinkTimeout(DefaultCaretBlinkTimeout),
     d_caretBlinkElapsed(0.0f),
-    d_showCaret(true)
+    d_showCaret(true),
+    d_textFormatting(HTF_LEFT_ALIGNED)
 {
     registerProperty(&d_blinkCaretProperty);
     registerProperty(&d_blinkCaretTimeoutProperty);
+    registerProperty(&d_textFormattingProperty);
 }
 
 //----------------------------------------------------------------------------//
@@ -86,13 +91,17 @@ void FalagardEditbox::render()
     const size_t caret_index = getCaretIndex(visual_text);
     const float extent_to_caret = font->getTextExtent(visual_text.substr(0, caret_index));
     const float caret_width = caret_imagery.getBoundingRect(*d_window, text_area).getWidth();
-    const float text_offset = calculateTextOffset(text_area, caret_width, extent_to_caret);
+    const float text_extent = font->getTextExtent(visual_text);
+    const float text_offset = calculateTextOffset(text_area, text_extent, caret_width, extent_to_caret);
 
 #ifdef CEGUI_BIDI_SUPPORT
     renderTextBidi(wlf, visual_text, text_area, text_offset);
 #else
     renderTextNoBidi(wlf, visual_text, text_area, text_offset);
 #endif
+
+    // remember this for next time.
+    d_lastTextOffset = text_offset;
 
     renderCaret(caret_imagery, text_area, text_offset, extent_to_caret);
 }
@@ -177,13 +186,10 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 
 //----------------------------------------------------------------------------//
 float FalagardEditbox::calculateTextOffset(const Rect& text_area,
+                                           const float text_extent,
                                            const float caret_width,
                                            const float extent_to_caret)
 {
-    // if box is inactive
-    if (!static_cast<Editbox*>(d_window)->hasInputFocus())
-        return d_lastTextOffset;
-
     // if carat is to the left of the box
     if ((d_lastTextOffset + extent_to_caret) < 0)
         return -extent_to_caret;
@@ -192,7 +198,17 @@ float FalagardEditbox::calculateTextOffset(const Rect& text_area,
     if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
         return text_area.getWidth() - extent_to_caret - caret_width;
 
-    // else carat is already within the box
+    // handle formatting of text when it's shorter than the available space
+    if (text_extent < text_area.getWidth())
+    {
+        if (d_textFormatting == HTF_CENTRE_ALIGNED)
+            return (text_area.getWidth() - text_extent) / 2;
+
+        if (d_textFormatting == HTF_RIGHT_ALIGNED)
+            return text_area.getWidth() - text_extent;
+    }
+
+    // no change to text position; re-use last offset value.
     return d_lastTextOffset;
 }
 
@@ -264,9 +280,6 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
                    &text_area, colours);
-
-    // remember this for next time.
-    d_lastTextOffset = text_offset;
 }
 
 //----------------------------------------------------------------------------//
@@ -475,6 +488,33 @@ void FalagardEditbox::setCaretBlinkEnabled(bool enable)
 void FalagardEditbox::setCaretBlinkTimeout(float seconds)
 {
     d_caretBlinkTimeout = seconds;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setTextFormatting(const HorizontalTextFormatting format)
+{
+    if (isUnsupportedFormat(format))
+        CEGUI_THROW(InvalidRequestException(
+            "FalagardEditbox::setTextFormatting: currently only "
+            "HTF_LEFT_ALIGNED, HTF_RIGHT_ALIGNED and HTF_CENTRE_ALIGNED "
+            "are accepted for Editbox formatting"));
+
+    d_textFormatting = format;
+    d_window->invalidate();
+}
+
+//----------------------------------------------------------------------------//
+bool FalagardEditbox::isUnsupportedFormat(const HorizontalTextFormatting format)
+{
+    return !(format == HTF_LEFT_ALIGNED ||
+             format == HTF_RIGHT_ALIGNED ||
+             format == HTF_CENTRE_ALIGNED);
+}
+
+//----------------------------------------------------------------------------//
+HorizontalTextFormatting FalagardEditbox::getTextFormatting() const
+{
+    return d_textFormatting;
 }
 
 //----------------------------------------------------------------------------//

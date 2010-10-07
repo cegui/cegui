@@ -86,6 +86,33 @@ public:
     void    set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access the horizontal formatting mode setting.
+
+    \par Usage:
+        - Name: TextFormatting
+        - Format: "[text]".
+
+    \par Where [text] is one of:
+        - "LeftAligned"
+        - "RightAligned"
+        - "HorzCentred"
+*/
+class TextFormatting : public Property
+{
+public:
+    TextFormatting() : Property(
+        "TextFormatting",
+        "Property to get/set the horizontal formatting mode. "
+        "Value is one of: LeftAligned, RightAligned or HorzCentred",
+        "LeftAligned")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of FalagardEditboxProperties namespace section
 
 } // End of  CEGUI namespace section
