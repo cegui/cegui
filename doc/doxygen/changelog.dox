@@ -3,6 +3,32 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.3</b>
+- Bug Fix: Ensure return value from injectMouseButtonDown is consistent in all cases.  See: http://www.cegui.org.uk/mantis/view.php?id=397
+- Bug Fix: Ensure IrrlichtResourceProvider correctly detects when a file does not open successfully (as opposed to just checking that it exists).  See: http://www.cegui.org.uk/mantis/view.php?id=395
+- Bug Fix: resolve infinite recursion issue involving Tooltip::positionSelf.  Solution is not all that elegant, but it does work and does not break other things which could happen by 'tuning' where we call positionSelf.  See: http://www.cegui.org.uk/mantis/view.php?id=394
+- Bug Fix: Resolve issues where user can delete the system default Tooltip and leave a dangling pointer.  Tooltip is now recreated whenever it's needed after having been deleted. See: http://www.cegui.org.uk/mantis/view.php?id=391
+- Bug Fix: remove default param to resolve ambiguous function call. http://www.cegui.org.uk/mantis/view.php?id=386.
+- Bug Fix: Do not have String::iterator subclass String::const_iterator, since it prevents common iterator behaviours (because it was never possible to receive an object that behaved like a non-const iterator).  See: http://www.cegui.org.uk/mantis/view.php?id=384.
+- Bug Fix: Blending issues on OpenGL renderer when using the WGL pbuffer support.
+- Bug Fix: Blend mode issue in OpenGL renderer when using Apple pbuffer based targets.
+- Bug Fix: Blend mode issue in OpenGL renderer when using GLX pbuffer based targets.
+- Bug Fix: Manually set viewport dimensions in the OgreRenderer could be lost if no internal viewport existed at the point when the dimensions were set.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=5141
+- Bug Fix: Resolved OgreRenderer issues relating to when no render target / view port is set and Renderer::beginRendering gets called.  See: http://www.cegui.org.uk/mantis/view.php?id=367 and http://www.cegui.org.uk/mantis/view.php?id=379
+- Bug Fix: The layout container tolua++ package files were missing from the source distributions.  See: http://www.cegui.org.uk/mantis/view.php?id=388
+- Bug Fix: CEGUI::ScriptFunctor was not exported from CEGUIBase.dll in Win32.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=2&t=5109
+
+- Modified: Fire Combobox::EventListSelectionAccepted /after/ activating the editbox part of the control, which should allow handlers to pop-up and activate other windows.
+- Modified: Changed default setting in lua module target in Xcode so the release build is not built with the 'safe' mode enabled.
+- Modified: Apply Kulik's animation system patch that allows skipping of the next frame when things are lagging after an anim (re)start.
+- Modified: Applied Kulik's layout container patch to address some nested container issues.  NB: Part of this change makes Window::update function virtual.
+
+- Added: Facility to specify left, right or centred formatting for the Editbox.  See: http://www.cegui.org.uk/mantis/view.php?id=277
+- Added: configure option to allow the control over whether the lua module is built in 'safe' mode in non-debug builds.
+- Added: ImageCodec module based on stb_image.c (from http://nothings.org/).  Thanks to Tobias Schlegel.  See: http://www.cegui.org.uk/mantis/view.php?id=375.  NB: Still to test on MSVC and add targets in Xcode.
+- Added: Facility to clone a window.  Via Kulik's patch.  For: http://www.cegui.org.uk/mantis/view.php?id=352
+
+
 <b>Release 0.7.2</b>
 - Bug Fix: Resolve issue where auto generated buttons for TabControl could cause CEGUI::AlreadyExistsException to be thrown due to using only part of the content window name.  Issue resolved by using the entire content window name.  See: http://www.cegui.org.uk/mantis/view.php?id=383.
 - Bug Fix: Resolved infinite recursion bug in String::iterator::operator+.  Thanks to Kulik.
