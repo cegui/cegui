@@ -3,6 +3,11 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.4</b>
+This version was issued as an 'emergency release' to fix the following:
+- Bug Fix: CEGUI::Editbox masked text issue.  See: http://www.cegui.org.uk/mantis/view.php?id=399
+
+
 <b>Release 0.7.3</b>
 - Bug Fix: Ensure return value from injectMouseButtonDown is consistent in all cases.  See: http://www.cegui.org.uk/mantis/view.php?id=397
 - Bug Fix: Ensure IrrlichtResourceProvider correctly detects when a file does not open successfully (as opposed to just checking that it exists).  See: http://www.cegui.org.uk/mantis/view.php?id=395
