@@ -71,6 +71,47 @@ void BlinkCaretTimeout::set(PropertyReceiver* receiver, const String& value)
     wr->setCaretBlinkTimeout(PropertyHelper::stringToFloat(value));
 }
 
+//----------------------------------------------------------------------------//
+String TextFormatting::get(const PropertyReceiver* receiver) const
+{
+    FalagardEditbox* wr = static_cast<FalagardEditbox*>(
+        static_cast<const Window*>(receiver)->getWindowRenderer());
+
+    switch(wr->getTextFormatting())
+    {
+    case HTF_RIGHT_ALIGNED:
+        return String("RightAligned");
+        break;
+
+    case HTF_CENTRE_ALIGNED:
+        return String("HorzCentred");
+        break;
+
+    default:
+        return String("LeftAligned");
+        break;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void TextFormatting::set(PropertyReceiver* receiver, const String& value)
+{
+    HorizontalTextFormatting fmt;
+
+    if (value == "RightAligned")
+        fmt = HTF_RIGHT_ALIGNED;
+    else if (value == "HorzCentred")
+        fmt = HTF_CENTRE_ALIGNED;
+    else
+        fmt = HTF_LEFT_ALIGNED;
+
+    FalagardEditbox* wr = static_cast<FalagardEditbox*>(
+        static_cast<Window*>(receiver)->getWindowRenderer());
+    wr->setTextFormatting(fmt);
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of FalagardEditboxProperties namespace section
 
 } // End of  CEGUI namespace section

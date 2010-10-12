@@ -667,8 +667,7 @@ public:
         Pointer to the current system default tooltip.  May return 0 if
         no system default tooltip is available.
      */
-    Tooltip* getDefaultTooltip(void) const  { return d_defaultTooltip; }
-
+    Tooltip* getDefaultTooltip(void) const;
 
 	/*!
 	\brief
@@ -1239,6 +1238,10 @@ private:
     void notifyMouseTransition(Window* top, Window* bottom,
                                void (Window::*func)(MouseEventArgs&),
                                MouseEventArgs& args);
+    //! create a window of type d_defaultTooltipType for use as the Tooltip
+    void createSystemOwnedDefaultTooltipWindow() const;
+    //! destroy the default tooltip window if the system owns it.
+    void destroySystemOwnedDefaultTooltipWindow();
 
 	/*************************************************************************
 		Handlers for System events
@@ -1336,8 +1339,12 @@ private:
     bool        d_ourXmlParser;     //!< true when we created the xml parser.
     DynamicModule* d_parserModule;  //! pointer to parser module.
 
-    Tooltip* d_defaultTooltip;      //!< System default tooltip object.
-    bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.
+    //! System default tooltip object.
+    mutable Tooltip* d_defaultTooltip;
+    //! true if System created d_defaultTooltip.
+    mutable bool d_weOwnTooltip;
+    //! type of window to create as d_defaultTooltip
+    String d_defaultTooltipType;
 
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 

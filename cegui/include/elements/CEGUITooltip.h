@@ -407,6 +407,8 @@ namespace CEGUI
         float       d_hoverTime;    //!< tool-tip hover time (seconds mouse must stay stationary before tip shows).
         float       d_displayTime;  //!< tool-tip display time (seconds that tip is showsn for).
         float       d_fadeTime;     //!< tool-tip fade time (seconds it takes for tip to fade in and/or out).
+        //! are in positionSelf function? (to avoid infinite recursion issues)
+        bool d_inPositionSelf;
 
     private:
         /*************************************************************************

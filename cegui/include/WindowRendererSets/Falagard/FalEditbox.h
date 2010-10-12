@@ -132,6 +132,20 @@ public:
     //! set the caret blink timeout period (only used if blink is enabled).
     void setCaretBlinkTimeout(float seconds);
 
+    /*!
+    \brief
+        Sets the horizontal text formatting to be used from now onwards.
+
+    \param format
+        Specifies the formatting to use.  Currently can only be one of the
+        following HorizontalTextFormatting values:
+            - HTF_LEFT_ALIGNED (default)
+            - HTF_RIGHT_ALIGNED
+            - HTF_CENTRE_ALIGNED
+    */
+    void setTextFormatting(const HorizontalTextFormatting format);
+    HorizontalTextFormatting getTextFormatting() const;
+
     void render();
 
     // overridden from EditboxWindowRenderer base class.
@@ -143,6 +157,32 @@ protected:
     // properties
     static FalagardEditboxProperties::BlinkCaret d_blinkCaretProperty;
     static FalagardEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
+    static FalagardEditboxProperties::TextFormatting d_textFormattingProperty;
+
+    //! helper to draw the base imagery (container and what have you)
+    void renderBaseImagery(const WidgetLookFeel& wlf) const;
+    //! helper to set 'visual' to the string we will render (part of)
+    void setupVisualString(String& visual) const;
+    size_t getCaretIndex(const String& visual_string) const;
+    float calculateTextOffset(const Rect& text_area,
+                              const float text_extent,
+                              const float caret_width,
+                              const float extent_to_caret);
+    void renderTextNoBidi(const WidgetLookFeel& wlf,
+                          const String& text,
+                          const Rect& text_area,
+                          float text_offset);
+    void renderTextBidi(const WidgetLookFeel& wlf,
+                        const String& text,
+                        const Rect& text_area,
+                        float text_offset);
+    bool editboxIsFocussed() const;
+    void renderCaret(const ImagerySection& imagery,
+                     const Rect& text_area,
+                     const float text_offset,
+                     const float extent_to_caret) const;
+
+    bool isUnsupportedFormat(const HorizontalTextFormatting format);
 
     //! x rendering offset used last time we drew the widget.
     float d_lastTextOffset;
@@ -154,6 +194,8 @@ protected:
     float d_caretBlinkElapsed;
     //! true if caret should be shown.
     bool d_showCaret;
+    //! horizontal formatting.  Only supports left, right, and centred.
+    HorizontalTextFormatting d_textFormatting;
 };
 
 } // End of  CEGUI namespace section

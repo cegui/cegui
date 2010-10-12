@@ -1383,14 +1383,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 		DAFA3D8112536A8F00148B7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DAFA3D641253692300148B7B /* CEGUISTBImageCodec */;
+			remoteGlobalIDString = DAFA3D641253692300148B7B;
 			remoteInfo = CEGUISTBImageCodec;
 		};
 /* End PBXContainerItemProxy section */
@@ -2530,7 +2530,7 @@
 		DAF86672101F7C6900563021 /* CEGUIPCRERegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIPCRERegexMatcher.h; path = ../../cegui/include/CEGUIPCRERegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86673101F7C6900563021 /* CEGUIRegexMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRegexMatcher.h; path = ../../cegui/include/CEGUIRegexMatcher.h; sourceTree = SOURCE_ROOT; };
 		DAF86676101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIPCRERegexMatcher.cpp; path = ../../cegui/src/CEGUIPCRERegexMatcher.cpp; sourceTree = SOURCE_ROOT; };
-		DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CEGUISTBImageCodec.bundle; path = build/Debug/CEGUISTBImageCodec.bundle; sourceTree = "<group>"; };
+		DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUISTBImageCodec.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAFA3D661253692300148B7B /* CEGUISTBImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUISTBImageCodec-Info.plist"; sourceTree = "<group>"; };
 		DAFA3D7912536A3100148B7B /* CEGUISTBImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISTBImageCodec.h; path = ../../cegui/include/ImageCodecModules/STBImageCodec/CEGUISTBImageCodec.h; sourceTree = SOURCE_ROOT; };
 		DAFA3D7A12536A3100148B7B /* CEGUISTBImageCodecModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUISTBImageCodecModule.h; path = ../../cegui/include/ImageCodecModules/STBImageCodec/CEGUISTBImageCodecModule.h; sourceTree = SOURCE_ROOT; };
@@ -5664,7 +5664,14 @@
 			isa = PBXProject;
 			buildConfigurationList = DA1093400F6D51AE00B8A582 /* Build configuration list for PBXProject "CEGUI" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = DA10933B0F6D51AE00B8A582;
 			productRefGroup = DA1097A40F6D838D00B8A582 /* Products */;
 			projectDirPath = "";
@@ -8579,6 +8586,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					TOLUA_RELEASE,
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					../../dependencies/lua.framework/Headers,

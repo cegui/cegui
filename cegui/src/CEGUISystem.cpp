@@ -1371,16 +1371,17 @@ void System::notifyWindowDestroyed(const Window* window)
 		d_modalTarget = 0;
 	}
 
+    if (d_defaultTooltip == window)
+    {
+        d_defaultTooltip = 0;
+        d_weOwnTooltip = false;
+    }
 }
 
 void System::setDefaultTooltip(Tooltip* tooltip)
 {
-    // destroy current custom tooltip if one exists and we created it
-    if (d_defaultTooltip && d_weOwnTooltip)
-        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+    destroySystemOwnedDefaultTooltipWindow();
 
-    // set new custom tooltip
-    d_weOwnTooltip = false;
     d_defaultTooltip = tooltip;
 
     if (d_defaultTooltip)
@@ -1389,30 +1390,43 @@ void System::setDefaultTooltip(Tooltip* tooltip)
 
 void System::setDefaultTooltip(const String& tooltipType)
 {
-    // destroy current tooltip if one exists and we created it
-    if (d_defaultTooltip && d_weOwnTooltip)
-        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+    destroySystemOwnedDefaultTooltipWindow();
 
-    if (tooltipType.empty())
-    {
-        d_defaultTooltip = 0;
-        d_weOwnTooltip = false;
-    }
-    else
-    {
-        CEGUI_TRY
-        {
-            d_defaultTooltip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, "CEGUI::System::default__auto_tooltip__"));
-            d_weOwnTooltip = true;
-            d_defaultTooltip->setWritingXMLAllowed(false);
-        }
-        CEGUI_CATCH(UnknownObjectException x)
-        {
-            d_defaultTooltip = 0;
-            d_weOwnTooltip = false;
-        }
-    }
+    d_defaultTooltipType = tooltipType;
 }
+
+//----------------------------------------------------------------------------//
+void System::createSystemOwnedDefaultTooltipWindow() const
+{
+    d_defaultTooltip = static_cast<Tooltip*>(
+        WindowManager::getSingleton().createWindow(
+            d_defaultTooltipType, "CEGUI::System::default__auto_tooltip__"));
+    d_defaultTooltip->setWritingXMLAllowed(false);
+    d_weOwnTooltip = true;
+}
+
+//----------------------------------------------------------------------------//
+void System::destroySystemOwnedDefaultTooltipWindow()
+{
+    if (d_defaultTooltip && d_weOwnTooltip)
+    {
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+        d_defaultTooltip = 0;
+    }
+
+    d_weOwnTooltip = false;
+}
+
+//----------------------------------------------------------------------------//
+Tooltip* System::getDefaultTooltip(void) const
+{
+    if (!d_defaultTooltip && !d_defaultTooltipType.empty())
+        createSystemOwnedDefaultTooltipWindow();
+
+    return d_defaultTooltip;
+}
+
+//----------------------------------------------------------------------------//
 
 void System::outputLogHeader()
 {

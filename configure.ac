@@ -63,6 +63,8 @@ if test x$MINGW32 != xyes; then
     AC_CHECK_LIB([pthread], [pthread_create],, AC_MSG_ERROR([cannot find pthread library]))
 fi
 
+CEGUI_CODE_OPTIONS
+
 CEGUI_CHECK_FREETYPE
 CEGUI_CHECK_PCRE
 
@@ -111,7 +113,6 @@ CEGUI_CHECK_LUA
 # handle config for bi-directional text support.
 CEGUI_CHECK_BIDI
 
-CEGUI_CODE_OPTIONS
 CEGUI_CHECK_DEFAULT_LOGGER
 CEGUI_CHECK_MINIZIP_RESOURCE_PROVIDER
 
@@ -297,6 +298,9 @@ fi
 echo "*"
 echo "* Scripting:"
 echo "*         Building Lua scripting module:                ${cegui_with_lua-no}"
+if test x$cegui_with_lua = xyes; then
+echo "*             Safety checks enabled:                    ${cegui_enable_safe_lua-no}"
+fi
 echo "*         Building tolua++cegui generator:              ${cegui_build_toluatool-no}"
 if test x$cegui_with_lua = xyes; then
 echo "*             Using external tolua++ library:           ${cegui_found_toluapp-no}"

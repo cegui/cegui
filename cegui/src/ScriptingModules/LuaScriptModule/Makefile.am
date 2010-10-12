@@ -14,6 +14,10 @@ libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS += -DCEGUILUA_EXPORTS
 endif
 endif
 
+if CEGUI_BUILD_LUA_MODULE_UNSAFE
+libCEGUILuaScriptModule@cegui_bsfx@_la_CPPFLAGS += -DTOLUA_RELEASE
+endif
+
 lib_LTLIBRARIES = libCEGUILuaScriptModule@cegui_bsfx@.la
 
 libCEGUILuaScriptModule@cegui_bsfx@_la_SOURCES = lua_CEGUI.cpp \
