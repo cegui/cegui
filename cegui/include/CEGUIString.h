@@ -88,245 +88,222 @@ public:
 	/*************************************************************************
 		Iterator Classes
 	*************************************************************************/
-	/*!
-	\brief
-		Constant forward iterator class for String objects
-	*/
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-	class const_iterator : public std::iterator<std::random_access_iterator_tag, utf32>
-#else
-	class const_iterator : public std::iterator<std::random_access_iterator_tag, utf32, std::ptrdiff_t, const utf32*, const utf32&>
-#endif
-	{
+    //! regular iterator for String.
+    class iterator : public std::iterator<std::random_access_iterator_tag, utf32>
+    {
+    public:
+        iterator() : d_ptr(0) {}
+        explicit iterator(utf32* const ptr) : d_ptr(ptr) {}
 
-	public:
-		//////////////////////////////////////////////////////////////////////////
-		// data
-		//////////////////////////////////////////////////////////////////////////
-		const utf32*	d_ptr;
+        utf32& operator*() const
+        {
+            return *d_ptr;
+        }
 
+        utf32* operator->() const
+        {
+            return &**this;
+        }
 
-		//////////////////////////////////////////////////////////////////////////
-		// Methods
-		//////////////////////////////////////////////////////////////////////////
-		const_iterator(void)
-		{
-			d_ptr = 0;
-		}
-		const_iterator(const_pointer ptr)
-		{
-			d_ptr = ptr;
-		}
+        String::iterator& operator++()
+        {
+            ++d_ptr;
+            return *this;
+        }
 
-		const_reference	operator*() const
-		{
-			return *d_ptr;
-		}
+        String::iterator operator++(int)
+        {
+            String::iterator temp = *this;
+            ++*this;
+            return temp;
+        }
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#	pragma warning (push)
-#	pragma warning (disable : 4284)
-#endif
-		const_pointer	operator->() const
-		{
-			return &**this;
-		}
+        String::iterator& operator--()
+        {
+            --d_ptr;
+            return *this;
+        }
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#	pragma warning (pop)
-#endif
+        String::iterator operator--(int)
+        {
+            String::iterator temp = *this;
+            --*this;
+            return temp;
+        }
 
-		const_iterator&	operator++()
-		{
-			++d_ptr;
-			return *this;
-		}
+        String::iterator& operator+=(difference_type offset)
+        {
+            d_ptr += offset;
+            return *this;
+        }
 
-		const_iterator	operator++(int)
-		{
-			const_iterator temp = *this;
-			++*this;
-			return temp;
-		}
+        String::iterator operator+(difference_type offset) const
+        {
+            String::iterator temp = *this;
+            return temp += offset;
+        }
 
-		const_iterator&	operator--()
-		{
-			--d_ptr;
-			return *this;
-		}
+        String::iterator& operator-=(difference_type offset)
+        {
+            return *this += -offset;
+        }
 
-		const_iterator	operator--(int)
-		{
-			const_iterator temp = *this;
-			--*this;
-			return temp;
-		}
+        String::iterator operator-(difference_type offset) const
+        {
+            String::iterator temp = *this;
+            return temp -= offset;
+        }
 
-		const_iterator& operator+=(difference_type offset)
-		{
-			d_ptr += offset;
-			return *this;
-		}
+        utf32& operator[](difference_type offset) const
+        {
+            return *(*this + offset);
+        }
 
-		const_iterator operator+(difference_type offset) const
-		{
-			const_iterator temp = *this;
-			return temp += offset;
-		}
+        friend difference_type operator-(const String::iterator& lhs,
+                                         const String::iterator& rhs)
+            { return lhs.d_ptr - rhs.d_ptr; }
 
-		const_iterator& operator-=(difference_type offset)
-		{
-			return *this += -offset;
-		}
+        friend String::iterator operator+(difference_type offset, const String::iterator& iter)
+            { return iter + offset; }
 
-		const_iterator operator-(difference_type offset) const
-		{
-			const_iterator temp = *this;
-			return temp -= offset;
-		}
+        friend bool operator==(const String::iterator& lhs,
+                               const String::iterator& rhs)
+            { return lhs.d_ptr == rhs.d_ptr; }
 
-		difference_type operator-(const const_iterator& iter) const
-		{
-			return d_ptr - iter.d_ptr;
-		}
+        friend bool operator!=(const String::iterator& lhs,
+                               const String::iterator& rhs)
+            { return lhs.d_ptr != rhs.d_ptr; }
 
-		const_reference operator[](difference_type offset) const
-		{
-			return *(*this + offset);
-		}
+        friend bool operator<(const String::iterator& lhs,
+                              const String::iterator& rhs)
+            { return lhs.d_ptr < rhs.d_ptr; }
 
-		bool operator==(const const_iterator& iter) const
-		{
-			return d_ptr == iter.d_ptr;
-		}
+        friend bool operator>(const String::iterator& lhs,
+                              const String::iterator& rhs)
+            { return lhs.d_ptr > rhs.d_ptr; }
 
-		bool operator!=(const const_iterator& iter) const
-		{
-			return !(*this == iter);
-		}
+        friend bool operator<=(const String::iterator& lhs,
+                               const String::iterator& rhs)
+            { return lhs.d_ptr <= rhs.d_ptr; }
 
-		bool operator<(const const_iterator& iter) const
-		{
-			return d_ptr < iter.d_ptr;
-		}
+        friend bool operator>=(const String::iterator& lhs,
+                               const String::iterator& rhs)
+            { return lhs.d_ptr >= rhs.d_ptr; }
 
-		bool operator>(const const_iterator& iter) const
-		{
-			return (!(iter < *this));
-		}
+        utf32* d_ptr;
+    };
 
-		bool operator<=(const const_iterator& iter) const
-		{
-			return (!(iter < *this));
-		}
+    //! const iterator for String.
+    class const_iterator : public std::iterator<std::random_access_iterator_tag, const utf32>
+    {
+    public:
+        const_iterator() : d_ptr(0) {}
+        explicit const_iterator(const utf32* const ptr) : d_ptr(ptr) {}
+        const_iterator(const String::iterator& iter) : d_ptr(iter.d_ptr) {}
 
-		bool operator>=(const const_iterator& iter) const
-		{
-			return (!(*this < iter));
-		}
+        const utf32& operator*() const
+        {
+            return *d_ptr;
+        }
 
-		friend const_iterator operator+(difference_type offset, const const_iterator& iter)
-		{
-			return iter + offset;
-		}
+        const utf32* operator->() const
+        {
+            return &**this;
+        }
 
-	};
+        String::const_iterator& operator++()
+        {
+            ++d_ptr;
+            return *this;
+        }
 
-	/*!
-	\brief
-		Forward iterator class for String objects
-	*/
-	class iterator : public const_iterator
-	{
-	public:
-		iterator(void) {}
-		iterator(pointer ptr) : const_iterator(ptr) {}
+        String::const_iterator operator++(int)
+        {
+            String::const_iterator temp = *this;
+            ++*this;
+            return temp;
+        }
 
+        String::const_iterator& operator--()
+        {
+            --d_ptr;
+            return *this;
+        }
 
-		reference operator*() const
-		{
-			return ((reference)**(const_iterator *)this);
-		}
+        String::const_iterator operator--(int)
+        {
+            String::const_iterator temp = *this;
+            --*this;
+            return temp;
+        }
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#	pragma warning (push)
-#	pragma warning (disable : 4284)
-#endif
+        String::const_iterator& operator+=(difference_type offset)
+        {
+            d_ptr += offset;
+            return *this;
+        }
 
-		pointer operator->() const
-		{
-			return &**this;
-		}
+        String::const_iterator operator+(difference_type offset) const
+        {
+            String::const_iterator temp = *this;
+            return temp += offset;
+        }
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
-#	pragma warning (pop)
-#endif
+        String::const_iterator& operator-=(difference_type offset)
+        {
+            return *this += -offset;
+        }
 
-		iterator& operator++()
-		{
-			++this->d_ptr;
-			return *this;
-		}
+        String::const_iterator operator-(difference_type offset) const
+        {
+            String::const_iterator temp = *this;
+            return temp -= offset;
+        }
 
-		iterator operator++(int)
-		{
-			iterator temp = *this;
-			++*this;
-			return temp;
-		}
+        const utf32& operator[](difference_type offset) const
+        {
+            return *(*this + offset);
+        }
 
-		iterator& operator--()
-		{
-			--this->d_ptr;
-			return *this;
-		}
+        String::const_iterator& operator=(const String::iterator& iter)
+        {
+            d_ptr = iter.d_ptr;
+            return *this;
+        }
 
-		iterator operator--(int)
-		{
-			iterator temp = *this;
-			--*this;
-			return temp;
-		}
+        friend String::const_iterator operator+(difference_type offset, const String::const_iterator& iter)
+            { return iter + offset; }
 
-		iterator& operator+=(difference_type offset)
-		{
-			this->d_ptr += offset;
-			return *this;
-		}
+        friend difference_type operator-(const String::const_iterator& lhs,
+                                         const String::const_iterator& rhs)
+            { return lhs.d_ptr - rhs.d_ptr; }
 
-		iterator operator+(difference_type offset) const
-		{
-			iterator temp = *this;
-			return temp += offset;
-		}
+        friend bool operator==(const String::const_iterator& lhs,
+                               const String::const_iterator& rhs)
+            { return lhs.d_ptr == rhs.d_ptr; }
 
-		iterator& operator-=(difference_type offset)
-		{
-			return *this += -offset;
-		}
+        friend bool operator!=(const String::const_iterator& lhs,
+                               const String::const_iterator& rhs)
+            { return lhs.d_ptr != rhs.d_ptr; }
 
-		iterator operator-(difference_type offset) const
-		{
-			iterator temp = *this;
-			return temp -= offset;
-		}
+        friend bool operator<(const String::const_iterator& lhs,
+                              const String::const_iterator& rhs)
+            { return lhs.d_ptr < rhs.d_ptr; }
 
-		difference_type operator-(const const_iterator& iter) const
-		{
-			return ((const_iterator)*this - iter);
-		}
+        friend bool operator>(const String::const_iterator& lhs,
+                              const String::const_iterator& rhs)
+            { return lhs.d_ptr > rhs.d_ptr; }
 
-		reference operator[](difference_type offset) const
-		{
-			return *(*this + offset);
-		}
+        friend bool operator<=(const String::const_iterator& lhs,
+                               const String::const_iterator& rhs)
+            { return lhs.d_ptr <= rhs.d_ptr; }
 
-		friend iterator operator+(difference_type offset, const iterator& iter)
-		{
-			return iter + offset;
-		}
+        friend bool operator>=(const String::const_iterator& lhs,
+                               const String::const_iterator& rhs)
+            { return lhs.d_ptr >= rhs.d_ptr; }
 
-	};
+        const utf32* d_ptr;
+    };
 
 	/*!
 	\brief
@@ -2431,7 +2408,7 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	String& erase(size_type idx, size_type len = npos)
+	String& erase(size_type idx, size_type len)
 	{
         // cover the no-op case.
         if (len == 0)

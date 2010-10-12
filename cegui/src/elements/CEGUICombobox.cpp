@@ -736,13 +736,11 @@ bool Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
 		}
 
 		editbox->setCaratIndex(0);
+		editbox->activate();
 
 		// fire off an event of our own
 		WindowEventArgs args(this);
 		onListSelectionAccepted(args);
-
-		// finally, activate the edit box
-		editbox->activate();
 	}
 
 	return true;
