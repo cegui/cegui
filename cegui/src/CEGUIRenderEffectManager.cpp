@@ -72,7 +72,7 @@ void RenderEffectManager::removeEffect(const String& name)
     Logger::getSingleton().logEvent(
         "Unregistered RenderEffect named '" + name + "'");
 
-    delete i->second;
+    CEGUI_DELETE_AO i->second;
 	d_effectRegistry.erase(name);
 }
 

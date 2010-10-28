@@ -108,7 +108,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
 
             // split rstring at width into lstring and remaining rstring
             rstring.split(line, area_size.d_width, lstring);
-            frs = new T(*new RenderedString(lstring));
+            frs = CEGUI_NEW_AO T(*new RenderedString(lstring));
             frs->format(area_size);
             d_lines.push_back(frs);
             line = 0;
@@ -116,7 +116,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
     }
 
     // last line.
-    frs = new T(*new RenderedString(rstring));
+    frs = CEGUI_NEW_AO T(*new RenderedString(rstring));
     frs->format(area_size);
     d_lines.push_back(frs);
 }
@@ -185,9 +185,9 @@ void RenderedStringWordWrapper<T>::deleteFormatters()
         // get the rendered string back from rthe formatter
         const RenderedString* rs = &d_lines[i]->getRenderedString();
         // delete the formatter
-        delete d_lines[i];
+        CEGUI_DELETE_AO d_lines[i];
         // delete the rendered string.
-        delete rs;
+        CEGUI_DELETE_AO rs;
     }
 
     d_lines.clear();

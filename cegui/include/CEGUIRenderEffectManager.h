@@ -179,7 +179,7 @@ void RenderEffectManager::addEffect(const String& name)
             name + "'"));
 
     // create an instance of a factory to create effects of type T
-    d_effectRegistry[name] = new TplRenderEffectFactory<T>;
+    d_effectRegistry[name] = CEGUI_NEW_AO TplRenderEffectFactory<T>;
 
     Logger::getSingleton().logEvent(
         "Registered RenderEffect named '" + name + "'");

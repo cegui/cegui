@@ -50,7 +50,8 @@ namespace CEGUI
     \brief
         Class that encapsulates look & feel information for a particular widget type.
     */
-    class CEGUIEXPORT WidgetLookFeel
+    class CEGUIEXPORT WidgetLookFeel :
+        public AllocatedObject<WidgetLookFeelAllocator>
     {
     public:
         WidgetLookFeel(const String& name);

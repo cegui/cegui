@@ -70,7 +70,7 @@ Imageset_xmlHandler::Imageset_xmlHandler(const String& filename,
 Imageset_xmlHandler::~Imageset_xmlHandler()
 {
     if (!d_objectRead)
-        delete d_imageset;
+        CEGUI_DELETE_AO d_imageset;
 }
 
 //----------------------------------------------------------------------------//
@@ -137,7 +137,7 @@ void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
                     (resource_group.empty() ? "(Default)" : resource_group));
 
     // Create imageset object from image file
-    d_imageset = new Imageset(name, filename, resource_group);
+    d_imageset = CEGUI_NEW_AO Imageset(name, filename, resource_group);
 
     // set native resolution for imageset
     const float native_hres = static_cast<float>(

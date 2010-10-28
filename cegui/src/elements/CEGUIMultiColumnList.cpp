@@ -746,7 +746,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 			// delete the ListboxItem as needed.
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -920,7 +920,7 @@ void MultiColumnList::removeRow(uint row_idx)
 
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -963,7 +963,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 
 	if ((oldItem != 0) && oldItem->isAutoDeleted())
 	{
-		delete oldItem;
+		CEGUI_DELETE_AO oldItem;
 	}
 
 	// set new item.
@@ -2191,7 +2191,7 @@ bool MultiColumnList::resetList_impl(void)
 				// delete item as needed.
 				if ((item != 0) && item->isAutoDeleted())
 				{
-					delete item;
+					CEGUI_DELETE_AO item;
 				}
 
 			}

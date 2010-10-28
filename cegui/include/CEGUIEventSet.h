@@ -290,9 +290,6 @@ protected:
 	EventSet(EventSet&) {}
 	EventSet& operator=(EventSet&) {return *this;}
     
-    // todo: WindowAllocator is here as a compromise, AllocatedObject doesn't play
-    //       well with multiple inheritance, I guess it's a good compromise though,
-    //       since EventSet is most likely to be a Window
 	typedef std::map<String, Event*, String::FastLessCompare
         CEGUI_MAP_ALLOC(String, Event*)> EventMap;
 	EventMap	d_events;

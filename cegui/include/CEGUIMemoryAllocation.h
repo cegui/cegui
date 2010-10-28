@@ -47,18 +47,24 @@
     typedef Allocator AnimationAllocator;\
     typedef Allocator AnimationInstanceAllocator;\
     typedef Allocator BiDiVisualMappingAllocator;\
+    typedef Allocator BufferAllocator;\
     typedef Allocator EventAllocator;\
     typedef Allocator EventArgsAllocator;\
     typedef Allocator FactoryAllocator;\
+    typedef Allocator FalagardComponentAllocator;\
     typedef Allocator FontAllocator;\
     typedef Allocator FormattedRenderedStringAllocator;\
     typedef Allocator GeometryBufferAllocator;\
     typedef Allocator ImageAllocator;\
     typedef Allocator ImageCodecAllocator;\
+    typedef Allocator ImagerySectionAllocator;\
     typedef Allocator ImagesetAllocator;\
     typedef Allocator InterpolatorAllocator;\
+    typedef Allocator LayerSpecificationAllocator;\
+    typedef Allocator ListboxItemAllocator;\
     typedef Allocator LoggerAllocator;\
     typedef Allocator ModuleAllocator;\
+    typedef Allocator NamedAreaAllocator;\
     typedef Allocator PropertyAllocator;\
     typedef Allocator RawDataContainerAllocator;\
     typedef Allocator RegexMatcherAllocator;\
@@ -69,13 +75,16 @@
     typedef Allocator RenderQueueAllocator;\
     typedef Allocator RenderTargetAllocator;\
     typedef Allocator ResourceProviderAllocator;\
+    typedef Allocator SectionSpecificationAllocator;\
     typedef Allocator SchemeAllocator;\
     typedef Allocator SingletonAllocator;\
     typedef Allocator StringAllocator;\
     typedef Allocator STLAllocator;\
+    typedef Allocator StateImageryAllocator;\
     typedef Allocator SubscriberAllocator;\
     typedef Allocator TextureAllocator;\
     typedef Allocator TrivialAllocator;\
+    typedef Allocator WidgetLookFeelAllocator;\
     typedef Allocator WindowAllocator;\
     typedef Allocator WindowRendererAllocator;\
     typedef Allocator XMLAttributesAllocator;\
@@ -103,6 +112,18 @@ T* constructN(T* basePtr, size_t count)
 	return basePtr;
 }
 
+// ogre doesn't do this template but I added it because it works even for types without
+// destructors where I was getting syntax errors with just the macro
+template<typename T>
+void destructN(T* basePtr, size_t count)
+{
+    // iterate in reverse for consistency with delete []
+	for (size_t i = count - 1; i-- > 0;)
+	{
+		typename basePtr[i].~T();
+    }
+}
+
 } // CEGUI namespace
 
 #ifndef CEGUI_MEMORY_DEBUG
@@ -112,7 +133,7 @@ T* constructN(T* basePtr, size_t count)
 #   define CEGUI_NEW_PT(T, Allocator) new (Allocator::allocateBytes(sizeof(T))) T
 #   define CEGUI_NEW_ARRAY_PT(T, count, Allocator) ::CEGUI::constructN(static_cast<T*>(Allocator::allocateBytes(sizeof(T)*(count))), count)
 #   define CEGUI_DELETE_PT(ptr, T, Allocator) do{if(ptr){(ptr)->~T(); Allocator::deallocateBytes((void*)ptr);}}while(0)
-#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) do{if(ptr){for (size_t b = count; b-- > 0;){ (ptr)[b].~T();} Allocator::deallocateBytes((void*)ptr);}}while(0)
+#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) do{if(ptr){ ::CEGUI::destructN(static_cast<T*>(ptr), count); Allocator::deallocateBytes((void*)ptr);}}while(0)
 #else
 #   define CEGUI_NEW_AO new(__FILE__, __LINE__, __FUNCTION__)
 #   define CEGUI_DELETE_AO delete
@@ -123,7 +144,7 @@ T* constructN(T* basePtr, size_t count)
 #   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) do{if(ptr){for (size_t b = count; b-- > 0;){ (ptr)[b].~T();} Allocator::deallocateBytes((void*)ptr);}}while(0)
 #endif
 
-//#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryOgreAllocator.h"
+#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryOgreAllocator.h"
 
 #ifndef CEGUI_CUSTOM_ALLOCATORS_INCLUDE
 #   define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h"

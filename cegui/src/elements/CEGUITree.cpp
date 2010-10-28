@@ -411,7 +411,7 @@ void Tree::removeItem(const TreeItem* item)
             if (item->isAutoDeleted())
             {
                 // clean up this item.
-                delete item;
+                CEGUI_DELETE_AO item;
             }
             
             WindowEventArgs args(this);
@@ -1328,7 +1328,7 @@ bool Tree::resetList_impl(void)
             if (d_listItems[i]->isAutoDeleted())
             {
                 // clean up this item.
-                delete d_listItems[i];
+                CEGUI_DELETE_AO d_listItems[i];
             }
         }
         

@@ -66,14 +66,14 @@ public:
 template <typename T>
 RenderEffect& TplRenderEffectFactory<T>::create()
 {
-    return *new T;
+    return *CEGUI_NEW_AO T;
 }
 
 //---------------------------------------------------------------------------//
 template <typename T>
 void TplRenderEffectFactory<T>::destroy(RenderEffect& effect)
 {
-    delete &effect;
+    CEGUI_DELETE_AO &effect;
 }
 
 //---------------------------------------------------------------------------//

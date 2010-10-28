@@ -381,7 +381,7 @@ void Listbox::removeItem(const ListboxItem* item)
 			if (item->isAutoDeleted())
 			{
 				// clean up this item.
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 			WindowEventArgs args(this);
@@ -1074,7 +1074,7 @@ bool Listbox::resetList_impl(void)
 			if (d_listItems[i]->isAutoDeleted())
 			{
 				// clean up this item.
-				delete d_listItems[i];
+				CEGUI_DELETE_AO d_listItems[i];
 			}
 
 		}

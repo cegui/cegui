@@ -56,7 +56,7 @@ public:
     */
     RefCounted(T* ob) :
         d_object(ob),
-        // no need for CEGUI_NEW_T since we don't want custom allocators for this
+        // use system heap for this! no CEGUI_NEW_PT!
         d_count((ob != 0) ? new unsigned int(1) : 0)
     {
     }
@@ -184,6 +184,8 @@ private:
     {
         if (!--*d_count)
         {
+            // use system heap for this! no CEGUI_DELETE_PT!
+
             delete d_object;
             delete d_count;
             d_object = 0;

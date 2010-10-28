@@ -105,7 +105,7 @@ Affector* Animation::createAffector(void)
 {
     // no checking needed!
 
-    Affector* ret = new Affector(this);
+    Affector* ret = CEGUI_NEW_AO Affector(this);
     d_affectors.push_back(ret);
 
     return ret;

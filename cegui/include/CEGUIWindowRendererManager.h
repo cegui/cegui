@@ -117,7 +117,7 @@ template <typename T>
 void WindowRendererManager::addFactory()
 {
     // create the factory object
-    WindowRendererFactory* factory = new T;
+    WindowRendererFactory* factory = CEGUI_NEW_AO T;
 
     // only do the actual add now if our singleton has already been created
     if (WindowRendererManager::getSingletonPtr())
@@ -136,7 +136,7 @@ void WindowRendererManager::addFactory()
                                             "'" + factory->getName() +
                                             "' WindowRenderers.");
             // delete the factory object
-            delete factory;
+            CEGUI_DELETE_AO factory;
             CEGUI_RETHROW;
         }
     }

@@ -59,9 +59,9 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -80,7 +80,7 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 /*************************************************************************

@@ -64,7 +64,7 @@ void EventSet::addEvent(const String& name)
 		CEGUI_THROW(AlreadyExistsException("An event named '" + name + "' already exists in the EventSet."));
 	}
 
-	d_events[name] = new Event(name);
+    d_events.insert(std::make_pair(name, CEGUI_NEW_AO Event(name)));
 }
 
 
@@ -77,10 +77,11 @@ void EventSet::removeEvent(const String& name)
 
 	if (pos != d_events.end())
 	{
-		delete pos->second;
+		CEGUI_DELETE_AO pos->second;
 		d_events.erase(pos);
 	}
 
+    // todo: shouldn't this throw exception if not found?
 }
 
 
@@ -89,12 +90,12 @@ void EventSet::removeEvent(const String& name)
 *************************************************************************/
 void EventSet::removeAllEvents(void)
 {
-	EventMap::iterator pos = d_events.begin();
-	EventMap::iterator end = d_events.end()	;
+	EventMap::const_iterator pos = d_events.begin();
+	EventMap::const_iterator end = d_events.end()	;
 
 	for (; pos != end; ++pos)
 	{
-		delete pos->second;
+		CEGUI_DELETE_AO pos->second;
 	}
 
 	d_events.clear();
@@ -130,8 +131,8 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, const Str
 *************************************************************************/
 Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Group group, const String& subscriber_name)
 {
-        //return subscribeEvent(name, group, Event::Subscriber(ScriptFunctor(subscriber_name)));
-        ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
+    //return subscribeEvent(name, group, Event::Subscriber(ScriptFunctor(subscriber_name)));
+    ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
 	if (!sm)
 	{
 	   CEGUI_THROW(InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available"));

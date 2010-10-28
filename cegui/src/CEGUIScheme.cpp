@@ -284,7 +284,7 @@ void Scheme::loadWindowFactories()
         // create and load dynamic module as required
         if (!(*cmod).module)
         {
-            (*cmod).module = new FactoryModule((*cmod).name);
+            (*cmod).module = CEGUI_NEW_AO FactoryModule((*cmod).name);
         }
 
         // see if we should just register all factories available in the module (i.e. No factories explicitly specified)
@@ -322,7 +322,7 @@ void Scheme::loadWindowRendererFactories()
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
-                (*cmod).dynamicModule = new DynamicModule((*cmod).name);
+                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
 
             WindowRendererModule& (*getWRModuleFunc)() =
                 reinterpret_cast<WindowRendererModule&(*)()>(
@@ -522,7 +522,7 @@ void Scheme::unloadWindowFactories()
         // unload dynamic module as required
         if ((*cmod).module)
         {
-            delete (*cmod).module;
+            CEGUI_DELETE_AO (*cmod).module;
             (*cmod).module = 0;
         }
     }
@@ -558,7 +558,7 @@ void Scheme::unloadWindowRendererFactories()
         // unload dynamic module as required
         if ((*cmod).dynamicModule)
         {
-            delete (*cmod).dynamicModule;
+            CEGUI_DELETE_AO (*cmod).dynamicModule;
             (*cmod).dynamicModule = 0;
         }
 

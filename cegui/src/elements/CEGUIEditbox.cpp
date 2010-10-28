@@ -92,7 +92,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_textParsingEnabled = false;
 
 #ifdef CEGUI_HAS_PCRE_REGEX
-    d_validator = new PCRERegexMatcher;
+    d_validator = CEGUI_NEW_AO PCRERegexMatcher;
     // default to accepting all characters
     setValidationString(".*");
 #else

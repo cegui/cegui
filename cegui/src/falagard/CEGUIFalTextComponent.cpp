@@ -57,14 +57,14 @@ namespace CEGUI
 #ifndef CEGUI_BIDI_SUPPORT
         d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-        d_bidiVisualMapping(new FribidiVisualMapping),
+        d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-        d_bidiVisualMapping(new MinibidiVisualMapping),
+        d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
         d_bidiDataValid(false),
-        d_formattedRenderedString(new LeftAlignedRenderedString(d_renderedString)),
+        d_formattedRenderedString(CEGUI_NEW_AO LeftAlignedRenderedString(d_renderedString)),
         d_lastHorzFormatting(HTF_LEFT_ALIGNED),
         d_vertFormatting(VTF_TOP_ALIGNED),
         d_horzFormatting(HTF_LEFT_ALIGNED)
@@ -72,7 +72,7 @@ namespace CEGUI
 
     TextComponent::~TextComponent()
     {
-        delete d_bidiVisualMapping;
+        CEGUI_DELETE_AO d_bidiVisualMapping;
     }
 
     TextComponent::TextComponent(const TextComponent& obj) :
@@ -81,9 +81,9 @@ namespace CEGUI
 #ifndef CEGUI_BIDI_SUPPORT
         d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-        d_bidiVisualMapping(new FribidiVisualMapping),
+        d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-        d_bidiVisualMapping(new MinibidiVisualMapping),
+        d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #endif
         d_bidiDataValid(false),
         d_renderedString(obj.d_renderedString),
