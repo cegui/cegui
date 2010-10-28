@@ -491,4 +491,7 @@ String PropertyHelper::vector3ToString(const Vector3& val)
 
 //----------------------------------------------------------------------------//
 
+PropertyHelper::PropertyHelper()
+{}
+
 } // End of  CEGUI namespace section

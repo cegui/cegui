@@ -57,7 +57,9 @@ namespace CEGUI
     I think we could clean up the mapping stuff a bit. Possibly make it more generic now
     with the window renderers and all.
 */
-class CEGUIEXPORT WindowFactoryManager : public Singleton<WindowFactoryManager>
+class CEGUIEXPORT WindowFactoryManager :
+    public Singleton<WindowFactoryManager>,
+    public AllocatedObject<SingletonAllocator>
 {
 public:
     /*!

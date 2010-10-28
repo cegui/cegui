@@ -135,7 +135,10 @@ enum WindowUpdateMode
     and specifies the minimal interface required to be implemented by derived
     classes.
 */
-class CEGUIEXPORT Window : public PropertySet, public EventSet
+class CEGUIEXPORT Window :
+    public PropertySet,
+    public EventSet,
+    public AllocatedObject<WindowAllocator>
 {
 public:
     /*************************************************************************

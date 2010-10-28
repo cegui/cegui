@@ -48,16 +48,18 @@ namespace CEGUI
     Singleton class that manages creation and destruction of RenderEffect based
     objects.
 */
-class CEGUIEXPORT RenderEffectManager : public Singleton<RenderEffectManager>
+class CEGUIEXPORT RenderEffectManager :
+    public Singleton<RenderEffectManager>,
+    public AllocatedObject<SingletonAllocator>
 {
 private:
     //! Collection type used for the render effect registry
-    typedef std::map<String,
-                     RenderEffectFactory*,
-                     String::FastLessCompare> RenderEffectRegistry;
+    typedef std::map<String, RenderEffectFactory*, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, RenderEffectFactory*)> RenderEffectRegistry;
 
     //! Collection type to track which effects we created with which factories
-    typedef std::map<RenderEffect*, RenderEffectFactory*> EffectCreatorMap;
+    typedef std::map<RenderEffect*, RenderEffectFactory*, std::less<RenderEffect*>
+        CEGUI_MAP_ALLOC(RenderEffect*, RenderEffectFactory*)> EffectCreatorMap;
 
     //! Collection of registered render effects
     RenderEffectRegistry d_effectRegistry;

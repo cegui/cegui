@@ -44,7 +44,8 @@ namespace CEGUI
     Class representing a unified dimension; that is a dimension that has both
     a relative 'scale' portion and and absolute 'offset' portion.
 */
-class CEGUIEXPORT UDim
+class CEGUIEXPORT UDim :
+    public AllocatedObject<TrivialAllocator>
 {
 public:
     UDim() {}
@@ -125,7 +126,8 @@ public:
     Two dimensional vector class built using unified dimensions (UDims).
     The UVector2 class is used for representing both positions and sizes.
 */
-class CEGUIEXPORT UVector2
+class CEGUIEXPORT UVector2 :
+    public AllocatedObject<TrivialAllocator>
 {
 public:
     UVector2() {}
@@ -242,7 +244,8 @@ public:
 \brief
     Area rectangle class built using unified dimensions (UDims).
 */
-class CEGUIEXPORT URect
+class CEGUIEXPORT URect :
+    public AllocatedObject<TrivialAllocator>
 {
 public:
     URect() {}
@@ -348,7 +351,8 @@ public:
 \note
     Name taken from W3 'box model'
 */
-class CEGUIEXPORT UBox
+class CEGUIEXPORT UBox :
+    public AllocatedObject<TrivialAllocator>
 {
 public:
     UBox():

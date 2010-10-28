@@ -38,7 +38,8 @@ class RenderEffect;
     Interface for factory objects that create RenderEffect instances.
     Currently this interface is intended for internal use only.
 */
-class RenderEffectFactory
+class RenderEffectFactory : public
+    AllocatedObject<FactoryAllocator>
 {
 public:
     //! base class virtual destructor.

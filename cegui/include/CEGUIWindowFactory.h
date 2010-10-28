@@ -60,7 +60,7 @@
         T ## Factory() : WindowFactory( T::WidgetTypeName ) {}\
         Window* createWindow(const String& name)\
         {\
-            return new T (d_type, name);\
+            return new T(d_type, name);\
         }\
         void destroyWindow(Window* window)\
         {\
@@ -113,7 +113,8 @@ namespace CEGUI
     CEGUI::WindowFactoryManager::addFactory<TplWindowFactory<MyWidget> >();
     \endcode
 */
-class CEGUIEXPORT WindowFactory
+class CEGUIEXPORT WindowFactory :
+    public AllocatedObject<FactoryAllocator>
 {
 public:
     /*!

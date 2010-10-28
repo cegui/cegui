@@ -45,7 +45,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT WindowRendererManager : public Singleton<WindowRendererManager>
+class CEGUIEXPORT WindowRendererManager :
+    public Singleton<WindowRendererManager>,
+    public AllocatedObject<SingletonAllocator>
 {
 public:
     /*************************************************************************

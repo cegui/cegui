@@ -191,8 +191,10 @@ public:
     void createAll(const String& pattern, const String& resource_group);
 
 protected:
+    // singleton allocator fits here, resource managers are very likely to be singletons
     //! type of collection used to store and manage objects
-    typedef std::map<String, T*, String::FastLessCompare> ObjectRegistry;
+    typedef std::map<String, T*, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, T*)> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
     //! function to enforce XMLResourceExistsAction policy.

@@ -74,6 +74,10 @@ public:
 	static String	uvector2ToString(const UVector2& val);
 	static String	urectToString(const URect& val);
 	static String	uboxToString(const UBox& val);
+
+private:
+    //! disallow construction
+    PropertyHelper();
 };
 
 } // End of  CEGUI namespace section

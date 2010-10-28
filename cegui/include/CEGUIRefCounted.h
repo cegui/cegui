@@ -56,6 +56,7 @@ public:
     */
     RefCounted(T* ob) :
         d_object(ob),
+        // no need for CEGUI_NEW_T since we don't want custom allocators for this
         d_count((ob != 0) ? new unsigned int(1) : 0)
     {
     }
