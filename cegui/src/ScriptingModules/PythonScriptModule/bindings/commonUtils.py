@@ -77,8 +77,8 @@ def setDefaultCallPolicies(ns):
 def createDocumentationExtractor():
     return exdoc.doc_extractor("")
     
-def writeModule(mb, name):
-    mb.split_module(os.path.join(".", "output", name))
+def writeModule(mb, output_dir):
+    mb.split_module(output_dir)
 
 def excludeAllPrivate(cls):
     cls.decls(declarations.matchers.access_type_matcher_t("private")).exclude()

@@ -2,7 +2,7 @@
 
 #include "boost/python.hpp"
 #include "python_CEGUI.h"
-#include "CEGUI_enumerations.pypp.hpp"
+#include "PyCEGUI_enumerations.pypp.hpp"
 
 namespace bp = boost::python;
 
