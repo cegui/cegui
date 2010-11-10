@@ -15,14 +15,6 @@ struct FontManager_wrapper : CEGUI::FontManager, bp::wrapper< CEGUI::FontManager
     
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Font* > > ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject( ob );
-    }
-
-    ::CEGUI::Font & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Font * object, ::CEGUI::XMLResourceExistsAction const action ){
-        return CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
-    }
-
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -139,29 +131,6 @@ void register_FontManager_class(){
                 @param out_stream\n\
                     OutStream (std.ostream based) object where data is to be sent.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject
-        
-            typedef CEGUI::FontManager exported_class_t;
-            typedef void ( FontManager_wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Font* > > ) ;
-            
-            FontManager_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &FontManager_wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction
-        
-            typedef CEGUI::FontManager exported_class_t;
-            typedef ::CEGUI::Font & ( FontManager_wrapper::*doExistingObjectAction_function_type )( ::CEGUI::String const,::CEGUI::Font *,::CEGUI::XMLResourceExistsAction const ) ;
-            
-            FontManager_exposer.def( 
-                "doExistingObjectAction"
-                , doExistingObjectAction_function_type( &FontManager_wrapper::doExistingObjectAction )
-                , ( bp::arg("object_name"), bp::arg("object"), bp::arg("action") )
-                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::EventSet::fireEvent

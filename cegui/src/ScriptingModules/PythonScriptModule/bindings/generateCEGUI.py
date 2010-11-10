@@ -1247,10 +1247,6 @@ void Iterator_previous(::CEGUI::%s& t)
     falagardXMLHelper = CEGUI_ns.class_("FalagardXMLHelper")
     falagardXMLHelper.include()
     
-    # hack that should work for now! disallows inheriting and overriding in python
-    commonUtils.excludeAllPrivate(CEGUI_ns)
-    commonUtils.excludeAllProtected(CEGUI_ns)
-    
     # todo: hack fixes
     # taken from python ogre, causes AttributeError at import if not excluded
     for cls in CEGUI_ns.classes():
@@ -1283,6 +1279,11 @@ void Iterator_previous(::CEGUI::%s& t)
             
     # no need for this function, just use getSingleton
     mb.mem_funs("getSingletonPtr").exclude()
+
+    # hack that should work for now! disallows inheriting and overriding in python
+    commonUtils.excludeAllPrivate(CEGUI_ns)
+    commonUtils.excludeAllProtected(CEGUI_ns)
+    
                 
 def configureExceptions(mb):
     exception = mb.namespace("CEGUI").class_("Exception")

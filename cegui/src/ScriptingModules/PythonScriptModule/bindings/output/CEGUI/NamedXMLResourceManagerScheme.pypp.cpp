@@ -15,26 +15,6 @@ struct NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Schem
     
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
-    }
-
-    ::CEGUI::Scheme & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Scheme * object, ::CEGUI::XMLResourceExistsAction const action ){
-        return CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
-    }
-
-    virtual void doPostObjectAdditionAction( ::CEGUI::Scheme & arg0 ){
-        if( bp::override func_doPostObjectAdditionAction = this->get_override( "doPostObjectAdditionAction" ) )
-            func_doPostObjectAdditionAction( boost::ref(arg0) );
-        else{
-            this->CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doPostObjectAdditionAction( boost::ref(arg0) );
-        }
-    }
-    
-    virtual void default_doPostObjectAdditionAction( ::CEGUI::Scheme & arg0 ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doPostObjectAdditionAction( boost::ref(arg0) );
-    }
-
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -135,41 +115,6 @@ void register_NamedXMLResourceManagerScheme_class(){
             NamedXMLResourceManagerScheme_exposer.def( 
                 "destroyAll"
                 , destroyAll_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyAll )
-                , "----------------------------------------------------------------------------\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ) ;
-            
-            NamedXMLResourceManagerScheme_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef ::CEGUI::Scheme & ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*doExistingObjectAction_function_type )( ::CEGUI::String const,::CEGUI::Scheme *,::CEGUI::XMLResourceExistsAction const ) ;
-            
-            NamedXMLResourceManagerScheme_exposer.def( 
-                "doExistingObjectAction"
-                , doExistingObjectAction_function_type( &NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::doExistingObjectAction )
-                , ( bp::arg("object_name"), bp::arg("object"), bp::arg("action") )
-                , bp::return_value_policy< bp::reference_existing_object >() );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doPostObjectAdditionAction
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*doPostObjectAdditionAction_function_type )( ::CEGUI::Scheme & ) ;
-            
-            NamedXMLResourceManagerScheme_exposer.def( 
-                "doPostObjectAdditionAction"
-                , doPostObjectAdditionAction_function_type( &NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::default_doPostObjectAdditionAction )
-                , ( bp::arg("arg0") )
                 , "----------------------------------------------------------------------------\n" );
         
         }

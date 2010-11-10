@@ -15,14 +15,6 @@ struct SchemeManager_wrapper : CEGUI::SchemeManager, bp::wrapper< CEGUI::SchemeM
     
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
-    }
-
-    ::CEGUI::Scheme & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Scheme * object, ::CEGUI::XMLResourceExistsAction const action ){
-        return CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
-    }
-
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -79,29 +71,6 @@ void register_SchemeManager_class(){
                 Return a SchemeManager.SchemeIterator object to iterate over the\n\
                 available schemes.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
-        
-            typedef CEGUI::SchemeManager exported_class_t;
-            typedef void ( SchemeManager_wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ) ;
-            
-            SchemeManager_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &SchemeManager_wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction
-        
-            typedef CEGUI::SchemeManager exported_class_t;
-            typedef ::CEGUI::Scheme & ( SchemeManager_wrapper::*doExistingObjectAction_function_type )( ::CEGUI::String const,::CEGUI::Scheme *,::CEGUI::XMLResourceExistsAction const ) ;
-            
-            SchemeManager_exposer.def( 
-                "doExistingObjectAction"
-                , doExistingObjectAction_function_type( &SchemeManager_wrapper::doExistingObjectAction )
-                , ( bp::arg("object_name"), bp::arg("object"), bp::arg("action") )
-                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::EventSet::fireEvent
