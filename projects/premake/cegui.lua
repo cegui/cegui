@@ -163,7 +163,11 @@ if LUA_SCRIPT_MODULE then
 end
 
 if PYTHON_EXTENSION_MODULE then
-    tinsert(pkg_table.ScriptingModules, "PythonScriptModule")
+    pkg_table.ScriptingModules.PythonScriptModule = 
+    {
+        "PyCEGUI",
+        "PyCEGUIOpenGLRenderer"
+    }
 end
 
 -- finalise
