@@ -162,6 +162,10 @@ if LUA_SCRIPT_MODULE then
     }
 end
 
+if PYTHON_EXTENSION_MODULE then
+    tinsert(pkg_table.ScriptingModules, "PythonScriptModule")
+end
+
 -- finalise
 createpackages(pkg_table)
 

@@ -177,6 +177,12 @@ LUA_SCRIPT_MODULE_SAFE = false
 TOLUA_STATIC = false
 
 
+-------
+-- Python
+-- this controls whether building the Python extension modules is enabled
+PYTHON_EXTENSION_MODULE = false
+
+
 -----------
 -- Samples
 -- remember you have to edit CEGUISamplesConfig.h as well this just controls
