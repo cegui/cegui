@@ -13,9 +13,6 @@ BOOST_PYTHON_MODULE(PyCEGUIOpenGLRenderer){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("PythonVersion__") = "2.6.5 (release26-maint, Aug 24 2010, 20:14:50) \
-    [GCC 4.4.3]";
-
     boost::python::scope().attr("__doc__") = "PyCEGUIOpenGLRenderer - version 0.7.5";
 
     boost::python::scope().attr("Version__") = "0.7.5";

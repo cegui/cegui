@@ -57,7 +57,6 @@ def addVersionInfo(mb, name, version):
     addConstants(mb, {
                     'CompileTime__' : '__TIME__', 
                     'CompileDate__' : '__DATE__', 
-                    'PythonVersion__' : '"%s"' % sys.version.replace("\n", "\\\n" ),
                     'Version__' : '"%s"' % version.replace("\n", "\\\n" ),
                     '__doc__' : '"%s"' % docstring.replace("\n", "\\\n" )
                 	})
