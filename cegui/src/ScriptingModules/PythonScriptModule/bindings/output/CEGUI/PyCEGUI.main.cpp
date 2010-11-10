@@ -10,407 +10,407 @@
 
 #include "python_CEGUI.h"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AbsoluteDim.pypp.hpp"
+#include "AbsoluteDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ActivationEventArgs.pypp.hpp"
+#include "ActivationEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Affector.pypp.hpp"
+#include "Affector.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Animation.pypp.hpp"
+#include "Animation.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AnimationEventArgs.pypp.hpp"
+#include "AnimationEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AnimationInstance.pypp.hpp"
+#include "AnimationInstance.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AnimationManager.pypp.hpp"
+#include "AnimationManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BaseDim.pypp.hpp"
+#include "BaseDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BasicRenderedStringParser.pypp.hpp"
+#include "BasicRenderedStringParser.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BiDiVisualMapping.pypp.hpp"
+#include "BiDiVisualMapping.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BoundSlot.pypp.hpp"
+#include "BoundSlot.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ButtonBase.pypp.hpp"
+#include "ButtonBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CentredRenderedString.pypp.hpp"
+#include "CentredRenderedString.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Checkbox.pypp.hpp"
+#include "Checkbox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ColourRect.pypp.hpp"
+#include "ColourRect.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ComboDropList.pypp.hpp"
+#include "ComboDropList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Combobox.pypp.hpp"
+#include "Combobox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ComponentArea.pypp.hpp"
+#include "ComponentArea.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Connection.pypp.hpp"
+#include "Connection.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CoordConverter.pypp.hpp"
+#include "CoordConverter.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DefaultLogger.pypp.hpp"
+#include "DefaultLogger.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DefaultResourceProvider.pypp.hpp"
+#include "DefaultResourceProvider.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Dimension.pypp.hpp"
+#include "Dimension.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DisplayEventArgs.pypp.hpp"
+#include "DisplayEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DragContainer.pypp.hpp"
+#include "DragContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DragDropEventArgs.pypp.hpp"
+#include "DragDropEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Editbox.pypp.hpp"
+#include "Editbox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Event.pypp.hpp"
+#include "Event.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/EventArgs.pypp.hpp"
+#include "EventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/EventIterator.pypp.hpp"
+#include "EventIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/EventSet.pypp.hpp"
+#include "EventSet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FalagardComponentBase.pypp.hpp"
+#include "FalagardComponentBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FalagardMappingIterator.pypp.hpp"
+#include "FalagardMappingIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FalagardXMLHelper.pypp.hpp"
+#include "FalagardXMLHelper.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Font.pypp.hpp"
+#include "Font.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FontDim.pypp.hpp"
+#include "FontDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FontGlyph.pypp.hpp"
+#include "FontGlyph.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FontIterator.pypp.hpp"
+#include "FontIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FontManager.pypp.hpp"
+#include "FontManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FrameComponent.pypp.hpp"
+#include "FrameComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/FrameWindow.pypp.hpp"
+#include "FrameWindow.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GUISheet.pypp.hpp"
+#include "GUISheet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GeometryBuffer.pypp.hpp"
+#include "GeometryBuffer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GlobalEventSet.pypp.hpp"
+#include "GlobalEventSet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GridLayoutContainer.pypp.hpp"
+#include "GridLayoutContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GroupBox.pypp.hpp"
+#include "GroupBox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HeaderSequenceEventArgs.pypp.hpp"
+#include "HeaderSequenceEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HorizontalLayoutContainer.pypp.hpp"
+#include "HorizontalLayoutContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Image.pypp.hpp"
+#include "Image.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImageCodec.pypp.hpp"
+#include "ImageCodec.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImageDim.pypp.hpp"
+#include "ImageDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImageIterator.pypp.hpp"
+#include "ImageIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImageryComponent.pypp.hpp"
+#include "ImageryComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImagerySection.pypp.hpp"
+#include "ImagerySection.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Imageset.pypp.hpp"
+#include "Imageset.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImagesetIterator.pypp.hpp"
+#include "ImagesetIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ImagesetManager.pypp.hpp"
+#include "ImagesetManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Interpolator.pypp.hpp"
+#include "Interpolator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ItemEntry.pypp.hpp"
+#include "ItemEntry.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ItemListBase.pypp.hpp"
+#include "ItemListBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ItemListbox.pypp.hpp"
+#include "ItemListbox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Key.pypp.hpp"
+#include "Key.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/KeyEventArgs.pypp.hpp"
+#include "KeyEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/KeyFrame.pypp.hpp"
+#include "KeyFrame.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LBItemList.pypp.hpp"
+#include "LBItemList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LayerSpecification.pypp.hpp"
+#include "LayerSpecification.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LayoutContainer.pypp.hpp"
+#include "LayoutContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LineList.pypp.hpp"
+#include "LineList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ListHeader.pypp.hpp"
+#include "ListHeader.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ListHeaderSegment.pypp.hpp"
+#include "ListHeaderSegment.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Listbox.pypp.hpp"
+#include "Listbox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ListboxItem.pypp.hpp"
+#include "ListboxItem.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ListboxTextItem.pypp.hpp"
+#include "ListboxTextItem.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Logger.pypp.hpp"
+#include "Logger.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MCLGridRef.pypp.hpp"
+#include "MCLGridRef.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MenuBase.pypp.hpp"
+#include "MenuBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MenuItem.pypp.hpp"
+#include "MenuItem.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Menubar.pypp.hpp"
+#include "Menubar.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MouseCursor.pypp.hpp"
+#include "MouseCursor.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MouseCursorEventArgs.pypp.hpp"
+#include "MouseCursorEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MouseEventArgs.pypp.hpp"
+#include "MouseEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MultiColumnList.pypp.hpp"
+#include "MultiColumnList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/MultiLineEditbox.pypp.hpp"
+#include "MultiLineEditbox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/NamedArea.pypp.hpp"
+#include "NamedArea.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/NamedXMLResourceManagerFont.pypp.hpp"
+#include "NamedXMLResourceManagerFont.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/NamedXMLResourceManagerImageset.pypp.hpp"
+#include "NamedXMLResourceManagerImageset.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/NamedXMLResourceManagerScheme.pypp.hpp"
+#include "NamedXMLResourceManagerScheme.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PopupMenu.pypp.hpp"
+#include "PopupMenu.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ProgressBar.pypp.hpp"
+#include "ProgressBar.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Property.pypp.hpp"
+#include "Property.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyDefinition.pypp.hpp"
+#include "PropertyDefinition.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyDefinitionBase.pypp.hpp"
+#include "PropertyDefinitionBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyDefinitionList.pypp.hpp"
+#include "PropertyDefinitionList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyDim.pypp.hpp"
+#include "PropertyDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyHelper.pypp.hpp"
+#include "PropertyHelper.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyInitialiser.pypp.hpp"
+#include "PropertyInitialiser.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyInitialiserVector.pypp.hpp"
+#include "PropertyInitialiserVector.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyIterator.pypp.hpp"
+#include "PropertyIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyLinkDefinition.pypp.hpp"
+#include "PropertyLinkDefinition.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyLinkDefinitionList.pypp.hpp"
+#include "PropertyLinkDefinitionList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertyReceiver.pypp.hpp"
+#include "PropertyReceiver.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PropertySet.pypp.hpp"
+#include "PropertySet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PushButton.pypp.hpp"
+#include "PushButton.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/PyCEGUI_enumerations.pypp.hpp"
+#include "PyCEGUI_enumerations.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RadioButton.pypp.hpp"
+#include "RadioButton.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RawDataContainer.pypp.hpp"
+#include "RawDataContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Rect.pypp.hpp"
+#include "Rect.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderEffect.pypp.hpp"
+#include "RenderEffect.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderEffectFactory.pypp.hpp"
+#include "RenderEffectFactory.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderEffectManager.pypp.hpp"
+#include "RenderEffectManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderQueue.pypp.hpp"
+#include "RenderQueue.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderQueueEventArgs.pypp.hpp"
+#include "RenderQueueEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderTarget.pypp.hpp"
+#include "RenderTarget.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedString.pypp.hpp"
+#include "RenderedString.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedStringComponent.pypp.hpp"
+#include "RenderedStringComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedStringImageComponent.pypp.hpp"
+#include "RenderedStringImageComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedStringParser.pypp.hpp"
+#include "RenderedStringParser.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedStringTextComponent.pypp.hpp"
+#include "RenderedStringTextComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderedStringWidgetComponent.pypp.hpp"
+#include "RenderedStringWidgetComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Renderer.pypp.hpp"
+#include "Renderer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderingContext.pypp.hpp"
+#include "RenderingContext.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderingRoot.pypp.hpp"
+#include "RenderingRoot.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderingSurface.pypp.hpp"
+#include "RenderingSurface.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/RenderingWindow.pypp.hpp"
+#include "RenderingWindow.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ResourceEventArgs.pypp.hpp"
+#include "ResourceEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ResourceEventSet.pypp.hpp"
+#include "ResourceEventSet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ResourceProvider.pypp.hpp"
+#include "ResourceProvider.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Scheme.pypp.hpp"
+#include "Scheme.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SchemeIterator.pypp.hpp"
+#include "SchemeIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SchemeManager.pypp.hpp"
+#include "SchemeManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ScriptModule.pypp.hpp"
+#include "ScriptModule.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ScrollablePane.pypp.hpp"
+#include "ScrollablePane.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Scrollbar.pypp.hpp"
+#include "Scrollbar.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ScrolledContainer.pypp.hpp"
+#include "ScrolledContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ScrolledItemListBase.pypp.hpp"
+#include "ScrolledItemListBase.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SectionSpecification.pypp.hpp"
+#include "SectionSpecification.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SequentialLayoutContainer.pypp.hpp"
+#include "SequentialLayoutContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonAnimationManager.pypp.hpp"
+#include "SingletonAnimationManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonFontManager.pypp.hpp"
+#include "SingletonFontManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonGlobalEventSet.pypp.hpp"
+#include "SingletonGlobalEventSet.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonImagesetManager.pypp.hpp"
+#include "SingletonImagesetManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonLogger.pypp.hpp"
+#include "SingletonLogger.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonMouseCursor.pypp.hpp"
+#include "SingletonMouseCursor.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonRenderEffectManager.pypp.hpp"
+#include "SingletonRenderEffectManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonSchemeManager.pypp.hpp"
+#include "SingletonSchemeManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonSystem.pypp.hpp"
+#include "SingletonSystem.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonWidgetLookManager.pypp.hpp"
+#include "SingletonWidgetLookManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonWindowFactoryManager.pypp.hpp"
+#include "SingletonWindowFactoryManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonWindowManager.pypp.hpp"
+#include "SingletonWindowManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/SingletonWindowRendererManager.pypp.hpp"
+#include "SingletonWindowRendererManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Size.pypp.hpp"
+#include "Size.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Slider.pypp.hpp"
+#include "Slider.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Spinner.pypp.hpp"
+#include "Spinner.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/StateImagery.pypp.hpp"
+#include "StateImagery.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/StdPairFloatFloat.pypp.hpp"
+#include "StdPairFloatFloat.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/StrIndexList.pypp.hpp"
+#include "StrIndexList.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Subscriber.pypp.hpp"
+#include "Subscriber.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/System.pypp.hpp"
+#include "System.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabButton.pypp.hpp"
+#include "TabButton.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabControl.pypp.hpp"
+#include "TabControl.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TargetTypeStack.pypp.hpp"
+#include "TargetTypeStack.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextComponent.pypp.hpp"
+#include "TextComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextUtils.pypp.hpp"
+#include "TextUtils.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Texture.pypp.hpp"
+#include "Texture.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextureTarget.pypp.hpp"
+#include "TextureTarget.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Thumb.pypp.hpp"
+#include "Thumb.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Titlebar.pypp.hpp"
+#include "Titlebar.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Tooltip.pypp.hpp"
+#include "Tooltip.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Tree.pypp.hpp"
+#include "Tree.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TreeEventArgs.pypp.hpp"
+#include "TreeEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TreeItem.pypp.hpp"
+#include "TreeItem.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TypeAliasIterator.pypp.hpp"
+#include "TypeAliasIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/UBox.pypp.hpp"
+#include "UBox.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/UDim.pypp.hpp"
+#include "UDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/URect.pypp.hpp"
+#include "URect.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/UVector2.pypp.hpp"
+#include "UVector2.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/UnifiedDim.pypp.hpp"
+#include "UnifiedDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/UpdateEventArgs.pypp.hpp"
+#include "UpdateEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Vector2.pypp.hpp"
+#include "Vector2.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Vector3.pypp.hpp"
+#include "Vector3.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Vertex.pypp.hpp"
+#include "Vertex.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/VerticalLayoutContainer.pypp.hpp"
+#include "VerticalLayoutContainer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WidgetComponent.pypp.hpp"
+#include "WidgetComponent.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WidgetDim.pypp.hpp"
+#include "WidgetDim.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WidgetLookFeel.pypp.hpp"
+#include "WidgetLookFeel.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WidgetLookManager.pypp.hpp"
+#include "WidgetLookManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Window.pypp.hpp"
+#include "Window.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowEventArgs.pypp.hpp"
+#include "WindowEventArgs.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowFactory.pypp.hpp"
+#include "WindowFactory.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowFactoryIterator.pypp.hpp"
+#include "WindowFactoryIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowFactoryManager.pypp.hpp"
+#include "WindowFactoryManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowIterator.pypp.hpp"
+#include "WindowIterator.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowManager.pypp.hpp"
+#include "WindowManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowRenderer.pypp.hpp"
+#include "WindowRenderer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowRendererFactory.pypp.hpp"
+#include "WindowRendererFactory.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/WindowRendererManager.pypp.hpp"
+#include "WindowRendererManager.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLAttributes.pypp.hpp"
+#include "XMLAttributes.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLHandler.pypp.hpp"
+#include "XMLHandler.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLParser.pypp.hpp"
+#include "XMLParser.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLSerializer.pypp.hpp"
+#include "XMLSerializer.pypp.hpp"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/colour.pypp.hpp"
+#include "colour.pypp.hpp"
 
 namespace bp = boost::python;
 

@@ -4,7 +4,7 @@
 
 #include "python_CEGUIOpenGLRenderer.h"
 
-#include "/home/paul/dev/cegui/src/pythonbinding-devel/cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUIOpenGLRenderer/OpenGLRenderer.pypp.hpp"
+#include "OpenGLRenderer.pypp.hpp"
 
 namespace bp = boost::python;
 

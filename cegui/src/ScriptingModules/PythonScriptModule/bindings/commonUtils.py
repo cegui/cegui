@@ -78,6 +78,7 @@ def createDocumentationExtractor():
     return exdoc.doc_extractor("")
     
 def writeModule(mb, output_dir):
+    mb.code_creator.user_defined_directories.append(output_dir)
     mb.split_module(output_dir)
 
 def excludeAllPrivate(cls):
