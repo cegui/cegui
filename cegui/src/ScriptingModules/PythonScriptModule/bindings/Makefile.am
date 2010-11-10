@@ -6,6 +6,7 @@ pyexec_LTLIBRARIES = PyCEGUI.la
 
 # NB: No '@CEGUI_LIB_LINK_FLAGS@' here
 PyCEGUI_la_LDFLAGS = -module -avoid-version
+PyCEGUI_la_CXXFLAGS = -fvisibility=hidden
 PyCEGUI_la_CPPFLAGS = 
 
 if CEGUI_BUILD_STATIC
@@ -224,6 +225,7 @@ pyexec_LTLIBRARIES += PyCEGUIOpenGLRenderer.la
 
 # NB: No '@CEGUI_LIB_LINK_FLAGS@' here
 PyCEGUIOpenGLRenderer_la_LDFLAGS = -module -avoid-version
+PyCEGUIOpenGLRenderer_la_CXXFLAGS = -fvisibility=hidden
 PyCEGUIOpenGLRenderer_la_CPPFLAGS = 
 
 if CEGUI_BUILD_STATIC
