@@ -32,9 +32,6 @@
 #include "../../CEGUISize.h"
 #include "../../CEGUIVector.h"
 
-#include <OgreBlendMode.h>
-#include <OgreTextureUnitState.h>
-
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
@@ -56,6 +53,8 @@ namespace Ogre
 {
 class Root;
 class RenderSystem;
+class RenderTarget;
+class TexturePtr;
 }
 
 // Start of CEGUI namespace section
@@ -66,6 +65,7 @@ class OgreTexture;
 class OgreResourceProvider;
 class OgreImageCodec;
 class OgreWindowTarget;
+struct OgreRenderer_impl;
 
 //! CEGUI::Renderer implementation for the Ogre engine.
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
@@ -290,38 +290,8 @@ protected:
     //! common parts of constructor
     void constructor_impl(Ogre::RenderTarget& target);
 
-    //! String holding the renderer identification text.
-    static String d_rendererID;
-    //! What the renderer considers to be the current display size.
-    Size d_displaySize;
-    //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
-    //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
-    //! The default RenderTarget (used by d_defaultRoot)
-    OgreWindowTarget* d_defaultTarget;
-    //! container type used to hold TextureTargets we create.
-    typedef std::vector<TextureTarget*> TextureTargetList;
-    //! Container used to track texture targets.
-    TextureTargetList d_textureTargets;
-    //! container type used to hold GeometryBuffers we create.
-    typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
-    //! Container used to track geometry buffers.
-    GeometryBufferList d_geometryBuffers;
-    //! container type used to hold Textures we create.
-    typedef std::vector<OgreTexture*> TextureList;
-    //! Container used to track textures.
-    TextureList d_textures;
-    //! What the renderer thinks the max texture size is.
-    uint d_maxTextureSize;
-    //! OGRE root object ptr
-    Ogre::Root* d_ogreRoot;
-    //! Pointer to the render system for Ogre.
-    Ogre::RenderSystem* d_renderSystem;
-    //! What we think is the current blend mode to use
-    BlendMode d_activeBlendMode;
-    //! Whether _beginFrame and _endFrame will be called.
-    bool d_makeFrameControlCalls;
+    //! Pointer to the hidden implementation data
+    OgreRenderer_impl* d_pimpl;
 };
 
 
