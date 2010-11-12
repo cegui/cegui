@@ -48,7 +48,7 @@ namespace CEGUI
     through the Renderer object's texture creation functions.
 */
 class CEGUIEXPORT Texture :
-    public AllocatedObject<TextureAllocator>
+    public AllocatedObject<Texture>
 {
 public:
     /*!

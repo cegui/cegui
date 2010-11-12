@@ -107,7 +107,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     const long size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainerAllocator);
+    unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainer);
 
     const size_t size_read = fread(buffer, sizeof(char), size, file);
     fclose(file);

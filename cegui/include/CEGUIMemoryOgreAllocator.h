@@ -38,7 +38,8 @@ namespace CEGUI
 // I deliberately kept the interface exactly the same,
 // so this will do just fine...
 
-CEGUI_SET_ONE_ALLOCATOR(::Ogre::GeneralAllocPolicy)
+CEGUI_SET_DEFAULT_ALLOCATOR(::Ogre::GeneralAllocPolicy)
+CEGUI_SET_ALLOCATOR(System, ::Ogre::GeneralAllocPolicy)
 
 }
 

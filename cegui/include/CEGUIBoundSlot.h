@@ -43,7 +43,7 @@ namespace CEGUI
     unsubscribed and the SubscriberSlot is deleted.
 */
 class CEGUIEXPORT BoundSlot :
-    public AllocatedObject<SubscriberAllocator>
+    public AllocatedObject<BoundSlot>
 {
 public:
     typedef unsigned int Group;

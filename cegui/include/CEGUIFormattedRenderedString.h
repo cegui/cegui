@@ -39,7 +39,7 @@ namespace CEGUI
     with additional formatting.
 */
 class CEGUIEXPORT FormattedRenderedString :
-    public AllocatedObject<FormattedRenderedStringAllocator>
+    public AllocatedObject<FormattedRenderedString>
 {
 public:
     //! Destructor.

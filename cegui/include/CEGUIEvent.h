@@ -56,7 +56,7 @@ namespace CEGUI
         An Event object may not be copied.
 */
 class CEGUIEXPORT Event :
-    public AllocatedObject<EventAllocator>
+    public AllocatedObject<Event>
 {
 public:
     /*!

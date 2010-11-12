@@ -57,7 +57,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT Font :
     public PropertySet,
-    public AllocatedObject<FontAllocator>
+    public AllocatedObject<Font>
 {
 public:
     //! Colour value used whenever a colour is not specified.

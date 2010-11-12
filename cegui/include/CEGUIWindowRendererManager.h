@@ -47,7 +47,7 @@ namespace CEGUI
 {
 class CEGUIEXPORT WindowRendererManager :
     public Singleton<WindowRendererManager>,
-    public AllocatedObject<SingletonAllocator>
+    public AllocatedObject<WindowRendererManager>
 {
 public:
     /*************************************************************************

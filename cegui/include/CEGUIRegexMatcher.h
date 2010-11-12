@@ -37,7 +37,7 @@ class String;
 
 //! Interface for Regex matching support classes
 class CEGUIEXPORT RegexMatcher :
-    public AllocatedObject<RegexMatcherAllocator>
+    public AllocatedObject<RegexMatcher>
 {
 public:
     //! Destructor.

@@ -49,7 +49,7 @@ namespace CEGUI
     Base-class for the assignable WindowRenderer object
 */
 class CEGUIEXPORT WindowRenderer :
-    public AllocatedObject<WindowRendererAllocator>
+    public AllocatedObject<WindowRenderer>
 {
 public:
     /*************************************************************************

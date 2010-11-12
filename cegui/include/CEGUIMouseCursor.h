@@ -70,7 +70,7 @@ enum MouseCursorImage
 class CEGUIEXPORT MouseCursor :
     public EventSet,
     public Singleton<MouseCursor>,
-    public AllocatedObject<SingletonAllocator>
+    public AllocatedObject<MouseCursor>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

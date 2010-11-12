@@ -48,7 +48,7 @@ namespace CEGUI
     any renderable items.
 */
 class CEGUIEXPORT RenderedString :
-    public AllocatedObject<RenderedStringAllocator>
+    public AllocatedObject<RenderedString>
 {
 public:
     //! Constructor.

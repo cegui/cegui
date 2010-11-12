@@ -39,7 +39,7 @@ namespace CEGUI
     structure that is used to hold details of a single vertex in 3D space.
 */
 struct Vertex :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<Vertex>
 {
     //! Position of the vertex in 3D space.
     Vector3 position;

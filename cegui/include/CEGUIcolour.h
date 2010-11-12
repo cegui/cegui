@@ -46,7 +46,7 @@ typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
     This class isn't suitable to be allocated by custom allocators
 */
 class CEGUIEXPORT colour : 
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<colour>
 {
 public:
 	/*************************************************************************

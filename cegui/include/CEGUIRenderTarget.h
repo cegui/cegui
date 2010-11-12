@@ -40,7 +40,7 @@ namespace CEGUI
     normally created via the Renderer object.
 */
 class CEGUIEXPORT RenderTarget :
-    public AllocatedObject<RenderTargetAllocator>
+    public AllocatedObject<RenderTarget>
 {
 public:
     //! Destructor

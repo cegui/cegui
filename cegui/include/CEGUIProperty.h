@@ -59,7 +59,7 @@ public:
 	by using simple get/set functions and the name of the property to be accessed.
 */
 class CEGUIEXPORT Property :
-    public AllocatedObject<PropertyAllocator>
+    public AllocatedObject<Property>
 {
 public:
 	/*!

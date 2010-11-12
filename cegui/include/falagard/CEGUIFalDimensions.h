@@ -41,7 +41,7 @@ namespace CEGUI
         Abstract interface for a generic 'dimension' class.
     */
     class CEGUIEXPORT BaseDim :
-        public AllocatedObject<TrivialAllocator>
+        public AllocatedObject<BaseDim>
     {
     public:
         BaseDim();

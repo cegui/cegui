@@ -42,7 +42,7 @@ namespace CEGUI
 	Class encapsulating operations on a Rectangle
 */
 class CEGUIEXPORT Rect :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<Rect>
 {
 public:
 	Rect(void) {}

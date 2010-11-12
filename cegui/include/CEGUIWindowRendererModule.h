@@ -41,7 +41,7 @@ namespace CEGUI
 {
 //! Abstract interface for window renderer module objects.
 class CEGUIEXPORT WindowRendererModule :
-    public AllocatedObject<ModuleAllocator>
+    public AllocatedObject<WindowRendererModule>
 {
 public:
     //! Destructor.

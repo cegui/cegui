@@ -41,7 +41,7 @@ namespace CEGUI
     Class used as the databuffer for loading files throughout the library.
 */
 class CEGUIEXPORT RawDataContainer :
-    public AllocatedObject<RawDataContainerAllocator>
+    public AllocatedObject<RawDataContainer>
 {
 public:
 	/*************************************************************************

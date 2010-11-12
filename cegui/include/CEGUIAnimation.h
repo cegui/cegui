@@ -62,7 +62,7 @@ namespace CEGUI
 \see
     AnimationInstance, Affector
 */
-class CEGUIEXPORT Animation : public AllocatedObject<AnimationAllocator>
+class CEGUIEXPORT Animation : public AllocatedObject<Animation>
 {
 public:
     //! enumerates possible replay modes

@@ -45,7 +45,7 @@ namespace CEGUI
     a relative 'scale' portion and and absolute 'offset' portion.
 */
 class CEGUIEXPORT UDim :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<UDim>
 {
 public:
     UDim() {}
@@ -127,7 +127,7 @@ public:
     The UVector2 class is used for representing both positions and sizes.
 */
 class CEGUIEXPORT UVector2 :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<UVector2>
 {
 public:
     UVector2() {}
@@ -245,7 +245,7 @@ public:
     Area rectangle class built using unified dimensions (UDims).
 */
 class CEGUIEXPORT URect :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<URect>
 {
 public:
     URect() {}
@@ -352,7 +352,7 @@ public:
     Name taken from W3 'box model'
 */
 class CEGUIEXPORT UBox :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<UBox>
 {
 public:
     UBox():

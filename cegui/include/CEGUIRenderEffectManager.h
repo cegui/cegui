@@ -50,7 +50,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT RenderEffectManager :
     public Singleton<RenderEffectManager>,
-    public AllocatedObject<SingletonAllocator>
+    public AllocatedObject<RenderEffectManager>
 {
 private:
     //! Collection type used for the render effect registry

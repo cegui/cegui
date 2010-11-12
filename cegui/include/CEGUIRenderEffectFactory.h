@@ -39,7 +39,7 @@ class RenderEffect;
     Currently this interface is intended for internal use only.
 */
 class RenderEffectFactory : public
-    AllocatedObject<FactoryAllocator>
+    AllocatedObject<RenderEffectFactory>
 {
 public:
     //! base class virtual destructor.

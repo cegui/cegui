@@ -43,7 +43,7 @@ namespace CEGUI
  Class used as a two dimensional vector (aka a Point)
 */
 class CEGUIEXPORT Vector2 :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<Vector2>
 {
 public:
     Vector2(void) {}
@@ -129,7 +129,7 @@ typedef Vector2  Point;
  Class used as a three dimensional vector
 */
 class CEGUIEXPORT Vector3 :
-    public AllocatedObject<TrivialAllocator>
+    public AllocatedObject<Vector3>
 {
 public:
     Vector3(void) {}

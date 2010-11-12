@@ -61,7 +61,7 @@ namespace CEGUI
 	various details, and sent to the Renderer object for drawing.
 */
 class CEGUIEXPORT Imageset :
-    public AllocatedObject<ImagesetAllocator>
+    public AllocatedObject<Imageset>
 {
 	typedef	std::map<String, Image, String::FastLessCompare>	ImageRegistry;
 

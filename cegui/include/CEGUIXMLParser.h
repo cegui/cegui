@@ -41,7 +41,7 @@ namespace CEGUI
      */
     class CEGUIEXPORT XMLParser :
         public PropertySet,
-        public AllocatedObject<XMLParserAllocator>
+        public AllocatedObject<XMLParser>
     {
     public:
         /*!

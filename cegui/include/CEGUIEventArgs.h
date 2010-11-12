@@ -50,7 +50,7 @@ namespace CEGUI
 	how far to propagate an event.
 */
 class CEGUIEXPORT EventArgs :
-    public AllocatedObject<EventArgsAllocator>
+    public AllocatedObject<EventArgs>
 {
 public:
 	/*************************************************************************

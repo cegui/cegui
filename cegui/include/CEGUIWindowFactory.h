@@ -114,7 +114,7 @@ namespace CEGUI
     \endcode
 */
 class CEGUIEXPORT WindowFactory :
-    public AllocatedObject<FactoryAllocator>
+    public AllocatedObject<WindowFactory>
 {
 public:
     /*!

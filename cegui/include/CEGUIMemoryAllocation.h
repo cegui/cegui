@@ -37,69 +37,31 @@
 // this should really go to config.h, now it's there for testing since
 // I am a premake noob...
 #define CEGUI_CUSTOM_ALLOCATORS
+//#define CEGUI_MEMORY_DEBUG
+#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryOgreAllocator.h"
 
-#include "CEGUIMemoryAllocatedObject.h"
-#include "CEGUIMemorySTLWrapper.h"
+#define CEGUI_SET_DEFAULT_ALLOCATOR(A)\
+template<typename T>\
+struct AllocatorConfig\
+{\
+    typedef A Allocator;\
+};
 
-// convenience macro, sets all allocator types to given allocator
-// use if you don't want to maintain lots of typedefs
-#define CEGUI_SET_ONE_ALLOCATOR(Allocator)\
-    typedef Allocator AnimationAllocator;\
-    typedef Allocator AnimationInstanceAllocator;\
-    typedef Allocator BiDiVisualMappingAllocator;\
-    typedef Allocator BufferAllocator;\
-    typedef Allocator EventAllocator;\
-    typedef Allocator EventArgsAllocator;\
-    typedef Allocator FactoryAllocator;\
-    typedef Allocator FalagardComponentAllocator;\
-    typedef Allocator FontAllocator;\
-    typedef Allocator FormattedRenderedStringAllocator;\
-    typedef Allocator GeometryBufferAllocator;\
-    typedef Allocator ImageAllocator;\
-    typedef Allocator ImageCodecAllocator;\
-    typedef Allocator ImagerySectionAllocator;\
-    typedef Allocator ImagesetAllocator;\
-    typedef Allocator InterpolatorAllocator;\
-    typedef Allocator LayerSpecificationAllocator;\
-    typedef Allocator ListboxItemAllocator;\
-    typedef Allocator LoggerAllocator;\
-    typedef Allocator ModuleAllocator;\
-    typedef Allocator NamedAreaAllocator;\
-    typedef Allocator PropertyAllocator;\
-    typedef Allocator RawDataContainerAllocator;\
-    typedef Allocator RegexMatcherAllocator;\
-    typedef Allocator RenderedStringAllocator;\
-    typedef Allocator RendererAllocator;\
-    typedef Allocator RenderEffectAllocator;\
-    typedef Allocator RenderingSurfaceAllocator;\
-    typedef Allocator RenderQueueAllocator;\
-    typedef Allocator RenderTargetAllocator;\
-    typedef Allocator ResourceProviderAllocator;\
-    typedef Allocator SectionSpecificationAllocator;\
-    typedef Allocator SchemeAllocator;\
-    typedef Allocator SingletonAllocator;\
-    typedef Allocator StringAllocator;\
-    typedef Allocator STLAllocator;\
-    typedef Allocator StateImageryAllocator;\
-    typedef Allocator SubscriberAllocator;\
-    typedef Allocator TextureAllocator;\
-    typedef Allocator TrivialAllocator;\
-    typedef Allocator WidgetLookFeelAllocator;\
-    typedef Allocator WindowAllocator;\
-    typedef Allocator WindowRendererAllocator;\
-    typedef Allocator XMLAttributesAllocator;\
-    typedef Allocator XMLHandlerAllocator;\
-    typedef Allocator XMLParserAllocator;\
-    typedef Allocator XMLSerializerAllocator;
-
-// convenience macro - more just for clarity really
-#define CEGUI_SET_ALLOCATOR(Category, Allocator)\
-    typedef Allocator Category##Allocator;
+#define CEGUI_SET_ALLOCATOR(Class, A)\
+template<>\
+struct AllocatorConfig<Class>\
+{\
+    typedef A Allocator;\
+};
 
 #ifdef CEGUI_CUSTOM_ALLOCATORS
 
 namespace CEGUI
 {
+
+// stub classes uses for allocator configuration
+class STLAllocator {};
+class BufferAllocator {};
 
 // borrowed from Ogre, used to construct arrays
 template<typename T>
@@ -130,21 +92,19 @@ void destructN(T* basePtr, size_t count)
 #   define CEGUI_NEW_AO new
 #   define CEGUI_DELETE_AO delete
 // for primitive types, types not inherited from AllocatedObject
-#   define CEGUI_NEW_PT(T, Allocator) new (Allocator::allocateBytes(sizeof(T))) T
-#   define CEGUI_NEW_ARRAY_PT(T, count, Allocator) ::CEGUI::constructN(static_cast<T*>(Allocator::allocateBytes(sizeof(T)*(count))), count)
-#   define CEGUI_DELETE_PT(ptr, T, Allocator) do{if(ptr){(ptr)->~T(); Allocator::deallocateBytes((void*)ptr);}}while(0)
-#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) do{if(ptr){ ::CEGUI::destructN(static_cast<T*>(ptr), count); Allocator::deallocateBytes((void*)ptr);}}while(0)
+#   define CEGUI_NEW_PT(T, A) new (::CEGUI::AllocatorConfig<A>::Allocator::allocateBytes(sizeof(T))) T
+#   define CEGUI_NEW_ARRAY_PT(T, count, A) ::CEGUI::constructN(static_cast<T*>(::CEGUI::AllocatorConfig<A>::Allocator::allocateBytes(sizeof(T)*(count))), count)
+#   define CEGUI_DELETE_PT(ptr, T, A) do{if(ptr){(ptr)->~T(); ::CEGUI::AllocatorConfig<A>::Allocator::deallocateBytes((void*)ptr);}}while(0)
+#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, A) do{if(ptr){ ::CEGUI::destructN(static_cast<T*>(ptr), count); ::CEGUI::AllocatorConfig<A>::Allocator::deallocateBytes((void*)ptr);}}while(0)
 #else
 #   define CEGUI_NEW_AO new(__FILE__, __LINE__, __FUNCTION__)
 #   define CEGUI_DELETE_AO delete
 // for primitive types, types not inherited from AllocatedObject
-#   define CEGUI_NEW_PT(T, Allocator) new (Allocator::allocateBytes(sizeof(T), __FILE__, __LINE__, __FUNCTION__)) T
-#   define CEGUI_NEW_ARRAY_PT(T, count, Allocator) ::CEGUI::constructN(static_cast<T*>(Allocator::allocateBytes(sizeof(T)*(count), __FILE__, __LINE__, __FUNCTION__)), count)
-#   define CEGUI_DELETE_PT(ptr, T, Allocator) do{if(ptr){(ptr)->~T(); Allocator::deallocateBytes((void*)ptr);}}while(0)
-#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) do{if(ptr){for (size_t b = count; b-- > 0;){ (ptr)[b].~T();} Allocator::deallocateBytes((void*)ptr);}}while(0)
+#   define CEGUI_NEW_PT(T, A) new (::CEGUI::AllocatorConfig<A>::Allocator::allocateBytes(sizeof(T), __FILE__, __LINE__, __FUNCTION__)) T
+#   define CEGUI_NEW_ARRAY_PT(T, count, A) ::CEGUI::constructN(static_cast<T*>(::CEGUI::AllocatorConfig<A>::Allocator::allocateBytes(sizeof(T)*(count), __FILE__, __LINE__, __FUNCTION__)), count)
+#   define CEGUI_DELETE_PT(ptr, T, A) do{if(ptr){(ptr)->~T(); ::CEGUI::AllocatorConfig<A>::Allocator::deallocateBytes((void*)ptr);}}while(0)
+#   define CEGUI_DELETE_ARRAY_PT(ptr, T, count, A) do{if(ptr){for (size_t b = count; b-- > 0;){ (ptr)[b].~T();} ::CEGUI::AllocatorConfig<A>::Allocator::deallocateBytes((void*)ptr);}}while(0)
 #endif
-
-#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryOgreAllocator.h"
 
 #ifndef CEGUI_CUSTOM_ALLOCATORS_INCLUDE
 #   define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h"
@@ -168,10 +128,13 @@ namespace CEGUI
 {
 
 // use int as allocator for everything, it's not going to be used anyways
-CEGUI_SET_ONE_ALLOCATOR(int)
+CEGUI_SET_DEFAULT_ALLOCATOR(int)
 
 }
 
 #endif
+
+#include "CEGUIMemoryAllocatedObject.h"
+#include "CEGUIMemorySTLWrapper.h"
 
 #endif	// end of guard _CEGUIMemoryAllocation_h_

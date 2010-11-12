@@ -48,7 +48,7 @@ namespace CEGUI
     Affector
 */
 class CEGUIEXPORT KeyFrame :
-    public AllocatedObject<AnimationAllocator>
+    public AllocatedObject<KeyFrame>
 {
 public:
     //! enumerates possible progression methods, IE how the value progresses

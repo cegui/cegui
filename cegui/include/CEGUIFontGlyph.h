@@ -41,7 +41,7 @@ namespace CEGUI
     (getImage() will return 0), but they are filled by demand.
 */
 class CEGUIEXPORT FontGlyph:
-    public AllocatedObject<FontAllocator>
+    public AllocatedObject<FontGlyph>
 {
 public:
     //! Constructor.

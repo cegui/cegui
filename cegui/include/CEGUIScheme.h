@@ -57,7 +57,7 @@ namespace CEGUI
 	the system which would then be in a state to serve those elements to client code.
 */
 class CEGUIEXPORT Scheme :
-    public AllocatedObject<SchemeAllocator>
+    public AllocatedObject<Scheme>
 {
 	friend class Scheme_xmlHandler;
 public:

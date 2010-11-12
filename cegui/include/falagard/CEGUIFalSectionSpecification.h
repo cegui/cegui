@@ -46,7 +46,7 @@ namespace CEGUI
         sections to be specified by name rather than having mutiple copies of the same thing all over the place.
     */
     class CEGUIEXPORT SectionSpecification :
-        public AllocatedObject<SectionSpecificationAllocator>
+        public AllocatedObject<SectionSpecification>
     {
     public:
         /*!

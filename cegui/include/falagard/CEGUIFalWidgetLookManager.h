@@ -49,7 +49,7 @@ namespace CEGUI
     */
     class CEGUIEXPORT WidgetLookManager :
         public Singleton<WidgetLookManager>,
-        public AllocatedObject<SingletonAllocator>
+        public AllocatedObject<WidgetLookManager>
     {
     public:
         /*!

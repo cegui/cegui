@@ -78,7 +78,7 @@ enum BlendMode
     available.
 */
 class CEGUIEXPORT Renderer :
-    public AllocatedObject<RendererAllocator>
+    public AllocatedObject<Renderer>
 {
 public:
     /*!

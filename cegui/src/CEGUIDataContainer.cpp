@@ -37,7 +37,7 @@ void RawDataContainer::release(void)
 {
     if (mData)
     {
-        CEGUI_DELETE_ARRAY_PT(mData, uint8, mSize, RawDataContainerAllocator);
+        CEGUI_DELETE_ARRAY_PT(mData, uint8, mSize, RawDataContainer);
 
         mData = 0;
         mSize = 0;

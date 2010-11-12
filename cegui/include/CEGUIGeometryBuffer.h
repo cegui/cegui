@@ -40,7 +40,7 @@ namespace CEGUI
     later rendering.
 */
 class CEGUIEXPORT GeometryBuffer :
-    public AllocatedObject<GeometryBufferAllocator>
+    public AllocatedObject<GeometryBuffer>
 {
 public:
     //! Destructor

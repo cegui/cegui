@@ -108,7 +108,7 @@ public:
 */
 class CEGUIEXPORT RenderingSurface :
     public EventSet,
-    public AllocatedObject<RenderingSurfaceAllocator>
+    public AllocatedObject<RenderingSurface>
 {
 public:
     //! Namespace for global events from RenderingSurface objects.

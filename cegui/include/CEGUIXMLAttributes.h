@@ -45,7 +45,7 @@ namespace CEGUI
         Class representing a block of attributes associated with an XML element.
      */
     class CEGUIEXPORT XMLAttributes :
-        public AllocatedObject<XMLAttributesAllocator>
+        public AllocatedObject<XMLAttributes>
     {
     public:
         /*!

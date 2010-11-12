@@ -84,7 +84,7 @@ namespace CEGUI
     @endcode
     */
     class CEGUIEXPORT XMLSerializer :
-        public AllocatedObject<XMLSerializerAllocator>
+        public AllocatedObject<XMLSerializer>
     {
     public:
         /*!

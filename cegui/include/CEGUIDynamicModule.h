@@ -67,7 +67,7 @@ namespace CEGUI
     (.dll, .so, etc...)
 */
 class CEGUIEXPORT DynamicModule :
-    public AllocatedObject<ModuleAllocator>
+    public AllocatedObject<DynamicModule>
 {
 public:
     /*!

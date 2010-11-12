@@ -35,7 +35,7 @@ namespace CEGUI
 {
 //! Specifies interface for classes that parse text into RenderedString objects.
 class CEGUIEXPORT RenderedStringParser :
-    public AllocatedObject<RenderedStringAllocator>
+    public AllocatedObject<RenderedStringParser>
 {
 public:
     /*!

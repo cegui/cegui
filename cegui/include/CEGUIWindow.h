@@ -138,7 +138,7 @@ enum WindowUpdateMode
 class CEGUIEXPORT Window :
     public PropertySet,
     public EventSet,
-    public AllocatedObject<WindowAllocator>
+    public AllocatedObject<Window>
 {
 public:
     /*************************************************************************

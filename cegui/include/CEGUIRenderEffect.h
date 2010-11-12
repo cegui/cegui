@@ -39,7 +39,7 @@ namespace CEGUI
     process, thus allowing various effects to be achieved.
 */
 class CEGUIEXPORT RenderEffect :
-    public AllocatedObject<RenderEffectAllocator>
+    public AllocatedObject<RenderEffect>
 {
 public:
     /*!

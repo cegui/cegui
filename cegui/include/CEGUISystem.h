@@ -64,7 +64,7 @@ struct MouseClickTrackerImpl;
 class CEGUIEXPORT System :
     public Singleton<System>,
     public EventSet,
-    public AllocatedObject<SingletonAllocator>
+    public AllocatedObject<System>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

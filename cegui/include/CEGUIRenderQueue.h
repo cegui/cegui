@@ -51,7 +51,7 @@ namespace CEGUI
     RenderQueue to which they may be attached prior to destoying them).
 */
 class CEGUIEXPORT RenderQueue :
-    public AllocatedObject<RenderQueueAllocator> 
+    public AllocatedObject<RenderQueue> 
 {
 public:
     /*!

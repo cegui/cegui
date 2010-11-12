@@ -60,7 +60,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT WindowManager : public Singleton<WindowManager>,
                                   public EventSet,
-                                  public AllocatedObject<SingletonAllocator>
+                                  public AllocatedObject<WindowManager>
 {
 public:
     /*************************************************************************

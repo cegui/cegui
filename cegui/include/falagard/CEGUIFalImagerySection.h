@@ -46,7 +46,7 @@ namespace CEGUI
         Class that encapsulates a re-usable collection of imagery specifications.
     */
     class CEGUIEXPORT ImagerySection :
-        public AllocatedObject<ImagerySectionAllocator>
+        public AllocatedObject<ImagerySection>
     {
     public:
         /*!

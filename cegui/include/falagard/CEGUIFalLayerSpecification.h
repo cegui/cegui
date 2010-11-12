@@ -44,7 +44,7 @@ namespace CEGUI
         Class that encapsulates a single layer of imagery.
     */
     class CEGUIEXPORT LayerSpecification :
-        public AllocatedObject<LayerSpecificationAllocator>
+        public AllocatedObject<LayerSpecification>
     {
     public:
         /*!

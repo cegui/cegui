@@ -59,7 +59,7 @@ namespace CEGUI
 */
 class CEGUIEXPORT WindowFactoryManager :
     public Singleton<WindowFactoryManager>,
-    public AllocatedObject<SingletonAllocator>
+    public AllocatedObject<WindowFactoryManager>
 {
 public:
     /*!

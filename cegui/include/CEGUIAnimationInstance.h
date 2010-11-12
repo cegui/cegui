@@ -72,7 +72,7 @@ public:
     Animation
 */
 class CEGUIEXPORT AnimationInstance :
-    public AllocatedObject<AnimationInstanceAllocator>
+    public AllocatedObject<AnimationInstance>
 {
 public:
     //! Namespace for animation instance events

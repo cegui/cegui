@@ -43,7 +43,7 @@ namespace CEGUI
 	Class that encapsulates access to a dynamic loadable module containing implementations of Windows, Widgets, and their factories.
 */
 class FactoryModule :
-    public AllocatedObject<ModuleAllocator>
+    public AllocatedObject<FactoryModule>
 {
 public:
 	/*!

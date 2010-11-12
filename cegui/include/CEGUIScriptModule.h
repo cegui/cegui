@@ -44,7 +44,7 @@ namespace CEGUI
 	the CEGUI system.
 */
 class CEGUIEXPORT ScriptModule :
-    public AllocatedObject<ModuleAllocator>
+    public AllocatedObject<ScriptModule>
 {
 public:
 	/*************************************************************************

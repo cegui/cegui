@@ -39,7 +39,7 @@ namespace CEGUI
         and referenced by a name unique to the WidgetLook holding the NamedArea.
     */
     class CEGUIEXPORT NamedArea :
-        public AllocatedObject<NamedAreaAllocator>
+        public AllocatedObject<NamedArea>
     {
     public:
         NamedArea() {}

@@ -72,7 +72,7 @@ enum LoggingLevel
 */
 class CEGUIEXPORT Logger :
     public Singleton<Logger>,
-    public AllocatedObject<LoggerAllocator>
+    public AllocatedObject<Logger>
 {
 public:
 	/*!

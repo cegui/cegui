@@ -55,7 +55,7 @@ namespace CEGUI
 	Class that represents a single Image of an Imageset.
 */
 class CEGUIEXPORT Image :
-    public AllocatedObject<ImageAllocator>
+    public AllocatedObject<Image>
 {
 public:
 	/*!

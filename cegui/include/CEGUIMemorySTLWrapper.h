@@ -145,9 +145,9 @@ inline bool operator!=(const STLAllocatorWrapper<T, P>&, const OtherAllocator&)
 }
 
 // STL allocator helper macros
-#define CEGUI_VECTOR_ALLOC(T) , STLAllocatorWrapper<T, STLAllocator>
-#define CEGUI_MAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, STLAllocator>
-#define CEGUI_MULTIMAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, STLAllocator>
+#define CEGUI_VECTOR_ALLOC(T) , STLAllocatorWrapper<T, AllocatorConfig<STLAllocator>::Allocator>
+#define CEGUI_MAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, AllocatorConfig<STLAllocator>::Allocator>
+#define CEGUI_MULTIMAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, AllocatorConfig<STLAllocator>::Allocator>
 
 #else
 

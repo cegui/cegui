@@ -47,10 +47,12 @@ namespace CEGUI
     basically a wrapper that calls given Allocator when new/delete is called.
     This is managed via overloading of new and delete operators.
 */
-template <class Allocator>
-class CEGUIEXPORT AllocatedObject
+template <typename Class>
+class AllocatedObject
 {
 public:
+    typedef typename AllocatorConfig<Class>::Allocator Allocator;
+
 	inline explicit AllocatedObject()
 	{}
 
@@ -105,7 +107,7 @@ public:
 
 // allocated object is just a stub template class if custom memory allocators aren't used
 template<typename Allocator>
-class CEGUIEXPORT AllocatedObject
+class AllocatedObject
 {
 public:
     inline explicit AllocatedObject()

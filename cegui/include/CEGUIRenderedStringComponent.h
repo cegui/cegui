@@ -41,7 +41,7 @@ namespace CEGUI
     may be a text string, an image or some other entity.
 */
 class CEGUIEXPORT RenderedStringComponent :
-    public AllocatedObject<RenderedStringAllocator>
+    public AllocatedObject<RenderedStringComponent>
 {
 public:
     //! Destructor.
