@@ -30,7 +30,7 @@
 #ifndef _CEGUIMemoryStdAllocator_h_
 #define _CEGUIMemoryStdAllocator_h_
 
-#include <memory>
+#include <stdlib.h>
 #include <limits>
 
 namespace CEGUI

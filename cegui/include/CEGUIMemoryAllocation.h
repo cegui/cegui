@@ -31,7 +31,7 @@
 #define _CEGUIMemoryAllocation_h_
 
 #ifndef _CEGUIBase_h_
-#   error Don't include this directly! Include CEGUIBase.h instead.
+#   error Dont include this directly! Include CEGUIBase.h instead.
 #endif
 
 // this should really go to config.h, now it's there for testing since
@@ -82,7 +82,7 @@ void destructN(T* basePtr, size_t count)
     // iterate in reverse for consistency with delete []
 	for (size_t i = count - 1; i-- > 0;)
 	{
-		typename basePtr[i].~T();
+		basePtr[i].~T();
     }
 }
 
@@ -123,14 +123,6 @@ void destructN(T* basePtr, size_t count)
 #define CEGUI_NEW_ARRAY_PT(T, count, Allocator) new T[count]
 #define CEGUI_DELETE_PT(ptr, T, Allocator) delete ptr
 #define CEGUI_DELETE_ARRAY_PT(ptr, T, count, Allocator) delete [] ptr
-
-namespace CEGUI
-{
-
-// use int as allocator for everything, it's not going to be used anyways
-CEGUI_SET_DEFAULT_ALLOCATOR(int)
-
-}
 
 #endif
 

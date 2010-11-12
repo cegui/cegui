@@ -31,7 +31,7 @@
 #define _CEGUIMemorySTLWrapper_h_
 
 #ifndef _CEGUIMemoryAllocation_h_
-#   error Don't include this directly! Include CEGUIBase.h instead.
+#   error Dont include this directly! Include CEGUIBase.h instead.
 #endif
 
 namespace CEGUI
@@ -55,10 +55,10 @@ template <typename T, typename Allocator>
 class CEGUIEXPORT STLAllocatorWrapper : public STLAllocatorWrapperBase<T>
 {
 public :
-	typedef value_type* pointer;
-	typedef const value_type* const_pointer;
-	typedef value_type& reference;
-	typedef const value_type& const_reference;
+	typedef typename value_type* pointer;
+	typedef const typename value_type* const_pointer;
+	typedef typename value_type& reference;
+	typedef const typename value_type& const_reference;
 
 	typedef std::size_t size_type;
 	typedef std::ptrdiff_t difference_type;

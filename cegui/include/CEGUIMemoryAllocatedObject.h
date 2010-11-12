@@ -31,7 +31,7 @@
 #define _CEGUIMemoryAllocatedObject_h_
 
 #ifndef _CEGUIMemoryAllocation_h_
-#   error Don't include this directly! Include CEGUIBase.h instead.
+#   error Dont include this directly! Include CEGUIBase.h instead.
 #endif
 
 namespace CEGUI
