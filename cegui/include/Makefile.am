@@ -55,7 +55,12 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUILeftAlignedRenderedString.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
-				 CEGUIMinizipResourceProvider.h \
+                 CEGUIMemoryAllocatedObject.h \
+                 CEGUIMemoryAllocation.h \
+                 CEGUIMemoryOgreAllocator.h \
+                 CEGUIMemoryStdAllocator.h \
+                 CEGUIMemorySTLWrapper.h \
+                 CEGUIMinizipResourceProvider.h \
                  CEGUIMouseCursor.h \
                  CEGUINamedXMLResourceManager.h \
                  CEGUIPixmapFont.h \
@@ -74,8 +79,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIRenderedStringWordWrapper.h \
                  CEGUIRenderer.h \
                  CEGUIRenderEffect.h \
-				 CEGUIRenderEffectFactory.h \
-				 CEGUIRenderEffectManager.h \
+                 CEGUIRenderEffectFactory.h \
+                 CEGUIRenderEffectManager.h \
                  CEGUIRenderTarget.h \
                  CEGUIRenderingContext.h \
                  CEGUIRenderQueue.h \
