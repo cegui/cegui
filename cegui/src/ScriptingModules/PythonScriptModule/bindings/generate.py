@@ -17,8 +17,11 @@
 # *            generated code is MIT as the rest of CEGUI
 
 import generateCEGUI
-import generateCEGUIOpenGLRenderer
 
+import generateCEGUIOpenGLRenderer
+import generateCEGUIOgreRenderer
+import generateCEGUINullRenderer 
+ 
 import commonUtils
 
 import sys, time
@@ -33,3 +36,13 @@ if __name__ == "__main__":
     start_time = time.clock()
     generateCEGUIOpenGLRenderer.generateCode()
     print "Finished CEGUI OpenGLRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
+
+    print "Generating CEGUI OgreRenderer bindings..."
+    start_time = time.clock()
+    generateCEGUIOgreRenderer.generateCode()
+    print "Finished CEGUI OgreRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
+
+    print "Generating CEGUI NullRenderer bindings..."
+    start_time = time.clock()
+    generateCEGUINullRenderer.generateCode()
+    print "Finished CEGUI NullRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))

@@ -25,14 +25,22 @@ from pygccxml import declarations
 import extract_documentation as exdoc
 
 OUTPUT_DIR = os.path.join(os.path.abspath("."), "output")
+GLOBAL_PACKAGE_VERSION = "0.7.5"
+GCCXML_PATH = "C:\\Users\\Martin Preisler\\Devel\\PythonPackages\\gccxml_bin\\v09\\win32\\bin\\"
+INCLUDE_PATHS = [
+"../../../../include", # trespassers will be shot!
+"", # OgreMain/include path
+"", # Ogre cmake build folder path (Build/include)
+""  # Ogre boost path
+]
 
 def createModuleBuilder(input_file, defined_symbols):
     ret = module_builder.module_builder_t(
         files = [
             input_file
         ],
-        gccxml_path = "C:\\Users\\Martin Preisler\\Devel\\PythonPackages\\gccxml_bin\\v09\\win32\\bin\\",
-        include_paths = ["../../../../include"],
+        gccxml_path = GCCXML_PATH,
+        include_paths = INCLUDE_PATHS,
         define_symbols = defined_symbols,
         indexing_suite_version = 2
     )
@@ -57,6 +65,7 @@ def addVersionInfo(mb, name, version):
     addConstants(mb, {
                     'CompileTime__' : '__TIME__', 
                     'CompileDate__' : '__DATE__', 
+                    'PythonVersion__' : '"%s"' % sys.version.replace("\n", "\\\n" ),
                     'Version__' : '"%s"' % version.replace("\n", "\\\n" ),
                     '__doc__' : '"%s"' % docstring.replace("\n", "\\\n" )
                 	})
@@ -76,9 +85,8 @@ def setDefaultCallPolicies(ns):
 def createDocumentationExtractor():
     return exdoc.doc_extractor("")
     
-def writeModule(mb, output_dir):
-    mb.code_creator.user_defined_directories.append(output_dir)
-    mb.split_module(output_dir)
+def writeModule(mb, name):
+    mb.split_module(os.path.join(".", "output", name))
 
 def excludeAllPrivate(cls):
     cls.decls(declarations.matchers.access_type_matcher_t("private")).exclude()
