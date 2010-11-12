@@ -61,7 +61,7 @@ public:
 	}
 };
 
-CEGUI_SET_ONE_ALLOCATOR(StdAllocator)
+CEGUI_SET_DEFAULT_ALLOCATOR(StdAllocator)
 
 }
 

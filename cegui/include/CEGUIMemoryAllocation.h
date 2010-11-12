@@ -38,7 +38,7 @@
 // I am a premake noob...
 #define CEGUI_CUSTOM_ALLOCATORS
 //#define CEGUI_MEMORY_DEBUG
-#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryOgreAllocator.h"
+#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h"
 
 #define CEGUI_SET_DEFAULT_ALLOCATOR(A)\
 template<typename T>\
