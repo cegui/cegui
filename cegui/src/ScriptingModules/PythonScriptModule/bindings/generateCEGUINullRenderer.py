@@ -25,11 +25,11 @@ from pygccxml import declarations
 import commonUtils
 import generateCEGUI
 
-PACKAGE_NAME = "CEGUINullRenderer"
+PACKAGE_NAME = "PyCEGUINullRenderer"
 PACKAGE_VERSION = commonUtils.GLOBAL_PACKAGE_VERSION
 MODULE_NAME = PACKAGE_NAME
 
-OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, PACKAGE_NAME)
+OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, "CEGUINullRenderer")
 
 def filterDeclarations(mb):
     # by default we exclude everything and only include what we WANT in the module
@@ -37,7 +37,7 @@ def filterDeclarations(mb):
     
     CEGUI_ns = mb.global_ns.namespace("CEGUI")
     
-    # RendererModules/OpenGL/CEGUINullGLRenderer.h
+    # RendererModules/Null/CEGUINullRenderer.h
     renderer = CEGUI_ns.class_("NullRenderer")
     renderer.include()
     renderer.noncopyable = True
@@ -61,7 +61,7 @@ def generateCode():
     # Creating code creator. After this step you should not modify/customize declarations.
     mb.build_code_creator(module_name = MODULE_NAME, doc_extractor = commonUtils.createDocumentationExtractor())
     
-    commonUtils.writeModule(mb, MODULE_NAME)
+    commonUtils.writeModule(mb, OUTPUT_DIR)
 
 if __name__ == "__main__":
     generateCode()

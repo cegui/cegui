@@ -5,7 +5,7 @@
 #    created:    12/11/2010
 #    author:     Martin Preisler (with many bits taken from python ogre)
 #
-#    purpose:    Generates CEGUI OpenGL Renderer binding code
+#    purpose:    Generates CEGUI Ogre Renderer binding code
 #*************************************************************************/
 #/***************************************************************************
 # *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
@@ -25,11 +25,11 @@ from pygccxml import declarations
 import commonUtils
 import generateCEGUI
 
-PACKAGE_NAME = "CEGUIOgreRenderer"
+PACKAGE_NAME = "PyCEGUIOgreRenderer"
 PACKAGE_VERSION = commonUtils.GLOBAL_PACKAGE_VERSION
 MODULE_NAME = PACKAGE_NAME
 
-OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, PACKAGE_NAME)
+OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, "CEGUIOgreRenderer")
 
 def filterDeclarations(mb):
     # by default we exclude everything and only include what we WANT in the module
@@ -61,7 +61,8 @@ def generateCode():
     # Creating code creator. After this step you should not modify/customize declarations.
     mb.build_code_creator(module_name = MODULE_NAME, doc_extractor = commonUtils.createDocumentationExtractor())
     
-    commonUtils.writeModule(mb, MODULE_NAME)
+    commonUtils.writeModule(mb, OUTPUT_DIR)
 
 if __name__ == "__main__":
     generateCode()
+

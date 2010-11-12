@@ -28,10 +28,7 @@ OUTPUT_DIR = os.path.join(os.path.abspath("."), "output")
 GLOBAL_PACKAGE_VERSION = "0.7.5"
 GCCXML_PATH = "C:\\Users\\Martin Preisler\\Devel\\PythonPackages\\gccxml_bin\\v09\\win32\\bin\\"
 INCLUDE_PATHS = [
-"../../../../include", # trespassers will be shot!
-"", # OgreMain/include path
-"", # Ogre cmake build folder path (Build/include)
-""  # Ogre boost path
+"../../../../include" # trespassers will be shot!
 ]
 
 def createModuleBuilder(input_file, defined_symbols):
@@ -65,7 +62,6 @@ def addVersionInfo(mb, name, version):
     addConstants(mb, {
                     'CompileTime__' : '__TIME__', 
                     'CompileDate__' : '__DATE__', 
-                    'PythonVersion__' : '"%s"' % sys.version.replace("\n", "\\\n" ),
                     'Version__' : '"%s"' % version.replace("\n", "\\\n" ),
                     '__doc__' : '"%s"' % docstring.replace("\n", "\\\n" )
                 	})
@@ -85,8 +81,9 @@ def setDefaultCallPolicies(ns):
 def createDocumentationExtractor():
     return exdoc.doc_extractor("")
     
-def writeModule(mb, name):
-    mb.split_module(os.path.join(".", "output", name))
+def writeModule(mb, output_dir):
+    mb.code_creator.user_defined_directories.append(output_dir)
+    mb.split_module(output_dir)
 
 def excludeAllPrivate(cls):
     cls.decls(declarations.matchers.access_type_matcher_t("private")).exclude()

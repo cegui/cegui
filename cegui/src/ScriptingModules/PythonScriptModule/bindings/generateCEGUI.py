@@ -25,11 +25,11 @@ from pygccxml import declarations
 
 import commonUtils
 
-PACKAGE_NAME = "CEGUI"
+PACKAGE_NAME = "PyCEGUI"
 PACKAGE_VERSION = commonUtils.GLOBAL_PACKAGE_VERSION
 MODULE_NAME = PACKAGE_NAME
 
-OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, PACKAGE_NAME)
+OUTPUT_DIR = os.path.join(commonUtils.OUTPUT_DIR, "CEGUI")
 
 def filterDeclarations(mb):
     # by default we exclude everything and only include what we WANT in the module
@@ -1248,10 +1248,6 @@ void Iterator_previous(::CEGUI::%s& t)
     falagardXMLHelper = CEGUI_ns.class_("FalagardXMLHelper")
     falagardXMLHelper.include()
     
-    # hack that should work for now! disallows inheriting and overriding in python
-    commonUtils.excludeAllPrivate(CEGUI_ns)
-    commonUtils.excludeAllProtected(CEGUI_ns)
-    
     # todo: hack fixes
     # taken from python ogre, causes AttributeError at import if not excluded
     for cls in CEGUI_ns.classes():
@@ -1284,7 +1280,11 @@ void Iterator_previous(::CEGUI::%s& t)
             
     # no need for this function, just use getSingleton
     mb.mem_funs("getSingletonPtr").exclude()
-                
+
+    # hack that should work for now! disallows inheriting and overriding in python
+    commonUtils.excludeAllPrivate(CEGUI_ns)
+    commonUtils.excludeAllProtected(CEGUI_ns)
+
 def configureExceptions(mb):
     exception = mb.namespace("CEGUI").class_("Exception")
     # todo: do we want the exception or just the message?
@@ -1327,7 +1327,7 @@ def generateCode():
     # Creating code creator. After this step you should not modify/customize declarations.
     mb.build_code_creator(module_name = MODULE_NAME, doc_extractor = commonUtils.createDocumentationExtractor())
     
-    commonUtils.writeModule(mb, MODULE_NAME)
+    commonUtils.writeModule(mb, OUTPUT_DIR)
 
 if __name__ == "__main__":
     generateCode()
