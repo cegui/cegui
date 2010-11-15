@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIMenuBase.cpp
-	created:	5/4/2005
-	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
-	purpose:	Implementation of MenuBase widget base class
+    filename:   CEGUIMenuBase.cpp
+    created:    5/4/2005
+    author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
+
+    purpose:    Implementation of MenuBase widget base class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -38,12 +38,13 @@ namespace CEGUI
 /*************************************************************************
 Definition of Properties for this class
 *************************************************************************/
-MenuBaseProperties::ItemSpacing			MenuBase::d_itemSpacingProperty;
-MenuBaseProperties::AllowMultiplePopups	MenuBase::d_allowMultiplePopupsProperty;
+MenuBaseProperties::ItemSpacing         MenuBase::d_itemSpacingProperty;
+MenuBaseProperties::AllowMultiplePopups MenuBase::d_allowMultiplePopupsProperty;
+MenuBaseProperties::AutoCloseNestedPopups    MenuBase::d_autoCloseNestedPopupsProperty;
 
 
 /*************************************************************************
-	Constants
+    Constants
 *************************************************************************/
 // event strings
 const String MenuBase::EventNamespace("MenuBase");
@@ -51,71 +52,70 @@ const String MenuBase::EventPopupOpened("PopupOpened");
 const String MenuBase::EventPopupClosed("PopupClosed");
 
 /*************************************************************************
-	Constructor for MenuBase base class.
+    Constructor for MenuBase base class.
 *************************************************************************/
 MenuBase::MenuBase(const String& type, const String& name)
-	: ItemListBase(type, name),
-	d_itemSpacing(0.0f),
-	d_popupItem(0),
-	d_allowMultiplePopups(false)
+    : ItemListBase(type, name),
+      d_itemSpacing(0.0f),
+      d_popupItem(0),
+      d_allowMultiplePopups(false),
+      d_autoCloseNestedPopups(false)
 {
-	// add properties for MenuBase class
-	addMenuBaseProperties();
+    // add properties for MenuBase class
+    addMenuBaseProperties();
 }
 
-
 /*************************************************************************
-	Destructor for MenuBase base class.
+    Destructor for MenuBase base class.
 *************************************************************************/
 MenuBase::~MenuBase(void)
 {
 }
 
-
 /*************************************************************************
-	Change the currently open MenuItem PopupMenu
+    Change the currently open MenuItem PopupMenu
 *************************************************************************/
 void MenuBase::changePopupMenuItem(MenuItem* item)
 {
-	if (!d_allowMultiplePopups&&d_popupItem==item)
-		return;
+    if (!d_allowMultiplePopups && d_popupItem == item)
+        return;
 
-	if (!d_allowMultiplePopups&&d_popupItem!=0)
-	{
-		WindowEventArgs we(d_popupItem->getPopupMenu());
-		d_popupItem->closePopupMenu(false);
-		d_popupItem = 0;
-		onPopupClosed(we);
-	}
+    if (!d_allowMultiplePopups && d_popupItem != 0)
+    {
+        WindowEventArgs we(d_popupItem->getPopupMenu());
+        d_popupItem->closePopupMenu(false);
+        d_popupItem = 0;
+        onPopupClosed(we);
+    }
 
-	if (item)
-	{
-		d_popupItem = item;
-		d_popupItem->openPopupMenu(false);
-		WindowEventArgs we(d_popupItem->getPopupMenu());
-		onPopupOpened(we);
-	}
+    if (item)
+    {
+        d_popupItem = item;
+        d_popupItem->openPopupMenu(false);
+        WindowEventArgs we(d_popupItem->getPopupMenu());
+        onPopupOpened(we);
+    }
 
 }
 
 
 /*************************************************************************
-	handler invoked internally when the a MenuItem attached to this
-	MenuBase opens its popup.
+    handler invoked internally when the a MenuItem attached to this
+    MenuBase opens its popup.
 *************************************************************************/
 void MenuBase::onPopupOpened(WindowEventArgs& e)
 {
-	fireEvent(EventPopupOpened, e, EventNamespace);
+    fireEvent(EventPopupOpened, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	handler invoked internally when the a MenuItem attached to this
-	MenuBase closes its popup.
+    handler invoked internally when the a MenuItem attached to this
+    MenuBase closes its popup.
 *************************************************************************/
 void MenuBase::onPopupClosed(WindowEventArgs& e)
 {
-	fireEvent(EventPopupClosed, e, EventNamespace);
+    fireEvent(EventPopupClosed, e, EventNamespace);
 }
 
 
@@ -124,8 +124,9 @@ void MenuBase::onPopupClosed(WindowEventArgs& e)
 *************************************************************************/
 void MenuBase::addMenuBaseProperties(void)
 {
-	addProperty(&d_itemSpacingProperty);
+    addProperty(&d_itemSpacingProperty);
     addProperty(&d_allowMultiplePopupsProperty);
+    addProperty(&d_autoCloseNestedPopupsProperty);
 }
 
 
@@ -142,17 +143,52 @@ void MenuBase::setAllowMultiplePopups(bool setting)
     }
 }
 
+void MenuBase::setPopupMenuItemClosing()
+{
+    if (d_popupItem)
+    {
+        d_popupItem->startPopupClosing();
+    }
+}
+
 //----------------------------------------------------------------------------//
 void MenuBase::onChildRemoved(WindowEventArgs& e)
 {
     // if the removed window was our tracked popup item, zero ptr to it.
     if (e.window == d_popupItem)
         d_popupItem = 0;
-        
+
     // base class version
     ItemListBase::onChildRemoved(e);
 }
 
+void MenuBase::onHidden(WindowEventArgs& e)
+{
+    if (!getAutoCloseNestedPopups())
+        return;
+
+    changePopupMenuItem(0);
+
+    if (d_allowMultiplePopups)
+    {
+        for (size_t i = 0; i < d_listItems.size(); ++i)
+        {
+            if (!d_listItems[i])
+                continue;
+
+            if (!d_listItems[i]->testClassName("MenuItem"))
+                continue;
+
+            MenuItem* menuItem = static_cast<MenuItem*>(d_listItems[i]);
+            if (!menuItem->getPopupMenu())
+                continue;
+
+            WindowEventArgs we(menuItem->getPopupMenu());
+            menuItem->closePopupMenu(false);
+            onPopupClosed(we);
+        }
+    }
+}
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
