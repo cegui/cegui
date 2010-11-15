@@ -556,6 +556,8 @@
 		DA29EA7A11AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA29EA7811AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp */; };
 		DA29EA7B11AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA29EA7911AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp */; };
 		DA29EAA411AA8CA3000FAC6A /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DA29F43212917C5400676D86 /* CEGUIMenuItemProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = DA29F43112917C5400676D86 /* CEGUIMenuItemProperties.h */; };
+		DA29F43412917C7200676D86 /* CEGUIMenuItemProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA29F43312917C7200676D86 /* CEGUIMenuItemProperties.cpp */; };
 		DA2F8A651101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */; };
 		DA3C62CD12140D1D002A2BF0 /* CEGUIAffector.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C412140D1D002A2BF0 /* CEGUIAffector.h */; };
 		DA3C62CE12140D1D002A2BF0 /* CEGUIAnimation_xmlHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C512140D1D002A2BF0 /* CEGUIAnimation_xmlHandler.h */; };
@@ -2346,6 +2348,8 @@
 		DA29EA7711AA8ACB000FAC6A /* CEGUIRapidXMLParserModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRapidXMLParserModule.h; path = ../../cegui/include/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParserModule.h; sourceTree = SOURCE_ROOT; };
 		DA29EA7811AA8AEB000FAC6A /* CEGUIRapidXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRapidXMLParser.cpp; path = ../../cegui/src/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParser.cpp; sourceTree = SOURCE_ROOT; };
 		DA29EA7911AA8AEB000FAC6A /* CEGUIRapidXMLParserModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRapidXMLParserModule.cpp; path = ../../cegui/src/XMLParserModules/RapidXMLParser/CEGUIRapidXMLParserModule.cpp; sourceTree = SOURCE_ROOT; };
+		DA29F43112917C5400676D86 /* CEGUIMenuItemProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIMenuItemProperties.h; sourceTree = "<group>"; };
+		DA29F43312917C7200676D86 /* CEGUIMenuItemProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIMenuItemProperties.cpp; path = ../../cegui/src/elements/CEGUIMenuItemProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DA2F8A641101DB8B00D1C676 /* CEGUIGeometryBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGeometryBuffer.cpp; path = ../../cegui/src/CEGUIGeometryBuffer.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62C412140D1D002A2BF0 /* CEGUIAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIAffector.h; path = ../../cegui/include/CEGUIAffector.h; sourceTree = SOURCE_ROOT; };
 		DA3C62C512140D1D002A2BF0 /* CEGUIAnimation_xmlHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIAnimation_xmlHandler.h; path = ../../cegui/include/CEGUIAnimation_xmlHandler.h; sourceTree = SOURCE_ROOT; };
@@ -3786,6 +3790,7 @@
 				DA1094CC0F6D5EFD00B8A582 /* CEGUIMenuBase.cpp */,
 				DA1094CD0F6D5EFD00B8A582 /* CEGUIMenuBaseProperties.cpp */,
 				DA1094CE0F6D5EFD00B8A582 /* CEGUIMenuItem.cpp */,
+				DA29F43312917C7200676D86 /* CEGUIMenuItemProperties.cpp */,
 				DA1094CF0F6D5EFD00B8A582 /* CEGUIMultiColumnList.cpp */,
 				DA1094D00F6D5EFD00B8A582 /* CEGUIMultiColumnListProperties.cpp */,
 				DA1094D10F6D5EFD00B8A582 /* CEGUIMultiLineEditbox.cpp */,
@@ -3868,6 +3873,7 @@
 				DA1095B90F6D5F9B00B8A582 /* CEGUIMenuBase.h */,
 				DA1095BA0F6D5F9B00B8A582 /* CEGUIMenuBaseProperties.h */,
 				DA1095BB0F6D5F9B00B8A582 /* CEGUIMenuItem.h */,
+				DA29F43112917C5400676D86 /* CEGUIMenuItemProperties.h */,
 				DA1095BC0F6D5F9B00B8A582 /* CEGUIMultiColumnList.h */,
 				DA1095BD0F6D5F9B00B8A582 /* CEGUIMultiColumnListProperties.h */,
 				DA1095BE0F6D5F9B00B8A582 /* CEGUIMultiLineEditbox.h */,
@@ -4901,6 +4907,7 @@
 				DA3C62D312140D1D002A2BF0 /* CEGUIChainedXMLHandler.h in Headers */,
 				DA3C62D412140D1D002A2BF0 /* CEGUIInterpolator.h in Headers */,
 				DA3C62D512140D1D002A2BF0 /* CEGUIKeyFrame.h in Headers */,
+				DA29F43212917C5400676D86 /* CEGUIMenuItemProperties.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6223,6 +6230,7 @@
 				DA3C62E512140D63002A2BF0 /* CEGUIBasicInterpolators.cpp in Sources */,
 				DA3C62E612140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp in Sources */,
 				DA3C62E712140D63002A2BF0 /* CEGUIKeyFrame.cpp in Sources */,
+				DA29F43412917C7200676D86 /* CEGUIMenuItemProperties.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
