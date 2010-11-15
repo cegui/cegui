@@ -10,4 +10,7 @@ class MenuBase : public ItemListBase
 	void setItemSpacing(float spacing);
 	void changePopupMenuItem(MenuItem* item);
 	void setAllowMultiplePopups(bool setting);
+
+    bool getAutoCloseNestedPopups(void) const;
+    MenuItem* getPopupMenuItem(void) const;
 };
