@@ -241,7 +241,49 @@ PyCEGUIOpenGLRenderer_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_b
                                   -l$(PYTHON_LIB) -l$(BOOST_PYTHON_LIB)
 endif
 
-noinst_HEADERS = python_CEGUI.h python_CEGUIOpenGLRenderer.h \
+if BUILD_OGRE_RENDERER
+pyexec_LTLIBRARIES += PyCEGUIOgreRenderer.la
+
+# NB: No '@CEGUI_LIB_LINK_FLAGS@' here
+PyCEGUIOgreRenderer_la_LDFLAGS = -module -avoid-version
+PyCEGUIOgreRenderer_la_CXXFLAGS = -fvisibility=hidden
+PyCEGUIOgreRenderer_la_CPPFLAGS = 
+
+if CEGUI_BUILD_STATIC
+PyCEGUIOgreRenderer_la_CPPFLAGS += -DCEGUI_STATIC
+endif
+
+PyCEGUIOgreRenderer_la_SOURCES = \
+output/CEGUIOgreRenderer/PyCEGUIOgreRenderer.main.cpp \
+output/CEGUIOgreRenderer/OgreRenderer.pypp.cpp
+
+PyCEGUIOgreRenderer_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
+                                $(top_builddir)/cegui/src/RendererModules/Ogre/libCEGUIOgreRenderer@cegui_bsfx@.la \
+                                -l$(PYTHON_LIB) -l$(BOOST_PYTHON_LIB)
+endif
+
+if BUILD_NULL_RENDERER
+pyexec_LTLIBRARIES += PyCEGUINullRenderer.la
+
+# NB: No '@CEGUI_LIB_LINK_FLAGS@' here
+PyCEGUINullRenderer_la_LDFLAGS = -module -avoid-version
+PyCEGUINullRenderer_la_CXXFLAGS = -fvisibility=hidden
+PyCEGUINullRenderer_la_CPPFLAGS = 
+
+if CEGUI_BUILD_STATIC
+PyCEGUINullRenderer_la_CPPFLAGS += -DCEGUI_STATIC
+endif
+
+PyCEGUINullRenderer_la_SOURCES = \
+output/CEGUINullRenderer/PyCEGUINullRenderer.main.cpp \
+output/CEGUINullRenderer/NullRenderer.pypp.cpp
+
+PyCEGUINullRenderer_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
+                                $(top_builddir)/cegui/src/RendererModules/Null/libCEGUINullRenderer@cegui_bsfx@.la \
+                                -l$(PYTHON_LIB) -l$(BOOST_PYTHON_LIB)
+endif
+
+noinst_HEADERS = python_CEGUI.h python_CEGUIOpenGLRenderer.h python_CEGUINullRenderer.h python_CEGUIOgreRenderer.h \
 output/CEGUI/AbsoluteDim.pypp.hpp \
 output/CEGUI/ActivationEventArgs.pypp.hpp \
 output/CEGUI/Affector.pypp.hpp \
@@ -474,6 +516,8 @@ output/CEGUI/indexing_suite/value_traits.hpp \
 output/CEGUI/indexing_suite/vector.hpp \
 output/CEGUI/indexing_suite/visitor.hpp \
 output/CEGUI/indexing_suite/workaround.hpp \
+output/CEGUINullRenderer/NullRenderer.pypp.hpp \
+output/CEGUIOgreRenderer/OgreRenderer.pypp.hpp \
 output/CEGUIOpenGLRenderer/OpenGLRenderer.pypp.hpp
 
 EXTRA_DIST = commonUtils.py \
@@ -483,6 +527,10 @@ EXTRA_DIST = commonUtils.py \
              generate.py \
 			 output/CEGUI/exposed_decl.pypp.txt \
 			 output/CEGUI/named_tuple.py \
+			 output/CEGUINullRenderer/exposed_decl.pypp.txt \
+			 output/CEGUINullRenderer/named_tuple.py \
+			 output/CEGUIOgreRenderer/exposed_decl.pypp.txt \
+			 output/CEGUIOgreRenderer/named_tuple.py \
 			 output/CEGUIOpenGLRenderer/exposed_decl.pypp.txt \
 			 output/CEGUIOpenGLRenderer/named_tuple.py
 

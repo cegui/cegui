@@ -42,6 +42,22 @@ def filterDeclarations(mb):
     renderer.include()
     renderer.noncopyable = True
 
+    # RendererModules/Ogre/CEGUIOgreResourceProvider.h
+    resourceprovider = CEGUI_ns.class_("OgreResourceProvider")
+    resourceprovider.include()
+    resourceprovider.noncopyable = True
+
+    # RendererModules/Ogre/CEGUIOgreImageCodec.h
+    imagecodec = CEGUI_ns.class_("OgreImageCodec")
+    imagecodec.include()
+    imagecodec.noncopyable = True
+
+    commonUtils.excludeAllProtected(CEGUI_ns)
+    commonUtils.excludeAllPrivate(CEGUI_ns)
+
+    mb.global_ns.class_( "::Ogre::RenderTarget" ).already_exposed = True
+    mb.global_ns.class_( "::Ogre::TexturePtr" ).already_exposed = True
+
 def generateCode():
     # "CEGUIBASE_EXPORTS" seems to help with internal compiler error with VS2008SP1 and gccxml 0.9
     mb = commonUtils.createModuleBuilder("python_CEGUIOgreRenderer.h", ["OGRE_GUIRENDERER_EXPORTS", "CEGUIBASE_EXPORTS"])
