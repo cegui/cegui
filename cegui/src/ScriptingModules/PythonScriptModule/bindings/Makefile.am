@@ -254,8 +254,10 @@ PyCEGUIOgreRenderer_la_CPPFLAGS += -DCEGUI_STATIC
 endif
 
 PyCEGUIOgreRenderer_la_SOURCES = \
-output/CEGUIOgreRenderer/PyCEGUIOgreRenderer.main.cpp \
-output/CEGUIOgreRenderer/OgreRenderer.pypp.cpp
+output/CEGUIOgreRenderer/OgreImageCodec.pypp.cpp \
+output/CEGUIOgreRenderer/OgreRenderer.pypp.cpp \
+output/CEGUIOgreRenderer/OgreResourceProvider.pypp.cpp \
+output/CEGUIOgreRenderer/PyCEGUIOgreRenderer.main.cpp
 
 PyCEGUIOgreRenderer_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase@cegui_bsfx@.la \
                                 $(top_builddir)/cegui/src/RendererModules/Ogre/libCEGUIOgreRenderer@cegui_bsfx@.la \
@@ -517,7 +519,9 @@ output/CEGUI/indexing_suite/vector.hpp \
 output/CEGUI/indexing_suite/visitor.hpp \
 output/CEGUI/indexing_suite/workaround.hpp \
 output/CEGUINullRenderer/NullRenderer.pypp.hpp \
+output/CEGUIOgreRenderer/OgreImageCodec.pypp.hpp \
 output/CEGUIOgreRenderer/OgreRenderer.pypp.hpp \
+output/CEGUIOgreRenderer/OgreResourceProvider.pypp.hpp \
 output/CEGUIOpenGLRenderer/OpenGLRenderer.pypp.hpp
 
 EXTRA_DIST = commonUtils.py \
