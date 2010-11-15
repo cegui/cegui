@@ -162,11 +162,15 @@ if LUA_SCRIPT_MODULE then
     }
 end
 
+-- TODO: The renderers need to be optional based on whether the renderer is
+-- being build or not!
 if PYTHON_EXTENSION_MODULE then
     pkg_table.ScriptingModules.PythonScriptModule = 
     {
         "PyCEGUI",
-        "PyCEGUIOpenGLRenderer"
+        "PyCEGUIOpenGLRenderer",
+        "PyCEGUINullRenderer",
+        "PyCEGUIOgreRenderer"
     }
 end
 
