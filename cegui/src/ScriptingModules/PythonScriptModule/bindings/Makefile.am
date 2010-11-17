@@ -536,5 +536,10 @@ EXTRA_DIST = commonUtils.py \
 			 output/CEGUIOgreRenderer/exposed_decl.pypp.txt \
 			 output/CEGUIOgreRenderer/named_tuple.py \
 			 output/CEGUIOpenGLRenderer/exposed_decl.pypp.txt \
-			 output/CEGUIOpenGLRenderer/named_tuple.py
+			 output/CEGUIOpenGLRenderer/named_tuple.py \
+             distutils/README \
+             distutils/setup.py \
+             distutils/WINDOWS_ONLY \
+             distutils/PyCEGUI/fake.py \
+             distutils/PyCEGUI/__init__.py
 
