@@ -185,7 +185,7 @@ TOLUA_STATIC = false
 -------
 -- Python
 -- this controls whether building the Python extension modules is enabled
-PYTHON_EXTENSION_MODULE = true
+PYTHON_EXTENSION_MODULE = false
 
 
 -----------
