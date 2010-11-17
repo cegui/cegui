@@ -1093,13 +1093,6 @@
 			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
-		DA3203AB1292B93800B2B97D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DA6F901212929F2600B718C8;
-			remoteInfo = PyCEGUI;
-		};
 		DAAAB8050F6E4AC40003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
@@ -1601,42 +1594,42 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 		DAE3B7E61292BBE200CD5ACC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DAE8AB6811206F9E0091DDF3 /* CEGUINullRenderer */;
+			remoteGlobalIDString = DAE8AB6811206F9E0091DDF3;
 			remoteInfo = CEGUINullRenderer;
 		};
 		DAE3B8051292BD9D00CD5ACC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 		DAE3B8071292BD9D00CD5ACC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA10998A0F6D8D4100B8A582 /* CEGUIOpenGLRenderer */;
+			remoteGlobalIDString = DA10998A0F6D8D4100B8A582;
 			remoteInfo = CEGUIOpenGLRenderer;
 		};
 		DAE3B8211292C11B00CD5ACC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
+			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
 		};
 		DAE3B8231292C11B00CD5ACC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DAC4DDF00F70FFBD000EF0AC /* CEGUIOgreRenderer */;
+			remoteGlobalIDString = DAC4DDF00F70FFBD000EF0AC;
 			remoteInfo = CEGUIOgreRenderer;
 		};
 		DAE8AB7F112070170091DDF3 /* PBXContainerItemProxy */ = {
@@ -3118,7 +3111,7 @@
 		DA6F8F141292997800B718C8 /* XMLParser.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XMLParser.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLParser.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8F151292997800B718C8 /* XMLSerializer.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XMLSerializer.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLSerializer.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8FF712929ABC00B718C8 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
-		DA6F901312929F2600B718C8 /* PyCEGUI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA6F901312929F2600B718C8 /* PyCEGUI.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUI.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainer.h; sourceTree = "<group>"; };
 		DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainerProperties.h; sourceTree = "<group>"; };
 		DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIHorizontalLayoutContainer.h; sourceTree = "<group>"; };
@@ -3167,9 +3160,9 @@
 		DAAABA0C0F6E53320003BE03 /* CEGUILuaScriptModule-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUILuaScriptModule-Info.plist"; sourceTree = "<group>"; };
 		DAAABAC60F6E56BF0003BE03 /* Demo8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAABAC80F6E56BF0003BE03 /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Demo8-Info.plist"; sourceTree = "<group>"; };
-		DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUIOpenGLRenderer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUINullRenderer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUIOgreRenderer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUIOpenGLRenderer.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUINullRenderer.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUIOgreRenderer.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAF38810F6FACF800EEADDB /* CEGUIIrrlichtRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIIrrlichtRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAF38820F6FACF800EEADDB /* CEGUIIrrlichtRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUIIrrlichtRenderer-Info.plist"; sourceTree = "<group>"; };
 		DAAF3BB40F6FEE8F00EEADDB /* RendererSelector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RendererSelector.xib; sourceTree = "<group>"; };
@@ -5327,10 +5320,10 @@
 				DAAABAC60F6E56BF0003BE03 /* Demo8.app */,
 				DA29EA6911AA8899000FAC6A /* CEGUIRapidXMLParser.bundle */,
 				DAFA3D651253692300148B7B /* CEGUISTBImageCodec.bundle */,
-				DA6F901312929F2600B718C8 /* PyCEGUI.dylib */,
-				DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.dylib */,
-				DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.dylib */,
-				DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.dylib */,
+				DA6F901312929F2600B718C8 /* PyCEGUI.so */,
+				DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.so */,
+				DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.so */,
+				DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.so */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6572,7 +6565,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				DA3203AC1292B93800B2B97D /* PBXTargetDependency */,
 				DA109F7E0F6DB21400B8A582 /* PBXTargetDependency */,
 			);
 			name = CEGUITGAImageCodec;
@@ -6653,7 +6645,7 @@
 			);
 			name = PyCEGUI;
 			productName = PyCEGUI;
-			productReference = DA6F901312929F2600B718C8 /* PyCEGUI.dylib */;
+			productReference = DA6F901312929F2600B718C8 /* PyCEGUI.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		DAAAB7FC0F6E4A970003BE03 /* Demo7 */ = {
@@ -6931,7 +6923,7 @@
 			);
 			name = PyCEGUIOpenGLRenderer;
 			productName = PyCEGUIOpenGLRenderer;
-			productReference = DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.dylib */;
+			productReference = DAAC16EF1292B9CB00A01D0B /* PyCEGUIOpenGLRenderer.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		DAAC17011292B9DF00A01D0B /* PyCEGUINullRenderer */ = {
@@ -6950,7 +6942,7 @@
 			);
 			name = PyCEGUINullRenderer;
 			productName = PyCEGUINullRenderer;
-			productReference = DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.dylib */;
+			productReference = DAAC17021292B9DF00A01D0B /* PyCEGUINullRenderer.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		DAAC170E1292B9F200A01D0B /* PyCEGUIOgreRenderer */ = {
@@ -6969,7 +6961,7 @@
 			);
 			name = PyCEGUIOgreRenderer;
 			productName = PyCEGUIOgreRenderer;
-			productReference = DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.dylib */;
+			productReference = DAAC170F1292B9F200A01D0B /* PyCEGUIOgreRenderer.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		DAAF38800F6FACF800EEADDB /* CEGUIIrrlichtRenderer */ = {
@@ -8324,11 +8316,6 @@
 			isa = PBXTargetDependency;
 			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
 			targetProxy = DA32027C1292B33D00B2B97D /* PBXContainerItemProxy */;
-		};
-		DA3203AC1292B93800B2B97D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DA6F901212929F2600B718C8 /* PyCEGUI */;
-			targetProxy = DA3203AB1292B93800B2B97D /* PBXContainerItemProxy */;
 		};
 		DAAAB8060F6E4AC40003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -9696,6 +9683,7 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -9734,6 +9722,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -10521,6 +10510,7 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -10559,6 +10549,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -10595,6 +10586,7 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -10633,6 +10625,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -10670,6 +10663,7 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -10709,6 +10703,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = so;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
