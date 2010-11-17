@@ -62,7 +62,56 @@ private:
 } S_frameListener;
 
 //----------------------------------------------------------------------------//
-String OgreRenderer::d_rendererID(
+//! container type used to hold TextureTargets we create.
+typedef std::vector<TextureTarget*> TextureTargetList;
+//! container type used to hold GeometryBuffers we create.
+typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
+//! container type used to hold Textures we create.
+typedef std::vector<OgreTexture*> TextureList;
+
+//----------------------------------------------------------------------------//
+// Implementation data for the OgreRenderer
+struct OgreRenderer_impl
+{
+    OgreRenderer_impl() :
+        d_displayDPI(96, 96),
+        // TODO: should be set to correct value
+        d_maxTextureSize(2048),
+        d_ogreRoot(Ogre::Root::getSingletonPtr()),
+        d_activeBlendMode(BM_INVALID),
+        d_makeFrameControlCalls(true)
+        {}
+
+    //! String holding the renderer identification text.
+    static String d_rendererID;
+    //! What the renderer considers to be the current display size.
+    Size d_displaySize;
+    //! What the renderer considers to be the current display DPI resolution.
+    Vector2 d_displayDPI;
+    //! The default rendering root object
+    RenderingRoot* d_defaultRoot;
+    //! The default RenderTarget (used by d_defaultRoot)
+    OgreWindowTarget* d_defaultTarget;
+    //! Container used to track texture targets.
+    TextureTargetList d_textureTargets;
+    //! Container used to track geometry buffers.
+    GeometryBufferList d_geometryBuffers;
+    //! Container used to track textures.
+    TextureList d_textures;
+    //! What the renderer thinks the max texture size is.
+    uint d_maxTextureSize;
+    //! OGRE root object ptr
+    Ogre::Root* d_ogreRoot;
+    //! Pointer to the render system for Ogre.
+    Ogre::RenderSystem* d_renderSystem;
+    //! What we think is the current blend mode to use
+    BlendMode d_activeBlendMode;
+    //! Whether _beginFrame and _endFrame will be called.
+    bool d_makeFrameControlCalls;
+};
+
+//----------------------------------------------------------------------------//
+String OgreRenderer_impl::d_rendererID(
 "CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
@@ -172,29 +221,29 @@ bool OgreRenderer::isRenderingEnabled() const
 //----------------------------------------------------------------------------//
 RenderingRoot& OgreRenderer::getDefaultRenderingRoot()
 {
-    return *d_defaultRoot;
+    return *d_pimpl->d_defaultRoot;
 }
 
 //----------------------------------------------------------------------------//
 GeometryBuffer& OgreRenderer::createGeometryBuffer()
 {
     OgreGeometryBuffer* gb =
-        new OgreGeometryBuffer(*this, *d_renderSystem);
+        new OgreGeometryBuffer(*this, *d_pimpl->d_renderSystem);
 
-    d_geometryBuffers.push_back(gb);
+    d_pimpl->d_geometryBuffers.push_back(gb);
     return *gb;
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 {
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
+    GeometryBufferList::iterator i = std::find(d_pimpl->d_geometryBuffers.begin(),
+                                               d_pimpl->d_geometryBuffers.end(),
                                                &buffer);
 
-    if (d_geometryBuffers.end() != i)
+    if (d_pimpl->d_geometryBuffers.end() != i)
     {
-        d_geometryBuffers.erase(i);
+        d_pimpl->d_geometryBuffers.erase(i);
         delete &buffer;
     }
 }
@@ -202,28 +251,28 @@ void OgreRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyAllGeometryBuffers()
 {
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
+    while (!d_pimpl->d_geometryBuffers.empty())
+        destroyGeometryBuffer(**d_pimpl->d_geometryBuffers.begin());
 }
 
 //----------------------------------------------------------------------------//
 TextureTarget* OgreRenderer::createTextureTarget()
 {
-    TextureTarget* tt = new OgreTextureTarget(*this, *d_renderSystem);
-    d_textureTargets.push_back(tt);
+    TextureTarget* tt = new OgreTextureTarget(*this, *d_pimpl->d_renderSystem);
+    d_pimpl->d_textureTargets.push_back(tt);
     return tt;
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyTextureTarget(TextureTarget* target)
 {
-    TextureTargetList::iterator i = std::find(d_textureTargets.begin(),
-                                              d_textureTargets.end(),
+    TextureTargetList::iterator i = std::find(d_pimpl->d_textureTargets.begin(),
+                                              d_pimpl->d_textureTargets.end(),
                                               target);
 
-    if (d_textureTargets.end() != i)
+    if (d_pimpl->d_textureTargets.end() != i)
     {
-        d_textureTargets.erase(i);
+        d_pimpl->d_textureTargets.erase(i);
         delete target;
     }
 }
@@ -231,15 +280,15 @@ void OgreRenderer::destroyTextureTarget(TextureTarget* target)
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyAllTextureTargets()
 {
-    while (!d_textureTargets.empty())
-        destroyTextureTarget(*d_textureTargets.begin());
+    while (!d_pimpl->d_textureTargets.empty())
+        destroyTextureTarget(*d_pimpl->d_textureTargets.begin());
 }
 
 //----------------------------------------------------------------------------//
 Texture& OgreRenderer::createTexture()
 {
     OgreTexture* t = new OgreTexture;
-    d_textures.push_back(t);
+    d_pimpl->d_textures.push_back(t);
     return *t;
 }
 
@@ -248,7 +297,7 @@ Texture& OgreRenderer::createTexture(const String& filename,
                                      const String& resourceGroup)
 {
     OgreTexture* t = new OgreTexture(filename, resourceGroup);
-    d_textures.push_back(t);
+    d_pimpl->d_textures.push_back(t);
     return *t;
 }
 
@@ -256,7 +305,7 @@ Texture& OgreRenderer::createTexture(const String& filename,
 Texture& OgreRenderer::createTexture(const Size& size)
 {
     OgreTexture* t = new OgreTexture(size);
-    d_textures.push_back(t);
+    d_pimpl->d_textures.push_back(t);
     return *t;
 }
 
@@ -264,20 +313,20 @@ Texture& OgreRenderer::createTexture(const Size& size)
 Texture& OgreRenderer::createTexture(Ogre::TexturePtr& tex, bool take_ownership)
 {
     OgreTexture* t = new OgreTexture(tex, take_ownership);
-    d_textures.push_back(t);
+    d_pimpl->d_textures.push_back(t);
     return *t;
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
+    TextureList::iterator i = std::find(d_pimpl->d_textures.begin(),
+                                        d_pimpl->d_textures.end(),
                                         &texture);
 
-    if (d_textures.end() != i)
+    if (d_pimpl->d_textures.end() != i)
     {
-        d_textures.erase(i);
+        d_pimpl->d_textures.erase(i);
         delete &static_cast<OgreTexture&>(texture);
     }
 }
@@ -285,66 +334,61 @@ void OgreRenderer::destroyTexture(Texture& texture)
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyAllTextures()
 {
-    while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+    while (!d_pimpl->d_textures.empty())
+        destroyTexture(**d_pimpl->d_textures.begin());
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-    d_defaultRoot->getRenderTarget().activate();
+    d_pimpl->d_defaultRoot->getRenderTarget().activate();
     initialiseRenderStateSettings();
 
-    if (d_makeFrameControlCalls)
-        d_renderSystem->_beginFrame();
+    if (d_pimpl->d_makeFrameControlCalls)
+        d_pimpl->d_renderSystem->_beginFrame();
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::endRendering()
 {
-    if (d_makeFrameControlCalls)
-        d_renderSystem->_endFrame();
+    if (d_pimpl->d_makeFrameControlCalls)
+        d_pimpl->d_renderSystem->_endFrame();
 
-    d_defaultRoot->getRenderTarget().deactivate();
+    d_pimpl->d_defaultRoot->getRenderTarget().deactivate();
 }
 
 //----------------------------------------------------------------------------//
 const Size& OgreRenderer::getDisplaySize() const
 {
-    return d_displaySize;
+    return d_pimpl->d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
 const Vector2& OgreRenderer::getDisplayDPI() const
 {
-    return d_displayDPI;
+    return d_pimpl->d_displayDPI;
 }
 
 //----------------------------------------------------------------------------//
 uint OgreRenderer::getMaxTextureSize() const
 {
-    return d_maxTextureSize;
+    return d_pimpl->d_maxTextureSize;
 }
 
 //----------------------------------------------------------------------------//
 const String& OgreRenderer::getIdentifierString() const
 {
-    return d_rendererID;
+    return d_pimpl->d_rendererID;
 }
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer() :
-    d_displayDPI(96, 96),
-    // TODO: should be set to correct value
-    d_maxTextureSize(2048),
-    d_ogreRoot(Ogre::Root::getSingletonPtr()),
-    d_activeBlendMode(BM_INVALID),
-    d_makeFrameControlCalls(true)
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
     // get auto created window
-    Ogre::RenderWindow* rwnd = d_ogreRoot->getAutoCreatedWindow();
+    Ogre::RenderWindow* rwnd = d_pimpl->d_ogreRoot->getAutoCreatedWindow();
     if (!rwnd)
         CEGUI_THROW(RendererException(
             "Ogre was not initialised to automatically create a window, you "
@@ -356,12 +400,7 @@ OgreRenderer::OgreRenderer() :
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
-    d_displayDPI(96, 96),
-    // TODO: should be set to correct value
-    d_maxTextureSize(2048),
-    d_ogreRoot(Ogre::Root::getSingletonPtr()),
-    d_activeBlendMode(BM_INVALID),
-    d_makeFrameControlCalls(true)
+    d_pimpl(new OgreRenderer_impl())
 {
     checkOgreInitialised();
 
@@ -371,24 +410,26 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
 //----------------------------------------------------------------------------//
 OgreRenderer::~OgreRenderer()
 {
-    d_ogreRoot->removeFrameListener(&S_frameListener);
+    d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
 
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_defaultRoot;
-    delete d_defaultTarget;
+    delete d_pimpl->d_defaultRoot;
+    delete d_pimpl->d_defaultTarget;
+
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::checkOgreInitialised()
 {
-    if (!d_ogreRoot)
+    if (!d_pimpl->d_ogreRoot)
         CEGUI_THROW(RendererException("The Ogre::Root object has not been "
             "created. You must initialise Ogre first!"));
 
-    if (!d_ogreRoot->isInitialised())
+    if (!d_pimpl->d_ogreRoot->isInitialised())
         CEGUI_THROW(RendererException("Ogre has not been initialised. You must "
             "initialise Ogre first!"));
 }
@@ -396,30 +437,32 @@ void OgreRenderer::checkOgreInitialised()
 //----------------------------------------------------------------------------//
 void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 {
-    d_renderSystem = d_ogreRoot->getRenderSystem();
+    d_pimpl->d_renderSystem = d_pimpl->d_ogreRoot->getRenderSystem();
 
-    d_displaySize.d_width  = target.getWidth();
-    d_displaySize.d_height = target.getHeight();
+    d_pimpl->d_displaySize.d_width  = target.getWidth();
+    d_pimpl->d_displaySize.d_height = target.getHeight();
 
     // create default target & rendering root (surface) that uses it
-    d_defaultTarget = new OgreWindowTarget(*this, *d_renderSystem, target);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
+    d_pimpl->d_defaultTarget =
+        new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
+    d_pimpl->d_defaultRoot =
+        new RenderingRoot(*d_pimpl->d_defaultTarget);
 
     // hook into the rendering process
-    d_ogreRoot->addFrameListener(&S_frameListener);
+    d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::setDisplaySize(const Size& sz)
 {
-    if (sz != d_displaySize)
+    if (sz != d_pimpl->d_displaySize)
     {
-        d_displaySize = sz;
+        d_pimpl->d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect area(d_defaultTarget->getArea());
+        Rect area(d_pimpl->d_defaultTarget->getArea());
         area.setSize(sz);
-        d_defaultTarget->setArea(area);
+        d_pimpl->d_defaultTarget->setArea(area);
     }
 
 }
@@ -431,36 +474,38 @@ void OgreRenderer::setupRenderingBlendMode(const BlendMode mode,
     using namespace Ogre;
 
     // do nothing if mode appears current (and is not forced)
-    if ((d_activeBlendMode == mode) && !force)
+    if ((d_pimpl->d_activeBlendMode == mode) && !force)
         return;
 
-    d_activeBlendMode = mode;
+    d_pimpl->d_activeBlendMode = mode;
 
-    if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
-        d_renderSystem->_setSceneBlending(SBF_ONE, SBF_ONE_MINUS_SOURCE_ALPHA);
+    if (d_pimpl->d_activeBlendMode == BM_RTT_PREMULTIPLIED)
+        d_pimpl->d_renderSystem->_setSceneBlending(SBF_ONE,
+                                                    SBF_ONE_MINUS_SOURCE_ALPHA);
     else
-        d_renderSystem->_setSeparateSceneBlending(SBF_SOURCE_ALPHA,
-                                                  SBF_ONE_MINUS_SOURCE_ALPHA,
-                                                  SBF_ONE_MINUS_DEST_ALPHA,
-                                                  SBF_ONE);
+        d_pimpl->d_renderSystem->
+            _setSeparateSceneBlending(SBF_SOURCE_ALPHA,
+                                      SBF_ONE_MINUS_SOURCE_ALPHA,
+                                      SBF_ONE_MINUS_DEST_ALPHA,
+                                      SBF_ONE);
 }
 
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::setFrameControlExecutionEnabled(const bool enabled)
 {
-    d_makeFrameControlCalls = enabled;
+    d_pimpl->d_makeFrameControlCalls = enabled;
 
     // default rendering requires _beginFrame and _endFrame calls be made,
     // so if we're disabling those we must also disable default rendering.
-    if (!d_makeFrameControlCalls)
+    if (!d_pimpl->d_makeFrameControlCalls)
         setRenderingEnabled(false);
 }
 
 //----------------------------------------------------------------------------//
 bool OgreRenderer::isFrameControlExecutionEnabled() const
 {
-    return d_makeFrameControlCalls;
+    return d_pimpl->d_makeFrameControlCalls;
 }
 
 //----------------------------------------------------------------------------//
@@ -469,16 +514,16 @@ void OgreRenderer::initialiseRenderStateSettings()
     using namespace Ogre;
 
     // initialise render settings
-    d_renderSystem->setLightingEnabled(false);
-    d_renderSystem->_setDepthBufferParams(false, false);
-    d_renderSystem->_setDepthBias(0, 0);
-    d_renderSystem->_setCullingMode(CULL_NONE);
-    d_renderSystem->_setFog(FOG_NONE);
-    d_renderSystem->_setColourBufferWriteEnabled(true, true, true, true);
-    d_renderSystem->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
-    d_renderSystem->unbindGpuProgram(GPT_VERTEX_PROGRAM);
-    d_renderSystem->setShadingType(SO_GOURAUD);
-    d_renderSystem->_setPolygonMode(PM_SOLID);
+    d_pimpl->d_renderSystem->setLightingEnabled(false);
+    d_pimpl->d_renderSystem->_setDepthBufferParams(false, false);
+    d_pimpl->d_renderSystem->_setDepthBias(0, 0);
+    d_pimpl->d_renderSystem->_setCullingMode(CULL_NONE);
+    d_pimpl->d_renderSystem->_setFog(FOG_NONE);
+    d_pimpl->d_renderSystem->_setColourBufferWriteEnabled(true, true, true, true);
+    d_pimpl->d_renderSystem->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
+    d_pimpl->d_renderSystem->unbindGpuProgram(GPT_VERTEX_PROGRAM);
+    d_pimpl->d_renderSystem->setShadingType(SO_GOURAUD);
+    d_pimpl->d_renderSystem->_setPolygonMode(PM_SOLID);
 
     // set alpha blending to known state
     setupRenderingBlendMode(BM_NORMAL, true);
@@ -487,7 +532,7 @@ void OgreRenderer::initialiseRenderStateSettings()
 //----------------------------------------------------------------------------//
 void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
 {
-    d_defaultTarget->setOgreRenderTarget(target);
+    d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
 }
 
 //----------------------------------------------------------------------------//
