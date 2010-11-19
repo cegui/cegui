@@ -3,6 +3,18 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.5</b>
+- Added: Initial version of the officially supported Python extension modules:
+    - PyCEGUI - Support for the core CEGUI library.
+    - PyCEGUIOpenGLRenderer - Support for the OpenGL based renderer.
+    - PyCEGUIOgreRenderer - Support for the Ogre based renderer.
+    - PyCEGUINullRenderer - Support for the Null renderer.
+
+- Modified: Grimmigbeisser's patch improving the menu system - automatically opening/closing popups after certain time, closing all nested popups when their parent is closed and PopupOffset (closes http://www.cegui.org.uk/mantis/view.php?id=408)
+
+- Documentation: Kulik is a team member now!
+
+
 <b>Release 0.7.4</b>
 This version was issued as an 'emergency release' to fix the following:
 - Bug Fix: CEGUI::Editbox masked text issue.  See: http://www.cegui.org.uk/mantis/view.php?id=399
