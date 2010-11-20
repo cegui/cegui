@@ -149,17 +149,35 @@ end
 --
 -- Scripting modules
 --
+pkg_table.ScriptingModules = {}
 
 if LUA_SCRIPT_MODULE then
-    pkg_table.ScriptingModules =
+    tinsert(pkg_table.ScriptingModules, "LuaScriptModule")
+    pkg_table.ScriptingModules["LuaScriptModule"]=
     {
-	"LuaScriptModule",
-        ["LuaScriptModule"] =
-        {
-            "support/tolua++",
-            "support/tolua++bin",
-        },
+        "support/tolua++",
+        "support/tolua++bin",
     }
+end
+
+if PYTHON_EXTENSION_MODULE then
+    pkg_table.ScriptingModules.PythonScriptModule = 
+    {
+        "PyCEGUI"
+    }
+
+    if OPENGL_RENDERER then
+        tinsert(pkg_table.ScriptingModules.PythonScriptModule, "PyCEGUIOpenGLRenderer")
+    end
+
+    if NULL_RENDERER then
+        tinsert(pkg_table.ScriptingModules.PythonScriptModule, "PyCEGUINullRenderer")
+    end
+
+    if OGRE_RENDERER then
+        tinsert(pkg_table.ScriptingModules.PythonScriptModule, "PyCEGUIOgreRenderer")
+    end
+
 end
 
 -- finalise

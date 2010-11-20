@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUIOgreImageCodec.h"
 #include "CEGUIExceptions.h"
+#include <Ogre.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

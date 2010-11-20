@@ -327,18 +327,61 @@ function sample(name, ext)
 end
 
 --
--- creaes a cegui sample that uses Static Libs
+-- functions to correctly bring in dependencies and libs for static configs
 --
-function setup_static_samples()
+function setup_static_renderer_libs(core_solution)
+    -- Renderers
+    if OPENGL_RENDERER then
+		if core_solution then
+			dependency("CEGUIOpenGLRenderer")
+		else
+	        library_static("CEGUIOpenGLRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+    end
+    if DIRECT3D9_RENDERER then
+		if core_solution then
+			dependency("CEGUIDirect3D9Renderer")
+		else
+	        library_static("CEGUIDirect3D9Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+    end
+    if DIRECT3D10_RENDERER then
+		if core_solution then
+			dependency("CEGUIDirect3D10Renderer")
+		else
+	        library_static("CEGUIDirect3D10Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+    end
+    if IRRLICHT_RENDERER then
+		if core_solution then
+			dependency("CEGUIIrrlichtRenderer")
+		else
+	        library_static("CEGUIIrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+        if IRRLICHT_PATHS then
+            add_sdk_paths(IRRLICHT_PATHS)
+        end
+    end
+    if OGRE_RENDERER then
+		if core_solution then
+			dependency("CEGUIOgreRenderer")
+		else
+	        library_static("CEGUIOgreRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+        if OGRE_PATHS then
+            add_sdk_paths(OGRE_PATHS)
+        end
+    end
+    if NULL_RENDERER then
+	    if core_solution then
+		    dependency("CEGUINullRenderer")
+	    else
+		    library_static("CEGUINullRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+	    end
+    end
+end
 
--- All Samples using static compiles will need to link against the dependencies
-    if CEGUI_USE_FREETYPE then
-        library_static("freetype","","_D")
-    end
-    if CEGUI_USE_PCRE_REGEX then
-	   library_static("pcre","", "_d")
-    end
-	
+function setup_static_renderer_dependency_libs()
     -- Warn user when both D3D9 and D3D10 are defined during static builds
     if DIRECT3D9_RENDERER and DIRECT3D10_RENDERER then
         print "D3D9 and D3D10 cannot both be defined for static builds, because it will result in a linker conflict."
@@ -359,14 +402,21 @@ function setup_static_samples()
         library_static("dxerr")
         library_static("d3dx10")
     end
+end
 
-	if not CEGUI_CORE_LIBRARY_SOLUTION then
-		library_static("CEGUIBase","_Static", DEBUG_DLL_SUFFIX or "")
-	end
+function setup_static_core_libs()
+    if CEGUI_USE_FREETYPE then
+        library_static("freetype","","_D")
+    end
+    if CEGUI_USE_PCRE_REGEX then
+	   library_static("pcre","", "_d")
+    end
+end
 
+function setup_static_xml_parser_libs(core_solution)
     -- Link against the default xml parser
     if DEFAULT_XML_PARSER == "expat" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUIExpatParser")
 		else
 	        library_static("CEGUIExpatParser", "_Static", DEBUG_DLL_SUFFIX or "")
@@ -374,7 +424,7 @@ function setup_static_samples()
         library_static("expat","","_d")
     end
     if DEFAULT_XML_PARSER == "xerces" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUIXercesParser")
 		else
 	        library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
@@ -386,37 +436,40 @@ function setup_static_samples()
 		end
     end
     if DEFAULT_XML_PARSER == "tinyxml" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUITinyXMLParser")
 		else
 	        library_static("CEGUITinyXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end
     if DEFAULT_XML_PARSER == "libxml" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUILibXMLParser")
 		else
 	        library_static("CEGUILibXMLParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end
 
+end
+
+function setup_static_image_codec_libs(core_solution)
     -- Link against the default image codec
     if DEFAULT_IMAGE_CODEC == "tga" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUITGAImageCodec")
 		else
 	        library_static("CEGUITGAImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end
     if DEFAULT_IMAGE_CODEC == "stb" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUISTBImageCodec")
 		else
 	        library_static("CEGUISTBImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end
     if DEFAULT_IMAGE_CODEC == "silly" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUISILLYImageCodec")
 		else
 	        library_static("CEGUISILLYImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
@@ -430,7 +483,7 @@ function setup_static_samples()
 		end
     end
     if DEFAULT_IMAGE_CODEC == "devil" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUIDevILImageCodec")
 		else
 	        library_static("CEGUIDevILImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
@@ -446,7 +499,7 @@ function setup_static_samples()
 		end
     end
     if DEFAULT_IMAGE_CODEC == "freeimage" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUIFreeImageImageCodec")
 		else
 	        library_static("CEGUIFreeImageImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
@@ -454,73 +507,37 @@ function setup_static_samples()
         library_static("FreeImage", "", "d")
     end
     if DEFAULT_IMAGE_CODEC == "corona" then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUICoronaImageCodec")
 		else
 			library_static("CEGUICoronaImageCodec", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
         library_static("corona", "", "_d")
     end
+end
 
-    -- Renderers
-    if OPENGL_RENDERER then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
-			dependency("CEGUIOpenGLRenderer")
-		else
-	        library_static("CEGUIOpenGLRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-    end
-    if DIRECT3D9_RENDERER then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
-			dependency("CEGUIDirect3D9Renderer")
-		else
-	        library_static("CEGUIDirect3D9Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-    end
-    if DIRECT3D10_RENDERER then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
-			dependency("CEGUIDirect3D10Renderer")
-		else
-	        library_static("CEGUIDirect3D10Renderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-    end
-    if IRRLICHT_RENDERER then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
-			dependency("CEGUIIrrlichtRenderer")
-		else
-	        library_static("CEGUIIrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-        if IRRLICHT_PATHS then
-            add_sdk_paths(IRRLICHT_PATHS)
-        end
-    end
-    if OGRE_RENDERER then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
-			dependency("CEGUIOgreRenderer")
-		else
-	        library_static("CEGUIOgreRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-		end
-        if OGRE_PATHS then
-            add_sdk_paths(OGRE_PATHS)
-        end
-    end
-    if NULL_RENDERER then
-	    if CEGUI_CORE_LIBRARY_SOLUTION then
-		    dependency("CEGUINullRenderer")
-	    else
-		    library_static("CEGUINullRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
-	    end
-    end
-
-		
-    --Window Renderers
+function setup_static_window_renderer_libs(core_solution)
     if FALAGARD_WR then
-		if CEGUI_CORE_LIBRARY_SOLUTION then
+		if core_solution then
 			dependency("CEGUIFalagardWRBase")
 		else
 	        library_static("CEGUIFalagardWRBase", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
     end	    
+end
+
+function setup_static_samples()
+	setup_static_core_libs()
+	setup_static_renderer_dependency_libs()	
+
+	if not CEGUI_CORE_LIBRARY_SOLUTION then
+		library_static("CEGUIBase","_Static", DEBUG_DLL_SUFFIX or "")
+	end
+
+	setup_static_xml_parser_libs(CEGUI_CORE_LIBRARY_SOLUTION)
+	setup_static_image_codec_libs(CEGUI_CORE_LIBRARY_SOLUTION)
+	setup_static_renderer_libs(CEGUI_CORE_LIBRARY_SOLUTION)
+	setup_static_window_renderer_libs(CEGUI_CORE_LIBRARY_SOLUTION)
 end
 
 --

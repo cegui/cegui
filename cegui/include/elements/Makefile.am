@@ -37,6 +37,7 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIMenuBase.h \
                      CEGUIMenuBaseProperties.h \
                      CEGUIMenuItem.h \
+                     CEGUIMenuItemProperties.h \
                      CEGUIMultiColumnList.h \
                      CEGUIMultiColumnListProperties.h \
                      CEGUIMultiLineEditbox.h \
