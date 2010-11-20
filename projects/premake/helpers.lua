@@ -536,7 +536,7 @@ function setup_static_samples()
 
 	setup_static_xml_parser_libs(CEGUI_CORE_LIBRARY_SOLUTION)
 	setup_static_image_codec_libs(CEGUI_CORE_LIBRARY_SOLUTION)
-	setup_renderer_libs(CEGUI_CORE_LIBRARY_SOLUTION)
+	setup_static_renderer_libs(CEGUI_CORE_LIBRARY_SOLUTION)
 	setup_static_window_renderer_libs(CEGUI_CORE_LIBRARY_SOLUTION)
 end
 
