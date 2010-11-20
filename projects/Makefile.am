@@ -42,6 +42,10 @@ EXTRA_DIST = premake/README \
              premake/ScriptingModules/LuaScriptModule/premake.lua \
              premake/ScriptingModules/LuaScriptModule/support/tolua++/premake.lua \
              premake/ScriptingModules/LuaScriptModule/support/tolua++bin/premake.lua \
+             premake/ScriptingModules/PythonScriptModule/PyCEGUINullRenderer/premake.lua \
+             premake/ScriptingModules/PythonScriptModule/PyCEGUIOgreRenderer/premake.lua \
+             premake/ScriptingModules/PythonScriptModule/PyCEGUIOpenGLRenderer/premake.lua \
+             premake/ScriptingModules/PythonScriptModule/PyCEGUI/premake.lua \
              premake/WindowRendererSets/Falagard/premake.lua \
              premake/XMLParserModules/TinyXMLParser/premake.lua \
              premake/XMLParserModules/XercesParser/premake.lua \

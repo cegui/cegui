@@ -142,6 +142,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       elements/CEGUIMenuBase.cpp \
                       elements/CEGUIMenuBaseProperties.cpp \
                       elements/CEGUIMenuItem.cpp \
+                      elements/CEGUIMenuItemProperties.cpp \
                       elements/CEGUIMultiColumnList.cpp \
                       elements/CEGUIMultiColumnListProperties.cpp \
                       elements/CEGUIMultiLineEditbox.cpp \

@@ -37,6 +37,11 @@ OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
 -- Set this to where your RapidXML package headers are to be found
 RAPIDXML_PATHS = { "rapidxml-1.13", "", "" }
 
+-- Python / boost::python (required to build python extension modules)
+PYTHON_PATHS = { "C:/Python26", "include", "libs" }
+BOOST_PYTHON_PATHS = { "C:/Program Files/boost/boost_1_44", "", "lib" }
+
+
 -- Extra SDK / dependency paths.
 --
 -- Here you can set up any additional paths you require for the various projects
@@ -180,6 +185,12 @@ LUA_SCRIPT_MODULE_SAFE = false
 
 -- enable this to build the bundled tolua++ as a static library
 TOLUA_STATIC = false
+
+
+-------
+-- Python
+-- this controls whether building the Python extension modules is enabled
+PYTHON_EXTENSION_MODULE = false
 
 
 -----------

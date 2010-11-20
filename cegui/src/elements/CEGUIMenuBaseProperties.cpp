@@ -1,7 +1,7 @@
 /***********************************************************************
-	filename: 	CEGUIMenuBaseProperties.cpp
-	created:	5/4/2005
-	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
+    filename:   CEGUIMenuBaseProperties.cpp
+    created:    5/4/2005
+    author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -38,12 +38,12 @@ namespace MenuBaseProperties
 
 String ItemSpacing::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const MenuBase*>(receiver)->getItemSpacing());
+    return PropertyHelper::floatToString(static_cast<const MenuBase*>(receiver)->getItemSpacing());
 }
 
 void ItemSpacing::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MenuBase*>(receiver)->setItemSpacing(PropertyHelper::stringToFloat(value));
+    static_cast<MenuBase*>(receiver)->setItemSpacing(PropertyHelper::stringToFloat(value));
 }
 
 
@@ -55,6 +55,16 @@ String AllowMultiplePopups::get(const PropertyReceiver* receiver) const
 void AllowMultiplePopups::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<MenuBase*>(receiver)->setAllowMultiplePopups(PropertyHelper::stringToBool(value));
+}
+
+String AutoCloseNestedPopups::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const MenuBase*>(receiver)->getAutoCloseNestedPopups());
+}
+
+void AutoCloseNestedPopups::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<MenuBase*>(receiver)->setAutoCloseNestedPopups(PropertyHelper::stringToBool(value));
 }
 
 } // End of  MenuBaseProperties namespace section

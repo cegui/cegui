@@ -110,6 +110,9 @@ CEGUI_CHECK_WANTS_SAMPLES
 # decide whether to build the lua module
 CEGUI_CHECK_LUA
 
+# decide whether to build the python bindings
+CEGUI_CHECK_PYTHON
+
 # handle config for bi-directional text support.
 CEGUI_CHECK_BIDI
 
@@ -181,6 +184,8 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  cegui/src/ScriptingModules/LuaScriptModule/support/tolua++bin/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/Makefile
                  cegui/src/ScriptingModules/Makefile
+                 cegui/src/ScriptingModules/PythonScriptModule/Makefile
+                 cegui/src/ScriptingModules/PythonScriptModule/bindings/Makefile
                  cegui/src/WindowRendererSets/Falagard/Makefile
                  cegui/src/WindowRendererSets/Makefile
                  cegui/src/XMLParserModules/ExpatParser/Makefile
@@ -305,6 +310,8 @@ echo "*         Building tolua++cegui generator:              ${cegui_build_tolu
 if test x$cegui_with_lua = xyes; then
 echo "*             Using external tolua++ library:           ${cegui_found_toluapp-no}"
 fi
+echo "*"
+echo "*         Building Python extension module(s):          ${cegui_with_python-no}"
 echo "*"
 echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
