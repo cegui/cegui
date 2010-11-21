@@ -53,6 +53,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIJustifiedRenderedString.h \
                  CEGUIKeyFrame.h \
                  CEGUILeftAlignedRenderedString.h \
+                 CEGUILinkedEvent.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
 				 CEGUIMinizipResourceProvider.h \

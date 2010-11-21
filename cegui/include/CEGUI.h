@@ -59,6 +59,7 @@
 #include "CEGUIJustifiedRenderedString.h"
 #include "CEGUIKeyFrame.h"
 #include "CEGUILeftAlignedRenderedString.h"
+#include "CEGUILinkedEvent.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIPropertySet.h"
