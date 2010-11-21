@@ -108,7 +108,7 @@ void DragDropDemo::subscribeEvents()
         {
             // get the window pointer for this slot
             Window* wnd =
-                wmgr.getWindow(base_name + PropertyHelper::intToString(i));
+                wmgr.getWindow(base_name + PropertyHelper<int>::toString(i));
 
             // subscribe the handler.
             wnd->subscribeEvent(

@@ -281,7 +281,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
             d_buttons[i][j]->setEnabled(true);
         }
     }
-    d_counter->setText(CEGUI::PropertyHelper::uintToString(MineCount));
+    d_counter->setText(CEGUI::PropertyHelper<uint>::toString(MineCount));
     // Handle timer
     d_timerStartTime = ::clock();
     d_timerValue = 0;
@@ -306,7 +306,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     if (boardDiscover(*buttonLoc))
     {
         // We did not find a mine
-        button->setText(CEGUI::PropertyHelper::uintToString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
+        button->setText(CEGUI::PropertyHelper<uint>::toString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
         if (isGameWin())
             gameEnd(true);
     }
@@ -325,7 +325,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
                     }
                     else
                     {
-                        d_buttons[i][j]->setText(CEGUI::PropertyHelper::uintToString(d_board[i][j]));
+                        d_buttons[i][j]->setText(CEGUI::PropertyHelper<uint>::toString(d_board[i][j]));
                     }
                 }
                 d_buttons[i][j]->setEnabled(false);
@@ -372,7 +372,7 @@ bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
         time -= d_timerStartTime;
         if (time != d_timerValue)
         {
-            d_timer->setText(CEGUI::PropertyHelper::uintToString(time /  CLOCKS_PER_SEC));
+            d_timer->setText(CEGUI::PropertyHelper<uint>::toString(time /  CLOCKS_PER_SEC));
             d_timerValue = time;
         }
     }
@@ -474,7 +474,7 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
 
     if (d_board[loc.d_row][loc.d_col] > 8)
         return false;
-    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper::uintToString(d_board[loc.d_row][loc.d_col]));
+    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper<uint>::toString(d_board[loc.d_row][loc.d_col]));
     d_buttons[loc.d_row][loc.d_col]->setEnabled(false);
     ++d_boardCellDiscovered;
     // Discover surrounding case
