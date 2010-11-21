@@ -237,13 +237,13 @@ public:
             Checkbox *cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/AutoScaled"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("AutoScaled")));
+                cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("AutoScaled")));
 
             b = font->isPropertyPresent ("Antialiased");
             cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/Antialiased"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("Antialiased")));
+                cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("Antialiased")));
 
             b = font->isPropertyPresent ("PointSize");
             Scrollbar *sb = static_cast<Scrollbar *> (
@@ -253,7 +253,7 @@ public:
 			// Set the textbox' font to have the current scale
 			if (font->isPropertyPresent("PointSize"))
 				font->setProperty ("PointSize",
-                        PropertyHelper::intToString (
+                        PropertyHelper<int>::toString (
                             int (MIN_POINT_SIZE + sb->getScrollPosition ())));
 
             setFontDesc ();
@@ -274,7 +274,7 @@ public:
 
         Font *f = mle->getFont ();
         f->setProperty ("AutoScaled",
-                        PropertyHelper::boolToString (cb->isSelected ()));
+                        PropertyHelper<bool>::toString (cb->isSelected ()));
 
         updateTextWindows();
         return true;
@@ -292,7 +292,7 @@ public:
 
         Font *f = mle->getFont ();
         f->setProperty ("Antialiased",
-                        PropertyHelper::boolToString (cb->isSelected ()));
+                        PropertyHelper<bool>::toString (cb->isSelected ()));
 
         updateTextWindows();
         return true;
@@ -308,7 +308,7 @@ public:
         Font *f = winMgr.getWindow ("FontDemo/FontSample")->getFont ();
 
         f->setProperty ("PointSize",
-                        PropertyHelper::intToString (
+                        PropertyHelper<int>::toString (
                             int (MIN_POINT_SIZE + sb->getScrollPosition ())));
 
         setFontDesc ();

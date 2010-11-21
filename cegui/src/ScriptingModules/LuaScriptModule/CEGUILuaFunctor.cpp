@@ -32,6 +32,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUILua.h"
+#include "CEGUISystem.h"
 
 // include Lua libs and tolua++
 extern "C" {
@@ -236,7 +237,7 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
                 if (!lua_istable(L,-1))
                 {
                     lua_settop(L,top);
-                    CEGUI_THROW(ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper::uintToString(uint(vi+1))+" ("+parts[vi]+") is not a table"));
+                    CEGUI_THROW(ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper<uint>::toString(uint(vi+1))+" ("+parts[vi]+") is not a table"));
                 }
                 // get rid of the last table and move on
                 lua_remove(L,-2);
