@@ -62,6 +62,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIJustifiedRenderedString.cpp \
                       CEGUIJustifiedRenderedStringWordWrapper.cpp \
                       CEGUILeftAlignedRenderedString.cpp \
+                      CEGUILinkedEvent.cpp \
                       CEGUIKeyFrame.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \

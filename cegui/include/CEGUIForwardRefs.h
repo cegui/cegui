@@ -70,6 +70,8 @@ class Interpolator;
 class JustifiedRenderedString;
 class KeyFrame;
 class LeftAlignedRenderedString;
+class LinkedEvent;
+class LinkedEventArgs;
 class Logger;
 class MouseCursor;
 class Property;
