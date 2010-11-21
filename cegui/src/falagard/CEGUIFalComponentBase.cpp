@@ -104,12 +104,12 @@ namespace CEGUI
             // if property accesses a ColourRect
             if (d_colourProperyIsRect)
             {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
             }
             // property accesses a colour
             else
             {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                colour val(PropertyHelper<colour>::fromString(wnd.getProperty(d_colourPropertyName)));
                 cr.d_top_left     = val;
                 cr.d_top_right    = val;
                 cr.d_bottom_left  = val;
@@ -155,10 +155,10 @@ namespace CEGUI
         else if (!d_colours.isMonochromatic() || d_colours.d_top_left != colour(1,1,1,1))
         {
             xml_stream.openTag("Colours")
-                .attribute("topLeft", PropertyHelper::colourToString(d_colours.d_top_left))
-                .attribute("topRight", PropertyHelper::colourToString(d_colours.d_top_right))
-                .attribute("bottomLeft", PropertyHelper::colourToString(d_colours.d_bottom_left))
-                .attribute("bottomRight", PropertyHelper::colourToString(d_colours.d_bottom_right))
+                .attribute("topLeft", PropertyHelper<colour>::toString(d_colours.d_top_left))
+                .attribute("topRight", PropertyHelper<colour>::toString(d_colours.d_top_right))
+                .attribute("bottomLeft", PropertyHelper<colour>::toString(d_colours.d_bottom_left))
+                .attribute("bottomRight", PropertyHelper<colour>::toString(d_colours.d_bottom_right))
                 .closeTag();
         }
         else

@@ -302,7 +302,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
 colour FalagardMultiLineEditbox::getOptionalPropertyColour(const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper::stringToColour(d_window->getProperty(propertyName));
+        return PropertyHelper<colour>::fromString(d_window->getProperty(propertyName));
     else
         return colour(0,0,0);
 }

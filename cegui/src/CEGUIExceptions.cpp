@@ -43,7 +43,7 @@ Exception::Exception(const String& message, const String& name,
     d_name(name),
     d_line(line),
     d_what(name + " in file " + filename  +
-           "(" + PropertyHelper::intToString(line) + ") : " + message)
+           "(" + PropertyHelper<int>::toString(line) + ") : " + message)
 {
     // Log exception if possible
     Logger* const logger = Logger::getSingletonPtr();

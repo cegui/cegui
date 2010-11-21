@@ -37,36 +37,36 @@ namespace DragContainerProperties
 {
     String DraggingEnabled::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const DragContainer*>(receiver)->isDraggingEnabled());
+        return PropertyHelper<bool>::toString(static_cast<const DragContainer*>(receiver)->isDraggingEnabled());
     }
 
     void DraggingEnabled::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<DragContainer*>(receiver)->setDraggingEnabled(PropertyHelper::stringToBool(value));
+        static_cast<DragContainer*>(receiver)->setDraggingEnabled(PropertyHelper<bool>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
     
     String DragAlpha::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const DragContainer*>(receiver)->getDragAlpha());
+        return PropertyHelper<float>::toString(static_cast<const DragContainer*>(receiver)->getDragAlpha());
     }
 
     void DragAlpha::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<DragContainer*>(receiver)->setDragAlpha(PropertyHelper::stringToFloat(value));
+        static_cast<DragContainer*>(receiver)->setDragAlpha(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String DragThreshold::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const DragContainer*>(receiver)->getPixelDragThreshold());
+        return PropertyHelper<float>::toString(static_cast<const DragContainer*>(receiver)->getPixelDragThreshold());
     }
 
     void DragThreshold::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<DragContainer*>(receiver)->setPixelDragThreshold(PropertyHelper::stringToFloat(value));
+        static_cast<DragContainer*>(receiver)->setPixelDragThreshold(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -74,14 +74,14 @@ namespace DragContainerProperties
     String DragCursorImage::get(const PropertyReceiver* receiver) const
     {
         const Image* img = static_cast<const DragContainer*>(receiver)->getDragCursorImage();
-        return img ? PropertyHelper::imageToString(img) : String();
+        return img ?PropertyHelper<Image*>::toString(img) : String();
     }
 
     void DragCursorImage::set(PropertyReceiver* receiver, const String& value)
     {
         if (!value.empty())
         {
-            static_cast<DragContainer*>(receiver)->setDragCursorImage(PropertyHelper::stringToImage(value));
+            static_cast<DragContainer*>(receiver)->setDragCursorImage(PropertyHelper<Image*>::fromString(value));
         }
     }
 
@@ -89,35 +89,35 @@ namespace DragContainerProperties
 
     String StickyMode::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const DragContainer*>(receiver)->isStickyModeEnabled());
     }
 
     void StickyMode::set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<DragContainer*>(receiver)->
-            setStickyModeEnabled(PropertyHelper::stringToBool(value));
+            setStickyModeEnabled(PropertyHelper<bool>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String FixedDragOffset::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::uvector2ToString(
+        return PropertyHelper<UVector2>::toString(
             static_cast<const DragContainer*>(receiver)->getFixedDragOffset());
     }
 
     void FixedDragOffset::set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<DragContainer*>(receiver)->
-            setFixedDragOffset(PropertyHelper::stringToUVector2(value));
+            setFixedDragOffset(PropertyHelper<UVector2>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String UseFixedDragOffset::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const DragContainer*>(receiver)->
                 isUsingFixedDragOffset());
     }
@@ -125,7 +125,7 @@ namespace DragContainerProperties
     void UseFixedDragOffset::set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<DragContainer*>(receiver)->
-            setUsingFixedDragOffset(PropertyHelper::stringToBool(value));
+            setUsingFixedDragOffset(PropertyHelper<bool>::fromString(value));
     }
 
 } // End of  DragContainerProperties namespace section

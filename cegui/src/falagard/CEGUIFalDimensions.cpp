@@ -204,7 +204,7 @@ namespace CEGUI
 
     void AbsoluteDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        xml_stream.attribute("value", PropertyHelper::floatToString(d_val));
+        xml_stream.attribute("value", PropertyHelper<float>::toString(d_val));
     }
 
 
@@ -475,7 +475,7 @@ namespace CEGUI
             xml_stream.attribute("string", d_text);
 
         if (d_padding != 0)
-            xml_stream.attribute("padding", PropertyHelper::floatToString(d_padding));
+            xml_stream.attribute("padding", PropertyHelper<float>::toString(d_padding));
 
         xml_stream.attribute("type", FalagardXMLHelper::fontMetricTypeToString(d_metric));
     }
@@ -497,9 +497,9 @@ namespace CEGUI
 
         if (d_type == DT_INVALID)
             // return float property value.
-            return PropertyHelper::stringToFloat(sourceWindow.getProperty(d_property));
+            return PropertyHelper<float>::fromString(sourceWindow.getProperty(d_property));
 
-        UDim d = PropertyHelper::stringToUDim(sourceWindow.getProperty(d_property));
+        UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
         Size s = sourceWindow.getPixelSize();
 
         switch (d_type)
@@ -685,10 +685,10 @@ namespace CEGUI
     void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         if (d_value.d_scale != 0)
-            xml_stream.attribute("scale", PropertyHelper::floatToString(d_value.d_scale));
+            xml_stream.attribute("scale", PropertyHelper<float>::toString(d_value.d_scale));
 
         if (d_value.d_offset != 0)
-            xml_stream.attribute("offset", PropertyHelper::floatToString(d_value.d_offset));
+            xml_stream.attribute("offset", PropertyHelper<float>::toString(d_value.d_offset));
 
         xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
@@ -702,7 +702,7 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else
@@ -737,7 +737,7 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else

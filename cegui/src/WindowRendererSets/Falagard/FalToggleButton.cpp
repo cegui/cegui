@@ -42,7 +42,7 @@ namespace CEGUI
 
     String FalagardToggleButton::actualStateName(const String& name) const
     {
-    	bool selected = PropertyHelper::stringToBool(d_window->getProperty("Selected"));
+    	bool selected = PropertyHelper<bool>::fromString(d_window->getProperty("Selected"));
         return selected ? "Selected"+name : name;
     }
 

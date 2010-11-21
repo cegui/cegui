@@ -72,7 +72,7 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
         String exception (String((const utf8*)"ExpatParser::parseXMLFile - XML Parsing error '") +
                           String((const utf8*)XML_ErrorString(XML_GetErrorCode(parser))) +
                           String((const utf8*)"' at line ") +
-                          PropertyHelper::uintToString(XML_GetCurrentLineNumber(parser)));
+                          PropertyHelper<uint>::toString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
         CEGUI_THROW(GenericException(exception));

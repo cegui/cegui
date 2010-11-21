@@ -39,12 +39,12 @@ namespace ItemListboxProperties
 
     String MultiSelect::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ItemListbox*>(receiver)->isMultiSelectEnabled());
+        return PropertyHelper<bool>::toString(static_cast<const ItemListbox*>(receiver)->isMultiSelectEnabled());
     }
 
     void MultiSelect::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ItemListbox*>(receiver)->setMultiSelectEnabled(PropertyHelper::stringToBool(value));
+        static_cast<ItemListbox*>(receiver)->setMultiSelectEnabled(PropertyHelper<bool>::fromString(value));
     }
 
 } // End of ItemListboxProperties namespace section

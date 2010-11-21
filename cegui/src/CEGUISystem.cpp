@@ -1345,8 +1345,8 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 
     Logger::getSingleton().logEvent(
         "Display resize:"
-        " w=" + PropertyHelper::floatToString(new_size.d_width) +
-        " h=" + PropertyHelper::floatToString(new_size.d_height));
+        " w=" + PropertyHelper<float>::toString(new_size.d_width) +
+        " h=" + PropertyHelper<float>::toString(new_size.d_height));
 }
 
 
@@ -1819,9 +1819,9 @@ const String& System::getDefaultImageCodecName()
 //----------------------------------------------------------------------------//
 void System::initialiseVersionString()
 {
-    d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
+    d_strVersion = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
+       PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
+       PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
 
     d_strVersion += " (Build: " __DATE__;
 
