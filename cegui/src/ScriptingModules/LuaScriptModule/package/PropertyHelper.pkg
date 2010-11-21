@@ -1,7 +1,9 @@
 /***********************************************************************
 	PropertyHelper
 ***********************************************************************/
-class PropertyHelper
+$renaming ceguiLua_PropertyHelper @ PropertyHelper
+
+class ceguiLua_PropertyHelper
 {
 	static	float			stringToFloat(utf8string str);
 	static	unsigned int	stringToUint(utf8string str);
