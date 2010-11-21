@@ -186,12 +186,12 @@ namespace CEGUI
             // if property accesses a ColourRect
             if (d_colourProperyIsRect)
             {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
             }
             // property accesses a colour
             else
             {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                colour val(PropertyHelper<colour>::fromString(wnd.getProperty(d_colourPropertyName)));
                 cr.d_top_left     = val;
                 cr.d_top_right    = val;
                 cr.d_bottom_left  = val;
@@ -248,10 +248,10 @@ namespace CEGUI
             else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != colour(1,1,1,1))
             {
                 xml_stream.openTag("Colours")
-                    .attribute("topLeft", PropertyHelper::colourToString(d_coloursOverride.d_top_left))
-                    .attribute("topRight", PropertyHelper::colourToString(d_coloursOverride.d_top_right))
-                    .attribute("bottomLeft", PropertyHelper::colourToString(d_coloursOverride.d_bottom_left))
-                    .attribute("bottomRight", PropertyHelper::colourToString(d_coloursOverride.d_bottom_right))
+                    .attribute("topLeft", PropertyHelper<colour>::toString(d_coloursOverride.d_top_left))
+                    .attribute("topRight", PropertyHelper<colour>::toString(d_coloursOverride.d_top_right))
+                    .attribute("bottomLeft", PropertyHelper<colour>::toString(d_coloursOverride.d_bottom_left))
+                    .attribute("bottomRight", PropertyHelper<colour>::toString(d_coloursOverride.d_bottom_right))
                     .closeTag();
             }
 
@@ -284,7 +284,7 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
 
     // return whether to draw based on property value.
     if (d_renderControlValue.empty())
-        return PropertyHelper::stringToBool(
+        return PropertyHelper<bool>::fromString(
             property_source->getProperty(d_renderControlProperty));
     else
         return property_source->

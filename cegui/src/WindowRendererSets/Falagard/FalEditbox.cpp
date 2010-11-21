@@ -425,7 +425,7 @@ colour FalagardEditbox::getOptionalPropertyColour(
     const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper::stringToColour(
+        return PropertyHelper<colour>::fromString(
             d_window->getProperty(propertyName));
     else
         return colour(0, 0, 0);

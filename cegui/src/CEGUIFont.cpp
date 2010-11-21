@@ -29,6 +29,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUISystem.h"
 
 namespace CEGUI
 {
@@ -262,11 +263,11 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
-            PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeHorzRes)));
 
     if (d_nativeVertRes != DefaultNativeVertRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
-            PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
         xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute, "True");

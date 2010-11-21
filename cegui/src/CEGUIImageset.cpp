@@ -349,10 +349,10 @@ void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
         xml_stream.attribute("NativeHorzRes", 
-          PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
+          PropertyHelper<uint>::toString(static_cast<uint>(d_nativeHorzRes)));
     if (d_nativeVertRes != DefaultNativeVertRes)
         xml_stream.attribute("NativeVertRes", 
-          PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
+          PropertyHelper<uint>::toString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
         xml_stream.attribute("AutoScaled", "true");

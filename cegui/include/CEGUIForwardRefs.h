@@ -75,7 +75,7 @@ class LinkedEventArgs;
 class Logger;
 class MouseCursor;
 class Property;
-class PropertyHelper;
+template<typename T> class PropertyHelper;
 class PropertyReceiver;
 class PropertySet;
 class RawDataContainer;

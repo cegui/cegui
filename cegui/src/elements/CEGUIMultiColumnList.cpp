@@ -2306,10 +2306,10 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += seg.getText();
         // column width
         propString += " width:";
-        propString += PropertyHelper::udimToString(seg.getWidth());
+        propString += PropertyHelper<UDim>::toString(seg.getWidth());
         // column id
         propString += " id:";
-        propString += PropertyHelper::uintToString(seg.getID());
+        propString += PropertyHelper<uint>::toString(seg.getID());
         // create the tag
         xml_stream.openTag("Property")
             .attribute("Name", "ColumnHeader")
@@ -2326,7 +2326,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			{
                 xml_stream.openTag("Property")
                     .attribute("Name", "SortColumnID")
-                    .attribute("Value", PropertyHelper::uintToString(sortColumnID))
+                    .attribute("Value", PropertyHelper<uint>::toString(sortColumnID))
                     .closeTag();
 			    ++propCnt;
 			}
