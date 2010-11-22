@@ -33,10 +33,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-LinkedEvent::LinkedEvent(const String& event_name, Event& source_event,
-                         EventSet* target_event_set) :
+LinkedEvent::LinkedEvent(const String& event_name, EventSet* target_event_set) :
     Event(event_name),
-    d_con(source_event.subscribe(Subscriber(&LinkedEvent::handler, this))),
     d_owner(target_event_set)
 {
     if (target_event_set)
@@ -46,6 +44,18 @@ LinkedEvent::LinkedEvent(const String& event_name, Event& source_event,
 //----------------------------------------------------------------------------//
 LinkedEvent::~LinkedEvent()
 {
+    LinkedConnections::iterator i = d_connections.begin();
+    for ( ; i != d_connections.end(); ++i)
+        (*i)->disconnect();
+}
+
+//----------------------------------------------------------------------------//
+void LinkedEvent::addLinkedTarget(Event& link_target)
+{
+    Connection con(link_target.subscribe(
+        Subscriber(&LinkedEvent::handler, this)));
+
+    d_connections.push_back(con);
 }
 
 //----------------------------------------------------------------------------//

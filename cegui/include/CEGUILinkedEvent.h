@@ -29,6 +29,7 @@
 #define _CEGUILinkedEvent_h_
 
 #include "CEGUIEvent.h"
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,17 +49,42 @@ namespace CEGUI
 class CEGUIEXPORT LinkedEvent : public Event
 {
 public:
-    LinkedEvent(const String& event_name, Event& source_event,
-                EventSet* target_event_set);
+    /*!
+    \brief
+        Constructor
+
+    \param name
+        String object describing the name that this Event will use.
+
+    \param target_event_set
+        EventSet that the LinkedEvent should add itself to.
+    */
+    LinkedEvent(const String& event_name, EventSet* target_event_set);
     ~LinkedEvent();
+
+    /*!
+    \brief
+        Add a link target for this event.  A link target is an event that
+        will trigger this event.
+
+    \param link_target
+        Reference to an Event that, when fired, will additionally cause
+        this Event to fire.
+
+    \note
+        Once an event link is established it can not currently be broken
+        without destroying this Event completely.
+    */
+    void addLinkedTarget(Event& link_target);
 
 protected:
     bool handler(const EventArgs& args);
 
     LinkedEvent(const LinkedEvent& e) : Event(e) {}
 
-    //! our connection to the source Event.
-    ScopedConnection d_con;
+    typedef std::vector<Event::Connection> LinkedConnections;
+    //! collection of connection to the linked Events.
+    LinkedConnections d_connections;
     //! reference to the event set that we added ourself to
     const EventSet* d_owner;
 };
