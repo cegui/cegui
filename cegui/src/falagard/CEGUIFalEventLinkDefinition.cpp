@@ -84,6 +84,12 @@ void EventLinkDefinition::cleanUpWidget(Window& window) const
 }
 
 //----------------------------------------------------------------------------//
+const String& EventLinkDefinition:: getName() const
+{
+    return d_eventName;
+}
+
+//----------------------------------------------------------------------------//
 Window* EventLinkDefinition::getTargetWindow(Window& start_wnd,
                                              const String& name_suffix) const
 {

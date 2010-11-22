@@ -13,6 +13,8 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_8 <br>
 @ref fal_elem_ref_sec_9 <br>
 @ref fal_elem_ref_sec_10 <br>
+@ref fal_elem_ref_eventlinkdefintion <br>
+@ref fal_elem_ref_eventlinktarget <br>
 @ref fal_elem_ref_expressiondim <br>
 @ref fal_elem_ref_sec_11 <br>
 @ref fal_elem_ref_sec_12 <br>
@@ -448,6 +450,61 @@ and not:
 </AbsoluteDim>
 ...
 @endcode
+
+
+@section fal_elem_ref_eventlinkdefintion \<EventLinkDefinition\> Element
+
+@subsection fal_elem_ref_eventlinkdefintion_1 Purpose:
+The @c \<EventLinkDefinition\> element is used to define an event on a window
+using the @c \<WidgetLook\> being defined.  The new event can be linked to
+other events on the window, or to events on child windows.  For child windows,
+the window must exist, and the facility is largely intended to be able to link
+to events on windows defined via the @c \<Child\> element.
+
+@subsection fal_elem_ref_eventlinkdefintion_2 Attributes:
+@arg @c name specifies the unique name to use for the new event.  Required attribute.
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined.  Optional attribute.
+@arg @c event specifies the name of an event on widget identified via @cwidget that
+is to be linked to the new event being defined. If this is omitted but @c widget is
+specified, it will be assumed that the event to link to has the same name as the
+event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinkdefintion_3 Usage:
+<ul>
+    <li>The @c \<EventLinkDefinition\> element may contain any number of @c \<EventLinkTarget\> sub-elements.</li>
+    <li>The @c \<EventLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinkdefintion_4 Examples:
+TODO
+
+
+@section fal_elem_ref_eventlinktarget \<EventLinkTarget\> Element
+
+@subsection fal_elem_ref_eventlinktarget_1 Purpose:
+The @c \<EventLinkTarget\> element specifies a target widget suffix and
+event name to be used with a @c \<EventLinkDefinition\>.  Whenever the
+event specified here fires, the event defined by the
+enclosing @c \<EventLinkDefinition\> will also fire.
+
+@subsection fal_elem_ref_eventlinktarget_2 Attributes:
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined by the enclosing @c \<EventLinkDefinition\>.
+Optional attribute.
+@arg @c event specifies the name of an event on the widget identified via @cwidget that
+is to be linked to the event being defined by the enclosing @c \<EventLinkDefinition\>.
+If this is omitted but @c widget is specified, it will be assumed that the event to link
+to has the same name as the event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinktarget_3 Usage:
+<ul>
+    <li>The @c \<EventLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<EventLinkTarget\> element may only appear as a sub-element within @c \<EventLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinktarget_4 Examples:
+TODO
 
 
 @section fal_elem_ref_expressiondim \<ExpressionDim\> Element
