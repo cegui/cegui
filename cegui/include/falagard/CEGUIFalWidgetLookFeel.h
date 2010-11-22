@@ -34,6 +34,7 @@
 #include "CEGUIFalPropertyInitialiser.h"
 #include "CEGUIFalPropertyDefinition.h"
 #include "CEGUIFalPropertyLinkDefinition.h"
+#include "CEGUIFalEventLinkDefinition.h"
 #include "CEGUIFalNamedArea.h"
 #include <map>
 
@@ -323,6 +324,12 @@ public:
     */
     void addAnimationName(const String& anim_name);
 
+    //! adds an event link definition to the WidgetLookFeel.
+    void addEventLinkDefinition(const EventLinkDefinition& evtdef); 
+
+    //! clear all defined event link definitions from the WidgetLookFeel.
+    void clearEventLinkDefinitions();
+
     /*!
     \brief
         Writes an xml representation of this WidgetLookFeel to \a out_stream.
@@ -412,6 +419,7 @@ private:
     typedef std::vector<WidgetComponent> WidgetList;
     typedef std::vector<String> AnimationList;
     typedef std::multimap<Window*, AnimationInstance*> AnimationInstanceMap;
+    typedef std::vector<EventLinkDefinition> EventLinkDefinitionList;
 
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;
@@ -433,6 +441,8 @@ private:
     AnimationList d_animations;
     //! map of windows and their associated animation instances
     mutable AnimationInstanceMap d_animationInstances;
+    //! Collection of EventLinkDefinition objects.
+    EventLinkDefinitionList d_eventLinkDefinitions;
 };
 
 } // End of  CEGUI namespace section
