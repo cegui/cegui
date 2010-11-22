@@ -52,6 +52,7 @@ namespace CEGUI
     class NamedArea;
     class FrameComponent;
     class PropertyLinkDefinition;
+    class EventLinkDefinition;
 
     /*!
     \brief
@@ -138,6 +139,8 @@ namespace CEGUI
         static const String TextPropertyElement;        //!< Tag name for element that specifies an Text property.
         static const String FontPropertyElement;        //!< Tag name for element that specifies an Font property.
         static const String ColourElement;              //!< Tag name for Colour elements.
+        static const String EventLinkDefinitionElement; //!< Tag name for event link elements.
+        static const String EventLinkTargetElement;     //!< Tag name for event link target elements.
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -173,6 +176,8 @@ namespace CEGUI
         static const String ControlWidgetAttribute;   //!< Attribute name that stores a widget identifier used to control rendering of a section.
         //! Attribute name that stores a help string.
         static const String HelpStringAttribute;
+        //! Attribute name that stores an Event name string.
+        static const String EventAttribute;
 
         /*************************************************************************
             helper methods
@@ -437,6 +442,12 @@ namespace CEGUI
         //! Function to handle AnimationDefinition elements
         void elementAnimationDefinitionStart(const XMLAttributes& attributes);
 
+        //! Function to handle EventLinkDefinition elements.
+        void elementEventLinkDefinitionStart(const XMLAttributes& attributes);
+
+        //! Function to handle EventLinkTarget elements.
+        void elementEventLinkTargetStart(const XMLAttributes& attributes);
+
         /*!
         \brief
             Method that handles the closing Falagard XML element.
@@ -518,6 +529,9 @@ namespace CEGUI
         //! Function to handle closing PropertyLinkDefinition XML element.
         void elementPropertyLinkDefinitionEnd();
 
+        //! Function to handle closing EventLinkDefinition XML element.
+        void elementEventLinkDefinitionEnd();
+
         /*!
         \brief
             Register a handler for the opening tag of an XML element
@@ -529,6 +543,9 @@ namespace CEGUI
             Register a handler for the closing tag of an XML element
         */
         void registerElementEndHandler(const String& element, ElementEndHandler handler);
+    
+        //! helper to add an event link target as dictated by the input strings.
+        void processEventLinkTarget(const String& widget, const String& event);
 
         /*************************************************************************
             Implementation Data
@@ -559,6 +576,7 @@ namespace CEGUI
         std::vector<BaseDim*>    d_dimStack;
 
         PropertyLinkDefinition* d_propertyLink;
+        EventLinkDefinition* d_eventLink;
     };
 
 } // End of  CEGUI namespace section

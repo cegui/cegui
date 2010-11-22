@@ -93,6 +93,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::TextPropertyElement("TextProperty");
     const String Falagard_xmlHandler::FontPropertyElement("FontProperty");
     const String Falagard_xmlHandler::ColourElement("Colour");
+    const String Falagard_xmlHandler::EventLinkDefinitionElement("EventLinkDefinition");
+    const String Falagard_xmlHandler::EventLinkTargetElement("EventLinkTarget");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -127,6 +129,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ControlValueAttribute("controlValue");
     const String Falagard_xmlHandler::ControlWidgetAttribute("controlWidget");
     const String Falagard_xmlHandler::HelpStringAttribute("help");
+    const String Falagard_xmlHandler::EventAttribute("event");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -144,7 +147,8 @@ namespace CEGUI
         d_textcomponent(0),
         d_namedArea(0),
         d_framecomponent(0),
-        d_propertyLink(0)
+        d_propertyLink(0),
+        d_eventLink(0)
     {
         // register element start handlers
         registerElementStartHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardStart);
@@ -189,6 +193,8 @@ namespace CEGUI
         registerElementStartHandler(ColourElement, &Falagard_xmlHandler::elementColourStart);
         registerElementStartHandler(PropertyLinkTargetElement, &Falagard_xmlHandler::elementPropertyLinkTargetStart);
         registerElementStartHandler(AnimationDefinitionHandler::ElementName, &Falagard_xmlHandler::elementAnimationDefinitionStart);
+        registerElementStartHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionStart);
+        registerElementStartHandler(EventLinkTargetElement, &Falagard_xmlHandler::elementEventLinkTargetStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -211,6 +217,7 @@ namespace CEGUI
         registerElementEndHandler(ExpressionDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaEnd);
         registerElementEndHandler(PropertyLinkDefinitionElement, &Falagard_xmlHandler::elementPropertyLinkDefinitionEnd);
+        registerElementEndHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionEnd);
     }
 
     Falagard_xmlHandler::~Falagard_xmlHandler()
@@ -1162,6 +1169,57 @@ namespace CEGUI
             attributes.getValueAsString("name"));
     }
 
+
+    void Falagard_xmlHandler::elementEventLinkDefinitionStart(
+                                                const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook);
+        assert(d_eventLink == 0);
+
+        const String widget(attributes.getValueAsString(WidgetAttribute));
+        const String event(attributes.getValueAsString(EventAttribute));
+
+        d_eventLink = new EventLinkDefinition(
+            attributes.getValueAsString(NameAttribute));
+
+        CEGUI_LOGINSANE("-----> Adding EventLinkDefiniton. Name: " +
+                        d_eventLink->getName());
+
+        processEventLinkTarget(widget, event);
+    }
+
+    void Falagard_xmlHandler::processEventLinkTarget(const String& widget, const String& event)
+    {
+        assert(d_eventLink);
+
+        if (!widget.empty() || !event.empty())
+        {
+            d_eventLink->addLinkTarget(widget, event);
+            CEGUI_LOGINSANE("-------> Adding link target to event: " + event +
+                        " on widget: " + widget);
+        }
+    }
+
+    void Falagard_xmlHandler::elementEventLinkTargetStart(
+                                                const XMLAttributes& attributes)
+    {
+        const String widget(attributes.getValueAsString(WidgetAttribute));
+        const String event(attributes.getValueAsString(EventAttribute));
+
+        processEventLinkTarget(widget, event);
+    }
+
+    void Falagard_xmlHandler::elementEventLinkDefinitionEnd()
+    {
+        assert(d_eventLink);
+        d_widgetlook->addEventLinkDefinition(*d_eventLink);
+
+        CEGUI_LOGINSANE("<----- End of EventLinkDefiniton. Name: " +
+                        d_eventLink->getName());
+
+        delete d_eventLink;
+        d_eventLink = 0;
+    }
 
     /*************************************************************************
         register a handler for the opening tag of an XML element

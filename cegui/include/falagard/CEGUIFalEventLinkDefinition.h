@@ -46,11 +46,14 @@ public:
     //! clear all link targets from this link definition.
     void clearLinkTargets();
 
-    // initialise \a window with an event link as specified here.
+    //! initialise \a window with an event link as specified here.
     void initialiseWidget(Window& window) const;
 
-    // clean this event from \a window.
+    //! clean this event from \a window.
     void cleanUpWidget(Window& window) const;
+
+    //! return the name of the Event defined here.
+    const String& getName() const;
 
 protected:
     //! Return a pointer to the target window with the given suffix.
