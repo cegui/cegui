@@ -180,6 +180,14 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         (*prop).apply(widget);
     }
+    
+    // setup linked events
+    for (EventLinkDefinitionList::const_iterator evt = d_eventLinkDefinitions.begin();
+         evt != d_eventLinkDefinitions.end();
+         ++evt)
+    {
+        (*evt).initialiseWidget(widget);
+    }
 
     // create animation instances
     for (AnimationList::const_iterator anim = d_animations.begin(); anim != d_animations.end(); ++anim)
@@ -210,6 +218,14 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
     {
         WindowManager::getSingleton().destroyWindow(
             widget.getName() + (*curr).getWidgetNameSuffix());
+    }
+
+    // delete added named Events
+    for (EventLinkDefinitionList::const_iterator evt = d_eventLinkDefinitions.begin();
+         evt != d_eventLinkDefinitions.end();
+         ++evt)
+    {
+        (*evt).cleanUpWidget(widget);
     }
 
     // remove added property definitions
@@ -458,6 +474,18 @@ void WidgetLookFeel::addAnimationName(const String& anim_name)
 
     if (it == d_animations.end())
         d_animations.push_back(anim_name);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::addEventLinkDefinition(const EventLinkDefinition& evtdef)
+{
+    d_eventLinkDefinitions.push_back(evtdef);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::clearEventLinkDefinitions()
+{
+    d_eventLinkDefinitions.clear();
 }
 
 //---------------------------------------------------------------------------//

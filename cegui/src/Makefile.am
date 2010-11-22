@@ -183,6 +183,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       elements/CEGUIVerticalLayoutContainer.cpp \
                       falagard/CEGUIFalComponentBase.cpp \
                       falagard/CEGUIFalDimensions.cpp \
+                      falagard/CEGUIFalEventLinkDefinition.cpp \
                       falagard/CEGUIFalFrameComponent.cpp \
                       falagard/CEGUIFalImageryComponent.cpp \
                       falagard/CEGUIFalImagerySection.cpp \
