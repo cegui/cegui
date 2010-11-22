@@ -83,7 +83,7 @@ void FalagardEditbox::render()
     String visual_text;
     setupVisualString(visual_text);
 
-    const ImagerySection& caret_imagery = wlf.getImagerySection("Carat");
+    const ImagerySection& caret_imagery = wlf.getImagerySection("Caret");
 
     // get destination area for text
     const Rect text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
@@ -133,14 +133,14 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
-    size_t caretIndex = w->getCaratIndex();
+    size_t caretIndex = w->getCaretIndex();
 
 #ifdef CEGUI_BIDI_SUPPORT
     // the char before the caret bidi type
     bool currCharIsRtl = false;
     if ((visual_text.size() > 0) && (caretIndex > 0))
     {
-        size_t curCaretIndex = w->getCaratIndex();
+        size_t curCaretIndex = w->getCaretIndex();
         BidiCharType charBeforeCaretType = w->getBiDiVisualMapping()->
             getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
@@ -190,11 +190,11 @@ float FalagardEditbox::calculateTextOffset(const Rect& text_area,
                                            const float caret_width,
                                            const float extent_to_caret)
 {
-    // if carat is to the left of the box
+    // if caret is to the left of the box
     if ((d_lastTextOffset + extent_to_caret) < 0)
         return -extent_to_caret;
 
-    // if carat is off to the right.
+    // if caret is off to the right.
     if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
         return text_area.getWidth() - extent_to_caret - caret_width;
 
@@ -394,10 +394,10 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 {
     if (editboxIsFocussed() && (!d_blinkCaret || d_showCaret))
     {
-        Rect caratRect(text_area);
-        caratRect.d_left += extent_to_caret + text_offset;
+        Rect caretRect(text_area);
+        caretRect.d_left += extent_to_caret + text_offset;
 
-        imagery.render(*d_window, caratRect, 0, &text_area);
+        imagery.render(*d_window, caretRect, 0, &text_area);
     }
 }
 

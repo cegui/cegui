@@ -53,7 +53,7 @@ EditboxProperties::ReadOnly         Editbox::d_readOnlyProperty;
 EditboxProperties::MaskText         Editbox::d_maskTextProperty;
 EditboxProperties::MaskCodepoint    Editbox::d_maskCodepointProperty;
 EditboxProperties::ValidationString Editbox::d_validationStringProperty;
-EditboxProperties::CaratIndex       Editbox::d_caratIndexProperty;
+EditboxProperties::CaretIndex       Editbox::d_caretIndexProperty;
 EditboxProperties::SelectionStart   Editbox::d_selectionStartProperty;
 EditboxProperties::SelectionLength  Editbox::d_selectionLengthProperty;
 EditboxProperties::MaxTextLength    Editbox::d_maxTextLengthProperty;
@@ -68,7 +68,7 @@ const String Editbox::EventValidationStringChanged("ValidatorChanged");
 const String Editbox::EventMaximumTextLengthChanged("MaxTextLenChanged");
 const String Editbox::EventTextInvalidated("TextInvalidated");
 const String Editbox::EventInvalidEntryAttempted("InvalidInputAttempt");
-const String Editbox::EventCaratMoved("TextCaratMoved");
+const String Editbox::EventCaretMoved("TextCaretMoved");
 const String Editbox::EventTextSelectionChanged("TextSelectChanged");
 const String Editbox::EventEditboxFull("EditboxFull");
 const String Editbox::EventTextAccepted("TextAccepted");
@@ -80,7 +80,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_maskText(false),
     d_maskCodePoint('*'),
     d_maxTextLen(String::max_size()),
-    d_caratPos(0),
+    d_caretPos(0),
     d_selectionStart(0),
     d_selectionEnd(0),
     d_validator(0),
@@ -122,13 +122,13 @@ bool Editbox::isTextValid(void) const
 //----------------------------------------------------------------------------//
 size_t Editbox::getSelectionStartIndex(void) const
 {
-    return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caratPos;
+    return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos;
 }
 
 //----------------------------------------------------------------------------//
 size_t Editbox::getSelectionEndIndex(void) const
 {
-    return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caratPos;
+    return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caretPos;
 }
 
 //----------------------------------------------------------------------------//
@@ -191,20 +191,20 @@ void Editbox::setValidationString(const String& validation_string)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::setCaratIndex(size_t carat_pos)
+void Editbox::setCaretIndex(size_t caret_pos)
 {
     // make sure new position is valid
-    if (carat_pos > getText().length())
-        carat_pos = getText().length();
+    if (caret_pos > getText().length())
+        caret_pos = getText().length();
 
     // if new position is different
-    if (d_caratPos != carat_pos)
+    if (d_caretPos != caret_pos)
     {
-        d_caratPos = carat_pos;
+        d_caretPos = caret_pos;
 
-        // Trigger "carat moved" event
+        // Trigger "caret moved" event
         WindowEventArgs args(this);
-        onCaratMoved(args);
+        onCaretMoved(args);
     }
 
 }
@@ -301,8 +301,8 @@ void Editbox::eraseSelectedText(bool modify_text)
 {
     if (getSelectionLength() != 0)
     {
-        // setup new carat position and remove selection highlight.
-        setCaratIndex(d_selectionStart);
+        // setup new caret position and remove selection highlight.
+        setCaretIndex(d_selectionStart);
         clearSelection();
 
         // erase the selected characters (if required)
@@ -347,7 +347,7 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
                 d_dragAnchorIdx =
                     d_bidiVisualMapping->getV2lMapping()[d_dragAnchorIdx];
 #endif
-            setCaratIndex(d_dragAnchorIdx);
+            setCaretIndex(d_dragAnchorIdx);
         }
 
         ++e.handled;
@@ -381,19 +381,19 @@ void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
         if (isTextMasked())
         {
             d_dragAnchorIdx = 0;
-            setCaratIndex(getText().length());
+            setCaretIndex(getText().length());
         }
         // not masked, so select the word that was double-clicked.
         else
         {
             d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
-                (d_caratPos == getText().length()) ? d_caratPos :
-                                                     d_caratPos + 1);
-            d_caratPos = TextUtils::getNextWordStartIdx(getText(), d_caratPos);
+                (d_caretPos == getText().length()) ? d_caretPos :
+                                                     d_caretPos + 1);
+            d_caretPos = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
         }
 
         // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caratPos);
+        setSelection(d_dragAnchorIdx, d_caretPos);
 
         ++e.handled;
     }
@@ -409,8 +409,8 @@ void Editbox::onMouseTripleClicked(MouseEventArgs& e)
     if (e.button == LeftButton)
     {
         d_dragAnchorIdx = 0;
-        setCaratIndex(getText().length());
-        setSelection(d_dragAnchorIdx, d_caratPos);
+        setCaretIndex(getText().length());
+        setSelection(d_dragAnchorIdx, d_caretPos);
         ++e.handled;
     }
 
@@ -429,9 +429,9 @@ void Editbox::onMouseMove(MouseEventArgs& e)
         if (d_bidiVisualMapping->getV2lMapping().size() > anchorIdx)
             anchorIdx = d_bidiVisualMapping->getV2lMapping()[anchorIdx];
 #endif
-        setCaratIndex(anchorIdx);
+        setCaretIndex(anchorIdx);
 
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     }
 
     ++e.handled;
@@ -478,9 +478,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
                 // (we just want to update state)
                 eraseSelectedText(false);
 
-                // advance carat (done first so we can "do stuff" in event
+                // advance caret (done first so we can "do stuff" in event
                 // handlers!)
-                d_caratPos++;
+                d_caretPos++;
 
                 // set text to the newly modified string
                 setText(tmp);
@@ -527,7 +527,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
         case Key::LeftShift:
         case Key::RightShift:
             if (getSelectionLength() == 0)
-                d_dragAnchorIdx = d_caratPos;
+                d_dragAnchorIdx = d_caretPos;
             break;
 
         case Key::Backspace:
@@ -605,13 +605,13 @@ void Editbox::handleBackspace(void)
             }
 
         }
-        else if (getCaratIndex() > 0)
+        else if (getCaretIndex() > 0)
         {
-            tmp.erase(d_caratPos - 1, 1);
+            tmp.erase(d_caretPos - 1, 1);
 
             if (isStringValid(tmp))
             {
-                setCaratIndex(d_caratPos - 1);
+                setCaretIndex(d_caretPos - 1);
 
                 // set text to the newly modified string
                 setText(tmp);
@@ -657,9 +657,9 @@ void Editbox::handleDelete(void)
             }
 
         }
-        else if (getCaratIndex() < tmp.length())
+        else if (getCaretIndex() < tmp.length())
         {
-            tmp.erase(d_caratPos, 1);
+            tmp.erase(d_caretPos, 1);
 
             if (isStringValid(tmp))
             {
@@ -682,11 +682,11 @@ void Editbox::handleDelete(void)
 //----------------------------------------------------------------------------//
 void Editbox::handleCharLeft(uint sysKeys)
 {
-    if (d_caratPos > 0)
-        setCaratIndex(d_caratPos - 1);
+    if (d_caretPos > 0)
+        setCaretIndex(d_caretPos - 1);
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -694,11 +694,11 @@ void Editbox::handleCharLeft(uint sysKeys)
 //----------------------------------------------------------------------------//
 void Editbox::handleWordLeft(uint sysKeys)
 {
-    if (d_caratPos > 0)
-        setCaratIndex(TextUtils::getWordStartIdx(getText(), d_caratPos));
+    if (d_caretPos > 0)
+        setCaretIndex(TextUtils::getWordStartIdx(getText(), d_caretPos));
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -706,11 +706,11 @@ void Editbox::handleWordLeft(uint sysKeys)
 //----------------------------------------------------------------------------//
 void Editbox::handleCharRight(uint sysKeys)
 {
-    if (d_caratPos < getText().length())
-        setCaratIndex(d_caratPos + 1);
+    if (d_caretPos < getText().length())
+        setCaretIndex(d_caretPos + 1);
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -718,11 +718,11 @@ void Editbox::handleCharRight(uint sysKeys)
 //----------------------------------------------------------------------------//
 void Editbox::handleWordRight(uint sysKeys)
 {
-    if (d_caratPos < getText().length())
-        setCaratIndex(TextUtils::getNextWordStartIdx(getText(), d_caratPos));
+    if (d_caretPos < getText().length())
+        setCaretIndex(TextUtils::getNextWordStartIdx(getText(), d_caretPos));
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -730,11 +730,11 @@ void Editbox::handleWordRight(uint sysKeys)
 //----------------------------------------------------------------------------//
 void Editbox::handleHome(uint sysKeys)
 {
-    if (d_caratPos > 0)
-        setCaratIndex(0);
+    if (d_caretPos > 0)
+        setCaretIndex(0);
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -742,11 +742,11 @@ void Editbox::handleHome(uint sysKeys)
 //----------------------------------------------------------------------------//
 void Editbox::handleEnd(uint sysKeys)
 {
-    if (d_caratPos < getText().length())
-        setCaratIndex(getText().length());
+    if (d_caretPos < getText().length())
+        setCaretIndex(getText().length());
 
     if (sysKeys & Shift)
-        setSelection(d_caratPos, d_dragAnchorIdx);
+        setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
@@ -800,10 +800,10 @@ void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onCaratMoved(WindowEventArgs& e)
+void Editbox::onCaretMoved(WindowEventArgs& e)
 {
     invalidate();
-    fireEvent(EventCaratMoved , e, EventNamespace);
+    fireEvent(EventCaretMoved , e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -834,9 +834,9 @@ void Editbox::onTextChanged(WindowEventArgs& e)
     // clear selection
     clearSelection();
 
-    // make sure carat is within the text
-    if (d_caratPos > getText().length())
-        setCaratIndex(getText().length());
+    // make sure caret is within the text
+    if (d_caretPos > getText().length())
+        setCaretIndex(getText().length());
 
     ++e.handled;
 }
@@ -848,7 +848,7 @@ void Editbox::addEditboxProperties(void)
     addProperty(&d_maskTextProperty);
     addProperty(&d_maskCodepointProperty);
     addProperty(&d_validationStringProperty);
-    addProperty(&d_caratIndexProperty);
+    addProperty(&d_caretIndexProperty);
     addProperty(&d_selectionStartProperty);
     addProperty(&d_selectionLengthProperty);
     addProperty(&d_maxTextLengthProperty);
@@ -870,15 +870,15 @@ size_t Editbox::getTextIndexFromPosition(const Point& pt) const
 }
 
 //----------------------------------------------------------------------------//
-size_t Editbox::getCaratIndex(void) const
+size_t Editbox::getCaretIndex(void) const
 {
 #ifdef CEGUI_BIDI_SUPPORT
-    size_t caratPos = d_caratPos;
-    if (d_bidiVisualMapping->getL2vMapping().size() > caratPos)
-        caratPos = d_bidiVisualMapping->getL2vMapping()[caratPos];
+    size_t caretPos = d_caretPos;
+    if (d_bidiVisualMapping->getL2vMapping().size() > caretPos)
+        caretPos = d_bidiVisualMapping->getL2vMapping()[caretPos];
 #endif
 
-    return d_caratPos;
+    return d_caretPos;
 }
 
 //----------------------------------------------------------------------------//

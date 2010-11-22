@@ -91,15 +91,15 @@ void ValidationString::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String CaratIndex::get(const PropertyReceiver* receiver) const
+String CaretIndex::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getCaratIndex()));
+	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getCaretIndex()));
 }
 
 
-void CaratIndex::set(PropertyReceiver* receiver, const String& value)
+void CaretIndex::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Editbox*>(receiver)->setCaratIndex(PropertyHelper<uint>::fromString(value));
+	static_cast<Editbox*>(receiver)->setCaretIndex(PropertyHelper<uint>::fromString(value));
 }
 
 

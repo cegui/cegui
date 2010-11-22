@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Nov 21 22:13:15 2010.
+** Generated automatically by tolua++-1.0.92 on Mon Nov 22 13:22:55 2010.
 */
 
 #ifndef __cplusplus
@@ -37523,9 +37523,9 @@ static int tolua_CEGUI_CEGUI_Editbox_getValidationString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getCaratIndex of class  CEGUI::Editbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Editbox_getCaratIndex00
-static int tolua_CEGUI_CEGUI_Editbox_getCaratIndex00(lua_State* tolua_S)
+/* method: getCaretIndex of class  CEGUI::Editbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Editbox_getCaretIndex00
+static int tolua_CEGUI_CEGUI_Editbox_getCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -37539,17 +37539,17 @@ static int tolua_CEGUI_CEGUI_Editbox_getCaratIndex00(lua_State* tolua_S)
  {
   const CEGUI::Editbox* self = (const CEGUI::Editbox*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaretIndex'",NULL);
 #endif
  {
-  unsigned long tolua_ret = (unsigned long)  self->getCaratIndex();
+  unsigned long tolua_ret = (unsigned long)  self->getCaretIndex();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -37814,9 +37814,9 @@ static int tolua_CEGUI_CEGUI_Editbox_setValidationString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setCaratIndex of class  CEGUI::Editbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Editbox_setCaratIndex00
-static int tolua_CEGUI_CEGUI_Editbox_setCaratIndex00(lua_State* tolua_S)
+/* method: setCaretIndex of class  CEGUI::Editbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Editbox_setCaretIndex00
+static int tolua_CEGUI_CEGUI_Editbox_setCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -37830,18 +37830,18 @@ static int tolua_CEGUI_CEGUI_Editbox_setCaratIndex00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Editbox* self = (CEGUI::Editbox*)  tolua_tousertype(tolua_S,1,0);
-  unsigned long carat_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
+  unsigned long caret_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaretIndex'",NULL);
 #endif
  {
-  self->setCaratIndex(carat_pos);
+  self->setCaretIndex(caret_pos);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -38012,9 +38012,9 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_isReadOnly00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getCaratIndex of class  CEGUI::MultiLineEditbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_getCaratIndex00
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_getCaratIndex00(lua_State* tolua_S)
+/* method: getCaretIndex of class  CEGUI::MultiLineEditbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_getCaretIndex00
+static int tolua_CEGUI_CEGUI_MultiLineEditbox_getCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -38028,17 +38028,17 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_getCaratIndex00(lua_State* tolua_S
  {
   const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaretIndex'",NULL);
 #endif
  {
-  unsigned long tolua_ret = (unsigned long)  self->getCaratIndex();
+  unsigned long tolua_ret = (unsigned long)  self->getCaretIndex();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -38407,9 +38407,9 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_setReadOnly00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setCaratIndex of class  CEGUI::MultiLineEditbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_setCaratIndex00
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_setCaratIndex00(lua_State* tolua_S)
+/* method: setCaretIndex of class  CEGUI::MultiLineEditbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_setCaretIndex00
+static int tolua_CEGUI_CEGUI_MultiLineEditbox_setCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -38423,18 +38423,18 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_setCaratIndex00(lua_State* tolua_S
 #endif
  {
   CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-  unsigned long carat_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
+  unsigned long caret_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaretIndex'",NULL);
 #endif
  {
-  self->setCaratIndex(carat_pos);
+  self->setCaretIndex(caret_pos);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -38508,9 +38508,9 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_setMaxTextLength00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: ensureCaratIsVisible of class  CEGUI::MultiLineEditbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00(lua_State* tolua_S)
+/* method: ensureCaretIsVisible of class  CEGUI::MultiLineEditbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaretIsVisible00
+static int tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaretIsVisible00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -38524,16 +38524,16 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00(lua_State* 
  {
   CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureCaratIsVisible'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureCaretIsVisible'",NULL);
 #endif
  {
-  self->ensureCaratIsVisible();
+  self->ensureCaretIsVisible();
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ensureCaratIsVisible'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'ensureCaretIsVisible'.",&tolua_err);
  return 0;
 #endif
 }
@@ -39976,9 +39976,9 @@ static int tolua_CEGUI_CEGUI_Combobox_getValidationString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getCaratIndex of class  CEGUI::Combobox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_getCaratIndex00
-static int tolua_CEGUI_CEGUI_Combobox_getCaratIndex00(lua_State* tolua_S)
+/* method: getCaretIndex of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_getCaretIndex00
+static int tolua_CEGUI_CEGUI_Combobox_getCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -39992,17 +39992,17 @@ static int tolua_CEGUI_CEGUI_Combobox_getCaratIndex00(lua_State* tolua_S)
  {
   const CEGUI::Combobox* self = (const CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaretIndex'",NULL);
 #endif
  {
-  unsigned long tolua_ret = (unsigned long)  self->getCaratIndex();
+  unsigned long tolua_ret = (unsigned long)  self->getCaretIndex();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -41018,9 +41018,9 @@ static int tolua_CEGUI_CEGUI_Combobox_setValidationString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setCaratIndex of class  CEGUI::Combobox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_setCaratIndex00
-static int tolua_CEGUI_CEGUI_Combobox_setCaratIndex00(lua_State* tolua_S)
+/* method: setCaretIndex of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_setCaretIndex00
+static int tolua_CEGUI_CEGUI_Combobox_setCaretIndex00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -41034,18 +41034,18 @@ static int tolua_CEGUI_CEGUI_Combobox_setCaratIndex00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Combobox* self = (CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
-  unsigned long carat_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
+  unsigned long caret_pos = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaratIndex'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaretIndex'",NULL);
 #endif
  {
-  self->setCaratIndex(carat_pos);
+  self->setCaretIndex(caret_pos);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setCaratIndex'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setCaretIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -59642,7 +59642,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isTextMasked",tolua_CEGUI_CEGUI_Editbox_isTextMasked00);
    tolua_function(tolua_S,"isTextValid",tolua_CEGUI_CEGUI_Editbox_isTextValid00);
    tolua_function(tolua_S,"getValidationString",tolua_CEGUI_CEGUI_Editbox_getValidationString00);
-   tolua_function(tolua_S,"getCaratIndex",tolua_CEGUI_CEGUI_Editbox_getCaratIndex00);
+   tolua_function(tolua_S,"getCaretIndex",tolua_CEGUI_CEGUI_Editbox_getCaretIndex00);
    tolua_function(tolua_S,"getSelectionStartIndex",tolua_CEGUI_CEGUI_Editbox_getSelectionStartIndex00);
    tolua_function(tolua_S,"getSelectionEndIndex",tolua_CEGUI_CEGUI_Editbox_getSelectionEndIndex00);
    tolua_function(tolua_S,"getSelectionLength",tolua_CEGUI_CEGUI_Editbox_getSelectionLength00);
@@ -59651,7 +59651,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setReadOnly",tolua_CEGUI_CEGUI_Editbox_setReadOnly00);
    tolua_function(tolua_S,"setTextMasked",tolua_CEGUI_CEGUI_Editbox_setTextMasked00);
    tolua_function(tolua_S,"setValidationString",tolua_CEGUI_CEGUI_Editbox_setValidationString00);
-   tolua_function(tolua_S,"setCaratIndex",tolua_CEGUI_CEGUI_Editbox_setCaratIndex00);
+   tolua_function(tolua_S,"setCaretIndex",tolua_CEGUI_CEGUI_Editbox_setCaretIndex00);
    tolua_function(tolua_S,"setSelection",tolua_CEGUI_CEGUI_Editbox_setSelection00);
    tolua_function(tolua_S,"setMaskCodePoint",tolua_CEGUI_CEGUI_Editbox_setMaskCodePoint00);
    tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_Editbox_setMaxTextLength00);
@@ -59660,7 +59660,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"MultiLineEditbox");
    tolua_function(tolua_S,"hasInputFocus",tolua_CEGUI_CEGUI_MultiLineEditbox_hasInputFocus00);
    tolua_function(tolua_S,"isReadOnly",tolua_CEGUI_CEGUI_MultiLineEditbox_isReadOnly00);
-   tolua_function(tolua_S,"getCaratIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getCaratIndex00);
+   tolua_function(tolua_S,"getCaretIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getCaretIndex00);
    tolua_function(tolua_S,"getSelectionStartIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionStartIndex00);
    tolua_function(tolua_S,"getSelectionEndIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionEndIndex00);
    tolua_function(tolua_S,"getSelectionLength",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionLength00);
@@ -59672,10 +59672,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getTextRenderArea",tolua_CEGUI_CEGUI_MultiLineEditbox_getTextRenderArea00);
    tolua_function(tolua_S,"getLineNumberFromIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getLineNumberFromIndex00);
    tolua_function(tolua_S,"setReadOnly",tolua_CEGUI_CEGUI_MultiLineEditbox_setReadOnly00);
-   tolua_function(tolua_S,"setCaratIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_setCaratIndex00);
+   tolua_function(tolua_S,"setCaretIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_setCaretIndex00);
    tolua_function(tolua_S,"setSelection",tolua_CEGUI_CEGUI_MultiLineEditbox_setSelection00);
    tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_MultiLineEditbox_setMaxTextLength00);
-   tolua_function(tolua_S,"ensureCaratIsVisible",tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00);
+   tolua_function(tolua_S,"ensureCaretIsVisible",tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaretIsVisible00);
    tolua_function(tolua_S,"setWordWrapping",tolua_CEGUI_CEGUI_MultiLineEditbox_setWordWrapping00);
    tolua_function(tolua_S,"setShowVertScrollbar",tolua_CEGUI_CEGUI_MultiLineEditbox_setShowVertScrollbar00);
    tolua_function(tolua_S,"setSelectionBrushImage",tolua_CEGUI_CEGUI_MultiLineEditbox_setSelectionBrushImage00);
@@ -59729,7 +59729,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isReadOnly",tolua_CEGUI_CEGUI_Combobox_isReadOnly00);
    tolua_function(tolua_S,"isTextValid",tolua_CEGUI_CEGUI_Combobox_isTextValid00);
    tolua_function(tolua_S,"getValidationString",tolua_CEGUI_CEGUI_Combobox_getValidationString00);
-   tolua_function(tolua_S,"getCaratIndex",tolua_CEGUI_CEGUI_Combobox_getCaratIndex00);
+   tolua_function(tolua_S,"getCaretIndex",tolua_CEGUI_CEGUI_Combobox_getCaretIndex00);
    tolua_function(tolua_S,"getSelectionStartIndex",tolua_CEGUI_CEGUI_Combobox_getSelectionStartIndex00);
    tolua_function(tolua_S,"getSelectionEndIndex",tolua_CEGUI_CEGUI_Combobox_getSelectionEndIndex00);
    tolua_function(tolua_S,"getSelectionLength",tolua_CEGUI_CEGUI_Combobox_getSelectionLength00);
@@ -59761,7 +59761,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setSingleClickEnabled",tolua_CEGUI_CEGUI_Combobox_setSingleClickEnabled00);
    tolua_function(tolua_S,"setReadOnly",tolua_CEGUI_CEGUI_Combobox_setReadOnly00);
    tolua_function(tolua_S,"setValidationString",tolua_CEGUI_CEGUI_Combobox_setValidationString00);
-   tolua_function(tolua_S,"setCaratIndex",tolua_CEGUI_CEGUI_Combobox_setCaratIndex00);
+   tolua_function(tolua_S,"setCaretIndex",tolua_CEGUI_CEGUI_Combobox_setCaretIndex00);
    tolua_function(tolua_S,"setSelection",tolua_CEGUI_CEGUI_Combobox_setSelection00);
    tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_Combobox_setMaxTextLength00);
   tolua_endmodule(tolua_S);

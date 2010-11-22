@@ -101,26 +101,26 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
     imagery->render(*w);
 }
 
-void FalagardMultiLineEditbox::cacheCaratImagery(const Rect& textArea)
+void FalagardMultiLineEditbox::cacheCaretImagery(const Rect& textArea)
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
     Font* fnt = w->getFont();
 
-    // require a font so that we can calculate carat position.
+    // require a font so that we can calculate caret position.
     if (fnt)
     {
-        // get line that carat is in
-        size_t caratLine = w->getLineNumberFromIndex(w->getCaratIndex());
+        // get line that caret is in
+        size_t caretLine = w->getLineNumberFromIndex(w->getCaretIndex());
 
         const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
 
-        // if carat line is valid.
-        if (caratLine < d_lines.size())
+        // if caret line is valid.
+        if (caretLine < d_lines.size())
         {
-            // calculate pixel offsets to where carat should be drawn
-            size_t caratLineIdx = w->getCaratIndex() - d_lines[caratLine].d_startIdx;
-            float ypos = caratLine * fnt->getLineSpacing();
-            float xpos = fnt->getTextExtent(w->getText().substr(d_lines[caratLine].d_startIdx, caratLineIdx));
+            // calculate pixel offsets to where caret should be drawn
+            size_t caretLineIdx = w->getCaretIndex() - d_lines[caretLine].d_startIdx;
+            float ypos = caretLine * fnt->getLineSpacing();
+            float xpos = fnt->getTextExtent(w->getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
 
 //             // get base offset to target layer for cursor.
 //             Renderer* renderer = System::getSingleton().getRenderer();
@@ -128,19 +128,19 @@ void FalagardMultiLineEditbox::cacheCaratImagery(const Rect& textArea)
 
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = getLookNFeel();
-            // get carat imagery
-            const ImagerySection& caratImagery = wlf.getImagerySection("Carat");
+            // get caret imagery
+            const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
 
-            // calculate finat destination area for carat
-            Rect caratArea;
-            caratArea.d_left    = textArea.d_left + xpos;
-            caratArea.d_top     = textArea.d_top + ypos;
-            caratArea.setWidth(caratImagery.getBoundingRect(*w).getSize().d_width);
-            caratArea.setHeight(fnt->getLineSpacing());
-            caratArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
+            // calculate finat destination area for caret
+            Rect caretArea;
+            caretArea.d_left    = textArea.d_left + xpos;
+            caretArea.d_top     = textArea.d_top + ypos;
+            caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
+            caretArea.setHeight(fnt->getLineSpacing());
+            caretArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
 
-            // cache the carat image for rendering.
-            caratImagery.render(*w, caratArea, 0, &textArea);
+            // cache the caret image for rendering.
+            caretImagery.render(*w, caretArea, 0, &textArea);
         }
     }
 }
@@ -158,7 +158,7 @@ void FalagardMultiLineEditbox::render()
     // draw caret
     if ((w->hasInputFocus() && !w->isReadOnly()) &&
         (!d_blinkCaret || d_showCaret))
-            cacheCaratImagery(textarea);
+            cacheCaretImagery(textarea);
 }
 
 void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
