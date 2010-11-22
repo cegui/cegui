@@ -1491,7 +1491,7 @@
                 <Image type="Background" imageset="OgreTrayImages" image="MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1711,7 +1711,7 @@
                 <Image type="Background" imageset="OgreTrayImages" image="MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>

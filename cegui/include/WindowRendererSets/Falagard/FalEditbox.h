@@ -61,7 +61,7 @@ namespace CEGUI
                              selection area.)
 
     NamedAreas:
-        - TextArea: area where text, selection, and carat imagery will appear.
+        - TextArea: area where text, selection, and caret imagery will appear.
 
     PropertyDefinitions (optional)
         - NormalTextColour: property that accesses a colour value to be used to
@@ -72,7 +72,7 @@ namespace CEGUI
                               not defined, the colour defaults to black.
 
     Imagery Sections:
-        - Carat
+        - Caret
 */
 class FALAGARDBASE_API FalagardEditbox : public EditboxWindowRenderer
 {

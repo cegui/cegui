@@ -227,19 +227,19 @@ void register_Editbox_class(){
         typedef bp::class_< Editbox_wrapper, bp::bases< CEGUI::Window >, boost::noncopyable > Editbox_exposer_t;
         Editbox_exposer_t Editbox_exposer = Editbox_exposer_t( "Editbox", "! Base class for an Editbox widget\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "! Constructor for Editbox class.\n") );
         bp::scope Editbox_scope( Editbox_exposer );
-        { //::CEGUI::Editbox::getCaratIndex
+        { //::CEGUI::Editbox::getCaretIndex
         
-            typedef ::size_t ( ::CEGUI::Editbox::*getCaratIndex_function_type )(  ) const;
+            typedef ::size_t ( ::CEGUI::Editbox::*getCaretIndex_function_type )(  ) const;
             
             Editbox_exposer.def( 
-                "getCaratIndex"
-                , getCaratIndex_function_type( &::CEGUI::Editbox::getCaratIndex )
+                "getCaretIndex"
+                , getCaretIndex_function_type( &::CEGUI::Editbox::getCaretIndex )
                 , "*!\n\
                 \n\
-                    return the current position of the carat.\n\
+                    return the current position of the caret.\n\
             \n\
                 @return\n\
-                    Index of the insert carat relative to the start of the text.\n\
+                    Index of the insert caret relative to the start of the text.\n\
                 *\n" );
         
         }
@@ -295,7 +295,7 @@ void register_Editbox_class(){
             \n\
                 @return\n\
                     Index of the selection end point relative to the start of the text.  If\n\
-                    no selection is defined this function returns the position of the carat.\n\
+                    no selection is defined this function returns the position of the caret.\n\
                 *\n" );
         
         }
@@ -331,7 +331,7 @@ void register_Editbox_class(){
                 @return\n\
                     Index of the selection start point relative to the start of the text.\n\
                     If no selection is defined this function returns the position of the\n\
-                    carat.\n\
+                    caret.\n\
                 *\n" );
         
         }
@@ -438,22 +438,22 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Editbox::setCaratIndex
+        { //::CEGUI::Editbox::setCaretIndex
         
-            typedef void ( ::CEGUI::Editbox::*setCaratIndex_function_type )( ::size_t ) ;
+            typedef void ( ::CEGUI::Editbox::*setCaretIndex_function_type )( ::size_t ) ;
             
             Editbox_exposer.def( 
-                "setCaratIndex"
-                , setCaratIndex_function_type( &::CEGUI::Editbox::setCaratIndex )
-                , ( bp::arg("carat_pos") )
+                "setCaretIndex"
+                , setCaretIndex_function_type( &::CEGUI::Editbox::setCaretIndex )
+                , ( bp::arg("caret_pos") )
                 , "*!\n\
                 \n\
-                    Set the current position of the carat.\n\
+                    Set the current position of the caret.\n\
             \n\
-                @param carat_pos\n\
-                    New index for the insert carat relative to the start of the text.  If\n\
+                @param caret_pos\n\
+                    New index for the insert caret relative to the start of the text.  If\n\
                     the value specified is greater than the number of characters in the\n\
-                    Editbox, the carat is positioned at the end of the text.\n\
+                    Editbox, the caret is positioned at the end of the text.\n\
             \n\
                 @return\n\
                     Nothing.\n\
@@ -602,8 +602,8 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        Editbox_exposer.add_static_property( "EventCaratMoved"
-                        , bp::make_getter( &CEGUI::Editbox::EventCaratMoved
+        Editbox_exposer.add_static_property( "EventCaretMoved"
+                        , bp::make_getter( &CEGUI::Editbox::EventCaretMoved
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Editbox_exposer.add_static_property( "EventEditboxFull"
                         , bp::make_getter( &CEGUI::Editbox::EventEditboxFull
