@@ -28,7 +28,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIBase.cpp \
                       CEGUIBasicInterpolators.cpp \
                       CEGUIBasicRenderedStringParser.cpp \
-                      CEGUIBiDiVisualMapping.cpp \
+                      CEGUIBidiVisualMapping.cpp \
                       CEGUIBoundSlot.cpp \
                       CEGUICentredRenderedString.cpp \
                       CEGUIChainedXMLHandler.cpp \

@@ -37,7 +37,7 @@
 #include "CEGUIAnimationManager.h"
 #include "CEGUIBasicInterpolators.h"
 #include "CEGUIBasicRenderedStringParser.h"
-#include "CEGUIBiDiVisualMapping.h"
+#include "CEGUIBidiVisualMapping.h"
 #include "CEGUICentredRenderedString.h"
 #include "CEGUIcolour.h"
 #include "CEGUIColourRect.h"

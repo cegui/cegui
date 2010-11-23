@@ -41,7 +41,7 @@ class Animation;
 class AnimationInstance;
 class AnimationManager;
 class BasicRenderedStringParser;
-class BiDiVisualMapping;
+class BidiVisualMapping;
 class CentredRenderedString;
 class colour;
 class ColourRect;

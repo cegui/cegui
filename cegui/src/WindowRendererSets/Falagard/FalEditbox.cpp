@@ -35,7 +35,7 @@
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIFont.h"
-#include "CEGUIBiDiVisualMapping.h"
+#include "CEGUIBidiVisualMapping.h"
 
 #include <stdio.h>
 
@@ -141,13 +141,13 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     if ((visual_text.size() > 0) && (caretIndex > 0))
     {
         size_t curCaretIndex = w->getCaretIndex();
-        BidiCharType charBeforeCaretType = w->getBiDiVisualMapping()->
+        BidiCharType charBeforeCaretType = w->getBidiVisualMapping()->
             getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
         for (; BCT_NEUTRAL == charBeforeCaretType &&
                (visual_text.size() > curCaretIndex); curCaretIndex++)
         {
-            charBeforeCaretType = w->getBiDiVisualMapping()->
+            charBeforeCaretType = w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[curCaretIndex - 1]);
         }
 
@@ -161,8 +161,8 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
         caretIndex--;
 
     // we need to find the caret pos by the logical to visual map
-    if (w->getBiDiVisualMapping()->getV2lMapping().size() > caretIndex)
-        caretIndex = w->getBiDiVisualMapping()->getL2vMapping()[caretIndex];
+    if (w->getBidiVisualMapping()->getV2lMapping().size() > caretIndex)
+        caretIndex = w->getBidiVisualMapping()->getL2vMapping()[caretIndex];
 
     // for non RTL char - the caret pos is after the char
     if (!currCharIsRtl)
@@ -173,7 +173,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     {
         bool firstCharRtl =
             (visual_text.size() > 0) &&
-            (BCT_RIGHT_TO_LEFT == w->getBiDiVisualMapping()->
+            (BCT_RIGHT_TO_LEFT == w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[0]));
 
         if (!firstCharRtl)
@@ -320,7 +320,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     }
     else
     {
-        // there is highlighted text - because of the BiDi support - the
+        // there is highlighted text - because of the Bidi support - the
         // highlighted area can be in some cases nonconsecutive.
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
@@ -332,9 +332,9 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             size_t realPos = 0;
 
             // get he visual pos of the char
-            if (w->getBiDiVisualMapping()->getV2lMapping().size() > i)
+            if (w->getBidiVisualMapping()->getV2lMapping().size() > i)
             {
-                realPos = w->getBiDiVisualMapping()->getV2lMapping()[i];
+                realPos = w->getBidiVisualMapping()->getV2lMapping()[i];
             }
 
             // check if it is in the highlighted region

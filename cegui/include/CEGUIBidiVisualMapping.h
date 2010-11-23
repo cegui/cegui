@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIBiDiVisualMapping.h
+    filename:   CEGUIBidiVisualMapping.h
     created:    Wed Aug 5 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIBiDiVisualMapping_h_
-#define _CEGUIBiDiVisualMapping_h_
+#ifndef _CEGUIBidiVisualMapping_h_
+#define _CEGUIBidiVisualMapping_h_
 
 #include "CEGUIString.h"
 #include <vector>
@@ -47,25 +47,25 @@ enum BidiCharType
     BCT_NEUTRAL
 };
 
-//! Abstract class to wrap a BiDi visual mapping of a text string.
-class CEGUIEXPORT BiDiVisualMapping
+//! Abstract class to wrap a Bidi visual mapping of a text string.
+class CEGUIEXPORT BidiVisualMapping
 {
 public:
     //! type definition for collection used to hold mapping index lists.
     typedef std::vector<int> StrIndexList;
 
     //! Destructor.
-    virtual ~BiDiVisualMapping();
+    virtual ~BidiVisualMapping();
 
     /*!
     \brief
-        Gets the BiDi char type of a char.
+        Gets the Bidi char type of a char.
 
     \param charToCheck
         The utf32 character code that will be checked.
 
     \return
-        One of the BidiCharType enumerated values indicating the BiDi char type.
+        One of the BidiCharType enumerated values indicating the Bidi char type.
     */
     virtual BidiCharType getBidiCharType(const utf32 char_to_check) const = 0;
 
@@ -132,4 +132,4 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIBiDiVisualMapping_h_
+#endif  // end of guard _CEGUIBidiVisualMapping_h_

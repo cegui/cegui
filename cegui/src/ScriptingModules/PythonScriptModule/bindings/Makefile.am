@@ -23,7 +23,7 @@ output/CEGUI/AnimationManager.pypp.cpp \
 output/CEGUI/Animation.pypp.cpp \
 output/CEGUI/BaseDim.pypp.cpp \
 output/CEGUI/BasicRenderedStringParser.pypp.cpp \
-output/CEGUI/BiDiVisualMapping.pypp.cpp \
+output/CEGUI/BidiVisualMapping.pypp.cpp \
 output/CEGUI/BoundSlot.pypp.cpp \
 output/CEGUI/ButtonBase.pypp.cpp \
 output/CEGUI/PyCEGUI_enumerations.pypp.cpp \
@@ -295,7 +295,7 @@ output/CEGUI/AnimationManager.pypp.hpp \
 output/CEGUI/Animation.pypp.hpp \
 output/CEGUI/BaseDim.pypp.hpp \
 output/CEGUI/BasicRenderedStringParser.pypp.hpp \
-output/CEGUI/BiDiVisualMapping.pypp.hpp \
+output/CEGUI/BidiVisualMapping.pypp.hpp \
 output/CEGUI/BoundSlot.pypp.hpp \
 output/CEGUI/ButtonBase.pypp.hpp \
 output/CEGUI/PyCEGUI_enumerations.pypp.hpp \

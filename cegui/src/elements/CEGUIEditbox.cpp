@@ -36,7 +36,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
 #include "CEGUIPCRERegexMatcher.h"
-#include "CEGUIBiDiVisualMapping.h"
+#include "CEGUIBidiVisualMapping.h"
 #include <string.h>
 
 // Start of CEGUI namespace section
