@@ -296,9 +296,6 @@ System::System(Renderer& renderer,
     // add the window factories for the core window types
     addStandardWindowFactories();
 
-    // GUISheet's name was changed, register an alias so both can be used
-    WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
-
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     logger.logEvent("CEGUI::System singleton created. " + String(addr_buff));
@@ -1455,7 +1452,7 @@ void System::outputLogHeader()
 void System::addStandardWindowFactories()
 {
     // Add factories for types all base elements
-    WindowFactoryManager::addFactory< TplWindowFactory<GUISheet> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<DefaultWindow> >();
     WindowFactoryManager::addFactory< TplWindowFactory<DragContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<ScrolledContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<ClippedContainer> >();

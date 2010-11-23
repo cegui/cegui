@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIGUISheet.h"
+#include "elements/CEGUIDefaultWindow.h"
 
 
 // Start of CEGUI namespace section
@@ -35,12 +35,12 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 // type name for this widget
-const String GUISheet::WidgetTypeName( "DefaultWindow" );
+const String DefaultWindow::WidgetTypeName("DefaultWindow");
 
 /*************************************************************************
     Constructor
 *************************************************************************/
-GUISheet::GUISheet(const String& type, const String& name) :
+DefaultWindow::DefaultWindow(const String& type, const String& name) :
     Window(type, name)
 {
     UVector2 sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
@@ -49,7 +49,7 @@ GUISheet::GUISheet(const String& type, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseMove(MouseEventArgs& e)
+void DefaultWindow::onMouseMove(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseMove(e);
@@ -57,7 +57,7 @@ void GUISheet::onMouseMove(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseWheel(MouseEventArgs& e)
+void DefaultWindow::onMouseWheel(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseWheel(e);
@@ -65,7 +65,7 @@ void GUISheet::onMouseWheel(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseButtonDown(MouseEventArgs& e)
+void DefaultWindow::onMouseButtonDown(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseButtonDown(e);
@@ -73,7 +73,7 @@ void GUISheet::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseButtonUp(MouseEventArgs& e)
+void DefaultWindow::onMouseButtonUp(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseButtonUp(e);
@@ -81,7 +81,7 @@ void GUISheet::onMouseButtonUp(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseClicked(MouseEventArgs& e)
+void DefaultWindow::onMouseClicked(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseClicked(e);
@@ -91,7 +91,7 @@ void GUISheet::onMouseClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseDoubleClicked(MouseEventArgs& e)
+void DefaultWindow::onMouseDoubleClicked(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseDoubleClicked(e);
@@ -99,7 +99,7 @@ void GUISheet::onMouseDoubleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::onMouseTripleClicked(MouseEventArgs& e)
+void DefaultWindow::onMouseTripleClicked(MouseEventArgs& e)
 {
     // always call the base class handler
     Window::onMouseTripleClicked(e);
@@ -107,7 +107,7 @@ void GUISheet::onMouseTripleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void GUISheet::updateMouseEventHandled(MouseEventArgs& e) const
+void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
     // we do /not/ mark mouse events as handled.
@@ -116,7 +116,7 @@ void GUISheet::updateMouseEventHandled(MouseEventArgs& e) const
 }
 
 //----------------------------------------------------------------------------//
-bool GUISheet::moveToFront_impl(bool wasClicked)
+bool DefaultWindow::moveToFront_impl(bool wasClicked)
 {
     const bool took_action = Window::moveToFront_impl(wasClicked);
 
