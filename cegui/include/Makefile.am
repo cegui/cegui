@@ -7,7 +7,6 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIAnimationManager.h \
                  CEGUIAnimation_xmlHandler.h \
                  CEGUIBase.h \
-                 CEGUIBasicInterpolators.h \
                  CEGUIBasicRenderedStringParser.h \
                  CEGUIBidiVisualMapping.h \
                  CEGUIBoundSlot.h \
@@ -99,6 +98,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
                  CEGUITextureTarget.h \
+                 CEGUITplInterpolators.h \
                  CEGUITplWindowFactory.h \
                  CEGUITplWindowRendererFactory.h \
                  CEGUITplWRFactoryRegisterer.h \

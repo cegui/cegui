@@ -68,6 +68,7 @@ class PropertyHelper<const T>
 public:
     typedef typename PropertyHelper<T>::return_type return_type;
     typedef typename PropertyHelper<T>::pass_type pass_type;
+    typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
     static inline return_type fromString(const String& str)
     {
@@ -87,6 +88,7 @@ class PropertyHelper<const T&>
 public:
     typedef typename PropertyHelper<T>::return_type return_type;
     typedef typename PropertyHelper<T>::pass_type pass_type;
+    typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
     static inline return_type fromString(const String& str)
     {
@@ -106,6 +108,7 @@ class PropertyHelper<const T*>
 public:
     typedef typename PropertyHelper<T*>::return_type return_type;
     typedef typename PropertyHelper<T*>::pass_type pass_type;
+    typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
     static inline return_type fromString(const String& str)
     {
@@ -119,13 +122,33 @@ public:
 };
 
 template<>
+class PropertyHelper<String>
+{
+public:
+    typedef const String& return_type;
+    typedef const String& pass_type;
+    typedef const String& string_return_type;
+
+    static return_type fromString(const String& str)
+    {
+        return str;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        return val;
+    }
+};
+
+template<>
 class PropertyHelper<float>
 {
 public:
-    typedef float return_type;
-    typedef float pass_type;
-
-    static float fromString(const String& str)
+    typedef const float return_type;
+    typedef const float pass_type;
+    typedef const String string_return_type;
+    
+    static return_type fromString(const String& str)
     {
         float val = 0;
         sscanf(str.c_str(), " %g", &val);
@@ -133,7 +156,7 @@ public:
         return val;
     }
 
-    static String toString(float val)
+    static string_return_type toString(pass_type val)
     {
         char buff[64];
         snprintf(buff, sizeof(buff), "%g", val);
@@ -146,10 +169,11 @@ template<>
 class PropertyHelper<int>
 {
 public:
-    typedef int return_type;
-    typedef int pass_type;
-
-    static int fromString(const String& str)
+    typedef const int return_type;
+    typedef const int pass_type;
+    typedef const String string_return_type;
+    
+    static return_type fromString(const String& str)
     {
         int val = 0;
         sscanf(str.c_str(), " %d", &val);
@@ -157,7 +181,7 @@ public:
         return val;
     }
 
-    static String toString(int val)
+    static string_return_type toString(pass_type val)
     {
         char buff[64];
         snprintf(buff, sizeof(buff), "%d", val);
@@ -170,18 +194,19 @@ template<>
 class PropertyHelper<uint>
 {
 public:
-    typedef uint return_type;
-    typedef uint pass_type;
-
+    typedef const uint return_type;
+    typedef const uint pass_type;
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
-        return_type val = 0;
+        uint val = 0;
         sscanf(str.c_str(), " %u", &val);
 
         return val;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[64];
         snprintf(buff, sizeof(buff), "%u", val);
@@ -194,17 +219,23 @@ template<>
 class PropertyHelper<bool>
 {
 public:
-    typedef bool return_type;
-    typedef bool pass_type;
-
+    typedef const bool return_type;
+    typedef const bool pass_type;
+    typedef const String& string_return_type;
+    
     static return_type fromString(const String& str)
     {
         return (str == "True" || str == "true");
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
-        return val ? "True" : "False";
+        // yeah I am that awesome ;-D
+        
+        static String True("True");
+        static String False("False");
+        
+        return val ? True : False;
     }
 };
 
@@ -212,9 +243,10 @@ template<>
 class PropertyHelper<Size>
 {
 public:
-    typedef Size return_type;
+    typedef const Size return_type;
     typedef const Size& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         Size val(0, 0);
@@ -223,7 +255,7 @@ public:
         return val;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[128];
         snprintf(buff, sizeof(buff), "w:%g h:%g", val.d_width, val.d_height);
@@ -236,8 +268,9 @@ template<>
 class PropertyHelper<Vector2>
 {
 public:
-    typedef Vector2 return_type;
+    typedef const Vector2 return_type;
     typedef const Vector2& pass_type;
+    typedef const String string_return_type;
 
     static return_type fromString(const String& str)
     {
@@ -247,7 +280,7 @@ public:
         return val;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[128];
         snprintf(buff, sizeof(buff), "x:%g y:%g", val.d_x, val.d_y);
@@ -260,9 +293,10 @@ template<>
 class PropertyHelper<Vector3>
 {
 public:
-    typedef Vector3 return_type;
+    typedef const Vector3 return_type;
     typedef const Vector3& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         Vector3 val(0, 0, 0);
@@ -271,7 +305,7 @@ public:
         return val;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[128];
         snprintf(buff, sizeof(buff), "x:%g y:%g z:%g", val.d_x, val.d_y, val.d_z);
@@ -284,9 +318,10 @@ template<>
 class PropertyHelper<Rect>
 {
 public:
-    typedef Rect return_type;
+    typedef const Rect return_type;
     typedef const Rect& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         Rect val(0, 0, 0, 0);
@@ -295,7 +330,7 @@ public:
         return val;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[256];
         snprintf(buff, sizeof(buff), "l:%g t:%g r:%g b:%g",
@@ -311,19 +346,21 @@ class CEGUIEXPORT PropertyHelper<Image*>
 public:
     typedef const Image* return_type;
     typedef const Image* const pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str);
 
-    static String toString(pass_type val);
+    static string_return_type toString(pass_type val);
 };
 
 template<>
 class PropertyHelper<Colour>
 {
 public:
-    typedef Colour return_type;
+    typedef const Colour return_type;
     typedef const Colour& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         argb_t val = 0xFF000000;
@@ -332,7 +369,7 @@ public:
         return Colour(val);
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[16];
         sprintf(buff, "%.8X", val.getARGB());
@@ -345,9 +382,10 @@ template<>
 class PropertyHelper<ColourRect>
 {
 public:
-    typedef ColourRect return_type;
+    typedef const ColourRect return_type;
     typedef const ColourRect& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         if (str.length() == 8)
@@ -363,7 +401,7 @@ public:
         return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[64];
         sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
@@ -376,9 +414,10 @@ template<>
 class PropertyHelper<UDim>
 {
 public:
-    typedef UDim return_type;
+    typedef const UDim return_type;
     typedef const UDim& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         UDim ud;
@@ -387,7 +426,7 @@ public:
         return ud;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[128];
         snprintf(buff, sizeof(buff), "{%g,%g}", val.d_scale, val.d_offset);
@@ -400,9 +439,10 @@ template<>
 class PropertyHelper<UVector2>
 {
 public:
-    typedef UVector2 return_type;
+    typedef const UVector2 return_type;
     typedef const UVector2& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         UVector2 uv;
@@ -413,7 +453,7 @@ public:
         return uv;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[256];
         snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
@@ -427,9 +467,10 @@ template<>
 class PropertyHelper<URect>
 {
 public:
-    typedef URect return_type;
+    typedef const URect return_type;
     typedef const URect& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         URect ur;
@@ -445,7 +486,7 @@ public:
         return ur;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[512];
         snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
@@ -462,9 +503,10 @@ template<>
 class PropertyHelper<UBox>
 {
 public:
-    typedef UBox return_type;
+    typedef const UBox return_type;
     typedef const UBox& pass_type;
-
+    typedef const String string_return_type;
+    
     static return_type fromString(const String& str)
     {
         UBox ret;
@@ -480,7 +522,7 @@ public:
         return ret;
     }
 
-    static String toString(pass_type val)
+    static string_return_type toString(pass_type val)
     {
         char buff[512];
         snprintf(buff, sizeof(buff), "{top:{%g,%g},left:{%g,%g},bottom:{%g,%g},right:{%g,%g}}",
@@ -494,6 +536,5 @@ public:
 };
 
 } // End of  CEGUI namespace section
-
 
 #endif	// end of guard _CEGUIPropertyHelper_h_

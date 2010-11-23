@@ -73,7 +73,7 @@ PropertyHelper<Image*>::fromString(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-String PropertyHelper<Image*>::toString(
+PropertyHelper<Image*>::string_return_type PropertyHelper<Image*>::toString(
     PropertyHelper<Image*>::pass_type val)
 {
     return val ? String("set:" + val->getImagesetName() + " image:" + val->getName()) : String("");
