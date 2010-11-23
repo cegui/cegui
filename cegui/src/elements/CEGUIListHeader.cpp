@@ -81,7 +81,7 @@ const float	ListHeader::MinimumSegmentPixelWidth	= 20.0f;
 /*************************************************************************
     Child Widget name suffix constants
 *************************************************************************/
-const char ListHeader::SegmentNameSuffix[] = "__auto_seg_";
+const String ListHeader::SegmentNameSuffix("__auto_seg_");
 
 
 

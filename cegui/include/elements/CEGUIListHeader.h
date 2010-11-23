@@ -197,7 +197,8 @@ public:
     /*************************************************************************
         Child Widget name suffix constants
     *************************************************************************/
-    static const char SegmentNameSuffix[];          //!< Widget name suffix for header segments.
+    //! Widget name suffix for header segments.
+    static const String SegmentNameSuffix;
 
 
 	/*************************************************************************
