@@ -442,7 +442,7 @@ protected:
     *************************************************************************/
     String d_textLogical;
     //! pointer to bidirection support object
-    BiDiVisualMapping* d_bidiVisualMapping;
+    BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     String  d_tooltipText;  //!< Text for the individual tooltip of this item

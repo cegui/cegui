@@ -636,7 +636,7 @@ protected:
     //! Text for this tree item.  If not rendered, still used for sorting.
     String               d_textLogical;            //!< text rendered by this component.
     //! pointer to bidirection support object
-    BiDiVisualMapping* d_bidiVisualMapping;
+    BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     //! Text for the individual tooltip of this item.

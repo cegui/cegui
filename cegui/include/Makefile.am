@@ -9,7 +9,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIBasicInterpolators.h \
                  CEGUIBasicRenderedStringParser.h \
-                 CEGUIBiDiVisualMapping.h \
+                 CEGUIBidiVisualMapping.h \
                  CEGUIBoundSlot.h \
                  CEGUICentredRenderedString.h \
                  CEGUIChainedXMLHandler.h \

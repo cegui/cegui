@@ -3150,8 +3150,8 @@ public:
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2 getUnprojectedPosition(const Vector2& pos) const;
 
-    //! return the pointer to the BiDiVisualMapping for this window, if any.
-    const BiDiVisualMapping* getBiDiVisualMapping() const
+    //! return the pointer to the BidiVisualMapping for this window, if any.
+    const BidiVisualMapping* getBidiVisualMapping() const
         {return d_bidiVisualMapping;}
 
     //! Add the named property to the XML ban list for this window.
@@ -4242,7 +4242,7 @@ protected:
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
     //! pointer to bidirection support object
-    BiDiVisualMapping* d_bidiVisualMapping;
+    BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     //! RenderedString representation of text string as ouput from a parser.

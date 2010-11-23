@@ -47,7 +47,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUIMinibidiVisualMapping.h"
 #else
-    #include "CEGUIBiDiVisualMapping.h"
+    #include "CEGUIBidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -105,7 +105,7 @@ namespace CEGUI
         FalagardComponentBase::operator=(other);
 
         d_textLogical = other.d_textLogical;
-        // note we do not assign the BiDiVisualMapping object, we just mark our
+        // note we do not assign the BidiVisualMapping object, we just mark our
         // existing one as invalid so it's data gets regenerated next time it's
         // needed.
         d_bidiDataValid = false;
@@ -252,7 +252,7 @@ namespace CEGUI
             // fetch text & do bi-directional reordering as needed
             String vis;
             #ifdef CEGUI_BIDI_SUPPORT
-                BiDiVisualMapping::StrIndexList l2v, v2l;
+                BidiVisualMapping::StrIndexList l2v, v2l;
                 d_bidiVisualMapping->reorderFromLogicalToVisual(
                     srcWindow.getProperty(d_textPropertyName), vis, l2v, v2l);
             #else

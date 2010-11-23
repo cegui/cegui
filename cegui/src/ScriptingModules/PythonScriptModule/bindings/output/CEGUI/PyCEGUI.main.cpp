@@ -28,7 +28,7 @@
 
 #include "BasicRenderedStringParser.pypp.hpp"
 
-#include "BiDiVisualMapping.pypp.hpp"
+#include "BidiVisualMapping.pypp.hpp"
 
 #include "BoundSlot.pypp.hpp"
 
@@ -537,7 +537,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_BasicRenderedStringParser_class();
 
-    register_BiDiVisualMapping_class();
+    register_BidiVisualMapping_class();
 
     register_BoundSlot_class();
 

@@ -697,15 +697,15 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getBiDiVisualMapping
+        { //::CEGUI::Window::getBidiVisualMapping
         
-            typedef ::CEGUI::BiDiVisualMapping const * ( ::CEGUI::Window::*getBiDiVisualMapping_function_type )(  ) const;
+            typedef ::CEGUI::BidiVisualMapping const * ( ::CEGUI::Window::*getBidiVisualMapping_function_type )(  ) const;
             
             Window_exposer.def( 
-                "getBiDiVisualMapping"
-                , getBiDiVisualMapping_function_type( &::CEGUI::Window::getBiDiVisualMapping )
+                "getBidiVisualMapping"
+                , getBidiVisualMapping_function_type( &::CEGUI::Window::getBidiVisualMapping )
                 , bp::return_value_policy< bp::reference_existing_object >()
-                , "! return the pointer to the BiDiVisualMapping for this window, if any.\n" );
+                , "! return the pointer to the BidiVisualMapping for this window, if any.\n" );
         
         }
         { //::CEGUI::Window::getCaptureWindow

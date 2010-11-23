@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIBiDiVisualMapping.cpp
+    filename:   CEGUIBidiVisualMapping.cpp
     created:    Wed Aug 5 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,18 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIBiDiVisualMapping.h"
+#include "CEGUIBidiVisualMapping.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-BiDiVisualMapping::~BiDiVisualMapping()
+BidiVisualMapping::~BidiVisualMapping()
 {
 }
 
 //----------------------------------------------------------------------------//
-bool BiDiVisualMapping::updateVisual(const String& logical)
+bool BidiVisualMapping::updateVisual(const String& logical)
 {
     return reorderFromLogicalToVisual(logical, d_textVisual,
                                       d_l2vMapping, d_v2lMapping);
