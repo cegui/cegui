@@ -39,7 +39,7 @@
 #include "CEGUIBasicRenderedStringParser.h"
 #include "CEGUIBidiVisualMapping.h"
 #include "CEGUICentredRenderedString.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 #include "CEGUIColourRect.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIDataContainer.h"

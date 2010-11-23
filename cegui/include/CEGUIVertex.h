@@ -29,7 +29,7 @@
 #define _CEGUIVertex_h_
 
 #include "CEGUIVector.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,7 +45,7 @@ struct Vertex
     //! Texture co-ords to be applied to the vertex.
     Vector2 tex_coords;
     //! colour to be applied to the vertex.
-    colour  colour_val;
+    Colour  colour_val;
 };
 
 } // End of  CEGUI namespace section

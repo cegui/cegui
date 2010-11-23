@@ -287,7 +287,7 @@ RenderEffect* OgreGeometryBuffer::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
-Ogre::RGBA OgreGeometryBuffer::colourToOgre(const colour& col) const
+Ogre::RGBA OgreGeometryBuffer::colourToOgre(const Colour& col) const
 {
     Ogre::ColourValue ocv(col.getRed(),
                           col.getGreen(),

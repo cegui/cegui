@@ -408,10 +408,10 @@ public:
     */
     void draw(GeometryBuffer& buffer, const Rect& source_rect,
               const Rect& dest_rect, const Rect* clip_rect,
-              const colour& top_left_colour = 0xFFFFFFFF,
-              const colour& top_right_colour = 0xFFFFFFFF,
-              const colour& bottom_left_colour = 0xFFFFFFFF,
-              const colour& bottom_right_colour = 0xFFFFFFFF,
+              const Colour& top_left_colour = 0xFFFFFFFF,
+              const Colour& top_right_colour = 0xFFFFFFFF,
+              const Colour& bottom_left_colour = 0xFFFFFFFF,
+              const Colour& bottom_right_colour = 0xFFFFFFFF,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
         draw(buffer, source_rect, dest_rect, clip_rect,

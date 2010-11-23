@@ -203,10 +203,10 @@ public:
     */
     void draw(GeometryBuffer& buffer, const Vector2& position, const Size& size,
               const Rect* clip_rect,
-              const colour& top_left_colour = 0xFFFFFFFF,
-              const colour& top_right_colour = 0xFFFFFFFF,
-              const colour& bottom_left_colour = 0xFFFFFFFF,
-              const colour& bottom_right_colour = 0xFFFFFFFF,
+              const Colour& top_left_colour = 0xFFFFFFFF,
+              const Colour& top_right_colour = 0xFFFFFFFF,
+              const Colour& bottom_left_colour = 0xFFFFFFFF,
+              const Colour& bottom_right_colour = 0xFFFFFFFF,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
         draw(buffer, Rect(position.d_x, position.d_y,
@@ -264,10 +264,10 @@ public:
     */
     void draw(GeometryBuffer& buffer, const Rect& dest_rect,
               const Rect* clip_rect,
-              const colour& top_left_colour = 0xFFFFFFFF,
-              const colour& top_right_colour = 0xFFFFFFFF,
-              const colour& bottom_left_colour = 0xFFFFFFFF,
-              const colour& bottom_right_colour = 0xFFFFFFFF,
+              const Colour& top_left_colour = 0xFFFFFFFF,
+              const Colour& top_right_colour = 0xFFFFFFFF,
+              const Colour& bottom_left_colour = 0xFFFFFFFF,
+              const Colour& bottom_right_colour = 0xFFFFFFFF,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
         draw(buffer, dest_rect, clip_rect,
@@ -417,10 +417,10 @@ public:
     */
     void draw(GeometryBuffer& buffer, const Vector2& position,
               const Rect* clip_rect,
-              const colour& top_left_colour = 0xFFFFFFFF,
-              const colour& top_right_colour = 0xFFFFFFFF,
-              const colour& bottom_left_colour = 0xFFFFFFFF,
-              const colour& bottom_right_colour = 0xFFFFFFFF,
+              const Colour& top_left_colour = 0xFFFFFFFF,
+              const Colour& top_right_colour = 0xFFFFFFFF,
+              const Colour& bottom_left_colour = 0xFFFFFFFF,
+              const Colour& bottom_right_colour = 0xFFFFFFFF,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
         draw(buffer, Rect(position.d_x, position.d_y,

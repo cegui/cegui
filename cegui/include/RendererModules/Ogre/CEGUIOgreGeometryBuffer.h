@@ -78,7 +78,7 @@ public:
 
 protected:
     //! convert CEGUI::colour into something Ogre can use
-    Ogre::RGBA colourToOgre(const colour& col) const;
+    Ogre::RGBA colourToOgre(const Colour& col) const;
     //! update cached matrix
     void updateMatrix() const;
     //! Synchronise data in the hardware buffer with what's been added

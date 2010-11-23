@@ -261,7 +261,7 @@ void RenderingWindow::realiseGeometry_impl()
                         Rect(0, 0, tu, tv));
 
     const Rect area(0, 0, d_size.d_width, d_size.d_height);
-    const colour c(1, 1, 1, 1);
+    const Colour c(1, 1, 1, 1);
     Vertex vbuffer[6];
 
     // vertex 0

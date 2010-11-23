@@ -43,7 +43,7 @@ DefaultRenderedStringParser ListboxTextItem::d_noTagsStringParser;
 /*************************************************************************
 	Constants
 *************************************************************************/
-const colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
+const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 
 
 /*************************************************************************
@@ -165,10 +165,10 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
 /*************************************************************************
 	Set the colours used for text rendering.	
 *************************************************************************/
-void ListboxTextItem::setTextColours(colour top_left_colour,
-                                     colour top_right_colour,
-                                     colour bottom_left_colour,
-                                     colour bottom_right_colour)
+void ListboxTextItem::setTextColours(Colour top_left_colour,
+                                     Colour top_right_colour,
+                                     Colour bottom_left_colour,
+                                     Colour bottom_right_colour)
 {
 	d_textCols.d_top_left		= top_left_colour;
 	d_textCols.d_top_right		= top_right_colour;

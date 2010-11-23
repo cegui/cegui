@@ -65,13 +65,13 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = . ../../cegui/include/
+INPUT                  = ../../doc/doxygen ../../cegui/include/
 FILE_PATTERNS          = *.h *.cpp *.hpp *.dox
 RECURSIVE              = YES
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
-EXAMPLE_PATH           = ../ ../../cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/
+EXAMPLE_PATH           = ../../doc/ ../../cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/
 EXAMPLE_PATTERNS       =
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             =
@@ -198,7 +198,7 @@ INCLUDED_BY_GRAPH      = YES
 CALL_GRAPH             = NO
 GRAPHICAL_HIERARCHY    = YES
 DOT_IMAGE_FORMAT       = gif
-DOT_PATH               =
+DOT_PATH               = dot
 DOTFILE_DIRS           =
 MAX_DOT_GRAPH_WIDTH    = 1036
 MAX_DOT_GRAPH_HEIGHT   = 1024

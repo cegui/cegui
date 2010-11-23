@@ -64,9 +64,9 @@ public:
         Constants
      *************************************************************************/
     //! Default text colour.
-    static const colour DefaultTextColour;
+    static const Colour DefaultTextColour;
     //! Default selection brush colour.
-    static const colour DefaultSelectionColour;
+    static const Colour DefaultSelectionColour;
 
     /*************************************************************************
         Construction and Destruction
@@ -173,8 +173,8 @@ public:
      \return
         Nothing.
      */
-    void setTextColours(colour top_left_colour, colour top_right_colour,
-                        colour bottom_left_colour, colour bottom_right_colour);
+    void setTextColours(Colour top_left_colour, Colour top_right_colour,
+                        Colour bottom_left_colour, Colour bottom_right_colour);
 
     /*!
      \brief
@@ -186,7 +186,7 @@ public:
      \return
         Nothing.
      */
-    void setTextColours(colour col)
+    void setTextColours(Colour col)
     { setTextColours(col, col, col, col); }
 
     /*!
@@ -477,10 +477,10 @@ public:
      \return
         Nothing.
      */
-    void setSelectionColours(colour top_left_colour,
-                             colour top_right_colour,
-                             colour bottom_left_colour,
-                             colour bottom_right_colour);
+    void setSelectionColours(Colour top_left_colour,
+                             Colour top_right_colour,
+                             Colour bottom_left_colour,
+                             Colour bottom_right_colour);
 
     /*!
      \brief
@@ -492,7 +492,7 @@ public:
      \return
         Nothing.
      */
-    void setSelectionColours(colour col)
+    void setSelectionColours(Colour col)
     { setSelectionColours(col, col, col, col); }
 
 
@@ -625,7 +625,7 @@ protected:
          Return a colour value describing the colour specified by \a col after
          having its alpha component modulated by the value \a alpha.
      */
-    colour calculateModulatedAlphaColour(colour col, float alpha) const;
+    Colour calculateModulatedAlphaColour(Colour col, float alpha) const;
 
     //! parse the text visual string into a RenderString representation.
     void parseTextString() const;

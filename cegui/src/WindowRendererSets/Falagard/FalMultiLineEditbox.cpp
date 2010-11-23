@@ -176,11 +176,11 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
         // calculate final colours to use.
         ColourRect colours;
         float alpha = w->getEffectiveAlpha();
-        colour normalTextCol = getUnselectedTextColour();
+        Colour normalTextCol = getUnselectedTextColour();
         normalTextCol.setAlpha(normalTextCol.getAlpha() * alpha);
-        colour selectTextCol = getSelectedTextColour();
+        Colour selectTextCol = getSelectedTextColour();
         selectTextCol.setAlpha(selectTextCol.getAlpha() * alpha);
-        colour selectBrushCol = w->hasInputFocus() ? getActiveSelectionColour() :
+        Colour selectBrushCol = w->hasInputFocus() ? getActiveSelectionColour() :
                                                     getInactiveSelectionColour();
         selectBrushCol.setAlpha(selectBrushCol.getAlpha() * alpha);
 
@@ -299,30 +299,30 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
     }
 }
 
-colour FalagardMultiLineEditbox::getOptionalPropertyColour(const String& propertyName) const
+Colour FalagardMultiLineEditbox::getOptionalPropertyColour(const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper<colour>::fromString(d_window->getProperty(propertyName));
+        return PropertyHelper<Colour>::fromString(d_window->getProperty(propertyName));
     else
-        return colour(0,0,0);
+        return Colour(0,0,0);
 }
 
-colour FalagardMultiLineEditbox::getUnselectedTextColour() const
+Colour FalagardMultiLineEditbox::getUnselectedTextColour() const
 {
     return getOptionalPropertyColour(UnselectedTextColourPropertyName);
 }
 
-colour FalagardMultiLineEditbox::getSelectedTextColour() const
+Colour FalagardMultiLineEditbox::getSelectedTextColour() const
 {
     return getOptionalPropertyColour(SelectedTextColourPropertyName);
 }
 
-colour FalagardMultiLineEditbox::getActiveSelectionColour() const
+Colour FalagardMultiLineEditbox::getActiveSelectionColour() const
 {
     return getOptionalPropertyColour(ActiveSelectionColourPropertyName);
 }
 
-colour FalagardMultiLineEditbox::getInactiveSelectionColour() const
+Colour FalagardMultiLineEditbox::getInactiveSelectionColour() const
 {
     return getOptionalPropertyColour(InactiveSelectionColourPropertyName);
 }
