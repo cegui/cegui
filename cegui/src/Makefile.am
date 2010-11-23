@@ -113,6 +113,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       elements/CEGUICombobox.cpp \
                       elements/CEGUIComboboxProperties.cpp \
                       elements/CEGUIComboDropList.cpp \
+                      elements/CEGUIDefaultWindow.cpp \
                       elements/CEGUIDragContainer.cpp \
                       elements/CEGUIDragContainerProperties.cpp \
                       elements/CEGUIEditbox.cpp \
@@ -122,7 +123,6 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       elements/CEGUIGridLayoutContainer.cpp \
                       elements/CEGUIGridLayoutContainerProperties.cpp \
                       elements/CEGUIGroupBox.cpp \
-                      elements/CEGUIGUISheet.cpp \
                       elements/CEGUIHorizontalLayoutContainer.cpp \
                       elements/CEGUIItemEntry.cpp \
                       elements/CEGUIItemEntryProperties.cpp \

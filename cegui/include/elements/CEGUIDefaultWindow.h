@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIGUISheet.h
+    filename:   CEGUIDefaultWindow.h
     created:    5/6/2004
     author:     Paul D Turner
 
@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIGUISheet_h_
-#define _CEGUIGUISheet_h_
+#ifndef _CEGUIDefaultWindow_h_
+#define _CEGUIDefaultWindow_h_
 
 #include "../CEGUIWindow.h"
 #include "../CEGUIWindowFactory.h"
@@ -44,11 +44,11 @@ namespace CEGUI
     This class does no rendering and so appears totally transparent.  This window defaults
     to position 0.0f, 0.0f with a size of 1.0f x 1.0f.
 
-    /note
-    The C++ name of this class has been retained for backward compatibility reasons.  The intended usage of
-    this window type has now been extended beyond that of a gui-sheet or root window.
+    /par
+    This Window has been used as the root GUI-sheet (root window) but it's usage has been extended
+    beyond that. That's why it's name has been changed to "DefaultWindow" for 0.8.
 */
-class CEGUIEXPORT GUISheet : public Window
+class CEGUIEXPORT DefaultWindow : public Window
 {
 public:
     /*************************************************************************
@@ -63,16 +63,16 @@ public:
     *************************************************************************/
     /*!
     \brief
-        Constructor for GUISheet windows.
+        Constructor for DefaultWindows.
     */
-    GUISheet(const String& type, const String& name);
+    DefaultWindow(const String& type, const String& name);
 
 
     /*!
     \brief
-        Destructor for GUISheet windows.
+        Destructor for DefaultWindows.
     */
-    virtual ~GUISheet(void) {}
+    virtual ~DefaultWindow(void) {}
 
 
 protected:
@@ -88,7 +88,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name=="DefaultWindow" || class_name=="GUISheet")	return true;
+		if (class_name=="DefaultWindow")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 
@@ -108,15 +108,6 @@ protected:
     void onMouseTripleClicked(MouseEventArgs& e);
 };
 
-
-/*!
-\brief
-    typedef for DefaultWindow, which is the new name for GUISheet.
-*/
-typedef GUISheet DefaultWindow;
-
-
 } // End of  CEGUI namespace section
 
-
-#endif  // end of guard _CEGUIGUISheet_h_
+#endif  // end of guard _CEGUIDefaultWindow_h_

@@ -7,6 +7,7 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIComboDropList.h \
                      CEGUICombobox.h \
                      CEGUIComboboxProperties.h \
+                     CEGUIDefaultWindow.h \
                      CEGUIDragContainer.h \
                      CEGUIDragContainerProperties.h \
                      CEGUIEditbox.h \
@@ -16,7 +17,6 @@ pkginclude_HEADERS = CEGUIAll.h \
                      CEGUIGridLayoutContainer.h \
                      CEGUIGridLayoutContainerProperties.h \
                      CEGUIGroupBox.h \
-                     CEGUIGUISheet.h \
                      CEGUIHorizontalLayoutContainer.h \
                      CEGUIItemEntry.h \
                      CEGUIItemEntryProperties.h \
