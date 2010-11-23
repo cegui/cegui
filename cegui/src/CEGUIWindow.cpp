@@ -105,8 +105,8 @@ const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEntersArea("MouseEntersArea");
 const String Window::EventMouseLeavesArea("MouseLeavesArea");
-const String Window::EventMouseEnters("MouseEnter");
-const String Window::EventMouseLeaves("MouseLeave");
+const String Window::EventMouseEntersSurface("MouseEnter");
+const String Window::EventMouseLeavesSurface("MouseLeave");
 const String Window::EventMouseMove("MouseMove");
 const String Window::EventMouseWheel("MouseWheel");
 const String Window::EventMouseButtonDown("MouseButtonDown");
@@ -2845,7 +2845,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
     if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
-    fireEvent(EventMouseEnters, e, EventNamespace);
+    fireEvent(EventMouseEntersSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -2857,7 +2857,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
 
-    fireEvent(EventMouseLeaves, e, EventNamespace);
+    fireEvent(EventMouseLeavesSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

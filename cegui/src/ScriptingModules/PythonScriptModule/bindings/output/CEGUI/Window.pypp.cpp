@@ -4624,13 +4624,13 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventMouseDoubleClick"
                         , bp::make_getter( &CEGUI::Window::EventMouseDoubleClick
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventMouseEnters"
+        Window_exposer.add_static_property( "EventMouseEntersSurface"
                         , bp::make_getter( &CEGUI::Window::EventMouseEnters
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventMouseEntersArea"
                         , bp::make_getter( &CEGUI::Window::EventMouseEntersArea
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventMouseLeaves"
+        Window_exposer.add_static_property( "EventMouseLeavesSurface"
                         , bp::make_getter( &CEGUI::Window::EventMouseLeaves
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventMouseLeavesArea"
