@@ -29,7 +29,6 @@
 #define _CEGUIFalagard_xmlHandler_h_
 
 #include "../CEGUIChainedXMLHandler.h"
-#include "../CEGUIcolour.h"
 #include "CEGUIFalDimensions.h"
 #include "../CEGUIWindow.h"
 #include <vector>

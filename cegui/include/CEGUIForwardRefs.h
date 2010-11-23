@@ -43,7 +43,7 @@ class AnimationManager;
 class BasicRenderedStringParser;
 class BidiVisualMapping;
 class CentredRenderedString;
-class colour;
+class Colour;
 class ColourRect;
 class CoordConverter;
 class DefaultLogger;

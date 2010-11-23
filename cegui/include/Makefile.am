@@ -13,6 +13,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIBoundSlot.h \
                  CEGUICentredRenderedString.h \
                  CEGUIChainedXMLHandler.h \
+                 CEGUIColour.h \
                  CEGUIColourRect.h \
                  CEGUIConfig.h \
                  CEGUIConfig_xmlHandler.h \
@@ -118,8 +119,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
-                 CEGUIXMLSerializer.h \
-                 CEGUIcolour.h
+                 CEGUIXMLSerializer.h
 
 noinst_HEADERS = CEGUIFreeTypeFont.h \
                  CEGUIPixmapFont.h \

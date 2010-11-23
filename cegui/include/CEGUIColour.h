@@ -1,5 +1,5 @@
 /***********************************************************************
-	filename: 	CEGUIcolour.h
+	filename: 	CEGUIColour.h
 	created:	20/8/2004
 	author:		Paul D Turner (with code from Jeff Leigh)
 	
@@ -28,8 +28,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIcolour_h_
-#define _CEGUIcolour_h_
+#ifndef _CEGUIColour_h_
+#define _CEGUIColour_h_
 
 #include "CEGUIBase.h"
 
@@ -42,16 +42,16 @@ typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
 \brief
 	Class representing colour values within the system.
 */
-class CEGUIEXPORT colour
+class CEGUIEXPORT Colour
 {
 public:
 	/*************************************************************************
 		Construction & Destruction
 	*************************************************************************/
-	colour(void);
-	colour(const colour& val);
-	colour(float red, float green, float blue, float alpha = 1.0f);
-	colour(argb_t argb);
+	Colour(void);
+	Colour(const Colour& val);
+	Colour(float red, float green, float blue, float alpha = 1.0f);
+	Colour(argb_t argb);
 
 	/*************************************************************************
 		Accessors
@@ -122,7 +122,7 @@ public:
         d_blue = blue;
     }
 
-	inline void setRGB(const colour& val)
+	inline void setRGB(const Colour& val)
     {
         d_red = val.d_red;
         d_green = val.d_green;
@@ -143,13 +143,13 @@ public:
 	/*************************************************************************
 		Operators
 	*************************************************************************/
-	inline colour& operator=(argb_t val)
+	inline Colour& operator=(argb_t val)
     {
         setARGB(val);
         return *this;
     }
 
-	inline colour& operator=(const colour& val)
+	inline Colour& operator=(const Colour& val)
     {
         d_alpha = val.d_alpha;
         d_red   = val.d_red;
@@ -161,45 +161,45 @@ public:
         return *this;
     }
 
-	inline colour& operator&=(argb_t val)
+	inline Colour& operator&=(argb_t val)
     {
         setARGB(getARGB() & val);
         return *this;
     }
 
-	inline colour& operator&=(const colour& val)
+	inline Colour& operator&=(const Colour& val)
     {
         setARGB(getARGB() & val.getARGB());
         return *this;
     }
 
-	inline colour& operator|=(argb_t val)
+	inline Colour& operator|=(argb_t val)
     {
         setARGB(getARGB() | val);
         return *this;
     }
 
-	inline colour& operator|=(const colour& val)
+	inline Colour& operator|=(const Colour& val)
     {
         setARGB(getARGB() | val.getARGB());
         return *this;
     }
 
-	inline colour& operator<<=(int val)
+	inline Colour& operator<<=(int val)
     {
         setARGB(getARGB() << val);
         return *this;
     }
 
-	inline colour& operator>>=(int val)
+	inline Colour& operator>>=(int val)
     {
         setARGB(getARGB() >> val);
         return *this;
     }
 
-	inline colour operator+(const colour& val) const
+	inline Colour operator+(const Colour& val) const
     {
-        return colour(
+        return Colour(
             d_red   + val.d_red, 
             d_green + val.d_green, 
             d_blue  + val.d_blue,
@@ -207,9 +207,9 @@ public:
         );
     }
 
-	inline colour operator-(const colour& val) const
+	inline Colour operator-(const Colour& val) const
     {
-        return colour(
+        return Colour(
             d_red   - val.d_red,
             d_green - val.d_green,
             d_blue  - val.d_blue,
@@ -217,9 +217,9 @@ public:
         );
     }
 
-	inline colour operator*(const float val) const
+	inline Colour operator*(const float val) const
     {       
-        return colour(
+        return Colour(
             d_red   * val, 
             d_green * val, 
             d_blue  * val,
@@ -227,7 +227,7 @@ public:
         );  
     }
 
-    inline colour& operator*=(const colour& val)
+    inline Colour& operator*=(const Colour& val)
     {
         d_red *= val.d_red;
         d_blue *= val.d_blue;
@@ -242,7 +242,7 @@ public:
 	/*************************************************************************
 		Compare operators
 	*************************************************************************/
-	inline bool operator==(const colour& rhs) const
+	inline bool operator==(const Colour& rhs) const
     {
         return d_red   == rhs.d_red   &&
                d_green == rhs.d_green &&
@@ -250,7 +250,7 @@ public:
                d_alpha == rhs.d_alpha;
     }
 
-	inline bool operator!=(const colour& rhs) const
+	inline bool operator!=(const Colour& rhs) const
     {
         return !(*this == rhs);
     }
@@ -281,4 +281,4 @@ private:
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _CEGUIcolour_h_
+#endif	// end of guard _CEGUIColour_h_

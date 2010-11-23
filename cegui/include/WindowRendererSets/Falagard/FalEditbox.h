@@ -100,7 +100,7 @@ public:
     \return
         colour value describing the colour to be used.
     */
-    colour getUnselectedTextColour() const;
+    Colour getUnselectedTextColour() const;
 
     /*!
     \brief
@@ -110,7 +110,7 @@ public:
     \return
         colour value describing the colour to be used.
     */
-    colour getSelectedTextColour() const;
+    Colour getSelectedTextColour() const;
 
     /*!
     \brief
@@ -121,7 +121,7 @@ public:
         String object holding the name of the property to be accessed if it
         exists.
     */
-    colour getOptionalPropertyColour(const String& propertyName) const;
+    Colour getOptionalPropertyColour(const String& propertyName) const;
 
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const;

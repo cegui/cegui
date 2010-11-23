@@ -289,7 +289,7 @@ void BasicRenderedStringParser::initialiseTagHandlers()
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleColour(RenderedString& rs, const String& value)
 {
-    d_colours.setColours(PropertyHelper<colour>::fromString(value));
+    d_colours.setColours(PropertyHelper<Colour>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//

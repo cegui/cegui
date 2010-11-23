@@ -106,7 +106,7 @@ void RenderedStringTextComponent::setColours(const ColourRect& cr)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setColours(const colour& c)
+void RenderedStringTextComponent::setColours(const Colour& c)
 {
     d_colours.setColours(c);
 }

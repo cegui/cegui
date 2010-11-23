@@ -230,7 +230,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     ColourRect colours;
     const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
-    const colour unselectedColour(getUnselectedTextColour());
+    const Colour unselectedColour(getUnselectedTextColour());
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
@@ -421,24 +421,24 @@ size_t FalagardEditbox::getTextIndexFromPosition(const Point& pt) const
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getOptionalPropertyColour(
+Colour FalagardEditbox::getOptionalPropertyColour(
     const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper<colour>::fromString(
+        return PropertyHelper<Colour>::fromString(
             d_window->getProperty(propertyName));
     else
-        return colour(0, 0, 0);
+        return Colour(0, 0, 0);
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getUnselectedTextColour() const
+Colour FalagardEditbox::getUnselectedTextColour() const
 {
     return getOptionalPropertyColour(UnselectedTextColourPropertyName);
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getSelectedTextColour() const
+Colour FalagardEditbox::getSelectedTextColour() const
 {
     return getOptionalPropertyColour(SelectedTextColourPropertyName);
 }

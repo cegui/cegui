@@ -275,7 +275,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
 
             d_FPSGeometry->reset();
             fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2(0, 0), 0,
-                        CEGUI::colour(0xFFFFFFFF));
+                        CEGUI::Colour(0xFFFFFFFF));
         }
 
         // reset counter state

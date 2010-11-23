@@ -526,12 +526,12 @@ String ColourInterpolator::interpolateAbsolute(const String& value1,
         const String& value2,
         float position)
 {
-    const colour val1 = PropertyHelper<colour>::fromString(value1);
-    const colour val2 = PropertyHelper<colour>::fromString(value2);
+    const Colour val1 = PropertyHelper<Colour>::fromString(value1);
+    const Colour val2 = PropertyHelper<Colour>::fromString(value2);
 
-    const colour result = val1 * (1.0f - position) + val2 * (position);
+    const Colour result = val1 * (1.0f - position) + val2 * (position);
 
-    return PropertyHelper<colour>::toString(result);
+    return PropertyHelper<Colour>::toString(result);
 }
 
 //----------------------------------------------------------------------------//
@@ -540,13 +540,13 @@ String ColourInterpolator::interpolateRelative(const String& base,
         const String& value2,
         float position)
 {
-    const colour bas = PropertyHelper<colour>::fromString(base);
-    const colour val1 = PropertyHelper<colour>::fromString(value1);
-    const colour val2 = PropertyHelper<colour>::fromString(value2);
+    const Colour bas = PropertyHelper<Colour>::fromString(base);
+    const Colour val1 = PropertyHelper<Colour>::fromString(value1);
+    const Colour val2 = PropertyHelper<Colour>::fromString(value2);
 
-    const colour result = bas + (val1 * (1.0f - position) + val2 * (position));
+    const Colour result = bas + (val1 * (1.0f - position) + val2 * (position));
 
-    return PropertyHelper<colour>::toString(result);
+    return PropertyHelper<Colour>::toString(result);
 }
 
 //----------------------------------------------------------------------------//
@@ -555,15 +555,15 @@ String ColourInterpolator::interpolateRelativeMultiply(const String& base,
         const String& value2,
         float position)
 {
-    const colour bas = PropertyHelper<colour>::fromString(base);
+    const Colour bas = PropertyHelper<Colour>::fromString(base);
     const float val1 = PropertyHelper<float>::fromString(value1);
     const float val2 = PropertyHelper<float>::fromString(value2);
 
     const float mul = val1 * (1.0f - position) + val2 * (position);
 
-    const colour result = bas * mul;
+    const Colour result = bas * mul;
 
-    return PropertyHelper<colour>::toString(result);
+    return PropertyHelper<Colour>::toString(result);
 }
 
 /********************************************

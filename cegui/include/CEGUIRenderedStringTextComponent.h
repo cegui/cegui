@@ -58,7 +58,7 @@ public:
     //! Set the colour values used when rendering this component.
     void setColours(const ColourRect& cr);
     //! Set the colour values used when rendering this component.
-    void setColours(const colour& c);
+    void setColours(const Colour& c);
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const;
 

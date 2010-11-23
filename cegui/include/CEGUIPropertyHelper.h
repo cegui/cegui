@@ -33,7 +33,7 @@
 #include "CEGUIString.h"
 #include "CEGUISize.h"
 #include "CEGUIVector.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIUDim.h"
 
@@ -318,18 +318,18 @@ public:
 };
 
 template<>
-class PropertyHelper<colour>
+class PropertyHelper<Colour>
 {
 public:
-    typedef colour return_type;
-    typedef const colour& pass_type;
+    typedef Colour return_type;
+    typedef const Colour& pass_type;
 
     static return_type fromString(const String& str)
     {
         argb_t val = 0xFF000000;
         sscanf(str.c_str(), " %8X", &val);
 
-        return colour(val);
+        return Colour(val);
     }
 
     static String toString(pass_type val)

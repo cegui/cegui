@@ -32,6 +32,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIBoundSlot.cpp \
                       CEGUICentredRenderedString.cpp \
                       CEGUIChainedXMLHandler.cpp \
+                      CEGUIColour.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
@@ -105,7 +106,6 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIXMLHandler.cpp \
                       CEGUIXMLParser.cpp \
                       CEGUIXMLSerializer.cpp \
-                      CEGUIcolour.cpp \
                       elements/CEGUIButtonBase.cpp \
                       elements/CEGUICheckbox.cpp \
                       elements/CEGUIClippedContainer.cpp \
