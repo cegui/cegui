@@ -118,13 +118,6 @@ public:
 
 /*!
 \brief
- Point class
-*/
-typedef Vector2  Point;
-
-
-/*!
-\brief
  Class used as a three dimensional vector
 */
 class CEGUIEXPORT Vector3
@@ -159,6 +152,4 @@ public:
 
 } // End of  CEGUI namespace section
 
-
 #endif	// end of guard _CEGUIVector_h_
-

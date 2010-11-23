@@ -364,10 +364,10 @@ String PointInterpolator::interpolateAbsolute(const String& value1,
         const String& value2,
         float position)
 {
-    const Point val1 = PropertyHelper<Vector2>::fromString(value1);
-    const Point val2 = PropertyHelper<Vector2>::fromString(value2);
+    const Vector2 val1 = PropertyHelper<Vector2>::fromString(value1);
+    const Vector2 val2 = PropertyHelper<Vector2>::fromString(value2);
 
-    const Point result = val1 * (1.0f - position) + val2 * (position);
+    const Vector2 result = val1 * (1.0f - position) + val2 * (position);
 
     return PropertyHelper<Vector2>::toString(result);
 }
@@ -378,11 +378,11 @@ String PointInterpolator::interpolateRelative(const String& base,
         const String& value2,
         float position)
 {
-    const Point bas = PropertyHelper<Vector2>::fromString(base);
-    const Point val1 = PropertyHelper<Vector2>::fromString(value1);
-    const Point val2 = PropertyHelper<Vector2>::fromString(value2);
+    const Vector2 bas = PropertyHelper<Vector2>::fromString(base);
+    const Vector2 val1 = PropertyHelper<Vector2>::fromString(value1);
+    const Vector2 val2 = PropertyHelper<Vector2>::fromString(value2);
 
-    const Point result = bas + (val1 * (1.0f - position) + val2 * (position));
+    const Vector2 result = bas + (val1 * (1.0f - position) + val2 * (position));
 
     return PropertyHelper<Vector2>::toString(result);
 }
@@ -393,13 +393,13 @@ String PointInterpolator::interpolateRelativeMultiply(const String& base,
         const String& value2,
         float position)
 {
-    const Point bas = PropertyHelper<Vector2>::fromString(base);
+    const Vector2 bas = PropertyHelper<Vector2>::fromString(base);
     const float val1 = PropertyHelper<float>::fromString(value1);
     const float val2 = PropertyHelper<float>::fromString(value2);
 
     const float mul = val1 * (1.0f - position) + val2 * (position);
 
-    const Point result = bas * mul;
+    const Vector2 result = bas * mul;
 
     return PropertyHelper<Vector2>::toString(result);
 }

@@ -726,9 +726,9 @@ protected:
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
      */
-    TreeItem* getItemAtPoint(const Point& pt) const;
+    TreeItem* getItemAtPoint(const Vector2& pt) const;
     TreeItem* getItemFromListAtPoint(const LBItemList &itemList, float *bottomY,
-                                     const Point& pt) const;
+                                     const Vector2& pt) const;
 
     /*!
      \brief

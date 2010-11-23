@@ -43,7 +43,7 @@ Rect::Rect(float left, float top, float right, float bottom) :
 {
 }
 
-Rect::Rect(Point pos, Size sz) :
+Rect::Rect(Vector2 pos, Size sz) :
     d_top(pos.d_y),
     d_bottom(pos.d_y + sz.d_height),
     d_left(pos.d_x),
@@ -83,7 +83,7 @@ Rect Rect::getIntersection(const Rect& rect) const
 /*************************************************************************
 	Apply an offset the the Rect
 *************************************************************************/
-Rect& Rect::offset(const Point& pt)
+Rect& Rect::offset(const Vector2& pt)
 {
 	d_left		+= pt.d_x;
 	d_right		+= pt.d_x;
@@ -96,7 +96,7 @@ Rect& Rect::offset(const Point& pt)
 /*************************************************************************
 	Check if a given point is within the Rect
 *************************************************************************/
-bool Rect::isPointInRect(const Point& pt) const
+bool Rect::isPointInRect(const Vector2& pt) const
 {
 	if ((d_left > pt.d_x) ||
 		(d_right <= pt.d_x) ||
@@ -112,7 +112,7 @@ bool Rect::isPointInRect(const Point& pt) const
 /*************************************************************************
 	Set location of rect retaining current size.
 *************************************************************************/
-void Rect::setPosition(const Point& pt)
+void Rect::setPosition(const Vector2& pt)
 {
 	Size sz(getSize());
 

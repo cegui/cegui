@@ -94,7 +94,7 @@ public:
 	\return
 		Point object containing the offsets applied when rendering this Image
 	*/
-	Point	getOffsets(void) const		{return d_scaledOffset;}
+	Vector2	getOffsets(void) const		{return d_scaledOffset;}
 
 
 	/*!
@@ -524,7 +524,7 @@ public:
 
 	\exception NullObjectException	Thrown if \a owner was NULL.
 	*/
-	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
+	Image(const Imageset* owner, const String& name, const Rect& area, const Vector2& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
 
@@ -583,12 +583,12 @@ private:
 	*************************************************************************/
 	const Imageset*	d_owner;		//!< Link back to Imageset that owns this image
 	Rect			d_area;			//!< Rect defining the area on the texture that makes up this image.
-	Point			d_offset;		//!< Offset to use when rendering
+	Vector2			d_offset;		//!< Offset to use when rendering
 
 	// image auto-scaling fields.
 	float	d_scaledWidth;		//!< scaled image width.
 	float	d_scaledHeight;		//!< scaled image height.
-	Point	d_scaledOffset;		//!< scaled rendering offset.
+	Vector2	d_scaledOffset;		//!< scaled rendering offset.
 	String	d_name;				//!< name of this image.
 };
 

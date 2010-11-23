@@ -855,7 +855,7 @@ void Editbox::addEditboxProperties(void)
 }
 
 //----------------------------------------------------------------------------//
-size_t Editbox::getTextIndexFromPosition(const Point& pt) const
+size_t Editbox::getTextIndexFromPosition(const Vector2& pt) const
 {
     if (d_windowRenderer != 0)
     {

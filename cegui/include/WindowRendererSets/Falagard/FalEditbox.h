@@ -149,7 +149,7 @@ public:
     void render();
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const Point& pt) const;
+    size_t getTextIndexFromPosition(const Vector2& pt) const;
     // overridden from WindowRenderer class
     void update(float elapsed);
 

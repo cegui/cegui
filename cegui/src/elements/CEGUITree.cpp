@@ -932,7 +932,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 /*************************************************************************
     Return the TreeItem under the given window local pixel co-ordinate.
 *************************************************************************/
-TreeItem* Tree::getItemAtPoint(const Point& pt) const
+TreeItem* Tree::getItemAtPoint(const Vector2& pt) const
 {
     Rect renderArea(getTreeRenderArea());
     
@@ -950,7 +950,7 @@ TreeItem* Tree::getItemAtPoint(const Point& pt) const
 }
 
 // Recursive!
-TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Point& pt) const
+TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2& pt) const
 {
     size_t itemCount = itemList.size();
     
@@ -1093,7 +1093,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     {
         bool modified = false;
         
-        Point localPos(CoordConverter::screenToWindow(*this, e.position));
+        Vector2 localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
         
         TreeItem* item = getItemAtPoint(localPos);
@@ -1191,7 +1191,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
     {
         static TreeItem* lastItem = 0;
         
-        Point posi(CoordConverter::screenToWindow(*this, e.position));
+        Vector2 posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
         if (item != lastItem)

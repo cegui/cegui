@@ -93,7 +93,7 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
         Rect(0, 0,
              d_texture->getOriginalDataSize().d_width,
              d_texture->getOriginalDataSize().d_height),
-        Point(0, 0)
+        Vector2(0, 0)
     );
 }
 
@@ -140,7 +140,7 @@ const Image& Imageset::getImage(const String& name) const
 /*************************************************************************
 	defines a new Image.
 *************************************************************************/
-void Imageset::defineImage(const String& name, const Rect& image_rect, const Point& render_offset)
+void Imageset::defineImage(const String& name, const Rect& image_rect, const Vector2& render_offset)
 {
 	if (isImageDefined(name))
 	{
