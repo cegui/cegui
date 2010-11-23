@@ -475,7 +475,7 @@ public:
     void setNESWSizingCursorImage(const String& imageset, const String& image);
 
     // overridden from Window class
-    bool isHit(const Point& position, const bool /*allow_disabled*/) const
+    bool isHit(const Vector2& position, const bool /*allow_disabled*/) const
         { return Window::isHit(position) && !d_rolledup; }
 
     /*!
@@ -576,7 +576,7 @@ protected:
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation	getSizingBorderAtPoint(const Point& pt) const;
+	SizingLocation	getSizingBorderAtPoint(const Vector2& pt) const;
 
  
 	/*!
@@ -642,7 +642,7 @@ protected:
 	\brief
 		Set the appropriate mouse cursor for the given window-relative pixel point.
 	*/
-	void	setCursorForPoint(const Point& pt) const;
+	void	setCursorForPoint(const Vector2& pt) const;
 
 
 	/*!
@@ -718,7 +718,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
-	Point	d_dragPoint;		//!< point window is being dragged at.
+	Vector2	d_dragPoint;		//!< point window is being dragged at.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

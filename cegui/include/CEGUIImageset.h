@@ -249,7 +249,7 @@ public:
 
 	\exception UnknownObjectException	thrown if no Image named \a name is defined for the Imageset
 	*/
-	Point	getImageOffset(const String& name) const		{return getImage(name).getOffsets();}
+	Vector2	getImageOffset(const String& name) const		{return getImage(name).getOffsets();}
 
 
 	/*!
@@ -303,7 +303,7 @@ public:
 
 	\exception AlreadyExistsException	thrown if an Image named \a name is already defined for this Imageset
 	*/
-	void	defineImage(const String& name, const Point& position, const Size& size, const Point& render_offset)
+	void	defineImage(const String& name, const Vector2& position, const Size& size, const Vector2& render_offset)
 	{
 		defineImage(name, Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), render_offset);
 	}
@@ -327,7 +327,7 @@ public:
 
 	\exception AlreadyExistsException	thrown if an Image named \a name is already defined for this Imageset
 	*/
-	void	defineImage(const String& name, const Rect& image_rect, const Point& render_offset);
+	void	defineImage(const String& name, const Rect& image_rect, const Vector2& render_offset);
 
 
     /*!

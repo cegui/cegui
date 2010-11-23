@@ -171,7 +171,7 @@ void Imageset_xmlHandler::elementImageStart(const XMLAttributes& attributes)
     rect.setHeight(
         static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute)));
 
-    const Point offset(
+    const Vector2 offset(
         static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
         static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0)));
 

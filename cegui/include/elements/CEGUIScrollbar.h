@@ -84,7 +84,7 @@ public:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    virtual float getAdjustDirectionFromPoint(const Point& pt) const  = 0;
+    virtual float getAdjustDirectionFromPoint(const Vector2& pt) const  = 0;
 };
 
 /*!
@@ -527,7 +527,7 @@ protected:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    float getAdjustDirectionFromPoint(const Point& pt) const;
+    float getAdjustDirectionFromPoint(const Vector2& pt) const;
 
     /** implementation func that updates scroll position value, returns true if
      * value was changed.  NB: Fires no events and does no other updates.
