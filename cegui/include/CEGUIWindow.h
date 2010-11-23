@@ -388,7 +388,7 @@ public:
      * For an alternative version of this event see the
      * Window::EventMouseEntersArea event.
      */
-    static const String EventMouseEnters;
+    static const String EventMouseEntersSurface;
     /** Event fired when the mouse cursor is no longer over the Window's surface
      * area.
      * Handlers are passed a const MouseEventArgs reference with all fields
@@ -399,7 +399,7 @@ public:
      * actually 'left' this Window's area).  For an alternative version of this
      * event see the Window::EventMouseLeavesArea event.
      */
-    static const String EventMouseLeaves;
+    static const String EventMouseLeavesSurface;
     /** Event fired when the mouse cursor moves within the area of the Window.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
