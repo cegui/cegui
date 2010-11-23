@@ -605,7 +605,7 @@
 		DA6F902212929F5300B718C8 /* AnimationManager.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E521292997800B718C8 /* AnimationManager.pypp.cpp */; };
 		DA6F902312929F5300B718C8 /* BaseDim.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E531292997800B718C8 /* BaseDim.pypp.cpp */; };
 		DA6F902412929F5300B718C8 /* BasicRenderedStringParser.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E541292997800B718C8 /* BasicRenderedStringParser.pypp.cpp */; };
-		DA6F902512929F5300B718C8 /* BiDiVisualMapping.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E551292997800B718C8 /* BiDiVisualMapping.pypp.cpp */; };
+		DA6F902512929F5300B718C8 /* BidiVisualMapping.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E551292997800B718C8 /* BidiVisualMapping.pypp.cpp */; };
 		DA6F902612929F5300B718C8 /* BoundSlot.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E561292997800B718C8 /* BoundSlot.pypp.cpp */; };
 		DA6F902712929F5300B718C8 /* ButtonBase.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E571292997800B718C8 /* ButtonBase.pypp.cpp */; };
 		DA6F902812929F5300B718C8 /* CentredRenderedString.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E581292997800B718C8 /* CentredRenderedString.pypp.cpp */; };
@@ -951,10 +951,10 @@
 		DAE3B8251292C12D00CD5ACC /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
 		DAE3B8261292C12D00CD5ACC /* CEGUIOgreRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC4DDF10F70FFBD000EF0AC /* CEGUIOgreRenderer.framework */; };
 		DAE3B8281292C12D00CD5ACC /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE3B8271292C12D00CD5ACC /* Python.framework */; };
-		DAE4B64E102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */; };
+		DAE4B64E102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64B102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h */; };
 		DAE4B64F102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */; };
 		DAE4B650102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */; };
-		DAE4B654102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */; };
+		DAE4B654102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B651102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp */; };
 		DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */; };
 		DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE4B653102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp */; };
 		DAEEBFCD10ECA5B6005CD344 /* CEGUIFalExpressionDim.h in Headers */ = {isa = PBXBuildFile; fileRef = DAEEBFCC10ECA5B6005CD344 /* CEGUIFalExpressionDim.h */; };
@@ -2644,7 +2644,7 @@
 		DA3202BB1292B89300B2B97D /* AnimationManager.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AnimationManager.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AnimationManager.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202BC1292B89300B2B97D /* BaseDim.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BaseDim.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BaseDim.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202BD1292B89300B2B97D /* BasicRenderedStringParser.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BasicRenderedStringParser.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BasicRenderedStringParser.pypp.hpp; sourceTree = SOURCE_ROOT; };
-		DA3202BE1292B89300B2B97D /* BiDiVisualMapping.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BiDiVisualMapping.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BiDiVisualMapping.pypp.hpp; sourceTree = SOURCE_ROOT; };
+		DA3202BE1292B89300B2B97D /* BidiVisualMapping.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BidiVisualMapping.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BidiVisualMapping.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202BF1292B89300B2B97D /* BoundSlot.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BoundSlot.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BoundSlot.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C01292B89300B2B97D /* ButtonBase.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ButtonBase.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ButtonBase.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C11292B89300B2B97D /* CentredRenderedString.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CentredRenderedString.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CentredRenderedString.pypp.hpp; sourceTree = SOURCE_ROOT; };
@@ -2931,7 +2931,7 @@
 		DA6F8E521292997800B718C8 /* AnimationManager.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimationManager.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/AnimationManager.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E531292997800B718C8 /* BaseDim.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseDim.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BaseDim.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E541292997800B718C8 /* BasicRenderedStringParser.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicRenderedStringParser.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BasicRenderedStringParser.pypp.cpp; sourceTree = SOURCE_ROOT; };
-		DA6F8E551292997800B718C8 /* BiDiVisualMapping.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BiDiVisualMapping.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BiDiVisualMapping.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DA6F8E551292997800B718C8 /* BidiVisualMapping.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BidiVisualMapping.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BidiVisualMapping.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E561292997800B718C8 /* BoundSlot.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BoundSlot.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/BoundSlot.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E571292997800B718C8 /* ButtonBase.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ButtonBase.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ButtonBase.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E581292997800B718C8 /* CentredRenderedString.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CentredRenderedString.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CentredRenderedString.pypp.cpp; sourceTree = SOURCE_ROOT; };
@@ -3240,10 +3240,10 @@
 		DAE3B7CB1292BB7700CD5ACC /* named_tuple.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = named_tuple.py; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUIOpenGLRenderer/named_tuple.py; sourceTree = SOURCE_ROOT; };
 		DAE3B7CC1292BB7700CD5ACC /* OpenGLRenderer.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OpenGLRenderer.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUIOpenGLRenderer/OpenGLRenderer.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DAE3B8271292C12D00CD5ACC /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
-		DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBiDiVisualMapping.h; path = ../../cegui/include/CEGUIBiDiVisualMapping.h; sourceTree = SOURCE_ROOT; };
+		DAE4B64B102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBidiVisualMapping.h; path = ../../cegui/include/CEGUIBidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64C102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIFribidiVisualMapping.h; path = ../../cegui/include/CEGUIFribidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
 		DAE4B64D102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIMinibidiVisualMapping.h; path = ../../cegui/include/CEGUIMinibidiVisualMapping.h; sourceTree = SOURCE_ROOT; };
-		DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBiDiVisualMapping.cpp; path = ../../cegui/src/CEGUIBiDiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
+		DAE4B651102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBidiVisualMapping.cpp; path = ../../cegui/src/CEGUIBidiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
 		DAE4B652102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIFribidiVisualMapping.cpp; path = ../../cegui/src/CEGUIFribidiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
 		DAE4B653102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIMinibidiVisualMapping.cpp; path = ../../cegui/src/CEGUIMinibidiVisualMapping.cpp; sourceTree = SOURCE_ROOT; };
 		DAEEBFCC10ECA5B6005CD344 /* CEGUIFalExpressionDim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIFalExpressionDim.h; sourceTree = "<group>"; };
@@ -4308,7 +4308,7 @@
 				DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */,
 				DA3C62C912140D1D002A2BF0 /* CEGUIBasicInterpolators.h */,
 				DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */,
-				DAE4B64B102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h */,
+				DAE4B64B102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h */,
 				DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */,
 				DAB2700B0FCAE4F500D9EE82 /* CEGUICentredRenderedString.h */,
 				DA3C62CA12140D1D002A2BF0 /* CEGUIChainedXMLHandler.h */,
@@ -4440,7 +4440,7 @@
 				DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */,
 				DA3C62DD12140D63002A2BF0 /* CEGUIBasicInterpolators.cpp */,
 				DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */,
-				DAE4B651102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp */,
+				DAE4B651102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp */,
 				DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */,
 				DAB270170FCAE58C00D9EE82 /* CEGUICentredRenderedString.cpp */,
 				DA3C62DE12140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp */,
@@ -5513,8 +5513,8 @@
 				DA3202BC1292B89300B2B97D /* BaseDim.pypp.hpp */,
 				DA6F8E541292997800B718C8 /* BasicRenderedStringParser.pypp.cpp */,
 				DA3202BD1292B89300B2B97D /* BasicRenderedStringParser.pypp.hpp */,
-				DA6F8E551292997800B718C8 /* BiDiVisualMapping.pypp.cpp */,
-				DA3202BE1292B89300B2B97D /* BiDiVisualMapping.pypp.hpp */,
+				DA6F8E551292997800B718C8 /* BidiVisualMapping.pypp.cpp */,
+				DA3202BE1292B89300B2B97D /* BidiVisualMapping.pypp.hpp */,
 				DA6F8E561292997800B718C8 /* BoundSlot.pypp.cpp */,
 				DA3202BF1292B89300B2B97D /* BoundSlot.pypp.hpp */,
 				DA6F8E571292997800B718C8 /* ButtonBase.pypp.cpp */,
@@ -6238,7 +6238,7 @@
 				DAF7623C1013B84E001DD9EB /* CEGUIFontGlyph.h in Headers */,
 				DAF86674101F7C6900563021 /* CEGUIPCRERegexMatcher.h in Headers */,
 				DAF86675101F7C6900563021 /* CEGUIRegexMatcher.h in Headers */,
-				DAE4B64E102A1A5A00B38ADD /* CEGUIBiDiVisualMapping.h in Headers */,
+				DAE4B64E102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h in Headers */,
 				DAE4B64F102A1A5A00B38ADD /* CEGUIFribidiVisualMapping.h in Headers */,
 				DAE4B650102A1A5A00B38ADD /* CEGUIMinibidiVisualMapping.h in Headers */,
 				DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */,
@@ -7674,7 +7674,7 @@
 				DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */,
 				DAC1BE79101651F300B6EE60 /* CEGUINamedXMLResourceManager.cpp in Sources */,
 				DAF86677101F7CCF00563021 /* CEGUIPCRERegexMatcher.cpp in Sources */,
-				DAE4B654102A1AA800B38ADD /* CEGUIBiDiVisualMapping.cpp in Sources */,
+				DAE4B654102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp in Sources */,
 				DAE4B655102A1AA800B38ADD /* CEGUIFribidiVisualMapping.cpp in Sources */,
 				DAE4B656102A1AA800B38ADD /* CEGUIMinibidiVisualMapping.cpp in Sources */,
 				DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */,
@@ -7896,7 +7896,7 @@
 				DA6F902212929F5300B718C8 /* AnimationManager.pypp.cpp in Sources */,
 				DA6F902312929F5300B718C8 /* BaseDim.pypp.cpp in Sources */,
 				DA6F902412929F5300B718C8 /* BasicRenderedStringParser.pypp.cpp in Sources */,
-				DA6F902512929F5300B718C8 /* BiDiVisualMapping.pypp.cpp in Sources */,
+				DA6F902512929F5300B718C8 /* BidiVisualMapping.pypp.cpp in Sources */,
 				DA6F902612929F5300B718C8 /* BoundSlot.pypp.cpp in Sources */,
 				DA6F902712929F5300B718C8 /* ButtonBase.pypp.cpp in Sources */,
 				DA6F902812929F5300B718C8 /* CentredRenderedString.pypp.cpp in Sources */,
