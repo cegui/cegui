@@ -66,7 +66,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String Window::EventNamespace("Window");
-const String Window::EventWindowUpdated ("WindowUpdate");
+const String Window::EventUpdated ("Updated");
 const String Window::EventParentSized("ParentSized");
 const String Window::EventSized("Sized");
 const String Window::EventMoved("Moved");
@@ -1611,7 +1611,7 @@ void Window::update(float elapsed)
         static_cast<RenderingWindow*>(d_surface)->update(elapsed);
 
     UpdateEventArgs e(this,elapsed);
-    fireEvent(EventWindowUpdated,e,EventNamespace);
+    fireEvent(EventUpdated,e,EventNamespace);
 
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)

@@ -4684,8 +4684,8 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventWindowRendererDetached"
                         , bp::make_getter( &CEGUI::Window::EventWindowRendererDetached
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventWindowUpdated"
-                        , bp::make_getter( &CEGUI::Window::EventWindowUpdated
+        Window_exposer.add_static_property( "EventUpdated"
+                        , bp::make_getter( &CEGUI::Window::EventUpdated
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventZOrderChanged"
                         , bp::make_getter( &CEGUI::Window::EventZOrderChanged

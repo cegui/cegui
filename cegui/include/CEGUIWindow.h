@@ -148,7 +148,7 @@ public:
     /** Event fired as part of the time based update of the window.
      * Handlers are passed a const UpdateEventArgs reference.
      */
-    static const String EventWindowUpdated;
+    static const String EventUpdated;
     /** Event fired when the parent of this Window has been re-sized.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window pointing to the <em>parent window</em> that
