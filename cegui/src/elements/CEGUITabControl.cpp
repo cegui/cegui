@@ -31,7 +31,7 @@
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUIPushButton.h"
-#include "elements/CEGUIGUISheet.h"
+#include "elements/CEGUIDefaultWindow.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIPropertyHelper.h"

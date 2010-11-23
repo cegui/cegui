@@ -5,5 +5,5 @@ struct Vertex
 {
     Vector3 position;
     Vector2 tex_coords;
-    colour  colour_val;
+    Colour  colour_val;
 };
