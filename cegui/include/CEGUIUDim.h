@@ -69,6 +69,10 @@ public:
     {
         return UDim(d_scale - other.d_scale, d_offset - other.d_offset);
     }
+    UDim operator*(const float val) const
+    {
+        return UDim(d_scale * val, d_offset * val);
+    }
     UDim operator*(const UDim& other) const
     {
         return UDim(d_scale * other.d_scale, d_offset * other.d_offset);
@@ -153,6 +157,10 @@ public:
     UVector2 operator/(const UVector2& other) const
     {
         return UVector2(d_x / other.d_x, d_y / other.d_y);
+    }
+    UVector2 operator*(const float val) const
+    {
+        return UVector2(d_x * val, d_y * val);
     }
     UVector2 operator*(const UVector2& other) const
     {
@@ -324,6 +332,11 @@ public:
         d_min += sz;
         d_max += sz;
     }
+    
+    URect operator*(const float val) const
+    {
+        return URect(d_min * val, d_max * val);
+    }
 
     URect operator*(const UDim& dim) const
     {
@@ -403,6 +416,13 @@ public:
         d_right = rhs.d_right;
 
         return *this;
+    }
+    
+    UBox operator*(const float val) const
+    {
+        return UBox(
+                   d_top * val, d_left * val,
+                   d_bottom * val, d_right * val);
     }
 
     UBox operator*(const UDim& dim) const

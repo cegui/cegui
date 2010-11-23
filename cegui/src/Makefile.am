@@ -26,7 +26,6 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIAnimationManager.cpp \
                       CEGUIAnimation_xmlHandler.cpp \
                       CEGUIBase.cpp \
-                      CEGUIBasicInterpolators.cpp \
                       CEGUIBasicRenderedStringParser.cpp \
                       CEGUIBidiVisualMapping.cpp \
                       CEGUIBoundSlot.cpp \

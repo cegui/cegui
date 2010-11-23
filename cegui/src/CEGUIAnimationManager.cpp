@@ -31,7 +31,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIAnimation.h"
 #include "CEGUIAnimationInstance.h"
-#include "CEGUIBasicInterpolators.h"
+#include "CEGUITplInterpolators.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
@@ -64,21 +64,21 @@ AnimationManager::AnimationManager(void)
 #   define addBasicInterpolator(i) { Interpolator* in = i; addInterpolator(in); d_basicInterpolators.push_back(in); }
 
     // create and add basic interpolators shipped with CEGUI
-    addBasicInterpolator(new StringInterpolator());
-    addBasicInterpolator(new FloatInterpolator());
-    addBasicInterpolator(new IntInterpolator());
-    addBasicInterpolator(new UintInterpolator());
-    addBasicInterpolator(new BoolInterpolator());
-    addBasicInterpolator(new SizeInterpolator());
-    addBasicInterpolator(new PointInterpolator());
-    addBasicInterpolator(new Vector3Interpolator());
-    addBasicInterpolator(new RectInterpolator());
-    addBasicInterpolator(new ColourInterpolator());
-    addBasicInterpolator(new ColourRectInterpolator());
-    addBasicInterpolator(new UDimInterpolator());
-    addBasicInterpolator(new UVector2Interpolator());
-    addBasicInterpolator(new URectInterpolator());
-    addBasicInterpolator(new UBoxInterpolator());
+    addBasicInterpolator(new TplDiscreteRelativeInterpolator<String>("String"));
+    addBasicInterpolator(new TplLinearInterpolator<float>("float"));
+    addBasicInterpolator(new TplLinearInterpolator<int>("int"));
+    addBasicInterpolator(new TplLinearInterpolator<uint>("uint"));
+    addBasicInterpolator(new TplDiscreteInterpolator<bool>("bool"));
+    addBasicInterpolator(new TplLinearInterpolator<Size>("Size"));
+    addBasicInterpolator(new TplLinearInterpolator<Vector2>("Vector2"));
+    addBasicInterpolator(new TplLinearInterpolator<Vector3>("Vector3"));
+    addBasicInterpolator(new TplLinearInterpolator<Rect>("Rect"));
+    addBasicInterpolator(new TplLinearInterpolator<Colour>("Colour"));
+    addBasicInterpolator(new TplLinearInterpolator<ColourRect>("ColourRect"));
+    addBasicInterpolator(new TplLinearInterpolator<UDim>("UDim"));
+    addBasicInterpolator(new TplLinearInterpolator<UVector2>("UVector2"));
+    addBasicInterpolator(new TplLinearInterpolator<URect>("URect"));
+    addBasicInterpolator(new TplLinearInterpolator<UBox>("UBox"));
 }
 
 
