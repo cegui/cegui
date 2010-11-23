@@ -24,11 +24,6 @@ class Vector2
     Vector2(float x, float y);
 };
 
-// do a simple copy of Point to Vector2
-$[
-CEGUI.Point = CEGUI.Vector2
-$]
-
 /***********************************************************************
     Vector3
 ***********************************************************************/
@@ -102,9 +97,9 @@ class Rect
 
 
 /***********************************************************************
-	colour
+	Colour
 ***********************************************************************/
-class colour
+class Colour
 {
 	float getAlpha() const;
 	float getRed() const;
@@ -122,13 +117,13 @@ class colour
 	void setRGB(float r, float g, float b);
 	void setHSL(float hue, float saturation, float luminance, float alpha=1);
 
-	colour operator+ (const colour& c) const;
-	colour operator- (const colour& c) const;
-	//colour operator* (const colour& c) const; // gives a warning about argb_t to colour conversion
-	bool operator== (const colour& c) const;
+	Colour operator+ (const Colour& c) const;
+	Colour operator- (const Colour& c) const;
+	//Colour operator* (const Colour& c) const; // gives a warning about argb_t to Colour conversion
+	bool operator== (const Colour& c) const;
 
-	colour();
-	colour(float r, float g, float b, float a);
+	Colour();
+	Colour(float r, float g, float b, float a);
 };
 
 
@@ -138,10 +133,10 @@ class colour
 ***********************************************************************/
 class ColourRect
 {
-	colour d_top_left @ top_left;
-	colour d_top_right @ top_right;
-	colour d_bottom_left @ bottom_left;
-	colour d_bottom_right @ bottom_right;
+	Colour d_top_left @ top_left;
+	Colour d_top_right @ top_right;
+	Colour d_bottom_left @ bottom_left;
+	Colour d_bottom_right @ bottom_right;
 
 	void	setAlpha(float alpha);
 	void	setTopAlpha(float alpha);
@@ -150,18 +145,18 @@ class ColourRect
 	void	setRightAlpha(float alpha);
 	void	modulateAlpha(float alpha);
 
-	void	setColours(const colour& col);
+	void	setColours(const Colour& col);
 
 	bool	isMonochromatic() const;
 
 	ColourRect getSubRectangle( float left, float right, float top, float bottom ) const;
-	colour getColourAtPoint( float x, float y ) const;
+	Colour getColourAtPoint( float x, float y ) const;
 
 	//ColourRect& operator*= (const ColourRect& other); // no support for *= operators
 
 	ColourRect();
-	ColourRect(const colour& col);
-	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
+	ColourRect(const Colour& col);
+	ColourRect(const Colour& top_left, const Colour& top_right, const Colour& bottom_left, const Colour& bottom_right);
 };
 
 

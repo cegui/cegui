@@ -142,9 +142,9 @@ Size ceguiLua_PropertyHelper::stringToSize(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Vector2 ceguiLua_PropertyHelper::stringToPoint(const String& str)
+Vector2 ceguiLua_PropertyHelper::stringToVector2(const String& str)
 {
-    return PropertyHelper<Point>::fromString(str);
+    return PropertyHelper<Vector2>::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -160,9 +160,9 @@ const Image* ceguiLua_PropertyHelper::stringToImage(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-colour ceguiLua_PropertyHelper::stringToColour(const String& str)
+Colour ceguiLua_PropertyHelper::stringToColour(const String& str)
 {
-    return PropertyHelper<colour>::fromString(str);
+    return PropertyHelper<Colour>::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -214,7 +214,7 @@ String ceguiLua_PropertyHelper::sizeToString(const Size& val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::pointToString(const Vector2& val)
+String ceguiLua_PropertyHelper::vector2ToString(const Vector2& val)
 {
     return PropertyHelper<Vector2>::toString(val);
 }
@@ -232,9 +232,9 @@ String ceguiLua_PropertyHelper::imageToString(const Image* val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::colourToString(const colour& val)
+String ceguiLua_PropertyHelper::colourToString(const Colour& val)
 {
-    return PropertyHelper<colour>::toString(val);
+    return PropertyHelper<Colour>::toString(val);
 }
 
 //----------------------------------------------------------------------------//
