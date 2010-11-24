@@ -118,8 +118,8 @@
 		DA1097B50F6D841500B8A582 /* CEGUICheckboxProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10959D0F6D5F9B00B8A582 /* CEGUICheckboxProperties.h */; };
 		DA1097B60F6D841500B8A582 /* CEGUIClippedContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094B10F6D5EFD00B8A582 /* CEGUIClippedContainer.cpp */; };
 		DA1097B70F6D841500B8A582 /* CEGUIClippedContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10959E0F6D5F9B00B8A582 /* CEGUIClippedContainer.h */; };
-		DA1097B80F6D841500B8A582 /* CEGUIcolour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095070F6D5F4000B8A582 /* CEGUIcolour.cpp */; };
-		DA1097B90F6D841500B8A582 /* CEGUIcolour.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095450F6D5F9B00B8A582 /* CEGUIcolour.h */; };
+		DA1097B80F6D841500B8A582 /* CEGUIColour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095070F6D5F4000B8A582 /* CEGUIColour.cpp */; };
+		DA1097B90F6D841500B8A582 /* CEGUIColour.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095450F6D5F9B00B8A582 /* CEGUIColour.h */; };
 		DA1097BA0F6D841500B8A582 /* CEGUIColourRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095080F6D5F4000B8A582 /* CEGUIColourRect.cpp */; };
 		DA1097BB0F6D841500B8A582 /* CEGUIColourRect.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095460F6D5F9B00B8A582 /* CEGUIColourRect.h */; };
 		DA1097BC0F6D841500B8A582 /* CEGUICombobox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094B20F6D5EFD00B8A582 /* CEGUICombobox.cpp */; };
@@ -2011,7 +2011,7 @@
 		DA1095040F6D5F1F00B8A582 /* CEGUIFalXMLEnumHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIFalXMLEnumHelper.cpp; path = ../../cegui/src/falagard/CEGUIFalXMLEnumHelper.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBase.cpp; path = ../../cegui/src/CEGUIBase.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBoundSlot.cpp; path = ../../cegui/src/CEGUIBoundSlot.cpp; sourceTree = SOURCE_ROOT; };
-		DA1095070F6D5F4000B8A582 /* CEGUIcolour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIcolour.cpp; path = ../../cegui/src/CEGUIcolour.cpp; sourceTree = SOURCE_ROOT; };
+		DA1095070F6D5F4000B8A582 /* CEGUIColour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIColour.cpp; path = ../../cegui/src/CEGUIColour.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095080F6D5F4000B8A582 /* CEGUIColourRect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIColourRect.cpp; path = ../../cegui/src/CEGUIColourRect.cpp; sourceTree = SOURCE_ROOT; };
 		DA1095090F6D5F4000B8A582 /* CEGUIConfig_xmlHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIConfig_xmlHandler.cpp; path = ../../cegui/src/CEGUIConfig_xmlHandler.cpp; sourceTree = SOURCE_ROOT; };
 		DA10950A0F6D5F4000B8A582 /* CEGUICoordConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICoordConverter.cpp; path = ../../cegui/src/CEGUICoordConverter.cpp; sourceTree = SOURCE_ROOT; };
@@ -2072,7 +2072,7 @@
 		DA1095420F6D5F9B00B8A582 /* CEGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUI.h; path = ../../cegui/include/CEGUI.h; sourceTree = SOURCE_ROOT; };
 		DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBase.h; path = ../../cegui/include/CEGUIBase.h; sourceTree = SOURCE_ROOT; };
 		DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBoundSlot.h; path = ../../cegui/include/CEGUIBoundSlot.h; sourceTree = SOURCE_ROOT; };
-		DA1095450F6D5F9B00B8A582 /* CEGUIcolour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIcolour.h; path = ../../cegui/include/CEGUIcolour.h; sourceTree = SOURCE_ROOT; };
+		DA1095450F6D5F9B00B8A582 /* CEGUIColour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIColour.h; path = ../../cegui/include/CEGUIColour.h; sourceTree = SOURCE_ROOT; };
 		DA1095460F6D5F9B00B8A582 /* CEGUIColourRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIColourRect.h; path = ../../cegui/include/CEGUIColourRect.h; sourceTree = SOURCE_ROOT; };
 		DA1095470F6D5F9B00B8A582 /* CEGUIConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIConfig.h; path = ../../cegui/include/CEGUIConfig.h; sourceTree = SOURCE_ROOT; };
 		DA1095480F6D5F9B00B8A582 /* CEGUIConfig_xmlHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIConfig_xmlHandler.h; path = ../../cegui/include/CEGUIConfig_xmlHandler.h; sourceTree = SOURCE_ROOT; };
@@ -4364,7 +4364,7 @@
 				DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */,
 				DAB2700B0FCAE4F500D9EE82 /* CEGUICentredRenderedString.h */,
 				DA3C62CA12140D1D002A2BF0 /* CEGUIChainedXMLHandler.h */,
-				DA1095450F6D5F9B00B8A582 /* CEGUIcolour.h */,
+				DA1095450F6D5F9B00B8A582 /* CEGUIColour.h */,
 				DA1095460F6D5F9B00B8A582 /* CEGUIColourRect.h */,
 				DA1095470F6D5F9B00B8A582 /* CEGUIConfig.h */,
 				DA1095480F6D5F9B00B8A582 /* CEGUIConfig_xmlHandler.h */,
@@ -4497,7 +4497,7 @@
 				DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */,
 				DAB270170FCAE58C00D9EE82 /* CEGUICentredRenderedString.cpp */,
 				DA3C62DE12140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp */,
-				DA1095070F6D5F4000B8A582 /* CEGUIcolour.cpp */,
+				DA1095070F6D5F4000B8A582 /* CEGUIColour.cpp */,
 				DA1095080F6D5F4000B8A582 /* CEGUIColourRect.cpp */,
 				DA1095090F6D5F4000B8A582 /* CEGUIConfig_xmlHandler.cpp */,
 				DA10950A0F6D5F4000B8A582 /* CEGUICoordConverter.cpp */,
@@ -6135,7 +6135,7 @@
 				DA1097B30F6D841500B8A582 /* CEGUICheckbox.h in Headers */,
 				DA1097B50F6D841500B8A582 /* CEGUICheckboxProperties.h in Headers */,
 				DA1097B70F6D841500B8A582 /* CEGUIClippedContainer.h in Headers */,
-				DA1097B90F6D841500B8A582 /* CEGUIcolour.h in Headers */,
+				DA1097B90F6D841500B8A582 /* CEGUIColour.h in Headers */,
 				DA1097BB0F6D841500B8A582 /* CEGUIColourRect.h in Headers */,
 				DA1097BD0F6D841500B8A582 /* CEGUICombobox.h in Headers */,
 				DA1097BF0F6D841500B8A582 /* CEGUIComboboxProperties.h in Headers */,
@@ -7624,7 +7624,7 @@
 				DA1097B20F6D841500B8A582 /* CEGUICheckbox.cpp in Sources */,
 				DA1097B40F6D841500B8A582 /* CEGUICheckboxProperties.cpp in Sources */,
 				DA1097B60F6D841500B8A582 /* CEGUIClippedContainer.cpp in Sources */,
-				DA1097B80F6D841500B8A582 /* CEGUIcolour.cpp in Sources */,
+				DA1097B80F6D841500B8A582 /* CEGUIColour.cpp in Sources */,
 				DA1097BA0F6D841500B8A582 /* CEGUIColourRect.cpp in Sources */,
 				DA1097BC0F6D841500B8A582 /* CEGUICombobox.cpp in Sources */,
 				DA1097BE0F6D841500B8A582 /* CEGUIComboboxProperties.cpp in Sources */,
