@@ -61,7 +61,7 @@ TabControlProperties::TabPanePosition		    TabControl::d_tabPanePosition;
 	Constants
 *************************************************************************/
 // event names
-const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
+const String TabControl::EventSelectionChanged( "SelectionChanged" );
 
 /*************************************************************************
     Child Widget name suffix constants

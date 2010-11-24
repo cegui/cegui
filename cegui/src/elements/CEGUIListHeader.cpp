@@ -72,7 +72,7 @@ const String ListHeader::EventSegmentRemoved( "SegmentRemoved" );
 const String ListHeader::EventSortSettingChanged( "SortSettingChanged" );
 const String ListHeader::EventDragMoveSettingChanged( "DragMoveSettingChanged" );
 const String ListHeader::EventDragSizeSettingChanged( "DragSizeSettingChanged" );
-const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentOffsetChanged" );
+const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentRenderOffsetChanged" );
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;

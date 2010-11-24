@@ -51,7 +51,7 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String Thumb::EventThumbPositionChanged( "ThumbPosChanged" );
+const String Thumb::EventThumbPositionChanged( "ThumbPositionChanged" );
 const String Thumb::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Thumb::EventThumbTrackEnded( "ThumbTrackEnded" );
 

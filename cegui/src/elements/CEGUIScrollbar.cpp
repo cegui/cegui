@@ -46,7 +46,7 @@ ScrollbarProperties::ScrollPosition Scrollbar::d_scrollPositionProperty;
 ScrollbarProperties::EndLockEnabled Scrollbar::d_endLockEnabledProperty;
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::EventScrollPositionChanged("ScrollPosChanged");
+const String Scrollbar::EventScrollPositionChanged( "ScrollPositionChanged" );
 const String Scrollbar::EventThumbTrackStarted("ThumbTrackStarted");
 const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
 const String Scrollbar::EventScrollConfigChanged("ScrollConfigChanged");

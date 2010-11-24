@@ -61,15 +61,15 @@ EditboxProperties::MaxTextLength    Editbox::d_maxTextLengthProperty;
 //----------------------------------------------------------------------------//
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-const String Editbox::EventReadOnlyModeChanged("ReadOnlyChanged");
+const String Editbox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String Editbox::EventMaskedRenderingModeChanged("MaskRenderChanged");
 const String Editbox::EventMaskCodePointChanged("MaskCPChanged");
 const String Editbox::EventValidationStringChanged("ValidatorChanged");
 const String Editbox::EventMaximumTextLengthChanged("MaxTextLenChanged");
 const String Editbox::EventTextInvalidated("TextInvalidated");
-const String Editbox::EventInvalidEntryAttempted("InvalidInputAttempt");
+const String Editbox::EventInvalidEntryAttempted( "InvalidEntryAttempted" );
 const String Editbox::EventCaretMoved("TextCaretMoved");
-const String Editbox::EventTextSelectionChanged("TextSelectChanged");
+const String Editbox::EventTextSelectionChanged( "TextSelectionChanged" );
 const String Editbox::EventEditboxFull("EditboxFull");
 const String Editbox::EventTextAccepted("TextAccepted");
 

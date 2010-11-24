@@ -68,15 +68,15 @@ ComboboxProperties::SingleClickMode				Combobox::d_singleClickOperationProperty;
 	Constants
 *************************************************************************/
 // event names from edit box
-const String Combobox::EventReadOnlyModeChanged( "ReadOnlyChanged" );
+const String Combobox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String Combobox::EventValidationStringChanged( "ValidationStringChanged" );
 const String Combobox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
-const String Combobox::EventTextInvalidated( "TextInvalidatedEvent" );
+const String Combobox::EventTextInvalidated( "TextInvalidated" );
 const String Combobox::EventInvalidEntryAttempted( "InvalidEntryAttempted" );
 const String Combobox::EventCaretMoved( "CaretMoved" );
 const String Combobox::EventTextSelectionChanged( "TextSelectionChanged" );
-const String Combobox::EventEditboxFull( "EditboxFullEvent" );
-const String Combobox::EventTextAccepted( "TextAcceptedEvent" );
+const String Combobox::EventEditboxFull( "EditboxFull" );
+const String Combobox::EventTextAccepted( "TextAccepted" );
 
 // event names from list box
 const String Combobox::EventListContentsChanged( "ListContentsChanged" );
