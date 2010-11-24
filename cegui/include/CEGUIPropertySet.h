@@ -34,6 +34,9 @@
 #include "CEGUIString.h"
 #include "CEGUIIteratorBase.h"
 #include "CEGUIProperty.h"
+#include "CEGUIPropertyHelper.h"
+#include "CEGUITypedProperty.h"
+#include "CEGUIExceptions.h"
 #include <map>
 
 
@@ -41,6 +44,9 @@
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
+
+// for the crazy people not wanting RTTI
+//#define CEGUI_NO_RTTI
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -147,6 +153,40 @@ public:
 	*/
 	String	getProperty(const String& name) const;
 
+    /*!
+    \copydoc PropertySet::getProperty
+    
+    This method tries to do a native type get without string conversion if possible,
+    if that is not possible, it gracefully falls back to string conversion
+    */
+    template<typename T>
+    typename PropertyHelper<T>::return_type getProperty(const String& name)
+    {
+#ifdef CEGUI_NO_RTTI
+        return PropertyHelper<T>::fromString(getProperty(name));
+#else
+        PropertyRegistry::iterator pos = d_properties.find(name);
+
+        if (pos == d_properties.end())
+        {
+            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+        }
+
+        Property* baseProperty = pos->second;
+        TypedProperty<T>* typedProperty = dynamic_cast<TypedProperty<T>* >(baseProperty);
+        
+        if (typedProperty)
+        {
+            // yay, we can get native!
+            return typedProperty->getNative(this);
+        }
+        else
+        {
+            // fall back to string get
+            return PropertyHelper<T>::fromString(baseProperty->get(this));
+        }
+#endif
+    }
 
 	/*!
 	\brief
@@ -166,6 +206,40 @@ public:
 	*/
 	void	setProperty(const String& name, const String& value);
 
+    /*!
+    \copydoc PropertySet::setProperty
+    
+    This method tries to do a native type set without string conversion if possible,
+    if that is not possible, it gracefully falls back to string conversion
+    */
+    template<typename T>
+    void    setProperty(const String& name, typename PropertyHelper<T>::pass_type value)
+    {
+#ifdef CEGUI_NO_RTTI
+        setProperty(name, PropertyHelper<T>::toString(value));
+#else
+        PropertyRegistry::iterator pos = d_properties.find(name);
+
+        if (pos == d_properties.end())
+        {
+            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+        }
+
+        Property* baseProperty = pos->second;
+        TypedProperty<T>* typedProperty = dynamic_cast<TypedProperty<T>* >(baseProperty);
+        
+        if (typedProperty)
+        {
+            // yay, we can set native!
+            typedProperty->setNative(this, value);
+        }
+        else
+        {
+            // fall back to string set
+            baseProperty->set(this, PropertyHelper<T>::toString(value));
+        }
+#endif
+    }
 
 	/*!
 	\brief
@@ -206,7 +280,7 @@ public:
 
     /*!
     \brief
-        Return a PropertySet::Iterator object to iterate over the available
+        Return a PropertySet::PropertyIterator object to iterate over the available
         Properties.
     */
     Iterator getIterator(void) const;

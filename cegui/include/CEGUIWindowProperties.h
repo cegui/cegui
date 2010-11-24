@@ -73,33 +73,6 @@ public:
 
 /*!
 \brief
-	Property to access window alpha setting.
-
-	This property offers access to the alpha-blend setting for the window.
-
-	\par Usage:
-		- Name: Alpha
-		- Format: "[float]".
-
-	\par Where:
-		- [float] is a floating point number between 0.0 and 1.0.
-*/
-class Alpha : public Property
-{
-public:
-	Alpha() : Property(
-		"Alpha",
-		"Property to get/set the alpha value of the Window.  Value is floating point number.",
-		"1")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
 	Property to access window Font setting.
 
 	This property offers access to the current Font setting for the window.

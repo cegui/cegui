@@ -54,18 +54,6 @@ void ID::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String Alpha::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<float>::toString(static_cast<const Window*>(receiver)->getAlpha());
-}
-
-
-void Alpha::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setAlpha(PropertyHelper<float>::fromString(value));
-}
-
-
 String Font::get(const PropertyReceiver* receiver) const
 {
 	const CEGUI::Font* fnt = static_cast<const Window*>(receiver)->getFont();

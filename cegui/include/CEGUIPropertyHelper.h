@@ -144,9 +144,9 @@ template<>
 class PropertyHelper<float>
 {
 public:
-    typedef const float return_type;
-    typedef const float pass_type;
-    typedef const String string_return_type;
+    typedef float return_type;
+    typedef float pass_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -169,9 +169,9 @@ template<>
 class PropertyHelper<int>
 {
 public:
-    typedef const int return_type;
-    typedef const int pass_type;
-    typedef const String string_return_type;
+    typedef int return_type;
+    typedef int pass_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -194,9 +194,9 @@ template<>
 class PropertyHelper<uint>
 {
 public:
-    typedef const uint return_type;
-    typedef const uint pass_type;
-    typedef const String string_return_type;
+    typedef uint return_type;
+    typedef uint pass_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -219,8 +219,8 @@ template<>
 class PropertyHelper<bool>
 {
 public:
-    typedef const bool return_type;
-    typedef const bool pass_type;
+    typedef bool return_type;
+    typedef bool pass_type;
     typedef const String& string_return_type;
     
     static return_type fromString(const String& str)
@@ -243,9 +243,9 @@ template<>
 class PropertyHelper<Size>
 {
 public:
-    typedef const Size return_type;
+    typedef Size return_type;
     typedef const Size& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -268,9 +268,9 @@ template<>
 class PropertyHelper<Vector2>
 {
 public:
-    typedef const Vector2 return_type;
+    typedef Vector2 return_type;
     typedef const Vector2& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
 
     static return_type fromString(const String& str)
     {
@@ -293,9 +293,9 @@ template<>
 class PropertyHelper<Vector3>
 {
 public:
-    typedef const Vector3 return_type;
+    typedef Vector3 return_type;
     typedef const Vector3& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -318,9 +318,9 @@ template<>
 class PropertyHelper<Rect>
 {
 public:
-    typedef const Rect return_type;
+    typedef Rect return_type;
     typedef const Rect& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -346,7 +346,7 @@ class CEGUIEXPORT PropertyHelper<Image*>
 public:
     typedef const Image* return_type;
     typedef const Image* const pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str);
 
@@ -357,9 +357,9 @@ template<>
 class PropertyHelper<Colour>
 {
 public:
-    typedef const Colour return_type;
+    typedef Colour return_type;
     typedef const Colour& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -382,9 +382,9 @@ template<>
 class PropertyHelper<ColourRect>
 {
 public:
-    typedef const ColourRect return_type;
+    typedef ColourRect return_type;
     typedef const ColourRect& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -414,9 +414,9 @@ template<>
 class PropertyHelper<UDim>
 {
 public:
-    typedef const UDim return_type;
+    typedef UDim return_type;
     typedef const UDim& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -439,9 +439,9 @@ template<>
 class PropertyHelper<UVector2>
 {
 public:
-    typedef const UVector2 return_type;
+    typedef UVector2 return_type;
     typedef const UVector2& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -467,9 +467,9 @@ template<>
 class PropertyHelper<URect>
 {
 public:
-    typedef const URect return_type;
+    typedef URect return_type;
     typedef const URect& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {
@@ -503,9 +503,9 @@ template<>
 class PropertyHelper<UBox>
 {
 public:
-    typedef const UBox return_type;
+    typedef UBox return_type;
     typedef const UBox& pass_type;
-    typedef const String string_return_type;
+    typedef String string_return_type;
     
     static return_type fromString(const String& str)
     {

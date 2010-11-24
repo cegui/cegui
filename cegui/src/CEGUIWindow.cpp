@@ -128,7 +128,9 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-WindowProperties::Alpha             Window::d_alphaProperty;
+TplProperty<Window, float>          Window::d_alphaProperty("Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+                                                            &Window::getAlpha, &Window::setAlpha, 1.0f);
+                                                            
 WindowProperties::AlwaysOnTop       Window::d_alwaysOnTopProperty;
 WindowProperties::ClippedByParent   Window::d_clippedByParentProperty;
 WindowProperties::DestroyedByParent Window::d_destroyedByParentProperty;
