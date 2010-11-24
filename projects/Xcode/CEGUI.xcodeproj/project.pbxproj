@@ -226,8 +226,6 @@
 		DA1098210F6D841500B8A582 /* CEGUIGroupBox.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095A80F6D5F9B00B8A582 /* CEGUIGroupBox.h */; };
 		DA1098220F6D841500B8A582 /* CEGUIGUILayout_xmlHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10951C0F6D5F4100B8A582 /* CEGUIGUILayout_xmlHandler.cpp */; };
 		DA1098230F6D841500B8A582 /* CEGUIGUILayout_xmlHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10955F0F6D5F9B00B8A582 /* CEGUIGUILayout_xmlHandler.h */; };
-		DA1098240F6D841500B8A582 /* CEGUIGUISheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1094BC0F6D5EFD00B8A582 /* CEGUIGUISheet.cpp */; };
-		DA1098250F6D841500B8A582 /* CEGUIGUISheet.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095A90F6D5F9B00B8A582 /* CEGUIGUISheet.h */; };
 		DA1098260F6D841500B8A582 /* CEGUIImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10951D0F6D5F4100B8A582 /* CEGUIImage.cpp */; };
 		DA1098270F6D841500B8A582 /* CEGUIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095600F6D5F9B00B8A582 /* CEGUIImage.h */; };
 		DA1098280F6D841500B8A582 /* CEGUIImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA10951E0F6D5F4100B8A582 /* CEGUIImageCodec.cpp */; };
@@ -564,7 +562,6 @@
 		DA3C62CF12140D1D002A2BF0 /* CEGUIAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C612140D1D002A2BF0 /* CEGUIAnimation.h */; };
 		DA3C62D012140D1D002A2BF0 /* CEGUIAnimationInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C712140D1D002A2BF0 /* CEGUIAnimationInstance.h */; };
 		DA3C62D112140D1D002A2BF0 /* CEGUIAnimationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C812140D1D002A2BF0 /* CEGUIAnimationManager.h */; };
-		DA3C62D212140D1D002A2BF0 /* CEGUIBasicInterpolators.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62C912140D1D002A2BF0 /* CEGUIBasicInterpolators.h */; };
 		DA3C62D312140D1D002A2BF0 /* CEGUIChainedXMLHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62CA12140D1D002A2BF0 /* CEGUIChainedXMLHandler.h */; };
 		DA3C62D412140D1D002A2BF0 /* CEGUIInterpolator.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62CB12140D1D002A2BF0 /* CEGUIInterpolator.h */; };
 		DA3C62D512140D1D002A2BF0 /* CEGUIKeyFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3C62CC12140D1D002A2BF0 /* CEGUIKeyFrame.h */; };
@@ -573,12 +570,14 @@
 		DA3C62E212140D63002A2BF0 /* CEGUIAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DA12140D63002A2BF0 /* CEGUIAnimation.cpp */; };
 		DA3C62E312140D63002A2BF0 /* CEGUIAnimationInstance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DB12140D63002A2BF0 /* CEGUIAnimationInstance.cpp */; };
 		DA3C62E412140D63002A2BF0 /* CEGUIAnimationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DC12140D63002A2BF0 /* CEGUIAnimationManager.cpp */; };
-		DA3C62E512140D63002A2BF0 /* CEGUIBasicInterpolators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DD12140D63002A2BF0 /* CEGUIBasicInterpolators.cpp */; };
 		DA3C62E612140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DE12140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp */; };
 		DA3C62E712140D63002A2BF0 /* CEGUIKeyFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3C62DF12140D63002A2BF0 /* CEGUIKeyFrame.cpp */; };
 		DA3F6D9E10E6327F007A1C3A /* CEGUIRenderEffectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */; };
 		DA3F6D9F10E6327F007A1C3A /* CEGUIRenderEffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */; };
 		DA3F6DA110E632BE007A1C3A /* CEGUIRenderEffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */; };
+		DA46982A129D3D0D0037F5BE /* CEGUITplInterpolators.h in Headers */ = {isa = PBXBuildFile; fileRef = DA469829129D3D0D0037F5BE /* CEGUITplInterpolators.h */; };
+		DA46982C129D3D4F0037F5BE /* CEGUIDefaultWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DA46982B129D3D4F0037F5BE /* CEGUIDefaultWindow.h */; };
+		DA46982E129D3D870037F5BE /* CEGUIDefaultWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA46982D129D3D870037F5BE /* CEGUIDefaultWindow.cpp */; };
 		DA485B22103B3E390013D18E /* CEGUIIrrlichtImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */; };
 		DA485B24103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */; };
 		DA54492E0F739EC100983E1A /* CEGUITplWindowFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */; };
@@ -1936,7 +1935,6 @@
 		DA1094B90F6D5EFD00B8A582 /* CEGUIFrameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIFrameWindow.cpp; path = ../../cegui/src/elements/CEGUIFrameWindow.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094BA0F6D5EFD00B8A582 /* CEGUIFrameWindowProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIFrameWindowProperties.cpp; path = ../../cegui/src/elements/CEGUIFrameWindowProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094BB0F6D5EFD00B8A582 /* CEGUIGroupBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGroupBox.cpp; path = ../../cegui/src/elements/CEGUIGroupBox.cpp; sourceTree = SOURCE_ROOT; };
-		DA1094BC0F6D5EFD00B8A582 /* CEGUIGUISheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIGUISheet.cpp; path = ../../cegui/src/elements/CEGUIGUISheet.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094BD0F6D5EFD00B8A582 /* CEGUIItemEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIItemEntry.cpp; path = ../../cegui/src/elements/CEGUIItemEntry.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094BE0F6D5EFD00B8A582 /* CEGUIItemEntryProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIItemEntryProperties.cpp; path = ../../cegui/src/elements/CEGUIItemEntryProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DA1094BF0F6D5EFD00B8A582 /* CEGUIItemListBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIItemListBase.cpp; path = ../../cegui/src/elements/CEGUIItemListBase.cpp; sourceTree = SOURCE_ROOT; };
@@ -2168,7 +2166,6 @@
 		DA1095A60F6D5F9B00B8A582 /* CEGUIFrameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIFrameWindow.h; sourceTree = "<group>"; };
 		DA1095A70F6D5F9B00B8A582 /* CEGUIFrameWindowProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIFrameWindowProperties.h; sourceTree = "<group>"; };
 		DA1095A80F6D5F9B00B8A582 /* CEGUIGroupBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGroupBox.h; sourceTree = "<group>"; };
-		DA1095A90F6D5F9B00B8A582 /* CEGUIGUISheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGUISheet.h; sourceTree = "<group>"; };
 		DA1095AA0F6D5F9B00B8A582 /* CEGUIItemEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIItemEntry.h; sourceTree = "<group>"; };
 		DA1095AB0F6D5F9B00B8A582 /* CEGUIItemEntryProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIItemEntryProperties.h; sourceTree = "<group>"; };
 		DA1095AC0F6D5F9B00B8A582 /* CEGUIItemListBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIItemListBase.h; sourceTree = "<group>"; };
@@ -2905,7 +2902,6 @@
 		DA3C62C612140D1D002A2BF0 /* CEGUIAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIAnimation.h; path = ../../cegui/include/CEGUIAnimation.h; sourceTree = SOURCE_ROOT; };
 		DA3C62C712140D1D002A2BF0 /* CEGUIAnimationInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIAnimationInstance.h; path = ../../cegui/include/CEGUIAnimationInstance.h; sourceTree = SOURCE_ROOT; };
 		DA3C62C812140D1D002A2BF0 /* CEGUIAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIAnimationManager.h; path = ../../cegui/include/CEGUIAnimationManager.h; sourceTree = SOURCE_ROOT; };
-		DA3C62C912140D1D002A2BF0 /* CEGUIBasicInterpolators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIBasicInterpolators.h; path = ../../cegui/include/CEGUIBasicInterpolators.h; sourceTree = SOURCE_ROOT; };
 		DA3C62CA12140D1D002A2BF0 /* CEGUIChainedXMLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIChainedXMLHandler.h; path = ../../cegui/include/CEGUIChainedXMLHandler.h; sourceTree = SOURCE_ROOT; };
 		DA3C62CB12140D1D002A2BF0 /* CEGUIInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIInterpolator.h; path = ../../cegui/include/CEGUIInterpolator.h; sourceTree = SOURCE_ROOT; };
 		DA3C62CC12140D1D002A2BF0 /* CEGUIKeyFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIKeyFrame.h; path = ../../cegui/include/CEGUIKeyFrame.h; sourceTree = SOURCE_ROOT; };
@@ -2914,7 +2910,6 @@
 		DA3C62DA12140D63002A2BF0 /* CEGUIAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIAnimation.cpp; path = ../../cegui/src/CEGUIAnimation.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62DB12140D63002A2BF0 /* CEGUIAnimationInstance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIAnimationInstance.cpp; path = ../../cegui/src/CEGUIAnimationInstance.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62DC12140D63002A2BF0 /* CEGUIAnimationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIAnimationManager.cpp; path = ../../cegui/src/CEGUIAnimationManager.cpp; sourceTree = SOURCE_ROOT; };
-		DA3C62DD12140D63002A2BF0 /* CEGUIBasicInterpolators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIBasicInterpolators.cpp; path = ../../cegui/src/CEGUIBasicInterpolators.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62DE12140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIChainedXMLHandler.cpp; path = ../../cegui/src/CEGUIChainedXMLHandler.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62DF12140D63002A2BF0 /* CEGUIKeyFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIKeyFrame.cpp; path = ../../cegui/src/CEGUIKeyFrame.cpp; sourceTree = SOURCE_ROOT; };
 		DA3C62EA12140DAF002A2BF0 /* Animation.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Animation.xsd; path = ../../datafiles/xml_schemas/Animation.xsd; sourceTree = SOURCE_ROOT; };
@@ -2922,6 +2917,9 @@
 		DA3F6D9C10E6327F007A1C3A /* CEGUIRenderEffectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectFactory.h; path = ../../cegui/include/CEGUIRenderEffectFactory.h; sourceTree = SOURCE_ROOT; };
 		DA3F6D9D10E6327F007A1C3A /* CEGUIRenderEffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffectManager.h; path = ../../cegui/include/CEGUIRenderEffectManager.h; sourceTree = SOURCE_ROOT; };
 		DA3F6DA010E632BE007A1C3A /* CEGUIRenderEffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderEffectManager.cpp; path = ../../cegui/src/CEGUIRenderEffectManager.cpp; sourceTree = SOURCE_ROOT; };
+		DA469829129D3D0D0037F5BE /* CEGUITplInterpolators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplInterpolators.h; path = ../../cegui/include/CEGUITplInterpolators.h; sourceTree = SOURCE_ROOT; };
+		DA46982B129D3D4F0037F5BE /* CEGUIDefaultWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIDefaultWindow.h; sourceTree = "<group>"; };
+		DA46982D129D3D870037F5BE /* CEGUIDefaultWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIDefaultWindow.cpp; path = ../../cegui/src/elements/CEGUIDefaultWindow.cpp; sourceTree = SOURCE_ROOT; };
 		DA485B21103B3E390013D18E /* CEGUIIrrlichtImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIIrrlichtImageCodec.h; path = ../../cegui/include/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.h; sourceTree = SOURCE_ROOT; };
 		DA485B23103B3E590013D18E /* CEGUIIrrlichtImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIIrrlichtImageCodec.cpp; path = ../../cegui/src/RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITplWindowFactory.h; path = ../../cegui/include/CEGUITplWindowFactory.h; sourceTree = SOURCE_ROOT; };
@@ -4358,7 +4356,6 @@
 				DA3C62C712140D1D002A2BF0 /* CEGUIAnimationInstance.h */,
 				DA3C62C812140D1D002A2BF0 /* CEGUIAnimationManager.h */,
 				DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */,
-				DA3C62C912140D1D002A2BF0 /* CEGUIBasicInterpolators.h */,
 				DA61D5AF0FCEA5AD00EC1A0C /* CEGUIBasicRenderedStringParser.h */,
 				DAE4B64B102A1A5A00B38ADD /* CEGUIBidiVisualMapping.h */,
 				DA1095440F6D5F9B00B8A582 /* CEGUIBoundSlot.h */,
@@ -4453,6 +4450,7 @@
 				DA1095850F6D5F9B00B8A582 /* CEGUITexture.h */,
 				DA1095860F6D5F9B00B8A582 /* CEGUITextureTarget.h */,
 				DA1095870F6D5F9B00B8A582 /* CEGUITextUtils.h */,
+				DA469829129D3D0D0037F5BE /* CEGUITplInterpolators.h */,
 				DA5449280F739DF800983E1A /* CEGUITplWindowFactory.h */,
 				DA5449290F739DF800983E1A /* CEGUITplWindowRendererFactory.h */,
 				DA54492A0F739DF800983E1A /* CEGUITplWRFactoryRegisterer.h */,
@@ -4491,7 +4489,6 @@
 				DA3C62DB12140D63002A2BF0 /* CEGUIAnimationInstance.cpp */,
 				DA3C62DC12140D63002A2BF0 /* CEGUIAnimationManager.cpp */,
 				DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */,
-				DA3C62DD12140D63002A2BF0 /* CEGUIBasicInterpolators.cpp */,
 				DA61D5BB0FCEA5CD00EC1A0C /* CEGUIBasicRenderedStringParser.cpp */,
 				DAE4B651102A1AA800B38ADD /* CEGUIBidiVisualMapping.cpp */,
 				DA1095060F6D5F4000B8A582 /* CEGUIBoundSlot.cpp */,
@@ -4630,6 +4627,7 @@
 				DA1094B20F6D5EFD00B8A582 /* CEGUICombobox.cpp */,
 				DA1094B30F6D5EFD00B8A582 /* CEGUIComboboxProperties.cpp */,
 				DA1094B40F6D5EFD00B8A582 /* CEGUIComboDropList.cpp */,
+				DA46982D129D3D870037F5BE /* CEGUIDefaultWindow.cpp */,
 				DA1094B50F6D5EFD00B8A582 /* CEGUIDragContainer.cpp */,
 				DA1094B60F6D5EFD00B8A582 /* CEGUIDragContainerProperties.cpp */,
 				DA1094B70F6D5EFD00B8A582 /* CEGUIEditbox.cpp */,
@@ -4639,7 +4637,6 @@
 				DA831181120D707C006D045E /* CEGUIGridLayoutContainer.cpp */,
 				DA831182120D707C006D045E /* CEGUIGridLayoutContainerProperties.cpp */,
 				DA1094BB0F6D5EFD00B8A582 /* CEGUIGroupBox.cpp */,
-				DA1094BC0F6D5EFD00B8A582 /* CEGUIGUISheet.cpp */,
 				DA831183120D707C006D045E /* CEGUIHorizontalLayoutContainer.cpp */,
 				DA1094BD0F6D5EFD00B8A582 /* CEGUIItemEntry.cpp */,
 				DA1094BE0F6D5EFD00B8A582 /* CEGUIItemEntryProperties.cpp */,
@@ -4713,6 +4710,7 @@
 				DA10959F0F6D5F9B00B8A582 /* CEGUICombobox.h */,
 				DA1095A00F6D5F9B00B8A582 /* CEGUIComboboxProperties.h */,
 				DA1095A10F6D5F9B00B8A582 /* CEGUIComboDropList.h */,
+				DA46982B129D3D4F0037F5BE /* CEGUIDefaultWindow.h */,
 				DA1095A20F6D5F9B00B8A582 /* CEGUIDragContainer.h */,
 				DA1095A30F6D5F9B00B8A582 /* CEGUIDragContainerProperties.h */,
 				DA1095A40F6D5F9B00B8A582 /* CEGUIEditbox.h */,
@@ -4722,7 +4720,6 @@
 				DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */,
 				DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */,
 				DA1095A80F6D5F9B00B8A582 /* CEGUIGroupBox.h */,
-				DA1095A90F6D5F9B00B8A582 /* CEGUIGUISheet.h */,
 				DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */,
 				DA1095AA0F6D5F9B00B8A582 /* CEGUIItemEntry.h */,
 				DA1095AB0F6D5F9B00B8A582 /* CEGUIItemEntryProperties.h */,
@@ -6192,7 +6189,6 @@
 				DA10981F0F6D841500B8A582 /* CEGUIGlobalEventSet.h in Headers */,
 				DA1098210F6D841500B8A582 /* CEGUIGroupBox.h in Headers */,
 				DA1098230F6D841500B8A582 /* CEGUIGUILayout_xmlHandler.h in Headers */,
-				DA1098250F6D841500B8A582 /* CEGUIGUISheet.h in Headers */,
 				DA1098270F6D841500B8A582 /* CEGUIImage.h in Headers */,
 				DA1098290F6D841500B8A582 /* CEGUIImageCodec.h in Headers */,
 				DA10982B0F6D841500B8A582 /* CEGUIImageset.h in Headers */,
@@ -6348,7 +6344,6 @@
 				DA3C62CF12140D1D002A2BF0 /* CEGUIAnimation.h in Headers */,
 				DA3C62D012140D1D002A2BF0 /* CEGUIAnimationInstance.h in Headers */,
 				DA3C62D112140D1D002A2BF0 /* CEGUIAnimationManager.h in Headers */,
-				DA3C62D212140D1D002A2BF0 /* CEGUIBasicInterpolators.h in Headers */,
 				DA3C62D312140D1D002A2BF0 /* CEGUIChainedXMLHandler.h in Headers */,
 				DA3C62D412140D1D002A2BF0 /* CEGUIInterpolator.h in Headers */,
 				DA3C62D512140D1D002A2BF0 /* CEGUIKeyFrame.h in Headers */,
@@ -6376,6 +6371,8 @@
 				DAC3781F129BD9F40063DD78 /* CEGUIFalWidgetLookFeel.h in Headers */,
 				DAC37820129BD9F40063DD78 /* CEGUIFalWidgetLookManager.h in Headers */,
 				DAC37821129BD9F40063DD78 /* CEGUIFalXMLEnumHelper.h in Headers */,
+				DA46982A129D3D0D0037F5BE /* CEGUITplInterpolators.h in Headers */,
+				DA46982C129D3D4F0037F5BE /* CEGUIDefaultWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7675,7 +7672,6 @@
 				DA10981E0F6D841500B8A582 /* CEGUIGlobalEventSet.cpp in Sources */,
 				DA1098200F6D841500B8A582 /* CEGUIGroupBox.cpp in Sources */,
 				DA1098220F6D841500B8A582 /* CEGUIGUILayout_xmlHandler.cpp in Sources */,
-				DA1098240F6D841500B8A582 /* CEGUIGUISheet.cpp in Sources */,
 				DA1098260F6D841500B8A582 /* CEGUIImage.cpp in Sources */,
 				DA1098280F6D841500B8A582 /* CEGUIImageCodec.cpp in Sources */,
 				DA10982A0F6D841500B8A582 /* CEGUIImageset.cpp in Sources */,
@@ -7804,13 +7800,13 @@
 				DA3C62E212140D63002A2BF0 /* CEGUIAnimation.cpp in Sources */,
 				DA3C62E312140D63002A2BF0 /* CEGUIAnimationInstance.cpp in Sources */,
 				DA3C62E412140D63002A2BF0 /* CEGUIAnimationManager.cpp in Sources */,
-				DA3C62E512140D63002A2BF0 /* CEGUIBasicInterpolators.cpp in Sources */,
 				DA3C62E612140D63002A2BF0 /* CEGUIChainedXMLHandler.cpp in Sources */,
 				DA3C62E712140D63002A2BF0 /* CEGUIKeyFrame.cpp in Sources */,
 				DA29F43412917C7200676D86 /* CEGUIMenuItemProperties.cpp in Sources */,
 				DAC37823129BDA9F0063DD78 /* CEGUIFalEventLinkDefinition.cpp in Sources */,
 				DAC37826129BDAE80063DD78 /* CEGUIGeometryBuffer.cpp in Sources */,
 				DAC37827129BDAE80063DD78 /* CEGUILinkedEvent.cpp in Sources */,
+				DA46982E129D3D870037F5BE /* CEGUIDefaultWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
