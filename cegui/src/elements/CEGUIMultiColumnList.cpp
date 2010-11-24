@@ -74,8 +74,8 @@ MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
 *************************************************************************/
 // Event names
 const String MultiColumnList::EventSelectionModeChanged( "SelectionModeChanged" );
-const String MultiColumnList::EventNominatedSelectColumnChanged( "NomSelColChanged" );
-const String MultiColumnList::EventNominatedSelectRowChanged( "NomSelRowChanged" );
+const String MultiColumnList::EventNominatedSelectColumnChanged( "NominatedSelectColumnChanged" );
+const String MultiColumnList::EventNominatedSelectRowChanged( "NominatedSelectRowChanged" );
 const String MultiColumnList::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
 const String MultiColumnList::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 const String MultiColumnList::EventSelectionChanged( "SelectionChanged" );

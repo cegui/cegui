@@ -100,7 +100,7 @@ const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged
 const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventRotated("Rotated");
-const String Window::EventNonClientChanged("NonClientChanged");
+const String Window::EventNonClientChanged( "NonClientChanged" );
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEntersArea("MouseEntersArea");
