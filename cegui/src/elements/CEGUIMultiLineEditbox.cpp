@@ -87,12 +87,12 @@ MultiLineEditboxProperties::ForceVertScrollbar      MultiLineEditbox::d_forceVer
 	Constants
 *************************************************************************/
 // event names
-const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyChanged" );
+const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String MultiLineEditbox::EventWordWrapModeChanged( "WordWrapModeChanged" );
 const String MultiLineEditbox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
 const String MultiLineEditbox::EventCaretMoved( "CaretMoved" );
 const String MultiLineEditbox::EventTextSelectionChanged( "TextSelectionChanged" );
-const String MultiLineEditbox::EventEditboxFull( "EditboxFullEvent" );
+const String MultiLineEditbox::EventEditboxFull( "EditboxFull" );
 const String MultiLineEditbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
 const String MultiLineEditbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 

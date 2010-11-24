@@ -83,7 +83,7 @@ ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
 	Constants
 *************************************************************************/
 // event names
-const String ItemListBase::EventListContentsChanged("ListItemsChanged");
+const String ItemListBase::EventListContentsChanged( "ListContentsChanged" );
 const String ItemListBase::EventSortEnabledChanged("SortEnabledChanged");
 const String ItemListBase::EventSortModeChanged("SortModeChanged");
 

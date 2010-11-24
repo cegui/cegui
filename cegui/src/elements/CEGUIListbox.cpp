@@ -64,12 +64,12 @@ ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
 	Constants
 *************************************************************************/
 // event names
-const String Listbox::EventListContentsChanged( "ListItemsChanged" );
-const String Listbox::EventSelectionChanged( "ItemSelectionChanged" );
+const String Listbox::EventListContentsChanged( "ListContentsChanged" );
+const String Listbox::EventSelectionChanged( "SelectionChanged" );
 const String Listbox::EventSortModeChanged( "SortModeChanged" );
-const String Listbox::EventMultiselectModeChanged( "MuliselectModeChanged" );
-const String Listbox::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
-const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
+const String Listbox::EventMultiselectModeChanged( "MultiselectModeChanged" );
+const String Listbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
 /*************************************************************************
     Child Widget name suffix constants

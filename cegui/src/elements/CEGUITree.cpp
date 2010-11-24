@@ -58,12 +58,12 @@ TreeProperties::ItemTooltips       Tree::d_itemTooltipsProperty;
     Constants
 *************************************************************************/
 // event names
-const String Tree::EventListContentsChanged( "ListItemsChanged" );
-const String Tree::EventSelectionChanged( "ItemSelectionChanged" );
+const String Tree::EventListContentsChanged( "ListContentsChanged" );
+const String Tree::EventSelectionChanged( "SelectionChanged" );
 const String Tree::EventSortModeChanged( "SortModeChanged" );
-const String Tree::EventMultiselectModeChanged( "MuliselectModeChanged" );
-const String Tree::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
-const String Tree::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
+const String Tree::EventMultiselectModeChanged( "MultiselectModeChanged" );
+const String Tree::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String Tree::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 const String Tree::EventBranchOpened( "BranchOpened" );
 const String Tree::EventBranchClosed( "BranchClosed" );
 
