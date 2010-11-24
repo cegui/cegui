@@ -37,6 +37,7 @@
 #include "CEGUISize.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIPropertySet.h"
+#include "CEGUITplProperty.h"
 #include "CEGUISystem.h"
 #include "CEGUIInputEvent.h"
 #include "CEGUIWindowProperties.h"
@@ -4115,7 +4116,7 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::Alpha             d_alphaProperty;
+    static  TplProperty<Window, float>          d_alphaProperty;
     static  WindowProperties::AlwaysOnTop       d_alwaysOnTopProperty;
     static  WindowProperties::ClippedByParent   d_clippedByParentProperty;
     static  WindowProperties::DestroyedByParent d_destroyedByParentProperty;

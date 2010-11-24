@@ -99,9 +99,11 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUITexture.h \
                  CEGUITextureTarget.h \
                  CEGUITplInterpolators.h \
+                 CEGUITplProperty.h \
                  CEGUITplWindowFactory.h \
                  CEGUITplWindowRendererFactory.h \
                  CEGUITplWRFactoryRegisterer.h \
+                 CEGUITypedProperty.h \
                  CEGUIUDim.h \
                  CEGUIVector.h \
                  CEGUIVersion.h \
