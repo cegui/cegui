@@ -1126,7 +1126,7 @@ void Window::setRestoreCapture(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setAlpha(float alpha)
+void Window::setAlpha(const float alpha)
 {
     // clamp this to the valid range [0.0, 1.0]
     d_alpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
