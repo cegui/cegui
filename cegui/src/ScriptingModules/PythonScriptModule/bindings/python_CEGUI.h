@@ -6,6 +6,121 @@
 #include "CEGUI.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
 
+namespace CEGUI
+{
+
+class PropertyHelper_wrapper
+{
+public:
+    static float stringToFloat(const String& str)
+    {
+        return PropertyHelper<float>::fromString(str);
+    }
+	static unsigned int stringToUint(const String& str)
+	{
+	   return PropertyHelper<uint>::fromString(str);
+    }
+	static bool stringToBool(const String& str)
+	{
+	   return PropertyHelper<bool>::fromString(str);
+    }
+	static Size tringToSize(const String& str)
+	{
+	   return PropertyHelper<Size>::fromString(str);
+    }
+	static Vector2 stringToVector2(const String& str)
+	{
+	   return PropertyHelper<Vector2>::fromString(str);
+    }
+	static Rect stringToRect(const String& str)
+	{
+	   return PropertyHelper<Rect>::fromString(str);
+    }
+	static const Image*	stringToImage(const String& str)
+	{
+	   return PropertyHelper<Image*>::fromString(str);
+    }
+	static Colour stringToColour(const String& str)
+    {
+	   return PropertyHelper<Colour>::fromString(str);
+    }
+	static ColourRect stringToColourRect(const String& str)
+	{
+	   return PropertyHelper<ColourRect>::fromString(str);
+    }
+	static UDim stringToUDim(const String& str)
+	{
+	   return PropertyHelper<UDim>::fromString(str);
+    }
+	static UVector2 stringToUVector2(const String& str)
+	{
+	   return PropertyHelper<UVector2>::fromString(str);
+    }
+	static URect stringToURect(const String& str)
+	{
+	   return PropertyHelper<URect>::fromString(str);
+    }
+    static UBox stringToUBox(const String& str)
+	{
+	   return PropertyHelper<UBox>::fromString(str);
+    }
+
+	static String floatToString(float val)
+	{
+	   return PropertyHelper<float>::toString(val);
+    }
+	static String uintToString(unsigned int val)
+	{
+	   return PropertyHelper<uint>::toString(val);
+    }
+	static String boolToString(bool val)
+	{
+	   return PropertyHelper<bool>::toString(val);
+    }
+	static String sizeToString(const Size& val)
+	{
+	   return PropertyHelper<Size>::toString(val);
+    }
+	static String vector2ToString(const Vector2& val)
+	{
+	   return PropertyHelper<Vector2>::toString(val);
+    }
+	static String rectToString(const Rect& val)
+	{
+	   return PropertyHelper<Rect>::toString(val);
+    }
+	static String imageToString(const Image* val)
+	{
+	   return PropertyHelper<Image*>::toString(val);
+    }
+	static String colourToString(const Colour& val)
+	{
+	   return PropertyHelper<Colour>::toString(val);
+    }
+	static String colourRectToString(const ColourRect& val)
+	{
+	   return PropertyHelper<ColourRect>::toString(val);
+    }
+	static String udimToString(const UDim& val)
+	{
+	   return PropertyHelper<UDim>::toString(val);
+    }
+	static String uvector2ToString(const UVector2& val)
+	{
+	   return PropertyHelper<UVector2>::toString(val);
+    }
+	static String urectToString(const URect& val)
+	{
+	   return PropertyHelper<URect>::toString(val);
+    }
+    static String uboxToString(const UBox& val)
+	{
+	   return PropertyHelper<UBox>::toString(val);
+    }
+};
+
+}
+
 // First we create a magic namespace to hold all our aliases
 namespace pyplusplus
 {
@@ -24,16 +139,9 @@ namespace pyplusplus
         // typedef std::vector<CEGUI::Scheme::UIElementFactory> UIElementFactoryVector;
         // typedef std::vector<CEGUI::Scheme::UIModule> UIModuleVector;
         
-        /*
-        #if ( CEGUI_VERSION_MINOR > 5 )
-         typedef std::list<CEGUI::OgreCEGUITexture*> OgreCEGUITextureList;
-        #endif
-        */
-        
         typedef ::CEGUI::Event::Connection Connection;
         typedef ::CEGUI::Event::Subscriber Subscriber;
         typedef ::CEGUI::EventSet::Iterator EventIterator;
-        
         
         typedef ::CEGUI::FontManager::FontIterator FontIterator ;
         typedef ::CEGUI::Imageset::ImageIterator ImageIterator;	

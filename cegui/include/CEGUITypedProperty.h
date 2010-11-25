@@ -64,7 +64,7 @@ public:
     //! \copydoc Property::get
     virtual String get(const PropertyReceiver* receiver) const
     {
-        Helper::toString(getNative(receiver));
+        return Helper::toString(getNative(receiver));
     }
 
     //! \copydoc Property::set

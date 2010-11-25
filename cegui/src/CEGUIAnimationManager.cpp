@@ -130,8 +130,8 @@ void AnimationManager::addInterpolator(Interpolator* interpolator)
     if (d_interpolators.find(interpolator->getType()) != d_interpolators.end())
     {
         CEGUI_THROW(AlreadyExistsException(
-            "AnimationManager::addInterpolator: Interpolator of given type "
-            "already exists."));
+            "AnimationManager::addInterpolator: Interpolator of type '"
+            + interpolator->getType() + "' already exists."));
     }
 
     d_interpolators.insert(
@@ -146,8 +146,8 @@ void AnimationManager::removeInterpolator(Interpolator* interpolator)
     if (it == d_interpolators.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::removeInterpolator: Interpolator of given type "
-            "not found."));
+            "AnimationManager::removeInterpolator: Interpolator of type '"
+            + interpolator->getType() + "' not found."));
     }
 
     d_interpolators.erase(it);
@@ -161,8 +161,8 @@ Interpolator* AnimationManager::getInterpolator(const String& type) const
     if (it == d_interpolators.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::getInterpolator: Interpolator of given type "
-            "not found."));
+            "AnimationManager::getInterpolator: Interpolator of type '" + type +
+            "' not found."));
     }
 
     return it->second;
@@ -174,8 +174,8 @@ Animation* AnimationManager::createAnimation(const String& name)
     if (d_animations.find(name) != d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::createAnimation: Animation with given name "
-            "already exists."));
+            "AnimationManager::createAnimation: Animation with name '"
+            + name + "' already exists."));
     }
 
     Animation* ret = new Animation(name);
@@ -198,8 +198,8 @@ void AnimationManager::destroyAnimation(const String& name)
     if (it == d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::destroyAnimation: Animation with given name not "
-            "found."));
+            "AnimationManager::destroyAnimation: Animation with name '" + name
+            + "' not found."));
     }
 
     Animation* animation = it->second;
@@ -217,8 +217,8 @@ Animation* AnimationManager::getAnimation(const String& name) const
     if (it == d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::getAnimation: Animation with given name not "
-            "found."));
+            "AnimationManager::getAnimation: Animation with name '" + name
+            + "' not found."));
     }
 
     return it->second;

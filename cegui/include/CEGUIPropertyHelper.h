@@ -145,7 +145,7 @@ class PropertyHelper<float>
 {
 public:
     typedef float return_type;
-    typedef float pass_type;
+    typedef const float pass_type;
     typedef String string_return_type;
     
     static return_type fromString(const String& str)
@@ -170,7 +170,7 @@ class PropertyHelper<int>
 {
 public:
     typedef int return_type;
-    typedef int pass_type;
+    typedef const int pass_type;
     typedef String string_return_type;
     
     static return_type fromString(const String& str)
@@ -195,7 +195,7 @@ class PropertyHelper<uint>
 {
 public:
     typedef uint return_type;
-    typedef uint pass_type;
+    typedef const uint pass_type;
     typedef String string_return_type;
     
     static return_type fromString(const String& str)
@@ -220,7 +220,7 @@ class PropertyHelper<bool>
 {
 public:
     typedef bool return_type;
-    typedef bool pass_type;
+    typedef const bool pass_type;
     typedef const String& string_return_type;
     
     static return_type fromString(const String& str)

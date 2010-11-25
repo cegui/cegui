@@ -3,7 +3,7 @@
     created:    23/11/2010
     author:     Martin Preisler
 
-    purpose:    Defines the interface for the abstract Interpolator class
+    purpose:    Provides templated finger saving interpolators
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
@@ -85,7 +85,7 @@ public:
         typename Helper::return_type val1 = Helper::fromString(value1);
         typename Helper::return_type val2 = Helper::fromString(value2);
 
-        const T result = val1 * (1.0f - position) + val2 * (position);
+        const T result = static_cast<const T>(val1 * (1.0f - position) + val2 * (position));
 
         return Helper::toString(result);
     }
@@ -100,7 +100,7 @@ public:
         typename Helper::return_type val1 = Helper::fromString(value1);
         typename Helper::return_type val2 = Helper::fromString(value2);
 
-        const T result = bas + (val1 * (1.0f - position) + val2 * (position));
+        const T result = static_cast<const T>(bas + (val1 * (1.0f - position) + val2 * (position)));
 
         return Helper::toString(result);
     }
@@ -117,7 +117,7 @@ public:
 
         const float mul = val1 * (1.0f - position) + val2 * (position);
 
-        const T result = bas * mul;
+        const T result = static_cast<const T>(bas * mul);
 
         return Helper::toString(result);
     }

@@ -2101,7 +2101,7 @@ public:
     \return
         Nothing
     */
-    void setAlpha(float alpha);
+    void setAlpha(const float alpha);
 
     /*!
     \brief
