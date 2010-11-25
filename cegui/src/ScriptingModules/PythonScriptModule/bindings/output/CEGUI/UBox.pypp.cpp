@@ -26,6 +26,7 @@ void register_UBox_class(){
         UBox_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("top"), bp::arg("left"), bp::arg("bottom"), bp::arg("right") )) );
         UBox_exposer.def( bp::init< CEGUI::UBox const & >(( bp::arg("b") )) );
         UBox_exposer.def( bp::self != bp::self );
+        UBox_exposer.def( bp::self * bp::other< float >() );
         UBox_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         UBox_exposer.def( bp::self + bp::self );
         { //::CEGUI::UBox::operator=

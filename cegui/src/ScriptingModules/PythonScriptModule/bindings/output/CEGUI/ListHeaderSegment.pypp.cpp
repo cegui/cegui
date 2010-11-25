@@ -244,7 +244,7 @@ void register_ListHeaderSegment_class(){
             ;
         { //::CEGUI::ListHeaderSegment::getDragMoveOffset
         
-            typedef ::CEGUI::Point const & ( ::CEGUI::ListHeaderSegment::*getDragMoveOffset_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 const & ( ::CEGUI::ListHeaderSegment::*getDragMoveOffset_function_type )(  ) const;
             
             ListHeaderSegment_exposer.def( 
                 "getDragMoveOffset"

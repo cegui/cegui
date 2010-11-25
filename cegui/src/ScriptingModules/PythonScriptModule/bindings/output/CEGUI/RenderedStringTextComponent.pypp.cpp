@@ -234,7 +234,7 @@ void register_RenderedStringTextComponent_class(){
         }
         { //::CEGUI::RenderedStringTextComponent::setColours
         
-            typedef void ( ::CEGUI::RenderedStringTextComponent::*setColours_function_type )( ::CEGUI::colour const & ) ;
+            typedef void ( ::CEGUI::RenderedStringTextComponent::*setColours_function_type )( ::CEGUI::Colour const & ) ;
             
             RenderedStringTextComponent_exposer.def( 
                 "setColours"

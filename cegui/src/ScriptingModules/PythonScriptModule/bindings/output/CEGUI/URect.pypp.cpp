@@ -85,6 +85,7 @@ void register_URect_class(){
                 , ( bp::arg("sz") ) );
         
         }
+        URect_exposer.def( bp::self * bp::other< float >() );
         URect_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         URect_exposer.def( bp::self + bp::self );
         { //::CEGUI::URect::setHeight

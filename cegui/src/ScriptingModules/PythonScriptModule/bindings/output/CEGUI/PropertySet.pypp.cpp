@@ -67,7 +67,7 @@ void register_PropertySet_class(){
                 , getIterator_function_type( &::CEGUI::PropertySet::getIterator )
                 , "*!\n\
             \n\
-                Return a PropertySet.Iterator object to iterate over the available\n\
+                Return a PropertySet.PropertyIterator object to iterate over the available\n\
                 Properties.\n\
             *\n" );
         

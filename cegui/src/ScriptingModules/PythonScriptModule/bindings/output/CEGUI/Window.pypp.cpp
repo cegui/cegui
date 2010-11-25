@@ -3109,7 +3109,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setAlpha
         
-            typedef void ( ::CEGUI::Window::*setAlpha_function_type )( float ) ;
+            typedef void ( ::CEGUI::Window::*setAlpha_function_type )( float const ) ;
             
             Window_exposer.def( 
                 "setAlpha"
@@ -4624,17 +4624,17 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventMouseDoubleClick"
                         , bp::make_getter( &CEGUI::Window::EventMouseDoubleClick
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventMouseEntersSurface"
-                        , bp::make_getter( &CEGUI::Window::EventMouseEnters
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventMouseEntersArea"
                         , bp::make_getter( &CEGUI::Window::EventMouseEntersArea
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventMouseLeavesSurface"
-                        , bp::make_getter( &CEGUI::Window::EventMouseLeaves
+        Window_exposer.add_static_property( "EventMouseEntersSurface"
+                        , bp::make_getter( &CEGUI::Window::EventMouseEntersSurface
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventMouseLeavesArea"
                         , bp::make_getter( &CEGUI::Window::EventMouseLeavesArea
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "EventMouseLeavesSurface"
+                        , bp::make_getter( &CEGUI::Window::EventMouseLeavesSurface
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventMouseMove"
                         , bp::make_getter( &CEGUI::Window::EventMouseMove
@@ -4675,6 +4675,9 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventTextParsingChanged"
                         , bp::make_getter( &CEGUI::Window::EventTextParsingChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "EventUpdated"
+                        , bp::make_getter( &CEGUI::Window::EventUpdated
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventVerticalAlignmentChanged"
                         , bp::make_getter( &CEGUI::Window::EventVerticalAlignmentChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -4683,9 +4686,6 @@ void register_Window_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventWindowRendererDetached"
                         , bp::make_getter( &CEGUI::Window::EventWindowRendererDetached
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventUpdated"
-                        , bp::make_getter( &CEGUI::Window::EventUpdated
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventZOrderChanged"
                         , bp::make_getter( &CEGUI::Window::EventZOrderChanged
