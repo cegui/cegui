@@ -469,7 +469,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionColours
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionColours"
@@ -498,7 +498,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionColours
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::Colour ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionColours"

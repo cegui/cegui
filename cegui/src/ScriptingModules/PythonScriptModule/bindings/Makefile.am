@@ -26,11 +26,9 @@ output/CEGUI/BasicRenderedStringParser.pypp.cpp \
 output/CEGUI/BidiVisualMapping.pypp.cpp \
 output/CEGUI/BoundSlot.pypp.cpp \
 output/CEGUI/ButtonBase.pypp.cpp \
-output/CEGUI/PyCEGUI_enumerations.pypp.cpp \
-output/CEGUI/PyCEGUI.main.cpp \
 output/CEGUI/CentredRenderedString.pypp.cpp \
 output/CEGUI/Checkbox.pypp.cpp \
-output/CEGUI/colour.pypp.cpp \
+output/CEGUI/Colour.pypp.cpp \
 output/CEGUI/ColourRect.pypp.cpp \
 output/CEGUI/Combobox.pypp.cpp \
 output/CEGUI/ComboDropList.pypp.cpp \
@@ -39,6 +37,7 @@ output/CEGUI/Connection.pypp.cpp \
 output/CEGUI/CoordConverter.pypp.cpp \
 output/CEGUI/DefaultLogger.pypp.cpp \
 output/CEGUI/DefaultResourceProvider.pypp.cpp \
+output/CEGUI/DefaultWindow.pypp.cpp \
 output/CEGUI/Dimension.pypp.cpp \
 output/CEGUI/DisplayEventArgs.pypp.cpp \
 output/CEGUI/DragContainer.pypp.cpp \
@@ -46,6 +45,7 @@ output/CEGUI/DragDropEventArgs.pypp.cpp \
 output/CEGUI/Editbox.pypp.cpp \
 output/CEGUI/EventArgs.pypp.cpp \
 output/CEGUI/EventIterator.pypp.cpp \
+output/CEGUI/EventLinkDefinition.pypp.cpp \
 output/CEGUI/Event.pypp.cpp \
 output/CEGUI/EventSet.pypp.cpp \
 output/CEGUI/FalagardComponentBase.pypp.cpp \
@@ -62,7 +62,6 @@ output/CEGUI/GeometryBuffer.pypp.cpp \
 output/CEGUI/GlobalEventSet.pypp.cpp \
 output/CEGUI/GridLayoutContainer.pypp.cpp \
 output/CEGUI/GroupBox.pypp.cpp \
-output/CEGUI/GUISheet.pypp.cpp \
 output/CEGUI/HeaderSequenceEventArgs.pypp.cpp \
 output/CEGUI/HorizontalLayoutContainer.pypp.cpp \
 output/CEGUI/ImageCodec.pypp.cpp \
@@ -85,6 +84,7 @@ output/CEGUI/LayerSpecification.pypp.cpp \
 output/CEGUI/LayoutContainer.pypp.cpp \
 output/CEGUI/LBItemList.pypp.cpp \
 output/CEGUI/LineList.pypp.cpp \
+output/CEGUI/LinkedEventArgs.pypp.cpp \
 output/CEGUI/ListboxItem.pypp.cpp \
 output/CEGUI/Listbox.pypp.cpp \
 output/CEGUI/ListboxTextItem.pypp.cpp \
@@ -120,6 +120,8 @@ output/CEGUI/Property.pypp.cpp \
 output/CEGUI/PropertyReceiver.pypp.cpp \
 output/CEGUI/PropertySet.pypp.cpp \
 output/CEGUI/PushButton.pypp.cpp \
+output/CEGUI/PyCEGUI_enumerations.pypp.cpp \
+output/CEGUI/PyCEGUI.main.cpp \
 output/CEGUI/RadioButton.pypp.cpp \
 output/CEGUI/RawDataContainer.pypp.cpp \
 output/CEGUI/Rect.pypp.cpp \
@@ -298,10 +300,9 @@ output/CEGUI/BasicRenderedStringParser.pypp.hpp \
 output/CEGUI/BidiVisualMapping.pypp.hpp \
 output/CEGUI/BoundSlot.pypp.hpp \
 output/CEGUI/ButtonBase.pypp.hpp \
-output/CEGUI/PyCEGUI_enumerations.pypp.hpp \
 output/CEGUI/CentredRenderedString.pypp.hpp \
 output/CEGUI/Checkbox.pypp.hpp \
-output/CEGUI/colour.pypp.hpp \
+output/CEGUI/Colour.pypp.hpp \
 output/CEGUI/ColourRect.pypp.hpp \
 output/CEGUI/Combobox.pypp.hpp \
 output/CEGUI/ComboDropList.pypp.hpp \
@@ -310,6 +311,7 @@ output/CEGUI/Connection.pypp.hpp \
 output/CEGUI/CoordConverter.pypp.hpp \
 output/CEGUI/DefaultLogger.pypp.hpp \
 output/CEGUI/DefaultResourceProvider.pypp.hpp \
+output/CEGUI/DefaultWindow.pypp.hpp \
 output/CEGUI/Dimension.pypp.hpp \
 output/CEGUI/DisplayEventArgs.pypp.hpp \
 output/CEGUI/DragContainer.pypp.hpp \
@@ -317,6 +319,7 @@ output/CEGUI/DragDropEventArgs.pypp.hpp \
 output/CEGUI/Editbox.pypp.hpp \
 output/CEGUI/EventArgs.pypp.hpp \
 output/CEGUI/EventIterator.pypp.hpp \
+output/CEGUI/EventLinkDefinition.pypp.hpp \
 output/CEGUI/Event.pypp.hpp \
 output/CEGUI/EventSet.pypp.hpp \
 output/CEGUI/FalagardComponentBase.pypp.hpp \
@@ -333,7 +336,6 @@ output/CEGUI/GeometryBuffer.pypp.hpp \
 output/CEGUI/GlobalEventSet.pypp.hpp \
 output/CEGUI/GridLayoutContainer.pypp.hpp \
 output/CEGUI/GroupBox.pypp.hpp \
-output/CEGUI/GUISheet.pypp.hpp \
 output/CEGUI/HeaderSequenceEventArgs.pypp.hpp \
 output/CEGUI/HorizontalLayoutContainer.pypp.hpp \
 output/CEGUI/ImageCodec.pypp.hpp \
@@ -357,6 +359,7 @@ output/CEGUI/LayoutContainer.pypp.hpp \
 output/CEGUI/LBItemList.pypp.hpp \
 output/CEGUI/_LineInfo__value_traits.pypp.hpp \
 output/CEGUI/LineList.pypp.hpp \
+output/CEGUI/LinkedEventArgs.pypp.hpp \
 output/CEGUI/ListboxItem.pypp.hpp \
 output/CEGUI/Listbox.pypp.hpp \
 output/CEGUI/ListboxTextItem.pypp.hpp \
@@ -395,6 +398,7 @@ output/CEGUI/Property.pypp.hpp \
 output/CEGUI/PropertyReceiver.pypp.hpp \
 output/CEGUI/PropertySet.pypp.hpp \
 output/CEGUI/PushButton.pypp.hpp \
+output/CEGUI/PyCEGUI_enumerations.pypp.hpp \
 output/CEGUI/RadioButton.pypp.hpp \
 output/CEGUI/RawDataContainer.pypp.hpp \
 output/CEGUI/Rect.pypp.hpp \

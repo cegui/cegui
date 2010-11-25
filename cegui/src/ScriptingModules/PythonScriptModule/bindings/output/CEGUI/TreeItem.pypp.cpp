@@ -654,7 +654,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionColours
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionColours"
@@ -664,7 +664,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionColours
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionColours"
@@ -730,7 +730,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setTextColours
         
-            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setTextColours"
@@ -763,7 +763,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setTextColours
         
-            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setTextColours"

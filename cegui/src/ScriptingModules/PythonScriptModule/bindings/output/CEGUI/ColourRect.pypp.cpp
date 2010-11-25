@@ -18,18 +18,18 @@ void register_ColourRect_class(){
            Default constructor\n\
         *\n") );
         bp::scope ColourRect_scope( ColourRect_exposer );
-        ColourRect_exposer.def( bp::init< CEGUI::colour const & >(( bp::arg("col") ), "*!\n\
+        ColourRect_exposer.def( bp::init< CEGUI::Colour const & >(( bp::arg("col") ), "*!\n\
         \n\
            Constructor for ColourRect objects (via single colour).  Also handles default construction.\n\
         *\n") );
-        bp::implicitly_convertible< CEGUI::colour const &, CEGUI::ColourRect >();
-        ColourRect_exposer.def( bp::init< CEGUI::colour const &, CEGUI::colour const &, CEGUI::colour const &, CEGUI::colour const & >(( bp::arg("top_left"), bp::arg("top_right"), bp::arg("bottom_left"), bp::arg("bottom_right") ), "*!\n\
+        bp::implicitly_convertible< CEGUI::Colour const &, CEGUI::ColourRect >();
+        ColourRect_exposer.def( bp::init< CEGUI::Colour const &, CEGUI::Colour const &, CEGUI::Colour const &, CEGUI::Colour const & >(( bp::arg("top_left"), bp::arg("top_right"), bp::arg("bottom_left"), bp::arg("bottom_right") ), "*!\n\
         \n\
            Constructor for ColourRect objects\n\
         *\n") );
         { //::CEGUI::ColourRect::getColourAtPoint
         
-            typedef ::CEGUI::colour ( ::CEGUI::ColourRect::*getColourAtPoint_function_type )( float,float ) const;
+            typedef ::CEGUI::Colour ( ::CEGUI::ColourRect::*getColourAtPoint_function_type )( float,float ) const;
             
             ColourRect_exposer.def( 
                 "getColourAtPoint"
@@ -153,7 +153,7 @@ void register_ColourRect_class(){
         }
         { //::CEGUI::ColourRect::setColours
         
-            typedef void ( ::CEGUI::ColourRect::*setColours_function_type )( ::CEGUI::colour const & ) ;
+            typedef void ( ::CEGUI::ColourRect::*setColours_function_type )( ::CEGUI::Colour const & ) ;
             
             ColourRect_exposer.def( 
                 "setColours"

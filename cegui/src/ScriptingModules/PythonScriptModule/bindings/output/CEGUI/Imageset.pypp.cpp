@@ -55,7 +55,7 @@ void register_Imageset_class(){
             *\n") );
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Point const &,::CEGUI::Size const &,::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Vector2 const &,::CEGUI::Size const &,::CEGUI::Vector2 const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -90,7 +90,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Vector2 const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -132,7 +132,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::draw
         
-            typedef void ( ::CEGUI::Imageset::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Imageset::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
             
             Imageset_exposer.def( 
                 "draw"
@@ -221,7 +221,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getImageOffset
         
-            typedef ::CEGUI::Point ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
             
             Imageset_exposer.def( 
                 "getImageOffset"

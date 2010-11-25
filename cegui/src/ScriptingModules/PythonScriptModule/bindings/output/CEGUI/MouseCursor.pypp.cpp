@@ -102,7 +102,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getDisplayIndependantPosition
         
-            typedef ::CEGUI::Point ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getDisplayIndependantPosition"
@@ -153,7 +153,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getPosition
         
-            typedef ::CEGUI::Point ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getPosition"
@@ -271,7 +271,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::offsetPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Vector2 const & ) ;
             
             MouseCursor_exposer.def( 
                 "offsetPosition"
@@ -380,7 +380,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setInitialMousePosition
         
-            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Point const & );
+            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Vector2 const & );
             
             MouseCursor_exposer.def( 
                 "setInitialMousePosition"
@@ -404,7 +404,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Vector2 const & ) ;
             
             MouseCursor_exposer.def( 
                 "setPosition"

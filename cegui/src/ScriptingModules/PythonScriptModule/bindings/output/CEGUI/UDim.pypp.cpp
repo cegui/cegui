@@ -39,6 +39,7 @@ void register_UDim_class(){
         
         }
         UDim_exposer.def( bp::self != bp::self );
+        UDim_exposer.def( bp::self * bp::other< float >() );
         UDim_exposer.def( bp::self * bp::self );
         UDim_exposer.def( bp::self *= bp::self );
         UDim_exposer.def( bp::self + bp::self );
