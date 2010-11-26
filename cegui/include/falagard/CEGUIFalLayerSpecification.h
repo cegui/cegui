@@ -43,7 +43,8 @@ namespace CEGUI
     \brief
         Class that encapsulates a single layer of imagery.
     */
-    class CEGUIEXPORT LayerSpecification
+    class CEGUIEXPORT LayerSpecification :
+        public AllocatedObject<LayerSpecification>
     {
     public:
         /*!

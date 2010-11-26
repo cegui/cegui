@@ -45,7 +45,8 @@ namespace CEGUI
 
 	A ResourceProvider is used to load both XML and binary data from an external source.  This could be from a filesystem or the resource manager of a specific renderer.
 */
-class CEGUIEXPORT ResourceProvider
+class CEGUIEXPORT ResourceProvider :
+    public AllocatedObject<ResourceProvider>
 {
 public:
 	/*************************************************************************

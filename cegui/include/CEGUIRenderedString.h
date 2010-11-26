@@ -47,7 +47,8 @@ namespace CEGUI
     Here 'string' does not refer solely to a text string, rather a string of
     any renderable items.
 */
-class CEGUIEXPORT RenderedString
+class CEGUIEXPORT RenderedString :
+    public AllocatedObject<RenderedString>
 {
 public:
     //! Constructor.

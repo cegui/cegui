@@ -121,7 +121,7 @@ void WindowFactoryManager::removeFactory(const String& name)
                                         (*j)->getTypeName() +
                                         "' windows.");
 
-        delete (*j);
+        CEGUI_DELETE_AO (*j);
         d_ownedFactories.erase(j);
     }
 }

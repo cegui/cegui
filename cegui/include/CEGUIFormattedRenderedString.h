@@ -38,7 +38,8 @@ namespace CEGUI
     Root of a class hierarchy that wrap RenderedString objects and render them
     with additional formatting.
 */
-class CEGUIEXPORT FormattedRenderedString
+class CEGUIEXPORT FormattedRenderedString :
+    public AllocatedObject<FormattedRenderedString>
 {
 public:
     //! Destructor.

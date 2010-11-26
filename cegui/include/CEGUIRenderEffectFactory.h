@@ -38,7 +38,8 @@ class RenderEffect;
     Interface for factory objects that create RenderEffect instances.
     Currently this interface is intended for internal use only.
 */
-class RenderEffectFactory
+class RenderEffectFactory : public
+    AllocatedObject<RenderEffectFactory>
 {
 public:
     //! base class virtual destructor.
@@ -65,14 +66,14 @@ public:
 template <typename T>
 RenderEffect& TplRenderEffectFactory<T>::create()
 {
-    return *new T;
+    return *CEGUI_NEW_AO T;
 }
 
 //---------------------------------------------------------------------------//
 template <typename T>
 void TplRenderEffectFactory<T>::destroy(RenderEffect& effect)
 {
-    delete &effect;
+    CEGUI_DELETE_AO &effect;
 }
 
 //---------------------------------------------------------------------------//

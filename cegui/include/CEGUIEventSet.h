@@ -311,7 +311,8 @@ protected:
         return *this;
     }
 
-    typedef std::map<String, Event*, String::FastLessCompare>   EventMap;
+    typedef std::map<String, Event*, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, Event*)> EventMap;
     EventMap    d_events;
 
     bool    d_muted;    //!< true if events for this EventSet have been muted.

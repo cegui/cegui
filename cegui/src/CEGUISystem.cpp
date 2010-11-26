@@ -230,7 +230,7 @@ System::System(Renderer& renderer,
     // seeing its configuration overwritten by this.
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     if (d_ourLogger)
-        new DefaultLogger();
+        CEGUI_NEW_AO DefaultLogger();
 #endif
 
     Logger& logger(Logger::getSingleton());
@@ -238,7 +238,7 @@ System::System(Renderer& renderer,
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
     {
-        d_resourceProvider = new DefaultResourceProvider;
+        d_resourceProvider = CEGUI_NEW_AO DefaultResourceProvider();
         d_ourResourceProvider = true;
     }
 
@@ -259,7 +259,7 @@ System::System(Renderer& renderer,
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
-            delete d_xmlParser;
+            CEGUI_DELETE_AO d_xmlParser;
             CEGUI_RETHROW;
         }
     }
@@ -367,7 +367,7 @@ System::~System(void)
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
-        delete d_resourceProvider;
+        CEGUI_DELETE_AO d_resourceProvider;
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -378,7 +378,7 @@ System::~System(void)
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     // delete the Logger object only if we created it.
     if (d_ourLogger)
-        delete Logger::getSingletonPtr();
+        CEGUI_DELETE_AO Logger::getSingletonPtr();
 #endif
 
 	delete d_clickTrackerPimpl;
@@ -1493,32 +1493,32 @@ void System::addStandardWindowFactories()
 void System::createSingletons()
 {
     // cause creation of other singleton objects
-    new ImagesetManager();
-    new FontManager();
-    new WindowFactoryManager();
-    new WindowManager();
-    new SchemeManager();
-    new MouseCursor();
-    new GlobalEventSet();
-    new AnimationManager();
-    new WidgetLookManager();
-    new WindowRendererManager();
-    new RenderEffectManager();
+    CEGUI_NEW_AO ImagesetManager();
+    CEGUI_NEW_AO FontManager();
+    CEGUI_NEW_AO WindowFactoryManager();
+    CEGUI_NEW_AO WindowManager();
+    CEGUI_NEW_AO SchemeManager();
+    CEGUI_NEW_AO MouseCursor();
+    CEGUI_NEW_AO GlobalEventSet();
+    CEGUI_NEW_AO AnimationManager();
+    CEGUI_NEW_AO WidgetLookManager();
+    CEGUI_NEW_AO WindowRendererManager();
+    CEGUI_NEW_AO RenderEffectManager();
 }
 
 void System::destroySingletons()
 {
-    delete  SchemeManager::getSingletonPtr();
-    delete  WindowManager::getSingletonPtr();
-    delete  WindowFactoryManager::getSingletonPtr();
-    delete  WidgetLookManager::getSingletonPtr();
-    delete  WindowRendererManager::getSingletonPtr();
-    delete  AnimationManager::getSingletonPtr();
-    delete  RenderEffectManager::getSingletonPtr();
-    delete  FontManager::getSingletonPtr();
-    delete  MouseCursor::getSingletonPtr();
-    delete  ImagesetManager::getSingletonPtr();
-    delete  GlobalEventSet::getSingletonPtr();
+    CEGUI_DELETE_AO SchemeManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowFactoryManager::getSingletonPtr();
+    CEGUI_DELETE_AO WidgetLookManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowRendererManager::getSingletonPtr();
+    CEGUI_DELETE_AO AnimationManager::getSingletonPtr();
+    CEGUI_DELETE_AO RenderEffectManager::getSingletonPtr();
+    CEGUI_DELETE_AO FontManager::getSingletonPtr();
+    CEGUI_DELETE_AO MouseCursor::getSingletonPtr();
+    CEGUI_DELETE_AO ImagesetManager::getSingletonPtr();
+    CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -1566,7 +1566,7 @@ void System::cleanupXMLParser()
         deleteFunc(d_xmlParser);
 
         // delete the dynamic module for the xml parser
-        delete d_parserModule;
+        CEGUI_DELETE_AO d_parserModule;
         d_parserModule = 0;
     }
 #ifdef CEGUI_STATIC
@@ -1584,7 +1584,7 @@ void System::setXMLParser(const String& parserName)
 #ifndef CEGUI_STATIC
     cleanupXMLParser();
     // load dynamic module
-    d_parserModule = new DynamicModule(String("CEGUI") + parserName);
+    d_parserModule = CEGUI_NEW_AO DynamicModule(String("CEGUI") + parserName);
     // get pointer to parser creation function
     XMLParser* (*createFunc)(void) =
         (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
@@ -1790,7 +1790,7 @@ void System::cleanupImageCodec()
         ((void(*)(ImageCodec*))d_imageCodecModule->
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
-        delete d_imageCodecModule;
+        CEGUI_DELETE_AO d_imageCodecModule;
         d_imageCodecModule = 0;
     }
 #if defined(CEGUI_STATIC)
@@ -1891,7 +1891,7 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
 //----------------------------------------------------------------------------//
 void System::destroy()
 {
-    delete System::getSingletonPtr();
+    CEGUI_DELETE_AO System::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//

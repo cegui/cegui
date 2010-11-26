@@ -66,7 +66,8 @@ namespace CEGUI
     Class that wraps and gives access to a dynamically linked module
     (.dll, .so, etc...)
 */
-class CEGUIEXPORT DynamicModule
+class CEGUIEXPORT DynamicModule :
+    public AllocatedObject<DynamicModule>
 {
 public:
     /*!

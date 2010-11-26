@@ -28,13 +28,16 @@
 #ifndef _CEGUIRegexMatcher_h_
 #define _CEGUIRegexMatcher_h_
 
+#include "CEGUIBase.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 class String;
 
 //! Interface for Regex matching support classes
-class RegexMatcher
+class CEGUIEXPORT RegexMatcher :
+    public AllocatedObject<RegexMatcher>
 {
 public:
     //! Destructor.

@@ -48,7 +48,8 @@ enum BidiCharType
 };
 
 //! Abstract class to wrap a Bidi visual mapping of a text string.
-class CEGUIEXPORT BidiVisualMapping
+class CEGUIEXPORT BidiVisualMapping :
+    public AllocatedObject<BidiVisualMapping>
 {
 public:
     //! type definition for collection used to hold mapping index lists.

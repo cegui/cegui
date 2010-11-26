@@ -39,7 +39,8 @@ namespace CEGUI
     Abstract class defining the interface for objects that buffer geometry for
     later rendering.
 */
-class CEGUIEXPORT GeometryBuffer
+class CEGUIEXPORT GeometryBuffer :
+    public AllocatedObject<GeometryBuffer>
 {
 public:
     //! Destructor

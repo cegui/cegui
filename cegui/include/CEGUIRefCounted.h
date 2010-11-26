@@ -56,6 +56,7 @@ public:
     */
     RefCounted(T* ob) :
         d_object(ob),
+        // use system heap for this! no CEGUI_NEW_PT!
         d_count((ob != 0) ? new unsigned int(1) : 0)
     {
     }
@@ -183,6 +184,8 @@ private:
     {
         if (!--*d_count)
         {
+            // use system heap for this! no CEGUI_DELETE_PT!
+
             delete d_object;
             delete d_count;
             d_object = 0;

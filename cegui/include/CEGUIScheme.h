@@ -56,7 +56,8 @@ namespace CEGUI
 	Imageset objects, some Font objects, and register a collection of WindowFactory objects within
 	the system which would then be in a state to serve those elements to client code.
 */
-class CEGUIEXPORT Scheme
+class CEGUIEXPORT Scheme :
+    public AllocatedObject<Scheme>
 {
 	friend class Scheme_xmlHandler;
 public:
@@ -342,14 +343,29 @@ private:
 	*************************************************************************/
 	String	d_name;			//!< the name of this scheme.
 
-	std::vector<LoadableUIElement>		d_imagesets;
-	std::vector<LoadableUIElement>		d_imagesetsFromImages;
-	std::vector<LoadableUIElement>		d_fonts;
-	std::vector<UIModule>				d_widgetModules;
-    std::vector<WRModule>               d_windowRendererModules;
-	std::vector<AliasMapping>			d_aliasMappings;
-    std::vector<LoadableUIElement>		d_looknfeels;
-    std::vector<FalagardMapping>        d_falagardMappings;
+    typedef std::vector<LoadableUIElement
+        CEGUI_VECTOR_ALLOC(LoadableUIElement)>      LoadableUIElementList;
+	LoadableUIElementList                   		d_imagesets;
+	LoadableUIElementList                   		d_imagesetsFromImages;
+	LoadableUIElementList                   		d_fonts;
+    
+    typedef std::vector<UIModule
+        CEGUI_VECTOR_ALLOC(UIModule)>               UIModuleList;
+	UIModuleList                    				d_widgetModules;
+    
+    typedef std::vector<WRModule
+        CEGUI_VECTOR_ALLOC(WRModule)>               WRModuleList;
+    WRModuleList                                    d_windowRendererModules;
+
+	typedef std::vector<AliasMapping
+        CEGUI_VECTOR_ALLOC(AliasMapping)>			AliasMappingList;
+    AliasMappingList                                d_aliasMappings;
+
+    LoadableUIElementList                       	d_looknfeels;
+
+    typedef std::vector<FalagardMapping
+        CEGUI_VECTOR_ALLOC(FalagardMapping)>        FalagardMappingList;
+    FalagardMappingList                             d_falagardMappings;
 
     static String d_defaultResourceGroup;   //!< holds default resource group
 };

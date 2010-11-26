@@ -91,7 +91,7 @@ AnimationManager::~AnimationManager(void)
     for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
          it != d_animationInstances.end(); ++it)
     {
-        delete it->second;
+        CEGUI_DELETE_AO it->second;
     }
 
     d_animationInstances.clear();
@@ -100,7 +100,7 @@ AnimationManager::~AnimationManager(void)
     for (AnimationMap::const_iterator it = d_animations.begin();
          it != d_animations.end(); ++it)
     {
-        delete it->second;
+        CEGUI_DELETE_AO it->second;
     }
 
     d_animations.clear();
@@ -113,7 +113,7 @@ AnimationManager::~AnimationManager(void)
     for (BasicInterpolatorList::const_iterator it = d_basicInterpolators.begin();
          it != d_basicInterpolators.end(); ++it)
     {
-        delete *it;
+        CEGUI_DELETE_AO *it;
     }
 
     d_basicInterpolators.clear();
@@ -178,7 +178,7 @@ Animation* AnimationManager::createAnimation(const String& name)
             + name + "' already exists."));
     }
 
-    Animation* ret = new Animation(name);
+    Animation* ret = CEGUI_NEW_AO Animation(name);
     d_animations.insert(std::make_pair(name, ret));
 
     return ret;
@@ -206,7 +206,7 @@ void AnimationManager::destroyAnimation(const String& name)
     destroyAllInstancesOfAnimation(animation);
 
     d_animations.erase(it);
-    delete animation;
+    CEGUI_DELETE_AO animation;
 }
 
 //----------------------------------------------------------------------------//
@@ -248,7 +248,7 @@ size_t AnimationManager::getNumAnimations() const
 //----------------------------------------------------------------------------//
 AnimationInstance* AnimationManager::instantiateAnimation(Animation* animation)
 {
-    AnimationInstance* ret = new AnimationInstance(animation);
+    AnimationInstance* ret = CEGUI_NEW_AO AnimationInstance(animation);
     d_animationInstances.insert(std::make_pair(animation, ret));
 
     return ret;
@@ -291,7 +291,7 @@ void AnimationManager::destroyAllInstancesOfAnimation(Animation* animation)
         AnimationInstanceMap::iterator toErase = it;
         ++it;
 
-        delete toErase->second;
+        CEGUI_DELETE_AO toErase->second;
         d_animationInstances.erase(toErase);
     }
 }

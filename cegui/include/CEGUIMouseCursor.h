@@ -67,7 +67,10 @@ enum MouseCursorImage
 
 	The MouseCursor provides functionality to access the position and imagery of the mouse cursor / pointer
 */
-class CEGUIEXPORT MouseCursor : public EventSet, public Singleton<MouseCursor>
+class CEGUIEXPORT MouseCursor :
+    public EventSet,
+    public Singleton<MouseCursor>,
+    public AllocatedObject<MouseCursor>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
