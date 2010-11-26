@@ -80,7 +80,7 @@ Font_xmlHandler::Font_xmlHandler(const String& filename,
 Font_xmlHandler::~Font_xmlHandler()
 {
     if (!d_objectRead)
-        delete d_font;
+        CEGUI_DELETE_AO d_font;
 }
 
 //----------------------------------------------------------------------------//
@@ -192,7 +192,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     logger.logEvent("---- Real point size: " +
             attributes.getValueAsString(FontSizeAttribute, "12"));
 
-    d_font = new FreeTypeFont(name,
+    d_font = CEGUI_NEW_AO FreeTypeFont(name,
         attributes.getValueAsFloat(FontSizeAttribute, 12.0f),
         attributes.getValueAsBool(FontAntiAliasedAttribute, true),
         filename, resource_group,
@@ -220,7 +220,7 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
                     " in resource group: " + (resource_group.empty() ?
                                               "(Default)" : resource_group));
 
-    d_font = new PixmapFont(name, filename, resource_group,
+    d_font = CEGUI_NEW_AO PixmapFont(name, filename, resource_group,
         attributes.getValueAsBool(FontAutoScaledAttribute, false),
         attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
         attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));

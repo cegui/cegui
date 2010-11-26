@@ -47,7 +47,8 @@ namespace CEGUI
 \brief
     Base class for list box items
 */
-class CEGUIEXPORT ListboxItem
+class CEGUIEXPORT ListboxItem :
+    public AllocatedObject<ListboxItem>
 {
 public:
     /*************************************************************************

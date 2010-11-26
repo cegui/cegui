@@ -45,7 +45,8 @@ namespace CEGUI
     \brief
         Class that encapsulates a re-usable collection of imagery specifications.
     */
-    class CEGUIEXPORT ImagerySection
+    class CEGUIEXPORT ImagerySection :
+        public AllocatedObject<ImagerySection>
     {
     public:
         /*!

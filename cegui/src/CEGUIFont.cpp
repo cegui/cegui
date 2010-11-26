@@ -70,7 +70,13 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 //----------------------------------------------------------------------------//
 Font::~Font()
 {
-    delete[] d_glyphPageLoaded;
+    if (d_glyphPageLoaded)
+    {
+        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
+            + BITS_PER_UINT - 1) / BITS_PER_UINT;
+
+        CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -88,13 +94,20 @@ const String& Font::getTypeName() const
 //----------------------------------------------------------------------------//
 void Font::setMaxCodepoint(utf32 codepoint)
 {
+    if (d_glyphPageLoaded)
+    {
+        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
+            + BITS_PER_UINT - 1) / BITS_PER_UINT;
+
+        CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);
+    }
+
     d_maxCodepoint = codepoint;
 
-    delete[] d_glyphPageLoaded;
+    const uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
+    const uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
 
-    uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-    d_glyphPageLoaded = new uint[size];
+    d_glyphPageLoaded = CEGUI_NEW_ARRAY_PT(uint, size, Font);
     memset(d_glyphPageLoaded, 0, size * sizeof(uint));
 }
 

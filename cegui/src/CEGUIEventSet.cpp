@@ -51,7 +51,7 @@ EventSet::~EventSet(void)
 //----------------------------------------------------------------------------//
 void EventSet::addEvent(const String& name)
 {
-    addEvent(*new Event(name));
+    addEvent(*CEGUI_NEW_AO Event(name));
 }
 
 //----------------------------------------------------------------------------//
@@ -61,13 +61,13 @@ void EventSet::addEvent(Event& event)
 
     if (isEventPresent(name))
     {
-        delete &event;
+        CEGUI_DELETE_AO &event;
 
         CEGUI_THROW(AlreadyExistsException("EventSet::addEvent: "
             "An event named '" + name + "' already exists in the EventSet."));
     }
 
-    d_events[name] = &event;
+    d_events.insert(std::make_pair(name, &event));
 }
 
 //----------------------------------------------------------------------------//
@@ -75,12 +75,13 @@ void EventSet::removeEvent(const String& name)
 {
     EventMap::iterator pos = d_events.find(name);
 
-    if (pos != d_events.end())
-    {
-        delete pos->second;
-        d_events.erase(pos);
-    }
+	if (pos != d_events.end())
+	{
+		CEGUI_DELETE_AO pos->second;
+		d_events.erase(pos);
+	}
 
+    // todo: shouldn't this throw exception if not found?
 }
 
 //----------------------------------------------------------------------------//
@@ -92,11 +93,11 @@ void EventSet::removeEvent(Event& event)
 //----------------------------------------------------------------------------//
 void EventSet::removeAllEvents(void)
 {
-    EventMap::iterator pos = d_events.begin();
-    EventMap::iterator end = d_events.end() ;
+	EventMap::const_iterator pos = d_events.begin();
+	EventMap::const_iterator end = d_events.end()	;
 
-    for (; pos != end; ++pos)
-        delete pos->second;
+	for (; pos != end; ++pos)
+		CEGUI_DELETE_AO pos->second;
 
     d_events.clear();
 }

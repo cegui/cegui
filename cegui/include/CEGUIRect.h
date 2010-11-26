@@ -41,7 +41,8 @@ namespace CEGUI
 \brief
 	Class encapsulating operations on a Rectangle
 */
-class CEGUIEXPORT Rect
+class CEGUIEXPORT Rect :
+    public AllocatedObject<Rect>
 {
 public:
 	Rect(void) {}

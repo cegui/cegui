@@ -207,7 +207,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             "unable to split with no font set."));
 
     // create 'left' side of split and clone our basic configuration
-    RenderedStringTextComponent* lhs = new RenderedStringTextComponent;
+    RenderedStringTextComponent* lhs = CEGUI_NEW_AO RenderedStringTextComponent();
     lhs->d_padding = d_padding;
     lhs->d_verticalFormatting = d_verticalFormatting;
     lhs->d_font = d_font;
@@ -282,7 +282,7 @@ size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 {
-    RenderedStringTextComponent* c = new RenderedStringTextComponent(*this);
+    RenderedStringTextComponent* c = CEGUI_NEW_AO RenderedStringTextComponent(*this);
     return c;
 }
 

@@ -58,8 +58,9 @@ namespace CEGUI
 	WindowFactoryManager.  Additionally, the WindowManager tracks every Window object created, and can be
 	used to access those Window objects by name.
 */
-class CEGUIEXPORT WindowManager : public Singleton <WindowManager>,
-                                  public EventSet
+class CEGUIEXPORT WindowManager : public Singleton<WindowManager>,
+                                  public EventSet,
+                                  public AllocatedObject<WindowManager>
 {
 public:
     /*************************************************************************

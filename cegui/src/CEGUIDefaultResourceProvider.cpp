@@ -60,11 +60,12 @@ CEGUI::String Utf16ToString(const wchar_t* const utf16text)
         CEGUI_THROW(CEGUI::InvalidRequestException(
             "Utf16ToUtf8 - WideCharToMultiByte failed"));
 
-    CEGUI::utf8* buff = new CEGUI::utf8[len + 1];
+    CEGUI::utf8* buff = CEGUI_NEW_ARRAY_PT(CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
     WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
                         reinterpret_cast<char*>(buff), len, 0, 0);
     const CEGUI::String result(buff);
-    delete[] buff;
+
+    CEGUI_DELETE_ARRAY_PT(buff, CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
 
     return result;
 }
@@ -106,14 +107,15 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     const long size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    unsigned char* const buffer = new unsigned char[size];
+    unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainer);
 
     const size_t size_read = fread(buffer, sizeof(char), size, file);
     fclose(file);
 
     if (size_read != size)
     {
-        delete[] buffer;
+        CEGUI_DELETE_ARRAY_PT(buffer, unsigned char, size, BufferAllocator);
+
         CEGUI_THROW(GenericException(
             "DefaultResourceProvider::loadRawDataContainer: "
             "A problem occurred while reading file: " + final_filename));
@@ -126,10 +128,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 //----------------------------------------------------------------------------//
 void DefaultResourceProvider::unloadRawDataContainer(RawDataContainer& data)
 {
-    uint8* const ptr = data.getDataPtr();
-    delete[] ptr;
-    data.setData(0);
-    data.setSize(0);
+    data.release();
 }
 
 //----------------------------------------------------------------------------//

@@ -68,9 +68,9 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -98,7 +98,7 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 //----------------------------------------------------------------------------//
 TreeItem::~TreeItem(void)
 {
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 /*************************************************************************
@@ -252,7 +252,7 @@ void TreeItem::removeItem(const TreeItem* item)
                 parentWindow->d_lastSelected = 0;
 
             if (item->isAutoDeleted())
-                delete item;
+                CEGUI_DELETE_AO item;
 
             WindowEventArgs args(parentWindow);
             parentWindow->onListContentsChanged(args);

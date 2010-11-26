@@ -42,7 +42,8 @@ namespace CEGUI
 \brief
  Class used as a two dimensional vector (aka a Point)
 */
-class CEGUIEXPORT Vector2
+class CEGUIEXPORT Vector2 :
+    public AllocatedObject<Vector2>
 {
 public:
     Vector2(void) {}
@@ -120,7 +121,8 @@ public:
 \brief
  Class used as a three dimensional vector
 */
-class CEGUIEXPORT Vector3
+class CEGUIEXPORT Vector3 :
+    public AllocatedObject<Vector3>
 {
 public:
     Vector3(void) {}

@@ -54,7 +54,8 @@ namespace CEGUI
 \brief
 	Class that represents a single Image of an Imageset.
 */
-class CEGUIEXPORT Image
+class CEGUIEXPORT Image :
+    public AllocatedObject<Image>
 {
 public:
 	/*!

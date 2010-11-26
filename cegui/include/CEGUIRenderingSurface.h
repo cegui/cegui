@@ -106,7 +106,9 @@ public:
     these are queues that have had some interaction - such as clearing or adding
     geometry.
 */
-class CEGUIEXPORT RenderingSurface : public EventSet
+class CEGUIEXPORT RenderingSurface :
+    public EventSet,
+    public AllocatedObject<RenderingSurface>
 {
 public:
     //! Namespace for global events from RenderingSurface objects.

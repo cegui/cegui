@@ -93,7 +93,7 @@ void RenderedString::cloneComponentList(const ComponentList& list)
 void RenderedString::clearComponentList(ComponentList& list)
 {
     for (size_t i = 0; i < list.size(); ++i)
-        delete list[i];
+        CEGUI_DELETE_AO list[i];
 
     list.clear();
 }
