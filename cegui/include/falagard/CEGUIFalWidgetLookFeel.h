@@ -380,9 +380,12 @@ public:
     const WidgetComponent* findWidgetComponent(const String& nameSuffix) const;
 
     /** Typedefs for property related lists. */
-    typedef std::vector<PropertyInitialiser>  PropertyList;
-    typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
-    typedef std::vector<PropertyLinkDefinition> PropertyLinkDefinitionList;
+    typedef std::vector<PropertyInitialiser
+        CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertyList;
+    typedef std::vector<PropertyDefinition
+        CEGUI_VECTOR_ALLOC(PropertyDefinition)> PropertyDefinitionList;
+    typedef std::vector<PropertyLinkDefinition
+        CEGUI_VECTOR_ALLOC(PropertyLinkDefinition)> PropertyLinkDefinitionList;
 
     /** Obtains list of properties definitions.
      * @access public
@@ -414,13 +417,20 @@ public:
     }
 
 private:
-    typedef std::map<String, StateImagery, String::FastLessCompare> StateList;
-    typedef std::map<String, ImagerySection, String::FastLessCompare> ImageryList;
-    typedef std::map<String, NamedArea, String::FastLessCompare> NamedAreaList;
-    typedef std::vector<WidgetComponent> WidgetList;
-    typedef std::vector<String> AnimationList;
-    typedef std::multimap<Window*, AnimationInstance*> AnimationInstanceMap;
-    typedef std::vector<EventLinkDefinition> EventLinkDefinitionList;
+    typedef std::map<String, StateImagery, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, StateImagery)> StateList;
+    typedef std::map<String, ImagerySection, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, ImagerySection)> ImageryList;
+    typedef std::map<String, NamedArea, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, NamedArea)> NamedAreaList;
+    typedef std::vector<WidgetComponent
+        CEGUI_VECTOR_ALLOC(WidgetComponent)> WidgetList;
+    typedef std::vector<String
+        CEGUI_VECTOR_ALLOC(String)> AnimationList;
+    typedef std::multimap<Window*, AnimationInstance*
+        /*CEGUI_MULTIMAP_ALLOC(Window*, AnimationInstance*)*/> AnimationInstanceMap;
+    typedef std::vector<EventLinkDefinition
+        CEGUI_VECTOR_ALLOC(EventLinkDefinition)> EventLinkDefinitionList;
 
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;

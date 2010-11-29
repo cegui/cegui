@@ -117,9 +117,11 @@ public:
 
 	private:
 		friend class WindowFactoryManager;
-		typedef std::vector<String>	TargetTypeStack;		//!< Type used to implement stack of target type names.
 
-		TargetTypeStack	d_targetStack;		//!< Container holding the target types.
+		typedef std::vector<String
+            CEGUI_VECTOR_ALLOC(String)> TargetTypeStack; //!< Type used to implement stack of target type names.
+
+		TargetTypeStack	d_targetStack; //!< Container holding the target types.
 	};
 
 
@@ -426,11 +428,15 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, WindowFactory*, String::FastLessCompare>	WindowFactoryRegistry;		//!< Type used to implement registry of WindowFactory objects
-	typedef std::map<String, AliasTargetStack, String::FastLessCompare>	TypeAliasRegistry;		//!< Type used to implement registry of window type aliases.
-    typedef std::map<String, FalagardWindowMapping, String::FastLessCompare> FalagardMapRegistry;    //!< Type used to implement registry of falagard window mappings.
+	typedef	std::map<String, WindowFactory*, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, WindowFactory*)> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
+	typedef std::map<String, AliasTargetStack, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, AliasTargetStack)> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
+    typedef std::map<String, FalagardWindowMapping, String::FastLessCompare
+        CEGUI_MAP_ALLOC(String, FalagardWindowMapping)> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
     //! Type used for list of WindowFacory objects that we created ourselves
-    typedef std::vector<WindowFactory*> OwnedWindowFactoryList;
+    typedef std::vector<WindowFactory*
+        CEGUI_VECTOR_ALLOC(WindowFactory*)> OwnedWindowFactoryList;
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.

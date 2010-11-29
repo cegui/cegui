@@ -78,7 +78,8 @@ protected:
     String d_eventName;
 
     //! type used for the collection of target events.
-    typedef std::vector<Target> LinkTargetCollection;
+    typedef std::vector<Target
+        CEGUI_VECTOR_ALLOC(Target)> LinkTargetCollection;
 
     //! collection of targets for this EventLinkDefinition.
     LinkTargetCollection d_targets;

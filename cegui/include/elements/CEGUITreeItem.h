@@ -58,7 +58,8 @@ namespace CEGUI
 class CEGUIEXPORT TreeItem
 {
 public:
-    typedef std::vector<TreeItem*>  LBItemList;
+    typedef std::vector<TreeItem*
+        CEGUI_VECTOR_ALLOC(TreeItem*)>  LBItemList;
 
     /*************************************************************************
         Constants

@@ -312,7 +312,11 @@ private:
 	{
 		String name;
 		FactoryModule*	module;
-		std::vector<UIElementFactory>	factories;
+
+		typedef std::vector<UIElementFactory
+            CEGUI_VECTOR_ALLOC(UIElementFactory)> FactoryList;
+        
+        FactoryList factories;
 	};
 
     struct WRModule
@@ -320,7 +324,11 @@ private:
         String name;
         DynamicModule* dynamicModule;
         WindowRendererModule* wrModule;
-        std::vector<String> wrTypes;
+
+        typedef std::vector<String
+            CEGUI_VECTOR_ALLOC(String)> WRTypeList;
+            
+        WRTypeList wrTypes;
     };
 
 	struct AliasMapping

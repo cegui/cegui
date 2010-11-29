@@ -107,7 +107,8 @@ private:
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.
-    typedef std::vector<WindowRendererFactory*> OwnedFactoryList;
+    typedef std::vector<WindowRendererFactory*
+        CEGUI_VECTOR_ALLOC(WindowRendererFactory*)> OwnedFactoryList;
     //! Container that tracks WindowFactory objects we created ourselves.
     static OwnedFactoryList d_ownedFactories;
 };
