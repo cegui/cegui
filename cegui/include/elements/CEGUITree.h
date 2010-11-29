@@ -75,7 +75,9 @@ public:
 class CEGUIEXPORT Tree : public Window
 {
     friend class TreeItem;
-    typedef	std::vector<TreeItem*>	LBItemList;
+
+    typedef	std::vector<TreeItem*
+        CEGUI_VECTOR_ALLOC(TreeItem*)> LBItemList;
     
 public:
     //! Namespace for global events

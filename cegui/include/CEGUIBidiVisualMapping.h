@@ -53,7 +53,8 @@ class CEGUIEXPORT BidiVisualMapping :
 {
 public:
     //! type definition for collection used to hold mapping index lists.
-    typedef std::vector<int> StrIndexList;
+    typedef std::vector<int
+        CEGUI_VECTOR_ALLOC(int)> StrIndexList;
 
     //! Destructor.
     virtual ~BidiVisualMapping();

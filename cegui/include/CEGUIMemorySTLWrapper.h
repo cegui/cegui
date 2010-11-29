@@ -148,14 +148,16 @@ inline bool operator!=(const STLAllocatorWrapper<T, P>&, const OtherAllocator&)
 }
 
 // STL allocator helper macros
-#define CEGUI_VECTOR_ALLOC(T) , STLAllocatorWrapper<T, AllocatorConfig<STLAllocator>::Allocator>
-#define CEGUI_MAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, AllocatorConfig<STLAllocator>::Allocator>
-#define CEGUI_MULTIMAP_ALLOC(K, V) , STLAllocatorWrapper<std::pair<K, V>, AllocatorConfig<STLAllocator>::Allocator>
+#define CEGUI_VECTOR_ALLOC(T) , ::CEGUI::STLAllocatorWrapper<T, ::CEGUI::AllocatorConfig< ::CEGUI::STLAllocator >::Allocator>
+#define CEGUI_SET_ALLOC(T) , ::CEGUI::STLAllocatorWrapper<T, ::CEGUI::AllocatorConfig< ::CEGUI::STLAllocator >::Allocator>
+#define CEGUI_MAP_ALLOC(K, V) , ::CEGUI::STLAllocatorWrapper<std::pair<K, V>, ::CEGUI::AllocatorConfig< ::CEGUI::STLAllocator >::Allocator>
+#define CEGUI_MULTIMAP_ALLOC(K, V) , ::CEGUI::STLAllocatorWrapper<std::pair<K, V>, ::CEGUI::AllocatorConfig< ::CEGUI::STLAllocator >::Allocator>
 
 #else
 
 // STL allocator helper macros
 #define CEGUI_VECTOR_ALLOC(T)
+#define CEGUI_SET_ALLOC(T)
 #define CEGUI_MAP_ALLOC(K, V)
 #define CEGUI_MULTIMAP_ALLOC(K, V)
 

@@ -572,7 +572,8 @@ namespace CEGUI
         NamedArea*      d_namedArea;
         FrameComponent*  d_framecomponent;
 
-        std::vector<BaseDim*>    d_dimStack;
+        std::vector<BaseDim*
+            CEGUI_VECTOR_ALLOC(BaseDim*)> d_dimStack;
 
         PropertyLinkDefinition* d_propertyLink;
         EventLinkDefinition* d_eventLink;

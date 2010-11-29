@@ -162,7 +162,8 @@ public:
         size_t  d_length;       //!< Code point length of this line.
         float   d_extent;       //!< Rendered extent of this line.
     };
-    typedef std::vector<LineInfo>   LineList;   //!< Type for collection of LineInfos.
+    typedef std::vector<LineInfo
+        CEGUI_VECTOR_ALLOC(LineInfo)>   LineList;   //!< Type for collection of LineInfos.
 
 	/*************************************************************************
 		Accessor Functions

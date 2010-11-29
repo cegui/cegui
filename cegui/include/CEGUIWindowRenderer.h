@@ -202,7 +202,8 @@ protected:
     //! type used for entries in the PropertyList.
     typedef std::pair<Property*, bool> PropertyEntry;
     //! type to use for the property list.
-    typedef std::vector<PropertyEntry> PropertyList;
+    typedef std::vector<PropertyEntry
+        CEGUI_VECTOR_ALLOC(PropertyEntry)> PropertyList;
     PropertyList d_properties;  //!< The list of properties that this windowrenderer will be handling.
 
     // Window is friend so it can manipulate our 'd_window' member directly.

@@ -296,7 +296,7 @@ void Scheme::loadWindowFactories()
         // some names were explicitly given, so only register those.
         else
         {
-            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
+            UIModule::FactoryList::const_iterator   elem = (*cmod).factories.begin();
             for (; elem != (*cmod).factories.end(); ++elem)
             {
                 if (!wfmgr.isFactoryPresent((*elem).name))
@@ -355,7 +355,7 @@ void Scheme::loadWindowRendererFactories()
         // some names were explicitly given, so only register those.
         else
         {
-            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
+            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
             for (; elem != (*cmod).wrTypes.end(); ++elem)
                 (*cmod).wrModule->registerFactory(*elem);
         }
@@ -514,7 +514,7 @@ void Scheme::unloadWindowFactories()
         // remove all window factories explicitly registered for this module
         else
         {
-            std::vector<UIElementFactory>::const_iterator elem = (*cmod).factories.begin();
+            UIModule::FactoryList::const_iterator elem = (*cmod).factories.begin();
             for (; elem != (*cmod).factories.end(); ++elem)
                 wfmgr.removeFactory((*elem).name);
         }
@@ -550,7 +550,7 @@ void Scheme::unloadWindowRendererFactories()
         // remove all window factories explicitly registered for this module
         else
         {
-            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
+            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
             for (; elem != (*cmod).wrTypes.end(); ++elem)
                 (*cmod).wrModule->unregisterFactory(*elem);
         }
@@ -706,7 +706,7 @@ bool Scheme::areWindowFactoriesLoaded() const
         // check all window factories explicitly registered for this module
         else
         {
-            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
+            UIModule::FactoryList::const_iterator elem = (*cmod).factories.begin();
 
             for (; elem != (*cmod).factories.end(); ++elem)
             {
@@ -739,7 +739,7 @@ bool Scheme::areWindowRendererFactoriesLoaded() const
         // check all window factories explicitly registered for this module
         else
         {
-            std::vector<String>::const_iterator elem = (*cmod).wrTypes.begin();
+            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
 
             for (; elem != (*cmod).wrTypes.end(); ++elem)
                 if (!wfmgr.isFactoryPresent(*elem))

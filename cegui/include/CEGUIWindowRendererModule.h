@@ -57,7 +57,8 @@ public:
 
 protected:
     //! Collection type that holds pointers to the factory registerer objects.
-    typedef std::vector<WRFactoryRegisterer*> FactoryRegistry;
+    typedef std::vector<WRFactoryRegisterer*
+        CEGUI_VECTOR_ALLOC(WRFactoryRegisterer*)> FactoryRegistry;
     //! The collection of factorty registerer object pointers.
     FactoryRegistry d_registry;
 };
