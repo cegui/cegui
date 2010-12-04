@@ -4119,10 +4119,11 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  TplProperty<Window, float>          d_alphaProperty;
-    static  WindowProperties::AlwaysOnTop       d_alwaysOnTopProperty;
-    static  WindowProperties::ClippedByParent   d_clippedByParentProperty;
-    static  WindowProperties::DestroyedByParent d_destroyedByParentProperty;
+    static TplProperty<Window, float>           d_alphaProperty;
+    static TplProperty<Window, bool>            d_alwaysOnTopProperty;
+    static TplProperty<Window, bool>            d_clippedByParentProperty;
+    static TplProperty<Window, bool>            d_destroyedByParentProperty;
+
     static  WindowProperties::Disabled          d_disabledProperty;
     static  WindowProperties::Font              d_fontProperty;
     static  WindowProperties::ID                d_IDProperty;
