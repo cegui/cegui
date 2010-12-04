@@ -130,10 +130,14 @@ DefaultRenderedStringParser Window::d_defaultStringParser;
 //----------------------------------------------------------------------------//
 TplProperty<Window, float>          Window::d_alphaProperty("Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
                                                             &Window::getAlpha, &Window::setAlpha, 1.0f);
-                                                            
-WindowProperties::AlwaysOnTop       Window::d_alwaysOnTopProperty;
-WindowProperties::ClippedByParent   Window::d_clippedByParentProperty;
-WindowProperties::DestroyedByParent Window::d_destroyedByParentProperty;
+TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::isAlwaysOnTop, &Window::setAlwaysOnTop, false);
+TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::isClippedByParent, &Window::setClippedByParent, true);
+TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::isDestroyedByParent, &Window::setDestroyedByParent, true);
+/*TplProperty<Window, bool>           Window::d_disabledProperty("Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::isDisabled, &Window::setDisabled, false);*/
 WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
 WindowProperties::ID                Window::d_IDProperty;

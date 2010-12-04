@@ -52,7 +52,7 @@ struct STLAllocatorWrapperBase<const T>
 };
 
 template <typename T, typename Allocator>
-class CEGUIEXPORT STLAllocatorWrapper : public STLAllocatorWrapperBase<T>
+class STLAllocatorWrapper : public STLAllocatorWrapperBase<T>
 {
 public:
     typedef STLAllocatorWrapperBase<T> Base;
