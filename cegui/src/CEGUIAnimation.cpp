@@ -135,6 +135,7 @@ void Animation::destroyAffector(Affector* affector)
     }
 
     d_affectors.erase(it);
+    CEGUI_DELETE_AO affector;
 }
 
 //----------------------------------------------------------------------------//

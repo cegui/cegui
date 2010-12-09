@@ -271,6 +271,7 @@ void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
         if (it->second == instance)
         {
             d_animationInstances.erase(it);
+            CEGUI_DELETE_AO instance;
             return;
         }
     }
