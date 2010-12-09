@@ -44,32 +44,6 @@ namespace CEGUI
 */
 namespace WindowProperties
 {
-/*!
-\brief
-	Property to access window ID field.
-
-	This property offers access to the client specified ID for the window.
-
-	\par Usage:
-		- Name: ID
-		- Format: "[uint]".
-
-	\par Where:
-		- [uint] is any unsigned integer value.
-*/
-class ID : public Property
-{
-public:
-	ID() : Property(
-		"ID",
-		"Property to get/set the ID value of the Window.  Value is an unsigned integer number.",
-		"0")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
 
 /*!
 \brief
@@ -97,34 +71,6 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 	bool	isDefault(const PropertyReceiver* receiver) const;
 };
-
-
-/*!
-\brief
-	Property to access window text setting.
-
-	This property offers access to the current text for the window.
-
-	\par Usage:
-		- Name: Text
-		- Format: "[text]".
-
-	\par Where:
-		- [text] is the name of the Font to assign for this window.  The Font specified must already be loaded.
-*/
-class Text : public Property
-{
-public:
-	Text() : Property(
-		"Text",
-		"Property to get/set the text / caption for the Window.  Value is the text string to use.",
-		"")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
 
 /*!
 \brief
@@ -181,35 +127,6 @@ public:
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
 };
-
-
-/*!
-\brief
-	Property to access window "Inherits Alpha" setting.
-
-	This property offers access to the inherits alpha setting for the window.
-
-	\par Usage:
-		- Name: InheritsAlpha
-		- Format: "[text]".
-
-	\par Where [Text] is:
-		- "True" to indicate the Window inherits alpha blend values from it's ancestors.
-		- "False" to indicate the Window does not inherit alpha blend values from it's ancestors.
-*/
-class InheritsAlpha : public Property
-{
-public:
-	InheritsAlpha() : Property(
-		"InheritsAlpha",
-		"Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".",
-		"True")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
 
 /*!
 \brief
@@ -296,36 +213,6 @@ public:
 	bool	isDefault(const PropertyReceiver* receiver) const;
 };
 
-
-/*!
-\brief
-	Property to access window Restore Old Capture setting.
-
-	This property offers access to the restore old capture setting for the window.  This setting is of generally limited use, it
-	is primary purpose is for certain operations required for compound widgets.
-
-	\par Usage:
-		- Name: RestoreOldCapture
-		- Format: "[text]".
-
-	\par Where [Text] is:
-		- "True" to indicate the Window should restore any previous capture Window when it loses input capture.
-		- "False" to indicate the Window should not restore the old capture Window.  This is the default behaviour.
-*/
-class RestoreOldCapture : public Property
-{
-public:
-	RestoreOldCapture() : Property(
-		"RestoreOldCapture",
-		"Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".",
-		"False")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
 /*!
 \brief
 	Property to access window Destroyed by Parent setting.
@@ -352,35 +239,6 @@ public:
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
 };
-
-
-/*!
-\brief
-	Property to access window Z-Order changing enabled setting.
-
-	This property offers access to the setting that controls whether z-order changes are enabled for the window.
-
-	\par Usage:
-		- Name: ZOrderChangeEnabled
-		- Format: "[text]".
-
-	\par Where [Text] is:
-		- "True" to indicate the Window should respect requests to change z-order.
-		- "False" to indicate the Window should not change it's z-order.
-*/
-class ZOrderChangeEnabled : public Property
-{
-public:
-	ZOrderChangeEnabled() : Property(
-		"ZOrderChangeEnabled",
-		"Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
-		"True")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
 
 /*!
 \brief
