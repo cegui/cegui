@@ -129,24 +129,37 @@ DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
 TplProperty<Window, float>          Window::d_alphaProperty("Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
-                                                            &Window::getAlpha, &Window::setAlpha, 1.0f);
+                                                            &Window::setAlpha, &Window::getAlpha, 1.0f);
 TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::isAlwaysOnTop, &Window::setAlwaysOnTop, false);
+                                                            &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false);
 TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::isClippedByParent, &Window::setClippedByParent, true);
+                                                            &Window::setClippedByParent, &Window::isClippedByParent, true);
 TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::isDestroyedByParent, &Window::setDestroyedByParent, true);
+                                                            &Window::setDestroyedByParent, &Window::isDestroyedByParent, true);
 /*TplProperty<Window, bool>           Window::d_disabledProperty("Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::isDisabled, &Window::setDisabled, false);*/
+                                                            &Window::setDisabled, &Window::isDisabled, false);*/
+
 WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
-WindowProperties::ID                Window::d_IDProperty;
-WindowProperties::InheritsAlpha     Window::d_inheritsAlphaProperty;
+
+TplProperty<Window, uint>           Window::d_IDProperty("ID", "Property to get/set the ID value of the Window.  Value is an unsigned integer number.",
+                                                            &Window::setID, &Window::getID, 0);
+TplProperty<Window, bool>           Window::d_inheritsAlphaProperty("InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setInheritsAlpha, &Window::inheritsAlpha, true);
+/*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
+                                                            &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
-WindowProperties::RestoreOldCapture Window::d_restoreOldCaptureProperty;
-WindowProperties::Text              Window::d_textProperty;
+TplProperty<Window, bool>           Window::d_restoreOldCaptureProperty("RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setRestoreOldCapture, &Window::restoresOldCapture, false);
+TplProperty<Window, String>         Window::d_textProperty("Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
+                                                            &Window::setText, &Window::getText, "");
+/*
+TplProperty<Window, bool>           Window::d_visibleProperty("Visible", "Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setVisible, &Window::isVisible, true);*/
 WindowProperties::Visible           Window::d_visibleProperty;
-WindowProperties::ZOrderChangeEnabled   Window::d_zOrderChangeProperty;
+// TODO: inconsistency between property and setter getter names
+TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
 WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
 WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
@@ -1119,14 +1132,14 @@ void Window::releaseInput(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setRestoreCapture(bool setting)
+void Window::setRestoreOldCapture(bool setting)
 {
     d_restoreOldCapture = setting;
 
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        d_children[i]->setRestoreCapture(setting);
+        d_children[i]->setRestoreOldCapture(setting);
 }
 
 //----------------------------------------------------------------------------//

@@ -74,20 +74,20 @@ public:
     }
     
     /*!
-    \brief native get method, returns the native type by copy
-    
-    \see Property::get
-    \todo Should we support return by const reference for properties that allow that? Is it worth the hassles?
-    */
-    virtual T getNative(const PropertyReceiver* receiver) const = 0;
-    
-    /*!
     \brief native set method, sets the property given a native type
     
     \see Property::get
     \todo Should we support return by const reference for properties that allow that? Is it worth the hassles?
     */
     virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value) = 0;
+
+    /*!
+    \brief native get method, returns the native type by copy
+    
+    \see Property::get
+    \todo Should we support return by const reference for properties that allow that? Is it worth the hassles?
+    */
+    virtual typename Helper::return_type getNative(const PropertyReceiver* receiver) const = 0;
 };
 
 } // End of  CEGUI namespace section

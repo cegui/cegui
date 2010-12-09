@@ -46,12 +46,12 @@ class TplProperty : public TypedProperty<T>
 public:
     typedef PropertyHelper<T> Helper;
     
-    typedef typename Helper::return_type (C::*Getter)() const;
     typedef void (C::*Setter)(typename Helper::pass_type);
+    typedef typename Helper::return_type (C::*Getter)() const;
     
     // do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
     // but more typo prone (passing string default value)
-    TplProperty(const String& name, const String& help, Getter getter, Setter setter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
+    TplProperty(const String& name, const String& help, Setter setter, Getter getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
         TypedProperty<T>(name, help, defaultValue, writesXML),
         
         d_getter(getter),
@@ -61,23 +61,23 @@ public:
     virtual ~TplProperty()
     {}
     
-    //! \copydoc TypedProperty::getNative
-    virtual T getNative(const PropertyReceiver* receiver) const
-    {
-        const C* instance = static_cast<const C*>(receiver);
-        return CEGUI_CALL_MEMBER_FN(*instance, d_getter)();
-    }
-    
     //! \copydoc TypedProperty::setNative
     virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value)
     {
         C* instance = static_cast<C*>(receiver);
         CEGUI_CALL_MEMBER_FN(*instance, d_setter)(value);
     }
+
+    //! \copydoc TypedProperty::getNative
+    virtual typename Helper::return_type getNative(const PropertyReceiver* receiver) const
+    {
+        const C* instance = static_cast<const C*>(receiver);
+        return CEGUI_CALL_MEMBER_FN(*instance, d_getter)();
+    }
     
 private:
-    Getter d_getter;
     Setter d_setter;
+    Getter d_getter;
 };
 
 } // End of  CEGUI namespace section

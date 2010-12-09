@@ -2082,7 +2082,7 @@ public:
     \return
         Nothing
     */
-    void setRestoreCapture(bool setting);
+    void setRestoreOldCapture(bool setting);
 
     /*!
     \brief
@@ -4126,13 +4126,17 @@ protected:
 
     static  WindowProperties::Disabled          d_disabledProperty;
     static  WindowProperties::Font              d_fontProperty;
-    static  WindowProperties::ID                d_IDProperty;
-    static  WindowProperties::InheritsAlpha     d_inheritsAlphaProperty;
+
+    static TplProperty<Window, uint>            d_IDProperty;
+    static TplProperty<Window, bool>            d_inheritsAlphaProperty;
+    //static TplProperty<Window, Image*>          d_mouseCursorProperty;
     static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    static  WindowProperties::RestoreOldCapture d_restoreOldCaptureProperty;
-    static  WindowProperties::Text              d_textProperty;
+    static TplProperty<Window, bool>            d_restoreOldCaptureProperty;
+    static TplProperty<Window, String>          d_textProperty;
+    //static TplProperty<Window, bool>            d_visibleProperty;
     static  WindowProperties::Visible           d_visibleProperty;
-    static  WindowProperties::ZOrderChangeEnabled   d_zOrderChangeProperty;
+    static TplProperty<Window, bool>            d_zOrderChangeProperty;
+
     static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
     static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
     static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;

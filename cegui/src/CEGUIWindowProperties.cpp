@@ -42,17 +42,6 @@ namespace CEGUI
 // Start of WindowProperties namespace section
 namespace WindowProperties
 {
-String ID::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<uint>::toString(static_cast<const Window*>(receiver)->getID());
-}
-
-
-void ID::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setID(PropertyHelper<uint>::fromString(value));
-}
-
 
 String Font::get(const PropertyReceiver* receiver) const
 {
@@ -90,18 +79,6 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 bool Font::isDefault(const PropertyReceiver* receiver) const
 {
     return static_cast<const Window*>(receiver)->getFont(false) == 0;
-}
-
-
-String Text::get(const PropertyReceiver* receiver) const
-{
-	return static_cast<const Window*>(receiver)->getText();
-}
-
-
-void Text::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setText(value);
 }
 
 
@@ -143,18 +120,6 @@ String ClippedByParent::get(const PropertyReceiver* receiver) const
 void ClippedByParent::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setClippedByParent(PropertyHelper<bool>::fromString(value));
-}
-
-
-String InheritsAlpha::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->inheritsAlpha());
-}
-
-
-void InheritsAlpha::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setInheritsAlpha(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -203,19 +168,6 @@ bool Visible::isDefault(const PropertyReceiver* receiver) const
     return static_cast<const Window*>(receiver)->isVisible(true);
 }
 
-
-String RestoreOldCapture::get(const PropertyReceiver* receiver) const
-{
-	return	PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->restoresOldCapture());
-}
-
-
-void RestoreOldCapture::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setRestoreCapture(PropertyHelper<bool>::fromString(value));
-}
-
-
 String DestroyedByParent::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDestroyedByParent());
@@ -226,19 +178,6 @@ void DestroyedByParent::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setDestroyedByParent(PropertyHelper<bool>::fromString(value));
 }
-
-
-String ZOrderChangeEnabled::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isZOrderingEnabled());
-}
-
-
-void ZOrderChangeEnabled::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setZOrderingEnabled(PropertyHelper<bool>::fromString(value));
-}
-
 
 String WantsMultiClickEvents::get(const PropertyReceiver* receiver) const
 {
