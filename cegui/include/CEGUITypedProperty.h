@@ -52,10 +52,10 @@ class TypedProperty : public Property
 public:
     typedef PropertyHelper<T> Helper;
     
-    // do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
-    // but more typo prone (passing string default value)
+    // TODO: do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
+    //       but more typo prone (passing string default value)?
     TypedProperty(const String& name, const String& help, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
-        Property(name, help, Helper::toString(defaultValue), writesXML)
+        Property(name, help, Helper::toString(defaultValue), writesXML, Helper::getDataTypeName())
     {}
     
     virtual ~TypedProperty()
@@ -76,8 +76,7 @@ public:
     /*!
     \brief native set method, sets the property given a native type
     
-    \see Property::get
-    \todo Should we support return by const reference for properties that allow that? Is it worth the hassles?
+    \see Property::set
     */
     virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value) = 0;
 
@@ -85,7 +84,6 @@ public:
     \brief native get method, returns the native type by copy
     
     \see Property::get
-    \todo Should we support return by const reference for properties that allow that? Is it worth the hassles?
     */
     virtual typename Helper::return_type getNative(const PropertyReceiver* receiver) const = 0;
 };
