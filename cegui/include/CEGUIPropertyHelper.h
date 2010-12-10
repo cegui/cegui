@@ -70,6 +70,11 @@ public:
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
+    static inline const String& getDataTypeName()
+    {
+        return PropertyHelper<T>::getDataTypeName();
+    }
+
     static inline return_type fromString(const String& str)
     {
         return PropertyHelper<T>::fromString(str);
@@ -89,6 +94,11 @@ public:
     typedef typename PropertyHelper<T>::return_type return_type;
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
+
+    static inline const String& getDataTypeName()
+    {
+        return PropertyHelper<T>::getDataTypeName();
+    }
 
     static inline return_type fromString(const String& str)
     {
@@ -110,6 +120,11 @@ public:
     typedef typename PropertyHelper<T*>::pass_type pass_type;
     typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
+    static inline const String& getDataTypeName()
+    {
+        return PropertyHelper<T>::getDataTypeName();
+    }
+
     static inline return_type fromString(const String& str)
     {
         return PropertyHelper<T*>::fromString(str);
@@ -129,12 +144,19 @@ public:
     typedef const String& pass_type;
     typedef const String& string_return_type;
 
-    static return_type fromString(const String& str)
+    static const String& getDataTypeName()
+    {
+        static String type("String");
+
+        return type;
+    }
+
+    static inline return_type fromString(const String& str)
     {
         return str;
     }
 
-    static string_return_type toString(pass_type val)
+    static inline string_return_type toString(pass_type val)
     {
         return val;
     }
@@ -148,7 +170,14 @@ public:
     typedef const float pass_type;
     typedef String string_return_type;
     
-    static return_type fromString(const String& str)
+    static const String& getDataTypeName()
+    {
+        static String type("float");
+
+        return type;
+    }
+
+    static inline return_type fromString(const String& str)
     {
         float val = 0;
         sscanf(str.c_str(), " %g", &val);
@@ -156,7 +185,7 @@ public:
         return val;
     }
 
-    static string_return_type toString(pass_type val)
+    static inline string_return_type toString(pass_type val)
     {
         char buff[64];
         snprintf(buff, sizeof(buff), "%g", val);
@@ -173,7 +202,14 @@ public:
     typedef const int pass_type;
     typedef String string_return_type;
     
-    static return_type fromString(const String& str)
+    static const String& getDataTypeName()
+    {
+        static String type("int");
+
+        return type;
+    }
+
+    static inline return_type fromString(const String& str)
     {
         int val = 0;
         sscanf(str.c_str(), " %d", &val);
@@ -181,7 +217,7 @@ public:
         return val;
     }
 
-    static string_return_type toString(pass_type val)
+    static inline string_return_type toString(pass_type val)
     {
         char buff[64];
         snprintf(buff, sizeof(buff), "%d", val);
@@ -198,6 +234,13 @@ public:
     typedef const uint pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("uint");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         uint val = 0;
@@ -223,6 +266,13 @@ public:
     typedef const bool pass_type;
     typedef const String& string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("bool");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         return (str == "True" || str == "true");
@@ -247,6 +297,13 @@ public:
     typedef const Size& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("Size");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         Size val(0, 0);
@@ -271,6 +328,13 @@ public:
     typedef Vector2 return_type;
     typedef const Vector2& pass_type;
     typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("Vector2");
+
+        return type;
+    }
 
     static return_type fromString(const String& str)
     {
@@ -297,6 +361,13 @@ public:
     typedef const Vector3& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("Vector3");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         Vector3 val(0, 0, 0);
@@ -322,6 +393,13 @@ public:
     typedef const Rect& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("Rect");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         Rect val(0, 0, 0, 0);
@@ -348,6 +426,13 @@ public:
     typedef const Image* const pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("Image*");
+
+        return type;
+    }
+
     static return_type fromString(const String& str);
 
     static string_return_type toString(pass_type val);
@@ -361,6 +446,13 @@ public:
     typedef const Colour& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("Colour");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         argb_t val = 0xFF000000;
@@ -386,6 +478,13 @@ public:
     typedef const ColourRect& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("ColourRect");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         if (str.length() == 8)
@@ -418,6 +517,13 @@ public:
     typedef const UDim& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("UDim");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         UDim ud;
@@ -443,6 +549,13 @@ public:
     typedef const UVector2& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("UVector2");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         UVector2 uv;
@@ -471,6 +584,13 @@ public:
     typedef const URect& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("URect");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         URect ur;
@@ -507,6 +627,13 @@ public:
     typedef const UBox& pass_type;
     typedef String string_return_type;
     
+    static const String& getDataTypeName()
+    {
+        static String type("UBox");
+
+        return type;
+    }
+
     static return_type fromString(const String& str)
     {
         UBox ret;

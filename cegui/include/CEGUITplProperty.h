@@ -54,8 +54,8 @@ public:
     TplProperty(const String& name, const String& help, Setter setter, Getter getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
         TypedProperty<T>(name, help, defaultValue, writesXML),
         
-        d_getter(getter),
-        d_setter(setter)
+        d_setter(setter),
+        d_getter(getter)
     {}
     
     virtual ~TplProperty()
