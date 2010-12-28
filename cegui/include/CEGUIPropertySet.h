@@ -287,6 +287,37 @@ public:
     Iterator getIterator(void) const;
 };
 
+//! Helper class, don't use directly unless you are the guruest guru!
+class CEGUIEXPORT PropertyHolder
+{
+public:
+    PropertyHolder(Property* prop):
+        property(prop)
+    {}
+
+    ~PropertyHolder()
+    {
+        delete property;
+    }
+
+    Property* property;
+};
+
+/*!
+Example of usage inside addStandardProperties or similar method
+called in the PropertySet derived class' constructor:
+
+CEGUI_DEFINE_PROPERTY((new TplProperty<Window, float>(
+    "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+    &Window::setAlpha, &Window::getAlpha, 1.0f)
+));
+*/
+#define CEGUI_DEFINE_PROPERTY(expression)\
+{\
+    static ::CEGUI::PropertyHolder sProp(expression);\
+    addProperty(sProp.property);\
+}
+
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

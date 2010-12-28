@@ -4119,7 +4119,6 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static TplProperty<Window, float>           d_alphaProperty;
     static TplProperty<Window, bool>            d_alwaysOnTopProperty;
     static TplProperty<Window, bool>            d_clippedByParentProperty;
     static TplProperty<Window, bool>            d_destroyedByParentProperty;
@@ -4136,9 +4135,9 @@ protected:
     //static TplProperty<Window, bool>            d_visibleProperty;
     static  WindowProperties::Visible           d_visibleProperty;
     static TplProperty<Window, bool>            d_zOrderChangeProperty;
-
-    static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
-    static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
+    static TplProperty<Window, bool>            d_wantsMultiClicksProperty;
+    static TplProperty<Window, bool>            d_mouseButtonAutoRepeatProperty;
+    
     static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
     static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
     static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
