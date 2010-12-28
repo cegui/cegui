@@ -64,21 +64,21 @@ AnimationManager::AnimationManager(void)
 #   define addBasicInterpolator(i) { Interpolator* in = i; addInterpolator(in); d_basicInterpolators.push_back(in); }
 
     // create and add basic interpolators shipped with CEGUI
-    addBasicInterpolator(new TplDiscreteRelativeInterpolator<String>("String"));
-    addBasicInterpolator(new TplLinearInterpolator<float>("float"));
-    addBasicInterpolator(new TplLinearInterpolator<int>("int"));
-    addBasicInterpolator(new TplLinearInterpolator<uint>("uint"));
-    addBasicInterpolator(new TplDiscreteInterpolator<bool>("bool"));
-    addBasicInterpolator(new TplLinearInterpolator<Size>("Size"));
-    addBasicInterpolator(new TplLinearInterpolator<Vector2>("Vector2"));
-    addBasicInterpolator(new TplLinearInterpolator<Vector3>("Vector3"));
-    addBasicInterpolator(new TplLinearInterpolator<Rect>("Rect"));
-    addBasicInterpolator(new TplLinearInterpolator<Colour>("Colour"));
-    addBasicInterpolator(new TplLinearInterpolator<ColourRect>("ColourRect"));
-    addBasicInterpolator(new TplLinearInterpolator<UDim>("UDim"));
-    addBasicInterpolator(new TplLinearInterpolator<UVector2>("UVector2"));
-    addBasicInterpolator(new TplLinearInterpolator<URect>("URect"));
-    addBasicInterpolator(new TplLinearInterpolator<UBox>("UBox"));
+    addBasicInterpolator(CEGUI_NEW_AO TplDiscreteRelativeInterpolator<String>("String"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<float>("float"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<int>("int"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<uint>("uint"));
+    addBasicInterpolator(CEGUI_NEW_AO TplDiscreteInterpolator<bool>("bool"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Size>("Size"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2>("Vector2"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector3>("Vector3"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rect>("Rect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Colour>("Colour"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<ColourRect>("ColourRect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UDim>("UDim"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UVector2>("UVector2"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<URect>("URect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UBox>("UBox"));
 }
 
 

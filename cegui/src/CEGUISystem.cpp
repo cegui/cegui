@@ -1884,7 +1884,7 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
                        ScriptModule* scriptModule, const String& configFile,
                        const String& logFile)
 {
-    return *new System(renderer, resourceProvider, xmlParser, imageCodec,
+    return *CEGUI_NEW_AO System(renderer, resourceProvider, xmlParser, imageCodec,
                        scriptModule, configFile, logFile);
 }
 
