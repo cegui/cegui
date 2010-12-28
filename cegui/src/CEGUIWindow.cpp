@@ -1478,7 +1478,7 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 void Window::addStandardProperties(void)
 {
     // experimental, even easier to maintan, property definition, neat eh?
-    CEGUI_DEFINE_PROPERTY((new TplProperty<Window, float>(
+    CEGUI_DEFINE_PROPERTY((CEGUI_NEW_AO TplProperty<Window, float>(
         "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f)
     ));

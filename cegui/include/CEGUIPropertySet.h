@@ -297,7 +297,7 @@ public:
 
     ~PropertyHolder()
     {
-        delete property;
+        CEGUI_DELETE_AO property;
     }
 
     Property* property;

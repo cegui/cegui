@@ -1179,7 +1179,7 @@ namespace CEGUI
         const String widget(attributes.getValueAsString(WidgetAttribute));
         const String event(attributes.getValueAsString(EventAttribute));
 
-        d_eventLink = new EventLinkDefinition(
+        d_eventLink = CEGUI_NEW_AO EventLinkDefinition(
             attributes.getValueAsString(NameAttribute));
 
         CEGUI_LOGINSANE("-----> Adding EventLinkDefiniton. Name: " +
@@ -1217,7 +1217,7 @@ namespace CEGUI
         CEGUI_LOGINSANE("<----- End of EventLinkDefiniton. Name: " +
                         d_eventLink->getName());
 
-        delete d_eventLink;
+        CEGUI_DELETE_AO d_eventLink;
         d_eventLink = 0;
     }
 
