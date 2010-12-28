@@ -128,8 +128,6 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-TplProperty<Window, float>          Window::d_alphaProperty("Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
-                                                            &Window::setAlpha, &Window::getAlpha, 1.0f);
 TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
                                                             &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false);
 TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
@@ -160,8 +158,10 @@ WindowProperties::Visible           Window::d_visibleProperty;
 // TODO: inconsistency between property and setter getter names
 TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
                                                             &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
-WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
-WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
+TplProperty<Window, bool>           Window::d_wantsMultiClicksProperty("WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".",
+                                                            &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true);
+TplProperty<Window, bool>           Window::d_mouseButtonAutoRepeatProperty("MouseButtonDownAutoRepeat", "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".",
+                                                            &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false);
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
 WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
 WindowProperties::DistributeCapturedInputs Window::d_distInputsProperty;
@@ -1477,7 +1477,13 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 //----------------------------------------------------------------------------//
 void Window::addStandardProperties(void)
 {
-    addProperty(&d_alphaProperty);
+    // experimental, even easier to maintan, property definition, neat eh?
+    CEGUI_DEFINE_PROPERTY((new TplProperty<Window, float>(
+        "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f)
+    ));
+
+    //addProperty(&d_alphaProperty);
     addProperty(&d_alwaysOnTopProperty);
     addProperty(&d_clippedByParentProperty);
     addProperty(&d_destroyedByParentProperty);
@@ -1491,7 +1497,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_visibleProperty);
     addProperty(&d_zOrderChangeProperty);
     addProperty(&d_wantsMultiClicksProperty);
-    addProperty(&d_autoRepeatProperty);
+    addProperty(&d_mouseButtonAutoRepeatProperty);
     addProperty(&d_autoRepeatDelayProperty);
     addProperty(&d_autoRepeatRateProperty);
     addProperty(&d_distInputsProperty);
