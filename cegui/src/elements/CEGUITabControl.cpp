@@ -254,7 +254,7 @@ void TabControl::addTab(Window* wnd)
     // Create a new TabButton
     addButtonForTabContent(wnd);
     // Add the window to the content pane
-    getTabPane()->addChildWindow(wnd);
+    getTabPane()->addChild(wnd);
     // Auto-select?
     if (getTabCount() == 1)
         setSelectedTab(wnd->getName());
@@ -307,7 +307,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // Instert into map
     d_tabButtonVector.push_back(tb);
     // add the button
-    getTabButtonPane()->addChildWindow(tb);
+    getTabButtonPane()->addChild(tb);
     // Subscribe to clicked event so that we can change tab
     tb->subscribeEvent(TabButton::EventClicked,
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
@@ -344,7 +344,7 @@ void TabControl::removeButtonForTabContent(Window* wnd)
             d_tabButtonVector.erase (i);
             break;
         }
-    getTabButtonPane()->removeChildWindow(tb);
+    getTabButtonPane()->removeChild(tb);
 	// destroy
 	WindowManager::getSingleton().destroyWindow(tb);
 }
@@ -788,7 +788,7 @@ void TabControl::removeTab_impl(Window* window)
     // Was this selected?
     bool reselect = window->isVisible();
     // Tab buttons are the 2nd onward children
-    getTabPane()->removeChildWindow(window);
+    getTabPane()->removeChild(window);
 
     // remove button too
     removeButtonForTabContent(window);

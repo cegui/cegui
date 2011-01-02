@@ -78,6 +78,7 @@ class Property;
 template<typename T> class PropertyHelper;
 class PropertyReceiver;
 class PropertySet;
+class Quaternion;
 class RawDataContainer;
 class Rect;
 class RegexMatcher;
