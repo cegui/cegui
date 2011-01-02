@@ -146,7 +146,7 @@ namespace CEGUI
         {
             if (d_target != wnd)
             {
-                System::getSingleton().getGUISheet()->addChildWindow(this);
+                System::getSingleton().getGUISheet()->addChild(this);
                 d_target = wnd;
             }
 
@@ -326,7 +326,7 @@ namespace CEGUI
         d_elapsed = 0;
 
         if (d_parent)
-            d_parent->removeChildWindow(this);
+            d_parent->removeChild(this);
 
         // fire event before target gets reset in case that information is required in handler.
         WindowEventArgs args(this);

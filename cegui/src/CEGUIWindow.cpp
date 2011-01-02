@@ -915,13 +915,13 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChildWindow(const String& name)
+void Window::addChild(const String& name)
 {
-    addChildWindow(WindowManager::getSingleton().getWindow(name));
+    addChild(WindowManager::getSingleton().getWindow(name));
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChildWindow(Window* window)
+void Window::addChild(Window* window)
 {
     // don't add null window or ourself as a child
     if (!window || window == this)
@@ -934,7 +934,7 @@ void Window::addChildWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(const String& name)
+void Window::removeChild(const String& name)
 {
     const size_t child_count = getChildCount();
 
@@ -942,16 +942,14 @@ void Window::removeChildWindow(const String& name)
     {
         if (d_children[i]->getName() == name)
         {
-            removeChildWindow(d_children[i]);
+            removeChild(d_children[i]);
             return;
         }
-
     }
-
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(Window* window)
+void Window::removeChild(Window* window)
 {
     removeChild_impl(window);
     WindowEventArgs args(window);
@@ -960,7 +958,7 @@ void Window::removeChildWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(uint ID)
+void Window::removeChild(uint ID)
 {
     const size_t child_count = getChildCount();
 
@@ -968,7 +966,7 @@ void Window::removeChildWindow(uint ID)
     {
         if (d_children[i]->getID() == ID)
         {
-            removeChildWindow(d_children[i]);
+            removeChild(d_children[i]);
             return;
         }
 
@@ -981,7 +979,7 @@ Window* Window::createChild(const String& type, const String& name, bool nameLoc
     Window* ret = WindowManager::getSingleton().createWindow(type,
         nameLocal ? (getName() + "/" + name) : name );
 
-    addChildWindow(ret);
+    addChild(ret);
     return ret;
 }
 
@@ -1356,7 +1354,7 @@ void Window::cleanupChildren(void)
         Window* wnd = d_children[0];
 
         // always remove child
-        removeChildWindow(wnd);
+        removeChild(wnd);
 
         // destroy child if that is required
         if (wnd->isDestroyedByParent())
@@ -1370,7 +1368,7 @@ void Window::addChild_impl(Window* wnd)
     // if window is already attached, detach it first (will fire normal events)
     Window* const old_parent = wnd->getParent();
     if (old_parent)
-        old_parent->removeChildWindow(wnd);
+        old_parent->removeChild(wnd);
 
     addWindowToDrawList(*wnd);
 
@@ -1806,7 +1804,7 @@ void Window::destroy(void)
 
     // double check we are detached from parent
     if (d_parent)
-        d_parent->removeChildWindow(this);
+        d_parent->removeChild(this);
 
     cleanupChildren();
 
@@ -4206,7 +4204,7 @@ void Window::cloneChildWidgetsTo(Window& target) const
         }
 
         Window* newChild = child->clone(newChildName, true);
-        target.addChildWindow(newChild);
+        target.addChild(newChild);
     }
 }
 

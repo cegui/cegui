@@ -33,6 +33,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUIRect.h"
 #include "CEGUISize.h"
 #include "CEGUIEventSet.h"
@@ -1920,7 +1921,7 @@ public:
         thrown if Window \a name is an ancestor of this Window, to prevent
         cyclic Window structures.
     */
-    void addChildWindow(const String& name);
+    void addChild(const String& name);
 
     /*!
     \brief
@@ -1938,7 +1939,7 @@ public:
         thrown if Window \a window is an ancestor of this Window, to prevent
         cyclic Window structures.
     */
-    void addChildWindow(Window* window);
+    void addChild(Window* window);
 
     /*!
     \brief
@@ -1951,7 +1952,7 @@ public:
     \return
         Nothing.
     */
-    void removeChildWindow(const String& name);
+    void removeChild(const String& name);
 
     /*!
     \brief
@@ -1964,7 +1965,7 @@ public:
     \return
         Nothing.
     */
-    void removeChildWindow(Window* window);
+    void removeChild(Window* window);
 
     /*!
     \brief
@@ -1979,7 +1980,7 @@ public:
     \return
         Nothing.
     */
-    void removeChildWindow(uint ID);
+    void removeChild(uint ID);
 
     /*!
 	\brief
@@ -4374,6 +4375,8 @@ protected:
     VerticalAlignment d_vertAlign;
     //! Rotation angles for this window
     Vector3 d_rotation;
+    //! Rotation of this window (relative to the parent)
+    //Quaternion d_rotation;
 
     //! outer area rect in screen pixels
     mutable Rect d_outerUnclippedRect;

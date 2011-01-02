@@ -119,8 +119,8 @@ void Tree::initialise(void)
     d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
     d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
     
-    addChildWindow(d_vertScrollbar);
-    addChildWindow(d_horzScrollbar);
+    addChild(d_vertScrollbar);
+    addChild(d_horzScrollbar);
     
     d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));
     d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));

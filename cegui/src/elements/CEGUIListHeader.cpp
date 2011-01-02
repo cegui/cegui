@@ -523,7 +523,7 @@ void ListHeader::insertColumn(const String& text, uint id, const UDim& width, ui
 	d_segments.insert((d_segments.begin() + position), seg);
 
 	// add window as a child of this
-	addChildWindow(seg);
+	addChild(seg);
 
 	layoutSegments();
 
@@ -574,7 +574,7 @@ void ListHeader::removeColumn(uint column)
 		}
 
 		// detach segment window from the header (this)
-		removeChildWindow(seg);
+		removeChild(seg);
 
 		// destroy the segment (done in derived class, since that's where it was created).
 		destroyListSegment(seg);
