@@ -973,7 +973,33 @@ void Window::removeChildWindow(uint ID)
         }
 
     }
+}
 
+//----------------------------------------------------------------------------//
+Window* Window::createChild(const String& type, const String& name, bool nameLocal)
+{
+    Window* ret = WindowManager::getSingleton().createWindow(type,
+        nameLocal ? (getName() + "/" + name) : name );
+
+    addChildWindow(ret);
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+void Window::destroyChild(Window* wnd)
+{
+    assert(isChild(wnd) && "Window you are attempting to destroy is not a child!");
+
+    WindowManager::getSingleton().destroyWindow(wnd);
+}
+
+//----------------------------------------------------------------------------//
+void Window::destroyChild(const String& name, bool nameLocal)
+{
+    Window* wnd = WindowManager::getSingleton().getWindow(
+        nameLocal ? (getName() + "/" + name) : name);
+
+    destroyChild(wnd);
 }
 
 //----------------------------------------------------------------------------//

@@ -1982,6 +1982,46 @@ public:
     void removeChildWindow(uint ID);
 
     /*!
+	\brief
+		Creates a child window attached to this window.
+	
+	\param type
+		String that describes the type of Window to be created.  A valid WindowFactory for the specified type must be registered.
+
+	\param name
+		String that holds a unique name that is to be given to the new window.  If this string is empty (""), a name
+		will be generated for the window.
+	
+	\param nameLocal
+		If true, the name is considered local (the absolute name will be ParentWindowName/Name)
+
+	\return
+		Pointer to the newly created child Window object.
+	*/
+    Window* createChild(const String& type, const String& name, bool nameLocal = true);
+
+    /*!
+    \brief
+        Destroys a child window of this window
+
+    \param wnd
+        The child window to destroy
+    */
+    void destroyChild(Window* wnd);
+
+    /*!
+    \brief
+        Destroys a child window of this window
+
+    \param name
+        Name of the child window to destroy
+
+    \param nameLocal
+        If true, the name is considered local (the absolute name will be ParentWindowName/Name)
+    */
+    void destroyChild(const String& name, bool nameLocal = true);
+
+    /*!
     \brief
         Move the Window to the top of the z order.
 
