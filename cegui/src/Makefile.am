@@ -71,6 +71,7 @@ libCEGUIBase@cegui_bsfx@_la_SOURCES = \
                       CEGUIProperty.cpp \
                       CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
+                      CEGUIQuaternion.cpp \
                       CEGUIRect.cpp \
                       CEGUIRenderedString.cpp \
                       CEGUIRenderedStringComponent.cpp \
