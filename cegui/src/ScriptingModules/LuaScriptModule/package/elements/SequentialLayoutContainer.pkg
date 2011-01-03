@@ -4,23 +4,23 @@
 
 class SequentialLayoutContainer : public LayoutContainer
 {
-    unsigned int getPositionOfChildWindow(Window* wnd) const;
-    unsigned int getPositionOfChildWindow(utf8string wnd) const;
-    Window* getChildWindowAtPosition(unsigned int position) const;
+    unsigned int getPositionOfChild(Window* wnd) const;
+    unsigned int getPositionOfChild(utf8string wnd) const;
+    Window* getChildAtPosition(unsigned int position) const;
 
-    void swapChildWindowPositions(unsigned int wnd1, unsigned int wnd2);
-    void swapChildWindows(Window* wnd1, Window* wnd2);
-    void swapChildWindows(utf8string wnd1, Window* wnd2);
-    void swapChildWindows(Window* wnd1, utf8string wnd2);
-    void swapChildWindows(utf8string wnd1, utf8string wnd2);
+    void swapChildPositions(unsigned int wnd1, unsigned int wnd2);
+    void swapChildren(Window* wnd1, Window* wnd2);
+    void swapChildren(utf8string wnd1, Window* wnd2);
+    void swapChildren(Window* wnd1, utf8string wnd2);
+    void swapChildren(utf8string wnd1, utf8string wnd2);
 
-    void moveChildWindowToPosition(Window* wnd, unsigned int position);
-    void moveChildWindowToPosition(utf8string wnd, unsigned int position);
-    void moveChildWindow(Window* window, int delta = 1);
+    void moveChildToPosition(Window* wnd, unsigned int position);
+    void moveChildToPosition(utf8string wnd, unsigned int position);
+    void moveChild(Window* window, int delta = 1);
 
-    void addChildWindowToPosition(Window* window, unsigned int position);
-    void addChildWindowToPosition(utf8string window, unsigned int position);
+    void addChildToPosition(Window* window, unsigned int position);
+    void addChildToPosition(utf8string window, unsigned int position);
 
-    void removeChildWindowFromPosition(unsigned int position);
+    void removeChildFromPosition(unsigned int position);
 };
 

@@ -22,24 +22,24 @@ class GridLayoutContainer : public LayoutContainer
 
     void autoPositioningSkipCells(unsigned int cells);
 
-    void addChildWindowToPosition(Window* window, unsigned int gridX, unsigned int gridY);
-    void addChildWindowToPosition(utf8string name, unsigned int gridX, unsigned int gridY);
+    void addChildToPosition(Window* window, unsigned int gridX, unsigned int gridY);
+    void addChildToPosition(utf8string name, unsigned int gridX, unsigned int gridY);
 
-    Window* getChildWindowAtPosition(unsigned int gridX, unsigned int gridY);
+    Window* getChildAtPosition(unsigned int gridX, unsigned int gridY);
 
-    void removeChildWindowFromPosition(unsigned int gridX, unsigned int gridY);
+    void removeChildFromPosition(unsigned int gridX, unsigned int gridY);
 
-    void swapChildWindowPositions(unsigned int wnd1, unsigned int wnd2);
-    void swapChildWindowPositions(unsigned int gridX1, unsigned int gridY1,
-                                  unsigned int gridX2, unsigned int gridY2);
+    void swapChildPositions(unsigned int wnd1, unsigned int wnd2);
+    void swapChildPositions(unsigned int gridX1, unsigned int gridY1,
+                            unsigned int gridX2, unsigned int gridY2);
 
-    void swapChildWindows(Window* wnd1, Window* wnd2);
-    void swapChildWindows(Window* wnd1, utf8string wnd2);
-    void swapChildWindows(utf8string wnd1, Window* wnd2);
+    void swapChildren(Window* wnd1, Window* wnd2);
+    void swapChildren(Window* wnd1, utf8string wnd2);
+    void swapChildren(utf8string wnd1, Window* wnd2);
 
-    void moveChildWindowToPosition(Window* wnd, unsigned int gridX, unsigned int gridY);
-    void moveChildWindowToPosition(utf8string wnd,
-                                   unsigned int gridX, unsigned int gridY);
+    void moveChildToPosition(Window* wnd, unsigned int gridX, unsigned int gridY);
+    void moveChildToPosition(utf8string wnd,
+                             unsigned int gridX, unsigned int gridY);
 
 };
 
