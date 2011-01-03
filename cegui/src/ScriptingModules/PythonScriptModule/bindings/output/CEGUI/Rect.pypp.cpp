@@ -10,10 +10,7 @@ void register_Rect_class(){
 
     { //::CEGUI::Rect
         typedef bp::class_< CEGUI::Rect > Rect_exposer_t;
-        Rect_exposer_t Rect_exposer = Rect_exposer_t( "Rect", "*!\n\
-        \n\
-           Class encapsulating operations on a Rectangle\n\
-        *\n", bp::init< >() );
+        Rect_exposer_t Rect_exposer = Rect_exposer_t( "Rect", bp::init< >() );
         bp::scope Rect_scope( Rect_exposer );
         Rect_exposer.def( bp::init< float, float, float, float >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") ), "*!\n\
         \n\

@@ -10,11 +10,7 @@ void register_RenderEffectManager_class(){
 
     { //::CEGUI::RenderEffectManager
         typedef bp::class_< CEGUI::RenderEffectManager, bp::bases< CEGUI::Singleton< CEGUI::RenderEffectManager > >, boost::noncopyable > RenderEffectManager_exposer_t;
-        RenderEffectManager_exposer_t RenderEffectManager_exposer = RenderEffectManager_exposer_t( "RenderEffectManager", "*!\n\
-        \n\
-            Singleton class that manages creation and destruction of RenderEffect based\n\
-            objects.\n\
-        *\n", bp::init< >("! Constructor for RenderEffectManager objects.\n") );
+        RenderEffectManager_exposer_t RenderEffectManager_exposer = RenderEffectManager_exposer_t( "RenderEffectManager", bp::init< >("! Constructor for RenderEffectManager objects.\n") );
         bp::scope RenderEffectManager_scope( RenderEffectManager_exposer );
         { //::CEGUI::RenderEffectManager::create
         

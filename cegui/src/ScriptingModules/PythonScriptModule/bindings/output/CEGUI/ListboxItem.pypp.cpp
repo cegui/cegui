@@ -43,10 +43,7 @@ void register_ListboxItem_class(){
 
     { //::CEGUI::ListboxItem
         typedef bp::class_< ListboxItem_wrapper, boost::noncopyable > ListboxItem_exposer_t;
-        ListboxItem_exposer_t ListboxItem_exposer = ListboxItem_exposer_t( "ListboxItem", "*!\n\
-        \n\
-            Base class for list box items\n\
-        *\n", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
+        ListboxItem_exposer_t ListboxItem_exposer = ListboxItem_exposer_t( "ListboxItem", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
             Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\

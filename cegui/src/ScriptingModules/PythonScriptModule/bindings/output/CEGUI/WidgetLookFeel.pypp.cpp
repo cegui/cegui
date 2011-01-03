@@ -10,11 +10,7 @@ void register_WidgetLookFeel_class(){
 
     { //::CEGUI::WidgetLookFeel
         typedef bp::class_< CEGUI::WidgetLookFeel > WidgetLookFeel_exposer_t;
-        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", "*!\n\
-        \n\
-            Class that encapsulates look & feel information for a particular widget\n\
-            type.\n\
-        *\n", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
+        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
         bp::scope WidgetLookFeel_scope( WidgetLookFeel_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::WidgetLookFeel >();
         WidgetLookFeel_exposer.def( bp::init< >() );
@@ -429,7 +425,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getProperties
         
-            typedef ::std::vector< CEGUI::PropertyInitialiser > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyInitialiser, CEGUI::STLAllocatorWrapper<CEGUI::PropertyInitialiser, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getProperties"
@@ -443,7 +439,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitions"
@@ -458,7 +454,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyLinkDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitions"

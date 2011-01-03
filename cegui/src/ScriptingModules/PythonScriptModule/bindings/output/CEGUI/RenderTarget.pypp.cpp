@@ -60,12 +60,7 @@ void register_RenderTarget_class(){
 
     { //::CEGUI::RenderTarget
         typedef bp::class_< RenderTarget_wrapper, boost::noncopyable > RenderTarget_exposer_t;
-        RenderTarget_exposer_t RenderTarget_exposer = RenderTarget_exposer_t( "RenderTarget", "*!\n\
-        \n\
-            Defines interface to some surface that can be rendered to.  Concrete\n\
-            instances of objects that implement the RenderTarget interface are\n\
-            normally created via the Renderer object.\n\
-        *\n" );
+        RenderTarget_exposer_t RenderTarget_exposer = RenderTarget_exposer_t( "RenderTarget" );
         bp::scope RenderTarget_scope( RenderTarget_exposer );
         { //::CEGUI::RenderTarget::activate
         

@@ -26,10 +26,7 @@ void register_FalagardComponentBase_class(){
 
     { //::CEGUI::FalagardComponentBase
         typedef bp::class_< FalagardComponentBase_wrapper, boost::noncopyable > FalagardComponentBase_exposer_t;
-        FalagardComponentBase_exposer_t FalagardComponentBase_exposer = FalagardComponentBase_exposer_t( "FalagardComponentBase", "*!\n\
-        \n\
-            Common base class used for renderable components within an ImagerySection.\n\
-        *\n", bp::init< >("*!\n\
+        FalagardComponentBase_exposer_t FalagardComponentBase_exposer = FalagardComponentBase_exposer_t( "FalagardComponentBase", bp::init< >("*!\n\
         \n\
             Constructor\n\
         *\n") );

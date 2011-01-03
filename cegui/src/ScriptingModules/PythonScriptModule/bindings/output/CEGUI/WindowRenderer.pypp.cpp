@@ -74,10 +74,7 @@ void register_WindowRenderer_class(){
 
     { //::CEGUI::WindowRenderer
         typedef bp::class_< WindowRenderer_wrapper, boost::noncopyable > WindowRenderer_exposer_t;
-        WindowRenderer_exposer_t WindowRenderer_exposer = WindowRenderer_exposer_t( "WindowRenderer", "*!\n\
-        \n\
-            Base-class for the assignable WindowRenderer object\n\
-        *\n", bp::init< CEGUI::String const &, bp::optional< CEGUI::String const & > >(( bp::arg("name"), bp::arg("class_name")="Window" ), "*************************************************************************\n\
+        WindowRenderer_exposer_t WindowRenderer_exposer = WindowRenderer_exposer_t( "WindowRenderer", bp::init< CEGUI::String const &, bp::optional< CEGUI::String const & > >(( bp::arg("name"), bp::arg("class_name")="Window" ), "*************************************************************************\n\
                 Constructor  Destructor\n\
             **************************************************************************\n\
             *!\n\

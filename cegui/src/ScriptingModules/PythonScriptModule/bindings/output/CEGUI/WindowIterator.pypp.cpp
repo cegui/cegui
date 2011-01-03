@@ -6,44 +6,44 @@
 
 namespace bp = boost::python;
 
-void Iterator_next(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >& t)
+void Iterator_next(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >& t)
 {
     t++;
 }
 
-void Iterator_previous(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >& t)
+void Iterator_previous(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >& t)
 {
     t--;
 }
 
 void register_WindowIterator_class(){
 
-    { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >
-        typedef bp::class_< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > > WindowIterator_exposer_t;
+    { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >
+        typedef bp::class_< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > > WindowIterator_exposer_t;
         WindowIterator_exposer_t WindowIterator_exposer = WindowIterator_exposer_t( "WindowIterator", bp::no_init );
         bp::scope WindowIterator_scope( WindowIterator_exposer );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::getCurrentKey
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::getCurrentKey
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef ::CEGUI::String ( exported_class_t::*getCurrentKey_function_type )(  ) const;
             
             WindowIterator_exposer.def( 
                 "getCurrentKey"
-                , getCurrentKey_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::getCurrentKey )
+                , getCurrentKey_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::getCurrentKey )
                 , "*!\n\
             \n\
                Return the key for the item at the current iterator position.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::getCurrentValue
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::getCurrentValue
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef ::CEGUI::Window * ( exported_class_t::*getCurrentValue_function_type )(  ) const;
             
             WindowIterator_exposer.def( 
                 "getCurrentValue"
-                , getCurrentValue_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::getCurrentValue )
+                , getCurrentValue_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::getCurrentValue )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
             \n\
@@ -51,28 +51,28 @@ void register_WindowIterator_class(){
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::isAtEnd
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::isAtEnd
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef bool ( exported_class_t::*isAtEnd_function_type )(  ) const;
             
             WindowIterator_exposer.def( 
                 "isAtEnd"
-                , isAtEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::isAtEnd )
+                , isAtEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::isAtEnd )
                 , "*!\n\
             \n\
                Return whether the current iterator position is at the end of the iterators range.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::isAtStart
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::isAtStart
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef bool ( exported_class_t::*isAtStart_function_type )(  ) const;
             
             WindowIterator_exposer.def( 
                 "isAtStart"
-                , isAtStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::isAtStart )
+                , isAtStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::isAtStart )
                 , "*!\n\
             \n\
                Return whether the current iterator position is at the start of the iterators range.\n\
@@ -80,14 +80,14 @@ void register_WindowIterator_class(){
         
         }
         WindowIterator_exposer.def( bp::self != bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::operator=
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::operator=
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > & ( exported_class_t::*assign_function_type )( ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > const & ) ;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > & ( exported_class_t::*assign_function_type )( ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > const & ) ;
             
             WindowIterator_exposer.def( 
                 "assign"
-                , assign_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::operator= )
+                , assign_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::operator= )
                 , ( bp::arg("rhs") )
                 , bp::return_self< >()
                 , "*!\n\
@@ -97,28 +97,28 @@ void register_WindowIterator_class(){
         
         }
         WindowIterator_exposer.def( bp::self == bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::toEnd
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::toEnd
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef void ( exported_class_t::*toEnd_function_type )(  ) ;
             
             WindowIterator_exposer.def( 
                 "toEnd"
-                , toEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::toEnd )
+                , toEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::toEnd )
                 , "*!\n\
             \n\
                Set the iterator current position to the end position.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::toStart
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::toStart
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef void ( exported_class_t::*toStart_function_type )(  ) ;
             
             WindowIterator_exposer.def( 
                 "toStart"
-                , toStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > >::toStart )
+                , toStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > >::toStart )
                 , "*!\n\
             \n\
                Set the iterator current position to the start position.\n\

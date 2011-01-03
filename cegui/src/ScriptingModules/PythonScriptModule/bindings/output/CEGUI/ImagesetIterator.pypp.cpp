@@ -6,44 +6,44 @@
 
 namespace bp = boost::python;
 
-void Iterator_next(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >& t)
+void Iterator_next(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >& t)
 {
     t++;
 }
 
-void Iterator_previous(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >& t)
+void Iterator_previous(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >& t)
 {
     t--;
 }
 
 void register_ImagesetIterator_class(){
 
-    { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >
-        typedef bp::class_< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > > ImagesetIterator_exposer_t;
+    { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >
+        typedef bp::class_< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > > ImagesetIterator_exposer_t;
         ImagesetIterator_exposer_t ImagesetIterator_exposer = ImagesetIterator_exposer_t( "ImagesetIterator", bp::no_init );
         bp::scope ImagesetIterator_scope( ImagesetIterator_exposer );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::getCurrentKey
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::getCurrentKey
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef ::CEGUI::String ( exported_class_t::*getCurrentKey_function_type )(  ) const;
             
             ImagesetIterator_exposer.def( 
                 "getCurrentKey"
-                , getCurrentKey_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::getCurrentKey )
+                , getCurrentKey_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::getCurrentKey )
                 , "*!\n\
             \n\
                Return the key for the item at the current iterator position.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::getCurrentValue
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::getCurrentValue
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef ::CEGUI::Imageset * ( exported_class_t::*getCurrentValue_function_type )(  ) const;
             
             ImagesetIterator_exposer.def( 
                 "getCurrentValue"
-                , getCurrentValue_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::getCurrentValue )
+                , getCurrentValue_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::getCurrentValue )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
             \n\
@@ -51,28 +51,28 @@ void register_ImagesetIterator_class(){
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::isAtEnd
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::isAtEnd
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef bool ( exported_class_t::*isAtEnd_function_type )(  ) const;
             
             ImagesetIterator_exposer.def( 
                 "isAtEnd"
-                , isAtEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::isAtEnd )
+                , isAtEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::isAtEnd )
                 , "*!\n\
             \n\
                Return whether the current iterator position is at the end of the iterators range.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::isAtStart
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::isAtStart
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef bool ( exported_class_t::*isAtStart_function_type )(  ) const;
             
             ImagesetIterator_exposer.def( 
                 "isAtStart"
-                , isAtStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::isAtStart )
+                , isAtStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::isAtStart )
                 , "*!\n\
             \n\
                Return whether the current iterator position is at the start of the iterators range.\n\
@@ -80,14 +80,14 @@ void register_ImagesetIterator_class(){
         
         }
         ImagesetIterator_exposer.def( bp::self != bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::operator=
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::operator=
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > & ( exported_class_t::*assign_function_type )( ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > const & ) ;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > & ( exported_class_t::*assign_function_type )( ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > const & ) ;
             
             ImagesetIterator_exposer.def( 
                 "assign"
-                , assign_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::operator= )
+                , assign_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::operator= )
                 , ( bp::arg("rhs") )
                 , bp::return_self< >()
                 , "*!\n\
@@ -97,28 +97,28 @@ void register_ImagesetIterator_class(){
         
         }
         ImagesetIterator_exposer.def( bp::self == bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::toEnd
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::toEnd
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef void ( exported_class_t::*toEnd_function_type )(  ) ;
             
             ImagesetIterator_exposer.def( 
                 "toEnd"
-                , toEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::toEnd )
+                , toEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::toEnd )
                 , "*!\n\
             \n\
                Set the iterator current position to the end position.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::toStart
+        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::toStart
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > exported_class_t;
+            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > exported_class_t;
             typedef void ( exported_class_t::*toStart_function_type )(  ) ;
             
             ImagesetIterator_exposer.def( 
                 "toStart"
-                , toStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > >::toStart )
+                , toStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > >::toStart )
                 , "*!\n\
             \n\
                Set the iterator current position to the start position.\n\

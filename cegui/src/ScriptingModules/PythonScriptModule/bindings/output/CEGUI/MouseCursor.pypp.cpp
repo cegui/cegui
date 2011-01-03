@@ -57,13 +57,7 @@ void register_MouseCursor_class(){
 
     { //::CEGUI::MouseCursor
         typedef bp::class_< MouseCursor_wrapper, bp::bases< CEGUI::EventSet, CEGUI::Singleton< CEGUI::MouseCursor > >, boost::noncopyable > MouseCursor_exposer_t;
-        MouseCursor_exposer_t MouseCursor_exposer = MouseCursor_exposer_t( "MouseCursor", "*!\n\
-        \n\
-           Class that allows access to the GUI system mouse cursor.\n\
-        \n\
-           The MouseCursor provides functionality to access the position and imagery of the mouse cursor\
-           pointer\n\
-        *\n", bp::init< >("*!\n\
+        MouseCursor_exposer_t MouseCursor_exposer = MouseCursor_exposer_t( "MouseCursor", bp::init< >("*!\n\
         \n\
            Constructor for MouseCursor objects\n\
         *\n") );

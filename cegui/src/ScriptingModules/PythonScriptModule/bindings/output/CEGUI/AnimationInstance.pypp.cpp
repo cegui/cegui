@@ -10,20 +10,7 @@ void register_AnimationInstance_class(){
 
     { //::CEGUI::AnimationInstance
         typedef bp::class_< CEGUI::AnimationInstance > AnimationInstance_exposer_t;
-        AnimationInstance_exposer_t AnimationInstance_exposer = AnimationInstance_exposer_t( "AnimationInstance", "*!\n\
-        \n\
-            Defines an 'animation instance' class\n\
-        \n\
-            Animation classes hold definition of the animation. Whilst this class holds\n\
-            data needed to use the animation definition - target PropertySet, event\n\
-            receiver, animation position, ...\n\
-        \n\
-            You have to define animation first and then instantiate it via\n\
-            AnimationManager.instantiateAnimation\n\
-        \n\
-        @see\n\
-            Animation\n\
-        *\n", bp::init< CEGUI::Animation * >(( bp::arg("definition") ), "! internal constructor, please use AnimationManager.instantiateAnimation\n") );
+        AnimationInstance_exposer_t AnimationInstance_exposer = AnimationInstance_exposer_t( "AnimationInstance", bp::init< CEGUI::Animation * >(( bp::arg("definition") ), "! internal constructor, please use AnimationManager.instantiateAnimation\n") );
         bp::scope AnimationInstance_scope( AnimationInstance_exposer );
         bp::implicitly_convertible< CEGUI::Animation *, CEGUI::AnimationInstance >();
         { //::CEGUI::AnimationInstance::addAutoConnection

@@ -10,10 +10,7 @@ void register_ColourRect_class(){
 
     { //::CEGUI::ColourRect
         typedef bp::class_< CEGUI::ColourRect > ColourRect_exposer_t;
-        ColourRect_exposer_t ColourRect_exposer = ColourRect_exposer_t( "ColourRect", "*!\n\
-        \n\
-           Class that holds details of colours for the four corners of a rectangle.\n\
-        *\n", bp::init< >("*!\n\
+        ColourRect_exposer_t ColourRect_exposer = ColourRect_exposer_t( "ColourRect", bp::init< >("*!\n\
         \n\
            Default constructor\n\
         *\n") );

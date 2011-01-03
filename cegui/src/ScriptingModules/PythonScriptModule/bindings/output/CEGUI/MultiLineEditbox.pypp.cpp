@@ -282,7 +282,7 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::MultiLineEditbox::getFormattedLines
         
-            typedef ::std::vector< CEGUI::MultiLineEditbox::LineInfo > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::MultiLineEditbox::LineInfo, CEGUI::STLAllocatorWrapper<CEGUI::MultiLineEditbox::LineInfo, CEGUI::StdAllocator> > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
                 "getFormattedLines"
