@@ -164,7 +164,7 @@ bool TreeDemoSample::initialiseSample()
 
    TreeDemoWindow = winMgr.loadWindowLayout(LAYOUT_FILE_NAME);
 
-   background->addChildWindow(TreeDemoWindow);
+   background->addChild(TreeDemoWindow);
 
    // listen for key presses on the root window.
    background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&TreeDemoSample::handleRootKeyDown, this));

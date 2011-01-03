@@ -79,7 +79,7 @@ bool FalagardDemo1Sample::initialiseSample()
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));
+    background->addChild(winMgr.loadWindowLayout("VanillaWindows.layout"));
 
     // create an instance of the console class.
     d_console = new DemoConsole("Demo");
@@ -160,7 +160,7 @@ DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
 
     // attach this window if parent is valid
     if (parent)
-        parent->addChildWindow(d_root);
+        parent->addChild(d_root);
 }
 
 DemoConsole::~DemoConsole()

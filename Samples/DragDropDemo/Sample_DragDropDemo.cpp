@@ -133,7 +133,7 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
     if (!dd_args.window->getChildCount())
     {
         // add dragdrop item as child of target if target has no item already
-        dd_args.window->addChildWindow(dd_args.dragDropItem);
+        dd_args.window->addChild(dd_args.dragDropItem);
         // Now we must reset the item position from it's 'dropped' location,
         // since we're now a child of an entirely different window
         dd_args.dragDropItem->setPosition(
