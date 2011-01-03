@@ -197,6 +197,7 @@ output/CEGUI/URect.pypp.cpp \
 output/CEGUI/UVector2.pypp.cpp \
 output/CEGUI/Vector2.pypp.cpp \
 output/CEGUI/Vector3.pypp.cpp \
+output/CEGUI/vector_less__CEGUI_scope_String__greater_.pypp.cpp \
 output/CEGUI/Vertex.pypp.cpp \
 output/CEGUI/VerticalLayoutContainer.pypp.cpp \
 output/CEGUI/WidgetComponent.pypp.cpp \
@@ -473,6 +474,7 @@ output/CEGUI/URect.pypp.hpp \
 output/CEGUI/UVector2.pypp.hpp \
 output/CEGUI/Vector2.pypp.hpp \
 output/CEGUI/Vector3.pypp.hpp \
+output/CEGUI/vector_less__CEGUI_scope_String__greater_.pypp.hpp \
 output/CEGUI/Vertex.pypp.hpp \
 output/CEGUI/VerticalLayoutContainer.pypp.hpp \
 output/CEGUI/WidgetComponent.pypp.hpp \
