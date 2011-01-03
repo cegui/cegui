@@ -142,7 +142,7 @@ public:
         System::getSingleton ().setDefaultTooltip ("TaharezLook/Tooltip");
 
         // load some demo windows and attach to the background 'root'
-        background->addChildWindow (winMgr.loadWindowLayout ("FontDemo.layout"));
+        background->addChild (winMgr.loadWindowLayout ("FontDemo.layout"));
 
         // Add the font names to the listbox
         Listbox *lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/FontList"));

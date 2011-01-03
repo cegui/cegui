@@ -295,7 +295,7 @@ bool Demo7Sample::initialiseSample()
     // load the windows for Demo7 from the layout file.
     Window* sheet = winMgr.loadWindowLayout("Demo7Windows.layout");
     // attach this to the 'real' root
-    background->addChildWindow(sheet);
+    background->addChild(sheet);
     // set-up the contents of the list boxes.
     createListContent();
     // initialise the event handling.
