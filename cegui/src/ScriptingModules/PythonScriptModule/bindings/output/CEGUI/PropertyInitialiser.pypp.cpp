@@ -10,10 +10,7 @@ void register_PropertyInitialiser_class(){
 
     { //::CEGUI::PropertyInitialiser
         typedef bp::class_< CEGUI::PropertyInitialiser > PropertyInitialiser_exposer_t;
-        PropertyInitialiser_exposer_t PropertyInitialiser_exposer = PropertyInitialiser_exposer_t( "PropertyInitialiser", "*!\n\
-        \n\
-            Class that holds information about a property and it's required initial value.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("property"), bp::arg("value") ), "*!\n\
+        PropertyInitialiser_exposer_t PropertyInitialiser_exposer = PropertyInitialiser_exposer_t( "PropertyInitialiser", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("property"), bp::arg("value") ), "*!\n\
                 \n\
                     Constructor\n\
         \n\

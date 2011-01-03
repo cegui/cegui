@@ -117,22 +117,7 @@ void register_RenderingSurface_class(){
 
     { //::CEGUI::RenderingSurface
         typedef bp::class_< RenderingSurface_wrapper, bp::bases< CEGUI::EventSet >, boost::noncopyable > RenderingSurface_exposer_t;
-        RenderingSurface_exposer_t RenderingSurface_exposer = RenderingSurface_exposer_t( "RenderingSurface", "*!\n\
-        \n\
-            Class that represents a surface that can have geometry based imagery drawn\n\
-            to it.\n\
-        \n\
-            A RenderingSurface has a number of queues that can be used for rendering;\n\
-            normal window rendering will typically be done on RQ_BASE queue, things that\n\
-            are overlaid everything else are rendered to RQ_OVERLAY.\n\
-            \n\
-            The event EventRenderQueueStarted is fired before each queue is rendered and\n\
-            the event EventRenderQueueEnded is fired after each queue is rendered.\n\
-            \note\n\
-            For performance reasons, events are only fired for queues that are in use;\n\
-            these are queues that have had some interaction - such as clearing or adding\n\
-            geometry.\n\
-        *\n", bp::init< CEGUI::RenderTarget & >(( bp::arg("target") ), "*!\n\
+        RenderingSurface_exposer_t RenderingSurface_exposer = RenderingSurface_exposer_t( "RenderingSurface", bp::init< CEGUI::RenderTarget & >(( bp::arg("target") ), "*!\n\
             \n\
                 Constructor for RenderingSurface objects.\n\
         \n\

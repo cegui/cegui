@@ -10,10 +10,7 @@ void register_Colour_class(){
 
     { //::CEGUI::Colour
         typedef bp::class_< CEGUI::Colour > Colour_exposer_t;
-        Colour_exposer_t Colour_exposer = Colour_exposer_t( "Colour", "*!\n\
-        \n\
-           Class representing colour values within the system.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        Colour_exposer_t Colour_exposer = Colour_exposer_t( "Colour", bp::init< >("*************************************************************************\n\
            Construction & Destruction\n\
         *************************************************************************\n") );
         bp::scope Colour_scope( Colour_exposer );

@@ -10,10 +10,7 @@ void register_LayerSpecification_class(){
 
     { //::CEGUI::LayerSpecification
         typedef bp::class_< CEGUI::LayerSpecification > LayerSpecification_exposer_t;
-        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", "*!\n\
-        \n\
-            Class that encapsulates a single layer of imagery.\n\
-        *\n", bp::init< CEGUI::uint >(( bp::arg("priority") ), "*!\n\
+        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", bp::init< CEGUI::uint >(( bp::arg("priority") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\

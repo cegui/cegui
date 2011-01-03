@@ -336,8 +336,6 @@
 
 #include "TabControl.pypp.hpp"
 
-#include "TargetTypeStack.pypp.hpp"
-
 #include "TextComponent.pypp.hpp"
 
 #include "TextUtils.pypp.hpp"
@@ -415,6 +413,8 @@
 #include "XMLParser.pypp.hpp"
 
 #include "XMLSerializer.pypp.hpp"
+
+#include "vector_less__CEGUI_scope_String__greater_.pypp.hpp"
 
 namespace bp = boost::python;
 
@@ -503,7 +503,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_LBItemList_class();
 
-    register_TargetTypeStack_class();
+    register_vector_less__CEGUI_scope_String__greater__class();
 
     register_PropertyLinkDefinitionList_class();
 

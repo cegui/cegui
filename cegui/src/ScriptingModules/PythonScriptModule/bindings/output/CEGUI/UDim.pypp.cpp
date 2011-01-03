@@ -10,11 +10,7 @@ void register_UDim_class(){
 
     { //::CEGUI::UDim
         typedef bp::class_< CEGUI::UDim > UDim_exposer_t;
-        UDim_exposer_t UDim_exposer = UDim_exposer_t( "UDim", "*!\n\
-        \n\
-            Class representing a unified dimension; that is a dimension that has both\n\
-            a relative 'scale' portion and and absolute 'offset' portion.\n\
-        *\n", bp::init< >() );
+        UDim_exposer_t UDim_exposer = UDim_exposer_t( "UDim", bp::init< >() );
         bp::scope UDim_scope( UDim_exposer );
         UDim_exposer.def( bp::init< float, float >(( bp::arg("scale"), bp::arg("offset") )) );
         UDim_exposer.def( bp::init< CEGUI::UDim const & >(( bp::arg("v") )) );

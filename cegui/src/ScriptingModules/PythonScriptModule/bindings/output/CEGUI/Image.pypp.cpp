@@ -10,10 +10,7 @@ void register_Image_class(){
 
     { //::CEGUI::Image
         typedef bp::class_< CEGUI::Image > Image_exposer_t;
-        Image_exposer_t Image_exposer = Image_exposer_t( "Image", "*!\n\
-        \n\
-           Class that represents a single Image of an Imageset.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        Image_exposer_t Image_exposer = Image_exposer_t( "Image", bp::init< >("*************************************************************************\n\
            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\

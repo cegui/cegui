@@ -9,13 +9,13 @@ namespace bp = boost::python;
 void register_CoordConverter_class(){
 
     { //::CEGUI::CoordConverter
-        typedef bp::class_< CEGUI::CoordConverter > CoordConverter_exposer_t;
+        typedef bp::class_< CEGUI::CoordConverter, boost::noncopyable > CoordConverter_exposer_t;
         CoordConverter_exposer_t CoordConverter_exposer = CoordConverter_exposer_t( "CoordConverter", "*!\n\
         \n\
             Utility class that helps in converting various types of co-ordinate between\n\
             absolute screen positions and positions offset from the top-left corner of\n\
             a given Window object.\n\
-        *\n" );
+        *\n", bp::no_init );
         bp::scope CoordConverter_scope( CoordConverter_exposer );
         { //::CEGUI::CoordConverter::screenToWindow
         

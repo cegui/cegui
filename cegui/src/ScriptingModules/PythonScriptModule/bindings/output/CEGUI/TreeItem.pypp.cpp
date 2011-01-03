@@ -168,7 +168,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getItemList
         
-            typedef ::std::vector< CEGUI::TreeItem* > & ( ::CEGUI::TreeItem::*getItemList_function_type )(  ) ;
+            typedef ::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > & ( ::CEGUI::TreeItem::*getItemList_function_type )(  ) ;
             
             TreeItem_exposer.def( 
                 "getItemList"

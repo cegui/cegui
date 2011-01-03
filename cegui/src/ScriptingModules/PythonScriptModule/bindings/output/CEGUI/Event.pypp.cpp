@@ -10,18 +10,7 @@ void register_Event_class(){
 
     { //::CEGUI::Event
         typedef bp::class_< CEGUI::Event, boost::noncopyable > Event_exposer_t;
-        Event_exposer_t Event_exposer = Event_exposer_t( "Event", "*!\n\
-        \n\
-            Defines an 'event' which can be subscribed to by interested parties.\n\
-        \n\
-            An Event can be subscribed by a function, a member function, or a function\n\
-            object.  Whichever option is taken, the function signature needs to be as\n\
-            follows:\n\
-            \n\
-            <em>bool function_name(const EventArgs& args);<em>\n\
-            \note\n\
-                An Event object may not be copied.\n\
-        *\n", bp::init< CEGUI::String const & >(( bp::arg("name") ), "*!\n\
+        Event_exposer_t Event_exposer = Event_exposer_t( "Event", bp::init< CEGUI::String const & >(( bp::arg("name") ), "*!\n\
         \n\
             Constructs a new Event object with the specified name\n\
         *\n") );

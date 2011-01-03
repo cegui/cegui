@@ -178,7 +178,6 @@ output/CEGUI/Subscriber.pypp.cpp \
 output/CEGUI/System.pypp.cpp \
 output/CEGUI/TabButton.pypp.cpp \
 output/CEGUI/TabControl.pypp.cpp \
-output/CEGUI/TargetTypeStack.pypp.cpp \
 output/CEGUI/TextComponent.pypp.cpp \
 output/CEGUI/Texture.pypp.cpp \
 output/CEGUI/TextureTarget.pypp.cpp \
@@ -455,7 +454,6 @@ output/CEGUI/Subscriber.pypp.hpp \
 output/CEGUI/System.pypp.hpp \
 output/CEGUI/TabButton.pypp.hpp \
 output/CEGUI/TabControl.pypp.hpp \
-output/CEGUI/TargetTypeStack.pypp.hpp \
 output/CEGUI/TextComponent.pypp.hpp \
 output/CEGUI/Texture.pypp.hpp \
 output/CEGUI/TextureTarget.pypp.hpp \

@@ -10,16 +10,7 @@ void register_RenderQueue_class(){
 
     { //::CEGUI::RenderQueue
         typedef bp::class_< CEGUI::RenderQueue > RenderQueue_exposer_t;
-        RenderQueue_exposer_t RenderQueue_exposer = RenderQueue_exposer_t( "RenderQueue", "*!\n\
-        \n\
-            Class that represents a queue of GeometryBuffer objects to be rendered.\n\
-        \n\
-        \note\n\
-            The RenderQueue does not make copies of added GeometryBuffers, nor does it\n\
-            take ownership of them - it is up to other parts of the system to manage the\n\
-            lifetime of the GeometryBuffer objects (and to remove them from any\n\
-            RenderQueue to which they may be attached prior to destoying them).\n\
-        *\n" );
+        RenderQueue_exposer_t RenderQueue_exposer = RenderQueue_exposer_t( "RenderQueue" );
         bp::scope RenderQueue_scope( RenderQueue_exposer );
         { //::CEGUI::RenderQueue::addGeometryBuffer
         

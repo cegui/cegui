@@ -107,7 +107,7 @@ void register_ImagesetManager_class(){
         }
         { //::CEGUI::ImagesetManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Imageset*> > > > ( ::CEGUI::ImagesetManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Imageset*>, CEGUI::StdAllocator> > > ( ::CEGUI::ImagesetManager::*getIterator_function_type )(  ) const;
             
             ImagesetManager_exposer.def( 
                 "getIterator"

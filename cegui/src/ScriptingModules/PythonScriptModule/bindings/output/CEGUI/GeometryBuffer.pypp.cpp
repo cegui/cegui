@@ -108,11 +108,7 @@ void register_GeometryBuffer_class(){
 
     { //::CEGUI::GeometryBuffer
         typedef bp::class_< GeometryBuffer_wrapper, boost::noncopyable > GeometryBuffer_exposer_t;
-        GeometryBuffer_exposer_t GeometryBuffer_exposer = GeometryBuffer_exposer_t( "GeometryBuffer", "*!\n\
-        \n\
-            Abstract class defining the interface for objects that buffer geometry for\n\
-            later rendering.\n\
-        *\n", bp::no_init );
+        GeometryBuffer_exposer_t GeometryBuffer_exposer = GeometryBuffer_exposer_t( "GeometryBuffer", bp::no_init );
         bp::scope GeometryBuffer_scope( GeometryBuffer_exposer );
         { //::CEGUI::GeometryBuffer::appendGeometry
         
