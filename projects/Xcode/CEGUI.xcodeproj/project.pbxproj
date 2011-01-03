@@ -815,6 +815,8 @@
 		DA83118A120D707C006D045E /* CEGUILayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831184120D707C006D045E /* CEGUILayoutContainer.cpp */; };
 		DA83118B120D707C006D045E /* CEGUISequentialLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831185120D707C006D045E /* CEGUISequentialLayoutContainer.cpp */; };
 		DA83118C120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA831186120D707C006D045E /* CEGUIVerticalLayoutContainer.cpp */; };
+		DA8ABE3D12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA8ABE3B12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.cpp */; };
+		DA8ABE3E12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DA8ABE3C12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.hpp */; };
 		DAA67F9C101278620064C6ED /* CEGUINamedXMLResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */; };
 		DAA67F9E101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */; };
 		DAAAB8070F6E4ACC0003BE03 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
@@ -3161,6 +3163,8 @@
 		DA831192120D70A8006D045E /* SequentialLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SequentialLayoutContainer.pkg; sourceTree = "<group>"; };
 		DA831193120D70A8006D045E /* VerticalLayoutContainer.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalLayoutContainer.pkg; sourceTree = "<group>"; };
 		DA849D481052E5F700C07E33 /* futurechanges.dox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = futurechanges.dox; path = ../../doc/doxygen/futurechanges.dox; sourceTree = SOURCE_ROOT; };
+		DA8ABE3B12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_less__CEGUI_scope_String__greater_.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/vector_less__CEGUI_scope_String__greater_.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DA8ABE3C12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_less__CEGUI_scope_String__greater_.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/vector_less__CEGUI_scope_String__greater_.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DAA18F3F0F763761000D6896 /* minibidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibidi.cpp; path = ../../cegui/src/minibidi.cpp; sourceTree = SOURCE_ROOT; };
 		DAA67F9B101278620064C6ED /* CEGUINamedXMLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUINamedXMLResourceManager.h; path = ../../cegui/include/CEGUINamedXMLResourceManager.h; sourceTree = SOURCE_ROOT; };
 		DAA67F9D101278990064C6ED /* CEGUIJustifiedRenderedStringWordWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedStringWordWrapper.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedStringWordWrapper.cpp; sourceTree = SOURCE_ROOT; };
@@ -5902,6 +5906,8 @@
 				DA3203861292B89400B2B97D /* Vector2.pypp.hpp */,
 				DA6F8F011292997800B718C8 /* Vector3.pypp.cpp */,
 				DA3203871292B89400B2B97D /* Vector3.pypp.hpp */,
+				DA8ABE3B12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.cpp */,
+				DA8ABE3C12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.hpp */,
 				DA6F8F021292997800B718C8 /* Vertex.pypp.cpp */,
 				DA3203881292B89400B2B97D /* Vertex.pypp.hpp */,
 				DA6F8F031292997800B718C8 /* VerticalLayoutContainer.pypp.cpp */,
@@ -6362,6 +6368,7 @@
 				DAD59C5A12D20BBF0057BA51 /* DefaultWindow.pypp.hpp in Headers */,
 				DAD59C5C12D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp in Headers */,
 				DAD59C5E12D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp in Headers */,
+				DA8ABE3E12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8147,6 +8154,7 @@
 				DAD59C5912D20BBF0057BA51 /* DefaultWindow.pypp.cpp in Sources */,
 				DAD59C5B12D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp in Sources */,
 				DAD59C5D12D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp in Sources */,
+				DA8ABE3D12D2195B00F73A69 /* vector_less__CEGUI_scope_String__greater_.pypp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
