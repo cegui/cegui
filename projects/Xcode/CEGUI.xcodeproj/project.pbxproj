@@ -617,7 +617,6 @@
 		DA6F902712929F5300B718C8 /* ButtonBase.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E571292997800B718C8 /* ButtonBase.pypp.cpp */; };
 		DA6F902812929F5300B718C8 /* CentredRenderedString.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E581292997800B718C8 /* CentredRenderedString.pypp.cpp */; };
 		DA6F902912929F5300B718C8 /* Checkbox.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E591292997800B718C8 /* Checkbox.pypp.cpp */; };
-		DA6F902A12929F5300B718C8 /* colour.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E5A1292997800B718C8 /* colour.pypp.cpp */; };
 		DA6F902B12929F5300B718C8 /* ColourRect.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E5B1292997800B718C8 /* ColourRect.pypp.cpp */; };
 		DA6F902C12929F5300B718C8 /* Combobox.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E5C1292997800B718C8 /* Combobox.pypp.cpp */; };
 		DA6F902D12929F5300B718C8 /* ComboDropList.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E5D1292997800B718C8 /* ComboDropList.pypp.cpp */; };
@@ -649,7 +648,6 @@
 		DA6F904712929F5300B718C8 /* GlobalEventSet.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E771292997800B718C8 /* GlobalEventSet.pypp.cpp */; };
 		DA6F904812929F5300B718C8 /* GridLayoutContainer.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E781292997800B718C8 /* GridLayoutContainer.pypp.cpp */; };
 		DA6F904912929F5300B718C8 /* GroupBox.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E791292997800B718C8 /* GroupBox.pypp.cpp */; };
-		DA6F904A12929F5300B718C8 /* GUISheet.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E7A1292997800B718C8 /* GUISheet.pypp.cpp */; };
 		DA6F904B12929F5300B718C8 /* HeaderSequenceEventArgs.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E7B1292997800B718C8 /* HeaderSequenceEventArgs.pypp.cpp */; };
 		DA6F904C12929F5300B718C8 /* HorizontalLayoutContainer.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E7C1292997800B718C8 /* HorizontalLayoutContainer.pypp.cpp */; };
 		DA6F904D12929F5300B718C8 /* Image.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8E7D1292997800B718C8 /* Image.pypp.cpp */; };
@@ -765,7 +763,6 @@
 		DA6F90BB12929F5300B718C8 /* System.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EEB1292997800B718C8 /* System.pypp.cpp */; };
 		DA6F90BC12929F5300B718C8 /* TabButton.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EEC1292997800B718C8 /* TabButton.pypp.cpp */; };
 		DA6F90BD12929F5300B718C8 /* TabControl.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EED1292997800B718C8 /* TabControl.pypp.cpp */; };
-		DA6F90BE12929F5300B718C8 /* TargetTypeStack.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EEE1292997800B718C8 /* TargetTypeStack.pypp.cpp */; };
 		DA6F90BF12929F5300B718C8 /* TextComponent.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EEF1292997800B718C8 /* TextComponent.pypp.cpp */; };
 		DA6F90C012929F5300B718C8 /* Texture.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EF01292997800B718C8 /* Texture.pypp.cpp */; };
 		DA6F90C112929F5300B718C8 /* TextureTarget.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA6F8EF11292997800B718C8 /* TextureTarget.pypp.cpp */; };
@@ -945,6 +942,14 @@
 		DAC6D0CF10219276000602A5 /* FalEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CD10219276000602A5 /* FalEditboxProperties.cpp */; };
 		DAC6D0D010219276000602A5 /* FalMultiLineEditboxProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */; };
 		DAD1AD7E0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */; };
+		DAD59C5712D20BBF0057BA51 /* Colour.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD59C4F12D20BBF0057BA51 /* Colour.pypp.cpp */; };
+		DAD59C5812D20BBF0057BA51 /* Colour.pypp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DAD59C5012D20BBF0057BA51 /* Colour.pypp.hpp */; };
+		DAD59C5912D20BBF0057BA51 /* DefaultWindow.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD59C5112D20BBF0057BA51 /* DefaultWindow.pypp.cpp */; };
+		DAD59C5A12D20BBF0057BA51 /* DefaultWindow.pypp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DAD59C5212D20BBF0057BA51 /* DefaultWindow.pypp.hpp */; };
+		DAD59C5B12D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD59C5312D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp */; };
+		DAD59C5C12D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DAD59C5412D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp */; };
+		DAD59C5D12D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD59C5512D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp */; };
+		DAD59C5E12D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DAD59C5612D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp */; };
 		DAE3B7AD1292BA9A00CD5ACC /* NullRenderer.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B7AB1292BA9A00CD5ACC /* NullRenderer.pypp.cpp */; };
 		DAE3B7AE1292BA9A00CD5ACC /* PyCEGUINullRenderer.main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B7AC1292BA9A00CD5ACC /* PyCEGUINullRenderer.main.cpp */; };
 		DAE3B7BB1292BB0100CD5ACC /* OgreImageCodec.pypp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B7B71292BB0100CD5ACC /* OgreImageCodec.pypp.cpp */; };
@@ -2666,7 +2671,6 @@
 		DA3202C01292B89300B2B97D /* ButtonBase.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ButtonBase.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ButtonBase.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C11292B89300B2B97D /* CentredRenderedString.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CentredRenderedString.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CentredRenderedString.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C21292B89300B2B97D /* Checkbox.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Checkbox.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Checkbox.pypp.hpp; sourceTree = SOURCE_ROOT; };
-		DA3202C31292B89300B2B97D /* colour.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = colour.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/colour.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C41292B89300B2B97D /* ColourRect.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ColourRect.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ColourRect.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C51292B89300B2B97D /* Combobox.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Combobox.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Combobox.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202C61292B89300B2B97D /* ComboDropList.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ComboDropList.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ComboDropList.pypp.hpp; sourceTree = SOURCE_ROOT; };
@@ -2699,7 +2703,6 @@
 		DA3202E11292B89300B2B97D /* GlobalEventSet.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GlobalEventSet.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GlobalEventSet.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202E21292B89300B2B97D /* GridLayoutContainer.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GridLayoutContainer.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GridLayoutContainer.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202E31292B89300B2B97D /* GroupBox.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupBox.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GroupBox.pypp.hpp; sourceTree = SOURCE_ROOT; };
-		DA3202E41292B89300B2B97D /* GUISheet.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GUISheet.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GUISheet.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202E51292B89300B2B97D /* HeaderSequenceEventArgs.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HeaderSequenceEventArgs.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HeaderSequenceEventArgs.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202E61292B89300B2B97D /* HorizontalLayoutContainer.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HorizontalLayoutContainer.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HorizontalLayoutContainer.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3202E71292B89300B2B97D /* Image.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Image.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Image.pypp.hpp; sourceTree = SOURCE_ROOT; };
@@ -2842,7 +2845,6 @@
 		DA3203711292B89400B2B97D /* System.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = System.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/System.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3203721292B89400B2B97D /* TabButton.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TabButton.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabButton.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3203731292B89400B2B97D /* TabControl.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TabControl.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabControl.pypp.hpp; sourceTree = SOURCE_ROOT; };
-		DA3203741292B89400B2B97D /* TargetTypeStack.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TargetTypeStack.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TargetTypeStack.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3203751292B89400B2B97D /* TextComponent.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TextComponent.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextComponent.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3203761292B89400B2B97D /* Texture.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Texture.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Texture.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DA3203771292B89400B2B97D /* TextureTarget.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TextureTarget.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextureTarget.pypp.hpp; sourceTree = SOURCE_ROOT; };
@@ -2954,7 +2956,6 @@
 		DA6F8E571292997800B718C8 /* ButtonBase.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ButtonBase.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ButtonBase.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E581292997800B718C8 /* CentredRenderedString.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CentredRenderedString.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/CentredRenderedString.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E591292997800B718C8 /* Checkbox.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Checkbox.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Checkbox.pypp.cpp; sourceTree = SOURCE_ROOT; };
-		DA6F8E5A1292997800B718C8 /* colour.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = colour.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/colour.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E5B1292997800B718C8 /* ColourRect.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColourRect.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ColourRect.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E5C1292997800B718C8 /* Combobox.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Combobox.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Combobox.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E5D1292997800B718C8 /* ComboDropList.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ComboDropList.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/ComboDropList.pypp.cpp; sourceTree = SOURCE_ROOT; };
@@ -2986,7 +2987,6 @@
 		DA6F8E771292997800B718C8 /* GlobalEventSet.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GlobalEventSet.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GlobalEventSet.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E781292997800B718C8 /* GridLayoutContainer.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GridLayoutContainer.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GridLayoutContainer.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E791292997800B718C8 /* GroupBox.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GroupBox.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GroupBox.pypp.cpp; sourceTree = SOURCE_ROOT; };
-		DA6F8E7A1292997800B718C8 /* GUISheet.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GUISheet.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/GUISheet.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E7B1292997800B718C8 /* HeaderSequenceEventArgs.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HeaderSequenceEventArgs.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HeaderSequenceEventArgs.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E7C1292997800B718C8 /* HorizontalLayoutContainer.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HorizontalLayoutContainer.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/HorizontalLayoutContainer.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8E7D1292997800B718C8 /* Image.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Image.pypp.cpp; sourceTree = SOURCE_ROOT; };
@@ -3102,7 +3102,6 @@
 		DA6F8EEB1292997800B718C8 /* System.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = System.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/System.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8EEC1292997800B718C8 /* TabButton.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TabButton.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabButton.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8EED1292997800B718C8 /* TabControl.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TabControl.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TabControl.pypp.cpp; sourceTree = SOURCE_ROOT; };
-		DA6F8EEE1292997800B718C8 /* TargetTypeStack.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TargetTypeStack.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TargetTypeStack.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8EEF1292997800B718C8 /* TextComponent.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextComponent.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextComponent.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8EF01292997800B718C8 /* Texture.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Texture.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8EF11292997800B718C8 /* TextureTarget.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextureTarget.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/TextureTarget.pypp.cpp; sourceTree = SOURCE_ROOT; };
@@ -3233,6 +3232,14 @@
 		DAC6D0CE10219276000602A5 /* FalMultiLineEditboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalMultiLineEditboxProperties.cpp; path = ../../cegui/src/WindowRendererSets/Falagard/FalMultiLineEditboxProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7D0F7CE9D100528D46 /* CEGUIXercesParserProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIXercesParserProperties.cpp; path = ../../cegui/src/XMLParserModules/XercesParser/CEGUIXercesParserProperties.cpp; sourceTree = SOURCE_ROOT; };
 		DAD1AD7F0F7CEA4C00528D46 /* CEGUIXercesParserProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIXercesParserProperties.h; path = ../../cegui/include/XMLParserModules/XercesParser/CEGUIXercesParserProperties.h; sourceTree = SOURCE_ROOT; };
+		DAD59C4F12D20BBF0057BA51 /* Colour.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Colour.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Colour.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5012D20BBF0057BA51 /* Colour.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Colour.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/Colour.pypp.hpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5112D20BBF0057BA51 /* DefaultWindow.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DefaultWindow.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DefaultWindow.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5212D20BBF0057BA51 /* DefaultWindow.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DefaultWindow.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/DefaultWindow.pypp.hpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5312D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EventLinkDefinition.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/EventLinkDefinition.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5412D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EventLinkDefinition.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/EventLinkDefinition.pypp.hpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5512D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinkedEventArgs.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LinkedEventArgs.pypp.cpp; sourceTree = SOURCE_ROOT; };
+		DAD59C5612D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LinkedEventArgs.pypp.hpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/LinkedEventArgs.pypp.hpp; sourceTree = SOURCE_ROOT; };
 		DAD7DF3A1218707A00E4CFCD /* Affector.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Affector.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Affector.pkg; sourceTree = SOURCE_ROOT; };
 		DAD7DF3B1218707A00E4CFCD /* Animation.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Animation.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/Animation.pkg; sourceTree = SOURCE_ROOT; };
 		DAD7DF3C1218707A00E4CFCD /* AnimationInstance.pkg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AnimationInstance.pkg; path = ../../cegui/src/ScriptingModules/LuaScriptModule/package/AnimationInstance.pkg; sourceTree = SOURCE_ROOT; };
@@ -5556,8 +5563,8 @@
 				DA3202C11292B89300B2B97D /* CentredRenderedString.pypp.hpp */,
 				DA6F8E591292997800B718C8 /* Checkbox.pypp.cpp */,
 				DA3202C21292B89300B2B97D /* Checkbox.pypp.hpp */,
-				DA6F8E5A1292997800B718C8 /* colour.pypp.cpp */,
-				DA3202C31292B89300B2B97D /* colour.pypp.hpp */,
+				DAD59C4F12D20BBF0057BA51 /* Colour.pypp.cpp */,
+				DAD59C5012D20BBF0057BA51 /* Colour.pypp.hpp */,
 				DA6F8E5B1292997800B718C8 /* ColourRect.pypp.cpp */,
 				DA3202C41292B89300B2B97D /* ColourRect.pypp.hpp */,
 				DA6F8E5C1292997800B718C8 /* Combobox.pypp.cpp */,
@@ -5574,6 +5581,8 @@
 				DA3202CA1292B89300B2B97D /* DefaultLogger.pypp.hpp */,
 				DA6F8E621292997800B718C8 /* DefaultResourceProvider.pypp.cpp */,
 				DA3202CB1292B89300B2B97D /* DefaultResourceProvider.pypp.hpp */,
+				DAD59C5112D20BBF0057BA51 /* DefaultWindow.pypp.cpp */,
+				DAD59C5212D20BBF0057BA51 /* DefaultWindow.pypp.hpp */,
 				DA6F8E631292997800B718C8 /* Dimension.pypp.cpp */,
 				DA3202CC1292B89300B2B97D /* Dimension.pypp.hpp */,
 				DA6F8E641292997800B718C8 /* DisplayEventArgs.pypp.cpp */,
@@ -5590,6 +5599,8 @@
 				DA3202D21292B89300B2B97D /* EventArgs.pypp.hpp */,
 				DA6F8E6A1292997800B718C8 /* EventIterator.pypp.cpp */,
 				DA3202D31292B89300B2B97D /* EventIterator.pypp.hpp */,
+				DAD59C5312D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp */,
+				DAD59C5412D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp */,
 				DA6F8E6B1292997800B718C8 /* EventSet.pypp.cpp */,
 				DA3202D41292B89300B2B97D /* EventSet.pypp.hpp */,
 				DA3202D51292B89300B2B97D /* exposed_decl.pypp.txt */,
@@ -5621,8 +5632,6 @@
 				DA3202E21292B89300B2B97D /* GridLayoutContainer.pypp.hpp */,
 				DA6F8E791292997800B718C8 /* GroupBox.pypp.cpp */,
 				DA3202E31292B89300B2B97D /* GroupBox.pypp.hpp */,
-				DA6F8E7A1292997800B718C8 /* GUISheet.pypp.cpp */,
-				DA3202E41292B89300B2B97D /* GUISheet.pypp.hpp */,
 				DA6F8E7B1292997800B718C8 /* HeaderSequenceEventArgs.pypp.cpp */,
 				DA3202E51292B89300B2B97D /* HeaderSequenceEventArgs.pypp.hpp */,
 				DA6F8E7C1292997800B718C8 /* HorizontalLayoutContainer.pypp.cpp */,
@@ -5667,6 +5676,8 @@
 				DA3203151292B89400B2B97D /* LBItemList.pypp.hpp */,
 				DA6F8E901292997800B718C8 /* LineList.pypp.cpp */,
 				DA3203161292B89400B2B97D /* LineList.pypp.hpp */,
+				DAD59C5512D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp */,
+				DAD59C5612D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp */,
 				DA6F8E911292997800B718C8 /* Listbox.pypp.cpp */,
 				DA3203171292B89400B2B97D /* Listbox.pypp.hpp */,
 				DA6F8E921292997800B718C8 /* ListboxItem.pypp.cpp */,
@@ -5853,8 +5864,6 @@
 				DA3203721292B89400B2B97D /* TabButton.pypp.hpp */,
 				DA6F8EED1292997800B718C8 /* TabControl.pypp.cpp */,
 				DA3203731292B89400B2B97D /* TabControl.pypp.hpp */,
-				DA6F8EEE1292997800B718C8 /* TargetTypeStack.pypp.cpp */,
-				DA3203741292B89400B2B97D /* TargetTypeStack.pypp.hpp */,
 				DA6F8EEF1292997800B718C8 /* TextComponent.pypp.cpp */,
 				DA3203751292B89400B2B97D /* TextComponent.pypp.hpp */,
 				DA6F8EF01292997800B718C8 /* Texture.pypp.cpp */,
@@ -6349,6 +6358,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAD59C5812D20BBF0057BA51 /* Colour.pypp.hpp in Headers */,
+				DAD59C5A12D20BBF0057BA51 /* DefaultWindow.pypp.hpp in Headers */,
+				DAD59C5C12D20BBF0057BA51 /* EventLinkDefinition.pypp.hpp in Headers */,
+				DAD59C5E12D20BBF0057BA51 /* LinkedEventArgs.pypp.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7945,7 +7958,6 @@
 				DA6F902712929F5300B718C8 /* ButtonBase.pypp.cpp in Sources */,
 				DA6F902812929F5300B718C8 /* CentredRenderedString.pypp.cpp in Sources */,
 				DA6F902912929F5300B718C8 /* Checkbox.pypp.cpp in Sources */,
-				DA6F902A12929F5300B718C8 /* colour.pypp.cpp in Sources */,
 				DA6F902B12929F5300B718C8 /* ColourRect.pypp.cpp in Sources */,
 				DA6F902C12929F5300B718C8 /* Combobox.pypp.cpp in Sources */,
 				DA6F902D12929F5300B718C8 /* ComboDropList.pypp.cpp in Sources */,
@@ -7977,7 +7989,6 @@
 				DA6F904712929F5300B718C8 /* GlobalEventSet.pypp.cpp in Sources */,
 				DA6F904812929F5300B718C8 /* GridLayoutContainer.pypp.cpp in Sources */,
 				DA6F904912929F5300B718C8 /* GroupBox.pypp.cpp in Sources */,
-				DA6F904A12929F5300B718C8 /* GUISheet.pypp.cpp in Sources */,
 				DA6F904B12929F5300B718C8 /* HeaderSequenceEventArgs.pypp.cpp in Sources */,
 				DA6F904C12929F5300B718C8 /* HorizontalLayoutContainer.pypp.cpp in Sources */,
 				DA6F904D12929F5300B718C8 /* Image.pypp.cpp in Sources */,
@@ -8093,7 +8104,6 @@
 				DA6F90BB12929F5300B718C8 /* System.pypp.cpp in Sources */,
 				DA6F90BC12929F5300B718C8 /* TabButton.pypp.cpp in Sources */,
 				DA6F90BD12929F5300B718C8 /* TabControl.pypp.cpp in Sources */,
-				DA6F90BE12929F5300B718C8 /* TargetTypeStack.pypp.cpp in Sources */,
 				DA6F90BF12929F5300B718C8 /* TextComponent.pypp.cpp in Sources */,
 				DA6F90C012929F5300B718C8 /* Texture.pypp.cpp in Sources */,
 				DA6F90C112929F5300B718C8 /* TextureTarget.pypp.cpp in Sources */,
@@ -8133,6 +8143,10 @@
 				DA6F90E312929F5300B718C8 /* XMLHandler.pypp.cpp in Sources */,
 				DA6F90E412929F5300B718C8 /* XMLParser.pypp.cpp in Sources */,
 				DA6F90E512929F5300B718C8 /* XMLSerializer.pypp.cpp in Sources */,
+				DAD59C5712D20BBF0057BA51 /* Colour.pypp.cpp in Sources */,
+				DAD59C5912D20BBF0057BA51 /* DefaultWindow.pypp.cpp in Sources */,
+				DAD59C5B12D20BBF0057BA51 /* EventLinkDefinition.pypp.cpp in Sources */,
+				DAD59C5D12D20BBF0057BA51 /* LinkedEventArgs.pypp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
