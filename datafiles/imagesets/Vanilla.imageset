@@ -21,4 +21,7 @@
 	<Image Name="CheckboxNormal" XPos="90" YPos="1" Width="20" Height="20" />
 	<Image Name="CheckboxHover" XPos="90" YPos="43" Width="20" Height="20" />
 	<Image Name="CheckboxMark" XPos="90" YPos="22" Width="20" Height="20" />
+	<Image Name="RadioButtonNormal" XPos="1" YPos="70" Width="20" Height="20" />
+	<Image Name="RadioButtonHover" XPos="1" YPos="112" Width="20" Height="20" />
+	<Image Name="RadioButtonMark" XPos="1" YPos="91" Width="20" Height="20" />
 </Imageset>

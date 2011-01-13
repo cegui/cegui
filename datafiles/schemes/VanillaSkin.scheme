@@ -18,7 +18,7 @@
 	<FalagardMapping WindowType="Vanilla/ComboDropList" TargetType="CEGUI/ComboDropList" Renderer="Falagard/Listbox" LookNFeel="Vanilla/ComboDropList" />
 	<FalagardMapping WindowType="Vanilla/Combobox" TargetType="CEGUI/Combobox" Renderer="Falagard/Default" LookNFeel="Vanilla/Combobox" />
 	<FalagardMapping WindowType="Vanilla/ProgressBar" TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="Vanilla/ProgressBar" />
-	
 	<FalagardMapping WindowType="Vanilla/Checkbox" TargetType="CEGUI/Checkbox" Renderer="Falagard/ToggleButton" LookNFeel="Vanilla/Checkbox" />
+	<FalagardMapping WindowType="Vanilla/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="Vanilla/RadioButton" />
 
 </GUIScheme>
