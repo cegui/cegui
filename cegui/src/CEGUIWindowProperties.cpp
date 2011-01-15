@@ -550,7 +550,7 @@ void AutoRenderingSurface::set(PropertyReceiver* receiver, const String& value)
 //----------------------------------------------------------------------------//
 String Rotation::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper<Vector3>::toString(
+    return PropertyHelper<Quaternion>::toString(
         static_cast<const Window*>(receiver)->getRotation());
 }
 
@@ -558,55 +558,7 @@ String Rotation::get(const PropertyReceiver* receiver) const
 void Rotation::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setRotation(
-        PropertyHelper<Vector3>::fromString(value));
-}
-
-//----------------------------------------------------------------------------//
-String XRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper<float>::toString(v.d_x);
-}
-
-//----------------------------------------------------------------------------//
-void XRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper<float>::fromString(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_x = v;
-    static_cast<Window*>(receiver)->setRotation(r);
-}
-
-//----------------------------------------------------------------------------//
-String YRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper<float>::toString(v.d_y);
-}
-
-//----------------------------------------------------------------------------//
-void YRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper<float>::fromString(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_y = v;
-    static_cast<Window*>(receiver)->setRotation(r);
-}
-
-//----------------------------------------------------------------------------//
-String ZRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper<float>::toString(v.d_z);
-}
-
-//----------------------------------------------------------------------------//
-void ZRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper<float>::fromString(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_z = v;
-    static_cast<Window*>(receiver)->setRotation(r);
+        PropertyHelper<Quaternion>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
