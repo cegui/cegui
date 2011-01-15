@@ -252,8 +252,7 @@ void Imageset::draw(GeometryBuffer& buffer, const Rect& source_rect,
     vbuffer[5].colour_val= colours.d_bottom_right;
     vbuffer[5].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
 
-    // TODO: Remove cast when GeometryBuffer gets it's APIs fixed!
-    buffer.setActiveTexture((Texture*)d_texture);
+    buffer.setActiveTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);
 }
 

@@ -186,9 +186,6 @@ WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 WindowProperties::DragDropTarget    Window::d_dragDropTargetProperty;
 WindowProperties::AutoRenderingSurface Window::d_autoRenderingSurfaceProperty;
 WindowProperties::Rotation Window::d_rotationProperty;
-WindowProperties::XRotation Window::d_xRotationProperty;
-WindowProperties::YRotation Window::d_yRotationProperty;
-WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
 WindowProperties::Margin Window:: d_marginProperty;
@@ -290,7 +287,7 @@ Window::Window(const String& type, const String& name) :
     d_maxSize(cegui_reldim(1), cegui_reldim(1)),
     d_horzAlign(HA_LEFT),
     d_vertAlign(VA_TOP),
-    d_rotation(0.0f, 0.0f, 0.0f),
+    d_rotation(Quaternion::IDENTITY),
 
     // initialise area cache rects
     d_outerUnclippedRect(0, 0, 0, 0),
@@ -1546,9 +1543,6 @@ void Window::addStandardProperties(void)
     addProperty(&d_dragDropTargetProperty);
     addProperty(&d_autoRenderingSurfaceProperty);
     addProperty(&d_rotationProperty);
-    addProperty(&d_xRotationProperty);
-    addProperty(&d_yRotationProperty);
-    addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
     addProperty(&d_marginProperty);
@@ -3616,6 +3610,19 @@ void Window::setUsingAutoRenderingSurface(bool setting)
     notifyScreenAreaChanged();
 }
 
+void Window::setRotation(const Quaternion& rotation)
+{
+    d_rotation = rotation;
+
+    WindowEventArgs args(this);
+    onRotated(args);
+}
+
+const Quaternion& Window::getRotation() const
+{
+    return d_rotation;
+}
+
 //----------------------------------------------------------------------------//
 void Window::allocateRenderingWindow()
 {
@@ -3685,24 +3692,6 @@ void Window::transferChildSurfaces()
         else
             c->transferChildSurfaces();
     }
-}
-
-//----------------------------------------------------------------------------//
-const Vector3& Window::getRotation() const
-{
-    return d_rotation;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setRotation(const Vector3& rotation)
-{
-    if (rotation == d_rotation)
-        return;
-
-    d_rotation = rotation;
-
-    WindowEventArgs args(this);
-    onRotated(args);
 }
 
 //----------------------------------------------------------------------------//

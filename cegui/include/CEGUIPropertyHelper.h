@@ -33,6 +33,7 @@
 #include "CEGUIString.h"
 #include "CEGUISize.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUIColour.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIUDim.h"
@@ -380,6 +381,38 @@ public:
     {
         char buff[128];
         snprintf(buff, sizeof(buff), "x:%g y:%g z:%g", val.d_x, val.d_y, val.d_z);
+
+        return String(buff);
+    }
+};
+
+template<>
+class PropertyHelper<Quaternion>
+{
+public:
+    typedef Quaternion return_type;
+    typedef const Quaternion& pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("Quaternion");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        Quaternion val(1, 0, 0, 0);
+        sscanf(str.c_str(), " w:&g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
+
+        return val;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[128];
+        snprintf(buff, sizeof(buff), "w:&g x:%g y:%g z:%g", val.d_w, val.d_x, val.d_y, val.d_z);
 
         return String(buff);
     }

@@ -62,6 +62,7 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIPropertySet.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUIRect.h"
 #include "CEGUIRegexMatcher.h"
 #include "CEGUIRenderedString.h"

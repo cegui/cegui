@@ -148,6 +148,22 @@ public:
 
     /*!
     \brief
+        Performs an area memory blit to the texture
+
+    \param sourceData
+        input data, the size must match area described by the given Rect
+
+    \param area
+        area where the blit will happen
+
+    \note The pixel format must match current Texture's pixel format!
+    */
+    virtual void blitFromMemory(void* sourceData, const Rect& area) = 0;
+
+    virtual void blitToMemory(void* targetData) = 0;
+
+    /*!
+    \brief
         Destructor for Texture base class.
     */
     virtual ~Texture() {}

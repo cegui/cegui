@@ -1638,9 +1638,6 @@ public:
     const Window* getRootWindow() const;
     Window* getRootWindow();
 
-    //! return the rotations set for this window.
-    const Vector3& getRotation() const;
-
     /*!
     \brief
         Return whether the Window is a non-client window.
@@ -3155,8 +3152,25 @@ public:
     */
     void setUsingAutoRenderingSurface(bool setting);
 
-    //! set the rotations for this window.
-    void setRotation(const Vector3& rotation);
+    /*!
+    \brief sets rotation of this widget
+
+    \param rotation
+        A Quaternion describing the rotation
+
+    CEGUI used Euler angles previously. Whilst this is easy to use and seems
+    intuitive, it causes Gimbal locks when animating and is just the worse
+    solution than using Quaternions. You can still use Euler angles, see
+    the \a Quaternion class for more info about that.
+    */
+    void setRotation(const Quaternion& rotation);
+
+    /*!
+    \brief retrieves rotation of this widget
+
+    \see Window::setRotation
+    */
+    const Quaternion& getRotation() const;
 
     /*!
     \brief
@@ -4203,9 +4217,6 @@ protected:
     static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
     static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
     static  WindowProperties::Rotation d_rotationProperty;
-    static  WindowProperties::XRotation d_xRotationProperty;
-    static  WindowProperties::YRotation d_yRotationProperty;
-    static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
     static  WindowProperties::Margin d_marginProperty;
@@ -4373,10 +4384,8 @@ protected:
     HorizontalAlignment d_horzAlign;
     //! Specifies the base for vertical alignment.
     VerticalAlignment d_vertAlign;
-    //! Rotation angles for this window
-    Vector3 d_rotation;
     //! Rotation of this window (relative to the parent)
-    //Quaternion d_rotation;
+    Quaternion d_rotation;
 
     //! outer area rect in screen pixels
     mutable Rect d_outerUnclippedRect;

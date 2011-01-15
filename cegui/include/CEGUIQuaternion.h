@@ -59,20 +59,9 @@ public:
         d_z(v.d_z)
     {}
 
-	inline float operator [] ( const size_t i ) const
-	{
-		assert(i < 4);
-
-		return *(&d_w + i);
-	}
-
-	inline float& operator [] ( const size_t i )
-	{
-		assert(i < 4);
-
-		return *(&d_w + i);
-	}
-
+    static Quaternion eulerAnglesRadians(float x, float y, float z);
+    static Quaternion eulerAnglesDegrees(float x, float y, float z);
+    
     inline Quaternion& operator = (const Quaternion& v)
 	{
 		d_w = v.d_w;

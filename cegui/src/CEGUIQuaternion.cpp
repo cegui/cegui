@@ -37,6 +37,37 @@ namespace CEGUI
 const Quaternion Quaternion::ZERO(0, 0, 0, 0);
 const Quaternion Quaternion::IDENTITY(1, 0, 0, 0);
 
+Quaternion Quaternion::eulerAnglesRadians(float x, float y, float z)
+{
+    // the order of rotation:
+    // 1) around Z
+    // 2) around Y
+    // 3) around X
+    // even though it's passed in reverse...
+
+    const float sin_z_2 = sinf(0.5f * z);
+	const float sin_y_2 = sinf(0.5f * y);
+	const float sin_x_2 = sinf(0.5f * x);
+
+	const float cos_z_2 = cosf(0.5f * z);
+	const float cos_y_2 = cosf(0.5f * y);
+	const float cos_x_2 = cosf(0.5f * x);
+
+    return Quaternion(
+        cos_z_2 * cos_y_2 * cos_x_2 + sin_z_2 * sin_y_2 * sin_x_2,
+	    cos_z_2 * cos_y_2 * sin_x_2 - sin_z_2 * sin_y_2 * cos_x_2,
+	    cos_z_2 * sin_y_2 * cos_x_2 + sin_z_2 * cos_y_2 * sin_x_2,
+	    sin_z_2 * cos_y_2 * cos_x_2 - cos_z_2 * sin_y_2 * sin_x_2
+    );
+}
+
+Quaternion Quaternion::eulerAnglesDegrees(float x, float y, float z)
+{
+    static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
+
+    return eulerAnglesRadians(x * d2r, y * d2r, z * d2r);
+}
+
 //----------------------------------------------------------------------------//
 Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& right, bool shortestPath)
 {
