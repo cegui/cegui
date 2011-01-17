@@ -31,6 +31,7 @@
 #define _CEGUIQuaternion_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIInterpolator.h"
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -224,19 +225,19 @@ public:
     /*!
     \brief spherical linear interpolation
 
-    \param t
-        Number from range <0.0, 1.0), the closer this is to 1.0, the closer the interpolation is to the "right" quaternion
-
     \param left
         Left keyframe Quaternion
 
     \param right
         Right keyframe Quaternion
 
+    \param position
+        Number from range <0.0, 1.0), the closer this is to 1.0, the closer the interpolation is to the "right" quaternion
+
     \param shortestPath
         If true, the interpolation is guaranteed to go through the shortest path
     */
-    static Quaternion slerp(float t, const Quaternion& left, const Quaternion& right, bool shortestPath = false);
+    static Quaternion slerp(const Quaternion& left, const Quaternion& right, float position, bool shortestPath = false);
 
     //! Quaternion(0, 0, 0, 0)
     static const Quaternion ZERO;
@@ -244,13 +245,48 @@ public:
     static const Quaternion IDENTITY;
 
     //! imaginary part
-	float d_w;
+    float d_w;
     //! x component of the vector part
     float d_x;
     //! y component of the vector part
     float d_y;
     //! z component of the vector part
     float d_z;
+};
+
+/*!
+ \brief Special interpolator class for Quaternion
+ 
+ Quaternions can't be interpolated as floats and/or vectors, we have to use
+ "Spherical linear interpolator" instead.
+ */
+class QuaternionSlerpInterpolator : public Interpolator
+{
+public:
+    typedef PropertyHelper<Quaternion> Helper;
+    
+    //! destructor
+    virtual ~QuaternionSlerpInterpolator() {}
+
+    //! \copydoc Interpolator::getType
+    virtual const String& getType() const;
+    
+    //! \copydoc Interpolator::interpolateAbsolute
+    virtual String interpolateAbsolute(const String& value1,
+                                       const String& value2,
+                                       float position);
+    
+    //! \copydoc Interpolator::interpolateRelative
+    virtual String interpolateRelative(const String& base,
+                                       const String& value1,
+                                       const String& value2,
+                                       float position);
+    
+    //! \copydoc Interpolator::interpolateRelativeMultiply
+    virtual String interpolateRelativeMultiply(const String& base,
+                                               const String& value1,
+                                               const String& value2,
+                                               float position);
 };
 
 } // End of  CEGUI namespace section

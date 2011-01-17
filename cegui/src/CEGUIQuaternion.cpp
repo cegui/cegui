@@ -30,6 +30,9 @@
 
 #include "CEGUIQuaternion.h"
 #include "CEGUIVector.h"
+#include "CEGUIString.h"
+#include "CEGUIPropertyHelper.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -38,6 +41,7 @@ namespace CEGUI
 const Quaternion Quaternion::ZERO(0, 0, 0, 0);
 const Quaternion Quaternion::IDENTITY(1, 0, 0, 0);
 
+//----------------------------------------------------------------------------//
 Quaternion Quaternion::eulerAnglesRadians(const float x, const float y, const float z)
 {
     // the order of rotation:
@@ -62,6 +66,7 @@ Quaternion Quaternion::eulerAnglesRadians(const float x, const float y, const fl
     );
 }
 
+//----------------------------------------------------------------------------//
 Quaternion Quaternion::eulerAnglesDegrees(const float x, const float y, const float z)
 {
     static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
@@ -69,6 +74,7 @@ Quaternion Quaternion::eulerAnglesDegrees(const float x, const float y, const fl
     return eulerAnglesRadians(x * d2r, y * d2r, z * d2r);
 }
 
+//----------------------------------------------------------------------------//
 Quaternion Quaternion::axisAngleRadians(const Vector3& axis, const float rotation)
 {
     const float halfRotation = 0.5f * rotation;
@@ -78,6 +84,7 @@ Quaternion Quaternion::axisAngleRadians(const Vector3& axis, const float rotatio
         halfSin * axis.d_x, halfSin * axis.d_y, halfSin * axis.d_z);
 }
 
+//----------------------------------------------------------------------------//
 Quaternion Quaternion::axisAngleDegrees(const Vector3& axis, const float rotation)
 {
     static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
@@ -86,7 +93,8 @@ Quaternion Quaternion::axisAngleDegrees(const Vector3& axis, const float rotatio
 }
 
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& right, const bool shortestPath)
+Quaternion Quaternion::slerp(const Quaternion& left, const Quaternion& right,
+    float position, const bool shortestPath)
 {
     // Geometric Tools, LLC
     // Copyright (c) 1998-2010
@@ -114,8 +122,8 @@ Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& 
         const float vsin = sqrtf(1.0f - vcos * vcos);
         const float angle = atan2(vsin, vcos);
         const float invSin = 1.0f / vsin;
-        const float coeff0 = sin((1.0f - t) * angle) * invSin;
-        const float coeff1 = sin((t) * angle) * invSin;
+        const float coeff0 = sin((1.0f - position) * angle) * invSin;
+        const float coeff1 = sin((position) * angle) * invSin;
 
         return coeff0 * left + coeff1 * _right;
     }
@@ -128,11 +136,55 @@ Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& 
         //    are an infinite number of possibilities interpolation. but we haven't
         //    have method to fix this case, so just use linear interpolation here.
 
-        Quaternion ret = (1.0f - t) * left + t * _right;
+        Quaternion ret = (1.0f - position) * left + position * _right;
         // taking the complement requires renormalisation
         ret.normalise();
         return ret;
     }
+}
+
+//----------------------------------------------------------------------------//
+const String& QuaternionSlerpInterpolator::getType() const
+{
+    static String type("QuaternionSlerp");
+
+    return type;
+}
+
+//----------------------------------------------------------------------------//
+String QuaternionSlerpInterpolator::interpolateAbsolute(const String& value1,
+                                    const String& value2,
+                                    float position)
+{
+    Helper::return_type val1 = Helper::fromString(value1);
+    Helper::return_type val2 = Helper::fromString(value2);
+
+    return Helper::toString(Quaternion::slerp(val1, val2, position));
+}
+
+//----------------------------------------------------------------------------//
+String QuaternionSlerpInterpolator::interpolateRelative(const String& base,
+                                    const String& value1,
+                                    const String& value2,
+                                    float position)
+{
+    Helper::return_type bas = Helper::fromString(base);
+    Helper::return_type val1 = Helper::fromString(value1);
+    Helper::return_type val2 = Helper::fromString(value2);
+
+    return Helper::toString(bas * Quaternion::slerp(val1, val2, position));
+}
+
+//----------------------------------------------------------------------------//
+String QuaternionSlerpInterpolator::interpolateRelativeMultiply(const String& base,
+                                            const String& value1,
+                                            const String& value2,
+                                            float position)
+{
+    CEGUI_THROW(InvalidRequestException("AM_RelativeMultiply doesn't make sense "
+        "with Quaternions! Please us absolute or relative application method."));
+
+    return Helper::toString(Quaternion::IDENTITY);
 }
 
 //----------------------------------------------------------------------------//
