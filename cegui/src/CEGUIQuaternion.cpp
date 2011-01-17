@@ -29,6 +29,7 @@
  ***************************************************************************/
 
 #include "CEGUIQuaternion.h"
+#include "CEGUIVector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -37,7 +38,7 @@ namespace CEGUI
 const Quaternion Quaternion::ZERO(0, 0, 0, 0);
 const Quaternion Quaternion::IDENTITY(1, 0, 0, 0);
 
-Quaternion Quaternion::eulerAnglesRadians(float x, float y, float z)
+Quaternion Quaternion::eulerAnglesRadians(const float x, const float y, const float z)
 {
     // the order of rotation:
     // 1) around Z
@@ -61,15 +62,31 @@ Quaternion Quaternion::eulerAnglesRadians(float x, float y, float z)
     );
 }
 
-Quaternion Quaternion::eulerAnglesDegrees(float x, float y, float z)
+Quaternion Quaternion::eulerAnglesDegrees(const float x, const float y, const float z)
 {
     static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
 
     return eulerAnglesRadians(x * d2r, y * d2r, z * d2r);
 }
 
+Quaternion Quaternion::axisAngleRadians(const Vector3& axis, const float rotation)
+{
+    const float halfRotation = 0.5f * rotation;
+    const float halfSin = sinf(halfRotation);
+
+    return Quaternion(cosf(halfRotation),
+        halfSin * axis.d_x, halfSin * axis.d_y, halfSin * axis.d_z);
+}
+
+Quaternion Quaternion::axisAngleDegrees(const Vector3& axis, const float rotation)
+{
+    static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
+
+    return axisAngleRadians(axis, rotation * d2r);
+}
+
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& right, bool shortestPath)
+Quaternion Quaternion::slerp(float t, const Quaternion& left, const Quaternion& right, const bool shortestPath)
 {
     // Geometric Tools, LLC
     // Copyright (c) 1998-2010
