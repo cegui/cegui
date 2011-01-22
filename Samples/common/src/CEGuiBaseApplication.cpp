@@ -43,6 +43,10 @@
 #include <string.h>
 #include <limits.h>
 
+#ifdef __APPLE__
+#   include <Carbon/Carbon.h>
+#endif
+
 // setup default-default path
 #ifndef CEGUI_SAMPLE_DATAPATH
     #define CEGUI_SAMPLE_DATAPATH "../datafiles"

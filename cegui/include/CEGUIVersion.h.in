@@ -4,7 +4,7 @@
 	author:		jacmoe
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,8 +37,9 @@ This file contains CEGUI version defines
 //////////////////////////////////////////////////////////////////////////
 // Define CEGUI version
 //////////////////////////////////////////////////////////////////////////
-#define CEGUI_VERSION_MAJOR 0
-#define CEGUI_VERSION_MINOR 7
-#define CEGUI_VERSION_PATCH 9999
+#define CEGUI_VERSION_MAJOR ${CEGUI_VERSION_MAJOR}
+#define CEGUI_VERSION_MINOR ${CEGUI_VERSION_MINOR}
+#define CEGUI_VERSION_PATCH ${CEGUI_VERSION_PATCH}
 
 #endif	// end of guard _CEGUIVersion_h_
+
