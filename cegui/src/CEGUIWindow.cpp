@@ -1761,6 +1761,7 @@ void Window::destroy(void)
     cleanupChildren();
 
     releaseRenderingWindow();
+    invalidate();
 }
 
 //----------------------------------------------------------------------------//
