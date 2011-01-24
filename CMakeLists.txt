@@ -93,6 +93,7 @@ find_package(Corona)
 
 find_package(Lua51)
 find_package(TOLUAPP)
+find_package(PythonInterp)
 find_package(PythonLibs)
 find_package(Boost 1.36.0 COMPONENTS python)
 
@@ -149,7 +150,11 @@ endif()
 set( CEGUI_BUILD_LUA_MODULE ${LUA51_FOUND} CACHE BOOL "Build the Lua based script module" )
 set( CEGUI_BUILD_LUA_GENERATOR FALSE CACHE BOOL "Build ceguitolua, the custom tolua binding generator" )
 
-set( CEGUI_BUILD_PYTHON_MODULES ${Boost_FOUND} CACHE BOOL "Build the Python extension modules" )
+if (PYTHONINTERP_FOUND AND PYHONLIBS_FOUND AND Boost_FOUND)
+    set( CEGUI_BUILD_PYTHON_MODULES TRUE CACHE BOOL "Specifies whether the Python extension modules will be built." )
+else()
+    set( CEGUI_BUILD_PYTHON_MODULES FALSE CACHE BOOL "Specifies whether the Python extension modules will be built." )
+endif()
 
 if (TINYXML_FOUND)
     set( CEGUI_BUILD_EMBEDDED_TINYXML FALSE CACHE BOOL "Specifies whether to use internal copy of TinyXML even if external library is available" )
