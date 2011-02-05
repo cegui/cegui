@@ -6,7 +6,7 @@
     purpose:    Defines abstract base class for Window objects
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -3314,6 +3314,42 @@ public:
     //! copies this widget's child widgets to given target widget
     virtual void cloneChildWidgetsTo(Window& target) const;
 
+    /*!
+    \brief
+        Return the (visual) z index of the window on it's parent.
+        
+        The z index is a number that indicates the order that windows will be
+        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
+        front of lower numbers.
+
+        The number returned will not be stable, and generally should be used to
+        compare with the z index of sibling windows (and only sibling windows)
+        to discover the current z ordering of those windows.
+    */
+    size_t getZIndex() const;
+
+    /*!
+    \brief
+        Return whether /a this Window is in front of the given window.
+
+    \note
+        Here 'in front' just means that one window is drawn after the other, it
+        is not meant to imply that the windows are overlapping nor that one
+        window is obscured by the other.
+    */
+    bool isInFront(const Window& wnd) const;
+
+    /*!
+    \brief
+        Return whether /a this Window is behind the given window.
+
+    \note
+        Here 'behind' just means that one window is drawn before the other, it
+        is not meant to imply that the windows are overlapping nor that one
+        window is obscured by the other.
+    */
+    bool isBehind(const Window& wnd) const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -4148,6 +4184,14 @@ protected:
 
     //! helper to return whether the inner rect size has changed
     bool isInnerRectSizeChanged() const;
+
+    /*!
+    \brief
+        Helper function to return the ancestor Window of /a wnd that is attached
+        as a child to a window that is also an ancestor of /a this.  Returns 0
+        if /a wnd and /a this are not part of the same hierachy.
+     */
+    const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
     //! Default implementation of function to return Window outer rect area.
     virtual Rect getUnclippedOuterRect_impl() const;

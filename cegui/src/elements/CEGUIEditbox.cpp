@@ -35,7 +35,11 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
-#include "CEGUIPCRERegexMatcher.h"
+#ifdef CEGUI_HAS_PCRE_REGEX
+#   include "CEGUIPCRERegexMatcher.h"
+#else
+#   include "CEGUIRegexMatcher.h"
+#endif
 #include "CEGUIBidiVisualMapping.h"
 #include <string.h>
 
