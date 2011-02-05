@@ -25,11 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
+#include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
 
 #include "CEGuiD3D9BaseApplication.h"
 
