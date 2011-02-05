@@ -50,6 +50,7 @@
 #include "CEGUIRenderingContext.h"
 #include "CEGUIRenderingWindow.h"
 #include <algorithm>
+#include <iterator>
 #include <cmath>
 #include <stdio.h>
 
@@ -1803,6 +1804,7 @@ void Window::destroy(void)
     cleanupChildren();
 
     releaseRenderingWindow();
+    invalidate();
 }
 
 //----------------------------------------------------------------------------//
@@ -4215,6 +4217,71 @@ Rect Window::getNonClientChildWindowContentArea_impl() const
 Rect Window::getClientChildWindowContentArea_impl() const
 {
     return getUnclippedInnerRect_impl();
+}
+
+//----------------------------------------------------------------------------//
+size_t Window::getZIndex() const
+{
+    if (!d_parent)
+        return 0;
+
+    ChildList::iterator i = std::find(
+        d_parent->d_drawList.begin(),
+        d_parent->d_drawList.end(),
+        this);
+
+    if (i == d_parent->d_drawList.end())
+        CEGUI_THROW(InvalidRequestException("Window::getZIndex: Window is not "
+            "in its parent's draw list."));
+
+    return std::distance(d_parent->d_drawList.begin(), i);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isInFront(const Window& wnd) const
+{
+    // children are always in front of their ancestors
+    if (isAncestor(&wnd))
+        return true;
+
+    // conversely, ancestors are always behind their children
+    if (wnd.isAncestor(this))
+        return false;
+
+    const Window* const w1 = getWindowAttachedToCommonAncestor(wnd);
+
+    // seems not to be in same window hierarchy
+    if (!w1)
+        return false;
+
+    const Window* const w2 = wnd.getWindowAttachedToCommonAncestor(*this);
+
+    // at this point, w1 and w2 share the same parent.
+    return w2->getZIndex() > w1->getZIndex();
+}
+
+//----------------------------------------------------------------------------//
+const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
+{
+    const Window* w = &wnd;
+    const Window* tmp = w->d_parent;
+
+    while (tmp)
+    {
+        if (isAncestor(tmp))
+            break;
+
+        w = tmp;
+        tmp = tmp->d_parent;
+    }
+
+    return tmp ? w : 0;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isBehind(const Window& wnd) const
+{
+    return !isInFront(wnd);
 }
 
 //----------------------------------------------------------------------------//

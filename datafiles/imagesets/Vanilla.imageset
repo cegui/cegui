@@ -18,4 +18,10 @@
 	<Image Name="ScrollbarThumb" XPos="43" YPos="22" Width="20" Height="20" />
 	<Image Name="ShadowBrush" XPos="4" YPos="45" Width="24" Height="24" />
 	<Image Name="MouseArrow" XPos="69" YPos="7" Width="17" Height="25" />
+	<Image Name="CheckboxNormal" XPos="90" YPos="1" Width="20" Height="20" />
+	<Image Name="CheckboxHover" XPos="90" YPos="43" Width="20" Height="20" />
+	<Image Name="CheckboxMark" XPos="90" YPos="22" Width="20" Height="20" />
+	<Image Name="RadioButtonNormal" XPos="1" YPos="70" Width="20" Height="20" />
+	<Image Name="RadioButtonHover" XPos="1" YPos="112" Width="20" Height="20" />
+	<Image Name="RadioButtonMark" XPos="1" YPos="91" Width="20" Height="20" />
 </Imageset>

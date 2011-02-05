@@ -76,9 +76,10 @@ namespace CEGUI
 
         const Size w_pixel_size(w->getPixelSize());
 
+        float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.d_left / w_pixel_size.d_width);
+        float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.d_top / w_pixel_size.d_height);
         // get base location for thumb widget
-        UVector2 thumbPosition(cegui_reldim(area.d_left / w_pixel_size.d_width),
-                               cegui_reldim(area.d_top / w_pixel_size.d_height));
+        UVector2 thumbPosition(cegui_reldim(thumbRelXPos), cegui_reldim(thumbRelYPos));
 
         // Is this a vertical slider
         if (d_vertical)
