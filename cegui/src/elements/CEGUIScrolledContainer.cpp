@@ -50,6 +50,7 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     d_autosizePane(true)
 {
     addScrolledContainerProperties();
+    setMouseInputPropagationEnabled(true);
 }
 
 //----------------------------------------------------------------------------//
