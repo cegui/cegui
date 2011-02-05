@@ -31,7 +31,7 @@
 #include "../../CEGUIGeometryBuffer.h"
 #include "CEGUINullRenderer.h"
 #include "../../CEGUIRect.h"
-#include "../../CEGUIcolour.h"
+#include "../../CEGUIColour.h"
 #include "../../CEGUIVertex.h"
 
 #include <utility>

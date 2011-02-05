@@ -1,0 +1,17 @@
+add_subdirectory(common)
+add_subdirectory(Demo6)
+add_subdirectory(Demo7)
+add_subdirectory(DragDropDemo)
+add_subdirectory(FalagardDemo1)
+add_subdirectory(FirstWindow)
+add_subdirectory(FontDemo)
+add_subdirectory(Minesweeper)
+add_subdirectory(ScrollablePaneDemo)
+add_subdirectory(TabControlDemo)
+add_subdirectory(TextDemo)
+add_subdirectory(TreeDemo)
+
+if (CEGUI_BUILD_LUA_MODULE)
+    add_subdirectory(Demo8)
+endif()
+

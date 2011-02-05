@@ -39,7 +39,7 @@
 #define IRRLICHTRENDERERDEF_H_INCLUDED
 
 #if (defined( __WIN32__ ) || defined( _WIN32 ) || defined (WIN32)) && !defined(CEGUI_STATIC)
-#   ifdef IRRLICHT_GUIRENDERER_EXPORTS
+#   ifdef CEGUIIRRLICHTRENDERER_EXPORTS
 #       define IRR_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define IRR_GUIRENDERER_API __declspec(dllimport)

@@ -1,0 +1,12 @@
+if (UNIX AND NOT APPLE AND NOT WIN32)
+    install(DIRECTORY animations DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY configs DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY fonts DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY imagesets DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY layouts DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY looknfeel DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY lua_scripts DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY schemes DESTINATION share/${CMAKE_PROJECT_NAME})
+    install(DIRECTORY xml_schemas DESTINATION share/${CMAKE_PROJECT_NAME})
+endif()
+
