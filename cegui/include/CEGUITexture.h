@@ -66,6 +66,12 @@ public:
 
     /*!
     \brief
+        Destructor for Texture base class.
+    */
+    virtual ~Texture() {}
+
+    /*!
+    \brief
         Returns the current pixel size of the texture.
 
     \return
@@ -160,13 +166,17 @@ public:
     */
     virtual void blitFromMemory(void* sourceData, const Rect& area) = 0;
 
-    virtual void blitToMemory(void* targetData) = 0;
-
     /*!
     \brief
-        Destructor for Texture base class.
+    	Performs a complete blit from the texture surface to memory
+
+    \param
+    	targetData the buffer where the target is stored
+
+    \note
+    	You have to (correctly) preallocate the target buffer!
     */
-    virtual ~Texture() {}
+    virtual void blitToMemory(void* targetData) = 0;
 };
 
 } // End of  CEGUI namespace section
