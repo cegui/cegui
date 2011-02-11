@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <math.h>
 
 #ifdef __APPLE__
 #   include <Carbon/Carbon.h>
@@ -293,11 +294,8 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 {
     static float rot = 0.0f;
     d_logoGeometry->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
-    rot += 180.0f * elapsed;
 
-    // use "while" because if elapsed is high this could get way over 360
-    while (rot >= 360.0f)
-        rot -= 360.0f;
+    rot = fmodf(rot + 180.0f * elapsed, 360.0f);
 }
 
 //----------------------------------------------------------------------------//
