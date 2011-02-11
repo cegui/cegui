@@ -292,9 +292,11 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
 void CEGuiBaseApplication::updateLogo(const float elapsed)
 {
     static float rot = 0.0f;
-    d_logoGeometry->setRotation(CEGUI::Vector3(rot, 0, 0));
+    d_logoGeometry->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
     rot += 180.0f * elapsed;
-    if (rot > 360.0f)
+
+    // use "while" because if elapsed is high this could get way over 360
+    while (rot >= 360.0f)
         rot -= 360.0f;
 }
 
