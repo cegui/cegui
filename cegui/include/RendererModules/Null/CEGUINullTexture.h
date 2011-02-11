@@ -39,13 +39,18 @@ class NULL_GUIRENDERER_API NullTexture : public Texture
 {
 public:
     // implement CEGUI::Texture interface
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
-    void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    virtual const Size& getSize() const;
+    virtual const Size& getOriginalDataSize() const;
+    virtual const Vector2& getTexelScaling() const;
+    virtual void loadFromFile(const String& filename, const String& resourceGroup);
+    virtual void loadFromMemory(const void* buffer, const Size& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    virtual void saveToMemory(void* buffer);
+
+    //! \copydoc Texture::blitFromMemory
+    virtual void blitFromMemory(void* sourceData, const Rect& area);
+    //! \copydoc Texture::blitToMemory
+    virtual void blitToMemory(void* targetData);
 
 protected:
     // we all need a little help from out friends ;)
