@@ -1415,8 +1415,23 @@ const Image* Window::getMouseCursor(bool useDefault) const
 //----------------------------------------------------------------------------//
 void Window::setMouseCursor(const String& imageset, const String& image_name)
 {
-    d_mouseCursor =
-        &ImagesetManager::getSingleton().get(imageset).getImage(image_name);
+    setMouseCursor(
+        &ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+}
+
+//----------------------------------------------------------------------------//
+void Window::setMouseCursor(const Image* image)
+{
+    d_mouseCursor = image;
+
+    if (System::getSingleton().getWindowContainingMouse() == this)
+        MouseCursor::getSingleton().setImage(image);
+}
+
+//----------------------------------------------------------------------------//
+void Window::setMouseCursor(MouseCursorImage image)
+{
+    setMouseCursor((const Image*)image);
 }
 
 //----------------------------------------------------------------------------//
