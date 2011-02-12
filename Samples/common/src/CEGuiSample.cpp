@@ -35,7 +35,7 @@
 // includes for renderer selector classes
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   include "Win32CEGuiRendererSelector.h"
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)  || defined(__HAIKU__)
 #   ifdef CEGUI_SAMPLES_USE_GTK2
 #       include "GTK2CEGuiRendererSelector.h"
 #   else
@@ -162,7 +162,7 @@ bool CEGuiSample::initialise()
     d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
 #endif
 
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // decide which method to use for renderer selection
 #   ifdef CEGUI_SAMPLES_USE_GTK2
         d_rendererSelector = new GTK2CEGuiRendererSelector();
