@@ -77,7 +77,7 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(GeometryBuffer& buffer, const Vector2& position,
+    virtual void draw(GeometryBuffer& buffer, const Vector2<>& position,
                       const ColourRect* mod_colours,
                       const Rect* clip_rect,
                       const float vertical_space,

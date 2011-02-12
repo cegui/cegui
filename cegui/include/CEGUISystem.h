@@ -1145,7 +1145,7 @@ private:
 	\return
 		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
 	*/
-	Window*	getTargetWindow(const Vector2& pt, const bool allow_disabled) const;
+	Window*	getTargetWindow(const Vector2<>& pt, const bool allow_disabled) const;
 
 
 	/*!

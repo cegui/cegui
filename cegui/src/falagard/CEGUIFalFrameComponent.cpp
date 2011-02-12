@@ -98,7 +98,7 @@ namespace CEGUI
         Rect backgroundRect(destRect);
         Rect finalRect;
         Size imageSize;
-        Vector2 imageOffsets;
+        Vector2<> imageOffsets;
         ColourRect imageColours;
         float leftfactor, rightfactor, topfactor, bottomfactor;
         bool calcColoursPerImage;

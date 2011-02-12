@@ -99,7 +99,7 @@ const Size& OpenGLTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OpenGLTexture::getTexelScaling() const
+const Vector2<>& OpenGLTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

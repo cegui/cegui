@@ -589,12 +589,12 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.
 *************************************************************************/
-size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2<>& pt) const
 {
 	//
 	// calculate final window position to be checked
 	//
-	Vector2 wndPt = CoordConverter::screenToWindow(*this, pt);
+	Vector2<> wndPt = CoordConverter::screenToWindow(*this, pt);
 
 	Rect textArea(getTextRenderArea());
 

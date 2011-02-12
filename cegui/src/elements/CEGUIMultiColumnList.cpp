@@ -1536,7 +1536,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
 {
     const ListHeader* header = getListHeader();
     Rect listArea(getListRenderArea());
@@ -1876,7 +1876,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Vector2 localPos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
 
 		ListboxItem* item = getItemAtPoint(localPos);
 

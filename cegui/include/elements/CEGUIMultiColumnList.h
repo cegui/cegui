@@ -1399,7 +1399,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-	ListboxItem*	getItemAtPoint(const Vector2& pt) const;
+	ListboxItem*	getItemAtPoint(const Vector2<>& pt) const;
 
 
 	/*!

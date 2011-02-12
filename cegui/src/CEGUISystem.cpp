@@ -711,7 +711,7 @@ bool System::injectMouseLeaves(void)
 	{
 		ma.position = d_wndWithMouse->
           getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
-		ma.moveDelta = Vector2(0.0f, 0.0f);
+		ma.moveDelta = Vector2<>(0.0f, 0.0f);
 		ma.button = NoButton;
 		ma.sysKeys = d_sysKeys;
 		ma.wheelChange = 0;
@@ -736,7 +736,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2<>(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -764,7 +764,7 @@ bool System::injectMouseButtonDown(MouseButton button)
         // build new allowable area for multi-clicks
         tkr.d_click_area.setPosition(ma.position);
         tkr.d_click_area.setSize(d_dblclick_size);
-        tkr.d_click_area.offset(Vector2(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+        tkr.d_click_area.offset(Vector2<>(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 
         // set target window for click events on this tracker
         tkr.d_target_window = ma.window;
@@ -817,7 +817,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2<>(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -930,7 +930,7 @@ bool System::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2<>(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = delta;
@@ -954,7 +954,7 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-    const Vector2 new_position(x_pos, y_pos);
+    const Vector2<> new_position(x_pos, y_pos);
     MouseCursor& mouse(MouseCursor::getSingleton());
 
     // setup mouse movement event args object.
@@ -1000,7 +1000,7 @@ bool System::injectTimePulse(float timeElapsed)
 /*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window* System::getTargetWindow(const Vector2& pt,
+Window* System::getTargetWindow(const Vector2<>& pt,
                                 const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
@@ -1688,7 +1688,7 @@ void System::notifyMouseTransition(Window* top, Window* bottom,
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
-    const Vector2 mouse_pos(MouseCursor::getSingleton().getPosition());
+    const Vector2<> mouse_pos(MouseCursor::getSingleton().getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -1935,7 +1935,7 @@ bool System::injectMouseButtonClick(const MouseButton button)
     if (ma.window)
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2<>(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1958,7 +1958,7 @@ bool System::injectMouseButtonDoubleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2<>(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1981,7 +1981,7 @@ bool System::injectMouseButtonTripleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2<>(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;

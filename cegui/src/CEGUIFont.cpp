@@ -188,12 +188,12 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
 //----------------------------------------------------------------------------//
 void Font::drawText(GeometryBuffer& buffer, const String& text,
-                    const Vector2& position, const Rect* clip_rect,
+                    const Vector2<>& position, const Rect* clip_rect,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale)
 {
     const float base_y = position.d_y + getBaseline(y_scale);
-    Vector2 glyph_pos(position);
+    Vector2<> glyph_pos(position);
 
     for (size_t c = 0; c < text.length(); ++c)
     {

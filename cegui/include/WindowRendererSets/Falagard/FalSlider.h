@@ -89,7 +89,7 @@ namespace CEGUI
         // overridden from Slider base class.
         void updateThumb(void);
         float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const Vector2& pt) const;
+        float getAdjustDirectionFromPoint(const Vector2<>& pt) const;
 
         // property objects
         static FalagardSliderProperties::VerticalSlider d_verticalProperty;
