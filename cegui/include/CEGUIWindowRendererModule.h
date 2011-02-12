@@ -30,6 +30,7 @@
 #define _CEGUIWindowRendererModule_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 #include <vector>
 
 #if defined(_MSC_VER)

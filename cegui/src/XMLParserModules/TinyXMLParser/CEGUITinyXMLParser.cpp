@@ -118,12 +118,12 @@ namespace CEGUI
         const CEGUI_TINYXML_NAMESPACE::TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add((utf8*)currAttr->Name(), (utf8*)currAttr->Value());
+            attrs.add((encoded_char*)currAttr->Name(), (encoded_char*)currAttr->Value());
             currAttr = currAttr->Next();
         }
 
         // start element
-        d_handler->elementStart((utf8*)element->Value(), attrs);
+        d_handler->elementStart((encoded_char*)element->Value(), attrs);
 
         // do children
         const CEGUI_TINYXML_NAMESPACE::TiXmlNode* childNode = element->FirstChild();
@@ -136,7 +136,7 @@ namespace CEGUI
                 break;
             case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TEXT:
                 if (childNode->ToText()->Value() != '\0')
-                    d_handler->text((utf8*)childNode->ToText()->Value());
+                    d_handler->text((encoded_char*)childNode->ToText()->Value());
                 break;
 
                 // Silently ignore unhandled node type
@@ -145,7 +145,7 @@ namespace CEGUI
         }
 
         // end element
-        d_handler->elementEnd((utf8*)element->Value());
+        d_handler->elementEnd((encoded_char*)element->Value());
     }
 
     TinyXMLParser::TinyXMLParser(void)

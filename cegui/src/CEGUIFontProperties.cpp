@@ -207,7 +207,7 @@ public:
     void set (PropertyReceiver* receiver, const String& value)
     {
         char img[33];
-        utf32 codepoint;
+        String::value_type codepoint;
         float adv;
         if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
             CEGUI_THROW(InvalidRequestException(

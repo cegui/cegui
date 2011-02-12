@@ -484,7 +484,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef std::map<String, Window*, String::FastLessCompare
+	typedef std::map<String, Window*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, Window*)> WindowRegistry; //!< Type used to implement registry of Window objects
     typedef std::vector<Window*
         CEGUI_VECTOR_ALLOC(Window*)> WindowVector; //!< Type to use for a collection of Window pointers.

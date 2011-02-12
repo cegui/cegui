@@ -260,6 +260,38 @@ public:
 };
 
 template<>
+class PropertyHelper<unsigned long>
+{
+public:
+    typedef unsigned long return_type;
+    typedef const unsigned long pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("unsigned long");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        unsigned long val = 0;
+        sscanf(str.c_str(), " %lu", &val);
+
+        return val;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[64];
+        snprintf(buff, sizeof(buff), "%lu", val);
+
+        return String(buff);
+    }
+};
+
+template<>
 class PropertyHelper<bool>
 {
 public:

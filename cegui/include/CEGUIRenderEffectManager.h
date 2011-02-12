@@ -54,7 +54,7 @@ class CEGUIEXPORT RenderEffectManager :
 {
 private:
     //! Collection type used for the render effect registry
-    typedef std::map<String, RenderEffectFactory*, String::FastLessCompare
+    typedef std::map<String, RenderEffectFactory*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, RenderEffectFactory*)> RenderEffectRegistry;
 
     //! Collection type to track which effects we created with which factories

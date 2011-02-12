@@ -161,23 +161,23 @@ String XMLSerializer::convertEntityInText(const String& text)
         switch(*iter)
         {  
             case '<':
-                res +=(utf8*)"&lt;";
+                res += "&lt;";
                 break;
       
             case '>':
-                res +=(utf8*)"&gt;";
+                res += "&gt;";
                 break;
         
             case '&':
-                res += (utf8*)"&amp;";
+                res += "&amp;";
                 break;
         
             case '\'':
-                res += (utf8*)"&apos;";
+                res += "&apos;";
                 break;
 
             case '"':
-                res += (utf8*)"&quot;";
+                res += "&quot;";
                 break;
       
             default:
@@ -198,32 +198,35 @@ String XMLSerializer::convertEntityInAttribute(const String& attributeValue)
         switch(*iter)
         {  
             case '<':
-                res +=(utf8*)"&lt;";
+                res += "&lt;";
                 break;
       
             case '>':
-                res +=(utf8*)"&gt;";
+                res += "&gt;";
                 break;
         
             case '&':
-                res += (utf8*)"&amp;";
+                res += "&amp;";
                 break;
         
             case '\'':
-                res += (utf8*)"&apos;";
+                res += "&apos;";
                 break;
 
             case '"':
-                res += (utf8*)"&quot;";
+                res += "&quot;";
                 break;
       
             case '\n':
-                res += (utf8*)"\\n";
+                res += "\\n";
                 break;
+
             default:
                 res += *iter;
         }
     }
+
     return res;
 }
+
 } // End of CEGUI Namespace 

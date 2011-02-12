@@ -38,7 +38,8 @@ namespace CEGUI
 FalagardMultiLineEditboxProperties::BlinkCaret FalagardMultiLineEditbox::d_blinkCaretProperty;
 FalagardMultiLineEditboxProperties::BlinkCaretTimeout FalagardMultiLineEditbox::d_blinkCaretTimeoutProperty;
 
-const utf8 FalagardMultiLineEditbox::TypeName[] = "Falagard/MultiLineEditbox";
+const String FalagardMultiLineEditbox::TypeName("Falagard/MultiLineEditbox");
+
 const String FalagardMultiLineEditbox::UnselectedTextColourPropertyName( "NormalTextColour" );
 const String FalagardMultiLineEditbox::SelectedTextColourPropertyName( "SelectedTextColour" );
 const String FalagardMultiLineEditbox::ActiveSelectionColourPropertyName( "ActiveSelectionColour" );

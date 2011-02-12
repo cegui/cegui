@@ -29,6 +29,8 @@
  ***************************************************************************/
 #include "CEGUIString.h"
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_UNICODE
+
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -44,7 +46,7 @@ const String::size_type String::npos = (String::size_type)(-1);
 //////////////////////////////////////////////////////////////////////////
 String::~String(void)
 {
-	if (d_reserve > STR_QUICKBUFF_SIZE)
+	if (d_reserve > CEGUI_STR_QUICKBUFF_SIZE)
 	{
 		delete[] d_buffer;
 	}
@@ -67,7 +69,7 @@ bool String::grow(size_type new_size)
     {
         utf32* temp = CEGUI_NEW_ARRAY_PT(utf32, new_size, String);
 
-        if (d_reserve > STR_QUICKBUFF_SIZE)
+        if (d_reserve > CEGUI_STR_QUICKBUFF_SIZE)
         {
             memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
             CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
@@ -92,14 +94,14 @@ void String::trim(void)
     size_type min_size = d_cplength + 1;
 
     // only re-allocate when not using quick-buffer, and when size can be trimmed
-    if ((d_reserve > STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
+    if ((d_reserve > CEGUI_STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
     {
             // see if we can trim to quick-buffer
-        if (min_size <= STR_QUICKBUFF_SIZE)
+        if (min_size <= CEGUI_STR_QUICKBUFF_SIZE)
         {
             memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
             CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
-            d_reserve = STR_QUICKBUFF_SIZE;
+            d_reserve = CEGUI_STR_QUICKBUFF_SIZE;
         }
         // re-allocate buffer
         else
@@ -446,5 +448,6 @@ void	swap(String& str1, String& str2)
 	str1.swap(str2);
 }
 
-
 } // End of  CEGUI namespace section
+
+#endif

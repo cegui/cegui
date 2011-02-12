@@ -29,11 +29,11 @@
 #define _CEGUIRegexMatcher_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class String;
 
 //! Interface for Regex matching support classes
 class CEGUIEXPORT RegexMatcher :

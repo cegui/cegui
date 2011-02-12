@@ -63,7 +63,7 @@ namespace CEGUI
 class CEGUIEXPORT Imageset :
     public AllocatedObject<Imageset>
 {
-	typedef	std::map<String, Image, String::FastLessCompare
+	typedef	std::map<String, Image, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, Image)> ImageRegistry;
 
 public:

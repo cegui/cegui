@@ -30,6 +30,7 @@
 
 #include "CEGUIRenderedStringComponent.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

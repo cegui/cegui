@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-WRFactoryRegisterer::WRFactoryRegisterer(const CEGUI::utf8* type) :
+WRFactoryRegisterer::WRFactoryRegisterer(const String& type) :
     d_type(type)
 {}
 

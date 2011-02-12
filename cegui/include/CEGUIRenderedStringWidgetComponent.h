@@ -29,6 +29,7 @@
 #define _CEGUIRenderedStringWidgetComponent_h_
 
 #include "CEGUIRenderedStringComponent.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

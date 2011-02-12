@@ -74,7 +74,8 @@ namespace CEGUI
 class FALAGARDBASE_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
 {
 public:
-    static const utf8   TypeName[];     //! type name for this widget.
+    static const String TypeName;     //! type name for this widget.
+
     //! Name of property to use to obtain unselected text rendering colour.
     static const String UnselectedTextColourPropertyName;
     //! Name of property to use to obtain selected text rendering colour.

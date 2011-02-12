@@ -69,7 +69,7 @@ public:
     \return
         One of the BidiCharType enumerated values indicating the Bidi char type.
     */
-    virtual BidiCharType getBidiCharType(const utf32 char_to_check) const = 0;
+    virtual BidiCharType getBidiCharType(const String::value_type char_to_check) const = 0;
 
 
     /*!

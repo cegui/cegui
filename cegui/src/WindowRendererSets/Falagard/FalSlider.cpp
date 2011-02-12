@@ -34,7 +34,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardSlider::TypeName[] = "Falagard/Slider";
+    const String FalagardSlider::TypeName("Falagard/Slider");
+
     FalagardSliderProperties::VerticalSlider FalagardSlider::d_verticalProperty;
     FalagardSliderProperties::ReversedDirection FalagardSlider::d_reversedProperty;
 

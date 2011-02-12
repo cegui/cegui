@@ -60,12 +60,21 @@ CEGUI::String Utf16ToString(const wchar_t* const utf16text)
         CEGUI_THROW(CEGUI::InvalidRequestException(
             "Utf16ToUtf8 - WideCharToMultiByte failed"));
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     CEGUI::utf8* buff = CEGUI_NEW_ARRAY_PT(CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
     WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
                         reinterpret_cast<char*>(buff), len, 0, 0);
     const CEGUI::String result(buff);
 
     CEGUI_DELETE_ARRAY_PT(buff, CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
+#else
+    CEGUI::String::value_type* buff = CEGUI_NEW_ARRAY_PT(CEGUI::String::value_type, len + 1, CEGUI::BufferAllocator);
+    WideCharToMultiByte(CP_ACP, 0, utf16text, -1,
+                        static_cast<char*>(buff), len, 0, 0);
+    const CEGUI::String result(buff);
+
+    CEGUI_DELETE_ARRAY_PT(buff, CEGUI::String::value_type, len + 1, CEGUI::BufferAllocator);
+#endif
 
     return result;
 }

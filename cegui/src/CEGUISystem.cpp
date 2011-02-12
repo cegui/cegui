@@ -907,7 +907,7 @@ bool System::injectKeyUp(uint key_code)
 /*************************************************************************
 	Method that injects a typed character event into the system.
 *************************************************************************/
-bool System::injectChar(utf32 code_point)
+bool System::injectChar(String::value_type code_point)
 {
     KeyEventArgs args(getKeyboardTargetWindow());
 

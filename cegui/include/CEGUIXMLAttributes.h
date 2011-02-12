@@ -235,7 +235,7 @@ namespace CEGUI
         float getValueAsFloat(const String& attrName, float def = 0.0f) const;
 
     protected:
-        typedef std::map<String, String, String::FastLessCompare> AttributeMap;
+        typedef std::map<String, String, StringFastLessCompare> AttributeMap;
         AttributeMap    d_attrs;
     };
 

@@ -55,7 +55,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardToggleButton : public FalagardButton
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief

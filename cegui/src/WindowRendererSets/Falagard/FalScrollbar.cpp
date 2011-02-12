@@ -35,7 +35,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardScrollbar::TypeName[] = "Falagard/Scrollbar";
+    const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
+
     FalagardScrollbarProperties::VerticalScrollbar FalagardScrollbar::d_verticalProperty;
 
 

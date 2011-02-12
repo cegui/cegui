@@ -33,7 +33,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardProgressBar::TypeName[] = "Falagard/ProgressBar";
+    const String FalagardProgressBar::TypeName("Falagard/ProgressBar");
+
     FalagardProgressBarProperties::VerticalProgress FalagardProgressBar::d_verticalProperty;
     FalagardProgressBarProperties::ReversedProgress FalagardProgressBar::d_reversedProperty;
 

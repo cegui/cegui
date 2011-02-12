@@ -190,7 +190,7 @@ namespace CEGUI
             while (inputLength)
             {
                 outputLength = transcoder->transcodeTo(xmlch_str + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
-                out.append(outBuff, outputLength);
+                out.append((encoded_char*)outBuff, outputLength);
                 offset += eaten;
                 inputLength -= eaten;
             }
