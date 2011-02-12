@@ -51,7 +51,7 @@ public:
 
     // !!! IF YOU GET AN ERROR HERE:
     // that says something like: "You can't call allocateBytes with 4 arguments",
-    // you are using StdAllocator and trying to enable CEGUI_MEMORY_DEBUG, you
+    // you are using StdAllocator and trying to enable CEGUI_CUSTOM_ALLOCATORS_DEBUG, you
     // have to provide your own custom memory allocator if you want memory debugging.
 
 	/// Get the maximum size of a single allocation
