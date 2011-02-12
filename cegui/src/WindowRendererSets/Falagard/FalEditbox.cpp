@@ -403,7 +403,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const Vector2& pt) const
+size_t FalagardEditbox::getTextIndexFromPosition(const Vector2<>& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 

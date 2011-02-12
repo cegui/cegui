@@ -295,7 +295,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     if (!font)
         return;
 
-    Vector2 draw_pos(finalRect.getPosition());
+    Vector2<> draw_pos(finalRect.getPosition());
     draw_pos.d_y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
 
     if (!d_renderedStringValid)

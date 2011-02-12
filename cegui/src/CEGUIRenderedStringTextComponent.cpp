@@ -119,7 +119,7 @@ const ColourRect& RenderedStringTextComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
-                                       const Vector2& position,
+                                       const Vector2<>& position,
                                        const ColourRect* mod_colours,
                                        const Rect* clip_rect,
                                        const float vertical_space,
@@ -130,7 +130,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
     if (!fnt)
         return;
 
-    Vector2 final_pos(position);
+    Vector2<> final_pos(position);
     float y_scale = 1.0f;
 
     // handle formatting options

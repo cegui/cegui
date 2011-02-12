@@ -87,7 +87,7 @@ namespace CEGUI
         // overridden from Scrollbar base class.
         void updateThumb(void);
         float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const Vector2& pt) const;
+        float getAdjustDirectionFromPoint(const Vector2<>& pt) const;
 
         // property objects
         static FalagardScrollbarProperties::VerticalScrollbar d_verticalProperty;

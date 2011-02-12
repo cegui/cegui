@@ -143,7 +143,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
     if (!font)
         return;
 
-    Vector2 draw_pos(targetRect.getPosition());
+    Vector2<> draw_pos(targetRect.getPosition());
 
     draw_pos.d_y += PixelAligned(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);

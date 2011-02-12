@@ -280,7 +280,7 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 
 //----------------------------------------------------------------------------//
 void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
-                          const Vector2& position,
+                          const Vector2<>& position,
                           const ColourRect* mod_colours, const Rect* clip_rect,
                           const float space_extra) const
 {
@@ -290,7 +290,7 @@ void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
 
     const float render_height = getPixelSize(line).d_height;
 
-    Vector2 comp_pos(position);
+    Vector2<> comp_pos(position);
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)

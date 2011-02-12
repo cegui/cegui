@@ -41,7 +41,7 @@ public:
     // implement CEGUI::Texture interface
     virtual const Size& getSize() const;
     virtual const Size& getOriginalDataSize() const;
-    virtual const Vector2& getTexelScaling() const;
+    virtual const Vector2<>& getTexelScaling() const;
     virtual void loadFromFile(const String& filename, const String& resourceGroup);
     virtual void loadFromMemory(const void* buffer, const Size& buffer_size,
                         PixelFormat pixel_format);
@@ -78,7 +78,7 @@ protected:
     //! original pixel of size data loaded into texture
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
 };
 
 } // End of  CEGUI namespace section

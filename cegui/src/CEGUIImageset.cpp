@@ -93,7 +93,7 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
         Rect(0, 0,
              d_texture->getOriginalDataSize().d_width,
              d_texture->getOriginalDataSize().d_height),
-        Vector2(0, 0)
+        Vector2<>(0, 0)
     );
 }
 
@@ -140,7 +140,7 @@ const Image& Imageset::getImage(const String& name) const
 /*************************************************************************
 	defines a new Image.
 *************************************************************************/
-void Imageset::defineImage(const String& name, const Rect& image_rect, const Vector2& render_offset)
+void Imageset::defineImage(const String& name, const Rect& image_rect, const Vector2<>& render_offset)
 {
 	if (isImageDefined(name))
 	{
@@ -197,12 +197,12 @@ void Imageset::draw(GeometryBuffer& buffer, const Rect& source_rect,
     // vertex 0
     vbuffer[0].position   = Vector3(final_rect.d_left, final_rect.d_top, 0.0f);
     vbuffer[0].colour_val = colours.d_top_left;
-    vbuffer[0].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[0].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
 
     // vertex 1
     vbuffer[1].position   = Vector3(final_rect.d_left, final_rect.d_bottom, 0.0f);
     vbuffer[1].colour_val = colours.d_bottom_left;
-    vbuffer[1].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_bottom);
+    vbuffer[1].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_bottom);
 
     // vertex 2
     vbuffer[2].position.d_x   = final_rect.d_right;
@@ -226,7 +226,7 @@ void Imageset::draw(GeometryBuffer& buffer, const Rect& source_rect,
     // vertex 3
     vbuffer[3].position   = Vector3(final_rect.d_right, final_rect.d_top, 0.0f);
     vbuffer[3].colour_val = colours.d_top_right;
-    vbuffer[3].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_top);
+    vbuffer[3].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_top);
 
     // vertex 4
     vbuffer[4].position.d_x   = final_rect.d_left;
@@ -250,7 +250,7 @@ void Imageset::draw(GeometryBuffer& buffer, const Rect& source_rect,
     // vertex 5
     vbuffer[5].position = Vector3(final_rect.d_right, final_rect.d_bottom, 0.0f);
     vbuffer[5].colour_val= colours.d_bottom_right;
-    vbuffer[5].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[5].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
 
     buffer.setActiveTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);

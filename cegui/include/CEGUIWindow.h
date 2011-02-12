@@ -1104,7 +1104,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2& position,
+    virtual bool isHit(const Vector2<>& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -1119,7 +1119,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2& position) const;
+    Window* getChildAtPosition(const Vector2<>& position) const;
 
     /*!
     \brief
@@ -1138,7 +1138,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2& position, 
+    Window* getTargetChildAtPosition(const Vector2<>& position, 
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -3207,7 +3207,7 @@ public:
     const UBox& getMargin() const;
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+    Vector2<> getUnprojectedPosition(const Vector2<>& pos) const;
 
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const

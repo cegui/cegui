@@ -102,7 +102,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    void setPosition(const Vector2& position);
+    void setPosition(const Vector2<>& position);
 
     /*!
     \brief
@@ -148,7 +148,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const Vector2& getPosition() const;
+    const Vector2<>& getPosition() const;
 
     /*!
     \brief
@@ -271,7 +271,7 @@ public:
         Fill in Vector2 object \a p_out with an unprojected version of the
         point described by Vector2 \a p_in.
     */
-    void unprojectPoint(const Vector2& p_in, Vector2& p_out);
+    void unprojectPoint(const Vector2<>& p_in, Vector2<>& p_out);
 
     // overrides from base
     void draw();
@@ -298,7 +298,7 @@ protected:
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow
-    Vector2 d_position;
+    Vector2<> d_position;
     //! Size of this RenderingWindow
     Size d_size;
     //! Rotation for this RenderingWindow

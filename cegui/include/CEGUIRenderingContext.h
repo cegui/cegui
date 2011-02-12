@@ -45,7 +45,7 @@ struct RenderingContext :
     //! The Window object that owns the RenederingSurface (0 for default root)
     const Window* owner;
     //! The offset of the owning window on the root RenderingSurface.
-    Vector2 offset;
+    Vector2<> offset;
     //! The queue that rendering should be added to.
     RenderQueueID queue;
 };

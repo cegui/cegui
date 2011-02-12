@@ -43,7 +43,7 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-Image::Image(const Imageset* owner, const String& name, const Rect& area, const Vector2& render_offset, float horzScaling, float vertScaling) :
+Image::Image(const Imageset* owner, const String& name, const Rect& area, const Vector2<>& render_offset, float horzScaling, float vertScaling) :
 	d_owner(owner),
 	d_area(area),
 	d_offset(render_offset),
