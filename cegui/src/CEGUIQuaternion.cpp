@@ -33,6 +33,7 @@
 #include "CEGUIString.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
+#include <limits>
 
 // Start of CEGUI namespace section
 namespace CEGUI
