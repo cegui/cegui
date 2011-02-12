@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUIString.h"
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_UNICODE
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 
 #include <iostream>
 
