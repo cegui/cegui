@@ -195,7 +195,7 @@ public:
     void endRendering();
     void setDisplaySize(const Size& sz);
     const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -311,7 +311,7 @@ private:
     //! What the renderer considers to be the current display size.
     Size d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2<> d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)

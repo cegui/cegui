@@ -95,7 +95,7 @@ public:
 	\return
 		Point object containing the offsets applied when rendering this Image
 	*/
-	Vector2	getOffsets(void) const		{return d_scaledOffset;}
+	Vector2<> getOffsets(void) const		{return d_scaledOffset;}
 
 
 	/*!
@@ -202,7 +202,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2& position, const Size& size,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size& size,
               const Rect* clip_rect,
               const Colour& top_left_colour = 0xFFFFFFFF,
               const Colour& top_right_colour = 0xFFFFFFFF,
@@ -315,7 +315,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2& position, const Size& size,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size& size,
               const Rect* clip_rect, const ColourRect& colours,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
@@ -363,7 +363,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const Rect* clip_rect, const ColourRect& colours,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
@@ -416,7 +416,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const Rect* clip_rect,
               const Colour& top_left_colour = 0xFFFFFFFF,
               const Colour& top_right_colour = 0xFFFFFFFF,
@@ -525,7 +525,7 @@ public:
 
 	\exception NullObjectException	Thrown if \a owner was NULL.
 	*/
-	Image(const Imageset* owner, const String& name, const Rect& area, const Vector2& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
+	Image(const Imageset* owner, const String& name, const Rect& area, const Vector2<>& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
 
@@ -584,12 +584,12 @@ private:
 	*************************************************************************/
 	const Imageset*	d_owner;		//!< Link back to Imageset that owns this image
 	Rect			d_area;			//!< Rect defining the area on the texture that makes up this image.
-	Vector2			d_offset;		//!< Offset to use when rendering
+	Vector2<>		d_offset;		//!< Offset to use when rendering
 
 	// image auto-scaling fields.
 	float	d_scaledWidth;		//!< scaled image width.
 	float	d_scaledHeight;		//!< scaled image height.
-	Vector2	d_scaledOffset;		//!< scaled rendering offset.
+	Vector2<> d_scaledOffset;		//!< scaled rendering offset.
 	String	d_name;				//!< name of this image.
 };
 

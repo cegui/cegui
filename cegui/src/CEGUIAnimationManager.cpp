@@ -70,7 +70,7 @@ AnimationManager::AnimationManager(void)
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<uint>("uint"));
     addBasicInterpolator(CEGUI_NEW_AO TplDiscreteInterpolator<bool>("bool"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Size>("Size"));
-    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2>("Vector2"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2<> >("Vector2<>"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector3>("Vector3"));
     addBasicInterpolator(CEGUI_NEW_AO QuaternionSlerpInterpolator());
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rect>("Rect"));

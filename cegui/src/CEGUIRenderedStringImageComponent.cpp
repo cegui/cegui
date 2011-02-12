@@ -106,7 +106,7 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
-                                        const Vector2& position,
+                                        const Vector2<>& position,
                                         const ColourRect* mod_colours,
                                         const Rect* clip_rect,
                                         const float vertical_space,

@@ -56,7 +56,7 @@ ButtonBase::~ButtonBase(void)
 /*************************************************************************
 	Update the internal state of the Widget
 *************************************************************************/
-void ButtonBase::updateInternalState(const Vector2& mouse_pos)
+void ButtonBase::updateInternalState(const Vector2<>& mouse_pos)
 {
     // This code is rewritten and has a slightly different behaviour
     // it is no longer fully "correct", as overlapping windows will not be

@@ -223,7 +223,7 @@ const Size& NullRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullRenderer::getDisplayDPI() const
+const Vector2<>& NullRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }

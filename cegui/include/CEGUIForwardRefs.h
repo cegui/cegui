@@ -114,7 +114,7 @@ class UBox;
 class UDim;
 class URect;
 class UVector2;
-class Vector2;
+template<typename T = float> class Vector2;
 class Vector3;
 struct Vertex;
 class WidgetLookFeel;

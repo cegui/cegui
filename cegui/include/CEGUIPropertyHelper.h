@@ -355,23 +355,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Vector2>
+class PropertyHelper<Vector2<> >
 {
 public:
-    typedef Vector2 return_type;
-    typedef const Vector2& pass_type;
+    typedef Vector2<> return_type;
+    typedef const Vector2<>& pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName()
     {
-        static String type("Vector2");
+        static String type("Vector2<>");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Vector2 val(0, 0) ;
+        Vector2<> val(0, 0) ;
         sscanf(str.c_str(), " x:%g y:%g", &val.d_x, &val.d_y);
 
         return val;

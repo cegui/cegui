@@ -105,7 +105,7 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
-    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
+    const CEGUI::Rect scrn(CEGUI::Vector2<>(0, 0), d_renderer->getDisplaySize());
 
     // setup for FPS value
     d_FPSGeometry = &d_renderer->createGeometryBuffer();
@@ -279,7 +279,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
             sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
 
             d_FPSGeometry->reset();
-            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2(0, 0), 0,
+            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2<>(0, 0), 0,
                         CEGUI::Colour(0xFFFFFFFF));
         }
 

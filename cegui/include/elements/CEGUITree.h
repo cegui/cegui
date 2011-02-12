@@ -728,9 +728,9 @@ protected:
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
      */
-    TreeItem* getItemAtPoint(const Vector2& pt) const;
+    TreeItem* getItemAtPoint(const Vector2<>& pt) const;
     TreeItem* getItemFromListAtPoint(const LBItemList &itemList, float *bottomY,
-                                     const Vector2& pt) const;
+                                     const Vector2<>& pt) const;
 
     /*!
      \brief
@@ -775,7 +775,7 @@ protected:
      virtual void populateGeometryBuffer();
  
      void drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
-                       Vector2& itemPos, GeometryBuffer& geometry, float alpha);
+                       Vector2<>& itemPos, GeometryBuffer& geometry, float alpha);
     
     /*************************************************************************
         New event handlers

@@ -273,7 +273,7 @@ public:
         Vector2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2& getDisplayDPI() const = 0;
+    virtual const Vector2<>& getDisplayDPI() const = 0;
 
     /*!
     \brief

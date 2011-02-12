@@ -139,13 +139,13 @@ public:
     UVector2(const UVector2& v): d_x(v.d_x), d_y(v.d_y) {}
     ~UVector2() {}
 
-    Vector2 asAbsolute(const Size& base) const
+    Vector2<> asAbsolute(const Size& base) const
     {
-        return Vector2(d_x.asAbsolute(base.d_width), d_y.asAbsolute(base.d_height));
+        return Vector2<>(d_x.asAbsolute(base.d_width), d_y.asAbsolute(base.d_height));
     }
-    Vector2 asRelative(const Size& base) const
+    Vector2<> asRelative(const Size& base) const
     {
-        return Vector2(d_x.asRelative(base.d_width), d_y.asRelative(base.d_height));
+        return Vector2<>(d_x.asRelative(base.d_width), d_y.asRelative(base.d_height));
     }
 
     UVector2 operator+(const UVector2& other) const

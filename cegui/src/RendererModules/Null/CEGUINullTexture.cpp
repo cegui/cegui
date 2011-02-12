@@ -49,7 +49,7 @@ const Size& NullTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullTexture::getTexelScaling() const
+const Vector2<>& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

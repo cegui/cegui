@@ -638,7 +638,7 @@ Rect Window::getParentElementClipIntersection(const Rect& unclipped_area) const
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
             d_parent->getClipRect(d_nonClientContent) :
-            Rect(Vector2(0, 0),
+            Rect(Vector2<>(0, 0),
                  System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
@@ -688,13 +688,13 @@ Rect Window::getHitTestRect_impl() const
     else
     {
         return getUnclippedOuterRect().getIntersection(
-            Rect(Vector2(0, 0),
+            Rect(Vector2<>(0, 0),
                  System::getSingleton().getRenderer()->getDisplaySize()));
     }
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isHit(const Vector2& position, const bool allow_disabled) const
+bool Window::isHit(const Vector2<>& position, const bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
     if (!allow_disabled && isDisabled())
@@ -709,11 +709,11 @@ bool Window::isHit(const Vector2& position, const bool allow_disabled) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChildAtPosition(const Vector2& position) const
+Window* Window::getChildAtPosition(const Vector2<>& position) const
 {
     const ChildList::const_reverse_iterator end = d_drawList.rend();
 
-    Vector2 p;
+    Vector2<> p;
     // if the window has RenderingWindow backing
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->unprojectPoint(position, p);
@@ -742,12 +742,12 @@ Window* Window::getChildAtPosition(const Vector2& position) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getTargetChildAtPosition(const Vector2& position,
+Window* Window::getTargetChildAtPosition(const Vector2<>& position,
                                          const bool allow_disabled) const
 {
     const ChildList::const_reverse_iterator end = d_drawList.rend();
 
-    Vector2 p;
+    Vector2<> p;
     // if the window has RenderingWindow backing
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->unprojectPoint(position, p);
@@ -1489,7 +1489,7 @@ void Window::generateAutoRepeatEvent(MouseButton button)
     MouseEventArgs ma(this);
     ma.position =
         getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2<>(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = System::getSingleton().getSystemKeys();
     ma.wheelChange = 0;
@@ -1919,16 +1919,17 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    Vector2 absMax(d_maxSize.asAbsolute(
+    Vector2<> absMax(d_maxSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
-    Vector2 absMin(d_minSize.asAbsolute(
+    Vector2<> absMin(d_minSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     const Size base_size((d_parent && !d_nonClientContent) ?
                             d_parent->getUnclippedInnerRect().getSize() :
                             getParentPixelSize());
 
-    d_pixelSize = size.asAbsolute(base_size).asSize();
+    const Vector2<> pixelSizeVector = size.asAbsolute(base_size);
+    d_pixelSize = Size(pixelSizeVector.d_x, pixelSizeVector.d_y);
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (d_pixelSize.d_width < absMin.d_x)
@@ -3528,7 +3529,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
         ctx.surface =
             &System::getSingleton().getRenderer()->getDefaultRenderingRoot();
         ctx.owner = 0;
-        ctx.offset = Vector2(0, 0);
+        ctx.offset = Vector2<>(0, 0);
         ctx.queue = RQ_BASE;
     }
 }
@@ -3709,16 +3710,16 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 d_parent->getInnerRectClipper());
         else
             rendering_window->setClippingRegion(
-                Rect(Vector2(0, 0),
+                Rect(Vector2<>(0, 0),
                      System::getSingleton().getRenderer()->getDisplaySize()));
 
-        d_geometry->setClippingRegion(Rect(Vector2(0, 0), d_pixelSize));
+        d_geometry->setClippingRegion(Rect(Vector2<>(0, 0), d_pixelSize));
     }
     else
     {
         Rect geo_clip(getOuterRectClipper());
 
-        geo_clip.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
+        geo_clip.offset(Vector2<>(-ctx.offset.d_x, -ctx.offset.d_y));
         d_geometry->setClippingRegion(geo_clip);
     }
 }
@@ -3841,7 +3842,7 @@ RenderedStringParser& Window::getRenderedStringParser() const
 }
 
 //----------------------------------------------------------------------------//
-Vector2 Window::getUnprojectedPosition(const Vector2& pos) const
+Vector2<> Window::getUnprojectedPosition(const Vector2<>& pos) const
 {
     RenderingSurface* rs = &getTargetRenderingSurface();
 
@@ -3853,13 +3854,13 @@ Vector2 Window::getUnprojectedPosition(const Vector2& pos) const
     RenderingWindow* rw = static_cast<RenderingWindow*>(rs);
 
     // setup for loop
-    Vector2 out_pos(pos);
+    Vector2<> out_pos(pos);
 
     // while there are rendering windows
     while (rw)
     {
         // unproject the point for the current rw
-        const Vector2 in_pos(out_pos);
+        const Vector2<> in_pos(out_pos);
         rw->unprojectPoint(in_pos, out_pos);
 
         // get next rendering window, if any
@@ -4016,8 +4017,8 @@ WindowUpdateMode Window::getUpdateMode() const
 //----------------------------------------------------------------------------//
 bool Window::constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz)
 {
-    const Vector2 pixel_sz(sz.asAbsolute(base_sz));
-    const Vector2 min_sz(d_minSize.asAbsolute(
+    const Vector2<> pixel_sz(sz.asAbsolute(base_sz));
+    const Vector2<> min_sz(d_minSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;
@@ -4052,8 +4053,8 @@ bool Window::constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz)
 //----------------------------------------------------------------------------//
 bool Window::constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz)
 {
-    const Vector2 pixel_sz(sz.asAbsolute(base_sz));
-    const Vector2 max_sz(d_maxSize.asAbsolute(
+    const Vector2<> pixel_sz(sz.asAbsolute(base_sz));
+    const Vector2<> max_sz(d_maxSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;
