@@ -482,8 +482,11 @@ void System::setDefaultFont(Font* font)
 *************************************************************************/
 void System::setDefaultMouseCursor(const Image* image)
 {
+    const Image* const default_cursor =
+        reinterpret_cast<const Image*>(DefaultMouseCursor);
+
     // the default, default, is for nothing!
-    if (image == (const Image*)DefaultMouseCursor)
+    if (image == default_cursor)
         image = 0;
 
     // if mouse cursor is set to the current default we *may* need to
@@ -496,7 +499,8 @@ void System::setDefaultMouseCursor(const Image* image)
     if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
     {
         // does the window containing the mouse use the default cursor?
-        if ((d_wndWithMouse) && (0 == d_wndWithMouse->getMouseCursor(false)))
+        if ((d_wndWithMouse) &&
+            (default_cursor == d_wndWithMouse->getMouseCursor(false)))
         {
             // default cursor is active, update the image immediately
             MouseCursor::getSingleton().setImage(image);

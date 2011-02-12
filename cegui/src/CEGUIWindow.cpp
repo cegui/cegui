@@ -1425,7 +1425,15 @@ void Window::setMouseCursor(const Image* image)
     d_mouseCursor = image;
 
     if (System::getSingleton().getWindowContainingMouse() == this)
+    {
+        const Image* const default_cursor =
+            reinterpret_cast<const Image*>(DefaultMouseCursor);
+
+        if (default_cursor == image)
+            image = System::getSingleton().getDefaultMouseCursor();
+
         MouseCursor::getSingleton().setImage(image);
+    }
 }
 
 //----------------------------------------------------------------------------//
