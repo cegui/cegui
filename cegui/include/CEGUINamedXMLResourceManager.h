@@ -193,7 +193,7 @@ public:
 protected:
     // singleton allocator fits here, resource managers are very likely to be singletons
     //! type of collection used to store and manage objects
-    typedef std::map<String, T*, String::FastLessCompare
+    typedef std::map<String, T*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, T*)> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);

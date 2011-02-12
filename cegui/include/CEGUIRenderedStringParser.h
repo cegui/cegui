@@ -29,6 +29,7 @@
 #define _CEGUIRenderedStringParser_h_
 
 #include "CEGUIRenderedString.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -69,9 +69,9 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
     if ( ! XML_Parse(parser, reinterpret_cast<const char*>(rawXMLData.getDataPtr()), rawXMLData.getSize(), true))
     {
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
-        String exception (String((const utf8*)"ExpatParser::parseXMLFile - XML Parsing error '") +
-                          String((const utf8*)XML_ErrorString(XML_GetErrorCode(parser))) +
-                          String((const utf8*)"' at line ") +
+        String exception (String((const encoded_char*)"ExpatParser::parseXMLFile - XML Parsing error '") +
+                          String((const encoded_char*)XML_ErrorString(XML_GetErrorCode(parser))) +
+                          String((const encoded_char*)"' at line ") +
                           PropertyHelper<uint>::toString(XML_GetCurrentLineNumber(parser)));
         // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
         XML_ParserFree(parser);
@@ -100,21 +100,21 @@ void ExpatParser::startElement(void* data, const char* element, const char** att
     XMLAttributes attrs;
 
     for(size_t i = 0 ; attr[i] ; i += 2)
-        attrs.add((const utf8*)attr[i], (const utf8*)attr[i+1]);
+        attrs.add((const encoded_char*)attr[i], (const encoded_char*)attr[i+1]);
 
-    handler->elementStart((const utf8*)element, attrs);
+    handler->elementStart((const encoded_char*)element, attrs);
 }
 
 void ExpatParser::endElement(void* data, const char* element)
 {
     XMLHandler* handler = static_cast<XMLHandler*>(data);
-    handler->elementEnd((const utf8*)element);
+    handler->elementEnd((const encoded_char*)element);
 }
 
 void ExpatParser::characterData(void *data, const char *text, int len)
 {
     XMLHandler* handler = static_cast<XMLHandler*>(data);
-    String str((const utf8*)text, static_cast<String::size_type>(len));
+    String str((const encoded_char*)text, static_cast<String::size_type>(len));
     handler->text(str);
 }
 

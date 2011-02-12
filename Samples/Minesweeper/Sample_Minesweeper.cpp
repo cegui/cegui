@@ -455,11 +455,11 @@ void MinesweeperSample::gameEnd(bool victory)
     CEGUI::String message;
     if (victory)
     {
-        message = CEGUI::String((CEGUI::utf8*)"You win");
+        message = CEGUI::String("You win");
     }
     else
     {
-        message = CEGUI::String((CEGUI::utf8*)"You lose");
+        message = CEGUI::String("You lose");
     }
     // Display a message to the user
     d_result->setText(message);

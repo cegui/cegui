@@ -111,7 +111,7 @@ const String MultiLineEditbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	Window(type, name),
 	d_readOnly(false),
-	d_maxTextLen(String::max_size()),
+	d_maxTextLen(String().max_size()),
 	d_caretPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),

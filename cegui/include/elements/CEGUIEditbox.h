@@ -257,14 +257,15 @@ public:
 
     /*!
     \brief
-        return the utf32 code point used when rendering masked text.
+        return the code point used when rendering masked text.
 
     \return
-        utf32 code point value representing the Unicode code point that will be
-        rendered instead of the Editbox text when rendering in masked mode.
+        utf32 or char (depends on used String class) code point value representing
+        the Unicode code point that will be rendered instead of the Editbox text
+        when rendering in masked mode.
     */
-    utf32 getMaskCodePoint(void) const
-        {return d_maskCodePoint;}
+    String::value_type getMaskCodePoint(void) const
+    { return d_maskCodePoint; }
 
     /*!
     \brief
@@ -361,16 +362,17 @@ public:
 
     /*!
     \brief
-        set the utf32 code point used when rendering masked text.
+        set the code point used when rendering masked text.
 
     \param code_point
-        utf32 code point value representing the Unicode code point that should
-        be rendered instead of the Editbox text when rendering in masked mode.
+        utf32 or char (depends on used String class) code point value representing
+        the vode point that should be rendered instead of the Editbox text when
+        rendering in masked mode.
 
     \return
         Nothing.
     */
-    void setMaskCodePoint(utf32 code_point);
+    void setMaskCodePoint(String::value_type code_point);
 
     /*!
     \brief
@@ -570,7 +572,7 @@ protected:
     //! True if the editbox text should be rendered masked.
     bool d_maskText;
     //! Code point to use when rendering masked text.
-    utf32 d_maskCodePoint;
+    String::value_type d_maskCodePoint;
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
     //! Position of the caret / insert-point.

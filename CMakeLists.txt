@@ -104,6 +104,11 @@ set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
 # These define the configurable options
 #
+set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
+1 - utf8 and utf32 aware inbuilt string,
+2 - std::string without custom allocation,
+3 - std::basic_string allocated according to allocator config" )
+
 set( CEGUI_HAS_EXPRESSION_DIM FALSE CACHE BOOL "Build the ExpressionDim support" )
 set( CEGUI_HAS_DEFAULT_LOGGER TRUE CACHE BOOL "Include the default logger implementation" )
 set( CEGUI_HAS_FREETYPE ${FREETYPE_FOUND} CACHE BOOL "Include Freetype font support" )

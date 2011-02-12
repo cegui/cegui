@@ -954,13 +954,13 @@ public:
 		Method that injects a typed character event into the system.
 
 	\param code_point
-		Unicode code point of the character that was typed.
+		Unicode or ASCII (depends on used String class) code point of the character that was typed.
 
 	\return
 		- true if the input was processed by the gui system.
 		- false if the input was not processed by the gui system.
 	*/
-	bool	injectChar(utf32 code_point);
+	bool	injectChar(String::value_type code_point);
 
 
 	/*!

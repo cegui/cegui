@@ -78,7 +78,8 @@ class FALAGARDBASE_API FalagardEditbox : public EditboxWindowRenderer
 {
 public:
     //! type name for this widget.
-    static const utf8 TypeName[];
+    static const String TypeName;
+
     //! Name of property to access for unselected text colour.
     static const String UnselectedTextColourPropertyName;
     //! Name of property to access for selected text colour.

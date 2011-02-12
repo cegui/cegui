@@ -417,11 +417,11 @@ public:
     }
 
 private:
-    typedef std::map<String, StateImagery, String::FastLessCompare
+    typedef std::map<String, StateImagery, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, StateImagery)> StateList;
-    typedef std::map<String, ImagerySection, String::FastLessCompare
+    typedef std::map<String, ImagerySection, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, ImagerySection)> ImageryList;
-    typedef std::map<String, NamedArea, String::FastLessCompare
+    typedef std::map<String, NamedArea, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, NamedArea)> NamedAreaList;
     typedef std::vector<WidgetComponent
         CEGUI_VECTOR_ALLOC(WidgetComponent)> WidgetList;

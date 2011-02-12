@@ -4274,10 +4274,10 @@ protected:
     typedef std::vector<Window*
         CEGUI_VECTOR_ALLOC(Window*)> ChildList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, String::FastLessCompare
+    typedef std::map<String, String, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, String)> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, String::FastLessCompare
+    typedef std::set<String, StringFastLessCompare
         CEGUI_SET_ALLOC(String)> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)

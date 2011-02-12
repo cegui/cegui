@@ -48,7 +48,8 @@ FalagardEditboxProperties::BlinkCaretTimeout FalagardEditbox::d_blinkCaretTimeou
 FalagardEditboxProperties::TextFormatting FalagardEditbox::d_textFormattingProperty;
 
 //----------------------------------------------------------------------------//
-const utf8 FalagardEditbox::TypeName[] = "Falagard/Editbox";
+const String FalagardEditbox::TypeName("Falagard/Editbox");
+
 const String FalagardEditbox::UnselectedTextColourPropertyName("NormalTextColour");
 const String FalagardEditbox::SelectedTextColourPropertyName("SelectedTextColour");
 const float FalagardEditbox::DefaultCaretBlinkTimeout(0.66f);

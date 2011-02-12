@@ -106,7 +106,6 @@ class SchemeManager;
 class ScriptFunctor;
 class ScriptModule;
 class Size;
-class String;
 class System;
 class Texture;
 class TextureTarget;

@@ -428,11 +428,11 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, WindowFactory*, String::FastLessCompare
+	typedef	std::map<String, WindowFactory*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, WindowFactory*)> WindowFactoryRegistry; //!< Type used to implement registry of WindowFactory objects
-	typedef std::map<String, AliasTargetStack, String::FastLessCompare
+	typedef std::map<String, AliasTargetStack, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, AliasTargetStack)> TypeAliasRegistry; //!< Type used to implement registry of window type aliases.
-    typedef std::map<String, FalagardWindowMapping, String::FastLessCompare
+    typedef std::map<String, FalagardWindowMapping, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, FalagardWindowMapping)> FalagardMapRegistry; //!< Type used to implement registry of falagard window mappings.
     //! Type used for list of WindowFacory objects that we created ourselves
     typedef std::vector<WindowFactory*

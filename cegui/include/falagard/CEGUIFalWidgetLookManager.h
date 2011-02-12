@@ -229,7 +229,7 @@ namespace CEGUI
     private:
         static const String FalagardSchemaName;     //!< Name of schema file used for XML validation.
 
-        typedef std::map<String, WidgetLookFeel, String::FastLessCompare> WidgetLookList;
+        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
         WidgetLookList  d_widgetLooks;
 
         static String d_defaultResourceGroup;   //!< holds default resource group

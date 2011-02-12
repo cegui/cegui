@@ -487,7 +487,7 @@ public:
     void writeXMLToStream(XMLSerializer& xml_stream) const;
 
 
-	friend class std::map<String, Image, String::FastLessCompare>;
+	friend class std::map<String, Image, StringFastLessCompare>;
 	friend struct std::pair<const String, Image>;
 
 

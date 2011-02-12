@@ -310,9 +310,9 @@ class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
 public:
 	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	utf32		codepoint;		//!< utf32 codepoint for the key (only used for Character inputs).
-	Key::Scan	scancode;		//!< Scan code of key that caused event (only used for key up & down inputs.
-	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
+	String::value_type codepoint; //!< utf32 or char (depends on used String class) codepoint for the key (only used for Character inputs).
+	Key::Scan          scancode;  //!< Scan code of key that caused event (only used for key up & down inputs.
+	uint               sysKeys;   //!< current state of the system keys and mouse buttons.
 };
 
 

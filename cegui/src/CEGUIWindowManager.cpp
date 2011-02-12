@@ -379,7 +379,7 @@ String WindowManager::generateUniqueWindowName()
         Logger::getSingleton().logEvent("UID counter for generated window names has wrapped around - the fun shall now commence!");
 
     // return generated name as a CEGUI::String.
-    return String(uidname.str());
+    return String(uidname.str().c_str());
 }
 
 void WindowManager::renameWindow(const String& window, const String& new_name)

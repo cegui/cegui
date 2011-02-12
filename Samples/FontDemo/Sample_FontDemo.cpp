@@ -38,46 +38,46 @@ using namespace CEGUI;
 
 static struct
 {
-    utf8 *Language;
-    utf8* Font;
-	utf8 *Text;
+    encoded_char* Language;
+    encoded_char* Font;
+	encoded_char* Text;
 } LangList [] =
 {
 	// A list of strings in different languages
 	// Feel free to add your own language here (UTF-8 ONLY!)...
-    { (utf8 *)"English",
-      (utf8*)"DejaVuSans-10",
-	  (utf8 *)"THIS IS SOME TEXT IN UPPERCASE\n"
+    { (encoded_char*)"English",
+      (encoded_char*)"DejaVuSans-10",
+	  (encoded_char*)"THIS IS SOME TEXT IN UPPERCASE\n"
               "and this is lowercase...\n"
               "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog" },
-    { (utf8 *)"Русский",
-      (utf8*)"DejaVuSans-10",
-	  (utf8 *)"Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств.\n"
+    { (encoded_char*)"Русский",
+      (encoded_char*)"DejaVuSans-10",
+	  (encoded_char*)"Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств.\n"
               "\nЗавершён ежегодный съезд эрудированных школьников, мечтающих глубоко проникнуть в тайны физических явлений и химических реакций.\n"
               "\nавтор панграмм -- Андрей Николаев\n" },
-    { (utf8 *)"Română",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"CEI PATRU APOSTOLI\n"
+    { (encoded_char*)"Română",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"CEI PATRU APOSTOLI\n"
               "au fost trei:\n"
               "Luca şi Matfei\n" },
-    { (utf8 *)"Dansk",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"FARLIGE STORE BOGSTAVER\n"
+    { (encoded_char*)"Dansk",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"FARLIGE STORE BOGSTAVER\n"
               "og flere men små...\n"
               "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" },
-	{ (utf8 *)"Japanese",
-      (utf8*)"Sword-26",
-      (utf8 *)"日本語を選択\n"
+	{ (encoded_char*)"Japanese",
+      (encoded_char*)"Sword-26",
+      (encoded_char*)"日本語を選択\n"
               "トリガー検知\n"
               "鉱石備蓄不足\n" },
-	{ (utf8 *)"Korean",
-      (utf8*)"Batang-26",
-      (utf8 *)"한국어를 선택\n"
+	{ (encoded_char*)"Korean",
+      (encoded_char*)"Batang-26",
+      (encoded_char*)"한국어를 선택\n"
               "트리거 검지\n"
               "광석 비축부족\n" },
-    { (utf8 *)"Việt",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"Chào CrazyEddie !\n"
+    { (encoded_char*)"Việt",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"Chào CrazyEddie !\n"
               "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
               "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
               "Cám ơn bạn rất nhiều\n"
@@ -342,7 +342,7 @@ public:
 			}
 
 			// Finally, set the sample text for the selected language
-            winMgr.getWindow ("FontDemo/FontSample")->setText ((utf8*)LangList [idx].Text);
+            winMgr.getWindow ("FontDemo/FontSample")->setText((encoded_char*)LangList[idx].Text);
         }
 
         return true;

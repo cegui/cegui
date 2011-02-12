@@ -428,7 +428,7 @@ Window* Window::getChild(uint ID) const
     char strbuf[16];
     sprintf(strbuf, "%X", ID);
     CEGUI_THROW(UnknownObjectException("Window::getChild: A Window with ID: '" +
-        std::string(strbuf) + "' is not attached to Window '" + d_name + "'."));
+        String(strbuf) + "' is not attached to Window '" + d_name + "'."));
 }
 
 //----------------------------------------------------------------------------//

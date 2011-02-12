@@ -31,7 +31,7 @@
 #define _CEGUIInterpolator_h_
 
 #include "CEGUIBase.h"
-
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

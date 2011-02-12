@@ -311,7 +311,7 @@ protected:
         return *this;
     }
 
-    typedef std::map<String, Event*, String::FastLessCompare
+    typedef std::map<String, Event*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, Event*)> EventMap;
     EventMap    d_events;
 

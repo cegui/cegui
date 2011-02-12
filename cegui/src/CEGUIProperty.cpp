@@ -60,7 +60,7 @@ namespace CEGUI
             // Detect wether it is a long property or not 
             // Long property are needed if 
             const String& value = get(receiver);
-            if (value.find((utf32)'\n') != String::npos)
+            if (value.find((String::value_type)'\n') != String::npos)
             {
                 xml_stream.text(value);
             }

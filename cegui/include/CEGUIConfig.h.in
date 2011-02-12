@@ -53,6 +53,18 @@ setting CMake options and regenerating, rather than editing directly.
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// CEGUI allows 3 different string class configurations
+//////////////////////////////////////////////////////////////////////////
+// Inbuilt Unicode (utf8 and utf32 aware)
+#define CEGUI_STRING_CLASS_UNICODE 1
+// plain std::string without allocators (makes pass by reference easy)
+#define CEGUI_STRING_CLASS_STD 2
+// std::basic_string allocated according to allocator config
+#define CEGUI_STRING_CLASS_STD_AO 3
+
+#define CEGUI_STRING_CLASS @CEGUI_STRING_CLASS@
+
+//////////////////////////////////////////////////////////////////////////
 // Set this to the default XMLParser to be used.
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_XMLPARSER

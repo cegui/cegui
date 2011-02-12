@@ -103,7 +103,7 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<String, WindowRendererFactory*, String::FastLessCompare> WR_Registry;
+    typedef std::map<String, WindowRendererFactory*, StringFastLessCompare> WR_Registry;
     WR_Registry d_wrReg;
 
     //! Container type to hold WindowRenderFacory objects that we created.

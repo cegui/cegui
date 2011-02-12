@@ -123,7 +123,7 @@ namespace CEGUI
 
             if (d_caching)
             {
-                d_cache.push_back(std::make_pair(d_workstream.str(), level));
+                d_cache.push_back(std::make_pair(d_workstream.str().c_str(), level));
             }
             else if (d_level >= level)
             {

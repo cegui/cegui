@@ -173,7 +173,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
             break;
 
         Imageset& is = ImagesetManager::getSingleton().create(
-                           d_name + "_auto_glyph_images_" + int (s->first),
+                           d_name + "_auto_glyph_images_" + PropertyHelper<int>::toString(s->first),
                            System::getSingleton().getRenderer()->createTexture());
         d_glyphImages.push_back(&is);
 
@@ -212,13 +212,12 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
                     err << static_cast<unsigned int>(s->first);
                     err << ".  Will use an empty image for this glyph!";
-                    Logger::getSingleton().logEvent(err.str(), Errors);
+                    Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
                     Rect area(0, 0, 0, 0);
                     Vector2 offset(0, 0);
-                    String name;
-                    name += s->first;
+                    const String name(PropertyHelper<unsigned long>::toString(s->first));
                     is.defineImage(name, area, offset);
                     ((FontGlyph &)s->second).setImage(&is.getImage(name));
                 }
@@ -253,8 +252,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Vector2 offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
                                  -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
-                    String name;
-                    name += s->first;
+                    const String name(PropertyHelper<unsigned long>::toString(s->first));
                     is.defineImage(name, area, offset);
                     ((FontGlyph &)s->second).setImage(&is.getImage(name));
 

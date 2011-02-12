@@ -83,7 +83,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_readOnly(false),
     d_maskText(false),
     d_maskCodePoint('*'),
-    d_maxTextLen(String::max_size()),
+    d_maxTextLen(String().max_size()),
     d_caretPos(0),
     d_selectionStart(0),
     d_selectionEnd(0),
@@ -96,7 +96,7 @@ Editbox::Editbox(const String& type, const String& name) :
     d_textParsingEnabled = false;
 
 #ifdef CEGUI_HAS_PCRE_REGEX
-    d_validator = CEGUI_NEW_AO PCRERegexMatcher;
+    d_validator = CEGUI_NEW_AO PCRERegexMatcher();
     // default to accepting all characters
     setValidationString(".*");
 #else
@@ -247,7 +247,7 @@ void Editbox::setSelection(size_t start_pos, size_t end_pos)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::setMaskCodePoint(utf32 code_point)
+void Editbox::setMaskCodePoint(String::value_type code_point)
 {
     if (code_point != d_maskCodePoint)
     {

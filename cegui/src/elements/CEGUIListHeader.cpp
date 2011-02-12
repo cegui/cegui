@@ -722,7 +722,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	name << getName().c_str() << SegmentNameSuffix << d_uniqueIDNumber;
 
 	// create segment.
-	ListHeaderSegment* newseg = createNewSegment(name.str());
+	ListHeaderSegment* newseg = createNewSegment(name.str().c_str());
 	d_uniqueIDNumber++;
 
 	// setup segment;

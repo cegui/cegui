@@ -372,7 +372,7 @@ void Tree::insertItem(TreeItem* item, const TreeItem* position)
             // throw if item 'position' is not in the list
             if (ins_pos == d_listItems.end())
             {
-                CEGUI_THROW(InvalidRequestException((utf8*)"Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree."));
+                CEGUI_THROW(InvalidRequestException("Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree."));
             }
         }
         
@@ -589,7 +589,7 @@ void Tree::setItemSelectState(size_t item_index, bool state)
     }
     else
     {
-        CEGUI_THROW(InvalidRequestException((utf8*)"Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree."));
+        CEGUI_THROW(InvalidRequestException("Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree."));
     }
     
 }
