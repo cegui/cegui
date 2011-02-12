@@ -44,10 +44,12 @@ setting CMake options and regenerating, rather than editing directly.
 #endif
 
 #cmakedefine CEGUI_HAS_BUILD_SUFFIX
-#if defined(DEBUG) || defined(_DEBUG)
-#   ifdef CEGUI_HAS_BUILD_SUFFIX
-#       ifndef CEGUI_BUILD_SUFFIX
+#ifdef CEGUI_HAS_BUILD_SUFFIX
+#   ifndef CEGUI_BUILD_SUFFIX
+#       if defined(DEBUG) || defined(_DEBUG)
 #           define CEGUI_BUILD_SUFFIX "${CEGUI_BUILD_SUFFIX}"
+#       else
+#           define CEGUI_BUILD_SUFFIX ""
 #       endif
 #   endif
 #endif
