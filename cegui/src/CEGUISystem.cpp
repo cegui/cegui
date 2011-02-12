@@ -1398,11 +1398,16 @@ void System::setDefaultTooltip(const String& tooltipType)
 //----------------------------------------------------------------------------//
 void System::createSystemOwnedDefaultTooltipWindow() const
 {
-    d_defaultTooltip = static_cast<Tooltip*>(
-        WindowManager::getSingleton().createWindow(
-            d_defaultTooltipType, "CEGUI::System::default__auto_tooltip__"));
-    d_defaultTooltip->setWritingXMLAllowed(false);
-    d_weOwnTooltip = true;
+    WindowManager& winmgr(WindowManager::getSingleton());
+
+    if (!winmgr.isLocked())
+    {
+        d_defaultTooltip = static_cast<Tooltip*>(
+            winmgr.createWindow(d_defaultTooltipType,
+                                "CEGUI::System::default__auto_tooltip__"));
+        d_defaultTooltip->setWritingXMLAllowed(false);
+        d_weOwnTooltip = true;
+    }
 }
 
 //----------------------------------------------------------------------------//
