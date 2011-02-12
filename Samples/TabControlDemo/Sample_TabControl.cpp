@@ -103,7 +103,7 @@ public:
         // load some demo windows and attach to the background 'root'
         // because of the 2nd parameter, all windows get prefixed with "TabControlDemo/"
         CEGUI::String prefix = "TabControlDemo/";
-        background->addChildWindow (winMgr.loadWindowLayout ("TabControlDemo.layout", prefix));
+        background->addChild (winMgr.loadWindowLayout ("TabControlDemo.layout", prefix));
 
         TabControl *tc = static_cast<TabControl *>(winMgr.getWindow ("TabControlDemo/Frame/TabControl"));
 

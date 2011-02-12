@@ -39,7 +39,8 @@ namespace CEGUI
     instances of objects that implement the RenderTarget interface are
     normally created via the Renderer object.
 */
-class CEGUIEXPORT RenderTarget
+class CEGUIEXPORT RenderTarget :
+    public AllocatedObject<RenderTarget>
 {
 public:
     //! Destructor

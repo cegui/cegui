@@ -41,60 +41,60 @@ namespace ListboxProperties
 {
 String	Sort::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isSortEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const Listbox*>(receiver)->isSortEnabled());
 }
 
 
 void	Sort::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Listbox*>(receiver)->setSortingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	MultiSelect::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isMultiselectEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const Listbox*>(receiver)->isMultiselectEnabled());
 }
 
 
 void	MultiSelect::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setMultiselectEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Listbox*>(receiver)->setMultiselectEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isVertScrollbarAlwaysShown());
+	return PropertyHelper<bool>::toString(static_cast<const Listbox*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
 void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<Listbox*>(receiver)->setShowVertScrollbar(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isHorzScrollbarAlwaysShown());
+	return PropertyHelper<bool>::toString(static_cast<const Listbox*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
 void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<Listbox*>(receiver)->setShowHorzScrollbar(PropertyHelper<bool>::fromString(value));
 }
 
 String	ItemTooltips::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isItemTooltipsEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const Listbox*>(receiver)->isItemTooltipsEnabled());
 }
 
 
 void	ItemTooltips::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setItemTooltipsEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Listbox*>(receiver)->setItemTooltipsEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 } // End of  ListboxProperties namespace section

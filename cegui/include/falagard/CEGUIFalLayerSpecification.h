@@ -43,7 +43,8 @@ namespace CEGUI
     \brief
         Class that encapsulates a single layer of imagery.
     */
-    class CEGUIEXPORT LayerSpecification
+    class CEGUIEXPORT LayerSpecification :
+        public AllocatedObject<LayerSpecification>
     {
     public:
         /*!
@@ -132,7 +133,8 @@ namespace CEGUI
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     private:
-        typedef std::vector<SectionSpecification> SectionList;
+        typedef std::vector<SectionSpecification
+            CEGUI_VECTOR_ALLOC(SectionSpecification)> SectionList;
 
         SectionList d_sections;         //!< Collection of SectionSpecification objects descibing the sections to be drawn for this layer.
         uint        d_layerPriority;    //!< Priority of the layer.

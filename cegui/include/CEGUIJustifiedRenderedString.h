@@ -60,7 +60,8 @@ public:
 
 protected:
     //! space extra size for each line to achieve justified formatting.
-    std::vector<float> d_spaceExtras;
+    std::vector<float
+        CEGUI_VECTOR_ALLOC(float)> d_spaceExtras;
 };
 
 } // End of  CEGUI namespace section

@@ -43,7 +43,7 @@ String	FrameEnabled::get(const PropertyReceiver* receiver) const
 {
     FalagardStatic* wr = static_cast<FalagardStatic*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::boolToString(wr->isFrameEnabled());
+    return PropertyHelper<bool>::toString(wr->isFrameEnabled());
 }
 
 
@@ -51,7 +51,7 @@ void	FrameEnabled::set(PropertyReceiver* receiver, const String& value)
 {
     FalagardStatic* wr = static_cast<FalagardStatic*>(
     static_cast<Window*>(receiver)->getWindowRenderer());
-    wr->setFrameEnabled(PropertyHelper::stringToBool(value));
+    wr->setFrameEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -59,7 +59,7 @@ String	BackgroundEnabled::get(const PropertyReceiver* receiver) const
 {
     FalagardStatic* wr = static_cast<FalagardStatic*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::boolToString(wr->isBackgroundEnabled());
+    return PropertyHelper<bool>::toString(wr->isBackgroundEnabled());
 }
 
 
@@ -67,7 +67,7 @@ void	BackgroundEnabled::set(PropertyReceiver* receiver, const String& value)
 {
     FalagardStatic* wr = static_cast<FalagardStatic*>(
     static_cast<Window*>(receiver)->getWindowRenderer());
-    wr->setBackgroundEnabled(PropertyHelper::stringToBool(value));
+    wr->setBackgroundEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 } // End of  FalagardStaticProperties namespace section

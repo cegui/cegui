@@ -308,6 +308,9 @@ public:
     static Rect screenToWindow(const Window& window, const Rect& rect);
 
 private:
+    //! disallows construction of this class
+    CoordConverter();
+
     /*!
     \brief
         Return the base X co-ordinate of the given Window object.

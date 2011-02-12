@@ -41,49 +41,49 @@ namespace ListHeaderProperties
 {
 String	SortSettingEnabled::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isSortingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeader*>(receiver)->isSortingEnabled());
 }
 
 
 void	SortSettingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeader*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<ListHeader*>(receiver)->setSortingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ColumnsSizable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isColumnSizingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeader*>(receiver)->isColumnSizingEnabled());
 }
 
 
 void	ColumnsSizable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeader*>(receiver)->setColumnSizingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<ListHeader*>(receiver)->setColumnSizingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ColumnsMovable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isColumnDraggingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeader*>(receiver)->isColumnDraggingEnabled());
 }
 
 
 void	ColumnsMovable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeader*>(receiver)->setColumnDraggingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<ListHeader*>(receiver)->setColumnDraggingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	SortColumnID::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const ListHeader*>(receiver)->getSortSegment().getID());
+	return PropertyHelper<uint>::toString(static_cast<const ListHeader*>(receiver)->getSortSegment().getID());
 }
 
 
 void	SortColumnID::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeader*>(receiver)->setSortColumnFromID(PropertyHelper::stringToUint(value));
+	static_cast<ListHeader*>(receiver)->setSortColumnFromID(PropertyHelper<uint>::fromString(value));
 }
 
 

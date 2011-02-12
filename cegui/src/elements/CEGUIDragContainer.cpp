@@ -178,7 +178,7 @@ namespace CEGUI
         addProperty(&d_useFixedDragOffsetProperty);
     }
 
-    bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
+    bool DragContainer::isDraggingThresholdExceeded(const Vector2& local_mouse)
     {
         // calculate amount mouse has moved.
         float	deltaX = fabsf(local_mouse.d_x - d_dragPoint.d_x.asAbsolute(d_pixelSize.d_width));
@@ -209,7 +209,7 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::doDragging(const Point& local_mouse)
+    void DragContainer::doDragging(const Vector2& local_mouse)
     {
         // calculate amount to move
         UVector2 offset(cegui_absdim(local_mouse.d_x), cegui_absdim(local_mouse.d_y));

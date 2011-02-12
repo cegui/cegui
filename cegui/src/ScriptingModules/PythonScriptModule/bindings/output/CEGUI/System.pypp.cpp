@@ -50,16 +50,7 @@ void register_System_class(){
 
     { //::CEGUI::System
         typedef bp::class_< System_wrapper, bp::bases< CEGUI::Singleton< CEGUI::System >, CEGUI::EventSet >, boost::noncopyable > System_exposer_t;
-        System_exposer_t System_exposer = System_exposer_t( "System", "*!\n\
-        \n\
-           The System class is the CEGUI class that provides access to all other elements in this system.\n\
-        \n\
-           This object must be created by the client application.  The System object requires that you pass\
-           it\n\
-           an initialised Renderer object which it can use to interface to whatever rendering system will\
-           be\n\
-           used to display the GUI imagery.\n\
-        *\n", bp::no_init );
+        System_exposer_t System_exposer = System_exposer_t( "System", bp::no_init );
         bp::scope System_scope( System_exposer );
         { //::CEGUI::System::create
         

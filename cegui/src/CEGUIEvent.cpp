@@ -33,6 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
 /*!
 \brief
     Implementation helper functor which is used to locate a BoundSlot in the
@@ -55,14 +56,13 @@ private:
     const BoundSlot& d_s;
 };
 
-
-
+//----------------------------------------------------------------------------//
 Event::Event(const String& name) :
     d_name(name)
 {
 }
 
-
+//----------------------------------------------------------------------------//
 Event::~Event()
 {
     SlotContainer::iterator iter(d_slots.begin());
@@ -77,21 +77,22 @@ Event::~Event()
     d_slots.clear();
 }
 
-
+//----------------------------------------------------------------------------//
 Event::Connection Event::subscribe(const Event::Subscriber& slot)
 {
     return subscribe(static_cast<Group>(-1), slot);
 }
 
-
-Event::Connection Event::subscribe(Event::Group group, const Event::Subscriber& slot)
+//----------------------------------------------------------------------------//
+Event::Connection Event::subscribe(Event::Group group,
+                                   const Event::Subscriber& slot)
 {
     Event::Connection c(new BoundSlot(group, slot, *this));
     d_slots.insert(std::pair<Group, Connection>(group, c));
     return c;
 }
 
-
+//----------------------------------------------------------------------------//
 void Event::operator()(EventArgs& args)
 {
     SlotContainer::iterator iter(d_slots.begin());
@@ -103,7 +104,7 @@ void Event::operator()(EventArgs& args)
             ++args.handled;
 }
 
-
+//----------------------------------------------------------------------------//
 void Event::unsubscribe(const BoundSlot& slot)
 {
     // try to find the slot in our collection
@@ -116,6 +117,8 @@ void Event::unsubscribe(const BoundSlot& slot)
     if (curr != d_slots.end())
         d_slots.erase(curr);
 }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

@@ -10,15 +10,7 @@ void register_Scheme_class(){
 
     { //::CEGUI::Scheme
         typedef bp::class_< CEGUI::Scheme, boost::noncopyable > Scheme_exposer_t;
-        Scheme_exposer_t Scheme_exposer = Scheme_exposer_t( "Scheme", "*!\n\
-        \n\
-           A class that groups a set of GUI elements and initialises the system to access those elements.\n\
-        \n\
-           A GUI Scheme is a high-level construct that loads and initialises various lower-level objects\n\
-           and registers them within the system for usage.  So, for example, a Scheme might create some\n\
-           Imageset objects, some Font objects, and register a collection of WindowFactory objects within\n\
-           the system which would then be in a state to serve those elements to client code.\n\
-        *\n", bp::no_init );
+        Scheme_exposer_t Scheme_exposer = Scheme_exposer_t( "Scheme", bp::no_init );
         bp::scope Scheme_scope( Scheme_exposer );
         { //::CEGUI::Scheme::getDefaultResourceGroup
         

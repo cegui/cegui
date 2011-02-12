@@ -48,7 +48,7 @@ const String MouseCursor::EventNamespace("MouseCursor");
 // singleton instance pointer
 template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= 0;
 bool MouseCursor::s_initialPositionSet = false;
-Point MouseCursor::s_initialPosition(0.0f, 0.0f);
+Vector2 MouseCursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
@@ -76,8 +76,8 @@ MouseCursor::MouseCursor(void) :
         setPosition(s_initialPosition);
     else
     	// mouse defaults to middle of the constrained area
-        setPosition(Point(screenArea.getWidth() / 2,
-                          screenArea.getHeight() / 2));
+        setPosition(Vector2(screenArea.getWidth() / 2,
+                            screenArea.getHeight() / 2));
 
 	// mouse defaults to visible
 	d_visible = true;
@@ -150,7 +150,7 @@ void MouseCursor::draw(void) const
 /*************************************************************************
 	Set the current mouse cursor position
 *************************************************************************/
-void MouseCursor::setPosition(const Point& position)
+void MouseCursor::setPosition(const Vector2& position)
 {
     d_position = position;
 	constrainPosition();
@@ -162,7 +162,7 @@ void MouseCursor::setPosition(const Point& position)
 /*************************************************************************
 	Offset the mouse cursor position by the deltas specified in 'offset'.
 *************************************************************************/
-void MouseCursor::offsetPosition(const Point& offset)
+void MouseCursor::offsetPosition(const Vector2& offset)
 {
 	d_position.d_x += offset.d_x;
 	d_position.d_y += offset.d_y;
@@ -265,11 +265,11 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 	Return the current mouse cursor position in display resolution
 	independant values.
 *************************************************************************/
-Point MouseCursor::getDisplayIndependantPosition(void) const
+Vector2 MouseCursor::getDisplayIndependantPosition(void) const
 {
     Size dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
-    return Point(d_position.d_x / (dsz.d_width - 1.0f),
+    return Vector2(d_position.d_x / (dsz.d_width - 1.0f),
                  d_position.d_y / (dsz.d_height - 1.0f));
 }
 
@@ -321,7 +321,7 @@ void MouseCursor::cacheGeometry() const
 void MouseCursor::calculateCustomOffset() const
 {
     const Size sz(d_cursorImage->getSize());
-    const Point offset(d_cursorImage->getOffsets());
+    const Vector2 offset(d_cursorImage->getOffsets());
 
     d_customOffset.d_x =
         d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
@@ -330,7 +330,7 @@ void MouseCursor::calculateCustomOffset() const
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setInitialMousePosition(const Point& position)
+void MouseCursor::setInitialMousePosition(const Vector2& position)
 {
     s_initialPosition = position; 
     s_initialPositionSet = true;

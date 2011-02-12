@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUILayout>
-<Window Type="DefaultGUISheet" Name="root">
-    <Window Type="DefaultGUISheet" Name="Demo8">
+<Window Type="DefaultWindow" Name="root">
+    <Window Type="DefaultWindow" Name="Demo8">
         <Property Name="UnifiedMaxSize" Value="{{1,0},{2,0}}" />
         <Property Name="UnifiedSize" Value="{{1,0},{2,0}}" />
 

@@ -593,7 +593,7 @@ public:
         position \a pt, or 0 if no ListboxItem attached to this Listbox is at
         that position.
 	*/
-    ListboxItem* getItemAtPoint(const Point& pt) const;
+    ListboxItem* getItemAtPoint(const Vector2& pt) const;
 
 
 	/*************************************************************************
@@ -762,7 +762,8 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::vector<ListboxItem*>	LBItemList;
+	typedef	std::vector<ListboxItem*
+        CEGUI_VECTOR_ALLOC(ListboxItem*)> LBItemList;
 	bool	d_sorted;				//!< true if list is sorted
 	bool	d_multiselect;			//!< true if multi-select is enabled
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed

@@ -65,12 +65,12 @@ bool String::grow(size_type new_size)
 
     if (new_size > d_reserve)
     {
-        utf32* temp = new utf32[new_size];
+        utf32* temp = CEGUI_NEW_ARRAY_PT(utf32, new_size, String);
 
         if (d_reserve > STR_QUICKBUFF_SIZE)
         {
             memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
-            delete[] d_buffer;
+            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
         }
         else
         {
@@ -98,15 +98,15 @@ void String::trim(void)
         if (min_size <= STR_QUICKBUFF_SIZE)
         {
             memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
-            delete[] d_buffer;
+            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
             d_reserve = STR_QUICKBUFF_SIZE;
         }
         // re-allocate buffer
         else
         {
-            utf32* temp = new utf32[min_size];
+            utf32* temp = CEGUI_NEW_ARRAY_PT(utf32, min_size, String);
             memcpy(temp, d_buffer, min_size * sizeof(utf32));
-            delete[] d_buffer;
+            CEGUI_DELETE_ARRAY_PT(d_buffer, utf32, d_reserve, String);
             d_buffer = temp;
             d_reserve = min_size;
         }
@@ -124,10 +124,10 @@ utf8* String::build_utf8_buff(void) const
 
         if (d_encodedbufflen > 0)
         {
-            delete[] d_encodedbuff;
+            CEGUI_DELETE_ARRAY_PT(d_encodedbuff, utf8, d_encodedbufflen, String);
         }
 
-        d_encodedbuff = new utf8[buffsize];
+        d_encodedbuff = CEGUI_NEW_ARRAY_PT(utf8, buffsize, String);
         d_encodedbufflen = buffsize;
     }
 

@@ -400,7 +400,7 @@ void register_Listbox_class(){
         }
         { //::CEGUI::Listbox::getItemAtPoint
         
-            typedef ::CEGUI::ListboxItem * ( ::CEGUI::Listbox::*getItemAtPoint_function_type )( ::CEGUI::Point const & ) const;
+            typedef ::CEGUI::ListboxItem * ( ::CEGUI::Listbox::*getItemAtPoint_function_type )( ::CEGUI::Vector2 const & ) const;
             
             Listbox_exposer.def( 
                 "getItemAtPoint"

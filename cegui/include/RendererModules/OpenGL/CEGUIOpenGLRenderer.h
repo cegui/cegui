@@ -36,7 +36,7 @@
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef OPENGL_GUIRENDERER_EXPORTS
+#   ifdef CEGUIOPENGLRENDERER_EXPORTS
 #       define OPENGL_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define OPENGL_GUIRENDERER_API __declspec(dllimport)

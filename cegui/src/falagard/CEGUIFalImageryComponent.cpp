@@ -92,7 +92,7 @@ namespace CEGUI
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
-            PropertyHelper::stringToImage(srcWindow.getProperty(d_imagePropertyName)) :
+            PropertyHelper<Image*>::fromString(srcWindow.getProperty(d_imagePropertyName)) :
             d_image;
 
         // do not draw anything if image is not set.

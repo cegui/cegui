@@ -1075,6 +1075,9 @@ void register_ListHeader_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         ListHeader_exposer.def_readonly( "MinimumSegmentPixelWidth", CEGUI::ListHeader::MinimumSegmentPixelWidth, "values\n" );
         ListHeader_exposer.def_readonly( "ScrollSpeed", CEGUI::ListHeader::ScrollSpeed, "values\n" );
+        ListHeader_exposer.add_static_property( "SegmentNameSuffix"
+                        , bp::make_getter( &CEGUI::ListHeader::SegmentNameSuffix
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;

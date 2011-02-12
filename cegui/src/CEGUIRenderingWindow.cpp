@@ -47,7 +47,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),
-    d_rotation(0, 0, 0)
+    d_rotation(Quaternion::IDENTITY)
 {
     d_geometry->setBlendMode(BM_RTT_PREMULTIPLIED);
 }
@@ -103,7 +103,7 @@ void RenderingWindow::setSize(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setRotation(const Vector3& rotation)
+void RenderingWindow::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
     d_geometry->setRotation(d_rotation);
@@ -129,7 +129,7 @@ const Size& RenderingWindow::getSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector3& RenderingWindow::getRotation() const
+const Quaternion& RenderingWindow::getRotation() const
 {
     return d_rotation;
 }
@@ -261,7 +261,7 @@ void RenderingWindow::realiseGeometry_impl()
                         Rect(0, 0, tu, tv));
 
     const Rect area(0, 0, d_size.d_width, d_size.d_height);
-    const colour c(1, 1, 1, 1);
+    const Colour c(1, 1, 1, 1);
     Vertex vbuffer[6];
 
     // vertex 0
@@ -302,9 +302,7 @@ void RenderingWindow::realiseGeometry_impl()
 void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
 {
     // quick test for rotations to save us a lot of work in the unrotated case
-    if ((d_rotation.d_x == 0.0f) &&
-        (d_rotation.d_y == 0.0f) &&
-        (d_rotation.d_z == 0.0f))
+    if ((d_rotation == Quaternion::IDENTITY))
     {
         p_out = p_in;
         return;

@@ -10,10 +10,7 @@ void register_URect_class(){
 
     { //::CEGUI::URect
         typedef bp::class_< CEGUI::URect > URect_exposer_t;
-        URect_exposer_t URect_exposer = URect_exposer_t( "URect", "*!\n\
-        \n\
-            Area rectangle class built using unified dimensions (UDims).\n\
-        *\n", bp::init< >() );
+        URect_exposer_t URect_exposer = URect_exposer_t( "URect", bp::init< >() );
         bp::scope URect_scope( URect_exposer );
         URect_exposer.def( bp::init< CEGUI::UVector2 const &, CEGUI::UVector2 const & >(( bp::arg("min"), bp::arg("max") )) );
         URect_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") )) );
@@ -85,6 +82,7 @@ void register_URect_class(){
                 , ( bp::arg("sz") ) );
         
         }
+        URect_exposer.def( bp::self * bp::other< float >() );
         URect_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         URect_exposer.def( bp::self + bp::self );
         { //::CEGUI::URect::setHeight

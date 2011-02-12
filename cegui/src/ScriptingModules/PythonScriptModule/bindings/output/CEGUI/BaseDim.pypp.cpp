@@ -46,10 +46,7 @@ void register_BaseDim_class(){
 
     { //::CEGUI::BaseDim
         typedef bp::class_< BaseDim_wrapper, boost::noncopyable > BaseDim_exposer_t;
-        BaseDim_exposer_t BaseDim_exposer = BaseDim_exposer_t( "BaseDim", "*!\n\
-        \n\
-            Abstract interface for a generic 'dimension' class.\n\
-        *\n", bp::init< >() );
+        BaseDim_exposer_t BaseDim_exposer = BaseDim_exposer_t( "BaseDim", bp::init< >() );
         bp::scope BaseDim_scope( BaseDim_exposer );
         { //::CEGUI::BaseDim::clone
         

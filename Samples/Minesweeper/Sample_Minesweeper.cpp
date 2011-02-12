@@ -157,12 +157,12 @@ bool MinesweeperSample::initialiseSample()
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
     d_alarm = (Timer*)winMgr.createWindow("Timer");
-    background->addChildWindow(d_alarm);
+    background->addChild(d_alarm);
     d_alarm->setDelay(0.5); // Tick each 0.5 seconds
 
     // create the game frame
     Window* frame = winMgr.createWindow("Vanilla/FrameWindow");
-    d_alarm->addChildWindow(frame);
+    d_alarm->addChild(frame);
     frame->setXPosition(UDim(0.3f, 0.0f));
     frame->setYPosition(UDim(0.15f, 0.0f));
     frame->setWidth(UDim(0.4f, 0.0f)); 
@@ -171,13 +171,13 @@ bool MinesweeperSample::initialiseSample()
 
     // create the action panel
     Window* action = winMgr.createWindow("DefaultWindow");
-    frame->addChildWindow(action);
+    frame->addChild(action);
     action->setXPosition(UDim(0.03f, 0.0f));
     action->setYPosition(UDim(0.10f, 0.0f));
     action->setWidth(UDim(0.94f, 0.0f));
     action->setHeight(UDim(0.1f, 0.0f));
     d_counter = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "mine_counter");
-    action->addChildWindow(d_counter);
+    action->addChild(d_counter);
     d_counter->setText("0");
     d_counter->setTooltipText("Number of mine");
     d_counter->setReadOnly(true);
@@ -187,7 +187,7 @@ bool MinesweeperSample::initialiseSample()
     d_counter->setHeight(UDim(1.0f, 0.0f));
 
     Window* newGame = winMgr.createWindow("Vanilla/Button", "new_game");
-    action->addChildWindow(newGame);
+    action->addChild(newGame);
     newGame->setText("Start");
     newGame->setTooltipText("Start a new game");
     newGame->setXPosition(UDim(0.35f, 0.0f));
@@ -197,7 +197,7 @@ bool MinesweeperSample::initialiseSample()
     newGame->subscribeEvent(PushButton::EventClicked,  Event::Subscriber(&MinesweeperSample::handleGameStartClicked, this));
 
     d_timer = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "timer");
-    action->addChildWindow(d_timer);
+    action->addChild(d_timer);
     d_timer->setText("0");
     d_timer->setTooltipText("Time elapsed");
     d_timer->setReadOnly(true);
@@ -209,7 +209,7 @@ bool MinesweeperSample::initialiseSample()
 
     // Board button grid
     Window* grid = winMgr.createWindow("DefaultWindow");
-    frame->addChildWindow(grid);
+    frame->addChild(grid);
     grid->setXPosition(UDim(0.03f, 0.0f));
     grid->setYPosition(UDim(0.23f, 0.0f));
     grid->setWidth(    UDim(0.94f, 0.0f));
@@ -221,14 +221,14 @@ bool MinesweeperSample::initialiseSample()
         Window* row = winMgr.createWindow("DefaultWindow");
         row->setArea(URect(UDim(0,0), UDim(d_inc * i, 0),
             UDim(1,0), UDim(d_inc * (i + 1), 0)));
-        grid->addChildWindow(row);
+        grid->addChild(row);
         for(size_t j = 0 ; j < MinesweeperSize ; ++j)
         {
             // Initialize buttons coordinate
             d_buttonsMapping[i][j].d_col = j;
             d_buttonsMapping[i][j].d_row = i;
             d_buttons[i][j] = (PushButton*)winMgr.createWindow("Vanilla/Button");
-            row->addChildWindow(d_buttons[i][j]);
+            row->addChild(d_buttons[i][j]);
             d_buttons[i][j]->setArea(URect(UDim(d_inc * j, 0), UDim(0,0),
                                  UDim(d_inc * (j + 1), 0), UDim(1,0)));
             d_buttons[i][j]->setEnabled(false);
@@ -241,7 +241,7 @@ bool MinesweeperSample::initialiseSample()
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");
-    grid->addChildWindow(d_result);
+    grid->addChild(d_result);
     d_result->setXPosition(UDim(0.0, 0.0));
     d_result->setYPosition(UDim(0.0, 0.0));
     d_result->setWidth(UDim(1.0, 0.0));
@@ -281,7 +281,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
             d_buttons[i][j]->setEnabled(true);
         }
     }
-    d_counter->setText(CEGUI::PropertyHelper::uintToString(MineCount));
+    d_counter->setText(CEGUI::PropertyHelper<CEGUI::uint>::toString(MineCount));
     // Handle timer
     d_timerStartTime = ::clock();
     d_timerValue = 0;
@@ -306,7 +306,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     if (boardDiscover(*buttonLoc))
     {
         // We did not find a mine
-        button->setText(CEGUI::PropertyHelper::uintToString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
+        button->setText(CEGUI::PropertyHelper<CEGUI::uint>::toString(d_board[buttonLoc->d_row][buttonLoc->d_col]));
         if (isGameWin())
             gameEnd(true);
     }
@@ -325,7 +325,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
                     }
                     else
                     {
-                        d_buttons[i][j]->setText(CEGUI::PropertyHelper::uintToString(d_board[i][j]));
+                        d_buttons[i][j]->setText(CEGUI::PropertyHelper<CEGUI::uint>::toString(d_board[i][j]));
                     }
                 }
                 d_buttons[i][j]->setEnabled(false);
@@ -372,7 +372,7 @@ bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
         time -= d_timerStartTime;
         if (time != d_timerValue)
         {
-            d_timer->setText(CEGUI::PropertyHelper::uintToString(time /  CLOCKS_PER_SEC));
+            d_timer->setText(CEGUI::PropertyHelper<CEGUI::uint>::toString(time /  CLOCKS_PER_SEC));
             d_timerValue = time;
         }
     }
@@ -474,7 +474,7 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
 
     if (d_board[loc.d_row][loc.d_col] > 8)
         return false;
-    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper::uintToString(d_board[loc.d_row][loc.d_col]));
+    d_buttons[loc.d_row][loc.d_col]->setText(CEGUI::PropertyHelper<CEGUI::uint>::toString(d_board[loc.d_row][loc.d_col]));
     d_buttons[loc.d_row][loc.d_col]->setEnabled(false);
     ++d_boardCellDiscovered;
     // Discover surrounding case

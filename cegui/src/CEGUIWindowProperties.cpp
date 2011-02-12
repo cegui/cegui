@@ -42,29 +42,6 @@ namespace CEGUI
 // Start of WindowProperties namespace section
 namespace WindowProperties
 {
-String ID::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::uintToString(static_cast<const Window*>(receiver)->getID());
-}
-
-
-void ID::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setID(PropertyHelper::stringToUint(value));
-}
-
-
-String Alpha::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAlpha());
-}
-
-
-void Alpha::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setAlpha(PropertyHelper::stringToFloat(value));
-}
-
 
 String Font::get(const PropertyReceiver* receiver) const
 {
@@ -105,25 +82,13 @@ bool Font::isDefault(const PropertyReceiver* receiver) const
 }
 
 
-String Text::get(const PropertyReceiver* receiver) const
-{
-	return static_cast<const Window*>(receiver)->getText();
-}
-
-
-void Text::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setText(value);
-}
-
-
 String MouseCursorImage::get(const PropertyReceiver* receiver) const
 {
 	const Image* img = static_cast<const Window*>(receiver)->getMouseCursor();
 
 	if (img)
 	{
-		return PropertyHelper::imageToString(img);
+		return PropertyHelper<Image*>::toString(img);
 	}
 	else
 	{
@@ -136,7 +101,7 @@ void MouseCursorImage::set(PropertyReceiver* receiver, const String& value)
 {
 	if (!value.empty())
 	{
-		static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper::stringToImage(value));
+		static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper<Image*>::fromString(value));
 	}
 }
 
@@ -148,49 +113,37 @@ bool MouseCursorImage::isDefault(const PropertyReceiver* receiver) const
 
 String ClippedByParent::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isClippedByParent());
+	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isClippedByParent());
 }
 
 
 void ClippedByParent::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setClippedByParent(PropertyHelper::stringToBool(value));
-}
-
-
-String InheritsAlpha::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->inheritsAlpha());
-}
-
-
-void InheritsAlpha::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setInheritsAlpha(PropertyHelper::stringToBool(value));
+	static_cast<Window*>(receiver)->setClippedByParent(PropertyHelper<bool>::fromString(value));
 }
 
 
 String AlwaysOnTop::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isAlwaysOnTop());
+	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isAlwaysOnTop());
 }
 
 
 void AlwaysOnTop::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setAlwaysOnTop(PropertyHelper::stringToBool(value));
+	static_cast<Window*>(receiver)->setAlwaysOnTop(PropertyHelper<bool>::fromString(value));
 }
 
 
 String Disabled::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDisabled());
+	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDisabled());
 }
 
 
 void Disabled::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setEnabled(!PropertyHelper::stringToBool(value));
+	static_cast<Window*>(receiver)->setEnabled(!PropertyHelper<bool>::fromString(value));
 }
 
 bool Disabled::isDefault(const PropertyReceiver* receiver) const
@@ -201,13 +154,13 @@ bool Disabled::isDefault(const PropertyReceiver* receiver) const
 
 String Visible::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isVisible());
+	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isVisible());
 }
 
 
 void Visible::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setVisible(PropertyHelper::stringToBool(value));
+	static_cast<Window*>(receiver)->setVisible(PropertyHelper<bool>::fromString(value));
 }
 
 bool Visible::isDefault(const PropertyReceiver* receiver) const
@@ -215,100 +168,74 @@ bool Visible::isDefault(const PropertyReceiver* receiver) const
     return static_cast<const Window*>(receiver)->isVisible(true);
 }
 
-
-String RestoreOldCapture::get(const PropertyReceiver* receiver) const
-{
-	return	PropertyHelper::boolToString(static_cast<const Window*>(receiver)->restoresOldCapture());
-}
-
-
-void RestoreOldCapture::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setRestoreCapture(PropertyHelper::stringToBool(value));
-}
-
-
 String DestroyedByParent::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDestroyedByParent());
+	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDestroyedByParent());
 }
 
 
 void DestroyedByParent::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setDestroyedByParent(PropertyHelper::stringToBool(value));
+	static_cast<Window*>(receiver)->setDestroyedByParent(PropertyHelper<bool>::fromString(value));
 }
-
-
-String ZOrderChangeEnabled::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isZOrderingEnabled());
-}
-
-
-void ZOrderChangeEnabled::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setZOrderingEnabled(PropertyHelper::stringToBool(value));
-}
-
 
 String WantsMultiClickEvents::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->wantsMultiClickEvents());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->wantsMultiClickEvents());
 }
 
 
 void WantsMultiClickEvents::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWantsMultiClickEvents(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setWantsMultiClickEvents(PropertyHelper<bool>::fromString(value));
 }
 
 
 String MouseButtonDownAutoRepeat::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isMouseAutoRepeatEnabled());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isMouseAutoRepeatEnabled());
 }
 
 
 void MouseButtonDownAutoRepeat::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setMouseAutoRepeatEnabled(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setMouseAutoRepeatEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String AutoRepeatDelay::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAutoRepeatDelay());
+    return PropertyHelper<float>::toString(static_cast<const Window*>(receiver)->getAutoRepeatDelay());
 }
 
 
 void AutoRepeatDelay::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setAutoRepeatDelay(PropertyHelper::stringToFloat(value));
+    static_cast<Window*>(receiver)->setAutoRepeatDelay(PropertyHelper<float>::fromString(value));
 }
 
 
 String AutoRepeatRate::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAutoRepeatRate());
+    return PropertyHelper<float>::toString(static_cast<const Window*>(receiver)->getAutoRepeatRate());
 }
 
 
 void AutoRepeatRate::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setAutoRepeatRate(PropertyHelper::stringToFloat(value));
+    static_cast<Window*>(receiver)->setAutoRepeatRate(PropertyHelper<float>::fromString(value));
 }
 
 
 String DistributeCapturedInputs::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->distributesCapturedInputs());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->distributesCapturedInputs());
 }
 
 
 void DistributeCapturedInputs::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setDistributesCapturedInputs(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setDistributesCapturedInputs(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -346,25 +273,25 @@ void Tooltip::set(PropertyReceiver* receiver, const String& value)
 
 String InheritsTooltipText::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->inheritsTooltipText());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->inheritsTooltipText());
 }
 
 
 void InheritsTooltipText::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setInheritsTooltipText(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setInheritsTooltipText(PropertyHelper<bool>::fromString(value));
 }
 
 
 String RiseOnClick::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isRiseOnClickEnabled());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isRiseOnClickEnabled());
 }
 
 
 void RiseOnClick::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setRiseOnClickEnabled(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setRiseOnClickEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -446,111 +373,111 @@ void HorizontalAlignment::set(PropertyReceiver* receiver, const String& value)
 
 String UnifiedAreaRect::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::urectToString(static_cast<const Window*>(receiver)->getArea());
+    return PropertyHelper<URect>::toString(static_cast<const Window*>(receiver)->getArea());
 }
 
 void UnifiedAreaRect::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setArea(PropertyHelper::stringToURect(value));
+    static_cast<Window*>(receiver)->setArea(PropertyHelper<URect>::fromString(value));
 }
 
 
 String UnifiedPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getPosition());
+    return PropertyHelper<UVector2>::toString(static_cast<const Window*>(receiver)->getPosition());
 }
 
 void UnifiedPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setPosition(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setPosition(PropertyHelper<UVector2>::fromString(value));
 }
 
 
 String UnifiedXPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getXPosition());
+    return PropertyHelper<UDim>::toString(static_cast<const Window*>(receiver)->getXPosition());
 }
 
 void UnifiedXPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setXPosition(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setXPosition(PropertyHelper<UDim>::fromString(value));
 }
 
 
 String UnifiedYPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getYPosition());
+    return PropertyHelper<UDim>::toString(static_cast<const Window*>(receiver)->getYPosition());
 }
 
 void UnifiedYPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setYPosition(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setYPosition(PropertyHelper<UDim>::fromString(value));
 }
 
 
 String UnifiedSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getSize());
+    return PropertyHelper<UVector2>::toString(static_cast<const Window*>(receiver)->getSize());
 }
 
 void UnifiedSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setSize(PropertyHelper<UVector2>::fromString(value));
 }
 
 
 String UnifiedWidth::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWidth());
+    return PropertyHelper<UDim>::toString(static_cast<const Window*>(receiver)->getWidth());
 }
 
 void UnifiedWidth::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWidth(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setWidth(PropertyHelper<UDim>::fromString(value));
 }
 
 
 String UnifiedHeight::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getHeight());
+    return PropertyHelper<UDim>::toString(static_cast<const Window*>(receiver)->getHeight());
 }
 
 void UnifiedHeight::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setHeight(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setHeight(PropertyHelper<UDim>::fromString(value));
 }
 
 
 String UnifiedMinSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getMinSize());
+    return PropertyHelper<UVector2>::toString(static_cast<const Window*>(receiver)->getMinSize());
 }
 
 void UnifiedMinSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setMinSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setMinSize(PropertyHelper<UVector2>::fromString(value));
 }
 
 
 String UnifiedMaxSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getMaxSize());
+    return PropertyHelper<UVector2>::toString(static_cast<const Window*>(receiver)->getMaxSize());
 }
 
 void UnifiedMaxSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setMaxSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setMaxSize(PropertyHelper<UVector2>::fromString(value));
 }
 
 
 String MousePassThroughEnabled::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isMousePassThroughEnabled());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isMousePassThroughEnabled());
 }
 
 void MousePassThroughEnabled::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setMousePassThroughEnabled(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setMousePassThroughEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -597,19 +524,19 @@ void LookNFeel::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer
 
 String DragDropTarget::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDragDropTarget());
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDragDropTarget());
 }
 
 
 void DragDropTarget::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setDragDropTarget(PropertyHelper::stringToBool(value));
+    static_cast<Window*>(receiver)->setDragDropTarget(PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
 String AutoRenderingSurface::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(
+    return PropertyHelper<bool>::toString(
         static_cast<const Window*>(receiver)->isUsingAutoRenderingSurface());
 }
 
@@ -617,13 +544,13 @@ String AutoRenderingSurface::get(const PropertyReceiver* receiver) const
 void AutoRenderingSurface::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setUsingAutoRenderingSurface(
-        PropertyHelper::stringToBool(value));
+        PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
 String Rotation::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::vector3ToString(
+    return PropertyHelper<Quaternion>::toString(
         static_cast<const Window*>(receiver)->getRotation());
 }
 
@@ -631,61 +558,13 @@ String Rotation::get(const PropertyReceiver* receiver) const
 void Rotation::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setRotation(
-        PropertyHelper::stringToVector3(value));
-}
-
-//----------------------------------------------------------------------------//
-String XRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper::floatToString(v.d_x);
-}
-
-//----------------------------------------------------------------------------//
-void XRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper::stringToFloat(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_x = v;
-    static_cast<Window*>(receiver)->setRotation(r);
-}
-
-//----------------------------------------------------------------------------//
-String YRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper::floatToString(v.d_y);
-}
-
-//----------------------------------------------------------------------------//
-void YRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper::stringToFloat(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_y = v;
-    static_cast<Window*>(receiver)->setRotation(r);
-}
-
-//----------------------------------------------------------------------------//
-String ZRotation::get(const PropertyReceiver* receiver) const
-{
-    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
-    return PropertyHelper::floatToString(v.d_z);
-}
-
-//----------------------------------------------------------------------------//
-void ZRotation::set(PropertyReceiver* receiver, const String& value)
-{
-    const float v = PropertyHelper::stringToFloat(value);
-    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
-    r.d_z = v;
-    static_cast<Window*>(receiver)->setRotation(r);
+        PropertyHelper<Quaternion>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
 String NonClient::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(
+    return PropertyHelper<bool>::toString(
         static_cast<const Window*>(receiver)->isNonClientWindow());
 }
 
@@ -693,13 +572,13 @@ String NonClient::get(const PropertyReceiver* receiver) const
 void NonClient::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->
-        setNonClientWindow(PropertyHelper::stringToBool(value));
+        setNonClientWindow(PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
 String TextParsingEnabled::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(
+    return PropertyHelper<bool>::toString(
         static_cast<const Window*>(receiver)->isTextParsingEnabled());
 }
 
@@ -707,13 +586,13 @@ String TextParsingEnabled::get(const PropertyReceiver* receiver) const
 void TextParsingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->
-        setTextParsingEnabled(PropertyHelper::stringToBool(value));
+        setTextParsingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
 String Margin::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uboxToString(
+	return PropertyHelper<UBox>::toString(
         static_cast<const Window*>(receiver)->getMargin());
 }
 
@@ -721,7 +600,7 @@ String Margin::get(const PropertyReceiver* receiver) const
 void Margin::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->
-        setMargin(PropertyHelper::stringToUBox(value));
+        setMargin(PropertyHelper<UBox>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
@@ -758,7 +637,7 @@ void UpdateMode::set(PropertyReceiver* receiver, const String& value)
 //----------------------------------------------------------------------------//
 String MouseInputPropagationEnabled::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->
+    return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->
         isMouseInputPropagationEnabled());
 }
 
@@ -767,7 +646,7 @@ void MouseInputPropagationEnabled::set(PropertyReceiver* receiver,
                                        const String& value)
 {
     static_cast<Window*>(receiver)->
-        setMouseInputPropagationEnabled(PropertyHelper::stringToBool(value));
+        setMouseInputPropagationEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//

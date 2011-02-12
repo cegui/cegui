@@ -85,7 +85,7 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const CEGUI::colour c(1, 1, 1, 1);
+    static const CEGUI::Colour c(1, 1, 1, 1);
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
@@ -295,7 +295,7 @@ bool Demo7Sample::initialiseSample()
     // load the windows for Demo7 from the layout file.
     Window* sheet = winMgr.loadWindowLayout("Demo7Windows.layout");
     // attach this to the 'real' root
-    background->addChildWindow(sheet);
+    background->addChild(sheet);
     // set-up the contents of the list boxes.
     createListContent();
     // initialise the event handling.

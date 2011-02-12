@@ -42,37 +42,37 @@ namespace MultiColumnListProperties
 {
 String	ColumnsSizable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserColumnSizingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const MultiColumnList*>(receiver)->isUserColumnSizingEnabled());
 }
 
 
 void	ColumnsSizable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setUserColumnSizingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<MultiColumnList*>(receiver)->setUserColumnSizingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ColumnsMovable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserColumnDraggingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const MultiColumnList*>(receiver)->isUserColumnDraggingEnabled());
 }
 
 
 void	ColumnsMovable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setUserColumnDraggingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<MultiColumnList*>(receiver)->setUserColumnDraggingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	SortSettingEnabled::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserSortControlEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const MultiColumnList*>(receiver)->isUserSortControlEnabled());
 }
 
 
 void	SortSettingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setUserSortControlEnabled(PropertyHelper::stringToBool(value));
+	static_cast<MultiColumnList*>(receiver)->setUserSortControlEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -84,7 +84,7 @@ String	SortColumnID::get(const PropertyReceiver* receiver) const
 	// so this check doesn't hurt.
 	if (mcl->getColumnCount() > 0)
 	{
-	return PropertyHelper::uintToString(mcl->getColumnID(mcl->getSortColumn()));
+	return PropertyHelper<uint>::toString(mcl->getColumnID(mcl->getSortColumn()));
 }
 	return "0"; // Return default value. For the Setting part, responsibility lies with the caller again.
 }
@@ -92,7 +92,7 @@ String	SortColumnID::get(const PropertyReceiver* receiver) const
 
 void	SortColumnID::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setSortColumnByID(PropertyHelper::stringToUint(value));
+	static_cast<MultiColumnList*>(receiver)->setSortColumnByID(PropertyHelper<uint>::fromString(value));
 }
 
 
@@ -142,7 +142,7 @@ String	NominatedSelectionColumnID::get(const PropertyReceiver* receiver) const
 	const MultiColumnList* mcl = static_cast<const MultiColumnList*>(receiver);
 	if (mcl->getColumnCount() > 0)
 	{
-		return PropertyHelper::uintToString(mcl->getNominatedSelectionColumnID());
+		return PropertyHelper<uint>::toString(mcl->getNominatedSelectionColumnID());
 	}
 	return "0"; // Return default value. For the Setting part, responsibility lies with the caller again.
 }
@@ -150,43 +150,43 @@ String	NominatedSelectionColumnID::get(const PropertyReceiver* receiver) const
 
 void	NominatedSelectionColumnID::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionColumn(PropertyHelper::stringToUint(value));
+	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionColumn(PropertyHelper<uint>::fromString(value));
 }
 
 
 String	NominatedSelectionRow::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getNominatedSelectionRow());
+	return PropertyHelper<uint>::toString(static_cast<const MultiColumnList*>(receiver)->getNominatedSelectionRow());
 }
 
 
 void	NominatedSelectionRow::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionRow(PropertyHelper::stringToUint(value));
+	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionRow(PropertyHelper<uint>::fromString(value));
 }
 
 
 String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isVertScrollbarAlwaysShown());
+	return PropertyHelper<bool>::toString(static_cast<const MultiColumnList*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
 void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<MultiColumnList*>(receiver)->setShowVertScrollbar(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isHorzScrollbarAlwaysShown());
+	return PropertyHelper<bool>::toString(static_cast<const MultiColumnList*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
 void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiColumnList*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<MultiColumnList*>(receiver)->setShowHorzScrollbar(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -335,13 +335,13 @@ void ColumnHeader::set(PropertyReceiver* receiver, const String& value)
 
     // add the column accordingly
     static_cast<MultiColumnList*>(receiver)->addColumn(
-        caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToUDim(width));
+        caption, PropertyHelper<uint>::fromString(id), PropertyHelper<UDim>::fromString(width));
 }
 
 
 String RowCount::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getRowCount());
+	return PropertyHelper<uint>::toString(static_cast<const MultiColumnList*>(receiver)->getRowCount());
 }
 
 

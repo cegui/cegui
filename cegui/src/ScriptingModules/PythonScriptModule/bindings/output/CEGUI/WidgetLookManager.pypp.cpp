@@ -10,11 +10,7 @@ void register_WidgetLookManager_class(){
 
     { //::CEGUI::WidgetLookManager
         typedef bp::class_< CEGUI::WidgetLookManager, bp::bases< CEGUI::Singleton< CEGUI::WidgetLookManager > >, boost::noncopyable > WidgetLookManager_exposer_t;
-        WidgetLookManager_exposer_t WidgetLookManager_exposer = WidgetLookManager_exposer_t( "WidgetLookManager", "*!\n\
-        \n\
-            Manager class that gives top-level access to widget data based look and feel specifications\
-            loaded into the system.\n\
-        *\n", bp::init< >("*!\n\
+        WidgetLookManager_exposer_t WidgetLookManager_exposer = WidgetLookManager_exposer_t( "WidgetLookManager", bp::init< >("*!\n\
         \n\
             Constructor.\n\
         *\n") );

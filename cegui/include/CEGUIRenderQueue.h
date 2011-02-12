@@ -50,7 +50,8 @@ namespace CEGUI
     lifetime of the GeometryBuffer objects (and to remove them from any
     RenderQueue to which they may be attached prior to destoying them).
 */
-class CEGUIEXPORT RenderQueue
+class CEGUIEXPORT RenderQueue :
+    public AllocatedObject<RenderQueue> 
 {
 public:
     /*!
@@ -92,7 +93,8 @@ public:
 
 private:
     //! Type to use for the GeometryBuffer collection.
-    typedef std::vector<const GeometryBuffer*> BufferList;
+    typedef std::vector<const GeometryBuffer*
+        CEGUI_VECTOR_ALLOC(const GeometryBuffer)> BufferList;
     //! Collection of GeometryBuffer objects that comprise this RenderQueue.
     BufferList d_buffers;
 };

@@ -43,99 +43,99 @@ namespace MultiLineEditboxProperties
 {
 String ReadOnly::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isReadOnly());
+	return PropertyHelper<bool>::toString(static_cast<const MultiLineEditbox*>(receiver)->isReadOnly());
 }
 
 
 void ReadOnly::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiLineEditbox*>(receiver)->setReadOnly(PropertyHelper::stringToBool(value));
+	static_cast<MultiLineEditbox*>(receiver)->setReadOnly(PropertyHelper<bool>::fromString(value));
 }
 
 
 String WordWrap::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isWordWrapped());
+	return PropertyHelper<bool>::toString(static_cast<const MultiLineEditbox*>(receiver)->isWordWrapped());
 }
 
 
 void WordWrap::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiLineEditbox*>(receiver)->setWordWrapping(PropertyHelper::stringToBool(value));
+	static_cast<MultiLineEditbox*>(receiver)->setWordWrapping(PropertyHelper<bool>::fromString(value));
 }
 
 
-String CaratIndex::get(const PropertyReceiver* receiver) const
+String CaretIndex::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getCaratIndex()));
+	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getCaretIndex()));
 }
 
 
-void CaratIndex::set(PropertyReceiver* receiver, const String& value)
+void CaretIndex::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiLineEditbox*>(receiver)->setCaratIndex(PropertyHelper::stringToUint(value));
+	static_cast<MultiLineEditbox*>(receiver)->setCaretIndex(PropertyHelper<uint>::fromString(value));
 }
 
 
 String SelectionStart::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionStartIndex()));
+	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionStartIndex()));
 }
 
 
 void SelectionStart::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(receiver);
-	uint selStart = PropertyHelper::stringToUint(value);
+	uint selStart = PropertyHelper<uint>::fromString(value);
 	eb->setSelection(selStart, selStart + eb->getSelectionLength());
 }
 
 
 String SelectionLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionLength()));
+	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionLength()));
 }
 
 
 void SelectionLength::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(receiver);
-	uint selLen = PropertyHelper::stringToUint(value);
+	uint selLen = PropertyHelper<uint>::fromString(value);
 	eb->setSelection(eb->getSelectionStartIndex(), eb->getSelectionStartIndex() + selLen);
 }
 
 
 String MaxTextLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getMaxTextLength()));
+	return PropertyHelper<uint>::toString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getMaxTextLength()));
 }
 
 
 void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiLineEditbox*>(receiver)->setMaxTextLength(PropertyHelper::stringToUint(value));
+	static_cast<MultiLineEditbox*>(receiver)->setMaxTextLength(PropertyHelper<uint>::fromString(value));
 }
 
 
 String SelectionBrushImage::get(const PropertyReceiver* receiver) const
 {
     const Image* img = static_cast<const MultiLineEditbox*>(receiver)->getSelectionBrushImage();
-    return img ? PropertyHelper::imageToString(img) : String("");
+    return img ?PropertyHelper<Image*>::toString(img) : String("");
 }
 
 void SelectionBrushImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<MultiLineEditbox*>(receiver)->setSelectionBrushImage(PropertyHelper::stringToImage(value));
+    static_cast<MultiLineEditbox*>(receiver)->setSelectionBrushImage(PropertyHelper<Image*>::fromString(value));
 }
 
 String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isVertScrollbarAlwaysShown());
+	return PropertyHelper<bool>::toString(static_cast<const MultiLineEditbox*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<MultiLineEditbox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<MultiLineEditbox*>(receiver)->setShowVertScrollbar(PropertyHelper<bool>::fromString(value));
 }
 
 } // End of  MultiLineEditboxProperties namespace section

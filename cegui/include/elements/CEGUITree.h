@@ -75,7 +75,9 @@ public:
 class CEGUIEXPORT Tree : public Window
 {
     friend class TreeItem;
-    typedef	std::vector<TreeItem*>	LBItemList;
+
+    typedef	std::vector<TreeItem*
+        CEGUI_VECTOR_ALLOC(TreeItem*)> LBItemList;
     
 public:
     //! Namespace for global events
@@ -726,9 +728,9 @@ protected:
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
      */
-    TreeItem* getItemAtPoint(const Point& pt) const;
+    TreeItem* getItemAtPoint(const Vector2& pt) const;
     TreeItem* getItemFromListAtPoint(const LBItemList &itemList, float *bottomY,
-                                     const Point& pt) const;
+                                     const Vector2& pt) const;
 
     /*!
      \brief

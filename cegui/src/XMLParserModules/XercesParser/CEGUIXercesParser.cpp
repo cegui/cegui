@@ -87,7 +87,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -100,7 +100,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
