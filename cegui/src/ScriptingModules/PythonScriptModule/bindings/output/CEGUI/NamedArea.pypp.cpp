@@ -10,11 +10,7 @@ void register_NamedArea_class(){
 
     { //::CEGUI::NamedArea
         typedef bp::class_< CEGUI::NamedArea > NamedArea_exposer_t;
-        NamedArea_exposer_t NamedArea_exposer = NamedArea_exposer_t( "NamedArea", "*!\n\
-        \n\
-            NamedArea defines an area for a component which may later be obtained\n\
-            and referenced by a name unique to the WidgetLook holding the NamedArea.\n\
-        *\n", bp::init< >() );
+        NamedArea_exposer_t NamedArea_exposer = NamedArea_exposer_t( "NamedArea", bp::init< >() );
         bp::scope NamedArea_scope( NamedArea_exposer );
         NamedArea_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("name") )) );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::NamedArea >();

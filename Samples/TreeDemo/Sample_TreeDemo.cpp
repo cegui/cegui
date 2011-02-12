@@ -164,7 +164,7 @@ bool TreeDemoSample::initialiseSample()
 
    TreeDemoWindow = winMgr.loadWindowLayout(LAYOUT_FILE_NAME);
 
-   background->addChildWindow(TreeDemoWindow);
+   background->addChild(TreeDemoWindow);
 
    // listen for key presses on the root window.
    background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&TreeDemoSample::handleRootKeyDown, this));
@@ -250,7 +250,7 @@ bool TreeDemoSample::initialiseSample()
    while (levelIndex < 10)
       {
       idepthIndex = 0;
-      itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex);
+      itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex);
       newTreeCtrlEntryLvl1 = new TreeItem(itemText);
       // Set a random icon for the item.  Sometimes blank (on purpose).
       iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0])) + 2);
@@ -265,7 +265,7 @@ bool TreeDemoSample::initialiseSample()
       childCount = randInt(0, 3);
       while (childIndex < childCount)
          {
-         itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1) + " Child " + PropertyHelper::intToString(childIndex + 1);
+         itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
          newTreeCtrlEntryLvl2 = new TreeItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
@@ -279,7 +279,7 @@ bool TreeDemoSample::initialiseSample()
 
       while (idepthIndex < 15)
          {
-         itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1);
+         itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1);
          newTreeCtrlEntryLvl2 = new TreeItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
@@ -294,7 +294,7 @@ bool TreeDemoSample::initialiseSample()
          childCount = randInt(0, 3);
          while (childIndex < childCount)
             {
-            itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1) + " Child " + PropertyHelper::intToString(childIndex + 1);
+            itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
             newTreeCtrlEntryLvl2 = new TreeItem(itemText);
             // Set a random icon for the item.  Sometimes blank (on purpose).
             iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));

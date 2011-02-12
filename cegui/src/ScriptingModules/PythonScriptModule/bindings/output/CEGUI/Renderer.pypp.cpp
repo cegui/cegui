@@ -108,15 +108,7 @@ void register_Renderer_class(){
 
     { //::CEGUI::Renderer
         typedef bp::class_< Renderer_wrapper, boost::noncopyable > Renderer_exposer_t;
-        Renderer_exposer_t Renderer_exposer = Renderer_exposer_t( "Renderer", "*!\n\
-        \n\
-            Abstract class defining the basic required interface for Renderer objects.\n\
-        \n\
-            Objects derived from Renderer are the means by which the GUI system\n\
-            interfaces with specific rendering technologies.  To use a rendering system\n\
-            or API to draw CEGUI imagery requires that an appropriate Renderer object be\n\
-            available.\n\
-        *\n" );
+        Renderer_exposer_t Renderer_exposer = Renderer_exposer_t( "Renderer" );
         bp::scope Renderer_scope( Renderer_exposer );
         { //::CEGUI::Renderer::beginRendering
         

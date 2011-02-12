@@ -168,11 +168,14 @@ private:
     void autoLoadLookNFeels(const String& pattern, const String& group) const;
 
     //! type of collection holding resource group directory specifications.
-    typedef std::vector<ResourceDirectory> ResourceDirVector;
+    typedef std::vector<ResourceDirectory
+        CEGUI_VECTOR_ALLOC(ResourceDirectory)> ResourceDirVector;
     //! type of collection holding default resource group specifications.
-    typedef std::vector<DefaultResourceGroup> DefaultGroupVector;
+    typedef std::vector<DefaultResourceGroup
+        CEGUI_VECTOR_ALLOC(DefaultResourceGroup)> DefaultGroupVector;
     //! type of collection holding specifications of resources to auto-load.
-    typedef std::vector<AutoLoadResource> AutoResourceVector;
+    typedef std::vector<AutoLoadResource
+        CEGUI_VECTOR_ALLOC(AutoLoadResource)> AutoResourceVector;
     //! The name to use for the CEGUI log file.
     String d_logFileName;
     //! The logging level to be set.

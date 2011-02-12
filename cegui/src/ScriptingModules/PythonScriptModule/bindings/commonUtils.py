@@ -117,7 +117,7 @@ struct CEGUI_String_to_python
 		// "replace" replaces invalid utf32 chars with "?"
 		
 		// python wants the size of the buffer, not length of the string,
-        // this is the reason for the sizeof
+		// this is the reason for the sizeof
 		return boost::python::incref(
 			PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
 		);

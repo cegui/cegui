@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -68,10 +68,6 @@ public:
     //! Destructor.
     ~CEGuiD3D10BaseApplication();
 
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
-
 protected:
     /*************************************************************************
         Implementation Methods
@@ -83,8 +79,11 @@ protected:
     //! cleanup D3D objects / interfaces
     void cleanupDirect3D();
 
-    void doFPSUpdate(void);
-    bool overlayHandler(const CEGUI::EventArgs& args);
+    // Implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
     /*************************************************************************
         Data fields
@@ -92,15 +91,8 @@ protected:
     //! Pointer to the struct holding D3D specific fields.
     CEGuiBaseApplicationImpl* pimpl;;
 
-    // counter used to track elapsed time (for time pulse injection)
+    // counter used to track elapsed time
     DWORD d_lastFrameTime;
-    // FPS stuff
-    DWORD d_fps_lastTime;
-    int d_fps_frames;
-    int d_fps_value;
-    char d_fps_textbuff[16];
-    CEGUI::GeometryBuffer* d_fps_geometry;
-    CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 #endif  // end of guard _CEGuiD3D10BaseApplication_h_

@@ -27,16 +27,16 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         CEGUI::GridLayoutContainer::layout( );
     }
 
-    virtual void swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        if( bp::override func_swapChildWindowPositions = this->get_override( "swapChildWindowPositions" ) )
-            func_swapChildWindowPositions( wnd1, wnd2 );
+    virtual void swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        if( bp::override func_swapChildPositions = this->get_override( "swapChildPositions" ) )
+            func_swapChildPositions( wnd1, wnd2 );
         else{
-            this->CEGUI::GridLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+            this->CEGUI::GridLayoutContainer::swapChildPositions( wnd1, wnd2 );
         }
     }
     
-    void default_swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        CEGUI::GridLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+    void default_swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        CEGUI::GridLayoutContainer::swapChildPositions( wnd1, wnd2 );
     }
 
     virtual void beginInitialisation(  ) {
@@ -278,13 +278,13 @@ void register_GridLayoutContainer_class(){
             .value("AP_TopToBottom", CEGUI::GridLayoutContainer::AP_TopToBottom)
             .export_values()
             ;
-        { //::CEGUI::GridLayoutContainer::addChildWindowToPosition
+        { //::CEGUI::GridLayoutContainer::addChildToPosition
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*addChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::Window *,::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "addChildWindowToPosition"
-                , addChildWindowToPosition_function_type( &::CEGUI::GridLayoutContainer::addChildWindowToPosition )
+                "addChildToPosition"
+                , addChildToPosition_function_type( &::CEGUI::GridLayoutContainer::addChildToPosition )
                 , ( bp::arg("window"), bp::arg("gridX"), bp::arg("gridY") )
                 , "*!\n\
                 \n\
@@ -301,17 +301,17 @@ void register_GridLayoutContainer_class(){
                     setAutoPositioningIdx(..) to set it's starting point back\n\
             \n\
                 @see\n\
-                    Window.addChildWindow\n\
+                    Window.addChild\n\
                 *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::addChildWindowToPosition
+        { //::CEGUI::GridLayoutContainer::addChildToPosition
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*addChildWindowToPosition_function_type )( ::CEGUI::String const &,::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::String const &,::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "addChildWindowToPosition"
-                , addChildWindowToPosition_function_type( &::CEGUI::GridLayoutContainer::addChildWindowToPosition )
+                "addChildToPosition"
+                , addChildToPosition_function_type( &::CEGUI::GridLayoutContainer::addChildToPosition )
                 , ( bp::arg("name"), bp::arg("gridX"), bp::arg("gridY") )
                 , "*!\n\
                 \n\
@@ -328,7 +328,7 @@ void register_GridLayoutContainer_class(){
                     setAutoPositioningIdx(..) to set it's starting point back\n\
             \n\
                 @see\n\
-                    Window.addChildWindow\n\
+                    Window.addChild\n\
                 *\n" );
         
         }
@@ -359,13 +359,13 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::getChildWindowAtPosition
+        { //::CEGUI::GridLayoutContainer::getChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::GridLayoutContainer::*getChildWindowAtPosition_function_type )( ::size_t,::size_t ) ;
+            typedef ::CEGUI::Window * ( ::CEGUI::GridLayoutContainer::*getChildAtPosition_function_type )( ::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "getChildWindowAtPosition"
-                , getChildWindowAtPosition_function_type( &::CEGUI::GridLayoutContainer::getChildWindowAtPosition )
+                "getChildAtPosition"
+                , getChildAtPosition_function_type( &::CEGUI::GridLayoutContainer::getChildAtPosition )
                 , ( bp::arg("gridX"), bp::arg("gridY") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
@@ -410,7 +410,7 @@ void register_GridLayoutContainer_class(){
                 , "*!\n\
             \n\
                 Retrieves auto positioning sequence position, this will be used next\n\
-                time when addChildWindow is called.\n\
+                time when addChild is called.\n\
             *\n" );
         
         }
@@ -425,13 +425,13 @@ void register_GridLayoutContainer_class(){
                 , default_layout_function_type(&GridLayoutContainer_wrapper::default_layout) );
         
         }
-        { //::CEGUI::GridLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::GridLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::Window *,::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type( &::CEGUI::GridLayoutContainer::moveChildWindowToPosition )
+                "moveChildToPosition"
+                , moveChildToPosition_function_type( &::CEGUI::GridLayoutContainer::moveChildToPosition )
                 , ( bp::arg("wnd"), bp::arg("gridX"), bp::arg("gridY") )
                 , "*!\n\
             \n\
@@ -439,13 +439,13 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::GridLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::String const &,::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::String const &,::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type( &::CEGUI::GridLayoutContainer::moveChildWindowToPosition )
+                "moveChildToPosition"
+                , moveChildToPosition_function_type( &::CEGUI::GridLayoutContainer::moveChildToPosition )
                 , ( bp::arg("wnd"), bp::arg("gridX"), bp::arg("gridY") )
                 , "*!\n\
             \n\
@@ -453,20 +453,20 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::removeChildWindowFromPosition
+        { //::CEGUI::GridLayoutContainer::removeChildFromPosition
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*removeChildWindowFromPosition_function_type )( ::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*removeChildFromPosition_function_type )( ::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "removeChildWindowFromPosition"
-                , removeChildWindowFromPosition_function_type( &::CEGUI::GridLayoutContainer::removeChildWindowFromPosition )
+                "removeChildFromPosition"
+                , removeChildFromPosition_function_type( &::CEGUI::GridLayoutContainer::removeChildFromPosition )
                 , ( bp::arg("gridX"), bp::arg("gridY") )
                 , "*!\n\
                 \n\
                     Removes the child window that is currently at given grid position\n\
             \n\
                 @see\n\
-                    Window.removeChildWindow\n\
+                    Window.removeChild\n\
                 *\n" );
         
         }
@@ -513,29 +513,29 @@ void register_GridLayoutContainer_class(){
                 , "*!\n\
             \n\
                 Sets the next auto positioning sequence position, this will be used\n\
-                next time when addChildWindow is called.\n\
+                next time when addChild is called.\n\
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::swapChildWindowPositions
+        { //::CEGUI::GridLayoutContainer::swapChildPositions
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
-            typedef void ( GridLayoutContainer_wrapper::*default_swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( GridLayoutContainer_wrapper::*default_swapChildPositions_function_type )( ::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "swapChildWindowPositions"
-                , swapChildWindowPositions_function_type(&::CEGUI::GridLayoutContainer::swapChildWindowPositions)
-                , default_swapChildWindowPositions_function_type(&GridLayoutContainer_wrapper::default_swapChildWindowPositions)
+                "swapChildPositions"
+                , swapChildPositions_function_type(&::CEGUI::GridLayoutContainer::swapChildPositions)
+                , default_swapChildPositions_function_type(&GridLayoutContainer_wrapper::default_swapChildPositions)
                 , ( bp::arg("wnd1"), bp::arg("wnd2") ) );
         
         }
-        { //::CEGUI::GridLayoutContainer::swapChildWindowPositions
+        { //::CEGUI::GridLayoutContainer::swapChildPositions
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildWindowPositions_function_type )( ::size_t,::size_t,::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildPositions_function_type )( ::size_t,::size_t,::size_t,::size_t ) ;
             
             GridLayoutContainer_exposer.def( 
-                "swapChildWindowPositions"
-                , swapChildWindowPositions_function_type( &::CEGUI::GridLayoutContainer::swapChildWindowPositions )
+                "swapChildPositions"
+                , swapChildPositions_function_type( &::CEGUI::GridLayoutContainer::swapChildPositions )
                 , ( bp::arg("gridX1"), bp::arg("gridY1"), bp::arg("gridX2"), bp::arg("gridY2") )
                 , "*!\n\
             \n\
@@ -543,13 +543,13 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::swapChildWindows
+        { //::CEGUI::GridLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::Window *,::CEGUI::Window * ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildren_function_type )( ::CEGUI::Window *,::CEGUI::Window * ) ;
             
             GridLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::GridLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::GridLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -557,13 +557,13 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::swapChildWindows
+        { //::CEGUI::GridLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::Window *,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildren_function_type )( ::CEGUI::Window *,::CEGUI::String const & ) ;
             
             GridLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::GridLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::GridLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -571,13 +571,13 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::swapChildWindows
+        { //::CEGUI::GridLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::String const &,::CEGUI::Window * ) ;
+            typedef void ( ::CEGUI::GridLayoutContainer::*swapChildren_function_type )( ::CEGUI::String const &,::CEGUI::Window * ) ;
             
             GridLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::GridLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::GridLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -588,8 +588,8 @@ void register_GridLayoutContainer_class(){
         GridLayoutContainer_exposer.add_static_property( "DummyNameSuffix"
                         , bp::make_getter( &CEGUI::GridLayoutContainer::DummyNameSuffix
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        GridLayoutContainer_exposer.add_static_property( "EventChildWindowOrderChanged"
-                        , bp::make_getter( &CEGUI::GridLayoutContainer::EventChildWindowOrderChanged
+        GridLayoutContainer_exposer.add_static_property( "EventChildOrderChanged"
+                        , bp::make_getter( &CEGUI::GridLayoutContainer::EventChildOrderChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

@@ -38,7 +38,8 @@ namespace CEGUI
         NamedArea defines an area for a component which may later be obtained
         and referenced by a name unique to the WidgetLook holding the NamedArea.
     */
-    class CEGUIEXPORT NamedArea
+    class CEGUIEXPORT NamedArea :
+        public AllocatedObject<NamedArea>
     {
     public:
         NamedArea() {}

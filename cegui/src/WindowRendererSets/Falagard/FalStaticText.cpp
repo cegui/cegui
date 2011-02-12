@@ -124,18 +124,18 @@ namespace CEGUI
             case HTF_WORDWRAP_LEFT_ALIGNED:
             case HTF_JUSTIFIED:
             case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(Point(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Point(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Point(horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2(horzScrollbar->getScrollPosition(), 0));
                 break;
             }
         }

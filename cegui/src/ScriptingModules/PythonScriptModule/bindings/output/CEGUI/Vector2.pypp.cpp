@@ -10,10 +10,7 @@ void register_Vector2_class(){
 
     { //::CEGUI::Vector2
         typedef bp::class_< CEGUI::Vector2 > Vector2_exposer_t;
-        Vector2_exposer_t Vector2_exposer = Vector2_exposer_t( "Vector2", "*!\n\
-        \n\
-         Class used as a two dimensional vector (aka a Point)\n\
-        *\n", bp::init< >() );
+        Vector2_exposer_t Vector2_exposer = Vector2_exposer_t( "Vector2", bp::init< >() );
         bp::scope Vector2_scope( Vector2_exposer );
         Vector2_exposer.def( bp::init< float, float >(( bp::arg("x"), bp::arg("y") )) );
         Vector2_exposer.def( bp::init< CEGUI::Vector2 const & >(( bp::arg("v") )) );

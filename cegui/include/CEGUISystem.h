@@ -61,7 +61,10 @@ struct MouseClickTrackerImpl;
 	an initialised Renderer object which it can use to interface to whatever rendering system will be
 	used to display the GUI imagery.
 */
-class CEGUIEXPORT System : public Singleton<System>, public EventSet
+class CEGUIEXPORT System :
+    public Singleton<System>,
+    public EventSet,
+    public AllocatedObject<System>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -1142,7 +1145,7 @@ private:
 	\return
 		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
 	*/
-	Window*	getTargetWindow(const Point& pt, const bool allow_disabled) const;
+	Window*	getTargetWindow(const Vector2& pt, const bool allow_disabled) const;
 
 
 	/*!

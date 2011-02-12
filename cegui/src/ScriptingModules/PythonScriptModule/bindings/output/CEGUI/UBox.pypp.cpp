@@ -10,22 +10,14 @@ void register_UBox_class(){
 
     { //::CEGUI::UBox
         typedef bp::class_< CEGUI::UBox > UBox_exposer_t;
-        UBox_exposer_t UBox_exposer = UBox_exposer_t( "UBox", "*!\n\
-        \n\
-            Class encapsulating the 'Unified Box' - this is usually used for margin\n\
-        \n\
-        \n\
-            top, left, right and bottom represent offsets on each edge\n\
-        \n\
-        \note\n\
-            Name taken from W3 'box model'\n\
-        *\n", bp::init< >() );
+        UBox_exposer_t UBox_exposer = UBox_exposer_t( "UBox", bp::init< >() );
         bp::scope UBox_scope( UBox_exposer );
         UBox_exposer.def( bp::init< CEGUI::UDim const & >(( bp::arg("margin") )) );
         bp::implicitly_convertible< CEGUI::UDim const &, CEGUI::UBox >();
         UBox_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("top"), bp::arg("left"), bp::arg("bottom"), bp::arg("right") )) );
         UBox_exposer.def( bp::init< CEGUI::UBox const & >(( bp::arg("b") )) );
         UBox_exposer.def( bp::self != bp::self );
+        UBox_exposer.def( bp::self * bp::other< float >() );
         UBox_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         UBox_exposer.def( bp::self + bp::self );
         { //::CEGUI::UBox::operator=

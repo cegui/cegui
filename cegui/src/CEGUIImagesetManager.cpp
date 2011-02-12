@@ -68,7 +68,7 @@ Imageset& ImagesetManager::create(const String& name, Texture& texture,
                                     "' with texture only.");
 
     // create new object ahead of time
-    Imageset* object = new Imageset(name, texture);
+    Imageset* object = CEGUI_NEW_AO Imageset(name, texture);
     // return appropriate object instance (deleting any not required)
     return doExistingObjectAction(name, object, action);;
 }
@@ -83,7 +83,7 @@ Imageset& ImagesetManager::createFromImageFile(const String& name,
         "' using image file '" + filename + "'.");
 
     // create new object ahead of time
-    Imageset* object = new Imageset(name, filename, resourceGroup);
+    Imageset* object = CEGUI_NEW_AO Imageset(name, filename, resourceGroup);
     // return appropriate object instance (deleting any not required)
     return doExistingObjectAction(name, object, action);;
 }

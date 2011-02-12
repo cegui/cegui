@@ -86,7 +86,7 @@ MenuItem::~MenuItem(void)
 /*************************************************************************
     Update the internal state of the Widget
 *************************************************************************/
-void MenuItem::updateInternalState(const Point& mouse_pos)
+void MenuItem::updateInternalState(const Vector2& mouse_pos)
 {
     bool oldstate = d_hovering;
 
@@ -182,7 +182,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     // is there already a popup ?
     if (old_popup)
     {
-        removeChildWindow(old_popup);
+        removeChild(old_popup);
 
         // should we destroy it as well?
         if (old_popup->isDestroyedByParent())
@@ -195,7 +195,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
     // we are setting a new popup and not just clearing. and we are told to add the child
     if (popup != 0 && add_as_child)
     {
-        addChildWindow(popup);
+        addChild(popup);
     }
 
     invalidate();

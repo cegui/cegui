@@ -121,7 +121,7 @@ protected:
         return Window::testClassName_impl(class_name);
     }
 
-    size_t getIdxOfChildWindow(Window* wnd) const;
+    size_t getIdxOfChild(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl
     virtual void addChild_impl(Window* wnd);

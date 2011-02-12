@@ -50,7 +50,7 @@
 	<Image Name="EditBoxLeft" XPos="41" YPos="108" Width="4" Height="18" />
 	<Image Name="EditBoxMiddle" XPos="47" YPos="108" Width="4" Height="18" />
 	<Image Name="EditBoxRight" XPos="53" YPos="108" Width="4" Height="18" />
-	<Image Name="EditBoxCarat" XPos="60" YPos="108" Width="4" Height="18" />
+	<Image Name="EditBoxCaret" XPos="60" YPos="108" Width="4" Height="18" />
 	<Image Name="SpinnerUpNormal" XPos="68" YPos="110" Width="10" Height="6" />
 	<Image Name="SpinnerDownNormal" XPos="68" YPos="118" Width="10" Height="6" />
 	<Image Name="SpinnerUpHover" XPos="82" YPos="110" Width="10" Height="6" />

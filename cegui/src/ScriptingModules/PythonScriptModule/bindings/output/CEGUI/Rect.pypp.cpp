@@ -10,16 +10,13 @@ void register_Rect_class(){
 
     { //::CEGUI::Rect
         typedef bp::class_< CEGUI::Rect > Rect_exposer_t;
-        Rect_exposer_t Rect_exposer = Rect_exposer_t( "Rect", "*!\n\
-        \n\
-           Class encapsulating operations on a Rectangle\n\
-        *\n", bp::init< >() );
+        Rect_exposer_t Rect_exposer = Rect_exposer_t( "Rect", bp::init< >() );
         bp::scope Rect_scope( Rect_exposer );
         Rect_exposer.def( bp::init< float, float, float, float >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") ), "*!\n\
         \n\
            Constructor for a Rect.\n\
         *\n") );
-        Rect_exposer.def( bp::init< CEGUI::Point, CEGUI::Size >(( bp::arg("pos"), bp::arg("sz") )) );
+        Rect_exposer.def( bp::init< CEGUI::Vector2, CEGUI::Size >(( bp::arg("pos"), bp::arg("sz") )) );
         { //::CEGUI::Rect::constrainSize
         
             typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSize_function_type )( ::CEGUI::Size const &,::CEGUI::Size const & ) ;
@@ -121,7 +118,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::getPosition
         
-            typedef ::CEGUI::Point ( ::CEGUI::Rect::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::Rect::*getPosition_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getPosition"
@@ -160,7 +157,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::isPointInRect
         
-            typedef bool ( ::CEGUI::Rect::*isPointInRect_function_type )( ::CEGUI::Point const & ) const;
+            typedef bool ( ::CEGUI::Rect::*isPointInRect_function_type )( ::CEGUI::Vector2 const & ) const;
             
             Rect_exposer.def( 
                 "isPointInRect"
@@ -180,7 +177,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::offset
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*offset_function_type )( ::CEGUI::Point const & ) ;
+            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*offset_function_type )( ::CEGUI::Vector2 const & ) ;
             
             Rect_exposer.def( 
                 "offset"
@@ -231,7 +228,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::setPosition
         
-            typedef void ( ::CEGUI::Rect::*setPosition_function_type )( ::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::Rect::*setPosition_function_type )( ::CEGUI::Vector2 const & ) ;
             
             Rect_exposer.def( 
                 "setPosition"

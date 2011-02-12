@@ -25,6 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "falagard/CEGUIFalagard_xmlHandler.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
@@ -35,6 +39,9 @@
 #include "falagard/CEGUIFalPropertyDefinition.h"
 #include "falagard/CEGUIFalPropertyLinkDefinition.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
+#ifdef CEGUI_HAS_EXPRESSION_DIM
+#   include "falagard/CEGUIFalExpressionDim.h"
+#endif
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include "CEGUIAnimation_xmlHandler.h"
@@ -70,6 +77,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
     const String Falagard_xmlHandler::FontDimElement("FontDim");
     const String Falagard_xmlHandler::PropertyDimElement("PropertyDim");
+    const String Falagard_xmlHandler::ExpressionDimElement("ExpressionDim");
     const String Falagard_xmlHandler::TextElement("Text");
     const String Falagard_xmlHandler::ColourPropertyElement("ColourProperty");
     const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
@@ -85,6 +93,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::TextPropertyElement("TextProperty");
     const String Falagard_xmlHandler::FontPropertyElement("FontProperty");
     const String Falagard_xmlHandler::ColourElement("Colour");
+    const String Falagard_xmlHandler::EventLinkDefinitionElement("EventLinkDefinition");
+    const String Falagard_xmlHandler::EventLinkTargetElement("EventLinkTarget");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -119,6 +129,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ControlValueAttribute("controlValue");
     const String Falagard_xmlHandler::ControlWidgetAttribute("controlWidget");
     const String Falagard_xmlHandler::HelpStringAttribute("help");
+    const String Falagard_xmlHandler::EventAttribute("event");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -136,7 +147,8 @@ namespace CEGUI
         d_textcomponent(0),
         d_namedArea(0),
         d_framecomponent(0),
-        d_propertyLink(0)
+        d_propertyLink(0),
+        d_eventLink(0)
     {
         // register element start handlers
         registerElementStartHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardStart);
@@ -164,6 +176,7 @@ namespace CEGUI
         registerElementStartHandler(WidgetDimElement, &Falagard_xmlHandler::elementWidgetDimStart);
         registerElementStartHandler(FontDimElement, &Falagard_xmlHandler::elementFontDimStart);
         registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
+        registerElementStartHandler(ExpressionDimElement, &Falagard_xmlHandler::elementExpressionDimStart);
         registerElementStartHandler(TextElement, &Falagard_xmlHandler::elementTextStart);
         registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourPropertyStart);
         registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
@@ -180,6 +193,8 @@ namespace CEGUI
         registerElementStartHandler(ColourElement, &Falagard_xmlHandler::elementColourStart);
         registerElementStartHandler(PropertyLinkTargetElement, &Falagard_xmlHandler::elementPropertyLinkTargetStart);
         registerElementStartHandler(AnimationDefinitionHandler::ElementName, &Falagard_xmlHandler::elementAnimationDefinitionStart);
+        registerElementStartHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionStart);
+        registerElementStartHandler(EventLinkTargetElement, &Falagard_xmlHandler::elementEventLinkTargetStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -199,8 +214,10 @@ namespace CEGUI
         registerElementEndHandler(WidgetDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(FontDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(PropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(ExpressionDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaEnd);
         registerElementEndHandler(PropertyLinkDefinitionElement, &Falagard_xmlHandler::elementPropertyLinkDefinitionEnd);
+        registerElementEndHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionEnd);
     }
 
     Falagard_xmlHandler::~Falagard_xmlHandler()
@@ -337,7 +354,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementWidgetLookStart(const XMLAttributes& attributes)
     {
         assert(d_widgetlook == 0);
-        d_widgetlook = new WidgetLookFeel(attributes.getValueAsString(NameAttribute));
+        d_widgetlook = CEGUI_NEW_AO WidgetLookFeel(attributes.getValueAsString(NameAttribute));
 
         Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
     }
@@ -348,7 +365,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementChildStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent == 0);
-        d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute), attributes.getValueAsString(RendererAttribute));
+        d_childcomponent = CEGUI_NEW_AO WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute), attributes.getValueAsString(RendererAttribute));
 
         CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
     }
@@ -359,7 +376,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementImagerySectionStart(const XMLAttributes& attributes)
     {
         assert(d_imagerysection == 0);
-        d_imagerysection = new ImagerySection(attributes.getValueAsString(NameAttribute));
+        d_imagerysection = CEGUI_NEW_AO ImagerySection(attributes.getValueAsString(NameAttribute));
 
         CEGUI_LOGINSANE("-----> Start of definition for imagery section '" + d_imagerysection->getName() + "'.");
     }
@@ -370,7 +387,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementStateImageryStart(const XMLAttributes& attributes)
     {
         assert(d_stateimagery == 0);
-        d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
+        d_stateimagery = CEGUI_NEW_AO StateImagery(attributes.getValueAsString(NameAttribute));
         d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute, true));
 
         CEGUI_LOGINSANE("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.");
@@ -382,7 +399,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementLayerStart(const XMLAttributes& attributes)
     {
         assert(d_layer == 0);
-        d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute, 0));
+        d_layer = CEGUI_NEW_AO LayerSpecification(attributes.getValueAsInteger(PriorityAttribute, 0));
 
         CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute, "0"));
     }
@@ -396,7 +413,7 @@ namespace CEGUI
         assert(d_widgetlook != 0);
         String owner(attributes.getValueAsString(LookAttribute));
         d_section =
-            new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner,
+            CEGUI_NEW_AO SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner,
                                      attributes.getValueAsString(SectionNameAttribute),
                                      attributes.getValueAsString(ControlPropertyAttribute),
                                      attributes.getValueAsString(ControlValueAttribute),
@@ -411,7 +428,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementImageryComponentStart(const XMLAttributes&)
     {
         assert(d_imagerycomponent == 0);
-        d_imagerycomponent = new ImageryComponent();
+        d_imagerycomponent = CEGUI_NEW_AO ImageryComponent();
 
         CEGUI_LOGINSANE("-------> Image component definition...");
     }
@@ -422,7 +439,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementTextComponentStart(const XMLAttributes&)
     {
         assert(d_textcomponent == 0);
-        d_textcomponent = new TextComponent();
+        d_textcomponent = CEGUI_NEW_AO TextComponent();
 
         CEGUI_LOGINSANE("-------> Text component definition...");
     }
@@ -433,7 +450,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementFrameComponentStart(const XMLAttributes&)
     {
         assert(d_framecomponent == 0);
-        d_framecomponent = new FrameComponent();
+        d_framecomponent = CEGUI_NEW_AO FrameComponent();
 
         CEGUI_LOGINSANE("-------> Frame component definition...");
     }
@@ -444,7 +461,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementAreaStart(const XMLAttributes&)
     {
         assert(d_area == 0);
-        d_area = new ComponentArea();
+        d_area = CEGUI_NEW_AO ComponentArea();
     }
 
     /*************************************************************************
@@ -647,6 +664,21 @@ namespace CEGUI
     }
 
     /*************************************************************************
+        Method that handles the opening ExpressionDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementExpressionDimStart(const XMLAttributes& attributes)
+    {
+#ifdef CEGUI_HAS_EXPRESSION_DIM
+        ExpressionDim base(attributes.getValueAsString(ValueAttribute, "0.0"));
+        doBaseDimStart(&base);
+#else
+        throw InvalidRequestException(
+            "Falagard_xmlHandler::elementExpressionDimStart: CEGUI was built "
+            "without ExpressionDim support.");
+#endif
+    }
+
+    /*************************************************************************
         Method that handles the opening Text XML element.
     *************************************************************************/
     void Falagard_xmlHandler::elementTextStart(const XMLAttributes& attributes)
@@ -730,7 +762,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementNamedAreaStart(const XMLAttributes& attributes)
     {
         assert(d_namedArea == 0);
-        d_namedArea = new NamedArea(attributes.getValueAsString(NameAttribute));
+        d_namedArea = CEGUI_NEW_AO NamedArea(attributes.getValueAsString(NameAttribute));
 
         CEGUI_LOGINSANE("-----> Creating named area: " + d_namedArea->getName());
     }
@@ -768,7 +800,7 @@ namespace CEGUI
         const String widget(attributes.getValueAsString(WidgetAttribute));
         const String target(attributes.getValueAsString(TargetPropertyAttribute));
 
-        d_propertyLink = new PropertyLinkDefinition(
+        d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition(
             attributes.getValueAsString(NameAttribute),
             widget,
             target,
@@ -890,7 +922,7 @@ namespace CEGUI
         {
             Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
             d_manager->addWidgetLook(*d_widgetlook);
-            delete d_widgetlook;
+            CEGUI_DELETE_AO d_widgetlook;
             d_widgetlook = 0;
         }
     }
@@ -906,7 +938,7 @@ namespace CEGUI
         {
             CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
             d_widgetlook->addWidgetComponent(*d_childcomponent);
-            delete d_childcomponent;
+            CEGUI_DELETE_AO d_childcomponent;
             d_childcomponent = 0;
         }
     }
@@ -922,7 +954,7 @@ namespace CEGUI
         {
             CEGUI_LOGINSANE("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.");
             d_widgetlook->addImagerySection(*d_imagerysection);
-            delete d_imagerysection;
+            CEGUI_DELETE_AO d_imagerysection;
             d_imagerysection = 0;
         }
     }
@@ -938,7 +970,7 @@ namespace CEGUI
         {
             CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
             d_widgetlook->addStateSpecification(*d_stateimagery);
-            delete d_stateimagery;
+            CEGUI_DELETE_AO d_stateimagery;
             d_stateimagery = 0;
         }
     }
@@ -954,7 +986,7 @@ namespace CEGUI
         {
             CEGUI_LOGINSANE("-------< End of definition of imagery layer.");
             d_stateimagery->addLayer(*d_layer);
-            delete d_layer;
+            CEGUI_DELETE_AO d_layer;
             d_layer = 0;
         }
     }
@@ -969,7 +1001,7 @@ namespace CEGUI
         if (d_section)
         {
             d_layer->addSectionSpecification(*d_section);
-            delete d_section;
+            CEGUI_DELETE_AO d_section;
             d_section = 0;
         }
     }
@@ -984,7 +1016,7 @@ namespace CEGUI
         if (d_imagerycomponent)
         {
             d_imagerysection->addImageryComponent(*d_imagerycomponent);
-            delete d_imagerycomponent;
+            CEGUI_DELETE_AO d_imagerycomponent;
             d_imagerycomponent = 0;
         }
     }
@@ -999,7 +1031,7 @@ namespace CEGUI
         if (d_textcomponent)
         {
             d_imagerysection->addTextComponent(*d_textcomponent);
-            delete d_textcomponent;
+            CEGUI_DELETE_AO d_textcomponent;
             d_textcomponent = 0;
         }
     }
@@ -1014,7 +1046,7 @@ namespace CEGUI
         if (d_framecomponent)
         {
             d_imagerysection->addFrameComponent(*d_framecomponent);
-            delete d_framecomponent;
+            CEGUI_DELETE_AO d_framecomponent;
             d_framecomponent = 0;
         }
     }
@@ -1048,7 +1080,7 @@ namespace CEGUI
             d_namedArea->setArea(*d_area);
         }
 
-        delete d_area;
+        CEGUI_DELETE_AO d_area;
         d_area = 0;
     }
 
@@ -1062,7 +1094,7 @@ namespace CEGUI
         if (d_namedArea)
         {
             d_widgetlook->addNamedArea(*d_namedArea);
-            delete d_namedArea;
+            CEGUI_DELETE_AO d_namedArea;
             d_namedArea = 0;
         }
     }
@@ -1088,7 +1120,7 @@ namespace CEGUI
             }
 
             // release the dim we popped.
-            delete currDim;
+            CEGUI_DELETE_AO currDim;
         }
     }
 
@@ -1100,7 +1132,7 @@ namespace CEGUI
         CEGUI_LOGINSANE("<----- End of PropertyLinkDefiniton. Name: " +
                         d_propertyLink->getName());
 
-        delete d_propertyLink;
+        CEGUI_DELETE_AO d_propertyLink;
         d_propertyLink = 0;
     }
 
@@ -1127,7 +1159,7 @@ namespace CEGUI
         String anim_name_prefix(d_widgetlook->getName());
         anim_name_prefix.append("/");
 
-        d_chainedHandler = new AnimationDefinitionHandler(
+        d_chainedHandler = CEGUI_NEW_AO AnimationDefinitionHandler(
             attributes, anim_name_prefix);
 
         // This is a little bit of abuse here, ideally we would get the name
@@ -1137,6 +1169,57 @@ namespace CEGUI
             attributes.getValueAsString("name"));
     }
 
+
+    void Falagard_xmlHandler::elementEventLinkDefinitionStart(
+                                                const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook);
+        assert(d_eventLink == 0);
+
+        const String widget(attributes.getValueAsString(WidgetAttribute));
+        const String event(attributes.getValueAsString(EventAttribute));
+
+        d_eventLink = CEGUI_NEW_AO EventLinkDefinition(
+            attributes.getValueAsString(NameAttribute));
+
+        CEGUI_LOGINSANE("-----> Adding EventLinkDefiniton. Name: " +
+                        d_eventLink->getName());
+
+        processEventLinkTarget(widget, event);
+    }
+
+    void Falagard_xmlHandler::processEventLinkTarget(const String& widget, const String& event)
+    {
+        assert(d_eventLink);
+
+        if (!widget.empty() || !event.empty())
+        {
+            d_eventLink->addLinkTarget(widget, event);
+            CEGUI_LOGINSANE("-------> Adding link target to event: " + event +
+                        " on widget: " + widget);
+        }
+    }
+
+    void Falagard_xmlHandler::elementEventLinkTargetStart(
+                                                const XMLAttributes& attributes)
+    {
+        const String widget(attributes.getValueAsString(WidgetAttribute));
+        const String event(attributes.getValueAsString(EventAttribute));
+
+        processEventLinkTarget(widget, event);
+    }
+
+    void Falagard_xmlHandler::elementEventLinkDefinitionEnd()
+    {
+        assert(d_eventLink);
+        d_widgetlook->addEventLinkDefinition(*d_eventLink);
+
+        CEGUI_LOGINSANE("<----- End of EventLinkDefiniton. Name: " +
+                        d_eventLink->getName());
+
+        CEGUI_DELETE_AO d_eventLink;
+        d_eventLink = 0;
+    }
 
     /*************************************************************************
         register a handler for the opening tag of an XML element

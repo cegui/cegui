@@ -45,7 +45,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUIMinibidiVisualMapping.h"
 #else
-    #include "CEGUIBiDiVisualMapping.h"
+    #include "CEGUIBidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -57,8 +57,8 @@ BasicRenderedStringParser TreeItem::d_stringParser;
 /*************************************************************************
     Constants
 *************************************************************************/
-const colour TreeItem::DefaultSelectionColour = 0xFF4444AA;
-const colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
+const Colour TreeItem::DefaultSelectionColour = 0xFF4444AA;
+const Colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
 
 /*************************************************************************
     Base class constructor
@@ -68,9 +68,9 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -98,7 +98,7 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 //----------------------------------------------------------------------------//
 TreeItem::~TreeItem(void)
 {
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 /*************************************************************************
@@ -131,9 +131,9 @@ ColourRect TreeItem::getModulateAlphaColourRect(const ColourRect& cols,
     Return a colour value describing the colour specified by 'col' after
     having its alpha component modulated by the value 'alpha'.
 *************************************************************************/
-colour TreeItem::calculateModulatedAlphaColour(colour col, float alpha) const
+Colour TreeItem::calculateModulatedAlphaColour(Colour col, float alpha) const
 {
-    colour temp(col);
+    Colour temp(col);
     temp.setAlpha(temp.getAlpha() * alpha);
     return temp;
 }
@@ -252,7 +252,7 @@ void TreeItem::removeItem(const TreeItem* item)
                 parentWindow->d_lastSelected = 0;
 
             if (item->isAutoDeleted())
-                delete item;
+                CEGUI_DELETE_AO item;
 
             WindowEventArgs args(parentWindow);
             parentWindow->onListContentsChanged(args);
@@ -282,7 +282,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
         d_iconImage->draw(buffer, finalPos, clipper,
-                          ColourRect(colour(1,1,1,alpha)));
+                          ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_left += targetRect.getHeight();
     }
 
@@ -314,10 +314,10 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
 /*************************************************************************
     Set the colours used for selection highlighting.
 *************************************************************************/
-void TreeItem::setSelectionColours(colour top_left_colour,
-                                   colour top_right_colour,
-                                   colour bottom_left_colour,
-                                   colour bottom_right_colour)
+void TreeItem::setSelectionColours(Colour top_left_colour,
+                                   Colour top_right_colour,
+                                   Colour bottom_left_colour,
+                                   Colour bottom_right_colour)
 {
     d_selectCols.d_top_left		= top_left_colour;
     d_selectCols.d_top_right	= top_right_colour;
@@ -328,10 +328,10 @@ void TreeItem::setSelectionColours(colour top_left_colour,
 /*************************************************************************
     Set the colours used for text rendering.
 *************************************************************************/
-void TreeItem::setTextColours(colour top_left_colour,
-                              colour top_right_colour,
-                              colour bottom_left_colour,
-                              colour bottom_right_colour)
+void TreeItem::setTextColours(Colour top_left_colour,
+                              Colour top_right_colour,
+                              Colour bottom_left_colour,
+                              Colour bottom_right_colour)
 {
     d_textCols.d_top_left		= top_left_colour;
     d_textCols.d_top_right		= top_right_colour;

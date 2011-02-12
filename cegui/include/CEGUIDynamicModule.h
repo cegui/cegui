@@ -43,19 +43,12 @@
     struct HINSTANCE__;
     typedef struct HINSTANCE__* hInstance;
 
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)
 #    define DYNLIB_HANDLE void*
 #    define DYNLIB_LOAD( a ) dlopen( a, RTLD_LAZY )
 #    define DYNLIB_GETSYM( a, b ) dlsym( a, b )
 #    define DYNLIB_UNLOAD( a ) dlclose( a )
 #    define DYNLIB_ERROR( ) dlerror( )
-
-#elif defined(__APPLE_CC__)
-#    define DYNLIB_HANDLE CFBundleRef
-#    define DYNLIB_LOAD( a ) mac_loadExeBundle( a )
-#    define DYNLIB_GETSYM( a, b ) mac_getBundleSym( a, b )
-#    define DYNLIB_UNLOAD( a ) mac_unloadExeBundle( a )
-#    define DYNLIB_ERROR( ) mac_errorBundle()
 #endif
 
 // Start of CEGUI namespace section
@@ -66,7 +59,8 @@ namespace CEGUI
     Class that wraps and gives access to a dynamically linked module
     (.dll, .so, etc...)
 */
-class CEGUIEXPORT DynamicModule
+class CEGUIEXPORT DynamicModule :
+    public AllocatedObject<DynamicModule>
 {
 public:
     /*!

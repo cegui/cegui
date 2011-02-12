@@ -44,7 +44,8 @@ namespace CEGUI
     Class representing a unified dimension; that is a dimension that has both
     a relative 'scale' portion and and absolute 'offset' portion.
 */
-class CEGUIEXPORT UDim
+class CEGUIEXPORT UDim :
+    public AllocatedObject<UDim>
 {
 public:
     UDim() {}
@@ -68,6 +69,10 @@ public:
     UDim operator-(const UDim& other) const
     {
         return UDim(d_scale - other.d_scale, d_offset - other.d_offset);
+    }
+    UDim operator*(const float val) const
+    {
+        return UDim(d_scale * val, d_offset * val);
     }
     UDim operator*(const UDim& other) const
     {
@@ -125,7 +130,8 @@ public:
     Two dimensional vector class built using unified dimensions (UDims).
     The UVector2 class is used for representing both positions and sizes.
 */
-class CEGUIEXPORT UVector2
+class CEGUIEXPORT UVector2 :
+    public AllocatedObject<UVector2>
 {
 public:
     UVector2() {}
@@ -153,6 +159,10 @@ public:
     UVector2 operator/(const UVector2& other) const
     {
         return UVector2(d_x / other.d_x, d_y / other.d_y);
+    }
+    UVector2 operator*(const float val) const
+    {
+        return UVector2(d_x * val, d_y * val);
     }
     UVector2 operator*(const UVector2& other) const
     {
@@ -242,7 +252,8 @@ public:
 \brief
     Area rectangle class built using unified dimensions (UDims).
 */
-class CEGUIEXPORT URect
+class CEGUIEXPORT URect :
+    public AllocatedObject<URect>
 {
 public:
     URect() {}
@@ -324,6 +335,11 @@ public:
         d_min += sz;
         d_max += sz;
     }
+    
+    URect operator*(const float val) const
+    {
+        return URect(d_min * val, d_max * val);
+    }
 
     URect operator*(const UDim& dim) const
     {
@@ -348,7 +364,8 @@ public:
 \note
     Name taken from W3 'box model'
 */
-class CEGUIEXPORT UBox
+class CEGUIEXPORT UBox :
+    public AllocatedObject<UBox>
 {
 public:
     UBox():
@@ -403,6 +420,13 @@ public:
         d_right = rhs.d_right;
 
         return *this;
+    }
+    
+    UBox operator*(const float val) const
+    {
+        return UBox(
+                   d_top * val, d_left * val,
+                   d_bottom * val, d_right * val);
     }
 
     UBox operator*(const UDim& dim) const

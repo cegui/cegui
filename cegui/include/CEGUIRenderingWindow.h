@@ -30,6 +30,7 @@
 
 #include "CEGUIRenderingSurface.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUISize.h"
 
 // Start of CEGUI namespace section
@@ -115,14 +116,13 @@ public:
 
     /*!
     \brief
-        Set the rotation factors to be used when rendering the RenderingWindow
+        Set the rotation quaternion to be used when rendering the RenderingWindow
         back onto it's owning RenderingSurface.
 
     \param rotation
-        Vector3 object describing the rotaions to be used. Values are in
-        degrees.
+        Quaternion object describing the rotation.
     */
-    void setRotation(const Vector3& rotation);
+    void setRotation(const Quaternion& rotation);
 
     /*!
     \brief
@@ -161,13 +161,12 @@ public:
 
     /*!
     \brief
-        Return the current rotations being applied to the RenderingWindow, in
-        degrees.
+        Return the current rotation being applied to the RenderingWindow
 
     \return
-        Vector3 object describing the rotations for the RenderingWindow.
+        Quaternion object describing the rotation for the RenderingWindow.
     */
-    const Vector3& getRotation()const;
+    const Quaternion& getRotation()const;
 
     /*!
     \brief
@@ -302,8 +301,8 @@ protected:
     Vector2 d_position;
     //! Size of this RenderingWindow
     Size d_size;
-    //! Rotaions for this RenderingWindow
-    Vector3 d_rotation;
+    //! Rotation for this RenderingWindow
+    Quaternion d_rotation;
     //! Pivot point used for the rotation.
     Vector3 d_pivot;
 };

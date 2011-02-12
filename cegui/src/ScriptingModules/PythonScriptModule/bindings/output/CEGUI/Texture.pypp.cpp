@@ -48,16 +48,7 @@ void register_Texture_class(){
 
     { //::CEGUI::Texture
         typedef bp::class_< Texture_wrapper, boost::noncopyable > Texture_exposer_t;
-        Texture_exposer_t Texture_exposer = Texture_exposer_t( "Texture", "*!\n\
-        \n\
-            Abstract base class specifying the required interface for Texture objects.\n\
-        \n\
-            Texture objects are created via the Renderer.  The actual inner workings of\n\
-            any Texture object are dependant upon the Renderer (and underlying API) in\n\
-            use.  This base class defines the minimal set of functions that is required\n\
-            for the rest of the system to work.  Texture objects are only created\n\
-            through the Renderer object's texture creation functions.\n\
-        *\n" );
+        Texture_exposer_t Texture_exposer = Texture_exposer_t( "Texture" );
         bp::scope Texture_scope( Texture_exposer );
         bp::enum_< CEGUI::Texture::PixelFormat>("PixelFormat")
             .value("PF_RGB", CEGUI::Texture::PF_RGB)

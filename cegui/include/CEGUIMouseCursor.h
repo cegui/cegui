@@ -67,7 +67,10 @@ enum MouseCursorImage
 
 	The MouseCursor provides functionality to access the position and imagery of the mouse cursor / pointer
 */
-class CEGUIEXPORT MouseCursor : public EventSet, public Singleton<MouseCursor>
+class CEGUIEXPORT MouseCursor :
+    public EventSet,
+    public Singleton<MouseCursor>,
+    public AllocatedObject<MouseCursor>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -170,7 +173,7 @@ public:
 	\param position
 		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
 	*/
-	void	setPosition(const Point& position);
+	void	setPosition(const Vector2& position);
 
 
 	/*!
@@ -183,7 +186,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	offsetPosition(const Point& offset);
+	void	offsetPosition(const Vector2& offset);
 
 
 	/*!
@@ -266,7 +269,7 @@ public:
 	\return
 		Point object describing the mouse cursor position in screen pixels.
 	*/
-	Point	getPosition(void) const
+	Vector2	getPosition(void) const
     { return d_position; }
 
 
@@ -299,7 +302,7 @@ public:
 		range from 0.0f to 1.0f, where 0.0f represents the left-most and top-most positions, and 1.0f
 		represents the right-most and bottom-most positions.
 	*/
-	Point	getDisplayIndependantPosition(void) const;
+	Vector2	getDisplayIndependantPosition(void) const;
 
     /*!
     \brief
@@ -352,7 +355,7 @@ public:
         Reference to a point object describing the initial pixel position to
         be used for the mouse cursor.
     */
-    static void setInitialMousePosition(const Point& position);
+    static void setInitialMousePosition(const Vector2& position);
 
     /*!
     \brief
@@ -400,11 +403,11 @@ private:
     //! custom explicit size to render the cursor image at
     Size d_customSize;
     //! correctly scaled offset used when using custom image size.
-    mutable Point d_customOffset;
+    mutable Vector2 d_customOffset;
     //! true if the mouse initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
-    static Point s_initialPosition;
+    static Vector2 s_initialPosition;
     //! boolean indicating whether cached pointer geometry is valid.
     mutable bool d_cachedGeometryValid;
 };

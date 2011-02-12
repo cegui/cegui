@@ -47,7 +47,8 @@ namespace CEGUI
     for the rest of the system to work.  Texture objects are only created
     through the Renderer object's texture creation functions.
 */
-class CEGUIEXPORT Texture
+class CEGUIEXPORT Texture :
+    public AllocatedObject<Texture>
 {
 public:
     /*!
@@ -62,6 +63,12 @@ public:
         //! Each pixel is 4 bytes. RGBA in that order.
         PF_RGBA
     };
+
+    /*!
+    \brief
+        Destructor for Texture base class.
+    */
+    virtual ~Texture() {}
 
     /*!
     \brief
@@ -147,9 +154,29 @@ public:
 
     /*!
     \brief
-        Destructor for Texture base class.
+        Performs an area memory blit to the texture
+
+    \param sourceData
+        input data, the size must match area described by the given Rect
+
+    \param area
+        area where the blit will happen
+
+    \note The pixel format must match current Texture's pixel format!
     */
-    virtual ~Texture() {}
+    virtual void blitFromMemory(void* sourceData, const Rect& area) = 0;
+
+    /*!
+    \brief
+    	Performs a complete blit from the texture surface to memory
+
+    \param
+    	targetData the buffer where the target is stored
+
+    \note
+    	You have to (correctly) preallocate the target buffer!
+    */
+    virtual void blitToMemory(void* targetData) = 0;
 };
 
 } // End of  CEGUI namespace section

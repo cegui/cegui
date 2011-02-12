@@ -477,7 +477,8 @@ protected:
 	*************************************************************************/
     UDim        d_tabHeight;        //!< The height of the tabs in pixels
     UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
-    typedef std::vector<TabButton*> TabButtonVector;
+    typedef std::vector<TabButton*
+        CEGUI_VECTOR_ALLOC(TabButton*)> TabButtonVector;
     TabButtonVector d_tabButtonVector;  //!< Sorting for tabs
     float       d_firstTabOffset;   //!< The offset in pixels of the first tab
     TabPanePosition d_tabPanePos;   //!< The position of the tab pane

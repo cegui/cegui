@@ -39,7 +39,8 @@ namespace CEGUI
     Abstract class defining the interface for objects that buffer geometry for
     later rendering.
 */
-class CEGUIEXPORT GeometryBuffer
+class CEGUIEXPORT GeometryBuffer :
+    public AllocatedObject<GeometryBuffer>
 {
 public:
     //! Destructor
@@ -67,9 +68,9 @@ public:
         subsequently rendered.
 
     \param r
-        Vector3 describing the rotation factors to be used.
+        Quaternion describing the rotation to be used.
     */
-    virtual void setRotation(const Vector3& r) = 0;
+    virtual void setRotation(const Quaternion& r) = 0;
 
     /*!
     \brief

@@ -10,11 +10,7 @@ void register_UVector2_class(){
 
     { //::CEGUI::UVector2
         typedef bp::class_< CEGUI::UVector2 > UVector2_exposer_t;
-        UVector2_exposer_t UVector2_exposer = UVector2_exposer_t( "UVector2", "*!\n\
-        \n\
-            Two dimensional vector class built using unified dimensions (UDims).\n\
-            The UVector2 class is used for representing both positions and sizes.\n\
-        *\n", bp::init< >() );
+        UVector2_exposer_t UVector2_exposer = UVector2_exposer_t( "UVector2", bp::init< >() );
         bp::scope UVector2_scope( UVector2_exposer );
         UVector2_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("x"), bp::arg("y") )) );
         UVector2_exposer.def( bp::init< CEGUI::UVector2 const & >(( bp::arg("v") )) );
@@ -39,6 +35,7 @@ void register_UVector2_class(){
         
         }
         UVector2_exposer.def( bp::self != bp::self );
+        UVector2_exposer.def( bp::self * bp::other< float >() );
         UVector2_exposer.def( bp::self * bp::self );
         UVector2_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         UVector2_exposer.def( bp::self *= bp::self );

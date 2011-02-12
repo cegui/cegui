@@ -46,7 +46,7 @@ ScrollbarProperties::ScrollPosition Scrollbar::d_scrollPositionProperty;
 ScrollbarProperties::EndLockEnabled Scrollbar::d_endLockEnabledProperty;
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::EventScrollPositionChanged("ScrollPosChanged");
+const String Scrollbar::EventScrollPositionChanged( "ScrollPositionChanged" );
 const String Scrollbar::EventThumbTrackStarted("ThumbTrackStarted");
 const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
 const String Scrollbar::EventScrollConfigChanged("ScrollConfigChanged");
@@ -373,7 +373,7 @@ float Scrollbar::getValueFromThumb(void) const
 }
 
 //----------------------------------------------------------------------------//
-float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+float Scrollbar::getAdjustDirectionFromPoint(const Vector2& pt) const
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException(

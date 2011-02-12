@@ -8,9 +8,9 @@ class TreeItem
     void setFont(Font* font);
     void setFont(utf8string font_name);
     void setTextColours(const ColourRect& cols);
-    void setTextColours(colour top_left_colour, colour top_right_colour,
-                        colour bottom_left_colour, colour bottom_right_colour);
-    void setTextColours(colour col);
+    void setTextColours(Colour top_left_colour, Colour top_right_colour,
+                        Colour bottom_left_colour, Colour bottom_right_colour);
+    void setTextColours(Colour col);
     string getText() const;
     string getTooltipText() const;
     unsigned int getID() const;
@@ -30,8 +30,8 @@ class TreeItem
     void setAutoDeleted(bool setting);
     void setOwnerWindow(const Window* owner);
     void setSelectionColours(const ColourRect& cols);
-    void setSelectionColours(colour top_left_colour,colour top_right_colour,colour bottom_left_colour,colour bottom_right_colour);
-    void setSelectionColours(colour col);
+    void setSelectionColours(Colour top_left_colour,Colour top_right_colour,Colour bottom_left_colour,Colour bottom_right_colour);
+    void setSelectionColours(Colour col);
     void setSelectionBrushImage(const Image* image);
     void setSelectionBrushImage(utf8string imageset, utf8string image);
     void setButtonLocation(Rect &buttonOffset);

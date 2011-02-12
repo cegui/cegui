@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <GUILayout>
-<Window Type="DefaultGUISheet" Name="root">
+<Window Type="DefaultWindow" Name="root">
     <Window Type="TaharezLook/FrameWindow" Name="FontDemo/Window">
         <Property Name="UnifiedPosition" Value="{{0.1,0},{0.1,0}}" />
         <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />

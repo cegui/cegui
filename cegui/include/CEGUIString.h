@@ -54,7 +54,8 @@ namespace CEGUI
 	current locale, and also comparisons do not take into account the Unicode data tables, so are not 'correct'
 	as such.
 */
-class CEGUIEXPORT String
+class CEGUIEXPORT String :
+    public AllocatedObject<String>
 {
 public:
 	/*************************************************************************

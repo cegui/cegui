@@ -35,7 +35,7 @@
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIFont.h"
-#include "CEGUIBiDiVisualMapping.h"
+#include "CEGUIBidiVisualMapping.h"
 
 #include <stdio.h>
 
@@ -83,7 +83,7 @@ void FalagardEditbox::render()
     String visual_text;
     setupVisualString(visual_text);
 
-    const ImagerySection& caret_imagery = wlf.getImagerySection("Carat");
+    const ImagerySection& caret_imagery = wlf.getImagerySection("Caret");
 
     // get destination area for text
     const Rect text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
@@ -133,21 +133,21 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
-    size_t caretIndex = w->getCaratIndex();
+    size_t caretIndex = w->getCaretIndex();
 
 #ifdef CEGUI_BIDI_SUPPORT
     // the char before the caret bidi type
     bool currCharIsRtl = false;
     if ((visual_text.size() > 0) && (caretIndex > 0))
     {
-        size_t curCaretIndex = w->getCaratIndex();
-        BidiCharType charBeforeCaretType = w->getBiDiVisualMapping()->
+        size_t curCaretIndex = w->getCaretIndex();
+        BidiCharType charBeforeCaretType = w->getBidiVisualMapping()->
             getBidiCharType(visual_text[curCaretIndex - 1]);
         // for neutral chars you decide by the char after
         for (; BCT_NEUTRAL == charBeforeCaretType &&
                (visual_text.size() > curCaretIndex); curCaretIndex++)
         {
-            charBeforeCaretType = w->getBiDiVisualMapping()->
+            charBeforeCaretType = w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[curCaretIndex - 1]);
         }
 
@@ -161,8 +161,8 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
         caretIndex--;
 
     // we need to find the caret pos by the logical to visual map
-    if (w->getBiDiVisualMapping()->getV2lMapping().size() > caretIndex)
-        caretIndex = w->getBiDiVisualMapping()->getL2vMapping()[caretIndex];
+    if (w->getBidiVisualMapping()->getV2lMapping().size() > caretIndex)
+        caretIndex = w->getBidiVisualMapping()->getL2vMapping()[caretIndex];
 
     // for non RTL char - the caret pos is after the char
     if (!currCharIsRtl)
@@ -173,7 +173,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     {
         bool firstCharRtl =
             (visual_text.size() > 0) &&
-            (BCT_RIGHT_TO_LEFT == w->getBiDiVisualMapping()->
+            (BCT_RIGHT_TO_LEFT == w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[0]));
 
         if (!firstCharRtl)
@@ -190,11 +190,11 @@ float FalagardEditbox::calculateTextOffset(const Rect& text_area,
                                            const float caret_width,
                                            const float extent_to_caret)
 {
-    // if carat is to the left of the box
+    // if caret is to the left of the box
     if ((d_lastTextOffset + extent_to_caret) < 0)
         return -extent_to_caret;
 
-    // if carat is off to the right.
+    // if caret is off to the right.
     if ((d_lastTextOffset + extent_to_caret) >= (text_area.getWidth() - caret_width))
         return text_area.getWidth() - extent_to_caret - caret_width;
 
@@ -230,7 +230,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     ColourRect colours;
     const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
-    const colour unselectedColour(getUnselectedTextColour());
+    const Colour unselectedColour(getUnselectedTextColour());
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
@@ -320,7 +320,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     }
     else
     {
-        // there is highlighted text - because of the BiDi support - the
+        // there is highlighted text - because of the Bidi support - the
         // highlighted area can be in some cases nonconsecutive.
         // So - we need to draw it char by char (I guess we can optimize it more
         // but this is not that big performance hit because it only happens if
@@ -332,9 +332,9 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             size_t realPos = 0;
 
             // get he visual pos of the char
-            if (w->getBiDiVisualMapping()->getV2lMapping().size() > i)
+            if (w->getBidiVisualMapping()->getV2lMapping().size() > i)
             {
-                realPos = w->getBiDiVisualMapping()->getV2lMapping()[i];
+                realPos = w->getBidiVisualMapping()->getV2lMapping()[i];
             }
 
             // check if it is in the highlighted region
@@ -394,15 +394,15 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 {
     if (editboxIsFocussed() && (!d_blinkCaret || d_showCaret))
     {
-        Rect caratRect(text_area);
-        caratRect.d_left += extent_to_caret + text_offset;
+        Rect caretRect(text_area);
+        caretRect.d_left += extent_to_caret + text_offset;
 
-        imagery.render(*d_window, caratRect, 0, &text_area);
+        imagery.render(*d_window, caretRect, 0, &text_area);
     }
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const Point& pt) const
+size_t FalagardEditbox::getTextIndexFromPosition(const Vector2& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 
@@ -421,24 +421,24 @@ size_t FalagardEditbox::getTextIndexFromPosition(const Point& pt) const
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getOptionalPropertyColour(
+Colour FalagardEditbox::getOptionalPropertyColour(
     const String& propertyName) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper::stringToColour(
+        return PropertyHelper<Colour>::fromString(
             d_window->getProperty(propertyName));
     else
-        return colour(0, 0, 0);
+        return Colour(0, 0, 0);
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getUnselectedTextColour() const
+Colour FalagardEditbox::getUnselectedTextColour() const
 {
     return getOptionalPropertyColour(UnselectedTextColourPropertyName);
 }
 
 //----------------------------------------------------------------------------//
-colour FalagardEditbox::getSelectedTextColour() const
+Colour FalagardEditbox::getSelectedTextColour() const
 {
     return getOptionalPropertyColour(SelectedTextColourPropertyName);
 }

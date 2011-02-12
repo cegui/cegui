@@ -10,13 +10,7 @@ void register_FontGlyph_class(){
 
     { //::CEGUI::FontGlyph
         typedef bp::class_< CEGUI::FontGlyph > FontGlyph_exposer_t;
-        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", "*!\n\
-        \n\
-            internal class representing a single font glyph.\n\
-        \n\
-            For TrueType fonts initially all FontGlyph's are empty\n\
-            (getImage() will return 0), but they are filled by demand.\n\
-        *\n", bp::init< bp::optional< float, CEGUI::Image const * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
+        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image const * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
         bp::scope FontGlyph_scope( FontGlyph_exposer );
         bp::implicitly_convertible< float, CEGUI::FontGlyph >();
         { //::CEGUI::FontGlyph::getAdvance

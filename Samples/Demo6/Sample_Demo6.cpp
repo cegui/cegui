@@ -104,13 +104,13 @@ void Demo6Sample::createDemoWindows(void)
 
     // create the main list.
     MultiColumnList* mcl = static_cast<MultiColumnList*>(winMgr.createWindow("TaharezLook/MultiColumnList", "Demo6/MainList"));
-    root->addChildWindow(mcl);
+    root->addChild(mcl);
     mcl->setPosition(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.1f)));
     mcl->setSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.8f)));
 
     // create frame window for control panel
     FrameWindow* fwnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "Demo6/ControlPanel"));
-    root->addChildWindow(fwnd);
+    root->addChild(fwnd);
     fwnd->setPosition(UVector2(cegui_reldim(0.53f), cegui_reldim( 0.03f)));
     fwnd->setMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     fwnd->setSize(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.94f)));
@@ -118,7 +118,7 @@ void Demo6Sample::createDemoWindows(void)
 
     // create combo-box.
     Combobox* cbbo = static_cast<Combobox*>(winMgr.createWindow("TaharezLook/Combobox", "Demo6/ControlPanel/SelModeBox"));
-    fwnd->addChildWindow(cbbo);
+    fwnd->addChild(cbbo);
     cbbo->setPosition(UVector2(cegui_reldim(0.04f), cegui_reldim( 0.06f)));
     cbbo->setSize(UVector2(cegui_reldim(0.66f), cegui_reldim( 0.33f)));
     //cbbo->setSortingEnabled(true);
@@ -165,14 +165,14 @@ void Demo6Sample::createDemoWindows(void)
 
     // column control section
     Window* st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/ColumnPanel");
-    fwnd->addChildWindow(st);
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.12f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Column Control");
     st->setProperty("VertFormatting", "TopAligned");
 
     Window* label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label1");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
@@ -180,7 +180,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("ID Code:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label2");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
@@ -188,7 +188,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Width:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label3");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.2f)));
@@ -196,32 +196,32 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Caption:");
 
     PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/AddColButton"));
-    st->addChildWindow(btn);
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Add");
 
     Editbox* ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColIDBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
     ebox->setText("Test -- ");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColWidthBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColTextBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.36f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label4");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
@@ -229,27 +229,27 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("ID Code:");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/DelColIDBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/DelColButton"));
-    st->addChildWindow(btn);
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.67f)));
     btn->setSize(UVector2(cegui_reldim(0.4f), cegui_reldim( 0.2f)));
     btn->setText("Delete Column");
 
     // Row control box
     st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/RowControl");
-    fwnd->addChildWindow(st);
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.38f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Row Control");
     st->setProperty("VertFormatting", "TopAligned");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label5");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
@@ -257,7 +257,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Col ID:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label6");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
@@ -265,25 +265,25 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Item Text:");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/RowColIDBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/RowTextBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.55f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
     btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/AddRowButton"));
-    st->addChildWindow(btn);
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Add");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label7");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
@@ -291,27 +291,27 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Row Idx:");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/DelRowIdxBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/DelRowButton"));
-    st->addChildWindow(btn);
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.67f)));
     btn->setSize(UVector2(cegui_reldim(0.4f), cegui_reldim( 0.2f)));
     btn->setText("Delete Row");
 
     // set item box
     st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/SetItemPanel");
-    fwnd->addChildWindow(st);
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.65f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Item Modification");
     st->setProperty("VertFormatting", "TopAligned");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label8");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
@@ -319,7 +319,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Row Idx:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label9");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
@@ -327,7 +327,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Col ID:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label10");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.2f)));
@@ -335,31 +335,31 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Item Text:");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemRowBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemIDBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemTextBox"));
-    st->addChildWindow(ebox);
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.36f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
     btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/SetItemButton"));
-    st->addChildWindow(btn);
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Set");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/RowCount");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
@@ -367,7 +367,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Current Row Count:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/ColCount");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
@@ -375,7 +375,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Current Column Count:");
 
     label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/SelCount");
-    st->addChildWindow(label);
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.79f)));
@@ -383,7 +383,7 @@ void Demo6Sample::createDemoWindows(void)
     label->setText("Current Selected Count:");
 
     btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/QuitButton"));
-    fwnd->addChildWindow(btn);
+    fwnd->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.93f)));
     btn->setSize(UVector2(cegui_reldim(0.50f), cegui_reldim( 0.05f)));
     btn->setText("Quit This Demo!");

@@ -72,7 +72,7 @@ const String ListHeader::EventSegmentRemoved( "SegmentRemoved" );
 const String ListHeader::EventSortSettingChanged( "SortSettingChanged" );
 const String ListHeader::EventDragMoveSettingChanged( "DragMoveSettingChanged" );
 const String ListHeader::EventDragSizeSettingChanged( "DragSizeSettingChanged" );
-const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentOffsetChanged" );
+const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentRenderOffsetChanged" );
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;
@@ -81,7 +81,7 @@ const float	ListHeader::MinimumSegmentPixelWidth	= 20.0f;
 /*************************************************************************
     Child Widget name suffix constants
 *************************************************************************/
-const char ListHeader::SegmentNameSuffix[] = "__auto_seg_";
+const String ListHeader::SegmentNameSuffix("__auto_seg_");
 
 
 
@@ -523,7 +523,7 @@ void ListHeader::insertColumn(const String& text, uint id, const UDim& width, ui
 	d_segments.insert((d_segments.begin() + position), seg);
 
 	// add window as a child of this
-	addChildWindow(seg);
+	addChild(seg);
 
 	layoutSegments();
 
@@ -574,7 +574,7 @@ void ListHeader::removeColumn(uint column)
 		}
 
 		// detach segment window from the header (this)
-		removeChildWindow(seg);
+		removeChild(seg);
 
 		// destroy the segment (done in derived class, since that's where it was created).
 		destroyListSegment(seg);
@@ -896,14 +896,14 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 *************************************************************************/
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
-	const Point mousePos(
+	const Vector2 mousePos(
        getUnprojectedPosition(MouseCursor::getSingleton().getPosition()));
 
 	// segment must be dropped within the window
 	if (isHit(mousePos))
 	{
 		// get mouse position as something local
-		Point localMousePos(CoordConverter::screenToWindow(*this, mousePos));
+		Vector2 localMousePos(CoordConverter::screenToWindow(*this, mousePos));
 
 		// set up to allow for current offsets
 		float currwidth = -d_segmentOffset;
@@ -1002,7 +1002,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 
 	// get mouse position as something local
-    const Point localMousePos(CoordConverter::screenToWindow(*this,
+    const Vector2 localMousePos(CoordConverter::screenToWindow(*this,
         getUnprojectedPosition(
             MouseCursor::getSingleton().getPosition())));
 

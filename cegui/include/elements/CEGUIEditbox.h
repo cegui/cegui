@@ -61,7 +61,7 @@ public:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    virtual size_t getTextIndexFromPosition(const Point& pt) const = 0;
+    virtual size_t getTextIndexFromPosition(const Vector2& pt) const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -123,7 +123,7 @@ public:
      * WindowEventArgs::window set to the Editbox whose current insertion point
      * has changed.
      */
-    static const String EventCaratMoved;
+    static const String EventCaretMoved;
     /** Event fired when the current text selection is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose current text selection
@@ -216,12 +216,12 @@ public:
 
     /*!
     \brief
-        return the current position of the carat.
+        return the current position of the caret.
 
     \return
-        Index of the insert carat relative to the start of the text.
+        Index of the insert caret relative to the start of the text.
     */
-    size_t getCaratIndex(void) const;
+    size_t getCaretIndex(void) const;
 
     /*!
     \brief
@@ -230,7 +230,7 @@ public:
     \return
         Index of the selection start point relative to the start of the text.
         If no selection is defined this function returns the position of the
-        carat.
+        caret.
     */
     size_t getSelectionStartIndex(void) const;
 
@@ -240,7 +240,7 @@ public:
 
     \return
         Index of the selection end point relative to the start of the text.  If
-        no selection is defined this function returns the position of the carat.
+        no selection is defined this function returns the position of the caret.
     */
     size_t getSelectionEndIndex(void) const;
 
@@ -328,17 +328,17 @@ public:
 
     /*!
     \brief
-        Set the current position of the carat.
+        Set the current position of the caret.
 
-    \param carat_pos
-        New index for the insert carat relative to the start of the text.  If
+    \param caret_pos
+        New index for the insert caret relative to the start of the text.  If
         the value specified is greater than the number of characters in the
-        Editbox, the carat is positioned at the end of the text.
+        Editbox, the caret is positioned at the end of the text.
 
     \return
         Nothing.
     */
-    void setCaratIndex(size_t carat_pos);
+    void setCaretIndex(size_t caret_pos);
 
     /*!
     \brief
@@ -409,7 +409,7 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    size_t getTextIndexFromPosition(const Point& pt) const;
+    size_t getTextIndexFromPosition(const Vector2& pt) const;
 
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection(void);
@@ -437,22 +437,22 @@ protected:
     //! Processing for Delete key
     void handleDelete(void);
 
-    //! Processing to move carat one character left
+    //! Processing to move caret one character left
     void handleCharLeft(uint sysKeys);
 
-    //! Processing to move carat one word left
+    //! Processing to move caret one word left
     void handleWordLeft(uint sysKeys);
 
-    //! Processing to move carat one character right
+    //! Processing to move caret one character right
     void handleCharRight(uint sysKeys);
 
-    //! Processing to move carat one word right
+    //! Processing to move caret one word right
     void handleWordRight(uint sysKeys);
 
-    //! Processing to move carat to the start of the text.
+    //! Processing to move caret to the start of the text.
     void handleHome(uint sysKeys);
 
-    //! Processing to move carat to the end of the text
+    //! Processing to move caret to the end of the text
     void handleEnd(uint sysKeys);
 
     /*!
@@ -530,9 +530,9 @@ protected:
 
     /*!
     \brief
-        Handler called when the carat (insert point) position changes.
+        Handler called when the caret (insert point) position changes.
     */
-    virtual void onCaratMoved(WindowEventArgs& e);
+    virtual void onCaretMoved(WindowEventArgs& e);
 
     /*!
     \brief
@@ -573,8 +573,8 @@ protected:
     utf32 d_maskCodePoint;
     //! Maximum number of characters for this Editbox.
     size_t d_maxTextLen;
-    //! Position of the carat / insert-point.
-    size_t d_caratPos;
+    //! Position of the caret / insert-point.
+    size_t d_caretPos;
     //! Start of selection area.
     size_t d_selectionStart;
     //! End of selection area.
@@ -593,7 +593,7 @@ private:
     static EditboxProperties::MaskText         d_maskTextProperty;
     static EditboxProperties::MaskCodepoint    d_maskCodepointProperty;
     static EditboxProperties::ValidationString d_validationStringProperty;
-    static EditboxProperties::CaratIndex       d_caratIndexProperty;
+    static EditboxProperties::CaretIndex       d_caretIndexProperty;
     static EditboxProperties::SelectionStart   d_selectionStartProperty;
     static EditboxProperties::SelectionLength  d_selectionLengthProperty;
     static EditboxProperties::MaxTextLength    d_maxTextLengthProperty;

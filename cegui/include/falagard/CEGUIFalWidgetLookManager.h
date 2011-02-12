@@ -47,7 +47,9 @@ namespace CEGUI
     \brief
         Manager class that gives top-level access to widget data based "look and feel" specifications loaded into the system.
     */
-    class CEGUIEXPORT WidgetLookManager : public Singleton<WidgetLookManager>
+    class CEGUIEXPORT WidgetLookManager :
+        public Singleton<WidgetLookManager>,
+        public AllocatedObject<WidgetLookManager>
     {
     public:
         /*!

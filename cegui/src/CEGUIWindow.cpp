@@ -59,7 +59,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUIMinibidiVisualMapping.h"
 #else
-    #include "CEGUIBiDiVisualMapping.h"
+    #include "CEGUIBidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -67,7 +67,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String Window::EventNamespace("Window");
-const String Window::EventWindowUpdated ("WindowUpdate");
+const String Window::EventUpdated ("Updated");
 const String Window::EventParentSized("ParentSized");
 const String Window::EventSized("Sized");
 const String Window::EventMoved("Moved");
@@ -81,18 +81,18 @@ const String Window::EventShown("Shown");
 const String Window::EventHidden("Hidden");
 const String Window::EventEnabled("Enabled");
 const String Window::EventDisabled("Disabled");
-const String Window::EventClippedByParentChanged("ClippingChanged");
+const String Window::EventClippedByParentChanged( "ClippedByParentChanged" );
 const String Window::EventDestroyedByParentChanged("DestroyedByParentChanged");
-const String Window::EventInheritsAlphaChanged("InheritAlphaChanged");
+const String Window::EventInheritsAlphaChanged( "InheritsAlphaChanged" );
 const String Window::EventAlwaysOnTopChanged("AlwaysOnTopChanged");
-const String Window::EventInputCaptureGained("CaptureGained");
-const String Window::EventInputCaptureLost("CaptureLost");
-const String Window::EventRenderingStarted("StartRender");
-const String Window::EventRenderingEnded("EndRender");
-const String Window::EventChildAdded("AddedChild");
-const String Window::EventChildRemoved("RemovedChild");
-const String Window::EventDestructionStarted("DestructStart");
-const String Window::EventZOrderChanged("ZChanged");
+const String Window::EventInputCaptureGained( "InputCaptureGained" );
+const String Window::EventInputCaptureLost( "InputCaptureLost" );
+const String Window::EventRenderingStarted( "RenderingStarted" );
+const String Window::EventRenderingEnded( "RenderingEnded" );
+const String Window::EventChildAdded( "ChildAdded" );
+const String Window::EventChildRemoved( "ChildRemoved" );
+const String Window::EventDestructionStarted( "DestructionStarted" );
+const String Window::EventZOrderChanged( "ZOrderChanged" );
 const String Window::EventDragDropItemEnters("DragDropItemEnters");
 const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
@@ -101,13 +101,13 @@ const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged
 const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventRotated("Rotated");
-const String Window::EventNonClientChanged("NonClientChanged");
+const String Window::EventNonClientChanged( "NonClientChanged" );
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEntersArea("MouseEntersArea");
 const String Window::EventMouseLeavesArea("MouseLeavesArea");
-const String Window::EventMouseEnters("MouseEnter");
-const String Window::EventMouseLeaves("MouseLeave");
+const String Window::EventMouseEntersSurface( "MouseEntersSurface" );
+const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
 const String Window::EventMouseMove("MouseMove");
 const String Window::EventMouseWheel("MouseWheel");
 const String Window::EventMouseButtonDown("MouseButtonDown");
@@ -129,21 +129,40 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-WindowProperties::Alpha             Window::d_alphaProperty;
-WindowProperties::AlwaysOnTop       Window::d_alwaysOnTopProperty;
-WindowProperties::ClippedByParent   Window::d_clippedByParentProperty;
-WindowProperties::DestroyedByParent Window::d_destroyedByParentProperty;
+TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false);
+TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setClippedByParent, &Window::isClippedByParent, true);
+TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setDestroyedByParent, &Window::isDestroyedByParent, true);
+/*TplProperty<Window, bool>           Window::d_disabledProperty("Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setDisabled, &Window::isDisabled, false);*/
+
 WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
-WindowProperties::ID                Window::d_IDProperty;
-WindowProperties::InheritsAlpha     Window::d_inheritsAlphaProperty;
+
+TplProperty<Window, uint>           Window::d_IDProperty("ID", "Property to get/set the ID value of the Window.  Value is an unsigned integer number.",
+                                                            &Window::setID, &Window::getID, 0);
+TplProperty<Window, bool>           Window::d_inheritsAlphaProperty("InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setInheritsAlpha, &Window::inheritsAlpha, true);
+/*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
+                                                            &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
-WindowProperties::RestoreOldCapture Window::d_restoreOldCaptureProperty;
-WindowProperties::Text              Window::d_textProperty;
+TplProperty<Window, bool>           Window::d_restoreOldCaptureProperty("RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setRestoreOldCapture, &Window::restoresOldCapture, false);
+TplProperty<Window, String>         Window::d_textProperty("Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
+                                                            &Window::setText, &Window::getText, "");
+/*
+TplProperty<Window, bool>           Window::d_visibleProperty("Visible", "Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setVisible, &Window::isVisible, true);*/
 WindowProperties::Visible           Window::d_visibleProperty;
-WindowProperties::ZOrderChangeEnabled   Window::d_zOrderChangeProperty;
-WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
-WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
+// TODO: inconsistency between property and setter getter names
+TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
+                                                            &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
+TplProperty<Window, bool>           Window::d_wantsMultiClicksProperty("WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".",
+                                                            &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true);
+TplProperty<Window, bool>           Window::d_mouseButtonAutoRepeatProperty("MouseButtonDownAutoRepeat", "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".",
+                                                            &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false);
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
 WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
 WindowProperties::DistributeCapturedInputs Window::d_distInputsProperty;
@@ -168,9 +187,6 @@ WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 WindowProperties::DragDropTarget    Window::d_dragDropTargetProperty;
 WindowProperties::AutoRenderingSurface Window::d_autoRenderingSurfaceProperty;
 WindowProperties::Rotation Window::d_rotationProperty;
-WindowProperties::XRotation Window::d_xRotationProperty;
-WindowProperties::YRotation Window::d_yRotationProperty;
-WindowProperties::ZRotation Window::d_zRotationProperty;
 WindowProperties::NonClient Window::d_nonClientProperty;
 WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
 WindowProperties::Margin Window:: d_marginProperty;
@@ -221,9 +237,9 @@ Window::Window(const String& type, const String& name) :
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -272,7 +288,7 @@ Window::Window(const String& type, const String& name) :
     d_maxSize(cegui_reldim(1), cegui_reldim(1)),
     d_horzAlign(HA_LEFT),
     d_vertAlign(VA_TOP),
-    d_rotation(0.0f, 0.0f, 0.0f),
+    d_rotation(Quaternion::IDENTITY),
 
     // initialise area cache rects
     d_outerUnclippedRect(0, 0, 0, 0),
@@ -304,7 +320,7 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
 
     System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometry);
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 //----------------------------------------------------------------------------//
@@ -897,13 +913,13 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChildWindow(const String& name)
+void Window::addChild(const String& name)
 {
-    addChildWindow(WindowManager::getSingleton().getWindow(name));
+    addChild(WindowManager::getSingleton().getWindow(name));
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChildWindow(Window* window)
+void Window::addChild(Window* window)
 {
     // don't add null window or ourself as a child
     if (!window || window == this)
@@ -916,7 +932,7 @@ void Window::addChildWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(const String& name)
+void Window::removeChild(const String& name)
 {
     const size_t child_count = getChildCount();
 
@@ -924,16 +940,14 @@ void Window::removeChildWindow(const String& name)
     {
         if (d_children[i]->getName() == name)
         {
-            removeChildWindow(d_children[i]);
+            removeChild(d_children[i]);
             return;
         }
-
     }
-
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(Window* window)
+void Window::removeChild(Window* window)
 {
     removeChild_impl(window);
     WindowEventArgs args(window);
@@ -942,7 +956,7 @@ void Window::removeChildWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChildWindow(uint ID)
+void Window::removeChild(uint ID)
 {
     const size_t child_count = getChildCount();
 
@@ -950,12 +964,38 @@ void Window::removeChildWindow(uint ID)
     {
         if (d_children[i]->getID() == ID)
         {
-            removeChildWindow(d_children[i]);
+            removeChild(d_children[i]);
             return;
         }
 
     }
+}
 
+//----------------------------------------------------------------------------//
+Window* Window::createChild(const String& type, const String& name, bool nameLocal)
+{
+    Window* ret = WindowManager::getSingleton().createWindow(type,
+        nameLocal ? (getName() + "/" + name) : name );
+
+    addChild(ret);
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+void Window::destroyChild(Window* wnd)
+{
+    assert(isChild(wnd) && "Window you are attempting to destroy is not a child!");
+
+    WindowManager::getSingleton().destroyWindow(wnd);
+}
+
+//----------------------------------------------------------------------------//
+void Window::destroyChild(const String& name, bool nameLocal)
+{
+    Window* wnd = WindowManager::getSingleton().getWindow(
+        nameLocal ? (getName() + "/" + name) : name);
+
+    destroyChild(wnd);
 }
 
 //----------------------------------------------------------------------------//
@@ -1114,18 +1154,18 @@ void Window::releaseInput(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setRestoreCapture(bool setting)
+void Window::setRestoreOldCapture(bool setting)
 {
     d_restoreOldCapture = setting;
 
     const size_t child_count = getChildCount();
 
     for (size_t i = 0; i < child_count; ++i)
-        d_children[i]->setRestoreCapture(setting);
+        d_children[i]->setRestoreOldCapture(setting);
 }
 
 //----------------------------------------------------------------------------//
-void Window::setAlpha(float alpha)
+void Window::setAlpha(const float alpha)
 {
     // clamp this to the valid range [0.0, 1.0]
     d_alpha = ceguimax(ceguimin(alpha, 1.0f), 0.0f);
@@ -1312,7 +1352,7 @@ void Window::cleanupChildren(void)
         Window* wnd = d_children[0];
 
         // always remove child
-        removeChildWindow(wnd);
+        removeChild(wnd);
 
         // destroy child if that is required
         if (wnd->isDestroyedByParent())
@@ -1326,7 +1366,7 @@ void Window::addChild_impl(Window* wnd)
     // if window is already attached, detach it first (will fire normal events)
     Window* const old_parent = wnd->getParent();
     if (old_parent)
-        old_parent->removeChildWindow(wnd);
+        old_parent->removeChild(wnd);
 
     addWindowToDrawList(*wnd);
 
@@ -1459,7 +1499,13 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 //----------------------------------------------------------------------------//
 void Window::addStandardProperties(void)
 {
-    addProperty(&d_alphaProperty);
+    // experimental, even easier to maintan, property definition, neat eh?
+    CEGUI_DEFINE_PROPERTY((CEGUI_NEW_AO TplProperty<Window, float>(
+        "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f)
+    ));
+
+    //addProperty(&d_alphaProperty);
     addProperty(&d_alwaysOnTopProperty);
     addProperty(&d_clippedByParentProperty);
     addProperty(&d_destroyedByParentProperty);
@@ -1473,7 +1519,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_visibleProperty);
     addProperty(&d_zOrderChangeProperty);
     addProperty(&d_wantsMultiClicksProperty);
-    addProperty(&d_autoRepeatProperty);
+    addProperty(&d_mouseButtonAutoRepeatProperty);
     addProperty(&d_autoRepeatDelayProperty);
     addProperty(&d_autoRepeatRateProperty);
     addProperty(&d_distInputsProperty);
@@ -1498,9 +1544,6 @@ void Window::addStandardProperties(void)
     addProperty(&d_dragDropTargetProperty);
     addProperty(&d_autoRenderingSurfaceProperty);
     addProperty(&d_rotationProperty);
-    addProperty(&d_xRotationProperty);
-    addProperty(&d_yRotationProperty);
-    addProperty(&d_zRotationProperty);
     addProperty(&d_nonClientProperty);
     addProperty(&d_textParsingEnabledProperty);
     addProperty(&d_marginProperty);
@@ -1612,7 +1655,7 @@ void Window::update(float elapsed)
         static_cast<RenderingWindow*>(d_surface)->update(elapsed);
 
     UpdateEventArgs e(this,elapsed);
-    fireEvent(EventWindowUpdated,e,EventNamespace);
+    fireEvent(EventUpdated,e,EventNamespace);
 
     // update child windows
     for (size_t i = 0; i < getChildCount(); ++i)
@@ -1756,7 +1799,7 @@ void Window::destroy(void)
 
     // double check we are detached from parent
     if (d_parent)
-        d_parent->removeChildWindow(this);
+        d_parent->removeChild(this);
 
     cleanupChildren();
 
@@ -2847,7 +2890,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
     if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
-    fireEvent(EventMouseEnters, e, EventNamespace);
+    fireEvent(EventMouseEntersSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -2859,7 +2902,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
 
-    fireEvent(EventMouseLeaves, e, EventNamespace);
+    fireEvent(EventMouseLeavesSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3569,6 +3612,19 @@ void Window::setUsingAutoRenderingSurface(bool setting)
     notifyScreenAreaChanged();
 }
 
+void Window::setRotation(const Quaternion& rotation)
+{
+    d_rotation = rotation;
+
+    WindowEventArgs args(this);
+    onRotated(args);
+}
+
+const Quaternion& Window::getRotation() const
+{
+    return d_rotation;
+}
+
 //----------------------------------------------------------------------------//
 void Window::allocateRenderingWindow()
 {
@@ -3638,24 +3694,6 @@ void Window::transferChildSurfaces()
         else
             c->transferChildSurfaces();
     }
-}
-
-//----------------------------------------------------------------------------//
-const Vector3& Window::getRotation() const
-{
-    return d_rotation;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setRotation(const Vector3& rotation)
-{
-    if (rotation == d_rotation)
-        return;
-
-    d_rotation = rotation;
-
-    WindowEventArgs args(this);
-    onRotated(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -4157,7 +4195,7 @@ void Window::cloneChildWidgetsTo(Window& target) const
         }
 
         Window* newChild = child->clone(newChildName, true);
-        target.addChildWindow(newChild);
+        target.addChild(newChild);
     }
 }
 
