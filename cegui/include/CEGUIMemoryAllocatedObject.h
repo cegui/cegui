@@ -56,7 +56,7 @@ public:
 	inline explicit AllocatedObject()
 	{}
 
-#ifndef CEGUI_MEMORY_DEBUG
+#ifndef CEGUI_CUSTOM_ALLOCATORS_DEBUG
 	inline void* operator new(size_t size)
 	{
 		return Allocator::allocateBytes(size);
@@ -73,7 +73,7 @@ public:
 		Allocator::deallocateBytes(ptr);
 	}
 
-#ifndef CEGUI_MEMORY_DEBUG
+#ifndef CEGUI_CUSTOM_ALLOCATORS_DEBUG
 	inline void* operator new[] (size_t size)
 	{
 		return Allocator::allocateBytes(size);

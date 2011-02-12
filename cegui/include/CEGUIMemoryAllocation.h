@@ -34,12 +34,6 @@
 #   error Dont include this directly! Include CEGUIBase.h instead.
 #endif
 
-// this should really go to config.h, now it's there for testing since
-// I am a premake noob...
-#define CEGUI_CUSTOM_ALLOCATORS
-//#define CEGUI_MEMORY_DEBUG
-#define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h"
-
 #define CEGUI_SET_DEFAULT_ALLOCATOR(A)\
 template<typename T>\
 struct AllocatorConfig\
@@ -88,7 +82,7 @@ void destructN(T* basePtr, size_t count)
 
 } // CEGUI namespace
 
-#ifndef CEGUI_MEMORY_DEBUG
+#ifndef CEGUI_CUSTOM_ALLOCATORS_DEBUG
 #   define CEGUI_NEW_AO new
 #   define CEGUI_DELETE_AO delete
 // for primitive types, types not inherited from AllocatedObject

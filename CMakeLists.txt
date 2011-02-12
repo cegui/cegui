@@ -104,6 +104,13 @@ set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
 # These define the configurable options
 #
+set( CEGUI_CUSTOM_ALLOCATORS 0 CACHE BOOL "If checked, CEGUI can use custom allocation. (for experienced developers only!)" )
+set( CEGUI_CUSTOM_ALLOCATORS_DEGUG 0 CACHE BOOL "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" )
+set( CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h" CACHE STRING "Which include file contains memory allocators and allocation configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
+We have bundled 2 allocators, mostly for demonstrational purposes.
+CEGUIMemoryStdAllocator.h contains malloc allocator, use it as a starting point for your own allocators
+CEGUIMemoryOgreAllocator.h delegates allocation to Ogre, which may be useful to Ogre users (you will have to manually change linking options of CEGUIBase!)" )
+
 set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
 1 - utf8 and utf32 aware inbuilt string,
 2 - std::string without custom allocation,
