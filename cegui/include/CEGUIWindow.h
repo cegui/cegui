@@ -2156,7 +2156,7 @@ public:
     \return
         Nothing.
     */
-    void setMouseCursor(const Image* image)     {d_mouseCursor = image;}
+    void setMouseCursor(const Image* image);
 
     /*!
     \brief
@@ -2168,8 +2168,7 @@ public:
     \return
         Nothing.
     */
-    void setMouseCursor(MouseCursorImage image)
-    {d_mouseCursor = (const Image*)image;}
+    void setMouseCursor(MouseCursorImage image);
 
     /*!
     \brief
