@@ -93,7 +93,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void draw(const size_t line, GeometryBuffer& buffer, const Vector2& position,
+    void draw(const size_t line, GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect,
               const float space_extra) const;
 

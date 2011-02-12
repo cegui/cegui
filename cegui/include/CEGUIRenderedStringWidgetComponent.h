@@ -51,7 +51,7 @@ public:
     const Window* getWindow() const;
 
     // implementation of abstract base interface
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect,
               const float vertical_space, const float space_extra) const;
     Size getPixelSize() const;

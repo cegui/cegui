@@ -138,7 +138,7 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rect& textArea)
             caretArea.d_top     = textArea.d_top + ypos;
             caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
             caretArea.setHeight(fnt->getLineSpacing());
-            caretArea.offset(Vector2(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
+            caretArea.offset(Vector2<>(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
 
             // cache the caret image for rendering.
             caretImagery.render(*w, caretArea, 0, &textArea);
@@ -168,7 +168,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
     // text is already formatted, we just grab the lines and render them with the required alignment.
     Rect drawArea(dest_area);
     float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    drawArea.offset(Vector2(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
+    drawArea.offset(Vector2<>(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
 
     Font* fnt = w->getFont();
 

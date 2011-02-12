@@ -505,7 +505,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	size_t	getTextIndexFromPosition(const Vector2& pt) const;
+	size_t	getTextIndexFromPosition(const Vector2<>& pt) const;
 
 
 	/*!

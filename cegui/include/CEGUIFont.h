@@ -124,7 +124,7 @@ public:
         Nothing.
     */
     void drawText(GeometryBuffer& buffer, const String& text,
-                  const Vector2& position, const Rect* clip_rect,
+                  const Vector2<>& position, const Rect* clip_rect,
                   const ColourRect& colours, const float space_extra = 0.0f,
                   const float x_scale = 1.0f, const float y_scale = 1.0f);
 

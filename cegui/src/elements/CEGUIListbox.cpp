@@ -742,9 +742,9 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Vector2& pt) const
+ListboxItem* Listbox::getItemAtPoint(const Vector2<>& pt) const
 {
-    const Vector2 local_pos(CoordConverter::screenToWindow(*this, pt));
+    const Vector2<> local_pos(CoordConverter::screenToWindow(*this, pt));
 	const Rect renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.

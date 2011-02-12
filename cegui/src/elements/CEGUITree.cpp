@@ -613,7 +613,7 @@ void Tree::populateGeometryBuffer()
     cacheTreeBaseImagery();
     
     // Render list items
-    Vector2  itemPos;
+    Vector2<> itemPos;
     float    widest = getWidestItemWidth();
     
     // calculate position of area we have to render into
@@ -630,7 +630,7 @@ void Tree::populateGeometryBuffer()
 
 // Recursive!
 void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
-                        Vector2& itemPos, GeometryBuffer& geometry, float alpha)
+                        Vector2<>& itemPos, GeometryBuffer& geometry, float alpha)
 {
     if (itemList.empty())
         return;
@@ -932,7 +932,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 /*************************************************************************
     Return the TreeItem under the given window local pixel co-ordinate.
 *************************************************************************/
-TreeItem* Tree::getItemAtPoint(const Vector2& pt) const
+TreeItem* Tree::getItemAtPoint(const Vector2<>& pt) const
 {
     Rect renderArea(getTreeRenderArea());
     
@@ -950,7 +950,7 @@ TreeItem* Tree::getItemAtPoint(const Vector2& pt) const
 }
 
 // Recursive!
-TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2& pt) const
+TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2<>& pt) const
 {
     size_t itemCount = itemList.size();
     
@@ -1093,7 +1093,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     {
         bool modified = false;
         
-        Vector2 localPos(CoordConverter::screenToWindow(*this, e.position));
+        Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
         
         TreeItem* item = getItemAtPoint(localPos);
@@ -1191,7 +1191,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
     {
         static TreeItem* lastItem = 0;
         
-        Vector2 posi(CoordConverter::screenToWindow(*this, e.position));
+        Vector2<> posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
         if (item != lastItem)

@@ -186,7 +186,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 	{
         Size parentSize(getParentPixelSize());
 
-		Vector2 delta;
+		Vector2<> delta;
 		float hmin, hmax, vmin, vmax;
 
         delta = CoordConverter::screenToWindow(*this, e.position);

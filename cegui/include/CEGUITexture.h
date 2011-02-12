@@ -99,7 +99,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2& getTexelScaling() const = 0;
+    virtual const Vector2<>& getTexelScaling() const = 0;
 
     /*!
     \brief
