@@ -36,6 +36,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 NullGeometryBuffer::NullGeometryBuffer() :
     d_activeTexture(0),
+    d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
