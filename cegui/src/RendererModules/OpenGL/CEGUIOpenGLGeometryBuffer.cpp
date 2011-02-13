@@ -129,10 +129,10 @@ void OpenGLGeometryBuffer::setPivot(const Vector3& p)
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::setClippingRegion(const Rect& region)
 {
-    d_clipRect.d_top    = PixelAligned(region.d_top);
-    d_clipRect.d_bottom = PixelAligned(region.d_bottom);
-    d_clipRect.d_left   = PixelAligned(region.d_left);
-    d_clipRect.d_right  = PixelAligned(region.d_right);
+    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
+    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
+    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
+    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
 }
 
 //----------------------------------------------------------------------------//

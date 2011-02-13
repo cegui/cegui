@@ -86,7 +86,10 @@ void NullGeometryBuffer::setPivot(const Vector3& p)
 //----------------------------------------------------------------------------//
 void NullGeometryBuffer::setClippingRegion(const Rect& region)
 {
-    d_clipRect = region;
+    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
+    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
+    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
+    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
 }
 
 //----------------------------------------------------------------------------//
