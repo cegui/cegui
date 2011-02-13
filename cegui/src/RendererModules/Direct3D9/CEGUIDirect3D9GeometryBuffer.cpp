@@ -40,6 +40,7 @@ Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(Direct3D9Renderer& owner,
                                                  LPDIRECT3DDEVICE9 device) :
     d_owner(owner),
     d_activeTexture(0),
+    d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
