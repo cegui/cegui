@@ -105,7 +105,7 @@ void OpenGLGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setTranslation(const Vector3& v)
+void OpenGLGeometryBuffer::setTranslation(const Vector3<>& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -119,9 +119,9 @@ void OpenGLGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setPivot(const Vector3& p)
+void OpenGLGeometryBuffer::setPivot(const Vector3<>& p)
 {
-    d_pivot = Vector3(p.d_x, p.d_y, p.d_z);
+    d_pivot = Vector3<>(p.d_x, p.d_y, p.d_z);
     d_matrixValid = false;
 }
 
@@ -234,9 +234,9 @@ void OpenGLGeometryBuffer::updateMatrix() const
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    const Vector3 final_trans(d_translation.d_x + d_pivot.d_x,
-                              d_translation.d_y + d_pivot.d_y,
-                              d_translation.d_z + d_pivot.d_z);
+    const Vector3<> final_trans(d_translation.d_x + d_pivot.d_x,
+                                d_translation.d_y + d_pivot.d_y,
+                                d_translation.d_z + d_pivot.d_z);
 
     glLoadIdentity();
     glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);

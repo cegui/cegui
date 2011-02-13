@@ -3384,18 +3384,18 @@ void Window::updateGeometryRenderSettings()
         static_cast<RenderingWindow*>(ctx.surface)->
             setPosition(getUnclippedOuterRect().getPosition());
         static_cast<RenderingWindow*>(d_surface)->setPivot(
-            Vector3(d_pixelSize.d_width / 2.0f,
+            Vector3<>(d_pixelSize.d_width / 2.0f,
                     d_pixelSize.d_height / 2.0f,
                     0.0f));
-        d_geometry->setTranslation(Vector3(0.0f, 0.0f, 0.0f));
+        d_geometry->setTranslation(Vector3<>(0.0f, 0.0f, 0.0f));
     }
     // if we're not texture backed, update geometry position.
     else
     {
         // position is the offset of the window on the dest surface.
         const Rect ucrect(getUnclippedOuterRect());
-        d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
-                                        ucrect.d_top - ctx.offset.d_y, 0.0f));
+        d_geometry->setTranslation(Vector3<>(ucrect.d_left - ctx.offset.d_x,
+                                             ucrect.d_top - ctx.offset.d_y, 0.0f));
     }
     initialiseClippers(ctx);
 }
@@ -3779,7 +3779,7 @@ void Window::onRotated(WindowEventArgs& e)
     // Checks / setup complete!  Now we can finally set the rotation.
     static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
     static_cast<RenderingWindow*>(d_surface)->setPivot(
-        Vector3(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
+        Vector3<>(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
 
     fireEvent(EventRotated, e, EventNamespace);
 }

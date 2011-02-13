@@ -58,9 +58,9 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-    void setTranslation(const Vector3& t);
+    void setTranslation(const Vector3<>& t);
     void setRotation(const Quaternion& r);
-    void setPivot(const Vector3& p);
+    void setPivot(const Vector3<>& p);
     void setClippingRegion(const Rect& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
@@ -107,11 +107,11 @@ protected:
     //! rectangular clip region
     Rect d_clipRect;
     //! translation vector
-    Vector3 d_translation;
+    Vector3<> d_translation;
     //! rotation quaternion
     Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3 d_pivot;
+    Vector3<> d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache - we use double because gluUnproject takes double
