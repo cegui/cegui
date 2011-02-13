@@ -40,7 +40,8 @@ namespace CEGUI
     For TrueType fonts initially all FontGlyph's are empty
     (getImage() will return 0), but they are filled by demand.
 */
-class CEGUIEXPORT FontGlyph
+class CEGUIEXPORT FontGlyph:
+    public AllocatedObject<FontGlyph>
 {
 public:
     //! Constructor.

@@ -19,12 +19,7 @@ void register_ImageCodec_class(){
 
     { //::CEGUI::ImageCodec
         typedef bp::class_< ImageCodec_wrapper, boost::noncopyable > ImageCodec_exposer_t;
-        ImageCodec_exposer_t ImageCodec_exposer = ImageCodec_exposer_t( "ImageCodec", "*!\n\
-           \n\
-          Abstract ImageLoader class. An image loader encapsulate the loading of a texture.\n\
-          \n\
-          This class define the loading of an abstract \n\
-        *\n", bp::no_init );
+        ImageCodec_exposer_t ImageCodec_exposer = ImageCodec_exposer_t( "ImageCodec", bp::no_init );
         bp::scope ImageCodec_scope( ImageCodec_exposer );
         { //::CEGUI::ImageCodec::getIdentifierString
         

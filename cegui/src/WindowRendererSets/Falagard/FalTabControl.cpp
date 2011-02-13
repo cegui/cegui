@@ -34,9 +34,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTabControl::TypeName[] = "Falagard/TabControl";
-    FalagardTabControlProperties::TabButtonType FalagardTabControl::d_tabButtonTypeProperty;
+    const String FalagardTabControl::TypeName("Falagard/TabControl");
 
+    FalagardTabControlProperties::TabButtonType FalagardTabControl::d_tabButtonTypeProperty;
 
     FalagardTabControl::FalagardTabControl(const String& type) :
         TabControlWindowRenderer(type)

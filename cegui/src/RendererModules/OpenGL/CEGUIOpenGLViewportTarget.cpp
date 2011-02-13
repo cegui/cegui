@@ -42,7 +42,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner) :
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
 
-    Rect init_area(Vector2(static_cast<float>(vp[0]), static_cast<float>(vp[1])),
+    Rect init_area(Vector2<>(static_cast<float>(vp[0]), static_cast<float>(vp[1])),
                    Size(static_cast<float>(vp[2]), static_cast<float>(vp[3])));
 
     setArea(init_area);

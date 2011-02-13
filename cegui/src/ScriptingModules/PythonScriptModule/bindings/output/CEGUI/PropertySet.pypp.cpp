@@ -60,14 +60,14 @@ void register_PropertySet_class(){
         }
         { //::CEGUI::PropertySet::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::PropertySet::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Property*>, CEGUI::StdAllocator> > > ( ::CEGUI::PropertySet::*getIterator_function_type )(  ) const;
             
             PropertySet_exposer.def( 
                 "getIterator"
                 , getIterator_function_type( &::CEGUI::PropertySet::getIterator )
                 , "*!\n\
             \n\
-                Return a PropertySet.Iterator object to iterate over the available\n\
+                Return a PropertySet.PropertyIterator object to iterate over the available\n\
                 Properties.\n\
             *\n" );
         

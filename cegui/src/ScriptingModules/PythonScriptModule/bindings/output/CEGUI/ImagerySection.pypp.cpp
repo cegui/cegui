@@ -10,10 +10,7 @@ void register_ImagerySection_class(){
 
     { //::CEGUI::ImagerySection
         typedef bp::class_< CEGUI::ImagerySection > ImagerySection_exposer_t;
-        ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", "*!\n\
-        \n\
-            Class that encapsulates a re-usable collection of imagery specifications.\n\
-        *\n", bp::init< >("*!\n\
+        ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", bp::init< >("*!\n\
         \n\
             Constructor.\n\
         *\n") );

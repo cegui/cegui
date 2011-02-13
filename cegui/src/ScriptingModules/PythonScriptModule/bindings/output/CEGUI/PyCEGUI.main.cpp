@@ -28,7 +28,7 @@
 
 #include "BasicRenderedStringParser.pypp.hpp"
 
-#include "BiDiVisualMapping.pypp.hpp"
+#include "BidiVisualMapping.pypp.hpp"
 
 #include "BoundSlot.pypp.hpp"
 
@@ -37,6 +37,8 @@
 #include "CentredRenderedString.pypp.hpp"
 
 #include "Checkbox.pypp.hpp"
+
+#include "Colour.pypp.hpp"
 
 #include "ColourRect.pypp.hpp"
 
@@ -54,6 +56,8 @@
 
 #include "DefaultResourceProvider.pypp.hpp"
 
+#include "DefaultWindow.pypp.hpp"
+
 #include "Dimension.pypp.hpp"
 
 #include "DisplayEventArgs.pypp.hpp"
@@ -69,6 +73,8 @@
 #include "EventArgs.pypp.hpp"
 
 #include "EventIterator.pypp.hpp"
+
+#include "EventLinkDefinition.pypp.hpp"
 
 #include "EventSet.pypp.hpp"
 
@@ -91,8 +97,6 @@
 #include "FrameComponent.pypp.hpp"
 
 #include "FrameWindow.pypp.hpp"
-
-#include "GUISheet.pypp.hpp"
 
 #include "GeometryBuffer.pypp.hpp"
 
@@ -145,6 +149,8 @@
 #include "LayoutContainer.pypp.hpp"
 
 #include "LineList.pypp.hpp"
+
+#include "LinkedEventArgs.pypp.hpp"
 
 #include "ListHeader.pypp.hpp"
 
@@ -330,8 +336,6 @@
 
 #include "TabControl.pypp.hpp"
 
-#include "TargetTypeStack.pypp.hpp"
-
 #include "TextComponent.pypp.hpp"
 
 #include "TextUtils.pypp.hpp"
@@ -410,7 +414,7 @@
 
 #include "XMLSerializer.pypp.hpp"
 
-#include "colour.pypp.hpp"
+#include "vector_less__CEGUI_scope_String__greater_.pypp.hpp"
 
 namespace bp = boost::python;
 
@@ -424,7 +428,7 @@ struct CEGUI_String_to_python
 		// "replace" replaces invalid utf32 chars with "?"
 		
 		// python wants the size of the buffer, not length of the string,
-        // this is the reason for the sizeof
+		// this is the reason for the sizeof
 		return boost::python::incref(
 			PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
 		);
@@ -499,7 +503,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_LBItemList_class();
 
-    register_TargetTypeStack_class();
+    register_vector_less__CEGUI_scope_String__greater__class();
 
     register_PropertyLinkDefinitionList_class();
 
@@ -537,7 +541,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_BasicRenderedStringParser_class();
 
-    register_BiDiVisualMapping_class();
+    register_BidiVisualMapping_class();
 
     register_BoundSlot_class();
 
@@ -554,6 +558,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_CentredRenderedString_class();
 
     register_Checkbox_class();
+
+    register_Colour_class();
+
+    bp::implicitly_convertible< CEGUI::Colour, CEGUI::argb_t >();
 
     register_ColourRect_class();
 
@@ -597,6 +605,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_DefaultResourceProvider_class();
 
+    register_DefaultWindow_class();
+
     register_Dimension_class();
 
     register_DisplayEventArgs_class();
@@ -611,6 +621,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_Event_class();
 
+    register_EventLinkDefinition_class();
+
     register_Rect_class();
 
     register_FalagardComponentBase_class();
@@ -620,10 +632,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Font_class();
 
     register_FontDim_class();
-
-    register_colour_class();
-
-    bp::implicitly_convertible< CEGUI::colour, CEGUI::argb_t >();
 
     register_Image_class();
 
@@ -640,8 +648,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_FrameComponent_class();
 
     register_FrameWindow_class();
-
-    register_GUISheet_class();
 
     register_GeometryBuffer_class();
 
@@ -692,6 +698,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_KeyEventArgs_class();
 
     register_LayerSpecification_class();
+
+    register_LinkedEventArgs_class();
 
     register_ListHeaderSegment_class();
 

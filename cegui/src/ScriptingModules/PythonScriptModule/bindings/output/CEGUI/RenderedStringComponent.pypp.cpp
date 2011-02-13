@@ -44,11 +44,7 @@ void register_RenderedStringComponent_class(){
 
     { //::CEGUI::RenderedStringComponent
         typedef bp::class_< RenderedStringComponent_wrapper, boost::noncopyable > RenderedStringComponent_exposer_t;
-        RenderedStringComponent_exposer_t RenderedStringComponent_exposer = RenderedStringComponent_exposer_t( "RenderedStringComponent", "*!\n\
-        \n\
-            Base class representing a part of a rendered string.  The 'part' represented\n\
-            may be a text string, an image or some other entity.\n\
-        *\n", bp::no_init );
+        RenderedStringComponent_exposer_t RenderedStringComponent_exposer = RenderedStringComponent_exposer_t( "RenderedStringComponent", bp::no_init );
         bp::scope RenderedStringComponent_scope( RenderedStringComponent_exposer );
         { //::CEGUI::RenderedStringComponent::canSplit
         

@@ -55,7 +55,8 @@ namespace CEGUI
 */
 class CEGUIEXPORT ImagesetManager :
         public Singleton<ImagesetManager>,
-        public NamedXMLResourceManager<Imageset, Imageset_xmlHandler>
+        public NamedXMLResourceManager<Imageset, Imageset_xmlHandler>,
+        public AllocatedObject<ImagesetManager>
 {
 public:
     //! Constructor for ImagesetManager objects

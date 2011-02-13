@@ -298,7 +298,7 @@ void register_Tree_class(){
         }
         { //::CEGUI::Tree::clearAllSelectionsFromList
         
-            typedef bool ( ::CEGUI::Tree::*clearAllSelectionsFromList_function_type )( ::std::vector< CEGUI::TreeItem* > const & ) ;
+            typedef bool ( ::CEGUI::Tree::*clearAllSelectionsFromList_function_type )( ::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > const & ) ;
             
             Tree_exposer.def( 
                 "clearAllSelectionsFromList"
@@ -418,7 +418,7 @@ void register_Tree_class(){
         }
         { //::CEGUI::Tree::findItemWithIDFromList
         
-            typedef ::CEGUI::TreeItem * ( ::CEGUI::Tree::*findItemWithIDFromList_function_type )( ::std::vector< CEGUI::TreeItem* > const &,::CEGUI::uint,::CEGUI::TreeItem const *,bool ) ;
+            typedef ::CEGUI::TreeItem * ( ::CEGUI::Tree::*findItemWithIDFromList_function_type )( ::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > const &,::CEGUI::uint,::CEGUI::TreeItem const *,bool ) ;
             
             Tree_exposer.def( 
                 "findItemWithIDFromList"
@@ -429,7 +429,7 @@ void register_Tree_class(){
         }
         { //::CEGUI::Tree::findItemWithTextFromList
         
-            typedef ::CEGUI::TreeItem * ( ::CEGUI::Tree::*findItemWithTextFromList_function_type )( ::std::vector< CEGUI::TreeItem* > const &,::CEGUI::String const &,::CEGUI::TreeItem const *,bool ) ;
+            typedef ::CEGUI::TreeItem * ( ::CEGUI::Tree::*findItemWithTextFromList_function_type )( ::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > const &,::CEGUI::String const &,::CEGUI::TreeItem const *,bool ) ;
             
             Tree_exposer.def( 
                 "findItemWithTextFromList"

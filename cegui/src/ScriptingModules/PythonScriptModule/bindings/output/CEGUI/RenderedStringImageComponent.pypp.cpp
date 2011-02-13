@@ -226,7 +226,7 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::setColours
         
-            typedef void ( ::CEGUI::RenderedStringImageComponent::*setColours_function_type )( ::CEGUI::colour const & ) ;
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*setColours_function_type )( ::CEGUI::Colour const & ) ;
             
             RenderedStringImageComponent_exposer.def( 
                 "setColours"

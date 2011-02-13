@@ -97,11 +97,17 @@ public:
     // implement abstract members from base class.
     const Size& getSize() const;
     const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const Vector2<>& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Size& buffer_size,
                         PixelFormat pixel_format);
     void saveToMemory(void* buffer);
+
+    //! \copydoc Texture::blitFromMemory
+    virtual void blitFromMemory(void* sourceData, const Rect& area);
+
+    //! \copydoc Texture::blitToMemory
+    virtual void blitToMemory(void* targetData);
 
 protected:
     // Friends (to allow construction and destruction)
@@ -141,7 +147,7 @@ protected:
     //! original pixel of size data loaded into texture
     Size d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
     //! OpenGLRenderer that created and owns this OpenGLTexture
     OpenGLRenderer& d_owner;
 };

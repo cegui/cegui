@@ -240,7 +240,7 @@ void register_WindowManager_class(){
         }
         { //::CEGUI::WindowManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > ( ::CEGUI::WindowManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Window*>, CEGUI::StdAllocator> > > ( ::CEGUI::WindowManager::*getIterator_function_type )(  ) const;
             
             WindowManager_exposer.def( 
                 "getIterator"

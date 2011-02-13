@@ -40,7 +40,7 @@ namespace CEGUI
 TGAImageCodec::TGAImageCodec()
     : ImageCodec("TGAImageCodec - Official TGA image codec")
 {
-    d_supportedFormat = (utf8*)"tga";
+    d_supportedFormat = "tga";
 }
 TGAImageCodec::~TGAImageCodec()
 {

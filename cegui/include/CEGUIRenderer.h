@@ -31,6 +31,7 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -77,7 +78,8 @@ enum BlendMode
     or API to draw CEGUI imagery requires that an appropriate Renderer object be
     available.
 */
-class CEGUIEXPORT Renderer
+class CEGUIEXPORT Renderer :
+    public AllocatedObject<Renderer>
 {
 public:
     /*!
@@ -271,7 +273,7 @@ public:
         Vector2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2& getDisplayDPI() const = 0;
+    virtual const Vector2<>& getDisplayDPI() const = 0;
 
     /*!
     \brief

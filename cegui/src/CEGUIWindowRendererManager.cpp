@@ -156,7 +156,7 @@ void WindowRendererManager::removeFactory(const String& name)
                                         (*j)->getName() +
                                         "' WindowRenderers.");
 
-        delete (*j);
+        CEGUI_DELETE_AO (*j);
         d_ownedFactories.erase(j);
     }
 }

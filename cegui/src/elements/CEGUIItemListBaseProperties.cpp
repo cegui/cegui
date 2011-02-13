@@ -37,22 +37,22 @@ namespace ItemListBaseProperties
 {
     String AutoResizeEnabled::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ItemListBase*>(receiver)->isAutoResizeEnabled());
+        return PropertyHelper<bool>::toString(static_cast<const ItemListBase*>(receiver)->isAutoResizeEnabled());
     }
 
     void AutoResizeEnabled::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ItemListBase*>(receiver)->setAutoResizeEnabled(PropertyHelper::stringToBool(value));
+        static_cast<ItemListBase*>(receiver)->setAutoResizeEnabled(PropertyHelper<bool>::fromString(value));
     }
 
     String SortEnabled::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ItemListBase*>(receiver)->isSortEnabled());
+        return PropertyHelper<bool>::toString(static_cast<const ItemListBase*>(receiver)->isSortEnabled());
     }
 
     void SortEnabled::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ItemListBase*>(receiver)->setSortEnabled(PropertyHelper::stringToBool(value));
+        static_cast<ItemListBase*>(receiver)->setSortEnabled(PropertyHelper<bool>::fromString(value));
     }
 
     String SortMode::get(const PropertyReceiver* receiver) const

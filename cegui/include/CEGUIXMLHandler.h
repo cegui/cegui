@@ -29,12 +29,13 @@
 #define _CEGUIXMLHandler_h_
 
 #include "CEGUIBase.h"
-
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class CEGUIEXPORT XMLHandler
+    class CEGUIEXPORT XMLHandler :
+        public AllocatedObject<XMLHandler>
     {
     public:
         /*!

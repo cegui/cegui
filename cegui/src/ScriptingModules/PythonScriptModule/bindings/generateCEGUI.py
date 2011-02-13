@@ -75,7 +75,7 @@ def filterDeclarations(mb):
     
     # CEGUIBiDiVisualMapping.h
     CEGUI_ns.enum("BidiCharType").include()
-    bidiVisualMapping = CEGUI_ns.class_("BiDiVisualMapping")
+    bidiVisualMapping = CEGUI_ns.class_("BidiVisualMapping")
     bidiVisualMapping.include()
     
     # CEGUIBoundSlot.h
@@ -93,8 +93,8 @@ def filterDeclarations(mb):
     #chainedXMLHandler = CEGUI_ns.class_("ChainedXMLHandler")
     #chainedXMLHandler.include()
     
-    # CEGUIcolour.h
-    colour = CEGUI_ns.class_("colour")
+    # CEGUIColour.h
+    colour = CEGUI_ns.class_("Colour")
     colour.include()
     
     # CEGUIColourRect.h
@@ -150,28 +150,27 @@ class EventCallback
 public:
     EventCallback() : mSubscriber(0) {}
 
-    EventCallback(PyObject*  subscriber, CEGUI::String const & method)
-    {
-        mSubscriber = subscriber;
-        mMethod = method;
-    } 
+    EventCallback(PyObject* subscriber, const CEGUI::String& method):
+        mSubscriber(boost::python::incref(subscriber)),
+        mMethod(method)
+    {} 
     
-    EventCallback(const EventCallback &other)
-    : mSubscriber(0)
-    {
-        *this = other;
-    }
+    EventCallback(const EventCallback& other):
+        mSubscriber(boost::python::incref(other.mSubscriber)),
+        mMethod(other.mMethod)
+    {}
     
     ~EventCallback()
     {
+        boost::python::decref(mSubscriber);
     } 
     
-    void setsubscriber( PyObject* subscriber )
+    /*void setsubscriber( PyObject* subscriber )
     {
         mSubscriber = subscriber;
-    }
+    }*/
     
-  bool operator() (const CEGUI::EventArgs &args) const
+    bool operator() (const CEGUI::EventArgs &args) const
     {
         if (dynamic_cast<CEGUI::MouseCursorEventArgs *>((CEGUI::EventArgs *)&args))
             if (mMethod.length() > 0 )
@@ -258,22 +257,25 @@ public:
      return true;
     }
 
-    PyObject*  mSubscriber;
-    CEGUI::String  mMethod;
+    PyObject* mSubscriber;
+    CEGUI::String mMethod;
 };
 
 class EventConnection
 {
 public:
-    EventConnection() : mConnection(0), mValid(false) {}
+    EventConnection():
+        mConnection(0),
+        mValid(false)
+    {}
     
     EventConnection(const CEGUI::Event::Connection &connection) 
     : mConnection(connection), mValid(true) 
-    {
-    }
+    {}
+    
     ~EventConnection()
     {
-        if (mCallback) delete mCallback;
+        delete mCallback;
     }   
     bool connected()
     {
@@ -283,16 +285,16 @@ public:
     void disconnect()
     {
         if (mValid)
+        {
             mConnection->disconnect();
-    } // disconnect()
+        }
+    }
     
 protected:
     CEGUI::Event::Connection mConnection;
     bool mValid;
-    EventCallback * mCallback;
+    EventCallback* mCallback;
 };
-
-
 
 EventConnection * EventSet_subscribeEventSet(CEGUI::EventSet *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
@@ -319,7 +321,7 @@ EventConnection * EventSet_subscribeEventFW(CEGUI::FrameWindow *self , CEGUI::St
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
     return connect; 
 }
-EventConnection * EventSet_subscribeEventGUISheet(CEGUI::GUISheet *self , CEGUI::String const & name, 
+EventConnection * EventSet_subscribeEventDefaultWindow(CEGUI::DefaultWindow *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
@@ -392,7 +394,6 @@ EventConnection * EventSet_subscribeMultiColumnList(CEGUI::MultiColumnList *self
     return connect; 
 }
 
-// new ones the I missed in RC1
 EventConnection * EventSet_subscribeWindow(CEGUI::Window *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
@@ -412,23 +413,12 @@ EventConnection * EventSet_subscribeSystem(CEGUI::System *self , CEGUI::String c
     return connect; 
 }
 
-#if CEGUI_VERSION_MINOR < 7 
-EventConnection * EventSet_subscribeRenderer(CEGUI::Renderer *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-#endif
-
-#if CEGUI_VERSION_MINOR > 5 && CEGUI_VERSION_PATCH > 0
 EventConnection * EventSet_subscribeTree(CEGUI::Tree *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
     return connect; 
 }
-#endif
 """
     )
     eventSet.add_registration_code(
@@ -445,7 +435,7 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventCheckBox,
             bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
 EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSB, 
             bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventGUISheet, 
+EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventDefaultWindow, 
             bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
 EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventFW, 
             bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
@@ -653,8 +643,9 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     property.include()
     
     # CEGUIPropertyHelper.h
-    propertyHelper = CEGUI_ns.class_("PropertyHelper")
+    propertyHelper = CEGUI_ns.class_("PropertyHelper_wrapper")
     propertyHelper.include()
+    propertyHelper.rename("PropertyHelper")
     
     # CEGUIPropertySet.h
     propertySet = CEGUI_ns.class_("PropertySet")
@@ -989,6 +980,10 @@ void Iterator_previous(::CEGUI::%s& t)
     # elements/CEGUIComboDropList.h
     comboDropList = CEGUI_ns.class_("ComboDropList")
     comboDropList.include()
+
+    # elements/CEGUIDefaultWindow.h
+    defaultWindow = CEGUI_ns.class_("DefaultWindow")
+    defaultWindow.include()
     
     # elements/CEGUIDragContainer.h
     dragContainer = CEGUI_ns.class_("DragContainer")
@@ -1009,10 +1004,6 @@ void Iterator_previous(::CEGUI::%s& t)
     # elements/CEGUIGroupBox.h
     groupBox = CEGUI_ns.class_("GroupBox")
     groupBox.include()
-    
-    # elements/CEGUIGUISheet.h
-    guiSheet = CEGUI_ns.class_("GUISheet")
-    guiSheet.include()
     
     # elements/CEGUIHorizontalLayoutContainer.h
     horizontalLayoutContainer = CEGUI_ns.class_("HorizontalLayoutContainer")
@@ -1183,6 +1174,10 @@ void Iterator_previous(::CEGUI::%s& t)
     CEGUI_ns.enum("FontMetricType").include()
     CEGUI_ns.enum("DimensionOperator").include()
     CEGUI_ns.enum("FrameImageComponent").include()
+
+    # falagard/CEGUIFalEventLinkDefinition.h
+    eventLinkDefinition = CEGUI_ns.class_("EventLinkDefinition")
+    eventLinkDefinition.include()
     
     # falagard/CEGUIFalFrameComponent.h
     frameComponent = CEGUI_ns.class_("FrameComponent")
@@ -1298,7 +1293,7 @@ def generateCode():
     # operator not supported
     messages.disable(messages.W1014)
     # py++ will create a wrapper
-    messages.disable(messages.W1023, messages.W1025, messages.W1031)
+    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1031)
     # static pointer member can't be exported
     messages.disable(messages.W1035)
     # immutable pointer can't be exposed

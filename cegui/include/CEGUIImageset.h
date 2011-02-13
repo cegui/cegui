@@ -60,9 +60,11 @@ namespace CEGUI
 	of 'components' which can later be accessed via name.  The components of an Imageset can queried for
 	various details, and sent to the Renderer object for drawing.
 */
-class CEGUIEXPORT Imageset
+class CEGUIEXPORT Imageset :
+    public AllocatedObject<Imageset>
 {
-	typedef	std::map<String, Image, String::FastLessCompare>	ImageRegistry;
+	typedef	std::map<String, Image, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, Image)> ImageRegistry;
 
 public:
 	/*!
@@ -249,7 +251,7 @@ public:
 
 	\exception UnknownObjectException	thrown if no Image named \a name is defined for the Imageset
 	*/
-	Point	getImageOffset(const String& name) const		{return getImage(name).getOffsets();}
+	Vector2<> getImageOffset(const String& name) const		{return getImage(name).getOffsets();}
 
 
 	/*!
@@ -303,7 +305,7 @@ public:
 
 	\exception AlreadyExistsException	thrown if an Image named \a name is already defined for this Imageset
 	*/
-	void	defineImage(const String& name, const Point& position, const Size& size, const Point& render_offset)
+	void	defineImage(const String& name, const Vector2<>& position, const Size& size, const Vector2<>& render_offset)
 	{
 		defineImage(name, Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), render_offset);
 	}
@@ -327,7 +329,7 @@ public:
 
 	\exception AlreadyExistsException	thrown if an Image named \a name is already defined for this Imageset
 	*/
-	void	defineImage(const String& name, const Rect& image_rect, const Point& render_offset);
+	void	defineImage(const String& name, const Rect& image_rect, const Vector2<>& render_offset);
 
 
     /*!
@@ -408,10 +410,10 @@ public:
     */
     void draw(GeometryBuffer& buffer, const Rect& source_rect,
               const Rect& dest_rect, const Rect* clip_rect,
-              const colour& top_left_colour = 0xFFFFFFFF,
-              const colour& top_right_colour = 0xFFFFFFFF,
-              const colour& bottom_left_colour = 0xFFFFFFFF,
-              const colour& bottom_right_colour = 0xFFFFFFFF,
+              const Colour& top_left_colour = 0xFFFFFFFF,
+              const Colour& top_right_colour = 0xFFFFFFFF,
+              const Colour& bottom_left_colour = 0xFFFFFFFF,
+              const Colour& bottom_right_colour = 0xFFFFFFFF,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {
         draw(buffer, source_rect, dest_rect, clip_rect,

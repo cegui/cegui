@@ -38,7 +38,7 @@ NullGeometryBuffer::NullGeometryBuffer() :
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
-    d_rotation(0, 0, 0),
+    d_rotation(),
     d_pivot(0, 0, 0),
     d_effect(0)
 {
@@ -72,7 +72,7 @@ void NullGeometryBuffer::setTranslation(const Vector3& v)
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRotation(const Vector3& r)
+void NullGeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
 }

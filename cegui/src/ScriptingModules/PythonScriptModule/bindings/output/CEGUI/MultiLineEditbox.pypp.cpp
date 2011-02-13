@@ -251,38 +251,38 @@ void register_MultiLineEditbox_class(){
             LineInfo_exposer.def_readwrite( "d_length", &CEGUI::MultiLineEditbox::LineInfo::d_length );
             LineInfo_exposer.def_readwrite( "d_startIdx", &CEGUI::MultiLineEditbox::LineInfo::d_startIdx );
         }
-        { //::CEGUI::MultiLineEditbox::ensureCaratIsVisible
+        { //::CEGUI::MultiLineEditbox::ensureCaretIsVisible
         
-            typedef void ( ::CEGUI::MultiLineEditbox::*ensureCaratIsVisible_function_type )(  ) ;
+            typedef void ( ::CEGUI::MultiLineEditbox::*ensureCaretIsVisible_function_type )(  ) ;
             
             MultiLineEditbox_exposer.def( 
-                "ensureCaratIsVisible"
-                , ensureCaratIsVisible_function_type( &::CEGUI::MultiLineEditbox::ensureCaratIsVisible )
+                "ensureCaretIsVisible"
+                , ensureCaretIsVisible_function_type( &::CEGUI::MultiLineEditbox::ensureCaretIsVisible )
                 , "*!\n\
             \n\
-               Scroll the view so that the current carat position is visible.\n\
+               Scroll the view so that the current caret position is visible.\n\
             *\n" );
         
         }
-        { //::CEGUI::MultiLineEditbox::getCaratIndex
+        { //::CEGUI::MultiLineEditbox::getCaretIndex
         
-            typedef ::size_t ( ::CEGUI::MultiLineEditbox::*getCaratIndex_function_type )(  ) const;
+            typedef ::size_t ( ::CEGUI::MultiLineEditbox::*getCaretIndex_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
-                "getCaratIndex"
-                , getCaratIndex_function_type( &::CEGUI::MultiLineEditbox::getCaratIndex )
+                "getCaretIndex"
+                , getCaretIndex_function_type( &::CEGUI::MultiLineEditbox::getCaretIndex )
                 , "*!\n\
                \n\
-                  return the current position of the carat.\n\
+                  return the current position of the caret.\n\
             \n\
                @return\n\
-                  Index of the insert carat relative to the start of the text.\n\
+                  Index of the insert caret relative to the start of the text.\n\
                *\n" );
         
         }
         { //::CEGUI::MultiLineEditbox::getFormattedLines
         
-            typedef ::std::vector< CEGUI::MultiLineEditbox::LineInfo > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::MultiLineEditbox::LineInfo, CEGUI::STLAllocatorWrapper<CEGUI::MultiLineEditbox::LineInfo, CEGUI::StdAllocator> > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
                 "getFormattedLines"
@@ -369,7 +369,7 @@ void register_MultiLineEditbox_class(){
                @return\n\
                   Index of the selection end point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
@@ -403,7 +403,7 @@ void register_MultiLineEditbox_class(){
                @return\n\
                   Index of the selection start point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
@@ -528,22 +528,22 @@ void register_MultiLineEditbox_class(){
                *\n" );
         
         }
-        { //::CEGUI::MultiLineEditbox::setCaratIndex
+        { //::CEGUI::MultiLineEditbox::setCaretIndex
         
-            typedef void ( ::CEGUI::MultiLineEditbox::*setCaratIndex_function_type )( ::size_t ) ;
+            typedef void ( ::CEGUI::MultiLineEditbox::*setCaretIndex_function_type )( ::size_t ) ;
             
             MultiLineEditbox_exposer.def( 
-                "setCaratIndex"
-                , setCaratIndex_function_type( &::CEGUI::MultiLineEditbox::setCaratIndex )
-                , ( bp::arg("carat_pos") )
+                "setCaretIndex"
+                , setCaretIndex_function_type( &::CEGUI::MultiLineEditbox::setCaretIndex )
+                , ( bp::arg("caret_pos") )
                 , "*!\n\
                \n\
-                  Set the current position of the carat.\n\
+                  Set the current position of the caret.\n\
             \n\
-               @param carat_pos\n\
-                  New index for the insert carat relative to the start of the text.  If the value specified is\
+               @param caret_pos\n\
+                  New index for the insert caret relative to the start of the text.  If the value specified is\
                   greater than the\n\
-                  number of characters in the edit box, the carat is positioned at the end of the text.\n\
+                  number of characters in the edit box, the caret is positioned at the end of the text.\n\
             \n\
                @return\n\
                   Nothing.\n\
@@ -672,8 +672,8 @@ void register_MultiLineEditbox_class(){
                *\n" );
         
         }
-        MultiLineEditbox_exposer.add_static_property( "EventCaratMoved"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::EventCaratMoved
+        MultiLineEditbox_exposer.add_static_property( "EventCaretMoved"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::EventCaretMoved
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         MultiLineEditbox_exposer.add_static_property( "EventEditboxFull"
                         , bp::make_getter( &CEGUI::MultiLineEditbox::EventEditboxFull

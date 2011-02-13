@@ -32,7 +32,7 @@
 #include "../../CEGUIWindowRenderer.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef FALAGARDWRBASE_EXPORTS
+#   ifdef CEGUIFALAGARDWRBASE_EXPORTS
 #       define FALAGARDBASE_API __declspec(dllexport)
 #   else
 #       define FALAGARDBASE_API __declspec(dllimport)

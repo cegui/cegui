@@ -111,7 +111,7 @@ Rect LayoutContainer::getClientChildWindowContentArea_impl() const
 }
 
 //----------------------------------------------------------------------------//
-size_t LayoutContainer::getIdxOfChildWindow(Window* wnd) const
+size_t LayoutContainer::getIdxOfChild(Window* wnd) const
 {
     for (size_t i = 0; i < getChildCount(); ++i)
     {

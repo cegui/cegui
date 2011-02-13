@@ -53,7 +53,7 @@ public:
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2& p_in, Vector2& p_out) const;
+                        const Vector2<>& p_in, Vector2<>& p_out) const;
     bool isImageryCache() const;
 
 protected:

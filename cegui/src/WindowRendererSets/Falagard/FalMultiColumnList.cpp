@@ -36,7 +36,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardMultiColumnList::TypeName[] = "Falagard/MultiColumnList";
+    const String FalagardMultiColumnList::TypeName("Falagard/MultiColumnList");
 
 
     FalagardMultiColumnList::FalagardMultiColumnList(const String& type) :

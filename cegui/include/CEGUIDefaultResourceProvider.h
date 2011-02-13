@@ -114,7 +114,7 @@ protected:
     */
     String getFinalFilename(const String& filename, const String& resourceGroup) const;
 
-    typedef std::map<String, String, String::FastLessCompare> ResourceGroupMap;
+    typedef std::map<String, String, StringFastLessCompare> ResourceGroupMap;
     ResourceGroupMap    d_resourceGroups;
 };
 

@@ -57,13 +57,7 @@ void register_GlobalEventSet_class(){
 
     { //::CEGUI::GlobalEventSet
         typedef bp::class_< GlobalEventSet_wrapper, bp::bases< CEGUI::EventSet, CEGUI::Singleton< CEGUI::GlobalEventSet > >, boost::noncopyable > GlobalEventSet_exposer_t;
-        GlobalEventSet_exposer_t GlobalEventSet_exposer = GlobalEventSet_exposer_t( "GlobalEventSet", "*!\n\
-        \n\
-            The GlobalEventSet singleton allows you to subscribe to an event for all\n\
-            instances of a class.  The GlobalEventSet effectively supports late binding\n\
-            to events; which means you can subscribe to some event that does not actually\n\
-            exist (yet).\n\
-        *\n", bp::init< >() );
+        GlobalEventSet_exposer_t GlobalEventSet_exposer = GlobalEventSet_exposer_t( "GlobalEventSet", bp::init< >() );
         bp::scope GlobalEventSet_scope( GlobalEventSet_exposer );
         { //::CEGUI::GlobalEventSet::fireEvent
         

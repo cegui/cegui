@@ -38,23 +38,23 @@ namespace PopupMenuProperties
 
 String FadeInTime::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const PopupMenu*>(receiver)->getFadeInTime());
+	return PropertyHelper<float>::toString(static_cast<const PopupMenu*>(receiver)->getFadeInTime());
 }
 
 void FadeInTime::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<PopupMenu*>(receiver)->setFadeInTime(PropertyHelper::stringToFloat(value));
+	static_cast<PopupMenu*>(receiver)->setFadeInTime(PropertyHelper<float>::fromString(value));
 }
 
 
 String FadeOutTime::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const PopupMenu*>(receiver)->getFadeOutTime());
+	return PropertyHelper<float>::toString(static_cast<const PopupMenu*>(receiver)->getFadeOutTime());
 }
 
 void FadeOutTime::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<PopupMenu*>(receiver)->setFadeOutTime(PropertyHelper::stringToFloat(value));
+	static_cast<PopupMenu*>(receiver)->setFadeOutTime(PropertyHelper<float>::fromString(value));
 }
 
 } // End of  PopupMenuProperties namespace section

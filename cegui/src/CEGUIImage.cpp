@@ -43,7 +43,7 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-Image::Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling) :
+Image::Image(const Imageset* owner, const String& name, const Rect& area, const Vector2<>& render_offset, float horzScaling, float vertScaling) :
 	d_owner(owner),
 	d_area(area),
 	d_offset(render_offset),
@@ -153,16 +153,16 @@ void Image::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     xml_stream.openTag("Image")
         .attribute("Name", d_name)
-        .attribute("XPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_left)))
-        .attribute("YPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_top)))
-        .attribute("Width", PropertyHelper::uintToString(static_cast<uint>(d_area.getWidth())))
-        .attribute("Height", PropertyHelper::uintToString(static_cast<uint>(d_area.getHeight())));
+        .attribute("XPos", PropertyHelper<uint>::toString(static_cast<uint>(d_area.d_left)))
+        .attribute("YPos", PropertyHelper<uint>::toString(static_cast<uint>(d_area.d_top)))
+        .attribute("Width", PropertyHelper<uint>::toString(static_cast<uint>(d_area.getWidth())))
+        .attribute("Height", PropertyHelper<uint>::toString(static_cast<uint>(d_area.getHeight())));
 
     if (d_offset.d_x != 0.0f)
-        xml_stream.attribute("XOffset", PropertyHelper::intToString(static_cast<int>(d_offset.d_x)));
+        xml_stream.attribute("XOffset", PropertyHelper<int>::toString(static_cast<int>(d_offset.d_x)));
 
     if (d_offset.d_y != 0.0f)
-        xml_stream.attribute("YOffset", PropertyHelper::intToString(static_cast<int>(d_offset.d_x)));
+        xml_stream.attribute("YOffset", PropertyHelper<int>::toString(static_cast<int>(d_offset.d_x)));
 
     xml_stream.closeTag();
 }

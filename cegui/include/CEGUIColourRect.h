@@ -32,7 +32,7 @@
 #define _CEGUIColourRect_h_
 
 #include "CEGUIBase.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,7 +41,8 @@ namespace CEGUI
 \brief
 	Class that holds details of colours for the four corners of a rectangle.
 */
-class CEGUIEXPORT ColourRect
+class CEGUIEXPORT ColourRect :
+    public AllocatedObject<ColourRect>
 {
 public:
 	/*!
@@ -55,14 +56,14 @@ public:
 	\brief
 		Constructor for ColourRect objects (via single colour).  Also handles default construction.
 	*/
-	ColourRect(const colour& col);
+	ColourRect(const Colour& col);
 
 
 	/*!
 	\brief
 		Constructor for ColourRect objects
 	*/
-	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
+	ColourRect(const Colour& top_left, const Colour& top_right, const Colour& bottom_left, const Colour& bottom_right);
 
 
 	/*!
@@ -170,7 +171,7 @@ public:
 	\return
 		The colour at the specified point.
 	*/
-	colour getColourAtPoint( float x, float y ) const;
+	Colour getColourAtPoint( float x, float y ) const;
 
 
 	/*!
@@ -180,7 +181,7 @@ public:
 	\param col
 		colour that is to be set for all four corners of the ColourRect;
 	*/
-	void	setColours(const colour& col);
+	void	setColours(const Colour& col);
 
 
 	/*!
@@ -219,7 +220,7 @@ public:
     }
 
 
-	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
+	Colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };
 
 } // End of  CEGUI namespace section

@@ -34,7 +34,7 @@
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef DIRECT3D10_GUIRENDERER_EXPORTS
+#   ifdef CEGUIDIRECT3D10RENDERER_EXPORTS
 #       define D3D10_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define D3D10_GUIRENDERER_API __declspec(dllimport)

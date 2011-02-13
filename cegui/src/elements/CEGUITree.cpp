@@ -58,12 +58,12 @@ TreeProperties::ItemTooltips       Tree::d_itemTooltipsProperty;
     Constants
 *************************************************************************/
 // event names
-const String Tree::EventListContentsChanged( "ListItemsChanged" );
-const String Tree::EventSelectionChanged( "ItemSelectionChanged" );
+const String Tree::EventListContentsChanged( "ListContentsChanged" );
+const String Tree::EventSelectionChanged( "SelectionChanged" );
 const String Tree::EventSortModeChanged( "SortModeChanged" );
-const String Tree::EventMultiselectModeChanged( "MuliselectModeChanged" );
-const String Tree::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
-const String Tree::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
+const String Tree::EventMultiselectModeChanged( "MultiselectModeChanged" );
+const String Tree::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String Tree::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 const String Tree::EventBranchOpened( "BranchOpened" );
 const String Tree::EventBranchClosed( "BranchClosed" );
 
@@ -119,8 +119,8 @@ void Tree::initialise(void)
     d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
     d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
     
-    addChildWindow(d_vertScrollbar);
-    addChildWindow(d_horzScrollbar);
+    addChild(d_vertScrollbar);
+    addChild(d_horzScrollbar);
     
     d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));
     d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));
@@ -372,7 +372,7 @@ void Tree::insertItem(TreeItem* item, const TreeItem* position)
             // throw if item 'position' is not in the list
             if (ins_pos == d_listItems.end())
             {
-                CEGUI_THROW(InvalidRequestException((utf8*)"Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree."));
+                CEGUI_THROW(InvalidRequestException("Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree."));
             }
         }
         
@@ -411,7 +411,7 @@ void Tree::removeItem(const TreeItem* item)
             if (item->isAutoDeleted())
             {
                 // clean up this item.
-                delete item;
+                CEGUI_DELETE_AO item;
             }
             
             WindowEventArgs args(this);
@@ -589,7 +589,7 @@ void Tree::setItemSelectState(size_t item_index, bool state)
     }
     else
     {
-        CEGUI_THROW(InvalidRequestException((utf8*)"Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree."));
+        CEGUI_THROW(InvalidRequestException("Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree."));
     }
     
 }
@@ -613,7 +613,7 @@ void Tree::populateGeometryBuffer()
     cacheTreeBaseImagery();
     
     // Render list items
-    Vector2  itemPos;
+    Vector2<> itemPos;
     float    widest = getWidestItemWidth();
     
     // calculate position of area we have to render into
@@ -630,7 +630,7 @@ void Tree::populateGeometryBuffer()
 
 // Recursive!
 void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
-                        Vector2& itemPos, GeometryBuffer& geometry, float alpha)
+                        Vector2<>& itemPos, GeometryBuffer& geometry, float alpha)
 {
     if (itemList.empty())
         return;
@@ -932,7 +932,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 /*************************************************************************
     Return the TreeItem under the given window local pixel co-ordinate.
 *************************************************************************/
-TreeItem* Tree::getItemAtPoint(const Point& pt) const
+TreeItem* Tree::getItemAtPoint(const Vector2<>& pt) const
 {
     Rect renderArea(getTreeRenderArea());
     
@@ -950,7 +950,7 @@ TreeItem* Tree::getItemAtPoint(const Point& pt) const
 }
 
 // Recursive!
-TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Point& pt) const
+TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2<>& pt) const
 {
     size_t itemCount = itemList.size();
     
@@ -1093,7 +1093,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     {
         bool modified = false;
         
-        Point localPos(CoordConverter::screenToWindow(*this, e.position));
+        Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
         
         TreeItem* item = getItemAtPoint(localPos);
@@ -1191,7 +1191,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
     {
         static TreeItem* lastItem = 0;
         
-        Point posi(CoordConverter::screenToWindow(*this, e.position));
+        Vector2<> posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
         if (item != lastItem)
@@ -1328,7 +1328,7 @@ bool Tree::resetList_impl(void)
             if (d_listItems[i]->isAutoDeleted())
             {
                 // clean up this item.
-                delete d_listItems[i];
+                CEGUI_DELETE_AO d_listItems[i];
             }
         }
         

@@ -10,17 +10,7 @@ void register_Imageset_class(){
 
     { //::CEGUI::Imageset
         typedef bp::class_< CEGUI::Imageset > Imageset_exposer_t;
-        Imageset_exposer_t Imageset_exposer = Imageset_exposer_t( "Imageset", "*!\n\
-        \n\
-           Offers functions to define, access, and draw, a set of image components on a single graphical\
-           surface or Texture.\n\
-        \n\
-           Imageset objects are a means by which a single graphical image (file, Texture, etc), can be split\
-           into a number\n\
-           of 'components' which can later be accessed via name.  The components of an Imageset can queried\
-           for\n\
-           various details, and sent to the Renderer object for drawing.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::Texture & >(( bp::arg("name"), bp::arg("texture") ), "*!\n\
+        Imageset_exposer_t Imageset_exposer = Imageset_exposer_t( "Imageset", bp::init< CEGUI::String const &, CEGUI::Texture & >(( bp::arg("name"), bp::arg("texture") ), "*!\n\
            \n\
               Construct a new Imageset object.  Object will initially have no Images defined\n\
         \n\
@@ -55,7 +45,7 @@ void register_Imageset_class(){
             *\n") );
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Point const &,::CEGUI::Size const &,::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Vector2 const &,::CEGUI::Size const &,::CEGUI::Vector2 const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -90,7 +80,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Vector2 const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -132,7 +122,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::draw
         
-            typedef void ( ::CEGUI::Imageset::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::colour const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Imageset::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
             
             Imageset_exposer.def( 
                 "draw"
@@ -221,7 +211,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getImageOffset
         
-            typedef ::CEGUI::Point ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
             
             Imageset_exposer.def( 
                 "getImageOffset"
@@ -331,7 +321,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Image, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Image> > > > ( ::CEGUI::Imageset::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Image, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Image>, CEGUI::StdAllocator> > > ( ::CEGUI::Imageset::*getIterator_function_type )(  ) const;
             
             Imageset_exposer.def( 
                 "getIterator"

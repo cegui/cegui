@@ -10,10 +10,7 @@ void register_WidgetLookFeel_class(){
 
     { //::CEGUI::WidgetLookFeel
         typedef bp::class_< CEGUI::WidgetLookFeel > WidgetLookFeel_exposer_t;
-        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", "*!\n\
-        \n\
-            Class that encapsulates look & feel information for a particular widget type.\n\
-        *\n", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
+        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
         bp::scope WidgetLookFeel_scope( WidgetLookFeel_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::WidgetLookFeel >();
         WidgetLookFeel_exposer.def( bp::init< >() );
@@ -26,14 +23,25 @@ void register_WidgetLookFeel_class(){
                 , addAnimationName_function_type( &::CEGUI::WidgetLookFeel::addAnimationName )
                 , ( bp::arg("anim_name") )
                 , "*!\n\
-                    \n\
-                        Add the name of an animation that is associated with the\n\
-                        WidgetLookFeel.\n\
+                \n\
+                    Add the name of an animation that is associated with the\n\
+                    WidgetLookFeel.\n\
             \n\
-                    @param anim_name\n\
-                        Reference to a String object that contains the name of the animation\n\
-                        to be associated with this WidgetLookFeel.\n\
-                    *\n" );
+                @param anim_name\n\
+                    Reference to a String object that contains the name of the animation\n\
+                    to be associated with this WidgetLookFeel.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::addEventLinkDefinition
+        
+            typedef void ( ::CEGUI::WidgetLookFeel::*addEventLinkDefinition_function_type )( ::CEGUI::EventLinkDefinition const & ) ;
+            
+            WidgetLookFeel_exposer.def( 
+                "addEventLinkDefinition"
+                , addEventLinkDefinition_function_type( &::CEGUI::WidgetLookFeel::addEventLinkDefinition )
+                , ( bp::arg("evtdef") )
+                , "! adds an event link definition to the WidgetLookFeel.\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addImagerySection
@@ -45,14 +53,15 @@ void register_WidgetLookFeel_class(){
                 , addImagerySection_function_type( &::CEGUI::WidgetLookFeel::addImagerySection )
                 , ( bp::arg("section") )
                 , "*!\n\
-                    \n\
-                        Add an ImagerySection to the WidgetLookFeel.\n\
+                \n\
+                    Add an ImagerySection to the WidgetLookFeel.\n\
             \n\
-                    @param section\n\
-                        ImagerySection object to be added.\n\
+                @param section\n\
+                    ImagerySection object to be added.\n\
             \n\
-                    @return Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addNamedArea
@@ -64,15 +73,15 @@ void register_WidgetLookFeel_class(){
                 , addNamedArea_function_type( &::CEGUI::WidgetLookFeel::addNamedArea )
                 , ( bp::arg("area") )
                 , "*!\n\
-                    \n\
-                        Adds a named area to the WidgetLookFeel.\n\
+                \n\
+                    Adds a named area to the WidgetLookFeel.\n\
             \n\
-                    @param area\n\
-                        NamedArea to be added.\n\
+                @param area\n\
+                    NamedArea to be added.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addPropertyDefinition
@@ -84,15 +93,15 @@ void register_WidgetLookFeel_class(){
                 , addPropertyDefinition_function_type( &::CEGUI::WidgetLookFeel::addPropertyDefinition )
                 , ( bp::arg("propdef") )
                 , "*!\n\
-                    \n\
-                        Adds a property definition to the WidgetLookFeel.\n\
+                \n\
+                    Adds a property definition to the WidgetLookFeel.\n\
             \n\
-                    @param propdef\n\
-                        PropertyDefinition object to be added.\n\
+                @param propdef\n\
+                    PropertyDefinition object to be added.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addPropertyInitialiser
@@ -104,14 +113,15 @@ void register_WidgetLookFeel_class(){
                 , addPropertyInitialiser_function_type( &::CEGUI::WidgetLookFeel::addPropertyInitialiser )
                 , ( bp::arg("initialiser") )
                 , "*!\n\
-                    \n\
-                        Add a property initialiser to the WidgetLookFeel.\n\
+                \n\
+                    Add a property initialiser to the WidgetLookFeel.\n\
             \n\
-                    @param initialiser\n\
-                        PropertyInitialiser object to be added.\n\
+                @param initialiser\n\
+                    PropertyInitialiser object to be added.\n\
             \n\
-                    @return Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addPropertyLinkDefinition
@@ -123,15 +133,15 @@ void register_WidgetLookFeel_class(){
                 , addPropertyLinkDefinition_function_type( &::CEGUI::WidgetLookFeel::addPropertyLinkDefinition )
                 , ( bp::arg("propdef") )
                 , "*!\n\
-                    \n\
-                        Adds a property link definition to the WidgetLookFeel.\n\
+                \n\
+                    Adds a property link definition to the WidgetLookFeel.\n\
             \n\
-                    @param propdef\n\
-                        PropertyLinkDefinition object to be added.\n\
+                @param propdef\n\
+                    PropertyLinkDefinition object to be added.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addStateSpecification
@@ -143,14 +153,15 @@ void register_WidgetLookFeel_class(){
                 , addStateSpecification_function_type( &::CEGUI::WidgetLookFeel::addStateSpecification )
                 , ( bp::arg("state") )
                 , "*!\n\
-                    \n\
-                        Add a state specification (StateImagery object) to the WidgetLookFeel.\n\
+                \n\
+                    Add a state specification (StateImagery object) to the WidgetLookFeel.\n\
             \n\
-                    @param section\n\
-                        StateImagery object to be added.\n\
+                @param section\n\
+                    StateImagery object to be added.\n\
             \n\
-                    @return Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::addWidgetComponent
@@ -162,14 +173,15 @@ void register_WidgetLookFeel_class(){
                 , addWidgetComponent_function_type( &::CEGUI::WidgetLookFeel::addWidgetComponent )
                 , ( bp::arg("widget") )
                 , "*!\n\
-                    \n\
-                        Add a WidgetComponent to the WidgetLookFeel.\n\
+                \n\
+                    Add a WidgetComponent to the WidgetLookFeel.\n\
             \n\
-                    @param widget\n\
-                        WidgetComponent object to be added.\n\
+                @param widget\n\
+                    WidgetComponent object to be added.\n\
             \n\
-                    @return Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::cleanUpWidget
@@ -181,16 +193,26 @@ void register_WidgetLookFeel_class(){
                 , cleanUpWidget_function_type( &::CEGUI::WidgetLookFeel::cleanUpWidget )
                 , ( bp::arg("widget") )
                 , "*!\n\
-                    \n\
-                        Clean up the given window from all properties and component widgets created by this\
-                        WidgetLookFeel\n\
+                \n\
+                    Clean up the given window from all properties and component widgets\n\
+                    created by this WidgetLookFeel\n\
             \n\
-                    @param widget\n\
-                        Window based object to be cleaned up.\n\
+                @param widget\n\
+                    Window based object to be cleaned up.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::clearEventLinkDefinitions
+        
+            typedef void ( ::CEGUI::WidgetLookFeel::*clearEventLinkDefinitions_function_type )(  ) ;
+            
+            WidgetLookFeel_exposer.def( 
+                "clearEventLinkDefinitions"
+                , clearEventLinkDefinitions_function_type( &::CEGUI::WidgetLookFeel::clearEventLinkDefinitions )
+                , "! clear all defined event link definitions from the WidgetLookFeel.\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearImagerySections
@@ -201,12 +223,12 @@ void register_WidgetLookFeel_class(){
                 "clearImagerySections"
                 , clearImagerySections_function_type( &::CEGUI::WidgetLookFeel::clearImagerySections )
                 , "*!\n\
-                    \n\
-                        Clear all ImagerySections from the WidgetLookFeel.\n\
+                \n\
+                    Clear all ImagerySections from the WidgetLookFeel.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearNamedAreas
@@ -217,12 +239,12 @@ void register_WidgetLookFeel_class(){
                 "clearNamedAreas"
                 , clearNamedAreas_function_type( &::CEGUI::WidgetLookFeel::clearNamedAreas )
                 , "*!\n\
-                    \n\
-                        Clear all defined named areas from the WidgetLookFeel\n\
+                \n\
+                    Clear all defined named areas from the WidgetLookFeel\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearPropertyDefinitions
@@ -233,12 +255,12 @@ void register_WidgetLookFeel_class(){
                 "clearPropertyDefinitions"
                 , clearPropertyDefinitions_function_type( &::CEGUI::WidgetLookFeel::clearPropertyDefinitions )
                 , "*!\n\
-                    \n\
-                        Clear all defined property definitions from the WidgetLookFeel\n\
+                \n\
+                    Clear all defined property definitions from the WidgetLookFeel\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearPropertyInitialisers
@@ -249,12 +271,12 @@ void register_WidgetLookFeel_class(){
                 "clearPropertyInitialisers"
                 , clearPropertyInitialisers_function_type( &::CEGUI::WidgetLookFeel::clearPropertyInitialisers )
                 , "*!\n\
-                    \n\
-                        Clear all PropertyInitialiser objects from the WidgetLookFeel.\n\
+                \n\
+                    Clear all PropertyInitialiser objects from the WidgetLookFeel.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearPropertyLinkDefinitions
@@ -265,12 +287,12 @@ void register_WidgetLookFeel_class(){
                 "clearPropertyLinkDefinitions"
                 , clearPropertyLinkDefinitions_function_type( &::CEGUI::WidgetLookFeel::clearPropertyLinkDefinitions )
                 , "*!\n\
-                    \n\
-                        Clear all defined property link definitions from the WidgetLookFeel\n\
+                \n\
+                    Clear all defined property link definitions from the WidgetLookFeel\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearStateSpecifications
@@ -281,12 +303,12 @@ void register_WidgetLookFeel_class(){
                 "clearStateSpecifications"
                 , clearStateSpecifications_function_type( &::CEGUI::WidgetLookFeel::clearStateSpecifications )
                 , "*!\n\
-                    \n\
-                        Clear all StateImagery objects from the WidgetLookFeel.\n\
+                \n\
+                    Clear all StateImagery objects from the WidgetLookFeel.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::clearWidgetComponents
@@ -297,12 +319,12 @@ void register_WidgetLookFeel_class(){
                 "clearWidgetComponents"
                 , clearWidgetComponents_function_type( &::CEGUI::WidgetLookFeel::clearWidgetComponents )
                 , "*!\n\
-                    \n\
-                        Clear all WidgetComponents from the WidgetLookFeel.\n\
+                \n\
+                    Clear all WidgetComponents from the WidgetLookFeel.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::findPropertyInitialiser
@@ -315,14 +337,14 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("propertyName") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                    \n\
-                        Takes the name of a property and returns a pointer to the last\n\
-                        PropertyInitialiser for this property or 0 if the is no\n\
-                        PropertyInitialiser for this property in the WidgetLookFeel\n\
+                \n\
+                    Takes the name of a property and returns a pointer to the last\n\
+                    PropertyInitialiser for this property or 0 if the is no\n\
+                    PropertyInitialiser for this property in the WidgetLookFeel\n\
             \n\
-                    @param propertyName\n\
-                        The name of the property to look for.\n\
-                    *\n" );
+                @param propertyName\n\
+                    The name of the property to look for.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::findWidgetComponent
@@ -335,13 +357,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("nameSuffix") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                    \n\
-                        Takes the namesuffix for a widget component and returns a pointer to\n\
-                        it if it exists or 0 if it does'nt.\n\
+                \n\
+                    Takes the namesuffix for a widget component and returns a pointer to\n\
+                    it if it exists or 0 if it does'nt.\n\
             \n\
-                    @param nameSuffix\n\
-                        The name suffix of the Child component to look for.\n\
-                    *\n" );
+                @param nameSuffix\n\
+                    The name suffix of the Child component to look for.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getImagerySection
@@ -354,12 +376,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("section") )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Return a const reference to the ImagerySection object with the specified name.\n\
+                \n\
+                    Return a const reference to the ImagerySection object with the\n\
+                    specified name.\n\
             \n\
-                    @return\n\
-                        ImagerySection object with the specified name.\n\
-                    *\n" );
+                @return\n\
+                    ImagerySection object with the specified name.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getName
@@ -371,12 +394,12 @@ void register_WidgetLookFeel_class(){
                 , getName_function_type( &::CEGUI::WidgetLookFeel::getName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Return the name of the widget look.\n\
+                \n\
+                    Return the name of the widget look.\n\
             \n\
-                    @return\n\
-                        String object holding the name of the WidgetLookFeel.\n\
-                    *\n" );
+                @return\n\
+                    String object holding the name of the WidgetLookFeel.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getNamedArea
@@ -389,56 +412,58 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("name") )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Return the NamedArea with the specified name.\n\
+                \n\
+                    Return the NamedArea with the specified name.\n\
             \n\
-                    @param name\n\
-                        String object holding the name of the NamedArea to be returned.\n\
+                @param name\n\
+                    String object holding the name of the NamedArea to be returned.\n\
             \n\
-                    @return\n\
-                        The requested NamedArea object.\n\
-                    *\n" );
+                @return\n\
+                    The requested NamedArea object.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getProperties
         
-            typedef ::std::vector< CEGUI::PropertyInitialiser > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyInitialiser, CEGUI::STLAllocatorWrapper<CEGUI::PropertyInitialiser, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getProperties"
                 , getProperties_function_type( &::CEGUI::WidgetLookFeel::getProperties )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "** Obtains list of properties.\n\
-             * @access public \n\
+             * @access public\n\
              * @return CEGUI.WidgetLookFeel.PropertyList List of properties\n\
              *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitions"
                 , getPropertyDefinitions_function_type( &::CEGUI::WidgetLookFeel::getPropertyDefinitions )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "** Obtains list of properties definitions.\n\
-             * @access public \n\
-             * @return CEGUI.WidgetLookFeel.PropertyDefinitionList List of properties definitions\n\
+             * @access public\n\
+             * @return CEGUI.WidgetLookFeel.PropertyDefinitionList List of properties\n\
+             * definitions\n\
              *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyLinkDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
+            typedef ::std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitions"
                 , getPropertyLinkDefinitions_function_type( &::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "** Obtains list of properties link definitions.\n\
-             * @access public \n\
-             * @return CEGUI.WidgetLookFeel.PropertyLinkDefinitionList List of properties link definitions\n\
+             * @access public\n\
+             * @return CEGUI.WidgetLookFeel.PropertyLinkDefinitionList List of\n\
+             * properties link definitions\n\
              *\n" );
         
         }
@@ -452,12 +477,13 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("state") )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Return a const reference to the StateImagery object for the specified state.\n\
+                \n\
+                    Return a const reference to the StateImagery object for the specified\n\
+                    state.\n\
             \n\
-                    @return\n\
-                        StateImagery object for the requested state.\n\
-                    *\n" );
+                @return\n\
+                    StateImagery object for the requested state.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::initialiseWidget
@@ -469,16 +495,16 @@ void register_WidgetLookFeel_class(){
                 , initialiseWidget_function_type( &::CEGUI::WidgetLookFeel::initialiseWidget )
                 , ( bp::arg("widget") )
                 , "*!\n\
-                    \n\
-                        Initialise the given window using PropertyInitialsers and component widgets\n\
-                        specified for this WidgetLookFeel.\n\
+                \n\
+                    Initialise the given window using PropertyInitialsers and component\n\
+                    widgets specified for this WidgetLookFeel.\n\
             \n\
-                    @param widget\n\
-                        Window based object to be initialised.\n\
+                @param widget\n\
+                    Window based object to be initialised.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::isNamedAreaDefined
@@ -490,17 +516,18 @@ void register_WidgetLookFeel_class(){
                 , isNamedAreaDefined_function_type( &::CEGUI::WidgetLookFeel::isNamedAreaDefined )
                 , ( bp::arg("name") )
                 , "*!\n\
-                    \n\
-                        return whether a NamedArea object with the specified name exists for this\
-                        WidgetLookFeel.\n\
+                \n\
+                    return whether a NamedArea object with the specified name exists for\n\
+                    this WidgetLookFeel.\n\
             \n\
-                    @param name\n\
-                        String holding the name of the NamedArea to check for.\n\
+                @param name\n\
+                    String holding the name of the NamedArea to check for.\n\
             \n\
-                    @return\n\
-                        - true if a named area with the requested name is defined for this WidgetLookFeel.\n\
-                        - false if no such named area is defined for this WidgetLookFeel.\n\
-                    *\n" );
+                @return\n\
+                    - true if a named area with the requested name is defined for this\n\
+                      WidgetLookFeel.\n\
+                    - false if no such named area is defined for this WidgetLookFeel.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::isStateImageryPresent
@@ -512,16 +539,16 @@ void register_WidgetLookFeel_class(){
                 , isStateImageryPresent_function_type( &::CEGUI::WidgetLookFeel::isStateImageryPresent )
                 , ( bp::arg("state") )
                 , "*!\n\
-                    \n\
-                        Return whether imagery is defined for the given state.\n\
+                \n\
+                    Return whether imagery is defined for the given state.\n\
             \n\
-                    @param state\n\
-                        String object containing name of state to look for.\n\
+                @param state\n\
+                    String object containing name of state to look for.\n\
             \n\
-                    @return\n\
-                        - true if imagery exists for the specified state,\n\
-                        - false if no imagery exists for the specified state.\n\
-                    *\n" );
+                @return\n\
+                    - true if imagery exists for the specified state,\n\
+                    - false if no imagery exists for the specified state.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::layoutChildWidgets
@@ -533,16 +560,16 @@ void register_WidgetLookFeel_class(){
                 , layoutChildWidgets_function_type( &::CEGUI::WidgetLookFeel::layoutChildWidgets )
                 , ( bp::arg("owner") )
                 , "*!\n\
-                    \n\
-                        Layout the child widgets defined for this WidgetLookFeel which are attached to the given\
-                        window.\n\
+                \n\
+                    Layout the child widgets defined for this WidgetLookFeel which are\n\
+                    attached to the given window.\n\
             \n\
-                    @param owner\n\
-                        Window object that has the child widgets that require laying out.\n\
+                @param owner\n\
+                    Window object that has the child widgets that require laying out.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::renameChildren
@@ -554,18 +581,18 @@ void register_WidgetLookFeel_class(){
                 , renameChildren_function_type( &::CEGUI::WidgetLookFeel::renameChildren )
                 , ( bp::arg("widget"), bp::arg("newBaseName") )
                 , "*!\n\
-                    \n\
-                        Uses the WindowManager to rename the child windows that are\n\
-                        created for this WidgetLookFeel.\n\
+                \n\
+                    Uses the WindowManager to rename the child windows that are\n\
+                    created for this WidgetLookFeel.\n\
             \n\
-                    @param widget\n\
-                        The target Window containing the child windows that are to be\n\
-                        renamed.\n\
+                @param widget\n\
+                    The target Window containing the child windows that are to be\n\
+                    renamed.\n\
             \n\
-                    @param newBaseName\n\
-                        String object holding the new base name that will be used when\n\
-                        constructing new names for the child windows.\n\
-                    *\n" );
+                @param newBaseName\n\
+                    String object holding the new base name that will be used when\n\
+                    constructing new names for the child windows.\n\
+                *\n" );
         
         }
         { //::CEGUI::WidgetLookFeel::writeXMLToStream
@@ -577,16 +604,15 @@ void register_WidgetLookFeel_class(){
                 , writeXMLToStream_function_type( &::CEGUI::WidgetLookFeel::writeXMLToStream )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes an xml representation of this WidgetLookFeel to  out_stream.\n\
+                \n\
+                    Writes an xml representation of this WidgetLookFeel to  out_stream.\n\
             \n\
-                    @param xml_stream\n\
-                        Stream where xml data should be output.\n\
+                @param xml_stream\n\
+                    Stream where xml data should be output.\n\
             \n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
     }
