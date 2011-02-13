@@ -3703,7 +3703,9 @@ void Window::initialiseClippers(const RenderingContext& ctx)
     {
         Rect geo_clip(getOuterRectClipper());
 
-        geo_clip.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
+        if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
+            geo_clip.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
+
         d_geometry->setClippingRegion(geo_clip);
     }
 }
