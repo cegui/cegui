@@ -61,6 +61,9 @@ const String MouseCursor::EventImageChanged( "ImageChanged" );
 	constructor
 *************************************************************************/
 MouseCursor::MouseCursor(void) :
+    d_cursorImage(0),
+    d_position(0.0f, 0.0f),
+    d_visible(true),
     d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer()),
     d_customSize(0.0f, 0.0f),
     d_customOffset(0.0f, 0.0f),
@@ -79,12 +82,6 @@ MouseCursor::MouseCursor(void) :
     	// mouse defaults to middle of the constrained area
         setPosition(Vector2<>(screenArea.getWidth() / 2,
                             screenArea.getHeight() / 2));
-
-	// mouse defaults to visible
-	d_visible = true;
-
-	// no default image though
-	d_cursorImage = 0;
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));

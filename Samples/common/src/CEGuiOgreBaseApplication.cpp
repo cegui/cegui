@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 # include <unistd.h>
 #endif
 

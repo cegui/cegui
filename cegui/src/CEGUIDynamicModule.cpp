@@ -42,7 +42,7 @@
 #   include <windows.h>
 #endif
 
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 #   include "dlfcn.h"
 #endif
 
@@ -102,7 +102,7 @@ DynamicModule::DynamicModule(const String& name) :
     #endif
 
 
-#if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // see if adding a leading 'lib' helps us to open the library
     if (!d_handle && d_moduleName.substr(0, 3) != "lib")
     {
@@ -145,7 +145,7 @@ void* DynamicModule::getSymbolAddress(const String& symbol) const
 String DynamicModule::getFailureString() const
 {
     String retMsg;
-#if defined(__linux__) || defined (__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#if defined(__linux__) || defined (__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     retMsg = DYNLIB_ERROR();
 #elif defined(__WIN32__) || defined(_WIN32)
     LPVOID msgBuffer;

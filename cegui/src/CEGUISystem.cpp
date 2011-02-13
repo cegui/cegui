@@ -110,7 +110,7 @@ double SimpleTimer::currentTime()
     return timeGetTime() / 1000.0;
 }
 
-#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)  || defined(__HAIKU__)
 #include <sys/time.h>
 double SimpleTimer::currentTime()
 {
@@ -479,8 +479,11 @@ void System::setDefaultFont(Font* font)
 *************************************************************************/
 void System::setDefaultMouseCursor(const Image* image)
 {
+    const Image* const default_cursor =
+        reinterpret_cast<const Image*>(DefaultMouseCursor);
+
     // the default, default, is for nothing!
-    if (image == (const Image*)DefaultMouseCursor)
+    if (image == default_cursor)
         image = 0;
 
     // if mouse cursor is set to the current default we *may* need to
@@ -493,7 +496,8 @@ void System::setDefaultMouseCursor(const Image* image)
     if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
     {
         // does the window containing the mouse use the default cursor?
-        if ((d_wndWithMouse) && (0 == d_wndWithMouse->getMouseCursor(false)))
+        if ((d_wndWithMouse) &&
+            (default_cursor == d_wndWithMouse->getMouseCursor(false)))
         {
             // default cursor is active, update the image immediately
             MouseCursor::getSingleton().setImage(image);
@@ -1395,11 +1399,16 @@ void System::setDefaultTooltip(const String& tooltipType)
 //----------------------------------------------------------------------------//
 void System::createSystemOwnedDefaultTooltipWindow() const
 {
-    d_defaultTooltip = static_cast<Tooltip*>(
-        WindowManager::getSingleton().createWindow(
-            d_defaultTooltipType, "CEGUI::System::default__auto_tooltip__"));
-    d_defaultTooltip->setWritingXMLAllowed(false);
-    d_weOwnTooltip = true;
+    WindowManager& winmgr(WindowManager::getSingleton());
+
+    if (!winmgr.isLocked())
+    {
+        d_defaultTooltip = static_cast<Tooltip*>(
+            winmgr.createWindow(d_defaultTooltipType,
+                                "CEGUI::System::default__auto_tooltip__"));
+        d_defaultTooltip->setWritingXMLAllowed(false);
+        d_weOwnTooltip = true;
+    }
 }
 
 //----------------------------------------------------------------------------//
