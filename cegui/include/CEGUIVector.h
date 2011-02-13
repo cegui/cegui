@@ -1,12 +1,12 @@
 /***********************************************************************
 	filename: 	CEGUIVector.h
-	created:	14/3/2004
-	author:		Paul D Turner
+	created:	13/2/2011
+	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
 	purpose:	Defines interfaces for Vector classes
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,7 +40,15 @@ namespace CEGUI
 
 /*!
 \brief
- Class used as a two dimensional vector (aka a Point)
+    Class used as a two dimensional vector (aka a Point)
+
+\par
+    This class is templated now, this allows us to use it as a Vector2 of floats,
+    ints or even UDims without replicating the code all over the place.
+
+\par
+    For a simple Vector2 of floats (what was called Vector2 before), use Vector2<>
+    as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>
 class Vector2:
@@ -122,45 +130,65 @@ public:
         return !(operator==(vec));
     }
 
-    //Size asSize() const     { return Size(d_x, d_y); }
-
     T d_x;
     T d_y;
 };
 
 /*!
 \brief
- Class used as a three dimensional vector
+    Class used as a three dimensional vector
+
+\par
+    This class is templated now, this allows us to use it as a Vector3 of floats,
+    ints or even UDims without replicating the code all over the place.
+
+\par
+    For a simple Vector3 of floats (what was called Vector3 before), use Vector3<>
+    as the T template parameter defaults to float to save fingertips.
 */
-class CEGUIEXPORT Vector3 :
-    public AllocatedObject<Vector3>
+template<typename T>
+class CEGUIEXPORT Vector3:
+    public AllocatedObject<Vector3<T> >
 {
 public:
-    Vector3(void) {}
-    Vector3(float x, float y, float z) : d_x(x), d_y(y), d_z(z) {}
-    Vector3(const Vector3& v) : d_x(v.d_x), d_y(v.d_y), d_z(v.d_z) {}
+    inline Vector3()
+    {}
 
-    bool operator==(const Vector3& vec) const
+    inline Vector3(const T& x, const T& y, const T& z):
+        d_x(x),
+        d_y(y),
+        d_z(z)
+    {}
+
+    inline Vector3(const Vector3& v):
+        d_x(v.d_x),
+        d_y(v.d_y),
+        d_z(v.d_z)
+    {}
+
+    inline bool operator==(const Vector3& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y) && (d_z == vec.d_z));
     }
 
-    bool operator!=(const Vector3& vec) const
+    inline bool operator!=(const Vector3& vec) const
     {
         return !(operator==(vec));
     }
 
-	Vector3 operator*(float c) const
+	inline Vector3 operator*(float c) const
 	{
 		return Vector3(d_x * c, d_y * c, d_z * c);
 	}
 
-	Vector3 operator+(const Vector3& v) const
+	inline Vector3 operator+(const Vector3& v) const
 	{
 		return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
 	}
 
-    float d_x, d_y, d_z;
+    T d_x;
+    T d_y;
+    T d_z;
 };
 
 } // End of  CEGUI namespace section

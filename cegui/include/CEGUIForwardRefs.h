@@ -115,7 +115,7 @@ class UDim;
 class URect;
 class UVector2;
 template<typename T = float> class Vector2;
-class Vector3;
+template<typename T = float> class Vector3;
 struct Vertex;
 class WidgetLookFeel;
 class Window;

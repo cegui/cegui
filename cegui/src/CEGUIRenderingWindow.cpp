@@ -80,7 +80,7 @@ void RenderingWindow::setPosition(const Vector2<>& position)
 {
     d_position = position;
 
-    Vector3 trans(d_position.d_x, d_position.d_y, 0.0f);
+    Vector3<> trans(d_position.d_x, d_position.d_y, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
@@ -110,7 +110,7 @@ void RenderingWindow::setRotation(const Quaternion& rotation)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPivot(const Vector3& pivot)
+void RenderingWindow::setPivot(const Vector3<>& pivot)
 {
     d_pivot = pivot;
     d_geometry->setPivot(d_pivot);
@@ -135,7 +135,7 @@ const Quaternion& RenderingWindow::getRotation() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector3& RenderingWindow::getPivot() const
+const Vector3<>& RenderingWindow::getPivot() const
 {
     return d_pivot;
 }
@@ -265,32 +265,32 @@ void RenderingWindow::realiseGeometry_impl()
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = Vector3(area.d_left, area.d_top, 0.0f);
+    vbuffer[0].position   = Vector3<>(area.d_left, area.d_top, 0.0f);
     vbuffer[0].colour_val = c;
     vbuffer[0].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
 
     // vertex 1
-    vbuffer[1].position   = Vector3(area.d_left, area.d_bottom, 0.0f);
+    vbuffer[1].position   = Vector3<>(area.d_left, area.d_bottom, 0.0f);
     vbuffer[1].colour_val = c;
     vbuffer[1].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_bottom);
 
     // vertex 2
-    vbuffer[2].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[2].position   = Vector3<>(area.d_right, area.d_bottom, 0.0f);
     vbuffer[2].colour_val = c;
     vbuffer[2].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
 
     // vertex 3
-    vbuffer[3].position   = Vector3(area.d_right, area.d_top, 0.0f);
+    vbuffer[3].position   = Vector3<>(area.d_right, area.d_top, 0.0f);
     vbuffer[3].colour_val = c;
     vbuffer[3].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_top);
 
     // vertex 4
-    vbuffer[4].position   = Vector3(area.d_left, area.d_top, 0.0f);
+    vbuffer[4].position   = Vector3<>(area.d_left, area.d_top, 0.0f);
     vbuffer[4].colour_val = c;
     vbuffer[4].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
 
     // vertex 5
-    vbuffer[5].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[5].position   = Vector3<>(area.d_right, area.d_bottom, 0.0f);
     vbuffer[5].colour_val = c;
     vbuffer[5].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
 

@@ -131,7 +131,7 @@ public:
     \param rotation
         Anticlockwise rotation around given axis
     */
-    static Quaternion axisAngleRadians(const Vector3& axis, float rotation);
+    static Quaternion axisAngleRadians(const Vector3<>& axis, float rotation);
 
     /*!
     \brief constructs a quaternion from axis and angle around it in degrees
@@ -141,7 +141,7 @@ public:
     \param rotation
         Anticlockwise rotation around given axis
     */
-    static Quaternion axisAngleDegrees(const Vector3& axis, float rotation);
+    static Quaternion axisAngleDegrees(const Vector3<>& axis, float rotation);
 
     //! equality operator
     inline bool operator == (const Quaternion& v) const

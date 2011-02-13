@@ -76,7 +76,7 @@ Quaternion Quaternion::eulerAnglesDegrees(const float x, const float y, const fl
 }
 
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::axisAngleRadians(const Vector3& axis, const float rotation)
+Quaternion Quaternion::axisAngleRadians(const Vector3<>& axis, const float rotation)
 {
     const float halfRotation = 0.5f * rotation;
     const float halfSin = sinf(halfRotation);
@@ -86,7 +86,7 @@ Quaternion Quaternion::axisAngleRadians(const Vector3& axis, const float rotatio
 }
 
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::axisAngleDegrees(const Vector3& axis, const float rotation)
+Quaternion Quaternion::axisAngleDegrees(const Vector3<>& axis, const float rotation)
 {
     static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
 
@@ -183,7 +183,7 @@ String QuaternionSlerpInterpolator::interpolateRelativeMultiply(const String& ba
                                             float position)
 {
     CEGUI_THROW(InvalidRequestException("AM_RelativeMultiply doesn't make sense "
-        "with Quaternions! Please us absolute or relative application method."));
+        "with Quaternions! Please use absolute or relative application method."));
 
     return Helper::toString(Quaternion::IDENTITY);
 }

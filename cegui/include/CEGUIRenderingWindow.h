@@ -133,7 +133,7 @@ public:
         Vector3 describing the three dimensional point around which the
         RenderingWindow will be rotated.
     */
-    void setPivot(const Vector3& pivot);
+    void setPivot(const Vector3<>& pivot);
 
     /*!
     \brief
@@ -176,7 +176,7 @@ public:
         Vector3 object describing the current location of the pivot point used
         when rotating the RenderingWindow.
     */
-    const Vector3& getPivot() const;
+    const Vector3<>& getPivot() const;
 
     /*!
     \brief
@@ -304,7 +304,7 @@ protected:
     //! Rotation for this RenderingWindow
     Quaternion d_rotation;
     //! Pivot point used for the rotation.
-    Vector3 d_pivot;
+    Vector3<> d_pivot;
 };
 
 } // End of  CEGUI namespace section
