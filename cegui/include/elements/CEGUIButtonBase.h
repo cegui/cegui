@@ -115,7 +115,7 @@ protected:
 	\return
 		Nothing
 	*/
-	void	updateInternalState(const Point& mouse_pos);
+	void	updateInternalState(const Vector2<>& mouse_pos);
 
 
 	/*!

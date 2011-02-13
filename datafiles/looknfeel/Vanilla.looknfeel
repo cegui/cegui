@@ -456,7 +456,7 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1101,7 +1101,7 @@
             </Area>
             <HorzAlignment type="RightAligned" />
         </Child>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>

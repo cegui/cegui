@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,8 +36,8 @@
 #include <map>
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
@@ -55,7 +55,8 @@ namespace CEGUI
     \note
         An Event object may not be copied.
 */
-class CEGUIEXPORT Event
+class CEGUIEXPORT Event :
+    public AllocatedObject<Event>
 {
 public:
     /*!
@@ -94,7 +95,9 @@ public:
         ScopedConnection() {}
 
         ~ScopedConnection()
-            { disconnect(); }
+        {
+            disconnect();
+        }
 
         ScopedConnection(const Event::Connection& connection) :
             d_connection(connection)
@@ -107,10 +110,14 @@ public:
         }
 
         bool connected() const
-            { return d_connection.isValid() ? d_connection->connected() : false; }
+        {
+            return d_connection.isValid() ? d_connection->connected() : false;
+        }
 
         void disconnect()
-            { if (d_connection.isValid()) d_connection->disconnect(); }
+        {
+            if (d_connection.isValid()) d_connection->disconnect();
+        }
 
     private:
         Event::Connection d_connection;
@@ -127,7 +134,7 @@ public:
         Destructor for Event objects.  Note that this is non-virtual and so you
         should not sub-class Event.
     */
-    ~Event();
+    virtual ~Event();
 
     /*!
     \brief
@@ -137,7 +144,9 @@ public:
         String object containing the name of the Event object.
     */
     const String& getName(void) const
-        { return d_name; }
+    {
+        return d_name;
+    }
 
     /*!
     \brief
@@ -192,7 +201,7 @@ public:
     void operator()(EventArgs& args);
 
 
-private:
+protected:
     friend void CEGUI::BoundSlot::disconnect();
     /*!
     \brief
@@ -208,9 +217,13 @@ private:
 
     // Copy constructor and assignment are not allowed for events
     Event(const Event&) {}
-    Event& operator=(const Event&)  {return *this;}
+    Event& operator=(const Event&)
+    {
+        return *this;
+    }
 
-    typedef std::multimap<Group, Connection> SlotContainer;
+    typedef std::multimap<Group, Connection, std::less<Group>
+        CEGUI_MULTIMAP_ALLOC(Group, Connection)> SlotContainer;
     SlotContainer d_slots;  //!< Collection holding ref-counted bound slots
     const String d_name;    //!< Name of this event
 };
@@ -218,7 +231,8 @@ private:
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#   pragma warning(pop)
 #endif
 
 #endif  // end of guard _CEGUIEvent_h_
+

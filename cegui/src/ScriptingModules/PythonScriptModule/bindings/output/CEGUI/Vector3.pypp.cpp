@@ -10,10 +10,7 @@ void register_Vector3_class(){
 
     { //::CEGUI::Vector3
         typedef bp::class_< CEGUI::Vector3 > Vector3_exposer_t;
-        Vector3_exposer_t Vector3_exposer = Vector3_exposer_t( "Vector3", "*!\n\
-        \n\
-         Class used as a three dimensional vector\n\
-        *\n", bp::init< >() );
+        Vector3_exposer_t Vector3_exposer = Vector3_exposer_t( "Vector3", bp::init< >() );
         bp::scope Vector3_scope( Vector3_exposer );
         Vector3_exposer.def( bp::init< float, float, float >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
         Vector3_exposer.def( bp::init< CEGUI::Vector3 const & >(( bp::arg("v") )) );

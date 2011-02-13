@@ -29,7 +29,7 @@
 #define _CEGUIVertex_h_
 
 #include "CEGUIVector.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -38,14 +38,15 @@ namespace CEGUI
 \brief
     structure that is used to hold details of a single vertex in 3D space.
 */
-struct Vertex
+struct Vertex :
+    public AllocatedObject<Vertex>
 {
     //! Position of the vertex in 3D space.
     Vector3 position;
     //! Texture co-ords to be applied to the vertex.
-    Vector2 tex_coords;
+    Vector2<> tex_coords;
     //! colour to be applied to the vertex.
-    colour  colour_val;
+    Colour  colour_val;
 };
 
 } // End of  CEGUI namespace section

@@ -35,7 +35,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardScrollbar::TypeName[] = "Falagard/Scrollbar";
+    const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
+
     FalagardScrollbarProperties::VerticalScrollbar FalagardScrollbar::d_verticalProperty;
 
 
@@ -111,7 +112,7 @@ namespace CEGUI
         }
     }
 
-    float FalagardScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+    float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2<>& pt) const
     {
         Scrollbar* w = (Scrollbar*)d_window;
         Rect absrect(w->getThumb()->getUnclippedOuterRect());

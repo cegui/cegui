@@ -57,7 +57,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardListHeader : public ListHeaderWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief

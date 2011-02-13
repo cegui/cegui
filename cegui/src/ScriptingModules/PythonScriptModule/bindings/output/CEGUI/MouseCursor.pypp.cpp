@@ -57,13 +57,7 @@ void register_MouseCursor_class(){
 
     { //::CEGUI::MouseCursor
         typedef bp::class_< MouseCursor_wrapper, bp::bases< CEGUI::EventSet, CEGUI::Singleton< CEGUI::MouseCursor > >, boost::noncopyable > MouseCursor_exposer_t;
-        MouseCursor_exposer_t MouseCursor_exposer = MouseCursor_exposer_t( "MouseCursor", "*!\n\
-        \n\
-           Class that allows access to the GUI system mouse cursor.\n\
-        \n\
-           The MouseCursor provides functionality to access the position and imagery of the mouse cursor\
-           pointer\n\
-        *\n", bp::init< >("*!\n\
+        MouseCursor_exposer_t MouseCursor_exposer = MouseCursor_exposer_t( "MouseCursor", bp::init< >("*!\n\
         \n\
            Constructor for MouseCursor objects\n\
         *\n") );
@@ -102,7 +96,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getDisplayIndependantPosition
         
-            typedef ::CEGUI::Point ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getDisplayIndependantPosition"
@@ -153,7 +147,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getPosition
         
-            typedef ::CEGUI::Point ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2 ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getPosition"
@@ -271,7 +265,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::offsetPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Vector2 const & ) ;
             
             MouseCursor_exposer.def( 
                 "offsetPosition"
@@ -380,7 +374,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setInitialMousePosition
         
-            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Point const & );
+            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Vector2 const & );
             
             MouseCursor_exposer.def( 
                 "setInitialMousePosition"
@@ -404,7 +398,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Point const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Vector2 const & ) ;
             
             MouseCursor_exposer.def( 
                 "setPosition"

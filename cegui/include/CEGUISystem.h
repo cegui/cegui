@@ -61,7 +61,10 @@ struct MouseClickTrackerImpl;
 	an initialised Renderer object which it can use to interface to whatever rendering system will be
 	used to display the GUI imagery.
 */
-class CEGUIEXPORT System : public Singleton<System>, public EventSet
+class CEGUIEXPORT System :
+    public Singleton<System>,
+    public EventSet,
+    public AllocatedObject<System>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -951,13 +954,13 @@ public:
 		Method that injects a typed character event into the system.
 
 	\param code_point
-		Unicode code point of the character that was typed.
+		Unicode or ASCII (depends on used String class) code point of the character that was typed.
 
 	\return
 		- true if the input was processed by the gui system.
 		- false if the input was not processed by the gui system.
 	*/
-	bool	injectChar(utf32 code_point);
+	bool	injectChar(String::value_type code_point);
 
 
 	/*!
@@ -1142,7 +1145,7 @@ private:
 	\return
 		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
 	*/
-	Window*	getTargetWindow(const Point& pt, const bool allow_disabled) const;
+	Window*	getTargetWindow(const Vector2<>& pt, const bool allow_disabled) const;
 
 
 	/*!

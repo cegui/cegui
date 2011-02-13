@@ -36,10 +36,7 @@ void register_XMLParser_class(){
 
     { //::CEGUI::XMLParser
         typedef bp::class_< XMLParser_wrapper, bp::bases< CEGUI::PropertySet >, boost::noncopyable > XMLParser_exposer_t;
-        XMLParser_exposer_t XMLParser_exposer = XMLParser_exposer_t( "XMLParser", "*!\n\
-        \n\
-            This is an abstract class that is used by CEGUI to interface with XML parser libraries.\n\
-         *\n", bp::init< >("*!\n\
+        XMLParser_exposer_t XMLParser_exposer = XMLParser_exposer_t( "XMLParser", bp::init< >("*!\n\
         \n\
             XMLParser base class constructor.\n\
          *\n") );

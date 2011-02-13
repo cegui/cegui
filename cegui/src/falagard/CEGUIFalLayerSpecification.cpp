@@ -78,7 +78,7 @@ namespace CEGUI
         xml_stream.openTag("Layer");
 
         if (d_layerPriority != 0)
-            xml_stream.attribute("priority", PropertyHelper::uintToString(d_layerPriority));
+            xml_stream.attribute("priority", PropertyHelper<uint>::toString(d_layerPriority));
 
         // ouput all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)

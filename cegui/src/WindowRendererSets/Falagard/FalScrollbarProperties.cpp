@@ -38,14 +38,14 @@ namespace FalagardScrollbarProperties
     {
         FalagardScrollbar* wr = static_cast<FalagardScrollbar*>(
         static_cast<const Window*>(receiver)->getWindowRenderer());
-        return PropertyHelper::boolToString(wr->isVertical());
+        return PropertyHelper<bool>::toString(wr->isVertical());
     }
 
     void VerticalScrollbar::set(PropertyReceiver* receiver, const String& value)
     {
         FalagardScrollbar* wr = static_cast<FalagardScrollbar*>(
         static_cast<Window*>(receiver)->getWindowRenderer());
-        wr->setVertical(PropertyHelper::stringToBool(value));
+        wr->setVertical(PropertyHelper<bool>::fromString(value));
     }
 }
 } // End of  CEGUI namespace section

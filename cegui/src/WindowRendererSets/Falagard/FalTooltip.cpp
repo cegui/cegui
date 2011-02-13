@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTooltip::TypeName[] = "Falagard/Tooltip";
+    const String FalagardTooltip::TypeName("Falagard/Tooltip");
 
     FalagardTooltip::FalagardTooltip(const String& type) :
         TooltipWindowRenderer(type)

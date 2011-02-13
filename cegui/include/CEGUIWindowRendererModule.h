@@ -30,6 +30,7 @@
 #define _CEGUIWindowRendererModule_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -40,7 +41,8 @@
 namespace CEGUI
 {
 //! Abstract interface for window renderer module objects.
-class CEGUIEXPORT WindowRendererModule
+class CEGUIEXPORT WindowRendererModule :
+    public AllocatedObject<WindowRendererModule>
 {
 public:
     //! Destructor.
@@ -56,7 +58,8 @@ public:
 
 protected:
     //! Collection type that holds pointers to the factory registerer objects.
-    typedef std::vector<WRFactoryRegisterer*> FactoryRegistry;
+    typedef std::vector<WRFactoryRegisterer*
+        CEGUI_VECTOR_ALLOC(WRFactoryRegisterer*)> FactoryRegistry;
     //! The collection of factorty registerer object pointers.
     FactoryRegistry d_registry;
 };

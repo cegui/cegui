@@ -52,7 +52,7 @@ public:
 
     // implementation of base interface
     void format(const Size& area_size);
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent() const;
@@ -62,7 +62,8 @@ protected:
     //! Delete the current formatters and associated RenderedStrings
     void deleteFormatters();
     //! type of collection used to track the formatted lines.
-    typedef std::vector<FormattedRenderedString*> LineList;
+    typedef std::vector<FormattedRenderedString*
+        CEGUI_VECTOR_ALLOC(FormattedRenderedString*)> LineList;
     //! collection of lines.
     LineList d_lines;
 };
@@ -108,7 +109,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
 
             // split rstring at width into lstring and remaining rstring
             rstring.split(line, area_size.d_width, lstring);
-            frs = new T(*new RenderedString(lstring));
+            frs = CEGUI_NEW_AO T(*new RenderedString(lstring));
             frs->format(area_size);
             d_lines.push_back(frs);
             line = 0;
@@ -116,7 +117,7 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
     }
 
     // last line.
-    frs = new T(*new RenderedString(rstring));
+    frs = CEGUI_NEW_AO T(*new RenderedString(rstring));
     frs->format(area_size);
     d_lines.push_back(frs);
 }
@@ -124,11 +125,11 @@ void RenderedStringWordWrapper<T>::format(const Size& area_size)
 //----------------------------------------------------------------------------//
 template <typename T>
 void RenderedStringWordWrapper<T>::draw(GeometryBuffer& buffer,
-                                     const Vector2& position,
+                                     const Vector2<>& position,
                                      const ColourRect* mod_colours,
                                      const Rect* clip_rect) const
 {
-    Vector2 line_pos(position);
+    Vector2<> line_pos(position);
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
@@ -185,9 +186,9 @@ void RenderedStringWordWrapper<T>::deleteFormatters()
         // get the rendered string back from rthe formatter
         const RenderedString* rs = &d_lines[i]->getRenderedString();
         // delete the formatter
-        delete d_lines[i];
+        CEGUI_DELETE_AO d_lines[i];
         // delete the rendered string.
-        delete rs;
+        CEGUI_DELETE_AO rs;
     }
 
     d_lines.clear();

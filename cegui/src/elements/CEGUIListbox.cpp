@@ -64,12 +64,12 @@ ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
 	Constants
 *************************************************************************/
 // event names
-const String Listbox::EventListContentsChanged( "ListItemsChanged" );
-const String Listbox::EventSelectionChanged( "ItemSelectionChanged" );
+const String Listbox::EventListContentsChanged( "ListContentsChanged" );
+const String Listbox::EventSelectionChanged( "SelectionChanged" );
 const String Listbox::EventSortModeChanged( "SortModeChanged" );
-const String Listbox::EventMultiselectModeChanged( "MuliselectModeChanged" );
-const String Listbox::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
-const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
+const String Listbox::EventMultiselectModeChanged( "MultiselectModeChanged" );
+const String Listbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
 /*************************************************************************
     Child Widget name suffix constants
@@ -381,7 +381,7 @@ void Listbox::removeItem(const ListboxItem* item)
 			if (item->isAutoDeleted())
 			{
 				// clean up this item.
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 			WindowEventArgs args(this);
@@ -742,9 +742,9 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
+ListboxItem* Listbox::getItemAtPoint(const Vector2<>& pt) const
 {
-    const Point local_pos(CoordConverter::screenToWindow(*this, pt));
+    const Vector2<> local_pos(CoordConverter::screenToWindow(*this, pt));
 	const Rect renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
@@ -1074,7 +1074,7 @@ bool Listbox::resetList_impl(void)
 			if (d_listItems[i]->isAutoDeleted())
 			{
 				// clean up this item.
-				delete d_listItems[i];
+				CEGUI_DELETE_AO d_listItems[i];
 			}
 
 		}

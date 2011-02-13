@@ -38,7 +38,9 @@
 namespace CEGUI
 {
 //! Root exception class used within the GUI system.
-class  CEGUIEXPORT Exception : public std::exception
+class  CEGUIEXPORT Exception :
+    public std::exception,
+    public AllocatedObject<Exception>
 {
 public:
     //! Virtual destructor.

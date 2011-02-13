@@ -68,7 +68,7 @@ bool TextDemo::initialiseSample()
     System::getSingleton().setGUISheet(background);
 
     // Load our layout as a basic
-    background->addChildWindow (winMgr.loadWindowLayout ("TextDemo.layout"));
+    background->addChild (winMgr.loadWindowLayout ("TextDemo.layout"));
 
     // Init the seperate blocks which make up this sample
     initStaticText();

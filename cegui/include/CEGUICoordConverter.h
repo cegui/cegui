@@ -125,7 +125,7 @@ public:
         Vector2 object describing a screen co-ordinate position that is
         equivalent to window based UVector2 \a vec.
     */
-    static Vector2 windowToScreen(const Window& window, const UVector2& vec);
+    static Vector2<> windowToScreen(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -142,7 +142,7 @@ public:
         Vector2 object describing a screen co-ordinate position that is
         equivalent to window based Vector2 \a vec.
     */
-    static Vector2 windowToScreen(const Window& window, const Vector2& vec);
+    static Vector2<> windowToScreen(const Window& window, const Vector2<>& vec);
 
     /*!
     \brief
@@ -256,7 +256,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based UVector2 point \a vec.
     */
-    static Vector2 screenToWindow(const Window& window, const UVector2& vec);
+    static Vector2<> screenToWindow(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -273,7 +273,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based Vector2 point \a vec.
     */
-    static Vector2 screenToWindow(const Window& window, const Vector2& vec);
+    static Vector2<> screenToWindow(const Window& window, const Vector2<>& vec);
 
     /*!
     \brief
@@ -308,6 +308,9 @@ public:
     static Rect screenToWindow(const Window& window, const Rect& rect);
 
 private:
+    //! disallows construction of this class
+    CoordConverter();
+
     /*!
     \brief
         Return the base X co-ordinate of the given Window object.
@@ -345,7 +348,7 @@ private:
         Vector2 value indicating the base on-screen pixel location of the window
         object. (i.e. The screen co-ord of the window's top-left corner).
     */
-    static Vector2 getBaseValue(const Window& window);
+    static Vector2<> getBaseValue(const Window& window);
 };
 
 } // End of  CEGUI namespace section

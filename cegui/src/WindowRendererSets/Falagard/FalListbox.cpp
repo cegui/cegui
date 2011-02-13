@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardListbox::TypeName[] = "Falagard/Listbox";
+    const String FalagardListbox::TypeName("Falagard/Listbox");
 
 
     FalagardListbox::FalagardListbox(const String& type) :

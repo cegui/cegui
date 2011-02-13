@@ -35,10 +35,12 @@ namespace CEGUI
 
 void RawDataContainer::release(void)
 {
-    if(mData)
+    if (mData)
     {
-        delete [] mData;
+        CEGUI_DELETE_ARRAY_PT(mData, uint8, mSize, RawDataContainer);
+
         mData = 0;
+        mSize = 0;
     }
 }
 

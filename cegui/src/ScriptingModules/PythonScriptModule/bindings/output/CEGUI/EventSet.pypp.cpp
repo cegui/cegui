@@ -58,28 +58,27 @@ class EventCallback
 public:
     EventCallback() : mSubscriber(0) {}
 
-    EventCallback(PyObject*  subscriber, CEGUI::String const & method)
-    {
-        mSubscriber = subscriber;
-        mMethod = method;
-    } 
+    EventCallback(PyObject* subscriber, const CEGUI::String& method):
+        mSubscriber(boost::python::incref(subscriber)),
+        mMethod(method)
+    {} 
     
-    EventCallback(const EventCallback &other)
-    : mSubscriber(0)
-    {
-        *this = other;
-    }
+    EventCallback(const EventCallback& other):
+        mSubscriber(boost::python::incref(other.mSubscriber)),
+        mMethod(other.mMethod)
+    {}
     
     ~EventCallback()
     {
+        boost::python::decref(mSubscriber);
     } 
     
-    void setsubscriber( PyObject* subscriber )
+    /*void setsubscriber( PyObject* subscriber )
     {
         mSubscriber = subscriber;
-    }
+    }*/
     
-  bool operator() (const CEGUI::EventArgs &args) const
+    bool operator() (const CEGUI::EventArgs &args) const
     {
         if (dynamic_cast<CEGUI::MouseCursorEventArgs *>((CEGUI::EventArgs *)&args))
             if (mMethod.length() > 0 )
@@ -166,22 +165,25 @@ public:
      return true;
     }
 
-    PyObject*  mSubscriber;
-    CEGUI::String  mMethod;
+    PyObject* mSubscriber;
+    CEGUI::String mMethod;
 };
 
 class EventConnection
 {
 public:
-    EventConnection() : mConnection(0), mValid(false) {}
+    EventConnection():
+        mConnection(0),
+        mValid(false)
+    {}
     
     EventConnection(const CEGUI::Event::Connection &connection) 
     : mConnection(connection), mValid(true) 
-    {
-    }
+    {}
+    
     ~EventConnection()
     {
-        if (mCallback) delete mCallback;
+        delete mCallback;
     }   
     bool connected()
     {
@@ -191,16 +193,16 @@ public:
     void disconnect()
     {
         if (mValid)
+        {
             mConnection->disconnect();
-    } // disconnect()
+        }
+    }
     
 protected:
     CEGUI::Event::Connection mConnection;
     bool mValid;
-    EventCallback * mCallback;
+    EventCallback* mCallback;
 };
-
-
 
 EventConnection * EventSet_subscribeEventSet(CEGUI::EventSet *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
@@ -227,7 +229,7 @@ EventConnection * EventSet_subscribeEventFW(CEGUI::FrameWindow *self , CEGUI::St
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
     return connect; 
 }
-EventConnection * EventSet_subscribeEventGUISheet(CEGUI::GUISheet *self , CEGUI::String const & name, 
+EventConnection * EventSet_subscribeEventDefaultWindow(CEGUI::DefaultWindow *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
@@ -300,7 +302,6 @@ EventConnection * EventSet_subscribeMultiColumnList(CEGUI::MultiColumnList *self
     return connect; 
 }
 
-// new ones the I missed in RC1
 EventConnection * EventSet_subscribeWindow(CEGUI::Window *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
@@ -320,23 +321,12 @@ EventConnection * EventSet_subscribeSystem(CEGUI::System *self , CEGUI::String c
     return connect; 
 }
 
-#if CEGUI_VERSION_MINOR < 7 
-EventConnection * EventSet_subscribeRenderer(CEGUI::Renderer *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-#endif
-
-#if CEGUI_VERSION_MINOR > 5 && CEGUI_VERSION_PATCH > 0
 EventConnection * EventSet_subscribeTree(CEGUI::Tree *self , CEGUI::String const & name, 
                                                 PyObject* subscriber, CEGUI::String const & method="")
 {
     EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
     return connect; 
 }
-#endif
 
 void register_EventSet_class(){
 
@@ -344,7 +334,7 @@ void register_EventSet_class(){
         typedef bp::class_< EventSet_wrapper, boost::noncopyable > EventSet_exposer_t;
         EventSet_exposer_t EventSet_exposer = EventSet_exposer_t( "EventSet", "*!\n\
         \n\
-           Class that collects together a set of Event objects.\n\
+            Class that collects together a set of Event objects.\n\
         \n\
             The EventSet is a means for code to attach a handler function to some\n\
             named event, and later, for that event to be fired and the subscribed\n\
@@ -361,7 +351,7 @@ void register_EventSet_class(){
             course action).\n\
         *\n", bp::init< >("*!\n\
         \n\
-           Constructor for EventSet objects\n\
+            Constructor for EventSet objects\n\
         *\n") );
         bp::scope EventSet_scope( EventSet_exposer );
         { //::CEGUI::EventSet::addEvent
@@ -373,18 +363,42 @@ void register_EventSet_class(){
                 , addEvent_function_type( &::CEGUI::EventSet::addEvent )
                 , ( bp::arg("name") )
                 , "*!\n\
-               \n\
-                  Add a new Event to the EventSet with the given name.\n\
+                \n\
+                    Creates a new Event object with the given name and adds it to the\n\
+                    EventSet.\n\
             \n\
-               @param name\n\
-                  String object containing the name to give the new Event.  The name must be unique for the\
-                  EventSet.\n\
+                @param name\n\
+                    String object containing the name to give the new Event.  The name must\n\
+                    be unique for the EventSet.\n\
             \n\
-               @return\n\
-                  Nothing\n\
+                @exception AlreadyExistsException\n\
+                    Thrown if an Event already exists named  name.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::EventSet::addEvent
+        
+            typedef void ( ::CEGUI::EventSet::*addEvent_function_type )( ::CEGUI::Event & ) ;
+            
+            EventSet_exposer.def( 
+                "addEvent"
+                , addEvent_function_type( &::CEGUI::EventSet::addEvent )
+                , ( bp::arg("event") )
+                , "*!\n\
+                \n\
+                    Adds the given Event object to the EventSet.  Ownership of the object\n\
+                    passes to EventSet and it will be deleted when it is removed from the\n\
+                    EventSet - whether explicitly via removeEvent or when the EventSet\n\
+                    is destroyed.\n\
             \n\
-               @exception AlreadyExistsException   Thrown if an Event already exists named  name.\n\
-               *\n" );
+                @param event\n\
+                    Reference to an Event or Event based object that is to be added to the\n\
+                    EventSaet\n\
+            \n\
+                @exception AlreadyExistsException\n\
+                    Thrown if the EventSet already contains an Event with the same name\n\
+                    as  event.  Note that  event will be destroyed under this scenario.\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::fireEvent
@@ -399,9 +413,39 @@ void register_EventSet_class(){
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
         
         }
+        { //::CEGUI::EventSet::getEventObject
+        
+            typedef ::CEGUI::Event * ( ::CEGUI::EventSet::*getEventObject_function_type )( ::CEGUI::String const &,bool ) ;
+            
+            EventSet_exposer.def( 
+                "getEventObject"
+                , getEventObject_function_type( &::CEGUI::EventSet::getEventObject )
+                , ( bp::arg("name"), bp::arg("autoAdd")=(bool)(false) )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a pointer to the Event object with the given name, optionally\n\
+                    adding such an Event object to the EventSet if it does not already\n\
+                    exist.\n\
+            \n\
+                @param name\n\
+                    String object holding the name of the Event to return.\n\
+            \n\
+                @param autoAdd\n\
+                    - true if an Event object named  name should be added to the set\n\
+                      if such an Event does not currently exist.\n\
+                    - false if no object should automatically be added to the set.  In this\n\
+                      case, if the Event does not already exist 0 will be returned.\n\
+            \n\
+                @return\n\
+                    Pointer to the Event object in this EventSet with the specifed name.\n\
+                    Or 0 if such an Event does not exist and  autoAdd was false.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::EventSet::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::EventSet::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Event*>, CEGUI::StdAllocator> > > ( ::CEGUI::EventSet::*getIterator_function_type )(  ) const;
             
             EventSet_exposer.def( 
                 "getIterator"
@@ -422,12 +466,14 @@ void register_EventSet_class(){
                 , isEventPresent_function_type( &::CEGUI::EventSet::isEventPresent )
                 , ( bp::arg("name") )
                 , "*!\n\
-               \n\
-                  Checks to see if an Event with the given name is present in the EventSet.\n\
+                \n\
+                    Checks to see if an Event with the given name is present in this\n\
+                    EventSet.\n\
             \n\
-               @return\n\
-                  true if an Event named  name was found, or false if the Event was not found\n\
-               *\n" );
+                @return\n\
+                    - true if an Event named  name is defined for this EventSet.\n\
+                    - false if no Event named  name is defined for this EventSet.\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::isMuted
@@ -438,13 +484,15 @@ void register_EventSet_class(){
                 "isMuted"
                 , isMuted_function_type( &::CEGUI::EventSet::isMuted )
                 , "*!\n\
-               \n\
-                  Return whether the EventSet is muted or not.\n\
+                \n\
+                    Return whether the EventSet is muted or not.\n\
             \n\
-               @return\n\
-                  - true if the EventSet is muted.  All requests to fire events will be ignored.\n\
-                  - false if the EventSet is not muted.  All requests to fire events are processed as normal.\n\
-               *\n" );
+                @return\n\
+                    - true if the EventSet is muted.  All requests to fire events will be\n\
+                      ignored.\n\
+                    - false if the EventSet is not muted.  Requests to fire events are\n\
+                      processed as normal.\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::removeAllEvents
@@ -455,12 +503,10 @@ void register_EventSet_class(){
                 "removeAllEvents"
                 , removeAllEvents_function_type( &::CEGUI::EventSet::removeAllEvents )
                 , "*!\n\
-               \n\
-                  Remove all Event objects from the EventSet\n\
             \n\
-               @return\n\
-                  Nothing\n\
-               *\n" );
+                Remove all Event objects from the EventSet.  Add connections will be\n\
+                disconnected, and all Event objects destroyed.\n\
+            *\n" );
         
         }
         { //::CEGUI::EventSet::removeEvent
@@ -472,16 +518,33 @@ void register_EventSet_class(){
                 , removeEvent_function_type( &::CEGUI::EventSet::removeEvent )
                 , ( bp::arg("name") )
                 , "*!\n\
-               \n\
-                  Removes the Event with the given name.  All connections to the event are disconnected.\n\
+                \n\
+                    Removes the Event with the given name.  All connections to the event\n\
+                    are disconnected, and the underlying Event object is destroyed.\n\
             \n\
-               @param name\n\
-                  String object containing the name of the Event to remove.  If no such Event exists, nothing\
-                  happens.\n\
+                @param name\n\
+                    String object containing the name of the Event to remove.  If no such\n\
+                    Event exists, nothing happens.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::EventSet::removeEvent
+        
+            typedef void ( ::CEGUI::EventSet::*removeEvent_function_type )( ::CEGUI::Event & ) ;
+            
+            EventSet_exposer.def( 
+                "removeEvent"
+                , removeEvent_function_type( &::CEGUI::EventSet::removeEvent )
+                , ( bp::arg("event") )
+                , "*!\n\
+                \n\
+                    Removes the given event from the EventSet.  All connections to the event\n\
+                    are disconnected, and the event object is destroyed.\n\
             \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
+                @param event\n\
+                    Reference to the Event or Event based object to be removed from the\n\
+                    EventSet.\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::setMutedState
@@ -493,17 +556,15 @@ void register_EventSet_class(){
                 , setMutedState_function_type( &::CEGUI::EventSet::setMutedState )
                 , ( bp::arg("setting") )
                 , "*!\n\
-               \n\
-                  Set the mute state for this EventSet.\n\
+                \n\
+                    Set the mute state for this EventSet.\n\
             \n\
-               @param setting\n\
-                  - true if the EventSet is to be muted (no further event firing requests will be honoured until\
-                  EventSet is unmuted).\n\
-                  - false if the EventSet is not to be muted and all events should fired as requested.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
+                @param setting\n\
+                    - true if the EventSet is to be muted (no further event firing requests\n\
+                      will be honoured until EventSet is unmuted).\n\
+                    - false if the EventSet is not to be muted and all events should fired\n\
+                      as requested.\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent
@@ -542,7 +603,7 @@ void register_EventSet_class(){
                     bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
         EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSB, 
                     bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventGUISheet, 
+        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventDefaultWindow, 
                     bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
         EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventFW, 
                     bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());

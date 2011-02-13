@@ -34,7 +34,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardSlider::TypeName[] = "Falagard/Slider";
+    const String FalagardSlider::TypeName("Falagard/Slider");
+
     FalagardSliderProperties::VerticalSlider FalagardSlider::d_verticalProperty;
     FalagardSliderProperties::ReversedDirection FalagardSlider::d_reversedProperty;
 
@@ -158,7 +159,7 @@ namespace CEGUI
         }
     }
 
-    float FalagardSlider::getAdjustDirectionFromPoint(const Point& pt) const
+    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2<>& pt) const
     {
         Slider* w = (Slider*)d_window;
         Rect absrect(w->getThumb()->getUnclippedOuterRect());

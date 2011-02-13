@@ -10,11 +10,11 @@ namespace bp = boost::python;
 
 void register_StrIndexList_class(){
 
-    { //::std::vector< int >
-        typedef bp::class_< std::vector< int > > StrIndexList_exposer_t;
+    { //::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> >
+        typedef bp::class_< std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > > StrIndexList_exposer_t;
         StrIndexList_exposer_t StrIndexList_exposer = StrIndexList_exposer_t( "StrIndexList" );
         bp::scope StrIndexList_scope( StrIndexList_exposer );
-        StrIndexList_exposer.def( bp::indexing::vector_suite< std::vector< int > >() );
+        StrIndexList_exposer.def( bp::indexing::vector_suite< std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > >() );
     }
 
 }

@@ -174,6 +174,27 @@ void OgreTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
+void OgreTexture::blitFromMemory(void* sourceData, const Rect& area)
+{
+    if (d_texture.isNull()) // TODO: exception?
+        return;
+
+    Ogre::PixelBox pb(area.getWidth(), area.getHeight(), 1, Ogre::PF_A8R8G8B8, sourceData);
+    Ogre::Image::Box box(area.d_left, area.d_top, area.d_right, area.d_bottom);
+    d_texture->getBuffer()->blitFromMemory(pb, box);
+}
+
+//----------------------------------------------------------------------------//
+void OgreTexture::blitToMemory(void* targetData)
+{
+    if (d_texture.isNull()) // TODO: exception?
+        return;
+
+    Ogre::PixelBox pb(d_size.d_width, d_size.d_height, 1, Ogre::PF_A8R8G8B8, targetData);
+    d_texture->getBuffer()->blitToMemory(pb);
+}
+
+//----------------------------------------------------------------------------//
 OgreTexture::OgreTexture() :
     d_isLinked(false),
     d_size(0, 0),

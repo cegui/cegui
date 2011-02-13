@@ -43,13 +43,7 @@ void register_ResourceProvider_class(){
 
     { //::CEGUI::ResourceProvider
         typedef bp::class_< ResourceProvider_wrapper, boost::noncopyable > ResourceProvider_exposer_t;
-        ResourceProvider_exposer_t ResourceProvider_exposer = ResourceProvider_exposer_t( "ResourceProvider", "*!\n\
-        \n\
-           Abstract class that defines the required interface for all resource provider sub-classes.\n\
-        \n\
-           A ResourceProvider is used to load both XML and binary data from an external source.  This could\
-           be from a filesystem or the resource manager of a specific renderer.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        ResourceProvider_exposer_t ResourceProvider_exposer = ResourceProvider_exposer_t( "ResourceProvider", bp::init< >("*************************************************************************\n\
            Construction and Destruction\n\
         *************************************************************************\n\
          *!\n\

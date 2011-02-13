@@ -31,6 +31,7 @@
 #include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIOgreRenderer.h"
 #include "../../CEGUIRect.h"
+#include "../../CEGUIQuaternion.h"
 
 #include <OgreMatrix4.h>
 #include <OgreColourValue.h>
@@ -61,24 +62,24 @@ public:
     const Ogre::Matrix4& getMatrix() const;
 
     // implement CEGUI::GeometryBuffer interface.
-    void draw() const;
-    void setTranslation(const Vector3& v);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
-    void setClippingRegion(const Rect& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    void setActiveTexture(Texture* texture);
-    void reset();
-    Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
+    virtual void draw() const;
+    virtual void setTranslation(const Vector3& v);
+    virtual void setRotation(const Quaternion& r);
+    virtual void setPivot(const Vector3& p);
+    virtual void setClippingRegion(const Rect& region);
+    virtual void appendVertex(const Vertex& vertex);
+    virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    virtual void setActiveTexture(Texture* texture);
+    virtual void reset();
+    virtual Texture* getActiveTexture() const;
+    virtual uint getVertexCount() const;
+    virtual uint getBatchCount() const;
+    virtual void setRenderEffect(RenderEffect* effect);
+    virtual RenderEffect* getRenderEffect();
 
 protected:
     //! convert CEGUI::colour into something Ogre can use
-    Ogre::RGBA colourToOgre(const colour& col) const;
+    Ogre::RGBA colourToOgre(const Colour& col) const;
     //! update cached matrix
     void updateMatrix() const;
     //! Synchronise data in the hardware buffer with what's been added
@@ -104,8 +105,8 @@ protected:
     Rect d_clipRect;
     //! translation vector
     Vector3 d_translation;
-    //! rotation vector
-    Vector3 d_rotation;
+    //! rotation quaternion
+    Quaternion d_rotation;
     //! pivot point for rotation
     Vector3 d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer

@@ -83,7 +83,7 @@ ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
 	Constants
 *************************************************************************/
 // event names
-const String ItemListBase::EventListContentsChanged("ListItemsChanged");
+const String ItemListBase::EventListContentsChanged( "ListContentsChanged" );
 const String ItemListBase::EventSortEnabledChanged("SortEnabledChanged");
 const String ItemListBase::EventSortModeChanged("SortModeChanged");
 
@@ -232,7 +232,7 @@ void ItemListBase::addItem(ItemEntry* item)
         }
         // make sure it gets added properly
 		item->d_ownerList = this;
-		addChildWindow(item);
+		addChild(item);
 		handleUpdatedItemData();
 	}
 }
@@ -271,7 +271,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 
 		d_listItems.insert(ins_pos, item);
 		item->d_ownerList = this;
-		addChildWindow(item);
+		addChild(item);
 
 		handleUpdatedItemData();
 	}
@@ -285,7 +285,7 @@ void ItemListBase::removeItem(ItemEntry* item)
 {
 	if (item && item->d_ownerList == this)
 	{
-	    d_pane->removeChildWindow(item);
+	    d_pane->removeChild(item);
 	    if (item->isDestroyedByParent())
 	    {
 	        WindowManager::getSingleton().destroyWindow(item);
@@ -419,7 +419,7 @@ bool ItemListBase::resetList_impl(void)
 		while (!d_listItems.empty())
 		{
 		    ItemEntry* item = d_listItems[0];
-			d_pane->removeChildWindow(item);
+			d_pane->removeChild(item);
 			if (item->isDestroyedByParent())
 			{
 			    WindowManager::getSingleton().destroyWindow(item);
@@ -454,7 +454,7 @@ void ItemListBase::addChild_impl(Window* wnd)
         // add to the pane if we have one
         if (d_pane != this)
         {
-            d_pane->addChildWindow(wnd);
+            d_pane->addChild(wnd);
         }
         // add item directly to us
         else

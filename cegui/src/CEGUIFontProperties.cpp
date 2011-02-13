@@ -65,14 +65,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::sizeToString(
+        return PropertyHelper<Size>::toString(
             static_cast<const Font*>(receiver)->getNativeResolution());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<Font*>(receiver)->
-            setNativeResolution(PropertyHelper::stringToSize(value));
+            setNativeResolution(PropertyHelper<Size>::fromString(value));
     }
 };
 
@@ -110,14 +110,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const Font*>(receiver)->isAutoScaled());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<Font*>(receiver)->setAutoScaled(
-            PropertyHelper::stringToBool(value));
+            PropertyHelper<bool>::fromString(value));
     }
 };
 
@@ -133,14 +133,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(
+        return PropertyHelper<float>::toString(
             static_cast<const FreeTypeFont*>(receiver)->getPointSize());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<FreeTypeFont*>(receiver)->
-            setPointSize(PropertyHelper::stringToFloat (value));
+            setPointSize(PropertyHelper<float>::fromString(value));
     }
 };
 
@@ -156,14 +156,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const FreeTypeFont*>(receiver)->isAntiAliased());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<FreeTypeFont*>(receiver)->
-            setAntiAliased(PropertyHelper::stringToBool(value));
+            setAntiAliased(PropertyHelper<bool>::fromString(value));
 }
 };
 #endif // CEGUI_HAS_FREETYPE
@@ -207,7 +207,7 @@ public:
     void set (PropertyReceiver* receiver, const String& value)
     {
         char img[33];
-        utf32 codepoint;
+        String::value_type codepoint;
         float adv;
         if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
             CEGUI_THROW(InvalidRequestException(

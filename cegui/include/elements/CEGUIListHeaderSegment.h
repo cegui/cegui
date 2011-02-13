@@ -184,7 +184,7 @@ public:
 	\return
 		Point object describing the drag move offset position.
 	*/
-	const Point&	getDragMoveOffset(void) const	{return d_dragPosition;}
+	const Vector2<>& getDragMoveOffset(void) const	{return d_dragPosition;}
 
 
 	/*!
@@ -333,7 +333,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	void	doDragSizing(const Point& local_mouse);
+	void	doDragSizing(const Vector2<>& local_mouse);
 
 
 	/*!
@@ -346,7 +346,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	void	doDragMoving(const Point& local_mouse);
+	void	doDragMoving(const Vector2<>& local_mouse);
 
 
 	/*!
@@ -382,7 +382,7 @@ protected:
 		true if the threshold has been exceeded and drag-moving should be initiated, or false
 		if the threshold has not been exceeded.
 	*/		
-	bool	isDragMoveThresholdExceeded(const Point& local_mouse);
+	bool	isDragMoveThresholdExceeded(const Vector2<>& local_mouse);
 
 
 	/*!
@@ -496,7 +496,7 @@ protected:
 	bool	d_splitterHover;	//!< True if the mouse is over the splitter
 
 	bool	d_dragSizing;		//!< true when we are being sized.
-	Point	d_dragPoint;		//!< point we are being dragged at when sizing or moving.
+	Vector2<> d_dragPoint;		//!< point we are being dragged at when sizing or moving.
 
 	SortDirection	d_sortDir;	//!< Direction for sorting (used for deciding what icon to display).
 
@@ -505,7 +505,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true when sizing is enabled for this segment.
 	bool	d_movingEnabled;	//!< True when drag-moving is enabled for this segment;
 	bool	d_dragMoving;		//!< true when segment is being drag moved.
-	Point	d_dragPosition;		//!< position of dragged segment.
+	Vector2<> d_dragPosition;		//!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
 
 private:

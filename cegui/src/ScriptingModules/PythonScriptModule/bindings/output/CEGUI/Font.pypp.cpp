@@ -36,17 +36,7 @@ void register_Font_class(){
 
     { //::CEGUI::Font
         typedef bp::class_< Font_wrapper, bp::bases< CEGUI::PropertySet >, boost::noncopyable > Font_exposer_t;
-        Font_exposer_t Font_exposer = Font_exposer_t( "Font", "*!\n\
-        \n\
-            Class that encapsulates a typeface.\n\
-        \n\
-            A Font object is created for each unique typeface required.\n\
-            The Font class provides methods for loading typefaces from various sources,\n\
-            and then for outputting text via the Renderer object.\n\
-        \n\
-            This class is not specific to any font renderer, it just provides the\n\
-            basic interfaces needed to manage fonts.\n\
-        *\n", bp::no_init );
+        Font_exposer_t Font_exposer = Font_exposer_t( "Font", bp::no_init );
         bp::scope Font_scope( Font_exposer );
         { //::CEGUI::Font::drawText
         

@@ -15,28 +15,28 @@ struct SequentialLayoutContainer_wrapper : CEGUI::SequentialLayoutContainer, bp:
     
     }
 
-    virtual void moveChildWindowToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
-        if( bp::override func_moveChildWindowToPosition = this->get_override( "moveChildWindowToPosition" ) )
-            func_moveChildWindowToPosition( boost::python::ptr(wnd), position );
+    virtual void moveChildToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
+        if( bp::override func_moveChildToPosition = this->get_override( "moveChildToPosition" ) )
+            func_moveChildToPosition( boost::python::ptr(wnd), position );
         else{
-            this->CEGUI::SequentialLayoutContainer::moveChildWindowToPosition( boost::python::ptr(wnd), position );
+            this->CEGUI::SequentialLayoutContainer::moveChildToPosition( boost::python::ptr(wnd), position );
         }
     }
     
-    void default_moveChildWindowToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
-        CEGUI::SequentialLayoutContainer::moveChildWindowToPosition( boost::python::ptr(wnd), position );
+    void default_moveChildToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
+        CEGUI::SequentialLayoutContainer::moveChildToPosition( boost::python::ptr(wnd), position );
     }
 
-    virtual void swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        if( bp::override func_swapChildWindowPositions = this->get_override( "swapChildWindowPositions" ) )
-            func_swapChildWindowPositions( wnd1, wnd2 );
+    virtual void swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        if( bp::override func_swapChildPositions = this->get_override( "swapChildPositions" ) )
+            func_swapChildPositions( wnd1, wnd2 );
         else{
-            this->CEGUI::SequentialLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+            this->CEGUI::SequentialLayoutContainer::swapChildPositions( wnd1, wnd2 );
         }
     }
     
-    void default_swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        CEGUI::SequentialLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+    void default_swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        CEGUI::SequentialLayoutContainer::swapChildPositions( wnd1, wnd2 );
     }
 
     virtual void beginInitialisation(  ) {
@@ -284,13 +284,13 @@ void register_SequentialLayoutContainer_class(){
                 String object holding unique name for the Window.\n\
             *\n") );
         bp::scope SequentialLayoutContainer_scope( SequentialLayoutContainer_exposer );
-        { //::CEGUI::SequentialLayoutContainer::addChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::addChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*addChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "addChildWindowToPosition"
-                , addChildWindowToPosition_function_type( &::CEGUI::SequentialLayoutContainer::addChildWindowToPosition )
+                "addChildToPosition"
+                , addChildToPosition_function_type( &::CEGUI::SequentialLayoutContainer::addChildToPosition )
                 , ( bp::arg("window"), bp::arg("position") )
                 , "*!\n\
             \n\
@@ -298,13 +298,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::addChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::addChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*addChildWindowToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "addChildWindowToPosition"
-                , addChildWindowToPosition_function_type( &::CEGUI::SequentialLayoutContainer::addChildWindowToPosition )
+                "addChildToPosition"
+                , addChildToPosition_function_type( &::CEGUI::SequentialLayoutContainer::addChildToPosition )
                 , ( bp::arg("window"), bp::arg("position") )
                 , "*!\n\
             \n\
@@ -312,13 +312,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::getChildWindowAtPosition
+        { //::CEGUI::SequentialLayoutContainer::getChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::SequentialLayoutContainer::*getChildWindowAtPosition_function_type )( ::size_t ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::SequentialLayoutContainer::*getChildAtPosition_function_type )( ::size_t ) const;
             
             SequentialLayoutContainer_exposer.def( 
-                "getChildWindowAtPosition"
-                , getChildWindowAtPosition_function_type( &::CEGUI::SequentialLayoutContainer::getChildWindowAtPosition )
+                "getChildAtPosition"
+                , getChildAtPosition_function_type( &::CEGUI::SequentialLayoutContainer::getChildAtPosition )
                 , ( bp::arg("position") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
@@ -327,13 +327,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::getPositionOfChildWindow
+        { //::CEGUI::SequentialLayoutContainer::getPositionOfChild
         
-            typedef ::size_t ( ::CEGUI::SequentialLayoutContainer::*getPositionOfChildWindow_function_type )( ::CEGUI::Window * ) const;
+            typedef ::size_t ( ::CEGUI::SequentialLayoutContainer::*getPositionOfChild_function_type )( ::CEGUI::Window * ) const;
             
             SequentialLayoutContainer_exposer.def( 
-                "getPositionOfChildWindow"
-                , getPositionOfChildWindow_function_type( &::CEGUI::SequentialLayoutContainer::getPositionOfChildWindow )
+                "getPositionOfChild"
+                , getPositionOfChild_function_type( &::CEGUI::SequentialLayoutContainer::getPositionOfChild )
                 , ( bp::arg("wnd") )
                 , "*!\n\
             \n\
@@ -341,13 +341,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::getPositionOfChildWindow
+        { //::CEGUI::SequentialLayoutContainer::getPositionOfChild
         
-            typedef ::size_t ( ::CEGUI::SequentialLayoutContainer::*getPositionOfChildWindow_function_type )( ::CEGUI::String const & ) const;
+            typedef ::size_t ( ::CEGUI::SequentialLayoutContainer::*getPositionOfChild_function_type )( ::CEGUI::String const & ) const;
             
             SequentialLayoutContainer_exposer.def( 
-                "getPositionOfChildWindow"
-                , getPositionOfChildWindow_function_type( &::CEGUI::SequentialLayoutContainer::getPositionOfChildWindow )
+                "getPositionOfChild"
+                , getPositionOfChild_function_type( &::CEGUI::SequentialLayoutContainer::getPositionOfChild )
                 , ( bp::arg("wnd") )
                 , "*!\n\
             \n\
@@ -355,13 +355,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::moveChildWindow
+        { //::CEGUI::SequentialLayoutContainer::moveChild
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildWindow_function_type )( ::CEGUI::Window *,int ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChild_function_type )( ::CEGUI::Window *,int ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "moveChildWindow"
-                , moveChildWindow_function_type( &::CEGUI::SequentialLayoutContainer::moveChildWindow )
+                "moveChild"
+                , moveChild_function_type( &::CEGUI::SequentialLayoutContainer::moveChild )
                 , ( bp::arg("window"), bp::arg("delta")=(int)(1) )
                 , "*!\n\
                 \n\
@@ -374,25 +374,25 @@ void register_SequentialLayoutContainer_class(){
                 *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
-            typedef void ( SequentialLayoutContainer_wrapper::*default_moveChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
+            typedef void ( SequentialLayoutContainer_wrapper::*default_moveChildToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type(&::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition)
-                , default_moveChildWindowToPosition_function_type(&SequentialLayoutContainer_wrapper::default_moveChildWindowToPosition)
+                "moveChildToPosition"
+                , moveChildToPosition_function_type(&::CEGUI::SequentialLayoutContainer::moveChildToPosition)
+                , default_moveChildToPosition_function_type(&SequentialLayoutContainer_wrapper::default_moveChildToPosition)
                 , ( bp::arg("wnd"), bp::arg("position") ) );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type( &::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition )
+                "moveChildToPosition"
+                , moveChildToPosition_function_type( &::CEGUI::SequentialLayoutContainer::moveChildToPosition )
                 , ( bp::arg("wnd"), bp::arg("position") )
                 , "*!\n\
             \n\
@@ -403,13 +403,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::removeChildWindowFromPosition
+        { //::CEGUI::SequentialLayoutContainer::removeChildFromPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*removeChildWindowFromPosition_function_type )( ::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*removeChildFromPosition_function_type )( ::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "removeChildWindowFromPosition"
-                , removeChildWindowFromPosition_function_type( &::CEGUI::SequentialLayoutContainer::removeChildWindowFromPosition )
+                "removeChildFromPosition"
+                , removeChildFromPosition_function_type( &::CEGUI::SequentialLayoutContainer::removeChildFromPosition )
                 , ( bp::arg("position") )
                 , "*!\n\
             \n\
@@ -417,25 +417,25 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindowPositions
+        { //::CEGUI::SequentialLayoutContainer::swapChildPositions
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
-            typedef void ( SequentialLayoutContainer_wrapper::*default_swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( SequentialLayoutContainer_wrapper::*default_swapChildPositions_function_type )( ::size_t,::size_t ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "swapChildWindowPositions"
-                , swapChildWindowPositions_function_type(&::CEGUI::SequentialLayoutContainer::swapChildWindowPositions)
-                , default_swapChildWindowPositions_function_type(&SequentialLayoutContainer_wrapper::default_swapChildWindowPositions)
+                "swapChildPositions"
+                , swapChildPositions_function_type(&::CEGUI::SequentialLayoutContainer::swapChildPositions)
+                , default_swapChildPositions_function_type(&SequentialLayoutContainer_wrapper::default_swapChildPositions)
                 , ( bp::arg("wnd1"), bp::arg("wnd2") ) );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindows
+        { //::CEGUI::SequentialLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::Window *,::CEGUI::Window * ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildren_function_type )( ::CEGUI::Window *,::CEGUI::Window * ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::SequentialLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::SequentialLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -443,13 +443,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindows
+        { //::CEGUI::SequentialLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::String const &,::CEGUI::Window * ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildren_function_type )( ::CEGUI::String const &,::CEGUI::Window * ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::SequentialLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::SequentialLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -457,13 +457,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindows
+        { //::CEGUI::SequentialLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::Window *,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildren_function_type )( ::CEGUI::Window *,::CEGUI::String const & ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::SequentialLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::SequentialLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -471,13 +471,13 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindows
+        { //::CEGUI::SequentialLayoutContainer::swapChildren
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindows_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildren_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
             
             SequentialLayoutContainer_exposer.def( 
-                "swapChildWindows"
-                , swapChildWindows_function_type( &::CEGUI::SequentialLayoutContainer::swapChildWindows )
+                "swapChildren"
+                , swapChildren_function_type( &::CEGUI::SequentialLayoutContainer::swapChildren )
                 , ( bp::arg("wnd1"), bp::arg("wnd2") )
                 , "*!\n\
             \n\
@@ -485,8 +485,8 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        SequentialLayoutContainer_exposer.add_static_property( "EventChildWindowOrderChanged"
-                        , bp::make_getter( &CEGUI::SequentialLayoutContainer::EventChildWindowOrderChanged
+        SequentialLayoutContainer_exposer.add_static_property( "EventChildOrderChanged"
+                        , bp::make_getter( &CEGUI::SequentialLayoutContainer::EventChildOrderChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

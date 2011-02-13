@@ -406,7 +406,7 @@ const Size& OpenGLRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OpenGLRenderer::getDisplayDPI() const
+const Vector2<>& OpenGLRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -638,7 +638,7 @@ void initialiseGLExtensions()
         err_string << "OpenGLRenderer failed to initialise the GLEW library. "
         << glewGetErrorString(err);
 
-        CEGUI_THROW(RendererException(err_string.str()));
+        CEGUI_THROW(RendererException(err_string.str().c_str()));
     }
 
     // GL 1.3 has multi-texture support natively

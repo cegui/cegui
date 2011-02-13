@@ -285,7 +285,7 @@ namespace CEGUI
             CEGUI_THROW(InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered."));
         }
 
-        return String(tmp.str());
+        return String(tmp.str().c_str());
     }
 
     void Spinner::onFontChanged(WindowEventArgs& e)

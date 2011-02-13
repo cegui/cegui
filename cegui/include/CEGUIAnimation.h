@@ -62,7 +62,7 @@ namespace CEGUI
 \see
     AnimationInstance, Affector
 */
-class CEGUIEXPORT Animation
+class CEGUIEXPORT Animation : public AllocatedObject<Animation>
 {
 public:
     //! enumerates possible replay modes
@@ -272,11 +272,13 @@ private:
      */
     bool d_autoStart;
 
-    typedef std::vector<Affector*> AffectorList;
+    typedef std::vector<Affector*
+        CEGUI_VECTOR_ALLOC(Affector*)> AffectorList;
     //! list of affectors defined in this animation
     AffectorList d_affectors;
 
-    typedef std::multimap<String, String> SubscriptionMap;
+    typedef std::multimap<String, String, std::less<String>
+        CEGUI_MAP_ALLOC(String, String)> SubscriptionMap;
     /** holds pairs of 2 strings, the left string is the Event that we will
      * subscribe to, the right string is the action that will be invoked to the
      * instance if the event is fired on target window

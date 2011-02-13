@@ -47,7 +47,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),
-    d_rotation(0, 0, 0)
+    d_rotation(Quaternion::IDENTITY)
 {
     d_geometry->setBlendMode(BM_RTT_PREMULTIPLIED);
 }
@@ -68,15 +68,15 @@ void RenderingWindow::setClippingRegion(const Rect& region)
     if (d_owner->isRenderingWindow())
     {
         final_region.offset(
-            Vector2(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
-                    -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
+            Vector2<>(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
+                      -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
     }
 
     d_geometry->setClippingRegion(final_region);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPosition(const Vector2& position)
+void RenderingWindow::setPosition(const Vector2<>& position)
 {
     d_position = position;
 
@@ -103,7 +103,7 @@ void RenderingWindow::setSize(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setRotation(const Vector3& rotation)
+void RenderingWindow::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
     d_geometry->setRotation(d_rotation);
@@ -117,7 +117,7 @@ void RenderingWindow::setPivot(const Vector3& pivot)
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& RenderingWindow::getPosition() const
+const Vector2<>& RenderingWindow::getPosition() const
 {
     return d_position;
 }
@@ -129,7 +129,7 @@ const Size& RenderingWindow::getSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector3& RenderingWindow::getRotation() const
+const Quaternion& RenderingWindow::getRotation() const
 {
     return d_rotation;
 }
@@ -261,56 +261,54 @@ void RenderingWindow::realiseGeometry_impl()
                         Rect(0, 0, tu, tv));
 
     const Rect area(0, 0, d_size.d_width, d_size.d_height);
-    const colour c(1, 1, 1, 1);
+    const Colour c(1, 1, 1, 1);
     Vertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].position   = Vector3(area.d_left, area.d_top, 0.0f);
     vbuffer[0].colour_val = c;
-    vbuffer[0].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[0].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
 
     // vertex 1
     vbuffer[1].position   = Vector3(area.d_left, area.d_bottom, 0.0f);
     vbuffer[1].colour_val = c;
-    vbuffer[1].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_bottom);
+    vbuffer[1].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_bottom);
 
     // vertex 2
     vbuffer[2].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
     vbuffer[2].colour_val = c;
-    vbuffer[2].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[2].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
 
     // vertex 3
     vbuffer[3].position   = Vector3(area.d_right, area.d_top, 0.0f);
     vbuffer[3].colour_val = c;
-    vbuffer[3].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_top);
+    vbuffer[3].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_top);
 
     // vertex 4
     vbuffer[4].position   = Vector3(area.d_left, area.d_top, 0.0f);
     vbuffer[4].colour_val = c;
-    vbuffer[4].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[4].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
 
     // vertex 5
     vbuffer[5].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
     vbuffer[5].colour_val = c;
-    vbuffer[5].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[5].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
 
     d_geometry->setActiveTexture(&tex);
     d_geometry->appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
+void RenderingWindow::unprojectPoint(const Vector2<>& p_in, Vector2<>& p_out)
 {
     // quick test for rotations to save us a lot of work in the unrotated case
-    if ((d_rotation.d_x == 0.0f) &&
-        (d_rotation.d_y == 0.0f) &&
-        (d_rotation.d_z == 0.0f))
+    if ((d_rotation == Quaternion::IDENTITY))
     {
         p_out = p_in;
         return;
     }
 
-    Vector2 in(p_in);
+    Vector2<> in(p_in);
 
     // localise point for cases where owner is also a RenderingWindow
     if (d_owner->isRenderingWindow())

@@ -72,7 +72,7 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
-                                         const Vector2& position,
+                                         const Vector2<>& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rect* /*clip_rect*/,
                                          const float vertical_space,
@@ -94,7 +94,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     }
     // HACK: re-adjust for inner-rect of parent (Ends)
 
-    Vector2 final_pos(position);
+    Vector2<> final_pos(position);
     // handle formatting options
     switch (d_verticalFormatting)
     {
@@ -163,7 +163,7 @@ RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent* RenderedStringWidgetComponent::clone() const
 {
-    return new RenderedStringWidgetComponent(*this);
+    return CEGUI_NEW_AO RenderedStringWidgetComponent(*this);
 }
 
 //----------------------------------------------------------------------------//

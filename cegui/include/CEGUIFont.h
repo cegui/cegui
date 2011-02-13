@@ -55,7 +55,9 @@ namespace CEGUI
     This class is not specific to any font renderer, it just provides the
     basic interfaces needed to manage fonts.
 */
-class CEGUIEXPORT Font : public PropertySet
+class CEGUIEXPORT Font :
+    public PropertySet,
+    public AllocatedObject<Font>
 {
 public:
     //! Colour value used whenever a colour is not specified.
@@ -122,7 +124,7 @@ public:
         Nothing.
     */
     void drawText(GeometryBuffer& buffer, const String& text,
-                  const Vector2& position, const Rect* clip_rect,
+                  const Vector2<>& position, const Rect* clip_rect,
                   const ColourRect& colours, const float space_extra = 0.0f,
                   const float x_scale = 1.0f, const float y_scale = 1.0f);
 
@@ -432,7 +434,8 @@ protected:
     uint* d_glyphPageLoaded;
 
     //! Definition of CodepointMap type.
-    typedef std::map<utf32, FontGlyph> CodepointMap;
+    typedef std::map<utf32, FontGlyph, std::less<utf32>
+        CEGUI_MAP_ALLOC(utf32, FontGlyph)> CodepointMap;
     //! Contains mappings from code points to Image objects
     CodepointMap d_cp_map;
 };

@@ -49,7 +49,7 @@ const Size& NullTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullTexture::getTexelScaling() const
+const Vector2<>& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -95,10 +95,22 @@ void NullTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::saveToMemory(void* buffer)
+void NullTexture::saveToMemory(void* /*buffer*/)
 {
     // TODO: If we make loadFromMemory save a copy of the data, we could
     // implement this function too :)
+}
+
+//----------------------------------------------------------------------------//
+void NullTexture::blitFromMemory(void* /*sourceData*/, const Rect& /*area*/)
+{
+    // do nothing
+}
+
+//----------------------------------------------------------------------------//
+void NullTexture::blitToMemory(void* /*targetData*/)
+{
+    // do nothing
 }
 
 //----------------------------------------------------------------------------//

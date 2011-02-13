@@ -44,7 +44,9 @@
 namespace CEGUI
 {
 
-class CEGUIEXPORT AnimationManager : public Singleton <AnimationManager>
+class CEGUIEXPORT AnimationManager :
+    public Singleton <AnimationManager>,
+    public AllocatedObject<AnimationManager>
 {
 public:
     /*************************************************************************
@@ -229,10 +231,12 @@ public:
     }
 
 private:
-    typedef std::map<String, Interpolator*> InterpolatorMap;
+    typedef std::map<String, Interpolator*, std::less<String>
+        CEGUI_MAP_ALLOC(String, Interpolator*)> InterpolatorMap;
     //! stores available interpolators
     InterpolatorMap d_interpolators;
-    typedef std::vector<Interpolator*> BasicInterpolatorList;
+    typedef std::vector<Interpolator*
+        CEGUI_VECTOR_ALLOC(Interpolator*)> BasicInterpolatorList;
     //! stores interpolators that are inbuilt in CEGUI
     BasicInterpolatorList d_basicInterpolators;
 
@@ -240,7 +244,8 @@ private:
     //! all defined animations
     AnimationMap d_animations;
 
-    typedef std::multimap<Animation*, AnimationInstance*> AnimationInstanceMap;
+    typedef std::multimap<Animation*, AnimationInstance*, std::less<Animation*>
+        CEGUI_MULTIMAP_ALLOC(Animation*, AnimationInstance*)> AnimationInstanceMap;
     //! all instances of animations
     AnimationInstanceMap d_animationInstances;
     //! Name of the schema used for loading animation xml files.

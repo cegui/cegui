@@ -10,10 +10,7 @@ void register_Size_class(){
 
     { //::CEGUI::Size
         typedef bp::class_< CEGUI::Size > Size_exposer_t;
-        Size_exposer_t Size_exposer = Size_exposer_t( "Size", "*!\n\
-        \n\
-           Class that holds the size (width & height) of something.\n\
-        *\n", bp::init< >() );
+        Size_exposer_t Size_exposer = Size_exposer_t( "Size", bp::init< >() );
         bp::scope Size_scope( Size_exposer );
         Size_exposer.def( bp::init< float, float >(( bp::arg("width"), bp::arg("height") )) );
         Size_exposer.def( bp::init< CEGUI::Size const & >(( bp::arg("v") )) );

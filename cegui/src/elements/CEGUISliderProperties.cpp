@@ -41,37 +41,37 @@ namespace SliderProperties
 {
 String	CurrentValue::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const Slider*>(receiver)->getCurrentValue());
+	return PropertyHelper<float>::toString(static_cast<const Slider*>(receiver)->getCurrentValue());
 }
 
 
 void	CurrentValue::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Slider*>(receiver)->setCurrentValue(PropertyHelper::stringToFloat(value));
+	static_cast<Slider*>(receiver)->setCurrentValue(PropertyHelper<float>::fromString(value));
 }
 
 
 String	MaximumValue::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const Slider*>(receiver)->getMaxValue());
+	return PropertyHelper<float>::toString(static_cast<const Slider*>(receiver)->getMaxValue());
 }
 
 
 void	MaximumValue::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Slider*>(receiver)->setMaxValue(PropertyHelper::stringToFloat(value));
+	static_cast<Slider*>(receiver)->setMaxValue(PropertyHelper<float>::fromString(value));
 }
 
 
 String	ClickStepSize::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::floatToString(static_cast<const Slider*>(receiver)->getClickStep());
+	return PropertyHelper<float>::toString(static_cast<const Slider*>(receiver)->getClickStep());
 }
 
 
 void	ClickStepSize::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Slider*>(receiver)->setClickStep(PropertyHelper::stringToFloat(value));
+	static_cast<Slider*>(receiver)->setClickStep(PropertyHelper<float>::fromString(value));
 }
 
 } // End of  SliderProperties namespace section

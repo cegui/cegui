@@ -79,7 +79,7 @@ bool FalagardDemo1Sample::initialiseSample()
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));
+    background->addChild(winMgr.loadWindowLayout("VanillaWindows.layout"));
 
     // create an instance of the console class.
     d_console = new DemoConsole("Demo");
@@ -160,7 +160,7 @@ DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
 
     // attach this window if parent is valid
     if (parent)
-        parent->addChildWindow(d_root);
+        parent->addChild(d_root);
 }
 
 DemoConsole::~DemoConsole()
@@ -201,7 +201,7 @@ bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)
         // append new text to history output
         history->setText(history->getText() + edit_text);
         // scroll to bottom of history output
-        history->setCaratIndex(static_cast<size_t>(-1));
+        history->setCaretIndex(static_cast<size_t>(-1));
         // erase text in text entry box.
         editbox->setText("");
     }
@@ -226,7 +226,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos >= 0)
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {
@@ -241,7 +241,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos < static_cast<int>(d_history.size()))
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {

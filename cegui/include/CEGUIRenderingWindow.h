@@ -30,6 +30,7 @@
 
 #include "CEGUIRenderingSurface.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUISize.h"
 
 // Start of CEGUI namespace section
@@ -101,7 +102,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    void setPosition(const Vector2& position);
+    void setPosition(const Vector2<>& position);
 
     /*!
     \brief
@@ -115,14 +116,13 @@ public:
 
     /*!
     \brief
-        Set the rotation factors to be used when rendering the RenderingWindow
+        Set the rotation quaternion to be used when rendering the RenderingWindow
         back onto it's owning RenderingSurface.
 
     \param rotation
-        Vector3 object describing the rotaions to be used. Values are in
-        degrees.
+        Quaternion object describing the rotation.
     */
-    void setRotation(const Vector3& rotation);
+    void setRotation(const Quaternion& rotation);
 
     /*!
     \brief
@@ -148,7 +148,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const Vector2& getPosition() const;
+    const Vector2<>& getPosition() const;
 
     /*!
     \brief
@@ -161,13 +161,12 @@ public:
 
     /*!
     \brief
-        Return the current rotations being applied to the RenderingWindow, in
-        degrees.
+        Return the current rotation being applied to the RenderingWindow
 
     \return
-        Vector3 object describing the rotations for the RenderingWindow.
+        Quaternion object describing the rotation for the RenderingWindow.
     */
-    const Vector3& getRotation()const;
+    const Quaternion& getRotation()const;
 
     /*!
     \brief
@@ -272,7 +271,7 @@ public:
         Fill in Vector2 object \a p_out with an unprojected version of the
         point described by Vector2 \a p_in.
     */
-    void unprojectPoint(const Vector2& p_in, Vector2& p_out);
+    void unprojectPoint(const Vector2<>& p_in, Vector2<>& p_out);
 
     // overrides from base
     void draw();
@@ -299,11 +298,11 @@ protected:
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow
-    Vector2 d_position;
+    Vector2<> d_position;
     //! Size of this RenderingWindow
     Size d_size;
-    //! Rotaions for this RenderingWindow
-    Vector3 d_rotation;
+    //! Rotation for this RenderingWindow
+    Quaternion d_rotation;
     //! Pivot point used for the rotation.
     Vector3 d_pivot;
 };

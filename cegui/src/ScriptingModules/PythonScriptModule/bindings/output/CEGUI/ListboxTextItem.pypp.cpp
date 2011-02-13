@@ -225,7 +225,7 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::setTextColours
         
-            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             ListboxTextItem_exposer.def( 
                 "setTextColours"
@@ -254,7 +254,7 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::setTextColours
         
-            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::Colour ) ;
             
             ListboxTextItem_exposer.def( 
                 "setTextColours"

@@ -75,7 +75,7 @@ void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
 *************************************************************************/
 MultiLineEditboxProperties::ReadOnly				MultiLineEditbox::d_readOnlyProperty;
 MultiLineEditboxProperties::WordWrap				MultiLineEditbox::d_wordWrapProperty;
-MultiLineEditboxProperties::CaratIndex				MultiLineEditbox::d_caratIndexProperty;
+MultiLineEditboxProperties::CaretIndex				MultiLineEditbox::d_caretIndexProperty;
 MultiLineEditboxProperties::SelectionStart			MultiLineEditbox::d_selectionStartProperty;
 MultiLineEditboxProperties::SelectionLength			MultiLineEditbox::d_selectionLengthProperty;
 MultiLineEditboxProperties::MaxTextLength			MultiLineEditbox::d_maxTextLengthProperty;
@@ -87,12 +87,12 @@ MultiLineEditboxProperties::ForceVertScrollbar      MultiLineEditbox::d_forceVer
 	Constants
 *************************************************************************/
 // event names
-const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyChanged" );
+const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String MultiLineEditbox::EventWordWrapModeChanged( "WordWrapModeChanged" );
 const String MultiLineEditbox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
-const String MultiLineEditbox::EventCaratMoved( "CaratMoved" );
+const String MultiLineEditbox::EventCaretMoved( "CaretMoved" );
 const String MultiLineEditbox::EventTextSelectionChanged( "TextSelectionChanged" );
-const String MultiLineEditbox::EventEditboxFull( "EditboxFullEvent" );
+const String MultiLineEditbox::EventEditboxFull( "EditboxFull" );
 const String MultiLineEditbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
 const String MultiLineEditbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
@@ -111,8 +111,8 @@ const String MultiLineEditbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
 MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	Window(type, name),
 	d_readOnly(false),
-	d_maxTextLen(String::max_size()),
-	d_caratPos(0),
+	d_maxTextLen(String().max_size()),
+	d_caretPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),
 	d_dragging(false),
@@ -177,7 +177,7 @@ bool MultiLineEditbox::hasInputFocus(void) const
 *************************************************************************/
 size_t MultiLineEditbox::getSelectionStartIndex(void) const
 {
-	return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caratPos;
+	return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caretPos;
 }
 
 
@@ -186,7 +186,7 @@ size_t MultiLineEditbox::getSelectionStartIndex(void) const
 *************************************************************************/
 size_t MultiLineEditbox::getSelectionEndIndex(void) const
 {
-	return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caratPos;
+	return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caretPos;
 }
 
 
@@ -216,25 +216,25 @@ void MultiLineEditbox::setReadOnly(bool setting)
 
 
 /*************************************************************************
-	Set the current position of the carat.
+	Set the current position of the caret.
 *************************************************************************/
-void MultiLineEditbox::setCaratIndex(size_t carat_pos)
+void MultiLineEditbox::setCaretIndex(size_t caret_pos)
 {
 	// make sure new position is valid
-    if (carat_pos > getText().length() - 1)
+    if (caret_pos > getText().length() - 1)
 	{
-       carat_pos = getText().length() - 1;
+       caret_pos = getText().length() - 1;
 	}
 
 	// if new position is different
-	if (d_caratPos != carat_pos)
+	if (d_caretPos != caret_pos)
 	{
-		d_caratPos = carat_pos;
-		ensureCaratIsVisible();
+		d_caretPos = caret_pos;
+		ensureCaretIsVisible();
 
-		// Trigger "carat moved" event
+		// Trigger "caret moved" event
 		WindowEventArgs args(this);
-		onCaratMoved(args);
+		onCaretMoved(args);
 	}
 
 }
@@ -309,47 +309,47 @@ void MultiLineEditbox::setMaxTextLength(size_t max_len)
 
 
 /*************************************************************************
-	Scroll the view so that the current carat position is visible.
+	Scroll the view so that the current caret position is visible.
 *************************************************************************/
-void MultiLineEditbox::ensureCaratIsVisible(void)
+void MultiLineEditbox::ensureCaretIsVisible(void)
 {
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-	// calculate the location of the carat
+	// calculate the location of the caret
 	Font* fnt = getFont();
-	size_t caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
-	if (caratLine < d_lines.size())
+	if (caretLine < d_lines.size())
 	{
 		Rect textArea(getTextRenderArea());
 
-		size_t caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
+		size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
 
-		float ypos = caratLine * fnt->getLineSpacing();
-        float xpos = fnt->getTextExtent(getText().substr(d_lines[caratLine].d_startIdx, caratLineIdx));
+		float ypos = caretLine * fnt->getLineSpacing();
+        float xpos = fnt->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
 
 		// adjust position for scroll bars
 		xpos -= horzScrollbar->getScrollPosition();
 		ypos -= vertScrollbar->getScrollPosition();
 
-		// if carat is above window, scroll up
+		// if caret is above window, scroll up
 		if (ypos < 0)
 		{
 			vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
 		}
-		// if carat is below the window, scroll down
+		// if caret is below the window, scroll down
 		else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
 		{
 			vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
 		}
 
-		// if carat is left of the window, scroll left
+		// if caret is left of the window, scroll left
 		if (xpos < 0)
 		{
 			horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
 		}
-		// if carat is right of the window, scroll right
+		// if caret is right of the window, scroll right
 		else if (xpos > textArea.getWidth())
 		{
 			horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
@@ -589,12 +589,12 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.
 *************************************************************************/
-size_t MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2<>& pt) const
 {
 	//
 	// calculate final window position to be checked
 	//
-	Point wndPt = CoordConverter::screenToWindow(*this, pt);
+	Vector2<> wndPt = CoordConverter::screenToWindow(*this, pt);
 
 	Rect textArea(getTextRenderArea());
 
@@ -644,15 +644,15 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 	else
 	{
 		size_t indexCount = 0;
-		size_t caratLine = 0;
+		size_t caretLine = 0;
 
-		for (; caratLine < lineCount; ++caratLine)
+		for (; caretLine < lineCount; ++caretLine)
 		{
-			indexCount += d_lines[caratLine].d_length;
+			indexCount += d_lines[caretLine].d_length;
 
 			if (index < indexCount)
 			{
-				return caratLine;
+				return caretLine;
 			}
 
 		}
@@ -685,8 +685,8 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 {
 	if (getSelectionLength() != 0)
 	{
-		// setup new carat position and remove selection highlight.
-		setCaratIndex(getSelectionStartIndex());
+		// setup new caret position and remove selection highlight.
+		setCaretIndex(getSelectionStartIndex());
 
 		// erase the selected characters (if required)
 		if (modify_text)
@@ -717,11 +717,11 @@ void MultiLineEditbox::handleBackspace(void)
 		{
 			eraseSelectedText();
 		}
-		else if (d_caratPos > 0)
+		else if (d_caretPos > 0)
 		{
             String newText = getText();
-            newText.erase(d_caratPos - 1, 1);
-            setCaratIndex(d_caratPos - 1);
+            newText.erase(d_caretPos - 1, 1);
+            setCaretIndex(d_caretPos - 1);
             setText(newText);
 
 			WindowEventArgs args(this);
@@ -743,13 +743,13 @@ void MultiLineEditbox::handleDelete(void)
 		{
 			eraseSelectedText();
 		}
-        else if (getCaratIndex() < getText().length() - 1)
+        else if (getCaretIndex() < getText().length() - 1)
 		{
             String newText = getText();
-            newText.erase(d_caratPos, 1);
+            newText.erase(d_caretPos, 1);
             setText(newText);
 
-			ensureCaratIsVisible();
+			ensureCaretIsVisible();
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -761,18 +761,18 @@ void MultiLineEditbox::handleDelete(void)
 
 
 /*************************************************************************
-	Processing to move carat one character left
+	Processing to move caret one character left
 *************************************************************************/
 void MultiLineEditbox::handleCharLeft(uint sysKeys)
 {
-	if (d_caratPos > 0)
+	if (d_caretPos > 0)
 	{
-		setCaratIndex(d_caratPos - 1);
+		setCaretIndex(d_caretPos - 1);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -783,18 +783,18 @@ void MultiLineEditbox::handleCharLeft(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat one word left
+	Processing to move caret one word left
 *************************************************************************/
 void MultiLineEditbox::handleWordLeft(uint sysKeys)
 {
-	if (d_caratPos > 0)
+	if (d_caretPos > 0)
 	{
-        setCaratIndex(TextUtils::getWordStartIdx(getText(), getCaratIndex()));
+        setCaretIndex(TextUtils::getWordStartIdx(getText(), getCaretIndex()));
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -805,18 +805,18 @@ void MultiLineEditbox::handleWordLeft(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat one character right
+	Processing to move caret one character right
 *************************************************************************/
 void MultiLineEditbox::handleCharRight(uint sysKeys)
 {
-   if (d_caratPos < getText().length() - 1)
+   if (d_caretPos < getText().length() - 1)
 	{
-		setCaratIndex(d_caratPos + 1);
+		setCaretIndex(d_caretPos + 1);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -827,18 +827,18 @@ void MultiLineEditbox::handleCharRight(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat one word right
+	Processing to move caret one word right
 *************************************************************************/
 void MultiLineEditbox::handleWordRight(uint sysKeys)
 {
-   if (d_caratPos < getText().length() - 1)
+   if (d_caretPos < getText().length() - 1)
 	{
-        setCaratIndex(TextUtils::getNextWordStartIdx(getText(), getCaratIndex()));
+        setCaretIndex(TextUtils::getNextWordStartIdx(getText(), getCaretIndex()));
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -849,18 +849,18 @@ void MultiLineEditbox::handleWordRight(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat to the start of the text.
+	Processing to move caret to the start of the text.
 *************************************************************************/
 void MultiLineEditbox::handleDocHome(uint sysKeys)
 {
-	if (d_caratPos > 0)
+	if (d_caretPos > 0)
 	{
-		setCaratIndex(0);
+		setCaretIndex(0);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -871,18 +871,18 @@ void MultiLineEditbox::handleDocHome(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat to the end of the text
+	Processing to move caret to the end of the text
 *************************************************************************/
 void MultiLineEditbox::handleDocEnd(uint sysKeys)
 {
-   if (d_caratPos < getText().length() - 1)
+   if (d_caretPos < getText().length() - 1)
 	{
-       setCaratIndex(getText().length() - 1);
+       setCaretIndex(getText().length() - 1);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -893,24 +893,24 @@ void MultiLineEditbox::handleDocEnd(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat to the start of the current line.
+	Processing to move caret to the start of the current line.
 *************************************************************************/
 void MultiLineEditbox::handleLineHome(uint sysKeys)
 {
-	size_t line = getLineNumberFromIndex(d_caratPos);
+	size_t line = getLineNumberFromIndex(d_caretPos);
 
 	if (line < d_lines.size())
 	{
 		size_t lineStartIdx = d_lines[line].d_startIdx;
 
-		if (d_caratPos > lineStartIdx)
+		if (d_caretPos > lineStartIdx)
 		{
-			setCaratIndex(lineStartIdx);
+			setCaretIndex(lineStartIdx);
 		}
 
 		if (sysKeys & Shift)
 		{
-			setSelection(d_caratPos, d_dragAnchorIdx);
+			setSelection(d_caretPos, d_dragAnchorIdx);
 		}
 		else
 		{
@@ -923,24 +923,24 @@ void MultiLineEditbox::handleLineHome(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat to the end of the current line
+	Processing to move caret to the end of the current line
 *************************************************************************/
 void MultiLineEditbox::handleLineEnd(uint sysKeys)
 {
-	size_t line = getLineNumberFromIndex(d_caratPos);
+	size_t line = getLineNumberFromIndex(d_caretPos);
 
 	if (line < d_lines.size())
 	{
 		size_t lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
 
-		if (d_caratPos < lineEndIdx)
+		if (d_caretPos < lineEndIdx)
 		{
-			setCaratIndex(lineEndIdx);
+			setCaretIndex(lineEndIdx);
 		}
 
 		if (sysKeys & Shift)
 		{
-			setSelection(d_caratPos, d_dragAnchorIdx);
+			setSelection(d_caretPos, d_dragAnchorIdx);
 		}
 		else
 		{
@@ -953,26 +953,26 @@ void MultiLineEditbox::handleLineEnd(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat up a line.
+	Processing to move caret up a line.
 *************************************************************************/
 void MultiLineEditbox::handleLineUp(uint sysKeys)
 {
-	size_t caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
-	if (caratLine > 0)
+	if (caretLine > 0)
 	{
-        float caratPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caratLine].d_startIdx, d_caratPos - d_lines[caratLine].d_startIdx));
+        float caretPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
-		--caratLine;
+		--caretLine;
 
-        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
+        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
 
-		setCaratIndex(d_lines[caratLine].d_startIdx + newLineIndex);
+		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -983,26 +983,26 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat down a line.
+	Processing to move caret down a line.
 *************************************************************************/
 void MultiLineEditbox::handleLineDown(uint sysKeys)
 {
-	size_t caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
-	if ((d_lines.size() > 1) && (caratLine < (d_lines.size() - 1)))
+	if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
 	{
-        float caratPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caratLine].d_startIdx, d_caratPos - d_lines[caratLine].d_startIdx));
+        float caretPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
-		++caratLine;
+		++caretLine;
 
-        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
+        size_t newLineIndex = getFont()->getCharAtPixel(getText().substr(d_lines[caretLine].d_startIdx, d_lines[caretLine].d_length), caretPixelOffset);
 
-		setCaratIndex(d_lines[caratLine].d_startIdx + newLineIndex);
+		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -1026,10 +1026,10 @@ void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
        if (getText().length() - 1 < d_maxTextLen)
 		{
             String newText = getText();
-            newText.insert(getCaratIndex(), 1, 0x0a);
+            newText.insert(getCaretIndex(), 1, 0x0a);
             setText(newText);
 
-			d_caratPos++;
+			d_caretPos++;
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -1045,23 +1045,23 @@ void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
 *************************************************************************/
 void MultiLineEditbox::handlePageUp(uint sysKeys)
 {
-    size_t caratLine = getLineNumberFromIndex(d_caratPos);
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
     size_t newline = 0;
-    if (nbLine < caratLine)
+    if (nbLine < caretLine)
     {
-        newline = caratLine - nbLine;
+        newline = caretLine - nbLine;
     }
-    setCaratIndex(d_lines[newline].d_startIdx);
+    setCaretIndex(d_lines[newline].d_startIdx);
     if (sysKeys & Shift)
     {
-        setSelection(d_caratPos, d_selectionEnd);
+        setSelection(d_caretPos, d_selectionEnd);
     }
     else
     {
         clearSelection();
     }
-    ensureCaratIsVisible();
+    ensureCaretIsVisible();
 }
 
 
@@ -1070,23 +1070,23 @@ void MultiLineEditbox::handlePageUp(uint sysKeys)
 *************************************************************************/
 void MultiLineEditbox::handlePageDown(uint sysKeys)
 {
-    size_t caratLine = getLineNumberFromIndex(d_caratPos);
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
-    size_t newline = caratLine + nbLine;
+    size_t newline = caretLine + nbLine;
     if (d_lines.size() > 0)
     {
         newline = newline < d_lines.size() - 1 ? newline : d_lines.size() -1;
     }
-    setCaratIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
+    setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
     if (sysKeys & Shift)
     {
-        setSelection(d_selectionStart, d_caratPos);
+        setSelection(d_selectionStart, d_caretPos);
     }
     else
     {
         clearSelection();
     }
-    ensureCaratIsVisible();
+    ensureCaretIsVisible();
 }
 
 
@@ -1107,7 +1107,7 @@ void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
 			clearSelection();
 			d_dragging = true;
 			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
-			setCaratIndex(d_dragAnchorIdx);
+			setCaretIndex(d_dragAnchorIdx);
 		}
 
 		++e.handled;
@@ -1143,11 +1143,11 @@ void MultiLineEditbox::onMouseDoubleClicked(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-        d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(), (d_caratPos == getText().length()) ? d_caratPos : d_caratPos + 1);
-        d_caratPos      = TextUtils::getNextWordStartIdx(getText(), d_caratPos);
+        d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(), (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
+        d_caretPos      = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
 
 		// perform actual selection operation.
-		setSelection(d_dragAnchorIdx, d_caratPos);
+		setSelection(d_dragAnchorIdx, d_caretPos);
 
 		++e.handled;
 	}
@@ -1165,8 +1165,8 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		size_t caratLine = getLineNumberFromIndex(d_caratPos);
-		size_t lineStart = d_lines[caratLine].d_startIdx;
+		size_t caretLine = getLineNumberFromIndex(d_caretPos);
+		size_t lineStart = d_lines[caretLine].d_startIdx;
 
 		// find end of last paragraph
         String::size_type paraStart = getText().find_last_of(d_lineBreakChars, lineStart);
@@ -1193,8 +1193,8 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 
 		// set up selection using new values.
 		d_dragAnchorIdx = paraStart;
-		setCaratIndex(paraEnd);
-		setSelection(d_dragAnchorIdx, d_caratPos);
+		setCaretIndex(paraEnd);
+		setSelection(d_dragAnchorIdx, d_caretPos);
 		++e.handled;
 	}
 
@@ -1211,8 +1211,8 @@ void MultiLineEditbox::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging)
 	{
-		setCaratIndex(getTextIndexFromPosition(e.position));
-		setSelection(d_caratPos, d_dragAnchorIdx);
+		setCaretIndex(getTextIndexFromPosition(e.position));
+		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
 
 	++e.handled;
@@ -1257,10 +1257,10 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
        if (getText().length() - 1 < d_maxTextLen)
 		{
            String newText = getText();
-           newText.insert(getCaratIndex(), 1, e.codepoint);
+           newText.insert(getCaretIndex(), 1, e.codepoint);
            setText(newText);
 
-			d_caratPos++;
+			d_caretPos++;
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -1301,7 +1301,7 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 		case Key::RightShift:
 			if (getSelectionLength() == 0)
 			{
-				d_dragAnchorIdx = getCaratIndex();
+				d_dragAnchorIdx = getCaretIndex();
 			}
 			break;
 
@@ -1412,12 +1412,12 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
     formatText(true);
     // layout child windows (scrollbars) since text layout may have changed
     performChildWindowLayout();
-    // ensure carat is still within the text
-    setCaratIndex(getCaratIndex());
-    // ensure carat is visible
+    // ensure caret is still within the text
+    setCaretIndex(getCaretIndex());
+    // ensure caret is visible
     // NB: this will already have been called at least once, but since we
     // may have changed the formatting of the text, it needs to be called again.
-    ensureCaratIsVisible();
+    ensureCaretIsVisible();
 
     ++e.handled;
 }
@@ -1489,12 +1489,12 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the carat moves.
+	Handler called when the caret moves.
 *************************************************************************/
-void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
+void MultiLineEditbox::onCaretMoved(WindowEventArgs& e)
 {
 	invalidate();
-	fireEvent(EventCaratMoved, e, EventNamespace);
+	fireEvent(EventCaretMoved, e, EventNamespace);
 }
 
 
@@ -1555,7 +1555,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 {
 	addProperty(&d_readOnlyProperty);
 	addProperty(&d_wordWrapProperty);
-	addProperty(&d_caratIndexProperty);
+	addProperty(&d_caretIndexProperty);
 	addProperty(&d_selectionStartProperty);
 	addProperty(&d_selectionLengthProperty);
 	addProperty(&d_maxTextLengthProperty);

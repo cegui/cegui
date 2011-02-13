@@ -10,10 +10,7 @@ void register_Vertex_class(){
 
     { //::CEGUI::Vertex
         typedef bp::class_< CEGUI::Vertex > Vertex_exposer_t;
-        Vertex_exposer_t Vertex_exposer = Vertex_exposer_t( "Vertex", "*!\n\
-        \n\
-            structure that is used to hold details of a single vertex in 3D space.\n\
-        *\n" );
+        Vertex_exposer_t Vertex_exposer = Vertex_exposer_t( "Vertex" );
         bp::scope Vertex_scope( Vertex_exposer );
         Vertex_exposer.def_readwrite( "colour_val", &CEGUI::Vertex::colour_val, "! Texture co-ords to be applied to the vertex.\n\
         ! colour to be applied to the vertex.\n" );

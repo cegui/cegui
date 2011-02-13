@@ -270,7 +270,7 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const Point& local_mouse)
+void ListHeaderSegment::doDragSizing(const Vector2<>& local_mouse)
 {
     float delta = local_mouse.d_x - d_dragPoint.d_x;
 
@@ -306,7 +306,7 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 /*************************************************************************
 	Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const Point& local_mouse)
+void ListHeaderSegment::doDragMoving(const Vector2<>& local_mouse)
 {
 	// calculate movement deltas.
 	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
@@ -403,7 +403,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const Point& local_mouse)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2<>& local_mouse)
 {
 	// see if mouse has moved far enough to start move operation
 	// calculate movement deltas.
@@ -434,7 +434,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	//
 	// convert mouse position to something local
 	//
-	Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
+	Vector2<> localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -510,7 +510,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 		if (captureInput())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(CoordConverter::screenToWindow(*this, e.position));
+			Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;

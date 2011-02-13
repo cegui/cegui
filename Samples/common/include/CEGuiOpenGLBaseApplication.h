@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,45 +33,22 @@
 #undef max
 #undef min
 
-
-#include "CEGUI.h"
-
-// forward reference this
-namespace CEGUI
-{
-class OpenGLRenderer;
-class GeometryBuffer;
-}
-
 class CEGuiOpenGLBaseApplication : public CEGuiBaseApplication
 {
 public:
-    /*!
-    \brief
-        Constructor.
-    */
+    //! Constructor.
     CEGuiOpenGLBaseApplication();
 
+    //! Destructor.
+    ~CEGuiOpenGLBaseApplication();
 
-    /*!
-    \brief
-        Destructor.
-    */
-    virtual ~CEGuiOpenGLBaseApplication();
-
-
-    // implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
-
-    // overrides of other base class methods.
-    // These are required to make the 'quit' flag field static to enable us
-    // to access it via the static methods employed by glut.
-    void setQuitting(bool quit = true);
-    bool isQuitting() const;
-
-    bool overlayHandler(const CEGUI::EventArgs& args);
 protected:
+    // implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
+
     /*************************************************************************
         Implementation Methods
     *************************************************************************/
@@ -84,22 +61,12 @@ protected:
     static void handleModifierKeys(void);
     static void handleMouseWheel_freeglut(int wheel, int dir, int x, int y);
 
-    static void doFPSUpdate();
-
     /*************************************************************************
         Data fields
     *************************************************************************/
-    CEGUI::OpenGLRenderer* d_renderer;
-    static bool d_quitFlag;
-    static int  d_lastFrameTime;
+    static CEGuiOpenGLBaseApplication* d_appInstance;
+    static int  d_frameTime;
     static int  d_modifiers;
-    // FPS stuff
-    static int d_fps_lastTime;
-    static int d_fps_frames;
-    static int d_fps_value;
-    static char d_fps_textbuff[16];
-    CEGUI::GeometryBuffer* d_fps_geometry;
-    static CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 

@@ -39,7 +39,8 @@ namespace CEGUI
     instances of objects that implement the RenderTarget interface are
     normally created via the Renderer object.
 */
-class CEGUIEXPORT RenderTarget
+class CEGUIEXPORT RenderTarget :
+    public AllocatedObject<RenderTarget>
 {
 public:
     //! Destructor
@@ -136,7 +137,7 @@ public:
         Resulting point is local to GeometryBuffer \a buff.
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
-                                const Vector2& p_in, Vector2& p_out) const = 0;
+                                const Vector2<>& p_in, Vector2<>& p_out) const = 0;
 };
 
 } // End of  CEGUI namespace section

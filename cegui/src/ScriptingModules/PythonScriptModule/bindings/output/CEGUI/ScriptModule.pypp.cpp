@@ -75,11 +75,7 @@ void register_ScriptModule_class(){
 
     { //::CEGUI::ScriptModule
         typedef bp::class_< ScriptModule_wrapper, boost::noncopyable > ScriptModule_exposer_t;
-        ScriptModule_exposer_t ScriptModule_exposer = ScriptModule_exposer_t( "ScriptModule", "*!\n\
-        \n\
-           Abstract interface required for all scripting support modules to be used with\n\
-           the CEGUI system.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        ScriptModule_exposer_t ScriptModule_exposer = ScriptModule_exposer_t( "ScriptModule", bp::init< >("*************************************************************************\n\
            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\
