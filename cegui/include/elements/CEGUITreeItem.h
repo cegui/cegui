@@ -570,7 +570,7 @@ public:
      \return
         Size object describing the size of the tree item in pixels.
      */
-    virtual Size getPixelSize(void) const;
+    virtual Size<> getPixelSize(void) const;
 
     /*!
      \brief

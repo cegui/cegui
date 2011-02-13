@@ -67,7 +67,7 @@ Imageset::Imageset(const String& name, Texture& texture) :
 	}
 	// defaults for scaling options
 	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
+	setNativeResolution(Size<>(DefaultNativeHorzRes, DefaultNativeVertRes));
 }
 
 
@@ -313,7 +313,7 @@ void Imageset::setAutoScalingEnabled(bool setting)
 /*************************************************************************
 	Set the native resolution for this Imageset
 *************************************************************************/
-void Imageset::setNativeResolution(const Size& size)
+void Imageset::setNativeResolution(const Size<>& size)
 {
 	d_nativeHorzRes = size.d_width;
 	d_nativeVertRes = size.d_height;
@@ -327,7 +327,7 @@ void Imageset::setNativeResolution(const Size& size)
 /*************************************************************************
 	Notify the Imageset of the current (usually new) display resolution.
 *************************************************************************/
-void Imageset::notifyDisplaySizeChanged(const Size& size)
+void Imageset::notifyDisplaySizeChanged(const Size<>& size)
 {
 	d_horzScaling = size.d_width / d_nativeHorzRes;
 	d_vertScaling = size.d_height / d_nativeVertRes;

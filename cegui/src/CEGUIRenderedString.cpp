@@ -241,18 +241,18 @@ size_t RenderedString::getLineCount() const
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedString::getPixelSize(const size_t line) const
+Size<> RenderedString::getPixelSize(const size_t line) const
 {
     if (line >= getLineCount())
         CEGUI_THROW(InvalidRequestException("RenderedString::getPixelSize: "
             "line number specified is invalid."));
 
-    Size sz(0, 0);
+    Size<> sz(0, 0);
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        const Size comp_sz(d_components[i]->getPixelSize());
+        const Size<> comp_sz(d_components[i]->getPixelSize());
         sz.d_width += comp_sz.d_width;
 
         if (comp_sz.d_height > sz.d_height)

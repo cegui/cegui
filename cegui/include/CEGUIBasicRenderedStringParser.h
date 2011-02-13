@@ -179,7 +179,7 @@ protected:
     //! active vertical alignment
     VerticalFormatting d_vertAlignment;
     //! active image size
-    Size d_imageSize;
+    Size<> d_imageSize;
     //! active 'aspect lock' state
     bool d_aspectLock;
 

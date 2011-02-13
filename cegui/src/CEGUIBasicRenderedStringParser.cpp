@@ -384,7 +384,7 @@ void BasicRenderedStringParser::handleAspectLock(RenderedString& rs,
 void BasicRenderedStringParser::handleImageSize(RenderedString& rs,
                                                 const String& value)
 {
-    d_imageSize = PropertyHelper<Size>::fromString(value);
+    d_imageSize = PropertyHelper<Size<> >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

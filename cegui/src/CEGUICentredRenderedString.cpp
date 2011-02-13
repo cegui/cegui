@@ -39,7 +39,7 @@ CentredRenderedString::CentredRenderedString(const RenderedString& string) :
 }
 
 //----------------------------------------------------------------------------//
-void CentredRenderedString::format(const Size& area_size)
+void CentredRenderedString::format(const Size<>& area_size)
 {
     d_offsets.clear();
 

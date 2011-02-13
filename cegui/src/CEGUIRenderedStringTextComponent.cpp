@@ -171,12 +171,12 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedStringTextComponent::getPixelSize() const
+Size<> RenderedStringTextComponent::getPixelSize() const
 {
     Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
-    Size psz(d_padding.d_left + d_padding.d_right,
-             d_padding.d_top + d_padding.d_bottom);
+    Size<> psz(d_padding.d_left + d_padding.d_right,
+               d_padding.d_top + d_padding.d_bottom);
 
     if (fnt)
     {

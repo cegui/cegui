@@ -70,7 +70,7 @@ ItemEntry::ItemEntry(const String& type, const String& name)
 /*************************************************************************
     Get item pixel size
 *************************************************************************/
-Size ItemEntry::getItemPixelSize(void) const
+Size<> ItemEntry::getItemPixelSize(void) const
 {
     if (d_windowRenderer != 0)
     {

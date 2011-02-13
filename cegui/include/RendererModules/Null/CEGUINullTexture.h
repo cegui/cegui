@@ -39,12 +39,12 @@ class NULL_GUIRENDERER_API NullTexture : public Texture
 {
 public:
     // implement CEGUI::Texture interface
-    virtual const Size& getSize() const;
-    virtual const Size& getOriginalDataSize() const;
+    virtual const Size<>& getSize() const;
+    virtual const Size<>& getOriginalDataSize() const;
     virtual const Vector2<>& getTexelScaling() const;
     virtual void loadFromFile(const String& filename, const String& resourceGroup);
-    virtual void loadFromMemory(const void* buffer, const Size& buffer_size,
-                        PixelFormat pixel_format);
+    virtual void loadFromMemory(const void* buffer, const Size<>& buffer_size,
+                                PixelFormat pixel_format);
     virtual void saveToMemory(void* buffer);
 
     //! \copydoc Texture::blitFromMemory
@@ -56,7 +56,7 @@ protected:
     // we all need a little help from out friends ;)
     friend Texture& NullRenderer::createTexture();
     friend Texture& NullRenderer::createTexture(const String&, const String&);
-    friend Texture& NullRenderer::createTexture(const Size&);
+    friend Texture& NullRenderer::createTexture(const Size<>&);
     friend void NullRenderer::destroyTexture(Texture&);
 
     //! standard constructor
@@ -64,7 +64,7 @@ protected:
     //! construct texture via an image file.
     NullTexture(const String& filename, const String& resourceGroup);
     //! construct texture with a specified initial size.
-    NullTexture(const Size& sz);
+    NullTexture(const Size<>& sz);
 
     //! destructor.
     virtual ~NullTexture();
@@ -74,9 +74,9 @@ protected:
     //! Counter used to provide unique texture names.
     static uint32 d_textureNumber;
     //! Size of the texture.
-    Size d_size;
+    Size<> d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2<> d_texelScaling;
 };

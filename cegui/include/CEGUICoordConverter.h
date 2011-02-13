@@ -44,6 +44,72 @@ class CEGUIEXPORT CoordConverter
 public:
     /*!
     \brief
+        converts given UDim to absolute value
+    */
+    inline static float asAbsolute(const UDim& u, float base)
+    {
+        return PixelAligned(base * u.d_scale) + u.d_offset;
+    }
+
+    /*!
+    \brief
+        converts given UDim to relative value
+    */
+    inline static float asRelative(const UDim& u, float base)
+    {
+        return (base != 0.0f) ? u.d_offset / base + u.d_scale : 0.0f;
+    }
+
+    /*!
+    \brief
+        converts given Vector2<UDim> to absolute Vector2<>
+    */
+    inline static Vector2<> asAbsolute(const Vector2<UDim>& v, const Size<>& base)
+    {
+        return Vector2<>(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
+    }
+
+    /*!
+    \brief
+        converts given Vector2<UDim> to relative Vector2<>
+    */
+    inline static Vector2<> asRelative(const Vector2<UDim>& v, const Size<>& base)
+    {
+        return Vector2<>(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
+    }
+
+    /*inline static Vector2<> asAbsolute(const UVector2& v, const Size<>& base)
+    {
+        return Vector2<>(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
+    }
+
+    inline static Vector2<> asRelative(const UVector2& v, const Size<>& base)
+    {
+        return Vector2<>(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
+    }*/
+
+    inline static Rect asAbsolute(const URect& r, const Size<>& base)
+    {
+        return Rect(
+                   asAbsolute(r.d_min.d_x, base.d_width),
+                   asAbsolute(r.d_min.d_y, base.d_height),
+                   asAbsolute(r.d_max.d_x, base.d_width),
+                   asAbsolute(r.d_max.d_y, base.d_height)
+               );
+    }
+
+    inline static Rect asRelative(const URect& r, const Size<>& base)
+    {
+        return Rect(
+                   asRelative(r.d_min.d_x, base.d_width),
+                   asRelative(r.d_min.d_y, base.d_height),
+                   asRelative(r.d_max.d_x, base.d_width),
+                   asRelative(r.d_max.d_y, base.d_height)
+               );
+    }
+
+    /*!
+    \brief
         Convert a window co-ordinate value, specified as a UDim, to a screen
         relative pixel co-ordinate.
 

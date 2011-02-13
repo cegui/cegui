@@ -34,7 +34,7 @@
 #include "CEGUIEventArgs.h"
 #include "CEGUIString.h"
 #include "CEGUIVector.h"
-
+#include "CEGUISize.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -347,10 +347,12 @@ public:
 class CEGUIEXPORT DisplayEventArgs : public EventArgs
 {
 public:
-    DisplayEventArgs(const Size& sz) : size(sz) {}
+    DisplayEventArgs(const Size<>& sz):
+        size(sz)
+    {}
 
     //! current / new size of the display.
-    Size size;
+    Size<> size;
 };
 
 //! EventArgs based class that is used for notifications regarding resources.

@@ -205,7 +205,7 @@ public:
         the final size of the texture may not match the requested size.  You can
         check the ultimate sizes by querying the Texture object after creation.
     */
-    virtual Texture& createTexture(const Size& size) = 0;
+    virtual Texture& createTexture(const Size<>& size) = 0;
 
     /*!
     \brief
@@ -253,7 +253,7 @@ public:
         Size object describing the dimesions of the current or host window in
         pixels.
     */
-    virtual void setDisplaySize(const Size& size) = 0;
+    virtual void setDisplaySize(const Size<>& size) = 0;
 
     /*!
     \brief
@@ -263,7 +263,7 @@ public:
         Size object describing the pixel dimesntions of the current display or
         host window.
     */
-    virtual const Size& getDisplaySize() const = 0;
+    virtual const Size<>& getDisplaySize() const = 0;
 
     /*!
     \brief

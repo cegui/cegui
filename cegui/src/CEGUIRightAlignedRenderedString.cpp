@@ -40,7 +40,7 @@ RightAlignedRenderedString::RightAlignedRenderedString(
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::format(const Size& area_size)
+void RightAlignedRenderedString::format(const Size<>& area_size)
 {
     d_offsets.clear();
 

@@ -133,7 +133,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    void notifyDisplaySizeChanged(const Size& size);
+    void notifyDisplaySizeChanged(const Size<>& size);
 
     /*!
     \brief

@@ -35,6 +35,7 @@
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -408,9 +409,9 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (!tb)
         return;
 
-    float ww = getPixelSize ().d_width;
-    float x = tb->getXPosition().asAbsolute (ww);
-    float w = tb->getPixelSize ().d_width;
+    float ww = getPixelSize().d_width;
+    float x = CoordConverter::asAbsolute(tb->getXPosition(), ww);
+    float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
     Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
@@ -418,16 +419,16 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
-        lx = scrollLeftBtn->getArea ().d_max.d_x.asAbsolute (ww);
-        scrollLeftBtn->setWantsMultiClickEvents (false);
+        lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
+        scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
     name = getName() + ButtonScrollRightSuffix;
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollRightBtn = WindowManager::getSingleton().getWindow (name);
-        rx = scrollRightBtn->getXPosition ().asAbsolute (ww);
-        scrollRightBtn->setWantsMultiClickEvents (false);
+        rx = CoordConverter::asAbsolute(scrollRightBtn->getXPosition(), ww);
+        scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
     if (x < lx)

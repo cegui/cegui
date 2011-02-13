@@ -57,7 +57,7 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     else 
     {
         Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PF_RGB : Texture::PF_RGBA;
-        result->loadFromMemory(img->data, Size(img->sizeX, img->sizeY), fmt);
+        result->loadFromMemory(img->data, Size<>(img->sizeX, img->sizeY), fmt);
         if (img->data)
         {
             delete[] img->data; 

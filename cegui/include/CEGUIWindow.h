@@ -1174,7 +1174,7 @@ public:
     \return
         Size object describing this windows size in pixels.
     */
-    Size getPixelSize(void) const    { return d_pixelSize; }
+    Size<> getPixelSize(void) const    { return d_pixelSize; }
 
     /*!
     \brief
@@ -1480,7 +1480,7 @@ public:
         Size object that describes the pixel dimensions of this Window objects
         parent
     */
-    Size getParentPixelSize(void) const;
+    Size<> getParentPixelSize(void) const;
 
     /*!
     \brief
@@ -4004,8 +4004,6 @@ protected:
     */
     void setParent(Window* parent);
 
-    Size getSize_impl(const Window* window) const;
-
     /*!
     \brief
         Fires off a repeated mouse button down event for this window.
@@ -4211,9 +4209,9 @@ protected:
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
     // constrain given UVector2 to window's min size, return if size changed.
-    bool constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz);
+    bool constrainUVector2ToMinSize(const Size<>& base_sz, UVector2& sz);
     // constrain given UVector2 to window's max size, return if size changed.
-    bool constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz);
+    bool constrainUVector2ToMaxSize(const Size<>& base_sz, UVector2& sz);
 
     /*************************************************************************
         Properties for Window base class
@@ -4419,7 +4417,7 @@ protected:
     //! This Window objects area as defined by a URect.
     URect d_area;
     //! Current constrained pixel size of the window.
-    Size d_pixelSize;
+    Size<> d_pixelSize;
     //! current minimum size for the window.
     UVector2 d_minSize;
     //! current maximum size for the window.

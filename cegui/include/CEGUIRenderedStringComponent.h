@@ -84,7 +84,7 @@ public:
                       const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
-    virtual Size getPixelSize() const = 0;
+    virtual Size<> getPixelSize() const = 0;
 
     //! return whether the component can be split
     virtual bool canSplit() const = 0;

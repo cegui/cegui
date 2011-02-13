@@ -74,7 +74,7 @@ public:
 	*************************************************************************/
 	static const double		DefaultSingleClickTimeout;		//!< Default timeout for generation of single click events.
 	static const double		DefaultMultiClickTimeout;		//!< Default timeout for generation of multi-click events.
-	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
+	static const Size<>		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
     /** Event fired whenever the GUI sheet is changed.
@@ -318,7 +318,7 @@ public:
 	\return
 		Size object describing the current multi-click tolerance area size.
 	*/
-	const Size&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
+	const Size<>&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
 
 
 	/*!
@@ -379,7 +379,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void setMultiClickToleranceAreaSize(const Size&	sz);
+	void setMultiClickToleranceAreaSize(const Size<>&	sz);
 
     /*!
     \brief
@@ -817,7 +817,7 @@ public:
     \param new_size
         Size object describing the new display size in pixels.
     */
-    void notifyDisplaySizeChanged(const Size& new_size);
+    void notifyDisplaySizeChanged(const Size<>& new_size);
 
     /*!
     \brief
@@ -1325,7 +1325,7 @@ private:
 
 	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
-	Size		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
+	Size<>		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
 
 	MouseClickTrackerImpl* const	d_clickTrackerPimpl;		//!< Tracks mouse button click generation.
 

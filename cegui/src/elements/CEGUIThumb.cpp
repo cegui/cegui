@@ -99,7 +99,7 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	float cp = getYPosition().asRelative(getParentPixelHeight());
+	const float cp = CoordConverter::asRelative(getYPosition(), getParentPixelHeight());
 
 	if (cp < min)
 	{
@@ -118,7 +118,7 @@ void Thumb::setVertRange(float min, float max)
 *************************************************************************/
 void Thumb::setHorzRange(float min, float max)
 {
-    Size parentSize(getParentPixelSize());
+    Size<> parentSize(getParentPixelSize());
 
 	// ensure min <= max, swap if not.
 	if (min > max)
@@ -132,7 +132,7 @@ void Thumb::setHorzRange(float min, float max)
 	d_horzMin = min;
 
 	// validate current position.
-	float cp = getXPosition().asAbsolute(parentSize.d_width);
+	const float cp = CoordConverter::asAbsolute(getXPosition(), parentSize.d_width);
 
 	if (cp < min)
 	{
@@ -184,7 +184,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
-        Size parentSize(getParentPixelSize());
+        Size<> parentSize(getParentPixelSize());
 
 		Vector2<> delta;
 		float hmin, hmax, vmin, vmax;

@@ -112,7 +112,7 @@ public:
         Size object that describes the desired size of the RenderingWindow, in
         pixels.
     */
-    void setSize(const Size& size);
+    void setSize(const Size<>& size);
 
     /*!
     \brief
@@ -157,7 +157,7 @@ public:
     \return
         Size object describing the current pixel size of the RenderingWindow.
     */
-    const Size& getSize() const;
+    const Size<>& getSize() const;
 
     /*!
     \brief
@@ -300,7 +300,7 @@ protected:
     //! Position of this RenderingWindow
     Vector2<> d_position;
     //! Size of this RenderingWindow
-    Size d_size;
+    Size<> d_size;
     //! Rotation for this RenderingWindow
     Quaternion d_rotation;
     //! Pivot point used for the rotation.

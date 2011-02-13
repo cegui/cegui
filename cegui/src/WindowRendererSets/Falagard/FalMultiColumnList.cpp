@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIListHeader.h"
 #include "elements/CEGUIListboxItem.h"
@@ -90,9 +91,9 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3 itemPos;
-        Size    itemSize;
-        Rect    itemClipper, itemRect;;
+        Vector3<> itemPos;
+        Size<>    itemSize;
+        Rect      itemClipper, itemRect;
 
         // calculate position of area we have to render into
         Rect itemsArea(getListRenderArea());
@@ -116,7 +117,7 @@ namespace CEGUI
             for (uint j = 0; j < w->getColumnCount(); ++j)
             {
                 // allow item to use full width of the column
-                itemSize.d_width = header->getColumnWidth(j).asAbsolute(header->getPixelSize().d_width);
+                itemSize.d_width = CoordConverter::asAbsolute(header->getColumnWidth(j), header->getPixelSize().d_width);
 
                 ListboxItem* item = w->getItemAtGridReference(MCLGridRef(i,j));
 

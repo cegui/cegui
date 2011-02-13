@@ -65,7 +65,7 @@ public:
 	\return
 		Size object holding the width and height of the Image.
 	*/
-	Size	getSize(void) const			{return Size(d_scaledWidth, d_scaledHeight);}
+	Size<>	getSize(void) const			{return Size<>(d_scaledWidth, d_scaledHeight);}
 	
 
 	/*!
@@ -202,7 +202,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size& size,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size<>& size,
               const Rect* clip_rect,
               const Colour& top_left_colour = 0xFFFFFFFF,
               const Colour& top_right_colour = 0xFFFFFFFF,
@@ -315,7 +315,7 @@ public:
     \return
         Nothing
     */
-    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size& size,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position, const Size<>& size,
               const Rect* clip_rect, const ColourRect& colours,
               QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
     {

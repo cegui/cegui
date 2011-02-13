@@ -51,7 +51,7 @@ public:
     ~RenderedStringWordWrapper();
 
     // implementation of base interface
-    void format(const Size& area_size);
+    void format(const Size<>& area_size);
     void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect) const;
     size_t getFormattedLineCount() const;
@@ -70,7 +70,7 @@ protected:
 
 //! specialised version of format used with Justified text
 template <> CEGUIEXPORT
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Size& area_size);
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Size<>& area_size);
 
 //----------------------------------------------------------------------------//
 template <typename T>
@@ -89,7 +89,7 @@ RenderedStringWordWrapper<T>::~RenderedStringWordWrapper()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void RenderedStringWordWrapper<T>::format(const Size& area_size)
+void RenderedStringWordWrapper<T>::format(const Size<>& area_size)
 {
     deleteFormatters();
 

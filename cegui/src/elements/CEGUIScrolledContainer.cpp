@@ -109,7 +109,7 @@ Rect ScrolledContainer::getChildExtentsArea(void) const
     for (size_t i = 0; i < childCount; ++i)
     {
         const Window* const wnd = getChildAtIdx(i);
-        const Rect area(wnd->getArea().asAbsolute(d_pixelSize));
+        const Rect area(CoordConverter::asAbsolute(wnd->getArea(), d_pixelSize));
 
         if (area.d_left < extents.d_left)
             extents.d_left = area.d_left;

@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIThumb.h"
 #include "elements/CEGUIPushButton.h"
 
@@ -103,12 +104,12 @@ namespace CEGUI
         if (d_vertical)
         {
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            return (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getYPosition(), w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
         }
         else
         {
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            return (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getXPosition(), w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
         }
     }
 

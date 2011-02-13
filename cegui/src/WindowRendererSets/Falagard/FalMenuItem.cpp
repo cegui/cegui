@@ -41,7 +41,7 @@ FalagardMenuItem::FalagardMenuItem(const String& type) :
 {
 }
 
-Size FalagardMenuItem::getItemPixelSize() const
+Size<> FalagardMenuItem::getItemPixelSize() const
 {
     MenuItem* w = (MenuItem*)d_window;
     Window* parent = w->getParent();

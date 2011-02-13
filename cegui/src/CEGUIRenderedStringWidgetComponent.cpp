@@ -131,9 +131,9 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedStringWidgetComponent::getPixelSize() const
+Size<> RenderedStringWidgetComponent::getPixelSize() const
 {
-    Size sz(0, 0);
+    Size<> sz(0, 0);
 
     if (d_window)
     {

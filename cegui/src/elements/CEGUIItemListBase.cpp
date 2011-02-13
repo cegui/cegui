@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIItemListBase.h"
 #include "elements/CEGUIItemEntry.h"
 
@@ -523,10 +524,10 @@ void ItemListBase::performChildWindowLayout(void)
 void ItemListBase::sizeToContent_impl(void)
 {
     Rect renderArea(getItemRenderArea());
-    Rect wndArea(getArea().asAbsolute(getParentPixelSize()));
+    Rect wndArea(CoordConverter::asAbsolute(getArea(), getParentPixelSize()));
 
     // get size of content
-    Size sz(getContentSize());
+    Size<> sz(getContentSize());
 
     // calculate the full size with the frame accounted for and resize the window to this
     sz.d_width  += wndArea.getWidth() - renderArea.getWidth();

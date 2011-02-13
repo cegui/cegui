@@ -233,13 +233,13 @@ namespace CEGUI
     /************************************************************************
         Gets the pixel size of the document
     *************************************************************************/
-    Size FalagardStaticText::getDocumentSize(const Rect& renderArea) const
+    Size<> FalagardStaticText::getDocumentSize(const Rect& renderArea) const
     {
         if (!d_formatValid)
             updateFormatting(renderArea.getSize());
 
-        return Size(d_formattedRenderedString->getHorizontalExtent(),
-                    d_formattedRenderedString->getVerticalExtent());
+        return Size<>(d_formattedRenderedString->getHorizontalExtent(),
+                      d_formattedRenderedString->getVerticalExtent());
     }
 
     /*************************************************************************
@@ -307,8 +307,8 @@ namespace CEGUI
 
         // get the sizes we need
         Rect renderArea(getTextRenderArea());
-        Size renderAreaSize(renderArea.getSize());
-        Size documentSize(getDocumentSize(renderArea));
+        Size<> renderAreaSize(renderArea.getSize());
+        Size<> documentSize(getDocumentSize(renderArea));
 
         // show or hide vertical scroll bar as required (or as specified by option)
         bool showVert = ((documentSize.d_height > renderAreaSize.d_height) && d_enableVertScrollbar);
@@ -554,7 +554,7 @@ void FalagardStaticText::updateFormatting() const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardStaticText::updateFormatting(const Size& sz) const
+void FalagardStaticText::updateFormatting(const Size<>& sz) const
 {
     if (!d_window)
         return;

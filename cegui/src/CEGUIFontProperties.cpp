@@ -65,14 +65,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper<Size>::toString(
+        return PropertyHelper<Size<> >::toString(
             static_cast<const Font*>(receiver)->getNativeResolution());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<Font*>(receiver)->
-            setNativeResolution(PropertyHelper<Size>::fromString(value));
+            setNativeResolution(PropertyHelper<Size<> >::fromString(value));
     }
 };
 

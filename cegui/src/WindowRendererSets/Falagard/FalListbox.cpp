@@ -93,7 +93,7 @@ namespace CEGUI
         // Render list items
         //
         Vector3<> itemPos;
-        Size    itemSize;
+        Size<>  itemSize;
         Rect    itemClipper, itemRect;
         float   widest = lb->getWidestItemWidth();
 

@@ -1441,7 +1441,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Size<> sz(item->getPixelSize());
 
 				// see if this item is wider than the previous widest
 				if (sz.d_width > width)
@@ -1482,7 +1482,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Size<> sz(item->getPixelSize());
 
 				// see if this item is higher than the previous highest
 				if (sz.d_height > height)
@@ -1555,7 +1555,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
             for (uint j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
-                x += seg.getWidth().asAbsolute(header->getPixelSize().d_width);
+                x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
                 if (pt.d_x < x)
