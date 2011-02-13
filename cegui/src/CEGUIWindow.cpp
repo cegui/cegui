@@ -1445,8 +1445,31 @@ const Image* Window::getMouseCursor(bool useDefault) const
 //----------------------------------------------------------------------------//
 void Window::setMouseCursor(const String& imageset, const String& image_name)
 {
-    d_mouseCursor =
-        &ImagesetManager::getSingleton().get(imageset).getImage(image_name);
+    setMouseCursor(
+        &ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+}
+
+//----------------------------------------------------------------------------//
+void Window::setMouseCursor(const Image* image)
+{
+    d_mouseCursor = image;
+
+    if (System::getSingleton().getWindowContainingMouse() == this)
+    {
+        const Image* const default_cursor =
+            reinterpret_cast<const Image*>(DefaultMouseCursor);
+
+        if (default_cursor == image)
+            image = System::getSingleton().getDefaultMouseCursor();
+
+        MouseCursor::getSingleton().setImage(image);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Window::setMouseCursor(MouseCursorImage image)
+{
+    setMouseCursor((const Image*)image);
 }
 
 //----------------------------------------------------------------------------//
@@ -3709,7 +3732,9 @@ void Window::initialiseClippers(const RenderingContext& ctx)
     {
         Rect geo_clip(getOuterRectClipper());
 
-        geo_clip.offset(Vector2<>(-ctx.offset.d_x, -ctx.offset.d_y));
+        if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
+            geo_clip.offset(Vector2<>(-ctx.offset.d_x, -ctx.offset.d_y));
+
         d_geometry->setClippingRegion(geo_clip);
     }
 }

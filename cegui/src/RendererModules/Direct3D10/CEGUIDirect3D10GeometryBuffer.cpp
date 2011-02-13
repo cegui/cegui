@@ -43,6 +43,7 @@ Direct3D10GeometryBuffer::Direct3D10GeometryBuffer(Direct3D10Renderer& owner) :
     d_vertexBuffer(0),
     d_bufferSize(0),
     d_bufferSynched(false),
+    d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -133,10 +134,10 @@ void Direct3D10GeometryBuffer::setPivot(const Vector3& p)
 //----------------------------------------------------------------------------//
 void Direct3D10GeometryBuffer::setClippingRegion(const Rect& region)
 {
-    d_clipRect.d_top    = PixelAligned(region.d_top);
-    d_clipRect.d_bottom = PixelAligned(region.d_bottom);
-    d_clipRect.d_left   = PixelAligned(region.d_left);
-    d_clipRect.d_right  = PixelAligned(region.d_right);
+    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
+    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
+    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
+    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
 }
 
 //----------------------------------------------------------------------------//
