@@ -206,7 +206,7 @@ public:
 
 	\exception UnknownObjectException	thrown if no Image named \a name is defined for the Imageset
 	*/
-	Size	getImageSize(const String& name) const			{return getImage(name).getSize();}
+	Size<>	getImageSize(const String& name) const			{return getImage(name).getSize();}
 
 
 	/*!
@@ -305,7 +305,7 @@ public:
 
 	\exception AlreadyExistsException	thrown if an Image named \a name is already defined for this Imageset
 	*/
-	void	defineImage(const String& name, const Vector2<>& position, const Size& size, const Vector2<>& render_offset)
+	void	defineImage(const String& name, const Vector2<>& position, const Size<>& size, const Vector2<>& render_offset)
 	{
 		defineImage(name, Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), render_offset);
 	}
@@ -439,7 +439,7 @@ public:
 	\return
 		Size object describing the native display size for this Imageset.
 	*/
-	Size	getNativeResolution(void) const	{return Size(d_nativeHorzRes, d_nativeVertRes);}
+	Size<>	getNativeResolution(void) const	{return Size<>(d_nativeHorzRes, d_nativeVertRes);}
 
 
 	/*!
@@ -465,7 +465,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setNativeResolution(const Size& size);
+	void	setNativeResolution(const Size<>& size);
 
 
     /*!
@@ -475,7 +475,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    void notifyDisplaySizeChanged(const Size& size);
+    void notifyDisplaySizeChanged(const Size<>& size);
 
 
 	/*!

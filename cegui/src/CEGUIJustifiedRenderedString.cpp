@@ -39,7 +39,7 @@ JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::format(const Size& area_size)
+void JustifiedRenderedString::format(const Size<>& area_size)
 {
     d_spaceExtras.clear();
 

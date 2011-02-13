@@ -278,7 +278,7 @@ void PopupMenu::layoutItemWidgets()
 /*************************************************************************
 	Returns the "optimal" size for the content in unclipped pixels
 *************************************************************************/
-Size PopupMenu::getContentSize() const
+Size<> PopupMenu::getContentSize() const
 {
 	// find the content sizes
 	float widest = 0;
@@ -288,7 +288,7 @@ Size PopupMenu::getContentSize() const
 	size_t max = d_listItems.size();
 	while (i < max)
 	{
-		const Size sz = d_listItems[i]->getItemPixelSize();
+		const Size<> sz = d_listItems[i]->getItemPixelSize();
 		if (sz.d_width > widest)
 			widest = sz.d_width;
 		total_height += sz.d_height;
@@ -305,7 +305,7 @@ Size PopupMenu::getContentSize() const
 	}
 
 	// return the content size
-	return Size(widest, total_height);
+	return Size<>(widest, total_height);
 }
 
 

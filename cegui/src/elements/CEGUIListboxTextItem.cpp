@@ -103,21 +103,21 @@ void ListboxTextItem::setFont(Font* font)
 /*************************************************************************
 	Return the rendered pixel size of this list box item.
 *************************************************************************/
-Size ListboxTextItem::getPixelSize(void) const
+Size<> ListboxTextItem::getPixelSize(void) const
 {
     Font* fnt = getFont();
 
     if (!fnt)
-        return Size(0, 0);
+        return Size<>(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Size sz(0.0f, 0.0f);
+    Size<> sz(0.0f, 0.0f);
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Size line_sz(d_renderedString.getPixelSize(i));
+        const Size<> line_sz(d_renderedString.getPixelSize(i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)

@@ -40,7 +40,7 @@ LeftAlignedRenderedString::LeftAlignedRenderedString(
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::format(const Size& /*area_size*/)
+void LeftAlignedRenderedString::format(const Size<>& /*area_size*/)
 {
 }
 

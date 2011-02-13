@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "elements/CEGUIHorizontalLayoutContainer.h"
+#include "CEGUICoordConverter.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -70,7 +71,8 @@ void HorizontalLayoutContainer::layout()
         // full child window width, including margins
         const UDim& childHeight = boundingSize.d_y;
 
-        if (layoutHeight.asAbsolute(absHeight) < childHeight.asAbsolute(absHeight))
+        if (CoordConverter::asAbsolute(layoutHeight, absHeight) <
+            CoordConverter::asAbsolute(childHeight, absHeight))
         {
             layoutHeight = childHeight;
         }

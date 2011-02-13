@@ -70,7 +70,7 @@ namespace CEGUI
         FalagardMenuItem(const String& type);
 
         void render();
-        Size getItemPixelSize(void) const;
+        Size<> getItemPixelSize(void) const;
     };
 
 } // End of  CEGUI namespace section

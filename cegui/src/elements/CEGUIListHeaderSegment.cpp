@@ -282,8 +282,8 @@ void ListHeaderSegment::doDragSizing(const Vector2<>& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -309,8 +309,8 @@ void ListHeaderSegment::doDragSizing(const Vector2<>& local_mouse)
 void ListHeaderSegment::doDragMoving(const Vector2<>& local_mouse)
 {
 	// calculate movement deltas.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float	deltaY = local_mouse.d_y - d_dragPoint.d_y;
+	float deltaX = local_mouse.d_x - d_dragPoint.d_x;
+	float deltaY = local_mouse.d_y - d_dragPoint.d_y;
 
 	// update 'ghost' position
 	d_dragPosition.d_x += deltaX;

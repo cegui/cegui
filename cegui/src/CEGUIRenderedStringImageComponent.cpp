@@ -143,7 +143,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
             "unknown VerticalFormatting option specified."));
     }
 
-    Size sz(d_image->getSize());
+    Size<> sz(d_image->getSize());
     if (d_size.d_width != 0.0)
         sz.d_width = d_size.d_width;
     if (d_size.d_height != 0.0)
@@ -165,9 +165,9 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedStringImageComponent::getPixelSize() const
+Size<> RenderedStringImageComponent::getPixelSize() const
 {
-    Size sz(0, 0);
+    Size<> sz(0, 0);
 
     if (d_image)
     {
@@ -212,13 +212,13 @@ size_t RenderedStringImageComponent::getSpaceCount() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setSize(const Size& sz)
+void RenderedStringImageComponent::setSize(const Size<>& sz)
 {
     d_size = sz;
 }
 
 //----------------------------------------------------------------------------//
-const Size& RenderedStringImageComponent::getSize() const
+const Size<>& RenderedStringImageComponent::getSize() const
 {
     return d_size;
 }

@@ -96,7 +96,7 @@ void PixmapFont::updateFont()
     d_maxCodepoint = 0;
 
     d_glyphImages->setAutoScalingEnabled(d_autoScale);
-    d_glyphImages->setNativeResolution(Size(d_nativeHorzRes, d_nativeVertRes));
+    d_glyphImages->setNativeResolution(Size<>(d_nativeHorzRes, d_nativeVertRes));
 
     for (CodepointMap::const_iterator i = d_cp_map.begin(); i != d_cp_map.end(); ++i)
     {

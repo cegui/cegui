@@ -89,7 +89,7 @@ Imageset& ImagesetManager::createFromImageFile(const String& name,
 }
 
 //----------------------------------------------------------------------------//
-void ImagesetManager::notifyDisplaySizeChanged(const Size& size)
+void ImagesetManager::notifyDisplaySizeChanged(const Size<>& size)
 {
     // notify all attached Imageset objects of the change in resolution
     ObjectRegistry::iterator pos = d_objects.begin(), end = d_objects.end();

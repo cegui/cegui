@@ -125,8 +125,8 @@ public:
     \return
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
-    static OpenGLRenderer& bootstrapSystem(const Size& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO);
+    static OpenGLRenderer& bootstrapSystem(const Size<>& display_size,
+                                           const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
     \brief
@@ -166,7 +166,7 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    static OpenGLRenderer& create(const Size& display_size,
+    static OpenGLRenderer& create(const Size<>& display_size,
                                   const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
@@ -188,13 +188,13 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Size<>& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
+    void setDisplaySize(const Size<>& sz);
+    const Size<>& getDisplaySize() const;
     const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
@@ -213,7 +213,7 @@ public:
         Texture object that wraps the OpenGL texture \a tex, and whose size is
         specified to be \a sz.
     */
-    Texture& createTexture(GLuint tex, const Size& sz);
+    Texture& createTexture(GLuint tex, const Size<>& sz);
 
     /*!
     \brief
@@ -255,7 +255,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Size getAdjustedTextureSize(const Size& sz) const;
+    Size<> getAdjustedTextureSize(const Size<>& sz) const;
 
     /*!
     \brief
@@ -289,7 +289,7 @@ private:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    OpenGLRenderer(const Size& display_size, const TextureTargetType tt_type);
+    OpenGLRenderer(const Size<>& display_size, const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -309,7 +309,7 @@ private:
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Size<> d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2<> d_displayDPI;
     //! The default rendering root object
@@ -336,7 +336,7 @@ private:
     OGLTextureTargetFactory* d_textureTargetFactory;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
-  };
+};
 
 } // End of  CEGUI namespace section
 

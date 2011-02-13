@@ -154,7 +154,7 @@ template<> System* Singleton<System>::ms_Singleton	= 0;
 // click event generation defaults
 const double	System::DefaultSingleClickTimeout	= 0.0; // was 0.2
 const double	System::DefaultMultiClickTimeout	= 0.33;
-const Size		System::DefaultMultiClickAreaSize(12,12);
+const Size<>	System::DefaultMultiClickAreaSize(12,12);
 
 // event names
 const String System::EventGUISheetChanged( "GUISheetChanged" );
@@ -1215,7 +1215,7 @@ void System::setMultiClickTimeout(double timeout)
 	Set the size of the allowable mouse movement tolerance used when
 	generating multi-click events.
 *************************************************************************/
-void System::setMultiClickToleranceAreaSize(const Size&	sz)
+void System::setMultiClickToleranceAreaSize(const Size<>& sz)
 {
 	d_dblclick_size = sz;
 
@@ -1315,7 +1315,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-void System::notifyDisplaySizeChanged(const Size& new_size)
+void System::notifyDisplaySizeChanged(const Size<>& new_size)
 {
     // notify other components of the display size change
     d_renderer->setDisplaySize(new_size);

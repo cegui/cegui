@@ -78,7 +78,7 @@ public:
         Reference to a Size object that describes the size of the texture in
         pixels.
     */
-    virtual const Size& getSize() const = 0;
+    virtual const Size<>& getSize() const = 0;
 
     /*!
     \brief
@@ -88,7 +88,7 @@ public:
         reference to a Size object that describes the original size, in pixels,
         of the data loaded into the texture.
     */
-    virtual const Size& getOriginalDataSize() const = 0;
+    virtual const Size<>& getOriginalDataSize() const = 0;
 
     /*!
     \brief
@@ -137,7 +137,7 @@ public:
         Nothing.
     */
     virtual void loadFromMemory(const void* buffer,
-                                const Size& buffer_size,
+                                const Size<>& buffer_size,
                                 PixelFormat pixel_format) = 0;
 
     /*!

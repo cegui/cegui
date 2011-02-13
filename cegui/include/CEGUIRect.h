@@ -54,7 +54,7 @@ public:
 	*/
 	Rect(float left, float top, float right, float bottom);
 
-    Rect(const Vector2<>& pos, const Size& sz);
+    Rect(const Vector2<>& pos, const Size<>& sz);
 
 
 	/*!
@@ -81,7 +81,7 @@ public:
 	\brief
 		return the size of the Rect area
 	*/
-	Size	getSize(void) const			{return Size(getWidth(), getHeight());}
+	Size<>	getSize(void) const			{return Size<>(getWidth(), getHeight());}
 
 
 	/*!
@@ -108,7 +108,7 @@ public:
 	\brief
 		set the size of the Rect area
 	*/
-	void	setSize(const Size& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
+	void	setSize(const Size<>& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
 
 
 	/*!
@@ -158,7 +158,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMax(const Size& sz);
+	Rect&	constrainSizeMax(const Size<>& sz);
 
 
 	/*!
@@ -171,7 +171,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMin(const Size& sz);
+	Rect&	constrainSizeMin(const Size<>& sz);
 
 
 	/*!
@@ -187,7 +187,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSize(const Size& max_sz, const Size& min_sz);
+	Rect&	constrainSize(const Size<>& max_sz, const Size<>& min_sz);
 
 
 	/*************************************************************************

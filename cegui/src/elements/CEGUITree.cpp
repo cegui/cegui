@@ -636,7 +636,7 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
         return;
     
     // loop through the items
-    Size     itemSize;
+    Size<>   itemSize;
     Rect     itemClipper, itemRect;
     size_t   itemCount = itemList.size();
     bool     itemIsVisible;

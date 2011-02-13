@@ -317,8 +317,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -359,8 +359,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -403,8 +403,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -447,8 +447,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)

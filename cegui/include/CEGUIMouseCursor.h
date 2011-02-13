@@ -315,7 +315,7 @@ public:
     \param new_size
         Size object describing the new display size in pixels.
     */
-    void notifyDisplaySizeChanged(const Size& new_size);
+    void notifyDisplaySizeChanged(const Size<>& new_size);
 
     /*!
     \brief
@@ -332,14 +332,14 @@ public:
         Reference to a Size object that describes the size at which the cursor
         image should be drawn in pixels.
     */
-    void setExplicitRenderSize(const Size& size);
+    void setExplicitRenderSize(const Size<>& size);
 
     /*!
     \brief
         Return the explicit render size currently set.  A return size of (0, 0)
         indicates that the real image size will be used.
     */
-    const Size& getExplicitRenderSize() const;
+    const Size<>& getExplicitRenderSize() const;
 
     /*!
     \brief
@@ -401,7 +401,7 @@ private:
     //! buffer to hold geometry for mouse cursor imagery.
     GeometryBuffer* d_geometry;
     //! custom explicit size to render the cursor image at
-    Size d_customSize;
+    Size<> d_customSize;
     //! correctly scaled offset used when using custom image size.
     mutable Vector2<> d_customOffset;
     //! true if the mouse initial position has been pre-set

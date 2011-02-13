@@ -97,7 +97,6 @@ public:
               const ColourRect* mod_colours, const Rect* clip_rect,
               const float space_extra) const;
 
-    //! return the pixel size of the specified line.
     /*!
     \brief
         Return the pixel size of a specified line for the RenderedString.
@@ -112,7 +111,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    Size getPixelSize(const size_t line) const;
+    Size<> getPixelSize(const size_t line) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);

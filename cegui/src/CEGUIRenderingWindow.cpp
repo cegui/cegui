@@ -93,7 +93,7 @@ void RenderingWindow::setPosition(const Vector2<>& position)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setSize(const Size& size)
+void RenderingWindow::setSize(const Size<>& size)
 {
     d_size.d_width = PixelAligned(size.d_width);
     d_size.d_height = PixelAligned(size.d_height);
@@ -123,7 +123,7 @@ const Vector2<>& RenderingWindow::getPosition() const
 }
 
 //----------------------------------------------------------------------------//
-const Size& RenderingWindow::getSize() const
+const Size<>& RenderingWindow::getSize() const
 {
     return d_size;
 }

@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "elements/CEGUIVerticalLayoutContainer.h"
+#include "CEGUICoordConverter.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -70,7 +71,8 @@ void VerticalLayoutContainer::layout()
         // full child window width, including margins
         const UDim& childWidth = boundingSize.d_x;
 
-        if (layoutWidth.asAbsolute(absWidth) < childWidth.asAbsolute(absWidth))
+        if (CoordConverter::asAbsolute(layoutWidth, absWidth) <
+            CoordConverter::asAbsolute(childWidth, absWidth))
         {
             layoutWidth = childWidth;
         }

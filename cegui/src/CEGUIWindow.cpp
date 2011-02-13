@@ -1325,23 +1325,21 @@ void Window::setParent(Window* parent)
 //----------------------------------------------------------------------------//
 float Window::getParentPixelWidth(void) const
 {
-    return d_parent ?
-           d_parent->d_pixelSize.d_width :
-           System::getSingleton().getRenderer()->getDisplaySize().d_width;
+    return getParentPixelSize().d_width;
 }
 
 //----------------------------------------------------------------------------//
 float Window::getParentPixelHeight(void) const
 {
-    return d_parent ?
-           d_parent->d_pixelSize.d_height:
-           System::getSingleton().getRenderer()->getDisplaySize().d_height;
+    return getParentPixelSize().d_height;
 }
 
 //----------------------------------------------------------------------------//
-Size Window::getParentPixelSize(void) const
+Size<> Window::getParentPixelSize(void) const
 {
-    return getSize_impl(d_parent);
+    return d_parent ?
+           d_parent->d_pixelSize :
+           System::getSingleton().getRenderer()->getDisplaySize();
 }
 
 //----------------------------------------------------------------------------//
@@ -1433,14 +1431,6 @@ void Window::onZChange_impl(void)
     }
 
     System::getSingleton().updateWindowContainingMouse();
-}
-
-//----------------------------------------------------------------------------//
-Size Window::getSize_impl(const Window* window) const
-{
-    return window ?
-           window->d_pixelSize :
-           System::getSingleton().getRenderer()->getDisplaySize();
 }
 
 //----------------------------------------------------------------------------//
@@ -1915,21 +1905,21 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
     bool moved = false, sized;
 
     // save original size so we can work out how to behave later on
-    const Size oldSize(d_pixelSize);
+    const Size<> oldSize(d_pixelSize);
 
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    Vector2<> absMax(d_maxSize.asAbsolute(
+    Vector2<> absMax(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
-    Vector2<> absMin(d_minSize.asAbsolute(
+    Vector2<> absMin(CoordConverter::asAbsolute(d_minSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
-    const Size base_size((d_parent && !d_nonClientContent) ?
+    const Size<> base_size((d_parent && !d_nonClientContent) ?
                             d_parent->getUnclippedInnerRect().getSize() :
                             getParentPixelSize());
 
-    const Vector2<> pixelSizeVector = size.asAbsolute(base_size);
-    d_pixelSize = Size(pixelSizeVector.d_x, pixelSizeVector.d_y);
+    const Vector2<> pixelSizeVector = CoordConverter::asAbsolute(size, base_size);
+    d_pixelSize = Size<>(pixelSizeVector.d_x, pixelSizeVector.d_y);
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (d_pixelSize.d_width < absMin.d_x)
@@ -1997,9 +1987,9 @@ void Window::setArea(const UVector2& pos, const UVector2& size)
     // specified via the min and max size settings.
 
     // get size of 'base' - i.e. the size of the parent region.
-    const Size base_sz((d_parent && !d_nonClientContent) ?
-                            d_parent->getUnclippedInnerRect().getSize() :
-                            getParentPixelSize());
+    const Size<> base_sz((d_parent && !d_nonClientContent) ?
+                              d_parent->getUnclippedInnerRect().getSize() :
+                              getParentPixelSize());
 
     UVector2 newsz(size);
     constrainUVector2ToMinSize(base_sz, newsz);
@@ -2039,9 +2029,9 @@ void Window::setSize(const UVector2& size)
     // specified via the min and max size settings.
 
     // get size of 'base' - i.e. the size of the parent region.
-    const Size base_sz((d_parent && !d_nonClientContent) ?
-                            d_parent->getUnclippedInnerRect().getSize() :
-                            getParentPixelSize());
+    const Size<> base_sz((d_parent && !d_nonClientContent) ?
+                              d_parent->getUnclippedInnerRect().getSize() :
+                              getParentPixelSize());
 
     UVector2 newsz(size);
     constrainUVector2ToMinSize(base_sz, newsz);
@@ -2075,9 +2065,9 @@ void Window::setMaxSize(const UVector2& size)
     // no longer needs to be applied.
 
     // get size of 'base' - i.e. the size of the parent region.
-    const Size base_sz((d_parent && !d_nonClientContent) ?
-                            d_parent->getUnclippedInnerRect().getSize() :
-                            getParentPixelSize());
+    const Size<> base_sz((d_parent && !d_nonClientContent) ?
+                              d_parent->getUnclippedInnerRect().getSize() :
+                              getParentPixelSize());
 
     UVector2 wnd_sz(getSize());
 
@@ -2097,9 +2087,9 @@ void Window::setMinSize(const UVector2& size)
     // no longer needs to be applied.
 
     // get size of 'base' - i.e. the size of the parent region.
-    const Size base_sz((d_parent && !d_nonClientContent) ?
-                            d_parent->getUnclippedInnerRect().getSize() :
-                            getParentPixelSize());
+    const Size<> base_sz((d_parent && !d_nonClientContent) ?
+                              d_parent->getUnclippedInnerRect().getSize() :
+                              getParentPixelSize());
 
     UVector2 wnd_sz(getSize());
 
@@ -3933,7 +3923,7 @@ void Window::onMarginChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 bool Window::isInnerRectSizeChanged() const
 {
-    const Size old_sz(d_innerUnclippedRect.getSize());
+    const Size<> old_sz(d_innerUnclippedRect.getSize());
     d_innerUnclippedRectValid = false;
     return old_sz != getUnclippedInnerRect().getSize();
 }
@@ -4015,10 +4005,10 @@ WindowUpdateMode Window::getUpdateMode() const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz)
+bool Window::constrainUVector2ToMinSize(const Size<>& base_sz, UVector2& sz)
 {
-    const Vector2<> pixel_sz(sz.asAbsolute(base_sz));
-    const Vector2<> min_sz(d_minSize.asAbsolute(
+    const Vector2<> pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Vector2<> min_sz(CoordConverter::asAbsolute(d_minSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;
@@ -4051,10 +4041,10 @@ bool Window::constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz)
+bool Window::constrainUVector2ToMaxSize(const Size<>& base_sz, UVector2& sz)
 {
-    const Vector2<> pixel_sz(sz.asAbsolute(base_sz));
-    const Vector2<> max_sz(d_maxSize.asAbsolute(
+    const Vector2<> pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Vector2<> max_sz(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;

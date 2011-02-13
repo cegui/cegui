@@ -108,7 +108,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size imgSz(img->getSize());
+        Size<> imgSz(img->getSize());
 
         // calculate final colours to be used
         ColourRect finalColours;

@@ -81,7 +81,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRenderer& owner) :
     initialiseTexture();
 
     // set default size (and cause initialisation of the pbuffer)
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -156,7 +156,7 @@ void OpenGLWGLPBTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLWGLPBTextureTarget::declareRenderSize(const Size& sz)
+void OpenGLWGLPBTextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) &&
@@ -213,8 +213,8 @@ void OpenGLWGLPBTextureTarget::initialisePBuffer()
     int actual_width, actual_height;
     wglQueryPbufferARB(d_pbuffer, WGL_PBUFFER_WIDTH_ARB, &actual_width);
     wglQueryPbufferARB(d_pbuffer, WGL_PBUFFER_HEIGHT_ARB, &actual_height);
-    d_area.setSize(Size(static_cast<float>(actual_width),
-                        static_cast<float>(actual_height)));
+    d_area.setSize(Size<>(static_cast<float>(actual_width),
+                          static_cast<float>(actual_height)));
 
     // ensure CEGUI::Texture is wrapping real GL texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());

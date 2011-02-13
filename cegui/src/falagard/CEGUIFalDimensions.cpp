@@ -36,6 +36,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 #include <cassert>
 
 // Start of CEGUI namespace section
@@ -334,7 +335,7 @@ namespace CEGUI
         }
 
         // get size of parent; required to extract pixel values
-        Size parentSize(widget->getParentPixelSize());
+        Size<> parentSize(widget->getParentPixelSize());
 
         switch (d_what)
         {
@@ -358,20 +359,20 @@ namespace CEGUI
 
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
-                return widget->getPosition().d_x.asAbsolute(parentSize.d_width);
+                return CoordConverter::asAbsolute(widget->getPosition().d_x, parentSize.d_width);
                 break;
 
             case DT_TOP_EDGE:
             case DT_Y_POSITION:
-                return widget->getPosition().d_y.asAbsolute(parentSize.d_height);
+                return CoordConverter::asAbsolute(widget->getPosition().d_y, parentSize.d_height);
                 break;
 
             case DT_RIGHT_EDGE:
-                return widget->getArea().d_max.d_x.asAbsolute(parentSize.d_width);
+                return CoordConverter::asAbsolute(widget->getArea().d_max.d_x, parentSize.d_width);
                 break;
 
             case DT_BOTTOM_EDGE:
-                return widget->getArea().d_max.d_y.asAbsolute(parentSize.d_height);
+                return CoordConverter::asAbsolute(widget->getArea().d_max.d_y, parentSize.d_height);
                 break;
 
             default:
@@ -500,16 +501,16 @@ namespace CEGUI
             // return float property value.
             return PropertyHelper<float>::fromString(sourceWindow.getProperty(d_property));
 
-        UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
-        Size s = sourceWindow.getPixelSize();
+        const UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
+        const Size<> s = sourceWindow.getPixelSize();
 
         switch (d_type)
         {
             case DT_WIDTH:
-                return d.asAbsolute(s.d_width);
+                return CoordConverter::asAbsolute(d, s.d_width);
 
             case DT_HEIGHT:
-                return d.asAbsolute(s.d_height);
+                return CoordConverter::asAbsolute(d, s.d_height);
 
             default:
                 CEGUI_THROW(InvalidRequestException("PropertyDim::getValue - unknown or unsupported DimensionType encountered."));
@@ -631,7 +632,7 @@ namespace CEGUI
             case DT_X_POSITION:
             case DT_X_OFFSET:
             case DT_WIDTH:
-                return d_value.asAbsolute(wnd.getPixelSize().d_width);
+                return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_width);
                 break;
 
             case DT_TOP_EDGE:
@@ -639,7 +640,7 @@ namespace CEGUI
             case DT_Y_POSITION:
             case DT_Y_OFFSET:
             case DT_HEIGHT:
-                return d_value.asAbsolute(wnd.getPixelSize().d_height);
+                return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_height);
                 break;
 
             default:
@@ -657,7 +658,7 @@ namespace CEGUI
             case DT_X_POSITION:
             case DT_X_OFFSET:
             case DT_WIDTH:
-                return d_value.asAbsolute(container.getWidth());
+                return CoordConverter::asAbsolute(d_value, container.getWidth());
                 break;
 
             case DT_TOP_EDGE:
@@ -665,7 +666,7 @@ namespace CEGUI
             case DT_Y_POSITION:
             case DT_Y_OFFSET:
             case DT_HEIGHT:
-                return d_value.asAbsolute(container.getHeight());
+                return CoordConverter::asAbsolute(d_value, container.getHeight());
                 break;
 
             default:
@@ -705,7 +706,8 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = CoordConverter::asAbsolute(
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)), wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else
@@ -740,7 +742,8 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = CoordConverter::asAbsolute(
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)), wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else

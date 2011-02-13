@@ -28,6 +28,7 @@
 #include "elements/CEGUIGridLayoutContainer.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
+#include "CEGUICoordConverter.h"
 #include <limits>
 
 // Start of CEGUI namespace section
@@ -311,12 +312,14 @@ void GridLayoutContainer::layout()
             Window* window = getChildAtIdx(childIdx);
             const UVector2 size = getBoundingSizeForWindow(window);
 
-            if (colSizes[x].asAbsolute(absWidth) < size.d_x.asAbsolute(absWidth))
+            if (CoordConverter::asAbsolute(colSizes[x], absWidth) <
+                CoordConverter::asAbsolute(size.d_x, absWidth))
             {
                 colSizes[x] = size.d_x;
             }
 
-            if (rowSizes[y].asAbsolute(absHeight) < size.d_y.asAbsolute(absHeight))
+            if (CoordConverter::asAbsolute(rowSizes[y], absHeight) <
+                CoordConverter::asAbsolute(size.d_y, absHeight))
             {
                 rowSizes[y] = size.d_y;
             }

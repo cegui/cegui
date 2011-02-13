@@ -62,7 +62,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 {
     addFontProperties();
 
-    const Size size(System::getSingleton().getRenderer()->getDisplaySize());
+    const Size<> size(System::getSingleton().getRenderer()->getDisplaySize());
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
@@ -214,7 +214,7 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
 }
 
 //----------------------------------------------------------------------------//
-void Font::setNativeResolution(const Size& size)
+void Font::setNativeResolution(const Size<>& size)
 {
     d_nativeHorzRes = size.d_width;
     d_nativeVertRes = size.d_height;
@@ -225,9 +225,9 @@ void Font::setNativeResolution(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-Size Font::getNativeResolution() const
+Size<> Font::getNativeResolution() const
 {
-    return Size(d_nativeHorzRes, d_nativeVertRes);
+    return Size<>(d_nativeHorzRes, d_nativeVertRes);
 }
 
 //----------------------------------------------------------------------------//
@@ -247,7 +247,7 @@ bool Font::isAutoScaled() const
 }
 
 //----------------------------------------------------------------------------//
-void Font::notifyDisplaySizeChanged(const Size& size)
+void Font::notifyDisplaySizeChanged(const Size<>& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;

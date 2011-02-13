@@ -135,7 +135,7 @@ public:
     \param size
         Size object describing the new native screen resolution for this Font.
     */
-    void setNativeResolution(const Size& size);
+    void setNativeResolution(const Size<>& size);
 
     /*!
     \brief
@@ -145,7 +145,7 @@ public:
     \return
         Size object describing the native display size for this Font.
     */
-    Size getNativeResolution() const;
+    Size<> getNativeResolution() const;
 
     /*!
     \brief
@@ -174,7 +174,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    virtual void notifyDisplaySizeChanged(const Size& size);
+    virtual void notifyDisplaySizeChanged(const Size<>& size);
 
     /*!
     \brief

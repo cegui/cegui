@@ -379,7 +379,7 @@ public:
     \return
         Size object describing the size of the list box item in pixels.
     */
-    virtual Size    getPixelSize(void) const    = 0;
+    virtual Size<> getPixelSize(void) const = 0;
 
 
     /*!

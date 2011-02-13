@@ -97,7 +97,7 @@ namespace CEGUI
     {
         Rect backgroundRect(destRect);
         Rect finalRect;
-        Size imageSize;
+        Size<> imageSize;
         Vector2<> imageOffsets;
         ColourRect imageColours;
         float leftfactor, rightfactor, topfactor, bottomfactor;
@@ -392,7 +392,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size imgSz(d_frameImages[FIC_BACKGROUND]->getSize());
+        Size<> imgSz(d_frameImages[FIC_BACKGROUND]->getSize());
 
         // calculate initial x co-ordinate and horizontal tile count according to formatting options
         switch (horzFormatting)

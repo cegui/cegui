@@ -144,7 +144,7 @@ void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
         attributes.getValueAsInteger(ImagesetNativeHorzResAttribute, 640));
     const float native_vres = static_cast<float>(
         attributes.getValueAsInteger(ImagesetNativeVertResAttribute, 480));
-    d_imageset->setNativeResolution(Size(native_hres, native_vres));
+    d_imageset->setNativeResolution(Size<>(native_hres, native_vres));
 
     // set auto-scaling as needed
     d_imageset->setAutoScalingEnabled(

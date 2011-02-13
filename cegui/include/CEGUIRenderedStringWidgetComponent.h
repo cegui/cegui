@@ -54,7 +54,7 @@ public:
     void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect,
               const float vertical_space, const float space_extra) const;
-    Size getPixelSize() const;
+    Size<> getPixelSize() const;
     bool canSplit() const;
     RenderedStringWidgetComponent* split(float split_point, bool first_component);
     RenderedStringWidgetComponent* clone() const;

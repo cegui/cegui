@@ -60,7 +60,7 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Size FalagardItemEntry::getItemPixelSize() const
+    Size<> FalagardItemEntry::getItemPixelSize() const
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();

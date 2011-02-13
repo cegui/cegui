@@ -36,6 +36,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUIImage.h"
 #include "CEGUIGeometryBuffer.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -250,7 +251,7 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 *************************************************************************/
 Rect MouseCursor::getConstraintArea(void) const
 {
-    return Rect(d_constraints.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize()));
+    return Rect(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 /*************************************************************************
@@ -267,14 +268,14 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 *************************************************************************/
 Vector2<> MouseCursor::getDisplayIndependantPosition(void) const
 {
-    Size dsz(System::getSingleton().getRenderer()->getDisplaySize());
+    Size<> dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
     return Vector2<>(d_position.d_x / (dsz.d_width - 1.0f),
                  d_position.d_y / (dsz.d_height - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::notifyDisplaySizeChanged(const Size& new_size)
+void MouseCursor::notifyDisplaySizeChanged(const Size<>& new_size)
 {
     const Rect screenArea(Vector2<>(0, 0), new_size);
     d_geometry->setClippingRegion(screenArea);
@@ -284,14 +285,14 @@ void MouseCursor::notifyDisplaySizeChanged(const Size& new_size)
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setExplicitRenderSize(const Size& size)
+void MouseCursor::setExplicitRenderSize(const Size<>& size)
 {
     d_customSize = size;
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Size& MouseCursor::getExplicitRenderSize() const
+const Size<>& MouseCursor::getExplicitRenderSize() const
 {
     return d_customSize;
 }
@@ -320,7 +321,7 @@ void MouseCursor::cacheGeometry() const
 //----------------------------------------------------------------------------//
 void MouseCursor::calculateCustomOffset() const
 {
-    const Size sz(d_cursorImage->getSize());
+    const Size<> sz(d_cursorImage->getSize());
     const Vector2<> offset(d_cursorImage->getOffsets());
 
     d_customOffset.d_x =

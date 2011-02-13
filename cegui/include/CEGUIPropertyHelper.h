@@ -323,23 +323,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Size>
+class PropertyHelper<Size<> >
 {
 public:
-    typedef Size return_type;
-    typedef const Size& pass_type;
+    typedef Size<> return_type;
+    typedef const Size<>& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Size");
+        static String type("Size<>");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Size val(0, 0);
+        Size<> val(0, 0);
         sscanf(str.c_str(), " w:%g h:%g", &val.d_width, &val.d_height);
 
         return val;
