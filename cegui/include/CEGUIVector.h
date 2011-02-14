@@ -145,7 +145,7 @@ public:
     as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>
-class CEGUIEXPORT Vector3:
+class Vector3:
     public AllocatedObject<Vector3<T> >
 {
 public:

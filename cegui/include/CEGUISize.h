@@ -41,7 +41,7 @@ namespace CEGUI
 	Class that holds the size (width & height) of something.
 */
 template<typename T>
-class CEGUIEXPORT Size:
+class Size:
     public AllocatedObject<Size<T> >
 {
 public:
