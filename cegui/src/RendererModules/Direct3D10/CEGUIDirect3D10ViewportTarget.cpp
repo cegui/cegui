@@ -45,8 +45,8 @@ Direct3D10ViewportTarget::Direct3D10ViewportTarget(Direct3D10Renderer& owner) :
             "required view port information from ID3D10Device."));
 
     Rect area(
-        Vector2(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
-        Size(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
+        Vector2<>(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
+        Size<>(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 
     setArea(area);
