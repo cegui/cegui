@@ -131,7 +131,7 @@
                     <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-4" type="BottomEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="WordWrapCentreAligned" />
