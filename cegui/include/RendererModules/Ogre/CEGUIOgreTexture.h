@@ -48,11 +48,11 @@ public:
     static Ogre::String getUniqueName();
 
     // implement CEGUI::Texture interface
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const Size<>& getSize() const;
+    const Size<>& getOriginalDataSize() const;
+    const Vector2<>& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
     void saveToMemory(void* buffer);
 
@@ -66,7 +66,7 @@ protected:
     // we all need a little help from out friends ;)
     friend Texture& OgreRenderer::createTexture();
     friend Texture& OgreRenderer::createTexture(const String&, const String&);
-    friend Texture& OgreRenderer::createTexture(const Size&);
+    friend Texture& OgreRenderer::createTexture(const Size<>&);
     friend Texture& OgreRenderer::createTexture(Ogre::TexturePtr&, bool);
     friend void OgreRenderer::destroyTexture(Texture&);
 
@@ -75,7 +75,7 @@ protected:
     //! construct texture via an image file.
     OgreTexture(const String& filename, const String& resourceGroup);
     //! construct texture with a specified initial size.
-    OgreTexture(const Size& sz);
+    OgreTexture(const Size<>& sz);
     //! construct texture from existing Ogre texture.
     OgreTexture(Ogre::TexturePtr& tex, bool take_ownership);
 
@@ -93,11 +93,11 @@ protected:
     //! specifies whether d_texture was created externally (not owned by us).
     bool d_isLinked;
     //! Size of the texture.
-    Size d_size;
+    Size<> d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
 };
 
 } // End of  CEGUI namespace section

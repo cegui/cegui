@@ -85,9 +85,9 @@ struct OgreRenderer_impl
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Size<> d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2<> d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -302,7 +302,7 @@ Texture& OgreRenderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture(const Size& size)
+Texture& OgreRenderer::createTexture(const Size<>& size)
 {
     OgreTexture* t = new OgreTexture(size);
     d_pimpl->d_textures.push_back(t);
@@ -358,13 +358,13 @@ void OgreRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size& OgreRenderer::getDisplaySize() const
+const Size<>& OgreRenderer::getDisplaySize() const
 {
     return d_pimpl->d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OgreRenderer::getDisplayDPI() const
+const Vector2<>& OgreRenderer::getDisplayDPI() const
 {
     return d_pimpl->d_displayDPI;
 }
@@ -453,7 +453,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setDisplaySize(const Size& sz)
+void OgreRenderer::setDisplaySize(const Size<>& sz)
 {
     if (sz != d_pimpl->d_displaySize)
     {

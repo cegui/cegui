@@ -173,7 +173,7 @@ void OgreGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setTranslation(const Vector3& v)
+void OgreGeometryBuffer::setTranslation(const Vector3<>& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -187,7 +187,7 @@ void OgreGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setPivot(const Vector3& p)
+void OgreGeometryBuffer::setPivot(const Vector3<>& p)
 {
     d_pivot = p;
     d_matrixValid = false;
