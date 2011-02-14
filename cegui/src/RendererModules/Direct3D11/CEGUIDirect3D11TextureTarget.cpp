@@ -46,7 +46,7 @@ Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner) :
     d_CEGUITexture = &static_cast<Direct3D11Texture&>(d_owner.createTexture());
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -90,7 +90,7 @@ Texture& Direct3D11TextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11TextureTarget::declareRenderSize(const Size& sz)
+void Direct3D11TextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
