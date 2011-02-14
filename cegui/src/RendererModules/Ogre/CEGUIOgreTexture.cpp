@@ -50,19 +50,19 @@ void _byteSwap(unsigned char* b, int n)
 uint32 OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getSize() const
+const Size<>& OgreTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getOriginalDataSize() const
+const Size<>& OgreTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OgreTexture::getTexelScaling() const
+const Vector2<>& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -107,7 +107,7 @@ void OgreTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
+void OgreTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
                                  PixelFormat pixel_format)
 {
     using namespace Ogre;
@@ -214,7 +214,7 @@ OgreTexture::OgreTexture(const String& filename, const String& resourceGroup) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const Size& sz) :
+OgreTexture::OgreTexture(const Size<>& sz) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -316,7 +316,7 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
         d_dataSize = d_size;
     }
     else
-        d_size = d_dataSize = Size(0, 0);
+        d_size = d_dataSize = Size<>(0, 0);
 
     updateCachedScaleValues();
 }
