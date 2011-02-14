@@ -48,7 +48,7 @@ void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
 
     if (d_texture)
     {
-        d_size = d_dataSize = Size(
+        d_size = d_dataSize = Size<>(
                 static_cast<float>(d_texture->getSize().Width),
                 static_cast<float>(d_texture->getSize().Height));
 
@@ -63,19 +63,19 @@ irr::video::ITexture* IrrlichtTexture::getIrrlichtTexture() const
 }
 
 //----------------------------------------------------------------------------//
-const Size& IrrlichtTexture::getSize() const
+const Size<>& IrrlichtTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& IrrlichtTexture::getOriginalDataSize() const
+const Size<>& IrrlichtTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& IrrlichtTexture::getTexelScaling() const
+const Vector2<>& IrrlichtTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -109,7 +109,7 @@ void IrrlichtTexture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::loadFromMemory(const void* buffer,
-                                     const Size& buffer_size,
+                                     const Size<>& buffer_size,
                                      PixelFormat pixel_format)
 {
     using namespace irr;
@@ -158,6 +158,20 @@ void IrrlichtTexture::saveToMemory(void* buffer)
 }
 
 //----------------------------------------------------------------------------//
+void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect& area)
+{
+    CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitFromMemory: "
+        "Function is unimplemented!"));
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTexture::blitToMemory(void* targetData)
+{
+    CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitToMemory: "
+        "Function is unimplemented!"));
+}
+
+//----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver) :
     d_driver(driver),
@@ -185,7 +199,7 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver,
-                                 const Size& size) :
+                                 const Size<>& size) :
     d_driver(driver),
     d_dataSize(size),
     d_owner(owner)
@@ -206,11 +220,11 @@ IrrlichtTexture::~IrrlichtTexture()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::createIrrlichtTexture(const Size& sz)
+void IrrlichtTexture::createIrrlichtTexture(const Size<>& sz)
 {
     using namespace irr;
 
-    const Size tex_sz(d_owner.getAdjustedTextureSize(sz));
+    const Size<> tex_sz(d_owner.getAdjustedTextureSize(sz));
 
     #if CEGUI_IRR_SDK_VERSION >= 16
         const core::dimension2d<u32> irr_sz(
@@ -283,7 +297,7 @@ std::string IrrlichtTexture::getUniqueName()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::setOriginalDataSize(const Size& sz)
+void IrrlichtTexture::setOriginalDataSize(const Size<>& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();

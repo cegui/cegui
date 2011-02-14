@@ -214,7 +214,7 @@ Texture& IrrlichtRenderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& IrrlichtRenderer::createTexture(const Size& size)
+Texture& IrrlichtRenderer::createTexture(const Size<>& size)
 {
     IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, size);
     d_textures.push_back(t);
@@ -253,7 +253,7 @@ void IrrlichtRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtRenderer::setDisplaySize(const Size& sz)
+void IrrlichtRenderer::setDisplaySize(const Size<>& sz)
 {
     if (sz != d_displaySize)
     {
@@ -268,13 +268,13 @@ void IrrlichtRenderer::setDisplaySize(const Size& sz)
 }
 
 //----------------------------------------------------------------------------//
-const Size& IrrlichtRenderer::getDisplaySize() const
+const Size<>& IrrlichtRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& IrrlichtRenderer::getDisplayDPI() const
+const Vector2<>& IrrlichtRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -324,9 +324,9 @@ IrrlichtRenderer::~IrrlichtRenderer()
 }
 
 //----------------------------------------------------------------------------//
-Size IrrlichtRenderer::getAdjustedTextureSize(const Size& sz) const
+Size<> IrrlichtRenderer::getAdjustedTextureSize(const Size<>& sz) const
 {
-    Size out(sz);
+    Size<> out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
     if (!d_supportsNPOTTextures)
