@@ -184,7 +184,7 @@ Texture& Direct3D9Renderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D9Renderer::createTexture(const Size& size)
+Texture& Direct3D9Renderer::createTexture(const Size<>& size)
 {
     Direct3D9Texture* tex = new Direct3D9Texture(*this, size);
     d_textures.push_back(tex);
@@ -268,7 +268,7 @@ void Direct3D9Renderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Renderer::setDisplaySize(const Size& sz)
+void Direct3D9Renderer::setDisplaySize(const Size<>& sz)
 {
     if (sz != d_displaySize)
     {
@@ -282,13 +282,13 @@ void Direct3D9Renderer::setDisplaySize(const Size& sz)
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D9Renderer::getDisplaySize() const
+const Size<>& Direct3D9Renderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& Direct3D9Renderer::getDisplayDPI() const
+const Vector2<>& Direct3D9Renderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -344,7 +344,7 @@ Direct3D9Renderer::~Direct3D9Renderer()
 }
 
 //----------------------------------------------------------------------------//
-Size Direct3D9Renderer::getViewportSize()
+Size<> Direct3D9Renderer::getViewportSize()
 {
     D3DVIEWPORT9 vp;
 
@@ -353,8 +353,8 @@ Size Direct3D9Renderer::getViewportSize()
             "Direct3D9Renderer::getViewportSize - Unable to access required "
             "view port information from Direct3DDevice9."));
     else
-        return Size(static_cast<float>(vp.Width),
-                    static_cast<float>(vp.Height));
+        return Size<>(static_cast<float>(vp.Width),
+                      static_cast<float>(vp.Height));
 }
 
 //----------------------------------------------------------------------------//
@@ -415,9 +415,9 @@ bool Direct3D9Renderer::supportsNPOTTextures()
 }
 
 //----------------------------------------------------------------------------//
-Size Direct3D9Renderer::getAdjustedSize(const Size& sz)
+Size<> Direct3D9Renderer::getAdjustedSize(const Size<>& sz)
 {
-    Size s(sz);
+    Size<> s(sz);
 
     if (!d_supportNPOTTex)
     {

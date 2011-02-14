@@ -134,7 +134,7 @@ public:
     bool supportsNPOTTextures();
 
     //! returns Size object from \a sz adjusted for hardware capabilities.
-    Size getAdjustedSize(const Size& sz);
+    Size<> getAdjustedSize(const Size<>& sz);
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -150,14 +150,14 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Size<>& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Size<>& sz);
+    const Size<>& getDisplaySize() const;
+    const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -169,7 +169,7 @@ private:
     virtual ~Direct3D9Renderer();
 
     //! return size of device view port (if possible).
-    Size getViewportSize();
+    Size<> getViewportSize();
     //! returns next power of 2 size if \a size is not power of 2
     float getSizeNextPOT(float sz) const;
 
@@ -178,9 +178,9 @@ private:
     //! Direct3DDevice9 interface we were given when constructed.
     LPDIRECT3DDEVICE9 d_device;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Size<> d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2<> d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)

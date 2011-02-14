@@ -63,7 +63,7 @@ public:
     \note
         This also causes the texel scaling values to be updated.
     */
-    void setOriginalDataSize(const Size& sz);
+    void setOriginalDataSize(const Size<>& sz);
 
     //! auto called via the Renderer prior to Reset on the Direct3DDevice9.
     void preD3DReset();
@@ -72,19 +72,21 @@ public:
     void postD3DReset();
 
     // implement abstract members from base class.
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const Size<>& getSize() const;
+    const Size<>& getOriginalDataSize() const;
+    const Vector2<>& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
     void saveToMemory(void* buffer);
+    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // Friends (to allow construction and destruction)
     friend Texture& Direct3D9Renderer::createTexture(void);
     friend Texture& Direct3D9Renderer::createTexture(const String&, const String&);
-    friend Texture& Direct3D9Renderer::createTexture(const Size&);
+    friend Texture& Direct3D9Renderer::createTexture(const Size<>&);
     friend Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 tex);
     friend void Direct3D9Renderer::destroyTexture(Texture&);
 
@@ -94,7 +96,7 @@ protected:
     Direct3D9Texture(Direct3D9Renderer& owner, const String& filename,
                      const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D9Texture(Direct3D9Renderer& owner, const Size& sz);
+    Direct3D9Texture(Direct3D9Renderer& owner, const Size<>& sz);
     //! Construct texture that wraps an existing D3D9 texture.
     Direct3D9Texture(Direct3D9Renderer& owner, LPDIRECT3DTEXTURE9 tex);
     //! Destructor.
@@ -112,11 +114,11 @@ protected:
     //! The D3D9 texture we're wrapping.
     LPDIRECT3DTEXTURE9 d_texture;
     //! Size of the texture.
-    Size d_size;
+    Size<> d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
     //! holds info about the texture surface before we released it for reset.
     D3DSURFACE_DESC d_savedSurfaceDesc;
     //! true when d_savedSurfaceDesc is valid and texture can be restored.
