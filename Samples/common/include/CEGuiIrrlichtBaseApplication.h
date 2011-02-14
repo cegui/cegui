@@ -82,7 +82,7 @@ protected:
     irr::u32                   d_lastTime;
 
     //! size of display last time a change was detected.
-    CEGUI::Size d_lastDisplaySize;
+    CEGUI::Size<> d_lastDisplaySize;
 };
 
 

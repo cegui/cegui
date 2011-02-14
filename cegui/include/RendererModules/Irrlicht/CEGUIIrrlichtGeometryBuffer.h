@@ -63,9 +63,9 @@ public:
 
     // implement GeometryBuffer interface
     void draw() const;
-    void setTranslation(const Vector3& v);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
+    void setTranslation(const Vector3<>& v);
+    void setRotation(const Quaternion& r);
+    void setPivot(const Vector3<>& p);
     void setClippingRegion(const Rect& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
@@ -93,8 +93,8 @@ protected:
     Rect d_clipRect;
     //! translation vector
     irr::core::vector3d<irr::f32> d_translation;
-    //! rotation vector
-    irr::core::vector3d<irr::f32> d_rotation;
+    //! rotation quaternion
+    irr::core::quaternion d_rotation;
     //! pivot point for rotation
     irr::core::vector3d<irr::f32> d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer

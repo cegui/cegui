@@ -33,6 +33,7 @@
 #include "CEGUIRenderEffect.h"
 #include "CEGUIIrrlichtTexture.h"
 #include "CEGUIVertex.h"
+#include "CEGUIQuaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -72,9 +73,9 @@ void IrrlichtGeometryBuffer::draw() const
     const irr::core::matrix4 proj
         (d_driver.getTransform(irr::video::ETS_PROJECTION));
 
-    const Size csz(d_clipRect.getSize());
-    const Size tsz(static_cast<float>(target_vp.getWidth()),
-                   static_cast<float>(target_vp.getHeight()));
+    const Size<> csz(d_clipRect.getSize());
+    const Size<> tsz(static_cast<float>(target_vp.getWidth()),
+                     static_cast<float>(target_vp.getHeight()));
 
     // set modified projection 'scissor' matix that negates scale and
     // translation that would be done by setting the viewport to the clip area.
@@ -133,7 +134,7 @@ void IrrlichtGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3& v)
+void IrrlichtGeometryBuffer::setTranslation(const Vector3<>& v)
 {
     d_translation.X = v.d_x;
     d_translation.Y = v.d_y;
@@ -142,8 +143,9 @@ void IrrlichtGeometryBuffer::setTranslation(const Vector3& v)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Vector3& r)
+void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
 {
+    d_rotation.W = -r.d_w;
     d_rotation.X = r.d_x;
     d_rotation.Y = r.d_y;
     d_rotation.Z = r.d_z;
@@ -151,7 +153,7 @@ void IrrlichtGeometryBuffer::setRotation(const Vector3& r)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3& p)
+void IrrlichtGeometryBuffer::setPivot(const Vector3<>& p)
 {
     d_pivot.X = p.d_x;
     d_pivot.Y = p.d_y;
@@ -308,12 +310,10 @@ void IrrlichtGeometryBuffer::updateMatrix() const
     d_matrix.makeIdentity();
     d_matrix.setTranslation(d_translation + d_pivot);
 
-    irr::core::matrix4 rot;
-    rot.setRotationDegrees(d_rotation);
     irr::core::matrix4 ptrans;
     ptrans.setTranslation(-d_pivot);
 
-    d_matrix *= rot;
+    d_matrix *= d_rotation.getMatrix();
     d_matrix *= ptrans;
 
     d_matrixValid = true;
