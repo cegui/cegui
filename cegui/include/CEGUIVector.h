@@ -113,9 +113,19 @@ public:
         return Vector2(d_x * vec.d_x, d_y * vec.d_y);
     }
 
+    inline Vector2 operator/(const Vector2& vec) const
+    {
+        return Vector2(d_x / vec.d_x, d_y / vec.d_y);
+    }
+
 	inline Vector2 operator*(const T& c) const
     {
         return Vector2(d_x * c, d_y * c);
+    }
+
+    inline Vector2 operator/(const T& c) const
+    {
+        return Vector2(d_x / c, d_y / c);
     }
 
     inline bool operator==(const Vector2& vec) const
