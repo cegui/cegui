@@ -37,5 +37,5 @@ class Listbox : public Window
 	Scrollbar* getHorzScrollbar() const;
 	float getWidestItemWidth() const;
 	float getTotalItemsHeight() const;
-    ListboxItem* getItemAtPoint(const Vector2& pt) const;
+    ListboxItem* getItemAtPoint(const Vector2<float>& pt) const;
 };

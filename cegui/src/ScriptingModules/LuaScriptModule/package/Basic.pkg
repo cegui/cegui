@@ -1,3 +1,11 @@
+/************************************************************************
+    rename the default template basic types to be shorter :)
+*************************************************************************/
+$renaming Vector2_float @ Vector2
+$renaming Vector3_float @ Vector3
+$renaming Size_float @ Size
+
+
 // Possible actions when loading an XML resource that already exists.
 enum XMLResourceExistsAction
 {
@@ -11,17 +19,19 @@ enum XMLResourceExistsAction
 ***********************************************************************/
 class Vector2
 {
-    // rename 'd_x' and 'd_y' to just 'x' and 'y'
-    float d_x @ x;
-    float d_y @ y;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-    Vector2 operator+ (const Vector2& vec) const;
-    Vector2 operator- (const Vector2& vec) const;
-    Vector2 operator* (const Vector2& vec) const;
-    bool operator== (const Vector2& vec) const;
+    // rename 'd_x' and 'd_y' to just 'x' and 'y'
+    T d_x @ x;
+    T d_y @ y;
+
+    Vector2<T> operator+ (const Vector2<T>& vec) const;
+    Vector2<T> operator- (const Vector2<T>& vec) const;
+    Vector2<T> operator* (const Vector2<T>& vec) const;
+    bool operator== (const Vector2<T>& vec) const;
 
     Vector2();
-    Vector2(float x, float y);
+    Vector2(T x, T y);
 };
 
 /***********************************************************************
@@ -29,32 +39,34 @@ class Vector2
 ***********************************************************************/
 class Vector3
 {
-    // rename 'd_x', 'd_y' and 'd_z' to just 'x', 'y' and 'z'
-    float d_x @ x;
-    float d_y @ y;
-    float d_z @ z;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-    bool operator== (const Vector3& vec) const;
+    // rename 'd_x', 'd_y' and 'd_z' to just 'x', 'y' and 'z'
+    T d_x @ x;
+    T d_y @ y;
+    T d_z @ z;
+
+    bool operator== (const Vector3<T>& vec) const;
 
     Vector3();
-    Vector3(float x, float y, float z);
+    Vector3(T x, T y, T z);
 };
-
-
 
 /***********************************************************************
 	Size
 ***********************************************************************/
 class Size
 {
-	// rename 'd_width' and 'd_height' to just 'width' and 'height'
-	float d_width @ width;
-	float d_height @ height;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-	bool operator== (const Size& sz) const;
+	// rename 'd_width' and 'd_height' to just 'width' and 'height'
+	T d_width @ width;
+	T d_height @ height;
+
+	bool operator== (const Size<T>& sz) const;
 
 	Size();
-	Size(float w, float h);
+	Size(T w, T h);
 };
 
 
@@ -70,23 +82,23 @@ class Rect
 	float d_left @ left;
 	float d_right @ right;
 
-	Vector2 getPosition() const;
+	Vector2<float> getPosition() const;
 	float getWidth() const;
 	float getHeight() const;
-	Size getSize() const;
+	Size<float> getSize() const;
 
 	Rect getIntersection(const Rect& rect) const;
-	bool isPointInRect(const Vector2& p) const;
+	bool isPointInRect(const Vector2<float>& p) const;
 
-	void setPosition(const Vector2& p);
+	void setPosition(const Vector2<float>& p);
 	void setWidth(float w);
 	void setHeight(float h);
-	void setSize(const Size& sz);
+	void setSize(const Size<float>& sz);
 
-	Rect& offset(const Vector2& p);
-	Rect& constrainSizeMax(const Size& sz);
-	Rect& constrainSizeMin(const Size& sz);
-	Rect& constrainSize(const Size& min, const Size& max);
+	Rect& offset(const Vector2<float>& p);
+	Rect& constrainSizeMax(const Size<float>& sz);
+	Rect& constrainSizeMin(const Size<float>& sz);
+	Rect& constrainSize(const Size<float>& min, const Size<float>& max);
 
 	bool operator== (const Rect& r) const;
 
@@ -94,6 +106,39 @@ class Rect
 	Rect(float l, float t, float r, float b);
 };
 
+class Quaternion
+{
+    float d_w @ w;
+    float d_x @ x;
+    float d_y @ y;
+    float d_z @ z;
+
+    static const Quaternion ZERO;
+    static const Quaternion IDENTITY;
+
+    static Quaternion eulerAnglesRadians(float x, float y, float z);
+    static Quaternion eulerAnglesDegrees(float x, float y, float z);
+    static Quaternion axisAngleRadians(const Vector3<float>& axis, float rotation);
+    static Quaternion axisAngleDegrees(const Vector3<float>& axis, float rotation);
+
+    static Quaternion slerp(const Quaternion& left, const Quaternion& right, float position, bool shortestPath = false);
+
+    Quaternion(float w = 1.0, float x = 0.0, float y = 0.0, float z = 0.0);
+    Quaternion(const Quaternion& v);
+    //Quaternion& operator= (const Quaternion& v);
+
+    bool operator== (const Quaternion& v) const;
+    //bool operator!= (const Quaternion& v) const;
+    Quaternion operator- () const;
+    Quaternion operator+ (const Quaternion& v) const;
+    Quaternion operator* (const Quaternion& v) const;
+    Quaternion operator* (float v) const;
+    //inline friend Quaternion operator * (float v, const Quaternion& q);
+
+    float dot(const Quaternion& v) const;
+    float length() const;
+    float normalise();
+};
 
 
 /***********************************************************************

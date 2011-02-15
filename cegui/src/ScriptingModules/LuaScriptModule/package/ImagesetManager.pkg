@@ -16,7 +16,7 @@ class ImagesetManager
 	tolua_throws|CEGUI::Exception,nil| Imageset& get(utf8string name) const;
 	bool isDefined(utf8string name) const;
 
-	void notifyDisplaySizeChanged(const Size& size);
+	void notifyDisplaySizeChanged(const Size<float>& size);
 
     ImagesetIterator getIterator() const;
 };

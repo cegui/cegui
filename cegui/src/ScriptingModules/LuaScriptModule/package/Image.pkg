@@ -3,10 +3,10 @@
 ***********************************************************************/
 class Image
 {
-	Size getSize() const;
+	Size<float> getSize() const;
 	float getWidth() const;
 	float getHeight() const;
-	Vector2 getOffsets() const;
+	Vector2<float> getOffsets() const;
 	float getOffsetX() const;
 	float getOffsetY() const;
 	string getName() const;

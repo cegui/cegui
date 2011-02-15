@@ -136,15 +136,15 @@ bool ceguiLua_PropertyHelper::stringToBool(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Size ceguiLua_PropertyHelper::stringToSize(const String& str)
+Size<> ceguiLua_PropertyHelper::stringToSize(const String& str)
 {
-    return PropertyHelper<Size>::fromString(str);
+    return PropertyHelper<Size<> >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
-Vector2 ceguiLua_PropertyHelper::stringToVector2(const String& str)
+Vector2<> ceguiLua_PropertyHelper::stringToVector2(const String& str)
 {
-    return PropertyHelper<Vector2>::fromString(str);
+    return PropertyHelper<Vector2<> >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -208,15 +208,15 @@ String ceguiLua_PropertyHelper::boolToString(bool val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::sizeToString(const Size& val)
+String ceguiLua_PropertyHelper::sizeToString(const Size<>& val)
 {
-    return PropertyHelper<Size>::toString(val);
+    return PropertyHelper<Size<> >::toString(val);
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::vector2ToString(const Vector2& val)
+String ceguiLua_PropertyHelper::vector2ToString(const Vector2<>& val)
 {
-    return PropertyHelper<Vector2>::toString(val);
+    return PropertyHelper<Vector2<> >::toString(val);
 }
 
 //----------------------------------------------------------------------------//

@@ -6,9 +6,6 @@ class UDim
 	float d_scale @ scale;
 	float d_offset @ offset;
 
-	float asAbsolute(float base) const;
-	float asRelative(float base) const;
-
 	UDim operator+ (const UDim& other) const;
 	UDim operator- (const UDim& other) const;
 	UDim operator/ (const UDim& other) const;
@@ -29,9 +26,6 @@ class UVector2
 	UDim d_x @ x;
 	UDim d_y @ y;
 
-	Vector2 asAbsolute(const Size& base) const;
-	Vector2 asRelative(const Size& base) const;
-
 	UVector2 operator+ (const UVector2& other) const;
 	UVector2 operator- (const UVector2& other) const;
 	UVector2 operator/ (const UVector2& other) const;
@@ -51,9 +45,6 @@ class URect
 {
 	UVector2 d_min @ min;
 	UVector2 d_max @ max;
-
-	Rect asAbsolute(const Size& base) const;
-	Rect asRelative(const Size& base) const;
 
 	const UVector2& getPosition() const;
 	UVector2 getSize() const;

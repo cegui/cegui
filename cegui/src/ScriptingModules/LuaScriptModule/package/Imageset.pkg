@@ -10,19 +10,19 @@ class Imageset
 	const Image& getImage(utf8string name) const;
 	void undefineImage(utf8string name);
 	void undefineAllImages();
-	Size getImageSize(utf8string name) const;
+	Size<float> getImageSize(utf8string name) const;
 	float getImageWidth(utf8string name) const;
 	float getImageHeight(utf8string name) const;
-	Vector2 getImageOffset(utf8string name) const;
+	Vector2<float> getImageOffset(utf8string name) const;
 	float getImageOffsetX(utf8string name) const;
 	float getImageOffsetY(utf8string name) const;
-	void defineImage(utf8string name, const Vector2& pos, const Size& size, const Vector2& render_offset);
-	void defineImage(utf8string name, const Rect& rect, const Vector2& render_offset);
+	void defineImage(utf8string name, const Vector2<float>& pos, const Size<float>& size, const Vector2<float>& render_offset);
+	void defineImage(utf8string name, const Rect& rect, const Vector2<float>& render_offset);
 	bool isAutoScaled() const;
 	void setAutoScalingEnabled(bool setting);
-	Size getNativeResolution() const;
-	void setNativeResolution(const Size& sz);
-	void notifyDisplaySizeChanged(const Size& sz);
+	Size<float> getNativeResolution() const;
+	void setNativeResolution(const Size<float>& sz);
+	void notifyDisplaySizeChanged(const Size<float>& sz);
 
     ImageIterator getIterator() const;
 

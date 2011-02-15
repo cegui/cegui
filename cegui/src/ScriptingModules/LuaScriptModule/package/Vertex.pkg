@@ -3,7 +3,7 @@
 ***********************************************************************/
 struct Vertex
 {
-    Vector3 position;
-    Vector2 tex_coords;
+    Vector3<float> position;
+    Vector2<float> tex_coords;
     Colour  colour_val;
 };
