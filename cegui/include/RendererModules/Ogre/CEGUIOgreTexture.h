@@ -54,13 +54,8 @@ public:
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
-
-    //! \copydoc Texture::blitFromMemory
-    virtual void blitFromMemory(void* sourceData, const Rect& area);
-
-    //! \copydoc Texture::blitToMemory
-    virtual void blitToMemory(void* targetData);
+    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // we all need a little help from out friends ;)

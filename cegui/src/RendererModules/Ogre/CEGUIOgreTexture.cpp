@@ -157,29 +157,13 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::saveToMemory(void* buffer)
-{
-    if (d_texture.isNull())
-        return;
-    
-    Ogre::HardwarePixelBufferSharedPtr src = d_texture->getBuffer();
-
-    if (src.isNull())
-        CEGUI_THROW(RendererException("OgreTexture::saveToMemory: unable to "
-            "obtain hardware pixel buffer pointer."));
-
-    Ogre::PixelBox pb(Ogre::Box(0, 0, d_size.d_width, d_size.d_height),
-                      Ogre::PF_A8R8G8B8, buffer);
-    src->blitToMemory(pb);
-}
-
-//----------------------------------------------------------------------------//
 void OgreTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
     if (d_texture.isNull()) // TODO: exception?
         return;
 
-    Ogre::PixelBox pb(area.getWidth(), area.getHeight(), 1, Ogre::PF_A8R8G8B8, sourceData);
+    Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
+                      1, Ogre::PF_A8R8G8B8, sourceData);
     Ogre::Image::Box box(area.d_left, area.d_top, area.d_right, area.d_bottom);
     d_texture->getBuffer()->blitFromMemory(pb, box);
 }
@@ -190,7 +174,8 @@ void OgreTexture::blitToMemory(void* targetData)
     if (d_texture.isNull()) // TODO: exception?
         return;
 
-    Ogre::PixelBox pb(d_size.d_width, d_size.d_height, 1, Ogre::PF_A8R8G8B8, targetData);
+    Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
+                      1, Ogre::PF_A8R8G8B8, targetData);
     d_texture->getBuffer()->blitToMemory(pb);
 }
 

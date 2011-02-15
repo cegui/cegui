@@ -147,17 +147,6 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::saveToMemory(void* buffer)
-{
-    if (!d_texture)
-        return;
-
-    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
-    memcpy(buffer, d_texture->lock(), sz);
-    d_texture->unlock();
-}
-
-//----------------------------------------------------------------------------//
 void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
     CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitFromMemory: "
@@ -167,8 +156,12 @@ void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect& area)
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::blitToMemory(void* targetData)
 {
-    CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitToMemory: "
-        "Function is unimplemented!"));
+    if (!d_texture)
+        return;
+
+    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
+    memcpy(targetData, d_texture->lock(), sz);
+    d_texture->unlock();
 }
 
 //----------------------------------------------------------------------------//
