@@ -180,14 +180,6 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::saveToMemory(void* buffer)
-{
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D10Texture::saveToMemory: unimplemented!"));
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D10Texture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // TODO:

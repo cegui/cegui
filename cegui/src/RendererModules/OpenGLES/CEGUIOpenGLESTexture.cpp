@@ -178,19 +178,19 @@ void OpenGLESTexture::loadFromMemory(const void* buffer, const Size& buffer_size
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::saveToMemory(void* buffer)
+void OpenGLESTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
-	assert(0 && "glGetTexImage() is unsupported");
+    // TODO:
+    CEGUI_THROW(RendererException(
+        "OpenGLESTexture::blitFromMemory: unimplemented!"));
+}
 
-	// save old texture binding
-    //GLuint old_tex;
-    //glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    //glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    //glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
-    // restore previous texture binding.
-    //glBindTexture(GL_TEXTURE_2D, old_tex);
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::blitToMemory(void* targetData)
+{
+    // TODO:
+    CEGUI_THROW(RendererException(
+        "OpenGLESTexture::blitToMemory: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//

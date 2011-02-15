@@ -179,20 +179,6 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::saveToMemory(void* buffer)
-{
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLTexture::setTextureSize(const Size<>& sz)
 {
     const Size<> size(d_owner.getAdjustedTextureSize(sz));
@@ -245,6 +231,7 @@ void OpenGLTexture::grabTexture()
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
+//----------------------------------------------------------------------------//
 void OpenGLTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // save old texture binding
@@ -264,6 +251,7 @@ void OpenGLTexture::blitFromMemory(void* sourceData, const Rect& area)
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
+//----------------------------------------------------------------------------//
 void OpenGLTexture::blitToMemory(void* targetData)
 {
     // save old texture binding

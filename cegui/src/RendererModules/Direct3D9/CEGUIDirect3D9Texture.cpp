@@ -275,14 +275,6 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Texture::saveToMemory(void* buffer)
-{
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D9Texture::saveToMemory - Unimplemented!"));
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D9Texture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // TODO:

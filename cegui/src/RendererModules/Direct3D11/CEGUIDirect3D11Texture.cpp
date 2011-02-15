@@ -181,14 +181,6 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11Texture::saveToMemory(void* buffer)
-{
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D11Texture::saveToMemory: unimplemented!"));
-}
-
-//----------------------------------------------------------------------------//
 void Direct3D11Texture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // TODO:

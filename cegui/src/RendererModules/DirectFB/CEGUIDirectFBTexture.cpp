@@ -143,9 +143,19 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBTexture::saveToMemory(void* buffer)
+void DirectFBTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // TODO:
+    CEGUI_THROW(RendererException(
+        "DirectFBTexture::blitFromMemory: unimplemented!"));
+}
+
+//----------------------------------------------------------------------------//
+void DirectFBTexture::blitToMemory(void* targetData)
+{
+    // TODO:
+    CEGUI_THROW(RendererException(
+        "DirectFBTexture::blitToMemory: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
