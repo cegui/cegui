@@ -27,7 +27,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::FrameWindow::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const arg1 ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const arg1 ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), arg1 );
         else{
@@ -35,7 +35,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const arg1 ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const arg1 ) const  {
         return CEGUI::FrameWindow::isHit( boost::ref(position), arg1 );
     }
 
@@ -441,8 +441,8 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::isHit
         
-            typedef bool ( ::CEGUI::FrameWindow::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( FrameWindow_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::FrameWindow::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( FrameWindow_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             FrameWindow_exposer.def( 
                 "isHit"
@@ -519,7 +519,7 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::offsetPixelPosition
         
-            typedef void ( ::CEGUI::FrameWindow::*offsetPixelPosition_function_type )( ::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*offsetPixelPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
             
             FrameWindow_exposer.def( 
                 "offsetPixelPosition"

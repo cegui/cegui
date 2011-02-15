@@ -74,7 +74,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::sizeToString
         
-            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Size const & );
+            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Size< float > const & );
             
             PropertyHelper_exposer.def( 
                 "sizeToString"
@@ -143,6 +143,16 @@ void register_PropertyHelper_class(){
                 , ( bp::arg("str") ) );
         
         }
+        { //::CEGUI::PropertyHelper_wrapper::stringToSize
+        
+            typedef ::CEGUI::Size< float > ( *stringToSize_function_type )( ::CEGUI::String const & );
+            
+            PropertyHelper_exposer.def( 
+                "stringToSize"
+                , stringToSize_function_type( &::CEGUI::PropertyHelper_wrapper::stringToSize )
+                , ( bp::arg("str") ) );
+        
+        }
         { //::CEGUI::PropertyHelper_wrapper::stringToUBox
         
             typedef ::CEGUI::UBox ( *stringToUBox_function_type )( ::CEGUI::String const & );
@@ -195,21 +205,11 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToVector2
         
-            typedef ::CEGUI::Vector2 ( *stringToVector2_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Vector2< float > ( *stringToVector2_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToVector2"
                 , stringToVector2_function_type( &::CEGUI::PropertyHelper_wrapper::stringToVector2 )
-                , ( bp::arg("str") ) );
-        
-        }
-        { //::CEGUI::PropertyHelper_wrapper::tringToSize
-        
-            typedef ::CEGUI::Size ( *tringToSize_function_type )( ::CEGUI::String const & );
-            
-            PropertyHelper_exposer.def( 
-                "tringToSize"
-                , tringToSize_function_type( &::CEGUI::PropertyHelper_wrapper::tringToSize )
                 , ( bp::arg("str") ) );
         
         }
@@ -265,7 +265,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::vector2ToString
         
-            typedef ::CEGUI::String ( *vector2ToString_function_type )( ::CEGUI::Vector2 const & );
+            typedef ::CEGUI::String ( *vector2ToString_function_type )( ::CEGUI::Vector2< float > const & );
             
             PropertyHelper_exposer.def( 
                 "vector2ToString"
@@ -286,13 +286,13 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToFloat" );
         PropertyHelper_exposer.staticmethod( "stringToImage" );
         PropertyHelper_exposer.staticmethod( "stringToRect" );
+        PropertyHelper_exposer.staticmethod( "stringToSize" );
         PropertyHelper_exposer.staticmethod( "stringToUBox" );
         PropertyHelper_exposer.staticmethod( "stringToUDim" );
         PropertyHelper_exposer.staticmethod( "stringToURect" );
         PropertyHelper_exposer.staticmethod( "stringToUVector2" );
         PropertyHelper_exposer.staticmethod( "stringToUint" );
         PropertyHelper_exposer.staticmethod( "stringToVector2" );
-        PropertyHelper_exposer.staticmethod( "tringToSize" );
         PropertyHelper_exposer.staticmethod( "uboxToString" );
         PropertyHelper_exposer.staticmethod( "udimToString" );
         PropertyHelper_exposer.staticmethod( "uintToString" );

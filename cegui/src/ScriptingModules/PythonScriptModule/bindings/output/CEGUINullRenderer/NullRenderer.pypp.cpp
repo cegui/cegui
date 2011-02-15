@@ -139,7 +139,7 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         return CEGUI::NullRenderer::getMaxTextureSize( );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size const & sz ) {
+    virtual void setDisplaySize( ::CEGUI::Size< float > const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
         else{
@@ -147,7 +147,7 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         }
     }
     
-    void default_setDisplaySize( ::CEGUI::Size const & sz ) {
+    void default_setDisplaySize( ::CEGUI::Size< float > const & sz ) {
         CEGUI::NullRenderer::setDisplaySize( boost::ref(sz) );
     }
 
@@ -253,7 +253,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::Size< float > const & ) ;
             
             NullRenderer_exposer.def( 
                 "createTexture"
@@ -401,7 +401,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2< float > const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplayDPI"
@@ -411,7 +411,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplaySize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplaySize"
@@ -442,8 +442,8 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::setDisplaySize
         
-            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
-            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             NullRenderer_exposer.def( 
                 "setDisplaySize"

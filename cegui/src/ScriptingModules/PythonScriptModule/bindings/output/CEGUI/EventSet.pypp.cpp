@@ -445,7 +445,7 @@ void register_EventSet_class(){
         }
         { //::CEGUI::EventSet::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Event*>, CEGUI::StdAllocator> > > ( ::CEGUI::EventSet::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::EventSet::*getIterator_function_type )(  ) const;
             
             EventSet_exposer.def( 
                 "getIterator"

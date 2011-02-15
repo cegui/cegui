@@ -8,21 +8,12 @@ namespace bp = boost::python;
 
 void register_Vector2_class(){
 
-    { //::CEGUI::Vector2
-        typedef bp::class_< CEGUI::Vector2 > Vector2_exposer_t;
+    { //::CEGUI::Vector2< float >
+        typedef bp::class_< CEGUI::Vector2< float > > Vector2_exposer_t;
         Vector2_exposer_t Vector2_exposer = Vector2_exposer_t( "Vector2", bp::init< >() );
         bp::scope Vector2_scope( Vector2_exposer );
-        Vector2_exposer.def( bp::init< float, float >(( bp::arg("x"), bp::arg("y") )) );
-        Vector2_exposer.def( bp::init< CEGUI::Vector2 const & >(( bp::arg("v") )) );
-        { //::CEGUI::Vector2::asSize
-        
-            typedef ::CEGUI::Size ( ::CEGUI::Vector2::*asSize_function_type )(  ) const;
-            
-            Vector2_exposer.def( 
-                "asSize"
-                , asSize_function_type( &::CEGUI::Vector2::asSize ) );
-        
-        }
+        Vector2_exposer.def( bp::init< float const &, float const & >(( bp::arg("x"), bp::arg("y") )) );
+        Vector2_exposer.def( bp::init< CEGUI::Vector2< float > const & >(( bp::arg("v") )) );
         Vector2_exposer.def( bp::self != bp::self );
         Vector2_exposer.def( bp::self * bp::self );
         Vector2_exposer.def( bp::self * bp::other< float >() );
@@ -31,10 +22,12 @@ void register_Vector2_class(){
         Vector2_exposer.def( bp::self += bp::self );
         Vector2_exposer.def( bp::self - bp::self );
         Vector2_exposer.def( bp::self -= bp::self );
+        Vector2_exposer.def( bp::self / bp::self );
+        Vector2_exposer.def( bp::self / bp::other< float >() );
         Vector2_exposer.def( bp::self /= bp::self );
         Vector2_exposer.def( bp::self == bp::self );
-        Vector2_exposer.def_readwrite( "d_x", &CEGUI::Vector2::d_x );
-        Vector2_exposer.def_readwrite( "d_y", &CEGUI::Vector2::d_y );
+        Vector2_exposer.def_readwrite( "d_x", &CEGUI::Vector2< float >::d_x );
+        Vector2_exposer.def_readwrite( "d_y", &CEGUI::Vector2< float >::d_y );
     }
 
 }

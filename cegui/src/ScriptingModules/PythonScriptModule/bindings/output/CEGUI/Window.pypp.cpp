@@ -111,7 +111,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -119,7 +119,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -871,7 +871,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildAtPosition_function_type )( ::CEGUI::Vector2 const & ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildAtPosition_function_type )( ::CEGUI::Vector2< float > const & ) const;
             
             Window_exposer.def( 
                 "getChildAtPosition"
@@ -1065,7 +1065,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getEventIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Event*>, CEGUI::StdAllocator> > > ( ::CEGUI::Window::*getEventIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::Window::*getEventIterator_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getEventIterator"
@@ -1434,7 +1434,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getParentPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Window::*getParentPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Window::*getParentPixelSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getParentPixelSize"
@@ -1470,7 +1470,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Window::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Window::*getPixelSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getPixelSize"
@@ -1513,7 +1513,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getPropertyIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Property*>, CEGUI::StdAllocator> > > ( ::CEGUI::Window::*getPropertyIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::Window::*getPropertyIterator_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getPropertyIterator"
@@ -1645,13 +1645,17 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getRotation
         
-            typedef ::CEGUI::Vector3 const & ( ::CEGUI::Window::*getRotation_function_type )(  ) const;
+            typedef ::CEGUI::Quaternion const & ( ::CEGUI::Window::*getRotation_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getRotation"
                 , getRotation_function_type( &::CEGUI::Window::getRotation )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "! return the rotations set for this window.\n" );
+                , "*!\n\
+                 retrieves rotation of this widget\n\
+            \n\
+                @see Window.setRotation\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::getSize
@@ -1679,7 +1683,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getTargetChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getTargetChildAtPosition_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getTargetChildAtPosition_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             Window_exposer.def( 
                 "getTargetChildAtPosition"
@@ -1880,7 +1884,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnprojectedPosition
         
-            typedef ::CEGUI::Vector2 ( ::CEGUI::Window::*getUnprojectedPosition_function_type )( ::CEGUI::Vector2 const & ) const;
+            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Window::*getUnprojectedPosition_function_type )( ::CEGUI::Vector2< float > const & ) const;
             
             Window_exposer.def( 
                 "getUnprojectedPosition"
@@ -2069,6 +2073,27 @@ void register_Window_class(){
                 @return\n\
                     UDim describing the y position of the window area.\n\
                  *\n" );
+        
+        }
+        { //::CEGUI::Window::getZIndex
+        
+            typedef ::size_t ( ::CEGUI::Window::*getZIndex_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getZIndex"
+                , getZIndex_function_type( &::CEGUI::Window::getZIndex )
+                , "*!\n\
+                \n\
+                    Return the (visual) z index of the window on it's parent.\n\
+                    \n\
+                    The z index is a number that indicates the order that windows will be\n\
+                    drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in\n\
+                    front of lower numbers.\n\
+            \n\
+                    The number returned will not be stable, and generally should be used to\n\
+                    compare with the z index of sibling windows (and only sibling windows)\n\
+                    to discover the current z ordering of those windows.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::hide
@@ -2344,6 +2369,25 @@ void register_Window_class(){
             *\n" );
         
         }
+        { //::CEGUI::Window::isBehind
+        
+            typedef bool ( ::CEGUI::Window::*isBehind_function_type )( ::CEGUI::Window const & ) const;
+            
+            Window_exposer.def( 
+                "isBehind"
+                , isBehind_function_type( &::CEGUI::Window::isBehind )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return whether a this Window is behind the given window.\n\
+            \n\
+                \note\n\
+                    Here 'behind' just means that one window is drawn before the other, it\n\
+                    is not meant to imply that the windows are overlapping nor that one\n\
+                    window is obscured by the other.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::isCapturedByAncestor
         
             typedef bool ( ::CEGUI::Window::*isCapturedByAncestor_function_type )(  ) const;
@@ -2573,14 +2617,33 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Window_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( Window_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             Window_exposer.def( 
                 "isHit"
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&Window_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isInFront
+        
+            typedef bool ( ::CEGUI::Window::*isInFront_function_type )( ::CEGUI::Window const & ) const;
+            
+            Window_exposer.def( 
+                "isInFront"
+                , isInFront_function_type( &::CEGUI::Window::isInFront )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return whether a this Window is in front of the given window.\n\
+            \n\
+                \note\n\
+                    Here 'in front' just means that one window is drawn after the other, it\n\
+                    is not meant to imply that the windows are overlapping nor that one\n\
+                    window is obscured by the other.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::isMouseAutoRepeatEnabled
@@ -4023,13 +4086,23 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setRotation
         
-            typedef void ( ::CEGUI::Window::*setRotation_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::Window::*setRotation_function_type )( ::CEGUI::Quaternion const & ) ;
             
             Window_exposer.def( 
                 "setRotation"
                 , setRotation_function_type( &::CEGUI::Window::setRotation )
                 , ( bp::arg("rotation") )
-                , "! set the rotations for this window.\n" );
+                , "*!\n\
+                 sets rotation of this widget\n\
+            \n\
+                @param rotation\n\
+                    A Quaternion describing the rotation\n\
+            \n\
+                CEGUI used Euler angles previously. Whilst this is easy to use and seems\n\
+                intuitive, it causes Gimbal locks when animating and is just the worse\n\
+                solution than using Quaternions. You can still use Euler angles, see\n\
+                the  Quaternion class for more info about that.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::setSize

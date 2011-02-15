@@ -20,7 +20,7 @@ struct BidiVisualMapping_wrapper : CEGUI::BidiVisualMapping, bp::wrapper< CEGUI:
         return func_getBidiCharType( char_to_check );
     }
 
-    virtual bool reorderFromLogicalToVisual( ::CEGUI::String const & logical, ::CEGUI::String & visual, ::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > & l2v, ::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > & v2l ) const {
+    virtual bool reorderFromLogicalToVisual( ::CEGUI::String const & logical, ::CEGUI::String & visual, ::std::vector< int > & l2v, ::std::vector< int > & v2l ) const {
         bp::override func_reorderFromLogicalToVisual = this->get_override( "reorderFromLogicalToVisual" );
         return func_reorderFromLogicalToVisual( boost::ref(logical), boost::ref(visual), boost::ref(l2v), boost::ref(v2l) );
     }
@@ -55,7 +55,7 @@ void register_BidiVisualMapping_class(){
         }
         { //::CEGUI::BidiVisualMapping::getL2vMapping
         
-            typedef ::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > const ( ::CEGUI::BidiVisualMapping::*getL2vMapping_function_type )(  ) const;
+            typedef ::std::vector< int > const ( ::CEGUI::BidiVisualMapping::*getL2vMapping_function_type )(  ) const;
             
             BidiVisualMapping_exposer.def( 
                 "getL2vMapping"
@@ -74,7 +74,7 @@ void register_BidiVisualMapping_class(){
         }
         { //::CEGUI::BidiVisualMapping::getV2lMapping
         
-            typedef ::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > const ( ::CEGUI::BidiVisualMapping::*getV2lMapping_function_type )(  ) const;
+            typedef ::std::vector< int > const ( ::CEGUI::BidiVisualMapping::*getV2lMapping_function_type )(  ) const;
             
             BidiVisualMapping_exposer.def( 
                 "getV2lMapping"
@@ -83,7 +83,7 @@ void register_BidiVisualMapping_class(){
         }
         { //::CEGUI::BidiVisualMapping::reorderFromLogicalToVisual
         
-            typedef bool ( ::CEGUI::BidiVisualMapping::*reorderFromLogicalToVisual_function_type )( ::CEGUI::String const &,::CEGUI::String &,::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > &,::std::vector<int, CEGUI::STLAllocatorWrapper<int, CEGUI::StdAllocator> > & ) const;
+            typedef bool ( ::CEGUI::BidiVisualMapping::*reorderFromLogicalToVisual_function_type )( ::CEGUI::String const &,::CEGUI::String &,::std::vector<int, std::allocator<int> > &,::std::vector<int, std::allocator<int> > & ) const;
             
             BidiVisualMapping_exposer.def( 
                 "reorderFromLogicalToVisual"

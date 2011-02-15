@@ -15,7 +15,7 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
     
     }
 
-    virtual ::CEGUI::Size getTextSize_impl(  ) const  {
+    virtual ::CEGUI::Size< float > getTextSize_impl(  ) const  {
         if( bp::override func_getTextSize_impl = this->get_override( "getTextSize_impl" ) )
             return func_getTextSize_impl(  );
         else{
@@ -23,7 +23,7 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
         }
     }
     
-    ::CEGUI::Size default_getTextSize_impl(  ) const  {
+    ::CEGUI::Size< float > default_getTextSize_impl(  ) const  {
         return CEGUI::Tooltip::getTextSize_impl( );
     }
 
@@ -135,7 +135,7 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -143,7 +143,7 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -332,7 +332,7 @@ void register_Tooltip_class(){
         }
         { //::CEGUI::Tooltip::getTextSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Tooltip::*getTextSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Tooltip::*getTextSize_function_type )(  ) const;
             
             Tooltip_exposer.def( 
                 "getTextSize"
@@ -349,8 +349,8 @@ void register_Tooltip_class(){
         }
         { //::CEGUI::Tooltip::getTextSize_impl
         
-            typedef ::CEGUI::Size ( ::CEGUI::Tooltip::*getTextSize_impl_function_type )(  ) const;
-            typedef ::CEGUI::Size ( Tooltip_wrapper::*default_getTextSize_impl_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Tooltip::*getTextSize_impl_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( Tooltip_wrapper::*default_getTextSize_impl_function_type )(  ) const;
             
             Tooltip_exposer.def( 
                 "getTextSize_impl"
@@ -627,8 +627,8 @@ void register_Tooltip_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Tooltip_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( Tooltip_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             Tooltip_exposer.def( 
                 "isHit"

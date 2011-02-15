@@ -34,7 +34,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         CEGUI::TreeItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const  {
+    virtual ::CEGUI::Size< float > getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
         else{
@@ -42,7 +42,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         }
     }
     
-    ::CEGUI::Size default_getPixelSize(  ) const  {
+    ::CEGUI::Size< float > default_getPixelSize(  ) const  {
         return CEGUI::TreeItem::getPixelSize( );
     }
 
@@ -168,7 +168,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getItemList
         
-            typedef ::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > & ( ::CEGUI::TreeItem::*getItemList_function_type )(  ) ;
+            typedef ::std::vector< CEGUI::TreeItem* > & ( ::CEGUI::TreeItem::*getItemList_function_type )(  ) ;
             
             TreeItem_exposer.def( 
                 "getItemList"
@@ -198,8 +198,8 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Size ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
             
             TreeItem_exposer.def( 
                 "getPixelSize"

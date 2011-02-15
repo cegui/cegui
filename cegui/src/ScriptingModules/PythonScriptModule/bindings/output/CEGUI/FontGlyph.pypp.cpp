@@ -84,7 +84,7 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::getSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::FontGlyph::*getSize_function_type )( float,float ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::FontGlyph::*getSize_function_type )( float,float ) const;
             
             FontGlyph_exposer.def( 
                 "getSize"

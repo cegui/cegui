@@ -651,6 +651,10 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     propertySet = CEGUI_ns.class_("PropertySet")
     propertySet.include()
     
+    # CEGUIQuaternion.h
+    quaternion = CEGUI_ns.class_("Quaternion")
+    quaternion.include()
+    
     # CEGUIRect.h
     rect = CEGUI_ns.class_("Rect")
     rect.include()
@@ -755,7 +759,7 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     # handled separately
     
     # CEGUISize.h
-    size = CEGUI_ns.class_("Size")
+    size = CEGUI_ns.class_("Size<float>")
     size.include()
     
     # CEGUISlotFunctorBase.h
@@ -802,9 +806,6 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     udim = CEGUI_ns.class_("UDim")
     udim.include()
 	
-    uvector2 = CEGUI_ns.class_("UVector2")
-    uvector2.include()
-    
     urect = CEGUI_ns.class_("URect")
     urect.include()
     
@@ -812,11 +813,14 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     ubox.include()
     
     # CEGUIVector.h
-    vector2 = CEGUI_ns.class_("Vector2")
+    vector2 = CEGUI_ns.class_("Vector2<float>")
     vector2.include()
     
-    vector3 = CEGUI_ns.class_("Vector3")
+    vector3 = CEGUI_ns.class_("Vector3<float>")
     vector3.include()
+    
+    uvector2 = CEGUI_ns.class_("Vector2<CEGUI::UDim>")
+    uvector2.include()
     
     # CEGUIVersion.h
     # nothing usable for python

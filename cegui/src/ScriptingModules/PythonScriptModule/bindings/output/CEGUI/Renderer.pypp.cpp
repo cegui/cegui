@@ -32,7 +32,7 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::Size const & size ){
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::Size< float > const & size ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -80,11 +80,11 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Vector2 const & getDisplayDPI(  ) const {
+    virtual ::CEGUI::Vector2< float > const & getDisplayDPI(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Size const & getDisplaySize(  ) const {
+    virtual ::CEGUI::Size< float > const & getDisplaySize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -97,7 +97,7 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         return func_getMaxTextureSize(  );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size const & size ){
+    virtual void setDisplaySize( ::CEGUI::Size< float > const & size ){
         bp::override func_setDisplaySize = this->get_override( "setDisplaySize" );
         func_setDisplaySize( boost::ref(size) );
     }
@@ -196,7 +196,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::Size<float> const & ) ;
             
             Renderer_exposer.def( 
                 "createTexture"
@@ -374,7 +374,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::Renderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2<float> const & ( ::CEGUI::Renderer::*getDisplayDPI_function_type )(  ) const;
             
             Renderer_exposer.def( 
                 "getDisplayDPI"
@@ -392,7 +392,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::getDisplaySize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::Renderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Renderer::*getDisplaySize_function_type )(  ) const;
             
             Renderer_exposer.def( 
                 "getDisplaySize"
@@ -443,7 +443,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::setDisplaySize
         
-            typedef void ( ::CEGUI::Renderer::*setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::Renderer::*setDisplaySize_function_type )( ::CEGUI::Size<float> const & ) ;
             
             Renderer_exposer.def( 
                 "setDisplaySize"

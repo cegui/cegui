@@ -11,11 +11,11 @@ namespace bp = boost::python;
 
 void register_PropertyLinkDefinitionList_class(){
 
-    { //::std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> >
-        typedef bp::class_< std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> > > PropertyLinkDefinitionList_exposer_t;
+    { //::std::vector< CEGUI::PropertyLinkDefinition >
+        typedef bp::class_< std::vector< CEGUI::PropertyLinkDefinition > > PropertyLinkDefinitionList_exposer_t;
         PropertyLinkDefinitionList_exposer_t PropertyLinkDefinitionList_exposer = PropertyLinkDefinitionList_exposer_t( "PropertyLinkDefinitionList" );
         bp::scope PropertyLinkDefinitionList_scope( PropertyLinkDefinitionList_exposer );
-        PropertyLinkDefinitionList_exposer.def( bp::indexing::vector_suite< std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> > >() );
+        PropertyLinkDefinitionList_exposer.def( bp::indexing::vector_suite< std::vector< CEGUI::PropertyLinkDefinition > >() );
     }
 
 }

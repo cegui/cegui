@@ -123,7 +123,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -252,11 +252,12 @@ void register_Editbox_class(){
                 , getMaskCodePoint_function_type( &::CEGUI::Editbox::getMaskCodePoint )
                 , "*!\n\
                 \n\
-                    return the utf32 code point used when rendering masked text.\n\
+                    return the code point used when rendering masked text.\n\
             \n\
                 @return\n\
-                    utf32 code point value representing the Unicode code point that will be\n\
-                    rendered instead of the Editbox text when rendering in masked mode.\n\
+                    utf32 or char (depends on used String class) code point value representing\n\
+                    the Unicode code point that will be rendered instead of the Editbox text\n\
+                    when rendering in masked mode.\n\
                 *\n" );
         
         }
@@ -470,11 +471,12 @@ void register_Editbox_class(){
                 , ( bp::arg("code_point") )
                 , "*!\n\
                 \n\
-                    set the utf32 code point used when rendering masked text.\n\
+                    set the code point used when rendering masked text.\n\
             \n\
                 @param code_point\n\
-                    utf32 code point value representing the Unicode code point that should\n\
-                    be rendered instead of the Editbox text when rendering in masked mode.\n\
+                    utf32 or char (depends on used String class) code point value representing\n\
+                    the vode point that should be rendered instead of the Editbox text when\n\
+                    rendering in masked mode.\n\
             \n\
                 @return\n\
                     Nothing.\n\
@@ -750,8 +752,8 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Editbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( Editbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             Editbox_exposer.def( 
                 "isHit"

@@ -15,26 +15,6 @@ void register_URect_class(){
         URect_exposer.def( bp::init< CEGUI::UVector2 const &, CEGUI::UVector2 const & >(( bp::arg("min"), bp::arg("max") )) );
         URect_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") )) );
         URect_exposer.def( bp::init< CEGUI::URect const & >(( bp::arg("v") )) );
-        { //::CEGUI::URect::asAbsolute
-        
-            typedef ::CEGUI::Rect ( ::CEGUI::URect::*asAbsolute_function_type )( ::CEGUI::Size const & ) const;
-            
-            URect_exposer.def( 
-                "asAbsolute"
-                , asAbsolute_function_type( &::CEGUI::URect::asAbsolute )
-                , ( bp::arg("base") ) );
-        
-        }
-        { //::CEGUI::URect::asRelative
-        
-            typedef ::CEGUI::Rect ( ::CEGUI::URect::*asRelative_function_type )( ::CEGUI::Size const & ) const;
-            
-            URect_exposer.def( 
-                "asRelative"
-                , asRelative_function_type( &::CEGUI::URect::asRelative )
-                , ( bp::arg("base") ) );
-        
-        }
         { //::CEGUI::URect::getHeight
         
             typedef ::CEGUI::UDim ( ::CEGUI::URect::*getHeight_function_type )(  ) const;

@@ -45,7 +45,7 @@ void register_Imageset_class(){
             *\n") );
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Vector2 const &,::CEGUI::Size const &,::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Vector2< float > const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -80,7 +80,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::defineImage
         
-            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::Imageset::*defineImage_function_type )( ::CEGUI::String const &,::CEGUI::Rect const &,::CEGUI::Vector2< float > const & ) ;
             
             Imageset_exposer.def( 
                 "defineImage"
@@ -211,7 +211,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getImageOffset
         
-            typedef ::CEGUI::Vector2 ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Imageset::*getImageOffset_function_type )( ::CEGUI::String const & ) const;
             
             Imageset_exposer.def( 
                 "getImageOffset"
@@ -277,7 +277,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getImageSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Imageset::*getImageSize_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Imageset::*getImageSize_function_type )( ::CEGUI::String const & ) const;
             
             Imageset_exposer.def( 
                 "getImageSize"
@@ -321,7 +321,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Image, CEGUI::String::FastLessCompare, CEGUI::STLAllocatorWrapper<std::pair<CEGUI::String, CEGUI::Image>, CEGUI::StdAllocator> > > ( ::CEGUI::Imageset::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Image, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Image> > > > ( ::CEGUI::Imageset::*getIterator_function_type )(  ) const;
             
             Imageset_exposer.def( 
                 "getIterator"
@@ -352,7 +352,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::getNativeResolution
         
-            typedef ::CEGUI::Size ( ::CEGUI::Imageset::*getNativeResolution_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Imageset::*getNativeResolution_function_type )(  ) const;
             
             Imageset_exposer.def( 
                 "getNativeResolution"
@@ -425,7 +425,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::Imageset::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::Imageset::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Imageset_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -482,7 +482,7 @@ void register_Imageset_class(){
         }
         { //::CEGUI::Imageset::setNativeResolution
         
-            typedef void ( ::CEGUI::Imageset::*setNativeResolution_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::Imageset::*setNativeResolution_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Imageset_exposer.def( 
                 "setNativeResolution"

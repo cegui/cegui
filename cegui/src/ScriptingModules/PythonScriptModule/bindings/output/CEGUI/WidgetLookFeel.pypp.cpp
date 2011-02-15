@@ -425,7 +425,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getProperties
         
-            typedef ::std::vector<CEGUI::PropertyInitialiser, CEGUI::STLAllocatorWrapper<CEGUI::PropertyInitialiser, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::PropertyInitialiser > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getProperties"
@@ -439,7 +439,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitions
         
-            typedef ::std::vector<CEGUI::PropertyDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::PropertyDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitions"
@@ -454,7 +454,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions
         
-            typedef ::std::vector<CEGUI::PropertyLinkDefinition, CEGUI::STLAllocatorWrapper<CEGUI::PropertyLinkDefinition, CEGUI::StdAllocator> > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::PropertyLinkDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitions"

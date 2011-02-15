@@ -60,7 +60,7 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         return CEGUI::RenderedStringImageComponent::clone( );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2 const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
         else{
@@ -68,11 +68,11 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2 const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
         CEGUI::RenderedStringImageComponent::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const  {
+    virtual ::CEGUI::Size< float > getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
         else{
@@ -80,7 +80,7 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         }
     }
     
-    ::CEGUI::Size default_getPixelSize(  ) const  {
+    ::CEGUI::Size< float > default_getPixelSize(  ) const  {
         return CEGUI::RenderedStringImageComponent::getPixelSize( );
     }
 
@@ -144,8 +144,8 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringImageComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
-            typedef void ( RenderedStringImageComponent_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( RenderedStringImageComponent_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
             
             RenderedStringImageComponent_exposer.def( 
                 "draw"
@@ -180,8 +180,8 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::RenderedStringImageComponent::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Size ( RenderedStringImageComponent_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::RenderedStringImageComponent::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( RenderedStringImageComponent_wrapper::*default_getPixelSize_function_type )(  ) const;
             
             RenderedStringImageComponent_exposer.def( 
                 "getPixelSize"
@@ -191,7 +191,7 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::getSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::RenderedStringImageComponent::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > const & ( ::CEGUI::RenderedStringImageComponent::*getSize_function_type )(  ) const;
             
             RenderedStringImageComponent_exposer.def( 
                 "getSize"
@@ -261,7 +261,7 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::setSize
         
-            typedef void ( ::CEGUI::RenderedStringImageComponent::*setSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*setSize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             RenderedStringImageComponent_exposer.def( 
                 "setSize"
