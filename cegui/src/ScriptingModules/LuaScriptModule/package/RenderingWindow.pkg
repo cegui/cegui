@@ -5,15 +5,15 @@ class RenderingWindow : public RenderingSurface
 {
     void setClippingRegion(const Rect& region);
 
-    void setPosition(const Vector2& position);
-    void setSize(const Size& size);
-    void setRotation(const Vector3& rotation);
-    void setPivot(const Vector3& pivot);
+    void setPosition(const Vector2<float>& position);
+    void setSize(const Size<float>& size);
+    void setRotation(const Quaternion& rotation);
+    void setPivot(const Vector3<float>& pivot);
 
-    const Vector2& getPosition() const;
-    const Size& getSize() const;
-    const Vector3& getRotation()const;
-    const Vector3& getPivot() const;
+    const Vector2<float>& getPosition() const;
+    const Size<float>& getSize() const;
+    const Quaternion& getRotation()const;
+    const Vector3<float>& getPivot() const;
 
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
@@ -22,7 +22,7 @@ class RenderingWindow : public RenderingSurface
     const RenderingSurface& getOwner() const;
     RenderingSurface& getOwner();
 
-    void unprojectPoint(const Vector2& p_in, Vector2& p_out);
+    void unprojectPoint(const Vector2<float>& p_in, Vector2<float>& p_out);
 
     //const TextureTarget& getTextureTarget() const;
     //TextureTarget& getTextureTarget();

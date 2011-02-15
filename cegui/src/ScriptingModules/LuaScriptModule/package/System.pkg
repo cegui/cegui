@@ -20,10 +20,10 @@ class System : public EventSet
 
 	void setSingleClickTimeout(double timeout);
 	void setMultiClickTimeout(double timeout);
-	void setMultiClickToleranceAreaSize(const Size& sz);
+	void setMultiClickToleranceAreaSize(const Size<float>& sz);
 	double getSingleClickTimeout() const;
 	double getMultiClickTimeout() const;
-	const Size& getMultiClickToleranceAreaSize() const;
+	const Size<float>& getMultiClickToleranceAreaSize() const;
     bool isMouseClickEventGenerationEnabled() const;
     void setMouseClickEventGenerationEnabled(bool enable);
 
@@ -51,7 +51,7 @@ class System : public EventSet
 	void setDefaultTooltip(utf8string tooltipType);
 	Tooltip* getDefaultTooltip(void) const;
 
-    void notifyDisplaySizeChanged(const Size& new_size);
+    void notifyDisplaySizeChanged(const Size<float>& new_size);
 
 	bool injectMouseMove(float dx, float dy);
 	bool injectMouseLeaves();

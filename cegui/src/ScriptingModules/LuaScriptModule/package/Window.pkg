@@ -82,8 +82,8 @@ class Window //: public EventSet
     Window* getChildRecursive(unsigned int ID) const;
     Window* getChildRecursive(utf8string name) const;
 	Window* getChildAtIdx(unsigned int ID) const;
-	Window* getChildAtPosition(const Vector2& pos) const;
-    Window* getTargetChildAtPosition(const Vector2& pos) const;
+	Window* getChildAtPosition(const Vector2<float>& pos) const;
+    Window* getTargetChildAtPosition(const Vector2<float>& pos) const;
 
     Window* getActiveChild() const;
     Window* getActiveSibling();
@@ -125,8 +125,8 @@ class Window //: public EventSet
     Rect getClipRect(bool non_client = false) const;
     Rect getHitTestRect() const;
 
-    Size getPixelSize() const;
-    Size getParentPixelSize() const;
+    Size<float> getPixelSize() const;
+    Size<float> getParentPixelSize() const;
     float getParentPixelWidth() const;
     float getParentPixelHeight() const;
 
@@ -144,7 +144,7 @@ class Window //: public EventSet
 	bool isCapturedByAncestor() const;
 	bool isCapturedByChild() const;
 
-	bool isHit(const Vector2& pos) const;
+	bool isHit(const Vector2<float>& pos) const;
 
 	bool isRiseOnClickEnabled() const;
 	void setRiseOnClickEnabled(bool setting);
@@ -244,8 +244,8 @@ class Window //: public EventSet
     void setWritingXMLAllowed(bool allow);
 
     // rotation
-    const Vector3& getRotation() const;
-    void setRotation(const Vector3& rotation);
+    const Quaternion& getRotation() const;
+    void setRotation(const Quaternion& rotation);
 
     // rendering surface related
     RenderingSurface& getTargetRenderingSurface() const;
@@ -265,7 +265,7 @@ class Window //: public EventSet
     bool isTextParsingEnabled() const;
     void setTextParsingEnabled(bool setting);
 
-    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+    Vector2<float> getUnprojectedPosition(const Vector2<float>& pos) const;
 
     void banPropertyFromXML(utf8string property_name);
     void unbanPropertyFromXML(utf8string property_name);

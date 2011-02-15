@@ -26,8 +26,8 @@ class ListboxItem
 	void setSelectionBrushImage(const Image* image);
 	void setSelectionBrushImage(utf8string imageset, utf8string image);
 
-	Size getPixelSize() const;
+	Size<float> getPixelSize() const;
 
-	//void draw(const Vector3& position, float alpha, const Rect& clipper) const;
+	//void draw(const Vector3<float>& position, float alpha, const Rect& clipper) const;
 	// operators missing
 };

@@ -5,5 +5,5 @@ struct RenderingContext
 {
     RenderingSurface* surface;
     const Window* owner;
-    Vector2 offset;
+    Vector2<float> offset;
 };

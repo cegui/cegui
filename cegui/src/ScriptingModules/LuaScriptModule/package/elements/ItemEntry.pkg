@@ -3,7 +3,7 @@
 ***********************************************************************/
 class ItemEntry : public Window
 {
-	Size getItemPixelSize();
+	Size<float> getItemPixelSize();
 	ItemListBase* getOwnerList() const;
 	bool isSelected() const;
 	bool isSelectable() const;

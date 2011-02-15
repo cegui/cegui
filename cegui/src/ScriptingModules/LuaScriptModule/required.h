@@ -6,7 +6,7 @@
 	purpose:  Header that includes the necessary stuff needed for the Lua bindings
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -145,8 +145,8 @@ public:
     static float stringToFloat(const String& str);
     static unsigned int stringToUint(const String& str);
     static bool stringToBool(const String& str);
-    static Size stringToSize(const String& str);
-    static Vector2 stringToVector2(const String& str);
+    static Size<> stringToSize(const String& str);
+    static Vector2<> stringToVector2(const String& str);
     static Rect stringToRect(const String& str);
     static const Image* stringToImage(const String& str);
     static Colour stringToColour(const String& str);
@@ -157,8 +157,8 @@ public:
     static String floatToString(float val);
     static String uintToString(unsigned int val);
     static String boolToString(bool val);
-    static String sizeToString(const Size& val);
-    static String vector2ToString(const Vector2& val);
+    static String sizeToString(const Size<>& val);
+    static String vector2ToString(const Vector2<>& val);
     static String rectToString(const Rect& val);
     static String imageToString(const Image* val);
     static String colourToString(const Colour& val);
