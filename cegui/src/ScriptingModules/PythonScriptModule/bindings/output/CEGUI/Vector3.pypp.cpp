@@ -8,19 +8,20 @@ namespace bp = boost::python;
 
 void register_Vector3_class(){
 
-    { //::CEGUI::Vector3
-        typedef bp::class_< CEGUI::Vector3 > Vector3_exposer_t;
+    { //::CEGUI::Vector3< float >
+        typedef bp::class_< CEGUI::Vector3< float > > Vector3_exposer_t;
         Vector3_exposer_t Vector3_exposer = Vector3_exposer_t( "Vector3", bp::init< >() );
         bp::scope Vector3_scope( Vector3_exposer );
-        Vector3_exposer.def( bp::init< float, float, float >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
-        Vector3_exposer.def( bp::init< CEGUI::Vector3 const & >(( bp::arg("v") )) );
+        Vector3_exposer.def( bp::init< float const &, float const &, float const & >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
+        Vector3_exposer.def( bp::init< CEGUI::Vector3< float > const & >(( bp::arg("v") )) );
         Vector3_exposer.def( bp::self != bp::self );
         Vector3_exposer.def( bp::self * bp::other< float >() );
         Vector3_exposer.def( bp::self + bp::self );
+        Vector3_exposer.def( bp::self - bp::self );
         Vector3_exposer.def( bp::self == bp::self );
-        Vector3_exposer.def_readwrite( "d_x", &CEGUI::Vector3::d_x );
-        Vector3_exposer.def_readwrite( "d_y", &CEGUI::Vector3::d_y );
-        Vector3_exposer.def_readwrite( "d_z", &CEGUI::Vector3::d_z );
+        Vector3_exposer.def_readwrite( "d_x", &CEGUI::Vector3< float >::d_x );
+        Vector3_exposer.def_readwrite( "d_y", &CEGUI::Vector3< float >::d_y );
+        Vector3_exposer.def_readwrite( "d_z", &CEGUI::Vector3< float >::d_z );
     }
 
 }

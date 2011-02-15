@@ -27,7 +27,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Combobox::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -35,7 +35,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Combobox::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -708,8 +708,8 @@ void register_Combobox_class(){
         }
         { //::CEGUI::Combobox::isHit
         
-            typedef bool ( ::CEGUI::Combobox::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Combobox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Combobox::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( Combobox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             Combobox_exposer.def( 
                 "isHit"

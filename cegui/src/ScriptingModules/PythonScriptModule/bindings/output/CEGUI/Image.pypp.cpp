@@ -18,7 +18,7 @@ void register_Image_class(){
            Default constructor (only used by std.map)\n\
         *\n") );
         bp::scope Image_scope( Image_exposer );
-        Image_exposer.def( bp::init< CEGUI::Imageset const *, CEGUI::String const &, CEGUI::Rect const &, CEGUI::Vector2 const &, bp::optional< float, float > >(( bp::arg("owner"), bp::arg("name"), bp::arg("area"), bp::arg("render_offset"), bp::arg("horzScaling")=1.0e+0f, bp::arg("vertScaling")=1.0e+0f ), "*!\n\
+        Image_exposer.def( bp::init< CEGUI::Imageset const *, CEGUI::String const &, CEGUI::Rect const &, CEGUI::Vector2< float > const &, bp::optional< float, float > >(( bp::arg("owner"), bp::arg("name"), bp::arg("area"), bp::arg("render_offset"), bp::arg("horzScaling")=1.0e+0f, bp::arg("vertScaling")=1.0e+0f ), "*!\n\
            \n\
               Constructor for Image objects.  This is not normally used directly by client code, use the\
               Imageset interface instead.\n\
@@ -49,7 +49,7 @@ void register_Image_class(){
         *\n") );
         { //::CEGUI::Image::draw
         
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::Size const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
             
             Image_exposer.def( 
                 "draw"
@@ -69,7 +69,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::draw
         
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::Size const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
             
             Image_exposer.def( 
                 "draw"
@@ -79,7 +79,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::draw
         
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
             
             Image_exposer.def( 
                 "draw"
@@ -89,7 +89,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::draw
         
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
+            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
             
             Image_exposer.def( 
                 "draw"
@@ -210,7 +210,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::getOffsets
         
-            typedef ::CEGUI::Vector2 ( ::CEGUI::Image::*getOffsets_function_type )(  ) const;
+            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Image::*getOffsets_function_type )(  ) const;
             
             Image_exposer.def( 
                 "getOffsets"
@@ -226,7 +226,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::getSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Image::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Image::*getSize_function_type )(  ) const;
             
             Image_exposer.def( 
                 "getSize"

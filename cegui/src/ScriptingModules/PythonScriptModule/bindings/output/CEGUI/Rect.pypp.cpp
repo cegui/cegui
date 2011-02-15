@@ -16,10 +16,10 @@ void register_Rect_class(){
         \n\
            Constructor for a Rect.\n\
         *\n") );
-        Rect_exposer.def( bp::init< CEGUI::Vector2, CEGUI::Size >(( bp::arg("pos"), bp::arg("sz") )) );
+        Rect_exposer.def( bp::init< CEGUI::Vector2< float > const &, CEGUI::Size< float > const & >(( bp::arg("pos"), bp::arg("sz") )) );
         { //::CEGUI::Rect::constrainSize
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSize_function_type )( ::CEGUI::Size const &,::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSize_function_type )( ::CEGUI::Size< float > const &,::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSize"
@@ -44,7 +44,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::constrainSizeMax
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMax_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMax_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSizeMax"
@@ -65,7 +65,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::constrainSizeMin
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMin_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMin_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSizeMin"
@@ -118,7 +118,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::getPosition
         
-            typedef ::CEGUI::Vector2 ( ::CEGUI::Rect::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Rect::*getPosition_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getPosition"
@@ -131,7 +131,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::getSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::Rect::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::Rect::*getSize_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getSize"
@@ -157,7 +157,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::isPointInRect
         
-            typedef bool ( ::CEGUI::Rect::*isPointInRect_function_type )( ::CEGUI::Vector2 const & ) const;
+            typedef bool ( ::CEGUI::Rect::*isPointInRect_function_type )( ::CEGUI::Vector2< float > const & ) const;
             
             Rect_exposer.def( 
                 "isPointInRect"
@@ -177,7 +177,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::offset
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*offset_function_type )( ::CEGUI::Vector2 const & ) ;
+            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*offset_function_type )( ::CEGUI::Vector2< float > const & ) ;
             
             Rect_exposer.def( 
                 "offset"
@@ -228,7 +228,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::setPosition
         
-            typedef void ( ::CEGUI::Rect::*setPosition_function_type )( ::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::Rect::*setPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
             
             Rect_exposer.def( 
                 "setPosition"
@@ -242,7 +242,7 @@ void register_Rect_class(){
         }
         { //::CEGUI::Rect::setSize
         
-            typedef void ( ::CEGUI::Rect::*setSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::Rect::*setSize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "setSize"

@@ -15,15 +15,25 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         
     }
 
-    virtual ::CEGUI::Size const & getOriginalDataSize(  ) const {
+    virtual void blitFromMemory( void * sourceData, ::CEGUI::Rect const & area ){
+        bp::override func_blitFromMemory = this->get_override( "blitFromMemory" );
+        func_blitFromMemory( sourceData, boost::ref(area) );
+    }
+
+    virtual void blitToMemory( void * targetData ){
+        bp::override func_blitToMemory = this->get_override( "blitToMemory" );
+        func_blitToMemory( targetData );
+    }
+
+    virtual ::CEGUI::Size< float > const & getOriginalDataSize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Size const & getSize(  ) const {
+    virtual ::CEGUI::Size< float > const & getSize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Vector2 const & getTexelScaling(  ) const {
+    virtual ::CEGUI::Vector2< float > const & getTexelScaling(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -32,14 +42,9 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         func_loadFromFile( boost::ref(filename), boost::ref(resourceGroup) );
     }
 
-    virtual void loadFromMemory( void const * buffer, ::CEGUI::Size const & buffer_size, ::CEGUI::Texture::PixelFormat pixel_format ){
+    virtual void loadFromMemory( void const * buffer, ::CEGUI::Size< float > const & buffer_size, ::CEGUI::Texture::PixelFormat pixel_format ){
         bp::override func_loadFromMemory = this->get_override( "loadFromMemory" );
         func_loadFromMemory( buffer, boost::ref(buffer_size), pixel_format );
-    }
-
-    virtual void saveToMemory( void * buffer ){
-        bp::override func_saveToMemory = this->get_override( "saveToMemory" );
-        func_saveToMemory( buffer );
     }
 
 };
@@ -55,9 +60,51 @@ void register_Texture_class(){
             .value("PF_RGBA", CEGUI::Texture::PF_RGBA)
             .export_values()
             ;
+        { //::CEGUI::Texture::blitFromMemory
+        
+            typedef void ( ::CEGUI::Texture::*blitFromMemory_function_type )( void *,::CEGUI::Rect const & ) ;
+            
+            Texture_exposer.def( 
+                "blitFromMemory"
+                , bp::pure_virtual( blitFromMemory_function_type(&::CEGUI::Texture::blitFromMemory) )
+                , ( bp::arg("sourceData"), bp::arg("area") )
+                , "*!\n\
+                \n\
+                    Performs an area memory blit to the texture\n\
+            \n\
+                @param sourceData\n\
+                    input data, the size must match area described by the given Rect\n\
+            \n\
+                @param area\n\
+                    area where the blit will happen\n\
+            \n\
+                \note The pixel format must match current Texture's pixel format!\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Texture::blitToMemory
+        
+            typedef void ( ::CEGUI::Texture::*blitToMemory_function_type )( void * ) ;
+            
+            Texture_exposer.def( 
+                "blitToMemory"
+                , bp::pure_virtual( blitToMemory_function_type(&::CEGUI::Texture::blitToMemory) )
+                , ( bp::arg("targetData") )
+                , "*!\n\
+                \n\
+                  Performs a complete blit from the texture surface to memory\n\
+            \n\
+                @param\n\
+                  targetData the buffer where the target is stored\n\
+            \n\
+                \note\n\
+                  You have to (correctly) preallocate the target buffer!\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Texture::getOriginalDataSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::Texture::*getOriginalDataSize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Texture::*getOriginalDataSize_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getOriginalDataSize"
@@ -75,7 +122,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::getSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::Texture::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Texture::*getSize_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getSize"
@@ -93,7 +140,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::getTexelScaling
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::Texture::*getTexelScaling_function_type )(  ) const;
+            typedef ::CEGUI::Vector2<float> const & ( ::CEGUI::Texture::*getTexelScaling_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getTexelScaling"
@@ -137,32 +184,12 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::loadFromMemory
         
-            typedef void ( ::CEGUI::Texture::*loadFromMemory_function_type )( void const *,::CEGUI::Size const &,::CEGUI::Texture::PixelFormat ) ;
+            typedef void ( ::CEGUI::Texture::*loadFromMemory_function_type )( void const *,::CEGUI::Size<float> const &,::CEGUI::Texture::PixelFormat ) ;
             
             Texture_exposer.def( 
                 "loadFromMemory"
                 , bp::pure_virtual( loadFromMemory_function_type(&::CEGUI::Texture::loadFromMemory) )
                 , ( bp::arg("buffer"), bp::arg("buffer_size"), bp::arg("pixel_format") ) );
-        
-        }
-        { //::CEGUI::Texture::saveToMemory
-        
-            typedef void ( ::CEGUI::Texture::*saveToMemory_function_type )( void * ) ;
-            
-            Texture_exposer.def( 
-                "saveToMemory"
-                , bp::pure_virtual( saveToMemory_function_type(&::CEGUI::Texture::saveToMemory) )
-                , ( bp::arg("buffer") )
-                , "*!\n\
-                \n\
-                    Save  dump the content of the texture to a memory buffer.  The dumped\n\
-                    pixel format is always RGBA (4 bytes per pixel).\n\
-            \n\
-                @param buffer\n\
-                    Pointer to the buffer that is to receive the image data.  You must make\n\
-                    sure that this buffer is large enough to hold the dumped texture data,\n\
-                    the required pixel dimensions can be established by calling getSize.\n\
-                *\n" );
         
         }
     }

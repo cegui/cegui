@@ -14,26 +14,6 @@ void register_UDim_class(){
         bp::scope UDim_scope( UDim_exposer );
         UDim_exposer.def( bp::init< float, float >(( bp::arg("scale"), bp::arg("offset") )) );
         UDim_exposer.def( bp::init< CEGUI::UDim const & >(( bp::arg("v") )) );
-        { //::CEGUI::UDim::asAbsolute
-        
-            typedef float ( ::CEGUI::UDim::*asAbsolute_function_type )( float ) const;
-            
-            UDim_exposer.def( 
-                "asAbsolute"
-                , asAbsolute_function_type( &::CEGUI::UDim::asAbsolute )
-                , ( bp::arg("base") ) );
-        
-        }
-        { //::CEGUI::UDim::asRelative
-        
-            typedef float ( ::CEGUI::UDim::*asRelative_function_type )( float ) const;
-            
-            UDim_exposer.def( 
-                "asRelative"
-                , asRelative_function_type( &::CEGUI::UDim::asRelative )
-                , ( bp::arg("base") ) );
-        
-        }
         UDim_exposer.def( bp::self != bp::self );
         UDim_exposer.def( bp::self * bp::other< float >() );
         UDim_exposer.def( bp::self * bp::self );

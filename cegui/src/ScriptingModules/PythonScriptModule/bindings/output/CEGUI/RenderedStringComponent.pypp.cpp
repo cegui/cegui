@@ -18,12 +18,12 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_clone(  );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2 const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const {
+    virtual ::CEGUI::Size< float > getPixelSize(  ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
         return func_getPixelSize(  );
     }
@@ -69,7 +69,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2<float> const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
             
             RenderedStringComponent_exposer.def( 
                 "draw"
@@ -124,7 +124,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )(  ) const;
             
             RenderedStringComponent_exposer.def( 
                 "getPixelSize"

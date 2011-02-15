@@ -20,7 +20,7 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
         func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const {
+    virtual ::CEGUI::Size< float > getPixelSize(  ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
         return func_getPixelSize(  );
     }
@@ -120,7 +120,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
             
             ListboxItem_exposer.def( 
                 "getPixelSize"

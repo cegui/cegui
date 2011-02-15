@@ -123,7 +123,7 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -282,7 +282,7 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::MultiLineEditbox::getFormattedLines
         
-            typedef ::std::vector<CEGUI::MultiLineEditbox::LineInfo, CEGUI::STLAllocatorWrapper<CEGUI::MultiLineEditbox::LineInfo, CEGUI::StdAllocator> > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::MultiLineEditbox::LineInfo > const & ( ::CEGUI::MultiLineEditbox::*getFormattedLines_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
                 "getFormattedLines"
@@ -806,8 +806,8 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( MultiLineEditbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( MultiLineEditbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             MultiLineEditbox_exposer.def( 
                 "isHit"

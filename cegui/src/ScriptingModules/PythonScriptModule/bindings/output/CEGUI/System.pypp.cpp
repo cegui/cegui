@@ -331,7 +331,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::getMultiClickToleranceAreaSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
             
             System_exposer.def( 
                 "getMultiClickToleranceAreaSize"
@@ -497,7 +497,7 @@ void register_System_class(){
                   Method that injects a typed character event into the system.\n\
             \n\
                @param code_point\n\
-                  Unicode code point of the character that was typed.\n\
+                  Unicode or ASCII (depends on used String class) code point of the character that was typed.\n\
             \n\
                @return\n\
                   - true if the input was processed by the gui system.\n\
@@ -861,7 +861,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
             
             System_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -1328,7 +1328,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::setMultiClickToleranceAreaSize
         
-            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             System_exposer.def( 
                 "setMultiClickToleranceAreaSize"

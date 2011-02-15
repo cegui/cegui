@@ -10,11 +10,11 @@ namespace bp = boost::python;
 
 void register_LBItemList_class(){
 
-    { //::std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> >
-        typedef bp::class_< std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > > LBItemList_exposer_t;
+    { //::std::vector< CEGUI::TreeItem* >
+        typedef bp::class_< std::vector< CEGUI::TreeItem* > > LBItemList_exposer_t;
         LBItemList_exposer_t LBItemList_exposer = LBItemList_exposer_t( "LBItemList" );
         bp::scope LBItemList_scope( LBItemList_exposer );
-        LBItemList_exposer.def( bp::indexing::vector_suite< std::vector<CEGUI::TreeItem*, CEGUI::STLAllocatorWrapper<CEGUI::TreeItem*, CEGUI::StdAllocator> > >::with_policies(bp::return_internal_reference< >()) );
+        LBItemList_exposer.def( bp::indexing::vector_suite< std::vector< CEGUI::TreeItem* > >::with_policies(bp::return_internal_reference< >()) );
     }
 
 }

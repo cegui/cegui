@@ -46,7 +46,7 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::draw
         
-            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const ) const;
+            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const ) const;
             
             RenderedString_exposer.def( 
                 "draw"
@@ -76,14 +76,13 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
+            typedef ::CEGUI::Size< float > ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
             
             RenderedString_exposer.def( 
                 "getPixelSize"
                 , getPixelSize_function_type( &::CEGUI::RenderedString::getPixelSize )
                 , ( bp::arg("line") )
-                , "! return the pixel size of the specified line.\n\
-                *!\n\
+                , "*!\n\
                 \n\
                     Return the pixel size of a specified line for the RenderedString.\n\
             \n\

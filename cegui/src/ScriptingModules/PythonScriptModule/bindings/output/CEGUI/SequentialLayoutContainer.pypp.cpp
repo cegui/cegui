@@ -147,7 +147,7 @@ struct SequentialLayoutContainer_wrapper : CEGUI::SequentialLayoutContainer, bp:
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -155,7 +155,7 @@ struct SequentialLayoutContainer_wrapper : CEGUI::SequentialLayoutContainer, bp:
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -603,8 +603,8 @@ void register_SequentialLayoutContainer_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( SequentialLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( SequentialLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             SequentialLayoutContainer_exposer.def( 
                 "isHit"

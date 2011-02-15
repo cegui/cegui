@@ -224,6 +224,8 @@
 
 #include "PyCEGUI_enumerations.pypp.hpp"
 
+#include "Quaternion.pypp.hpp"
+
 #include "RadioButton.pypp.hpp"
 
 #include "RawDataContainer.pypp.hpp"
@@ -336,6 +338,8 @@
 
 #include "TabControl.pypp.hpp"
 
+#include "TargetTypeStack.pypp.hpp"
+
 #include "TextComponent.pypp.hpp"
 
 #include "TextUtils.pypp.hpp"
@@ -413,8 +417,6 @@
 #include "XMLParser.pypp.hpp"
 
 #include "XMLSerializer.pypp.hpp"
-
-#include "vector_less__CEGUI_scope_String__greater_.pypp.hpp"
 
 namespace bp = boost::python;
 
@@ -503,7 +505,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_LBItemList_class();
 
-    register_vector_less__CEGUI_scope_String__greater__class();
+    register_TargetTypeStack_class();
 
     register_PropertyLinkDefinitionList_class();
 
@@ -753,6 +755,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PushButton_class();
 
+    register_Quaternion_class();
+
     register_RadioButton_class();
 
     register_RawDataContainer_class();
@@ -863,11 +867,11 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_URect_class();
 
-    register_UVector2_class();
-
     register_UnifiedDim_class();
 
     register_UpdateEventArgs_class();
+
+    register_UVector2_class();
 
     register_Vector2_class();
 
