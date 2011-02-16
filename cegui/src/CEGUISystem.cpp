@@ -34,6 +34,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIDefaultLogger.h"
 #include "CEGUIImagesetManager.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUITplWindowFactory.h"
@@ -1503,6 +1504,7 @@ void System::createSingletons()
 {
     // cause creation of other singleton objects
     CEGUI_NEW_AO ImagesetManager();
+    CEGUI_NEW_AO ImageManager();
     CEGUI_NEW_AO FontManager();
     CEGUI_NEW_AO WindowFactoryManager();
     CEGUI_NEW_AO WindowManager();
@@ -1526,6 +1528,7 @@ void System::destroySingletons()
     CEGUI_DELETE_AO RenderEffectManager::getSingletonPtr();
     CEGUI_DELETE_AO FontManager::getSingletonPtr();
     CEGUI_DELETE_AO MouseCursor::getSingletonPtr();
+    CEGUI_DELETE_AO ImageManager::getSingletonPtr();
     CEGUI_DELETE_AO ImagesetManager::getSingletonPtr();
     CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
 }
