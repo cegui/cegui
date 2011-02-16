@@ -172,9 +172,11 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         if (!texsize)
             break;
 
+        const String imageset_name(d_name + "_auto_glyph_images_" +
+                                   PropertyHelper<int>::toString(s->first));
         Imageset& is = ImagesetManager::getSingleton().create(
-                           d_name + "_auto_glyph_images_" + PropertyHelper<int>::toString(s->first),
-                           System::getSingleton().getRenderer()->createTexture());
+                imageset_name,
+                System::getSingleton().getRenderer()->createTexture(imageset_name));
         d_glyphImages.push_back(&is);
 
         // Create a memory buffer where we will render our glyphs
