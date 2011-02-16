@@ -27,18 +27,19 @@
  ***************************************************************************/
 #include "CEGUIOpenGLTextureTarget.h"
 #include "CEGUIOpenGLTexture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+uint OpenGLTextureTarget::s_textureNumber = 0;
+
 //----------------------------------------------------------------------------//
 OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRenderer& owner) :
     OpenGLRenderTarget(owner),
     d_texture(0)
 {
-    // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
+    createCEGUITexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -79,11 +80,25 @@ void OpenGLTextureTarget::grabTexture()
 //----------------------------------------------------------------------------//
 void OpenGLTextureTarget::restoreTexture()
 {
-    if (d_CEGUITexture)
-        return;
+    if (!d_CEGUITexture)
+        createCEGUITexture();
+}
 
+//----------------------------------------------------------------------------//
+void OpenGLTextureTarget::createCEGUITexture()
+{
     d_CEGUITexture = &static_cast<OpenGLTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
+        d_owner.createTexture(generateTextureName(),
+                              d_texture, d_area.getSize()));
+}
+
+//----------------------------------------------------------------------------//
+String OpenGLTextureTarget::generateTextureName()
+{
+    String tmp("_ogl_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//
