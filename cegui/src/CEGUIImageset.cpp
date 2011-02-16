@@ -76,8 +76,8 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
 {
     // try to load the image file using the renderer
     d_texture =
-        &System::getSingleton().getRenderer()->createTexture(filename,
-        resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
+        &System::getSingleton().getRenderer()->createTexture(name, filename,
+            resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
     // store texture filename
     d_textureFilename = filename;

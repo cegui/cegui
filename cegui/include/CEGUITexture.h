@@ -72,6 +72,15 @@ public:
 
     /*!
     \brief
+        Returns the name given to the texture when it was created.
+
+    \return
+        Reference to a String object that holds the name of the texture.
+    */
+    virtual const String& getName() const = 0;
+
+    /*!
+    \brief
         Returns the current pixel size of the texture.
 
     \return
