@@ -95,6 +95,7 @@ public:
     void restoreTexture();
 
     // implement abstract members from base class.
+    const String& getName() const;
     const Size<>& getSize() const;
     const Size<>& getOriginalDataSize() const;
     const Vector2<>& getTexelScaling() const;
@@ -106,21 +107,24 @@ public:
 
 protected:
     // Friends (to allow construction and destruction)
-    friend Texture& OpenGLRenderer::createTexture(void);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const String&);
-    friend Texture& OpenGLRenderer::createTexture(const Size<>&);
-    friend Texture& OpenGLRenderer::createTexture(GLuint, const Size<>&);
+    friend Texture& OpenGLRenderer::createTexture(const String&);
+    friend Texture& OpenGLRenderer::createTexture(const String&, const String&, const String&);
+    friend Texture& OpenGLRenderer::createTexture(const String&, const Size<>&);
+    friend Texture& OpenGLRenderer::createTexture(const String&, GLuint, const Size<>&);
     friend void OpenGLRenderer::destroyTexture(Texture&);
+    friend void OpenGLRenderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    OpenGLTexture(OpenGLRenderer& owner);
+    OpenGLTexture(OpenGLRenderer& owner, const String& name);
     //! Constructor that creates a Texture from an image file.
-    OpenGLTexture(OpenGLRenderer& owner,
+    OpenGLTexture(OpenGLRenderer& owner, const String& name,
                   const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLTexture(OpenGLRenderer& owner, const Size<>& size);
+    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+                  const Size<>& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(OpenGLRenderer& owner, GLuint tex, const Size<>& size);
+    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+                  GLuint tex, const Size<>& size);
     //! Destructor.
     virtual ~OpenGLTexture();
 
@@ -145,6 +149,8 @@ protected:
     Vector2<> d_texelScaling;
     //! OpenGLRenderer that created and owns this OpenGLTexture
     OpenGLRenderer& d_owner;
+    //! The name given for this texture.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section

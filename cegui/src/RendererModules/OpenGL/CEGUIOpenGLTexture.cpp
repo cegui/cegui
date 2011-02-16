@@ -35,47 +35,53 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner) :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLTexture();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& filename,
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+                             const String& filename,
                              const String& resourceGroup) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const Size<>& size) :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+                             const Size<>& size) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLTexture();
     setTextureSize(size);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, GLuint tex,
-                             const Size<>& size) :
+OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+                             GLuint tex, const Size<>& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
     d_dataSize(size),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     updateCachedScaleValues();
 }
@@ -84,6 +90,12 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, GLuint tex,
 OpenGLTexture::~OpenGLTexture()
 {
     cleanupOpenGLTexture();
+}
+
+//----------------------------------------------------------------------------//
+const String& OpenGLTexture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//
