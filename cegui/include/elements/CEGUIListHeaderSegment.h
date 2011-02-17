@@ -297,9 +297,9 @@ public:
 
 
     void setSizingCursorImage(const Image* image);
-    void setSizingCursorImage(const String& imageset, const String& image);
+    void setSizingCursorImage(const String& name);
     void setMovingCursorImage(const Image* image);
-    void setMovingCursorImage(const String& imageset, const String& image);
+    void setMovingCursorImage(const String& name);
 
 
 	/*************************************************************************

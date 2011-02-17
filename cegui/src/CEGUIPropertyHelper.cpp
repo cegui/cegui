@@ -28,8 +28,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIPropertyHelper.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 
 #include <cstdio>
@@ -53,16 +53,11 @@ PropertyHelper<Image*>::fromString(const String& str)
     if (str.empty())
         return 0;
 
-    char imageSet[128];
-    char imageName[128];
-
-    sscanf(str.c_str(), " set:%127s image:%127s", imageSet, imageName);
-
     PropertyHelper<Image*>::return_type image;
 
     CEGUI_TRY
     {
-        image = &ImagesetManager::getSingleton().get(imageSet).getImage(imageName);
+        image = &ImageManager::getSingleton().get(str);
     }
     CEGUI_CATCH(UnknownObjectException&)
     {
@@ -76,7 +71,7 @@ PropertyHelper<Image*>::fromString(const String& str)
 PropertyHelper<Image*>::string_return_type PropertyHelper<Image*>::toString(
     PropertyHelper<Image*>::pass_type val)
 {
-    return val ? String("set:" + val->getImagesetName() + " image:" + val->getName()) : String("");
+    return val ? val->getName() : String("");
 }
 
 //----------------------------------------------------------------------------//

@@ -59,10 +59,10 @@ bool FalagardDemo1Sample::initialiseSample()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().create("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -72,7 +72,7 @@ bool FalagardDemo1Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 

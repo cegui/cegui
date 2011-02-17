@@ -41,11 +41,11 @@ class CEGUIEXPORT RenderedStringImageComponent : public RenderedStringComponent
 public:
     //! Constructor
     RenderedStringImageComponent();
-    RenderedStringImageComponent(const String& imageset, const String& image);
+    RenderedStringImageComponent(const String& name);
     RenderedStringImageComponent(const Image* image);
 
     //! Set the image to be drawn by this component.
-    void setImage(const String& imageset, const String& image);
+    void setImage(const String& name);
     //! Set the image to be drawn by this component.
     void setImage(const Image* image);
     //! return the current set image that will be drawn by this component

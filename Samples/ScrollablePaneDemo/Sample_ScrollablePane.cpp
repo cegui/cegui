@@ -29,8 +29,7 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIFontManager.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindow.h"
 #include "CEGUICoordConverter.h"
@@ -106,13 +105,13 @@ bool ScrollablePaneSample::initialiseSample()
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font
-    Imageset& wndlook = ImagesetManager::getSingleton().get("WindowsLook");
-    wndlook.setAutoScalingEnabled(false);
+//    Imageset& wndlook = ImageManager::getSingleton().get("WindowsLook");
+//    wndlook.setAutoScalingEnabled(false);
     d_font->setProperty("AutoScaled", "false");
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->setDefaultMouseCursor(&wndlook.getImage("MouseArrow"));
+    d_system->setDefaultMouseCursor("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_system->setDefaultTooltip("WindowsLook/Tooltip");

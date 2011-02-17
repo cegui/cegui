@@ -410,10 +410,7 @@ public:
     \brief
         Set the image to be used for the north-south sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -421,16 +418,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNSSizingCursorImage(const String& imageset, const String& image);
+    void setNSSizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the east-west sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -438,16 +432,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setEWSizingCursorImage(const String& imageset, const String& image);
+    void setEWSizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the northwest-southeast sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -455,16 +446,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNWSESizingCursorImage(const String& imageset, const String& image);
+    void setNWSESizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the northeast-southwest sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -472,7 +460,7 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNESWSizingCursorImage(const String& imageset, const String& image);
+    void setNESWSizingCursorImage(const String& name);
 
     // overridden from Window class
     bool isHit(const Vector2<>& position, const bool /*allow_disabled*/) const

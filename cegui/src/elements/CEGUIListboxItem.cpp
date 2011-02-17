@@ -33,8 +33,7 @@
 
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUISystem.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUIFribidiVisualMapping.h"
@@ -86,9 +85,9 @@ ListboxItem::~ListboxItem(void)
 /*************************************************************************
 	Set the selection highlighting brush image.
 *************************************************************************/
-void ListboxItem::setSelectionBrushImage(const String& imageset, const String& image)
+void ListboxItem::setSelectionBrushImage(const String& name)
 {
-	setSelectionBrushImage(&ImagesetManager::getSingleton().get(imageset).getImage(image));
+	setSelectionBrushImage(&ImageManager::getSingleton().get(name));
 }
 
 

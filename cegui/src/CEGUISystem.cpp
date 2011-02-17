@@ -33,7 +33,6 @@
 
 #include "CEGUISystem.h"
 #include "CEGUIDefaultLogger.h"
-#include "CEGUIImagesetManager.h"
 #include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIWindowFactoryManager.h"
@@ -44,7 +43,6 @@
 #include "CEGUIAnimationManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
-#include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
@@ -517,9 +515,10 @@ void System::setDefaultMouseCursor(const Image* image)
 /*************************************************************************
 	Set the image to be used as the default mouse cursor.
 *************************************************************************/
-void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
+void System::setDefaultMouseCursor(const String& name)
 {
-	setDefaultMouseCursor(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+	setDefaultMouseCursor(
+        &ImageManager::getSingleton().get(name));
 }
 
 
@@ -1324,7 +1323,7 @@ void System::notifyDisplaySizeChanged(const Size<>& new_size)
 {
     // notify other components of the display size change
     d_renderer->setDisplaySize(new_size);
-    ImagesetManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    ImageManager::getSingleton().notifyDisplaySizeChanged(new_size);
     FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
     MouseCursor::getSingleton().notifyDisplaySizeChanged(new_size);
 
@@ -1503,7 +1502,6 @@ void System::addStandardWindowFactories()
 void System::createSingletons()
 {
     // cause creation of other singleton objects
-    CEGUI_NEW_AO ImagesetManager();
     CEGUI_NEW_AO ImageManager();
     CEGUI_NEW_AO FontManager();
     CEGUI_NEW_AO WindowFactoryManager();
@@ -1529,7 +1527,6 @@ void System::destroySingletons()
     CEGUI_DELETE_AO FontManager::getSingletonPtr();
     CEGUI_DELETE_AO MouseCursor::getSingletonPtr();
     CEGUI_DELETE_AO ImageManager::getSingletonPtr();
-    CEGUI_DELETE_AO ImagesetManager::getSingletonPtr();
     CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
 }
 

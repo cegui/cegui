@@ -135,7 +135,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
                            float alpha, const Rect* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->draw(buffer, targetRect, clipper,
+        d_selectBrush->render(buffer, targetRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
     Font* font = getFont();

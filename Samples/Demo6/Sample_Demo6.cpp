@@ -56,11 +56,11 @@ bool Demo6Sample::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
@@ -71,7 +71,7 @@ bool Demo6Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
@@ -124,7 +124,7 @@ void Demo6Sample::createDemoWindows(void)
     //cbbo->setSortingEnabled(true);
 
     // populate combobox with possible selection modes
-    const CEGUI::Image* sel_img = &ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush");
+    const CEGUI::Image* sel_img = &ImageManager::getSingleton().get("TaharezLook/MultiListSelectionBrush");
     itm = new ListboxTextItem("Full Row (Single)", 0);
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
@@ -522,7 +522,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
     // construct a new ListboxTextItem with the required string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to use for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to add a new row, using the new ListboxTextItem as the initial content for one of the columns
     CEGUI_TRY
@@ -590,7 +590,7 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
     // create a new ListboxTextItem using the new text string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to be used for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to set the new item in place
     CEGUI_TRY

@@ -99,7 +99,7 @@ namespace CEGUI
 
         if (mouseImage)
         {
-            mouseSz = mouseImage->getSize();
+            mouseSz = mouseImage->getRenderedSize();
         }
 
         Vector2<> tmpPos(mousePos.d_x + mouseSz.d_width, mousePos.d_y + mouseSz.d_height);

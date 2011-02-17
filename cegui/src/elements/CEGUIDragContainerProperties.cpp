@@ -73,15 +73,17 @@ namespace DragContainerProperties
 
     String DragCursorImage::get(const PropertyReceiver* receiver) const
     {
-        const Image* img = static_cast<const DragContainer*>(receiver)->getDragCursorImage();
-        return img ?PropertyHelper<Image*>::toString(img) : String();
+        const Image* img =
+            static_cast<const DragContainer*>(receiver)->getDragCursorImage();
+        return PropertyHelper<Image*>::toString(img);
     }
 
     void DragCursorImage::set(PropertyReceiver* receiver, const String& value)
     {
         if (!value.empty())
         {
-            static_cast<DragContainer*>(receiver)->setDragCursorImage(PropertyHelper<Image*>::fromString(value));
+            static_cast<DragContainer*>(receiver)->
+                setDragCursorImage(PropertyHelper<Image*>::fromString(value));
         }
     }
 

@@ -25,24 +25,87 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIImageManager_h
+#ifndef _CEGUIImageManager_h_
 #define _CEGUIImageManager_h_
 
 #include "CEGUISingleton.h"
+#include "CEGUIXMLHandler.h"
+#include "CEGUIString.h"
+#include <map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 class CEGUIEXPORT ImageManager :
         public Singleton<ImageManager>,
-        public AllocatedObject<ImageManager>
+        public AllocatedObject<ImageManager>,
+        public XMLHandler
 {
 public:
     ImageManager();
     ~ImageManager();
 
-private:
+    //! add a /copy/ (via Image::clone) of \a image.
+    void add(const Image& image);
+    void destroy(Image& image);
+    void destroy(const String& name);
+    void destroyAll();
 
+    Image& get(const String& name) const;
+    bool isDefined(const String& name) const;
+
+    uint getImageCount() const;
+
+    void loadImageset(const String& filename, const String& resource_group = "");
+    void addFromImageFile(const String& name,
+                          const String& filename,
+                          const String& resource_group = "");
+
+    /*!
+    \brief
+        Notify the ImageManager that the display size may have changed.
+
+    \param size
+        Size object describing the display resolution
+    */
+    void notifyDisplaySizeChanged(const Size<>& size);
+
+    /*!
+    \brief
+        Sets the default resource group to be used when loading imageset data
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+    */
+    static void setImagesetDefaultResourceGroup(const String& resourceGroup)
+        { d_imagesetDefaultResourceGroup = resourceGroup; }
+
+    /*!
+    \brief
+        Returns the default resource group currently set for Imagesets.
+
+    \return
+        String describing the default resource group identifier that will be
+        used when loading Imageset data.
+    */
+    static const String& getImagesetDefaultResourceGroup()
+        { return d_imagesetDefaultResourceGroup; }
+
+    // XMLHandler overrides
+    void elementStart(const String& element, const XMLAttributes& attributes);
+
+private:
+    // XML parsing helper functions.
+    void elementImagesetStart(const XMLAttributes& attributes);
+    void elementImageStart(const XMLAttributes& attributes);
+    //! Default resource group specifically for Imagesets.
+    static String d_imagesetDefaultResourceGroup;
+
+    //! container type used to hold the images.
+    typedef std::map<String, Image*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+    //! container holding the images.
+    ImageMap d_images;
 };
 
 } // End of  CEGUI namespace section

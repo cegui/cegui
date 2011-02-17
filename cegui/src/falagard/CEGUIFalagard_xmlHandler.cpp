@@ -100,8 +100,6 @@ namespace CEGUI
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
     const String Falagard_xmlHandler::BottomLeftAttribute("bottomLeft");
     const String Falagard_xmlHandler::BottomRightAttribute("bottomRight");
-    const String Falagard_xmlHandler::ImagesetAttribute("imageset");
-    const String Falagard_xmlHandler::ImageAttribute("image");
     const String Falagard_xmlHandler::TypeAttribute("type");
     const String Falagard_xmlHandler::NameAttribute("name");
     const String Falagard_xmlHandler::PriorityAttribute("priority");
@@ -471,19 +469,17 @@ namespace CEGUI
     {
         if (d_imagerycomponent)
         {
-            d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
-            CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
+            d_imagerycomponent->setImage(attributes.getValueAsString(NameAttribute));
+            CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(NameAttribute));
         }
         else if (d_framecomponent)
         {
             d_framecomponent->setImage(
                 FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
-                attributes.getValueAsString(ImagesetAttribute),
-                attributes.getValueAsString(ImageAttribute));
+                attributes.getValueAsString(NameAttribute));
 
             CEGUI_LOGINSANE("---------> Using image: " +
-                attributes.getValueAsString(ImageAttribute) + " from imageset: " +
-                attributes.getValueAsString(ImagesetAttribute) + " for: " +
+                attributes.getValueAsString(NameAttribute) + " for: " +
                 attributes.getValueAsString(TypeAttribute));
         }
     }
@@ -613,8 +609,7 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementImageDimStart(const XMLAttributes& attributes)
     {
-        ImageDim base(attributes.getValueAsString(ImagesetAttribute),
-                      attributes.getValueAsString(ImageAttribute),
+        ImageDim base(attributes.getValueAsString(NameAttribute),
                       FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
 
         doBaseDimStart(&base);

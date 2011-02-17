@@ -70,7 +70,6 @@ public:
     static const String DirectoryAttribute;
     static const String InitScriptAttribute;
     static const String TerminateScriptAttribute;
-    static const String ImagesetAttribute;
     static const String ImageAttribute;
     static const String NameAttribute;
 
@@ -166,6 +165,8 @@ private:
     void autoLoadLayouts(const String& pattern, const String& group) const;
     //! helper to auto-load looknfeels
     void autoLoadLookNFeels(const String& pattern, const String& group) const;
+    //! helper to auto-load imagesets
+    void autoLoadImagesets(const String& pattern, const String& group) const;
 
     //! type of collection holding resource group directory specifications.
     typedef std::vector<ResourceDirectory
@@ -186,8 +187,6 @@ private:
     String d_imageCodecName;
     //! The name of the default font to be set.
     String d_defaultFont;
-    //! The name of the imageset holding the default mouse cursor image.
-    String d_defaultMouseImageset;
     //! The name of the default mouse cursor image to use.
     String d_defaultMouseImage;
     //! The name of the default tooltip window type.

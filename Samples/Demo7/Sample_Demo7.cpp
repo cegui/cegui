@@ -273,11 +273,11 @@ bool Demo7Sample::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -288,7 +288,7 @@ bool Demo7Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
@@ -448,11 +448,11 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "set:BackgroundImage image:full_image");
+        img->setProperty("Image", "BackgroundImage");
         break;
 
     case 1:
-        img->setProperty("Image", "set:TaharezLook image:MouseArrow");
+        img->setProperty("Image", "TaharezLook/MouseArrow");
         break;
 
     default:

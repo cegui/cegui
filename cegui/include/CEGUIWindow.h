@@ -2220,18 +2220,16 @@ public:
         String object that contains the name of the Imageset that contains the
         image to be used.
 
-    \param image_name
-        String object that contains the name of the Image on \a imageset that
-        is to be used.
+    \param name
+        String object that contains the name of the Image to use.
 
     \return
         Nothing.
 
     \exception UnknownObjectException
-        thrown if \a imageset is not known, or if \a imageset contains no Image
-        named \a image_name.
+        thrown if no Image named \a name exists.
     */
-    void setMouseCursor(const String& imageset, const String& image_name);
+    void setMouseCursor(const String& name);
 
     /*!
     \brief

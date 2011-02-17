@@ -36,8 +36,7 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUISystem.h"
 #include "CEGUIFontManager.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIWindowRendererManager.h"
@@ -1443,10 +1442,10 @@ const Image* Window::getMouseCursor(bool useDefault) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMouseCursor(const String& imageset, const String& image_name)
+void Window::setMouseCursor(const String& name)
 {
     setMouseCursor(
-        &ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+        &ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//

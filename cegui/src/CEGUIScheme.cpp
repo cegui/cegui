@@ -31,8 +31,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUILogger.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowFactoryManager.h"
@@ -123,7 +122,7 @@ void Scheme::unloadResources(void)
 
     // unload all resources specified for this scheme.
     unloadFonts();
-    unloadXMLImagesets();
+    //unloadXMLImagesets(); FIXME: ????
     unloadImageFileImagesets();
     unloadWindowFactories();
     unloadWindowRendererFactories();
@@ -141,7 +140,7 @@ void Scheme::unloadResources(void)
 bool Scheme::resourcesLoaded(void) const
 {
     // test state of all loadable resources for this scheme.
-    if (areXMLImagesetsLoaded() &&
+    if (//areXMLImagesetsLoaded() && FIXME: ????
         areImageFileImagesetsLoaded() &&
         areFontsLoaded() &&
         areWindowRendererFactoriesLoaded() &&
@@ -161,36 +160,12 @@ bool Scheme::resourcesLoaded(void) const
 *************************************************************************/
 void Scheme::loadXMLImagesets()
 {
-    ImagesetManager& ismgr = ImagesetManager::getSingleton();
-
     // check all imagesets
     for (LoadableUIElementList::iterator pos = d_imagesets.begin();
         pos != d_imagesets.end(); ++pos)
     {
-        // skip if the imageset already exists
-        if (!(*pos).name.empty() && ismgr.isDefined((*pos).name))
-            continue;
-
-        // create imageset from specified file.
-        Imageset& iset = ismgr.create((*pos).filename, (*pos).resourceGroup);
-        const String realname(iset.getName());
-
-        // if name was not in scheme, set it now and proceed to next imageset
-        if ((*pos).name.empty())
-        {
-            (*pos).name = realname;
-            continue;
-        }
-
-        // confirm the imageset loaded has same name specified in scheme
-        if (realname != (*pos).name)
-        {
-            ismgr.destroy(iset);
-            CEGUI_THROW(InvalidRequestException("Scheme::loadResources: "
-                "The Imageset created by file '" + (*pos).filename +
-                "' is named '" + realname + "', not '" + (*pos).name +
-                "' as required by Scheme '" + d_name + "'."));
-        }
+        ImageManager::getSingleton().loadImageset(
+            (*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -199,9 +174,9 @@ void Scheme::loadXMLImagesets()
 *************************************************************************/
 void Scheme::loadImageFileImagesets()
 {
-    ImagesetManager& ismgr = ImagesetManager::getSingleton();
+    ImageManager& imgr = ImageManager::getSingleton();
 
-    // check imagesets that are created directly from image files
+    // check images that are created directly from image files
     for (LoadableUIElementList::iterator pos = d_imagesetsFromImages.begin();
         pos != d_imagesetsFromImages.end(); ++pos)
     {
@@ -209,9 +184,9 @@ void Scheme::loadImageFileImagesets()
         if ((*pos).name.empty())
             (*pos).name = (*pos).filename;
 
-        // see if imageset is present, and create it if not.
-        if (!ismgr.isDefined((*pos).name))
-            ismgr.createFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
+        // see if image is present, and create it if not.
+        if (!imgr.isDefined((*pos).name))
+            imgr.addFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
     }
 }
 
@@ -441,14 +416,14 @@ void Scheme::loadFalagardMappings()
 *************************************************************************/
 void Scheme::unloadXMLImagesets()
 {
-    ImagesetManager& ismgr      = ImagesetManager::getSingleton();
+    ImageManager& imgr = ImageManager::getSingleton();
 
     // unload all xml based Imagesets
     for (LoadableUIElementList::const_iterator pos = d_imagesets.begin();
         pos != d_imagesets.end(); ++pos)
     {
-        if (!(*pos).name.empty())
-            ismgr.destroy((*pos).name);
+//        if (!(*pos).name.empty())
+//            ismgr.destroy((*pos).name);
     }
 }
 
@@ -457,14 +432,14 @@ void Scheme::unloadXMLImagesets()
 *************************************************************************/
 void Scheme::unloadImageFileImagesets()
 {
-    ImagesetManager& ismgr      = ImagesetManager::getSingleton();
+    ImageManager& imgr = ImageManager::getSingleton();
 
-    // unload all imagesets that are created directly from image files
+    // unload all images that are created directly from image files
     for (LoadableUIElementList::const_iterator pos = d_imagesetsFromImages.begin();
         pos != d_imagesetsFromImages.end(); ++pos)
     {
         if (!(*pos).name.empty())
-            ismgr.destroy((*pos).name);
+            imgr.destroy((*pos).name);
     }
 }
 
@@ -629,14 +604,14 @@ void Scheme::unloadFalagardMappings()
 *************************************************************************/
 bool Scheme::areXMLImagesetsLoaded() const
 {
-    ImagesetManager& ismgr = ImagesetManager::getSingleton();
+    ImageManager& imgr = ImageManager::getSingleton();
 
     // check imagesets
     for (LoadableUIElementList::const_iterator pos = d_imagesets.begin();
         pos != d_imagesets.end(); ++pos)
     {
-        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
-            return false;
+//        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
+//            return false;
     }
 
     return true;
@@ -647,12 +622,12 @@ bool Scheme::areXMLImagesetsLoaded() const
 *************************************************************************/
 bool Scheme::areImageFileImagesetsLoaded() const
 {
-    ImagesetManager& ismgr = ImagesetManager::getSingleton();
+    ImageManager& imgr = ImageManager::getSingleton();
 
     for (LoadableUIElementList::const_iterator pos = d_imagesetsFromImages.begin();
         pos != d_imagesetsFromImages.end(); ++pos)
     {
-        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
+        if ((*pos).name.empty() || !imgr.isDefined((*pos).name))
             return false;
     }
 

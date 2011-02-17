@@ -145,8 +145,6 @@ namespace CEGUI
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
         static const String BottomLeftAttribute;        //!< Attribute name that stores colour for bottom-left corner.
         static const String BottomRightAttribute;       //!< Attribute name that stores colour for bottom-right corner.
-        static const String ImagesetAttribute;          //!< Attribute name that stores name of an imageset.
-        static const String ImageAttribute;             //!< Attribute name that stores name of an image.
         static const String TypeAttribute;              //!< Attribute name that stores a type string.
         static const String NameAttribute;              //!< Attribute name that stores name string
         static const String PriorityAttribute;          //!< Attribute name that stores an integer priority.

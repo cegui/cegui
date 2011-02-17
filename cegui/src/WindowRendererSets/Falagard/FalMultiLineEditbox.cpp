@@ -31,6 +31,7 @@
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -266,7 +267,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect& dest_area)
 
                 // render the selection area brush for this line
                 colours.setColours(selectBrushCol);
-                w->getSelectionBrushImage()->draw(w->getGeometryBuffer(), lineRect, &dest_area, colours);
+                w->getSelectionBrushImage()->render(w->getGeometryBuffer(), lineRect, &dest_area, colours);
 
                 // draw the text for this section
                 colours.setColours(selectTextCol);

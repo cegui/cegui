@@ -145,46 +145,54 @@ void	SizingBorderThickness::set(PropertyReceiver* receiver, const String& value)
 
 String NSSizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const FrameWindow*>(receiver)->getNSSizingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const FrameWindow*>(receiver)->getNSSizingCursorImage();
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void NSSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<FrameWindow*>(receiver)->setNSSizingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<FrameWindow*>(receiver)->
+        setNSSizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 String EWSizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const FrameWindow*>(receiver)->getEWSizingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const FrameWindow*>(receiver)->getEWSizingCursorImage();
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void EWSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<FrameWindow*>(receiver)->setEWSizingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<FrameWindow*>(receiver)->
+        setEWSizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 String NWSESizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const FrameWindow*>(receiver)->getNWSESizingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const FrameWindow*>(receiver)->getNWSESizingCursorImage();
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void NWSESizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<FrameWindow*>(receiver)->setNWSESizingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<FrameWindow*>(receiver)->
+        setNWSESizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 String NESWSizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const FrameWindow*>(receiver)->getNESWSizingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const FrameWindow*>(receiver)->getNESWSizingCursorImage();
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void NESWSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<FrameWindow*>(receiver)->setNESWSizingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<FrameWindow*>(receiver)->
+        setNESWSizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 

@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,6 +30,7 @@
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUISystem.h"
+#include "CEGUIImage.h"
 
 namespace CEGUI
 {
@@ -202,8 +203,8 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
         {
             const Image* const img = glyph->getImage();
             glyph_pos.d_y =
-                base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(buffer, glyph_pos,
+                base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
+            img->render(buffer, glyph_pos,
                       glyph->getSize(x_scale, y_scale), clip_rect, colours);
             glyph_pos.d_x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars

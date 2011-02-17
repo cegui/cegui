@@ -26,8 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIRenderedStringImageComponent.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
@@ -43,12 +43,11 @@ RenderedStringImageComponent::RenderedStringImageComponent() :
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringImageComponent::RenderedStringImageComponent(
-        const String& imageset, const String& image) :
+RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_size(0, 0)
 {
-    setImage(imageset, image);
+    setImage(name);
 }
 
 //----------------------------------------------------------------------------//
@@ -60,13 +59,11 @@ RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setImage(const String& imageset,
-                                            const String& image)
+void RenderedStringImageComponent::setImage(const String& name)
 {
-    if (!imageset.empty() && !image.empty())
+    if (!name.empty())
     {
-        Imageset& is = ImagesetManager::getSingleton().get(imageset);
-        d_image = &is.getImage(image);
+        d_image = &ImageManager::getSingleton().get(name);
     }
     else
     {
@@ -143,7 +140,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
             "unknown VerticalFormatting option specified."));
     }
 
-    Size<> sz(d_image->getSize());
+    Size<> sz(d_image->getRenderedSize());
     if (d_size.d_width != 0.0)
         sz.d_width = d_size.d_width;
     if (d_size.d_height != 0.0)
@@ -161,7 +158,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
         final_cols *= *mod_colours;
 
     // draw the image.
-    d_image->draw(buffer, dest, clip_rect, final_cols);
+    d_image->render(buffer, dest, clip_rect, final_cols);
 }
 
 //----------------------------------------------------------------------------//
@@ -171,7 +168,7 @@ Size<> RenderedStringImageComponent::getPixelSize() const
 
     if (d_image)
     {
-        sz = d_image->getSize();
+        sz = d_image->getRenderedSize();
         if (d_size.d_width != 0.0)
             sz.d_width = d_size.d_width;
         if (d_size.d_height != 0.0)

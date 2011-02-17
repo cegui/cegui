@@ -32,10 +32,10 @@
 #endif
 
 #include "CEGUIPixmapFont.h"
-#include "CEGUIImageset.h"
 #include "CEGUIXMLSerializer.h" 
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
+#include "CEGUILogger.h"
 
 #ifdef CEGUI_HAS_FREETYPE
 #   include "CEGUIFreeTypeFont.h"
@@ -169,23 +169,23 @@ public:
 #endif // CEGUI_HAS_FREETYPE
 
 // PixmapFont property
-class PixmapImageset : public Property
+class PixmapImageNamePrefix : public Property
 {
 public:
-    PixmapImageset() : Property(
-        "Imageset",
-        "This is the name of the imageset which contains the glyph images for "
-        "this font.")
+    PixmapImageNamePrefix() : Property(
+        "ImageNamePrefix",
+        "This is the name prefix used by the images that contain the glyph "
+        "imagery for this font.")
     {}
 
     String get(const PropertyReceiver* receiver) const
     {
-        return static_cast<const PixmapFont*>(receiver)->getImageset();
+        return static_cast<const PixmapFont*>(receiver)->getImageNamePrefix();
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<PixmapFont*>(receiver)->setImageset(value);
+        static_cast<PixmapFont*>(receiver)->setImageNamePrefix(value);
     }
 };
 
@@ -242,10 +242,10 @@ void FreeTypeFont::addFreeTypeFontProperties ()
 
 void PixmapFont::addPixmapFontProperties ()
 {
-    static FontProperties::PixmapImageset PixmapImageset;
+    static FontProperties::PixmapImageNamePrefix PixmapImageNamePrefix;
     static FontProperties::PixmapMapping PixmapMapping;
 
-    addProperty(&PixmapImageset);
+    addProperty(&PixmapImageNamePrefix);
     addProperty(&PixmapMapping);
 }
 

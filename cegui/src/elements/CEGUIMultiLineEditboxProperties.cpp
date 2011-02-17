@@ -119,13 +119,16 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 
 String SelectionBrushImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const MultiLineEditbox*>(receiver)->getSelectionBrushImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const MultiLineEditbox*>(receiver)->getSelectionBrushImage();
+
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void SelectionBrushImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<MultiLineEditbox*>(receiver)->setSelectionBrushImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<MultiLineEditbox*>(receiver)->
+        setSelectionBrushImage(PropertyHelper<Image*>::fromString(value));
 }
 
 String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const

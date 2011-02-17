@@ -118,25 +118,31 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 
 String SizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getSizingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const ListHeaderSegment*>(receiver)->getSizingCursorImage();
+
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void SizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<ListHeaderSegment*>(receiver)->setSizingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<ListHeaderSegment*>(receiver)->
+        setSizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 
 String MovingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getMovingCursorImage();
-    return img ?PropertyHelper<Image*>::toString(img) : String("");
+    const Image* img =
+        static_cast<const ListHeaderSegment*>(receiver)->getMovingCursorImage();
+
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void MovingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<ListHeaderSegment*>(receiver)->setMovingCursorImage(PropertyHelper<Image*>::fromString(value));
+    static_cast<ListHeaderSegment*>(receiver)->
+        setMovingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 } // End of  ListHeaderSegmentProperties namespace section
