@@ -604,20 +604,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setEWSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setEWSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setEWSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setEWSizingCursorImage"
                 , setEWSizingCursorImage_function_type( &::CEGUI::FrameWindow::setEWSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the east-west sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -671,20 +668,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNESWSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNESWSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNESWSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNESWSizingCursorImage"
                 , setNESWSizingCursorImage_function_type( &::CEGUI::FrameWindow::setNESWSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the northeast-southwest sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -717,20 +711,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNSSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNSSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNSSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNSSizingCursorImage"
                 , setNSSizingCursorImage_function_type( &::CEGUI::FrameWindow::setNSSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the north-south sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -763,20 +754,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNWSESizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNWSESizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNWSESizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNWSESizingCursorImage"
                 , setNWSESizingCursorImage_function_type( &::CEGUI::FrameWindow::setNWSESizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the northwest-southeast sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\

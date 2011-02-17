@@ -334,27 +334,23 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setImage
         
-            typedef void ( ::CEGUI::MouseCursor::*setImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setImage_function_type )( ::CEGUI::String const & ) ;
             
             MouseCursor_exposer.def( 
                 "setImage"
                 , setImage_function_type( &::CEGUI::MouseCursor::setImage )
-                , ( bp::arg("imageset"), bp::arg("image_name") )
+                , ( bp::arg("name") )
                 , "*!\n\
                \n\
                   Set the current mouse cursor image\n\
             \n\
-               @param imageset\n\
-                  String object holding the name of the Imageset that contains the desired Image.\n\
-            \n\
-               @param image_name\n\
-                  String object holding the name of the desired Image on Imageset  imageset.\n\
+               @param name\n\
+                  String object holding the name of the desired Image.\n\
             \n\
                @return\n\
                   Nothing.\n\
             \n\
-               @exception UnknownObjectException   thrown if  imageset is not known, or if  imageset contains no\
-               Image named  image_name.\n\
+               @exception UnknownObjectException   thrown if Image  name is not known.\n\
                *\n" );
         
         }

@@ -26,6 +26,8 @@
 
 #include "BaseDim.pypp.hpp"
 
+#include "BasicImage.pypp.hpp"
+
 #include "BasicRenderedStringParser.pypp.hpp"
 
 #include "BidiVisualMapping.pypp.hpp"
@@ -116,17 +118,11 @@
 
 #include "ImageDim.pypp.hpp"
 
-#include "ImageIterator.pypp.hpp"
+#include "ImageManager.pypp.hpp"
 
 #include "ImageryComponent.pypp.hpp"
 
 #include "ImagerySection.pypp.hpp"
-
-#include "Imageset.pypp.hpp"
-
-#include "ImagesetIterator.pypp.hpp"
-
-#include "ImagesetManager.pypp.hpp"
 
 #include "Interpolator.pypp.hpp"
 
@@ -185,8 +181,6 @@
 #include "NamedArea.pypp.hpp"
 
 #include "NamedXMLResourceManagerFont.pypp.hpp"
-
-#include "NamedXMLResourceManagerImageset.pypp.hpp"
 
 #include "NamedXMLResourceManagerScheme.pypp.hpp"
 
@@ -298,7 +292,7 @@
 
 #include "SingletonGlobalEventSet.pypp.hpp"
 
-#include "SingletonImagesetManager.pypp.hpp"
+#include "SingletonImageManager.pypp.hpp"
 
 #include "SingletonLogger.pypp.hpp"
 
@@ -539,6 +533,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_AnimationManager_class();
 
+    register_ColourRect_class();
+
+    register_Rect_class();
+
+    register_Image_class();
+
+    register_BasicImage_class();
+
     register_RenderedStringParser_class();
 
     register_BasicRenderedStringParser_class();
@@ -565,8 +567,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     bp::implicitly_convertible< CEGUI::Colour, CEGUI::argb_t >();
 
-    register_ColourRect_class();
-
     register_Listbox_class();
 
     register_ComboDropList_class();
@@ -578,10 +578,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_EventIterator_class();
 
     register_FontIterator_class();
-
-    register_ImageIterator_class();
-
-    register_ImagesetIterator_class();
 
     register_PropertyIterator_class();
 
@@ -625,8 +621,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_EventLinkDefinition_class();
 
-    register_Rect_class();
-
     register_FalagardComponentBase_class();
 
     register_FalagardXMLHelper_class();
@@ -634,8 +628,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Font_class();
 
     register_FontDim_class();
-
-    register_Image_class();
 
     register_FontGlyph_class();
 
@@ -673,17 +665,15 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ImageDim_class();
 
+    register_SingletonImageManager_class();
+
+    register_XMLHandler_class();
+
+    register_ImageManager_class();
+
     register_ImageryComponent_class();
 
     register_ImagerySection_class();
-
-    register_Imageset_class();
-
-    register_NamedXMLResourceManagerImageset_class();
-
-    register_SingletonImagesetManager_class();
-
-    register_ImagesetManager_class();
 
     register_Interpolator_class();
 
@@ -902,8 +892,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_WindowRendererManager_class();
 
     register_XMLAttributes_class();
-
-    register_XMLHandler_class();
 
     register_XMLSerializer_class();
 

@@ -92,6 +92,18 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
         CEGUI::OpenGLRenderer::destroyTexture( boost::ref(texture) );
     }
 
+    virtual void destroyTexture( ::CEGUI::String const & name ) {
+        if( bp::override func_destroyTexture = this->get_override( "destroyTexture" ) )
+            func_destroyTexture( boost::ref(name) );
+        else{
+            this->CEGUI::OpenGLRenderer::destroyTexture( boost::ref(name) );
+        }
+    }
+    
+    void default_destroyTexture( ::CEGUI::String const & name ) {
+        CEGUI::OpenGLRenderer::destroyTexture( boost::ref(name) );
+    }
+
     virtual void destroyTextureTarget( ::CEGUI::TextureTarget * target ) {
         if( bp::override func_destroyTextureTarget = this->get_override( "destroyTextureTarget" ) )
             func_destroyTextureTarget( boost::python::ptr(target) );
@@ -287,44 +299,45 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )(  ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::OpenGLRenderer::createTexture)
+                , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::OpenGLRenderer::createTexture)
-                , ( bp::arg("filename"), bp::arg("resourceGroup") )
+                , ( bp::arg("name"), bp::arg("filename"), bp::arg("resourceGroup") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::OpenGLRenderer::createTexture)
-                , ( bp::arg("size") )
+                , ( bp::arg("name"), bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::GLuint,::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::GLuint,::CEGUI::Size< float > const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type( &::CEGUI::OpenGLRenderer::createTexture )
-                , ( bp::arg("tex"), bp::arg("sz") )
+                , ( bp::arg("name"), bp::arg("tex"), bp::arg("sz") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -336,9 +349,17 @@ void register_OpenGLRenderer_class(){
                     Size object that describes the pixel size of the OpenGL texture\n\
                     identified by  tex.\n\
             \n\
+                @param name\n\
+                    String holding the name for the new texture.  Texture names must be\n\
+                    unique within the Renderer.\n\
+            \n\
                 @return\n\
                     Texture object that wraps the OpenGL texture  tex, and whose size is\n\
                     specified to be  sz.\n\
+            \n\
+                @exceptions\n\
+                    - AlreadyExistsException - thrown if a Texture object named  name\n\
+                      already exists within the system.\n\
                 *\n" );
         
         }
@@ -450,6 +471,18 @@ void register_OpenGLRenderer_class(){
                 , destroyTexture_function_type(&::CEGUI::OpenGLRenderer::destroyTexture)
                 , default_destroyTexture_function_type(&OpenGLRenderer_wrapper::default_destroyTexture)
                 , ( bp::arg("texture") ) );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::destroyTexture
+        
+            typedef void ( ::CEGUI::OpenGLRenderer::*destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( OpenGLRenderer_wrapper::*default_destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            
+            OpenGLRenderer_exposer.def( 
+                "destroyTexture"
+                , destroyTexture_function_type(&::CEGUI::OpenGLRenderer::destroyTexture)
+                , default_destroyTexture_function_type(&OpenGLRenderer_wrapper::default_destroyTexture)
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::OpenGLRenderer::destroyTextureTarget
@@ -581,6 +614,17 @@ void register_OpenGLRenderer_class(){
                 Utility function that will return  f if it's a power of two, or the\n\
                 next power of two up from  f if it's not.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::getTexture
+        
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*getTexture_function_type )( ::CEGUI::String const & ) const;
+            
+            OpenGLRenderer_exposer.def( 
+                "getTexture"
+                , getTexture_function_type(&::CEGUI::OpenGLRenderer::getTexture)
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::grabTextures

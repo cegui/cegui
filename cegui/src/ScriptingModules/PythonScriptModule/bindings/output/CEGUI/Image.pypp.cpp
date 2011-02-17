@@ -6,155 +6,57 @@
 
 namespace bp = boost::python;
 
+struct Image_wrapper : CEGUI::Image, bp::wrapper< CEGUI::Image > {
+
+    Image_wrapper()
+    : CEGUI::Image()
+      , bp::wrapper< CEGUI::Image >(){
+        // null constructor
+        
+    }
+
+    virtual ::CEGUI::Image & clone(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::String const & getName(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Vector2< float > const & getRenderedOffset(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Size< float > const & getRenderedSize(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual void notifyDisplaySizeChanged( ::CEGUI::Size< float > const & size ){
+        bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" );
+        func_notifyDisplaySizeChanged( boost::ref(size) );
+    }
+
+    virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & dest_area, ::CEGUI::Rect const * clip_area, ::CEGUI::ColourRect const & colours ) const {
+        bp::override func_render = this->get_override( "render" );
+        func_render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
+    }
+
+};
+
 void register_Image_class(){
 
     { //::CEGUI::Image
-        typedef bp::class_< CEGUI::Image > Image_exposer_t;
-        Image_exposer_t Image_exposer = Image_exposer_t( "Image", bp::init< >("*************************************************************************\n\
-           Construction and Destruction\n\
-        *************************************************************************\n\
-        *!\n\
-        \n\
-           Default constructor (only used by std.map)\n\
-        *\n") );
+        typedef bp::class_< Image_wrapper, boost::noncopyable > Image_exposer_t;
+        Image_exposer_t Image_exposer = Image_exposer_t( "Image" );
         bp::scope Image_scope( Image_exposer );
-        Image_exposer.def( bp::init< CEGUI::Imageset const *, CEGUI::String const &, CEGUI::Rect const &, CEGUI::Vector2< float > const &, bp::optional< float, float > >(( bp::arg("owner"), bp::arg("name"), bp::arg("area"), bp::arg("render_offset"), bp::arg("horzScaling")=1.0e+0f, bp::arg("vertScaling")=1.0e+0f ), "*!\n\
-           \n\
-              Constructor for Image objects.  This is not normally used directly by client code, use the\
-              Imageset interface instead.\n\
-        \n\
-           @param owner\n\
-              Pointer to a Imageset object that owns this Image.  This must not be NULL.\n\
-              \n\
-           @param name\n\
-              String object describing the name of the image being created.\n\
-              \n\
-           @param area\n\
-              Rect object describing an area that will be associated with this image.\n\
-              \n\
-           @param render_offset\n\
-              Point object that describes the offset to be applied when rendering this image.\n\
-              \n\
-           @param horzScaling\n\
-              float value indicating the initial horizontal scaling to be applied to this image.\n\
-        \n\
-           @param vertScaling\n\
-              float value indicating the initial vertical scaling to be applied to this image.\n\
-        \n\
-           @exception NullObjectException   Thrown if  owner was NULL.\n\
-           *\n") );
-        Image_exposer.def( bp::init< CEGUI::Image const & >(( bp::arg("image") ), "*!\n\
-        \n\
-           Copy constructor\n\
-        *\n") );
-        { //::CEGUI::Image::draw
+        { //::CEGUI::Image::clone
         
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
+            typedef ::CEGUI::Image & ( ::CEGUI::Image::*clone_function_type )(  ) const;
             
             Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_rect"), bp::arg("top_left_colour")=4294967295u, bp::arg("top_right_colour")=4294967295u, bp::arg("bottom_left_colour")=4294967295u, bp::arg("bottom_right_colour")=4294967295u, bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::draw
-        
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
-            
-            Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("dest_rect"), bp::arg("clip_rect"), bp::arg("top_left_colour")=4294967295u, bp::arg("top_right_colour")=4294967295u, bp::arg("bottom_left_colour")=4294967295u, bp::arg("bottom_right_colour")=4294967295u, bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::draw
-        
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
-            
-            Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_rect"), bp::arg("colours"), bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::draw
-        
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
-            
-            Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_rect"), bp::arg("colours"), bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::draw
-        
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::Colour const &,::CEGUI::QuadSplitMode ) const;
-            
-            Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_rect"), bp::arg("top_left_colour")=4294967295u, bp::arg("top_right_colour")=4294967295u, bp::arg("bottom_left_colour")=4294967295u, bp::arg("bottom_right_colour")=4294967295u, bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::draw
-        
-            typedef void ( ::CEGUI::Image::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,::CEGUI::QuadSplitMode ) const;
-            
-            Image_exposer.def( 
-                "draw"
-                , draw_function_type( &::CEGUI::Image::draw )
-                , ( bp::arg("buffer"), bp::arg("dest_rect"), bp::arg("clip_rect"), bp::arg("colours"), bp::arg("quad_split_mode")=::CEGUI::TopLeftToBottomRight ) );
-        
-        }
-        { //::CEGUI::Image::getHeight
-        
-            typedef float ( ::CEGUI::Image::*getHeight_function_type )(  ) const;
-            
-            Image_exposer.def( 
-                "getHeight"
-                , getHeight_function_type( &::CEGUI::Image::getHeight )
-                , "*!\n\
-               \n\
-                  Return the pixel height of the image.\n\
-            \n\
-               @return\n\
-                  Height of this Image in pixels\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::Image::getImageset
-        
-            typedef ::CEGUI::Imageset const * ( ::CEGUI::Image::*getImageset_function_type )(  ) const;
-            
-            Image_exposer.def( 
-                "getImageset"
-                , getImageset_function_type( &::CEGUI::Image::getImageset )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return the parent Imageset object that contains this Image\n\
-            \n\
-               @return\n\
-                  The parent Imageset object.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::Image::getImagesetName
-        
-            typedef ::CEGUI::String const & ( ::CEGUI::Image::*getImagesetName_function_type )(  ) const;
-            
-            Image_exposer.def( 
-                "getImagesetName"
-                , getImagesetName_function_type( &::CEGUI::Image::getImagesetName )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-               \n\
-                  Return the name of the Imageset that contains this Image\n\
-            \n\
-               @return\n\
-                  String object containing the name of the Imageset which this Image is a part of.\n\
-               *\n" );
+                "clone"
+                , bp::pure_virtual( clone_function_type(&::CEGUI::Image::clone) )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::Image::getName
@@ -163,136 +65,68 @@ void register_Image_class(){
             
             Image_exposer.def( 
                 "getName"
-                , getName_function_type( &::CEGUI::Image::getName )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-               \n\
-                  Return the name of this Image object.\n\
-            \n\
-               @return\n\
-                  String object containing the name of this Image\n\
-               *\n" );
+                , bp::pure_virtual( getName_function_type(&::CEGUI::Image::getName) )
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::Image::getOffsetX
+        { //::CEGUI::Image::getRenderedOffset
         
-            typedef float ( ::CEGUI::Image::*getOffsetX_function_type )(  ) const;
+            typedef ::CEGUI::Vector2<float> const & ( ::CEGUI::Image::*getRenderedOffset_function_type )(  ) const;
             
             Image_exposer.def( 
-                "getOffsetX"
-                , getOffsetX_function_type( &::CEGUI::Image::getOffsetX )
-                , "*!\n\
-               \n\
-                  Return the X rendering offset\n\
-            \n\
-               @return\n\
-                  X rendering offset.  This is the number of pixels that the image is offset by when rendering\
-                  at any given location.\n\
-               *\n" );
+                "getRenderedOffset"
+                , bp::pure_virtual( getRenderedOffset_function_type(&::CEGUI::Image::getRenderedOffset) )
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::Image::getOffsetY
+        { //::CEGUI::Image::getRenderedSize
         
-            typedef float ( ::CEGUI::Image::*getOffsetY_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Image::*getRenderedSize_function_type )(  ) const;
             
             Image_exposer.def( 
-                "getOffsetY"
-                , getOffsetY_function_type( &::CEGUI::Image::getOffsetY )
-                , "*!\n\
-               \n\
-                  Return the Y rendering offset\n\
-            \n\
-               @return\n\
-                  Y rendering offset.  This is the number of pixels that the image is offset by when rendering\
-                  at any given location.\n\
-               *\n" );
+                "getRenderedSize"
+                , bp::pure_virtual( getRenderedSize_function_type(&::CEGUI::Image::getRenderedSize) )
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::Image::getOffsets
+        { //::CEGUI::Image::notifyDisplaySizeChanged
         
-            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Image::*getOffsets_function_type )(  ) const;
+            typedef void ( ::CEGUI::Image::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size<float> const & ) ;
             
             Image_exposer.def( 
-                "getOffsets"
-                , getOffsets_function_type( &::CEGUI::Image::getOffsets )
-                , "*!\n\
-               \n\
-                  Return a Point object that contains the offset applied when rendering this Image\n\
-            \n\
-               @return\n\
-                  Point object containing the offsets applied when rendering this Image\n\
-               *\n" );
+                "notifyDisplaySizeChanged"
+                , bp::pure_virtual( notifyDisplaySizeChanged_function_type(&::CEGUI::Image::notifyDisplaySizeChanged) )
+                , ( bp::arg("size") ) );
         
         }
-        { //::CEGUI::Image::getSize
+        { //::CEGUI::Image::render
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::Image::*getSize_function_type )(  ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
-                "getSize"
-                , getSize_function_type( &::CEGUI::Image::getSize )
-                , "*!\n\
-               \n\
-                  Return a Size object containing the dimensions of the Image.\n\
-            \n\
-               @return\n\
-                  Size object holding the width and height of the Image.\n\
-               *\n" );
+                "render"
+                , bp::pure_virtual( render_function_type(&::CEGUI::Image::render) )
+                , ( bp::arg("buffer"), bp::arg("dest_area"), bp::arg("clip_area"), bp::arg("colours") ) );
         
         }
-        { //::CEGUI::Image::getSourceTextureArea
+        { //::CEGUI::Image::render
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::Image::*getSourceTextureArea_function_type )(  ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
-                "getSourceTextureArea"
-                , getSourceTextureArea_function_type( &::CEGUI::Image::getSourceTextureArea )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Return Rect describing the source texture area used by this Image.\n\
-            \n\
-                @return\n\
-                    Rect object that describes, in pixels, the area upon the source texture\n\
-                    which is used when rendering this Image.\n\
-                *\n" );
+                "render"
+                , render_function_type( &::CEGUI::Image::render )
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_area")=bp::object(), bp::arg("colours")=CEGUI::ColourRect(((const CEGUI::Colour&)(& CEGUI::Colour(4294967295u)))) ) );
         
         }
-        { //::CEGUI::Image::getWidth
+        { //::CEGUI::Image::render
         
-            typedef float ( ::CEGUI::Image::*getWidth_function_type )(  ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
-                "getWidth"
-                , getWidth_function_type( &::CEGUI::Image::getWidth )
-                , "*!\n\
-               \n\
-                  Return the pixel width of the image.\n\
-            \n\
-               @return\n\
-                  Width of this Image in pixels.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::Image::writeXMLToStream
-        
-            typedef void ( ::CEGUI::Image::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
-            
-            Image_exposer.def( 
-                "writeXMLToStream"
-                , writeXMLToStream_function_type( &::CEGUI::Image::writeXMLToStream )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                \n\
-                    Writes an xml representation of this Image object to  out_stream.\n\
-            \n\
-                @param xml_stream\n\
-                    Stream where xml data should be output.\n\
-            \n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
+                "render"
+                , render_function_type( &::CEGUI::Image::render )
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_area")=bp::object(), bp::arg("colours")=CEGUI::ColourRect(((const CEGUI::Colour&)(& CEGUI::Colour(4294967295u)))) ) );
         
         }
     }

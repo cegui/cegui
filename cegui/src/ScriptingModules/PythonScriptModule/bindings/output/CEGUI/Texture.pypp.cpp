@@ -25,6 +25,10 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         func_blitToMemory( targetData );
     }
 
+    virtual ::CEGUI::String const & getName(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
     virtual ::CEGUI::Size< float > const & getOriginalDataSize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
@@ -99,6 +103,23 @@ void register_Texture_class(){
             \n\
                 \note\n\
                   You have to (correctly) preallocate the target buffer!\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Texture::getName
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::Texture::*getName_function_type )(  ) const;
+            
+            Texture_exposer.def( 
+                "getName"
+                , bp::pure_virtual( getName_function_type(&::CEGUI::Texture::getName) )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Returns the name given to the texture when it was created.\n\
+            \n\
+                @return\n\
+                    Reference to a String object that holds the name of the texture.\n\
                 *\n" );
         
         }

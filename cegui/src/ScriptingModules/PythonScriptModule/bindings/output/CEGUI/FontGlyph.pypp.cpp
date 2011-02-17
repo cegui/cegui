@@ -54,17 +54,6 @@ void register_FontGlyph_class(){
                 , "! Return the CEGUI.Image object rendered for this glyph.\n" );
         
         }
-        { //::CEGUI::FontGlyph::getImageset
-        
-            typedef ::CEGUI::Imageset const * ( ::CEGUI::FontGlyph::*getImageset_function_type )(  ) const;
-            
-            FontGlyph_exposer.def( 
-                "getImageset"
-                , getImageset_function_type( &::CEGUI::FontGlyph::getImageset )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "! Return the parent CEGUI.Imageset object for this glyph.\n" );
-        
-        }
         { //::CEGUI::FontGlyph::getRenderedAdvance
         
             typedef float ( ::CEGUI::FontGlyph::*getRenderedAdvance_function_type )( float ) const;

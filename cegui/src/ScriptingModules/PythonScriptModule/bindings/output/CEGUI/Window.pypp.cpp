@@ -3874,12 +3874,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setMouseCursor
         
-            typedef void ( ::CEGUI::Window::*setMouseCursor_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::Window::*setMouseCursor_function_type )( ::CEGUI::String const & ) ;
             
             Window_exposer.def( 
                 "setMouseCursor"
                 , setMouseCursor_function_type( &::CEGUI::Window::setMouseCursor )
-                , ( bp::arg("imageset"), bp::arg("image_name") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the mouse cursor image to be used when the mouse enters this window.\n\
@@ -3888,16 +3888,14 @@ void register_Window_class(){
                     String object that contains the name of the Imageset that contains the\n\
                     image to be used.\n\
             \n\
-                @param image_name\n\
-                    String object that contains the name of the Image on  imageset that\n\
-                    is to be used.\n\
+                @param name\n\
+                    String object that contains the name of the Image to use.\n\
             \n\
                 @return\n\
                     Nothing.\n\
             \n\
                 @exception UnknownObjectException\n\
-                    thrown if  imageset is not known, or if  imageset contains no Image\n\
-                    named  image_name.\n\
+                    thrown if no Image named  name exists.\n\
                 *\n" );
         
         }

@@ -423,20 +423,17 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionBrushImage
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const & ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionBrushImage"
                 , setSelectionBrushImage_function_type( &::CEGUI::ListboxItem::setSelectionBrushImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the selection highlighting brush image.\n\
             \n\
-                @param imageset\n\
-                    Name of the imagest containing the image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     Name of the image to be used\n\
             \n\
                 @return\n\
