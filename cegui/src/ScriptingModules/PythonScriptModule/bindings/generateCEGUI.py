@@ -64,6 +64,10 @@ def filterDeclarations(mb):
     # CEGUIBase.h
     # nothing interesting for python users
     # todo: maybe pixel align?
+
+    # CEGUIBasicImage.h
+    basicImage = CEGUI_ns.class_("BasicImage")
+    basicImage.include()   
     
     # CEGUIBasicInterpolators.h
     # nothing interesting for python users
@@ -558,16 +562,9 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     imageCodec = CEGUI_ns.class_("ImageCodec")
     imageCodec.include()
     
-    # CEGUIImageset.h
-    imageset = CEGUI_ns.class_("Imageset")
-    imageset.include()
-    
-    # CEGUIImageset_xmlHandler.h
-    # not needed in python
-    
-    # CEGUIImagesetManager.h
-    imagesetManager = CEGUI_ns.class_("ImagesetManager")
-    imagesetManager.include()
+    # CEGUIImageManager.h
+    imageManager = CEGUI_ns.class_("ImageManager")
+    imageManager.include()
     
     # CEGUIInputEvent.h
     key = CEGUI_ns.class_("Key")

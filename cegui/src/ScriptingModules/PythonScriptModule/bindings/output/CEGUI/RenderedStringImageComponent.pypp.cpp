@@ -22,8 +22,8 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
     
     }
 
-    RenderedStringImageComponent_wrapper(::CEGUI::String const & imageset, ::CEGUI::String const & image )
-    : CEGUI::RenderedStringImageComponent( boost::ref(imageset), boost::ref(image) )
+    RenderedStringImageComponent_wrapper(::CEGUI::String const & name )
+    : CEGUI::RenderedStringImageComponent( boost::ref(name) )
       , bp::wrapper< CEGUI::RenderedStringImageComponent >(){
         // constructor
     
@@ -116,7 +116,8 @@ void register_RenderedStringImageComponent_class(){
         typedef bp::class_< RenderedStringImageComponent_wrapper, bp::bases< CEGUI::RenderedStringComponent > > RenderedStringImageComponent_exposer_t;
         RenderedStringImageComponent_exposer_t RenderedStringImageComponent_exposer = RenderedStringImageComponent_exposer_t( "RenderedStringImageComponent", "! String component that draws an image.\n", bp::init< >("! Constructor\n") );
         bp::scope RenderedStringImageComponent_scope( RenderedStringImageComponent_exposer );
-        RenderedStringImageComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("imageset"), bp::arg("image") ), "! Constructor\n") );
+        RenderedStringImageComponent_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("name") ), "! Constructor\n") );
+        bp::implicitly_convertible< CEGUI::String const &, CEGUI::RenderedStringImageComponent >();
         RenderedStringImageComponent_exposer.def( bp::init< CEGUI::Image const * >(( bp::arg("image") )) );
         bp::implicitly_convertible< CEGUI::Image const *, CEGUI::RenderedStringImageComponent >();
         { //::CEGUI::RenderedStringImageComponent::canSplit
@@ -238,12 +239,12 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::setImage
         
-            typedef void ( ::CEGUI::RenderedStringImageComponent::*setImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*setImage_function_type )( ::CEGUI::String const & ) ;
             
             RenderedStringImageComponent_exposer.def( 
                 "setImage"
                 , setImage_function_type( &::CEGUI::RenderedStringImageComponent::setImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "! Set the image to be drawn by this component.\n" );
         
         }

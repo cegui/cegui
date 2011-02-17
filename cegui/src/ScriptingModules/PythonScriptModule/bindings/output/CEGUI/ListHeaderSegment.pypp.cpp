@@ -473,12 +473,12 @@ void register_ListHeaderSegment_class(){
         }
         { //::CEGUI::ListHeaderSegment::setMovingCursorImage
         
-            typedef void ( ::CEGUI::ListHeaderSegment::*setMovingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ListHeaderSegment::*setMovingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             ListHeaderSegment_exposer.def( 
                 "setMovingCursorImage"
                 , setMovingCursorImage_function_type( &::CEGUI::ListHeaderSegment::setMovingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") ) );
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::ListHeaderSegment::setSizingCursorImage
@@ -493,12 +493,12 @@ void register_ListHeaderSegment_class(){
         }
         { //::CEGUI::ListHeaderSegment::setSizingCursorImage
         
-            typedef void ( ::CEGUI::ListHeaderSegment::*setSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ListHeaderSegment::*setSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             ListHeaderSegment_exposer.def( 
                 "setSizingCursorImage"
                 , setSizingCursorImage_function_type( &::CEGUI::ListHeaderSegment::setSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") ) );
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::ListHeaderSegment::setSizingEnabled

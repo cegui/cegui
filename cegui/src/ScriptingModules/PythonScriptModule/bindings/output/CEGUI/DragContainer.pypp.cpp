@@ -521,12 +521,12 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::DragContainer::setDragCursorImage
         
-            typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             DragContainer_exposer.def( 
                 "setDragCursorImage"
                 , setDragCursorImage_function_type( &::CEGUI::DragContainer::setDragCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                     \n\
                         Set the Image to be used for the mouse cursor when a drag operation is\n\
@@ -535,17 +535,13 @@ void register_DragContainer_class(){
                         This method may be used during a drag operation to update the current mouse\n\
                         cursor image.\n\
             \n\
-                    @param imageset\n\
-                        String holding the name of the Imageset that contains the Image to be used.\n\
-            \n\
-                    @param image\n\
-                        Image defined for the Imageset  imageset to be used as the mouse cursor\n\
-                        when dragging.\n\
+                    @param name\n\
+                        Image to be used as the mouse cursor when dragging.\n\
             \n\
                     @return\n\
                         Nothing.\n\
             \n\
-                    @exception UnknownObjectException   thrown if either  imageset or  image are unknown.\n\
+                    @exception UnknownObjectException   thrown if Image \name is unknown.\n\
                     *\n" );
         
         }

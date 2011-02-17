@@ -611,20 +611,17 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionBrushImage
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const & ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionBrushImage"
                 , setSelectionBrushImage_function_type( &::CEGUI::TreeItem::setSelectionBrushImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
              \n\
                 Set the selection highlighting brush image.\n\
              \n\
-             @param imageset\n\
-                Name of the imagest containing the image to be used.\n\
-             \n\
-             @param image\n\
+             @param name\n\
                 Name of the image to be used.\n\
              \n\
              @return\n\

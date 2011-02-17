@@ -1047,27 +1047,23 @@ void register_System_class(){
         }
         { //::CEGUI::System::setDefaultMouseCursor
         
-            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::String const & ) ;
             
             System_exposer.def( 
                 "setDefaultMouseCursor"
                 , setDefaultMouseCursor_function_type( &::CEGUI::System::setDefaultMouseCursor )
-                , ( bp::arg("imageset"), bp::arg("image_name") )
+                , ( bp::arg("name") )
                 , "*!\n\
                \n\
                   Set the image to be used as the default mouse cursor.\n\
             \n\
-               @param imageset\n\
-                  String object that contains the name of the Imageset  that contains the image to be used.\n\
-            \n\
-               @param image_name\n\
-                  String object that contains the name of the Image on  imageset that is to be used.\n\
+               @param name\n\
+                  String object that contains the name of the Image that is to be used.\n\
             \n\
                @return\n\
                   Nothing.\n\
             \n\
-               @exception UnknownObjectException   thrown if  imageset is not known, or if  imageset contains no\
-               Image named  image_name.\n\
+               @exception UnknownObjectException   thrown if no Image named  name exists.\n\
                *\n" );
         
         }

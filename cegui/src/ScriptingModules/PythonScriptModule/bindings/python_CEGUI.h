@@ -128,7 +128,6 @@ namespace pyplusplus
 	{
         typedef ::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >    NamedXMLResourceManagerFont;
         typedef ::CEGUI::RefCounted< CEGUI::FormattedRenderedString > RefCountedFormattedRenderedString;
-        typedef ::CEGUI::NamedXMLResourceManager< CEGUI::Imageset, CEGUI::Imageset_xmlHandler >  NamedXMLResourceManagerImageset;
         typedef ::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >  NamedXMLResourceManagerScheme;
 
         typedef ::CEGUI::Vector2<float> Vector2;
@@ -151,8 +150,6 @@ namespace pyplusplus
         typedef ::CEGUI::EventSet::Iterator EventIterator;
         
         typedef ::CEGUI::FontManager::FontIterator FontIterator;
-        typedef ::CEGUI::Imageset::ImageIterator ImageIterator;	
-        typedef ::CEGUI::ImagesetManager::ImagesetIterator ImagesetIterator;
         typedef ::CEGUI::PropertySet::Iterator PropertyIterator;
         typedef ::CEGUI::SchemeManager::SchemeIterator SchemeIterator;
         typedef ::CEGUI::WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
@@ -170,7 +167,7 @@ namespace pyplusplus
         typedef CEGUI::Singleton<CEGUI::Logger> SingletonLogger;
         typedef CEGUI::Singleton<CEGUI::FontManager> SingletonFontManager;
         typedef CEGUI::Singleton<CEGUI::GlobalEventSet> SingletonGlobalEventSet;
-        typedef CEGUI::Singleton<CEGUI::ImagesetManager> SingletonImagesetManager;
+        typedef CEGUI::Singleton<CEGUI::ImageManager> SingletonImageManager;
         typedef CEGUI::Singleton<CEGUI::MouseCursor> SingletonMouseCursor;
         typedef CEGUI::Singleton<CEGUI::RenderEffectManager> SingletonRenderEffectManager; 
         typedef CEGUI::Singleton<CEGUI::SchemeManager> SingletonSchemeManager;
@@ -191,8 +188,6 @@ namespace pyplusplus
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::String)>	EventMap;
         typedef std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare
             CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*)> FontRegistry;
-        typedef std::vector<CEGUI::Imageset*
-            CEGUI_VECTOR_ALLOC(CEGUI::Imageset*)> ImagesetVector;
         typedef std::pair<CEGUI::Window*, bool> WindowStackEntry; 
         typedef std::vector<WindowStackEntry
             CEGUI_VECTOR_ALLOC(WindowStackEntry)> WindowStack;
@@ -229,8 +224,6 @@ namespace python_CEGUI
             sizeof ( ::CEGUI::Event::Subscriber) ;
             
             sizeof ( ::CEGUI::FontManager::FontIterator);
-            sizeof ( ::CEGUI::Imageset::ImageIterator);	
-            sizeof ( ::CEGUI::ImagesetManager::ImagesetIterator);
             sizeof ( ::CEGUI::PropertySet::Iterator);
             sizeof ( ::CEGUI::SchemeManager::SchemeIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::WindowFactoryIterator);
@@ -247,7 +240,6 @@ namespace python_CEGUI
             sizeof ( ::std::pair<float, float> );
             
             // seems that doing an sizeof ( ::CEGUI::EventSet::Iterator ); doesn't expose the class :(
-            sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Imageset*, CEGUI::StringFastLessCompare   CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Imageset*) > > );
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare   CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Property*) > > );
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare     CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Scheme*) > > );
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Window*, CEGUI::StringFastLessCompare     CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Window*) > > );
@@ -256,7 +248,6 @@ namespace python_CEGUI
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack) > > );
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactory*) > > );
             sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare       CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*) > > );
-            sizeof(  CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Image, CEGUI::StringFastLessCompare      CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Image) > > );
 		}
 	}
 }

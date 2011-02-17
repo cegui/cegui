@@ -140,6 +140,27 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         CEGUI::OgreRenderer::setDisplaySize( boost::ref(sz) );
     }
 
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::Size< float > const & size ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual void destroyTexture( ::CEGUI::String const & name ){
+        bp::override func_destroyTexture = this->get_override( "destroyTexture" );
+        func_destroyTexture( boost::ref(name) );
+    }
+
+    virtual ::CEGUI::Texture & getTexture( ::CEGUI::String const & name ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
 };
 
 void register_OgreRenderer_class(){
@@ -322,7 +343,7 @@ void register_OgreRenderer_class(){
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -332,7 +353,7 @@ void register_OgreRenderer_class(){
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
                 , ( bp::arg("filename"), bp::arg("resourceGroup") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
@@ -343,7 +364,7 @@ void register_OgreRenderer_class(){
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
                 , ( bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
