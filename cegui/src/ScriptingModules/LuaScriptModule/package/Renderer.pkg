@@ -13,10 +13,11 @@ class Renderer
     //void destroyTextureTarget(TextureTarget* target);
     //void destroyAllTextureTargets();
 
-    Texture& createTexture();
-    Texture& createTexture(utf8string filename, utf8string resourceGroup);
-    Texture& createTexture(const Size<float>& size);
+    Texture& createTexture(utf8string name);
+    Texture& createTexture(utf8string name, utf8string filename, utf8string resourceGroup);
+    Texture& createTexture(utf8string name, const Size<float>& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(utf8string name);
     void destroyAllTextures();
 
     void setDisplaySize(const Size<float>& sz);
@@ -26,6 +27,8 @@ class Renderer
     unsigned int getMaxTextureSize() const;
 
     string getIdentifierString() const;
+
+    Texture& getTexture(utf8string name) const;
 
     //void beginRendering();
     //void endRendering();

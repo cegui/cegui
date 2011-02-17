@@ -152,7 +152,7 @@ class Window //: public EventSet
 	const Image* getMouseCursor() const;
 	void setMouseCursor(MouseCursorImage cursor);
 	void setMouseCursor(const Image* image);
-	void setMouseCursor(utf8string imageset, utf8string image);
+	void setMouseCursor(utf8string name);
 
 	void moveToFront();
 	void moveToBack();

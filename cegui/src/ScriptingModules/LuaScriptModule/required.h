@@ -106,8 +106,6 @@ typedef WindowManager::WindowIterator WindowIterator;
 typedef WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
 typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
 typedef WindowFactoryManager::FalagardWindowMapping FalagardWindowMapping;
-typedef ImagesetManager::ImagesetIterator ImagesetIterator;
-typedef Imageset::ImageIterator ImageIterator;
 typedef SchemeManager::SchemeIterator SchemeIterator;
 typedef FontManager::FontIterator FontIterator;
 

@@ -11,7 +11,7 @@ class FrameComponent : public FalagardComponentBase
   void setBackgroundHorizontalFormatting(HorizontalFormatting fmt);
   const Image* getImage(FrameImageComponent part) const;
   void setImage(FrameImageComponent part, const Image* image);
-  void setImage(FrameImageComponent part, utf8string imageset, utf8string image);
+  void setImage(FrameImageComponent part, utf8string name);
   //void writeXMLToStream(OutStream& out_stream) const;
   FrameComponent();
 };

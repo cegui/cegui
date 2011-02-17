@@ -1,0 +1,26 @@
+/***********************************************************************
+    ImageManager
+***********************************************************************/
+class ImageManager
+{
+	static ImageManager& getSingleton();
+
+    void add(const Image& image);
+    void destroy(Image& image);
+    void destroy(const String& name);
+    void destroyAll();
+
+    Image& get(const utf8string name) const;
+    bool isDefined(const utf8string name) const;
+
+    unsigned int getImageCount() const;
+
+    void loadImageset(const utf8string filename, const utf8string resource_group = "");
+    void addFromImageFile(const utf8string name,
+                          const utf8string filename,
+                          const utf8string resource_group = "");
+
+    static void setImagesetDefaultResourceGroup(const String& resourceGroup);
+    static const String& getImagesetDefaultResourceGroup();
+};
+

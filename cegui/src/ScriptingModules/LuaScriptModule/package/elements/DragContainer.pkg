@@ -16,7 +16,7 @@ class DragContainer : public Window
 
 	const Image* getDragCursorImage() const;
 	void setDragCursorImage(MouseCursorImage image);
-	void setDragCursorImage(utf8string imageset, utf8string image);
+	void setDragCursorImage(utf8string name);
 	void setDragCursorImage(const Image* image);
 
 	Window* getCurrentDropTarget() const;

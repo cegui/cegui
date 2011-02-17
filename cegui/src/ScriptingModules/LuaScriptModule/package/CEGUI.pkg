@@ -14,8 +14,8 @@ $pfile "Font.pkg"
 $pfile "FontManager.pkg"
 
 $pfile "Image.pkg"
-$pfile "Imageset.pkg"
-$pfile "ImagesetManager.pkg"
+$pfile "BasicImage.pkg"
+$pfile "ImageManager.pkg"
 
 $pfile "Iterators.pkg"
 
