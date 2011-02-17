@@ -17,7 +17,7 @@ class MouseCursor : public EventSet
 	static MouseCursor& getSingleton();
 
 	void setImage(const Image* image);
-	void setImage(utf8string imageset, utf8string image);
+	void setImage(utf8string name);
 	const Image* getImage() const;
 
 	void setPosition(const Vector2<float>& pos);

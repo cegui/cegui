@@ -33,7 +33,7 @@ class TreeItem
     void setSelectionColours(Colour top_left_colour,Colour top_right_colour,Colour bottom_left_colour,Colour bottom_right_colour);
     void setSelectionColours(Colour col);
     void setSelectionBrushImage(const Image* image);
-    void setSelectionBrushImage(utf8string imageset, utf8string image);
+    void setSelectionBrushImage(utf8string name);
     void setButtonLocation(Rect &buttonOffset);
     Rect &getButtonLocation();
     bool getIsOpen();

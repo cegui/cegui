@@ -51,7 +51,7 @@ function addItemHandler(args)
     local cols = CEGUI.PropertyHelper:stringToColourRect(winMgr:getWindow("Demo8/Window1/Controls/ColourSample"):getProperty("ImageColours"))
 
     local newItem = CEGUI.createListboxTextItem(text, 0, nil, false, true)
-    newItem:setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush")
+    newItem:setSelectionBrushImage("TaharezLook/MultiListSelectionBrush")
     newItem:setSelectionColours(cols)
 
     CEGUI.toListbox(winMgr:getWindow("Demo8/Window1/Listbox")):addItem(newItem)
@@ -71,7 +71,7 @@ local root = winMgr:loadWindowLayout("Demo8.layout")
 -- set the layout as the root
 guiSystem:setGUISheet(root)
 -- set default mouse cursor
-guiSystem:setDefaultMouseCursor("TaharezLook", "MouseArrow")
+guiSystem:setDefaultMouseCursor("TaharezLook/MouseArrow")
 -- set the Tooltip type
 guiSystem:setDefaultTooltip("TaharezLook/Tooltip")
 

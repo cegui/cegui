@@ -29,7 +29,7 @@ class System : public EventSet
 
 	void setDefaultMouseCursor(MouseCursorImage image);
 	void setDefaultMouseCursor(const Image* image);
-	void setDefaultMouseCursor(utf8string imageset_name, utf8string image_name);
+	void setDefaultMouseCursor(utf8string name);
 	const Image* getDefaultMouseCursor() const;
 
 	Window* getWindowContainingMouse() const;

@@ -35,6 +35,7 @@
 #include "CEGUIAnimation.h"
 #include "CEGUIAnimationInstance.h"
 #include "CEGUIAnimationManager.h"
+#include "CEGUIBasicImage.h"
 #include "CEGUIBasicRenderedStringParser.h"
 #include "CEGUIBidiVisualMapping.h"
 #include "CEGUICentredRenderedString.h"
