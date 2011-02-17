@@ -28,7 +28,8 @@
 #include "CEGuiBaseApplication.h"
 #include "CEGUISystem.h"
 #include "CEGUIDefaultResourceProvider.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIFont.h"
 #include "CEGUIScheme.h"
 #include "CEGUIWindowManager.h"
@@ -117,10 +118,10 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
     positionLogo();
 
     // create logo imageset and draw the image (we only ever draw this once)
-    CEGUI::ImagesetManager::getSingleton().
-        createFromImageFile("cegui_logo", "logo.png", "imagesets");
-    CEGUI::ImagesetManager::getSingleton().get("cegui_logo").
-        getImage("full_image").draw(*d_logoGeometry, CEGUI::Rect(0, 0, 100, 69.5f), 0);
+    CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
+                                                         "logo.png");
+    CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
+        *d_logoGeometry, CEGUI::Rect(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
     d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -145,7 +146,7 @@ void CEGuiBaseApplication::cleanup()
 {
     cleanup_impl();
 
-    CEGUI::ImagesetManager::getSingleton().destroy("cegui_logo");
+    CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
     d_renderer->destroyGeometryBuffer(*d_logoGeometry);
     d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
     CEGUI::System::destroy();
@@ -197,7 +198,7 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
 void CEGuiBaseApplication::initialiseDefaultResourceGroups()
 {
     // set the default resource groups to be used
-    CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+    CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
     CEGUI::Font::setDefaultResourceGroup("fonts");
     CEGUI::Scheme::setDefaultResourceGroup("schemes");
     CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");

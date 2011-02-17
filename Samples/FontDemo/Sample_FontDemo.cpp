@@ -95,7 +95,7 @@ public:
     MyListItem (const String& text, CEGUI::uint item_id = 0) :
         ListboxTextItem(text, item_id)
     {
-        setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
     }
 };
 
@@ -111,7 +111,7 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().create("TaharezLook.scheme");
-        System::getSingleton().setDefaultMouseCursor ("TaharezLook", "MouseArrow");
+        System::getSingleton().setDefaultMouseCursor ("TaharezLook/MouseArrow");
 
 		// Create a custom font which we use to draw the list items. This custom
 		// font won't get effected by the scaler and such.
@@ -123,7 +123,7 @@ public:
         FontManager::getSingleton().createAll("*.font", "fonts");
 
         // load an image to use as a background
-        ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow ("TaharezLook/StaticImage");
@@ -134,7 +134,7 @@ public:
         background->setProperty ("FrameEnabled", "false");
         background->setProperty ("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty ("Image", "set:BackgroundImage image:full_image");
+        background->setProperty ("Image", "BackgroundImage");
         // install this as the root GUI sheet
         System::getSingleton ().setGUISheet (background);
 

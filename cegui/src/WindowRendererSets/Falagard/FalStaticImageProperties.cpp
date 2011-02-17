@@ -38,14 +38,14 @@ namespace CEGUI
 namespace FalagardStaticImageProperties
 {
 
-String  Image::get(const PropertyReceiver* receiver) const
+String Image::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticImage* wr = static_cast<FalagardStaticImage*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
     return PropertyHelper< ::CEGUI::Image*>::toString(wr->getImage());
 }
 
-void    Image::set(PropertyReceiver* receiver, const String& value)
+void Image::set(PropertyReceiver* receiver, const String& value)
 {
     FalagardStaticImage* wr = static_cast<FalagardStaticImage*>(
     static_cast<Window*>(receiver)->getWindowRenderer());

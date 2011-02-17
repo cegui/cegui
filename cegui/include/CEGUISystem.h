@@ -453,18 +453,15 @@ public:
 	\brief
 		Set the image to be used as the default mouse cursor.
 
-	\param imageset
-		String object that contains the name of the Imageset  that contains the image to be used.
-
-	\param image_name
-		String object that contains the name of the Image on \a imageset that is to be used.
+	\param name
+		String object that contains the name of the Image that is to be used.
 
 	\return
 		Nothing.
 
-	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	\exception UnknownObjectException	thrown if no Image named \a name exists.
 	*/
-	void	setDefaultMouseCursor(const String& imageset, const String& image_name);
+	void	setDefaultMouseCursor(const String& name);
 
 
 	/*!

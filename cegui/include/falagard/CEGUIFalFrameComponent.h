@@ -127,16 +127,13 @@ namespace CEGUI
         \param part
             One of the FrameImageComponent enumerated values specifying the component image to be accessed.
 
-        \param imageset
-            String holding the name of the Imagset that contains the Image to be rendered.
-
-        \param image
+        \param name
             String holding the name of the Image to be rendered.
 
         \return
             Nothing.
         */
-        void setImage(FrameImageComponent part, const String& imageset, const String& image);
+        void setImage(FrameImageComponent part, const String& name);
 
         /*!
         \brief

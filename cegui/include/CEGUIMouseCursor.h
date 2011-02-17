@@ -126,18 +126,15 @@ public:
 	\brief
 		Set the current mouse cursor image
 
-	\param imageset
-		String object holding the name of the Imageset that contains the desired Image.
-
-	\param image_name
-		String object holding the name of the desired Image on Imageset \a imageset.
+	\param name
+		String object holding the name of the desired Image.
 
 	\return
 		Nothing.
 
-	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	\exception UnknownObjectException	thrown if Image \a name is not known.
 	*/
-	void	setImage(const String& imageset, const String& image_name);
+	void	setImage(const String& name);
 
 
 	/*!

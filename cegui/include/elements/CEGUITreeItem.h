@@ -515,16 +515,13 @@ public:
      \brief
         Set the selection highlighting brush image.
      
-     \param imageset
-        Name of the imagest containing the image to be used.
-     
-     \param image
+     \param name
         Name of the image to be used.
      
      \return
         Nothing.
      */
-    void setSelectionBrushImage(const String& imageset, const String& image);
+    void setSelectionBrushImage(const String& name);
 
     /*!
      \brief
@@ -558,7 +555,7 @@ public:
     void removeItem(const TreeItem* item);
 
     void setIcon(const Image &theIcon)
-    { d_iconImage = (Image *) & theIcon; }
+    { d_iconImage = &theIcon; }
 
     /*************************************************************************
         Abstract portion of interface
@@ -665,7 +662,7 @@ protected:
     //! Font used for rendering text.
     Font* d_font;
     //! Image for the icon to be displayed with this TreeItem.
-    Image* d_iconImage;
+    const Image* d_iconImage;
     //! list of items in this item's tree branch.
     LBItemList d_listItems;
     //! true if the this item's tree branch is opened.

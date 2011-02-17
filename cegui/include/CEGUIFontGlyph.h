@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -54,21 +54,17 @@ public:
     const Image* getImage() const
     { return d_image; }
 
-    //! Return the parent CEGUI::Imageset object for this glyph.
-    const Imageset* getImageset() const
-    { return d_image->getImageset(); }
-
     //! Return the scaled pixel size of the glyph.
     Size<> getSize(float x_scale, float y_scale) const
     { return Size<>(getWidth(x_scale), getHeight(y_scale)); }
 
     //! Return the scaled width of the glyph.
     float getWidth(float x_scale) const
-    { return d_image->getWidth() * x_scale; }
+    { return d_image->getRenderedSize().d_width * x_scale; }
 
     //! Return the scaled height of the glyph.
     float getHeight(float y_scale) const
-    { return d_image->getHeight() * y_scale; }
+    { return d_image->getRenderedSize().d_height * y_scale; }
 
     /*!
     \brief
@@ -78,7 +74,8 @@ public:
         current pen position that will be occupied by this glyph when rendered.
     */
     float getRenderedAdvance(float x_scale) const
-    { return (d_image->getWidth() + d_image->getOffsetX()) * x_scale; }
+    { return (d_image->getRenderedSize().d_width +
+              d_image->getRenderedOffset().d_x) * x_scale; }
 
     /*!
     \brief

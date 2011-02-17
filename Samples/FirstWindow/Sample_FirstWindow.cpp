@@ -64,7 +64,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI

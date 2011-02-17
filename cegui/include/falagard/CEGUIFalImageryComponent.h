@@ -72,16 +72,13 @@ namespace CEGUI
         \brief
             Set the Image that will be drawn by this ImageryComponent.
 
-        \param imageset
-            String holding the name of the Imagset that contains the Image to be rendered.
-
-        \param image
+        \param name
             String holding the name of the Image to be rendered.
 
         \return
             Nothing.
         */
-        void setImage(const String& imageset, const String& image);
+        void setImage(const String& name);
 
         /*!
         \brief

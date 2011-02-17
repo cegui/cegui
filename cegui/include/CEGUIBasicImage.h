@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIImage.h
+    filename:   CEGUIBasicImage.h
     created:    Wed Feb 16 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,64 +25,64 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIImage_h_
-#define _CEGUIImage_h_
+#ifndef _CEGUIBasicImage_h_
+#define _CEGUIBasicImage_h_
 
+#include "CEGUIImage.h"
 #include "CEGUIString.h"
-#include "CEGUIColourRect.h"
 #include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Interface for Image.
-
-    In CEGUI, an Image is some object that can render itself into a given
-    GeometryBuffer object.  This may be something as simple as a basic textured
-    quad, or something more complex.
-*/
-class CEGUIEXPORT Image :
-    public AllocatedObject<Image>
+class CEGUIEXPORT BasicImage : public Image
 {
 public:
-    virtual ~Image() {}
+    BasicImage(const String& name);
 
-    virtual const String& getName() const = 0;
+    BasicImage(const String& name, Texture* texture,
+               const Rect& tex_area, const Vector2<>& offset,
+               const bool autoscaled, const Size<>& native_res);
 
-    virtual const Size<>& getRenderedSize() const = 0;
-    virtual const Vector2<>& getRenderedOffset() const = 0;
+    void setTexture(Texture* texture);
+    void setArea(const Rect& pixel_area);
+    void setOffset(const Vector2<>& pixel_offset);
+    void setAutoScaled(const bool autoscaled);
+    void setNativeResolution(const Size<>& native_res);
 
-    virtual void render(GeometryBuffer& buffer,
+    // Implement CEGUI::Image interface
+    const String& getName() const;
+    const Size<>& getRenderedSize() const;
+    const Vector2<>& getRenderedOffset() const;
+    void render(GeometryBuffer& buffer,
                         const Rect& dest_area,
                         const Rect* clip_area,
-                        const ColourRect& colours) const = 0;
+                        const ColourRect& colours) const;
+    void notifyDisplaySizeChanged(const Size<>& size);
+    Image& clone() const;
 
-    virtual void notifyDisplaySizeChanged(const Size<>& size) = 0;
-
-    virtual Image& clone() const = 0;
-
-    // Standard Image::render overloads
-    void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const
-    {
-        render(buffer, Rect(position, getRenderedSize()), clip_area, colours);
-    }
-
-    void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Size<>& size,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const
-    {
-        render(buffer, Rect(position, size), clip_area, colours);
-    }
+protected:
+    //! name used when the BasicImage was created.
+    String d_name;
+    //! Texture used by this image.
+    Texture* d_texture;
+    //! Rect defining texture co-ords for this image.
+    Rect d_area;
+    //! Actual pixel size.
+    Size<> d_pixelSize;
+    //! Defined pixel offset
+    Vector2<> d_pixelOffset;
+    //! Whether image is auto-scaled or not.
+    bool d_autoscaled;
+    //! Native resolution used for autoscaling.
+    Size<> d_nativeResolution;
+    //! Size after having autoscaling applied.
+    Size<> d_scaledSize;
+    //! Offset after having autoscaling applied.
+    Vector2<> d_scaledOffset;
 };
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIImage_h_
+#endif  // end of guard _CEGUIBasicImage_h_
 

@@ -33,8 +33,7 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -826,33 +825,33 @@ void FrameWindow::setNESWSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
-void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNSSizingCursorImage(const String& name)
 {
-    d_nsSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nsSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the east-west sizing cursor.
 *************************************************************************/
-void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setEWSizingCursorImage(const String& name)
 {
-    d_ewSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_ewSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNWSESizingCursorImage(const String& name)
 {
-    d_nwseSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nwseSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNESWSizingCursorImage(const String& name)
 {
-    d_neswSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_neswSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************

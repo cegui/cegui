@@ -60,7 +60,7 @@ class MyListItem : public ListboxTextItem
 public:
     MyListItem (const String& text) : ListboxTextItem(text)
     {
-        setSelectionBrushImage(SKIN, "MultiListSelectionBrush");
+        setSelectionBrushImage(SKIN "/MultiListSelectionBrush");
     }
 };
 
@@ -76,13 +76,13 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().create(SKIN ".scheme");
-        System::getSingleton().setDefaultMouseCursor (SKIN, "MouseArrow");
+        System::getSingleton().setDefaultMouseCursor (SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
         FontManager::getSingleton().create("DejaVuSans-10.font");
 
         // load an image to use as a background
-        ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow (SKIN "/StaticImage");
@@ -93,7 +93,7 @@ public:
         background->setProperty ("FrameEnabled", "false");
         background->setProperty ("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty ("Image", "set:BackgroundImage image:full_image");
+        background->setProperty ("Image", "BackgroundImage");
         // install this as the root GUI sheet
         System::getSingleton ().setGUISheet (background);
 

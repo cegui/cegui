@@ -33,6 +33,8 @@
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowFactoryManager.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include <cstdlib>
 #include <cstdio>
 
@@ -86,22 +88,15 @@ String MouseCursorImage::get(const PropertyReceiver* receiver) const
 {
 	const Image* img = static_cast<const Window*>(receiver)->getMouseCursor();
 
-	if (img)
-	{
-		return PropertyHelper<Image*>::toString(img);
-	}
-	else
-	{
-		return String();
-	}
-
+    return img ? img->getName() : String();
 }
 
 void MouseCursorImage::set(PropertyReceiver* receiver, const String& value)
 {
 	if (!value.empty())
 	{
-		static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper<Image*>::fromString(value));
+		static_cast<Window*>(receiver)->setMouseCursor(
+            &ImageManager::getSingleton().get(value));
 	}
 }
 

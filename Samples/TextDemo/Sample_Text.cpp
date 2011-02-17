@@ -42,7 +42,7 @@ bool TextDemo::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     // We need a font
     FontManager::getSingleton().create("DejaVuSans-10.font");
     // Font defaulting
@@ -52,7 +52,7 @@ bool TextDemo::initialiseSample()
     }
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -63,7 +63,7 @@ bool TextDemo::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 

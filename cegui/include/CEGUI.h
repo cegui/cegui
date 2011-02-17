@@ -52,7 +52,7 @@
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUIGlobalEventSet.h"
 #include "CEGUIImageCodec.h"
-#include "CEGUIImagesetManager.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIInputEvent.h"
 #include "CEGUIInterpolator.h"
 #include "CEGUIJustifiedRenderedString.h"

@@ -202,13 +202,11 @@
 		<xsd:attribute name="value" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="imageType">
-		<xsd:attribute name="imageset" type="xsd:string" use="required" />
-		<xsd:attribute name="image" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="frameImageType">
         <xsd:attribute name="type" type="frameImageComponentEnum" use="required" />
-        <xsd:attribute name="imageset" type="xsd:string" use="required" />
-        <xsd:attribute name="image" type="xsd:string" use="required" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="componentAreaType">
         <xsd:choice>
@@ -266,8 +264,7 @@
         <xsd:sequence>
             <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
-		<xsd:attribute name="imageset" type="xsd:string" use="required" />
-		<xsd:attribute name="image" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetDimType">

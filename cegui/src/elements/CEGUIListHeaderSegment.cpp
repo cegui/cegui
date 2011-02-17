@@ -30,8 +30,7 @@
 #include "elements/CEGUIListHeaderSegment.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUICoordConverter.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -644,9 +643,9 @@ void ListHeaderSegment::setSizingCursorImage(const Image* image)
     d_sizingMouseCursor = image;
 }
 
-void ListHeaderSegment::setSizingCursorImage(const String& imageset, const String& image)
+void ListHeaderSegment::setSizingCursorImage(const String& name)
 {
-    d_sizingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_sizingMouseCursor = &ImageManager::getSingleton().get(name);
 }
 
 const Image* ListHeaderSegment::getMovingCursorImage() const
@@ -659,9 +658,9 @@ void ListHeaderSegment::setMovingCursorImage(const Image* image)
     d_movingMouseCursor = image;
 }
 
-void ListHeaderSegment::setMovingCursorImage(const String& imageset, const String& image)
+void ListHeaderSegment::setMovingCursorImage(const String& name)
 {
-    d_movingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_movingMouseCursor = &ImageManager::getSingleton().get(name);
 }
 
 } // End of  CEGUI namespace section

@@ -32,8 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUISystem.h"
 #include "CEGUIRenderer.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUICoordConverter.h"
@@ -124,9 +123,9 @@ void MouseCursor::setImage(const Image* image)
 /*************************************************************************
 	Set the current mouse cursor image
 *************************************************************************/
-void MouseCursor::setImage(const String& imageset, const String& image_name)
+void MouseCursor::setImage(const String& name)
 {
-	setImage(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+	setImage(&ImageManager::getSingleton().get(name));
 }
 
 
@@ -307,19 +306,19 @@ void MouseCursor::cacheGeometry() const
     if (d_customSize.d_width != 0.0f || d_customSize.d_height != 0.0f)
     {
         calculateCustomOffset();
-        d_cursorImage->draw(*d_geometry, d_customOffset, d_customSize, 0);
+        d_cursorImage->render(*d_geometry, d_customOffset, d_customSize);
     }
     else
     {
-        d_cursorImage->draw(*d_geometry, Vector2<>(0, 0), 0);
+        d_cursorImage->render(*d_geometry, Vector2<>(0, 0));
     }
 }
 
 //----------------------------------------------------------------------------//
 void MouseCursor::calculateCustomOffset() const
 {
-    const Size<> sz(d_cursorImage->getSize());
-    const Vector2<> offset(d_cursorImage->getOffsets());
+    const Size<> sz(d_cursorImage->getRenderedSize());
+    const Vector2<> offset(d_cursorImage->getRenderedOffset());
 
     d_customOffset.d_x =
         d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;

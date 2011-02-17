@@ -32,6 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIFont.h"
+#include "CEGUIImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

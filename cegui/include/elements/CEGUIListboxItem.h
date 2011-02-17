@@ -357,16 +357,13 @@ public:
     \brief
         Set the selection highlighting brush image.
 
-    \param imageset
-        Name of the imagest containing the image to be used.
-
-    \param image
+    \param name
         Name of the image to be used
 
     \return
         Nothing.
     */
-    void    setSelectionBrushImage(const String& imageset, const String& image);
+    void    setSelectionBrushImage(const String& name);
 
 
     /*************************************************************************

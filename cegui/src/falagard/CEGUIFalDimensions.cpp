@@ -27,8 +27,7 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalDimensions.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIWindow.h"
@@ -212,16 +211,14 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    ImageDim::ImageDim(const String& imageset, const String& image, DimensionType dim) :
-        d_imageset(imageset),
-        d_image(image),
+    ImageDim::ImageDim(const String& name, DimensionType dim) :
+        d_image(name),
         d_what(dim)
     {}
 
-    void ImageDim::setSourceImage(const String& imageset, const String& image)
+    void ImageDim::setSourceImage(const String& name)
     {
-        d_imageset = imageset;
-        d_image = image;
+        d_image = name;
     }
 
     void ImageDim::setSourceDimension(DimensionType dim)
@@ -231,27 +228,27 @@ namespace CEGUI
 
     float ImageDim::getValue_impl(const Window&) const
     {
-        const Image* img = &ImagesetManager::getSingleton().get(d_imageset).getImage(d_image);
+        const Image* img = &ImageManager::getSingleton().get(d_image);
 
         switch (d_what)
         {
             case DT_WIDTH:
-                return img->getWidth();
+                return img->getRenderedSize().d_width;
                 break;
 
             case DT_HEIGHT:
-                return img->getHeight();
+                return img->getRenderedSize().d_height;
                 break;
 
             case DT_X_OFFSET:
-                return img->getOffsetX();
+                return img->getRenderedOffset().d_x;
                 break;
 
             case DT_Y_OFFSET:
-                return img->getOffsetY();
+                return img->getRenderedOffset().d_y;
                 break;
 
-            // these other options will not be particularly useful for most people since they return the edges of the
+/*            // these other options will not be particularly useful for most people since they return the edges of the
             // image on the source texture.
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
@@ -270,7 +267,7 @@ namespace CEGUI
             case DT_BOTTOM_EDGE:
                 return img->getSourceTextureArea().d_bottom;
                 break;
-
+*/
             default:
                 CEGUI_THROW(InvalidRequestException("ImageDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
@@ -286,7 +283,7 @@ namespace CEGUI
 
     BaseDim* ImageDim::clone_impl() const
     {
-        ImageDim* ndim = CEGUI_NEW_AO ImageDim(d_imageset, d_image, d_what);
+        ImageDim* ndim = CEGUI_NEW_AO ImageDim(d_image, d_what);
         return ndim;
     }
 
@@ -297,8 +294,7 @@ namespace CEGUI
 
     void ImageDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        xml_stream.attribute("imageset", d_imageset)
-            .attribute("image", d_image)
+        xml_stream.attribute("name", d_image)
             .attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 

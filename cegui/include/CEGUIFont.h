@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -437,7 +437,7 @@ protected:
     typedef std::map<utf32, FontGlyph, std::less<utf32>
         CEGUI_MAP_ALLOC(utf32, FontGlyph)> CodepointMap;
     //! Contains mappings from code points to Image objects
-    CodepointMap d_cp_map;
+    mutable CodepointMap d_cp_map;
 };
 
 } // End of  CEGUI namespace section

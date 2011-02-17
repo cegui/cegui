@@ -26,9 +26,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "elements/CEGUIDragContainer.h"
-#include "CEGUIImageset.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIRenderingContext.h"
+#include "CEGUIImageManager.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
@@ -157,9 +157,9 @@ namespace CEGUI
         setDragCursorImage((const Image*)image);
     }
 
-    void DragContainer::setDragCursorImage(const String& imageset, const String& image)
+    void DragContainer::setDragCursorImage(const String& name)
     {
-        setDragCursorImage(&ImagesetManager::getSingleton().get(imageset).getImage(image));
+        setDragCursorImage(&ImageManager::getSingleton().get(name));
     }
 
     Window* DragContainer::getCurrentDropTarget(void) const

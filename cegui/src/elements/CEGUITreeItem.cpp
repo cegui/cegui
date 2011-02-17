@@ -32,12 +32,11 @@
 #include "elements/CEGUITree.h"
 #include "elements/CEGUITreeItem.h"
 #include "CEGUISystem.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindow.h"
-#include "CEGUIImage.h"
 #include <algorithm>
 
 #if defined (CEGUI_USE_FRIBIDI)
@@ -104,11 +103,10 @@ TreeItem::~TreeItem(void)
 /*************************************************************************
     Set the selection highlighting brush image.
 *************************************************************************/
-void TreeItem::setSelectionBrushImage(const String& imageset,
-                                      const String& image)
+void TreeItem::setSelectionBrushImage(const String& name)
 {
     setSelectionBrushImage(
-        &ImagesetManager::getSingleton().get(imageset).getImage(image));
+        &ImageManager::getSingleton().get(name));
 }
 
 /*************************************************************************
@@ -281,13 +279,13 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
         Rect finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
-        d_iconImage->draw(buffer, finalPos, clipper,
+        d_iconImage->render(buffer, finalPos, clipper,
                           ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_left += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->draw(buffer, finalRect, clipper,
+        d_selectBrush->render(buffer, finalRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
     Font* font = getFont();
