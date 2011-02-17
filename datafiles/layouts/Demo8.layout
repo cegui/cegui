@@ -72,7 +72,7 @@
                     <Property Name="UnifiedPosition" Value="{{0.05,0},{0.26,0}}" />
                     <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                     <Property Name="UnifiedSize" Value="{{0.9,0},{0.1,0}}" />
-                    <Property Name="Image" Value="set:TaharezLook image:MultiListSelectionBrush" />
+                    <Property Name="Image" Value="TaharezLook/MultiListSelectionBrush" />
                     <Property Name="ImageColours" Value="tl:0 tr:0 bl:0 br:0" />
                     <Property Name="Tooltip" Value="Shows a sample of the selected colour." />
                 </Window>

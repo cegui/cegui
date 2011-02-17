@@ -5,7 +5,7 @@
         <Property Name="UnifiedSize" Value="{{1,0},{1,0}}" />
         <Property Name="FrameEnabled" Value="False" />
         <Property Name="BackgroundEnabled" Value="False" />
-<!--        <Property Name="Image" Value="set:Backdrop-Images image:Magic" />
+<!--        <Property Name="Image" Value="Backdrop-Images/Magic" />
 -->
         <Window Type="Vanilla/FrameWindow" Name="Demo/NewNode">
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
