@@ -220,7 +220,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Vector2<> offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
-                        new BasicImage(name, &texture, area, offset, d_autoScale,
+                        new BasicImage(name, &texture, area, offset, false,
                                        Size<>(d_nativeHorzRes, d_nativeVertRes));
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -258,7 +258,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
-                        new BasicImage(name, &texture, area, offset, d_autoScale,
+                        new BasicImage(name, &texture, area, offset, false,
                                        Size<>(d_nativeHorzRes, d_nativeVertRes));
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
