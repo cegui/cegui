@@ -30,7 +30,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUIDefaultResourceProvider.h"
-#include "CEGUIImagesetManager.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUIWindowManager.h"
@@ -63,7 +63,6 @@ const String Config_xmlHandler::PatternAttribute("pattern");
 const String Config_xmlHandler::DirectoryAttribute("directory");
 const String Config_xmlHandler::InitScriptAttribute("initScript");
 const String Config_xmlHandler::TerminateScriptAttribute("terminateScript");
-const String Config_xmlHandler::ImagesetAttribute("imageset");
 const String Config_xmlHandler::ImageAttribute("image");
 const String Config_xmlHandler::NameAttribute("name");
 
@@ -202,7 +201,6 @@ void Config_xmlHandler::handleDefaultFontElement(const XMLAttributes& attr)
 //----------------------------------------------------------------------------//
 void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& attr)
 {
-    d_defaultMouseImageset = attr.getValueAsString(ImagesetAttribute, "");
     d_defaultMouseImage = attr.getValueAsString(ImageAttribute, "");
 }
 
@@ -262,7 +260,7 @@ void Config_xmlHandler::initialiseDefaultResourceGroups() const
         switch ((*i).type)
         {
         case RT_IMAGESET:
-            Imageset::setDefaultResourceGroup((*i).group);
+            ImageManager::setImagesetDefaultResourceGroup((*i).group);
             break;
 
         case RT_FONT:
@@ -311,7 +309,7 @@ void Config_xmlHandler::loadAutoResources() const
         switch ((*i).type)
         {
         case RT_IMAGESET:
-            ImagesetManager::getSingleton().createAll((*i).pattern, (*i).group);
+            autoLoadImagesets((*i).pattern, (*i).group);
             break;
 
         case RT_FONT:
@@ -349,9 +347,9 @@ void Config_xmlHandler::initialiseDefaultFont() const
 //----------------------------------------------------------------------------//
 void Config_xmlHandler::initialiseDefaultMouseCursor() const
 {
-    if (!d_defaultMouseImageset.empty() && !d_defaultMouseImage.empty())
+    if (!d_defaultMouseImage.empty())
         System::getSingleton().
-            setDefaultMouseCursor(d_defaultMouseImageset, d_defaultMouseImage);
+            setDefaultMouseCursor(d_defaultMouseImage);
 }
 
 //----------------------------------------------------------------------------//
@@ -427,6 +425,18 @@ void Config_xmlHandler::autoLoadLookNFeels(const String& pattern,
     for (size_t i = 0; i < num; ++i)
         WidgetLookManager::getSingleton().
             parseLookNFeelSpecification(names[i], group);
+}
+
+//----------------------------------------------------------------------------//
+void Config_xmlHandler::autoLoadImagesets(const String& pattern,
+                                          const String& group) const
+{
+    std::vector<String> names;
+    const size_t num = System::getSingleton().getResourceProvider()->
+        getResourceGroupFileNames(names, pattern, group);
+
+    for (size_t i = 0; i < num; ++i)
+        ImageManager::getSingleton().loadImageset(names[i], group);
 }
 
 //----------------------------------------------------------------------------//

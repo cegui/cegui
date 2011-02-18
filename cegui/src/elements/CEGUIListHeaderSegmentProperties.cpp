@@ -41,37 +41,37 @@ namespace ListHeaderSegmentProperties
 {
 String	Sizable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isSizingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeaderSegment*>(receiver)->isSizingEnabled());
 }
 
 
 void	Sizable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeaderSegment*>(receiver)->setSizingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<ListHeaderSegment*>(receiver)->setSizingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	Clickable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isClickable());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeaderSegment*>(receiver)->isClickable());
 }
 
 
 void	Clickable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeaderSegment*>(receiver)->setClickable(PropertyHelper::stringToBool(value));
+	static_cast<ListHeaderSegment*>(receiver)->setClickable(PropertyHelper<bool>::fromString(value));
 }
 
 
 String	Dragable::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isDragMovingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const ListHeaderSegment*>(receiver)->isDragMovingEnabled());
 }
 
 
 void	Dragable::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<ListHeaderSegment*>(receiver)->setDragMovingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<ListHeaderSegment*>(receiver)->setDragMovingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -118,25 +118,31 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 
 String SizingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getSizingCursorImage();
-    return img ? PropertyHelper::imageToString(img) : String("");
+    const Image* img =
+        static_cast<const ListHeaderSegment*>(receiver)->getSizingCursorImage();
+
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void SizingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<ListHeaderSegment*>(receiver)->setSizingCursorImage(PropertyHelper::stringToImage(value));
+    static_cast<ListHeaderSegment*>(receiver)->
+        setSizingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 
 String MovingCursorImage::get(const PropertyReceiver* receiver) const
 {
-    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getMovingCursorImage();
-    return img ? PropertyHelper::imageToString(img) : String("");
+    const Image* img =
+        static_cast<const ListHeaderSegment*>(receiver)->getMovingCursorImage();
+
+    return PropertyHelper<Image*>::toString(img);
 }
 
 void MovingCursorImage::set(PropertyReceiver* receiver, const String &value)
 {
-    static_cast<ListHeaderSegment*>(receiver)->setMovingCursorImage(PropertyHelper::stringToImage(value));
+    static_cast<ListHeaderSegment*>(receiver)->
+        setMovingCursorImage(PropertyHelper<Image*>::fromString(value));
 }
 
 } // End of  ListHeaderSegmentProperties namespace section

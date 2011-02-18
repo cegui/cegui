@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardToggleButton::TypeName[] = "Falagard/ToggleButton";
+    const String FalagardToggleButton::TypeName("Falagard/ToggleButton");
 
     FalagardToggleButton::FalagardToggleButton(const String& type) :
         FalagardButton(type)
@@ -42,7 +42,7 @@ namespace CEGUI
 
     String FalagardToggleButton::actualStateName(const String& name) const
     {
-    	bool selected = PropertyHelper::stringToBool(d_window->getProperty("Selected"));
+    	bool selected = PropertyHelper<bool>::fromString(d_window->getProperty("Selected"));
         return selected ? "Selected"+name : name;
     }
 

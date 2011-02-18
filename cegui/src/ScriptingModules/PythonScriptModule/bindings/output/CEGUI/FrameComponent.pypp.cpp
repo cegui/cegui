@@ -145,12 +145,12 @@ void register_FrameComponent_class(){
         }
         { //::CEGUI::FrameComponent::setImage
         
-            typedef void ( ::CEGUI::FrameComponent::*setImage_function_type )( ::CEGUI::FrameImageComponent,::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameComponent::*setImage_function_type )( ::CEGUI::FrameImageComponent,::CEGUI::String const & ) ;
             
             FrameComponent_exposer.def( 
                 "setImage"
                 , setImage_function_type( &::CEGUI::FrameComponent::setImage )
-                , ( bp::arg("part"), bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("part"), bp::arg("name") )
                 , "*!\n\
                     \n\
                         Set the Image that will be drawn by this FrameComponent.\n\
@@ -159,10 +159,7 @@ void register_FrameComponent_class(){
                         One of the FrameImageComponent enumerated values specifying the component image to be\
                         accessed.\n\
             \n\
-                    @param imageset\n\
-                        String holding the name of the Imagset that contains the Image to be rendered.\n\
-            \n\
-                    @param image\n\
+                    @param name\n\
                         String holding the name of the Image to be rendered.\n\
             \n\
                     @return\n\

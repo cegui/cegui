@@ -112,8 +112,8 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // load the resulting image into the texture
     result->loadFromMemory(image.getData(),
-                           Size(image.getWidth(),
-                                image.getHeight()),
+                           Size<>(image.getWidth(),
+                                  image.getHeight()),
                            format);
 
     return result;

@@ -38,14 +38,14 @@ namespace FalagardSliderProperties
     {
         FalagardSlider* wr = static_cast<FalagardSlider*>(
         static_cast<const Window*>(receiver)->getWindowRenderer());
-        return PropertyHelper::boolToString(wr->isVertical());
+        return PropertyHelper<bool>::toString(wr->isVertical());
     }
 
     void VerticalSlider::set(PropertyReceiver* receiver, const String& value)
     {
         FalagardSlider* wr = static_cast<FalagardSlider*>(
         static_cast<Window*>(receiver)->getWindowRenderer());
-        wr->setVertical(PropertyHelper::stringToBool(value));
+        wr->setVertical(PropertyHelper<bool>::fromString(value));
     }
 
 
@@ -53,14 +53,14 @@ namespace FalagardSliderProperties
     {
         FalagardSlider* wr = static_cast<FalagardSlider*>(
         static_cast<const Window*>(receiver)->getWindowRenderer());
-        return PropertyHelper::boolToString(wr->isReversedDirection());
+        return PropertyHelper<bool>::toString(wr->isReversedDirection());
     }
 
     void ReversedDirection::set(PropertyReceiver* receiver, const String& value)
     {
         FalagardSlider* wr = static_cast<FalagardSlider*>(
         static_cast<Window*>(receiver)->getWindowRenderer());
-        wr->setReversedDirection(PropertyHelper::stringToBool(value));
+        wr->setReversedDirection(PropertyHelper<bool>::fromString(value));
     }
 
 }

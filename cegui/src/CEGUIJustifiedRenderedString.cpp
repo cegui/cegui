@@ -39,7 +39,7 @@ JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::format(const Size& area_size)
+void JustifiedRenderedString::format(const Size<>& area_size)
 {
     d_spaceExtras.clear();
 
@@ -58,11 +58,11 @@ void JustifiedRenderedString::format(const Size& area_size)
 
 //----------------------------------------------------------------------------//
 void JustifiedRenderedString::draw(GeometryBuffer& buffer,
-                                 const Vector2& position,
+                                 const Vector2<>& position,
                                  const ColourRect* mod_colours,
                                  const Rect* clip_rect) const
 {
-    Vector2 draw_pos(position);
+    Vector2<> draw_pos(position);
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {

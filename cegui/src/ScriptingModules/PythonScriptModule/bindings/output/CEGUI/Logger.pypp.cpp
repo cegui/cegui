@@ -31,13 +31,7 @@ void register_Logger_class(){
 
     { //::CEGUI::Logger
         typedef bp::class_< Logger_wrapper, bp::bases< CEGUI::Singleton< CEGUI::Logger > >, boost::noncopyable > Logger_exposer_t;
-        Logger_exposer_t Logger_exposer = Logger_exposer_t( "Logger", "*!\n\
-        \n\
-           Abstract class that defines the interface of a logger object for the GUI system.\n\
-            The default implementation of this interface is the DefaultLogger class; if you\n\
-            want to perform special logging, derive your own class from Logger and initialize\n\
-            a object of that type before you create the CEGUI.System singleton.\n\
-        *\n", bp::init< >("*!\n\
+        Logger_exposer_t Logger_exposer = Logger_exposer_t( "Logger", bp::init< >("*!\n\
         \n\
            Constructor for Logger object.\n\
         *\n") );

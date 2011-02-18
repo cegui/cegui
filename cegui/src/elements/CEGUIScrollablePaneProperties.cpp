@@ -37,120 +37,120 @@ namespace ScrollablePaneProperties
 {
     String ContentPaneAutoSized::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ScrollablePane*>(receiver)->isContentPaneAutoSized());
+        return PropertyHelper<bool>::toString(static_cast<const ScrollablePane*>(receiver)->isContentPaneAutoSized());
     }
 
     void ContentPaneAutoSized::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setContentPaneAutoSized(PropertyHelper::stringToBool(value));
+        static_cast<ScrollablePane*>(receiver)->setContentPaneAutoSized(PropertyHelper<bool>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String ContentArea::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::rectToString(static_cast<const ScrollablePane*>(receiver)->getContentPaneArea());
+        return PropertyHelper<Rect>::toString(static_cast<const ScrollablePane*>(receiver)->getContentPaneArea());
     }
 
     void ContentArea::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setContentPaneArea(PropertyHelper::stringToRect(value));
+        static_cast<ScrollablePane*>(receiver)->setContentPaneArea(PropertyHelper<Rect>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String ForceVertScrollbar::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ScrollablePane*>(receiver)->isVertScrollbarAlwaysShown());
+        return PropertyHelper<bool>::toString(static_cast<const ScrollablePane*>(receiver)->isVertScrollbarAlwaysShown());
     }
 
     void ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+        static_cast<ScrollablePane*>(receiver)->setShowVertScrollbar(PropertyHelper<bool>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ScrollablePane*>(receiver)->isHorzScrollbarAlwaysShown());
+        return PropertyHelper<bool>::toString(static_cast<const ScrollablePane*>(receiver)->isHorzScrollbarAlwaysShown());
     }
 
     void ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
+        static_cast<ScrollablePane*>(receiver)->setShowHorzScrollbar(PropertyHelper<bool>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
     
     String HorzStepSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalStepSize());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalStepSize());
     }
 
     void HorzStepSize::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setHorizontalStepSize(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setHorizontalStepSize(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String HorzOverlapSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalOverlapSize());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalOverlapSize());
     }
 
     void HorzOverlapSize::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setHorizontalOverlapSize(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setHorizontalOverlapSize(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String HorzScrollPosition::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalScrollPosition());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalScrollPosition());
     }
 
     void HorzScrollPosition::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setHorizontalScrollPosition(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setHorizontalScrollPosition(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String VertStepSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalStepSize());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalStepSize());
     }
 
     void VertStepSize::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setVerticalStepSize(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setVerticalStepSize(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String VertOverlapSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalOverlapSize());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalOverlapSize());
     }
 
     void VertOverlapSize::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setVerticalOverlapSize(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setVerticalOverlapSize(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String VertScrollPosition::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalScrollPosition());
+        return PropertyHelper<float>::toString(static_cast<const ScrollablePane*>(receiver)->getHorizontalScrollPosition());
     }
 
     void VertScrollPosition::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setVerticalScrollPosition(PropertyHelper::stringToFloat(value));
+        static_cast<ScrollablePane*>(receiver)->setVerticalScrollPosition(PropertyHelper<float>::fromString(value));
     }
 
 } // End of  ScrollablePaneProperties namespace section

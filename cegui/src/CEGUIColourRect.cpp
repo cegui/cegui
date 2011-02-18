@@ -36,7 +36,7 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-ColourRect::ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right) :
+ColourRect::ColourRect(const Colour& top_left, const Colour& top_right, const Colour& bottom_left, const Colour& bottom_right) :
 	d_top_left(top_left),
 	d_top_right(top_right),
 	d_bottom_left(bottom_left),
@@ -48,7 +48,7 @@ ColourRect::ColourRect(const colour& top_left, const colour& top_right, const co
 /*************************************************************************
 	Constructor for ColourRect objects (via single colour).
 *************************************************************************/
-ColourRect::ColourRect(const colour& col) :
+ColourRect::ColourRect(const Colour& col) :
 	d_top_left(col),
 	d_top_right(col),
 	d_bottom_left(col),
@@ -133,11 +133,11 @@ bool ColourRect::isMonochromatic() const
 /*************************************************************************
 	Get the colour at a specified point
 *************************************************************************/
-colour ColourRect::getColourAtPoint( float x, float y ) const
+Colour ColourRect::getColourAtPoint( float x, float y ) const
 {
-    colour h1((d_top_right - d_top_left) * x + d_top_left);
-	colour h2((d_bottom_right - d_bottom_left) * x + d_bottom_left);
-	return colour((h2 - h1) * y + h1);
+    Colour h1((d_top_right - d_top_left) * x + d_top_left);
+	Colour h2((d_bottom_right - d_bottom_left) * x + d_bottom_left);
+	return Colour((h2 - h1) * y + h1);
 }
 
 /*************************************************************************
@@ -157,7 +157,7 @@ ColourRect ColourRect::getSubRectangle( float left, float right, float top, floa
 /*************************************************************************
 	Set the colour of all four corners simultaneously.	
 *************************************************************************/
-void ColourRect::setColours(const colour& col)
+void ColourRect::setColours(const Colour& col)
 {
 	d_top_left = d_top_right = d_bottom_left = d_bottom_right = col;
 }

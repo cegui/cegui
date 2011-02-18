@@ -59,10 +59,10 @@ bool FalagardDemo1Sample::initialiseSample()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().create("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -72,14 +72,14 @@ bool FalagardDemo1Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));
+    background->addChild(winMgr.loadWindowLayout("VanillaWindows.layout"));
 
     // create an instance of the console class.
     d_console = new DemoConsole("Demo");
@@ -160,7 +160,7 @@ DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
 
     // attach this window if parent is valid
     if (parent)
-        parent->addChildWindow(d_root);
+        parent->addChild(d_root);
 }
 
 DemoConsole::~DemoConsole()
@@ -201,7 +201,7 @@ bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)
         // append new text to history output
         history->setText(history->getText() + edit_text);
         // scroll to bottom of history output
-        history->setCaratIndex(static_cast<size_t>(-1));
+        history->setCaretIndex(static_cast<size_t>(-1));
         // erase text in text entry box.
         editbox->setText("");
     }
@@ -226,7 +226,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos >= 0)
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {
@@ -241,7 +241,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos < static_cast<int>(d_history.size()))
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {

@@ -39,7 +39,8 @@ namespace CEGUI
     \brief
         Common base class used for renderable components within an ImagerySection.
     */
-    class CEGUIEXPORT FalagardComponentBase
+    class CEGUIEXPORT FalagardComponentBase :
+        public AllocatedObject<FalagardComponentBase>
     {
     public:
         /*!

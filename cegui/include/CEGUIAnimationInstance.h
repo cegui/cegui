@@ -71,7 +71,8 @@ public:
 \see
     Animation
 */
-class CEGUIEXPORT AnimationInstance
+class CEGUIEXPORT AnimationInstance :
+    public AllocatedObject<AnimationInstance>
 {
 public:
     //! Namespace for animation instance events
@@ -407,13 +408,15 @@ private:
     //! always clamp step delta to this value
     float d_maxStepDeltaClamp;
 
-    typedef std::map<String, String> PropertyValueMap;
+    typedef std::map<String, String, std::less<String>
+        CEGUI_MAP_ALLOC(String, String)> PropertyValueMap;
     /** cached saved values, used for relative application method
      *  and keyframe property source, see Affector and KeyFrame classes
      */
     PropertyValueMap d_savedPropertyValues;
 
-    typedef std::vector<Event::Connection> ConnectionTracker;
+    typedef std::vector<Event::Connection
+        CEGUI_VECTOR_ALLOC(Event::Connection)> ConnectionTracker;
     //! tracks auto event connections we make.
     ConnectionTracker d_autoConnections;
 };

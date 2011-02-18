@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardListbox::TypeName[] = "Falagard/Listbox";
+    const String FalagardListbox::TypeName("Falagard/Listbox");
 
 
     FalagardListbox::FalagardListbox(const String& type) :
@@ -92,8 +92,8 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3 itemPos;
-        Size    itemSize;
+        Vector3<> itemPos;
+        Size<>  itemSize;
         Rect    itemClipper, itemRect;
         float   widest = lb->getWidestItemWidth();
 

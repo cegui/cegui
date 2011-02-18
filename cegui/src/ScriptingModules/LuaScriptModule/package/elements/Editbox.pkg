@@ -10,7 +10,7 @@ class Editbox : public Window
 
 	string getValidationString() const;
 
-	unsigned long getCaratIndex() const;
+	unsigned long getCaretIndex() const;
 	unsigned long getSelectionStartIndex() const;
 	unsigned long getSelectionEndIndex() const;
 	unsigned long getSelectionLength() const;
@@ -20,7 +20,7 @@ class Editbox : public Window
 	void setReadOnly(bool setting);
 	void setTextMasked(bool setting);
 	void setValidationString(utf8string validation_string);
-	void setCaratIndex(unsigned long carat_pos);
+	void setCaretIndex(unsigned long caret_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaskCodePoint(unsigned long code_point);
 	void setMaxTextLength(unsigned long max_len);

@@ -34,7 +34,7 @@
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef DIRECT3D10_GUIRENDERER_EXPORTS
+#   ifdef CEGUIDIRECT3D10RENDERER_EXPORTS
 #       define D3D10_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define D3D10_GUIRENDERER_API __declspec(dllimport)
@@ -141,14 +141,14 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Size<>& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Size<>& sz);
+    const Size<>& getDisplaySize() const;
+    const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -160,16 +160,16 @@ protected:
     ~Direct3D10Renderer();
 
     //! return size of the D3D device viewport.
-    Size getViewportSize();
+    Size<> getViewportSize();
 
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! The D3D device we're using to render with.
     ID3D10Device* d_device;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Size<> d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2<> d_displayDPI;
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! The default rendering root object

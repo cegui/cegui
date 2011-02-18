@@ -181,7 +181,7 @@ Texture& Direct3D11Renderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D11Renderer::createTexture(const Size& size)
+Texture& Direct3D11Renderer::createTexture(const Size<>& size)
 {
     Direct3D11Texture* tex = new Direct3D11Texture(d_device, size);
     d_textures.push_back(tex);
@@ -222,7 +222,7 @@ void Direct3D11Renderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11Renderer::setDisplaySize(const Size& sz)
+void Direct3D11Renderer::setDisplaySize(const Size<>& sz)
 {
     if (sz != d_displaySize)
     {
@@ -237,13 +237,13 @@ void Direct3D11Renderer::setDisplaySize(const Size& sz)
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D11Renderer::getDisplaySize() const
+const Size<>& Direct3D11Renderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& Direct3D11Renderer::getDisplayDPI() const
+const Vector2<>& Direct3D11Renderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -377,7 +377,7 @@ Direct3D11Renderer::~Direct3D11Renderer()
 }
 
 //----------------------------------------------------------------------------//
-Size Direct3D11Renderer::getViewportSize()
+Size<> Direct3D11Renderer::getViewportSize()
 {
     D3D11_VIEWPORT vp;
     UINT vp_count = 1;
@@ -389,8 +389,8 @@ Size Direct3D11Renderer::getViewportSize()
             "Direct3D11Renderer::getViewportSize: Unable "
             "to access required view port information from IDirect3DDevice10."));
     else
-        return Size(static_cast<float>(vp.Width),
-                    static_cast<float>(vp.Height));
+        return Size<>(static_cast<float>(vp.Width),
+                      static_cast<float>(vp.Height));
 }
 
 //----------------------------------------------------------------------------//

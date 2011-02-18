@@ -191,8 +191,10 @@ public:
     void createAll(const String& pattern, const String& resource_group);
 
 protected:
+    // singleton allocator fits here, resource managers are very likely to be singletons
     //! type of collection used to store and manage objects
-    typedef std::map<String, T*, String::FastLessCompare> ObjectRegistry;
+    typedef std::map<String, T*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, T*)> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
     //! function to enforce XMLResourceExistsAction policy.
@@ -302,7 +304,7 @@ void NamedXMLResourceManager<T, U>::destroyObject(
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);
 
-    delete ob->second;
+    CEGUI_DELETE_AO ob->second;
     d_objects.erase(ob);
 
     // fire event signalling an object has been destroyed
@@ -326,7 +328,7 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
-            delete object;
+            CEGUI_DELETE_AO object;
             // return existing instance of object.
             return *d_objects[object_name];
 
@@ -339,14 +341,14 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             break;
 
         case XREA_THROW:
-            delete object;
+            CEGUI_DELETE_AO object;
             CEGUI_THROW(AlreadyExistsException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "an object of type '" + d_resourceType + "' named '" +
                 object_name + "' already exists in the collection."));
 
         default:
-            delete object;
+            CEGUI_DELETE_AO object;
             CEGUI_THROW(InvalidRequestException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "Invalid CEGUI::XMLResourceExistsAction was specified."));

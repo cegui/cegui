@@ -91,7 +91,7 @@ class MyListItem : public CEGUI::ListboxTextItem
 public:
     MyListItem(const CEGUI::String& text) : ListboxTextItem(text)
     {
-        setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
     }
 };
 

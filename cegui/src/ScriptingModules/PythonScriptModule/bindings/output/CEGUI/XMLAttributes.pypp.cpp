@@ -10,10 +10,7 @@ void register_XMLAttributes_class(){
 
     { //::CEGUI::XMLAttributes
         typedef bp::class_< CEGUI::XMLAttributes > XMLAttributes_exposer_t;
-        XMLAttributes_exposer_t XMLAttributes_exposer = XMLAttributes_exposer_t( "XMLAttributes", "*!\n\
-        \n\
-            Class representing a block of attributes associated with an XML element.\n\
-         *\n", bp::init< >("*!\n\
+        XMLAttributes_exposer_t XMLAttributes_exposer = XMLAttributes_exposer_t( "XMLAttributes", bp::init< >("*!\n\
         \n\
             XMLAttributes constructor.\n\
          *\n") );

@@ -63,26 +63,27 @@ public:
     \note
         This also causes the texel scaling values to be updated.
     */
-    void setOriginalDataSize(const Size& sz);
+    void setOriginalDataSize(const Size<>& sz);
 
     //! return a std::string containing a unique name.
     static std::string getUniqueName();
 
     // Implement texture interface.
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const Size<>& getSize() const;
+    const Size<>& getOriginalDataSize() const;
+    const Vector2<>& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // friends in order that Renderer module can create / destroy textures
     friend Texture& IrrlichtRenderer::createTexture();
     friend Texture& IrrlichtRenderer::createTexture(const String&,
                                                     const String&);
-    friend Texture& IrrlichtRenderer::createTexture(const Size&);
+    friend Texture& IrrlichtRenderer::createTexture(const Size<>&);
     friend void IrrlichtRenderer::destroyTexture(Texture&);
 
     //! Construct a basic texture
@@ -92,12 +93,12 @@ protected:
                     const String& filename, const String& resourceGroup);
     //! Construct a texture with the given size.
     IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
-                    const Size& size);
+                    const Size<>& size);
     //! destructor.
     ~IrrlichtTexture();
 
     //! create the underlying Irrlicht texture with the given size
-    void createIrrlichtTexture(const Size& sz);
+    void createIrrlichtTexture(const Size<>& sz);
 
     //! release the underlying irrlicht texture currently used.
     void freeIrrlichtTexture();
@@ -112,11 +113,11 @@ protected:
     //! ptr to underlying irrlicht texture.
     irr::video::ITexture* d_texture;
     //! Size of the texture.
-    Size d_size;
+    Size<> d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
     //! reference to the IrrlichtRenderer that created this texture
     IrrlichtRenderer& d_owner;
 };

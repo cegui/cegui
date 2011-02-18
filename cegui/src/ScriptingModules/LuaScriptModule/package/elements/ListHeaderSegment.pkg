@@ -13,7 +13,7 @@ class ListHeaderSegment : public Window
 	bool isSizingEnabled() const;
 	SortDirection getSortDirection() const;
 	bool isDragMovingEnabled() const;
-	const Vector2& getDragMoveOffset() const;
+	const Vector2<float>& getDragMoveOffset() const;
 	bool isClickable() const;
 
 	void setSizingEnabled(bool setting);

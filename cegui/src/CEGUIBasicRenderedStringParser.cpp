@@ -32,6 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIFont.h"
+#include "CEGUIImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -289,7 +290,7 @@ void BasicRenderedStringParser::initialiseTagHandlers()
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleColour(RenderedString& rs, const String& value)
 {
-    d_colours.setColours(PropertyHelper::stringToColour(value));
+    d_colours.setColours(PropertyHelper<Colour>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
@@ -302,7 +303,7 @@ void BasicRenderedStringParser::handleFont(RenderedString& rs, const String& val
 void BasicRenderedStringParser::handleImage(RenderedString& rs, const String& value)
 {
     RenderedStringImageComponent ric(
-        PropertyHelper::stringToImage(value));
+        PropertyHelper<Image*>::fromString(value));
     ric.setPadding(d_padding);
     ric.setColours(d_colours);
     ric.setVerticalFormatting(d_vertAlignment);
@@ -342,63 +343,63 @@ void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const St
 void BasicRenderedStringParser::handlePadding(RenderedString& rs,
                                               const String& value)
 {
-    d_padding = PropertyHelper::stringToRect(value);
+    d_padding = PropertyHelper<Rect>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleTopPadding(RenderedString& rs,
                                                  const String& value)
 {
-    d_padding.d_top = PropertyHelper::stringToFloat(value);
+    d_padding.d_top = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleBottomPadding(RenderedString& rs,
                                                     const String& value)
 {
-    d_padding.d_bottom = PropertyHelper::stringToFloat(value);
+    d_padding.d_bottom = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleLeftPadding(RenderedString& rs,
                                                   const String& value)
 {
-    d_padding.d_left = PropertyHelper::stringToFloat(value);
+    d_padding.d_left = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleRightPadding(RenderedString& rs,
                                                    const String& value)
 {
-    d_padding.d_right = PropertyHelper::stringToFloat(value);
+    d_padding.d_right = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleAspectLock(RenderedString& rs,
                                                  const String& value)
 {
-    d_aspectLock = PropertyHelper::stringToBool(value);
+    d_aspectLock = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleImageSize(RenderedString& rs,
                                                 const String& value)
 {
-    d_imageSize = PropertyHelper::stringToSize(value);
+    d_imageSize = PropertyHelper<Size<> >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleImageWidth(RenderedString& rs,
                                                  const String& value)
 {
-    d_imageSize.d_width = PropertyHelper::stringToFloat(value);
+    d_imageSize.d_width = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleImageHeight(RenderedString& rs,
                                                   const String& value)
 {
-    d_imageSize.d_height = PropertyHelper::stringToFloat(value);
+    d_imageSize.d_height = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

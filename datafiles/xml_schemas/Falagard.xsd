@@ -8,6 +8,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetLookType">
 		<xsd:sequence>
+            <xsd:element name="EventLinkDefinition" type="eventLinkDefinitionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="PropertyDefinition" type="propertyDefinitionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="PropertyLinkDefinition" type="propertyLinkDefinitionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
@@ -42,6 +43,18 @@
     <xsd:complexType name="propertyLinkTargetType">
         <xsd:attribute name="widget" type="xsd:string" use="required" />
         <xsd:attribute name="property" type="xsd:string" use="optional" default="" />
+    </xsd:complexType>
+    <xsd:complexType name="eventLinkDefinitionType">
+		<xsd:sequence>
+			<xsd:element name="EventLinkTarget" type="eventLinkTargetType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="event" type="xsd:string" use="optional" default="" />
+    </xsd:complexType>
+    <xsd:complexType name="eventLinkTargetType">
+        <xsd:attribute name="widget" type="xsd:string" use="required" />
+        <xsd:attribute name="event" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
     <xsd:complexType name="namedAreaType">
         <xsd:sequence>
@@ -189,13 +202,11 @@
 		<xsd:attribute name="value" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="imageType">
-		<xsd:attribute name="imageset" type="xsd:string" use="required" />
-		<xsd:attribute name="image" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="frameImageType">
         <xsd:attribute name="type" type="frameImageComponentEnum" use="required" />
-        <xsd:attribute name="imageset" type="xsd:string" use="required" />
-        <xsd:attribute name="image" type="xsd:string" use="required" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="componentAreaType">
         <xsd:choice>
@@ -213,6 +224,7 @@
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
+            <xsd:element name="ExpressionDim" type="expressionDimType" />
 		</xsd:choice>
 		<xsd:attribute name="type" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
@@ -252,8 +264,7 @@
         <xsd:sequence>
             <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
-		<xsd:attribute name="imageset" type="xsd:string" use="required" />
-		<xsd:attribute name="image" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetDimType">
@@ -262,6 +273,12 @@
         </xsd:sequence>
 		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
+	</xsd:complexType>
+   	<xsd:complexType name="expressionDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+		<xsd:attribute name="value" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="settingByPropertyType">
         <xsd:attribute name="name" type="xsd:string" use="required" />

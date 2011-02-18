@@ -40,7 +40,8 @@ namespace CEGUI
     Base class representing a part of a rendered string.  The 'part' represented
     may be a text string, an image or some other entity.
 */
-class CEGUIEXPORT RenderedStringComponent
+class CEGUIEXPORT RenderedStringComponent :
+    public AllocatedObject<RenderedStringComponent>
 {
 public:
     //! Destructor.
@@ -76,14 +77,14 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(GeometryBuffer& buffer, const Vector2& position,
+    virtual void draw(GeometryBuffer& buffer, const Vector2<>& position,
                       const ColourRect* mod_colours,
                       const Rect* clip_rect,
                       const float vertical_space,
                       const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
-    virtual Size getPixelSize() const = 0;
+    virtual Size<> getPixelSize() const = 0;
 
     //! return whether the component can be split
     virtual bool canSplit() const = 0;

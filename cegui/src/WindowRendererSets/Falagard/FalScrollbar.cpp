@@ -29,13 +29,15 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIThumb.h"
 #include "elements/CEGUIPushButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardScrollbar::TypeName[] = "Falagard/Scrollbar";
+    const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
+
     FalagardScrollbarProperties::VerticalScrollbar FalagardScrollbar::d_verticalProperty;
 
 
@@ -102,16 +104,16 @@ namespace CEGUI
         if (d_vertical)
         {
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            return (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getYPosition(), w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
         }
         else
         {
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            return (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getXPosition(), w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
         }
     }
 
-    float FalagardScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+    float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2<>& pt) const
     {
         Scrollbar* w = (Scrollbar*)d_window;
         Rect absrect(w->getThumb()->getUnclippedOuterRect());

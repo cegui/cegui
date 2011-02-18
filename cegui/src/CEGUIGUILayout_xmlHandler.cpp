@@ -148,7 +148,7 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
             // detach from parent
             if (wnd->getParent())
             {
-                wnd->getParent()->removeChildWindow(wnd);
+                wnd->getParent()->removeChild(wnd);
             }
 
             // destroy the window
@@ -206,7 +206,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 
         // add this window to the current parent (if any)
         if (!d_stack.empty())
-            d_stack.back().first->addChildWindow(wnd);
+            d_stack.back().first->addChild(wnd);
         else
             d_root = wnd;
 
@@ -343,7 +343,7 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
 
         // attach the imported layout to the window being defined
         if ((subLayout != 0) && (!d_stack.empty()))
-            d_stack.back().first->addChildWindow(subLayout);
+            d_stack.back().first->addChild(subLayout);
     }
     // something failed when loading the sub-layout
     CEGUI_CATCH (Exception&)
@@ -386,7 +386,7 @@ void GUILayout_xmlHandler::elementGUILayoutEnd()
     // attach to named parent if needed
     if (!d_layoutParent.empty() && (d_root != 0))
     {
-        WindowManager::getSingleton().getWindow(d_layoutParent)->addChildWindow(d_root);
+        WindowManager::getSingleton().getWindow(d_layoutParent)->addChild(d_root);
     }
 }
 

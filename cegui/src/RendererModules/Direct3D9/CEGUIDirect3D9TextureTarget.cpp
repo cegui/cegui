@@ -50,7 +50,7 @@ Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
     d_CEGUITexture = &static_cast<Direct3D9Texture&>(d_owner.createTexture(0));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -61,7 +61,7 @@ Direct3D9TextureTarget::~Direct3D9TextureTarget()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9TextureTarget::declareRenderSize(const Size& sz)
+void Direct3D9TextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
@@ -112,7 +112,7 @@ Texture& Direct3D9TextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void Direct3D9TextureTarget::initialiseRenderTexture()
 {
-    Size tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
+    Size<> tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
 
     d_device->CreateTexture(static_cast<UINT>(tex_sz.d_width),
                             static_cast<UINT>(tex_sz.d_height),

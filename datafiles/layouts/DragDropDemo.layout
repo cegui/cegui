@@ -18,7 +18,7 @@
 
                     <Window Type="WindowsLook/StaticImage" Name="DragContainer1/Image" >
                         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="set:DriveIcons image:Lime" />
+                        <Property Name="Image" Value="DriveIcons/Lime" />
                         <Property Name="MousePassThroughEnabled" Value="True" />
                     </Window>
 
@@ -55,7 +55,7 @@
 
                     <Window Type="WindowsLook/StaticImage" Name="DragContainer2/Image" >
                         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="set:DriveIcons image:GlobalDrive" />
+                        <Property Name="Image" Value="DriveIcons/GlobalDrive" />
                         <Property Name="MousePassThroughEnabled" Value="True" />
                     </Window>
 

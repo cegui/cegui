@@ -67,7 +67,10 @@ enum MouseCursorImage
 
 	The MouseCursor provides functionality to access the position and imagery of the mouse cursor / pointer
 */
-class CEGUIEXPORT MouseCursor : public EventSet, public Singleton<MouseCursor>
+class CEGUIEXPORT MouseCursor :
+    public EventSet,
+    public Singleton<MouseCursor>,
+    public AllocatedObject<MouseCursor>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -123,18 +126,15 @@ public:
 	\brief
 		Set the current mouse cursor image
 
-	\param imageset
-		String object holding the name of the Imageset that contains the desired Image.
-
-	\param image_name
-		String object holding the name of the desired Image on Imageset \a imageset.
+	\param name
+		String object holding the name of the desired Image.
 
 	\return
 		Nothing.
 
-	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	\exception UnknownObjectException	thrown if Image \a name is not known.
 	*/
-	void	setImage(const String& imageset, const String& image_name);
+	void	setImage(const String& name);
 
 
 	/*!
@@ -170,7 +170,7 @@ public:
 	\param position
 		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
 	*/
-	void	setPosition(const Point& position);
+	void	setPosition(const Vector2<>& position);
 
 
 	/*!
@@ -183,7 +183,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	offsetPosition(const Point& offset);
+	void	offsetPosition(const Vector2<>& offset);
 
 
 	/*!
@@ -266,7 +266,7 @@ public:
 	\return
 		Point object describing the mouse cursor position in screen pixels.
 	*/
-	Point	getPosition(void) const
+	Vector2<> getPosition(void) const
     { return d_position; }
 
 
@@ -299,7 +299,7 @@ public:
 		range from 0.0f to 1.0f, where 0.0f represents the left-most and top-most positions, and 1.0f
 		represents the right-most and bottom-most positions.
 	*/
-	Point	getDisplayIndependantPosition(void) const;
+	Vector2<> getDisplayIndependantPosition(void) const;
 
     /*!
     \brief
@@ -312,7 +312,7 @@ public:
     \param new_size
         Size object describing the new display size in pixels.
     */
-    void notifyDisplaySizeChanged(const Size& new_size);
+    void notifyDisplaySizeChanged(const Size<>& new_size);
 
     /*!
     \brief
@@ -329,14 +329,14 @@ public:
         Reference to a Size object that describes the size at which the cursor
         image should be drawn in pixels.
     */
-    void setExplicitRenderSize(const Size& size);
+    void setExplicitRenderSize(const Size<>& size);
 
     /*!
     \brief
         Return the explicit render size currently set.  A return size of (0, 0)
         indicates that the real image size will be used.
     */
-    const Size& getExplicitRenderSize() const;
+    const Size<>& getExplicitRenderSize() const;
 
     /*!
     \brief
@@ -352,7 +352,7 @@ public:
         Reference to a point object describing the initial pixel position to
         be used for the mouse cursor.
     */
-    static void setInitialMousePosition(const Point& position);
+    static void setInitialMousePosition(const Vector2<>& position);
 
     /*!
     \brief
@@ -392,19 +392,19 @@ private:
 		Implementation Data
 	*************************************************************************/
 	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
-	Vector2	d_position;					//!< Current location of the cursor
+	Vector2<> d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
     //! buffer to hold geometry for mouse cursor imagery.
     GeometryBuffer* d_geometry;
     //! custom explicit size to render the cursor image at
-    Size d_customSize;
+    Size<> d_customSize;
     //! correctly scaled offset used when using custom image size.
-    mutable Point d_customOffset;
+    mutable Vector2<> d_customOffset;
     //! true if the mouse initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
-    static Point s_initialPosition;
+    static Vector2<> s_initialPosition;
     //! boolean indicating whether cached pointer geometry is valid.
     mutable bool d_cachedGeometryValid;
 };

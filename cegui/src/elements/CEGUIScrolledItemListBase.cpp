@@ -30,6 +30,7 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 
 // begin CEGUI namespace
 namespace CEGUI
@@ -103,7 +104,7 @@ void ScrolledItemListBase::initialiseComponents()
         // allow propagation back to us
         d_pane->setMouseInputPropagationEnabled(true);
 
-        addChildWindow(d_pane);
+        addChild(d_pane);
     }
 
     // base class handling
@@ -146,7 +147,7 @@ Scrollbar* ScrolledItemListBase::getHorzScrollbar() const
 /************************************************************************
     Configure scroll bars
 ************************************************************************/
-void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
+void ScrolledItemListBase::configureScrollbars(const Size<>& doc_size)
 {
     Scrollbar* v = getVertScrollbar();
     Scrollbar* h = getHorzScrollbar();
@@ -154,7 +155,7 @@ void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
     const bool old_vert_visible = v->isVisible(true);
     const bool old_horz_visible = h->isVisible(true);
 
-    Size render_area_size = getItemRenderArea().getSize();
+    Size<> render_area_size = getItemRenderArea().getSize();
 
     // setup the pane size
     float pane_size_w = ceguimax(doc_size.d_width, render_area_size.d_width);
@@ -316,7 +317,7 @@ void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
     const float currPos = v->getScrollPosition();
 
     const float top =
-        item.getYPosition().asAbsolute(this->getPixelSize().d_height) - currPos;
+        CoordConverter::asAbsolute(item.getYPosition(), getPixelSize().d_height) - currPos;
     const float bottom = top + item.getItemPixelSize().d_height;
 
     // if top is above the view area, or if item is too big, scroll item to top
@@ -335,7 +336,7 @@ void ScrolledItemListBase::ensureItemIsVisibleHorz(const ItemEntry& item)
     const float currPos = h->getScrollPosition();
 
     const float left =
-        item.getXPosition().asAbsolute(this->getPixelSize().d_width) - currPos;
+        CoordConverter::asAbsolute(item.getXPosition(), getPixelSize().d_width) - currPos;
     const float right = left + item.getItemPixelSize().d_width;
 
     // if left is left of the view area, or if item too big, scroll item to left

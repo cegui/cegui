@@ -47,7 +47,7 @@ Direct3D10TextureTarget::Direct3D10TextureTarget(Direct3D10Renderer& owner) :
     d_CEGUITexture = &static_cast<Direct3D10Texture&>(d_owner.createTexture());
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -91,7 +91,7 @@ Texture& Direct3D10TextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10TextureTarget::declareRenderSize(const Size& sz)
+void Direct3D10TextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))

@@ -49,7 +49,7 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         func_setArea( boost::ref(area) );
     }
 
-    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2 const & p_in, ::CEGUI::Vector2 & p_out ) const {
+    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2< float > const & p_in, ::CEGUI::Vector2< float > & p_out ) const {
         bp::override func_unprojectPoint = this->get_override( "unprojectPoint" );
         func_unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
     }
@@ -60,12 +60,7 @@ void register_RenderTarget_class(){
 
     { //::CEGUI::RenderTarget
         typedef bp::class_< RenderTarget_wrapper, boost::noncopyable > RenderTarget_exposer_t;
-        RenderTarget_exposer_t RenderTarget_exposer = RenderTarget_exposer_t( "RenderTarget", "*!\n\
-        \n\
-            Defines interface to some surface that can be rendered to.  Concrete\n\
-            instances of objects that implement the RenderTarget interface are\n\
-            normally created via the Renderer object.\n\
-        *\n" );
+        RenderTarget_exposer_t RenderTarget_exposer = RenderTarget_exposer_t( "RenderTarget" );
         bp::scope RenderTarget_scope( RenderTarget_exposer );
         { //::CEGUI::RenderTarget::activate
         
@@ -206,7 +201,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::unprojectPoint
         
-            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2 const &,::CEGUI::Vector2 & ) const;
+            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const;
             
             RenderTarget_exposer.def( 
                 "unprojectPoint"

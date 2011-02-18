@@ -64,7 +64,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardSlider : public SliderWindowRenderer
     {
     public:
-        static const utf8   TypeName[];     //! type name for this widget.
+        static const String TypeName;     //! type name for this widget.
 
         /*!
         \brief
@@ -89,7 +89,7 @@ namespace CEGUI
         // overridden from Slider base class.
         void updateThumb(void);
         float getValueFromThumb(void) const;
-        float getAdjustDirectionFromPoint(const Point& pt) const;
+        float getAdjustDirectionFromPoint(const Vector2<>& pt) const;
 
         // property objects
         static FalagardSliderProperties::VerticalSlider d_verticalProperty;

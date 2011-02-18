@@ -46,39 +46,39 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonNormalBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonNormalLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonNormalTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonNormalRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonNormalBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonNormalLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonNormalTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonNormalRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonNormalBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -100,39 +100,39 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonHoverBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonHoverLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonHoverTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonHoverRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonHoverBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonHoverLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonHoverTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonHoverRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonHoverBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFCFD9CF" topRight="FFF2FFF2" bottomLeft="FFF2FFF2" bottomRight="FFCFD9CF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -154,39 +154,39 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonPushedBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonPushedLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonPushedTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonPushedRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonPushedBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonPushedLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonPushedTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonPushedRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonPushedBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -208,39 +208,39 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonNormalBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonNormalLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonNormalTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonNormalRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonNormalBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonNormalLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonNormalTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonNormalRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonNormalBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -304,7 +304,7 @@
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim imageset="WindowsLook" image="CheckboxNormal" dimension="Width">
+                        <ImageDim name="WindowsLook/CheckboxNormal" dimension="Width">
                             <DimOperator op="Add">
                                 <AbsoluteDim value="4" />
                             </DimOperator>
@@ -326,7 +326,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CheckboxNormal" />
+                <Image name="WindowsLook/CheckboxNormal" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -339,7 +339,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CheckboxHover" />
+                <Image name="WindowsLook/CheckboxHover" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -352,7 +352,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CheckboxMark" />
+                <Image name="WindowsLook/CheckboxMark" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -501,19 +501,19 @@
     <WidgetLook name="WindowsLook/ComboDropList">
         <NamedArea name="ItemRenderingArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -521,12 +521,12 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -537,15 +537,15 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -553,8 +553,8 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
@@ -589,15 +589,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -655,7 +655,7 @@
                 <Dim type="Height" ><WidgetDim widget="__auto_editbox__" dimension="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeDownArrow" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -673,7 +673,7 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
-        <Property name="MouseCursorImage" value="set:WindowsLook image:MouseTextBar" />
+        <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
@@ -690,15 +690,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="EditFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="EditFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="EditFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="EditFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="EditFrameLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="EditFrameTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="EditFrameRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="EditFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/EditFrameLeft" />
+                <Image type="TopEdge" name="WindowsLook/EditFrameTop" />
+                <Image type="RightEdge" name="WindowsLook/EditFrameRight" />
+                <Image type="BottomEdge" name="WindowsLook/EditFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -709,20 +709,20 @@
                     <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><ImageDim imageset="WindowsLook" image="EditBoxCarat" dimension="Width" /></Dim>
+                    <Dim type="Width" ><ImageDim name="WindowsLook/EditBoxCaret" dimension="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="EditBoxCarat" />
+                <Image name="WindowsLook/EditBoxCaret" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -771,16 +771,16 @@
     <WidgetLook name="WindowsLook/FrameWindow">
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF000000" />
         <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
-        <Property name="NSSizingCursorImage" value="set:WindowsLook image:MouseNoSoCursor" />
-        <Property name="EWSizingCursorImage" value="set:WindowsLook image:MouseEsWeCursor" />
-        <Property name="NWSESizingCursorImage" value="set:WindowsLook image:MouseNwSeCursor" />
-        <Property name="NESWSizingCursorImage" value="set:WindowsLook image:MouseNeSwCursor" />
+        <Property name="NSSizingCursorImage" value="WindowsLook/MouseNoSoCursor" />
+        <Property name="EWSizingCursorImage" value="WindowsLook/MouseEsWeCursor" />
+        <Property name="NWSESizingCursorImage" value="WindowsLook/MouseNwSeCursor" />
+        <Property name="NESWSizingCursorImage" value="WindowsLook/MouseNeSwCursor" />
         <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
-                    <ImageDim imageset="WindowsLook" image="WindowFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/WindowFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge">
                     <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" />
@@ -788,14 +788,14 @@
                 <Dim type="RightEdge">
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="WindowFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/WindowFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge">
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="WindowFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/WindowFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -820,22 +820,22 @@
         <NamedArea name="ClientNoTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
-                    <ImageDim imageset="WindowsLook" image="WindowFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/WindowFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge">
-                    <ImageDim imageset="WindowsLook" image="WindowFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/WindowFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge">
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="WindowFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/WindowFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge">
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="WindowFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/WindowFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -885,7 +885,7 @@
                         <DimOperator op="Subtract">
                             <AbsoluteDim value="0.5">
                                 <DimOperator op="Multiply">
-                                    <ImageDim imageset="WindowsLook" image="CloseButtonNormal" dimension="Width">
+                                    <ImageDim name="WindowsLook/CloseButtonNormal" dimension="Width">
                                         <DimOperator op="Add">
                                             <WidgetDim widget="__auto_titlebar__" dimension="Height" />
                                         </DimOperator>
@@ -902,7 +902,7 @@
                                 <DimOperator op="Multiply">
                                     <WidgetDim widget="__auto_titlebar__" dimension="Height">
                                         <DimOperator op="Add">
-                                            <ImageDim imageset="WindowsLook" image="CloseButtonNormal" dimension="Height" />
+                                            <ImageDim name="WindowsLook/CloseButtonNormal" dimension="Height" />
                                         </DimOperator>
                                     </WidgetDim>
                                 </DimOperator>
@@ -911,16 +911,16 @@
                     </WidgetDim>
                 </Dim>
                 <Dim type="Width">
-                    <ImageDim imageset="WindowsLook" image="CloseButtonNormal" dimension="Width" />
+                    <ImageDim name="WindowsLook/CloseButtonNormal" dimension="Width" />
                 </Dim>
                 <Dim type="Height">
-                    <ImageDim imageset="WindowsLook" image="CloseButtonNormal" dimension="Height" />
+                    <ImageDim name="WindowsLook/CloseButtonNormal" dimension="Height" />
                 </Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
-            <Property name="NormalImage" value="set:WindowsLook image:CloseButtonNormal" />
-            <Property name="HoverImage" value="set:WindowsLook image:CloseButtonHover" />
-            <Property name="PushedImage" value="set:WindowsLook image:CloseButtonPushed" />
+            <Property name="NormalImage" value="WindowsLook/CloseButtonNormal" />
+            <Property name="HoverImage" value="WindowsLook/CloseButtonHover" />
+            <Property name="PushedImage" value="WindowsLook/CloseButtonPushed" />
         </Child>
         <ImagerySection name="withtitle_frame">
             <FrameComponent>
@@ -938,11 +938,11 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="WindowFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="WindowFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="WindowFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="WindowFrameRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="WindowFrameBottom" />
+                <Image type="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/WindowFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/WindowFrameRight" />
+                <Image type="BottomEdge" name="WindowsLook/WindowFrameBottom" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="notitle_frame">
@@ -961,14 +961,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="WindowFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="WindowFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="WindowFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="WindowFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="WindowFrameLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="WindowFrameTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="WindowFrameRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="WindowFrameBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/WindowFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/WindowFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/WindowFrameLeft" />
+                <Image type="TopEdge" name="WindowsLook/WindowFrameTop" />
+                <Image type="RightEdge" name="WindowsLook/WindowFrameRight" />
+                <Image type="BottomEdge" name="WindowsLook/WindowFrameBottom" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="withtitle_withframe_client_area">
@@ -976,7 +976,7 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="WindowFrameLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/WindowFrameLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
                         <WidgetDim widget="__auto_titlebar__" dimension="Height" />
@@ -984,19 +984,19 @@
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="WindowFrameRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/WindowFrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="WindowFrameBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/WindowFrameBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -1006,27 +1006,27 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="WindowFrameLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/WindowFrameLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="WindowFrameTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/WindowFrameTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="WindowFrameRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/WindowFrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="WindowFrameBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/WindowFrameBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -1048,7 +1048,7 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -1070,7 +1070,7 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -1216,19 +1216,19 @@
     <WidgetLook name="WindowsLook/Listbox">
         <NamedArea name="ItemRenderingArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1236,12 +1236,12 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1252,15 +1252,15 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1268,8 +1268,8 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
@@ -1304,15 +1304,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1336,19 +1336,19 @@
     <WidgetLook name="WindowsLook/ItemListbox">
         <NamedArea name="ItemRenderArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1356,12 +1356,12 @@
         </NamedArea>
         <NamedArea name="ItemRenderAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1372,15 +1372,15 @@
         </NamedArea>
         <NamedArea name="ItemRenderAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1388,8 +1388,8 @@
         </NamedArea>
         <NamedArea name="ItemRenderAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
@@ -1426,15 +1426,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1458,7 +1458,7 @@
     <WidgetLook name="WindowsLook/ListboxItem">
 		<PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
 		<PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="SelectionBrush" initialValue="set:WindowsLook image:Background" redrawOnWrite="true" />
+		<PropertyDefinition name="SelectionBrush" initialValue="WindowsLook/Background" redrawOnWrite="true" />
 		<PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" />
 		<Property name="Selectable" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
@@ -1562,14 +1562,14 @@
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="MenuLeft" dimension="Width">
+                    <ImageDim name="WindowsLook/MenuLeft" dimension="Width">
                         <DimOperator op="Add">
                             <PropertyDim name="BorderWidth" />
                         </DimOperator>
                     </ImageDim>
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="MenuTop" dimension="Height">
+                    <ImageDim name="WindowsLook/MenuTop" dimension="Height">
                         <DimOperator op="Add">
                             <PropertyDim name="BorderWidth" />
                         </DimOperator>
@@ -1578,7 +1578,7 @@
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="MenuRight" dimension="Width">
+                            <ImageDim name="WindowsLook/MenuRight" dimension="Width">
                                 <DimOperator op="Add">
                                     <PropertyDim name="BorderWidth" />
                                 </DimOperator>
@@ -1589,7 +1589,7 @@
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="MenuBottom" dimension="Height">
+                            <ImageDim name="WindowsLook/MenuBottom" dimension="Height">
                                 <DimOperator op="Add">
                                     <PropertyDim name="BorderWidth" />
                                 </DimOperator>
@@ -1607,15 +1607,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="MenuTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="MenuTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="MenuBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="MenuBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="MenuLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="MenuRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="MenuTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="MenuBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/MenuTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/MenuLeft" />
+                <Image type="RightEdge" name="WindowsLook/MenuRight" />
+                <Image type="TopEdge" name="WindowsLook/MenuTop" />
+                <Image type="BottomEdge" name="WindowsLook/MenuBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
                 <ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
@@ -1652,9 +1652,9 @@
                 <Dim type="Width">
                     <FontDim type="HorzExtent">
                         <DimOperator op="Add">
-                            <ImageDim imageset="WindowsLook" image="MenuLeft" dimension="Width">
+                            <ImageDim name="WindowsLook/MenuLeft" dimension="Width">
                                 <DimOperator op="Add">
-                                    <ImageDim imageset="WindowsLook" image="MenuRight" dimension="Width" />
+                                    <ImageDim name="WindowsLook/MenuRight" dimension="Width" />
                                 </DimOperator>
                             </ImageDim>
                         </DimOperator>
@@ -1663,9 +1663,9 @@
                 <Dim type="Height">
                     <FontDim type="LineSpacing">
                         <DimOperator op="Add">
-                            <ImageDim imageset="WindowsLook" image="MenuTop" dimension="Height">
+                            <ImageDim name="WindowsLook/MenuTop" dimension="Height">
                                 <DimOperator op="Add">
-                                    <ImageDim imageset="WindowsLook" image="MenuBottom" dimension="Height" />
+                                    <ImageDim name="WindowsLook/MenuBottom" dimension="Height" />
                                 </DimOperator>
                             </ImageDim>
                         </DimOperator>
@@ -1680,11 +1680,11 @@
                 <Dim type="Width">
                     <FontDim type="HorzExtent">
                         <DimOperator op="Add">
-                            <ImageDim imageset="WindowsLook" image="MenuLeft" dimension="Width">
+                            <ImageDim name="WindowsLook/MenuLeft" dimension="Width">
                                 <DimOperator op="Add">
-                                    <ImageDim imageset="WindowsLook" image="MenuRight" dimension="Width">
+                                    <ImageDim name="WindowsLook/MenuRight" dimension="Width">
                                         <DimOperator op="Add">
-                                            <ImageDim imageset="WindowsLook" image="PopupMenuArrowLeft" dimension="Width">
+                                            <ImageDim name="WindowsLook/PopupMenuArrowLeft" dimension="Width">
                                                 <DimOperator op="Multiply">
                                                     <AbsoluteDim value="3" />
                                                 </DimOperator>
@@ -1699,9 +1699,9 @@
                 <Dim type="Height">
                     <FontDim type="LineSpacing">
                         <DimOperator op="Add">
-                            <ImageDim imageset="WindowsLook" image="MenuTop" dimension="Height">
+                            <ImageDim name="WindowsLook/MenuTop" dimension="Height">
                                 <DimOperator op="Add">
-                                    <ImageDim imageset="WindowsLook" image="MenuBottom" dimension="Height" />
+                                    <ImageDim name="WindowsLook/MenuBottom" dimension="Height" />
                                 </DimOperator>
                             </ImageDim>
                         </DimOperator>
@@ -1712,19 +1712,19 @@
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
-                    <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="MenuLeft" dimension="Width" /></Dim>
-                    <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="MenuTop" dimension="Height" /></Dim>
+                    <Dim type="LeftEdge" ><ImageDim name="WindowsLook/MenuLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge" ><ImageDim name="WindowsLook/MenuTop" dimension="Height" /></Dim>
                     <Dim type="RightEdge" >
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="MenuRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/MenuRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="MenuBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/MenuBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
@@ -1741,15 +1741,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="MenuTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="MenuTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="MenuBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="MenuBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="MenuLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="MenuRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="MenuTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="MenuBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/MenuTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/MenuLeft" />
+                <Image type="RightEdge" name="WindowsLook/MenuRight" />
+                <Image type="TopEdge" name="WindowsLook/MenuTop" />
+                <Image type="BottomEdge" name="WindowsLook/MenuBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="popup_arrow_right">
@@ -1760,13 +1760,13 @@
                     <Dim type="Width" >
                         <UnifiedDim scale="1" type="Width">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="PopupMenuArrowRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/PopupMenuArrowRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="PopupMenuArrowRight" />
+                <Image name="WindowsLook/PopupMenuArrowRight" />
                 <Colours topLeft="FF000000" topRight="FF000000" bottomLeft="FF000000" bottomRight="FF000000" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="RightAligned" />
@@ -1780,13 +1780,13 @@
                     <Dim type="Width" >
                         <UnifiedDim scale="1" type="Width">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="PopupMenuArrowLeft" dimension="Width" />
+                                <ImageDim name="WindowsLook/PopupMenuArrowLeft" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="PopupMenuArrowLeft" />
+                <Image name="WindowsLook/PopupMenuArrowLeft" />
                 <Colours topLeft="FF000000" topRight="FF000000" bottomLeft="FF000000" bottomRight="FF000000" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="RightAligned" />
@@ -1897,8 +1897,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/ListHeaderSegment">
-        <Property name="SizingCursorImage" value="set:WindowsLook image:MouseEsWeCursor" />
-        <Property name="MovingCursorImage" value="set:WindowsLook image:MouseMoveCursor" />
+        <Property name="SizingCursorImage" value="WindowsLook/MouseEsWeCursor" />
+        <Property name="MovingCursorImage" value="WindowsLook/MouseMoveCursor" />
         <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="segment">
             <ImageryComponent>
@@ -1908,13 +1908,13 @@
                     <Dim type="RightEdge" >
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="HeaderSplitter" dimension="Width" />
+                                <ImageDim name="WindowsLook/HeaderSplitter" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="HeaderMainBrush" />
+                <Image name="WindowsLook/HeaderMainBrush" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -1927,7 +1927,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="HeaderSplitter" />
+                <Image name="WindowsLook/HeaderSplitter" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="RightAligned" />
             </ImageryComponent>
@@ -1937,10 +1937,10 @@
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="3" /></Dim>
-                    <Dim type="Width" ><ImageDim imageset="WindowsLook" image="SmallUpArrow" dimension="Width" /></Dim>
-                    <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SmallUpArrow" dimension="Height" /></Dim>
+                    <Dim type="Width" ><ImageDim name="WindowsLook/SmallUpArrow" dimension="Width" /></Dim>
+                    <Dim type="Height" ><ImageDim name="WindowsLook/SmallUpArrow" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SmallDownArrow" />
+                <Image name="WindowsLook/SmallDownArrow" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="descend_icon">
@@ -1948,17 +1948,17 @@
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="3" /></Dim>
-                    <Dim type="Width" ><ImageDim imageset="WindowsLook" image="SmallDownArrow" dimension="Width" /></Dim>
-                    <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SmallDownArrow" dimension="Height" /></Dim>
+                    <Dim type="Width" ><ImageDim name="WindowsLook/SmallDownArrow" dimension="Width" /></Dim>
+                    <Dim type="Height" ><ImageDim name="WindowsLook/SmallDownArrow" dimension="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SmallUpArrow" />
+                <Image name="WindowsLook/SmallUpArrow" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim imageset="WindowsLook" image="SmallUpArrow" dimension="Width">
+                        <ImageDim name="WindowsLook/SmallUpArrow" dimension="Width">
                             <DimOperator op="Add">
                                 <AbsoluteDim value="5" />
                             </DimOperator>
@@ -2072,19 +2072,19 @@
     <WidgetLook name="WindowsLook/MultiColumnList">
         <NamedArea name="ItemRenderingArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2092,12 +2092,12 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2108,7 +2108,7 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
@@ -2116,7 +2116,7 @@
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2124,7 +2124,7 @@
         </NamedArea>
         <NamedArea name="ItemRenderingAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
@@ -2136,12 +2136,12 @@
         </NamedArea>
         <Child  type="WindowsLook/ListHeader" nameSuffix="__auto_listheader__">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2180,15 +2180,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2215,23 +2215,23 @@
         <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
-        <Property name="MouseCursorImage" value="set:WindowsLook image:MouseTextBar" />
-        <Property name="SelectionBrushImage" value="set:WindowsLook image:Background" />
+        <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar" />
+        <Property name="SelectionBrushImage" value="WindowsLook/Background" />
         <NamedArea name="TextArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="EditFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/EditFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/EditFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="EditFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/EditFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/EditFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2239,12 +2239,12 @@
         </NamedArea>
         <NamedArea name="TextAreaHScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="EditFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/EditFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/EditFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="EditFrameRight" dimension="Height" />
+                            <ImageDim name="WindowsLook/EditFrameRight" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2255,15 +2255,15 @@
         </NamedArea>
         <NamedArea name="TextAreaVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="EditFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/EditFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/EditFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/EditFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2271,8 +2271,8 @@
         </NamedArea>
         <NamedArea name="TextAreaHVScroll">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="EditFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" ><ImageDim name="WindowsLook/EditFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="WindowsLook/EditFrameTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" offset="-16" type="RightEdge" />
                 </Dim>
@@ -2307,26 +2307,26 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="EditFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="EditFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="EditFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="EditFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="EditFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="EditFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="EditFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="EditFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/EditFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/EditFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/EditFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/EditFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="Carat">
+        <ImagerySection name="Caret">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><ImageDim imageset="WindowsLook" image="EditBoxCarat" dimension="Width" /></Dim>
+                    <Dim type="Width" ><ImageDim name="WindowsLook/EditBoxCaret" dimension="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="EditBoxCarat" />
+                <Image name="WindowsLook/EditBoxCaret" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -2364,14 +2364,14 @@
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="PopupMenuFrameLeft" dimension="Width">
+                    <ImageDim name="WindowsLook/PopupMenuFrameLeft" dimension="Width">
                         <DimOperator op="Add">
                             <PropertyDim name="BorderWidth" />
                         </DimOperator>
                     </ImageDim>
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="PopupMenuFrameTop" dimension="Height">
+                    <ImageDim name="WindowsLook/PopupMenuFrameTop" dimension="Height">
                         <DimOperator op="Add">
                             <PropertyDim name="BorderWidth" />
                         </DimOperator>
@@ -2380,7 +2380,7 @@
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="PopupMenuFrameRight" dimension="Width">
+                            <ImageDim name="WindowsLook/PopupMenuFrameRight" dimension="Width">
                                 <DimOperator op="Add">
                                     <PropertyDim name="BorderWidth" />
                                 </DimOperator>
@@ -2391,7 +2391,7 @@
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="PopupMenuFrameBottom" dimension="Height">
+                            <ImageDim name="WindowsLook/PopupMenuFrameBottom" dimension="Height">
                                 <DimOperator op="Add">
                                     <PropertyDim name="BorderWidth" />
                                 </DimOperator>
@@ -2409,15 +2409,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="PopupMenuFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="PopupMenuFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="PopupMenuFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="PopupMenuFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="PopupMenuFrameLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="PopupMenuFrameRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="PopupMenuFrameTop" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="PopupMenuFrameBottom" />
-                <Image type="Background" imageset="WindowsLook" image="Background" />
+                <Image type="TopLeftCorner" name="WindowsLook/PopupMenuFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/PopupMenuFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/PopupMenuFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/PopupMenuFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/PopupMenuFrameLeft" />
+                <Image type="RightEdge" name="WindowsLook/PopupMenuFrameRight" />
+                <Image type="TopEdge" name="WindowsLook/PopupMenuFrameTop" />
+                <Image type="BottomEdge" name="WindowsLook/PopupMenuFrameBottom" />
+                <Image type="Background" name="WindowsLook/Background" />
                 <ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
@@ -2443,22 +2443,22 @@
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1.0" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -2472,39 +2472,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -2518,7 +2518,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -2564,7 +2564,7 @@
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim imageset="WindowsLook" image="RadioButtonNormal" dimension="Width">
+                        <ImageDim name="WindowsLook/RadioButtonNormal" dimension="Width">
                             <DimOperator op="Add">
                                 <AbsoluteDim value="4" />
                             </DimOperator>
@@ -2586,7 +2586,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="RadioButtonNormal" />
+                <Image name="WindowsLook/RadioButtonNormal" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -2599,7 +2599,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="RadioButtonHover" />
+                <Image name="WindowsLook/RadioButtonHover" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -2612,7 +2612,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="RadioButtonMark" />
+                <Image name="WindowsLook/RadioButtonMark" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
@@ -2734,39 +2734,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonNormalBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonNormalLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonNormalTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonNormalRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonNormalBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonNormalLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonNormalTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonNormalRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonNormalBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -2780,39 +2780,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonHoverBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonHoverLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonHoverTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonHoverRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonHoverBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonHoverLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonHoverTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonHoverRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonHoverBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFCFD9CF" topRight="FFF2FFF2" bottomLeft="FFF2FFF2" bottomRight="FFCFD9CF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -2826,39 +2826,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonPushedBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonPushedLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonPushedTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonPushedRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonPushedBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonPushedLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonPushedTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonPushedRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonPushedBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -2868,27 +2868,27 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonPushedLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonPushedTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonPushedRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonPushedBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="VertScrollbarGrip" />
+                <Image name="WindowsLook/VertScrollbarGrip" />
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -2950,7 +2950,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Width" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
-            <Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeDownArrow" />
         </Child>
         <Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
             <Area>
@@ -2959,7 +2959,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Width" /></Dim>
             </Area>
-            <Property name="IconImage" value="set:WindowsLook image:LargeUpArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeUpArrow" />
         </Child>
         <Child  type="WindowsLook/VerticalScrollbarThumb" nameSuffix="__auto_thumb__">
             <Area>
@@ -2973,17 +2973,17 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="LargeUpArrow" dimension="Height" /></Dim>
+                    <Dim type="TopEdge" ><ImageDim name="WindowsLook/LargeUpArrow" dimension="Height" /></Dim>
                     <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1.0" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="LargeDownArrow" dimension="Height" />
+                                <ImageDim name="WindowsLook/LargeDownArrow" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -3022,39 +3022,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonNormalBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonNormalLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonNormalTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonNormalRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonNormalBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonNormalLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonNormalTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonNormalTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonNormalRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonNormalBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonNormalBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -3068,39 +3068,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonHoverBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonHoverLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonHoverTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonHoverRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonHoverBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonHoverLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonHoverTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonHoverTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonHoverRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonHoverBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonHoverBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFCFD9CF" topRight="FFF2FFF2" bottomLeft="FFF2FFF2" bottomRight="FFCFD9CF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -3114,39 +3114,39 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="ButtonPushedBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="ButtonPushedLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="ButtonPushedTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="ButtonPushedRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="ButtonPushedBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonPushedLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonPushedTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonPushedRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonPushedBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFAFAFAF" topRight="FFFFFFFF" bottomLeft="FFFFFFFF" bottomRight="FFAFAFAF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -3156,27 +3156,27 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/ButtonPushedLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="ButtonPushedTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/ButtonPushedTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/ButtonPushedRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="ButtonPushedBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/ButtonPushedBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="HorzScrollbarGrip" />
+                <Image name="WindowsLook/HorzScrollbarGrip" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="CentreAligned" />
             </ImageryComponent>
@@ -3236,7 +3236,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="IconImage" value="set:WindowsLook image:LargeRightArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeRightArrow" />
         </Child>
         <Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
             <Area>
@@ -3245,7 +3245,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
-            <Property name="IconImage" value="set:WindowsLook image:LargeLeftArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeLeftArrow" />
         </Child>
         <Child  type="WindowsLook/HorizontalScrollbarThumb" nameSuffix="__auto_thumb__">
             <Area>
@@ -3258,16 +3258,16 @@
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="LargeLeftArrow" dimension="Height" /></Dim>
+                    <Dim type="LeftEdge" ><ImageDim name="WindowsLook/LargeLeftArrow" dimension="Height" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="LargeRightArrow" dimension="Height" />
+                                <ImageDim name="WindowsLook/LargeRightArrow" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
@@ -3302,7 +3302,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SliderThumbNormal" />
+                <Image name="WindowsLook/SliderThumbNormal" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -3315,7 +3315,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="SliderThumbHover" />
+                <Image name="WindowsLook/SliderThumbHover" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -3366,8 +3366,8 @@
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="Width" ><ImageDim imageset="WindowsLook" image="SliderThumbNormal" dimension="Width" /></Dim>
-                <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SliderThumbNormal" dimension="Height" /></Dim>
+                <Dim type="Width" ><ImageDim name="WindowsLook/SliderThumbNormal" dimension="Width" /></Dim>
+                <Dim type="Height" ><ImageDim name="WindowsLook/SliderThumbNormal" dimension="Height" /></Dim>
             </Area>
             <VertAlignment type="CentreAligned" />
         </Child>
@@ -3375,7 +3375,7 @@
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim imageset="WindowsLook" image="SliderThumbNormal" dimension="Width">
+                        <ImageDim name="WindowsLook/SliderThumbNormal" dimension="Width">
                             <DimOperator op="Multiply">
                                 <AbsoluteDim value="0.5" />
                             </DimOperator>
@@ -3384,7 +3384,7 @@
                     <Dim type="TopEdge" >
                         <UnifiedDim scale="0.5" type="TopEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="SlidertrackMiddle" dimension="Height">
+                                <ImageDim name="WindowsLook/SlidertrackMiddle" dimension="Height">
                                     <DimOperator op="Multiply">
                                         <AbsoluteDim value="0.5" />
                                     </DimOperator>
@@ -3395,7 +3395,7 @@
                     <Dim type="RightEdge" >
                         <UnifiedDim scale="1.0" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="SliderThumbNormal" dimension="Width">
+                                <ImageDim name="WindowsLook/SliderThumbNormal" dimension="Width">
                                     <DimOperator op="Multiply">
                                         <AbsoluteDim value="0.5" />
                                     </DimOperator>
@@ -3403,11 +3403,11 @@
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
-                    <Dim type="Height" ><ImageDim imageset="WindowsLook" image="SlidertrackMiddle" dimension="Height" /></Dim>
+                    <Dim type="Height" ><ImageDim name="WindowsLook/SlidertrackMiddle" dimension="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" imageset="WindowsLook" image="SliderTrackLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="SliderTrackRight" />
-                <Image type="Background" imageset="WindowsLook" image="SlidertrackMiddle" />
+                <Image type="LeftEdge" name="WindowsLook/SliderTrackLeft" />
+                <Image type="RightEdge" name="WindowsLook/SliderTrackRight" />
+                <Image type="Background" name="WindowsLook/SlidertrackMiddle" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </FrameComponent>
@@ -3453,7 +3453,7 @@
                 <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="IconImage" value="set:WindowsLook image:LargeUpArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeUpArrow" />
         </Child>
         <Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
             <Area>
@@ -3463,7 +3463,7 @@
                 <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
+            <Property name="IconImage" value="WindowsLook/LargeDownArrow" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -3492,14 +3492,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
+                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
                 <ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
@@ -3507,27 +3507,27 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge">
-                        <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge">
-                        <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge">
                         <UnifiedDim scale="1" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge">
                         <UnifiedDim scale="1" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -3540,7 +3540,7 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="Background" />
+                <Image name="WindowsLook/Background" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -3658,22 +3658,22 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                        <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                     </Dim>
                     <Dim type="TopEdge" >
-                        <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                        <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge" >
                         <UnifiedDim scale="1.0" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                                <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1.0" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                                <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
@@ -3765,22 +3765,22 @@
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1.0" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -3789,15 +3789,15 @@
         <NamedArea name="WithFrameTextRenderAreaHScroll">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                            <ImageDim name="WindowsLook/StaticFrameRight" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -3809,10 +3809,10 @@
         <NamedArea name="WithFrameTextRenderAreaVScroll">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" offset="-16" type="RightEdge" />
@@ -3820,7 +3820,7 @@
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1.0" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                            <ImageDim name="WindowsLook/StaticFrameBottom" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -3829,10 +3829,10 @@
         <NamedArea name="WithFrameTextRenderAreaHVScroll">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+                    <ImageDim name="WindowsLook/StaticFrameLeft" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+                    <ImageDim name="WindowsLook/StaticFrameTop" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" offset="-16" type="RightEdge" />
@@ -3998,15 +3998,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="TabButtonUpperLeftNormal" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabButtonLowerRightNormal" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="TabButtonLeftNormal" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightNormal" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TabButtonUpperNormal" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TabButtonLowerNormal" />
-                <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleNormal" />
+                <Image type="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftNormal" />
+                <Image type="TopRightCorner" name="WindowsLook/TabButtonUpperRightNormal" />
+                <Image type="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftNormal" />
+                <Image type="BottomRightCorner" name="WindowsLook/TabButtonLowerRightNormal" />
+                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftNormal" />
+                <Image type="RightEdge" name="WindowsLook/TabButtonRightNormal" />
+                <Image type="TopEdge" name="WindowsLook/TabButtonUpperNormal" />
+                <Image type="BottomEdge" name="WindowsLook/TabButtonLowerNormal" />
+                <Image type="Background" name="WindowsLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="top_selected">
@@ -4017,12 +4017,12 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="TabButtonUpperLeftSelected" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TabButtonUpperSelected" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="TabButtonUpperRightSelected" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="TabButtonLeftSelected" />
-                <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleSelected" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightSelected" />
+                <Image type="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftSelected" />
+                <Image type="TopEdge" name="WindowsLook/TabButtonUpperSelected" />
+                <Image type="TopRightCorner" name="WindowsLook/TabButtonUpperRightSelected" />
+                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
+                <Image type="Background" name="WindowsLook/TabButtonMiddleSelected" />
+                <Image type="RightEdge" name="WindowsLook/TabButtonRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="bot_selected">
@@ -4033,12 +4033,12 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" imageset="WindowsLook" image="TabButtonLeftSelected" />
-                <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleSelected" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightSelected" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabButtonLowerLeftSelected" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TabButtonLowerSelected" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabButtonLowerRightSelected" />
+                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
+                <Image type="Background" name="WindowsLook/TabButtonMiddleSelected" />
+                <Image type="RightEdge" name="WindowsLook/TabButtonRightSelected" />
+                <Image type="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftSelected" />
+                <Image type="BottomEdge" name="WindowsLook/TabButtonLowerSelected" />
+                <Image type="BottomRightCorner" name="WindowsLook/TabButtonLowerRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -4099,22 +4099,22 @@
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" >
-                        <ImageDim imageset="WindowsLook" image="TabContentPaneUpperLeft" dimension="Height">
+                        <ImageDim name="WindowsLook/TabContentPaneUpperLeft" dimension="Height">
                             <DimOperator op="Multiply">
                                 <PropertyDim name="EnableTop" />
                             </DimOperator>
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="TabContentPaneUpperLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TabContentPaneTop" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="TabContentPaneUpperRight" />
+                <Image type="TopLeftCorner" name="WindowsLook/TabContentPaneUpperLeft" />
+                <Image type="TopEdge" name="WindowsLook/TabContentPaneTop" />
+                <Image type="TopRightCorner" name="WindowsLook/TabContentPaneUpperRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" >
-                        <ImageDim imageset="WindowsLook" image="TabContentPaneUpperLeft" dimension="Height">
+                        <ImageDim name="WindowsLook/TabContentPaneUpperLeft" dimension="Height">
                             <DimOperator op="Multiply">
                                 <PropertyDim name="EnableTop" />
                             </DimOperator>
@@ -4124,7 +4124,7 @@
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1" type="Height">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="TabContentPaneLowerLeft" dimension="Height">
+                                <ImageDim name="WindowsLook/TabContentPaneLowerLeft" dimension="Height">
                                     <DimOperator op="Multiply">
                                         <PropertyDim name="EnableBottom" />
                                     </DimOperator>
@@ -4133,9 +4133,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="LeftEdge" imageset="WindowsLook" image="TabContentPaneLeft" />
-                <Image type="Background" imageset="WindowsLook" image="TabContentPaneMiddle" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabContentPaneRight" />
+                <Image type="LeftEdge" name="WindowsLook/TabContentPaneLeft" />
+                <Image type="Background" name="WindowsLook/TabContentPaneMiddle" />
+                <Image type="RightEdge" name="WindowsLook/TabContentPaneRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -4143,7 +4143,7 @@
                     <Dim type="TopEdge" >
                         <UnifiedDim scale="1" type="Height">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="TabContentPaneLowerLeft" dimension="Height">
+                                <ImageDim name="WindowsLook/TabContentPaneLowerLeft" dimension="Height">
                                     <DimOperator op="Multiply">
                                         <PropertyDim name="EnableBottom" />
                                     </DimOperator>
@@ -4154,9 +4154,9 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabContentPaneLowerLeft" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TabContentPaneLower" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabContentPaneLowerRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/TabContentPaneLowerLeft" />
+                <Image type="BottomEdge" name="WindowsLook/TabContentPaneLower" />
+                <Image type="BottomRightCorner" name="WindowsLook/TabContentPaneLowerRight" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4189,20 +4189,20 @@
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" >
-                        <ImageDim imageset="WindowsLook" image="TabHorizontalTopFiller" dimension="Height">
+                        <ImageDim name="WindowsLook/TabHorizontalTopFiller" dimension="Height">
                             <DimOperator op="Multiply">
                                 <PropertyDim name="EnableTop" />
                             </DimOperator>
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" imageset="WindowsLook" image="TabHorizontalTopFiller" />
+                <Image type="TopEdge" name="WindowsLook/TabHorizontalTopFiller" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" >
-                        <ImageDim imageset="WindowsLook" image="TabHorizontalTopFiller" dimension="Height">
+                        <ImageDim name="WindowsLook/TabHorizontalTopFiller" dimension="Height">
                             <DimOperator op="Multiply">
                                 <PropertyDim name="EnableTop" />
                             </DimOperator>
@@ -4212,7 +4212,7 @@
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1" type="Height">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="TabHorizontalBottomFiller" dimension="Height">
+                                <ImageDim name="WindowsLook/TabHorizontalBottomFiller" dimension="Height">
                                     <DimOperator op="Multiply">
                                         <PropertyDim name="EnableBottom" />
                                     </DimOperator>
@@ -4228,7 +4228,7 @@
                     <Dim type="TopEdge" >
                         <UnifiedDim scale="1" type="Height">
                             <DimOperator op="Subtract">
-                                <ImageDim imageset="WindowsLook" image="TabHorizontalBottomFiller" dimension="Height">
+                                <ImageDim name="WindowsLook/TabHorizontalBottomFiller" dimension="Height">
                                     <DimOperator op="Multiply">
                                         <PropertyDim name="EnableBottom" />
                                     </DimOperator>
@@ -4239,7 +4239,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="BottomEdge" imageset="WindowsLook" image="TabHorizontalBottomFiller" />
+                <Image type="BottomEdge" name="WindowsLook/TabHorizontalBottomFiller" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4315,7 +4315,7 @@
                                         <DimOperator op="Multiply">
                                             <WidgetDim widget="__auto_TabPane__" dimension="Height">
                                                 <DimOperator op="Subtract">
-                                                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                                                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Width">
                                                         <DimOperator op="Add">
                                                             <AbsoluteDim value="6" />
                                                         </DimOperator>
@@ -4330,23 +4330,23 @@
                     </WidgetDim>
                 </Dim>
                 <Dim type="Width">
-                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width" />
+                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Width" />
                 </Dim>
                 <Dim type="Height">
-                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Height" />
+                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Height" />
                 </Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
-            <Property name="NormalImage" value="set:WindowsLook image:TabButtonScrollLeftNormal" />
-            <Property name="HoverImage" value="set:WindowsLook image:TabButtonScrollLeftHover" />
-            <Property name="PushedImage" value="set:WindowsLook image:TabButtonScrollLeftHover" />
+            <Property name="NormalImage" value="WindowsLook/TabButtonScrollLeftNormal" />
+            <Property name="HoverImage" value="WindowsLook/TabButtonScrollLeftHover" />
+            <Property name="PushedImage" value="WindowsLook/TabButtonScrollLeftHover" />
         </Child>
         <Child type="WindowsLook/SystemButton" nameSuffix="__auto_TabPane__ScrollRight">
             <Area>
                 <Dim type="LeftEdge">
                     <UnifiedDim scale="1" type="Width">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                            <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Width">
                                 <DimOperator op="Add">
                                     <AbsoluteDim value="6" />
                                 </DimOperator>
@@ -4363,7 +4363,7 @@
                                         <DimOperator op="Multiply">
                                             <WidgetDim widget="__auto_TabPane__" dimension="Height">
                                                 <DimOperator op="Subtract">
-                                                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                                                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Width">
                                                         <DimOperator op="Add">
                                                             <AbsoluteDim value="6" />
                                                         </DimOperator>
@@ -4378,16 +4378,16 @@
                     </WidgetDim>
                 </Dim>
                 <Dim type="Width">
-                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width" />
+                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Width" />
                 </Dim>
                 <Dim type="Height">
-                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Height" />
+                    <ImageDim name="WindowsLook/TabButtonScrollLeftNormal" dimension="Height" />
                 </Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
-            <Property name="NormalImage" value="set:WindowsLook image:TabButtonScrollRightNormal" />
-            <Property name="HoverImage" value="set:WindowsLook image:TabButtonScrollRightHover" />
-            <Property name="PushedImage" value="set:WindowsLook image:TabButtonScrollRightHover" />
+            <Property name="NormalImage" value="WindowsLook/TabButtonScrollRightNormal" />
+            <Property name="HoverImage" value="WindowsLook/TabButtonScrollRightHover" />
+            <Property name="PushedImage" value="WindowsLook/TabButtonScrollRightHover" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -4418,15 +4418,15 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="TitlebarTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="TitlebarTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TitlebarBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TitlebarBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="TitlebarLeft" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TitlebarTop" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TitlebarRight" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TitlebarBottom" />
-                <Image type="Background" imageset="WindowsLook" image="TitlebarFill" />
+                <Image type="TopLeftCorner" name="WindowsLook/TitlebarTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/TitlebarTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/TitlebarBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/TitlebarBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/TitlebarLeft" />
+                <Image type="TopEdge" name="WindowsLook/TitlebarTop" />
+                <Image type="RightEdge" name="WindowsLook/TitlebarRight" />
+                <Image type="BottomEdge" name="WindowsLook/TitlebarBottom" />
+                <Image type="Background" name="WindowsLook/TitlebarFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="caption">
@@ -4483,22 +4483,22 @@
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim imageset="WindowsLook" image="TooltipLeftEdge" dimension="Width" />
+                    <ImageDim name="WindowsLook/TooltipLeftEdge" dimension="Width" />
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim imageset="WindowsLook" image="TooltipTopEdge" dimension="Height" />
+                    <ImageDim name="WindowsLook/TooltipTopEdge" dimension="Height" />
                 </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1.0" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="TooltipRightEdge" dimension="Width" />
+                            <ImageDim name="WindowsLook/TooltipRightEdge" dimension="Width" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1.0" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="WindowsLook" image="TooltipBottomEdge" dimension="Height" />
+                            <ImageDim name="WindowsLook/TooltipBottomEdge" dimension="Height" />
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -4520,15 +4520,15 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" imageset="WindowsLook" image="TooltipTopLeft" />
-                <Image type="TopRightCorner" imageset="WindowsLook" image="TooltipTopRight" />
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TooltipBottomLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TooltipBottomRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="TooltipLeftEdge" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TooltipTopEdge" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TooltipRightEdge" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TooltipBottomEdge" />
-                <Image type="Background" imageset="WindowsLook" image="TooltipMiddle" />
+                <Image type="TopLeftCorner" name="WindowsLook/TooltipTopLeft" />
+                <Image type="TopRightCorner" name="WindowsLook/TooltipTopRight" />
+                <Image type="BottomLeftCorner" name="WindowsLook/TooltipBottomLeft" />
+                <Image type="BottomRightCorner" name="WindowsLook/TooltipBottomRight" />
+                <Image type="LeftEdge" name="WindowsLook/TooltipLeftEdge" />
+                <Image type="TopEdge" name="WindowsLook/TooltipTopEdge" />
+                <Image type="RightEdge" name="WindowsLook/TooltipRightEdge" />
+                <Image type="BottomEdge" name="WindowsLook/TooltipBottomEdge" />
+                <Image type="Background" name="WindowsLook/TooltipMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">

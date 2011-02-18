@@ -30,8 +30,7 @@
 #include "elements/CEGUIListHeaderSegment.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUICoordConverter.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -270,7 +269,7 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const Point& local_mouse)
+void ListHeaderSegment::doDragSizing(const Vector2<>& local_mouse)
 {
     float delta = local_mouse.d_x - d_dragPoint.d_x;
 
@@ -282,8 +281,8 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -306,11 +305,11 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 /*************************************************************************
 	Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const Point& local_mouse)
+void ListHeaderSegment::doDragMoving(const Vector2<>& local_mouse)
 {
 	// calculate movement deltas.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float	deltaY = local_mouse.d_y - d_dragPoint.d_y;
+	float deltaX = local_mouse.d_x - d_dragPoint.d_x;
+	float deltaY = local_mouse.d_y - d_dragPoint.d_y;
 
 	// update 'ghost' position
 	d_dragPosition.d_x += deltaX;
@@ -403,7 +402,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const Point& local_mouse)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2<>& local_mouse)
 {
 	// see if mouse has moved far enough to start move operation
 	// calculate movement deltas.
@@ -434,7 +433,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	//
 	// convert mouse position to something local
 	//
-	Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
+	Vector2<> localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -510,7 +509,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 		if (captureInput())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(CoordConverter::screenToWindow(*this, e.position));
+			Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;
@@ -644,9 +643,9 @@ void ListHeaderSegment::setSizingCursorImage(const Image* image)
     d_sizingMouseCursor = image;
 }
 
-void ListHeaderSegment::setSizingCursorImage(const String& imageset, const String& image)
+void ListHeaderSegment::setSizingCursorImage(const String& name)
 {
-    d_sizingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_sizingMouseCursor = &ImageManager::getSingleton().get(name);
 }
 
 const Image* ListHeaderSegment::getMovingCursorImage() const
@@ -659,9 +658,9 @@ void ListHeaderSegment::setMovingCursorImage(const Image* image)
     d_movingMouseCursor = image;
 }
 
-void ListHeaderSegment::setMovingCursorImage(const String& imageset, const String& image)
+void ListHeaderSegment::setMovingCursorImage(const String& name)
 {
-    d_movingMouseCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_movingMouseCursor = &ImageManager::getSingleton().get(name);
 }
 
 } // End of  CEGUI namespace section

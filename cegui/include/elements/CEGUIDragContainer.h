@@ -260,19 +260,15 @@ namespace CEGUI
             This method may be used during a drag operation to update the current mouse
             cursor image.
 
-        \param imageset
-            String holding the name of the Imageset that contains the Image to be used.
-
-        \param image
-            Image defined for the Imageset \a imageset to be used as the mouse cursor
-            when dragging.
+        \param name
+            Image to be used as the mouse cursor when dragging.
 
         \return
             Nothing.
 
-        \exception UnknownObjectException   thrown if either \a imageset or \a image are unknown.
+        \exception UnknownObjectException   thrown if Image \name is unknown.
         */
-        void setDragCursorImage(const String& imageset, const String& image);
+        void setDragCursorImage(const String& name);
 
         /*!
         \brief
@@ -398,7 +394,7 @@ namespace CEGUI
             - true if the threshold has been exceeded and dragging should be initiated.
             - false if the threshold has not been exceeded.
         */		
-        bool isDraggingThresholdExceeded(const Point& local_mouse);
+        bool isDraggingThresholdExceeded(const Vector2<>& local_mouse);
 
 	    /*!
 	    \brief
@@ -419,7 +415,7 @@ namespace CEGUI
 	    \return
 		    Nothing.
 	    */
-        void doDragging(const Point& local_mouse);
+        void doDragging(const Vector2<>& local_mouse);
 
         /*!
         \brief

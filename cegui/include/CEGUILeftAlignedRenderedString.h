@@ -45,8 +45,8 @@ public:
     LeftAlignedRenderedString(const RenderedString& string);
 
     // implementation of base interface
-    void format(const Size& area_size);
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void format(const Size<>& area_size);
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent() const;

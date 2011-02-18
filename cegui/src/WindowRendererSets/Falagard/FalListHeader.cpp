@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardListHeader::TypeName[] = "Falagard/ListHeader";
+    const String FalagardListHeader::TypeName("Falagard/ListHeader");
 
     // properties
     FalagardListHeaderProperties::SegmentWidgetType FalagardListHeader::d_segmentWidgetTypeProperty;

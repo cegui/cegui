@@ -28,7 +28,7 @@
 #include "falagard/CEGUIFalComponentBase.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
-#include "CEGUIcolour.h"
+#include "CEGUIColour.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -104,12 +104,12 @@ namespace CEGUI
             // if property accesses a ColourRect
             if (d_colourProperyIsRect)
             {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
             }
             // property accesses a colour
             else
             {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
                 cr.d_top_left     = val;
                 cr.d_top_right    = val;
                 cr.d_bottom_left  = val;
@@ -152,13 +152,13 @@ namespace CEGUI
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();
         }
-        else if (!d_colours.isMonochromatic() || d_colours.d_top_left != colour(1,1,1,1))
+        else if (!d_colours.isMonochromatic() || d_colours.d_top_left != Colour(1,1,1,1))
         {
             xml_stream.openTag("Colours")
-                .attribute("topLeft", PropertyHelper::colourToString(d_colours.d_top_left))
-                .attribute("topRight", PropertyHelper::colourToString(d_colours.d_top_right))
-                .attribute("bottomLeft", PropertyHelper::colourToString(d_colours.d_bottom_left))
-                .attribute("bottomRight", PropertyHelper::colourToString(d_colours.d_bottom_right))
+                .attribute("topLeft", PropertyHelper<Colour>::toString(d_colours.d_top_left))
+                .attribute("topRight", PropertyHelper<Colour>::toString(d_colours.d_top_right))
+                .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_colours.d_bottom_left))
+                .attribute("bottomRight", PropertyHelper<Colour>::toString(d_colours.d_bottom_right))
                 .closeTag();
         }
         else

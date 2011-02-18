@@ -27,9 +27,9 @@ class AbsoluteDim : public BaseDim
 ******************************************************************************/
 class ImageDim : public BaseDim 
 {
-  void setSourceImage(utf8string imageset, utf8string image);
+  void setSourceImage(utf8string name);
   void setSourceDimension(DimensionType dim);
-  ImageDim(utf8string imageset, utf8string image, DimensionType dim);
+  ImageDim(utf8string name, DimensionType dim);
 };
 
 /******************************************************************************

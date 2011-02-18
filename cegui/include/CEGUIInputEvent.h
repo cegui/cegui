@@ -34,7 +34,7 @@
 #include "CEGUIEventArgs.h"
 #include "CEGUIString.h"
 #include "CEGUIVector.h"
-
+#include "CEGUISize.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -276,8 +276,8 @@ class CEGUIEXPORT MouseEventArgs : public WindowEventArgs
 public:
 	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	Point		position;		//!< holds current mouse position.
-	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
+	Vector2<>	position;		//!< holds current mouse position.
+	Vector2<>	moveDelta;		//!< holds variation of mouse position from last mouse input
 	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
 	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
 	float		wheelChange;	//!< Holds the amount the scroll wheel has changed.
@@ -310,9 +310,9 @@ class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
 public:
 	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	utf32		codepoint;		//!< utf32 codepoint for the key (only used for Character inputs).
-	Key::Scan	scancode;		//!< Scan code of key that caused event (only used for key up & down inputs.
-	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
+	String::value_type codepoint; //!< utf32 or char (depends on used String class) codepoint for the key (only used for Character inputs).
+	Key::Scan          scancode;  //!< Scan code of key that caused event (only used for key up & down inputs.
+	uint               sysKeys;   //!< current state of the system keys and mouse buttons.
 };
 
 
@@ -347,10 +347,12 @@ public:
 class CEGUIEXPORT DisplayEventArgs : public EventArgs
 {
 public:
-    DisplayEventArgs(const Size& sz) : size(sz) {}
+    DisplayEventArgs(const Size<>& sz):
+        size(sz)
+    {}
 
     //! current / new size of the display.
-    Size size;
+    Size<> size;
 };
 
 //! EventArgs based class that is used for notifications regarding resources.

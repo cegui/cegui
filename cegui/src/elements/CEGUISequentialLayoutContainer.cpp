@@ -38,7 +38,7 @@
 namespace CEGUI
 {
 const String SequentialLayoutContainer::EventNamespace("SequentialLayoutContainer");
-const String SequentialLayoutContainer::EventChildWindowOrderChanged("ChildWindowOrderChanged");
+const String SequentialLayoutContainer::EventChildOrderChanged("ChildOrderChanged");
 
 //----------------------------------------------------------------------------//
 SequentialLayoutContainer::SequentialLayoutContainer(const String& type,
@@ -51,71 +51,70 @@ SequentialLayoutContainer::~SequentialLayoutContainer(void)
 {}
 
 //----------------------------------------------------------------------------//
-size_t SequentialLayoutContainer::getPositionOfChildWindow(Window* wnd) const
+size_t SequentialLayoutContainer::getPositionOfChild(Window* wnd) const
 {
-    return getIdxOfChildWindow(wnd);
+    return getIdxOfChild(wnd);
 }
 
 //----------------------------------------------------------------------------//
-size_t SequentialLayoutContainer::getPositionOfChildWindow(const String& wnd) const
+size_t SequentialLayoutContainer::getPositionOfChild(const String& wnd) const
 {
-    return getPositionOfChildWindow(
+    return getPositionOfChild(
                 WindowManager::getSingleton().getWindow(wnd));
 }
 
 //----------------------------------------------------------------------------//
-Window* SequentialLayoutContainer::getChildWindowAtPosition(size_t position) const
+Window* SequentialLayoutContainer::getChildAtPosition(size_t position) const
 {
     return getChildAtIdx(position);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::swapChildWindowPositions(size_t wnd1,
-                                                         size_t wnd2)
+void SequentialLayoutContainer::swapChildPositions(size_t wnd1, size_t wnd2)
 {
     if (wnd1 < d_children.size() && wnd2 < d_children.size())
     {
         std::swap(d_children[wnd1], d_children[wnd2]);
 
         WindowEventArgs args(this);
-        onChildWindowOrderChanged(args);
+        onChildOrderChanged(args);
     }
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::swapChildWindows(Window* wnd1, Window* wnd2)
+void SequentialLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
 {
     if (isChild(wnd1) && isChild(wnd2))
     {
-        swapChildWindowPositions(getPositionOfChildWindow(wnd1),
-                                 getPositionOfChildWindow(wnd2));
+        swapChildPositions(getPositionOfChild(wnd1),
+                           getPositionOfChild(wnd2));
     }
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::swapChildWindows(const String& wnd1,
-                                                 Window* wnd2)
+void SequentialLayoutContainer::swapChildren(const String& wnd1,
+                                             Window* wnd2)
 {
-    swapChildWindows(WindowManager::getSingleton().getWindow(wnd1), wnd2);
+    swapChildren(WindowManager::getSingleton().getWindow(wnd1), wnd2);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::swapChildWindows(Window* wnd1,
-                                                 const String& wnd2)
+void SequentialLayoutContainer::swapChildren(Window* wnd1,
+                                             const String& wnd2)
 {
-    swapChildWindows(wnd1, WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(wnd1, WindowManager::getSingleton().getWindow(wnd2));
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::swapChildWindows(const String& wnd1,
-                                                 const String& wnd2)
+void SequentialLayoutContainer::swapChildren(const String& wnd1,
+                                             const String& wnd2)
 {
-    swapChildWindows(WindowManager::getSingleton().getWindow(wnd1),
-                     WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(WindowManager::getSingleton().getWindow(wnd1),
+                 WindowManager::getSingleton().getWindow(wnd2));
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::moveChildWindowToPosition(Window* wnd,
+void SequentialLayoutContainer::moveChildToPosition(Window* wnd,
                                                           size_t position)
 {
     if (!isChild(wnd))
@@ -123,7 +122,7 @@ void SequentialLayoutContainer::moveChildWindowToPosition(Window* wnd,
 
     position = std::min(position, d_children.size() - 1);
 
-    const size_t oldPosition = getPositionOfChildWindow(wnd);
+    const size_t oldPosition = getPositionOfChild(wnd);
 
     if (oldPosition == position)
     {
@@ -151,58 +150,57 @@ void SequentialLayoutContainer::moveChildWindowToPosition(Window* wnd,
     d_children.insert(it, wnd);
 
     WindowEventArgs args(this);
-    onChildWindowOrderChanged(args);
+    onChildOrderChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::moveChildWindowToPosition(const String& wnd,
+void SequentialLayoutContainer::moveChildToPosition(const String& wnd,
                                                           size_t position)
 {
-    moveChildWindowToPosition(WindowManager::getSingleton().getWindow(wnd),
-                              position);
+    moveChildToPosition(WindowManager::getSingleton().getWindow(wnd), position);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::moveChildWindow(Window* window, int delta)
+void SequentialLayoutContainer::moveChild(Window* window, int delta)
 {
-    const size_t oldPosition = getPositionOfChildWindow(window);
+    const size_t oldPosition = getPositionOfChild(window);
     int newPosition = oldPosition + delta;
     newPosition = std::max(newPosition, 0);
-    // this is handled by moveChildWindowToPosition itself
+    // this is handled by moveChildToPosition itself
     //newPosition = std::min(newPosition, (int)(d_children.size() - 1));
 
-    moveChildWindowToPosition(window, newPosition);
+    moveChildToPosition(window, newPosition);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::addChildWindowToPosition(Window* window,
+void SequentialLayoutContainer::addChildToPosition(Window* window,
                                                          size_t position)
 {
-    addChildWindow(window);
+    addChild(window);
 
-    moveChildWindowToPosition(window, position);
+    moveChildToPosition(window, position);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::addChildWindowToPosition(const String& window,
+void SequentialLayoutContainer::addChildToPosition(const String& window,
                                                          size_t position)
 {
-    addChildWindowToPosition(WindowManager::getSingleton().getWindow(window),
+    addChildToPosition(WindowManager::getSingleton().getWindow(window),
                              position);
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::removeChildWindowFromPosition(size_t position)
+void SequentialLayoutContainer::removeChildFromPosition(size_t position)
 {
-    removeChildWindow(getChildWindowAtPosition(position));
+    removeChild(getChildAtPosition(position));
 }
 
 //----------------------------------------------------------------------------//
-void SequentialLayoutContainer::onChildWindowOrderChanged(WindowEventArgs& e)
+void SequentialLayoutContainer::onChildOrderChanged(WindowEventArgs& e)
 {
     markNeedsLayouting();
 
-    fireEvent(EventChildWindowOrderChanged, e, EventNamespace);
+    fireEvent(EventChildOrderChanged, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

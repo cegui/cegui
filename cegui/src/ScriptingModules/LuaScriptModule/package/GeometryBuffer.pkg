@@ -8,9 +8,9 @@ public:
 
     //void setTransform(const float* matrix);
 
-    void setTranslation(const Vector3& v);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
+    void setTranslation(const Vector3<float>& v);
+    void setRotation(const Quaternion& r);
+    void setPivot(const Vector3<float>& p);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* vbuff, unsigned int vertex_count);
     void setActiveTexture(Texture* texture);

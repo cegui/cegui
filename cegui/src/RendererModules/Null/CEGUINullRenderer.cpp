@@ -178,7 +178,7 @@ Texture& NullRenderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& NullRenderer::createTexture(const Size& size)
+Texture& NullRenderer::createTexture(const Size<>& size)
 {
     NullTexture* t = new NullTexture(size);
     d_textures.push_back(t);
@@ -217,13 +217,13 @@ void NullRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size& NullRenderer::getDisplaySize() const
+const Size<>& NullRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullRenderer::getDisplayDPI() const
+const Vector2<>& NullRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -269,7 +269,7 @@ void NullRenderer::constructor_impl()
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderer::setDisplaySize(const Size& sz)
+void NullRenderer::setDisplaySize(const Size<>& sz)
 {
     if (sz != d_displaySize)
     {
@@ -280,7 +280,6 @@ void NullRenderer::setDisplaySize(const Size& sz)
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
-
 }
 
 } // End of  CEGUI namespace section

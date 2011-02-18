@@ -123,7 +123,7 @@ struct MenuItem_wrapper : CEGUI::MenuItem, bp::wrapper< CEGUI::MenuItem > {
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct MenuItem_wrapper : CEGUI::MenuItem, bp::wrapper< CEGUI::MenuItem > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -227,13 +227,17 @@ void register_MenuItem_class(){
         typedef bp::class_< MenuItem_wrapper, bp::bases< CEGUI::ItemEntry >, boost::noncopyable > MenuItem_exposer_t;
         MenuItem_exposer_t MenuItem_exposer = MenuItem_exposer_t( "MenuItem", "*!\n\
         \n\
-           Base class for menu items.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*************************************************************************\n\
-           Construction and Destruction\n\
+            Base class for menu items.\n\
+        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*!\n\
+        \n\
+            starts the opening timer for the popup, which will open it if the timer is enabled.\n\
+        *\n\
+        *************************************************************************\n\
+            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\
         \n\
-           Constructor for MenuItem objects\n\
+            Constructor for MenuItem objects\n\
         *\n") );
         bp::scope MenuItem_scope( MenuItem_exposer );
         { //::CEGUI::MenuItem::closePopupMenu
@@ -245,15 +249,29 @@ void register_MenuItem_class(){
                 , closePopupMenu_function_type( &::CEGUI::MenuItem::closePopupMenu )
                 , ( bp::arg("notify")=(bool)(true) )
                 , "*!\n\
-               \n\
-                  Closes the PopupMenu.\n\
+                \n\
+                    Closes the PopupMenu.\n\
             \n\
-               @param notify\n\
-                  true if the parent menubar (if any) is to handle the close.\n\
+                @param notify\n\
+                    true if the parent menubar (if any) is to handle the close.\n\
             \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::getAutoPopupTimeout
+        
+            typedef float ( ::CEGUI::MenuItem::*getAutoPopupTimeout_function_type )(  ) const;
+            
+            MenuItem_exposer.def( 
+                "getAutoPopupTimeout"
+                , getAutoPopupTimeout_function_type( &::CEGUI::MenuItem::getAutoPopupTimeout )
+                , "*!\n\
+            \n\
+                Returns the time, which has to elapse before the popup window is openedclosed if the hovering\
+                state changes.\n\
+            *\n" );
         
         }
         { //::CEGUI::MenuItem::getPopupMenu
@@ -265,12 +283,40 @@ void register_MenuItem_class(){
                 , getPopupMenu_function_type( &::CEGUI::MenuItem::getPopupMenu )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-               \n\
-                  Get the PopupMenu that is currently attached to this MenuItem.\n\
+                \n\
+                    Get the PopupMenu that is currently attached to this MenuItem.\n\
             \n\
-               @return\n\
-                  A pointer to the currently attached PopupMenu.  Null is there is no PopupMenu attached.\n\
-               *\n" );
+                @return\n\
+                    A pointer to the currently attached PopupMenu.  Null is there is no PopupMenu attached.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::getPopupOffset
+        
+            typedef ::CEGUI::UVector2 const & ( ::CEGUI::MenuItem::*getPopupOffset_function_type )(  ) const;
+            
+            MenuItem_exposer.def( 
+                "getPopupOffset"
+                , getPopupOffset_function_type( &::CEGUI::MenuItem::getPopupOffset )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+            \n\
+                Returns the current offset for popup placement.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::hasAutoPopup
+        
+            typedef bool ( ::CEGUI::MenuItem::*hasAutoPopup_function_type )(  ) const;
+            
+            MenuItem_exposer.def( 
+                "hasAutoPopup"
+                , hasAutoPopup_function_type( &::CEGUI::MenuItem::hasAutoPopup )
+                , "*!\n\
+            \n\
+                Returns true if the menu item popup is closed or opened automatically if hovering with the\
+                mouse.\n\
+            *\n" );
         
         }
         { //::CEGUI::MenuItem::isHovering
@@ -281,17 +327,17 @@ void register_MenuItem_class(){
                 "isHovering"
                 , isHovering_function_type( &::CEGUI::MenuItem::isHovering )
                 , "*************************************************************************\n\
-                  Accessor type functions\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  return true if user is hovering over this widget (or it's pushed and user is not over it for\
-                  highlight)\n\
+                    Accessor type functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    return true if user is hovering over this widget (or it's pushed and user is not over it for\
+                    highlight)\n\
             \n\
-               @return\n\
-                  true if the user is hovering or if the button is pushed and the mouse is not over the button.\
-                  Otherwise return false.\n\
-               *\n" );
+                @return\n\
+                    true if the user is hovering or if the button is pushed and the mouse is not over the\
+                    button.  Otherwise return false.\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuItem::isOpened
@@ -307,6 +353,19 @@ void register_MenuItem_class(){
             *\n" );
         
         }
+        { //::CEGUI::MenuItem::isPopupClosing
+        
+            typedef bool ( ::CEGUI::MenuItem::*isPopupClosing_function_type )(  ) const;
+            
+            MenuItem_exposer.def( 
+                "isPopupClosing"
+                , isPopupClosing_function_type( &::CEGUI::MenuItem::isPopupClosing )
+                , "*!\n\
+            \n\
+                Returns true if the menu item popup is closing or not.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::MenuItem::isPushed
         
             typedef bool ( ::CEGUI::MenuItem::*isPushed_function_type )(  ) const;
@@ -315,12 +374,12 @@ void register_MenuItem_class(){
                 "isPushed"
                 , isPushed_function_type( &::CEGUI::MenuItem::isPushed )
                 , "*!\n\
-               \n\
-                  Return true if the button widget is in the pushed state.\n\
+                \n\
+                    Return true if the button widget is in the pushed state.\n\
             \n\
-               @return\n\
-                  true if the button-type widget is pushed, false if the widget is not pushed.\n\
-               *\n" );
+                @return\n\
+                    true if the button-type widget is pushed, false if the widget is not pushed.\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuItem::openPopupMenu
@@ -332,12 +391,27 @@ void register_MenuItem_class(){
                 , openPopupMenu_function_type( &::CEGUI::MenuItem::openPopupMenu )
                 , ( bp::arg("notify")=(bool)(true) )
                 , "*!\n\
-               \n\
-                  Opens the PopupMenu.\n\
+                \n\
+                    Opens the PopupMenu.\n\
             \n\
                 @param notify\n\
-                  true if the parent menu bar or menu popup (if any) is to handle the open.\n\
-               *\n" );
+                    true if the parent menu bar or menu popup (if any) is to handle the open.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::setAutoPopupTimeout
+        
+            typedef void ( ::CEGUI::MenuItem::*setAutoPopupTimeout_function_type )( float ) ;
+            
+            MenuItem_exposer.def( 
+                "setAutoPopupTimeout"
+                , setAutoPopupTimeout_function_type( &::CEGUI::MenuItem::setAutoPopupTimeout )
+                , ( bp::arg("time") )
+                , "*!\n\
+            \n\
+                Sets the time, which has to elapse before the popup window is openedclosed if the hovering state\
+                changes.\n\
+            *\n" );
         
         }
         { //::CEGUI::MenuItem::setPopupMenu
@@ -349,18 +423,58 @@ void register_MenuItem_class(){
                 , setPopupMenu_function_type( &::CEGUI::MenuItem::setPopupMenu )
                 , ( bp::arg("popup") )
                 , "*************************************************************************\n\
-                  Manipulators\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  Set the popup menu for this item.\n\
+                    Manipulators\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Set the popup menu for this item.\n\
             \n\
-               @param popup\n\
-                  popupmenu window to attach to this item\n\
+                @param popup\n\
+                    popupmenu window to attach to this item\n\
             \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::setPopupOffset
+        
+            typedef void ( ::CEGUI::MenuItem::*setPopupOffset_function_type )( ::CEGUI::UVector2 const & ) ;
+            
+            MenuItem_exposer.def( 
+                "setPopupOffset"
+                , setPopupOffset_function_type( &::CEGUI::MenuItem::setPopupOffset )
+                , ( bp::arg("popupOffset") )
+                , "*!\n\
+            \n\
+                sets the current offset for popup placement.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::startPopupClosing
+        
+            typedef void ( ::CEGUI::MenuItem::*startPopupClosing_function_type )(  ) ;
+            
+            MenuItem_exposer.def( 
+                "startPopupClosing"
+                , startPopupClosing_function_type( &::CEGUI::MenuItem::startPopupClosing )
+                , "*!\n\
+            \n\
+                starts the closing timer for the popup, which will close it if the timer is enabled.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MenuItem::startPopupOpening
+        
+            typedef void ( ::CEGUI::MenuItem::*startPopupOpening_function_type )(  ) ;
+            
+            MenuItem_exposer.def( 
+                "startPopupOpening"
+                , startPopupOpening_function_type( &::CEGUI::MenuItem::startPopupOpening )
+                , "*!\n\
+            \n\
+                starts the opening timer for the popup, which will open it if the timer is enabled.\n\
+            *\n" );
         
         }
         { //::CEGUI::MenuItem::togglePopupMenu
@@ -371,12 +485,12 @@ void register_MenuItem_class(){
                 "togglePopupMenu"
                 , togglePopupMenu_function_type( &::CEGUI::MenuItem::togglePopupMenu )
                 , "*!\n\
-               \n\
-                  Toggles the PopupMenu.\n\
+                \n\
+                    Toggles the PopupMenu.\n\
             \n\
-               @return\n\
-                  true if the popup was opened. false if it was closed.\n\
-               *\n" );
+                @return\n\
+                    true if the popup was opened. false if it was closed.\n\
+                *\n" );
         
         }
         MenuItem_exposer.add_static_property( "EventClicked"
@@ -497,8 +611,8 @@ void register_MenuItem_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( MenuItem_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( MenuItem_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             MenuItem_exposer.def( 
                 "isHit"

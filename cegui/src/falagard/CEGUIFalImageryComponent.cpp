@@ -27,10 +27,9 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalImageryComponent.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIPropertyHelper.h"
 #include <iostream>
 #include <cstdlib>
@@ -56,11 +55,11 @@ namespace CEGUI
         d_image = image;
     }
 
-    void ImageryComponent::setImage(const String& imageset, const String& image)
+    void ImageryComponent::setImage(const String& name)
     {
         CEGUI_TRY
         {
-            d_image = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+            d_image = &ImageManager::getSingleton().get(name);
         }
         CEGUI_CATCH (UnknownObjectException&)
         {
@@ -92,7 +91,7 @@ namespace CEGUI
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
-            PropertyHelper::stringToImage(srcWindow.getProperty(d_imagePropertyName)) :
+            PropertyHelper<Image*>::fromString(srcWindow.getProperty(d_imagePropertyName)) :
             d_image;
 
         // do not draw anything if image is not set.
@@ -108,7 +107,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size imgSz(img->getSize());
+        Size<> imgSz(img->getRenderedSize());
 
         // calculate final colours to be used
         ColourRect finalColours;
@@ -210,7 +209,7 @@ namespace CEGUI
                 }
 
                 // add geometry for image to the target window.
-                img->draw(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
+                img->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;
@@ -235,8 +234,7 @@ namespace CEGUI
                 .closeTag();
         else
             xml_stream.openTag("Image")
-                .attribute("imageset", d_image->getImagesetName())
-                .attribute("image", d_image->getName())
+                .attribute("name", d_image->getName())
                 .closeTag();
 
         // get base class to write colours

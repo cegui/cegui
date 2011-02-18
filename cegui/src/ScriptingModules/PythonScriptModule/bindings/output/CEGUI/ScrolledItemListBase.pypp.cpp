@@ -99,7 +99,7 @@ struct ScrolledItemListBase_wrapper : CEGUI::ScrolledItemListBase, bp::wrapper< 
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
-    virtual ::CEGUI::Size getContentSize(  ) const {
+    virtual ::CEGUI::Size< float > getContentSize(  ) const {
         bp::override func_getContentSize = this->get_override( "getContentSize" );
         return func_getContentSize(  );
     }
@@ -128,7 +128,7 @@ struct ScrolledItemListBase_wrapper : CEGUI::ScrolledItemListBase, bp::wrapper< 
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -136,7 +136,7 @@ struct ScrolledItemListBase_wrapper : CEGUI::ScrolledItemListBase, bp::wrapper< 
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -513,7 +513,7 @@ void register_ScrolledItemListBase_class(){
         }
         { //::CEGUI::ItemListBase::getContentSize
         
-            typedef ::CEGUI::Size ( ScrolledItemListBase_wrapper::*getContentSize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > ( ScrolledItemListBase_wrapper::*getContentSize_function_type )(  ) const;
             
             ScrolledItemListBase_exposer.def( 
                 "getContentSize"
@@ -564,8 +564,8 @@ void register_ScrolledItemListBase_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ScrolledItemListBase_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( ScrolledItemListBase_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             ScrolledItemListBase_exposer.def( 
                 "isHit"

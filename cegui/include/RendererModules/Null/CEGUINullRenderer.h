@@ -36,7 +36,7 @@
 #include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef NULL_GUIRENDERER_EXPORTS
+#   ifdef CEGUINULLRENDERER_EXPORTS
 #       define NULL_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define NULL_GUIRENDERER_API __declspec(dllimport)
@@ -114,14 +114,14 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Size<>& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Size<>& sz);
+    const Size<>& getDisplaySize() const;
+    const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -136,9 +136,9 @@ protected:
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Size<> d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2<> d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)

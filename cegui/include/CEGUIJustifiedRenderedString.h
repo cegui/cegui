@@ -51,8 +51,8 @@ public:
     JustifiedRenderedString(const RenderedString& string);
 
     // implementation of base interface
-    void format(const Size& area_size);
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void format(const Size<>& area_size);
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent() const;
@@ -60,7 +60,8 @@ public:
 
 protected:
     //! space extra size for each line to achieve justified formatting.
-    std::vector<float> d_spaceExtras;
+    std::vector<float
+        CEGUI_VECTOR_ALLOC(float)> d_spaceExtras;
 };
 
 } // End of  CEGUI namespace section

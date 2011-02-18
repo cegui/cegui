@@ -24,15 +24,15 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Texture & createTexture(  ){
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::Size const & size ){
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::Size< float > const & size ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -66,6 +66,11 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         func_destroyTexture( boost::ref(texture) );
     }
 
+    virtual void destroyTexture( ::CEGUI::String const & name ){
+        bp::override func_destroyTexture = this->get_override( "destroyTexture" );
+        func_destroyTexture( boost::ref(name) );
+    }
+
     virtual void destroyTextureTarget( ::CEGUI::TextureTarget * target ){
         bp::override func_destroyTextureTarget = this->get_override( "destroyTextureTarget" );
         func_destroyTextureTarget( boost::python::ptr(target) );
@@ -80,11 +85,11 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Vector2 const & getDisplayDPI(  ) const {
+    virtual ::CEGUI::Vector2< float > const & getDisplayDPI(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Size const & getDisplaySize(  ) const {
+    virtual ::CEGUI::Size< float > const & getDisplaySize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -97,7 +102,11 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         return func_getMaxTextureSize(  );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size const & size ){
+    virtual ::CEGUI::Texture & getTexture( ::CEGUI::String const & name ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual void setDisplaySize( ::CEGUI::Size< float > const & size ){
         bp::override func_setDisplaySize = this->get_override( "setDisplaySize" );
         func_setDisplaySize( boost::ref(size) );
     }
@@ -108,15 +117,7 @@ void register_Renderer_class(){
 
     { //::CEGUI::Renderer
         typedef bp::class_< Renderer_wrapper, boost::noncopyable > Renderer_exposer_t;
-        Renderer_exposer_t Renderer_exposer = Renderer_exposer_t( "Renderer", "*!\n\
-        \n\
-            Abstract class defining the basic required interface for Renderer objects.\n\
-        \n\
-            Objects derived from Renderer are the means by which the GUI system\n\
-            interfaces with specific rendering technologies.  To use a rendering system\n\
-            or API to draw CEGUI imagery requires that an appropriate Renderer object be\n\
-            available.\n\
-        *\n" );
+        Renderer_exposer_t Renderer_exposer = Renderer_exposer_t( "Renderer" );
         bp::scope Renderer_scope( Renderer_exposer );
         { //::CEGUI::Renderer::beginRendering
         
@@ -153,68 +154,59 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )(  ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::String const & ) ;
             
             Renderer_exposer.def( 
                 "createTexture"
                 , bp::pure_virtual( createTexture_function_type(&::CEGUI::Renderer::createTexture) )
+                , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
                     Create a 'null' Texture object.\n\
             \n\
+                @param name\n\
+                    String holding the name for the new texture.  Texture names must be\n\
+                    unique within the Renderer.\n\
+            \n\
                 @return\n\
                     A newly created Texture object.  The returned Texture object has no size\n\
                     or imagery associated with it.\n\
+            \n\
+                @exceptions\n\
+                    - AlreadyExistsException - thrown if a Texture object named  name\n\
+                      already exists within the system.\n\
                 *\n" );
         
         }
         { //::CEGUI::Renderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
             
             Renderer_exposer.def( 
                 "createTexture"
                 , bp::pure_virtual( createTexture_function_type(&::CEGUI::Renderer::createTexture) )
-                , ( bp::arg("filename"), bp::arg("resourceGroup") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    Create a Texture object using the given image file.\n\
-            \n\
-                @param filename\n\
-                    String object that specifies the path and filename of the image file to\n\
-                    use when creating the texture.\n\
-            \n\
-                @param resourceGroup\n\
-                    String objet that specifies the resource group identifier to be passed\n\
-                    to the resource provider when loading the texture file  filename.\n\
-            \n\
-                @return\n\
-                    A newly created Texture object.  The initial content of the texture\n\
-                    memory is the requested image file.\n\
-            \n\
-                \note\n\
-                    Due to possible limitations of the underlying hardware, API or engine,\n\
-                    the final size of the texture may not match the size of the loaded file.\n\
-                    You can check the ultimate sizes by querying the Texture object\n\
-                    after creation.\n\
-                *\n" );
+                , ( bp::arg("name"), bp::arg("filename"), bp::arg("resourceGroup") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::Renderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Size<float> const & ) ;
             
             Renderer_exposer.def( 
                 "createTexture"
                 , bp::pure_virtual( createTexture_function_type(&::CEGUI::Renderer::createTexture) )
-                , ( bp::arg("size") )
+                , ( bp::arg("name"), bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
                     Create a Texture object with the given pixel dimensions as specified by\n\
                      size.\n\
+            \n\
+                @param name\n\
+                    String holding the name for the new texture.  Texture names must be\n\
+                    unique within the Renderer.\n\
             \n\
                 @param size\n\
                     Size object that describes the desired texture size.\n\
@@ -227,6 +219,10 @@ void register_Renderer_class(){
                     Due to possible limitations of the underlying hardware, API or engine,\n\
                     the final size of the texture may not match the requested size.  You can\n\
                     check the ultimate sizes by querying the Texture object after creation.\n\
+            \n\
+                @exceptions\n\
+                    - AlreadyExistsException - thrown if a Texture object named  name\n\
+                      already exists within the system.\n\
                 *\n" );
         
         }
@@ -328,6 +324,24 @@ void register_Renderer_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Renderer::destroyTexture
+        
+            typedef void ( ::CEGUI::Renderer::*destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            
+            Renderer_exposer.def( 
+                "destroyTexture"
+                , bp::pure_virtual( destroyTexture_function_type(&::CEGUI::Renderer::destroyTexture) )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Destroy a Texture object that was previously created by calling the\n\
+                    createTexture functions.\n\
+            \n\
+                @param name\n\
+                    String holding the name of the texture to destroy.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Renderer::destroyTextureTarget
         
             typedef void ( ::CEGUI::Renderer::*destroyTextureTarget_function_type )( ::CEGUI::TextureTarget * ) ;
@@ -382,7 +396,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::Renderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2<float> const & ( ::CEGUI::Renderer::*getDisplayDPI_function_type )(  ) const;
             
             Renderer_exposer.def( 
                 "getDisplayDPI"
@@ -400,7 +414,7 @@ void register_Renderer_class(){
         }
         { //::CEGUI::Renderer::getDisplaySize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::Renderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Renderer::*getDisplaySize_function_type )(  ) const;
             
             Renderer_exposer.def( 
                 "getDisplaySize"
@@ -449,9 +463,32 @@ void register_Renderer_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Renderer::getTexture
+        
+            typedef ::CEGUI::Texture & ( ::CEGUI::Renderer::*getTexture_function_type )( ::CEGUI::String const & ) const;
+            
+            Renderer_exposer.def( 
+                "getTexture"
+                , bp::pure_virtual( getTexture_function_type(&::CEGUI::Renderer::getTexture) )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a Texture object that was previously created by calling the\n\
+                    createTexture functions.\n\
+            \n\
+                @param name\n\
+                    String holding the name of the Texture object to be returned.\n\
+            \n\
+                @exceptions\n\
+                    - UnknownObjectException - thrown if no Texture object named  name\n\
+                      exists within the system.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Renderer::setDisplaySize
         
-            typedef void ( ::CEGUI::Renderer::*setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::Renderer::*setDisplaySize_function_type )( ::CEGUI::Size<float> const & ) ;
             
             Renderer_exposer.def( 
                 "setDisplaySize"

@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,6 +29,8 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUISystem.h"
+#include "CEGUIImage.h"
 
 namespace CEGUI
 {
@@ -61,7 +63,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 {
     addFontProperties();
 
-    const Size size(System::getSingleton().getRenderer()->getDisplaySize());
+    const Size<> size(System::getSingleton().getRenderer()->getDisplaySize());
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
@@ -69,7 +71,13 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 //----------------------------------------------------------------------------//
 Font::~Font()
 {
-    delete[] d_glyphPageLoaded;
+    if (d_glyphPageLoaded)
+    {
+        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
+            + BITS_PER_UINT - 1) / BITS_PER_UINT;
+
+        CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -87,13 +95,20 @@ const String& Font::getTypeName() const
 //----------------------------------------------------------------------------//
 void Font::setMaxCodepoint(utf32 codepoint)
 {
+    if (d_glyphPageLoaded)
+    {
+        const uint old_size = (((d_maxCodepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE)
+            + BITS_PER_UINT - 1) / BITS_PER_UINT;
+
+        CEGUI_DELETE_ARRAY_PT(d_glyphPageLoaded, uint, old_size, Font);
+    }
+
     d_maxCodepoint = codepoint;
 
-    delete[] d_glyphPageLoaded;
+    const uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
+    const uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
 
-    uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
-    uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
-    d_glyphPageLoaded = new uint[size];
+    d_glyphPageLoaded = CEGUI_NEW_ARRAY_PT(uint, size, Font);
     memset(d_glyphPageLoaded, 0, size * sizeof(uint));
 }
 
@@ -174,12 +189,12 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
 //----------------------------------------------------------------------------//
 void Font::drawText(GeometryBuffer& buffer, const String& text,
-                    const Vector2& position, const Rect* clip_rect,
+                    const Vector2<>& position, const Rect* clip_rect,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale)
 {
     const float base_y = position.d_y + getBaseline(y_scale);
-    Vector2 glyph_pos(position);
+    Vector2<> glyph_pos(position);
 
     for (size_t c = 0; c < text.length(); ++c)
     {
@@ -188,8 +203,8 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
         {
             const Image* const img = glyph->getImage();
             glyph_pos.d_y =
-                base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(buffer, glyph_pos,
+                base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
+            img->render(buffer, glyph_pos,
                       glyph->getSize(x_scale, y_scale), clip_rect, colours);
             glyph_pos.d_x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
@@ -200,7 +215,7 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
 }
 
 //----------------------------------------------------------------------------//
-void Font::setNativeResolution(const Size& size)
+void Font::setNativeResolution(const Size<>& size)
 {
     d_nativeHorzRes = size.d_width;
     d_nativeVertRes = size.d_height;
@@ -211,9 +226,9 @@ void Font::setNativeResolution(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-Size Font::getNativeResolution() const
+Size<> Font::getNativeResolution() const
 {
-    return Size(d_nativeHorzRes, d_nativeVertRes);
+    return Size<>(d_nativeHorzRes, d_nativeVertRes);
 }
 
 //----------------------------------------------------------------------------//
@@ -233,7 +248,7 @@ bool Font::isAutoScaled() const
 }
 
 //----------------------------------------------------------------------------//
-void Font::notifyDisplaySizeChanged(const Size& size)
+void Font::notifyDisplaySizeChanged(const Size<>& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
@@ -262,11 +277,11 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
-            PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeHorzRes)));
 
     if (d_nativeVertRes != DefaultNativeVertRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
-            PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
         xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute, "True");

@@ -37,36 +37,36 @@ namespace TooltipProperties
 {
     String HoverTime::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const Tooltip*>(receiver)->getHoverTime());
+        return PropertyHelper<float>::toString(static_cast<const Tooltip*>(receiver)->getHoverTime());
     }
 
     void HoverTime::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<Tooltip*>(receiver)->setHoverTime(PropertyHelper::stringToFloat(value));
+        static_cast<Tooltip*>(receiver)->setHoverTime(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String DisplayTime::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const Tooltip*>(receiver)->getDisplayTime());
+        return PropertyHelper<float>::toString(static_cast<const Tooltip*>(receiver)->getDisplayTime());
     }
 
     void DisplayTime::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<Tooltip*>(receiver)->setDisplayTime(PropertyHelper::stringToFloat(value));
+        static_cast<Tooltip*>(receiver)->setDisplayTime(PropertyHelper<float>::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String FadeTime::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const Tooltip*>(receiver)->getFadeTime());
+        return PropertyHelper<float>::toString(static_cast<const Tooltip*>(receiver)->getFadeTime());
     }
 
     void FadeTime::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<Tooltip*>(receiver)->setFadeTime(PropertyHelper::stringToFloat(value));
+        static_cast<Tooltip*>(receiver)->setFadeTime(PropertyHelper<float>::fromString(value));
     }
 
 } // End of  TooltipProperties namespace section

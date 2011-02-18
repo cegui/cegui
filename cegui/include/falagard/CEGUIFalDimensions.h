@@ -40,7 +40,8 @@ namespace CEGUI
     \brief
         Abstract interface for a generic 'dimension' class.
     */
-    class CEGUIEXPORT BaseDim
+    class CEGUIEXPORT BaseDim :
+        public AllocatedObject<BaseDim>
     {
     public:
         BaseDim();
@@ -238,32 +239,26 @@ namespace CEGUI
         \brief
             Constructor.
 
-        \param imageset
-            String object holding the name of the imagseset which contains the image.
-
-        \param image
+        \param name
             String object holding the name of the image.
 
         \param dim
             DimensionType value indicating which dimension of the described image that this ImageDim
             is to represent.
         */
-        ImageDim(const String& imageset, const String& image, DimensionType dim);
+        ImageDim(const String& name, DimensionType dim);
 
         /*!
         \brief
             Sets the source image information for this ImageDim.
 
-        \param imageset
-            String object holding the name of the imagseset which contains the image.
-
-        \param image
+        \param name
             String object holding the name of the image.
 
         \return
             Nothing.
         */
-        void setSourceImage(const String& imageset, const String& image);
+        void setSourceImage(const String& name);
 
         /*!
         \brief
@@ -287,7 +282,6 @@ namespace CEGUI
         BaseDim* clone_impl() const;
 
     private:
-        String d_imageset;      //!< name of the Imageset containing the image.
         String d_image;         //!< name of the Image.
         DimensionType d_what;   //!< the dimension of the image that we are to represent.
     };

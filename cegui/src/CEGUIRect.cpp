@@ -43,7 +43,7 @@ Rect::Rect(float left, float top, float right, float bottom) :
 {
 }
 
-Rect::Rect(Point pos, Size sz) :
+Rect::Rect(const Vector2<>& pos, const Size<>& sz) :
     d_top(pos.d_y),
     d_bottom(pos.d_y + sz.d_height),
     d_left(pos.d_x),
@@ -83,7 +83,7 @@ Rect Rect::getIntersection(const Rect& rect) const
 /*************************************************************************
 	Apply an offset the the Rect
 *************************************************************************/
-Rect& Rect::offset(const Point& pt)
+Rect& Rect::offset(const Vector2<>& pt)
 {
 	d_left		+= pt.d_x;
 	d_right		+= pt.d_x;
@@ -96,7 +96,7 @@ Rect& Rect::offset(const Point& pt)
 /*************************************************************************
 	Check if a given point is within the Rect
 *************************************************************************/
-bool Rect::isPointInRect(const Point& pt) const
+bool Rect::isPointInRect(const Vector2<>& pt) const
 {
 	if ((d_left > pt.d_x) ||
 		(d_right <= pt.d_x) ||
@@ -112,9 +112,9 @@ bool Rect::isPointInRect(const Point& pt) const
 /*************************************************************************
 	Set location of rect retaining current size.
 *************************************************************************/
-void Rect::setPosition(const Point& pt)
+void Rect::setPosition(const Vector2<>& pt)
 {
-	Size sz(getSize());
+	Size<> sz(getSize());
 
 	d_left = pt.d_x;
 	d_top  = pt.d_y;
@@ -126,7 +126,7 @@ void Rect::setPosition(const Point& pt)
 	check the size of the Rect object and if it is bigger than 'sz', 
 	resize it so it isn't.	
 *************************************************************************/
-Rect& Rect::constrainSizeMax(const Size& sz)
+Rect& Rect::constrainSizeMax(const Size<>& sz)
 {
 	if (getWidth() > sz.d_width)
 	{
@@ -146,7 +146,7 @@ Rect& Rect::constrainSizeMax(const Size& sz)
 	check the size of the Rect object and if it is smaller than 'sz',
 	resize it so it isn't.
 *************************************************************************/
-Rect& Rect::constrainSizeMin(const Size& sz)
+Rect& Rect::constrainSizeMin(const Size<>& sz)
 {
 	if (getWidth() < sz.d_width)
 	{
@@ -166,9 +166,9 @@ Rect& Rect::constrainSizeMin(const Size& sz)
 	check the size of the Rect object and if it is bigger than 'max_sz'
 	or smaller than 'min_sz', resize it so it isn't.
 *************************************************************************/
-Rect& Rect::constrainSize(const Size& max_sz, const Size& min_sz)
+Rect& Rect::constrainSize(const Size<>& max_sz, const Size<>& min_sz)
 {
-	Size curr_sz(getSize());
+	Size<> curr_sz(getSize());
 
 	if (curr_sz.d_width > max_sz.d_width)
 	{

@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardItemEntry::TypeName[] = "Falagard/ItemEntry";
+    const String FalagardItemEntry::TypeName("Falagard/ItemEntry");
 
     FalagardItemEntry::FalagardItemEntry(const String& type) :
         ItemEntryWindowRenderer(type)
@@ -60,7 +60,7 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Size FalagardItemEntry::getItemPixelSize() const
+    Size<> FalagardItemEntry::getItemPixelSize() const
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();

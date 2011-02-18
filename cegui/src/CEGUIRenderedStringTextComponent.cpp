@@ -106,7 +106,7 @@ void RenderedStringTextComponent::setColours(const ColourRect& cr)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setColours(const colour& c)
+void RenderedStringTextComponent::setColours(const Colour& c)
 {
     d_colours.setColours(c);
 }
@@ -119,7 +119,7 @@ const ColourRect& RenderedStringTextComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
-                                       const Vector2& position,
+                                       const Vector2<>& position,
                                        const ColourRect* mod_colours,
                                        const Rect* clip_rect,
                                        const float vertical_space,
@@ -130,7 +130,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
     if (!fnt)
         return;
 
-    Vector2 final_pos(position);
+    Vector2<> final_pos(position);
     float y_scale = 1.0f;
 
     // handle formatting options
@@ -171,12 +171,12 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedStringTextComponent::getPixelSize() const
+Size<> RenderedStringTextComponent::getPixelSize() const
 {
     Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
-    Size psz(d_padding.d_left + d_padding.d_right,
-             d_padding.d_top + d_padding.d_bottom);
+    Size<> psz(d_padding.d_left + d_padding.d_right,
+               d_padding.d_top + d_padding.d_bottom);
 
     if (fnt)
     {
@@ -207,7 +207,7 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
             "unable to split with no font set."));
 
     // create 'left' side of split and clone our basic configuration
-    RenderedStringTextComponent* lhs = new RenderedStringTextComponent;
+    RenderedStringTextComponent* lhs = CEGUI_NEW_AO RenderedStringTextComponent();
     lhs->d_padding = d_padding;
     lhs->d_verticalFormatting = d_verticalFormatting;
     lhs->d_font = d_font;
@@ -282,7 +282,7 @@ size_t RenderedStringTextComponent::getNextTokenLength(const String& text,
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent* RenderedStringTextComponent::clone() const
 {
-    RenderedStringTextComponent* c = new RenderedStringTextComponent(*this);
+    RenderedStringTextComponent* c = CEGUI_NEW_AO RenderedStringTextComponent(*this);
     return c;
 }
 

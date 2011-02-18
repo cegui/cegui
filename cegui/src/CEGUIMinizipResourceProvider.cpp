@@ -195,7 +195,7 @@ void MinizipResourceProvider::loadRawDataContainer(const String& filename,
     }
 
     ulong size = file_info.uncompressed_size;
-    utf8* buffer = new utf8[size];
+    uint8* buffer = CEGUI_NEW_ARRAY_PT(uint8, size, RawDataContainer);
 
     if (unzReadCurrentFile(d_pimpl->d_zfile, buffer, size) < 0)
     {

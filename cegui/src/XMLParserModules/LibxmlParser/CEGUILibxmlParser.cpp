@@ -110,7 +110,7 @@ void LibxmlParser::parseXMLFile(XMLHandler& handler, const String& filename, con
         CEGUI_THROW(GenericException(
             String("LibxmlParser::parseXMLFile - xmlParseMemory failed in file: '") +
             err->file + "' at line number" +
-            PropertyHelper::uintToString(err->line) + ".  Error is:" +
+            PropertyHelper<uint>::toString(err->line) + ".  Error is:" +
             err->message));
     }
 

@@ -58,7 +58,7 @@ namespace CEGUI
             widget->setLookNFeel(d_imageryName);
 
         // add the new widget to its parent
-        parent.addChildWindow(widget);
+        parent.addChild(widget);
 
         // set alignment options
         widget->setVerticalAlignment(d_vertAlign);

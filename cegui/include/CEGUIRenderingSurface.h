@@ -106,7 +106,9 @@ public:
     these are queues that have had some interaction - such as clearing or adding
     geometry.
 */
-class CEGUIEXPORT RenderingSurface : public EventSet
+class CEGUIEXPORT RenderingSurface :
+    public EventSet,
+    public AllocatedObject<RenderingSurface>
 {
 public:
     //! Namespace for global events from RenderingSurface objects.
@@ -339,9 +341,11 @@ protected:
     void attachWindow(RenderingWindow& w);
 
     //! collection type for the queues
-    typedef std::map<RenderQueueID, RenderQueue> RenderQueueList;
+    typedef std::map<RenderQueueID, RenderQueue
+        /*CEGUI_MAP_ALLOC(RenderQueueID, RenderQueue)*/> RenderQueueList;
     //! collection type for created RenderingWindow objects
-    typedef std::vector<RenderingWindow*> RenderingWindowList;
+    typedef std::vector<RenderingWindow*
+        CEGUI_VECTOR_ALLOC(RenderingWindow*)> RenderingWindowList;
     //! the collection of RenderQueue objects.
     RenderQueueList d_queues;
     //! collection of RenderingWindow object we own

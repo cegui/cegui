@@ -49,7 +49,7 @@ OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
     d_CEGUITexture = static_cast<OgreTexture*>(&d_owner.createTexture());
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -82,7 +82,7 @@ Texture& OgreTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreTextureTarget::declareRenderSize(const Size& sz)
+void OgreTextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
@@ -97,8 +97,8 @@ void OgreTextureTarget::declareRenderSize(const Size& sz)
     d_renderTarget = rttTex->getBuffer()->getRenderTarget();
 
     Rect init_area(
-        Vector2(0, 0),
-        Size(d_renderTarget->getWidth(), d_renderTarget->getHeight())
+        Vector2<>(0, 0),
+        Size<>(d_renderTarget->getWidth(), d_renderTarget->getHeight())
     );
 
     setArea(init_area);

@@ -40,31 +40,49 @@ namespace CEGUI
 \brief
 	Class that holds the size (width & height) of something.
 */
-class CEGUIEXPORT Size
+template<typename T>
+class Size:
+    public AllocatedObject<Size<T> >
 {
 public:
-	Size(void) {}
-	Size(float width, float height) : d_width(width), d_height(height) {}
-	Size(const Size& v): d_width(v.d_width), d_height(v.d_height) {}
+	inline Size()
+    {}
 
-	bool operator==(const Size& other) const;
-	bool operator!=(const Size& other) const;
+	inline Size(const T& width, const T& height):
+        d_width(width),
+        d_height(height)
+    {}
 
-	float d_width, d_height;
+	inline Size(const Size& v):
+        d_width(v.d_width),
+        d_height(v.d_height)
+    {}
 
-	Size operator*(float c) const
+	inline bool operator==(const Size& other) const
+    {
+	    return d_width == other.d_width && d_height == other.d_height;
+    }
+
+	inline bool operator!=(const Size& other) const
+    {
+	    return !operator==(other);
+    }
+
+	inline Size operator*(const T& c) const
 	{
 		return Size(d_width * c, d_height * c);
 	}
 
-	Size operator+(const Size& s) const
+	inline Size operator+(const Size& s) const
 	{
 		return Size(d_width + s.d_width, d_height + s.d_height);
 	}
+
+	T d_width;
+    T d_height;
 };
 
 } // End of  CEGUI namespace section
 
 
 #endif	// end of guard _CEGUISize_h_
-

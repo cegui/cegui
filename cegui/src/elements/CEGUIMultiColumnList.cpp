@@ -73,17 +73,17 @@ MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
 	Constants
 *************************************************************************/
 // Event names
-const String MultiColumnList::EventSelectionModeChanged( "SelectModeChanged" );
-const String MultiColumnList::EventNominatedSelectColumnChanged( "NomSelColChanged" );
-const String MultiColumnList::EventNominatedSelectRowChanged( "NomSelRowChanged" );
-const String MultiColumnList::EventVertScrollbarModeChanged( "VertBarModeChanged" );
-const String MultiColumnList::EventHorzScrollbarModeChanged( "HorzBarModeChanged" );
+const String MultiColumnList::EventSelectionModeChanged( "SelectionModeChanged" );
+const String MultiColumnList::EventNominatedSelectColumnChanged( "NominatedSelectColumnChanged" );
+const String MultiColumnList::EventNominatedSelectRowChanged( "NominatedSelectRowChanged" );
+const String MultiColumnList::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String MultiColumnList::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 const String MultiColumnList::EventSelectionChanged( "SelectionChanged" );
-const String MultiColumnList::EventListContentsChanged( "ContentsChanged" );
-const String MultiColumnList::EventSortColumnChanged( "SortColChanged" );
-const String MultiColumnList::EventSortDirectionChanged( "SortDirChanged" );
-const String MultiColumnList::EventListColumnSized( "ColSized" );
-const String MultiColumnList::EventListColumnMoved( "ColMoved" );
+const String MultiColumnList::EventListContentsChanged( "ListContentsChanged" );
+const String MultiColumnList::EventSortColumnChanged( "SortColumnChanged" );
+const String MultiColumnList::EventSortDirectionChanged( "SortDirectionChanged" );
+const String MultiColumnList::EventListColumnSized( "ListColumnSized" );
+const String MultiColumnList::EventListColumnMoved( "ListColumnMoved" );
 
 /*************************************************************************
     Child Widget name suffix constants
@@ -746,7 +746,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 			// delete the ListboxItem as needed.
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -920,7 +920,7 @@ void MultiColumnList::removeRow(uint row_idx)
 
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -963,7 +963,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 
 	if ((oldItem != 0) && oldItem->isAutoDeleted())
 	{
-		delete oldItem;
+		CEGUI_DELETE_AO oldItem;
 	}
 
 	// set new item.
@@ -1441,7 +1441,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Size<> sz(item->getPixelSize());
 
 				// see if this item is wider than the previous widest
 				if (sz.d_width > width)
@@ -1482,7 +1482,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Size<> sz(item->getPixelSize());
 
 				// see if this item is higher than the previous highest
 				if (sz.d_height > height)
@@ -1536,7 +1536,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
 {
     const ListHeader* header = getListHeader();
     Rect listArea(getListRenderArea());
@@ -1555,7 +1555,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
             for (uint j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
-                x += seg.getWidth().asAbsolute(header->getPixelSize().d_width);
+                x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
                 if (pt.d_x < x)
@@ -1876,7 +1876,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Point localPos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
@@ -2191,7 +2191,7 @@ bool MultiColumnList::resetList_impl(void)
 				// delete item as needed.
 				if ((item != 0) && item->isAutoDeleted())
 				{
-					delete item;
+					CEGUI_DELETE_AO item;
 				}
 
 			}
@@ -2306,10 +2306,10 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += seg.getText();
         // column width
         propString += " width:";
-        propString += PropertyHelper::udimToString(seg.getWidth());
+        propString += PropertyHelper<UDim>::toString(seg.getWidth());
         // column id
         propString += " id:";
-        propString += PropertyHelper::uintToString(seg.getID());
+        propString += PropertyHelper<uint>::toString(seg.getID());
         // create the tag
         xml_stream.openTag("Property")
             .attribute("Name", "ColumnHeader")
@@ -2326,7 +2326,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			{
                 xml_stream.openTag("Property")
                     .attribute("Name", "SortColumnID")
-                    .attribute("Value", PropertyHelper::uintToString(sortColumnID))
+                    .attribute("Value", PropertyHelper<uint>::toString(sortColumnID))
                     .closeTag();
 			    ++propCnt;
 			}
