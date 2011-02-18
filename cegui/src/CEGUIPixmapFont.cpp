@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUIPixmapFont.h"
 #include "CEGUIImageManager.h"
+#include "CEGUIBasicImage.h"
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUILogger.h"
@@ -58,26 +59,28 @@ PixmapFont::PixmapFont(const String& font_name, const String& imageset_filename,
 }
 
 //----------------------------------------------------------------------------//
-PixmapFont::~PixmapFont ()
+PixmapFont::~PixmapFont()
 {
-//    if (d_imagesetOwner)
-//        ImagesetManager::getSingleton ().destroy(*d_glyphImages);
+    if (d_imagesetOwner)
+        ImageManager::getSingleton().destroyImageCollection(d_imageNamePrefix);
 }
 
 //----------------------------------------------------------------------------//
 void PixmapFont::reinit()
 {
-//    if (d_imagesetOwner)
-//        ImagesetManager::getSingleton().destroy(*d_glyphImages);
+    if (d_imagesetOwner)
+        ImageManager::getSingleton().destroyImageCollection(d_imageNamePrefix);
 
     if (d_resourceGroup == BuiltInResourceGroup)
     {
-//        d_glyphImages = &ImagesetManager::getSingleton().get(d_filename);
+        d_imageNamePrefix = d_filename;
         d_imagesetOwner = false;
     }
     else
     {
         ImageManager::getSingleton().loadImageset(d_filename, d_resourceGroup);
+        // here we assume the imageset name will match the font name
+        d_imageNamePrefix = d_name; 
         d_imagesetOwner = true;
     }
 }
@@ -92,9 +95,6 @@ void PixmapFont::updateFont()
     d_height = 0;
     d_maxCodepoint = 0;
 
-//    d_glyphImages->setAutoScalingEnabled(d_autoScale);
-//    d_glyphImages->setNativeResolution(Size<>(d_nativeHorzRes, d_nativeVertRes));
-
     for (CodepointMap::iterator i = d_cp_map.begin(); i != d_cp_map.end(); ++i)
     {
         if (i->first > d_maxCodepoint)
@@ -102,7 +102,14 @@ void PixmapFont::updateFont()
 
         i->second.setAdvance(i->second.getAdvance() * factor);
 
-        const Image* img = i->second.getImage();
+        Image* img = i->second.getImage();
+
+        BasicImage* bi = dynamic_cast<BasicImage*>(img);
+        if (bi)
+        {
+            bi->setAutoScaled(d_autoScale);
+            bi->setNativeResolution(Size<>(d_nativeHorzRes, d_nativeVertRes));
+        }
 
         if (img->getRenderedOffset().d_y < d_ascender)
             d_ascender = img->getRenderedOffset().d_y;
@@ -139,7 +146,8 @@ void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
                                const float horz_advance)
 {
-    const Image& image(ImageManager::getSingleton().get(image_name));
+     Image& image(
+        ImageManager::getSingleton().get(d_imageNamePrefix + '/' + image_name));
 
     float adv = (horz_advance == -1.0f) ?
         (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().d_x) :
