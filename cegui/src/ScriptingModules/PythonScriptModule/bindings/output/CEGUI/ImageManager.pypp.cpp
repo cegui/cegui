@@ -110,6 +110,16 @@ void register_ImageManager_class(){
                 , destroyAll_function_type( &::CEGUI::ImageManager::destroyAll ) );
         
         }
+        { //::CEGUI::ImageManager::destroyImageCollection
+        
+            typedef void ( ::CEGUI::ImageManager::*destroyImageCollection_function_type )( ::CEGUI::String const &,bool const ) ;
+            
+            ImageManager_exposer.def( 
+                "destroyImageCollection"
+                , destroyImageCollection_function_type( &::CEGUI::ImageManager::destroyImageCollection )
+                , ( bp::arg("prefix"), bp::arg("delete_texture")=(bool const)(true) ) );
+        
+        }
         { //::CEGUI::ImageManager::elementStart
         
             typedef void ( ::CEGUI::ImageManager::*elementStart_function_type )( ::CEGUI::String const &,::CEGUI::XMLAttributes const & ) ;

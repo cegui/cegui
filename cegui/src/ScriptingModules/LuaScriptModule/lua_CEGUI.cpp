@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Fri Feb 18 09:49:29 2011.
+** Generated automatically by tolua++-1.0.92 on Fri Feb 18 18:12:30 2011.
 */
 
 #ifndef __cplusplus
@@ -8531,19 +8531,19 @@ static int tolua_CEGUI_CEGUI_ImageManager_destroy01(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
  {
   CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::String* name = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroy'",NULL);
 #endif
  {
-  self->destroy(*name);
+  self->destroy(name);
  }
  }
  return 0;
@@ -8599,7 +8599,7 @@ static int tolua_CEGUI_CEGUI_ImageManager_get00(lua_State* tolua_S)
 #endif
  {
   const CEGUI::ImageManager* self = (const CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const utf8string name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get'",NULL);
 #endif
@@ -8633,7 +8633,7 @@ static int tolua_CEGUI_CEGUI_ImageManager_isDefined00(lua_State* tolua_S)
 #endif
  {
   const CEGUI::ImageManager* self = (const CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const utf8string name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isDefined'",NULL);
 #endif
@@ -8700,8 +8700,8 @@ static int tolua_CEGUI_CEGUI_ImageManager_loadImageset00(lua_State* tolua_S)
 #endif
  {
   CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const utf8string filename = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
-  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,3,""));
+  utf8string filename = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadImageset'",NULL);
 #endif
@@ -8713,6 +8713,41 @@ static int tolua_CEGUI_CEGUI_ImageManager_loadImageset00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'loadImageset'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: destroyImageCollection of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_destroyImageCollection00
+static int tolua_CEGUI_CEGUI_ImageManager_destroyImageCollection00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string prefix = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  bool delete_texture = ((bool)  tolua_toboolean(tolua_S,3,true));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'destroyImageCollection'",NULL);
+#endif
+ {
+  self->destroyImageCollection(prefix,delete_texture);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'destroyImageCollection'.",&tolua_err);
  return 0;
 #endif
 }
@@ -8736,9 +8771,9 @@ static int tolua_CEGUI_CEGUI_ImageManager_addFromImageFile00(lua_State* tolua_S)
 #endif
  {
   CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const utf8string name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
-  const utf8string filename = ((const utf8string)  tolua_toutf8string(tolua_S,3,0));
-  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,4,""));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string filename = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
+  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,4,""));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addFromImageFile'",NULL);
 #endif
@@ -8763,16 +8798,16 @@ static int tolua_CEGUI_CEGUI_ImageManager_setImagesetDefaultResourceGroup00(lua_
  tolua_Error tolua_err;
  if (
  !tolua_isusertable(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::String",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  const CEGUI::String* resourceGroup = ((const CEGUI::String*)  tolua_tousertype(tolua_S,2,0));
+  utf8string resourceGroup = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
  {
-  CEGUI::ImageManager::setImagesetDefaultResourceGroup(*resourceGroup);
+  CEGUI::ImageManager::setImagesetDefaultResourceGroup(resourceGroup);
  }
  }
  return 0;
@@ -8799,8 +8834,8 @@ static int tolua_CEGUI_CEGUI_ImageManager_getImagesetDefaultResourceGroup00(lua_
 #endif
  {
  {
-  const CEGUI::String& tolua_ret = (const CEGUI::String&)  CEGUI::ImageManager::getImagesetDefaultResourceGroup();
- tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::String");
+  string tolua_ret = (string)  CEGUI::ImageManager::getImagesetDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
  }
  }
  return 1;
@@ -57587,6 +57622,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isDefined",tolua_CEGUI_CEGUI_ImageManager_isDefined00);
    tolua_function(tolua_S,"getImageCount",tolua_CEGUI_CEGUI_ImageManager_getImageCount00);
    tolua_function(tolua_S,"loadImageset",tolua_CEGUI_CEGUI_ImageManager_loadImageset00);
+   tolua_function(tolua_S,"destroyImageCollection",tolua_CEGUI_CEGUI_ImageManager_destroyImageCollection00);
    tolua_function(tolua_S,"addFromImageFile",tolua_CEGUI_CEGUI_ImageManager_addFromImageFile00);
    tolua_function(tolua_S,"setImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_setImagesetDefaultResourceGroup00);
    tolua_function(tolua_S,"getImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_getImagesetDefaultResourceGroup00);

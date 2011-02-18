@@ -10,7 +10,7 @@ void register_FontGlyph_class(){
 
     { //::CEGUI::FontGlyph
         typedef bp::class_< CEGUI::FontGlyph > FontGlyph_exposer_t;
-        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image const * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
+        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
         bp::scope FontGlyph_scope( FontGlyph_exposer );
         bp::implicitly_convertible< float, CEGUI::FontGlyph >();
         { //::CEGUI::FontGlyph::getAdvance
@@ -45,7 +45,7 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::getImage
         
-            typedef ::CEGUI::Image const * ( ::CEGUI::FontGlyph::*getImage_function_type )(  ) const;
+            typedef ::CEGUI::Image * ( ::CEGUI::FontGlyph::*getImage_function_type )(  ) const;
             
             FontGlyph_exposer.def( 
                 "getImage"
@@ -106,7 +106,7 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::setImage
         
-            typedef void ( ::CEGUI::FontGlyph::*setImage_function_type )( ::CEGUI::Image const * ) ;
+            typedef void ( ::CEGUI::FontGlyph::*setImage_function_type )( ::CEGUI::Image * ) ;
             
             FontGlyph_exposer.def( 
                 "setImage"
