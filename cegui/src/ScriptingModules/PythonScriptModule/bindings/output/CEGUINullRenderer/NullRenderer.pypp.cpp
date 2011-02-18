@@ -139,7 +139,7 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         return CEGUI::NullRenderer::getMaxTextureSize( );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size const & sz ) {
+    virtual void setDisplaySize( ::CEGUI::Size< float > const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
         else{
@@ -147,8 +147,29 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         }
     }
     
-    void default_setDisplaySize( ::CEGUI::Size const & sz ) {
+    void default_setDisplaySize( ::CEGUI::Size< float > const & sz ) {
         CEGUI::NullRenderer::setDisplaySize( boost::ref(sz) );
+    }
+
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::Size< float > const & size ){
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    virtual void destroyTexture( ::CEGUI::String const & name ){
+        bp::override func_destroyTexture = this->get_override( "destroyTexture" );
+        func_destroyTexture( boost::ref(name) );
+    }
+
+    virtual ::CEGUI::Texture & getTexture( ::CEGUI::String const & name ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
 };
@@ -236,7 +257,7 @@ void register_NullRenderer_class(){
             
             NullRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::NullRenderer::createTexture )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -246,18 +267,18 @@ void register_NullRenderer_class(){
             
             NullRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::NullRenderer::createTexture )
                 , ( bp::arg("filename"), bp::arg("resourceGroup") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::NullRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::Size< float > const & ) ;
             
             NullRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
+                , createTexture_function_type( &::CEGUI::NullRenderer::createTexture )
                 , ( bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
@@ -401,7 +422,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2< float > const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplayDPI"
@@ -411,7 +432,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplaySize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Size< float > const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplaySize"
@@ -442,8 +463,8 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::setDisplaySize
         
-            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
-            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             NullRenderer_exposer.def( 
                 "setDisplaySize"

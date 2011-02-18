@@ -28,11 +28,12 @@
 #include "FalTooltip.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTooltip::TypeName[] = "Falagard/Tooltip";
+    const String FalagardTooltip::TypeName("Falagard/Tooltip");
 
     FalagardTooltip::FalagardTooltip(const String& type) :
         TooltipWindowRenderer(type)
@@ -49,16 +50,16 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Size FalagardTooltip::getTextSize() const
+    Size<> FalagardTooltip::getTextSize() const
     {
         Tooltip* w = (Tooltip*)d_window;
-        Size sz(w->getTextSize_impl());
+        Size<> sz(w->getTextSize_impl());
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
         Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-        Rect wndArea(w->getArea().asAbsolute(w->getParentPixelSize()));
+        Rect wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
 
         sz.d_width  = PixelAligned(sz.d_width + wndArea.getWidth() - textArea.getWidth());
         sz.d_height = PixelAligned(sz.d_height + wndArea.getHeight() - textArea.getHeight());

@@ -92,7 +92,7 @@ void OpenGLRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2& p_in, Vector2& p_out) const
+    const Vector2<>& p_in, Vector2<>& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

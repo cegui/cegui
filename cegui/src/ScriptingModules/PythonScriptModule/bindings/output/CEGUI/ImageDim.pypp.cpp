@@ -13,14 +13,11 @@ void register_ImageDim_class(){
         ImageDim_exposer_t ImageDim_exposer = ImageDim_exposer_t( "ImageDim", "*!\n\
         \n\
             Dimension type that represents some dimension of a named Image.  Implements BaseDim interface.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("imageset"), bp::arg("image"), bp::arg("dim") ), "*!\n\
+        *\n", bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
-                @param imageset\n\
-                    String object holding the name of the imagseset which contains the image.\n\
-        \n\
-                @param image\n\
+                @param name\n\
                     String object holding the name of the image.\n\
         \n\
                 @param dim\n\
@@ -53,20 +50,17 @@ void register_ImageDim_class(){
         }
         { //::CEGUI::ImageDim::setSourceImage
         
-            typedef void ( ::CEGUI::ImageDim::*setSourceImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ImageDim::*setSourceImage_function_type )( ::CEGUI::String const & ) ;
             
             ImageDim_exposer.def( 
                 "setSourceImage"
                 , setSourceImage_function_type( &::CEGUI::ImageDim::setSourceImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                     \n\
                         Sets the source image information for this ImageDim.\n\
             \n\
-                    @param imageset\n\
-                        String object holding the name of the imagseset which contains the image.\n\
-            \n\
-                    @param image\n\
+                    @param name\n\
                         String object holding the name of the image.\n\
             \n\
                     @return\n\

@@ -74,12 +74,12 @@ void Menubar::layoutItemWidgets()
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
-		const Size optimal = (*item)->getItemPixelSize();
+		const Size<> optimal = (*item)->getItemPixelSize();
 
 		(*item)->setVerticalAlignment(VA_CENTRE);
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
-		rect.setSize( UVector2( cegui_absdim(PixelAligned(optimal.d_width)),
-                                cegui_absdim(PixelAligned(optimal.d_height))));
+		rect.setSize(UVector2(cegui_absdim(PixelAligned(optimal.d_width)),
+                              cegui_absdim(PixelAligned(optimal.d_height))));
 
 		(*item)->setArea(rect);
 
@@ -93,7 +93,7 @@ void Menubar::layoutItemWidgets()
 /*************************************************************************
 	Returns the "optimal" size for the content in unclipped pixels
 *************************************************************************/
-Size Menubar::getContentSize() const
+Size<> Menubar::getContentSize() const
 {
 	// find the content sizes
 	float tallest = 0;
@@ -103,7 +103,7 @@ Size Menubar::getContentSize() const
 	size_t max = d_listItems.size();
 	while (i < max)
 	{
-		const Size sz = d_listItems[i]->getItemPixelSize();
+		const Size<> sz = d_listItems[i]->getItemPixelSize();
 		if (sz.d_height > tallest)
 			tallest = sz.d_height;
 		total_width += sz.d_width;
@@ -120,7 +120,7 @@ Size Menubar::getContentSize() const
 	}
 
 	// return the content size
-	return Size(total_width, tallest);
+	return Size<>(total_width, tallest);
 }
 
 } // End of  CEGUI namespace section

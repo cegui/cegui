@@ -35,7 +35,7 @@
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef OGRE_GUIRENDERER_EXPORTS
+#   ifdef CEGUIOGRERENDERER_EXPORTS
 #       define OGRE_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define OGRE_GUIRENDERER_API __declspec(dllimport)
@@ -265,14 +265,14 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Size<>& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Size<>& sz);
+    const Size<>& getDisplaySize() const;
+    const Vector2<>& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 

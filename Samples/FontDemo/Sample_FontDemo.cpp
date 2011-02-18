@@ -38,46 +38,46 @@ using namespace CEGUI;
 
 static struct
 {
-    utf8 *Language;
-    utf8* Font;
-	utf8 *Text;
+    encoded_char* Language;
+    encoded_char* Font;
+	encoded_char* Text;
 } LangList [] =
 {
 	// A list of strings in different languages
 	// Feel free to add your own language here (UTF-8 ONLY!)...
-    { (utf8 *)"English",
-      (utf8*)"DejaVuSans-10",
-	  (utf8 *)"THIS IS SOME TEXT IN UPPERCASE\n"
+    { (encoded_char*)"English",
+      (encoded_char*)"DejaVuSans-10",
+	  (encoded_char*)"THIS IS SOME TEXT IN UPPERCASE\n"
               "and this is lowercase...\n"
               "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog" },
-    { (utf8 *)"Русский",
-      (utf8*)"DejaVuSans-10",
-	  (utf8 *)"Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств.\n"
+    { (encoded_char*)"Русский",
+      (encoded_char*)"DejaVuSans-10",
+	  (encoded_char*)"Всё ускоряющаяся эволюция компьютерных технологий предъявила жёсткие требования к производителям как собственно вычислительной техники, так и периферийных устройств.\n"
               "\nЗавершён ежегодный съезд эрудированных школьников, мечтающих глубоко проникнуть в тайны физических явлений и химических реакций.\n"
               "\nавтор панграмм -- Андрей Николаев\n" },
-    { (utf8 *)"Română",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"CEI PATRU APOSTOLI\n"
+    { (encoded_char*)"Română",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"CEI PATRU APOSTOLI\n"
               "au fost trei:\n"
               "Luca şi Matfei\n" },
-    { (utf8 *)"Dansk",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"FARLIGE STORE BOGSTAVER\n"
+    { (encoded_char*)"Dansk",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"FARLIGE STORE BOGSTAVER\n"
               "og flere men små...\n"
               "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" },
-	{ (utf8 *)"Japanese",
-      (utf8*)"Sword-26",
-      (utf8 *)"日本語を選択\n"
+	{ (encoded_char*)"Japanese",
+      (encoded_char*)"Sword-26",
+      (encoded_char*)"日本語を選択\n"
               "トリガー検知\n"
               "鉱石備蓄不足\n" },
-	{ (utf8 *)"Korean",
-      (utf8*)"Batang-26",
-      (utf8 *)"한국어를 선택\n"
+	{ (encoded_char*)"Korean",
+      (encoded_char*)"Batang-26",
+      (encoded_char*)"한국어를 선택\n"
               "트리거 검지\n"
               "광석 비축부족\n" },
-    { (utf8 *)"Việt",
-      (utf8*)"DejaVuSans-10",
-      (utf8 *)"Chào CrazyEddie !\n"
+    { (encoded_char*)"Việt",
+      (encoded_char*)"DejaVuSans-10",
+      (encoded_char*)"Chào CrazyEddie !\n"
               "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
               "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
               "Cám ơn bạn rất nhiều\n"
@@ -95,7 +95,7 @@ public:
     MyListItem (const String& text, CEGUI::uint item_id = 0) :
         ListboxTextItem(text, item_id)
     {
-        setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
     }
 };
 
@@ -111,7 +111,7 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().create("TaharezLook.scheme");
-        System::getSingleton().setDefaultMouseCursor ("TaharezLook", "MouseArrow");
+        System::getSingleton().setDefaultMouseCursor ("TaharezLook/MouseArrow");
 
 		// Create a custom font which we use to draw the list items. This custom
 		// font won't get effected by the scaler and such.
@@ -123,7 +123,7 @@ public:
         FontManager::getSingleton().createAll("*.font", "fonts");
 
         // load an image to use as a background
-        ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow ("TaharezLook/StaticImage");
@@ -134,7 +134,7 @@ public:
         background->setProperty ("FrameEnabled", "false");
         background->setProperty ("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty ("Image", "set:BackgroundImage image:full_image");
+        background->setProperty ("Image", "BackgroundImage");
         // install this as the root GUI sheet
         System::getSingleton ().setGUISheet (background);
 
@@ -142,7 +142,7 @@ public:
         System::getSingleton ().setDefaultTooltip ("TaharezLook/Tooltip");
 
         // load some demo windows and attach to the background 'root'
-        background->addChildWindow (winMgr.loadWindowLayout ("FontDemo.layout"));
+        background->addChild (winMgr.loadWindowLayout ("FontDemo.layout"));
 
         // Add the font names to the listbox
         Listbox *lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/FontList"));
@@ -237,13 +237,13 @@ public:
             Checkbox *cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/AutoScaled"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("AutoScaled")));
+                cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("AutoScaled")));
 
             b = font->isPropertyPresent ("Antialiased");
             cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/Antialiased"));
             cb->setEnabled (b);
             if (b)
-                cb->setSelected (PropertyHelper::stringToBool (font->getProperty ("Antialiased")));
+                cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("Antialiased")));
 
             b = font->isPropertyPresent ("PointSize");
             Scrollbar *sb = static_cast<Scrollbar *> (
@@ -253,7 +253,7 @@ public:
 			// Set the textbox' font to have the current scale
 			if (font->isPropertyPresent("PointSize"))
 				font->setProperty ("PointSize",
-                        PropertyHelper::intToString (
+                        PropertyHelper<int>::toString (
                             int (MIN_POINT_SIZE + sb->getScrollPosition ())));
 
             setFontDesc ();
@@ -274,7 +274,7 @@ public:
 
         Font *f = mle->getFont ();
         f->setProperty ("AutoScaled",
-                        PropertyHelper::boolToString (cb->isSelected ()));
+                        PropertyHelper<bool>::toString (cb->isSelected ()));
 
         updateTextWindows();
         return true;
@@ -292,7 +292,7 @@ public:
 
         Font *f = mle->getFont ();
         f->setProperty ("Antialiased",
-                        PropertyHelper::boolToString (cb->isSelected ()));
+                        PropertyHelper<bool>::toString (cb->isSelected ()));
 
         updateTextWindows();
         return true;
@@ -308,7 +308,7 @@ public:
         Font *f = winMgr.getWindow ("FontDemo/FontSample")->getFont ();
 
         f->setProperty ("PointSize",
-                        PropertyHelper::intToString (
+                        PropertyHelper<int>::toString (
                             int (MIN_POINT_SIZE + sb->getScrollPosition ())));
 
         setFontDesc ();
@@ -342,7 +342,7 @@ public:
 			}
 
 			// Finally, set the sample text for the selected language
-            winMgr.getWindow ("FontDemo/FontSample")->setText ((utf8*)LangList [idx].Text);
+            winMgr.getWindow ("FontDemo/FontSample")->setText((encoded_char*)LangList[idx].Text);
         }
 
         return true;

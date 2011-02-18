@@ -40,20 +40,7 @@ void register_Interpolator_class(){
 
     { //::CEGUI::Interpolator
         typedef bp::class_< Interpolator_wrapper, boost::noncopyable > Interpolator_exposer_t;
-        Interpolator_exposer_t Interpolator_exposer = Interpolator_exposer_t( "Interpolator", "*!\n\
-        \n\
-            Defines a 'interpolator' class\n\
-        \n\
-            Interpolator allows you to interpolate between 2 properties.\n\
-            You can jut pass them as strings and Interpolator does everything for you.\n\
-        \n\
-            If you want to define your own interpolator, inherit this class and add it\n\
-            to AnimationManager via AnimationManager.addInterpolator to make it\n\
-            available for animations.\n\
-        \n\
-        @see\n\
-            AnimationManager\n\
-        *\n" );
+        Interpolator_exposer_t Interpolator_exposer = Interpolator_exposer_t( "Interpolator" );
         bp::scope Interpolator_scope( Interpolator_exposer );
         { //::CEGUI::Interpolator::getType
         

@@ -72,7 +72,7 @@ void ItemListbox::layoutItemWidgets()
     while (i!=end)
     {
         ItemEntry* entry = *i;
-        const Size pxs = entry->getItemPixelSize();
+        const Size<> pxs = entry->getItemPixelSize();
         if (pxs.d_width > widest)
         {
             widest = pxs.d_width;
@@ -80,22 +80,22 @@ void ItemListbox::layoutItemWidgets()
 
         entry->setArea(URect(
             UVector2(cegui_absdim(0), cegui_absdim(y)),
-            UVector2(cegui_reldim(1), cegui_absdim(y+pxs.d_height))
+            UVector2(cegui_reldim(1), cegui_absdim(y + pxs.d_height))
             ));
 
-        y+=pxs.d_height;
+        y += pxs.d_height;
 
         ++i;
     }
 
     // reconfigure scrollbars
-    configureScrollbars(Size(widest,y));
+    configureScrollbars(Size<>(widest, y));
 }
 
 /************************************************************************
     Get size of items
 ************************************************************************/
-Size ItemListbox::getContentSize() const
+Size<> ItemListbox::getContentSize() const
 {
     float h = 0;
 
@@ -107,7 +107,7 @@ Size ItemListbox::getContentSize() const
         ++i;
     }
 
-    return Size(getItemRenderArea().getWidth(), h);
+    return Size<>(getItemRenderArea().getWidth(), h);
 }
 
 /************************************************************************

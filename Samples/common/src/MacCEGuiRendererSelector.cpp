@@ -109,7 +109,7 @@ void MacCEGuiRendererSelector::loadDialogWindow()
     // get our framework bundle from the app
     CFBundleRef helperFwk =
         CFBundleGetBundleWithIdentifier(
-            CFSTR("net.sourceforge.crayzedsgui.CEGUISampleHelper"));
+            CFSTR("uk.org.cegui.CEGUISampleHelper"));
 
     if (helperFwk)
     {

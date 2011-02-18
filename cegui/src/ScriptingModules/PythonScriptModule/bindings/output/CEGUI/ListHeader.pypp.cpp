@@ -123,7 +123,7 @@ struct ListHeader_wrapper : CEGUI::ListHeader, bp::wrapper< CEGUI::ListHeader > 
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct ListHeader_wrapper : CEGUI::ListHeader, bp::wrapper< CEGUI::ListHeader > 
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -1075,6 +1075,9 @@ void register_ListHeader_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         ListHeader_exposer.def_readonly( "MinimumSegmentPixelWidth", CEGUI::ListHeader::MinimumSegmentPixelWidth, "values\n" );
         ListHeader_exposer.def_readonly( "ScrollSpeed", CEGUI::ListHeader::ScrollSpeed, "values\n" );
+        ListHeader_exposer.add_static_property( "SegmentNameSuffix"
+                        , bp::make_getter( &CEGUI::ListHeader::SegmentNameSuffix
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;
@@ -1190,8 +1193,8 @@ void register_ListHeader_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ListHeader_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( ListHeader_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             ListHeader_exposer.def( 
                 "isHit"

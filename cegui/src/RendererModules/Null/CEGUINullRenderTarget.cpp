@@ -81,7 +81,7 @@ void NullRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void NullRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2& p_in, Vector2& p_out) const
+                                      const Vector2<>& p_in, Vector2<>& p_out) const
 {
 	p_out = p_in;
 }

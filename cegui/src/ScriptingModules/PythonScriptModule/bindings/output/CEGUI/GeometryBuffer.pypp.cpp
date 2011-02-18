@@ -82,7 +82,7 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         func_setClippingRegion( boost::ref(region) );
     }
 
-    virtual void setPivot( ::CEGUI::Vector3 const & p ){
+    virtual void setPivot( ::CEGUI::Vector3< float > const & p ){
         bp::override func_setPivot = this->get_override( "setPivot" );
         func_setPivot( boost::ref(p) );
     }
@@ -92,12 +92,12 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         func_setRenderEffect( boost::python::ptr(effect) );
     }
 
-    virtual void setRotation( ::CEGUI::Vector3 const & r ){
+    virtual void setRotation( ::CEGUI::Quaternion const & r ){
         bp::override func_setRotation = this->get_override( "setRotation" );
         func_setRotation( boost::ref(r) );
     }
 
-    virtual void setTranslation( ::CEGUI::Vector3 const & v ){
+    virtual void setTranslation( ::CEGUI::Vector3< float > const & v ){
         bp::override func_setTranslation = this->get_override( "setTranslation" );
         func_setTranslation( boost::ref(v) );
     }
@@ -108,11 +108,7 @@ void register_GeometryBuffer_class(){
 
     { //::CEGUI::GeometryBuffer
         typedef bp::class_< GeometryBuffer_wrapper, boost::noncopyable > GeometryBuffer_exposer_t;
-        GeometryBuffer_exposer_t GeometryBuffer_exposer = GeometryBuffer_exposer_t( "GeometryBuffer", "*!\n\
-        \n\
-            Abstract class defining the interface for objects that buffer geometry for\n\
-            later rendering.\n\
-        *\n", bp::no_init );
+        GeometryBuffer_exposer_t GeometryBuffer_exposer = GeometryBuffer_exposer_t( "GeometryBuffer", bp::no_init );
         bp::scope GeometryBuffer_scope( GeometryBuffer_exposer );
         { //::CEGUI::GeometryBuffer::appendGeometry
         
@@ -311,7 +307,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setPivot
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setPivot_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setPivot_function_type )( ::CEGUI::Vector3<float> const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setPivot"
@@ -353,7 +349,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setRotation
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setRotation_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setRotation_function_type )( ::CEGUI::Quaternion const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setRotation"
@@ -365,13 +361,13 @@ void register_GeometryBuffer_class(){
                     subsequently rendered.\n\
             \n\
                 @param r\n\
-                    Vector3 describing the rotation factors to be used.\n\
+                    Quaternion describing the rotation to be used.\n\
                 *\n" );
         
         }
         { //::CEGUI::GeometryBuffer::setTranslation
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setTranslation_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setTranslation_function_type )( ::CEGUI::Vector3<float> const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setTranslation"

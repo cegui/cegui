@@ -68,26 +68,26 @@ ID3D10ShaderResourceView* Direct3D10Texture::getDirect3DShaderResourceView() con
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::setOriginalDataSize(const Size& sz)
+void Direct3D10Texture::setOriginalDataSize(const Size<>& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D10Texture::getSize() const
+const Size<>& Direct3D10Texture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D10Texture::getOriginalDataSize() const
+const Size<>& Direct3D10Texture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& Direct3D10Texture::getTexelScaling() const
+const Vector2<>& Direct3D10Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -121,7 +121,7 @@ void Direct3D10Texture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void Direct3D10Texture::loadFromMemory(const void* buffer,
-                                       const Size& buffer_size,
+                                       const Size<>& buffer_size,
                                        PixelFormat pixel_format)
 {
     cleanupDirect3D10Texture();
@@ -180,11 +180,19 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::saveToMemory(void* buffer)
+void Direct3D10Texture::blitFromMemory(void* sourceData, const Rect& area)
 {
     // TODO:
     CEGUI_THROW(RendererException(
-        "Direct3D10Texture::saveToMemory: unimplemented!"));
+        "Direct3D10Texture::blitFromMemory: unimplemented!"));
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D10Texture::blitToMemory(void* targetData)
+{
+    // TODO:
+    CEGUI_THROW(RendererException(
+        "Direct3D10Texture::blitToMemory: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -271,7 +279,7 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size& sz) :
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size<>& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),

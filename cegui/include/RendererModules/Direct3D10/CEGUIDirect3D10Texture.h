@@ -77,22 +77,23 @@ public:
     \note
         This also causes the texel scaling values to be updated.
     */
-    void setOriginalDataSize(const Size& sz);
+    void setOriginalDataSize(const Size<>& sz);
 
     // implement abstract members from base class.
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const Size<>& getSize() const;
+    const Size<>& getOriginalDataSize() const;
+    const Vector2<>& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // Friends to allow Renderer to peform construction and destruction
     friend Texture& Direct3D10Renderer::createTexture();
     friend Texture& Direct3D10Renderer::createTexture(const String&, const String&);
-    friend Texture& Direct3D10Renderer::createTexture(const Size&);
+    friend Texture& Direct3D10Renderer::createTexture(const Size<>&);
     //friend Texture& Direct3D10Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D10Renderer::destroyTexture(Texture&);
 
@@ -102,7 +103,7 @@ protected:
     Direct3D10Texture(ID3D10Device& device, const String& filename,
                       const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D10Texture(ID3D10Device& device, const Size& sz);
+    Direct3D10Texture(ID3D10Device& device, const Size<>& sz);
     //! Construct texture that wraps an existing D3D10 texture.
     Direct3D10Texture(ID3D10Device& device, ID3D10Texture2D* tex);
     //! Destructor.
@@ -124,11 +125,11 @@ protected:
     //! Shader resource view for the texture.
     ID3D10ShaderResourceView* d_resourceView;
     //! Size of the texture.
-    Size d_size;
+    Size<> d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2<> d_texelScaling;
 };
 
 

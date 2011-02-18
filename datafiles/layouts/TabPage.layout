@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUILayout>
 
-<Window Type="DefaultGUISheet" Name="">
+<Window Type="DefaultWindow" Name="">
     <Window Type="TaharezLook/StaticText" Name="Text">
         <Property Name="FrameEnabled" Value="False" />
         <Property Name="HorzFormatting" Value="WordWrapCentred" />

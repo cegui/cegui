@@ -9,11 +9,11 @@ namespace bp = boost::python;
 void register_FalagardXMLHelper_class(){
 
     { //::CEGUI::FalagardXMLHelper
-        typedef bp::class_< CEGUI::FalagardXMLHelper > FalagardXMLHelper_exposer_t;
+        typedef bp::class_< CEGUI::FalagardXMLHelper, boost::noncopyable > FalagardXMLHelper_exposer_t;
         FalagardXMLHelper_exposer_t FalagardXMLHelper_exposer = FalagardXMLHelper_exposer_t( "FalagardXMLHelper", "*!\n\
         \n\
             Utility helper class primarily intended for use by the falagard xml parser.\n\
-        *\n" );
+        *\n", bp::no_init );
         bp::scope FalagardXMLHelper_scope( FalagardXMLHelper_exposer );
         { //::CEGUI::FalagardXMLHelper::dimensionOperatorToString
         

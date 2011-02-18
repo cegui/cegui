@@ -123,7 +123,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -521,12 +521,12 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::DragContainer::setDragCursorImage
         
-            typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             DragContainer_exposer.def( 
                 "setDragCursorImage"
                 , setDragCursorImage_function_type( &::CEGUI::DragContainer::setDragCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                     \n\
                         Set the Image to be used for the mouse cursor when a drag operation is\n\
@@ -535,17 +535,13 @@ void register_DragContainer_class(){
                         This method may be used during a drag operation to update the current mouse\n\
                         cursor image.\n\
             \n\
-                    @param imageset\n\
-                        String holding the name of the Imageset that contains the Image to be used.\n\
-            \n\
-                    @param image\n\
-                        Image defined for the Imageset  imageset to be used as the mouse cursor\n\
-                        when dragging.\n\
+                    @param name\n\
+                        Image to be used as the mouse cursor when dragging.\n\
             \n\
                     @return\n\
                         Nothing.\n\
             \n\
-                    @exception UnknownObjectException   thrown if either  imageset or  image are unknown.\n\
+                    @exception UnknownObjectException   thrown if Image \name is unknown.\n\
                     *\n" );
         
         }
@@ -782,8 +778,8 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( DragContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( DragContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
             
             DragContainer_exposer.def( 
                 "isHit"

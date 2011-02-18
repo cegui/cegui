@@ -10,17 +10,7 @@ void register_KeyFrame_class(){
 
     { //::CEGUI::KeyFrame
         typedef bp::class_< CEGUI::KeyFrame > KeyFrame_exposer_t;
-        KeyFrame_exposer_t KeyFrame_exposer = KeyFrame_exposer_t( "KeyFrame", "*!\n\
-        \n\
-            Defines a 'key frame' class\n\
-        \n\
-            Key frames are defined inside Affectors. The values they hold are used\n\
-            when animation is precisely at the key frame's position. If it's between\n\
-            two key frames, the value is interpolated.\n\
-        \n\
-        @see\n\
-            Affector\n\
-        *\n", bp::init< CEGUI::Affector *, float >(( bp::arg("parent"), bp::arg("position") ), "! internal constructor, please use Affector.createKeyFrame\n") );
+        KeyFrame_exposer_t KeyFrame_exposer = KeyFrame_exposer_t( "KeyFrame", bp::init< CEGUI::Affector *, float >(( bp::arg("parent"), bp::arg("position") ), "! internal constructor, please use Affector.createKeyFrame\n") );
         bp::scope KeyFrame_scope( KeyFrame_exposer );
         bp::enum_< CEGUI::KeyFrame::Progression>("Progression")
             .value("P_Linear", CEGUI::KeyFrame::P_Linear)

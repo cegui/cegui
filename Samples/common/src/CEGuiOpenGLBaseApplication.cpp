@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -41,8 +41,6 @@
 #include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
 #include "CEGuiSample.h"
 #include "CEGUI.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIGeometryBuffer.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -118,34 +116,31 @@ GlutKeyMapping specialKeyMap[] =
 /*************************************************************************
     Static Data
 *************************************************************************/
-bool CEGuiOpenGLBaseApplication::d_quitFlag = false;
-int  CEGuiOpenGLBaseApplication::d_lastFrameTime = 0;
+CEGuiOpenGLBaseApplication* CEGuiOpenGLBaseApplication::d_appInstance = 0;
+int  CEGuiOpenGLBaseApplication::d_frameTime = 0;
 int CEGuiOpenGLBaseApplication::d_modifiers = 0;
-int CEGuiOpenGLBaseApplication::d_fps_lastTime = 0;
-int CEGuiOpenGLBaseApplication::d_fps_frames = 0;
-int CEGuiOpenGLBaseApplication::d_fps_value = 0;
-char CEGuiOpenGLBaseApplication::d_fps_textbuff[16];
-CEGUI::GeometryBuffer* CEGuiOpenGLBaseApplication::d_logo_geometry = 0;
 
-/*************************************************************************
-    Constructor.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 {
+    if (d_appInstance)
+        throw CEGUI::InvalidRequestException(
+            "CEGuiOpenGLBaseApplication instance already exists!");
+
+    d_appInstance = this;
+
     // fake args for glutInit
     int argc = 1;
     const char* argv = "SampleApp";
 
     // Do GLUT init
     glutInit(&argc, (char**)&argv);
-    glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowSize(800, 600);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Crazy Eddie's GUI Mk-2 - Sample Application");
     glutSetCursor(GLUT_CURSOR_NONE);
-
-    d_renderer = &CEGUI::OpenGLRenderer::bootstrapSystem();
-
+    // set up glut callbacks
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
     glutReshapeFunc(&CEGuiOpenGLBaseApplication::reshape);
     glutMotionFunc(&CEGuiOpenGLBaseApplication::mouseMotion);
@@ -153,155 +148,84 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutMouseFunc(&CEGuiOpenGLBaseApplication::mouseButton);
     glutKeyboardFunc(&CEGuiOpenGLBaseApplication::keyChar);
     glutSpecialFunc(&CEGuiOpenGLBaseApplication::keySpecial);
-
     #ifdef __FREEGLUT_EXT_H__
         glutMouseWheelFunc(&CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut);
     #endif
 
+    // create renderer (other option objects are left at defaults)
+    d_renderer = &CEGUI::OpenGLRenderer::create();
+
     // Set the clear color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    initialiseResourceGroupDirectories();
-    initialiseDefaultResourceGroups();
-    
-    // setup required to do direct rendering of FPS value
-    const CEGUI::Rect scrn(CEGUI::Vector2(0, 0), d_renderer->getDisplaySize());
-    d_fps_geometry = &d_renderer->createGeometryBuffer();
-    d_fps_geometry->setClippingRegion(scrn);
-
-    // setup for logo
-    CEGUI::ImagesetManager::getSingleton().
-        createFromImageFile("cegui_logo", "logo.png", "imagesets");
-    d_logo_geometry = &d_renderer->createGeometryBuffer();
-    d_logo_geometry->setClippingRegion(scrn);
-    d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
-    d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
-    CEGUI::ImagesetManager::getSingleton().get("cegui_logo").
-        getImage("full_image").draw(*d_logo_geometry, CEGUI::Rect(0, 0, 100, 69.5f), 0);
-
-    // clearing this queue actually makes sure it's created(!)
-    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
-
-    // subscribe handler to render overlay items
-    d_renderer->getDefaultRenderingRoot().
-        subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-            CEGUI::Event::Subscriber(&CEGuiOpenGLBaseApplication::overlayHandler,
-                                     this));
 }
 
-
-/*************************************************************************
-    Destructor.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 CEGuiOpenGLBaseApplication::~CEGuiOpenGLBaseApplication()
 {
-    CEGUI::OpenGLRenderer::destroySystem();
+    CEGUI::OpenGLRenderer::destroy((CEGUI::OpenGLRenderer&)*d_renderer);
 }
 
-bool CEGuiOpenGLBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
-{
-    using namespace CEGUI;
-
-    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
-        return false;
-
-    // render FPS:
-    Font* fnt = System::getSingleton().getDefaultFont();
-    if (fnt)
-    {
-        d_fps_geometry->reset();
-        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0,
-                      colour(0xFFFFFFFF));
-        d_fps_geometry->draw();
-    }
-
-    d_logo_geometry->draw();
-
-    return true;
-}
-
-
-/*************************************************************************
-    Start the base application
-*************************************************************************/
-bool CEGuiOpenGLBaseApplication::execute(CEGuiSample* sampleApp)
+//----------------------------------------------------------------------------//
+bool CEGuiOpenGLBaseApplication::execute_impl(CEGuiSample* sampleApp)
 {
     sampleApp->initialiseSample();
 
     // set starting time
-    d_fps_lastTime = d_lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
+    d_frameTime = glutGet(GLUT_ELAPSED_TIME);
 
     glutMainLoop();
 
     return true;
 }
 
-
-/*************************************************************************
-    Performs any required cleanup of the base application system.
-*************************************************************************/
-void CEGuiOpenGLBaseApplication::cleanup()
+//----------------------------------------------------------------------------//
+void CEGuiOpenGLBaseApplication::cleanup_impl()
 {
     // nothing to do here.
 }
 
-/*************************************************************************
-    Set whether the app should quit
-*************************************************************************/
-void CEGuiOpenGLBaseApplication::setQuitting(bool quit)
+//----------------------------------------------------------------------------//
+void CEGuiOpenGLBaseApplication::beginRendering(const float /*elapsed*/)
 {
-    d_quitFlag = quit;
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
-/*************************************************************************
-    Is this app quitting
-*************************************************************************/
-bool CEGuiOpenGLBaseApplication::isQuitting() const
+//----------------------------------------------------------------------------//
+void CEGuiOpenGLBaseApplication::endRendering()
 {
-    return d_quitFlag;
-}
-
-/*************************************************************************
-    Does whatever is required in one single frame
-*************************************************************************/
-void CEGuiOpenGLBaseApplication::drawFrame(void)
-{
-    CEGUI::System& guiSystem = CEGUI::System::getSingleton();
-    // do time based updates
-    int thisTime = glutGet(GLUT_ELAPSED_TIME);
-    float elapsed = static_cast<float>(thisTime - d_lastFrameTime);
-    d_lastFrameTime = thisTime;
-    // inject the time pulse
-    guiSystem.injectTimePulse(elapsed / 1000.0f);
-    // update fps fields
-    doFPSUpdate();
-
-    // update logo rotation
-    static float rot = 0.0f;
-    d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
-    rot += 180.0f * (elapsed / 1000.0f);
-    if (rot > 360.0f)
-        rot -= 360.0f;
-
-    // do rendering for this frame.
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    guiSystem.renderGUI();
     glutPostRedisplay();
     glutSwapBuffers();
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOpenGLBaseApplication::drawFrame(void)
+{
+    // calculate time elapsed since last frame
+    const int time_now = glutGet(GLUT_ELAPSED_TIME);
+    const float elapsed = static_cast<float>(time_now - d_frameTime) / 1000.0f;
+    d_frameTime = time_now;
+
+    d_appInstance->renderSingleFrame(elapsed);
 
     // here we check the 'quitting' state and cleanup as required.
     // this is probably not the best way to do this, but since we're
     // using glut, and glutMainLoop can never return, we need some
     // way of checking when to exit.  And this is it...
-    if (d_quitFlag)
+    if (d_appInstance->isQuitting())
     {
-        CEGUI::OpenGLRenderer::destroySystem();
+        // cleanup cegui system
+        CEGUI::OpenGLRenderer* renderer =
+            static_cast<CEGUI::OpenGLRenderer*>(
+                CEGUI::System::getSingleton().getRenderer());
+        CEGUI::System::destroy();
+        CEGUI::OpenGLRenderer::destroy(*renderer);
 
         // exit
         exit(0);
     }
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::reshape(int w, int h)
 {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
@@ -310,55 +234,44 @@ void CEGuiOpenGLBaseApplication::reshape(int w, int h)
     gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 50.0);
     glMatrixMode(GL_MODELVIEW);
     CEGUI::System::getSingleton().
-        notifyDisplaySizeChanged(CEGUI::Size((float)w,(float)h));
+        notifyDisplaySizeChanged(CEGUI::Size<>((float)w,(float)h));
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::mouseMotion(int x, int y)
 {
     CEGUI::System::getSingleton().injectMousePosition(x, y);
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int /*x*/, int /*y*/)
 {
     switch(button)
     {
     case  GLUT_LEFT_BUTTON:
         if (state == GLUT_UP)
-        {
             CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
-        }
         else
-        {
             CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
-
-        }
         break;
 
     case GLUT_RIGHT_BUTTON:
         if (state == GLUT_UP)
-        {
             CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::RightButton);
-        }
         else
-        {
             CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
-        }
         break;
 
     case GLUT_MIDDLE_BUTTON:
         if (state == GLUT_UP)
-        {
             CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
-        }
         else
-        {
             CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
-        }
         break;
     }
-
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/)
 {
     handleModifierKeys();
@@ -373,7 +286,7 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Delete);
         break;
     case 0x1B:  // Escape
-        d_quitFlag = true;
+        d_appInstance->setQuitting();
         break;
     case 0x0D:  // CR (Return)
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Return);
@@ -386,6 +299,7 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/
 
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::keySpecial(int key, int /*x*/, int /*y*/)
 {
     handleModifierKeys();
@@ -404,6 +318,7 @@ void CEGuiOpenGLBaseApplication::keySpecial(int key, int /*x*/, int /*y*/)
     }
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
 {
     int mods = glutGetModifiers();
@@ -459,31 +374,15 @@ void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
     d_modifiers = mods;
 }
 
-void CEGuiOpenGLBaseApplication::doFPSUpdate()
-{
-    // another frame
-    ++d_fps_frames;
-
-    // has at least a second passed since we last updated the text?
-    if (d_lastFrameTime - d_fps_lastTime >= 1000)
-    {
-        // update FPS text to output
-        sprintf(d_fps_textbuff , "FPS: %d", d_fps_frames);
-        // reset counter
-        d_fps_frames    = 0;
-        // update timer
-        d_fps_lastTime  = d_lastFrameTime;
-    }
-}
-
+//----------------------------------------------------------------------------//
 // FreeGLUT supports wheel events
 void CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut(int wheel, int dir, int /*x*/, int /*y*/)
 {
     if (wheel == 0)
-    {
         CEGUI::System::getSingleton().injectMouseWheelChange((float)dir);
-    }
 }
+
+//----------------------------------------------------------------------------//
 
 #endif
 

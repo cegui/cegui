@@ -10,14 +10,7 @@ void register_WindowFactoryManager_class(){
 
     { //::CEGUI::WindowFactoryManager
         typedef bp::class_< CEGUI::WindowFactoryManager, bp::bases< CEGUI::Singleton< CEGUI::WindowFactoryManager > >, boost::noncopyable > WindowFactoryManager_exposer_t;
-        WindowFactoryManager_exposer_t WindowFactoryManager_exposer = WindowFactoryManager_exposer_t( "WindowFactoryManager", "*! \n\
-        \n\
-           Class that manages WindowFactory objects\n\
-        \n\
-        @todo \n\
-            I think we could clean up the mapping stuff a bit. Possibly make it more generic now\n\
-            with the window renderers and all.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        WindowFactoryManager_exposer_t WindowFactoryManager_exposer = WindowFactoryManager_exposer_t( "WindowFactoryManager", bp::init< >("*************************************************************************\n\
            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\
@@ -179,7 +172,7 @@ void register_WindowFactoryManager_class(){
         }
         { //::CEGUI::WindowFactoryManager::getAliasIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > > ( ::CEGUI::WindowFactoryManager::*getAliasIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > > ( ::CEGUI::WindowFactoryManager::*getAliasIterator_function_type )(  ) const;
             
             WindowFactoryManager_exposer.def( 
                 "getAliasIterator"
@@ -269,7 +262,7 @@ void register_WindowFactoryManager_class(){
         }
         { //::CEGUI::WindowFactoryManager::getFalagardMappingIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > > ( ::CEGUI::WindowFactoryManager::*getFalagardMappingIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > > > ( ::CEGUI::WindowFactoryManager::*getFalagardMappingIterator_function_type )(  ) const;
             
             WindowFactoryManager_exposer.def( 
                 "getFalagardMappingIterator"
@@ -283,7 +276,7 @@ void register_WindowFactoryManager_class(){
         }
         { //::CEGUI::WindowFactoryManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactory*> > > > ( ::CEGUI::WindowFactoryManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactory*> > > > ( ::CEGUI::WindowFactoryManager::*getIterator_function_type )(  ) const;
             
             WindowFactoryManager_exposer.def( 
                 "getIterator"

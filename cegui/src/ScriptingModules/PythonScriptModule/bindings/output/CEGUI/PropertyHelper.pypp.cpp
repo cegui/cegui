@@ -8,312 +8,268 @@ namespace bp = boost::python;
 
 void register_PropertyHelper_class(){
 
-    { //::CEGUI::PropertyHelper
-        typedef bp::class_< CEGUI::PropertyHelper > PropertyHelper_exposer_t;
-        PropertyHelper_exposer_t PropertyHelper_exposer = PropertyHelper_exposer_t( "PropertyHelper", "*!\n\
-        \n\
-           Helper class used to convert various data types to and from the format expected in Propery\
-           strings\n\
-        *\n" );
+    { //::CEGUI::PropertyHelper_wrapper
+        typedef bp::class_< CEGUI::PropertyHelper_wrapper > PropertyHelper_exposer_t;
+        PropertyHelper_exposer_t PropertyHelper_exposer = PropertyHelper_exposer_t( "PropertyHelper" );
         bp::scope PropertyHelper_scope( PropertyHelper_exposer );
-        { //::CEGUI::PropertyHelper::boolToString
+        { //::CEGUI::PropertyHelper_wrapper::boolToString
         
             typedef ::CEGUI::String ( *boolToString_function_type )( bool );
             
             PropertyHelper_exposer.def( 
                 "boolToString"
-                , boolToString_function_type( &::CEGUI::PropertyHelper::boolToString )
+                , boolToString_function_type( &::CEGUI::PropertyHelper_wrapper::boolToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::colourRectToString
+        { //::CEGUI::PropertyHelper_wrapper::colourRectToString
         
             typedef ::CEGUI::String ( *colourRectToString_function_type )( ::CEGUI::ColourRect const & );
             
             PropertyHelper_exposer.def( 
                 "colourRectToString"
-                , colourRectToString_function_type( &::CEGUI::PropertyHelper::colourRectToString )
+                , colourRectToString_function_type( &::CEGUI::PropertyHelper_wrapper::colourRectToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::colourToString
+        { //::CEGUI::PropertyHelper_wrapper::colourToString
         
-            typedef ::CEGUI::String ( *colourToString_function_type )( ::CEGUI::colour const & );
+            typedef ::CEGUI::String ( *colourToString_function_type )( ::CEGUI::Colour const & );
             
             PropertyHelper_exposer.def( 
                 "colourToString"
-                , colourToString_function_type( &::CEGUI::PropertyHelper::colourToString )
+                , colourToString_function_type( &::CEGUI::PropertyHelper_wrapper::colourToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::floatToString
+        { //::CEGUI::PropertyHelper_wrapper::floatToString
         
             typedef ::CEGUI::String ( *floatToString_function_type )( float );
             
             PropertyHelper_exposer.def( 
                 "floatToString"
-                , floatToString_function_type( &::CEGUI::PropertyHelper::floatToString )
+                , floatToString_function_type( &::CEGUI::PropertyHelper_wrapper::floatToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::imageToString
+        { //::CEGUI::PropertyHelper_wrapper::imageToString
         
-            typedef ::CEGUI::String ( *imageToString_function_type )( ::CEGUI::Image const * const );
+            typedef ::CEGUI::String ( *imageToString_function_type )( ::CEGUI::Image const * );
             
             PropertyHelper_exposer.def( 
                 "imageToString"
-                , imageToString_function_type( &::CEGUI::PropertyHelper::imageToString )
+                , imageToString_function_type( &::CEGUI::PropertyHelper_wrapper::imageToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::intToString
-        
-            typedef ::CEGUI::String ( *intToString_function_type )( int );
-            
-            PropertyHelper_exposer.def( 
-                "intToString"
-                , intToString_function_type( &::CEGUI::PropertyHelper::intToString )
-                , ( bp::arg("val") ) );
-        
-        }
-        { //::CEGUI::PropertyHelper::pointToString
-        
-            typedef ::CEGUI::String ( *pointToString_function_type )( ::CEGUI::Point const & );
-            
-            PropertyHelper_exposer.def( 
-                "pointToString"
-                , pointToString_function_type( &::CEGUI::PropertyHelper::pointToString )
-                , ( bp::arg("val") ) );
-        
-        }
-        { //::CEGUI::PropertyHelper::rectToString
+        { //::CEGUI::PropertyHelper_wrapper::rectToString
         
             typedef ::CEGUI::String ( *rectToString_function_type )( ::CEGUI::Rect const & );
             
             PropertyHelper_exposer.def( 
                 "rectToString"
-                , rectToString_function_type( &::CEGUI::PropertyHelper::rectToString )
+                , rectToString_function_type( &::CEGUI::PropertyHelper_wrapper::rectToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::sizeToString
+        { //::CEGUI::PropertyHelper_wrapper::sizeToString
         
-            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Size const & );
+            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Size< float > const & );
             
             PropertyHelper_exposer.def( 
                 "sizeToString"
-                , sizeToString_function_type( &::CEGUI::PropertyHelper::sizeToString )
+                , sizeToString_function_type( &::CEGUI::PropertyHelper_wrapper::sizeToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToBool
+        { //::CEGUI::PropertyHelper_wrapper::stringToBool
         
             typedef bool ( *stringToBool_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToBool"
-                , stringToBool_function_type( &::CEGUI::PropertyHelper::stringToBool )
+                , stringToBool_function_type( &::CEGUI::PropertyHelper_wrapper::stringToBool )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToColour
+        { //::CEGUI::PropertyHelper_wrapper::stringToColour
         
-            typedef ::CEGUI::colour ( *stringToColour_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Colour ( *stringToColour_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToColour"
-                , stringToColour_function_type( &::CEGUI::PropertyHelper::stringToColour )
+                , stringToColour_function_type( &::CEGUI::PropertyHelper_wrapper::stringToColour )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToColourRect
+        { //::CEGUI::PropertyHelper_wrapper::stringToColourRect
         
             typedef ::CEGUI::ColourRect ( *stringToColourRect_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToColourRect"
-                , stringToColourRect_function_type( &::CEGUI::PropertyHelper::stringToColourRect )
+                , stringToColourRect_function_type( &::CEGUI::PropertyHelper_wrapper::stringToColourRect )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToFloat
+        { //::CEGUI::PropertyHelper_wrapper::stringToFloat
         
             typedef float ( *stringToFloat_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToFloat"
-                , stringToFloat_function_type( &::CEGUI::PropertyHelper::stringToFloat )
+                , stringToFloat_function_type( &::CEGUI::PropertyHelper_wrapper::stringToFloat )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToImage
+        { //::CEGUI::PropertyHelper_wrapper::stringToImage
         
             typedef ::CEGUI::Image const * ( *stringToImage_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToImage"
-                , stringToImage_function_type( &::CEGUI::PropertyHelper::stringToImage )
+                , stringToImage_function_type( &::CEGUI::PropertyHelper_wrapper::stringToImage )
                 , ( bp::arg("str") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
-        { //::CEGUI::PropertyHelper::stringToInt
-        
-            typedef int ( *stringToInt_function_type )( ::CEGUI::String const & );
-            
-            PropertyHelper_exposer.def( 
-                "stringToInt"
-                , stringToInt_function_type( &::CEGUI::PropertyHelper::stringToInt )
-                , ( bp::arg("str") ) );
-        
-        }
-        { //::CEGUI::PropertyHelper::stringToPoint
-        
-            typedef ::CEGUI::Point ( *stringToPoint_function_type )( ::CEGUI::String const & );
-            
-            PropertyHelper_exposer.def( 
-                "stringToPoint"
-                , stringToPoint_function_type( &::CEGUI::PropertyHelper::stringToPoint )
-                , ( bp::arg("str") ) );
-        
-        }
-        { //::CEGUI::PropertyHelper::stringToRect
+        { //::CEGUI::PropertyHelper_wrapper::stringToRect
         
             typedef ::CEGUI::Rect ( *stringToRect_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToRect"
-                , stringToRect_function_type( &::CEGUI::PropertyHelper::stringToRect )
+                , stringToRect_function_type( &::CEGUI::PropertyHelper_wrapper::stringToRect )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToSize
+        { //::CEGUI::PropertyHelper_wrapper::stringToSize
         
-            typedef ::CEGUI::Size ( *stringToSize_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Size< float > ( *stringToSize_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToSize"
-                , stringToSize_function_type( &::CEGUI::PropertyHelper::stringToSize )
+                , stringToSize_function_type( &::CEGUI::PropertyHelper_wrapper::stringToSize )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToUBox
+        { //::CEGUI::PropertyHelper_wrapper::stringToUBox
         
             typedef ::CEGUI::UBox ( *stringToUBox_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToUBox"
-                , stringToUBox_function_type( &::CEGUI::PropertyHelper::stringToUBox )
+                , stringToUBox_function_type( &::CEGUI::PropertyHelper_wrapper::stringToUBox )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToUDim
+        { //::CEGUI::PropertyHelper_wrapper::stringToUDim
         
             typedef ::CEGUI::UDim ( *stringToUDim_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToUDim"
-                , stringToUDim_function_type( &::CEGUI::PropertyHelper::stringToUDim )
+                , stringToUDim_function_type( &::CEGUI::PropertyHelper_wrapper::stringToUDim )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToURect
+        { //::CEGUI::PropertyHelper_wrapper::stringToURect
         
             typedef ::CEGUI::URect ( *stringToURect_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToURect"
-                , stringToURect_function_type( &::CEGUI::PropertyHelper::stringToURect )
+                , stringToURect_function_type( &::CEGUI::PropertyHelper_wrapper::stringToURect )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToUVector2
+        { //::CEGUI::PropertyHelper_wrapper::stringToUVector2
         
             typedef ::CEGUI::UVector2 ( *stringToUVector2_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToUVector2"
-                , stringToUVector2_function_type( &::CEGUI::PropertyHelper::stringToUVector2 )
+                , stringToUVector2_function_type( &::CEGUI::PropertyHelper_wrapper::stringToUVector2 )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToUint
+        { //::CEGUI::PropertyHelper_wrapper::stringToUint
         
-            typedef ::CEGUI::uint ( *stringToUint_function_type )( ::CEGUI::String const & );
+            typedef unsigned int ( *stringToUint_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToUint"
-                , stringToUint_function_type( &::CEGUI::PropertyHelper::stringToUint )
+                , stringToUint_function_type( &::CEGUI::PropertyHelper_wrapper::stringToUint )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::stringToVector3
+        { //::CEGUI::PropertyHelper_wrapper::stringToVector2
         
-            typedef ::CEGUI::Vector3 ( *stringToVector3_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Vector2< float > ( *stringToVector2_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
-                "stringToVector3"
-                , stringToVector3_function_type( &::CEGUI::PropertyHelper::stringToVector3 )
+                "stringToVector2"
+                , stringToVector2_function_type( &::CEGUI::PropertyHelper_wrapper::stringToVector2 )
                 , ( bp::arg("str") ) );
         
         }
-        { //::CEGUI::PropertyHelper::uboxToString
+        { //::CEGUI::PropertyHelper_wrapper::uboxToString
         
             typedef ::CEGUI::String ( *uboxToString_function_type )( ::CEGUI::UBox const & );
             
             PropertyHelper_exposer.def( 
                 "uboxToString"
-                , uboxToString_function_type( &::CEGUI::PropertyHelper::uboxToString )
+                , uboxToString_function_type( &::CEGUI::PropertyHelper_wrapper::uboxToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::udimToString
+        { //::CEGUI::PropertyHelper_wrapper::udimToString
         
             typedef ::CEGUI::String ( *udimToString_function_type )( ::CEGUI::UDim const & );
             
             PropertyHelper_exposer.def( 
                 "udimToString"
-                , udimToString_function_type( &::CEGUI::PropertyHelper::udimToString )
+                , udimToString_function_type( &::CEGUI::PropertyHelper_wrapper::udimToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::uintToString
+        { //::CEGUI::PropertyHelper_wrapper::uintToString
         
-            typedef ::CEGUI::String ( *uintToString_function_type )( ::CEGUI::uint );
+            typedef ::CEGUI::String ( *uintToString_function_type )( unsigned int );
             
             PropertyHelper_exposer.def( 
                 "uintToString"
-                , uintToString_function_type( &::CEGUI::PropertyHelper::uintToString )
+                , uintToString_function_type( &::CEGUI::PropertyHelper_wrapper::uintToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::urectToString
+        { //::CEGUI::PropertyHelper_wrapper::urectToString
         
             typedef ::CEGUI::String ( *urectToString_function_type )( ::CEGUI::URect const & );
             
             PropertyHelper_exposer.def( 
                 "urectToString"
-                , urectToString_function_type( &::CEGUI::PropertyHelper::urectToString )
+                , urectToString_function_type( &::CEGUI::PropertyHelper_wrapper::urectToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::uvector2ToString
+        { //::CEGUI::PropertyHelper_wrapper::uvector2ToString
         
             typedef ::CEGUI::String ( *uvector2ToString_function_type )( ::CEGUI::UVector2 const & );
             
             PropertyHelper_exposer.def( 
                 "uvector2ToString"
-                , uvector2ToString_function_type( &::CEGUI::PropertyHelper::uvector2ToString )
+                , uvector2ToString_function_type( &::CEGUI::PropertyHelper_wrapper::uvector2ToString )
                 , ( bp::arg("val") ) );
         
         }
-        { //::CEGUI::PropertyHelper::vector3ToString
+        { //::CEGUI::PropertyHelper_wrapper::vector2ToString
         
-            typedef ::CEGUI::String ( *vector3ToString_function_type )( ::CEGUI::Vector3 const & );
+            typedef ::CEGUI::String ( *vector2ToString_function_type )( ::CEGUI::Vector2< float > const & );
             
             PropertyHelper_exposer.def( 
-                "vector3ToString"
-                , vector3ToString_function_type( &::CEGUI::PropertyHelper::vector3ToString )
+                "vector2ToString"
+                , vector2ToString_function_type( &::CEGUI::PropertyHelper_wrapper::vector2ToString )
                 , ( bp::arg("val") ) );
         
         }
@@ -322,8 +278,6 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "colourToString" );
         PropertyHelper_exposer.staticmethod( "floatToString" );
         PropertyHelper_exposer.staticmethod( "imageToString" );
-        PropertyHelper_exposer.staticmethod( "intToString" );
-        PropertyHelper_exposer.staticmethod( "pointToString" );
         PropertyHelper_exposer.staticmethod( "rectToString" );
         PropertyHelper_exposer.staticmethod( "sizeToString" );
         PropertyHelper_exposer.staticmethod( "stringToBool" );
@@ -331,8 +285,6 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToColourRect" );
         PropertyHelper_exposer.staticmethod( "stringToFloat" );
         PropertyHelper_exposer.staticmethod( "stringToImage" );
-        PropertyHelper_exposer.staticmethod( "stringToInt" );
-        PropertyHelper_exposer.staticmethod( "stringToPoint" );
         PropertyHelper_exposer.staticmethod( "stringToRect" );
         PropertyHelper_exposer.staticmethod( "stringToSize" );
         PropertyHelper_exposer.staticmethod( "stringToUBox" );
@@ -340,13 +292,13 @@ void register_PropertyHelper_class(){
         PropertyHelper_exposer.staticmethod( "stringToURect" );
         PropertyHelper_exposer.staticmethod( "stringToUVector2" );
         PropertyHelper_exposer.staticmethod( "stringToUint" );
-        PropertyHelper_exposer.staticmethod( "stringToVector3" );
+        PropertyHelper_exposer.staticmethod( "stringToVector2" );
         PropertyHelper_exposer.staticmethod( "uboxToString" );
         PropertyHelper_exposer.staticmethod( "udimToString" );
         PropertyHelper_exposer.staticmethod( "uintToString" );
         PropertyHelper_exposer.staticmethod( "urectToString" );
         PropertyHelper_exposer.staticmethod( "uvector2ToString" );
-        PropertyHelper_exposer.staticmethod( "vector3ToString" );
+        PropertyHelper_exposer.staticmethod( "vector2ToString" );
     }
 
 }

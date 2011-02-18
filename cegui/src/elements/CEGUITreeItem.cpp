@@ -32,12 +32,11 @@
 #include "elements/CEGUITree.h"
 #include "elements/CEGUITreeItem.h"
 #include "CEGUISystem.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindow.h"
-#include "CEGUIImage.h"
 #include <algorithm>
 
 #if defined (CEGUI_USE_FRIBIDI)
@@ -45,7 +44,7 @@
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUIMinibidiVisualMapping.h"
 #else
-    #include "CEGUIBiDiVisualMapping.h"
+    #include "CEGUIBidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -57,8 +56,8 @@ BasicRenderedStringParser TreeItem::d_stringParser;
 /*************************************************************************
     Constants
 *************************************************************************/
-const colour TreeItem::DefaultSelectionColour = 0xFF4444AA;
-const colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
+const Colour TreeItem::DefaultSelectionColour = 0xFF4444AA;
+const Colour TreeItem::DefaultTextColour = 0xFFFFFFFF;
 
 /*************************************************************************
     Base class constructor
@@ -68,9 +67,9 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -98,17 +97,16 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 //----------------------------------------------------------------------------//
 TreeItem::~TreeItem(void)
 {
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 /*************************************************************************
     Set the selection highlighting brush image.
 *************************************************************************/
-void TreeItem::setSelectionBrushImage(const String& imageset,
-                                      const String& image)
+void TreeItem::setSelectionBrushImage(const String& name)
 {
     setSelectionBrushImage(
-        &ImagesetManager::getSingleton().get(imageset).getImage(image));
+        &ImageManager::getSingleton().get(name));
 }
 
 /*************************************************************************
@@ -131,9 +129,9 @@ ColourRect TreeItem::getModulateAlphaColourRect(const ColourRect& cols,
     Return a colour value describing the colour specified by 'col' after
     having its alpha component modulated by the value 'alpha'.
 *************************************************************************/
-colour TreeItem::calculateModulatedAlphaColour(colour col, float alpha) const
+Colour TreeItem::calculateModulatedAlphaColour(Colour col, float alpha) const
 {
-    colour temp(col);
+    Colour temp(col);
     temp.setAlpha(temp.getAlpha() * alpha);
     return temp;
 }
@@ -176,21 +174,21 @@ void TreeItem::setFont(Font* font)
 /*************************************************************************
     Return the rendered pixel size of this tree item.
 *************************************************************************/
-Size TreeItem::getPixelSize(void) const
+Size<> TreeItem::getPixelSize(void) const
 {
     Font* fnt = getFont();
 
     if (!fnt)
-        return Size(0, 0);
+        return Size<>(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Size sz(0.0f, 0.0f);
+    Size<> sz(0.0f, 0.0f);
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Size line_sz(d_renderedString.getPixelSize(i));
+        const Size<> line_sz(d_renderedString.getPixelSize(i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)
@@ -252,7 +250,7 @@ void TreeItem::removeItem(const TreeItem* item)
                 parentWindow->d_lastSelected = 0;
 
             if (item->isAutoDeleted())
-                delete item;
+                CEGUI_DELETE_AO item;
 
             WindowEventArgs args(parentWindow);
             parentWindow->onListContentsChanged(args);
@@ -281,13 +279,13 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
         Rect finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
-        d_iconImage->draw(buffer, finalPos, clipper,
-                          ColourRect(colour(1,1,1,alpha)));
+        d_iconImage->render(buffer, finalPos, clipper,
+                          ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_left += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->draw(buffer, finalRect, clipper,
+        d_selectBrush->render(buffer, finalRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
     Font* font = getFont();
@@ -295,7 +293,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
     if (!font)
         return;
 
-    Vector2 draw_pos(finalRect.getPosition());
+    Vector2<> draw_pos(finalRect.getPosition());
     draw_pos.d_y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
 
     if (!d_renderedStringValid)
@@ -314,10 +312,10 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
 /*************************************************************************
     Set the colours used for selection highlighting.
 *************************************************************************/
-void TreeItem::setSelectionColours(colour top_left_colour,
-                                   colour top_right_colour,
-                                   colour bottom_left_colour,
-                                   colour bottom_right_colour)
+void TreeItem::setSelectionColours(Colour top_left_colour,
+                                   Colour top_right_colour,
+                                   Colour bottom_left_colour,
+                                   Colour bottom_right_colour)
 {
     d_selectCols.d_top_left		= top_left_colour;
     d_selectCols.d_top_right	= top_right_colour;
@@ -328,10 +326,10 @@ void TreeItem::setSelectionColours(colour top_left_colour,
 /*************************************************************************
     Set the colours used for text rendering.
 *************************************************************************/
-void TreeItem::setTextColours(colour top_left_colour,
-                              colour top_right_colour,
-                              colour bottom_left_colour,
-                              colour bottom_right_colour)
+void TreeItem::setTextColours(Colour top_left_colour,
+                              Colour top_right_colour,
+                              Colour bottom_left_colour,
+                              Colour bottom_right_colour)
 {
     d_textCols.d_top_left		= top_left_colour;
     d_textCols.d_top_right		= top_right_colour;

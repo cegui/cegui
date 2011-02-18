@@ -30,6 +30,7 @@
 
 #include "CEGUIRenderedStringComponent.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,11 +41,11 @@ class CEGUIEXPORT RenderedStringImageComponent : public RenderedStringComponent
 public:
     //! Constructor
     RenderedStringImageComponent();
-    RenderedStringImageComponent(const String& imageset, const String& image);
+    RenderedStringImageComponent(const String& name);
     RenderedStringImageComponent(const Image* image);
 
     //! Set the image to be drawn by this component.
-    void setImage(const String& imageset, const String& image);
+    void setImage(const String& name);
     //! Set the image to be drawn by this component.
     void setImage(const Image* image);
     //! return the current set image that will be drawn by this component
@@ -52,19 +53,19 @@ public:
     //! Set the colour values used when rendering this component.
     void setColours(const ColourRect& cr);
     //! Set the colour values used when rendering this component.
-    void setColours(const colour& c);
+    void setColours(const Colour& c);
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const;
     //! set the size for rendering the image (0s mean 'normal' size)
-    void setSize(const Size& sz);
+    void setSize(const Size<>& sz);
     //! return the size for rendering the image (0s mean 'normal' size)
-    const Size& getSize() const;
+    const Size<>& getSize() const;
 
     // implementation of abstract base interface
-    void draw(GeometryBuffer& buffer, const Vector2& position,
+    void draw(GeometryBuffer& buffer, const Vector2<>& position,
               const ColourRect* mod_colours, const Rect* clip_rect,
               const float vertical_space, const float space_extra) const;
-    Size getPixelSize() const;
+    Size<> getPixelSize() const;
     bool canSplit() const;
     RenderedStringImageComponent* split(float split_point, bool first_component);
     RenderedStringImageComponent* clone() const;
@@ -76,7 +77,7 @@ protected:
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours;
     //! target size to render the image at (0s mean natural size)
-    Size d_size;
+    Size<> d_size;
 };
 
 } // End of  CEGUI namespace section

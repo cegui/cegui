@@ -42,7 +42,7 @@ NullTextureTarget::NullTextureTarget(NullRenderer& owner) :
     d_CEGUITexture = static_cast<NullTexture*>(&d_owner.createTexture());
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -69,11 +69,11 @@ Texture& NullTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void NullTextureTarget::declareRenderSize(const Size& sz)
+void NullTextureTarget::declareRenderSize(const Size<>& sz)
 {
 	Rect r;
 	r.setSize(sz);
-	r.setPosition(Point(0, 0));
+	r.setPosition(Vector2<>(0, 0));
     setArea(r);
 }
 

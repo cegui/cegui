@@ -10,10 +10,7 @@ void register_StateImagery_class(){
 
     { //::CEGUI::StateImagery
         typedef bp::class_< CEGUI::StateImagery > StateImagery_exposer_t;
-        StateImagery_exposer_t StateImagery_exposer = StateImagery_exposer_t( "StateImagery", "*!\n\
-        \n\
-            Class the encapsulates imagery for a given widget state.\n\
-        *\n", bp::init< >("*!\n\
+        StateImagery_exposer_t StateImagery_exposer = StateImagery_exposer_t( "StateImagery", bp::init< >("*!\n\
         \n\
             Constructor\n\
         *\n") );

@@ -6,7 +6,7 @@
     purpose: Defines interface for abstract Renderer class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -77,7 +78,8 @@ enum BlendMode
     or API to draw CEGUI imagery requires that an appropriate Renderer object be
     available.
 */
-class CEGUIEXPORT Renderer
+class CEGUIEXPORT Renderer :
+    public AllocatedObject<Renderer>
 {
 public:
     /*!
@@ -155,15 +157,27 @@ public:
     \brief
         Create a 'null' Texture object.
 
+    \param name
+        String holding the name for the new texture.  Texture names must be
+        unique within the Renderer.
+
     \return
         A newly created Texture object.  The returned Texture object has no size
         or imagery associated with it.
+
+    \exceptions
+        - AlreadyExistsException - thrown if a Texture object named \a name
+          already exists within the system.
     */
-    virtual Texture& createTexture() = 0;
+    virtual Texture& createTexture(const String& name) = 0;
 
     /*!
     \brief
         Create a Texture object using the given image file.
+
+    \param name
+        String holding the name for the new texture.  Texture names must be
+        unique within the Renderer.
 
     \param filename
         String object that specifies the path and filename of the image file to
@@ -182,14 +196,23 @@ public:
         the final size of the texture may not match the size of the loaded file.
         You can check the ultimate sizes by querying the Texture object
         after creation.
+
+    \exceptions
+        - AlreadyExistsException - thrown if a Texture object named \a name
+          already exists within the system.
     */
-    virtual Texture& createTexture(const String& filename,
+    virtual Texture& createTexture(const String& name,
+                                   const String& filename,
                                    const String& resourceGroup) = 0;
 
     /*!
     \brief
         Create a Texture object with the given pixel dimensions as specified by
         \a size.
+
+    \param name
+        String holding the name for the new texture.  Texture names must be
+        unique within the Renderer.
 
     \param size
         Size object that describes the desired texture size.
@@ -202,8 +225,12 @@ public:
         Due to possible limitations of the underlying hardware, API or engine,
         the final size of the texture may not match the requested size.  You can
         check the ultimate sizes by querying the Texture object after creation.
+
+    \exceptions
+        - AlreadyExistsException - thrown if a Texture object named \a name
+          already exists within the system.
     */
-    virtual Texture& createTexture(const Size& size) = 0;
+    virtual Texture& createTexture(const String& name, const Size<>& size) = 0;
 
     /*!
     \brief
@@ -217,9 +244,33 @@ public:
 
     /*!
     \brief
+        Destroy a Texture object that was previously created by calling the
+        createTexture functions.
+
+    \param name
+        String holding the name of the texture to destroy.
+    */
+    virtual void destroyTexture(const String& name) = 0;
+
+    /*!
+    \brief
         Destroy all Texture objects created by this Renderer.
     */
     virtual void destroyAllTextures() = 0;
+
+    /*!
+    \brief
+        Return a Texture object that was previously created by calling the
+        createTexture functions.
+
+    \param name
+        String holding the name of the Texture object to be returned.
+
+    \exceptions
+        - UnknownObjectException - thrown if no Texture object named \a name
+          exists within the system.
+    */
+    virtual Texture& getTexture(const String& name) const = 0;
 
     /*!
     \brief
@@ -251,7 +302,7 @@ public:
         Size object describing the dimesions of the current or host window in
         pixels.
     */
-    virtual void setDisplaySize(const Size& size) = 0;
+    virtual void setDisplaySize(const Size<>& size) = 0;
 
     /*!
     \brief
@@ -261,7 +312,7 @@ public:
         Size object describing the pixel dimesntions of the current display or
         host window.
     */
-    virtual const Size& getDisplaySize() const = 0;
+    virtual const Size<>& getDisplaySize() const = 0;
 
     /*!
     \brief
@@ -271,7 +322,7 @@ public:
         Vector2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2& getDisplayDPI() const = 0;
+    virtual const Vector2<>& getDisplayDPI() const = 0;
 
     /*!
     \brief

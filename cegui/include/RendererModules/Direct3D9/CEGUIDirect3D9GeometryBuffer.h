@@ -31,6 +31,7 @@
 #include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D9Renderer.h"
 #include "../../CEGUIRect.h"
+#include "../../CEGUIQuaternion.h"
 #include <d3dx9.h>
 #include <utility>
 #include <vector>
@@ -60,9 +61,9 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-    void setTranslation(const Vector3& t);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
+    void setTranslation(const Vector3<>& t);
+    void setRotation(const Quaternion& r);
+    void setPivot(const Vector3<>& p);
     void setClippingRegion(const Rect& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
@@ -108,11 +109,11 @@ protected:
     //! rectangular clip region
     Rect d_clipRect;
     //! translation vector
-    Vector3 d_translation;
+    Vector3<> d_translation;
     //! rotation vector
-    Vector3 d_rotation;
+    Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3 d_pivot;
+    Vector3<> d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! The D3D Device

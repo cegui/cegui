@@ -31,7 +31,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIAnimation.h"
 #include "CEGUIAnimationInstance.h"
-#include "CEGUIBasicInterpolators.h"
+#include "CEGUITplInterpolators.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
@@ -64,21 +64,22 @@ AnimationManager::AnimationManager(void)
 #   define addBasicInterpolator(i) { Interpolator* in = i; addInterpolator(in); d_basicInterpolators.push_back(in); }
 
     // create and add basic interpolators shipped with CEGUI
-    addBasicInterpolator(new StringInterpolator());
-    addBasicInterpolator(new FloatInterpolator());
-    addBasicInterpolator(new IntInterpolator());
-    addBasicInterpolator(new UintInterpolator());
-    addBasicInterpolator(new BoolInterpolator());
-    addBasicInterpolator(new SizeInterpolator());
-    addBasicInterpolator(new PointInterpolator());
-    addBasicInterpolator(new Vector3Interpolator());
-    addBasicInterpolator(new RectInterpolator());
-    addBasicInterpolator(new ColourInterpolator());
-    addBasicInterpolator(new ColourRectInterpolator());
-    addBasicInterpolator(new UDimInterpolator());
-    addBasicInterpolator(new UVector2Interpolator());
-    addBasicInterpolator(new URectInterpolator());
-    addBasicInterpolator(new UBoxInterpolator());
+    addBasicInterpolator(CEGUI_NEW_AO TplDiscreteRelativeInterpolator<String>("String"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<float>("float"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<int>("int"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<uint>("uint"));
+    addBasicInterpolator(CEGUI_NEW_AO TplDiscreteInterpolator<bool>("bool"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Size<> >("Size<>"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector2<> >("Vector2<>"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Vector3<> >("Vector3<>"));
+    addBasicInterpolator(CEGUI_NEW_AO QuaternionSlerpInterpolator());
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Rect>("Rect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<Colour>("Colour"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<ColourRect>("ColourRect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UDim>("UDim"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UVector2>("UVector2"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<URect>("URect"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UBox>("UBox"));
 }
 
 
@@ -91,7 +92,7 @@ AnimationManager::~AnimationManager(void)
     for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
          it != d_animationInstances.end(); ++it)
     {
-        delete it->second;
+        CEGUI_DELETE_AO it->second;
     }
 
     d_animationInstances.clear();
@@ -100,7 +101,7 @@ AnimationManager::~AnimationManager(void)
     for (AnimationMap::const_iterator it = d_animations.begin();
          it != d_animations.end(); ++it)
     {
-        delete it->second;
+        CEGUI_DELETE_AO it->second;
     }
 
     d_animations.clear();
@@ -113,7 +114,7 @@ AnimationManager::~AnimationManager(void)
     for (BasicInterpolatorList::const_iterator it = d_basicInterpolators.begin();
          it != d_basicInterpolators.end(); ++it)
     {
-        delete *it;
+        CEGUI_DELETE_AO *it;
     }
 
     d_basicInterpolators.clear();
@@ -130,8 +131,8 @@ void AnimationManager::addInterpolator(Interpolator* interpolator)
     if (d_interpolators.find(interpolator->getType()) != d_interpolators.end())
     {
         CEGUI_THROW(AlreadyExistsException(
-            "AnimationManager::addInterpolator: Interpolator of given type "
-            "already exists."));
+            "AnimationManager::addInterpolator: Interpolator of type '"
+            + interpolator->getType() + "' already exists."));
     }
 
     d_interpolators.insert(
@@ -146,8 +147,8 @@ void AnimationManager::removeInterpolator(Interpolator* interpolator)
     if (it == d_interpolators.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::removeInterpolator: Interpolator of given type "
-            "not found."));
+            "AnimationManager::removeInterpolator: Interpolator of type '"
+            + interpolator->getType() + "' not found."));
     }
 
     d_interpolators.erase(it);
@@ -161,8 +162,8 @@ Interpolator* AnimationManager::getInterpolator(const String& type) const
     if (it == d_interpolators.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::getInterpolator: Interpolator of given type "
-            "not found."));
+            "AnimationManager::getInterpolator: Interpolator of type '" + type +
+            "' not found."));
     }
 
     return it->second;
@@ -174,11 +175,11 @@ Animation* AnimationManager::createAnimation(const String& name)
     if (d_animations.find(name) != d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::createAnimation: Animation with given name "
-            "already exists."));
+            "AnimationManager::createAnimation: Animation with name '"
+            + name + "' already exists."));
     }
 
-    Animation* ret = new Animation(name);
+    Animation* ret = CEGUI_NEW_AO Animation(name);
     d_animations.insert(std::make_pair(name, ret));
 
     return ret;
@@ -198,15 +199,15 @@ void AnimationManager::destroyAnimation(const String& name)
     if (it == d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::destroyAnimation: Animation with given name not "
-            "found."));
+            "AnimationManager::destroyAnimation: Animation with name '" + name
+            + "' not found."));
     }
 
     Animation* animation = it->second;
     destroyAllInstancesOfAnimation(animation);
 
     d_animations.erase(it);
-    delete animation;
+    CEGUI_DELETE_AO animation;
 }
 
 //----------------------------------------------------------------------------//
@@ -217,8 +218,8 @@ Animation* AnimationManager::getAnimation(const String& name) const
     if (it == d_animations.end())
     {
         CEGUI_THROW(UnknownObjectException(
-            "AnimationManager::getAnimation: Animation with given name not "
-            "found."));
+            "AnimationManager::getAnimation: Animation with name '" + name
+            + "' not found."));
     }
 
     return it->second;
@@ -248,7 +249,7 @@ size_t AnimationManager::getNumAnimations() const
 //----------------------------------------------------------------------------//
 AnimationInstance* AnimationManager::instantiateAnimation(Animation* animation)
 {
-    AnimationInstance* ret = new AnimationInstance(animation);
+    AnimationInstance* ret = CEGUI_NEW_AO AnimationInstance(animation);
     d_animationInstances.insert(std::make_pair(animation, ret));
 
     return ret;
@@ -271,6 +272,7 @@ void AnimationManager::destroyAnimationInstance(AnimationInstance* instance)
         if (it->second == instance)
         {
             d_animationInstances.erase(it);
+            CEGUI_DELETE_AO instance;
             return;
         }
     }
@@ -291,7 +293,7 @@ void AnimationManager::destroyAllInstancesOfAnimation(Animation* animation)
         AnimationInstanceMap::iterator toErase = it;
         ++it;
 
-        delete toErase->second;
+        CEGUI_DELETE_AO toErase->second;
         d_animationInstances.erase(toErase);
     }
 }

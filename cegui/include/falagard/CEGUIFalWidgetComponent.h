@@ -110,7 +110,8 @@ namespace CEGUI
         const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
 
     private:
-        typedef std::vector<PropertyInitialiser> PropertiesList;
+        typedef std::vector<PropertyInitialiser
+            CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
 
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
         String   d_baseType;                 //!< Type of widget to be created.

@@ -42,7 +42,6 @@ Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner) :
     d_vertexBuffer(0),
     d_bufferSize(0),
     d_bufferSynched(false),
-    d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -110,21 +109,21 @@ void Direct3D11GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setTranslation(const Vector3& v)
+void Direct3D11GeometryBuffer::setTranslation(const Vector3<>& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setRotation(const Vector3& r)
+void Direct3D11GeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setPivot(const Vector3& p)
+void Direct3D11GeometryBuffer::setPivot(const Vector3<>& p)
 {
     d_pivot = p;
     d_matrixValid = false;
@@ -232,10 +231,10 @@ void Direct3D11GeometryBuffer::updateMatrix() const
                         d_translation.d_z);
 
     D3DXQUATERNION r;
-    D3DXQuaternionRotationYawPitchRoll(&r,
-        D3DXToRadian(d_rotation.d_y),
-        D3DXToRadian(d_rotation.d_x),
-        D3DXToRadian(d_rotation.d_z));
+    r.x = d_rotation.d_x;
+    r.y = d_rotation.d_y;
+    r.z = d_rotation.d_z;
+    r.w = d_rotation.d_w;
 
     D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
 
@@ -311,3 +310,4 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

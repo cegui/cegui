@@ -53,11 +53,11 @@ bool DragDropDemo::initialiseSample()
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("WindowsLook/MouseArrow");
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
-    ImagesetManager::getSingleton().create("DriveIcons.imageset");
+    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
     System::getSingleton().setGUISheet(
@@ -108,7 +108,7 @@ void DragDropDemo::subscribeEvents()
         {
             // get the window pointer for this slot
             Window* wnd =
-                wmgr.getWindow(base_name + PropertyHelper::intToString(i));
+                wmgr.getWindow(base_name + PropertyHelper<int>::toString(i));
 
             // subscribe the handler.
             wnd->subscribeEvent(
@@ -133,7 +133,7 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
     if (!dd_args.window->getChildCount())
     {
         // add dragdrop item as child of target if target has no item already
-        dd_args.window->addChildWindow(dd_args.dragDropItem);
+        dd_args.window->addChild(dd_args.dragDropItem);
         // Now we must reset the item position from it's 'dropped' location,
         // since we're now a child of an entirely different window
         dd_args.dragDropItem->setPosition(

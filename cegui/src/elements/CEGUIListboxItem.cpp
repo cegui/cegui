@@ -33,15 +33,14 @@
 
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUISystem.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUIFribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
     #include "CEGUIMinibidiVisualMapping.h"
 #else
-    #include "CEGUIBiDiVisualMapping.h"
+    #include "CEGUIBidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -50,7 +49,7 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
+const Colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 
 /*************************************************************************
 	Base class constructor
@@ -59,9 +58,9 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 #ifndef CEGUI_BIDI_SUPPORT
     d_bidiVisualMapping(0),
 #elif defined (CEGUI_USE_FRIBIDI)
-    d_bidiVisualMapping(new FribidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO FribidiVisualMapping),
 #elif defined (CEGUI_USE_MINIBIDI)
-    d_bidiVisualMapping(new MinibidiVisualMapping),
+    d_bidiVisualMapping(CEGUI_NEW_AO MinibidiVisualMapping),
 #else
     #error "BIDI Configuration is inconsistant, check your config!"
 #endif
@@ -80,15 +79,15 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
 //----------------------------------------------------------------------------//
 ListboxItem::~ListboxItem(void)
 {
-    delete d_bidiVisualMapping;
+    CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
 /*************************************************************************
 	Set the selection highlighting brush image.
 *************************************************************************/
-void ListboxItem::setSelectionBrushImage(const String& imageset, const String& image)
+void ListboxItem::setSelectionBrushImage(const String& name)
 {
-	setSelectionBrushImage(&ImagesetManager::getSingleton().get(imageset).getImage(image));
+	setSelectionBrushImage(&ImageManager::getSingleton().get(name));
 }
 
 
@@ -112,9 +111,9 @@ ColourRect ListboxItem::getModulateAlphaColourRect(const ColourRect& cols, float
 	Return a colour value describing the colour specified by 'col' after
 	having its alpha component modulated by the value 'alpha'.
 *************************************************************************/
-colour ListboxItem::calculateModulatedAlphaColour(colour col, float alpha) const
+Colour ListboxItem::calculateModulatedAlphaColour(Colour col, float alpha) const
 {
-	colour temp(col);
+	Colour temp(col);
 	temp.setAlpha(temp.getAlpha() * alpha);
 	return temp;
 }
@@ -123,7 +122,7 @@ colour ListboxItem::calculateModulatedAlphaColour(colour col, float alpha) const
 /*************************************************************************
 	Set the colours used for selection highlighting.	
 *************************************************************************/
-void ListboxItem::setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void ListboxItem::setSelectionColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour)
 {
 	d_selectCols.d_top_left		= top_left_colour;
 	d_selectCols.d_top_right	= top_right_colour;

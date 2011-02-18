@@ -37,19 +37,19 @@ namespace CEGUI
 uint32 NullTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-const Size& NullTexture::getSize() const
+const Size<>& NullTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& NullTexture::getOriginalDataSize() const
+const Size<>& NullTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullTexture::getTexelScaling() const
+const Vector2<>& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -82,7 +82,7 @@ void NullTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
+void NullTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
                                  PixelFormat pixel_format)
 {
     const size_t pixel_size = pixel_format == PF_RGBA ? 4 : 3;
@@ -95,10 +95,15 @@ void NullTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::saveToMemory(void* buffer)
+void NullTexture::blitFromMemory(void* /*sourceData*/, const Rect& /*area*/)
 {
-    // TODO: If we make loadFromMemory save a copy of the data, we could
-    // implement this function too :)
+    // do nothing
+}
+
+//----------------------------------------------------------------------------//
+void NullTexture::blitToMemory(void* /*targetData*/)
+{
+    // do nothing
 }
 
 //----------------------------------------------------------------------------//
@@ -119,7 +124,7 @@ NullTexture::NullTexture(const String& filename, const String& resourceGroup) :
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const Size& sz) :
+NullTexture::NullTexture(const Size<>& sz) :
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0)

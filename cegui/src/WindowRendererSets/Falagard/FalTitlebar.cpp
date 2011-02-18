@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTitlebar::TypeName[] = "Falagard/Titlebar";
+    const String FalagardTitlebar::TypeName("Falagard/Titlebar");
 
     FalagardTitlebar::FalagardTitlebar(const String& type) :
         WindowRenderer(type, "Titlebar")

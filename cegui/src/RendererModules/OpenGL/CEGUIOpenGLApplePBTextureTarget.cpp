@@ -84,7 +84,7 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
     // set default size (and cause initialisation of the pbuffer)
     CEGUI_TRY
     {
-        declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+        declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
     }
     CEGUI_CATCH(...)
     {
@@ -156,7 +156,7 @@ void OpenGLApplePBTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLApplePBTextureTarget::declareRenderSize(const Size& sz)
+void OpenGLApplePBTextureTarget::declareRenderSize(const Size<>& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) &&
@@ -257,8 +257,8 @@ void OpenGLApplePBTextureTarget::grabTexture()
 //----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::restoreTexture()
 {
-    const Size sz(d_area.getSize());
-    d_area.setSize(Size(0.0f, 0.0f));
+    const Size<> sz(d_area.getSize());
+    d_area.setSize(Size<>(0.0f, 0.0f));
 
     OpenGLTextureTarget::restoreTexture();
     initialiseTexture();

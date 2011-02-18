@@ -41,13 +41,13 @@ namespace TitlebarProperties
 {
 String DraggingEnabled::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Titlebar*>(receiver)->isDraggingEnabled());
+	return PropertyHelper<bool>::toString(static_cast<const Titlebar*>(receiver)->isDraggingEnabled());
 }
 
 
 void DraggingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Titlebar*>(receiver)->setDraggingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Titlebar*>(receiver)->setDraggingEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 } // End of  TitlebarProperties namespace section

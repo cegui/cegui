@@ -292,7 +292,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	offsetPixelPosition(const Vector2& offset);
+	void	offsetPixelPosition(const Vector2<>& offset);
 
 
 	/*!
@@ -410,10 +410,7 @@ public:
     \brief
         Set the image to be used for the north-south sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -421,16 +418,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNSSizingCursorImage(const String& imageset, const String& image);
+    void setNSSizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the east-west sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -438,16 +432,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setEWSizingCursorImage(const String& imageset, const String& image);
+    void setEWSizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the northwest-southeast sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -455,16 +446,13 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNWSESizingCursorImage(const String& imageset, const String& image);
+    void setNWSESizingCursorImage(const String& name);
 
     /*!
     \brief
         Set the image to be used for the northeast-southwest sizing mouse cursor.
 
-    \param imageset
-        String holding the name of the Imageset containing the Image to be used.
-
-    \param image
+    \param name
         String holding the name of the Image to be used.
 
     \return
@@ -472,10 +460,10 @@ public:
 
     \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
     */
-    void setNESWSizingCursorImage(const String& imageset, const String& image);
+    void setNESWSizingCursorImage(const String& name);
 
     // overridden from Window class
-    bool isHit(const Point& position, const bool /*allow_disabled*/) const
+    bool isHit(const Vector2<>& position, const bool /*allow_disabled*/) const
         { return Window::isHit(position) && !d_rolledup; }
 
     /*!
@@ -576,7 +564,7 @@ protected:
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation	getSizingBorderAtPoint(const Point& pt) const;
+	SizingLocation	getSizingBorderAtPoint(const Vector2<>& pt) const;
 
  
 	/*!
@@ -642,7 +630,7 @@ protected:
 	\brief
 		Set the appropriate mouse cursor for the given window-relative pixel point.
 	*/
-	void	setCursorForPoint(const Point& pt) const;
+	void	setCursorForPoint(const Vector2<>& pt) const;
 
 
 	/*!
@@ -718,7 +706,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
-	Point	d_dragPoint;		//!< point window is being dragged at.
+	Vector2<> d_dragPoint;		//!< point window is being dragged at.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

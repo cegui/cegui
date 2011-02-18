@@ -20,7 +20,7 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
         func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const {
+    virtual ::CEGUI::Size< float > getPixelSize(  ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
         return func_getPixelSize(  );
     }
@@ -43,10 +43,7 @@ void register_ListboxItem_class(){
 
     { //::CEGUI::ListboxItem
         typedef bp::class_< ListboxItem_wrapper, boost::noncopyable > ListboxItem_exposer_t;
-        ListboxItem_exposer_t ListboxItem_exposer = ListboxItem_exposer_t( "ListboxItem", "*!\n\
-        \n\
-            Base class for list box items\n\
-        *\n", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
+        ListboxItem_exposer_t ListboxItem_exposer = ListboxItem_exposer_t( "ListboxItem", bp::init< CEGUI::String const &, bp::optional< CEGUI::uint, void *, bool, bool > >(( bp::arg("text"), bp::arg("item_id")=(::CEGUI::uint)(0), bp::arg("item_data")=bp::object(), bp::arg("disabled")=(bool)(false), bp::arg("auto_delete")=(bool)(true) ), "*************************************************************************\n\
             Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\
@@ -123,7 +120,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Size<float> ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
             
             ListboxItem_exposer.def( 
                 "getPixelSize"
@@ -426,20 +423,17 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionBrushImage
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const & ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionBrushImage"
                 , setSelectionBrushImage_function_type( &::CEGUI::ListboxItem::setSelectionBrushImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the selection highlighting brush image.\n\
             \n\
-                @param imageset\n\
-                    Name of the imagest containing the image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     Name of the image to be used\n\
             \n\
                 @return\n\
@@ -469,7 +463,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionColours
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionColours"
@@ -498,7 +492,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::setSelectionColours
         
-            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxItem::*setSelectionColours_function_type )( ::CEGUI::Colour ) ;
             
             ListboxItem_exposer.def( 
                 "setSelectionColours"

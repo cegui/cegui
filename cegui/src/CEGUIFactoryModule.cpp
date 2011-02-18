@@ -53,7 +53,7 @@ const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories
 FactoryModule::FactoryModule(const String& filename):d_module(0)
 {
 #if !defined(CEGUI_STATIC)
-	d_module = new DynamicModule(filename);
+	d_module = CEGUI_NEW_AO DynamicModule(filename);
 #endif
 
     // functions are now optional, and only throw upon the first attempt to use a missing function.

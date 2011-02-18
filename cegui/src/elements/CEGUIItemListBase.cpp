@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIItemListBase.h"
 #include "elements/CEGUIItemEntry.h"
 
@@ -83,7 +84,7 @@ ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
 	Constants
 *************************************************************************/
 // event names
-const String ItemListBase::EventListContentsChanged("ListItemsChanged");
+const String ItemListBase::EventListContentsChanged( "ListContentsChanged" );
 const String ItemListBase::EventSortEnabledChanged("SortEnabledChanged");
 const String ItemListBase::EventSortModeChanged("SortModeChanged");
 
@@ -232,7 +233,7 @@ void ItemListBase::addItem(ItemEntry* item)
         }
         // make sure it gets added properly
 		item->d_ownerList = this;
-		addChildWindow(item);
+		addChild(item);
 		handleUpdatedItemData();
 	}
 }
@@ -271,7 +272,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 
 		d_listItems.insert(ins_pos, item);
 		item->d_ownerList = this;
-		addChildWindow(item);
+		addChild(item);
 
 		handleUpdatedItemData();
 	}
@@ -285,7 +286,7 @@ void ItemListBase::removeItem(ItemEntry* item)
 {
 	if (item && item->d_ownerList == this)
 	{
-	    d_pane->removeChildWindow(item);
+	    d_pane->removeChild(item);
 	    if (item->isDestroyedByParent())
 	    {
 	        WindowManager::getSingleton().destroyWindow(item);
@@ -419,7 +420,7 @@ bool ItemListBase::resetList_impl(void)
 		while (!d_listItems.empty())
 		{
 		    ItemEntry* item = d_listItems[0];
-			d_pane->removeChildWindow(item);
+			d_pane->removeChild(item);
 			if (item->isDestroyedByParent())
 			{
 			    WindowManager::getSingleton().destroyWindow(item);
@@ -454,7 +455,7 @@ void ItemListBase::addChild_impl(Window* wnd)
         // add to the pane if we have one
         if (d_pane != this)
         {
-            d_pane->addChildWindow(wnd);
+            d_pane->addChild(wnd);
         }
         // add item directly to us
         else
@@ -523,10 +524,10 @@ void ItemListBase::performChildWindowLayout(void)
 void ItemListBase::sizeToContent_impl(void)
 {
     Rect renderArea(getItemRenderArea());
-    Rect wndArea(getArea().asAbsolute(getParentPixelSize()));
+    Rect wndArea(CoordConverter::asAbsolute(getArea(), getParentPixelSize()));
 
     // get size of content
-    Size sz(getContentSize());
+    Size<> sz(getContentSize());
 
     // calculate the full size with the frame accounted for and resize the window to this
     sz.d_width  += wndArea.getWidth() - renderArea.getWidth();

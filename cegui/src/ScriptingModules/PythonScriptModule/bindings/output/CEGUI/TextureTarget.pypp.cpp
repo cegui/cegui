@@ -20,7 +20,7 @@ struct TextureTarget_wrapper : CEGUI::TextureTarget, bp::wrapper< CEGUI::Texture
         func_clear(  );
     }
 
-    virtual void declareRenderSize( ::CEGUI::Size const & sz ){
+    virtual void declareRenderSize( ::CEGUI::Size< float > const & sz ){
         bp::override func_declareRenderSize = this->get_override( "declareRenderSize" );
         func_declareRenderSize( boost::ref(sz) );
     }
@@ -68,7 +68,7 @@ struct TextureTarget_wrapper : CEGUI::TextureTarget, bp::wrapper< CEGUI::Texture
         func_setArea( boost::ref(area) );
     }
 
-    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2 const & p_in, ::CEGUI::Vector2 & p_out ) const {
+    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2< float > const & p_in, ::CEGUI::Vector2< float > & p_out ) const {
         bp::override func_unprojectPoint = this->get_override( "unprojectPoint" );
         func_unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
     }
@@ -100,7 +100,7 @@ void register_TextureTarget_class(){
         }
         { //::CEGUI::TextureTarget::declareRenderSize
         
-            typedef void ( ::CEGUI::TextureTarget::*declareRenderSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::TextureTarget::*declareRenderSize_function_type )( ::CEGUI::Size<float> const & ) ;
             
             TextureTarget_exposer.def( 
                 "declareRenderSize"
@@ -305,7 +305,7 @@ void register_TextureTarget_class(){
         }
         { //::CEGUI::RenderTarget::unprojectPoint
         
-            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2 const &,::CEGUI::Vector2 & ) const;
+            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const;
             
             TextureTarget_exposer.def( 
                 "unprojectPoint"

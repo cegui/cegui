@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <GUILayout>
-    <Window Type="DefaultGUISheet" Name="Page1">
+    <Window Type="DefaultWindow" Name="Page1">
         <Property Name="Text" Value="Page one" />
 
         <Window Type="TaharezLook/RadioButton" Name="Page1/TabPaneTop" >

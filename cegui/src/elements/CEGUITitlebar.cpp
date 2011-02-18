@@ -109,7 +109,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging && (d_parent != 0))
 	{
-		Vector2 delta(CoordConverter::screenToWindow(*this, e.position));
+		Vector2<> delta(CoordConverter::screenToWindow(*this, e.position));
 
 		// calculate amount that window has been moved
 		delta -= d_dragPoint;
@@ -149,7 +149,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				if ((d_parent == 0) || (d_parent->getParent() == 0))
 				{
-                    Rect screen(Vector2(0, 0),
+                    Rect screen(Vector2<>(0, 0),
                                 System::getSingleton().getRenderer()->getDisplaySize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}

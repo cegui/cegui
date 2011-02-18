@@ -33,8 +33,7 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -225,7 +224,7 @@ void FrameWindow::toggleRollup(void)
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
-void FrameWindow::offsetPixelPosition(const Vector2& offset)
+void FrameWindow::offsetPixelPosition(const Vector2<>& offset)
 {
     UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
                      cegui_absdim(PixelAligned(offset.d_y)));
@@ -239,7 +238,7 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
 *************************************************************************/
-FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt) const
+FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2<>& pt) const
 {
 	Rect	frame(getSizingRect());
 
@@ -317,8 +316,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -359,8 +358,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -403,8 +402,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -447,8 +446,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -495,7 +494,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 	Set the appropriate mouse cursor for the given window-relative pixel
 	point.
 *************************************************************************/
-void FrameWindow::setCursorForPoint(const Point& pt) const
+void FrameWindow::setCursorForPoint(const Vector2<>& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
@@ -567,7 +566,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-		Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2<> localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
@@ -626,7 +625,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 		if (isSizingEnabled())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(CoordConverter::screenToWindow(*this, e.position));
+			Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
@@ -826,33 +825,33 @@ void FrameWindow::setNESWSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
-void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNSSizingCursorImage(const String& name)
 {
-    d_nsSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nsSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the east-west sizing cursor.
 *************************************************************************/
-void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setEWSizingCursorImage(const String& name)
 {
-    d_ewSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_ewSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNWSESizingCursorImage(const String& name)
 {
-    d_nwseSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nwseSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNESWSizingCursorImage(const String& name)
 {
-    d_neswSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_neswSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************

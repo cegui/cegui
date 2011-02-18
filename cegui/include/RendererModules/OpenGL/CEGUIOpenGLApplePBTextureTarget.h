@@ -53,7 +53,7 @@ public:
     void deactivate();
     // implementation of TextureTarget interface
     void clear();
-    void declareRenderSize(const Size& sz);
+    void declareRenderSize(const Size<>& sz);
     // specialise functions from OpenGLTextureTarget
     void grabTexture();
     void restoreTexture();

@@ -50,19 +50,19 @@ void _byteSwap(unsigned char* b, int n)
 uint32 OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getSize() const
+const Size<>& OgreTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getOriginalDataSize() const
+const Size<>& OgreTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OgreTexture::getTexelScaling() const
+const Vector2<>& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -107,7 +107,7 @@ void OgreTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
+void OgreTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
                                  PixelFormat pixel_format)
 {
     using namespace Ogre;
@@ -157,20 +157,26 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::saveToMemory(void* buffer)
+void OgreTexture::blitFromMemory(void* sourceData, const Rect& area)
 {
-    if (d_texture.isNull())
+    if (d_texture.isNull()) // TODO: exception?
         return;
-    
-    Ogre::HardwarePixelBufferSharedPtr src = d_texture->getBuffer();
 
-    if (src.isNull())
-        CEGUI_THROW(RendererException("OgreTexture::saveToMemory: unable to "
-            "obtain hardware pixel buffer pointer."));
+    Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
+                      1, Ogre::PF_A8R8G8B8, sourceData);
+    Ogre::Image::Box box(area.d_left, area.d_top, area.d_right, area.d_bottom);
+    d_texture->getBuffer()->blitFromMemory(pb, box);
+}
 
-    Ogre::PixelBox pb(Ogre::Box(0, 0, d_size.d_width, d_size.d_height),
-                      Ogre::PF_A8R8G8B8, buffer);
-    src->blitToMemory(pb);
+//----------------------------------------------------------------------------//
+void OgreTexture::blitToMemory(void* targetData)
+{
+    if (d_texture.isNull()) // TODO: exception?
+        return;
+
+    Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
+                      1, Ogre::PF_A8R8G8B8, targetData);
+    d_texture->getBuffer()->blitToMemory(pb);
 }
 
 //----------------------------------------------------------------------------//
@@ -193,7 +199,7 @@ OgreTexture::OgreTexture(const String& filename, const String& resourceGroup) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const Size& sz) :
+OgreTexture::OgreTexture(const Size<>& sz) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
@@ -295,7 +301,7 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
         d_dataSize = d_size;
     }
     else
-        d_size = d_dataSize = Size(0, 0);
+        d_size = d_dataSize = Size<>(0, 0);
 
     updateCachedScaleValues();
 }

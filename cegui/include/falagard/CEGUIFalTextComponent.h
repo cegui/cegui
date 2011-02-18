@@ -244,7 +244,7 @@ namespace CEGUI
     private:
         String               d_textLogical;            //!< text rendered by this component.
         //! pointer to bidirection support object
-        BiDiVisualMapping* d_bidiVisualMapping;
+        BidiVisualMapping* d_bidiVisualMapping;
         //! whether bidi visual mapping has been updated since last text change.
         mutable bool d_bidiDataValid;
         //! RenderedString used when not using the one from the target Window.

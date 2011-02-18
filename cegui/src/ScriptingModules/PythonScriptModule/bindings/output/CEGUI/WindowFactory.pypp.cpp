@@ -24,28 +24,7 @@ void register_WindowFactory_class(){
 
     { //::CEGUI::WindowFactory
         typedef bp::class_< WindowFactory_wrapper, boost::noncopyable > WindowFactory_exposer_t;
-        WindowFactory_exposer_t WindowFactory_exposer = WindowFactory_exposer_t( "WindowFactory", "*!\n\
-        \n\
-            Abstract class that defines the required interface for all WindowFactory\n\
-            objects.\n\
-        \n\
-            A WindowFactory is used to create and destroy windows of a specific type.\n\
-            For every type of Window object wihin the system (widgets, dialogs, movable\n\
-            windows etc) there must be an associated WindowFactory registered with the\n\
-            WindowFactoryManager so that the system knows how to create and destroy\n\
-            those types of Window base object.\n\
-        \n\
-        \note\n\
-            The use if of the CEGUI_DECLARE_WINDOW_FACTORY, CEGUI_DEFINE_WINDOW_FACTORY\n\
-            and CEGUI_WINDOW_FACTORY macros is deprecated in favour of the\n\
-            template class TplWindowFactory and templatised\n\
-            WindowFactoryManager.addFactory function, whereby you no longer need to\n\
-            directly create any supporting structure for your new window type, and can\n\
-            simply do:\n\
-            .\n\
-            CEGUI.WindowFactoryManager.addFactory<TplWindowFactory<MyWidget> >();\n\
-            \n\n\
-        *\n", bp::no_init );
+        WindowFactory_exposer_t WindowFactory_exposer = WindowFactory_exposer_t( "WindowFactory", bp::no_init );
         bp::scope WindowFactory_scope( WindowFactory_exposer );
         { //::CEGUI::WindowFactory::createWindow
         

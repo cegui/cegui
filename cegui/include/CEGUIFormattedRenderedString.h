@@ -38,14 +38,15 @@ namespace CEGUI
     Root of a class hierarchy that wrap RenderedString objects and render them
     with additional formatting.
 */
-class CEGUIEXPORT FormattedRenderedString
+class CEGUIEXPORT FormattedRenderedString :
+    public AllocatedObject<FormattedRenderedString>
 {
 public:
     //! Destructor.
     virtual ~FormattedRenderedString();
 
-    virtual void format(const Size& area_size) = 0;
-    virtual void draw(GeometryBuffer& buffer, const Vector2& position,
+    virtual void format(const Size<>& area_size) = 0;
+    virtual void draw(GeometryBuffer& buffer, const Vector2<>& position,
                       const ColourRect* mod_colours,
                       const Rect* clip_rect) const = 0;
     virtual size_t getFormattedLineCount() const = 0;

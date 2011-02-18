@@ -38,13 +38,19 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-#define STR_QUICKBUFF_SIZE	32
-	/*************************************************************************
-		Basic Types
-	*************************************************************************/
-	typedef		uint8	utf8;
-	//typedef		uint16	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
-	typedef		uint32	utf32;
+/*************************************************************************
+Basic Types
+*************************************************************************/
+typedef		uint8	utf8;
+//typedef		uint16	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
+typedef		uint32	utf32;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+
+/// encoded char signifies that it's a char (8bit) with encoding (in this case utf8)
+typedef utf8 encoded_char;
+
+#define CEGUI_STR_QUICKBUFF_SIZE 32
 
 /*!
 \brief
@@ -54,7 +60,8 @@ namespace CEGUI
 	current locale, and also comparisons do not take into account the Unicode data tables, so are not 'correct'
 	as such.
 */
-class CEGUIEXPORT String
+class CEGUIEXPORT String :
+    public AllocatedObject<String>
 {
 public:
 	/*************************************************************************
@@ -81,7 +88,7 @@ private:
 	mutable size_type	d_encodeddatlen;	//!< holds length of encoded data (in case it's smaller than buffer).
 	mutable size_type	d_encodedbufflen;	//!< length of above buffer (since buffer can be bigger then the data it holds to save re-allocations).
 
-	utf32		d_quickbuff[STR_QUICKBUFF_SIZE];	//!< This is a integrated 'quick' buffer to save allocations for smallish strings
+	utf32		d_quickbuff[CEGUI_STR_QUICKBUFF_SIZE]; //!< This is a integrated 'quick' buffer to save allocations for smallish strings
 	utf32*		d_buffer;							//!< Pointer the the main buffer memory.  This is only valid when quick-buffer is not being used
 
 public:
@@ -324,24 +331,6 @@ public:
 #else
 	typedef std::reverse_iterator<iterator>			reverse_iterator;
 #endif
-
-public:
-    /*!
-    \brief
-        Functor that can be used as comparator in a std::map with String keys.
-        It's faster than using the default, but the map will no longer be sorted alphabetically.
-    */
-    struct FastLessCompare
-    {
-        bool operator() (const String& a, const String& b) const
-        {
-            const size_t la = a.length();
-            const size_t lb = b.length();
-            if (la == lb)
-                return (memcmp(a.ptr(), b.ptr(), la*sizeof(utf32)) < 0);
-            return (la < lb);
-        }
-    };
 
 public:
 	//////////////////////////////////////////////////////////////////////////
@@ -656,7 +645,7 @@ public:
 	\return
 		The maximum number of code points that a string can contain
 	*/
-	static size_type	max_size(void)
+	size_type max_size(void) const
 	{
 		return (((size_type)-1) / sizeof(utf32));
 	}
@@ -1181,7 +1170,7 @@ public:
     */
 	utf32*	ptr(void)
 	{
-		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
 	}
 
 	/*!
@@ -1190,7 +1179,7 @@ public:
     */
 	const utf32*	ptr(void) const
 	{
-		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+		return (d_reserve > CEGUI_STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
 	}
 
 	// copy, at most, 'len' code-points of the string, begining with code-point 'idx', into the array 'buf' as valid utf8 encoded data
@@ -1588,13 +1577,13 @@ public:
 		str.d_buffer = temp_buf;
 
 		// see if we need to swap 'quick buffer' data
-		if (temp_res <= STR_QUICKBUFF_SIZE)
+		if (temp_res <= CEGUI_STR_QUICKBUFF_SIZE)
 		{
-			utf32		temp_qbf[STR_QUICKBUFF_SIZE];
+			utf32		temp_qbf[CEGUI_STR_QUICKBUFF_SIZE];
 
-			memcpy(temp_qbf, d_quickbuff, STR_QUICKBUFF_SIZE * sizeof(utf32));
-			memcpy(d_quickbuff, str.d_quickbuff, STR_QUICKBUFF_SIZE * sizeof(utf32));
-			memcpy(str.d_quickbuff, temp_qbf, STR_QUICKBUFF_SIZE * sizeof(utf32));
+			memcpy(temp_qbf, d_quickbuff, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
+			memcpy(d_quickbuff, str.d_quickbuff, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
+			memcpy(str.d_quickbuff, temp_qbf, CEGUI_STR_QUICKBUFF_SIZE * sizeof(utf32));
 		}
 
 	}
@@ -4779,7 +4768,7 @@ private:
 	// initialise string object
 	void	init(void)
 	{
-		d_reserve			= STR_QUICKBUFF_SIZE;
+		d_reserve			= CEGUI_STR_QUICKBUFF_SIZE;
 		d_encodedbuff		= 0;
 		d_encodedbufflen	= 0;
 		d_encodeddatlen		= 0;
@@ -5583,6 +5572,62 @@ CEGUIEXPORT std::ostream& operator<<(std::ostream& s, const String& str);
 */
 void CEGUIEXPORT swap(String& str1, String& str2);
 
+/*!
+\brief
+    Functor that can be used as comparator in a std::map with String keys.
+    It's faster than using the default, but the map will no longer be sorted alphabetically.
+*/
+struct StringFastLessCompare
+{
+    bool operator() (const String& a, const String& b) const
+    {
+        const size_t la = a.length();
+        const size_t lb = b.length();
+        if (la == lb)
+            return (memcmp(a.ptr(), b.ptr(), la * sizeof(utf32)) < 0);
+
+        return (la < lb);
+    }
+};
+
+#else
+
+/// encoded char signifies that it's a char (8bit) with encoding (in this case ASCII)
+typedef char encoded_char;
+
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_STD
+
+typedef std::string String;
+
+#else // CEGUI_STRING_CLASS_STD_AO
+
+typedef std::basic_string<char, std::char_traits<char>, STLAllocatorWrapper<char, AllocatorConfig<STLAllocator>::Allocator> > String;
+
+#endif
+
+/*!
+\brief
+    Functor that can be used as comparator in a std::map with String keys.
+    It's faster than using the default, but the map will no longer be sorted alphabetically.
+*/
+struct StringFastLessCompare
+{
+    bool operator() (const String& a, const String& b) const
+    {
+        const size_t la = a.length();
+        const size_t lb = b.length();
+        if (la == lb)
+            return (memcmp(a.c_str(), b.c_str(), la * sizeof(String::value_type)) < 0);
+
+        return (la < lb);
+    }
+};
+
+#if defined(_MSC_VER)
+#	pragma warning(disable : 4251)
+#endif
+
+#endif
 
 } // End of  CEGUI namespace section
 

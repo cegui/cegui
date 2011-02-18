@@ -126,7 +126,7 @@
                 <Property Name="ColumnHeader" Value="text:Ping width:{0.2,0} id:2" />
             </Window>
             <Window Type="TaharezLook/StaticImage" Name="Demo7/Window2/Image1" >
-                <Property Name="Image" Value="set:BackgroundImage image:full_image" />
+                <Property Name="Image" Value="BackgroundImage" />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="UnifiedAreaRect" Value="{{0.52,0},{0.30,0},{0.90,0},{0.47,0}}" />

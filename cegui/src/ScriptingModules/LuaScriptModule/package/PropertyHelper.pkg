@@ -1,16 +1,18 @@
 /***********************************************************************
 	PropertyHelper
 ***********************************************************************/
-class PropertyHelper
+$renaming ceguiLua_PropertyHelper @ PropertyHelper
+
+class ceguiLua_PropertyHelper
 {
 	static	float			stringToFloat(utf8string str);
 	static	unsigned int	stringToUint(utf8string str);
 	static	bool			stringToBool(utf8string str);
-	static	Size			stringToSize(utf8string str);
-	static	Vector2			stringToPoint(utf8string str);
+	static	Size<float>		stringToSize(utf8string str);
+	static	Vector2<float>	stringToVector2(utf8string str);
 	static	Rect			stringToRect(utf8string str);
 	static	const Image*	stringToImage(utf8string str);
-	static	colour			stringToColour(utf8string str);
+	static	Colour			stringToColour(utf8string str);
 	static	ColourRect		stringToColourRect(utf8string str);
 
 	static	UDim			stringToUDim(utf8string str);
@@ -20,11 +22,11 @@ class PropertyHelper
 	static string	floatToString(float val);
 	static string	uintToString(unsigned int val);
 	static string	boolToString(bool val);
-	static string	sizeToString(const Size& val);
-	static string	pointToString(const Vector2& val);
+	static string	sizeToString(const Size<float>& val);
+	static string	vector2ToString(const Vector2<float>& val);
 	static string	rectToString(const Rect& val);
 	static string	imageToString(const Image* val);
-	static string	colourToString(const colour& val);
+	static string	colourToString(const Colour& val);
 	static string	colourRectToString(const ColourRect& val);
 
 	static string	udimToString(const UDim& val);

@@ -31,10 +31,11 @@
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUIPushButton.h"
-#include "elements/CEGUIGUISheet.h"
+#include "elements/CEGUIDefaultWindow.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -61,7 +62,7 @@ TabControlProperties::TabPanePosition		    TabControl::d_tabPanePosition;
 	Constants
 *************************************************************************/
 // event names
-const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
+const String TabControl::EventSelectionChanged( "SelectionChanged" );
 
 /*************************************************************************
     Child Widget name suffix constants
@@ -254,7 +255,7 @@ void TabControl::addTab(Window* wnd)
     // Create a new TabButton
     addButtonForTabContent(wnd);
     // Add the window to the content pane
-    getTabPane()->addChildWindow(wnd);
+    getTabPane()->addChild(wnd);
     // Auto-select?
     if (getTabCount() == 1)
         setSelectedTab(wnd->getName());
@@ -307,7 +308,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // Instert into map
     d_tabButtonVector.push_back(tb);
     // add the button
-    getTabButtonPane()->addChildWindow(tb);
+    getTabButtonPane()->addChild(tb);
     // Subscribe to clicked event so that we can change tab
     tb->subscribeEvent(TabButton::EventClicked,
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
@@ -344,7 +345,7 @@ void TabControl::removeButtonForTabContent(Window* wnd)
             d_tabButtonVector.erase (i);
             break;
         }
-    getTabButtonPane()->removeChildWindow(tb);
+    getTabButtonPane()->removeChild(tb);
 	// destroy
 	WindowManager::getSingleton().destroyWindow(tb);
 }
@@ -408,9 +409,9 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (!tb)
         return;
 
-    float ww = getPixelSize ().d_width;
-    float x = tb->getXPosition().asAbsolute (ww);
-    float w = tb->getPixelSize ().d_width;
+    float ww = getPixelSize().d_width;
+    float x = CoordConverter::asAbsolute(tb->getXPosition(), ww);
+    float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
     Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
@@ -418,16 +419,16 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
-        lx = scrollLeftBtn->getArea ().d_max.d_x.asAbsolute (ww);
-        scrollLeftBtn->setWantsMultiClickEvents (false);
+        lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
+        scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
     name = getName() + ButtonScrollRightSuffix;
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollRightBtn = WindowManager::getSingleton().getWindow (name);
-        rx = scrollRightBtn->getXPosition ().asAbsolute (ww);
-        scrollRightBtn->setWantsMultiClickEvents (false);
+        rx = CoordConverter::asAbsolute(scrollRightBtn->getXPosition(), ww);
+        scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
     if (x < lx)
@@ -788,7 +789,7 @@ void TabControl::removeTab_impl(Window* window)
     // Was this selected?
     bool reselect = window->isVisible();
     // Tab buttons are the 2nd onward children
-    getTabPane()->removeChildWindow(window);
+    getTabPane()->removeChild(window);
 
     // remove button too
     removeButtonForTabContent(window);

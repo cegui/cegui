@@ -41,7 +41,8 @@ namespace CEGUI
 \brief
 	Class encapsulating operations on a Rectangle
 */
-class CEGUIEXPORT Rect
+class CEGUIEXPORT Rect :
+    public AllocatedObject<Rect>
 {
 public:
 	Rect(void) {}
@@ -53,14 +54,14 @@ public:
 	*/
 	Rect(float left, float top, float right, float bottom);
 
-    Rect(Point pos, Size sz);
+    Rect(const Vector2<>& pos, const Size<>& sz);
 
 
 	/*!
 	\brief
 		Return top-left postion of Rect as a Point
 	*/
-	Point	getPosition(void) const		{return Point(d_left, d_top);}
+	Vector2<> getPosition(void) const		{return Vector2<>(d_left, d_top);}
 
 	/*!
 	\brief
@@ -80,14 +81,14 @@ public:
 	\brief
 		return the size of the Rect area
 	*/
-	Size	getSize(void) const			{return Size(getWidth(), getHeight());}
+	Size<>	getSize(void) const			{return Size<>(getWidth(), getHeight());}
 
 
 	/*!
 	\brief
 		set the position of the Rect (leaves size in tact)
 	*/
-	void	setPosition(const Point& pt);
+	void	setPosition(const Vector2<>& pt);
 
 
 	/*!
@@ -107,7 +108,7 @@ public:
 	\brief
 		set the size of the Rect area
 	*/
-	void	setSize(const Size& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
+	void	setSize(const Size<>& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
 
 
 	/*!
@@ -131,7 +132,7 @@ public:
 	\return
 		this Rect after the offset is performed
 	*/
-	Rect&	offset(const Point& pt);
+	Rect&	offset(const Vector2<>& pt);
 
 
 	/*!
@@ -144,7 +145,7 @@ public:
 	\return
 		true if position \a pt is within this Rect's area, else false
 	*/
-	bool	isPointInRect(const Point& pt) const;
+	bool	isPointInRect(const Vector2<>& pt) const;
 
 
 	/*!
@@ -157,7 +158,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMax(const Size& sz);
+	Rect&	constrainSizeMax(const Size<>& sz);
 
 
 	/*!
@@ -170,7 +171,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMin(const Size& sz);
+	Rect&	constrainSizeMin(const Size<>& sz);
 
 
 	/*!
@@ -186,7 +187,7 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSize(const Size& max_sz, const Size& min_sz);
+	Rect&	constrainSize(const Size<>& max_sz, const Size<>& min_sz);
 
 
 	/*************************************************************************

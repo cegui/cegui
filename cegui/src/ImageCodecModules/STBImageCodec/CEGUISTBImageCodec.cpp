@@ -86,8 +86,8 @@ Texture* STBImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     result->loadFromMemory(image,
-                           Size(static_cast<float>(width),
-                                static_cast<float>(height)),
+                           Size<>(static_cast<float>(width),
+                                  static_cast<float>(height)),
                            format);
 
     // delete temporary image data

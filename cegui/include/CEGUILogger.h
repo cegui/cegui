@@ -70,7 +70,9 @@ enum LoggingLevel
     want to perform special logging, derive your own class from Logger and initialize
     a object of that type before you create the CEGUI::System singleton.
 */
-class CEGUIEXPORT Logger : public Singleton <Logger>
+class CEGUIEXPORT Logger :
+    public Singleton<Logger>,
+    public AllocatedObject<Logger>
 {
 public:
 	/*!

@@ -32,10 +32,10 @@
 #include "CEGUILogger.h"
 #include "CEGUISystem.h"
 #include "CEGUIRenderer.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIGeometryBuffer.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,7 +48,7 @@ const String MouseCursor::EventNamespace("MouseCursor");
 // singleton instance pointer
 template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= 0;
 bool MouseCursor::s_initialPositionSet = false;
-Point MouseCursor::s_initialPosition(0.0f, 0.0f);
+Vector2<> MouseCursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
@@ -68,7 +68,7 @@ MouseCursor::MouseCursor(void) :
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
-    const Rect screenArea(Vector2(0, 0),
+    const Rect screenArea(Vector2<>(0, 0),
                           System::getSingleton().getRenderer()->getDisplaySize());
     d_geometry->setClippingRegion(screenArea);
 
@@ -79,8 +79,8 @@ MouseCursor::MouseCursor(void) :
         setPosition(s_initialPosition);
     else
     	// mouse defaults to middle of the constrained area
-        setPosition(Point(screenArea.getWidth() / 2,
-                          screenArea.getHeight() / 2));
+        setPosition(Vector2<>(screenArea.getWidth() / 2,
+                            screenArea.getHeight() / 2));
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -123,9 +123,9 @@ void MouseCursor::setImage(const Image* image)
 /*************************************************************************
 	Set the current mouse cursor image
 *************************************************************************/
-void MouseCursor::setImage(const String& imageset, const String& image_name)
+void MouseCursor::setImage(const String& name)
 {
-	setImage(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+	setImage(&ImageManager::getSingleton().get(name));
 }
 
 
@@ -147,25 +147,25 @@ void MouseCursor::draw(void) const
 /*************************************************************************
 	Set the current mouse cursor position
 *************************************************************************/
-void MouseCursor::setPosition(const Point& position)
+void MouseCursor::setPosition(const Vector2<>& position)
 {
     d_position = position;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(Vector3<>(d_position.d_x, d_position.d_y, 0));
 }
 
 
 /*************************************************************************
 	Offset the mouse cursor position by the deltas specified in 'offset'.
 *************************************************************************/
-void MouseCursor::offsetPosition(const Point& offset)
+void MouseCursor::offsetPosition(const Vector2<>& offset)
 {
 	d_position.d_x += offset.d_x;
 	d_position.d_y += offset.d_y;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(Vector3<>(d_position.d_x, d_position.d_y, 0));
 }
 
 
@@ -196,7 +196,7 @@ void MouseCursor::constrainPosition(void)
 *************************************************************************/
 void MouseCursor::setConstraintArea(const Rect* area)
 {
-    const Rect renderer_area(Vector2(0, 0),
+    const Rect renderer_area(Vector2<>(0, 0),
                           System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (!area)
@@ -224,7 +224,7 @@ void MouseCursor::setConstraintArea(const Rect* area)
 *************************************************************************/
 void MouseCursor::setUnifiedConstraintArea(const URect* area)
 {
-    const Rect renderer_area(Vector2(0, 0),
+    const Rect renderer_area(Vector2<>(0, 0),
                           System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (area)
@@ -247,7 +247,7 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 *************************************************************************/
 Rect MouseCursor::getConstraintArea(void) const
 {
-    return Rect(d_constraints.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize()));
+    return Rect(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 /*************************************************************************
@@ -262,18 +262,18 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 	Return the current mouse cursor position in display resolution
 	independant values.
 *************************************************************************/
-Point MouseCursor::getDisplayIndependantPosition(void) const
+Vector2<> MouseCursor::getDisplayIndependantPosition(void) const
 {
-    Size dsz(System::getSingleton().getRenderer()->getDisplaySize());
+    Size<> dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
-    return Point(d_position.d_x / (dsz.d_width - 1.0f),
+    return Vector2<>(d_position.d_x / (dsz.d_width - 1.0f),
                  d_position.d_y / (dsz.d_height - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::notifyDisplaySizeChanged(const Size& new_size)
+void MouseCursor::notifyDisplaySizeChanged(const Size<>& new_size)
 {
-    const Rect screenArea(Vector2(0, 0), new_size);
+    const Rect screenArea(Vector2<>(0, 0), new_size);
     d_geometry->setClippingRegion(screenArea);
 
     // invalidate to regenerate geometry at (maybe) new size
@@ -281,14 +281,14 @@ void MouseCursor::notifyDisplaySizeChanged(const Size& new_size)
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setExplicitRenderSize(const Size& size)
+void MouseCursor::setExplicitRenderSize(const Size<>& size)
 {
     d_customSize = size;
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Size& MouseCursor::getExplicitRenderSize() const
+const Size<>& MouseCursor::getExplicitRenderSize() const
 {
     return d_customSize;
 }
@@ -306,19 +306,19 @@ void MouseCursor::cacheGeometry() const
     if (d_customSize.d_width != 0.0f || d_customSize.d_height != 0.0f)
     {
         calculateCustomOffset();
-        d_cursorImage->draw(*d_geometry, d_customOffset, d_customSize, 0);
+        d_cursorImage->render(*d_geometry, d_customOffset, d_customSize);
     }
     else
     {
-        d_cursorImage->draw(*d_geometry, Vector2(0, 0), 0);
+        d_cursorImage->render(*d_geometry, Vector2<>(0, 0));
     }
 }
 
 //----------------------------------------------------------------------------//
 void MouseCursor::calculateCustomOffset() const
 {
-    const Size sz(d_cursorImage->getSize());
-    const Point offset(d_cursorImage->getOffsets());
+    const Size<> sz(d_cursorImage->getRenderedSize());
+    const Vector2<> offset(d_cursorImage->getRenderedOffset());
 
     d_customOffset.d_x =
         d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
@@ -327,7 +327,7 @@ void MouseCursor::calculateCustomOffset() const
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setInitialMousePosition(const Point& position)
+void MouseCursor::setInitialMousePosition(const Vector2<>& position)
 {
     s_initialPosition = position; 
     s_initialPositionSet = true;

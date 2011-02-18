@@ -9,17 +9,102 @@ namespace bp = boost::python;
 void register_CoordConverter_class(){
 
     { //::CEGUI::CoordConverter
-        typedef bp::class_< CEGUI::CoordConverter > CoordConverter_exposer_t;
+        typedef bp::class_< CEGUI::CoordConverter, boost::noncopyable > CoordConverter_exposer_t;
         CoordConverter_exposer_t CoordConverter_exposer = CoordConverter_exposer_t( "CoordConverter", "*!\n\
         \n\
             Utility class that helps in converting various types of co-ordinate between\n\
             absolute screen positions and positions offset from the top-left corner of\n\
             a given Window object.\n\
-        *\n" );
+        *\n", bp::no_init );
         bp::scope CoordConverter_scope( CoordConverter_exposer );
+        { //::CEGUI::CoordConverter::asAbsolute
+        
+            typedef float ( *asAbsolute_function_type )( ::CEGUI::UDim const &,float );
+            
+            CoordConverter_exposer.def( 
+                "asAbsolute"
+                , asAbsolute_function_type( &::CEGUI::CoordConverter::asAbsolute )
+                , ( bp::arg("u"), bp::arg("base") )
+                , "*!\n\
+            \n\
+                converts given UDim to absolute value\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asAbsolute
+        
+            typedef ::CEGUI::Vector2< float > ( *asAbsolute_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Size< float > const & );
+            
+            CoordConverter_exposer.def( 
+                "asAbsolute"
+                , asAbsolute_function_type( &::CEGUI::CoordConverter::asAbsolute )
+                , ( bp::arg("v"), bp::arg("base") )
+                , "*!\n\
+            \n\
+                converts given Vector2<UDim> to absolute Vector2<>\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asAbsolute
+        
+            typedef ::CEGUI::Rect ( *asAbsolute_function_type )( ::CEGUI::URect const &,::CEGUI::Size< float > const & );
+            
+            CoordConverter_exposer.def( 
+                "asAbsolute"
+                , asAbsolute_function_type( &::CEGUI::CoordConverter::asAbsolute )
+                , ( bp::arg("r"), bp::arg("base") )
+                , "*inline static Vector2<> asAbsolute(const UVector2& v, const Size<>& base)\n\
+                {\n\
+                    return Vector2<>(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));\n\
+                }\n\
+            \n\
+                inline static Vector2<> asRelative(const UVector2& v, const Size<>& base)\n\
+                {\n\
+                    return Vector2<>(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));\n\
+                }*\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asRelative
+        
+            typedef float ( *asRelative_function_type )( ::CEGUI::UDim const &,float );
+            
+            CoordConverter_exposer.def( 
+                "asRelative"
+                , asRelative_function_type( &::CEGUI::CoordConverter::asRelative )
+                , ( bp::arg("u"), bp::arg("base") )
+                , "*!\n\
+            \n\
+                converts given UDim to relative value\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asRelative
+        
+            typedef ::CEGUI::Vector2< float > ( *asRelative_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Size< float > const & );
+            
+            CoordConverter_exposer.def( 
+                "asRelative"
+                , asRelative_function_type( &::CEGUI::CoordConverter::asRelative )
+                , ( bp::arg("v"), bp::arg("base") )
+                , "*!\n\
+            \n\
+                converts given Vector2<UDim> to relative Vector2<>\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asRelative
+        
+            typedef ::CEGUI::Rect ( *asRelative_function_type )( ::CEGUI::URect const &,::CEGUI::Size< float > const & );
+            
+            CoordConverter_exposer.def( 
+                "asRelative"
+                , asRelative_function_type( &::CEGUI::CoordConverter::asRelative )
+                , ( bp::arg("r"), bp::arg("base") ) );
+        
+        }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Vector2 ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
+            typedef ::CEGUI::Vector2< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -44,7 +129,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Vector2 ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2 const & );
+            typedef ::CEGUI::Vector2< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2< float > const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -217,7 +302,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Vector2 ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
+            typedef ::CEGUI::Vector2< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"
@@ -242,7 +327,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Vector2 ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2 const & );
+            typedef ::CEGUI::Vector2< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2< float > const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"
@@ -410,6 +495,8 @@ void register_CoordConverter_class(){
                 *\n" );
         
         }
+        CoordConverter_exposer.staticmethod( "asAbsolute" );
+        CoordConverter_exposer.staticmethod( "asRelative" );
         CoordConverter_exposer.staticmethod( "screenToWindow" );
         CoordConverter_exposer.staticmethod( "screenToWindowX" );
         CoordConverter_exposer.staticmethod( "screenToWindowY" );

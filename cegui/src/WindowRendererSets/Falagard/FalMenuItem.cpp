@@ -33,14 +33,15 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-const utf8 FalagardMenuItem::TypeName[] = "Falagard/MenuItem";
+
+const String FalagardMenuItem::TypeName("Falagard/MenuItem");
 
 FalagardMenuItem::FalagardMenuItem(const String& type) :
     ItemEntryWindowRenderer(type)
 {
 }
 
-Size FalagardMenuItem::getItemPixelSize() const
+Size<> FalagardMenuItem::getItemPixelSize() const
 {
     MenuItem* w = (MenuItem*)d_window;
     Window* parent = w->getParent();

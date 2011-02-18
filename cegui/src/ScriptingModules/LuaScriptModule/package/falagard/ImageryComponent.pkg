@@ -6,7 +6,7 @@ class ImageryComponent : public FalagardComponentBase
 {
   const Image* getImage() const;
   void setImage(const Image* image);
-  void setImage(utf8string imageset, utf8string image);
+  void setImage(utf8string name);
   VerticalFormatting getVerticalFormatting() const;
   void setVerticalFormatting(VerticalFormatting fmt);
   HorizontalFormatting getHorizontalFormatting() const;

@@ -10,50 +10,7 @@ void register_XMLSerializer_class(){
 
     { //::CEGUI::XMLSerializer
         typedef bp::class_< CEGUI::XMLSerializer, boost::noncopyable > XMLSerializer_exposer_t;
-        XMLSerializer_exposer_t XMLSerializer_exposer = XMLSerializer_exposer_t( "XMLSerializer", "*!\n\
-             \n\
-                 Class used to create XML Document. \n\
-        \n\
-            This class hides the complexity of formatting valid XML files. The\n\
-            class provides automatic substitution of entities, XML indenting\n\
-            in respect of the spaces. It does not contains any codes specific\n\
-            to CEGUI taking appart the CEGUI.String class. The following\n\
-            example show the code needed to exports parts of an XML document\n\
-            similar to what can be found in a layout.\n\
-            \n\
-            . \n\
-            #include <iostream>\n\
-            #include <CEGUIXMLSerializer.h> \n\
-            \n\
-            int main() \n\
-            {\n\
-                Create an encoder that outputs its result on standard output \n\
-               XMLSerializer xml(std.cout, 4);\n\
-               xml.openTag(Window)\n\
-                  .attribute(Type, TaharezLookStaticText)\n\
-                  .attribute(Name, Test)\n\
-                  .openTag(Property)\n\
-                  .attribute(Name, Text)\n\
-                  .text(This is the static text to be displayed)\n\
-                  .closeTag()\n\
-                  .openTag(Window)\n\
-                  .attribute(Name, Button)\n\
-                  .attribute(Type, VanillaButton)\n\
-                  .openTag(Property)\n\
-                  .attribute(Name, Text)\n\
-                  .attribute(Value, Push me)\n\
-                  .closeTag()\n\
-                  .closeTag()\n\
-                  .closeTag();\n\
-                  \n\
-               if (xml)\n\
-               {\n\
-                   std.cout << XML Exported successfully << std.endl;\n\
-               }\n\
-               return 0;\n\
-            }\n\
-            @endcode\n\
-            *\n", bp::init< CEGUI::OutStream &, bp::optional< size_t > >(( bp::arg("out"), bp::arg("indentSpace")=(::size_t)(4) ), "*!\n\
+        XMLSerializer_exposer_t XMLSerializer_exposer = XMLSerializer_exposer_t( "XMLSerializer", bp::init< CEGUI::OutStream &, bp::optional< size_t > >(( bp::arg("out"), bp::arg("indentSpace")=(::size_t)(4) ), "*!\n\
          XMLSerializer constructor \n\
          \n\
         @param out The stream to use to export the result \n\

@@ -43,7 +43,7 @@ String	TextColours::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::colourRectToString(wr->getTextColours());
+    return PropertyHelper<ColourRect>::toString(wr->getTextColours());
 }
 
 
@@ -51,7 +51,7 @@ void	TextColours::set(PropertyReceiver* receiver, const String& value)
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<Window*>(receiver)->getWindowRenderer());
-    wr->setTextColours(PropertyHelper::stringToColourRect(value));
+    wr->setTextColours(PropertyHelper<ColourRect>::fromString(value));
 }
 
 
@@ -189,7 +189,7 @@ String	VertScrollbar::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::boolToString(wr->isVerticalScrollbarEnabled());
+    return PropertyHelper<bool>::toString(wr->isVerticalScrollbarEnabled());
 }
 
 
@@ -197,7 +197,7 @@ void	VertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<Window*>(receiver)->getWindowRenderer());
-    wr->setVerticalScrollbarEnabled(PropertyHelper::stringToBool(value));
+    wr->setVerticalScrollbarEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 
@@ -205,7 +205,7 @@ String	HorzScrollbar::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::boolToString(wr->isHorizontalScrollbarEnabled());
+    return PropertyHelper<bool>::toString(wr->isHorizontalScrollbarEnabled());
 }
 
 
@@ -213,7 +213,7 @@ void	HorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<Window*>(receiver)->getWindowRenderer());
-    wr->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
+    wr->setHorizontalScrollbarEnabled(PropertyHelper<bool>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
@@ -221,7 +221,7 @@ String HorzExtent::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::floatToString(wr->getHorizontalTextExtent());
+    return PropertyHelper<float>::toString(wr->getHorizontalTextExtent());
 }
 
 //----------------------------------------------------------------------------//
@@ -238,7 +238,7 @@ String VertExtent::get(const PropertyReceiver* receiver) const
 {
     FalagardStaticText* wr = static_cast<FalagardStaticText*>(
     static_cast<const Window*>(receiver)->getWindowRenderer());
-    return PropertyHelper::floatToString(wr->getVerticalTextExtent());
+    return PropertyHelper<float>::toString(wr->getVerticalTextExtent());
 }
 
 //----------------------------------------------------------------------------//

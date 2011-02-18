@@ -30,11 +30,7 @@ void register_RenderEffectFactory_class(){
 
     { //::CEGUI::RenderEffectFactory
         typedef bp::class_< RenderEffectFactory_wrapper, boost::noncopyable > RenderEffectFactory_exposer_t;
-        RenderEffectFactory_exposer_t RenderEffectFactory_exposer = RenderEffectFactory_exposer_t( "RenderEffectFactory", "*!\n\
-        \n\
-            Interface for factory objects that create RenderEffect instances.\n\
-            Currently this interface is intended for internal use only.\n\
-        *\n" );
+        RenderEffectFactory_exposer_t RenderEffectFactory_exposer = RenderEffectFactory_exposer_t( "RenderEffectFactory" );
         bp::scope RenderEffectFactory_scope( RenderEffectFactory_exposer );
         { //::CEGUI::RenderEffectFactory::create
         

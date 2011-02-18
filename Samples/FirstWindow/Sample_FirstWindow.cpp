@@ -64,7 +64,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -95,7 +95,7 @@ bool FirstWindowSample::initialiseSample()
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
-    root->addChildWindow(wnd);
+    root->addChild(wnd);
 
     // Windows are in Relative metrics mode by default.  This means that we can
     // specify sizes and positions without having to know the exact pixel size

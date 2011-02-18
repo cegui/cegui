@@ -181,8 +181,9 @@ private:
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    typedef std::pair<Window*,bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
-	typedef std::vector<WindowStackEntry>	WindowStack;
+    typedef std::pair<Window*, bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
+	typedef std::vector<WindowStackEntry
+        CEGUI_VECTOR_ALLOC(WindowStackEntry)> WindowStack;
 	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.
