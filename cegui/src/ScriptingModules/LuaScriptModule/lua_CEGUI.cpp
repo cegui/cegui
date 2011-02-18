@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Thu Feb 17 16:40:36 2011.
+** Generated automatically by tolua++-1.0.92 on Fri Feb 18 09:49:29 2011.
 */
 
 #ifndef __cplusplus

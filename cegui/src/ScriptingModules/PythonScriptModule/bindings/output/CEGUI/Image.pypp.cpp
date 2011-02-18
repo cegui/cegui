@@ -111,12 +111,32 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const * ) const;
+            
+            Image_exposer.def( 
+                "render"
+                , render_function_type( &::CEGUI::Image::render )
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_area")=bp::object() ) );
+        
+        }
+        { //::CEGUI::Image::render
+        
             typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
                 "render"
                 , render_function_type( &::CEGUI::Image::render )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_area")=bp::object(), bp::arg("colours")=CEGUI::ColourRect(((const CEGUI::Colour&)(& CEGUI::Colour(4294967295u)))) ) );
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("clip_area"), bp::arg("colours") ) );
+        
+        }
+        { //::CEGUI::Image::render
+        
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const * ) const;
+            
+            Image_exposer.def( 
+                "render"
+                , render_function_type( &::CEGUI::Image::render )
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_area")=bp::object() ) );
         
         }
         { //::CEGUI::Image::render
@@ -126,7 +146,7 @@ void register_Image_class(){
             Image_exposer.def( 
                 "render"
                 , render_function_type( &::CEGUI::Image::render )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_area")=bp::object(), bp::arg("colours")=CEGUI::ColourRect(((const CEGUI::Colour&)(& CEGUI::Colour(4294967295u)))) ) );
+                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("size"), bp::arg("clip_area"), bp::arg("colours") ) );
         
         }
     }
