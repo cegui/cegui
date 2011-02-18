@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderEffectManager_h
+#ifndef _CEGUIRenderEffectManager_h_
 #define _CEGUIRenderEffectManager_h_
 
 #include "CEGUISingleton.h"
