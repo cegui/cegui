@@ -57,6 +57,9 @@ public:
     uint getImageCount() const;
 
     void loadImageset(const String& filename, const String& resource_group = "");
+    void destroyImageCollection(const String& prefix,
+                                const bool delete_texture = true);
+
     void addFromImageFile(const String& name,
                           const String& filename,
                           const String& resource_group = "");
@@ -95,15 +98,19 @@ public:
     void elementStart(const String& element, const XMLAttributes& attributes);
 
 private:
+    //! container type used to hold the images.
+    typedef std::map<String, Image*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+
+    //! helper to delete an image given an map iterator.
+    void destroy(ImageMap::iterator& iter);
+
     // XML parsing helper functions.
     void elementImagesetStart(const XMLAttributes& attributes);
     void elementImageStart(const XMLAttributes& attributes);
     //! Default resource group specifically for Imagesets.
     static String d_imagesetDefaultResourceGroup;
 
-    //! container type used to hold the images.
-    typedef std::map<String, Image*, StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
     //! container holding the images.
     ImageMap d_images;
 };
