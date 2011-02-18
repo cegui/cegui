@@ -43,7 +43,9 @@ BasicImage::BasicImage(const String& name) :
     d_pixelSize(0, 0),
     d_pixelOffset(0.0f, 0.0f),
     d_autoscaled(false),
-    d_nativeResolution(640, 480)
+    d_nativeResolution(640, 480),
+    d_scaledSize(0, 0),
+    d_scaledOffset(0, 0)
 {
 }
 
