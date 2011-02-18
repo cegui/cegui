@@ -50,6 +50,19 @@ template<> ImageManager* Singleton<ImageManager>::ms_Singleton = 0;
 String ImageManager::d_imagesetDefaultResourceGroup;
 
 //----------------------------------------------------------------------------//
+// predicate functor class to match items using a given prefix string.
+class ImagePrefixMatchPred
+{
+    const String d_prefix;
+
+public:
+    ImagePrefixMatchPred(const String& prefix) : d_prefix(prefix + '/') {}
+
+    bool operator()(const std::pair<String, Image*>& v)
+    { return v.first.find(d_prefix) == 0; }
+};
+
+//----------------------------------------------------------------------------//
 // Internal Strings holding XML element and attribute names
 const String ImagesetSchemaName("Imageset.xsd");
 const String ImagesetElement( "Imageset" );
@@ -119,12 +132,16 @@ void ImageManager::destroy(const String& name)
     ImageMap::iterator i = d_images.find(name);
 
     if (d_images.end() != i)
-    {
-        Logger::getSingleton().logEvent(
-            "[ImageManager] Deleted image: " + name);
-        delete i->second;
-        d_images.erase(i);
-    }
+        destroy(i);
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::destroy(ImageMap::iterator& iter)
+{
+    Logger::getSingleton().logEvent(
+        "[ImageManager] Deleted image: " + iter->first);
+    delete iter->second;
+    d_images.erase(iter);
 }
 
 //----------------------------------------------------------------------------//
@@ -165,6 +182,23 @@ void ImageManager::loadImageset(const String& filename,
     System::getSingleton().getXMLParser()->parseXMLFile(
             *this, filename, ImagesetSchemaName,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::destroyImageCollection(const String& prefix,
+                                          const bool delete_texture)
+{
+    Logger::getSingleton().logEvent(
+        "[ImageManager] Destroying image collection with prefix: " + prefix);
+
+    ImagePrefixMatchPred p(prefix);
+
+    ImageMap::iterator i;
+    while ((i = std::find_if(d_images.begin(), d_images.end(), p)) != d_images.end())
+        destroy(i);
+
+    if (delete_texture)
+        System::getSingleton().getRenderer()->destroyTexture(prefix);
 }
 
 //----------------------------------------------------------------------------//
