@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIFalExpressionDim_h
+#ifndef _CEGUIFalExpressionDim_h_
 #define _CEGUIFalExpressionDim_h_
 
 #include "CEGUIFalDimensions.h"

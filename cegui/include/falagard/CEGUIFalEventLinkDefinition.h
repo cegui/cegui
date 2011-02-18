@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIFalEventLinkDefinition_h
+#ifndef _CEGUIFalEventLinkDefinition_h_
 #define _CEGUIFalEventLinkDefinition_h_
 
 #include "../CEGUIString.h"
