@@ -66,8 +66,16 @@ public:
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const
+                const Rect* clip_area = 0) const
+    {
+        const ColourRect colours(0XFFFFFFFF);
+        render(buffer, Rect(position, getRenderedSize()), clip_area, colours);
+    }
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<>& position,
+                const Rect* clip_area,
+                const ColourRect& colours) const
     {
         render(buffer, Rect(position, getRenderedSize()), clip_area, colours);
     }
@@ -75,8 +83,17 @@ public:
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
                 const Size<>& size,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const
+                const Rect* clip_area = 0) const
+    {
+        const ColourRect colours(0XFFFFFFFF);
+        render(buffer, Rect(position, size), clip_area, colours);
+    }
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<>& position,
+                const Size<>& size,
+                const Rect* clip_area,
+                const ColourRect& colours) const
     {
         render(buffer, Rect(position, size), clip_area, colours);
     }
