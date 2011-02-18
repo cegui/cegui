@@ -45,13 +45,13 @@ class CEGUIEXPORT FontGlyph:
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, const Image* image = 0) :
+    FontGlyph(float advance = 0.0f, Image* image = 0) :
         d_image(image),
         d_advance(advance)
     {}
 
     //! Return the CEGUI::Image object rendered for this glyph.
-    const Image* getImage() const
+    Image* getImage() const
     { return d_image; }
 
     //! Return the scaled pixel size of the glyph.
@@ -94,12 +94,12 @@ public:
     { d_advance = advance; }
 
     //! Set the CEGUI::Image object rendered for this glyph.
-    void setImage(const Image* image)
+    void setImage(Image* image)
     { d_image = image; }
 
 private:
     //! The image which will be rendered for this glyph.
-    const Image* d_image;
+    Image* d_image;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
 };
