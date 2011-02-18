@@ -16,12 +16,21 @@ class Image
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const;
+                const Rect* clip_area = 0) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Rect* clip_area,
+                const ColourRect& colours) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
                 const Size<float>& size,
-                const Rect* clip_area = 0,
-                const ColourRect& colours = ColourRect(0xFFFFFFFF)) const;
+                const Rect* clip_area = 0) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Size<float>& size,
+                const Rect* clip_area,
+                const ColourRect& colours) const;
 };

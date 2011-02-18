@@ -533,8 +533,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_AnimationManager_class();
 
-    register_ColourRect_class();
-
     register_Rect_class();
 
     register_Image_class();
@@ -566,6 +564,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Colour_class();
 
     bp::implicitly_convertible< CEGUI::Colour, CEGUI::argb_t >();
+
+    register_ColourRect_class();
 
     register_Listbox_class();
 
