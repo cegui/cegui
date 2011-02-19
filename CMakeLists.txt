@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
-cmake_policy(SET CMP0017 OLD)
+if (POLICY CMP0017)
+    cmake_policy(SET CMP0017 OLD)
+endif()
 
 set( CEGUI_VERSION_MAJOR 0)
 set( CEGUI_VERSION_MINOR 7)
