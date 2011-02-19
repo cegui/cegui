@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,6 +34,7 @@
 #include "../../CEGUIVector.h"
 
 #include <vector>
+#include <map>
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -159,11 +160,15 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size<>& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Size<>& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
     void setDisplaySize(const Size<>& sz);
@@ -177,6 +182,13 @@ protected:
     IrrlichtRenderer(irr::IrrlichtDevice& device);
     //! Destructor
     ~IrrlichtRenderer();
+
+    //! helper to throw exception if name is already used.
+    void throwIfNameExists(const String& name) const;
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -201,9 +213,10 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<IrrlichtTexture*> TextureList;
+    typedef std::map<String, IrrlichtTexture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, IrrlichtTexture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! ptr to helper object that aids in injection of events from Irrlicht.

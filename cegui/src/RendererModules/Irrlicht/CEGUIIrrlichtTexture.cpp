@@ -4,7 +4,7 @@
     author:     Paul D Turner (based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -60,6 +60,12 @@ void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
 irr::video::ITexture* IrrlichtTexture::getIrrlichtTexture() const
 {
     return d_texture;
+}
+
+//----------------------------------------------------------------------------//
+const String& IrrlichtTexture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//
@@ -166,25 +172,28 @@ void IrrlichtTexture::blitToMemory(void* targetData)
 
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
-                                 irr::video::IVideoDriver& driver) :
+                                 irr::video::IVideoDriver& driver,
+                                 const String& name) :
     d_driver(driver),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver,
+                                 const String& name,
                                  const String& filename,
                                  const String& resourceGroup) :
     d_driver(driver),
     d_texture(0),
-    d_owner(owner)
-
+    d_owner(owner),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
@@ -192,10 +201,12 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver,
+                                 const String& name,
                                  const Size<>& size) :
     d_driver(driver),
     d_dataSize(size),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 
 {
     createIrrlichtTexture(size);

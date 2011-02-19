@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -196,50 +196,107 @@ void IrrlichtRenderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& IrrlichtRenderer::createTexture()
+Texture& IrrlichtRenderer::createTexture(const String& name)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver);
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, name);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& IrrlichtRenderer::createTexture(const String& filename,
+Texture& IrrlichtRenderer::createTexture(const String& name,
+                                         const String& filename,
                                          const String& resourceGroup)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, filename,
-                                             resourceGroup);
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, name,
+                                             filename, resourceGroup);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& IrrlichtRenderer::createTexture(const Size<>& size)
+Texture& IrrlichtRenderer::createTexture(const String& name, const Size<>& size)
 {
-    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, size);
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    IrrlichtTexture* t = new IrrlichtTexture(*this, *d_driver, name, size);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::throwIfNameExists(const String& name) const
+{
+    if (d_textures.find(name) != d_textures.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[IrrlichtRenderer] Texture already exists: " + name));
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::logTextureCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[IrrlichtRenderer] Created texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void IrrlichtRenderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
-                                        &texture);
+    destroyTexture(texture.getName());
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_textures.find(name);
 
     if (d_textures.end() != i)
     {
+        logTextureDestruction(name);
+        delete i->second;
         d_textures.erase(i);
-        delete &static_cast<IrrlichtTexture&>(texture);
     }
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtRenderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[IrrlichtRenderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void IrrlichtRenderer::destroyAllTextures()
 {
     while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+        destroyTexture(d_textures.begin()->first);
+}
+
+//----------------------------------------------------------------------------//
+Texture& IrrlichtRenderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[IrrlichtRenderer] Texture does not exist: " + name));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//

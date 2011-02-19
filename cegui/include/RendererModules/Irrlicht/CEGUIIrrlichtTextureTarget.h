@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@
 #include "CEGUIIrrlichtRendererDef.h"
 #include "../../CEGUITextureTarget.h"
 #include "CEGUIIrrlichtRenderTarget.h"
+#include "../../CEGUIString.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -67,6 +68,10 @@ public:
 protected:
     //! default / initial size for the underlying texture.
     static const float DEFAULT_SIZE;
+    //! static data used for creating texture names
+    static uint s_textureNumber;
+    //! helper to generate unique texture names
+    static String generateTextureName();
 
     //! cleans up the current render target texture used by this object.
     void cleanupTargetTexture();
