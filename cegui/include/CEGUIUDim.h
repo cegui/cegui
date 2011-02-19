@@ -31,6 +31,11 @@
 #include "CEGUIRect.h"
 #include "CEGUIVector.h"
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 // some macros to aid in the creation of UDims
 #define cegui_absdim(x)     CEGUI::UDim(0,(x))
 #define cegui_reldim(x)     CEGUI::UDim((x),0)
@@ -310,6 +315,10 @@ public:
 
 } // End of  CEGUI namespace section
 
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIUDim_h_
 

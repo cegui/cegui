@@ -31,6 +31,11 @@
 #include "../../CEGUIXMLParser.h"
 #include "CEGUIXercesParserProperties.h"
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIXERCESPARSER_EXPORTS
 #       define CEGUIXERCESPARSER_API __declspec(dllexport)
@@ -151,5 +156,8 @@ namespace CEGUI
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIXercesParser_h_
