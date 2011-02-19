@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,6 +36,7 @@
 #include "CEGUIDirect3D9TextureTarget.h"
 #include "CEGUISystem.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUILogger.h"
 
 #include <algorithm>
 
@@ -166,50 +167,107 @@ void Direct3D9Renderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D9Renderer::createTexture()
+Texture& Direct3D9Renderer::createTexture(const String& name)
 {
-    Direct3D9Texture* tex = new Direct3D9Texture(*this);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, name);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D9Renderer::createTexture(const String& filename,
-        const String& resourceGroup)
+Texture& Direct3D9Renderer::createTexture(const String& name,
+                                          const String& filename,
+                                          const String& resourceGroup)
 {
-    Direct3D9Texture* tex = new Direct3D9Texture(*this, filename,
-            resourceGroup);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D9Texture* tex =
+        new Direct3D9Texture(*this, name, filename, resourceGroup);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D9Renderer::createTexture(const Size<>& size)
+Texture& Direct3D9Renderer::createTexture(const String& name, const Size<>& size)
 {
-    Direct3D9Texture* tex = new Direct3D9Texture(*this, size);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, name, size);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::throwIfNameExists(const String& name) const
+{
+    if (d_textures.find(name) != d_textures.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[Direct3D9Renderer] Texture already exists: " + name));
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::logTextureCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[Direct3D9Renderer] Created texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
-                                        &texture);
+    destroyTexture(texture.getName());
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_textures.find(name);
 
     if (d_textures.end() != i)
     {
+        logTextureDestruction(name);
+        delete i->second;
         d_textures.erase(i);
-        delete &static_cast<Direct3D9Texture&>(texture);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9Renderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[Direct3D9Renderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::destroyAllTextures()
 {
     while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+        destroyTexture(d_textures.begin()->first);
+}
+
+//----------------------------------------------------------------------------//
+Texture& Direct3D9Renderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[Direct3D9Renderer] Texture does not exist: " + name));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -366,18 +424,18 @@ void Direct3D9Renderer::preD3DReset()
         static_cast<Direct3D9TextureTarget*>(*target_iterator)->preD3DReset();
 
     // perform pre-reset on textures
-    TextureList::iterator texture_iterator = d_textures.begin();
+    TextureMap::iterator texture_iterator = d_textures.begin();
     for (; texture_iterator != d_textures.end(); ++texture_iterator)
-        (*texture_iterator)->preD3DReset();
+        texture_iterator->second->preD3DReset();
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D9Renderer::postD3DReset()
 {
     // perform post-reset on textures
-    TextureList::iterator texture_iterator = d_textures.begin();
+    TextureMap::iterator texture_iterator = d_textures.begin();
     for (; texture_iterator != d_textures.end(); ++texture_iterator)
-        (*texture_iterator)->postD3DReset();
+        texture_iterator->second->postD3DReset();
 
     // perform post-reset on texture targets
     TextureTargetList::iterator target_iterator = d_textureTargets.begin();
@@ -395,10 +453,16 @@ LPDIRECT3DDEVICE9 Direct3D9Renderer::getDevice() const
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D9Renderer::createTexture(LPDIRECT3DTEXTURE9 texture)
+Texture& Direct3D9Renderer::createTexture(const String& name,
+                                          LPDIRECT3DTEXTURE9 texture)
 {
-    Direct3D9Texture* tex = new Direct3D9Texture(*this, texture);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D9Texture* tex = new Direct3D9Texture(*this, name, texture);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
 }
 

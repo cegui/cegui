@@ -36,18 +36,21 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner) :
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   const String& name) :
     d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_savedSurfaceDescValid(false)
+    d_savedSurfaceDescValid(false),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
 Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   const String& name,
                                    const String& filename,
                                    const String& resourceGroup) :
     d_owner(owner),
@@ -55,19 +58,22 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_savedSurfaceDescValid(false)
+    d_savedSurfaceDescValid(false),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size<>& sz) :
+Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   const String& name, const Size<>& sz) :
     d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(sz),
     d_texelScaling(0, 0),
-    d_savedSurfaceDescValid(false)
+    d_savedSurfaceDescValid(false),
+    d_name(name)
 {
     Size<> tex_sz(d_owner.getAdjustedSize(sz));
 
@@ -88,13 +94,15 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner, const Size<>& sz) :
 
 //----------------------------------------------------------------------------//
 Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
+                                   const String& name,
                                    LPDIRECT3DTEXTURE9 tex) :
     d_owner(owner),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_savedSurfaceDescValid(false)
+    d_savedSurfaceDescValid(false),
+    d_name(name)
 {
     setDirect3D9Texture(tex);
 }
@@ -127,6 +135,12 @@ void Direct3D9Texture::setDirect3D9Texture(LPDIRECT3DTEXTURE9 tex)
 LPDIRECT3DTEXTURE9 Direct3D9Texture::getDirect3D9Texture() const
 {
     return d_texture;
+}
+
+//----------------------------------------------------------------------------//
+const String& Direct3D9Texture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//

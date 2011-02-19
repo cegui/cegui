@@ -72,6 +72,10 @@ public:
 protected:
     //! default size of created texture objects
     static const float DEFAULT_SIZE;
+    //! static data used for creating texture names
+    static uint s_textureNumber;
+    //! helper to generate unique texture names
+    static String generateTextureName();
 
     //! allocate and set up the texture used for rendering.
     void initialiseRenderTexture();
