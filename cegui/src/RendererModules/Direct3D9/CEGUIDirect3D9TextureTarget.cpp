@@ -33,12 +33,14 @@
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D9Renderer.h"
 #include "CEGUIDirect3D9Texture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float Direct3D9TextureTarget::DEFAULT_SIZE = 128.0f;
+uint Direct3D9TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
@@ -47,7 +49,8 @@ Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
     d_surface(0)
 {
     // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<Direct3D9Texture&>(d_owner.createTexture(0));
+    d_CEGUITexture = &static_cast<Direct3D9Texture&>(
+        d_owner.createTexture(generateTextureName(), 0));
 
     // setup area and cause the initial texture to be generated.
     declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
@@ -212,6 +215,15 @@ void Direct3D9TextureTarget::postD3DReset()
         // now obtain the surface
         d_texture->GetSurfaceLevel(0, &d_surface);
     }
+}
+
+//----------------------------------------------------------------------------//
+String Direct3D9TextureTarget::generateTextureName()
+{
+    String tmp("_d3d9_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//
