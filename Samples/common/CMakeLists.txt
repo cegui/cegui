@@ -63,11 +63,16 @@ if (CEGUI_SAMPLES_USE_DIRECTFB)
     )
 endif()
 
-cegui_add_library(TRUE FALSE)
-
 include_directories(${CMAKE_BINARY_DIR}/Samples/common/include
                     ${CMAKE_SOURCE_DIR}/Samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
+
+if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
+    include_directories(${DIRECTXSDK_INCLUDE_DIR})
+    link_directories(${DIRECTXSDK_LIBRARY_DIR})
+endif()
+
+cegui_add_library(TRUE FALSE)
 
 if (CEGUI_SAMPLES_USE_OPENGL)
     cegui_add_dependency(OPENGL)
@@ -92,8 +97,6 @@ if (CEGUI_SAMPLES_USE_IRRLICHT)
 endif()
 
 if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
-    include_directories(${DIRECTXSDK_INCLUDE_DIR})
-    link_directories(${DIRECTXSDK_LIBRARY_DIR})
     target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
 
     if (CEGUI_SAMPLES_USE_DIRECT3D9)
