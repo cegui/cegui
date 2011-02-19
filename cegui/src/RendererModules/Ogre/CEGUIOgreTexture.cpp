@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -48,6 +48,12 @@ void _byteSwap(unsigned char* b, int n)
 
 //----------------------------------------------------------------------------//
 uint32 OgreTexture::d_textureNumber = 0;
+
+//----------------------------------------------------------------------------//
+const String& OgreTexture::getName() const
+{
+    return d_name;
+}
 
 //----------------------------------------------------------------------------//
 const Size<>& OgreTexture::getSize() const
@@ -180,30 +186,34 @@ void OgreTexture::blitToMemory(void* targetData)
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture() :
+OgreTexture::OgreTexture(const String& name) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& filename, const String& resourceGroup) :
+OgreTexture::OgreTexture(const String& name, const String& filename,
+                         const String& resourceGroup) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const Size<>& sz) :
+OgreTexture::OgreTexture(const String& name, const Size<>& sz) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     using namespace Ogre;
 
@@ -225,11 +235,13 @@ OgreTexture::OgreTexture(const Size<>& sz) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(Ogre::TexturePtr& tex, bool take_ownership) :
+OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
+                         bool take_ownership) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     setOgreTexture(tex, take_ownership);
 }

@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -60,6 +60,10 @@ public:
 protected:
     //! default / initial size for the underlying texture.
     static const float DEFAULT_SIZE;
+    //! static data used for creating texture names
+    static uint s_textureNumber;
+    //! helper to generate unique texture names
+    static String generateTextureName();
     //! This wraps d_texture so it can be used by the core CEGUI lib.
     OgreTexture* d_CEGUITexture;
 };
