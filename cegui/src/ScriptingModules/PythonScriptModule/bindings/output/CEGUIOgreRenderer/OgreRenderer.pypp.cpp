@@ -92,6 +92,18 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         CEGUI::OgreRenderer::destroyTexture( boost::ref(texture) );
     }
 
+    virtual void destroyTexture( ::CEGUI::String const & name ) {
+        if( bp::override func_destroyTexture = this->get_override( "destroyTexture" ) )
+            func_destroyTexture( boost::ref(name) );
+        else{
+            this->CEGUI::OgreRenderer::destroyTexture( boost::ref(name) );
+        }
+    }
+    
+    void default_destroyTexture( ::CEGUI::String const & name ) {
+        CEGUI::OgreRenderer::destroyTexture( boost::ref(name) );
+    }
+
     virtual void destroyTextureTarget( ::CEGUI::TextureTarget * target ) {
         if( bp::override func_destroyTextureTarget = this->get_override( "destroyTextureTarget" ) )
             func_destroyTextureTarget( boost::python::ptr(target) );
@@ -138,27 +150,6 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
     
     void default_setDisplaySize( ::CEGUI::Size< float > const & sz ) {
         CEGUI::OgreRenderer::setDisplaySize( boost::ref(sz) );
-    }
-
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name ){
-        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
-    }
-
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
-        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
-    }
-
-    virtual ::CEGUI::Texture & createTexture( ::CEGUI::String const & name, ::CEGUI::Size< float > const & size ){
-        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
-    }
-
-    virtual void destroyTexture( ::CEGUI::String const & name ){
-        bp::override func_destroyTexture = this->get_override( "destroyTexture" );
-        func_destroyTexture( boost::ref(name) );
-    }
-
-    virtual ::CEGUI::Texture & getTexture( ::CEGUI::String const & name ) const {
-        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
 };
@@ -314,16 +305,19 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::Ogre::TexturePtr &,bool ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::Ogre::TexturePtr &,bool ) ;
             
             OgreRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
-                , ( bp::arg("tex"), bp::arg("take_ownership")=(bool)(false) )
+                , ( bp::arg("name"), bp::arg("tex"), bp::arg("take_ownership")=(bool)(false) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
                     Create a CEGUI.Texture that wraps an existing Ogre texture.\n\
+            \n\
+                @param name\n\
+                    The name for tne new texture being created.\n\
             \n\
                 @param tex\n\
                     Ogre.TexturePtr for the texture that will be used by the created\n\
@@ -339,33 +333,34 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )(  ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const & ) ;
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
+                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OgreRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
-                , ( bp::arg("filename"), bp::arg("resourceGroup") )
+                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , ( bp::arg("name"), bp::arg("filename"), bp::arg("resourceGroup") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OgreRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ;
             
             OgreRenderer_exposer.def( 
                 "createTexture"
-                , createTexture_function_type( &::CEGUI::OgreRenderer::createTexture )
-                , ( bp::arg("size") )
+                , createTexture_function_type(&::CEGUI::OgreRenderer::createTexture)
+                , ( bp::arg("name"), bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -496,6 +491,18 @@ void register_OgreRenderer_class(){
                 , ( bp::arg("texture") ) );
         
         }
+        { //::CEGUI::OgreRenderer::destroyTexture
+        
+            typedef void ( ::CEGUI::OgreRenderer::*destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( OgreRenderer_wrapper::*default_destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            
+            OgreRenderer_exposer.def( 
+                "destroyTexture"
+                , destroyTexture_function_type(&::CEGUI::OgreRenderer::destroyTexture)
+                , default_destroyTexture_function_type(&OgreRenderer_wrapper::default_destroyTexture)
+                , ( bp::arg("name") ) );
+        
+        }
         { //::CEGUI::OgreRenderer::destroyTextureTarget
         
             typedef void ( ::CEGUI::OgreRenderer::*destroyTextureTarget_function_type )( ::CEGUI::TextureTarget * ) ;
@@ -568,6 +575,17 @@ void register_OgreRenderer_class(){
                 "getMaxTextureSize"
                 , getMaxTextureSize_function_type(&::CEGUI::OgreRenderer::getMaxTextureSize)
                 , default_getMaxTextureSize_function_type(&OgreRenderer_wrapper::default_getMaxTextureSize) );
+        
+        }
+        { //::CEGUI::OgreRenderer::getTexture
+        
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*getTexture_function_type )( ::CEGUI::String const & ) const;
+            
+            OgreRenderer_exposer.def( 
+                "getTexture"
+                , getTexture_function_type(&::CEGUI::OgreRenderer::getTexture)
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OgreRenderer::initialiseRenderStateSettings
