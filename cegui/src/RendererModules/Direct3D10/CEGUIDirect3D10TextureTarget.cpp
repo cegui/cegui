@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,12 +28,14 @@
 #define NOMINMAX
 #include "CEGUIDirect3D10TextureTarget.h"
 #include "CEGUIDirect3D10Texture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float Direct3D10TextureTarget::DEFAULT_SIZE = 128.0f;
+uint Direct3D10TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D10TextureTarget::Direct3D10TextureTarget(Direct3D10Renderer& owner) :
@@ -44,7 +46,8 @@ Direct3D10TextureTarget::Direct3D10TextureTarget(Direct3D10Renderer& owner) :
     d_previousDepthStencilView(0)
 {
     // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<Direct3D10Texture&>(d_owner.createTexture());
+    d_CEGUITexture = &static_cast<Direct3D10Texture&>(
+        d_owner.createTexture(generateTextureName()));
 
     // setup area and cause the initial texture to be generated.
     declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
@@ -180,6 +183,15 @@ void Direct3D10TextureTarget::disableRenderTexture()
 
     d_previousRenderTargetView = 0;
     d_previousDepthStencilView = 0;
+}
+
+//----------------------------------------------------------------------------//
+String Direct3D10TextureTarget::generateTextureName()
+{
+    String tmp("_d3d10_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//

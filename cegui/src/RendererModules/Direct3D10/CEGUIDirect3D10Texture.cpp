@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -72,6 +72,12 @@ void Direct3D10Texture::setOriginalDataSize(const Size<>& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+const String& Direct3D10Texture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//
@@ -254,18 +260,19 @@ void Direct3D10Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device) :
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
                                      const String& filename,
                                      const String& resourceGroup) :
     d_device(device),
@@ -273,19 +280,22 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size<>& sz) :
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
+                                     const Size<>& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     D3D10_TEXTURE2D_DESC tex_desc;
     ZeroMemory(&tex_desc, sizeof(tex_desc));
@@ -313,14 +323,15 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size<>& sz) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
                                      ID3D10Texture2D* tex) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     setDirect3DTexture(tex);
 }
