@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -180,6 +180,9 @@ public:
     \brief
         Create a CEGUI::Texture that wraps an existing Ogre texture.
 
+    \param name
+        The name for tne new texture being created.
+
     \param tex
         Ogre::TexturePtr for the texture that will be used by the created
         CEGUI::Texture.
@@ -190,7 +193,8 @@ public:
         - false if ownership of \a tex remains with the client app, and so
         no attempt will be made to destroy \a tex when the Texture is destroyed.
     */
-    Texture& createTexture(Ogre::TexturePtr& tex, bool take_ownership = false);
+    Texture& createTexture(const String& name, Ogre::TexturePtr& tex,
+                           bool take_ownership = false);
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -263,11 +267,15 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size<>& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Size<>& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
     void setDisplaySize(const Size<>& sz);
@@ -286,6 +294,12 @@ protected:
 
     //! checks Ogre initialisation.  throws exceptions if an issue is detected.
     void checkOgreInitialised();
+    //! helper to throw exception if name is already used.
+    void throwIfNameExists(const String& name) const;
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
 
     //! common parts of constructor
     void constructor_impl(Ogre::RenderTarget& target);
