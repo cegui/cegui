@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,11 +27,13 @@
  ***************************************************************************/
 #include "CEGUINullTextureTarget.h"
 #include "CEGUINullTexture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+uint NullTextureTarget::s_textureNumber = 0;
 const float NullTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
@@ -39,7 +41,8 @@ NullTextureTarget::NullTextureTarget(NullRenderer& owner) :
     NullRenderTarget(owner),
     d_CEGUITexture(0)
 {
-    d_CEGUITexture = static_cast<NullTexture*>(&d_owner.createTexture());
+    d_CEGUITexture = static_cast<NullTexture*>(
+        &d_owner.createTexture(generateTextureName()));
 
     // setup area and cause the initial texture to be generated.
     declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
@@ -83,6 +86,14 @@ bool NullTextureTarget::isRenderingInverted() const
     return false;
 }
 
+//----------------------------------------------------------------------------//
+String NullTextureTarget::generateTextureName()
+{
+    String tmp("_null_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
+}
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

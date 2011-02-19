@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,6 +35,12 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 uint32 NullTexture::d_textureNumber = 0;
+
+//----------------------------------------------------------------------------//
+const String& NullTexture::getName() const
+{
+    return d_name;
+}
 
 //----------------------------------------------------------------------------//
 const Size<>& NullTexture::getSize() const
@@ -107,27 +113,31 @@ void NullTexture::blitToMemory(void* /*targetData*/)
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture() :
+NullTexture::NullTexture(const String& name) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const String& filename, const String& resourceGroup) :
+NullTexture::NullTexture(const String& name, const String& filename,
+                         const String& resourceGroup) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const Size<>& sz) :
+NullTexture::NullTexture(const String& name, const Size<>& sz) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     d_size.d_width = sz.d_width;
     d_size.d_height = sz.d_height;
