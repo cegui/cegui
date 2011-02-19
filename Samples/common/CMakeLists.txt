@@ -73,6 +73,11 @@ if (CEGUI_SAMPLES_USE_OPENGL)
     cegui_add_dependency(OPENGL)
     cegui_add_dependency(GLUT)
     target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
+
+    # This works around an issue in the prebuilt deps and can be removed once those are fixed :)
+    if (WIN32)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
+    endif()
 endif()
 
 if (CEGUI_SAMPLES_USE_OGRE)
