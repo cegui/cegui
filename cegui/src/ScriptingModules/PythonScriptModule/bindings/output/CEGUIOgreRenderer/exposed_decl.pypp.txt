@@ -1365,7 +1365,8 @@
 ~@class_t@__is_integer< unsigned int >@::std::__is_integer< unsigned int >
 ~@member_function_t@_M_bump_up@void ( ::std::_Bit_iterator_base::* )(  ) void ( ::std::_Bit_iterator_base::* )(  ) 
 ~@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::TextureTarget::* )(  ) const::CEGUI::Texture & ( ::CEGUI::TextureTarget::* )(  ) const
-+@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const
++@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) const::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) const
+~@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const
 ~@member_function_t@eq_int_type@bool (*)( ::wint_t const &,::wint_t const & )bool (*)( ::wint_t const &,::wint_t const & )
 ~@member_function_t@eq_int_type@bool (*)( int const &,int const & )bool (*)( int const &,int const & )
 ~@member_function_t@loadFromFile@void ( ::CEGUI::Texture::* )( ::CEGUI::String const &,::CEGUI::String const & ) void ( ::CEGUI::Texture::* )( ::CEGUI::String const &,::CEGUI::String const & ) 
@@ -1620,6 +1621,7 @@
 ~@member_function_t@appendGeometry@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const * const,::CEGUI::uint ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const * const,::CEGUI::uint ) 
 ~@member_function_t@to_int_type@::wint_t (*)( wchar_t const & )::wint_t (*)( wchar_t const & )
 ~@member_function_t@to_int_type@int (*)( char const & )int (*)( char const & )
+~@member_function_t@throwIfNameExists@void ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) constvoid ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) const
 ~@member_function_t@getSupportedFormat@::CEGUI::String const & ( ::CEGUI::ImageCodec::* )(  ) const::CEGUI::String const & ( ::CEGUI::ImageCodec::* )(  ) const
 ~@member_function_t@unprojectPoint@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2< float > const &,::CEGUI::Vector2< float > & ) constvoid ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const
 ~@member_function_t@back@::CEGUI::RenderingWindow * & ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )(  ) ::CEGUI::RenderingWindow * & ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )(  ) 
@@ -1628,6 +1630,7 @@
 ~@member_function_t@back@::CEGUI::GeometryBuffer const * const & ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )(  ) const::CEGUI::GeometryBuffer const * const & ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )(  ) const
 +@member_function_t@beginRendering@void ( ::CEGUI::OgreRenderer::* )(  ) void ( ::CEGUI::OgreRenderer::* )(  ) 
 ~@member_function_t@beginRendering@void ( ::CEGUI::Renderer::* )(  ) void ( ::CEGUI::Renderer::* )(  ) 
+~@member_function_t@logTextureDestruction@void (*)( ::CEGUI::String const & )void (*)( ::CEGUI::String const & )
 ~@member_function_t@erase@::std::wstring & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t ) ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t ) 
 ~@member_function_t@erase@::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > ) ::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > > ) 
 ~@member_function_t@erase@::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > >,::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > ) ::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > >,::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > > ) 
@@ -1702,8 +1705,9 @@
 +@member_function_t@createTextureTarget@::CEGUI::TextureTarget * ( ::CEGUI::OgreRenderer::* )(  ) ::CEGUI::TextureTarget * ( ::CEGUI::OgreRenderer::* )(  ) 
 ~@member_function_t@createTextureTarget@::CEGUI::TextureTarget * ( ::CEGUI::Renderer::* )(  ) ::CEGUI::TextureTarget * ( ::CEGUI::Renderer::* )(  ) 
 +@member_function_t@destroyTexture@void ( ::CEGUI::OgreRenderer::* )( ::CEGUI::Texture & ) void ( ::CEGUI::OgreRenderer::* )( ::CEGUI::Texture & ) 
++@member_function_t@destroyTexture@void ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) void ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) 
 ~@member_function_t@destroyTexture@void ( ::CEGUI::Renderer::* )( ::CEGUI::Texture & ) void ( ::CEGUI::Renderer::* )( ::CEGUI::Texture & ) 
-+@member_function_t@destroyTexture@void ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) void ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) 
+~@member_function_t@destroyTexture@void ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) void ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) 
 ~@member_function_t@what@char const * ( ::std::runtime_error::* )(  ) constchar const * ( ::std::runtime_error::* )(  ) const
 ~@member_function_t@what@char const * ( ::std::logic_error::* )(  ) constchar const * ( ::std::logic_error::* )(  ) const
 ~@member_function_t@what@char const * ( ::std::bad_alloc::* )(  ) constchar const * ( ::std::bad_alloc::* )(  ) const
@@ -1751,13 +1755,13 @@
 ~@member_function_t@_M_is_shared@bool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) constbool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) const
 ~@member_function_t@_M_disjunct@bool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( wchar_t const * ) constbool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( wchar_t const * ) const
 ~@member_function_t@_M_disjunct@bool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( char const * ) constbool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( char const * ) const
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::Ogre::TexturePtr &,bool ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::Ogre::TexturePtr &,bool ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )(  ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )(  ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::String const & ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::Size< float > const & ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::Size<float> const & ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) 
-+@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::Size<float> const & ) 
++@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::Ogre::TexturePtr &,bool ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::Ogre::TexturePtr &,bool ) 
++@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const & ) 
++@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) 
++@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::* )( ::CEGUI::String const &,::CEGUI::Size<float> const & ) 
+~@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) 
+~@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) 
+~@member_function_t@createTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const &,::CEGUI::Size<float> const & ) 
 ~@member_function_t@getBatchCount@::CEGUI::uint ( ::CEGUI::GeometryBuffer::* )(  ) const::CEGUI::uint ( ::CEGUI::GeometryBuffer::* )(  ) const
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) 
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) 
@@ -1796,6 +1800,7 @@
 ~@member_function_t@_M_refcopy@char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) 
 ~@member_function_t@_M_set_leaked@void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) 
 ~@member_function_t@_M_set_leaked@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) 
+~@member_function_t@logTextureCreation@void (*)( ::CEGUI::String const & )void (*)( ::CEGUI::String const & )
 ~@member_function_t@_M_replace_aux@::std::wstring & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t,::size_t,wchar_t ) ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t,::size_t,wchar_t ) 
 ~@member_function_t@_M_replace_aux@::std::string & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::size_t,char ) ::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::size_t,char ) 
 ~@member_function_t@c_str@wchar_t const * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) constwchar_t const * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) const
