@@ -4,7 +4,7 @@
     author:     Paul D Turner (based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -69,6 +69,7 @@ public:
     static std::string getUniqueName();
 
     // Implement texture interface.
+    const String& getName() const;
     const Size<>& getSize() const;
     const Size<>& getOriginalDataSize() const;
     const Vector2<>& getTexelScaling() const;
@@ -80,20 +81,23 @@ public:
 
 protected:
     // friends in order that Renderer module can create / destroy textures
-    friend Texture& IrrlichtRenderer::createTexture();
-    friend Texture& IrrlichtRenderer::createTexture(const String&,
+    friend Texture& IrrlichtRenderer::createTexture(const String&);
+    friend Texture& IrrlichtRenderer::createTexture(const String&, const String&,
                                                     const String&);
-    friend Texture& IrrlichtRenderer::createTexture(const Size<>&);
+    friend Texture& IrrlichtRenderer::createTexture(const String&, const Size<>&);
     friend void IrrlichtRenderer::destroyTexture(Texture&);
+    friend void IrrlichtRenderer::destroyTexture(const String&);
 
     //! Construct a basic texture
-    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver);
+    IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
+                    const String& name);
     //! Construct a texture from the specified file.
     IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
-                    const String& filename, const String& resourceGroup);
+                    const String& name, const String& filename,
+                    const String& resourceGroup);
     //! Construct a texture with the given size.
     IrrlichtTexture(IrrlichtRenderer& owner, irr::video::IVideoDriver& driver,
-                    const Size<>& size);
+                    const String& name, const Size<>& size);
     //! destructor.
     ~IrrlichtTexture();
 
@@ -120,6 +124,8 @@ protected:
     Vector2<> d_texelScaling;
     //! reference to the IrrlichtRenderer that created this texture
     IrrlichtRenderer& d_owner;
+    //! name given when texture was created.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section
