@@ -55,6 +55,10 @@ macro (cegui_add_sample _NAME)
 
     cegui_gather_files()
 
+    if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
+        link_directories(${DIRECTXSDK_LIBRARY_DIR})
+    endif()
+
     add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES})
     set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES VERSION ${CEGUI_VERSION})
 
