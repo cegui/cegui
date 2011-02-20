@@ -560,7 +560,7 @@ float Window::getEffectiveAlpha(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedOuterRect() const
+Rect<> Window::getUnclippedOuterRect() const
 {
     if (!d_outerUnclippedRectValid)
     {
@@ -572,7 +572,7 @@ Rect Window::getUnclippedOuterRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedInnerRect() const
+Rect<> Window::getUnclippedInnerRect() const
 {
     if (!d_innerUnclippedRectValid)
     {
@@ -584,13 +584,13 @@ Rect Window::getUnclippedInnerRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedRect(const bool inner) const
+Rect<> Window::getUnclippedRect(const bool inner) const
 {
     return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getOuterRectClipper() const
+Rect<> Window::getOuterRectClipper() const
 {
     if (!d_outerRectClipperValid)
     {
@@ -602,7 +602,7 @@ Rect Window::getOuterRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getInnerRectClipper() const
+Rect<> Window::getInnerRectClipper() const
 {
     if (!d_innerRectClipperValid)
     {
@@ -614,13 +614,13 @@ Rect Window::getInnerRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getClipRect(const bool non_client) const
+Rect<> Window::getClipRect(const bool non_client) const
 {
     return non_client ? getOuterRectClipper() : getInnerRectClipper();
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getHitTestRect() const
+Rect<> Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
     {
@@ -632,24 +632,24 @@ Rect Window::getHitTestRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getParentElementClipIntersection(const Rect& unclipped_area) const
+Rect<> Window::getParentElementClipIntersection(const Rect<>& unclipped_area) const
 {
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
             d_parent->getClipRect(d_nonClientContent) :
-            Rect(Vector2<>(0, 0),
-                 System::getSingleton().getRenderer()->getDisplaySize()));
+            Rect<>(Vector2<>(0, 0),
+                   System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedOuterRect_impl() const
+Rect<> Window::getUnclippedOuterRect_impl() const
 {
-    const Rect local(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+    const Rect<> local(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
     return CoordConverter::windowToScreen(*this, local);
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getOuterRectClipper_impl() const
+Rect<> Window::getOuterRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedOuterRect() :
@@ -657,14 +657,14 @@ Rect Window::getOuterRectClipper_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getUnclippedInnerRect_impl(void) const
+Rect<> Window::getUnclippedInnerRect_impl(void) const
 {
     return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
                               getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getInnerRectClipper_impl() const
+Rect<> Window::getInnerRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedInnerRect() :
@@ -672,7 +672,7 @@ Rect Window::getInnerRectClipper_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getHitTestRect_impl() const
+Rect<> Window::getHitTestRect_impl() const
 {
     // if clipped by parent wnd, hit test area is the intersection of our
     // outer rect with the parent's hit test area intersected with the
@@ -687,7 +687,7 @@ Rect Window::getHitTestRect_impl() const
     else
     {
         return getUnclippedOuterRect().getIntersection(
-            Rect(Vector2<>(0, 0),
+            Rect<>(Vector2<>(0, 0),
                  System::getSingleton().getRenderer()->getDisplaySize()));
     }
 }
@@ -699,7 +699,7 @@ bool Window::isHit(const Vector2<>& position, const bool allow_disabled) const
     if (!allow_disabled && isDisabled())
         return false;
 
-    const Rect test_area(getHitTestRect());
+    const Rect<> test_area(getHitTestRect());
 
     if ((test_area.getWidth() == 0.0f) || (test_area.getHeight() == 0.0f))
         return false;
@@ -1953,7 +1953,8 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
     else if (d_pixelSize.d_height > absMax.d_y)
         d_pixelSize.d_height = absMax.d_y;
 
-    d_area.setSize(size);
+    // TODO: size vs vector
+    d_area.setSize(USize(size.d_x, size.d_y));
     sized = (d_pixelSize != oldSize);
 
     // If this is a top/left edge sizing op, only modify position if the size
@@ -2023,25 +2024,33 @@ void Window::setArea(const UVector2& pos, const UVector2& size)
 //----------------------------------------------------------------------------//
 void Window::setArea(const URect& area)
 {
-    setArea(area.d_min, area.getSize());
+    // TODO: size vs vector
+    const USize sz = area.getSize();
+    setArea(area.d_min, UVector2(sz.d_width, sz.d_height));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setPosition(const UVector2& pos)
 {
-    setArea_impl(pos, d_area.getSize());
+    // todo: vector vs size
+    const USize sz = d_area.getSize();
+    setArea_impl(pos, UVector2(sz.d_width, sz.d_height));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setXPosition(const UDim& x)
 {
-    setArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
+    // todo: vector vs size
+    const USize sz = d_area.getSize();
+    setArea_impl(UVector2(x, d_area.d_min.d_y), UVector2(sz.d_width, sz.d_height));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setYPosition(const UDim& y)
 {
-    setArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
+    // todo: vector vs size
+    const USize sz = d_area.getSize();
+    setArea_impl(UVector2(d_area.d_min.d_x, y), UVector2(sz.d_width, sz.d_height));
 }
 
 //----------------------------------------------------------------------------//
@@ -2066,13 +2075,13 @@ void Window::setSize(const UVector2& size)
 //----------------------------------------------------------------------------//
 void Window::setWidth(const UDim& width)
 {
-    setSize(UVector2(width, d_area.getSize().d_y));
+    setSize(UVector2(width, d_area.getSize().d_height));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setHeight(const UDim& height)
 {
-    setSize(UVector2(d_area.getSize().d_x, height));
+    setSize(UVector2(d_area.getSize().d_width, height));
 }
 
 //----------------------------------------------------------------------------//
@@ -2146,19 +2155,21 @@ const UDim& Window::getYPosition() const
 //----------------------------------------------------------------------------//
 UVector2 Window::getSize() const
 {
-    return d_area.getSize();
+    // todo: vector vs size
+    const USize sz = d_area.getSize();
+    return UVector2(sz.d_width, sz.d_height);
 }
 
 //----------------------------------------------------------------------------//
 UDim Window::getWidth() const
 {
-    return d_area.getSize().d_x;
+    return d_area.getSize().d_width;
 }
 
 //----------------------------------------------------------------------------//
 UDim Window::getHeight() const
 {
-    return d_area.getSize().d_y;
+    return d_area.getSize().d_height;
 }
 
 //----------------------------------------------------------------------------//
@@ -2831,7 +2842,10 @@ void Window::onParentSized(WindowEventArgs& e)
 {
     // set window area back on itself to cause minimum and maximum size
     // constraints to be applied as required.  (fire no events though)
-    setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
+
+    // todo: vector vs size
+    const USize sz = d_area.getSize();
+    setArea_impl(d_area.getPosition(), UVector2(sz.d_width, sz.d_height), false, false);
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
@@ -3405,9 +3419,9 @@ void Window::updateGeometryRenderSettings()
     else
     {
         // position is the offset of the window on the dest surface.
-        const Rect ucrect(getUnclippedOuterRect());
-        d_geometry->setTranslation(Vector3<>(ucrect.d_left - ctx.offset.d_x,
-                                             ucrect.d_top - ctx.offset.d_y, 0.0f));
+        const Rect<> ucrect(getUnclippedOuterRect());
+        d_geometry->setTranslation(Vector3<>(ucrect.d_min.d_x - ctx.offset.d_x,
+                                             ucrect.d_min.d_y - ctx.offset.d_y, 0.0f));
     }
     initialiseClippers(ctx);
 }
@@ -3722,14 +3736,14 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 d_parent->getInnerRectClipper());
         else
             rendering_window->setClippingRegion(
-                Rect(Vector2<>(0, 0),
-                     System::getSingleton().getRenderer()->getDisplaySize()));
+                Rect<>(Vector2<>(0, 0),
+                       System::getSingleton().getRenderer()->getDisplaySize()));
 
-        d_geometry->setClippingRegion(Rect(Vector2<>(0, 0), d_pixelSize));
+        d_geometry->setClippingRegion(Rect<>(Vector2<>(0, 0), d_pixelSize));
     }
     else
     {
-        Rect geo_clip(getOuterRectClipper());
+        Rect<> geo_clip(getOuterRectClipper());
 
         if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
             geo_clip.offset(Vector2<>(-ctx.offset.d_x, -ctx.offset.d_y));
@@ -4215,7 +4229,7 @@ void Window::cloneChildWidgetsTo(Window& target) const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getChildWindowContentArea(const bool non_client) const
+Rect<> Window::getChildWindowContentArea(const bool non_client) const
 {
     return non_client ?
         getNonClientChildWindowContentArea_impl() :
@@ -4223,13 +4237,13 @@ Rect Window::getChildWindowContentArea(const bool non_client) const
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getNonClientChildWindowContentArea_impl() const
+Rect<> Window::getNonClientChildWindowContentArea_impl() const
 {
     return getUnclippedOuterRect_impl();
 }
 
 //----------------------------------------------------------------------------//
-Rect Window::getClientChildWindowContentArea_impl() const
+Rect<> Window::getClientChildWindowContentArea_impl() const
 {
     return getUnclippedInnerRect_impl();
 }

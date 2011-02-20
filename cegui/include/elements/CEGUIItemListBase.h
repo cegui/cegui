@@ -70,7 +70,7 @@ public:
         Rect object describing the window relative area of the that is to be used for rendering
         the items.
     */
-    virtual Rect getItemRenderArea(void) const = 0;
+    virtual Rect<> getItemRenderArea(void) const = 0;
 };
 
 /*!
@@ -370,7 +370,7 @@ public:
         Rect object describing the window relative area of the that is to be used for rendering
         the items.
     */
-    Rect getItemRenderArea(void) const;
+    Rect<> getItemRenderArea(void) const;
 
     /*!
     \brief

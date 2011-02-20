@@ -451,24 +451,24 @@ public:
 };
 
 template<>
-class PropertyHelper<Rect>
+class PropertyHelper<Rect<> >
 {
 public:
-    typedef Rect return_type;
-    typedef const Rect& pass_type;
+    typedef Rect<> return_type;
+    typedef const Rect<>& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Rect");
+        static String type("Rect<>");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Rect val(0, 0, 0, 0);
-        sscanf(str.c_str(), " l:%g t:%g r:%g b:%g", &val.d_left, &val.d_top, &val.d_right, &val.d_bottom);
+        Rect<> val(0, 0, 0, 0);
+        sscanf(str.c_str(), " l:%g t:%g r:%g b:%g", &val.d_min.d_x, &val.d_min.d_y, &val.d_max.d_x, &val.d_max.d_y);
 
         return val;
     }
@@ -477,7 +477,7 @@ public:
     {
         char buff[256];
         snprintf(buff, sizeof(buff), "l:%g t:%g r:%g b:%g",
-                 val.d_left, val.d_top, val.d_right, val.d_bottom);
+                 val.d_min.d_x, val.d_min.d_y, val.d_max.d_x, val.d_max.d_y);
 
         return String(buff);
     }

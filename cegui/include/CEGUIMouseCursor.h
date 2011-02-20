@@ -198,7 +198,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setConstraintArea(const Rect* area);
+	void	setConstraintArea(const Rect<>* area);
 
 
 	/*!
@@ -277,7 +277,7 @@ public:
 	\return
 		Rect object describing the active area that the mouse cursor is constrained to.
 	*/
-	Rect	getConstraintArea(void) const;
+	Rect<> getConstraintArea(void) const;
 
 
 	/*!

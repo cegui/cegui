@@ -58,13 +58,13 @@ void NullRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderTarget::setArea(const Rect& area)
+void NullRenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& NullRenderTarget::getArea() const
+const Rect<>& NullRenderTarget::getArea() const
 {
     return d_area;
 }

@@ -58,8 +58,8 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-        Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-        Rect wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
+        const Rect<> textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
+        const Rect<> wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
 
         sz.d_width  = PixelAligned(sz.d_width + wndArea.getWidth() - textArea.getWidth());
         sz.d_height = PixelAligned(sz.d_height + wndArea.getHeight() - textArea.getHeight());

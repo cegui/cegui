@@ -50,7 +50,7 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardTree::getTreeRenderArea(void) const
+    Rect<> FalagardTree::getTreeRenderArea(void) const
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
@@ -88,7 +88,7 @@ namespace CEGUI
 	{
 		Tree* tree = (Tree*)d_window;
 		//Set the render area for this.
-        Rect rect = getTreeRenderArea();
+        Rect<> rect = getTreeRenderArea();
         tree->setItemRenderArea(rect);
 		const WidgetLookFeel& wlf = getLookNFeel();
 

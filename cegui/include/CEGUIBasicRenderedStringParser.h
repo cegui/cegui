@@ -171,7 +171,7 @@ protected:
     //! initial colours
     ColourRect d_initialColours;
     //! active padding values.
-    Rect d_padding;
+    Rect<> d_padding;
     //! active colour values.
     ColourRect d_colours;
     //! active font.

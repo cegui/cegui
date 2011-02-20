@@ -46,11 +46,11 @@ public:
     BasicImage(const String& name);
 
     BasicImage(const String& name, Texture* texture,
-               const Rect& tex_area, const Vector2<>& offset,
+               const Rect<>& tex_area, const Vector2<>& offset,
                const bool autoscaled, const Size<>& native_res);
 
     void setTexture(Texture* texture);
-    void setArea(const Rect& pixel_area);
+    void setArea(const Rect<>& pixel_area);
     void setOffset(const Vector2<>& pixel_offset);
     void setAutoScaled(const bool autoscaled);
     void setNativeResolution(const Size<>& native_res);
@@ -60,9 +60,9 @@ public:
     const Size<>& getRenderedSize() const;
     const Vector2<>& getRenderedOffset() const;
     void render(GeometryBuffer& buffer,
-                        const Rect& dest_area,
-                        const Rect* clip_area,
-                        const ColourRect& colours) const;
+                const Rect<>& dest_area,
+                const Rect<>* clip_area,
+                const ColourRect& colours) const;
     void notifyDisplaySizeChanged(const Size<>& size);
     Image& clone() const;
 
@@ -72,7 +72,7 @@ protected:
     //! Texture used by this image.
     Texture* d_texture;
     //! Rect defining texture co-ords for this image.
-    Rect d_area;
+    Rect<> d_area;
     //! Actual pixel size.
     Size<> d_pixelSize;
     //! Defined pixel offset

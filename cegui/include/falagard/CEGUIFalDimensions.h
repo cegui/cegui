@@ -78,7 +78,7 @@ namespace CEGUI
         \return
             float value which represents, in pixels, the same value as this BaseDim.
         */
-        float getValue(const Window& wnd, const Rect& container) const;
+        float getValue(const Window& wnd, const Rect<>& container) const;
 
         /*!
         \brief
@@ -164,7 +164,7 @@ namespace CEGUI
             Implementataion method to return the base value for this BaseDim.  This method should
             not attempt to apply the mathematical operator; this is handled automatically by BaseDim.
         */
-        virtual float getValue_impl(const Window& wnd, const Rect& container) const = 0;
+        virtual float getValue_impl(const Window& wnd, const Rect<>& container) const = 0;
 
         /*!
         \brief
@@ -217,7 +217,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
 
@@ -276,7 +276,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -340,7 +340,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -375,7 +375,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -419,7 +419,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -470,7 +470,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rect<>& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -611,7 +611,7 @@ namespace CEGUI
             Rect object describing the pixels area represented by this ComponentArea when using \a wnd
             as a reference for calculating the final pixel dimensions.
         */
-        Rect getPixelRect(const Window& wnd) const;
+        Rect<> getPixelRect(const Window& wnd) const;
 
         /*!
         \brief
@@ -627,7 +627,7 @@ namespace CEGUI
             Rect object describing the pixels area represented by this ComponentArea when using \a wnd
             and \a container as a reference for calculating the final pixel dimensions.
         */
-        Rect getPixelRect(const Window& wnd, const Rect& container) const;
+        Rect<> getPixelRect(const Window& wnd, const Rect<>& container) const;
 
         /*!
         \brief

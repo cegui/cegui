@@ -34,8 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class CEGUIEXPORT XMLHandler :
-        public AllocatedObject<XMLHandler>
+    class CEGUIEXPORT XMLHandler
     {
     public:
         /*!

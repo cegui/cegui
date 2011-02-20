@@ -86,7 +86,7 @@ namespace CEGUI
         if (w->isBeingDragMoved())
         {
             Size<> pixel_size = w->getPixelSize();
-            Rect targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
+            Rect<> targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
             targetArea.offset(w->getDragMoveOffset());
             imagery = &wlf.getStateImagery("DragGhost");
             imagery->render(*w, targetArea);

@@ -744,7 +744,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
         // This is the middle-mouse-click event, remember initial drag position
         Window *but_pane = getTabButtonPane();
         d_btGrabPos = (me.position.d_x -
-            but_pane->getOuterRectClipper().d_left) -
+            but_pane->getOuterRectClipper().d_min.d_x) -
             d_firstTabOffset;
     }
     else if (me.button == NoButton)
@@ -752,7 +752,7 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
         // Regular mouse move event
         Window *but_pane = getTabButtonPane();
         float new_to = (me.position.d_x -
-            but_pane->getOuterRectClipper().d_left) -
+            but_pane->getOuterRectClipper().d_min.d_x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
             (new_to > d_firstTabOffset + 0.9))

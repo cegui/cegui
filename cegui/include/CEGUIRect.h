@@ -1,12 +1,12 @@
 /***********************************************************************
 	filename: 	CEGUIRect.h
-	created:	8/3/2004
-	author:		Paul D Turner
+	created:	14/2/2011
+	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
 	purpose:	Defines 'Rect' class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -41,75 +41,143 @@ namespace CEGUI
 \brief
 	Class encapsulating operations on a Rectangle
 */
-class CEGUIEXPORT Rect :
-    public AllocatedObject<Rect>
+template<typename T>
+class Rect:
+    public AllocatedObject<Rect<T> >
 {
 public:
-	Rect(void) {}
+	inline Rect()
+    {}
 
+	inline Rect(const T& left, const T& top, const T& right, const T& bottom):
+        d_min(left, top),
+        d_max(right, bottom)
+    {}
 
-	/*!
-	\brief
-		Constructor for a Rect.
-	*/
-	Rect(float left, float top, float right, float bottom);
+    inline Rect(const Vector2<T>& min, const Vector2<T>& max):
+        d_min(min),
+        d_max(max)
+    {}
 
-    Rect(const Vector2<>& pos, const Size<>& sz);
+    inline Rect(const Vector2<T>& pos, const Size<T>& size):
+        d_min(pos),
+        d_max(pos + Vector2<T>(size.d_width, size.d_height))
+    {}
 
+    inline Rect(const Rect& r):
+        d_min(r.d_min),
+        d_max(r.d_max)
+    {}
 
-	/*!
-	\brief
-		Return top-left postion of Rect as a Point
-	*/
-	Vector2<> getPosition(void) const		{return Vector2<>(d_left, d_top);}
+    inline Rect& operator=(const Rect& rhs)
+    {
+        d_min = rhs.d_min;
+        d_max = rhs.d_max;
 
-	/*!
-	\brief
-		return width of Rect area
-	*/
-	float	getWidth(void) const		{return d_right - d_left;}
+        return *this;
+    }
 
+    inline void left(const T& v)
+    {
+        d_min.d_x = v;
+    }
 
-	/*!
-	\brief
-		return height of Rect area
-	*/
-	float	getHeight(void) const		{return d_bottom - d_top;}
+    inline const T& left() const
+    {
+        return d_min.d_x;
+    }
 
+    inline void top(const T& v)
+    {
+        d_min.d_y = v;
+    }
 
-	/*!
-	\brief
-		return the size of the Rect area
-	*/
-	Size<>	getSize(void) const			{return Size<>(getWidth(), getHeight());}
+    inline const T& top() const
+    {
+        return d_min.d_y;
+    }
 
+    inline void right(const T& v)
+    {
+        d_max.d_x = v;
+    }
+
+    inline const T& right() const
+    {
+        return d_max.d_x;
+    }
+
+    inline void bottom(const T& v)
+    {
+        d_max.d_y = v;
+    }
+
+    inline const T& bottom() const
+    {
+        return d_max.d_y;
+    }
 
 	/*!
 	\brief
 		set the position of the Rect (leaves size in tact)
 	*/
-	void	setPosition(const Vector2<>& pt);
+	void setPosition(const Vector2<T>& min)
+    {
+        const Size<T> size = getSize();
+        d_min = min;
+        setSize(size);
+    }
 
+    /*!
+	\brief
+		Return top-left position of Rect as a Vector2<T>
+	*/
+	const Vector2<T>& getPosition() const
+    {
+        return d_min;
+    }
+
+    void setSize(const Size<T>& size)
+    {
+        d_max = d_min + Vector2<T>(size.d_width, size.d_height);
+    }
+
+    /*!
+	\brief
+		return the size of the Rect area
+	*/
+	inline Size<T> getSize() const
+    {
+        return Size<T>(getWidth(), getHeight());
+    }
+
+    void setWidth(const T& w)
+    {
+        d_max.d_x = d_min.d_x + w;
+    }
 
 	/*!
 	\brief
-		set the width of the Rect object
+		return width of Rect area
 	*/
-	void	setWidth(float width)		{d_right = d_left + width;}
+	inline T getWidth() const
+    {
+        return d_max.d_x - d_min.d_x;
+    }
+
+    void setHeight(const T& h)
+    {
+        d_max.d_y = d_min.d_y + h;
+    }
 
 	/*!
 	\brief
-		set the height of the Rect object
+		return height of Rect area
 	*/
-	void	setHeight(float height)		{d_bottom = d_top + height;}
-
-
-	/*!
-	\brief
-		set the size of the Rect area
-	*/
-	void	setSize(const Size<>& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
-
+	inline T getHeight() const
+    {
+        return d_max.d_y - d_min.d_y;
+    }
 
 	/*!
 	\brief
@@ -119,33 +187,67 @@ public:
 		It can be assumed that if d_left == d_right, or d_top == d_bottom, or getWidth() == 0, or getHeight() == 0, then
 		'this' rect was totally outside 'rect'.
 	*/
-	Rect	getIntersection(const Rect& rect) const;
+	inline Rect getIntersection(const Rect& rect) const
+    {
+        if ((d_max.d_x > rect.d_min.d_x) &&
+		    (d_min.d_x < rect.d_max.d_x) &&
+		    (d_max.d_y > rect.d_min.d_y) &&
+		    (d_min.d_y < rect.d_max.d_y))
+	    {
+		    Rect ret;
 
+		    // fill in ret with the intersection
+		    ret.d_min.d_x = (d_min.d_x > rect.d_min.d_x) ? d_min.d_x : rect.d_min.d_x;
+		    ret.d_max.d_x = (d_max.d_x < rect.d_max.d_x) ? d_max.d_x : rect.d_max.d_x;
+		    ret.d_min.d_y = (d_min.d_y > rect.d_min.d_y) ? d_min.d_y : rect.d_min.d_y;
+		    ret.d_max.d_y = (d_max.d_y < rect.d_max.d_y) ? d_max.d_y : rect.d_max.d_y;
+
+		    return ret;
+	    }
+	    else
+	    {
+		    return Rect(0.0f, 0.0f, 0.0f, 0.0f);
+	    }
+    }
 
 	/*!
 	\brief
 		Applies an offset the Rect object
 
 	\param pt
-		Point object containing the offsets to be applied to the Rect.
+		Vector2 object containing the offsets to be applied to the Rect.
 
 	\return
 		this Rect after the offset is performed
 	*/
-	Rect&	offset(const Vector2<>& pt);
-
+	inline void offset(const Vector2<T>& v)
+    {
+        d_min += v;
+        d_max += v;
+    }
 
 	/*!
 	\brief
-		Return true if the given Point falls within this Rect
+		Return true if the given Vector2 falls within this Rect
 
 	\param pt
-		Point object describing the position to test.
+		Vector2 object describing the position to test.
 
 	\return
 		true if position \a pt is within this Rect's area, else false
 	*/
-	bool	isPointInRect(const Vector2<>& pt) const;
+	inline bool isPointInRect(const Vector2<T>& v) const
+    {
+		if ((d_min.d_x >  v.d_x) ||
+		    (d_max.d_x <= v.d_x) ||
+		    (d_min.d_y >  v.d_y) ||
+		    (d_max.d_y <= v.d_y))
+	    {
+		    return false;
+	    }
+
+	    return true;
+    }
 
 
 	/*!
@@ -158,7 +260,18 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMax(const Size<>& sz);
+	void constrainSizeMax(const Size<T>& size)
+    {
+        if (getWidth() > size.d_width)
+	    {
+		    setWidth(size.d_width);
+	    }
+
+	    if (getHeight() > size.d_height)
+	    {
+		    setHeight(size.d_height);
+	    }
+    }
 
 
 	/*!
@@ -171,7 +284,18 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSizeMin(const Size<>& sz);
+	void constrainSizeMin(const Size<T>& size)
+    {
+        if (getWidth() < size.d_width)
+	    {
+		    setWidth(size.d_width);
+	    }
+
+	    if (getHeight() < size.d_height)
+	    {
+		    setHeight(size.d_height);
+	    }
+    }
 
 
 	/*!
@@ -187,31 +311,70 @@ public:
 	\return
 		'this' Rect object after the constrain operation
 	*/
-	Rect&	constrainSize(const Size<>& max_sz, const Size<>& min_sz);
+	void constrainSize(const Size<T>& max_sz, const Size<T>& min_sz)
+    {
+        Size<T> curr_sz(getSize());
+
+	    if (curr_sz.d_width > max_sz.d_width)
+	    {
+		    setWidth(max_sz.d_width);
+	    }
+	    else if (curr_sz.d_width < min_sz.d_width)
+	    {
+		    setWidth(min_sz.d_width);
+	    }
+
+	    if (curr_sz.d_height > max_sz.d_height)
+	    {
+		    setHeight(max_sz.d_height);
+	    }
+	    else if (curr_sz.d_height < min_sz.d_height)
+	    {
+		    setHeight(min_sz.d_height);
+	    }
+    }
 
 
 	/*************************************************************************
 		Operators
 	*************************************************************************/
-	bool	operator==(const Rect& rhs) const
+	inline bool operator==(const Rect& rhs) const
 	{
-		return ((d_left == rhs.d_left) && (d_right == rhs.d_right) && (d_top == rhs.d_top) && (d_bottom == rhs.d_bottom));
+		return ((d_min == rhs.d_min) && (d_max == rhs.d_max));
 	}
 
-	bool	operator!=(const Rect& rhs) const		{return !operator==(rhs);}
+	inline bool operator!=(const Rect& rhs) const
+    {
+        return !operator==(rhs);
+    }
 
-	Rect&	operator=(const Rect& rhs);
+    inline Rect operator*(T scalar) const
+    {
+        return Rect(d_min * scalar, d_max * scalar);
+    }
 
-    Rect operator*(float scalar) const      { return Rect(d_left * scalar, d_top * scalar, d_right * scalar, d_bottom * scalar); }
-    const Rect& operator*=(float scalar)    { d_left *= scalar; d_top *= scalar; d_right *= scalar; d_bottom *= scalar; return *this; }
+    const Rect& operator*=(T scalar)
+    {
+        d_min *= scalar;
+        d_max *= scalar;
+        return *this;
+    }
 
-	Rect operator+(const Rect& r) const		{ return Rect(d_left + r.d_left, d_top + r.d_top, d_right + r.d_right, d_bottom + r.d_bottom); }
-
-
+	Rect operator+(const Rect& r) const
+    {
+        return Rect(d_min + r.d_min, d_max + r.d_max);
+    }
+    
 	/*************************************************************************
 		Data Fields
 	*************************************************************************/
-	float	d_left, d_top, d_right, d_bottom;
+    Vector2<T> d_min;
+    Vector2<T> d_max;
+
+    // d_min.d_x is former d_left
+    // d_min.d_y is former d_top
+    // d_max.d_x is former d_right
+    // d_max.d_y is former d_bottom
 };
 
 } // End of  CEGUI namespace section

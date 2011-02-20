@@ -61,7 +61,7 @@ public:
     void setTranslation(const Vector3<>& t);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3<>& p);
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rect<>& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -105,7 +105,7 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rect<> d_clipRect;
     //! translation vector
     Vector3<> d_translation;
     //! rotation quaternion

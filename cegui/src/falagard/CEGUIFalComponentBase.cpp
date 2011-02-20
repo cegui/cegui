@@ -42,26 +42,26 @@ namespace CEGUI
     FalagardComponentBase::~ FalagardComponentBase()
     {}
 
-    void FalagardComponentBase::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void FalagardComponentBase::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const
     {
-        Rect dest_rect(d_area.getPixelRect(srcWindow));
+        Rect<> dest_rect(d_area.getPixelRect(srcWindow));
 
         if (!clipper)
             clipper = &dest_rect;
 
-        const Rect final_clip_rect(dest_rect.getIntersection(*clipper));
+        const Rect<> final_clip_rect(dest_rect.getIntersection(*clipper));
         render_impl(srcWindow, dest_rect, modColours,
                     &final_clip_rect, clipToDisplay);
     }
 
-    void FalagardComponentBase::render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void FalagardComponentBase::render(Window& srcWindow, const Rect<>& baseRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const
     {
-        Rect dest_rect(d_area.getPixelRect(srcWindow, baseRect));
+        Rect<> dest_rect(d_area.getPixelRect(srcWindow, baseRect));
 
         if (!clipper)
             clipper = &dest_rect;
 
-        const Rect final_clip_rect(dest_rect.getIntersection(*clipper));
+        const Rect<> final_clip_rect(dest_rect.getIntersection(*clipper));
         render_impl(srcWindow, dest_rect, modColours,
                     &final_clip_rect, clipToDisplay);
     }

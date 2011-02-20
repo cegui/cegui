@@ -1347,7 +1347,7 @@ void MultiColumnList::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect renderArea(getListRenderArea());
+	Rect<> renderArea(getListRenderArea());
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -1539,10 +1539,10 @@ bool MultiColumnList::clearAllSelections_impl(void)
 ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rect listArea(getListRenderArea());
+    Rect<> listArea(getListRenderArea());
 
-    float y = listArea.d_top - getVertScrollbar()->getScrollPosition();
-    float x = listArea.d_left - getHorzScrollbar()->getScrollPosition();
+    float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
 
     for (uint i = 0; i < getRowCount(); ++i)
     {
@@ -1563,11 +1563,8 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
                 }
-
             }
-
         }
-
     }
 
     return 0;
@@ -2345,7 +2342,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     Return a Rect object describing, in un-clipped pixels, the window
     relative area that is to be used for rendering list items.
 *************************************************************************/
-Rect MultiColumnList::getListRenderArea() const
+Rect<> MultiColumnList::getListRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

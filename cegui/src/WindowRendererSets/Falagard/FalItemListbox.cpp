@@ -54,7 +54,7 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Rect FalagardItemListbox::getItemRenderArea(void) const
+    Rect<> FalagardItemListbox::getItemRenderArea(void) const
     {
         ItemListbox* lb = static_cast<ItemListbox*>(d_window);
         // get WidgetLookFeel for the assigned look.
@@ -97,12 +97,12 @@ namespace CEGUI
         d_widgetLookAssigned = false;
     }
 
-    Rect FalagardItemListbox::getUnclippedInnerRect() const
+    Rect<> FalagardItemListbox::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
             return d_window->getUnclippedOuterRect();
 
-        const Rect lr(getItemRenderArea());
+        const Rect<> lr(getItemRenderArea());
         return CoordConverter::windowToScreen(*d_window, lr);
     }
 

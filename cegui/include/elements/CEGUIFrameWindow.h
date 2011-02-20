@@ -637,7 +637,7 @@ protected:
 	\brief
 		Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing area for this window.
 	*/
-	virtual	Rect	getSizingRect(void) const		{return Rect(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);}
+	virtual	Rect<>	getSizingRect(void) const		{return Rect<>(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);}
 
 
 	/*!

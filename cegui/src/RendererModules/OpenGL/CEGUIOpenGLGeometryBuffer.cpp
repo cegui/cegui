@@ -59,8 +59,8 @@ void OpenGLGeometryBuffer::draw() const
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(static_cast<GLint>(d_clipRect.d_left),
-              static_cast<GLint>(vp[3] - d_clipRect.d_bottom),
+    glScissor(static_cast<GLint>(d_clipRect.left()),
+              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
               static_cast<GLint>(d_clipRect.getWidth()),
               static_cast<GLint>(d_clipRect.getHeight()));
 
@@ -127,12 +127,12 @@ void OpenGLGeometryBuffer::setPivot(const Vector3<>& p)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setClippingRegion(const Rect& region)
+void OpenGLGeometryBuffer::setClippingRegion(const Rect<>& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//

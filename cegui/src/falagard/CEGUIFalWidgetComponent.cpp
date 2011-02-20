@@ -160,11 +160,11 @@ namespace CEGUI
     {
         CEGUI_TRY
         {
-            Rect pixelArea(d_area.getPixelRect(owner));
-            URect window_area(cegui_absdim(pixelArea.d_left),
-                              cegui_absdim(pixelArea.d_top),
-                              cegui_absdim(pixelArea.d_right),
-                              cegui_absdim(pixelArea.d_bottom));
+            Rect<> pixelArea(d_area.getPixelRect(owner));
+            URect window_area(cegui_absdim(pixelArea.left()),
+                              cegui_absdim(pixelArea.top()),
+                              cegui_absdim(pixelArea.right()),
+                              cegui_absdim(pixelArea.bottom()));
 
             Window* wnd = WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix);
             wnd->setArea(window_area);

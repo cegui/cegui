@@ -60,7 +60,7 @@ public:
     void setTranslation(const Vector3<>& v);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3<>& p);
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rect<>& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -75,7 +75,7 @@ protected:
     //! Texture that is set as active
     NullTexture* d_activeTexture;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rect<> d_clipRect;
     //! translation vector
     Vector3<> d_translation;
     //! rotation quaternion

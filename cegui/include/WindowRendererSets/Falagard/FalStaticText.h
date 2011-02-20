@@ -178,8 +178,8 @@ namespace CEGUI
         void configureScrollbars(void);
         Scrollbar* getVertScrollbar(void) const;
         Scrollbar* getHorzScrollbar(void) const;
-        Rect getTextRenderArea(void) const;
-        Size<> getDocumentSize(const Rect& renderArea) const;
+        Rect<> getTextRenderArea(void) const;
+        Size<> getDocumentSize(const Rect<>& renderArea) const;
         void setupStringFormatter() const;
 
         // overridden event handlers

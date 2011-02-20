@@ -91,7 +91,7 @@ public:
         relative to the owner of the RenderingWindow.
 
     */
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rect<>& region);
 
     /*!
     \brief

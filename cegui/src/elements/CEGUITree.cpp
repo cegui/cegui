@@ -621,15 +621,15 @@ void Tree::populateGeometryBuffer()
     //Rect itemsArea(0,0,500,500);
     
     // set up some initial positional details for items
-    itemPos.d_x = d_itemArea.d_left - d_horzScrollbar->getScrollPosition();
-    itemPos.d_y = d_itemArea.d_top - d_vertScrollbar->getScrollPosition();
+    itemPos.d_x = d_itemArea.left() - d_horzScrollbar->getScrollPosition();
+    itemPos.d_y = d_itemArea.top() - d_vertScrollbar->getScrollPosition();
     
     drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
                  getEffectiveAlpha());
 }
 
 // Recursive!
-void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
+void Tree::drawItemList(LBItemList& itemList, Rect<>& itemsArea, float widest,
                         Vector2<>& itemPos, GeometryBuffer& geometry, float alpha)
 {
     if (itemList.empty())
@@ -637,7 +637,7 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
     
     // loop through the items
     Size<>   itemSize;
-    Rect     itemClipper, itemRect;
+    Rect<>   itemClipper, itemRect;
     size_t   itemCount = itemList.size();
     bool     itemIsVisible;
     for (size_t i = 0; i < itemCount; ++i)
@@ -648,11 +648,11 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
         itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
         
         // calculate destination area for this item.
-        itemRect.d_left = itemPos.d_x;
-        itemRect.d_top  = itemPos.d_y;
+        itemRect.left(itemPos.d_x);
+        itemRect.top(itemPos.d_y);
         itemRect.setSize(itemSize);
         itemClipper = itemRect.getIntersection(itemsArea);
-        itemRect.d_left += 20;     // start text past open/close buttons
+        itemRect.d_min.d_x += 20; // start text past open/close buttons
         
         if (itemClipper.getHeight() > 0)
         {
@@ -667,11 +667,11 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
         // Process this item's list if it has items in it.
         if (itemList[i]->getItemCount() > 0)
         {
-            Rect buttonRenderRect;
-            buttonRenderRect.d_left = itemPos.d_x;
-            buttonRenderRect.d_right = buttonRenderRect.d_left + 10;
-            buttonRenderRect.d_top = itemPos.d_y;
-            buttonRenderRect.d_bottom = buttonRenderRect.d_top + 10;
+            Rect<> buttonRenderRect;
+            buttonRenderRect.left(itemPos.d_x);
+            buttonRenderRect.right(buttonRenderRect.left() + 10);
+            buttonRenderRect.top(itemPos.d_y);
+            buttonRenderRect.bottom(buttonRenderRect.top() + 10);
             itemList[i]->setButtonLocation(buttonRenderRect);
             
             if (itemList[i]->getIsOpen())
@@ -717,8 +717,7 @@ void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
 *************************************************************************/
 void Tree::configureScrollbars(void)
 {
-    Rect  renderArea(getTreeRenderArea());
-    
+    Rect<> renderArea(getTreeRenderArea());
     
     //This is becuase CEGUI IS GAY! and fires events before the item is initialized
     if(!d_vertScrollbar)
@@ -736,14 +735,12 @@ void Tree::configureScrollbars(void)
     if ((totalHeight > renderArea.getHeight()) || d_forceVertScroll)
     {
         d_vertScrollbar->show();
-        renderArea.d_right -= d_vertScrollbar->getWidth().d_offset + d_vertScrollbar->getXPosition().d_offset;
-        //      renderArea.d_right -= d_vertScrollbar->getAbsoluteWidth() + d_vertScrollbar->getAbsoluteXPosition();
+        renderArea.d_max.d_x -= d_vertScrollbar->getWidth().d_offset + d_vertScrollbar->getXPosition().d_offset;
         // show or hide horizontal scroll bar as required (or as specified by option)
         if ((widestItem > renderArea.getWidth()) || d_forceHorzScroll)
         {
             d_horzScrollbar->show();
-            //         renderArea.d_bottom -= d_horzScrollbar->getAbsoluteHeight();
-            renderArea.d_bottom -= d_horzScrollbar->getHeight().d_offset;
+            renderArea.d_max.d_y -= d_horzScrollbar->getHeight().d_offset;
         }
         else
         {
@@ -757,15 +754,14 @@ void Tree::configureScrollbars(void)
         if ((widestItem > renderArea.getWidth()) || d_forceHorzScroll)
         {
             d_horzScrollbar->show();
-            //         renderArea.d_bottom -= d_horzScrollbar->getAbsoluteHeight();
-            renderArea.d_bottom -= d_vertScrollbar->getHeight().d_offset;
+            renderArea.d_max.d_y -= d_vertScrollbar->getHeight().d_offset;
             
             // show or hide vertical scroll bar as required (or as specified by option)
             if ((totalHeight > renderArea.getHeight()) || d_forceVertScroll)
             {
                 d_vertScrollbar->show();
                 //            renderArea.d_right -= d_vertScrollbar->getAbsoluteWidth();
-                renderArea.d_right -= d_vertScrollbar->getWidth().d_offset;
+                renderArea.d_max.d_x -= d_vertScrollbar->getWidth().d_offset;
             }
             else
             {
@@ -882,7 +878,7 @@ void Tree::getWidestItemWidthInList(const LBItemList &itemList, int itemDepth, f
     size_t itemCount = itemList.size();
     for (size_t index = 0; index < itemCount; ++index)
     {
-        Rect buttonLocation = itemList[index]->getButtonLocation();
+        Rect<> buttonLocation = itemList[index]->getButtonLocation();
         float thisWidth = itemList[index]->getPixelSize().d_width +
         buttonLocation.getWidth() +
         (d_horzScrollbar->getScrollPosition() / HORIZONTAL_STEP_SIZE_DIVISOR) +
@@ -934,12 +930,12 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 *************************************************************************/
 TreeItem* Tree::getItemAtPoint(const Vector2<>& pt) const
 {
-    Rect renderArea(getTreeRenderArea());
+    Rect<> renderArea(getTreeRenderArea());
     
     // point must be within the rendering area of the Tree.
     if (renderArea.isPointInRect(pt))
     {
-        float y = renderArea.d_top - d_vertScrollbar->getScrollPosition();
+        float y = renderArea.top() - d_vertScrollbar->getScrollPosition();
         
         // test if point is above first item
         if (pt.d_y >= y)
@@ -1104,9 +1100,9 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             TreeEventArgs args(this);
             args.treeItem = item;
             populateGeometryBuffer();
-            Rect buttonLocation = item->getButtonLocation();
-            if ((localPos.d_x >= buttonLocation.d_left) && (localPos.d_x <= buttonLocation.d_right) &&
-                (localPos.d_y >= buttonLocation.d_top) && (localPos.d_y <= buttonLocation.d_bottom))
+            Rect<> buttonLocation = item->getButtonLocation();
+            if ((localPos.d_x >= buttonLocation.left()) && (localPos.d_x <= buttonLocation.right()) &&
+                (localPos.d_y >= buttonLocation.top()) && (localPos.d_y <= buttonLocation.bottom()))
             {
                 item->toggleIsOpen();
                 if (item->getIsOpen())

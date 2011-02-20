@@ -101,7 +101,7 @@ void NullTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::blitFromMemory(void* /*sourceData*/, const Rect& /*area*/)
+void NullTexture::blitFromMemory(void* /*sourceData*/, const Rect<>& /*area*/)
 {
     // do nothing
 }

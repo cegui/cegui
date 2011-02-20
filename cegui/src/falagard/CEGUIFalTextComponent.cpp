@@ -225,7 +225,7 @@ namespace CEGUI
         }
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool /*clipToDisplay*/) const
+    void TextComponent::render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool /*clipToDisplay*/) const
     {
         // get font to use
         Font* font;
@@ -288,11 +288,11 @@ namespace CEGUI
         switch(vertFormatting)
         {
         case VTF_CENTRE_ALIGNED:
-            destRect.d_top += (destRect.getHeight() - textHeight) * 0.5f;
+            destRect.d_min.d_y += (destRect.getHeight() - textHeight) * 0.5f;
             break;
 
         case VTF_BOTTOM_ALIGNED:
-            destRect.d_top = destRect.d_bottom - textHeight;
+            destRect.d_min.d_y = destRect.d_max.d_y - textHeight;
             break;
 
         default:

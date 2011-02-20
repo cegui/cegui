@@ -58,14 +58,14 @@ void OpenGLRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderTarget::setArea(const Rect& area)
+void OpenGLRenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& OpenGLRenderTarget::getArea() const
+const Rect<>& OpenGLRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -73,8 +73,8 @@ const Rect& OpenGLRenderTarget::getArea() const
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::activate()
 {
-    glViewport(static_cast<GLsizei>(d_area.d_left),
-               static_cast<GLsizei>(d_area.d_top),
+    glViewport(static_cast<GLsizei>(d_area.left()),
+               static_cast<GLsizei>(d_area.top()),
                static_cast<GLsizei>(d_area.getWidth()),
                static_cast<GLsizei>(d_area.getHeight()));
 
@@ -101,8 +101,8 @@ void OpenGLRenderTarget::unprojectPoint(const GeometryBuffer& buff,
         static_cast<const OpenGLGeometryBuffer&>(buff);
 
     const GLint vp[4] = {
-        static_cast<GLint>(d_area.d_left),
-        static_cast<GLint>(d_area.d_top),
+        static_cast<GLint>(d_area.left()),
+        static_cast<GLint>(d_area.top()),
         static_cast<GLint>(d_area.getWidth()),
         static_cast<GLint>(d_area.getHeight())
     };

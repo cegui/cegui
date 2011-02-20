@@ -105,25 +105,25 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
                                         const Vector2<>& position,
                                         const ColourRect* mod_colours,
-                                        const Rect* clip_rect,
+                                        const Rect<>* clip_rect,
                                         const float vertical_space,
                                         const float /*space_extra*/) const
 {
     if (!d_image)
         return;
 
-    CEGUI::Rect dest(position.d_x, position.d_y, 0, 0);
+    CEGUI::Rect<> dest(position.d_x, position.d_y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        dest.d_top += vertical_space - getPixelSize().d_height;
+        dest.d_min.d_y += vertical_space - getPixelSize().d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        dest.d_top += (vertical_space - getPixelSize().d_height) / 2 ;
+        dest.d_min.d_y += (vertical_space - getPixelSize().d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
@@ -173,8 +173,8 @@ Size<> RenderedStringImageComponent::getPixelSize() const
             sz.d_width = d_size.d_width;
         if (d_size.d_height != 0.0)
             sz.d_height = d_size.d_height;
-        sz.d_width += (d_padding.d_left + d_padding.d_right);
-        sz.d_height += (d_padding.d_top + d_padding.d_bottom);
+        sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
+        sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
     }
 
     return sz;

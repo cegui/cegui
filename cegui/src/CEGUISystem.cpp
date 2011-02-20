@@ -133,7 +133,7 @@ struct MouseClickTracker
 
 	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
-	Rect			d_click_area;		//!< area used to detect multi-clicks
+	Rect<>			d_click_area;		//!< area used to detect multi-clicks
     Window*         d_target_window;    //!< target window for any events generated.
 };
 

@@ -531,10 +531,10 @@ public:
      \param buttonOffset
         Location of the button in screenspace.
      */
-    void setButtonLocation(Rect &buttonOffset)
+    void setButtonLocation(Rect<>& buttonOffset)
     { d_buttonLocation = buttonOffset; }
 
-    Rect &getButtonLocation(void)
+    Rect<>& getButtonLocation(void)
     { return d_buttonLocation; }
 
     bool getIsOpen(void)
@@ -586,8 +586,8 @@ public:
      \return
         Nothing.
      */
-    virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
-                      float alpha, const Rect* clipper) const;
+    virtual void draw(GeometryBuffer& buffer, const Rect<>& targetRect,
+                      float alpha, const Rect<>* clipper) const;
 
     /*************************************************************************
         Operators
@@ -650,7 +650,7 @@ protected:
     //! true if the system will destroy this item, false if client code will.
     bool d_autoDelete;
     //! Location of the 'expand' button for the item.
-    Rect d_buttonLocation;
+    Rect<> d_buttonLocation;
     //! Pointer to the window that owns this item.
     const Window* d_owner;
     //! Colours used for selection highlighting.

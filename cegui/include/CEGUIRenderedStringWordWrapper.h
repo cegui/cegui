@@ -53,7 +53,7 @@ public:
     // implementation of base interface
     void format(const Size<>& area_size);
     void draw(GeometryBuffer& buffer, const Vector2<>& position,
-              const ColourRect* mod_colours, const Rect* clip_rect) const;
+              const ColourRect* mod_colours, const Rect<>* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent() const;
     float getVerticalExtent() const;
@@ -127,7 +127,7 @@ template <typename T>
 void RenderedStringWordWrapper<T>::draw(GeometryBuffer& buffer,
                                      const Vector2<>& position,
                                      const ColourRect* mod_colours,
-                                     const Rect* clip_rect) const
+                                     const Rect<>* clip_rect) const
 {
     Vector2<> line_pos(position);
     typename LineList::const_iterator i = d_lines.begin();

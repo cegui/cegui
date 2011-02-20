@@ -83,7 +83,7 @@ public:
         May be thrown if the RenderTarget does not support setting or changing
         its area, or if the area change can not be satisfied for some reason.
     */
-    virtual void setArea(const Rect& area) = 0;
+    virtual void setArea(const Rect<>& area) = 0;
 
     /*!
     \brief
@@ -92,7 +92,7 @@ public:
     \return
         Rect object describing the currently defined area for this RenderTarget.
     */
-    virtual const Rect& getArea() const = 0;
+    virtual const Rect<>& getArea() const = 0;
 
     /*!
     \brief

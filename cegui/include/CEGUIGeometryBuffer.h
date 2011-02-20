@@ -86,7 +86,7 @@ public:
     \brief
         Set the clipping region to be used when rendering this buffer.
     */
-    virtual void setClippingRegion(const Rect& region) = 0;
+    virtual void setClippingRegion(const Rect<>& region) = 0;
 
     /*!
     \brief

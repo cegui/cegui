@@ -66,8 +66,8 @@ Menubar::~Menubar(void)
 *************************************************************************/
 void Menubar::layoutItemWidgets()
 {
-	Rect render_rect = getItemRenderArea();
-	float x0 = PixelAligned(render_rect.d_left);
+	Rect<> render_rect = getItemRenderArea();
+	float x0 = PixelAligned(render_rect.left());
 
 	URect rect;
 
@@ -78,15 +78,14 @@ void Menubar::layoutItemWidgets()
 
 		(*item)->setVerticalAlignment(VA_CENTRE);
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
-		rect.setSize(UVector2(cegui_absdim(PixelAligned(optimal.d_width)),
-                              cegui_absdim(PixelAligned(optimal.d_height))));
+		rect.setSize(USize(cegui_absdim(PixelAligned(optimal.d_width)),
+                           cegui_absdim(PixelAligned(optimal.d_height))));
 
 		(*item)->setArea(rect);
 
 		x0 += optimal.d_width + d_itemSpacing;
 		++item;
 	}
-
 }
 
 
