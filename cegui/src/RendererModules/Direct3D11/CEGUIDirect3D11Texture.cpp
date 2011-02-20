@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -73,6 +73,12 @@ void Direct3D11Texture::setOriginalDataSize(const Size<>& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+const String& Direct3D11Texture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//
@@ -255,7 +261,7 @@ void Direct3D11Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device) :
+Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
@@ -266,7 +272,7 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device,
+Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
                                      const String& filename,
                                      const String& resourceGroup) :
     d_device(device),
@@ -280,7 +286,8 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device,
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device, const Size<>& sz) :
+Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
+                                     const Size<>& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
@@ -314,7 +321,7 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const Size<>& sz) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Texture::Direct3D11Texture(IDevice11& device,
+Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
                                      ID3D11Texture2D* tex) :
     d_device(device),
     d_texture(0),
