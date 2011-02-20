@@ -79,7 +79,7 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
     d_selected(false),
     d_disabled(disabled),
     d_autoDelete(auto_delete),
-    d_buttonLocation(Rect(0,0,0,0)),
+    d_buttonLocation(Rect<>(0, 0, 0, 0)),
     d_owner(0),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour,
                  DefaultSelectionColour, DefaultSelectionColour),
@@ -269,19 +269,19 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 /*************************************************************************
     Draw the tree item in its current state.
 *************************************************************************/
-void TreeItem::draw(GeometryBuffer& buffer, const Rect &targetRect,
-                    float alpha, const Rect *clipper) const
+void TreeItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
+                    float alpha, const Rect<>* clipper) const
 {
-    Rect finalRect(targetRect);
+    Rect<> finalRect(targetRect);
 
     if (d_iconImage != 0)
     {
-        Rect finalPos(finalRect);
+        Rect<> finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
         d_iconImage->render(buffer, finalPos, clipper,
                           ColourRect(Colour(1,1,1,alpha)));
-        finalRect.d_left += targetRect.getHeight();
+        finalRect.d_min.d_x += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)

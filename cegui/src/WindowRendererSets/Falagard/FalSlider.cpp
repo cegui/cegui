@@ -72,14 +72,14 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
         const Size<> w_pixel_size(w->getPixelSize());
 
-        float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.d_left / w_pixel_size.d_width);
-        float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.d_top / w_pixel_size.d_height);
+        const float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.left() / w_pixel_size.d_width);
+        const float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.top() / w_pixel_size.d_height);
         // get base location for thumb widget
         UVector2 thumbPosition(cegui_reldim(thumbRelXPos), cegui_reldim(thumbRelYPos));
 
@@ -91,8 +91,8 @@ namespace CEGUI
 
             // Set range of motion for the thumb widget
             if (w_pixel_size.d_height != 0.0f)
-                theThumb->setVertRange(area.d_top  / w_pixel_size.d_height,
-                                       (area.d_top + slideExtent) / w_pixel_size.d_height);
+                theThumb->setVertRange(area.top()  / w_pixel_size.d_height,
+                                      (area.top() + slideExtent) / w_pixel_size.d_height);
             else
                 theThumb->setVertRange(0.0f, 0.0f);
 
@@ -111,8 +111,8 @@ namespace CEGUI
 
             // Set range of motion for the thumb widget
             if (w_pixel_size.d_width != 0.0f)
-                theThumb->setHorzRange(area.d_left / w_pixel_size.d_width,
-                                       (area.d_left + slideExtent) / w_pixel_size.d_width);
+                theThumb->setHorzRange(area.left() / w_pixel_size.d_width,
+                                      (area.left() + slideExtent) / w_pixel_size.d_width);
             else
                 theThumb->setHorzRange(0.0f, 0.0f);
 
@@ -134,7 +134,7 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        const Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
@@ -145,7 +145,7 @@ namespace CEGUI
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // calculate value represented by current thumb position
             float thumbValue = (CoordConverter::asAbsolute(
-                theThumb->getYPosition(), w->getPixelSize().d_height) - area.d_top) / (slideExtent / w->getMaxValue());
+                theThumb->getYPosition(), w->getPixelSize().d_height) - area.top()) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? thumbValue : w->getMaxValue() - thumbValue;
         }
@@ -156,7 +156,7 @@ namespace CEGUI
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // calculate value represented by current thumb position
             float thumbValue = (CoordConverter::asAbsolute(
-                theThumb->getXPosition(), w->getPixelSize().d_width) - area.d_left) / (slideExtent / w->getMaxValue());
+                theThumb->getXPosition(), w->getPixelSize().d_width) - area.left()) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? w->getMaxValue() - thumbValue : thumbValue;
         }
@@ -165,15 +165,15 @@ namespace CEGUI
     float FalagardSlider::getAdjustDirectionFromPoint(const Vector2<>& pt) const
     {
         Slider* w = (Slider*)d_window;
-        Rect absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rect<> absrect(w->getThumb()->getUnclippedOuterRect());
 
-        if ((d_vertical && (pt.d_y < absrect.d_top)) ||
-            (!d_vertical && (pt.d_x > absrect.d_right)))
+        if ((d_vertical && (pt.d_y < absrect.top())) ||
+            (!d_vertical && (pt.d_x > absrect.right())))
         {
             return d_reversed ? -1.0f : 1.0f;
         }
-        else if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
-            (!d_vertical && (pt.d_x < absrect.d_left)))
+        else if ((d_vertical && (pt.d_y > absrect.bottom())) ||
+            (!d_vertical && (pt.d_x < absrect.left())))
         {
             return d_reversed ? 1.0f : -1.0f;
         }

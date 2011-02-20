@@ -244,7 +244,7 @@ void OpenGLTexture::grabTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::blitFromMemory(void* sourceData, const Rect& area)
+void OpenGLTexture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
     // save old texture binding
     GLuint old_tex;
@@ -254,8 +254,8 @@ void OpenGLTexture::blitFromMemory(void* sourceData, const Rect& area)
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     
     glTexSubImage2D(GL_TEXTURE_2D, 0,
-        area.d_left, area.d_top,
-        area.d_right - area.d_left, area.d_bottom - area.d_top,
+        area.left(), area.top(),
+        area.getWidth(), area.getHeight(),
         GL_RGBA8, GL_UNSIGNED_BYTE, sourceData
     );
 

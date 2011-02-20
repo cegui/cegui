@@ -395,8 +395,8 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
-                      float alpha, const Rect* clipper) const = 0;
+    virtual void draw(GeometryBuffer& buffer, const Rect<>& targetRect,
+                      float alpha, const Rect<>* clipper) const = 0;
 
     /*************************************************************************
         Operators

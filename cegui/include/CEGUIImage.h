@@ -55,8 +55,8 @@ public:
     virtual const Vector2<>& getRenderedOffset() const = 0;
 
     virtual void render(GeometryBuffer& buffer,
-                        const Rect& dest_area,
-                        const Rect* clip_area,
+                        const Rect<>& dest_area,
+                        const Rect<>* clip_area,
                         const ColourRect& colours) const = 0;
 
     virtual void notifyDisplaySizeChanged(const Size<>& size) = 0;
@@ -66,36 +66,36 @@ public:
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
-                const Rect* clip_area = 0) const
+                const Rect<>* clip_area = 0) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rect(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rect<>(position, getRenderedSize()), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
-                const Rect* clip_area,
+                const Rect<>* clip_area,
                 const ColourRect& colours) const
     {
-        render(buffer, Rect(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rect<>(position, getRenderedSize()), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
                 const Size<>& size,
-                const Rect* clip_area = 0) const
+                const Rect<>* clip_area = 0) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rect(position, size), clip_area, colours);
+        render(buffer, Rect<>(position, size), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
                 const Vector2<>& position,
                 const Size<>& size,
-                const Rect* clip_area,
+                const Rect<>* clip_area,
                 const ColourRect& colours) const
     {
-        render(buffer, Rect(position, size), clip_area, colours);
+        render(buffer, Rect<>(position, size), clip_area, colours);
     }
 };
 

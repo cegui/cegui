@@ -90,8 +90,8 @@ namespace CEGUI
         d_inPositionSelf = true;
 
         MouseCursor& cursor = MouseCursor::getSingleton();
-        Rect screen(Vector2<>(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
-        Rect tipRect(getUnclippedOuterRect());
+        Rect<> screen(Vector2<>(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
+        Rect<> tipRect(getUnclippedOuterRect());
         const Image* mouseImage = cursor.getImage();
 
         Vector2<> mousePos(cursor.getPosition());
@@ -107,14 +107,14 @@ namespace CEGUI
 
         // if tooltip would be off the right of the screen,
         // reposition to the other side of the mouse cursor.
-        if (screen.d_right < tipRect.d_right)
+        if (screen.right() < tipRect.right())
         {
             tmpPos.d_x = mousePos.d_x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
         // reposition to the other side of the mouse cursor.
-        if (screen.d_bottom < tipRect.d_bottom)
+        if (screen.bottom() < tipRect.bottom())
         {
             tmpPos.d_y = mousePos.d_y - tipRect.getHeight() - 5;
         }

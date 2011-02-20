@@ -83,7 +83,7 @@ namespace CEGUI
         return val;
     }
 
-    float BaseDim::getValue(const Window& wnd, const Rect& container) const
+    float BaseDim::getValue(const Window& wnd, const Rect<>& container) const
     {
         // get sub-class to return value for this dimension.
         float val = getValue_impl(wnd, container);
@@ -187,7 +187,7 @@ namespace CEGUI
         return d_val;
     }
 
-    float AbsoluteDim::getValue_impl(const Window&, const Rect&) const
+    float AbsoluteDim::getValue_impl(const Window&, const Rect<>&) const
     {
         return d_val;
     }
@@ -274,7 +274,7 @@ namespace CEGUI
         }
     }
 
-    float ImageDim::getValue_impl(const Window& wnd, const Rect&) const
+    float ImageDim::getValue_impl(const Window& wnd, const Rect<>&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -377,7 +377,7 @@ namespace CEGUI
         }
     }
 
-    float WidgetDim::getValue_impl(const Window& wnd, const Rect&) const
+    float WidgetDim::getValue_impl(const Window& wnd, const Rect<>&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -445,7 +445,7 @@ namespace CEGUI
         }
     }
 
-    float FontDim::getValue_impl(const Window& wnd, const Rect&) const
+    float FontDim::getValue_impl(const Window& wnd, const Rect<>&) const
     {
         return getValue_impl(wnd);
     }
@@ -513,7 +513,7 @@ namespace CEGUI
         }
     }
 
-    float PropertyDim::getValue_impl(const Window& wnd, const Rect&) const
+    float PropertyDim::getValue_impl(const Window& wnd, const Rect<>&) const
     {
         return getValue_impl(wnd);
     }
@@ -645,7 +645,7 @@ namespace CEGUI
         }
     }
 
-    float UnifiedDim::getValue_impl(const Window&, const Rect& container) const
+    float UnifiedDim::getValue_impl(const Window&, const Rect<>& container) const
     {
         switch (d_what)
         {
@@ -695,9 +695,9 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    Rect ComponentArea::getPixelRect(const Window& wnd) const
+    Rect<> ComponentArea::getPixelRect(const Window& wnd) const
     {
-        Rect pixelRect;
+        Rect<> pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())
@@ -714,26 +714,26 @@ namespace CEGUI
             assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
             assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd);
-            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd);
+            pixelRect.left(d_left.getBaseDimension().getValue(wnd));
+            pixelRect.top(d_top.getBaseDimension().getValue(wnd));
 
             if (d_right_or_width.getDimensionType() == DT_WIDTH)
                 pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd));
             else
-                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd);
+                pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd));
 
             if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
                 pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
             else
-                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd);
+                pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd));
         }
 
         return pixelRect;
     }
 
-    Rect ComponentArea::getPixelRect(const Window& wnd, const Rect& container) const
+    Rect<> ComponentArea::getPixelRect(const Window& wnd, const Rect<>& container) const
     {
-        Rect pixelRect;
+        Rect<> pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())
@@ -750,18 +750,18 @@ namespace CEGUI
             assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
             assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd, container) + container.d_left;
-            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd, container) + container.d_top;
+            pixelRect.left(d_left.getBaseDimension().getValue(wnd, container) + container.left());
+            pixelRect.top(d_top.getBaseDimension().getValue(wnd, container) + container.top());
 
             if (d_right_or_width.getDimensionType() == DT_WIDTH)
                 pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
             else
-                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd, container) + container.d_left;
+                pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd, container) + container.left());
 
             if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
                 pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
             else
-                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
+                pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.top());
         }
 
         return pixelRect;

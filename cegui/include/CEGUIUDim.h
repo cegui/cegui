@@ -129,91 +129,14 @@ inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
 
 typedef Vector2<UDim> UVector2;
 
-/*!
-\brief
-    Area rectangle class built using unified dimensions (UDims).
-*/
-class CEGUIEXPORT URect :
-    public AllocatedObject<URect>
+// we need to allow URect to be multiplied by floats, this is the most elegant way to do that
+inline Rect<UDim> operator * (const Rect<UDim>& v, const float c)
 {
-public:
-    URect() {}
+    return Rect<UDim>(v.d_min * c, v.d_max * c);
+}
 
-    URect(const UVector2& min, const UVector2& max) : d_min(min), d_max(max) {}
-
-    URect(const UDim& left, const UDim& top, const UDim& right, const UDim& bottom)
-    {
-        d_min.d_x = left;
-        d_min.d_y = top;
-        d_max.d_x = right;
-        d_max.d_y = bottom;
-    }
-
-    URect(const URect& v): d_min(v.d_min), d_max(v.d_max) {}
-
-    ~URect() {}
-
-    const UVector2& getPosition() const
-    {
-        return d_min;
-    }
-    UVector2 getSize() const
-    {
-        return d_max - d_min;
-    }
-    UDim getWidth() const
-    {
-        return d_max.d_x - d_min.d_x;
-    }
-    UDim getHeight() const
-    {
-        return d_max.d_y - d_min.d_y;
-    }
-
-    void setPosition(const UVector2& pos)
-    {
-        UVector2 sz(d_max - d_min);
-        d_min = pos;
-        d_max = d_min + sz;
-    }
-
-    void setSize(const UVector2& sz)
-    {
-        d_max = d_min + sz;
-    }
-
-    void setWidth(const UDim& w)
-    {
-        d_max.d_x = d_min.d_x + w;
-    }
-    void setHeight(const UDim& h)
-    {
-        d_max.d_y = d_min.d_y + h;
-    }
-
-    void offset(const UVector2& sz)
-    {
-        d_min += sz;
-        d_max += sz;
-    }
-    
-    URect operator*(const float val) const
-    {
-        return URect(d_min * val, d_max * val);
-    }
-
-    URect operator*(const UDim& dim) const
-    {
-        return URect(d_min * dim, d_max * dim);
-    }
-
-    URect operator+(const URect& r) const
-    {
-        return URect(d_min + r.d_min, d_max + r.d_max);
-    }
-
-    UVector2 d_min, d_max;
-};
+typedef Size<UDim> USize;
+typedef Rect<UDim> URect;
 
 /*!
 \brief

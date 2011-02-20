@@ -74,7 +74,7 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
                                          const Vector2<>& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
-                                         const Rect* /*clip_rect*/,
+                                         const Rect<>* /*clip_rect*/,
                                          const float vertical_space,
                                          const float /*space_extra*/) const
 {
@@ -87,10 +87,10 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     
     if (parent)
     {
-        const CEGUI::Rect outer(parent->getUnclippedOuterRect());
-        const CEGUI::Rect inner(parent->getUnclippedInnerRect());
-        x_adj = inner.d_left - outer.d_left;
-        y_adj = inner.d_top - outer.d_top;
+        const Rect<> outer(parent->getUnclippedOuterRect());
+        const Rect<> inner(parent->getUnclippedInnerRect());
+        x_adj = inner.d_min.d_x - outer.d_min.d_x;
+        y_adj = inner.d_min.d_y - outer.d_min.d_y;
     }
     // HACK: re-adjust for inner-rect of parent (Ends)
 
@@ -124,8 +124,8 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     }
 
     // we do not actually draw the widget, we just move it into position.
-    const UVector2 wpos(UDim(0, final_pos.d_x + d_padding.d_left - x_adj),
-                        UDim(0, final_pos.d_y + d_padding.d_top - y_adj));
+    const UVector2 wpos(UDim(0, final_pos.d_x + d_padding.d_min.d_x - x_adj),
+                        UDim(0, final_pos.d_y + d_padding.d_min.d_y - y_adj));
 
     d_window->setPosition(wpos);
 }
@@ -138,8 +138,8 @@ Size<> RenderedStringWidgetComponent::getPixelSize() const
     if (d_window)
     {
         sz = d_window->getPixelSize();
-        sz.d_width += (d_padding.d_left + d_padding.d_right);
-        sz.d_height += (d_padding.d_top + d_padding.d_bottom);
+        sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
+        sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
     }
 
     return sz;

@@ -52,7 +52,7 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Rect FalagardPopupMenu::getItemRenderArea(void) const
+    Rect<> FalagardPopupMenu::getItemRenderArea(void) const
     {
         const WidgetLookFeel& wlf = getLookNFeel();
         return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*d_window);

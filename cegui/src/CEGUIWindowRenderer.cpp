@@ -62,7 +62,7 @@ const WidgetLookFeel& WindowRenderer::getLookNFeel() const
 /************************************************************************
     Get unclipped inner rectangle.
 *************************************************************************/
-Rect WindowRenderer::getUnclippedInnerRect() const
+Rect<> WindowRenderer::getUnclippedInnerRect() const
 {
     const WidgetLookFeel& lf(getLookNFeel());
 

@@ -42,7 +42,7 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardListbox::getListRenderArea(void) const
+    Rect<> FalagardListbox::getListRenderArea(void) const
     {
     	Listbox* lb = (Listbox*)d_window;
         // get WidgetLookFeel for the assigned look.
@@ -93,19 +93,19 @@ namespace CEGUI
         // Render list items
         //
         Vector3<> itemPos;
-        Size<>  itemSize;
-        Rect    itemClipper, itemRect;
-        float   widest = lb->getWidestItemWidth();
+        Size<> itemSize;
+        Rect<> itemClipper, itemRect;
+        const float widest = lb->getWidestItemWidth();
 
         // calculate position of area we have to render into
-        Rect itemsArea(getListRenderArea());
+        Rect<> itemsArea(getListRenderArea());
 
         // set up some initial positional details for items
-        itemPos.d_x = itemsArea.d_left - lb->getHorzScrollbar()->getScrollPosition();
-        itemPos.d_y = itemsArea.d_top - lb->getVertScrollbar()->getScrollPosition();
+        itemPos.d_x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
+        itemPos.d_y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
         itemPos.d_z = 0.0f;
 
-        float alpha = lb->getEffectiveAlpha();
+        const float alpha = lb->getEffectiveAlpha();
 
         // loop through the items
         size_t itemCount = lb->getItemCount();
@@ -119,8 +119,8 @@ namespace CEGUI
             itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
 
             // calculate destination area for this item.
-            itemRect.d_left = itemPos.d_x;
-            itemRect.d_top  = itemPos.d_y;
+            itemRect.left(itemPos.d_x);
+            itemRect.top(itemPos.d_y);
             itemRect.setSize(itemSize);
             itemClipper = itemRect.getIntersection(itemsArea);
 

@@ -165,21 +165,21 @@ protected:
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
     size_t getCaretIndex(const String& visual_string) const;
-    float calculateTextOffset(const Rect& text_area,
+    float calculateTextOffset(const Rect<>& text_area,
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
     void renderTextNoBidi(const WidgetLookFeel& wlf,
                           const String& text,
-                          const Rect& text_area,
+                          const Rect<>& text_area,
                           float text_offset);
     void renderTextBidi(const WidgetLookFeel& wlf,
                         const String& text,
-                        const Rect& text_area,
+                        const Rect<>& text_area,
                         float text_offset);
     bool editboxIsFocussed() const;
     void renderCaret(const ImagerySection& imagery,
-                     const Rect& text_area,
+                     const Rect<>& text_area,
                      const float text_offset,
                      const float extent_to_caret) const;
 

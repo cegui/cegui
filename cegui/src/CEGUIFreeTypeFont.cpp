@@ -216,7 +216,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
-                    Rect area(0, 0, 0, 0);
+                    Rect<> area(0, 0, 0, 0);
                     Vector2<> offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
@@ -248,13 +248,13 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     drawGlyphToBuffer(mem_buffer + (y * texsize) + x, texsize);
 
                     // Create a new image in the imageset
-                    const Rect area(static_cast<float>(x),
-                                    static_cast<float>(y),
-                                    static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
-                                    static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
+                    const Rect<> area(static_cast<float>(x),
+                                      static_cast<float>(y),
+                                      static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
+                                      static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
 
                     Vector2<> offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
-                                 -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
+                                    -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =

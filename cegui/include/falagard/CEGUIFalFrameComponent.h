@@ -150,10 +150,10 @@ namespace CEGUI
 
     protected:
         // implemets abstract from base
-        void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
+        void render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const;
 
         // renders the background image (basically a clone of render_impl from ImageryComponent - maybe we need a helper class?)
-        void doBackgroundRender(Window& srcWindow, Rect& destRect, const ColourRect& colours, const Rect* clipper, bool clipToDisplay) const;
+        void doBackgroundRender(Window& srcWindow, Rect<>& destRect, const ColourRect& colours, const Rect<>* clipper, bool clipToDisplay) const;
 
         // formatting options for background
         VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the background for the component.

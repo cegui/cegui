@@ -80,7 +80,7 @@ public:
     \return
         Rect object describing the clipping area in pixel that will be applied during rendering.
     */
-    const Rect& getClipArea(void) const;
+    const Rect<>& getClipArea(void) const;
 
     /*!
     \brief
@@ -92,7 +92,7 @@ public:
     \brief
         Set the custom clipper area in pixels.
     */
-    void setClipArea(const Rect& r);
+    void setClipArea(const Rect<>& r);
 
     /*!
     \brief
@@ -105,7 +105,7 @@ public:
     void setClipperWindow(Window* w);
 
     // Overridden from Window.
-    virtual Rect getUnclippedInnerRect_impl(void) const;
+    virtual Rect<> getUnclippedInnerRect_impl(void) const;
 
 protected:
     /*************************************************************************
@@ -136,7 +136,7 @@ protected:
     	Data fields
     *************************************************************************/
     //! the pixel rect to be used for clipping relative to either a window or the screen.
-    Rect d_clipArea;
+    Rect<> d_clipArea;
     //! the base window which the clipping rect is relative to.
     Window* d_clipperWindow;
 };

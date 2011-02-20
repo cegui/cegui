@@ -143,11 +143,11 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	bool	d_dragging;			//!< set to true when the window is being dragged.
+	bool d_dragging;			//!< set to true when the window is being dragged.
 	Vector2<> d_dragPoint;		//!< Point at which we are being dragged.
-	bool	d_dragEnabled;		//!< true when dragging for the widget is enabled.
+	bool d_dragEnabled;		//!< true when dragging for the widget is enabled.
 
-	Rect	d_oldCursorArea;	//!< Used to backup cursor restraint area.
+	Rect<> d_oldCursorArea;	//!< Used to backup cursor restraint area.
 
 private:
 	/*************************************************************************

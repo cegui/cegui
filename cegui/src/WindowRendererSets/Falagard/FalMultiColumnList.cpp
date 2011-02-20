@@ -45,7 +45,7 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardMultiColumnList::getListRenderArea(void) const
+    Rect<> FalagardMultiColumnList::getListRenderArea(void) const
     {
         MultiColumnList* w = (MultiColumnList*)d_window;
         // get WidgetLookFeel for the assigned look.
@@ -92,23 +92,23 @@ namespace CEGUI
         // Render list items
         //
         Vector3<> itemPos;
-        Size<>    itemSize;
-        Rect      itemClipper, itemRect;
+        Size<> itemSize;
+        Rect<> itemClipper, itemRect;
 
         // calculate position of area we have to render into
-        Rect itemsArea(getListRenderArea());
+        Rect<> itemsArea(getListRenderArea());
 
         // set up initial positional details for items
-        itemPos.d_y = itemsArea.d_top - vertScrollbar->getScrollPosition();
+        itemPos.d_y = itemsArea.top() - vertScrollbar->getScrollPosition();
         itemPos.d_z = 0.0f;
 
-        float alpha = w->getEffectiveAlpha();
+        const float alpha = w->getEffectiveAlpha();
 
         // loop through the items
         for (uint i = 0; i < w->getRowCount(); ++i)
         {
             // set initial x position for this row.
-            itemPos.d_x = itemsArea.d_left - horzScrollbar->getScrollPosition();
+            itemPos.d_x = itemsArea.left() - horzScrollbar->getScrollPosition();
 
             // calculate height for this row.
             itemSize.d_height = w->getHighestRowItemHeight(i);
@@ -125,8 +125,8 @@ namespace CEGUI
                 if (item)
                 {
                     // calculate destination area for this item.
-                    itemRect.d_left = itemPos.d_x;
-                    itemRect.d_top  = itemPos.d_y;
+                    itemRect.left(itemPos.d_x);
+                    itemRect.top(itemPos.d_y);
                     itemRect.setSize(itemSize);
                     itemClipper = itemRect.getIntersection(itemsArea);
 

@@ -69,7 +69,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -88,7 +88,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rect<>& baseRect, const CEGUI::ColourRect* modColours = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -194,7 +194,7 @@ namespace CEGUI
         \brief
             Method to do main render caching work.
         */
-        virtual void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const = 0;
+        virtual void render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const = 0;
 
         /*!
         \brief

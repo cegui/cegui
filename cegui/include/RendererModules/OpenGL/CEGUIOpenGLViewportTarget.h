@@ -58,7 +58,7 @@ public:
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    OpenGLViewportTarget(OpenGLRenderer& owner, const Rect& area);
+    OpenGLViewportTarget(OpenGLRenderer& owner, const Rect<>& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

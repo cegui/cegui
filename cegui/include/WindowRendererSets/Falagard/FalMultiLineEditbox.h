@@ -94,7 +94,7 @@ public:
     FalagardMultiLineEditbox(const String& type);
 
     // overridden from base classes.
-    Rect getTextRenderArea(void) const;
+    Rect<> getTextRenderArea(void) const;
     void render();
     void update(float elapsed);
 
@@ -127,13 +127,13 @@ protected:
     \return
         Nothing
     */
-    void cacheCaretImagery(const Rect& textArea);
+    void cacheCaretImagery(const Rect<>& textArea);
 
     /*!
     \brief
         Render text lines.
     */
-    void cacheTextLines(const Rect& dest_area);
+    void cacheTextLines(const Rect<>& dest_area);
 
     /*!
     \brief

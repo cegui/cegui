@@ -168,6 +168,12 @@ public:
         d_z(z)
     {}
 
+    inline explicit Vector3(const Vector2<T>& v, const T& z):
+        d_x(v.d_x),
+        d_y(v.d_y),
+        d_z(z)
+    {}
+
     inline Vector3(const Vector3& v):
         d_x(v.d_x),
         d_y(v.d_y),

@@ -281,7 +281,7 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 //----------------------------------------------------------------------------//
 void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
                           const Vector2<>& position,
-                          const ColourRect* mod_colours, const Rect* clip_rect,
+                          const ColourRect* mod_colours, const Rect<>* clip_rect,
                           const float space_extra) const
 {
     if (line >= getLineCount())

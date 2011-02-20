@@ -73,7 +73,7 @@ namespace CEGUI
         */
         ~FalagardTree();
     protected:
-        Rect getTreeRenderArea(void) const;
+        Rect<> getTreeRenderArea(void) const;
 		void render();
     };
 

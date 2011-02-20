@@ -161,7 +161,7 @@ public:
 
     \note The pixel format must match current Texture's pixel format!
     */
-    virtual void blitFromMemory(void* sourceData, const Rect& area) = 0;
+    virtual void blitFromMemory(void* sourceData, const Rect<>& area) = 0;
 
     /*!
     \brief

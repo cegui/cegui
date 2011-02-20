@@ -237,12 +237,13 @@ namespace CEGUI
 
     protected:
         // implemets abstract from base
-        void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
+        void render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const;
         //! helper to set up an appropriate FormattedRenderedString
         void setupStringFormatter(const Window& window,
                                   const RenderedString& rendered_string) const;
     private:
-        String               d_textLogical;            //!< text rendered by this component.
+        //! text rendered by this component.
+        String d_textLogical;
         //! pointer to bidirection support object
         BidiVisualMapping* d_bidiVisualMapping;
         //! whether bidi visual mapping has been updated since last text change.

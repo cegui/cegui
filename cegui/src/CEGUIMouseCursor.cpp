@@ -68,8 +68,8 @@ MouseCursor::MouseCursor(void) :
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
-    const Rect screenArea(Vector2<>(0, 0),
-                          System::getSingleton().getRenderer()->getDisplaySize());
+    const Rect<> screenArea(Vector2<>(0, 0),
+                            System::getSingleton().getRenderer()->getDisplaySize());
     d_geometry->setClippingRegion(screenArea);
 
 	// default constraint is to whole screen
@@ -80,7 +80,7 @@ MouseCursor::MouseCursor(void) :
     else
     	// mouse defaults to middle of the constrained area
         setPosition(Vector2<>(screenArea.getWidth() / 2,
-                            screenArea.getHeight() / 2));
+                              screenArea.getHeight() / 2));
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -175,44 +175,44 @@ void MouseCursor::offsetPosition(const Vector2<>& offset)
 *************************************************************************/
 void MouseCursor::constrainPosition(void)
 {
-    Rect absarea(getConstraintArea());
+    Rect<> absarea(getConstraintArea());
 
-	if (d_position.d_x >= absarea.d_right)
-		d_position.d_x = absarea.d_right -1;
+	if (d_position.d_x >= absarea.d_max.d_x)
+		d_position.d_x = absarea.d_max.d_x -1;
 
-	if (d_position.d_y >= absarea.d_bottom)
-		d_position.d_y = absarea.d_bottom -1;
+	if (d_position.d_y >= absarea.d_max.d_y)
+		d_position.d_y = absarea.d_max.d_y -1;
 
-	if (d_position.d_y < absarea.d_top)
-		d_position.d_y = absarea.d_top;
+	if (d_position.d_y < absarea.d_min.d_y)
+		d_position.d_y = absarea.d_min.d_y;
 
-	if (d_position.d_x < absarea.d_left)
-		d_position.d_x = absarea.d_left;
+	if (d_position.d_x < absarea.d_min.d_x)
+		d_position.d_x = absarea.d_min.d_x;
 }
 
 
 /*************************************************************************
 	Set the area that the mouse cursor is constrained to.
 *************************************************************************/
-void MouseCursor::setConstraintArea(const Rect* area)
+void MouseCursor::setConstraintArea(const Rect<>* area)
 {
-    const Rect renderer_area(Vector2<>(0, 0),
-                          System::getSingleton().getRenderer()->getDisplaySize());
+    const Rect<> renderer_area(Vector2<>(0, 0),
+                               System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (!area)
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_left / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_top / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_right / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_bottom / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
 	}
 	else
 	{
-        Rect finalArea(area->getIntersection(renderer_area));
-		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_left / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_top / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_right / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_bottom / renderer_area.getHeight());
+        Rect<> finalArea(area->getIntersection(renderer_area));
+		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_min.d_x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_min.d_y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_max.d_x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_max.d_y / renderer_area.getHeight());
 	}
 
 	constrainPosition();
@@ -224,8 +224,8 @@ void MouseCursor::setConstraintArea(const Rect* area)
 *************************************************************************/
 void MouseCursor::setUnifiedConstraintArea(const URect* area)
 {
-    const Rect renderer_area(Vector2<>(0, 0),
-                          System::getSingleton().getRenderer()->getDisplaySize());
+    const Rect<> renderer_area(Vector2<>(0, 0),
+                               System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (area)
 	{
@@ -233,10 +233,10 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 	}
 	else
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_left / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_top / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_right / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_bottom / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
 	}
 
 	constrainPosition();
@@ -245,9 +245,9 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 /*************************************************************************
 	Set the area that the mouse cursor is constrained to.
 *************************************************************************/
-Rect MouseCursor::getConstraintArea(void) const
+Rect<> MouseCursor::getConstraintArea(void) const
 {
-    return Rect(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
+    return Rect<>(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 /*************************************************************************
@@ -273,7 +273,7 @@ Vector2<> MouseCursor::getDisplayIndependantPosition(void) const
 //----------------------------------------------------------------------------//
 void MouseCursor::notifyDisplaySizeChanged(const Size<>& new_size)
 {
-    const Rect screenArea(Vector2<>(0, 0), new_size);
+    const Rect<> screenArea(Vector2<>(0, 0), new_size);
     d_geometry->setClippingRegion(screenArea);
 
     // invalidate to regenerate geometry at (maybe) new size

@@ -145,7 +145,7 @@ bool ScrollablePaneSample::initialiseSample()
     // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
     // the screen. 3000 x 3000 pixels
     d_pane->setContentPaneAutoSized(false);
-    d_pane->setContentPaneArea(CEGUI::Rect(0,0,3000,3000));
+    d_pane->setContentPaneArea(CEGUI::Rect<>(0, 0, 3000, 3000));
     d_root->addChild(d_pane);
 
     // add a dialog to this pane so we have something to drag around :)

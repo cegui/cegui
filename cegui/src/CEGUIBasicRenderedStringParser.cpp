@@ -234,7 +234,7 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::initialiseDefaultState()
 {
-    d_padding = Rect(0, 0, 0, 0);
+    d_padding = Rect<>(0, 0, 0, 0);
     d_colours = d_initialColours;
     d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
@@ -343,35 +343,35 @@ void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const St
 void BasicRenderedStringParser::handlePadding(RenderedString& rs,
                                               const String& value)
 {
-    d_padding = PropertyHelper<Rect>::fromString(value);
+    d_padding = PropertyHelper<Rect<> >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleTopPadding(RenderedString& rs,
                                                  const String& value)
 {
-    d_padding.d_top = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.d_y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleBottomPadding(RenderedString& rs,
                                                     const String& value)
 {
-    d_padding.d_bottom = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.d_y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleLeftPadding(RenderedString& rs,
                                                   const String& value)
 {
-    d_padding.d_left = PropertyHelper<float>::fromString(value);
+    d_padding.d_min.d_x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::handleRightPadding(RenderedString& rs,
                                                    const String& value)
 {
-    d_padding.d_right = PropertyHelper<float>::fromString(value);
+    d_padding.d_max.d_x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

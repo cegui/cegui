@@ -292,7 +292,9 @@ void ListHeaderSegment::doDragSizing(const Vector2<>& local_mouse)
     
     // update segment area rect
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
-    setArea_impl(area.d_min, area.getSize());
+    // todo: vector vs size
+    const USize sz = area.getSize();
+    setArea_impl(area.d_min, UVector2(sz.d_width, sz.d_height));
 
     // move the dragging point so mouse remains 'attached' to edge of segment
     d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;

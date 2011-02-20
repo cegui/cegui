@@ -87,7 +87,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool /*clipToDisplay*/) const
+    void ImageryComponent::render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool /*clipToDisplay*/) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -118,28 +118,28 @@ namespace CEGUI
         {
             case HF_STRETCHED:
                 imgSz.d_width = destRect.getWidth();
-                xpos = destRect.d_left;
+                xpos = destRect.left();
                 horzTiles = 1;
                 break;
 
             case HF_TILED:
-                xpos = destRect.d_left;
+                xpos = destRect.left();
                 horzTiles = std::abs(static_cast<int>(
                     (destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width));
                 break;
 
             case HF_LEFT_ALIGNED:
-                xpos = destRect.d_left;
+                xpos = destRect.left();
                 horzTiles = 1;
                 break;
 
             case HF_CENTRE_ALIGNED:
-                xpos = destRect.d_left + PixelAligned((destRect.getWidth() - imgSz.d_width) * 0.5f);
+                xpos = destRect.left() + PixelAligned((destRect.getWidth() - imgSz.d_width) * 0.5f);
                 horzTiles = 1;
                 break;
 
             case HF_RIGHT_ALIGNED:
-                xpos = destRect.d_right - imgSz.d_width;
+                xpos = destRect.right() - imgSz.d_width;
                 horzTiles = 1;
                 break;
 
@@ -152,28 +152,28 @@ namespace CEGUI
         {
             case VF_STRETCHED:
                 imgSz.d_height = destRect.getHeight();
-                ypos = destRect.d_top;
+                ypos = destRect.top();
                 vertTiles = 1;
                 break;
 
             case VF_TILED:
-                ypos = destRect.d_top;
+                ypos = destRect.top();
                 vertTiles = std::abs(static_cast<int>(
                     (destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height));
                 break;
 
             case VF_TOP_ALIGNED:
-                ypos = destRect.d_top;
+                ypos = destRect.top();
                 vertTiles = 1;
                 break;
 
             case VF_CENTRE_ALIGNED:
-                ypos = destRect.d_top + PixelAligned((destRect.getHeight() - imgSz.d_height) * 0.5f);
+                ypos = destRect.top() + PixelAligned((destRect.getHeight() - imgSz.d_height) * 0.5f);
                 vertTiles = 1;
                 break;
 
             case VF_BOTTOM_ALIGNED:
-                ypos = destRect.d_bottom - imgSz.d_height;
+                ypos = destRect.bottom() - imgSz.d_height;
                 vertTiles = 1;
                 break;
 
@@ -182,16 +182,16 @@ namespace CEGUI
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rect finalRect;
-        Rect finalClipper;
-        const Rect* clippingRect;
-        finalRect.d_top = ypos;
-        finalRect.d_bottom = ypos + imgSz.d_height;
+        Rect<> finalRect;
+        Rect<> finalClipper;
+        const Rect<>* clippingRect;
+        finalRect.top(ypos);
+        finalRect.bottom(ypos + imgSz.d_height);
 
         for (uint row = 0; row < vertTiles; ++row)
         {
-            finalRect.d_left = xpos;
-            finalRect.d_right = xpos + imgSz.d_width;
+            finalRect.left(xpos);
+            finalRect.right(xpos + imgSz.d_width);
 
             for (uint col = 0; col < horzTiles; ++col)
             {
@@ -211,12 +211,12 @@ namespace CEGUI
                 // add geometry for image to the target window.
                 img->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
 
-                finalRect.d_left += imgSz.d_width;
-                finalRect.d_right += imgSz.d_width;
+                finalRect.d_min.d_x += imgSz.d_width;
+                finalRect.d_max.d_x += imgSz.d_width;
             }
 
-            finalRect.d_top += imgSz.d_height;
-            finalRect.d_bottom += imgSz.d_height;
+            finalRect.d_min.d_y += imgSz.d_height;
+            finalRect.d_max.d_y += imgSz.d_height;
         }
     }
 

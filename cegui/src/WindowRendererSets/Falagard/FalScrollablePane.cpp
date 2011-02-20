@@ -44,7 +44,7 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardScrollablePane::getViewableArea(void) const
+    Rect<> FalagardScrollablePane::getViewableArea(void) const
     {
         ScrollablePane* w = (ScrollablePane*)d_window;
         // get WidgetLookFeel for the assigned look.
@@ -99,12 +99,12 @@ namespace CEGUI
         d_widgetLookAssigned = false;
     }
 
-    Rect FalagardScrollablePane::getUnclippedInnerRect() const
+    Rect<> FalagardScrollablePane::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
             return d_window->getUnclippedOuterRect();
 
-        const Rect lr(getViewableArea());
+        const Rect<> lr(getViewableArea());
         return CoordConverter::windowToScreen(*d_window, lr);
     }
 

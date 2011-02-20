@@ -104,14 +104,14 @@ public:
     virtual void layoutIfNecessary();
 
     /// @copydoc Window::getUnclippedInnerRect_impl
-    virtual Rect getUnclippedInnerRect_impl(void) const;
+    virtual Rect<> getUnclippedInnerRect_impl(void) const;
 
     /// @copydoc Window::update
     virtual void update(float elapsed);
 
 protected:
     /// @copydoc Window::getClientChildWindowContentArea_impl
-    virtual Rect getClientChildWindowContentArea_impl() const;
+    virtual Rect<> getClientChildWindowContentArea_impl() const;
 
     //! @copydoc Window::testClassName_impl
     virtual bool    testClassName_impl(const String& class_name) const

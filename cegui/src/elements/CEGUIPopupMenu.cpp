@@ -246,11 +246,11 @@ void PopupMenu::updateSelf(float elapsed)
 void PopupMenu::layoutItemWidgets()
 {
 	// get render area
-	Rect render_rect = getItemRenderArea();
+	Rect<> render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = PixelAligned(render_rect.d_left);
-	float y0 = PixelAligned(render_rect.d_top);
+	const float x0 = PixelAligned(render_rect.d_min.d_x);
+	float y0 = PixelAligned(render_rect.d_min.d_y);
 
 	URect rect;
 	UVector2 sz(cegui_absdim(PixelAligned(render_rect.getWidth())), cegui_absdim(0)); // set item width
@@ -264,7 +264,8 @@ void PopupMenu::layoutItemWidgets()
 
 		// set destination rect
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
-		rect.setSize( sz );
+        // todo: vector vs size
+		rect.setSize(USize(sz.d_x, sz.d_y));
 		(*item)->setArea(rect);
 
 		// next position

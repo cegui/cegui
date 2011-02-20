@@ -74,7 +74,7 @@ Texture& NullTextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void NullTextureTarget::declareRenderSize(const Size<>& sz)
 {
-	Rect r;
+	Rect<> r;
 	r.setSize(sz);
 	r.setPosition(Vector2<>(0, 0));
     setArea(r);

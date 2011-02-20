@@ -68,7 +68,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect getListRenderArea(void) const = 0;
+    virtual Rect<> getListRenderArea(void) const = 0;
 };
 
 /*!
@@ -539,7 +539,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect    getListRenderArea(void) const;
+    virtual Rect<> getListRenderArea(void) const;
 
 
     /*!

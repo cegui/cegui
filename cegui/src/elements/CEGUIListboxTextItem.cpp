@@ -131,8 +131,8 @@ Size<> ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
-                           float alpha, const Rect* clipper) const
+void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
+                           float alpha, const Rect<>* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
         d_selectBrush->render(buffer, targetRect, clipper,

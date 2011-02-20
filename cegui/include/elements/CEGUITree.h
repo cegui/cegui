@@ -227,7 +227,7 @@ public:
     bool isSortEnabled(void) const
         { return d_sorted; }
     
-    void setItemRenderArea(Rect& r)
+    void setItemRenderArea(Rect<>& r)
         { d_itemArea = r; }
     
     Scrollbar* getVertScrollbar()
@@ -607,7 +607,7 @@ protected:
         Rect object describing the area of the Window to be used for rendering
         tree items.
      */
-    virtual	Rect getTreeRenderArea(void) const
+    virtual	Rect<> getTreeRenderArea(void) const
         { return d_itemArea; }
     
     /*!
@@ -774,7 +774,7 @@ protected:
      // overridden from Window base class.
      virtual void populateGeometryBuffer();
  
-     void drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
+     void drawItemList(LBItemList& itemList, Rect<>& itemsArea, float widest,
                        Vector2<>& itemPos, GeometryBuffer& geometry, float alpha);
     
     /*************************************************************************
@@ -877,7 +877,7 @@ private:
         Private methods
      *************************************************************************/
     void addTreeProperties(void);
-    Rect d_itemArea;
+    Rect<> d_itemArea;
 };
 
 /*!

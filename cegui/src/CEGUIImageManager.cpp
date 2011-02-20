@@ -210,7 +210,7 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
         createTexture(name, filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
-    const Rect rect(Vector2<>(0.0f, 0.0f), tex->getOriginalDataSize());
+    const Rect<> rect(Vector2<>(0.0f, 0.0f), tex->getOriginalDataSize());
 
     BasicImage image(name, tex, rect,
                      Vector2<>(0, 0), false, Size<>(0, 0));
@@ -277,11 +277,11 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 {
     const String name(attributes.getValueAsString(ImageNameAttribute));
 
-    Rect rect;
-    rect.d_left =
-        attributes.getValueAsInteger(ImageXPosAttribute);
-    rect.d_top  =
-        attributes.getValueAsInteger(ImageYPosAttribute);
+    Rect<> rect;
+    rect.left(
+        attributes.getValueAsInteger(ImageXPosAttribute));
+    rect.top(
+        attributes.getValueAsInteger(ImageYPosAttribute));
     rect.setWidth(
         attributes.getValueAsInteger(ImageWidthAttribute));
     rect.setHeight(

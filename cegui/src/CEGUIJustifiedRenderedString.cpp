@@ -60,7 +60,7 @@ void JustifiedRenderedString::format(const Size<>& area_size)
 void JustifiedRenderedString::draw(GeometryBuffer& buffer,
                                  const Vector2<>& position,
                                  const ColourRect* mod_colours,
-                                 const Rect* clip_rect) const
+                                 const Rect<>* clip_rect) const
 {
     Vector2<> draw_pos(position);
 

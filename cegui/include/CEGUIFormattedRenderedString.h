@@ -48,7 +48,7 @@ public:
     virtual void format(const Size<>& area_size) = 0;
     virtual void draw(GeometryBuffer& buffer, const Vector2<>& position,
                       const ColourRect* mod_colours,
-                      const Rect* clip_rect) const = 0;
+                      const Rect<>* clip_rect) const = 0;
     virtual size_t getFormattedLineCount() const = 0;
     virtual float getHorizontalExtent() const = 0;
     virtual float getVerticalExtent() const = 0;

@@ -45,7 +45,7 @@ ClippedContainer::~ClippedContainer(void)
 {
 }
 
-Rect ClippedContainer::getUnclippedInnerRect_impl() const
+Rect<> ClippedContainer::getUnclippedInnerRect_impl() const
 {
     // This is obviously doing nothing.  The reason being that whas this
     // used to to is now handled correctly via the fixed 'inner rect' usage,
@@ -56,7 +56,7 @@ Rect ClippedContainer::getUnclippedInnerRect_impl() const
     return Window::getUnclippedInnerRect_impl();
 }
 
-const Rect& ClippedContainer::getClipArea(void) const
+const Rect<>& ClippedContainer::getClipArea(void) const
 {
     return d_clipArea;
 }
@@ -66,7 +66,7 @@ Window* ClippedContainer::getClipperWindow() const
     return d_clipperWindow;
 }
 
-void ClippedContainer::setClipArea(const CEGUI::Rect& r)
+void ClippedContainer::setClipArea(const Rect<>& r)
 {
     if (d_clipArea != r)
     {
@@ -76,7 +76,7 @@ void ClippedContainer::setClipArea(const CEGUI::Rect& r)
     }
 }
 
-void ClippedContainer::setClipperWindow(CEGUI::Window* w)
+void ClippedContainer::setClipperWindow(Window* w)
 {
     if (d_clipperWindow != w)
     {

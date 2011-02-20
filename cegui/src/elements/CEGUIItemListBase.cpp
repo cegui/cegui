@@ -523,8 +523,8 @@ void ItemListBase::performChildWindowLayout(void)
 ************************************************************************/
 void ItemListBase::sizeToContent_impl(void)
 {
-    Rect renderArea(getItemRenderArea());
-    Rect wndArea(CoordConverter::asAbsolute(getArea(), getParentPixelSize()));
+    Rect<> renderArea(getItemRenderArea());
+    Rect<> wndArea(CoordConverter::asAbsolute(getArea(), getParentPixelSize()));
 
     // get size of content
     Size<> sz(getContentSize());
@@ -538,7 +538,7 @@ void ItemListBase::sizeToContent_impl(void)
 /************************************************************************
     Get item render area
 ************************************************************************/
-Rect ItemListBase::getItemRenderArea(void) const
+Rect<> ItemListBase::getItemRenderArea(void) const
 {
     if (d_windowRenderer != 0)
     {

@@ -106,7 +106,7 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
-    const CEGUI::Rect scrn(CEGUI::Vector2<>(0, 0), d_renderer->getDisplaySize());
+    const CEGUI::Rect<> scrn(CEGUI::Vector2<>(0, 0), d_renderer->getDisplaySize());
 
     // setup for FPS value
     d_FPSGeometry = &d_renderer->createGeometryBuffer();
@@ -121,7 +121,7 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
     CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        *d_logoGeometry, CEGUI::Rect(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
+        *d_logoGeometry, CEGUI::Rect<>(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
     d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -302,7 +302,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::positionLogo()
 {
-    const CEGUI::Rect scrn(d_renderer->getDefaultRenderingRoot().
+    const CEGUI::Rect<> scrn(d_renderer->getDefaultRenderingRoot().
         getRenderTarget().getArea());
 
     d_logoGeometry->setClippingRegion(scrn);

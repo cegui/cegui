@@ -78,19 +78,9 @@ public:
         return Vector2<>(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
 
-    /*inline static Vector2<> asAbsolute(const UVector2& v, const Size<>& base)
+    inline static Rect<> asAbsolute(const URect& r, const Size<>& base)
     {
-        return Vector2<>(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
-    }
-
-    inline static Vector2<> asRelative(const UVector2& v, const Size<>& base)
-    {
-        return Vector2<>(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
-    }*/
-
-    inline static Rect asAbsolute(const URect& r, const Size<>& base)
-    {
-        return Rect(
+        return Rect<>(
                    asAbsolute(r.d_min.d_x, base.d_width),
                    asAbsolute(r.d_min.d_y, base.d_height),
                    asAbsolute(r.d_max.d_x, base.d_width),
@@ -98,9 +88,9 @@ public:
                );
     }
 
-    inline static Rect asRelative(const URect& r, const Size<>& base)
+    inline static Rect<> asRelative(const URect& r, const Size<>& base)
     {
-        return Rect(
+        return Rect<>(
                    asRelative(r.d_min.d_x, base.d_width),
                    asRelative(r.d_min.d_y, base.d_height),
                    asRelative(r.d_max.d_x, base.d_width),
@@ -221,7 +211,7 @@ public:
         Rect object describing a screen area that is equivalent to window
         area \a rect.
     */
-    static Rect windowToScreen(const Window& window, const URect& rect);
+    static Rect<> windowToScreen(const Window& window, const URect& rect);
 
     /*!
     \brief
@@ -237,7 +227,7 @@ public:
         Rect object describing a screen area that is equivalent to window
         area \a rect.
     */
-    static Rect windowToScreen(const Window& window, const Rect& rect);
+    static Rect<> windowToScreen(const Window& window, const Rect<>& rect);
 
     /*!
     \brief
@@ -355,7 +345,7 @@ public:
         Rect object describing a window area that is equivalent to URect screen
         area \a rect.
     */
-    static Rect screenToWindow(const Window& window, const URect& rect);
+    static Rect<> screenToWindow(const Window& window, const URect& rect);
 
     /*!
     \brief
@@ -371,7 +361,7 @@ public:
         Rect object describing a window area that is equivalent to Rect screen
         area \a rect.
     */
-    static Rect screenToWindow(const Window& window, const Rect& rect);
+    static Rect<> screenToWindow(const Window& window, const Rect<>& rect);
 
 private:
     //! disallows construction of this class

@@ -59,9 +59,9 @@ RenderingWindow::~RenderingWindow()
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setClippingRegion(const Rect& region)
+void RenderingWindow::setClippingRegion(const Rect<>& region)
 {
-    Rect final_region(region);
+    Rect<> final_region(region);
 
     // clip region position must be offset according to our owner position, if
     // that is a RenderingWindow.
@@ -256,43 +256,43 @@ void RenderingWindow::realiseGeometry_impl()
 
     const float tu = d_size.d_width * tex.getTexelScaling().d_x;
     const float tv = d_size.d_height * tex.getTexelScaling().d_y;
-    const Rect tex_rect(d_textarget.isRenderingInverted() ?
-                        Rect(0, 1, tu, 1 - tv) :
-                        Rect(0, 0, tu, tv));
+    const Rect<> tex_rect(d_textarget.isRenderingInverted() ?
+                          Rect<>(0, 1, tu, 1 - tv) :
+                          Rect<>(0, 0, tu, tv));
 
-    const Rect area(0, 0, d_size.d_width, d_size.d_height);
+    const Rect<> area(0, 0, d_size.d_width, d_size.d_height);
     const Colour c(1, 1, 1, 1);
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = Vector3<>(area.d_left, area.d_top, 0.0f);
+    vbuffer[0].position   = Vector3<>(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[0].colour_val = c;
-    vbuffer[0].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[0].tex_coords = Vector2<>(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 1
-    vbuffer[1].position   = Vector3<>(area.d_left, area.d_bottom, 0.0f);
+    vbuffer[1].position   = Vector3<>(area.d_min.d_x, area.d_max.d_y, 0.0f);
     vbuffer[1].colour_val = c;
-    vbuffer[1].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_bottom);
+    vbuffer[1].tex_coords = Vector2<>(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
 
     // vertex 2
-    vbuffer[2].position   = Vector3<>(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[2].position   = Vector3<>(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[2].colour_val = c;
-    vbuffer[2].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[2].tex_coords = Vector2<>(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     // vertex 3
-    vbuffer[3].position   = Vector3<>(area.d_right, area.d_top, 0.0f);
+    vbuffer[3].position   = Vector3<>(area.d_max.d_x, area.d_min.d_y, 0.0f);
     vbuffer[3].colour_val = c;
-    vbuffer[3].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_top);
+    vbuffer[3].tex_coords = Vector2<>(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
 
     // vertex 4
-    vbuffer[4].position   = Vector3<>(area.d_left, area.d_top, 0.0f);
+    vbuffer[4].position   = Vector3<>(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[4].colour_val = c;
-    vbuffer[4].tex_coords = Vector2<>(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[4].tex_coords = Vector2<>(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 5
-    vbuffer[5].position   = Vector3<>(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[5].position   = Vector3<>(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[5].colour_val = c;
-    vbuffer[5].tex_coords = Vector2<>(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[5].tex_coords = Vector2<>(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     d_geometry->setActiveTexture(&tex);
     d_geometry->appendGeometry(vbuffer, 6);

@@ -66,7 +66,7 @@ void OpenGLFBOTextureTarget::declareRenderSize(const Size<>& sz)
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
+    setArea(Rect<>(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     resizeRenderTexture();
 }
 

@@ -61,7 +61,7 @@ namespace CEGUI
         // overridden from Menubar base class.
         void render();
         //void sizeToContent_impl(void);
-        Rect getItemRenderArea(void) const;
+        Rect<> getItemRenderArea(void) const;
     };
 
 } // End of  CEGUI namespace section

@@ -240,7 +240,7 @@ void FrameWindow::offsetPixelPosition(const Vector2<>& offset)
 *************************************************************************/
 FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2<>& pt) const
 {
-	Rect	frame(getSizingRect());
+	Rect<> frame(getSizingRect());
 
 	// we can only size if the frame is enabled and sizing is on
 	if (isSizingEnabled() && isFrameEnabled())
@@ -249,16 +249,16 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2<>&
 		if (frame.isPointInRect(pt))
 		{
 			// adjust rect to get inner edge
-			frame.d_left	+= d_borderSize;
-			frame.d_top		+= d_borderSize;
-			frame.d_right	-= d_borderSize;
-			frame.d_bottom	-= d_borderSize;
+			frame.d_min.d_x += d_borderSize;
+			frame.d_min.d_y += d_borderSize;
+			frame.d_max.d_x -= d_borderSize;
+			frame.d_max.d_y -= d_borderSize;
 
 			// detect which edges we are on
-			bool top	= (pt.d_y < frame.d_top);
-			bool bottom = (pt.d_y >= frame.d_bottom);
-			bool left	= (pt.d_x < frame.d_left);
-			bool right	= (pt.d_x >= frame.d_right);
+			bool top = (pt.d_y < frame.d_min.d_y);
+			bool bottom = (pt.d_y >= frame.d_max.d_y);
+			bool left = (pt.d_x < frame.d_min.d_x);
+			bool right = (pt.d_x >= frame.d_max.d_x);
 
 			// return appropriate 'SizingLocation' value
 			if (top && left)
@@ -598,7 +598,9 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 				top_left_sizing |= moveBottomEdge(deltaY, new_area);
 			}
 
-            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
+            // todo: vector vs size
+            const USize sz = new_area.getSize();
+            setArea_impl(new_area.d_min, UVector2(sz.d_width, sz.d_height), top_left_sizing);
 		}
 		else
 		{

@@ -74,7 +74,7 @@ namespace CEGUI
 
     void SectionSpecification::render(Window& srcWindow,
                                       const ColourRect* modcols,
-                                      const Rect* clipper,
+                                      const Rect<>* clipper,
                                       bool clipToDisplay) const
     {
         // see if we need to bother rendering
@@ -103,9 +103,9 @@ namespace CEGUI
         {}
     }
 
-    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect,
+    void SectionSpecification::render(Window& srcWindow, const Rect<>& baseRect,
                                       const ColourRect* modcols,
-                                      const Rect* clipper,
+                                      const Rect<>* clipper,
                                       bool clipToDisplay) const
     {
         // see if we need to bother rendering
