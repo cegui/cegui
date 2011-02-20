@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -38,7 +38,10 @@ struct ID3D11DeviceContext;
 struct ID3D11Texture2D;
 struct ID3D11ShaderResourceView;
 
-
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -82,6 +85,7 @@ public:
     void setOriginalDataSize(const Size<>& sz);
 
     // implement abstract members from base class.
+    const String& getName() const;
     const Size<>& getSize() const;
     const Size<>& getOriginalDataSize() const;
     const Vector2<>& getTexelScaling() const;
@@ -93,21 +97,25 @@ public:
 
 protected:
     // Friends to allow Renderer to peform construction and destruction
-    friend Texture& Direct3D11Renderer::createTexture();
-    friend Texture& Direct3D11Renderer::createTexture(const String&, const String&);
-    friend Texture& Direct3D11Renderer::createTexture(const Size<>&);
+    friend Texture& Direct3D11Renderer::createTexture(const String&);
+    friend Texture& Direct3D11Renderer::createTexture(const String&,
+                                                      const String&,
+                                                      const String&);
+    friend Texture& Direct3D11Renderer::createTexture(const String&,
+                                                      const Size<>&);
     //friend Texture& Direct3D11Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D11Renderer::destroyTexture(Texture&);
+    friend void Direct3D11Renderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    Direct3D11Texture(IDevice11& device);
+    Direct3D11Texture(IDevice11& device, const String& name);
     //! Construct texture from an image file.
-    Direct3D11Texture(IDevice11& device, const String& filename,
+    Direct3D11Texture(IDevice11& device, const String& name, const String& filename,
                       const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D11Texture(IDevice11& device, const Size<>& sz);
+    Direct3D11Texture(IDevice11& device, const String& name, const Size<>& sz);
     //! Construct texture that wraps an existing D3D10 texture.
-    Direct3D11Texture(IDevice11& device, ID3D11Texture2D* tex);
+    Direct3D11Texture(IDevice11& device, const String& name, ID3D11Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D11Texture();
 
@@ -132,9 +140,15 @@ protected:
     Size<> d_dataSize;
     //! cached pixel to texel mapping scale values.
     Vector2<> d_texelScaling;
+    //! The name we were created with.
+    const String d_name;
 };
 
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIDirect3D11Texture_h_
