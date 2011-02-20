@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,6 +34,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUILogger.h"
 #include <algorithm>
 
 #include "d3dx11effect.h"
@@ -163,50 +164,108 @@ void Direct3D11Renderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D11Renderer::createTexture()
+Texture& Direct3D11Renderer::createTexture(const String& name)
 {
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D11Renderer::createTexture(const String& filename,
+Texture& Direct3D11Renderer::createTexture(const String& name,
+                                           const String& filename,
                                            const String& resourceGroup)
 {
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device, filename,
+    throwIfNameExists(name);
+
+    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name, filename,
                                                    resourceGroup);
-    d_textures.push_back(tex);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& Direct3D11Renderer::createTexture(const Size<>& size)
+Texture& Direct3D11Renderer::createTexture(const String& name,
+                                           const Size<>& size)
 {
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device, size);
-    d_textures.push_back(tex);
+    throwIfNameExists(name);
+
+    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name, size);
+    d_textures[name] = tex;
+
+    logTextureCreation(name);
+
     return *tex;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::throwIfNameExists(const String& name) const
+{
+    if (d_textures.find(name) != d_textures.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[Direct3D11Renderer] Texture already exists: " + name));
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::logTextureCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[Direct3D11Renderer] Created texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
-                                        &texture);
+    destroyTexture(texture.getName());
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_textures.find(name);
 
     if (d_textures.end() != i)
     {
+        logTextureDestruction(name);
+        delete i->second;
         d_textures.erase(i);
-        delete &static_cast<Direct3D11Texture&>(texture);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[Direct3D11Renderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::destroyAllTextures()
 {
     while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+        destroyTexture(d_textures.begin()->first);
+}
+
+//----------------------------------------------------------------------------//
+Texture& Direct3D11Renderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[Direct3D11Renderer] Texture does not exist: " + name));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//
