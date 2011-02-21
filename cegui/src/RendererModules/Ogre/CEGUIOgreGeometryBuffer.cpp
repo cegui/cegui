@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -133,8 +133,8 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 void OgreGeometryBuffer::draw() const
 {
     // Set up clipping for this buffer
-    d_renderSystem.setScissorTest(true, d_clipRect.d_left, d_clipRect.d_top,
-                                  d_clipRect.d_right, d_clipRect.d_bottom);
+    d_renderSystem.setScissorTest(true, d_clipRect.left(), d_clipRect.top(),
+                                  d_clipRect.right(), d_clipRect.bottom());
 
     if (!d_sync)
         syncHardwareBuffer();
@@ -194,12 +194,12 @@ void OgreGeometryBuffer::setPivot(const Vector3<>& p)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setClippingRegion(const Rect& region)
+void OgreGeometryBuffer::setClippingRegion(const Rect<>& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//

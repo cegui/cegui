@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -66,7 +66,7 @@ public:
     virtual void setTranslation(const Vector3<>& v);
     virtual void setRotation(const Quaternion& r);
     virtual void setPivot(const Vector3<>& p);
-    virtual void setClippingRegion(const Rect& region);
+    virtual void setClippingRegion(const Rect<>& region);
     virtual void appendVertex(const Vertex& vertex);
     virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     virtual void setActiveTexture(Texture* texture);
@@ -102,7 +102,7 @@ protected:
     //! Texture that is set as active
     OgreTexture* d_activeTexture;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rect<> d_clipRect;
     //! translation vector
     Vector3<> d_translation;
     //! rotation quaternion

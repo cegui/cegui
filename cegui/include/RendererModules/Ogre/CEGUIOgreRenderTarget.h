@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -59,13 +59,13 @@ public:
         This function is deprecated and will be removed or changed considerably
         in future releases.
     */
-    void setOgreViewportDimensions(const Rect& area);
+    void setOgreViewportDimensions(const Rect<>& area);
 
     // implement parts of CEGUI::RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rect<>& area);
+    const Rect<>& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
@@ -84,7 +84,7 @@ protected:
     //! Ogre RendererSystem used to affect the rendering process
     Ogre::RenderSystem& d_renderSystem;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rect<> d_area;
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
     //! Ogre viewport used for this target.
@@ -98,7 +98,7 @@ protected:
     //! true when d_viewport is up to date and valid.
     bool d_viewportValid;
     //! holds set Ogre viewport dimensions
-    Rect d_ogreViewportDimensions;
+    Rect<> d_ogreViewportDimensions;
 };
 
 } // End of  CEGUI namespace section

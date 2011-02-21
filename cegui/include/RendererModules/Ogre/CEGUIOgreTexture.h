@@ -55,7 +55,7 @@ public:
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Size<>& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitFromMemory(void* sourceData, const Rect<>& area);
     void blitToMemory(void* targetData);
 
 protected:

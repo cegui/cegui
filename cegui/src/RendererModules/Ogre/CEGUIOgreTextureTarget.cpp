@@ -99,7 +99,7 @@ void OgreTextureTarget::declareRenderSize(const Size<>& sz)
 
     d_renderTarget = rttTex->getBuffer()->getRenderTarget();
 
-    Rect init_area(
+    Rect<> init_area(
         Vector2<>(0, 0),
         Size<>(d_renderTarget->getWidth(), d_renderTarget->getHeight())
     );

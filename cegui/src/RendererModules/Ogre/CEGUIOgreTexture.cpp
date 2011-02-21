@@ -163,14 +163,14 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::blitFromMemory(void* sourceData, const Rect& area)
+void OgreTexture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
     if (d_texture.isNull()) // TODO: exception?
         return;
 
     Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
                       1, Ogre::PF_A8R8G8B8, sourceData);
-    Ogre::Image::Box box(area.d_left, area.d_top, area.d_right, area.d_bottom);
+    Ogre::Image::Box box(area.left(), area.top(), area.right(), area.bottom());
     d_texture->getBuffer()->blitFromMemory(pb, box);
 }
 
