@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -68,7 +68,7 @@ void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
 {
     d_renderTarget = &target;
 
-    Rect init_area(
+    Rect<> init_area(
         Vector2<>(0, 0),
         Size<>(d_renderTarget->getWidth(), d_renderTarget->getHeight())
     );
