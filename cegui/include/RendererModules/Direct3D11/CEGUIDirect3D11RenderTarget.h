@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -51,8 +51,8 @@ public:
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rect<>& area);
+    const Rect<>& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
@@ -70,7 +70,7 @@ protected:
     //! D3D10Device interface.
     IDevice11& d_device;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rect<> d_area;
     //! projection / view matrix cache
     mutable D3DXMATRIX d_matrix;
     //! true when d_matrix is valid and up to date

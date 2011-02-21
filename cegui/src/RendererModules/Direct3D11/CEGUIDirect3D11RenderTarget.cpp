@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -54,14 +54,14 @@ void Direct3D11RenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11RenderTarget::setArea(const Rect& area)
+void Direct3D11RenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& Direct3D11RenderTarget::getArea() const
+const Rect<>& Direct3D11RenderTarget::getArea() const
 {
     return d_area;
 }
@@ -180,8 +180,8 @@ void Direct3D11RenderTarget::updateMatrix() const
 //----------------------------------------------------------------------------//
 void Direct3D11RenderTarget::setupViewport(D3D11_VIEWPORT& vp) const
 {
-    vp.TopLeftX = static_cast<FLOAT>(d_area.d_left);
-    vp.TopLeftY = static_cast<FLOAT>(d_area.d_top);
+    vp.TopLeftX = static_cast<FLOAT>(d_area.left());
+    vp.TopLeftY = static_cast<FLOAT>(d_area.top());
     vp.Width = static_cast<FLOAT>(d_area.getWidth());
     vp.Height = static_cast<FLOAT>(d_area.getHeight());
     vp.MinDepth = 0.0f;
