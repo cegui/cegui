@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -84,19 +84,19 @@ void IrrlichtGeometryBuffer::draw() const
     scsr(1, 1) = tsz.d_height / csz.d_height;
     scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
                    (target_vp.UpperLeftCorner.X -
-                     (d_clipRect.d_left + csz.d_width * 0.5f))) / csz.d_width;
+                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
     scsr(3, 1) = -(tsz.d_height + 2.0f *
                    (target_vp.UpperLeftCorner.Y -
-                     (d_clipRect.d_top + csz.d_height * 0.5f))) / csz.d_height;
+                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
     scsr *= proj;
     d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
 
     // set new viewport for the clipping area
     const irr::core::rect<irr::s32> vp(
-            static_cast<irr::s32>(d_clipRect.d_left),
-            static_cast<irr::s32>(d_clipRect.d_top),
-            static_cast<irr::s32>(d_clipRect.d_right),
-            static_cast<irr::s32>(d_clipRect.d_bottom));
+            static_cast<irr::s32>(d_clipRect.left()),
+            static_cast<irr::s32>(d_clipRect.top()),
+            static_cast<irr::s32>(d_clipRect.right()),
+            static_cast<irr::s32>(d_clipRect.bottom()));
     d_driver.setViewPort(vp);
 
     if (!d_matrixValid)
@@ -162,12 +162,12 @@ void IrrlichtGeometryBuffer::setPivot(const Vector3<>& p)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setClippingRegion(const Rect& region)
+void IrrlichtGeometryBuffer::setClippingRegion(const Rect<>& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//

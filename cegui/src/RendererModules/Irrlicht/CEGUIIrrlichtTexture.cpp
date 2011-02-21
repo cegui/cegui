@@ -153,7 +153,7 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect& area)
+void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
     CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitFromMemory: "
         "Function is unimplemented!"));

@@ -102,7 +102,7 @@ void IrrlichtTextureTarget::declareRenderSize(const Size<>& sz)
                 static_cast<float>(d_texture->getSize().Height) < sz.d_height;
 
     // update area to render into.
-    setArea(Rect(d_area.getPosition(), sz));
+    setArea(Rect<>(d_area.getPosition(), sz));
 
     // exit if current texture size is large enough
     if (!realloc)

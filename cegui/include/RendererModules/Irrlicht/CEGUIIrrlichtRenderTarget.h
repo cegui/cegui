@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -57,8 +57,8 @@ public:
     // implement common parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rect<>& area);
+    const Rect<>& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
@@ -72,7 +72,7 @@ protected:
     //! Irrlicht video driver we are using
     irr::video::IVideoDriver& d_driver;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rect<> d_area;
     //! projection / view matrix cache
     mutable irr::core::matrix4 d_matrix;
     //! true when d_matrix is valid and up to date
