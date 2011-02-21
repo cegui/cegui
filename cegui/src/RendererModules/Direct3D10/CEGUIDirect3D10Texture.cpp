@@ -186,7 +186,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::blitFromMemory(void* sourceData, const Rect& area)
+void Direct3D10Texture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
     // TODO:
     CEGUI_THROW(RendererException(

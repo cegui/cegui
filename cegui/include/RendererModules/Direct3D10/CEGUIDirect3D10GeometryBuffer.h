@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -63,7 +63,7 @@ public:
     void setTranslation(const Vector3<>& v);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3<>& p);
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rect<>& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -118,7 +118,7 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rect<> d_clipRect;
     //! translation vector
     Vector3<> d_translation;
     //! rotation Quaternion

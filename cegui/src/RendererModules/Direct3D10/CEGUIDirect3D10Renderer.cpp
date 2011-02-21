@@ -283,7 +283,7 @@ void Direct3D10Renderer::setDisplaySize(const Size<>& sz)
         d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect area(d_defaultTarget->getArea());
+        Rect<> area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }

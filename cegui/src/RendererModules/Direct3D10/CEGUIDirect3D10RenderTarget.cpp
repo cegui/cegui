@@ -55,14 +55,14 @@ void Direct3D10RenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10RenderTarget::setArea(const Rect& area)
+void Direct3D10RenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& Direct3D10RenderTarget::getArea() const
+const Rect<>& Direct3D10RenderTarget::getArea() const
 {
     return d_area;
 }
@@ -171,8 +171,8 @@ void Direct3D10RenderTarget::updateMatrix() const
 //----------------------------------------------------------------------------//
 void Direct3D10RenderTarget::setupViewport(D3D10_VIEWPORT& vp) const
 {
-    vp.TopLeftX = static_cast<INT>(d_area.d_left);
-    vp.TopLeftY = static_cast<INT>(d_area.d_top);
+    vp.TopLeftX = static_cast<INT>(d_area.left());
+    vp.TopLeftY = static_cast<INT>(d_area.top());
     vp.Width = static_cast<UINT>(d_area.getWidth());
     vp.Height = static_cast<UINT>(d_area.getHeight());
     vp.MinDepth = 0.0f;

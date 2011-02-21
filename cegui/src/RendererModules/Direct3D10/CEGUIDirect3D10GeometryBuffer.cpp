@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -63,10 +63,10 @@ void Direct3D10GeometryBuffer::draw() const
 {
     // setup clip region
     D3D10_RECT clip;
-    clip.left   = static_cast<LONG>(d_clipRect.d_left);
-    clip.top    = static_cast<LONG>(d_clipRect.d_top);
-    clip.right  = static_cast<LONG>(d_clipRect.d_right);
-    clip.bottom = static_cast<LONG>(d_clipRect.d_bottom);
+    clip.left   = static_cast<LONG>(d_clipRect.left());
+    clip.top    = static_cast<LONG>(d_clipRect.top());
+    clip.right  = static_cast<LONG>(d_clipRect.right());
+    clip.bottom = static_cast<LONG>(d_clipRect.bottom());
     d_device.RSSetScissorRects(1, &clip);
 
     if (!d_bufferSynched)
@@ -132,12 +132,12 @@ void Direct3D10GeometryBuffer::setPivot(const Vector3<>& p)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::setClippingRegion(const Rect& region)
+void Direct3D10GeometryBuffer::setClippingRegion(const Rect<>& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//
