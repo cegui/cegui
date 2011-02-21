@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -43,7 +43,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
         CEGUI_THROW(RendererException("Direct3D11ViewportTarget: Unable to access "
             "required view port information from ID3D10Device."));
 
-    Rect area(
+    Rect<> area(
         Vector2<>(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
         Size<>(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
@@ -53,7 +53,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner,
-                                                   const Rect& area) :
+                                                   const Rect<>& area) :
     Direct3D11RenderTarget(owner)
 {
     setArea(area);
