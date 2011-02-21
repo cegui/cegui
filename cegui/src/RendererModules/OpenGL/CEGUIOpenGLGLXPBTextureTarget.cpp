@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -118,8 +118,8 @@ void OpenGLGLXPBTextureTarget::deactivate()
     glBindTexture(GL_TEXTURE_2D, d_texture);
     glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
                      0, 0,
-                     static_cast<GLsizei>(d_area.d_right),
-                     static_cast<GLsizei>(d_area.d_bottom), 0);
+                     static_cast<GLsizei>(d_area.right()),
+                     static_cast<GLsizei>(d_area.bottom()), 0);
 
     disablePBuffer();
 
@@ -148,7 +148,7 @@ void OpenGLGLXPBTextureTarget::declareRenderSize(const Size<>& sz)
         (d_area.getHeight() >= sz.d_height))
             return;
 
-    setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
+    setArea(Rect<>(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     initialisePBuffer();
     clear();
 }
