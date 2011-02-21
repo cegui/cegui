@@ -140,7 +140,7 @@ void ImageManager::destroy(ImageMap::iterator& iter)
 {
     Logger::getSingleton().logEvent(
         "[ImageManager] Deleted image: " + iter->first);
-    delete iter->second;
+    CEGUI_DELETE_AO iter->second;
     d_images.erase(iter);
 }
 

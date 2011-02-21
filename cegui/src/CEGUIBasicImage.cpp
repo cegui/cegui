@@ -253,7 +253,7 @@ void BasicImage::notifyDisplaySizeChanged(const Size<>& size)
 //----------------------------------------------------------------------------//
 Image& BasicImage::clone() const
 {
-    return *new BasicImage(*this);
+    return *CEGUI_NEW_AO BasicImage(*this);
 }
 
 //----------------------------------------------------------------------------//
