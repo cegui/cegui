@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -63,14 +63,14 @@ void IrrlichtRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtRenderTarget::setArea(const Rect& area)
+void IrrlichtRenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& IrrlichtRenderTarget::getArea() const
+const Rect<>& IrrlichtRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -78,10 +78,10 @@ const Rect& IrrlichtRenderTarget::getArea() const
 //----------------------------------------------------------------------------//
 void IrrlichtRenderTarget::activate()
 {
-    irr::core::rect<irr::s32> vp(static_cast<irr::s32>(d_area.d_left),
-                                 static_cast<irr::s32>(d_area.d_top),
-                                 static_cast<irr::s32>(d_area.d_right),
-                                 static_cast<irr::s32>(d_area.d_bottom));
+    irr::core::rect<irr::s32> vp(static_cast<irr::s32>(d_area.left()),
+                                 static_cast<irr::s32>(d_area.top()),
+                                 static_cast<irr::s32>(d_area.right()),
+                                 static_cast<irr::s32>(d_area.bottom()));
     d_driver.setViewPort(vp);
 
     if (!d_matrixValid)
@@ -116,7 +116,7 @@ void IrrlichtRenderTarget::unprojectPoint(const GeometryBuffer& buff,
         midx, 0, 0, 0,
         0, -midy, 0, 0,
         0, 0, 1, 0,
-        d_area.d_left + midx, d_area.d_top + midy, 0, 1
+        d_area.left() + midx, d_area.top() + midy, 0, 1
     };
     irr::core::matrix4 vpmat;
     vpmat.setM(vpmat_);
