@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -57,14 +57,14 @@ void Direct3D9RenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9RenderTarget::setArea(const Rect& area)
+void Direct3D9RenderTarget::setArea(const Rect<>& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& Direct3D9RenderTarget::getArea() const
+const Rect<>& Direct3D9RenderTarget::getArea() const
 {
     return d_area;
 }
@@ -173,8 +173,8 @@ void Direct3D9RenderTarget::updateMatrix() const
 //----------------------------------------------------------------------------//
 void Direct3D9RenderTarget::setupViewport(D3DVIEWPORT9& vp) const
 {
-    vp.X = static_cast<DWORD>(d_area.d_left);
-    vp.Y = static_cast<DWORD>(d_area.d_top);
+    vp.X = static_cast<DWORD>(d_area.left());
+    vp.Y = static_cast<DWORD>(d_area.top());
     vp.Width = static_cast<DWORD>(d_area.getWidth());
     vp.Height = static_cast<DWORD>(d_area.getHeight());
     vp.MinZ = 0.0f;

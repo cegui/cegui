@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -70,7 +70,7 @@ void Direct3D9TextureTarget::declareRenderSize(const Size<>& sz)
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect(d_area.getPosition(), sz));
+    setArea(Rect<>(d_area.getPosition(), sz));
     resizeRenderTexture();
     clear();
 }

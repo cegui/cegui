@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -289,7 +289,7 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Texture::blitFromMemory(void* sourceData, const Rect& area)
+void Direct3D9Texture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
     // TODO:
     CEGUI_THROW(RendererException(
