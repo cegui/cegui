@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,7 +30,6 @@
 
 #include "CEGUIDirect3D9RenderTarget.h"
 #include "../../CEGUITextureTarget.h"
-#include "../../CEGUIRect.h"
 #include <d3d9.h>
 
 #if defined(_MSC_VER)
