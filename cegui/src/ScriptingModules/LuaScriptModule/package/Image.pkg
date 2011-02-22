@@ -10,27 +10,27 @@ class Image
     const Vector2<float>& getRenderedOffset() const;
 
     void render(GeometryBuffer& buffer,
-                        const Rect& dest_area,
-                        const Rect* clip_area,
+                        const Rect<float>& dest_area,
+                        const Rect<float>* clip_area,
                         const ColourRect& colours) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
-                const Rect* clip_area = 0) const;
+                const Rect<float>* clip_area = 0) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
-                const Rect* clip_area,
+                const Rect<float>* clip_area,
                 const ColourRect& colours) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
                 const Size<float>& size,
-                const Rect* clip_area = 0) const;
+                const Rect<float>* clip_area = 0) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2<float>& position,
                 const Size<float>& size,
-                const Rect* clip_area,
+                const Rect<float>* clip_area,
                 const ColourRect& colours) const;
 };

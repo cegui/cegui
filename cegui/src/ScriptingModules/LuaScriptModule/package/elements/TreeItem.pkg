@@ -34,8 +34,8 @@ class TreeItem
     void setSelectionColours(Colour col);
     void setSelectionBrushImage(const Image* image);
     void setSelectionBrushImage(utf8string name);
-    void setButtonLocation(Rect &buttonOffset);
-    Rect &getButtonLocation();
+    void setButtonLocation(Rect<float>& buttonOffset);
+    Rect<float>& getButtonLocation();
     bool getIsOpen();
     void toggleIsOpen();
     TreeItem *getTreeItemFromIndex(unsigned long itemIndex);

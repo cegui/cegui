@@ -4,6 +4,7 @@
 $renaming Vector2_float @ Vector2
 $renaming Vector3_float @ Vector3
 $renaming Size_float @ Size
+$renaming Rect_float @ Rect
 
 
 // Possible actions when loading an XML resource that already exists.
@@ -76,34 +77,53 @@ class Size
 ***********************************************************************/
 class Rect
 {
-	// remove member variable 'd_' prefix
-	float d_top @ top;
-	float d_bottom @ bottom;
-	float d_left @ left;
-	float d_right @ right;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-	Vector2<float> getPosition() const;
-	float getWidth() const;
-	float getHeight() const;
-	Size<float> getSize() const;
-
-	Rect getIntersection(const Rect& rect) const;
-	bool isPointInRect(const Vector2<float>& p) const;
-
-	void setPosition(const Vector2<float>& p);
-	void setWidth(float w);
-	void setHeight(float h);
-	void setSize(const Size<float>& sz);
-
-	Rect& offset(const Vector2<float>& p);
-	Rect& constrainSizeMax(const Size<float>& sz);
-	Rect& constrainSizeMin(const Size<float>& sz);
-	Rect& constrainSize(const Size<float>& min, const Size<float>& max);
-
-	bool operator== (const Rect& r) const;
+    Vector2<T> d_min @ min;
+    Vector2<T> d_max @ max;
 
 	Rect();
-	Rect(float l, float t, float r, float b);
+
+	Rect(const T& left, const T& top, const T& right, const T& bottom);
+    Rect(const Vector2<T>& min, const Vector2<T>& max);
+    Rect(const Vector2<T>& pos, const Size<T>& size);
+    Rect(const Rect<T>& r);
+
+    void left(const T& v);
+    void top(const T& v);
+    void right(const T& v);
+    void bottom(const T& v);
+
+    const T& left() const;
+    const T& top() const;
+    const T& right() const;
+    const T& bottom() const;
+
+	void setPosition(const Vector2<T>& min);
+	const Vector2<T>& getPosition() const;
+
+    void setSize(const Size<T>& size);
+	Size<T> getSize() const;
+
+    void setWidth(const T& w);
+	T getWidth() const;
+
+    void setHeight(const T& h);
+	T getHeight() const;
+
+	Rect<T> getIntersection(const Rect<T>& rect) const;
+
+	void offset(const Vector2<T>& v);
+
+	bool isPointInRect(const Vector2<T>& v) const;
+
+	void constrainSizeMax(const Size<T>& size);
+	void constrainSizeMin(const Size<T>& size);
+	void constrainSize(const Size<T>& max_sz, const Size<T>& min_sz);
+
+	bool operator==(const Rect<T>& rhs) const;
+    Rect<T> operator*(T scalar) const;
+	Rect<T> operator+(const Rect<T>& r) const;
 };
 
 class Quaternion

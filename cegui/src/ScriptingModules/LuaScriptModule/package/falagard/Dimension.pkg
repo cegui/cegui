@@ -4,7 +4,7 @@
 class BaseDim
 {
   tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd) const;
-  tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd, const Rect& container) const;
+  tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd, const Rect<float>& container) const;
   BaseDim* clone() const;
   DimensionOperator getDimensionOperator() const;
   void setDimensionOperator(DimensionOperator op);
@@ -88,8 +88,8 @@ class Dimension
 ******************************************************************************/
 class ComponentArea
 {
-  Rect getPixelRect(const Window& wnd) const;
-  Rect getPixelRect(const Window& wnd, const Rect& container) const;
+  Rect<float> getPixelRect(const Window& wnd) const;
+  Rect<float> getPixelRect(const Window& wnd, const Rect<float>& container) const;
   //void writeXMLToStream(OutStream& out_stream) const;
   bool isAreaFetchedFromProperty() const;
   string getAreaPropertySource() const;

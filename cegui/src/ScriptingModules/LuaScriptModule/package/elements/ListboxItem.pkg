@@ -28,6 +28,6 @@ class ListboxItem
 
 	Size<float> getPixelSize() const;
 
-	//void draw(const Vector3<float>& position, float alpha, const Rect& clipper) const;
+	//void draw(const Vector3<float>& position, float alpha, const Rect<float>& clipper) const;
 	// operators missing
 };

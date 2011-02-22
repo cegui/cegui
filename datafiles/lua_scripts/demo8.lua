@@ -18,7 +18,7 @@ function panelSlideHandler(args)
     local scroller = CEGUI.toScrollbar(CEGUI.toWindowEventArgs(args).window)
     local demoWnd = CEGUI.WindowManager:getSingleton():getWindow("Demo8")
 
-    local relHeight = demoWnd:getHeight():asRelative(demoWnd:getParentPixelHeight())
+    local relHeight = CEGUI.CoordConverter:asRelative(demoWnd:getHeight(), demoWnd:getParentPixelHeight())
 
     scroller:setPosition(CEGUI.UVector2(CEGUI.UDim(0,0), CEGUI.UDim(scroller:getScrollPosition() / relHeight,0)))
     demoWnd:setPosition(CEGUI.UVector2(CEGUI.UDim(0,0), CEGUI.UDim(-scroller:getScrollPosition(),0)))
