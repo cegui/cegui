@@ -3,7 +3,7 @@
     created:    7/8/2010
     author:     Martin Preisler
 
-    purpose:    Defines the interface for the Animatin class
+    purpose:    Defines the interface for the Animation class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
