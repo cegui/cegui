@@ -148,9 +148,9 @@ Vector2<> ceguiLua_PropertyHelper::stringToVector2(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Rect ceguiLua_PropertyHelper::stringToRect(const String& str)
+Rect<> ceguiLua_PropertyHelper::stringToRect(const String& str)
 {
-    return PropertyHelper<Rect>::fromString(str);
+    return PropertyHelper<Rect<> >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -220,9 +220,9 @@ String ceguiLua_PropertyHelper::vector2ToString(const Vector2<>& val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::rectToString(const Rect& val)
+String ceguiLua_PropertyHelper::rectToString(const Rect<>& val)
 {
-    return PropertyHelper<Rect>::toString(val);
+    return PropertyHelper<Rect<> >::toString(val);
 }
 
 //----------------------------------------------------------------------------//

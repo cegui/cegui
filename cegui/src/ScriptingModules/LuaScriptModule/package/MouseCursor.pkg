@@ -22,9 +22,9 @@ class MouseCursor : public EventSet
 
 	void setPosition(const Vector2<float>& pos);
 	void offsetPosition(const Vector2<float>& offset);
-	void setConstraintArea(const Rect* area);
+	void setConstraintArea(const Rect<float>* area);
 	Vector2<float> getPosition() const;
-	Rect getConstraintArea() const;
+	Rect<float> getConstraintArea() const;
 	Vector2<float> getDisplayIndependantPosition() const;
 
 	void setUnifiedConstraintArea(const URect* area);

@@ -3,7 +3,7 @@
 ***********************************************************************/
 class RenderingWindow : public RenderingSurface
 {
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rect<float>& region);
 
     void setPosition(const Vector2<float>& position);
     void setSize(const Size<float>& size);

@@ -15,7 +15,7 @@ class MultiLineEditbox : public Window
     Scrollbar* getVertScrollbar() const;
     bool isVertScrollbarAlwaysShown() const;
     Scrollbar* getHorzScrollbar() const;
-    Rect getTextRenderArea() const;
+    Rect<float> getTextRenderArea() const;
     unsigned long getLineNumberFromIndex(unsigned long index) const;
 
 	void setReadOnly(bool setting);

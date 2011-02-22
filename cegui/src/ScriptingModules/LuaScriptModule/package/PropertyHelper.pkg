@@ -10,7 +10,7 @@ class ceguiLua_PropertyHelper
 	static	bool			stringToBool(utf8string str);
 	static	Size<float>		stringToSize(utf8string str);
 	static	Vector2<float>	stringToVector2(utf8string str);
-	static	Rect			stringToRect(utf8string str);
+	static	Rect<float>		stringToRect(utf8string str);
 	static	const Image*	stringToImage(utf8string str);
 	static	Colour			stringToColour(utf8string str);
 	static	ColourRect		stringToColourRect(utf8string str);
@@ -24,7 +24,7 @@ class ceguiLua_PropertyHelper
 	static string	boolToString(bool val);
 	static string	sizeToString(const Size<float>& val);
 	static string	vector2ToString(const Vector2<float>& val);
-	static string	rectToString(const Rect& val);
+	static string	rectToString(const Rect<float>& val);
 	static string	imageToString(const Image* val);
 	static string	colourToString(const Colour& val);
 	static string	colourRectToString(const ColourRect& val);
