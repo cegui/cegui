@@ -155,8 +155,34 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::blitFromMemory(void* sourceData, const Rect<>& area)
 {
-    CEGUI_THROW(InvalidRequestException("IrrlichtTexture::blitFromMemory: "
-        "Function is unimplemented!"));
+    if (!d_texture)
+        return;
+
+    const size_t pitch = d_texture->getPitch();
+    const uint32* src = static_cast<uint32*>(sourceData);
+    uint32* dst = static_cast<uint32*>(d_texture->lock());
+
+    if (!dst)
+        CEGUI_THROW(RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed."));
+
+    dst += static_cast<size_t>(area.top()) * (pitch / 4) +
+        static_cast<size_t>(area.left());
+
+    const Size<> sz(area.getSize());
+
+    for (int j = 0; j < sz.d_height; ++j)
+    {
+        for (int i = 0; i < sz.d_width; ++i)
+        {
+            dst[i] = src[i];
+        }
+
+        src += static_cast<int>(sz.d_width);
+        dst += pitch / 4;
+    }
+    
+    d_texture->unlock();
 }
 
 //----------------------------------------------------------------------------//
@@ -165,8 +191,14 @@ void IrrlichtTexture::blitToMemory(void* targetData)
     if (!d_texture)
         return;
 
-    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
-    memcpy(targetData, d_texture->lock(), sz);
+    const void* src = d_texture->lock(true);
+    if (!src)
+        CEGUI_THROW(RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed."));
+
+    memcpy(targetData, src,
+           static_cast<size_t>(d_size.d_width * d_size.d_height) * 4);
+
     d_texture->unlock();
 }
 
