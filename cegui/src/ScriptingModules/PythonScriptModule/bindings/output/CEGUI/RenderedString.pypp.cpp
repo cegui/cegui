@@ -46,7 +46,7 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::draw
         
-            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const ) const;
+            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,float const ) const;
             
             RenderedString_exposer.def( 
                 "draw"

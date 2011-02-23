@@ -169,7 +169,7 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -177,7 +177,7 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -451,7 +451,7 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::ItemListBase::getItemRenderArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ItemListBase::*getItemRenderArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ItemListBase::*getItemRenderArea_function_type )(  ) const;
             
             ItemListBase_exposer.def( 
                 "getItemRenderArea"
@@ -855,8 +855,8 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ItemListBase_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ItemListBase_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ItemListBase_exposer.def( 
                 "getUnclippedInnerRect_impl"

@@ -134,7 +134,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::getBoundingRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const & ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const & ) const;
             
             ImagerySection_exposer.def( 
                 "getBoundingRect"
@@ -148,7 +148,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::getBoundingRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rect const & ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rect< float > const & ) const;
             
             ImagerySection_exposer.def( 
                 "getBoundingRect"
@@ -196,7 +196,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::render
         
-            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
             
             ImagerySection_exposer.def( 
                 "render"
@@ -220,7 +220,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::render
         
-            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
             
             ImagerySection_exposer.def( 
                 "render"

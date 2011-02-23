@@ -35,7 +35,7 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         func_draw( boost::ref(queue) );
     }
 
-    virtual ::CEGUI::Rect const & getArea(  ) const {
+    virtual ::CEGUI::Rect< float > const & getArea(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -44,7 +44,7 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         return func_isImageryCache(  );
     }
 
-    virtual void setArea( ::CEGUI::Rect const & area ){
+    virtual void setArea( ::CEGUI::Rect< float > const & area ){
         bp::override func_setArea = this->get_override( "setArea" );
         func_setArea( boost::ref(area) );
     }
@@ -138,7 +138,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::getArea
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::RenderTarget::*getArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect<float> const & ( ::CEGUI::RenderTarget::*getArea_function_type )(  ) const;
             
             RenderTarget_exposer.def( 
                 "getArea"
@@ -177,7 +177,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::setArea
         
-            typedef void ( ::CEGUI::RenderTarget::*setArea_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::RenderTarget::*setArea_function_type )( ::CEGUI::Rect<float> const & ) ;
             
             RenderTarget_exposer.def( 
                 "setArea"

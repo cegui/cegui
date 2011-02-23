@@ -15,7 +15,7 @@ struct Listbox_wrapper : CEGUI::Listbox, bp::wrapper< CEGUI::Listbox > {
     
     }
 
-    virtual ::CEGUI::Rect getListRenderArea(  ) const  {
+    virtual ::CEGUI::Rect< float > getListRenderArea(  ) const  {
         if( bp::override func_getListRenderArea = this->get_override( "getListRenderArea" ) )
             return func_getListRenderArea(  );
         else{
@@ -23,7 +23,7 @@ struct Listbox_wrapper : CEGUI::Listbox, bp::wrapper< CEGUI::Listbox > {
         }
     }
     
-    ::CEGUI::Rect default_getListRenderArea(  ) const  {
+    ::CEGUI::Rect< float > default_getListRenderArea(  ) const  {
         return CEGUI::Listbox::getListRenderArea( );
     }
 
@@ -123,7 +123,7 @@ struct Listbox_wrapper : CEGUI::Listbox, bp::wrapper< CEGUI::Listbox > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -131,7 +131,7 @@ struct Listbox_wrapper : CEGUI::Listbox, bp::wrapper< CEGUI::Listbox > {
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -462,8 +462,8 @@ void register_Listbox_class(){
         }
         { //::CEGUI::Listbox::getListRenderArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Listbox::*getListRenderArea_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( Listbox_wrapper::*default_getListRenderArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Listbox::*getListRenderArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( Listbox_wrapper::*default_getListRenderArea_function_type )(  ) const;
             
             Listbox_exposer.def( 
                 "getListRenderArea"
@@ -1078,8 +1078,8 @@ void register_Listbox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( Listbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( Listbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Listbox_exposer.def( 
                 "getUnclippedInnerRect_impl"

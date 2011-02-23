@@ -13,6 +13,7 @@ void register_Vector3_class(){
         Vector3_exposer_t Vector3_exposer = Vector3_exposer_t( "Vector3", bp::init< >() );
         bp::scope Vector3_scope( Vector3_exposer );
         Vector3_exposer.def( bp::init< float const &, float const &, float const & >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
+        Vector3_exposer.def( bp::init< CEGUI::Vector2< float > const &, float const & >(( bp::arg("v"), bp::arg("z") )) );
         Vector3_exposer.def( bp::init< CEGUI::Vector3< float > const & >(( bp::arg("v") )) );
         Vector3_exposer.def( bp::self != bp::self );
         Vector3_exposer.def( bp::self * bp::other< float >() );

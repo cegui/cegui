@@ -388,7 +388,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::setClippingRegion
         
-            typedef void ( ::CEGUI::RenderingWindow::*setClippingRegion_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setClippingRegion_function_type )( ::CEGUI::Rect< float > const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setClippingRegion"

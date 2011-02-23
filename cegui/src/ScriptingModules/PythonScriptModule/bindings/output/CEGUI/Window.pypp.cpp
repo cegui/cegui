@@ -87,7 +87,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -95,7 +95,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -978,7 +978,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getChildWindowContentArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getChildWindowContentArea"
@@ -1007,7 +1007,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getClipRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getClipRect_function_type )( bool const ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getClipRect_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getClipRect"
@@ -1162,7 +1162,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getHitTestRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getHitTestRect"
@@ -1216,7 +1216,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getInnerRectClipper
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getInnerRectClipper"
@@ -1377,7 +1377,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getOuterRectClipper
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getOuterRectClipper"
@@ -1824,7 +1824,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect"
@@ -1838,8 +1838,8 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( Window_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( Window_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -1849,7 +1849,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedOuterRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedOuterRect"
@@ -1863,7 +1863,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getUnclippedRect"

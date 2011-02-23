@@ -77,7 +77,7 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         CEGUI::GeometryBuffer::setBlendMode( mode );
     }
 
-    virtual void setClippingRegion( ::CEGUI::Rect const & region ){
+    virtual void setClippingRegion( ::CEGUI::Rect< float > const & region ){
         bp::override func_setClippingRegion = this->get_override( "setClippingRegion" );
         func_setClippingRegion( boost::ref(region) );
     }
@@ -293,7 +293,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setClippingRegion
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setClippingRegion_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setClippingRegion_function_type )( ::CEGUI::Rect<float> const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setClippingRegion"

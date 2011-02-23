@@ -18,7 +18,7 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_clone(  );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect, float const vertical_space, float const space_extra ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
@@ -69,7 +69,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2<float> const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2<float> const &,::CEGUI::ColourRect const *,::CEGUI::Rect<float> const *,float const,float const ) const;
             
             RenderedStringComponent_exposer.def( 
                 "draw"
@@ -112,7 +112,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::getPadding
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::RenderedStringComponent::*getPadding_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > const & ( ::CEGUI::RenderedStringComponent::*getPadding_function_type )(  ) const;
             
             RenderedStringComponent_exposer.def( 
                 "getPadding"
@@ -213,7 +213,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::setPadding
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*setPadding_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::RenderedStringComponent::*setPadding_function_type )( ::CEGUI::Rect< float > const & ) ;
             
             RenderedStringComponent_exposer.def( 
                 "setPadding"

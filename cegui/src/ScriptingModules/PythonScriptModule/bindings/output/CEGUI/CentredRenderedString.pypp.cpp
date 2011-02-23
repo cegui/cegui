@@ -22,7 +22,7 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
         else{
@@ -30,7 +30,7 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect ) const  {
         CEGUI::CentredRenderedString::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
     }
 
@@ -97,8 +97,8 @@ void register_CentredRenderedString_class(){
         bp::implicitly_convertible< CEGUI::RenderedString const &, CEGUI::CentredRenderedString >();
         { //::CEGUI::CentredRenderedString::draw
         
-            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
-            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
+            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
             
             CentredRenderedString_exposer.def( 
                 "draw"

@@ -15,7 +15,7 @@ struct LayoutContainer_wrapper : CEGUI::LayoutContainer, bp::wrapper< CEGUI::Lay
     
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -23,7 +23,7 @@ struct LayoutContainer_wrapper : CEGUI::LayoutContainer, bp::wrapper< CEGUI::Lay
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -262,8 +262,8 @@ void register_LayoutContainer_class(){
         bp::scope LayoutContainer_scope( LayoutContainer_exposer );
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( LayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( LayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             LayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"

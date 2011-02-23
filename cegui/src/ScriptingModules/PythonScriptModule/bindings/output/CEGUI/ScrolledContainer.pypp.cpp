@@ -15,7 +15,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
     
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -23,7 +23,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::ScrolledContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -233,7 +233,7 @@ void register_ScrolledContainer_class(){
         bp::scope ScrolledContainer_scope( ScrolledContainer_exposer );
         { //::CEGUI::ScrolledContainer::getChildExtentsArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrolledContainer::*getChildExtentsArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ScrolledContainer::*getChildExtentsArea_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getChildExtentsArea"
@@ -251,7 +251,7 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::getContentArea
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::ScrolledContainer::*getContentArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > const & ( ::CEGUI::ScrolledContainer::*getContentArea_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getContentArea"
@@ -269,8 +269,8 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -298,7 +298,7 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::setContentArea
         
-            typedef void ( ::CEGUI::ScrolledContainer::*setContentArea_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::ScrolledContainer::*setContentArea_function_type )( ::CEGUI::Rect< float > const & ) ;
             
             ScrolledContainer_exposer.def( 
                 "setContentArea"

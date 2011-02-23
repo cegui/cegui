@@ -32,9 +32,9 @@ public:
 	{
 	   return PropertyHelper<Vector2<> >::fromString(str);
     }
-	static Rect stringToRect(const String& str)
+	static Rect<> stringToRect(const String& str)
 	{
-	   return PropertyHelper<Rect>::fromString(str);
+	   return PropertyHelper<Rect<> >::fromString(str);
     }
 	static const Image*	stringToImage(const String& str)
 	{
@@ -85,9 +85,9 @@ public:
 	{
 	   return PropertyHelper<Vector2<> >::toString(val);
     }
-	static String rectToString(const Rect& val)
+	static String rectToString(const Rect<>& val)
 	{
-	   return PropertyHelper<Rect>::toString(val);
+	   return PropertyHelper<Rect<> >::toString(val);
     }
 	static String imageToString(const Image* val)
 	{
@@ -133,7 +133,10 @@ namespace pyplusplus
         typedef ::CEGUI::Vector2<float> Vector2;
         typedef ::CEGUI::Vector3<float> Vector3;
         typedef ::CEGUI::Size<float> Size;
+        typedef ::CEGUI::Rect<float> Rect;
         typedef ::CEGUI::Vector2<CEGUI::UDim> UVector2;
+        typedef ::CEGUI::Rect<CEGUI::UDim> URect;
+        typedef ::CEGUI::Size<CEGUI::UDim> USize;
 
         typedef std::vector<CEGUI::ListboxItem*
             CEGUI_VECTOR_ALLOC(CEGUI::ListboxItem*)> ListBoxItemPtrVector;
@@ -235,7 +238,10 @@ namespace python_CEGUI
             sizeof ( ::CEGUI::Vector2< float > );
             sizeof ( ::CEGUI::Vector3< float > );
             sizeof ( ::CEGUI::Size< float > );
+            sizeof ( ::CEGUI::Rect< float > );
             sizeof ( ::CEGUI::Vector2< CEGUI::UDim > );
+            sizeof ( ::CEGUI::Rect< CEGUI::UDim > );
+            sizeof ( ::CEGUI::Size< CEGUI::UDim > );
             
             sizeof ( ::std::pair<float, float> );
             

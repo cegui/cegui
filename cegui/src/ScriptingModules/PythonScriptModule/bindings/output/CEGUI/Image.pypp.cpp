@@ -36,7 +36,7 @@ struct Image_wrapper : CEGUI::Image, bp::wrapper< CEGUI::Image > {
         func_notifyDisplaySizeChanged( boost::ref(size) );
     }
 
-    virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & dest_area, ::CEGUI::Rect const * clip_area, ::CEGUI::ColourRect const & colours ) const {
+    virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & dest_area, ::CEGUI::Rect< float > const * clip_area, ::CEGUI::ColourRect const & colours ) const {
         bp::override func_render = this->get_override( "render" );
         func_render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
     }
@@ -101,7 +101,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
-            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect<float> const &,::CEGUI::Rect<float> const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
                 "render"
@@ -111,7 +111,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
-            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect< float > const * ) const;
             
             Image_exposer.def( 
                 "render"
@@ -121,7 +121,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
-            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
                 "render"
@@ -131,7 +131,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
-            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect< float > const * ) const;
             
             Image_exposer.def( 
                 "render"
@@ -141,7 +141,7 @@ void register_Image_class(){
         }
         { //::CEGUI::Image::render
         
-            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const & ) const;
+            typedef void ( ::CEGUI::Image::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const & ) const;
             
             Image_exposer.def( 
                 "render"
