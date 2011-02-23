@@ -99,7 +99,7 @@ void register_StateImagery_class(){
         }
         { //::CEGUI::StateImagery::render
         
-            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
             
             StateImagery_exposer.def( 
                 "render"
@@ -119,7 +119,7 @@ void register_StateImagery_class(){
         }
         { //::CEGUI::StateImagery::render
         
-            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
             
             StateImagery_exposer.def( 
                 "render"

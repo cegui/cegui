@@ -64,7 +64,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::rectToString
         
-            typedef ::CEGUI::String ( *rectToString_function_type )( ::CEGUI::Rect const & );
+            typedef ::CEGUI::String ( *rectToString_function_type )( ::CEGUI::Rect< float > const & );
             
             PropertyHelper_exposer.def( 
                 "rectToString"
@@ -135,7 +135,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToRect
         
-            typedef ::CEGUI::Rect ( *stringToRect_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Rect< float > ( *stringToRect_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToRect"

@@ -8,24 +8,45 @@ namespace bp = boost::python;
 
 void register_Rect_class(){
 
-    { //::CEGUI::Rect
-        typedef bp::class_< CEGUI::Rect > Rect_exposer_t;
+    { //::CEGUI::Rect< float >
+        typedef bp::class_< CEGUI::Rect< float > > Rect_exposer_t;
         Rect_exposer_t Rect_exposer = Rect_exposer_t( "Rect", bp::init< >() );
         bp::scope Rect_scope( Rect_exposer );
-        Rect_exposer.def( bp::init< float, float, float, float >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") ), "*!\n\
-        \n\
-           Constructor for a Rect.\n\
-        *\n") );
-        Rect_exposer.def( bp::init< CEGUI::Vector2< float > const &, CEGUI::Size< float > const & >(( bp::arg("pos"), bp::arg("sz") )) );
-        { //::CEGUI::Rect::constrainSize
+        Rect_exposer.def( bp::init< float const &, float const &, float const &, float const & >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") )) );
+        Rect_exposer.def( bp::init< CEGUI::Vector2< float > const &, CEGUI::Vector2< float > const & >(( bp::arg("min"), bp::arg("max") )) );
+        Rect_exposer.def( bp::init< CEGUI::Vector2< float > const &, CEGUI::Size< float > const & >(( bp::arg("pos"), bp::arg("size") )) );
+        Rect_exposer.def( bp::init< CEGUI::Rect< float > const & >(( bp::arg("r") )) );
+        { //::CEGUI::Rect< float >::bottom
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSize_function_type )( ::CEGUI::Size< float > const &,::CEGUI::Size< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*bottom_function_type )( float const & ) ;
+            
+            Rect_exposer.def( 
+                "bottom"
+                , bottom_function_type( &::CEGUI::Rect< float >::bottom )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< float >::bottom
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float const & ( exported_class_t::*bottom_function_type )(  ) const;
+            
+            Rect_exposer.def( 
+                "bottom"
+                , bottom_function_type( &::CEGUI::Rect< float >::bottom )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Rect< float >::constrainSize
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*constrainSize_function_type )( ::CEGUI::Size< float > const &,::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSize"
-                , constrainSize_function_type( &::CEGUI::Rect::constrainSize )
+                , constrainSize_function_type( &::CEGUI::Rect< float >::constrainSize )
                 , ( bp::arg("max_sz"), bp::arg("min_sz") )
-                , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                \n\
                   check the size of the Rect object and if it is bigger than  max_sz or smaller than  min_sz,\
@@ -42,15 +63,15 @@ void register_Rect_class(){
                *\n" );
         
         }
-        { //::CEGUI::Rect::constrainSizeMax
+        { //::CEGUI::Rect< float >::constrainSizeMax
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMax_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*constrainSizeMax_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSizeMax"
-                , constrainSizeMax_function_type( &::CEGUI::Rect::constrainSizeMax )
-                , ( bp::arg("sz") )
-                , bp::return_value_policy< bp::reference_existing_object >()
+                , constrainSizeMax_function_type( &::CEGUI::Rect< float >::constrainSizeMax )
+                , ( bp::arg("size") )
                 , "*!\n\
                \n\
                   check the size of the Rect object and if it is bigger than  sz, resize it so it isn't.\n\
@@ -63,15 +84,15 @@ void register_Rect_class(){
                *\n" );
         
         }
-        { //::CEGUI::Rect::constrainSizeMin
+        { //::CEGUI::Rect< float >::constrainSizeMin
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*constrainSizeMin_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*constrainSizeMin_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "constrainSizeMin"
-                , constrainSizeMin_function_type( &::CEGUI::Rect::constrainSizeMin )
-                , ( bp::arg("sz") )
-                , bp::return_value_policy< bp::reference_existing_object >()
+                , constrainSizeMin_function_type( &::CEGUI::Rect< float >::constrainSizeMin )
+                , ( bp::arg("size") )
                 , "*!\n\
                \n\
                   check the size of the Rect object and if it is smaller than  sz, resize it so it isn't.\n\
@@ -84,26 +105,28 @@ void register_Rect_class(){
                *\n" );
         
         }
-        { //::CEGUI::Rect::getHeight
+        { //::CEGUI::Rect< float >::getHeight
         
-            typedef float ( ::CEGUI::Rect::*getHeight_function_type )(  ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float ( exported_class_t::*getHeight_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getHeight"
-                , getHeight_function_type( &::CEGUI::Rect::getHeight )
+                , getHeight_function_type( &::CEGUI::Rect< float >::getHeight )
                 , "*!\n\
             \n\
                return height of Rect area\n\
             *\n" );
         
         }
-        { //::CEGUI::Rect::getIntersection
+        { //::CEGUI::Rect< float >::getIntersection
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Rect::*getIntersection_function_type )( ::CEGUI::Rect const & ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef ::CEGUI::Rect< float > ( exported_class_t::*getIntersection_function_type )( ::CEGUI::Rect< float > const & ) const;
             
             Rect_exposer.def( 
                 "getIntersection"
-                , getIntersection_function_type( &::CEGUI::Rect::getIntersection )
+                , getIntersection_function_type( &::CEGUI::Rect< float >::getIntersection )
                 , ( bp::arg("rect") )
                 , "*!\n\
                \n\
@@ -116,80 +139,107 @@ void register_Rect_class(){
                *\n" );
         
         }
-        { //::CEGUI::Rect::getPosition
+        { //::CEGUI::Rect< float >::getPosition
         
-            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Rect::*getPosition_function_type )(  ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef ::CEGUI::Vector2< float > const & ( exported_class_t::*getPosition_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getPosition"
-                , getPosition_function_type( &::CEGUI::Rect::getPosition )
+                , getPosition_function_type( &::CEGUI::Rect< float >::getPosition )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
             \n\
-               Return top-left postion of Rect as a Point\n\
+               Return top-left position of Rect as a Vector2<T>\n\
             *\n" );
         
         }
-        { //::CEGUI::Rect::getSize
+        { //::CEGUI::Rect< float >::getSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::Rect::*getSize_function_type )(  ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( exported_class_t::*getSize_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getSize"
-                , getSize_function_type( &::CEGUI::Rect::getSize )
+                , getSize_function_type( &::CEGUI::Rect< float >::getSize )
                 , "*!\n\
             \n\
                return the size of the Rect area\n\
             *\n" );
         
         }
-        { //::CEGUI::Rect::getWidth
+        { //::CEGUI::Rect< float >::getWidth
         
-            typedef float ( ::CEGUI::Rect::*getWidth_function_type )(  ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float ( exported_class_t::*getWidth_function_type )(  ) const;
             
             Rect_exposer.def( 
                 "getWidth"
-                , getWidth_function_type( &::CEGUI::Rect::getWidth )
+                , getWidth_function_type( &::CEGUI::Rect< float >::getWidth )
                 , "*!\n\
             \n\
                return width of Rect area\n\
             *\n" );
         
         }
-        { //::CEGUI::Rect::isPointInRect
+        { //::CEGUI::Rect< float >::isPointInRect
         
-            typedef bool ( ::CEGUI::Rect::*isPointInRect_function_type )( ::CEGUI::Vector2< float > const & ) const;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef bool ( exported_class_t::*isPointInRect_function_type )( ::CEGUI::Vector2< float > const & ) const;
             
             Rect_exposer.def( 
                 "isPointInRect"
-                , isPointInRect_function_type( &::CEGUI::Rect::isPointInRect )
-                , ( bp::arg("pt") )
+                , isPointInRect_function_type( &::CEGUI::Rect< float >::isPointInRect )
+                , ( bp::arg("v") )
                 , "*!\n\
                \n\
-                  Return true if the given Point falls within this Rect\n\
+                  Return true if the given Vector2 falls within this Rect\n\
             \n\
                @param pt\n\
-                  Point object describing the position to test.\n\
+                  Vector2 object describing the position to test.\n\
             \n\
                @return\n\
                   true if position  pt is within this Rect's area, else false\n\
                *\n" );
         
         }
-        { //::CEGUI::Rect::offset
+        { //::CEGUI::Rect< float >::left
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*offset_function_type )( ::CEGUI::Vector2< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*left_function_type )( float const & ) ;
+            
+            Rect_exposer.def( 
+                "left"
+                , left_function_type( &::CEGUI::Rect< float >::left )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< float >::left
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float const & ( exported_class_t::*left_function_type )(  ) const;
+            
+            Rect_exposer.def( 
+                "left"
+                , left_function_type( &::CEGUI::Rect< float >::left )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Rect< float >::offset
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*offset_function_type )( ::CEGUI::Vector2< float > const & ) ;
             
             Rect_exposer.def( 
                 "offset"
-                , offset_function_type( &::CEGUI::Rect::offset )
-                , ( bp::arg("pt") )
-                , bp::return_value_policy< bp::reference_existing_object >()
+                , offset_function_type( &::CEGUI::Rect< float >::offset )
+                , ( bp::arg("v") )
                 , "*!\n\
                \n\
                   Applies an offset the Rect object\n\
             \n\
                @param pt\n\
-                  Point object containing the offsets to be applied to the Rect.\n\
+                  Vector2 object containing the offsets to be applied to the Rect.\n\
             \n\
                @return\n\
                   this Rect after the offset is performed\n\
@@ -200,84 +250,115 @@ void register_Rect_class(){
         Rect_exposer.def( bp::self * bp::other< float >() );
         Rect_exposer.def( bp::self *= bp::other< float >() );
         Rect_exposer.def( bp::self + bp::self );
-        { //::CEGUI::Rect::operator=
+        { //::CEGUI::Rect< float >::operator=
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::Rect::*assign_function_type )( ::CEGUI::Rect const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef ::CEGUI::Rect< float > & ( exported_class_t::*assign_function_type )( ::CEGUI::Rect< float > const & ) ;
             
             Rect_exposer.def( 
                 "assign"
-                , assign_function_type( &::CEGUI::Rect::operator= )
+                , assign_function_type( &::CEGUI::Rect< float >::operator= )
                 , ( bp::arg("rhs") )
                 , bp::return_self< >() );
         
         }
         Rect_exposer.def( bp::self == bp::self );
-        { //::CEGUI::Rect::setHeight
+        { //::CEGUI::Rect< float >::right
         
-            typedef void ( ::CEGUI::Rect::*setHeight_function_type )( float ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*right_function_type )( float const & ) ;
+            
+            Rect_exposer.def( 
+                "right"
+                , right_function_type( &::CEGUI::Rect< float >::right )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< float >::right
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float const & ( exported_class_t::*right_function_type )(  ) const;
+            
+            Rect_exposer.def( 
+                "right"
+                , right_function_type( &::CEGUI::Rect< float >::right )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Rect< float >::setHeight
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*setHeight_function_type )( float const & ) ;
             
             Rect_exposer.def( 
                 "setHeight"
-                , setHeight_function_type( &::CEGUI::Rect::setHeight )
-                , ( bp::arg("height") )
-                , "*!\n\
-            \n\
-               set the height of the Rect object\n\
-            *\n" );
+                , setHeight_function_type( &::CEGUI::Rect< float >::setHeight )
+                , ( bp::arg("h") ) );
         
         }
-        { //::CEGUI::Rect::setPosition
+        { //::CEGUI::Rect< float >::setPosition
         
-            typedef void ( ::CEGUI::Rect::*setPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*setPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
             
             Rect_exposer.def( 
                 "setPosition"
-                , setPosition_function_type( &::CEGUI::Rect::setPosition )
-                , ( bp::arg("pt") )
+                , setPosition_function_type( &::CEGUI::Rect< float >::setPosition )
+                , ( bp::arg("min") )
                 , "*!\n\
             \n\
                set the position of the Rect (leaves size in tact)\n\
             *\n" );
         
         }
-        { //::CEGUI::Rect::setSize
+        { //::CEGUI::Rect< float >::setSize
         
-            typedef void ( ::CEGUI::Rect::*setSize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*setSize_function_type )( ::CEGUI::Size< float > const & ) ;
             
             Rect_exposer.def( 
                 "setSize"
-                , setSize_function_type( &::CEGUI::Rect::setSize )
-                , ( bp::arg("sze") )
-                , "*!\n\
-            \n\
-               set the size of the Rect area\n\
-            *\n" );
+                , setSize_function_type( &::CEGUI::Rect< float >::setSize )
+                , ( bp::arg("size") ) );
         
         }
-        { //::CEGUI::Rect::setWidth
+        { //::CEGUI::Rect< float >::setWidth
         
-            typedef void ( ::CEGUI::Rect::*setWidth_function_type )( float ) ;
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*setWidth_function_type )( float const & ) ;
             
             Rect_exposer.def( 
                 "setWidth"
-                , setWidth_function_type( &::CEGUI::Rect::setWidth )
-                , ( bp::arg("width") )
-                , "*!\n\
-            \n\
-               set the width of the Rect object\n\
-            *\n" );
+                , setWidth_function_type( &::CEGUI::Rect< float >::setWidth )
+                , ( bp::arg("w") ) );
         
         }
-        Rect_exposer.def_readwrite( "d_bottom", &CEGUI::Rect::d_bottom, "*************************************************************************\n\
+        { //::CEGUI::Rect< float >::top
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef void ( exported_class_t::*top_function_type )( float const & ) ;
+            
+            Rect_exposer.def( 
+                "top"
+                , top_function_type( &::CEGUI::Rect< float >::top )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< float >::top
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef float const & ( exported_class_t::*top_function_type )(  ) const;
+            
+            Rect_exposer.def( 
+                "top"
+                , top_function_type( &::CEGUI::Rect< float >::top )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        Rect_exposer.def_readwrite( "d_max", &CEGUI::Rect< float >::d_max, "*************************************************************************\n\
            Data Fields\n\
         *************************************************************************\n" );
-        Rect_exposer.def_readwrite( "d_left", &CEGUI::Rect::d_left, "*************************************************************************\n\
-           Data Fields\n\
-        *************************************************************************\n" );
-        Rect_exposer.def_readwrite( "d_right", &CEGUI::Rect::d_right, "*************************************************************************\n\
-           Data Fields\n\
-        *************************************************************************\n" );
-        Rect_exposer.def_readwrite( "d_top", &CEGUI::Rect::d_top, "*************************************************************************\n\
+        Rect_exposer.def_readwrite( "d_min", &CEGUI::Rect< float >::d_min, "*************************************************************************\n\
            Data Fields\n\
         *************************************************************************\n" );
     }

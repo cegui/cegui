@@ -40,7 +40,7 @@ void register_ComponentArea_class(){
         }
         { //::CEGUI::ComponentArea::getPixelRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ComponentArea::*getPixelRect_function_type )( ::CEGUI::Window const & ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ComponentArea::*getPixelRect_function_type )( ::CEGUI::Window const & ) const;
             
             ComponentArea_exposer.def( 
                 "getPixelRect"
@@ -62,7 +62,7 @@ void register_ComponentArea_class(){
         }
         { //::CEGUI::ComponentArea::getPixelRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ComponentArea::*getPixelRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rect const & ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ComponentArea::*getPixelRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rect< float > const & ) const;
             
             ComponentArea_exposer.def( 
                 "getPixelRect"

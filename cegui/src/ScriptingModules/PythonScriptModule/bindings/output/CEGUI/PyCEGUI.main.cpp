@@ -362,6 +362,8 @@
 
 #include "URect.pypp.hpp"
 
+#include "USize.pypp.hpp"
+
 #include "UVector2.pypp.hpp"
 
 #include "UnifiedDim.pypp.hpp"
@@ -751,6 +753,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_RawDataContainer_class();
 
+    register_URect_class();
+
     register_RenderEffect_class();
 
     register_RenderEffectFactory_class();
@@ -813,6 +817,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_SingletonWindowRendererManager_class();
 
+    register_USize_class();
+
     register_Size_class();
 
     register_Slider_class();
@@ -854,8 +860,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_UBox_class();
 
     register_UDim_class();
-
-    register_URect_class();
 
     register_UnifiedDim_class();
 

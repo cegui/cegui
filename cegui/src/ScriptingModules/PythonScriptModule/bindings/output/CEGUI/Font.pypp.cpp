@@ -40,7 +40,7 @@ void register_Font_class(){
         bp::scope Font_scope( Font_exposer );
         { //::CEGUI::Font::drawText
         
-            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2< float > const &,::CEGUI::Rect const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
+            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
             
             Font_exposer.def( 
                 "drawText"

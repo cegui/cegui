@@ -80,7 +80,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getConstraintArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::MouseCursor::*getConstraintArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::MouseCursor::*getConstraintArea_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getConstraintArea"
@@ -285,7 +285,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setConstraintArea
         
-            typedef void ( ::CEGUI::MouseCursor::*setConstraintArea_function_type )( ::CEGUI::Rect const * ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setConstraintArea_function_type )( ::CEGUI::Rect< float > const * ) ;
             
             MouseCursor_exposer.def( 
                 "setConstraintArea"

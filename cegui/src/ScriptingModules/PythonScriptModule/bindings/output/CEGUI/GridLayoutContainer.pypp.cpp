@@ -123,7 +123,7 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -131,7 +131,7 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -684,8 +684,8 @@ void register_GridLayoutContainer_class(){
         }
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( GridLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( GridLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             GridLayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"

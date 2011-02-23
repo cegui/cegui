@@ -15,7 +15,7 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
@@ -53,7 +53,7 @@ void register_ListboxItem_class(){
         bp::scope ListboxItem_scope( ListboxItem_exposer );
         { //::CEGUI::ListboxItem::draw
         
-            typedef void ( ::CEGUI::ListboxItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::ListboxItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect<float> const &,float,::CEGUI::Rect<float> const * ) const;
             
             ListboxItem_exposer.def( 
                 "draw"

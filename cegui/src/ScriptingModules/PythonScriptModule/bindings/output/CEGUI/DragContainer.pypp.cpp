@@ -99,7 +99,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -107,7 +107,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -756,8 +756,8 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( DragContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( DragContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             DragContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"

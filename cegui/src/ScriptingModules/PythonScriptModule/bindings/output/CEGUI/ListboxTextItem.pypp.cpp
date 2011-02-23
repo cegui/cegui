@@ -22,7 +22,7 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
         else{
@@ -30,7 +30,7 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const  {
         CEGUI::ListboxTextItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
@@ -78,8 +78,8 @@ void register_ListboxTextItem_class(){
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::ListboxTextItem >();
         { //::CEGUI::ListboxTextItem::draw
         
-            typedef void ( ::CEGUI::ListboxTextItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
-            typedef void ( ListboxTextItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::ListboxTextItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,float,::CEGUI::Rect< float > const * ) const;
+            typedef void ( ListboxTextItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,float,::CEGUI::Rect< float > const * ) const;
             
             ListboxTextItem_exposer.def( 
                 "draw"

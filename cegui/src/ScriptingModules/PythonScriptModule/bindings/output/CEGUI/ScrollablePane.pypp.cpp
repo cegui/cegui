@@ -111,7 +111,7 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,7 +119,7 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -269,7 +269,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::getContentPaneArea
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::ScrollablePane::*getContentPaneArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > const & ( ::CEGUI::ScrollablePane::*getContentPaneArea_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getContentPaneArea"
@@ -435,7 +435,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::getViewableArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrollablePane::*getViewableArea_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::ScrollablePane::*getViewableArea_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getViewableArea"
@@ -515,7 +515,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::setContentPaneArea
         
-            typedef void ( ::CEGUI::ScrollablePane::*setContentPaneArea_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::ScrollablePane::*setContentPaneArea_function_type )( ::CEGUI::Rect< float > const & ) ;
             
             ScrollablePane_exposer.def( 
                 "setContentPaneArea"
@@ -842,8 +842,8 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ScrollablePane_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rect< float > ( ScrollablePane_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getUnclippedInnerRect_impl"

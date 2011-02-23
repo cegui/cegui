@@ -60,7 +60,7 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         return CEGUI::RenderedStringImageComponent::clone( );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect, float const vertical_space, float const space_extra ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
         else{
@@ -68,7 +68,7 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect, float const vertical_space, float const space_extra ) const  {
         CEGUI::RenderedStringImageComponent::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
@@ -145,8 +145,8 @@ void register_RenderedStringImageComponent_class(){
         }
         { //::CEGUI::RenderedStringImageComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringImageComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
-            typedef void ( RenderedStringImageComponent_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,float const,float const ) const;
+            typedef void ( RenderedStringImageComponent_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,float const,float const ) const;
             
             RenderedStringImageComponent_exposer.def( 
                 "draw"
