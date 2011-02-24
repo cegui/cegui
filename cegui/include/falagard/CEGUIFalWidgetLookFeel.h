@@ -56,7 +56,7 @@ class CEGUIEXPORT WidgetLookFeel :
     public AllocatedObject<WidgetLookFeel>
 {
 public:
-    WidgetLookFeel(const String& name);
+    WidgetLookFeel(const String& name, const String& inherits);
     WidgetLookFeel() {}
 
     /*!
@@ -434,6 +434,8 @@ private:
 
     //! Name of this WidgetLookFeel.
     CEGUI::String d_lookName;
+    //! Name of a WidgetLookFeel inherited by this WidgetLookFeel.
+    CEGUI::String d_inheritedLookName;
     //! Collection of ImagerySection objects.
     ImageryList d_imagerySections;
     //! Collection of WidgetComponent objects.
@@ -454,6 +456,30 @@ private:
     mutable AnimationInstanceMap d_animationInstances;
     //! Collection of EventLinkDefinition objects.
     EventLinkDefinitionList d_eventLinkDefinitions;
+
+    // these are container types used when composing final collections of
+    // objects that come via inheritence.
+    typedef std::map<String, const WidgetComponent*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, const WidgetComponent*)> WidgetComponentPtrMap;
+    typedef std::map<String, PropertyDefinition*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, PropertyDefinition*)> PropertyDefinitionPtrMap;
+    typedef std::map<String, PropertyLinkDefinition*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, PropertyLinkDefinition*)> PropertyLinkDefinitionPtrMap;
+    typedef std::map<String, const PropertyInitialiser*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, const PropertyInitialiser*)> PropertyInitialiserPtrMap;
+    typedef std::map<String, const EventLinkDefinition*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, const EventLinkDefinition*)> EventLinkDefinitionPtrMap;
+    typedef std::set<String, StringFastLessCompare
+        CEGUI_SET_ALLOC(String)> AnimationNameSet;
+
+    // functions to populate containers with collections of objects that we
+    // gain through inheritence.
+    void appendChildWidgetComponents(WidgetComponentPtrMap& map) const;
+    void appendPropertyDefinitions(PropertyDefinitionPtrMap& map) const;
+    void appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map) const;
+    void appendPropertyInitialisers(PropertyInitialiserPtrMap& map) const;
+    void appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map) const;
+    void appendAnimationNames(AnimationNameSet& set) const;
 };
 
 } // End of  CEGUI namespace section

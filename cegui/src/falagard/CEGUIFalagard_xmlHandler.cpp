@@ -128,6 +128,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ControlWidgetAttribute("controlWidget");
     const String Falagard_xmlHandler::HelpStringAttribute("help");
     const String Falagard_xmlHandler::EventAttribute("event");
+    const String Falagard_xmlHandler::InheritsAttribute("inherits");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -352,7 +353,8 @@ namespace CEGUI
     void Falagard_xmlHandler::elementWidgetLookStart(const XMLAttributes& attributes)
     {
         assert(d_widgetlook == 0);
-        d_widgetlook = CEGUI_NEW_AO WidgetLookFeel(attributes.getValueAsString(NameAttribute));
+        d_widgetlook = CEGUI_NEW_AO WidgetLookFeel(attributes.getValueAsString(NameAttribute),
+                                                   attributes.getValueAsString(InheritsAttribute));
 
         Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
     }
