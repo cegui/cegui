@@ -695,6 +695,13 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
+    ComponentArea::ComponentArea() :
+        d_left(AbsoluteDim(0.0f), DT_LEFT_EDGE),
+        d_top(AbsoluteDim(0.0f), DT_TOP_EDGE),
+        d_right_or_width(UnifiedDim(UDim(1.0f, 0.0f), DT_WIDTH), DT_RIGHT_EDGE),
+        d_bottom_or_height(UnifiedDim(UDim(1.0f, 0.0f), DT_HEIGHT), DT_BOTTOM_EDGE)
+    {}
+
     Rect<> ComponentArea::getPixelRect(const Window& wnd) const
     {
         Rect<> pixelRect;

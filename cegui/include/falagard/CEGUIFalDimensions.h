@@ -600,6 +600,8 @@ namespace CEGUI
     class CEGUIEXPORT ComponentArea
     {
     public:
+        ComponentArea();
+
         /*!
         \brief
             Return a Rect describing the absolute pixel area represented by this ComponentArea.
