@@ -175,6 +175,8 @@ namespace CEGUI
         static const String HelpStringAttribute;
         //! Attribute name that stores an Event name string.
         static const String EventAttribute;
+        //! Attribute name that stores the name of an inherited WidgetLook
+        static const String InheritsAttribute;
 
         /*************************************************************************
             helper methods

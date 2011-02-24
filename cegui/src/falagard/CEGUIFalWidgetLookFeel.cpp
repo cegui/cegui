@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIWindowManager.h"
@@ -38,8 +39,9 @@
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//
-WidgetLookFeel::WidgetLookFeel(const String& name) :
-    d_lookName(name)
+WidgetLookFeel::WidgetLookFeel(const String& name, const String& inherits) :
+    d_lookName(name),
+    d_inheritedLookName(inherits)
 {
 }
 
@@ -49,12 +51,16 @@ const StateImagery& WidgetLookFeel::getStateImagery(
 {
     StateList::const_iterator imagery = d_stateImagery.find(state);
 
-    if (imagery == d_stateImagery.end())
+    if (imagery != d_stateImagery.end())
+        return (*imagery).second;
+
+    if (d_inheritedLookName.empty())
         CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getStateImagery - unknown state '" + state +
             "' in look '" + d_lookName + "'."));
 
-    return (*imagery).second;
+    return WidgetLookManager::getSingleton().
+        getWidgetLook(d_inheritedLookName).getStateImagery(state);
 }
 
 //---------------------------------------------------------------------------//
@@ -63,12 +69,16 @@ const ImagerySection& WidgetLookFeel::getImagerySection(
 {
     ImageryList::const_iterator imgSect = d_imagerySections.find(section);
 
-    if (imgSect == d_imagerySections.end())
+    if (imgSect != d_imagerySections.end())
+        return (*imgSect).second;
+
+    if (d_inheritedLookName.empty())
         CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getImagerySection - unknown imagery section '" +
             section +  "' in look '" + d_lookName + "'."));
 
-    return (*imgSect).second;
+    return WidgetLookManager::getSingleton().
+        getWidgetLook(d_inheritedLookName).getImagerySection(section);
 }
 
 //---------------------------------------------------------------------------//
@@ -142,58 +152,72 @@ void WidgetLookFeel::clearPropertyInitialisers()
 void WidgetLookFeel::initialiseWidget(Window& widget) const
 {
     // add required child widgets
-    for (WidgetList::const_iterator curr = d_childWidgets.begin();
-         curr != d_childWidgets.end();
-         ++curr)
+    WidgetComponentPtrMap wcm;
+    appendChildWidgetComponents(wcm);
+    for (WidgetComponentPtrMap::const_iterator wci = wcm.begin();
+         wci != wcm.end();
+         ++wci)
     {
-        (*curr).create(widget);
+        wci->second->create(widget);
     }
 
     // add new property definitions
-    for (PropertyDefinitionList::iterator propdef = d_propertyDefinitions.begin();
-         propdef != d_propertyDefinitions.end();
-         ++propdef)
+    PropertyDefinitionPtrMap pdm;
+    appendPropertyDefinitions(pdm);
+    for (PropertyDefinitionPtrMap::const_iterator pdi = pdm.begin();
+         pdi != pdm.end();
+         ++pdi)
     {
         // add the property to the window
-        widget.addProperty(&(*propdef));
+        widget.addProperty(pdi->second);
         // write default value to get things set up properly
-        widget.setProperty((*propdef).getName(),
-                           (*propdef).getDefault(&widget));
+        widget.setProperty(pdi->first,
+                           pdi->second->getDefault(&widget));
     }
 
     // add new property link definitions
-    for (PropertyLinkDefinitionList::iterator linkdef = d_propertyLinkDefinitions.begin();
-         linkdef != d_propertyLinkDefinitions.end();
-         ++linkdef)
+    PropertyLinkDefinitionPtrMap pldm;
+    appendPropertyLinkDefinitions(pldm);
+    for (PropertyLinkDefinitionPtrMap::const_iterator pldi = pldm.begin();
+         pldi != pldm.end();
+         ++pldi)
     {
         // add the property to the window
-        widget.addProperty(&(*linkdef));
+        widget.addProperty(pldi->second);
         // write default value to get things set up properly
-        widget.setProperty((*linkdef).getName(),
-                           (*linkdef).getDefault(&widget));
+        widget.setProperty(pldi->first,
+                           pldi->second->getDefault(&widget));
     }
 
     // apply properties to the parent window
-    for (PropertyList::const_iterator prop = d_properties.begin();
-         prop != d_properties.end();
-         ++prop)
+    PropertyInitialiserPtrMap pim;
+    appendPropertyInitialisers(pim);
+    for (PropertyInitialiserPtrMap::const_iterator pi = pim.begin();
+         pi != pim.end();
+         ++pi)
     {
-        (*prop).apply(widget);
+        pi->second->apply(widget);
     }
-    
+
     // setup linked events
-    for (EventLinkDefinitionList::const_iterator evt = d_eventLinkDefinitions.begin();
-         evt != d_eventLinkDefinitions.end();
-         ++evt)
+    EventLinkDefinitionPtrMap eldm;
+    appendEventLinkDefinitions(eldm);
+    for (EventLinkDefinitionPtrMap::const_iterator eldi = eldm.begin();
+         eldi != eldm.end();
+         ++eldi)
     {
-        (*evt).initialiseWidget(widget);
+        eldi->second->initialiseWidget(widget);
     }
 
     // create animation instances
-    for (AnimationList::const_iterator anim = d_animations.begin(); anim != d_animations.end(); ++anim)
+    AnimationNameSet ans;
+    appendAnimationNames(ans);
+    for (AnimationNameSet::const_iterator ani = ans.begin();
+         ani != ans.end();
+         ++ani)
     {
         AnimationInstance* instance =
-            AnimationManager::getSingleton().instantiateAnimation(*anim);
+            AnimationManager::getSingleton().instantiateAnimation(*ani);
 
         d_animationInstances.insert(std::make_pair(&widget, instance));
         instance->setTargetWindow(&widget);
@@ -212,38 +236,46 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
     }
 
     // remove added child widgets
-    for (WidgetList::const_iterator curr = d_childWidgets.begin();
-         curr != d_childWidgets.end();
-         ++curr)
+    WidgetComponentPtrMap wcl;
+    appendChildWidgetComponents(wcl);
+    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
+         wci != wcl.end();
+         ++wci)
     {
         WindowManager::getSingleton().destroyWindow(
-            widget.getName() + (*curr).getWidgetNameSuffix());
+            widget.getName() + wci->second->getWidgetNameSuffix());
     }
 
     // delete added named Events
-    for (EventLinkDefinitionList::const_iterator evt = d_eventLinkDefinitions.begin();
-         evt != d_eventLinkDefinitions.end();
-         ++evt)
+    EventLinkDefinitionPtrMap eldm;
+    appendEventLinkDefinitions(eldm);
+    for (EventLinkDefinitionPtrMap::const_iterator eldi = eldm.begin();
+         eldi != eldm.end();
+         ++eldi)
     {
-        (*evt).cleanUpWidget(widget);
+        eldi->second->cleanUpWidget(widget);
     }
 
     // remove added property definitions
-    for (PropertyDefinitionList::iterator propdef = d_propertyDefinitions.begin();
-         propdef != d_propertyDefinitions.end();
-         ++propdef)
+    PropertyDefinitionPtrMap pdm;
+    appendPropertyDefinitions(pdm);
+    for (PropertyDefinitionPtrMap::const_iterator pdi = pdm.begin();
+         pdi != pdm.end();
+         ++pdi)
     {
         // remove the property from the window
-        widget.removeProperty((*propdef).getName());
+        widget.removeProperty(pdi->first);
     }
 
     // remove added property link definitions
-    for (PropertyLinkDefinitionList::iterator linkdef = d_propertyLinkDefinitions.begin();
-         linkdef != d_propertyLinkDefinitions.end();
-         ++linkdef)
+    PropertyLinkDefinitionPtrMap pldm;
+    appendPropertyLinkDefinitions(pldm);
+    for (PropertyLinkDefinitionPtrMap::const_iterator pldi = pldm.begin();
+         pldi != pldm.end();
+         ++pldi)
     {
         // remove the property from the window
-        widget.removeProperty((*linkdef).getName());
+        widget.removeProperty(pldi->first);
     }
 
     // clean up animation instances assoicated wit the window.
@@ -258,7 +290,16 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
 //---------------------------------------------------------------------------//
 bool WidgetLookFeel::isStateImageryPresent(const String& state) const
 {
-    return d_stateImagery.find(state) != d_stateImagery.end();
+    StateList::const_iterator i = d_stateImagery.find(state);
+    
+    if (i != d_stateImagery.end())
+        return true;
+
+    if (d_inheritedLookName.empty())
+        return false;
+ 
+    return WidgetLookManager::getSingleton().
+        getWidgetLook(d_inheritedLookName).isStateImageryPresent(state);
 }
 
 //---------------------------------------------------------------------------//
@@ -284,29 +325,44 @@ const NamedArea& WidgetLookFeel::getNamedArea(const String& name) const
 {
     NamedAreaList::const_iterator area = d_namedAreas.find(name);
 
-    if (area == d_namedAreas.end())
+    if (area != d_namedAreas.end())
+        return (*area).second;
+
+    if (d_inheritedLookName.empty())
         CEGUI_THROW(UnknownObjectException(
             "WidgetLookFeel::getNamedArea - unknown named area: '" + name +
             "' in look '" + d_lookName + "'."));
 
-    return (*area).second;
+    return WidgetLookManager::getSingleton().
+        getWidgetLook(d_inheritedLookName).getNamedArea(name);
 }
 
 //---------------------------------------------------------------------------//
 bool WidgetLookFeel::isNamedAreaDefined(const String& name) const
 {
-    return d_namedAreas.find(name) != d_namedAreas.end();
+    NamedAreaList::const_iterator area = d_namedAreas.find(name);
+
+    if (area != d_namedAreas.end())
+        return true;
+
+    if (d_inheritedLookName.empty())
+        return false;
+
+    return WidgetLookManager::getSingleton().
+        getWidgetLook(d_inheritedLookName).isNamedAreaDefined(name);
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
 {
-    // apply properties to the parent window
-    for (WidgetList::const_iterator wdgt = d_childWidgets.begin();
-         wdgt != d_childWidgets.end();
-         ++wdgt)
+    WidgetComponentPtrMap wcl;
+    appendChildWidgetComponents(wcl);
+
+    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
+         wci != wcl.end();
+         ++wci)
     {
-        (*wdgt).layout(owner);
+        wci->second->layout(owner);
     }
 }
 
@@ -339,7 +395,8 @@ void WidgetLookFeel::clearPropertyLinkDefinitions()
 void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     xml_stream.openTag("WidgetLook")
-    .attribute("name", d_lookName);
+    .attribute("name", d_lookName)
+    .attribute("inherits", d_inheritedLookName);
 
     // These sub-scopes of the loops avoid the "'curr'-already-initialized"
     // compile error on VC6++
@@ -422,12 +479,14 @@ void WidgetLookFeel::renameChildren(const Window& widget,
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    for (WidgetList::const_iterator curr = d_childWidgets.begin();
-         curr != d_childWidgets.end();
-         ++curr)
+    WidgetComponentPtrMap wcl;
+    appendChildWidgetComponents(wcl);
+    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
+         wci != wcl.end();
+         ++wci)
     {
-        winMgr.renameWindow(widget.getName() + (*curr).getWidgetNameSuffix(),
-                            newBaseName + (*curr).getWidgetNameSuffix());
+        winMgr.renameWindow(widget.getName() + wci->second->getWidgetNameSuffix(),
+                            newBaseName + wci->second->getWidgetNameSuffix());
     }
 }
 
@@ -435,34 +494,30 @@ void WidgetLookFeel::renameChildren(const Window& widget,
 const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
                                             const String& propertyName) const
 {
-    PropertyList::const_reverse_iterator i = d_properties.rbegin();
+    PropertyInitialiserPtrMap pim;
+    appendPropertyInitialisers(pim);
 
-    while (i != d_properties.rend())
-    {
-        if ((*i).getTargetPropertyName() == propertyName)
-            return &(*i);
+    PropertyInitialiserPtrMap::const_iterator i = pim.find(propertyName);
 
-        ++i;
-    }
+    if (i == pim.end())
+        return 0;
 
-    return 0;
+    return i->second;
 }
 
 //---------------------------------------------------------------------------//
 const WidgetComponent* WidgetLookFeel::findWidgetComponent(
                                             const String& nameSuffix) const
 {
-    WidgetList::const_iterator i = d_childWidgets.begin();
+    WidgetComponentPtrMap wcl;
+    appendChildWidgetComponents(wcl);
 
-    while (i != d_childWidgets.end())
-    {
-        if ((*i).getWidgetNameSuffix() == nameSuffix)
-            return &(*i);
+    WidgetComponentPtrMap::const_iterator wci = wcl.find(nameSuffix);
 
-        ++i;
-    }
+    if (wci == wcl.end())
+        return 0;
 
-    return 0;
+    return wci->second;
 }
 
 //---------------------------------------------------------------------------//
@@ -486,6 +541,104 @@ void WidgetLookFeel::addEventLinkDefinition(const EventLinkDefinition& evtdef)
 void WidgetLookFeel::clearEventLinkDefinitions()
 {
     d_eventLinkDefinitions.clear();
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendChildWidgetComponents(WidgetComponentPtrMap& map) const
+{
+    for (WidgetList::const_iterator i = d_childWidgets.begin();
+         i != d_childWidgets.end();
+         ++i)
+    {
+        if (map.find((*i).getWidgetNameSuffix()) == map.end())
+            map[(*i).getWidgetNameSuffix()] = &(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendChildWidgetComponents(map);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionPtrMap& map) const
+{
+    for (PropertyDefinitionList::iterator i = d_propertyDefinitions.begin();
+         i != d_propertyDefinitions.end();
+         ++i)
+    {
+        if (map.find((*i).getName()) == map.end())
+            map[(*i).getName()] = &(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendPropertyDefinitions(map);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map) const
+{
+    for (PropertyLinkDefinitionList::iterator i = d_propertyLinkDefinitions.begin();
+         i != d_propertyLinkDefinitions.end();
+         ++i)
+    {
+        if (map.find((*i).getName()) == map.end())
+            map[(*i).getName()] = &(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendPropertyLinkDefinitions(map);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendPropertyInitialisers(PropertyInitialiserPtrMap& map) const
+{
+    // backwards because if there are duplicates initialisers, only the last
+    // one that appeared needs to be applied.
+    for (PropertyList::const_reverse_iterator i = d_properties.rbegin();
+         i != d_properties.rend();
+         ++i)
+    {
+        if (map.find((*i).getTargetPropertyName()) == map.end())
+            map[(*i).getTargetPropertyName()] = &(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendPropertyInitialisers(map);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map) const
+{
+    for (EventLinkDefinitionList::const_iterator i = d_eventLinkDefinitions.begin();
+         i != d_eventLinkDefinitions.end();
+         ++i)
+    {
+        if (map.find((*i).getName()) == map.end())
+            map[(*i).getName()] = &(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendEventLinkDefinitions(map);
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::appendAnimationNames(AnimationNameSet& set) const
+{
+    for (AnimationList::const_iterator i = d_animations.begin();
+         i != d_animations.end();
+         ++i)
+    {
+        if (set.find(*i) == set.end())
+            set.insert(*i);
+    }
+
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendAnimationNames(set);
 }
 
 //---------------------------------------------------------------------------//
