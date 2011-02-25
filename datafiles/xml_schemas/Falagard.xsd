@@ -19,6 +19,7 @@
 			<xsd:element name="AnimationDefinition" type="animAnimationDefinitionType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="inherits" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
     <xsd:complexType name="propertyDefinitionType">
         <xsd:attribute name="type" type="propertyTypeEnum" use="optional" default="Generic" />
@@ -104,7 +105,10 @@
 	</xsd:complexType>
     <xsd:complexType name="frameComponentType">
         <xsd:sequence>
-            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="Area" type="componentAreaType" />
+                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
+            </xsd:choice>
             <xsd:element name="Image" type="frameImageType" minOccurs="0" maxOccurs="9" />
             <xsd:choice  minOccurs="0" maxOccurs="1">
                 <xsd:element name="Colour" type="colourType" />
@@ -124,7 +128,10 @@
     </xsd:complexType>
     <xsd:complexType name="textComponentType">
         <xsd:sequence>
-            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="Area" type="componentAreaType" />
+                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
+            </xsd:choice>
             <xsd:element name="Text" type="textStringType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="TextProperty" type="textPropertyType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="FontProperty" type="fontPropertyType" minOccurs="0" maxOccurs="1" />
@@ -146,7 +153,10 @@
     </xsd:complexType>
 	<xsd:complexType name="imageryComponentType">
 		<xsd:sequence>
-            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="Area" type="componentAreaType" />
+                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
+            </xsd:choice>
             <xsd:choice>
                 <xsd:element name="Image" type="imageType" />
                 <xsd:element name="ImageProperty" type="settingByPropertyType" />
@@ -169,7 +179,10 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetComponentType">
 		<xsd:sequence>
-            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="Area" type="componentAreaType" />
+                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
+            </xsd:choice>
 			<xsd:element name="VertAlignment" type="vertAlignmentType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="HorzAlignment" type="horzAlignmentType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
@@ -214,6 +227,7 @@
                 <xsd:element name="Dim" type="dimensionType" minOccurs="1" maxOccurs="4" />
             </xsd:sequence>
             <xsd:element name="AreaProperty" type="settingByPropertyType" />
+            <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
         </xsd:choice>
 	</xsd:complexType>
 	<xsd:complexType name="dimensionType">
@@ -317,6 +331,10 @@
             <xsd:element name="PropertyDim" type="propertyDimType" />
         </xsd:choice>
         <xsd:attribute name="op" type="dimensionOperatorEnum" use="required" />
+    </xsd:complexType>
+    <xsd:complexType name="namedAreaSourceType">
+        <xsd:attribute name="look" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="name" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
     <xsd:simpleType name="propertyDimensionTypeEnum">
 		<xsd:restriction base="xsd:string">

@@ -650,7 +650,7 @@ namespace CEGUI
 
         \return
             - true if the area comes via a Propery.
-            - false if the area is defined explicitly via the Dimension fields.
+            - false if the area is not sourced from a Property.
         */
         bool isAreaFetchedFromProperty() const;
 
@@ -667,6 +667,9 @@ namespace CEGUI
         \brief
             Set the name of the property that will be used to determine the pixel area for this ComponentArea.
 
+        \note
+            Calling this will replace any existing souce, such as a named area.
+
         \param property
             String object holding the name of a Propery.  The property should access a URect type property.
 
@@ -675,6 +678,19 @@ namespace CEGUI
         */
         void setAreaPropertySource(const String& property);
 
+        //! Set the named area source of the ComponentArea.
+        void setNamedAreaSouce(const String& widget_look, const String& area_name);
+
+        /*!
+        \brief
+            Return whether this ComponentArea fetches it's area via a named area
+            defined.
+
+        \return
+            - true if the area comes via a named area defined in a WidgetLook.
+            - false if the area is not sourced from a named area.
+        */
+        bool isAreaFetchedFromNamedArea() const;
 
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.
@@ -682,7 +698,10 @@ namespace CEGUI
         Dimension d_bottom_or_height;   //!< Either the bototm edge or the height of the area.
 
     private:
-        String  d_areaProperty;         //!< Property to access.  Must be a URect style property.
+        //! name of property or named area.  Property must access a URect style value.
+        String d_namedSource;
+        //! name of widget look holding the named area to fetch
+        String d_namedAreaSourceLook;
     };
 
 } // End of  CEGUI namespace section

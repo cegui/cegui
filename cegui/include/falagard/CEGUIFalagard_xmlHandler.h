@@ -140,6 +140,8 @@ namespace CEGUI
         static const String ColourElement;              //!< Tag name for Colour elements.
         static const String EventLinkDefinitionElement; //!< Tag name for event link elements.
         static const String EventLinkTargetElement;     //!< Tag name for event link target elements.
+        //! Tag name for specifying a source named area for a component
+        static const String NamedAreaSourceElement;
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -446,6 +448,9 @@ namespace CEGUI
 
         //! Function to handle EventLinkTarget elements.
         void elementEventLinkTargetStart(const XMLAttributes& attributes);
+
+        //! Function to handle NamedAreaSource elements.
+        void elementNamedAreaSourceStart(const XMLAttributes& attributes);
 
         /*!
         \brief
