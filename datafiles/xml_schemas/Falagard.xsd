@@ -105,10 +105,7 @@
 	</xsd:complexType>
     <xsd:complexType name="frameComponentType">
         <xsd:sequence>
-            <xsd:choice minOccurs="0" maxOccurs="1">
-                <xsd:element name="Area" type="componentAreaType" />
-                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
-            </xsd:choice>
+            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="Image" type="frameImageType" minOccurs="0" maxOccurs="9" />
             <xsd:choice  minOccurs="0" maxOccurs="1">
                 <xsd:element name="Colour" type="colourType" />
@@ -128,10 +125,7 @@
     </xsd:complexType>
     <xsd:complexType name="textComponentType">
         <xsd:sequence>
-            <xsd:choice minOccurs="0" maxOccurs="1">
-                <xsd:element name="Area" type="componentAreaType" />
-                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
-            </xsd:choice>
+            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="Text" type="textStringType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="TextProperty" type="textPropertyType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="FontProperty" type="fontPropertyType" minOccurs="0" maxOccurs="1" />
@@ -153,10 +147,7 @@
     </xsd:complexType>
 	<xsd:complexType name="imageryComponentType">
 		<xsd:sequence>
-            <xsd:choice minOccurs="0" maxOccurs="1">
-                <xsd:element name="Area" type="componentAreaType" />
-                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
-            </xsd:choice>
+            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
             <xsd:choice>
                 <xsd:element name="Image" type="imageType" />
                 <xsd:element name="ImageProperty" type="settingByPropertyType" />
@@ -179,10 +170,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetComponentType">
 		<xsd:sequence>
-            <xsd:choice minOccurs="0" maxOccurs="1">
-                <xsd:element name="Area" type="componentAreaType" />
-                <xsd:element name="NamedAreaSource" type="namedAreaSourceType" />
-            </xsd:choice>
+            <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="VertAlignment" type="vertAlignmentType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="HorzAlignment" type="horzAlignmentType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
