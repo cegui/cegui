@@ -334,7 +334,7 @@
     </xsd:complexType>
     <xsd:complexType name="namedAreaSourceType">
         <xsd:attribute name="look" type="xsd:string" use="optional" default="" />
-        <xsd:attribute name="name" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
     <xsd:simpleType name="propertyDimensionTypeEnum">
 		<xsd:restriction base="xsd:string">
