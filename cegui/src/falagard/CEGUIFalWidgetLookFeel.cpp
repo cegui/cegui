@@ -546,83 +546,78 @@ void WidgetLookFeel::clearEventLinkDefinitions()
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendChildWidgetComponents(WidgetComponentPtrMap& map) const
 {
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendChildWidgetComponents(map);
+
     for (WidgetList::const_iterator i = d_childWidgets.begin();
          i != d_childWidgets.end();
          ++i)
     {
-        if (map.find((*i).getWidgetNameSuffix()) == map.end())
-            map[(*i).getWidgetNameSuffix()] = &(*i);
+        map[(*i).getWidgetNameSuffix()] = &(*i);
     }
 
-    if (!d_inheritedLookName.empty())
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendChildWidgetComponents(map);
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionPtrMap& map) const
 {
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendPropertyDefinitions(map);
+
     for (PropertyDefinitionList::iterator i = d_propertyDefinitions.begin();
          i != d_propertyDefinitions.end();
          ++i)
     {
-        if (map.find((*i).getName()) == map.end())
-            map[(*i).getName()] = &(*i);
+        map[(*i).getName()] = &(*i);
     }
 
-    if (!d_inheritedLookName.empty())
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendPropertyDefinitions(map);
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map) const
 {
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendPropertyLinkDefinitions(map);
+
     for (PropertyLinkDefinitionList::iterator i = d_propertyLinkDefinitions.begin();
          i != d_propertyLinkDefinitions.end();
          ++i)
     {
-        if (map.find((*i).getName()) == map.end())
-            map[(*i).getName()] = &(*i);
+        map[(*i).getName()] = &(*i);
     }
-
-    if (!d_inheritedLookName.empty())
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendPropertyLinkDefinitions(map);
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendPropertyInitialisers(PropertyInitialiserPtrMap& map) const
 {
-    // backwards because if there are duplicates initialisers, only the last
-    // one that appeared needs to be applied.
-    for (PropertyList::const_reverse_iterator i = d_properties.rbegin();
-         i != d_properties.rend();
-         ++i)
-    {
-        if (map.find((*i).getTargetPropertyName()) == map.end())
-            map[(*i).getTargetPropertyName()] = &(*i);
-    }
-
     if (!d_inheritedLookName.empty())
         WidgetLookManager::getSingleton().
             getWidgetLook(d_inheritedLookName).appendPropertyInitialisers(map);
+
+    for (PropertyList::const_iterator i = d_properties.begin();
+         i != d_properties.end();
+         ++i)
+    {
+        map[(*i).getTargetPropertyName()] = &(*i);
+    }
 }
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map) const
 {
+    if (!d_inheritedLookName.empty())
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).appendEventLinkDefinitions(map);
+
     for (EventLinkDefinitionList::const_iterator i = d_eventLinkDefinitions.begin();
          i != d_eventLinkDefinitions.end();
          ++i)
     {
-        if (map.find((*i).getName()) == map.end())
-            map[(*i).getName()] = &(*i);
+        map[(*i).getName()] = &(*i);
     }
-
-    if (!d_inheritedLookName.empty())
-        WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendEventLinkDefinitions(map);
 }
 
 //---------------------------------------------------------------------------//
