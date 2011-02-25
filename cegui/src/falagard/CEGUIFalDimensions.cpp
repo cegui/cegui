@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalDimensions.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIWindowManager.h"
@@ -710,9 +711,17 @@ namespace CEGUI
         if (isAreaFetchedFromProperty())
         {
             pixelRect = CoordConverter::asAbsolute(
-                PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)), wnd.getPixelSize());
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_namedSource)), wnd.getPixelSize());
         }
-        // not via property - calculate using Dimensions
+        else if (isAreaFetchedFromNamedArea())
+        {
+            return WidgetLookManager::getSingleton()
+                .getWidgetLook(d_namedAreaSourceLook)
+                .getNamedArea(d_namedSource)
+                .getArea()
+                .getPixelRect(wnd);
+        }
+        // not via property or named area- calculate using Dimensions
         else
         {
             // sanity check, we mus be able to form a Rect from what we represent.
@@ -746,9 +755,17 @@ namespace CEGUI
         if (isAreaFetchedFromProperty())
         {
             pixelRect = CoordConverter::asAbsolute(
-                PropertyHelper<URect>::fromString(wnd.getProperty(d_areaProperty)), wnd.getPixelSize());
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_namedSource)), wnd.getPixelSize());
         }
-        // not via property - calculate using Dimensions
+        else if (isAreaFetchedFromNamedArea())
+        {
+            return WidgetLookManager::getSingleton()
+                .getWidgetLook(d_namedAreaSourceLook)
+                .getNamedArea(d_namedSource)
+                .getArea()
+                .getPixelRect(wnd, container);
+        }
+        // not via property or named area- calculate using Dimensions
         else
         {
             // sanity check, we mus be able to form a Rect from what we represent.
@@ -782,7 +799,14 @@ namespace CEGUI
         if (isAreaFetchedFromProperty())
         {
             xml_stream.openTag("AreaProperty")
-                .attribute("name", d_areaProperty)
+                .attribute("name", d_namedSource)
+                .closeTag();
+        }
+        else if (isAreaFetchedFromNamedArea())
+        {
+            xml_stream.openTag("NamedAreaSource")
+                .attribute("look", d_namedAreaSourceLook)
+                .attribute("name", d_namedSource)
                 .closeTag();
         }
         // not a property, write out individual dimensions explicitly.
@@ -798,17 +822,30 @@ namespace CEGUI
 
     bool ComponentArea::isAreaFetchedFromProperty() const
     {
-        return !d_areaProperty.empty();
+        return !d_namedSource.empty() && d_namedAreaSourceLook.empty();
     }
 
     const String& ComponentArea::getAreaPropertySource() const
     {
-        return d_areaProperty;
+        return d_namedSource;
     }
 
     void ComponentArea::setAreaPropertySource(const String& property)
     {
-        d_areaProperty = property;
+        d_namedSource = property;
+        d_namedAreaSourceLook.clear();
+    }
+    
+    void ComponentArea::setNamedAreaSouce(const String& widget_look,
+                                          const String& area_name)
+    {
+        d_namedSource = area_name;
+        d_namedAreaSourceLook = widget_look;
+    }
+
+    bool ComponentArea::isAreaFetchedFromNamedArea() const
+    {
+        return !d_namedAreaSourceLook.empty() && !d_namedSource.empty();
     }
 
 } // End of  CEGUI namespace section

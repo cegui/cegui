@@ -95,6 +95,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ColourElement("Colour");
     const String Falagard_xmlHandler::EventLinkDefinitionElement("EventLinkDefinition");
     const String Falagard_xmlHandler::EventLinkTargetElement("EventLinkTarget");
+    const String Falagard_xmlHandler::NamedAreaSourceElement("NamedAreaSource");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -194,6 +195,7 @@ namespace CEGUI
         registerElementStartHandler(AnimationDefinitionHandler::ElementName, &Falagard_xmlHandler::elementAnimationDefinitionStart);
         registerElementStartHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionStart);
         registerElementStartHandler(EventLinkTargetElement, &Falagard_xmlHandler::elementEventLinkTargetStart);
+        registerElementStartHandler(NamedAreaSourceElement, &Falagard_xmlHandler::elementNamedAreaSourceStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -1216,6 +1218,16 @@ namespace CEGUI
 
         CEGUI_DELETE_AO d_eventLink;
         d_eventLink = 0;
+    }
+
+    void Falagard_xmlHandler::elementNamedAreaSourceStart(const XMLAttributes& attributes)
+    {
+        assert (d_area != 0);
+
+        const String look(attributes.getValueAsString(LookAttribute));
+
+        d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
+                                  attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************
