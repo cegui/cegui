@@ -82,7 +82,9 @@ public:
     T d_height;
 };
 
-} // End of  CEGUI namespace section
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Size<float> Sizef;
 
+} // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUISize_h_

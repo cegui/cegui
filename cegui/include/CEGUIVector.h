@@ -142,6 +142,9 @@ public:
     T d_y;
 };
 
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Vector2<float> Vector2f;
+
 /*!
 \brief
     Class used as a three dimensional vector
@@ -209,6 +212,9 @@ public:
     T d_y;
     T d_z;
 };
+
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Vector3<float> Vector3f;
 
 } // End of  CEGUI namespace section
 
