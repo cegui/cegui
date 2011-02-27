@@ -41,6 +41,7 @@
 #include "CEGUIHorizontalLayoutContainer.h"
 #include "CEGUIItemEntry.h"
 #include "CEGUIItemListbox.h"
+#include "CEGUILayoutCell.h"
 #include "CEGUIListbox.h"
 #include "CEGUIListboxItem.h"
 #include "CEGUIListboxTextItem.h"

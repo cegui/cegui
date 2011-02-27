@@ -1494,6 +1494,7 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addFactory< TplWindowFactory<ItemListbox> >();
     WindowFactoryManager::addFactory< TplWindowFactory<GroupBox> >();
     WindowFactoryManager::addFactory< TplWindowFactory<Tree> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<LayoutCell> >();
     WindowFactoryManager::addFactory< TplWindowFactory<HorizontalLayoutContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<VerticalLayoutContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<GridLayoutContainer> >();
