@@ -377,6 +377,9 @@ public:
     // d_max.d_y is former d_bottom
 };
 
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Rect<float> Rectf;
+
 } // End of  CEGUI namespace section
 
 
