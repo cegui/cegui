@@ -250,7 +250,7 @@ public:
      */
     static const String EventAlwaysOnTopChanged;
     /** Event fired when the Window gains capture of mouse inputs.
-     * Handlers are passed a cont WindowEventArgs reference with
+     * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window that has captured mouse inputs.
      */
     static const String EventInputCaptureGained;
@@ -347,7 +347,7 @@ public:
      * detached from it.
      */
     static const String EventWindowRendererDetached;
-    /** Event fired whrn the rotation factor(s) for the window are changed.
+    /** Event fired when the rotation factor(s) for the window are changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rotation was changed.
      */
@@ -378,7 +378,7 @@ public:
      * valid.
      */
     static const String EventMouseEntersArea;
-    /** Event fired when themouse cursor has left the Window's area.
+    /** Event fired when the mouse cursor has left the Window's area.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
@@ -1633,7 +1633,7 @@ public:
 
     \return
         A pointer to the root window of the hierarchy that this window is
-        attched to.
+        attached to.
     */
     const Window* getRootWindow() const;
     Window* getRootWindow();
@@ -4434,7 +4434,7 @@ protected:
     mutable Rect<> d_outerRectClipper;
     //! inner area clipping rect in screen pixels
     mutable Rect<> d_innerRectClipper;
-    //! area rect used for hit-testing agains this window
+    //! area rect used for hit-testing against this window
     mutable Rect<> d_hitTestRect;
 
     mutable bool d_outerUnclippedRectValid;
