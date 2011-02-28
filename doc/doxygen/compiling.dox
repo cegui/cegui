@@ -38,7 +38,7 @@ details about where to obtain this please see @ref downloading.  The
 dependencies zip file should be extracted into the source package root directory
 so that you end up with a new directory named 'dependencies'.
 
-If you're using code directly from subversion you will need a copy of the
+If you're using code directly from mercurial you will need a copy of the
 premake executable (currently you need version 3.6, which is available
 <a href="http://sourceforge.net/projects/premake/files/Premake/3.6/premake-win32-3.6.zip/download">here</a>.
 This executable should either be placed in the <tt>projects/premake</tt>
@@ -66,7 +66,7 @@ chose to build them as part of the main solution).
 Compiling on GNU/Linux and similar systems follows the familiar configure, make,
 make install idiom.
 
-If you're using the code directly from subversion, the first thing you need to
+If you're using the code directly from mercurial, the first thing you need to
 do is generate the configure script.  This is achieved by running the bootstrap
 script in the source root directory (Note that running this requires Automake,
 Autoconf and Libtool).

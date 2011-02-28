@@ -12,8 +12,8 @@ their time creating great games, not building GUI sub-systems...
 
 Note: In various documentation and online, the system is additionally referred
 to as both CEGUI (which is the main namespace name), and cegui_mk2 (which was the
-CVS module name of the Mk2 version of the system, and is now the root svn
-directory for this part of the system).
+CVS module name of the Mk2 version of the system, and is now the mercurial
+repository name for this part of the system).
 
 @section main_sec_1 Documentation Sections
 The documentation for CEGUI is split into the following sections:
