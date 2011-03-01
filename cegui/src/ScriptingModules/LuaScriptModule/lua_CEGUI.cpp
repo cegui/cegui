@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Tue Feb 22 16:32:30 2011.
+** Generated automatically by tolua++-1.0.92 on Tue Mar  1 09:33:00 2011.
 */
 
 #ifndef __cplusplus
@@ -51485,6 +51485,73 @@ static int tolua_CEGUI_CEGUI_ComponentArea_setAreaPropertySource00(lua_State* to
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setNamedAreaSouce of class  CEGUI::ComponentArea */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ComponentArea_setNamedAreaSouce00
+static int tolua_CEGUI_CEGUI_ComponentArea_setNamedAreaSouce00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ComponentArea",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ComponentArea* self = (CEGUI::ComponentArea*)  tolua_tousertype(tolua_S,1,0);
+  utf8string widget_look = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string area_name = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setNamedAreaSouce'",NULL);
+#endif
+ {
+  self->setNamedAreaSouce(widget_look,area_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setNamedAreaSouce'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isAreaFetchedFromNamedArea of class  CEGUI::ComponentArea */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ComponentArea_isAreaFetchedFromNamedArea00
+static int tolua_CEGUI_CEGUI_ComponentArea_isAreaFetchedFromNamedArea00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ComponentArea",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ComponentArea* self = (const CEGUI::ComponentArea*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isAreaFetchedFromNamedArea'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isAreaFetchedFromNamedArea();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isAreaFetchedFromNamedArea'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: d_left of class  CEGUI::ComponentArea */
 #ifndef TOLUA_DISABLE_tolua_get_CEGUI__ComponentArea_d_left
 static int tolua_get_CEGUI__ComponentArea_d_left(lua_State* tolua_S)
@@ -57157,15 +57224,17 @@ static int tolua_CEGUI_CEGUI_WidgetLookFeel_new00(lua_State* tolua_S)
  if (
  !tolua_isusertable(tolua_S,1,"CEGUI::WidgetLookFeel",0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string inherits = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
  {
-  CEGUI::WidgetLookFeel* tolua_ret = (CEGUI::WidgetLookFeel*)  new CEGUI::WidgetLookFeel(name);
+  CEGUI::WidgetLookFeel* tolua_ret = (CEGUI::WidgetLookFeel*)  new CEGUI::WidgetLookFeel(name,inherits);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::WidgetLookFeel");
  }
  }
@@ -57187,15 +57256,17 @@ static int tolua_CEGUI_CEGUI_WidgetLookFeel_new00_local(lua_State* tolua_S)
  if (
  !tolua_isusertable(tolua_S,1,"CEGUI::WidgetLookFeel",0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string inherits = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
  {
-  CEGUI::WidgetLookFeel* tolua_ret = (CEGUI::WidgetLookFeel*)  new CEGUI::WidgetLookFeel(name);
+  CEGUI::WidgetLookFeel* tolua_ret = (CEGUI::WidgetLookFeel*)  new CEGUI::WidgetLookFeel(name,inherits);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::WidgetLookFeel");
  }
  }
@@ -60397,6 +60468,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isAreaFetchedFromProperty",tolua_CEGUI_CEGUI_ComponentArea_isAreaFetchedFromProperty00);
    tolua_function(tolua_S,"getAreaPropertySource",tolua_CEGUI_CEGUI_ComponentArea_getAreaPropertySource00);
    tolua_function(tolua_S,"setAreaPropertySource",tolua_CEGUI_CEGUI_ComponentArea_setAreaPropertySource00);
+   tolua_function(tolua_S,"setNamedAreaSouce",tolua_CEGUI_CEGUI_ComponentArea_setNamedAreaSouce00);
+   tolua_function(tolua_S,"isAreaFetchedFromNamedArea",tolua_CEGUI_CEGUI_ComponentArea_isAreaFetchedFromNamedArea00);
    tolua_variable(tolua_S,"d_left",tolua_get_CEGUI__ComponentArea_d_left,tolua_set_CEGUI__ComponentArea_d_left);
    tolua_variable(tolua_S,"d_top",tolua_get_CEGUI__ComponentArea_d_top,tolua_set_CEGUI__ComponentArea_d_top);
    tolua_variable(tolua_S,"d_right_or_width",tolua_get_CEGUI__ComponentArea_d_right_or_width,tolua_set_CEGUI__ComponentArea_d_right_or_width);
