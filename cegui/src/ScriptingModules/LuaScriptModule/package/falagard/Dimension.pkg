@@ -94,6 +94,10 @@ class ComponentArea
   bool isAreaFetchedFromProperty() const;
   string getAreaPropertySource() const;
   void setAreaPropertySource(utf8string property);
+
+  void setNamedAreaSouce(utf8string widget_look, utf8string area_name);
+  bool isAreaFetchedFromNamedArea() const;
+
   Dimension d_left;
   Dimension d_top;
   Dimension d_right_or_width;
