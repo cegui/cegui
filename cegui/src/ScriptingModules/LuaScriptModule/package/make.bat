@@ -1,2 +1,2 @@
-tolua++cegui -o ../src/lua_CEGUI.cpp -L exceptions.lua CEGUI.pkg
+tolua++cegui -o ../lua_CEGUI.cpp -L exceptions.lua CEGUI.pkg
 pause

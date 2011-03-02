@@ -80,6 +80,7 @@ struct OgreRenderer_impl
         // TODO: should be set to correct value
         d_maxTextureSize(2048),
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
+        d_previousVP(0),
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true)
         {}
@@ -106,6 +107,10 @@ struct OgreRenderer_impl
     Ogre::Root* d_ogreRoot;
     //! Pointer to the render system for Ogre.
     Ogre::RenderSystem* d_renderSystem;
+    //! Pointer to the previous viewport set in render system.
+    Ogre::Viewport* d_previousVP;
+    //! Previous projection matrix set on render system.
+    Ogre::Matrix4 d_previousProjMatrix;
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
     //! Whether _beginFrame and _endFrame will be called.
@@ -405,6 +410,14 @@ Texture& OgreRenderer::getTexture(const String& name) const
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
+    if ( !d_pimpl->d_previousVP ) 
+    {
+        d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
+        if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
+            d_pimpl->d_previousProjMatrix =
+                d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+    }
+
     d_pimpl->d_defaultRoot->getRenderTarget().activate();
     initialiseRenderStateSettings();
 
@@ -419,6 +432,21 @@ void OgreRenderer::endRendering()
         d_pimpl->d_renderSystem->_endFrame();
 
     d_pimpl->d_defaultRoot->getRenderTarget().deactivate();
+
+    if ( d_pimpl->d_previousVP ) 
+    {
+        d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
+    
+        if ( d_pimpl->d_previousVP->getCamera() )
+        {
+            d_pimpl->d_renderSystem->_setProjectionMatrix(
+                d_pimpl->d_previousProjMatrix);
+            d_pimpl->d_renderSystem->_setViewMatrix(
+                d_pimpl->d_previousVP->getCamera()->getViewMatrix());
+        }
+        d_pimpl->d_previousVP = 0;
+        d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
+    }
 }
 
 //----------------------------------------------------------------------------//
