@@ -3,9 +3,9 @@
 @author Paul D Turner
 
 CEGUI is available in source code form - either as stable release code packages
-or from the subversion repository at sourceforge.net (both unstable trunk and
-stable branch code), and also in precompiled binary form for use with Microsoft
-Windows and Apple Mac OS X.
+or from the mercurial repository at sourceforge.net (both unstable default branch
+and stable branch code), and also in precompiled binary form for use with
+Microsoft Windows and Apple Mac OS X.
 
 All released packages are made available through the sourceforge.net file
 release network of mirrors, and you can browse the available releases by
@@ -16,7 +16,7 @@ main download page here: http://www.cegui.org.uk/wiki/index.php/Downloads
 
 <br>
 @section dl_src_releases Stable Release Source Packages
-Source code from the stable subversion branch is released at various points in
+Source code from the stable mercurial branch is released at various points in
 time and made available as source code packages.
 
 The current stable packages are available here:
@@ -68,29 +68,31 @@ The current packages are available here:
 All Mac OS X binary packages are provided as 32bit i386/ppc universal binaries.
 
 <br>
-@section dl_svn Subversion Source Code Repository
-The source code for CEGUI is kept in the subversion repositiory at
-sourceforge.net.  Since we also have the code for other CEGUI related items in
-the same repository, the various parts are separated in to subdirectories; the
-subdirectory for CEGUI is named 'cegui_mk2'.
+@section dl_hg Mercurial Source Code Repository
+The source code for CEGUI is kept in a mercurial repositiory at sourceforge.net.
+We also have the code repositories for other CEGUI related items hosted at
+sourceforge; the repository for the main CEGUI libraries is named 'cegui_mk2'.
 
-Beneath this subdirectory, we maintain the main unstable code (as trunk) and
-a secondary branch for the current stable releases (which is v0-7 as of this
-writing), older branches are considered obsolete as newer stable code is
-branched from the trunk, although the older branch directories are left
-available for those who want or need that older code.
+Within this repository, we maintain the main unstable code (as the default
+branch) and a secondary branch for the current stable releases (which is v0-7 as
+of this writing), older branches are considered obsolete as newer stable code
+branches are created, although the older branches are still accessible for those
+who want or need that older code.
 
-To check out a copy of the current stable branch from subversion, you might use
-the following command (or copy the server string into your GUI based SVN client)
+To obtain a copy of the code from mercurial, you might use the following commands
+(or thier equivalent, if you use a GUI based mercurial client)
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/crayzedsgui/cegui_mk2/branches/v0-7 cegui-v0-7
+hg clone http://crayzedsgui.hg.sourceforge.net/hgroot/crayzedsgui/cegui_mk2 cegui-source
 @endverbatim
 
-Or, if you prefer the latest unstable code for testing purposes:
+Once you have this, the cloned repository is updated to the default (unstable)
+code, so you most likely will want to switch to the stable branch instead (be
+aware that the -C option here will discard any local file changes without
+additional warning):
 @verbatim
-svn co https://crayzedsgui.svn.sourceforge.net/svnroot/crayzedsgui/cegui_mk2/trunk cegui-trunk
+hg update -C v0-7
 @endverbatim
 
 You can also browse the repository from your web browser here:
-http://crayzedsgui.svn.sourceforge.net/viewvc/crayzedsgui/cegui_mk2/
+http://crayzedsgui.hg.sourceforge.net/hgweb/crayzedsgui/cegui_mk2/
 */
