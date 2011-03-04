@@ -169,16 +169,16 @@ public:
     Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Size<>& size);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
     Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size<>& sz);
-    const Size<>& getDisplaySize() const;
-    const Vector2<>& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -190,7 +190,7 @@ protected:
     ~Direct3D11Renderer();
 
     //! return size of the D3D device viewport.
-    Size<> getViewportSize();
+    Sizef getViewportSize();
 
     //! helper to throw exception if name is already used.
     void throwIfNameExists(const String& name) const;
@@ -206,9 +206,9 @@ protected:
 	IDevice11 d_device;
 
     //! What the renderer considers to be the current display size.
-    Size<> d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2<> d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! The default rendering root object

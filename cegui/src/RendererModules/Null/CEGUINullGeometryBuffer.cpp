@@ -66,7 +66,7 @@ void NullGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setTranslation(const Vector3<>& v)
+void NullGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
 }
@@ -78,13 +78,13 @@ void NullGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setPivot(const Vector3<>& p)
+void NullGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setClippingRegion(const Rect<>& region)
+void NullGeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
     d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));

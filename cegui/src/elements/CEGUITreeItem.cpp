@@ -79,7 +79,7 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
     d_selected(false),
     d_disabled(disabled),
     d_autoDelete(auto_delete),
-    d_buttonLocation(Rect<>(0, 0, 0, 0)),
+    d_buttonLocation(Rectf(0, 0, 0, 0)),
     d_owner(0),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour,
                  DefaultSelectionColour, DefaultSelectionColour),
@@ -174,21 +174,21 @@ void TreeItem::setFont(Font* font)
 /*************************************************************************
     Return the rendered pixel size of this tree item.
 *************************************************************************/
-Size<> TreeItem::getPixelSize(void) const
+Sizef TreeItem::getPixelSize(void) const
 {
     Font* fnt = getFont();
 
     if (!fnt)
-        return Size<>(0, 0);
+        return Sizef(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Size<> sz(0.0f, 0.0f);
+    Sizef sz(0.0f, 0.0f);
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Size<> line_sz(d_renderedString.getPixelSize(i));
+        const Sizef line_sz(d_renderedString.getPixelSize(i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)
@@ -269,14 +269,14 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 /*************************************************************************
     Draw the tree item in its current state.
 *************************************************************************/
-void TreeItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
-                    float alpha, const Rect<>* clipper) const
+void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+                    float alpha, const Rectf* clipper) const
 {
-    Rect<> finalRect(targetRect);
+    Rectf finalRect(targetRect);
 
     if (d_iconImage != 0)
     {
-        Rect<> finalPos(finalRect);
+        Rectf finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
         d_iconImage->render(buffer, finalPos, clipper,
@@ -293,7 +293,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
     if (!font)
         return;
 
-    Vector2<> draw_pos(finalRect.getPosition());
+    Vector2f draw_pos(finalRect.getPosition());
     draw_pos.d_y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
 
     if (!d_renderedStringValid)

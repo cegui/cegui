@@ -57,14 +57,14 @@ void Direct3D9RenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9RenderTarget::setArea(const Rect<>& area)
+void Direct3D9RenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& Direct3D9RenderTarget::getArea() const
+const Rectf& Direct3D9RenderTarget::getArea() const
 {
     return d_area;
 }
@@ -89,8 +89,8 @@ void Direct3D9RenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void Direct3D9RenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                           const Vector2<>& p_in,
-                                           Vector2<>& p_out) const
+                                           const Vector2f& p_in,
+                                           Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

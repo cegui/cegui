@@ -413,7 +413,7 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
     CEGUI::System* const sys = CEGUI::System::getSingletonPtr();
     if (sys)
         sys->notifyDisplaySizeChanged(
-            CEGUI::Size<>(static_cast<float>(rw->getWidth()),
+            CEGUI::Sizef(static_cast<float>(rw->getWidth()),
                           static_cast<float>(rw->getHeight())));
 }
 

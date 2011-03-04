@@ -70,7 +70,7 @@ OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRenderer& owner) :
     initialiseTexture();
 
     // set default size (and cause initialisation of the pbuffer)
-    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 
     // set some states as a one-time thing (because we use a separate context)
     enablePBuffer();
@@ -141,14 +141,14 @@ void OpenGLGLXPBTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGLXPBTextureTarget::declareRenderSize(const Size<>& sz)
+void OpenGLGLXPBTextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) &&
         (d_area.getHeight() >= sz.d_height))
             return;
 
-    setArea(Rect<>(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
+    setArea(Rectf(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     initialisePBuffer();
     clear();
 }
@@ -180,7 +180,7 @@ void OpenGLGLXPBTextureTarget::initialisePBuffer()
     GLuint actual_width, actual_height;
     glXQueryDrawable(d_dpy, d_pbuffer, GLX_WIDTH, &actual_width);
     glXQueryDrawable(d_dpy, d_pbuffer, GLX_HEIGHT, &actual_height);
-    d_area.setSize(Size<>(actual_width, actual_height));
+    d_area.setSize(Sizef(actual_width, actual_height));
 
     // ensure CEGUI::Texture is wrapping real GL texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());

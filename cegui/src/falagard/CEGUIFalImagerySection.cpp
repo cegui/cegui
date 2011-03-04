@@ -43,7 +43,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -71,7 +71,7 @@ namespace CEGUI
         }
     }
 
-    void ImagerySection::render(Window& srcWindow, const Rect<>& baseRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -181,10 +181,10 @@ namespace CEGUI
         }
     }
 
-    Rect<> ImagerySection::getBoundingRect(const Window& wnd) const
+    Rectf ImagerySection::getBoundingRect(const Window& wnd) const
     {
-        Rect<> compRect;
-        Rect<> bounds(0, 0, 0, 0);
+        Rectf compRect;
+        Rectf bounds(0, 0, 0, 0);
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
@@ -220,10 +220,10 @@ namespace CEGUI
         return bounds;
     }
 
-    Rect<> ImagerySection::getBoundingRect(const Window& wnd, const Rect<>& rect) const
+    Rectf ImagerySection::getBoundingRect(const Window& wnd, const Rectf& rect) const
     {
-        Rect<> compRect;
-        Rect<> bounds(0, 0, 0, 0);
+        Rectf compRect;
+        Rectf bounds(0, 0, 0, 0);
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)

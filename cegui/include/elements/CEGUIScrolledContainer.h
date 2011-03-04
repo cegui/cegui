@@ -105,7 +105,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane represented by this ScrolledContainer.
     */
-    const Rect<>& getContentArea(void) const;
+    const Rectf& getContentArea(void) const;
 
     /*!
     \brief
@@ -122,7 +122,7 @@ public:
     \return
         Nothing.
     */
-    void setContentArea(const Rect<>& area);
+    void setContentArea(const Rectf& area);
 
     /*!
     \brief
@@ -133,10 +133,10 @@ public:
         child windows.  This is effectively the smallest bounding box
         that could contain all the attached windows.
     */
-    Rect<> getChildExtentsArea(void) const;
+    Rectf getChildExtentsArea(void) const;
 
     // Overridden from Window.
-    Rect<> getUnclippedInnerRect_impl(void) const;
+    Rectf getUnclippedInnerRect_impl(void) const;
 
 protected:
     /*!
@@ -190,11 +190,11 @@ protected:
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) {};
-    Rect<> getInnerRectClipper_impl() const;
-    Rect<> getNonClientChildWindowContentArea_impl() const;
-    Rect<> getClientChildWindowContentArea_impl() const;
+    Rectf getInnerRectClipper_impl() const;
+    Rectf getNonClientChildWindowContentArea_impl() const;
+    Rectf getClientChildWindowContentArea_impl() const;
 
-    Rect<> getHitTestRect_impl() const;
+    Rectf getHitTestRect_impl() const;
     void onChildAdded(WindowEventArgs& e);
     void onChildRemoved(WindowEventArgs& e);
     void onParentSized(WindowEventArgs& e);
@@ -204,7 +204,7 @@ protected:
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
     //! Holds extents of the content pane.
-    Rect<> d_contentArea;
+    Rectf d_contentArea;
     //! true if the pane auto-sizes itself.
     bool d_autosizePane;
 

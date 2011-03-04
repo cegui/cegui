@@ -160,7 +160,7 @@ namespace CEGUI
     {
         CEGUI_TRY
         {
-            Rect<> pixelArea(d_area.getPixelRect(owner));
+            Rectf pixelArea(d_area.getPixelRect(owner));
             URect window_area(cegui_absdim(pixelArea.left()),
                               cegui_absdim(pixelArea.top()),
                               cegui_absdim(pixelArea.right()),

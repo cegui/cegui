@@ -187,7 +187,7 @@ protected:
     \return
         Nothing.
     */
-    virtual Size<> getContentSize(void) const;
+    virtual Sizef getContentSize(void) const;
 
 
     /*!

@@ -49,7 +49,7 @@ IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
         &d_owner.createTexture(generateTextureName())))
 {
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -94,7 +94,7 @@ Texture& IrrlichtTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTextureTarget::declareRenderSize(const Size<>& sz)
+void IrrlichtTextureTarget::declareRenderSize(const Sizef& sz)
 {
     const bool realloc =
                 !d_texture ||
@@ -102,14 +102,14 @@ void IrrlichtTextureTarget::declareRenderSize(const Size<>& sz)
                 static_cast<float>(d_texture->getSize().Height) < sz.d_height;
 
     // update area to render into.
-    setArea(Rect<>(d_area.getPosition(), sz));
+    setArea(Rectf(d_area.getPosition(), sz));
 
     // exit if current texture size is large enough
     if (!realloc)
         return;
 
     // get adjusted size - to account for device capabilities
-    const Size<> final_sz(d_owner.getAdjustedTextureSize(sz));
+    const Sizef final_sz(d_owner.getAdjustedTextureSize(sz));
 
     cleanupTargetTexture();
 

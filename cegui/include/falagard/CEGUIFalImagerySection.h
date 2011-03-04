@@ -77,7 +77,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -95,7 +95,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect<>& baseRect, const CEGUI::ColourRect* modColours = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -219,13 +219,13 @@ namespace CEGUI
         \brief
             Return smallest Rect that could contain all imagery within this section.
         */
-        Rect<> getBoundingRect(const Window& wnd) const;
+        Rectf getBoundingRect(const Window& wnd) const;
 
         /*!
         \brief
             Return smallest Rect that could contain all imagery within this section.
         */
-        Rect<> getBoundingRect(const Window& wnd, const Rect<>& rect) const;
+        Rectf getBoundingRect(const Window& wnd, const Rectf& rect) const;
 
         /*!
         \brief

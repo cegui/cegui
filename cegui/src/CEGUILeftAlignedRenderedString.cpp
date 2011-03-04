@@ -40,17 +40,17 @@ LeftAlignedRenderedString::LeftAlignedRenderedString(
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::format(const Size<>& /*area_size*/)
+void LeftAlignedRenderedString::format(const Sizef& /*area_size*/)
 {
 }
 
 //----------------------------------------------------------------------------//
 void LeftAlignedRenderedString::draw(GeometryBuffer& buffer,
-                                 const Vector2<>& position,
+                                 const Vector2f& position,
                                  const ColourRect* mod_colours,
-                                 const Rect<>* clip_rect) const
+                                 const Rectf* clip_rect) const
 {
-    Vector2<> draw_pos(position);
+    Vector2f draw_pos(position);
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {

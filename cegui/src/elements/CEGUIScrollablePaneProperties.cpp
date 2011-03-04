@@ -49,12 +49,12 @@ namespace ScrollablePaneProperties
 
     String ContentArea::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper<Rect<> >::toString(static_cast<const ScrollablePane*>(receiver)->getContentPaneArea());
+        return PropertyHelper<Rectf >::toString(static_cast<const ScrollablePane*>(receiver)->getContentPaneArea());
     }
 
     void ContentArea::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrollablePane*>(receiver)->setContentPaneArea(PropertyHelper<Rect<> >::fromString(value));
+        static_cast<ScrollablePane*>(receiver)->setContentPaneArea(PropertyHelper<Rectf >::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////

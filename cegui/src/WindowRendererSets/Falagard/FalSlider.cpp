@@ -72,11 +72,11 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
-        const Size<> w_pixel_size(w->getPixelSize());
+        const Sizef w_pixel_size(w->getPixelSize());
 
         const float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.left() / w_pixel_size.d_width);
         const float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.top() / w_pixel_size.d_height);
@@ -134,7 +134,7 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        const Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
@@ -162,10 +162,10 @@ namespace CEGUI
         }
     }
 
-    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2<>& pt) const
+    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2f& pt) const
     {
         Slider* w = (Slider*)d_window;
-        const Rect<> absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rectf absrect(w->getThumb()->getUnclippedOuterRect());
 
         if ((d_vertical && (pt.d_y < absrect.top())) ||
             (!d_vertical && (pt.d_x > absrect.right())))

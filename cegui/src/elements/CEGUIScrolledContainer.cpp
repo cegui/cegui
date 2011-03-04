@@ -78,13 +78,13 @@ void ScrolledContainer::setContentPaneAutoSized(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& ScrolledContainer::getContentArea(void) const
+const Rectf& ScrolledContainer::getContentArea(void) const
 {
     return d_contentArea;
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::setContentArea(const Rect<>& area)
+void ScrolledContainer::setContentArea(const Rectf& area)
 {
     if (!d_autosizePane)
     {
@@ -98,9 +98,9 @@ void ScrolledContainer::setContentArea(const Rect<>& area)
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getChildExtentsArea(void) const
+Rectf ScrolledContainer::getChildExtentsArea(void) const
 {
-    Rect<> extents(0, 0, 0, 0);
+    Rectf extents(0, 0, 0, 0);
 
     const size_t childCount = getChildCount();
     if (childCount == 0)
@@ -109,7 +109,7 @@ Rect<> ScrolledContainer::getChildExtentsArea(void) const
     for (size_t i = 0; i < childCount; ++i)
     {
         const Window* const wnd = getChildAtIdx(i);
-        const Rect<> area(CoordConverter::asAbsolute(wnd->getArea(), d_pixelSize));
+        const Rectf area(CoordConverter::asAbsolute(wnd->getArea(), d_pixelSize));
 
         if (area.d_min.d_x < extents.d_min.d_x)
             extents.d_min.d_x = area.d_min.d_x;
@@ -169,7 +169,7 @@ bool ScrolledContainer::handleChildMoved(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getUnclippedInnerRect_impl(void) const
+Rectf ScrolledContainer::getUnclippedInnerRect_impl(void) const
 {
     return d_parent ?
         d_parent->getUnclippedInnerRect() :
@@ -177,7 +177,7 @@ Rect<> ScrolledContainer::getUnclippedInnerRect_impl(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getInnerRectClipper_impl() const
+Rectf ScrolledContainer::getInnerRectClipper_impl() const
 {
     return d_parent ?
         d_parent->getInnerRectClipper() :
@@ -185,24 +185,24 @@ Rect<> ScrolledContainer::getInnerRectClipper_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getHitTestRect_impl() const
+Rectf ScrolledContainer::getHitTestRect_impl() const
 {
     return d_parent ? d_parent->getHitTestRect() :
                       Window::getHitTestRect_impl();
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getNonClientChildWindowContentArea_impl() const
+Rectf ScrolledContainer::getNonClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
         return Window::getNonClientChildWindowContentArea_impl();
     else
-        return Rect<>(getUnclippedOuterRect().getPosition(),
+        return Rectf(getUnclippedOuterRect().getPosition(),
                     d_parent->getUnclippedInnerRect().getSize());
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrolledContainer::getClientChildWindowContentArea_impl() const
+Rectf ScrolledContainer::getClientChildWindowContentArea_impl() const
 {
     return getNonClientChildWindowContentArea_impl();
 }

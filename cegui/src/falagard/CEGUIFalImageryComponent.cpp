@@ -87,7 +87,7 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool /*clipToDisplay*/) const
+    void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -107,7 +107,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size<> imgSz(img->getRenderedSize());
+        Sizef imgSz(img->getRenderedSize());
 
         // calculate final colours to be used
         ColourRect finalColours;
@@ -182,9 +182,9 @@ namespace CEGUI
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rect<> finalRect;
-        Rect<> finalClipper;
-        const Rect<>* clippingRect;
+        Rectf finalRect;
+        Rectf finalClipper;
+        const Rectf* clippingRect;
         finalRect.top(ypos);
         finalRect.bottom(ypos + imgSz.d_height);
 

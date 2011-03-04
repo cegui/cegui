@@ -62,7 +62,7 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
 
 //----------------------------------------------------------------------------//
 OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
-                             const Size<>& size) :
+                             const Sizef& size) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
@@ -75,7 +75,7 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
 
 //----------------------------------------------------------------------------//
 OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
-                             GLuint tex, const Size<>& size) :
+                             GLuint tex, const Sizef& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
@@ -99,19 +99,19 @@ const String& OpenGLTexture::getName() const
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& OpenGLTexture::getSize() const
+const Sizef& OpenGLTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& OpenGLTexture::getOriginalDataSize() const
+const Sizef& OpenGLTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& OpenGLTexture::getTexelScaling() const
+const Vector2f& OpenGLTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -152,7 +152,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
+void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                     PixelFormat pixel_format)
 {
     GLint comps;
@@ -191,9 +191,9 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::setTextureSize(const Size<>& sz)
+void OpenGLTexture::setTextureSize(const Sizef& sz)
 {
-    const Size<> size(d_owner.getAdjustedTextureSize(sz));
+    const Sizef size(d_owner.getAdjustedTextureSize(sz));
 
     // make sure size is within boundaries
     GLfloat maxSize;
@@ -244,7 +244,7 @@ void OpenGLTexture::grabTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::blitFromMemory(void* sourceData, const Rect<>& area)
+void OpenGLTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     // save old texture binding
     GLuint old_tex;
@@ -381,7 +381,7 @@ GLuint OpenGLTexture::getOpenGLTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::setOpenGLTexture(GLuint tex, const Size<>& size)
+void OpenGLTexture::setOpenGLTexture(GLuint tex, const Sizef& size)
 {
     if (d_ogltexture != tex)
     {

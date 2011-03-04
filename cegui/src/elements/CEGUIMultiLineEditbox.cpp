@@ -322,7 +322,7 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
 
 	if (caretLine < d_lines.size())
 	{
-		Rect<> textArea(getTextRenderArea());
+		Rectf textArea(getTextRenderArea());
 
 		size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
 
@@ -419,7 +419,7 @@ void MultiLineEditbox::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect<> renderArea(getTextRenderArea());
+	Rectf renderArea(getTextRenderArea());
 
 	vertScrollbar->setDocumentSize(static_cast<float>(d_lines.size()) * lspc);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -589,14 +589,14 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.
 *************************************************************************/
-size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2<>& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 {
 	//
 	// calculate final window position to be checked
 	//
-	Vector2<> wndPt = CoordConverter::screenToWindow(*this, pt);
+	Vector2f wndPt = CoordConverter::screenToWindow(*this, pt);
 
-	Rect<> textArea(getTextRenderArea());
+	Rectf textArea(getTextRenderArea());
 
     wndPt -= textArea.d_min;
 
@@ -1601,7 +1601,7 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 /*************************************************************************
     Get the text rendering area
 *************************************************************************/
-Rect<> MultiLineEditbox::getTextRenderArea() const
+Rectf MultiLineEditbox::getTextRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

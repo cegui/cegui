@@ -93,7 +93,7 @@ protected:
 	\return
 		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
-	virtual Size<> getContentSize() const;
+	virtual Sizef getContentSize() const;
 
 
 	/*!

@@ -51,51 +51,51 @@ public:
 
     virtual const String& getName() const = 0;
 
-    virtual const Size<>& getRenderedSize() const = 0;
-    virtual const Vector2<>& getRenderedOffset() const = 0;
+    virtual const Sizef& getRenderedSize() const = 0;
+    virtual const Vector2f& getRenderedOffset() const = 0;
 
     virtual void render(GeometryBuffer& buffer,
-                        const Rect<>& dest_area,
-                        const Rect<>* clip_area,
+                        const Rectf& dest_area,
+                        const Rectf* clip_area,
                         const ColourRect& colours) const = 0;
 
-    virtual void notifyDisplaySizeChanged(const Size<>& size) = 0;
+    virtual void notifyDisplaySizeChanged(const Sizef& size) = 0;
 
     virtual Image& clone() const = 0;
 
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Rect<>* clip_area = 0) const
+                const Vector2f& position,
+                const Rectf* clip_area = 0) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rect<>(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Rect<>* clip_area,
+                const Vector2f& position,
+                const Rectf* clip_area,
                 const ColourRect& colours) const
     {
-        render(buffer, Rect<>(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Size<>& size,
-                const Rect<>* clip_area = 0) const
+                const Vector2f& position,
+                const Sizef& size,
+                const Rectf* clip_area = 0) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rect<>(position, size), clip_area, colours);
+        render(buffer, Rectf(position, size), clip_area, colours);
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2<>& position,
-                const Size<>& size,
-                const Rect<>* clip_area,
+                const Vector2f& position,
+                const Sizef& size,
+                const Rectf* clip_area,
                 const ColourRect& colours) const
     {
-        render(buffer, Rect<>(position, size), clip_area, colours);
+        render(buffer, Rectf(position, size), clip_area, colours);
     }
 };
 

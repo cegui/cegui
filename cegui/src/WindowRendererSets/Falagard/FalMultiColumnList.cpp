@@ -45,7 +45,7 @@ namespace CEGUI
     {
     }
 
-    Rect<> FalagardMultiColumnList::getListRenderArea(void) const
+    Rectf FalagardMultiColumnList::getListRenderArea(void) const
     {
         MultiColumnList* w = (MultiColumnList*)d_window;
         // get WidgetLookFeel for the assigned look.
@@ -91,12 +91,12 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3<> itemPos;
-        Size<> itemSize;
-        Rect<> itemClipper, itemRect;
+        Vector3f itemPos;
+        Sizef itemSize;
+        Rectf itemClipper, itemRect;
 
         // calculate position of area we have to render into
-        Rect<> itemsArea(getListRenderArea());
+        Rectf itemsArea(getListRenderArea());
 
         // set up initial positional details for items
         itemPos.d_y = itemsArea.top() - vertScrollbar->getScrollPosition();

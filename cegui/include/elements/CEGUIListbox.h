@@ -68,7 +68,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect<> getListRenderArea(void) const = 0;
+    virtual Rectf getListRenderArea(void) const = 0;
 };
 
 /*!
@@ -539,7 +539,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect<> getListRenderArea(void) const;
+    virtual Rectf getListRenderArea(void) const;
 
 
     /*!
@@ -593,7 +593,7 @@ public:
         position \a pt, or 0 if no ListboxItem attached to this Listbox is at
         that position.
 	*/
-    ListboxItem* getItemAtPoint(const Vector2<>& pt) const;
+    ListboxItem* getItemAtPoint(const Vector2f& pt) const;
 
 
 	/*************************************************************************

@@ -50,19 +50,19 @@ namespace ScrolledContainerProperties
     
     String ContentArea::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper<Rect<> >::toString(static_cast<const ScrolledContainer*>(receiver)->getContentArea());
+        return PropertyHelper<Rectf >::toString(static_cast<const ScrolledContainer*>(receiver)->getContentArea());
     }
 
     void ContentArea::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrolledContainer*>(receiver)->setContentArea(PropertyHelper<Rect<> >::fromString(value));
+        static_cast<ScrolledContainer*>(receiver)->setContentArea(PropertyHelper<Rectf >::fromString(value));
     }
 
     //////////////////////////////////////////////////////////////////////////
 
     String ChildExtentsArea::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper<Rect<> >::toString(static_cast<const ScrolledContainer*>(receiver)->getChildExtentsArea());
+        return PropertyHelper<Rectf >::toString(static_cast<const ScrolledContainer*>(receiver)->getChildExtentsArea());
     }
 
     void ChildExtentsArea::set(PropertyReceiver*, const String&)

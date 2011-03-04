@@ -70,7 +70,7 @@ void OgreRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderTarget::setArea(const Rect<>& area)
+void OgreRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     setOgreViewportDimensions(area);
@@ -79,7 +79,7 @@ void OgreRenderTarget::setArea(const Rect<>& area)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderTarget::setOgreViewportDimensions(const Rect<>& area)
+void OgreRenderTarget::setOgreViewportDimensions(const Rectf& area)
 {
     d_ogreViewportDimensions = area;
 
@@ -104,7 +104,7 @@ void OgreRenderTarget::updateOgreViewportDimensions(
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& OgreRenderTarget::getArea() const
+const Rectf& OgreRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -131,8 +131,8 @@ void OgreRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2<>& p_in,
-                                      Vector2<>& p_out) const
+                                      const Vector2f& p_in,
+                                      Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

@@ -40,7 +40,7 @@ RightAlignedRenderedString::RightAlignedRenderedString(
 }
 
 //----------------------------------------------------------------------------//
-void RightAlignedRenderedString::format(const Size<>& area_size)
+void RightAlignedRenderedString::format(const Sizef& area_size)
 {
     d_offsets.clear();
 
@@ -51,11 +51,11 @@ void RightAlignedRenderedString::format(const Size<>& area_size)
 
 //----------------------------------------------------------------------------//
 void RightAlignedRenderedString::draw(GeometryBuffer& buffer,
-                                 const Vector2<>& position,
+                                 const Vector2f& position,
                                  const ColourRect* mod_colours,
-                                 const Rect<>* clip_rect) const
+                                 const Rectf* clip_rect) const
 {
-    Vector2<> draw_pos;
+    Vector2f draw_pos;
     draw_pos.d_y = position.d_y;
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)

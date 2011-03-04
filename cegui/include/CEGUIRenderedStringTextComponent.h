@@ -63,10 +63,10 @@ public:
     const ColourRect& getColours() const;
 
     // implementation of abstract base interface
-    void draw(GeometryBuffer& buffer, const Vector2<>& position,
-              const ColourRect* mod_colours, const Rect<>* clip_rect,
+    void draw(GeometryBuffer& buffer, const Vector2f& position,
+              const ColourRect* mod_colours, const Rectf* clip_rect,
               const float vertical_space, const float space_extra) const;
-    Size<> getPixelSize() const;
+    Sizef getPixelSize() const;
     bool canSplit() const;
     RenderedStringTextComponent* split(float split_point, bool first_component);
     RenderedStringTextComponent* clone() const;

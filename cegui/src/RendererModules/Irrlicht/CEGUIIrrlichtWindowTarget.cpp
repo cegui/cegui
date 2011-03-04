@@ -37,7 +37,7 @@ IrrlichtWindowTarget::IrrlichtWindowTarget(IrrlichtRenderer& owner,
 {
     irr::core::dimension2d<irr::s32> sz(d_driver.getScreenSize());
 
-    const Rect<> init_area(0, 0,
+    const Rectf init_area(0, 0,
                          static_cast<float>(sz.Width),
                          static_cast<float>(sz.Height));
     setArea(init_area);

@@ -234,7 +234,7 @@ void CEGuiOpenGLBaseApplication::reshape(int w, int h)
     gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 50.0);
     glMatrixMode(GL_MODELVIEW);
     CEGUI::System::getSingleton().
-        notifyDisplaySizeChanged(CEGUI::Size<>((float)w,(float)h));
+        notifyDisplaySizeChanged(CEGUI::Sizef((float)w,(float)h));
 }
 
 //----------------------------------------------------------------------------//

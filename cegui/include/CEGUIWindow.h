@@ -925,14 +925,14 @@ public:
         Return a Rect that describes the unclipped outer rect area of the Window
         in screen pixels.
     */
-    Rect<> getUnclippedOuterRect() const;
+    Rectf getUnclippedOuterRect() const;
 
     /*!
     \brief
         Return a Rect that describes the unclipped inner rect area of the Window
         in screen pixels.
     */
-    Rect<> getUnclippedInnerRect() const;
+    Rectf getUnclippedInnerRect() const;
 
     /*!
     \brief
@@ -945,7 +945,7 @@ public:
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
     */
-    Rect<> getUnclippedRect(const bool inner) const;
+    Rectf getUnclippedRect(const bool inner) const;
 
     /*!
     \brief
@@ -959,7 +959,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rect<> getOuterRectClipper() const;
+    Rectf getOuterRectClipper() const;
 
     /*!
     \brief
@@ -973,7 +973,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rect<> getInnerRectClipper() const;
+    Rectf getInnerRectClipper() const;
 
     /*!
     \brief
@@ -993,7 +993,7 @@ public:
         - true to return the non-client clipping area (based on outer rect).
         - false to return the client clipping area (based on inner rect).
     */
-    Rect<> getClipRect(const bool non_client = false) const;
+    Rectf getClipRect(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1005,7 +1005,7 @@ public:
         as opposed to what is used for rendering (since the actual rendering
         clipper rects should not to be used if reliable results are desired).
     */
-    Rect<> getHitTestRect() const;
+    Rectf getHitTestRect() const;
 
     /*!
     \brief
@@ -1026,7 +1026,7 @@ public:
         - true to return the non-client child content area.
         - false to return the client child content area (default).
     */
-    Rect<> getChildWindowContentArea(const bool non_client = false) const;
+    Rectf getChildWindowContentArea(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1044,7 +1044,7 @@ public:
         All code accessing the area rects via external code should be using the
         regular getUnclippedInnerRect function.
     */
-    virtual Rect<> getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
     /*!
     \brief
@@ -1104,7 +1104,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2<>& position,
+    virtual bool isHit(const Vector2f& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -1119,7 +1119,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2<>& position) const;
+    Window* getChildAtPosition(const Vector2f& position) const;
 
     /*!
     \brief
@@ -1138,7 +1138,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2<>& position, 
+    Window* getTargetChildAtPosition(const Vector2f& position, 
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -1174,7 +1174,7 @@ public:
     \return
         Size object describing this windows size in pixels.
     */
-    Size<> getPixelSize(void) const    { return d_pixelSize; }
+    Sizef getPixelSize(void) const    { return d_pixelSize; }
 
     /*!
     \brief
@@ -1480,7 +1480,7 @@ public:
         Size object that describes the pixel dimensions of this Window objects
         parent
     */
-    Size<> getParentPixelSize(void) const;
+    Sizef getParentPixelSize(void) const;
 
     /*!
     \brief
@@ -3204,7 +3204,7 @@ public:
     const UBox& getMargin() const;
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2<> getUnprojectedPosition(const Vector2<>& pos) const;
+    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
 
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
@@ -4172,7 +4172,7 @@ protected:
     void transferChildSurfaces();
 
     //! helper function for calculating clipping rectangles.
-    Rect<> getParentElementClipIntersection(const Rect<>& unclipped_area) const;
+    Rectf getParentElementClipIntersection(const Rectf& unclipped_area) const;
 
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
@@ -4189,26 +4189,26 @@ protected:
     const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
     //! Default implementation of function to return Window outer rect area.
-    virtual Rect<> getUnclippedOuterRect_impl() const;
+    virtual Rectf getUnclippedOuterRect_impl() const;
     //! Default implementation of function to return Window outer clipper area.
-    virtual Rect<> getOuterRectClipper_impl() const;
+    virtual Rectf getOuterRectClipper_impl() const;
     //! Default implementation of function to return Window inner clipper area.
-    virtual Rect<> getInnerRectClipper_impl() const;
+    virtual Rectf getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
-    virtual Rect<> getHitTestRect_impl() const;
+    virtual Rectf getHitTestRect_impl() const;
     //! Default implementation of function to return non-client content area
-    virtual Rect<> getNonClientChildWindowContentArea_impl() const;
+    virtual Rectf getNonClientChildWindowContentArea_impl() const;
     //! Default implementation of function to return client content area
-    virtual Rect<> getClientChildWindowContentArea_impl() const;
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
     // constrain given UVector2 to window's min size, return if size changed.
-    bool constrainUVector2ToMinSize(const Size<>& base_sz, UVector2& sz);
+    bool constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz);
     // constrain given UVector2 to window's max size, return if size changed.
-    bool constrainUVector2ToMaxSize(const Size<>& base_sz, UVector2& sz);
+    bool constrainUVector2ToMaxSize(const Sizef& base_sz, UVector2& sz);
 
     /*************************************************************************
         Properties for Window base class
@@ -4414,7 +4414,7 @@ protected:
     //! This Window objects area as defined by a URect.
     URect d_area;
     //! Current constrained pixel size of the window.
-    Size<> d_pixelSize;
+    Sizef d_pixelSize;
     //! current minimum size for the window.
     UVector2 d_minSize;
     //! current maximum size for the window.
@@ -4427,15 +4427,15 @@ protected:
     Quaternion d_rotation;
 
     //! outer area rect in screen pixels
-    mutable Rect<> d_outerUnclippedRect;
+    mutable Rectf d_outerUnclippedRect;
     //! inner area rect in screen pixels
-    mutable Rect<> d_innerUnclippedRect;
+    mutable Rectf d_innerUnclippedRect;
     //! outer area clipping rect in screen pixels
-    mutable Rect<> d_outerRectClipper;
+    mutable Rectf d_outerRectClipper;
     //! inner area clipping rect in screen pixels
-    mutable Rect<> d_innerRectClipper;
+    mutable Rectf d_innerRectClipper;
     //! area rect used for hit-testing against this window
-    mutable Rect<> d_hitTestRect;
+    mutable Rectf d_hitTestRect;
 
     mutable bool d_outerUnclippedRectValid;
     mutable bool d_innerUnclippedRectValid;

@@ -167,7 +167,7 @@ namespace CEGUI
         //! update string formatting (gets area size to use from looknfeel)
         void updateFormatting() const;
         //! update string formatting using given area size.
-        void updateFormatting(const Size<>& sz) const;
+        void updateFormatting(const Sizef& sz) const;
 
         // overridden from FalagardStatic base class
         void onLookNFeelAssigned();
@@ -178,8 +178,8 @@ namespace CEGUI
         void configureScrollbars(void);
         Scrollbar* getVertScrollbar(void) const;
         Scrollbar* getHorzScrollbar(void) const;
-        Rect<> getTextRenderArea(void) const;
-        Size<> getDocumentSize(const Rect<>& renderArea) const;
+        Rectf getTextRenderArea(void) const;
+        Sizef getDocumentSize(const Rectf& renderArea) const;
         void setupStringFormatter() const;
 
         // overridden event handlers

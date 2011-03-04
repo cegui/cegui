@@ -57,7 +57,7 @@ VerticalFormatting RenderedStringComponent::getVerticalFormatting() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringComponent::setPadding(const Rect<>& padding)
+void RenderedStringComponent::setPadding(const Rectf& padding)
 {
     d_padding = padding;
 }
@@ -87,7 +87,7 @@ void RenderedStringComponent::setBottomPadding(const float padding)
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& RenderedStringComponent::getPadding() const
+const Rectf& RenderedStringComponent::getPadding() const
 {
     return d_padding;
 }

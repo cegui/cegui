@@ -29,6 +29,7 @@
 #define _CEGUIRenderedString_h_
 
 #include "CEGUISize.h"
+#include "CEGUIRect.h"
 #include <vector>
 #include <utility>
 
@@ -93,8 +94,8 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void draw(const size_t line, GeometryBuffer& buffer, const Vector2<>& position,
-              const ColourRect* mod_colours, const Rect<>* clip_rect,
+    void draw(const size_t line, GeometryBuffer& buffer, const Vector2f& position,
+              const ColourRect* mod_colours, const Rectf* clip_rect,
               const float space_extra) const;
 
     /*!
@@ -111,7 +112,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    Size<> getPixelSize(const size_t line) const;
+    Sizef getPixelSize(const size_t line) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);

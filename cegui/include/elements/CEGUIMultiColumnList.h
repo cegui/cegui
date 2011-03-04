@@ -89,7 +89,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect<> getListRenderArea(void) const = 0;
+    virtual Rectf getListRenderArea(void) const = 0;
 };
 
 /*!
@@ -703,7 +703,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    Rect<> getListRenderArea(void) const;
+    Rectf getListRenderArea(void) const;
 
 
     /*!
@@ -1399,7 +1399,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-	ListboxItem*	getItemAtPoint(const Vector2<>& pt) const;
+	ListboxItem*	getItemAtPoint(const Vector2f& pt) const;
 
 
 	/*!

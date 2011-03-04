@@ -38,7 +38,7 @@ namespace CEGUI
         d_clipToDisplay(false)
     {}
 
-    void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rect<>* clipper) const
+    void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
     {
         // TODO: Fix layer priority handling
 
@@ -47,7 +47,7 @@ namespace CEGUI
             (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
     }
 
-    void StateImagery::render(Window& srcWindow, const Rect<>& baseRect, const ColourRect* modcols, const Rect<>* clipper) const
+    void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
     {
         // TODO: Fix layer priority handling
 

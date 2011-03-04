@@ -173,7 +173,7 @@ void OgreGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setTranslation(const Vector3<>& v)
+void OgreGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -187,14 +187,14 @@ void OgreGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setPivot(const Vector3<>& p)
+void OgreGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setClippingRegion(const Rect<>& region)
+void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
     d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));

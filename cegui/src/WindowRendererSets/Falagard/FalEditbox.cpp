@@ -87,7 +87,7 @@ void FalagardEditbox::render()
     const ImagerySection& caret_imagery = wlf.getImagerySection("Caret");
 
     // get destination area for text
-    const Rect<> text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
+    const Rectf text_area(wlf.getNamedArea("TextArea").getArea().getPixelRect(*d_window));
 
     const size_t caret_index = getCaretIndex(visual_text);
     const float extent_to_caret = font->getTextExtent(visual_text.substr(0, caret_index));
@@ -186,7 +186,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 }
 
 //----------------------------------------------------------------------------//
-float FalagardEditbox::calculateTextOffset(const Rect<>& text_area,
+float FalagardEditbox::calculateTextOffset(const Rectf& text_area,
                                            const float text_extent,
                                            const float caret_width,
                                            const float extent_to_caret)
@@ -216,13 +216,13 @@ float FalagardEditbox::calculateTextOffset(const Rect<>& text_area,
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
                                        const String& text,
-                                       const Rect<>& text_area,
+                                       const Rectf& text_area,
                                        float text_offset)
 {
     Font* const font = d_window->getFont();
 
     // setup initial rect for text formatting
-    Rect<> text_part_rect(text_area);
+    Rectf text_part_rect(text_area);
     // allow for scroll position
     text_part_rect.d_min.d_x += text_offset;
     // centre text vertically within the defined text area
@@ -245,7 +245,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
             font->getTextExtent(text.substr(0, w->getSelectionEndIndex()));
 
         // calculate area for selection imagery.
-        Rect<> hlarea(text_area);
+        Rectf hlarea(text_area);
         hlarea.d_min.d_x += text_offset + selStartOffset;
         hlarea.d_max.d_x = hlarea.d_min.d_x + (selEndOffset - selStartOffset);
 
@@ -286,14 +286,14 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                                      const String& text,
-                                     const Rect<>& text_area,
+                                     const Rectf& text_area,
                                      float text_offset)
 {
 #ifdef CEGUI_BIDI_SUPPORT
     Font* const font = d_window->getFont();
 
     // setup initial rect for text formatting
-    Rect<> text_part_rect(text_area);
+    Rectf text_part_rect(text_area);
     // allow for scroll position
     text_part_rect.d_left += text_offset;
     // centre text vertically within the defined text area
@@ -389,13 +389,13 @@ bool FalagardEditbox::editboxIsFocussed() const
 
 //----------------------------------------------------------------------------//
 void FalagardEditbox::renderCaret(const ImagerySection& imagery,
-                                  const Rect<>& text_area,
+                                  const Rectf& text_area,
                                   const float text_offset,
                                   const float extent_to_caret) const
 {
     if (editboxIsFocussed() && (!d_blinkCaret || d_showCaret))
     {
-        Rect<> caretRect(text_area);
+        Rectf caretRect(text_area);
         caretRect.d_min.d_x += extent_to_caret + text_offset;
 
         imagery.render(*d_window, caretRect, 0, &text_area);
@@ -403,7 +403,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
 }
 
 //----------------------------------------------------------------------------//
-size_t FalagardEditbox::getTextIndexFromPosition(const Vector2<>& pt) const
+size_t FalagardEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 {
     Editbox* w = static_cast<Editbox*>(d_window);
 

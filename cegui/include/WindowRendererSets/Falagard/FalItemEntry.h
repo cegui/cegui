@@ -67,7 +67,7 @@ namespace CEGUI
         FalagardItemEntry(const String& type);
 
         void render();
-        Size<> getItemPixelSize() const;
+        Sizef getItemPixelSize() const;
     };
 
 } // End of  CEGUI namespace section

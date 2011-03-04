@@ -87,11 +87,11 @@ public:
     virtual ~LayoutCell(void);
 
     /// @copydoc Window::getUnclippedInnerRect_impl
-    virtual Rect<> getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
 protected:
     /// @copydoc Window::getClientChildWindowContentArea_impl
-    virtual Rect<> getClientChildWindowContentArea_impl() const;
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     //! @copydoc Window::testClassName_impl
     virtual bool testClassName_impl(const String& class_name) const

@@ -58,7 +58,7 @@ LayoutCell::~LayoutCell(void)
 {}
 
 //----------------------------------------------------------------------------//
-Rect<> LayoutCell::getUnclippedInnerRect_impl(void) const
+Rectf LayoutCell::getUnclippedInnerRect_impl(void) const
 {
     return d_parent ?
            d_parent->getUnclippedInnerRect() :
@@ -66,12 +66,12 @@ Rect<> LayoutCell::getUnclippedInnerRect_impl(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rect<> LayoutCell::getClientChildWindowContentArea_impl() const
+Rectf LayoutCell::getClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
         return Window::getClientChildWindowContentArea_impl();
     else
-        return Rect<>(getUnclippedOuterRect().getPosition(),
+        return Rectf(getUnclippedOuterRect().getPosition(),
                     d_parent->getUnclippedInnerRect().getSize());
 }
 

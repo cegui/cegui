@@ -53,7 +53,7 @@ Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
         d_owner.createTexture(generateTextureName(), 0));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -64,13 +64,13 @@ Direct3D9TextureTarget::~Direct3D9TextureTarget()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9TextureTarget::declareRenderSize(const Size<>& sz)
+void Direct3D9TextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect<>(d_area.getPosition(), sz));
+    setArea(Rectf(d_area.getPosition(), sz));
     resizeRenderTexture();
     clear();
 }
@@ -115,7 +115,7 @@ Texture& Direct3D9TextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void Direct3D9TextureTarget::initialiseRenderTexture()
 {
-    Size<> tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
+    Sizef tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
 
     d_device->CreateTexture(static_cast<UINT>(tex_sz.d_width),
                             static_cast<UINT>(tex_sz.d_height),

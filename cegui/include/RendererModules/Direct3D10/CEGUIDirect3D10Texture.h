@@ -82,17 +82,17 @@ public:
     \note
         This also causes the texel scaling values to be updated.
     */
-    void setOriginalDataSize(const Size<>& sz);
+    void setOriginalDataSize(const Sizef& sz);
 
     // implement abstract members from base class.
     const String& getName() const;
-    const Size<>& getSize() const;
-    const Size<>& getOriginalDataSize() const;
-    const Vector2<>& getTexelScaling() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect<>& area);
+    void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
 
 protected:
@@ -102,7 +102,7 @@ protected:
                                                       const String&,
                                                       const String&);
     friend Texture& Direct3D10Renderer::createTexture(const String&,
-                                                      const Size<>&);
+                                                      const Sizef&);
     //friend Texture& Direct3D10Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D10Renderer::destroyTexture(Texture&);
     friend void Direct3D10Renderer::destroyTexture(const String&);
@@ -113,7 +113,7 @@ protected:
     Direct3D10Texture(ID3D10Device& device, const String&,
                       const String& filename, const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D10Texture(ID3D10Device& device, const String&, const Size<>& sz);
+    Direct3D10Texture(ID3D10Device& device, const String&, const Sizef& sz);
     //! Construct texture that wraps an existing D3D10 texture.
     Direct3D10Texture(ID3D10Device& device, const String&, ID3D10Texture2D* tex);
     //! Destructor.
@@ -135,11 +135,11 @@ protected:
     //! Shader resource view for the texture.
     ID3D10ShaderResourceView* d_resourceView;
     //! Size of the texture.
-    Size<> d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size<> d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2<> d_texelScaling;
+    Vector2f d_texelScaling;
     //! The name used when the texture was created.
     const String d_name;
 };

@@ -108,8 +108,8 @@ namespace CEGUI
     void FalagardStaticText::renderScrolledText()
     {
         // get destination area for the text.
-        const Rect<> clipper(getTextRenderArea());
-        Rect<> absarea(clipper);
+        const Rectf clipper(getTextRenderArea());
+        Rectf absarea(clipper);
 
         if (!d_formatValid)
             updateFormatting(clipper.getSize());
@@ -124,18 +124,18 @@ namespace CEGUI
             case HTF_WORDWRAP_LEFT_ALIGNED:
             case HTF_JUSTIFIED:
             case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(Vector2<>(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Vector2<>(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Vector2<>(horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2f(horzScrollbar->getScrollPosition(), 0));
                 break;
             }
         }
@@ -194,7 +194,7 @@ namespace CEGUI
     /************************************************************************
         Gets the text rendering area
     *************************************************************************/
-    Rect<> FalagardStaticText::getTextRenderArea(void) const
+    Rectf FalagardStaticText::getTextRenderArea(void) const
     {
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -232,12 +232,12 @@ namespace CEGUI
     /************************************************************************
         Gets the pixel size of the document
     *************************************************************************/
-    Size<> FalagardStaticText::getDocumentSize(const Rect<>& renderArea) const
+    Sizef FalagardStaticText::getDocumentSize(const Rectf& renderArea) const
     {
         if (!d_formatValid)
             updateFormatting(renderArea.getSize());
 
-        return Size<>(d_formattedRenderedString->getHorizontalExtent(),
+        return Sizef(d_formattedRenderedString->getHorizontalExtent(),
                       d_formattedRenderedString->getVerticalExtent());
     }
 
@@ -305,9 +305,9 @@ namespace CEGUI
         Scrollbar* horzScrollbar = getHorzScrollbar();
 
         // get the sizes we need
-        Rect<> renderArea(getTextRenderArea());
-        Size<> renderAreaSize(renderArea.getSize());
-        Size<> documentSize(getDocumentSize(renderArea));
+        Rectf renderArea(getTextRenderArea());
+        Sizef renderAreaSize(renderArea.getSize());
+        Sizef documentSize(getDocumentSize(renderArea));
 
         // show or hide vertical scroll bar as required (or as specified by option)
         bool showVert = ((documentSize.d_height > renderAreaSize.d_height) && d_enableVertScrollbar);
@@ -334,7 +334,7 @@ namespace CEGUI
 
         // if scrollbar visibility just changed we have might have a better TextRenderArea
         // if so we go with that instead
-        Rect<> updatedRenderArea = getTextRenderArea();
+        Rectf updatedRenderArea = getTextRenderArea();
         if (renderArea!=updatedRenderArea)
         {
             renderArea = updatedRenderArea;
@@ -553,7 +553,7 @@ void FalagardStaticText::updateFormatting() const
 }
 
 //----------------------------------------------------------------------------//
-void FalagardStaticText::updateFormatting(const Size<>& sz) const
+void FalagardStaticText::updateFormatting(const Sizef& sz) const
 {
     if (!d_window)
         return;

@@ -143,9 +143,9 @@ public:
     static float stringToFloat(const String& str);
     static unsigned int stringToUint(const String& str);
     static bool stringToBool(const String& str);
-    static Size<> stringToSize(const String& str);
-    static Vector2<> stringToVector2(const String& str);
-    static Rect<> stringToRect(const String& str);
+    static Sizef stringToSize(const String& str);
+    static Vector2f stringToVector2(const String& str);
+    static Rectf stringToRect(const String& str);
     static const Image* stringToImage(const String& str);
     static Colour stringToColour(const String& str);
     static ColourRect stringToColourRect(const String& str);
@@ -155,9 +155,9 @@ public:
     static String floatToString(float val);
     static String uintToString(unsigned int val);
     static String boolToString(bool val);
-    static String sizeToString(const Size<>& val);
-    static String vector2ToString(const Vector2<>& val);
-    static String rectToString(const Rect<>& val);
+    static String sizeToString(const Sizef& val);
+    static String vector2ToString(const Vector2f& val);
+    static String rectToString(const Rectf& val);
     static String imageToString(const Image* val);
     static String colourToString(const Colour& val);
     static String colourRectToString(const ColourRect& val);

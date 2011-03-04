@@ -45,7 +45,7 @@ namespace CEGUI
     ints or even UDims without replicating the code all over the place.
 
 \par
-    For a simple Vector2 of floats (what was called Vector2 before), use Vector2<>
+    For a simple Vector2 of floats (what was called Vector2 before), use Vector2f
     as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>
@@ -154,7 +154,7 @@ typedef Vector2<float> Vector2f;
     ints or even UDims without replicating the code all over the place.
 
 \par
-    For a simple Vector3 of floats (what was called Vector3 before), use Vector3<>
+    For a simple Vector3 of floats (what was called Vector3 before), use Vector3f
     as the T template parameter defaults to float to save fingertips.
 */
 template<typename T>

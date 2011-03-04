@@ -32,6 +32,8 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUISize.h"
+#include "CEGUIVector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -230,7 +232,7 @@ public:
         - AlreadyExistsException - thrown if a Texture object named \a name
           already exists within the system.
     */
-    virtual Texture& createTexture(const String& name, const Size<>& size) = 0;
+    virtual Texture& createTexture(const String& name, const Sizef& size) = 0;
 
     /*!
     \brief
@@ -302,7 +304,7 @@ public:
         Size object describing the dimesions of the current or host window in
         pixels.
     */
-    virtual void setDisplaySize(const Size<>& size) = 0;
+    virtual void setDisplaySize(const Sizef& size) = 0;
 
     /*!
     \brief
@@ -312,7 +314,7 @@ public:
         Size object describing the pixel dimesntions of the current display or
         host window.
     */
-    virtual const Size<>& getDisplaySize() const = 0;
+    virtual const Sizef& getDisplaySize() const = 0;
 
     /*!
     \brief
@@ -322,7 +324,7 @@ public:
         Vector2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2<>& getDisplayDPI() const = 0;
+    virtual const Vector2f& getDisplayDPI() const = 0;
 
     /*!
     \brief

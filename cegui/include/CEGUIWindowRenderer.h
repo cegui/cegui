@@ -116,7 +116,7 @@ public:
         Get unclipped inner rectangle that our window should return from its
         member function with the same name.
     */
-    virtual Rect<> getUnclippedInnerRect() const;
+    virtual Rectf getUnclippedInnerRect() const;
 
     /*!
     \brief

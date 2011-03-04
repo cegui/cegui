@@ -53,7 +53,7 @@ public:
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    Direct3D10ViewportTarget(Direct3D10Renderer& owner, const Rect<>& area);
+    Direct3D10ViewportTarget(Direct3D10Renderer& owner, const Rectf& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

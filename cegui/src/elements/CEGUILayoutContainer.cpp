@@ -85,7 +85,7 @@ void LayoutContainer::layoutIfNecessary()
 }
 
 //----------------------------------------------------------------------------//
-Rect<> LayoutContainer::getUnclippedInnerRect_impl(void) const
+Rectf LayoutContainer::getUnclippedInnerRect_impl(void) const
 {
     return d_parent ?
            d_parent->getUnclippedInnerRect() :
@@ -101,12 +101,12 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-Rect<> LayoutContainer::getClientChildWindowContentArea_impl() const
+Rectf LayoutContainer::getClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
         return Window::getClientChildWindowContentArea_impl();
     else
-        return Rect<>(getUnclippedOuterRect().getPosition(),
+        return Rectf(getUnclippedOuterRect().getPosition(),
                     d_parent->getUnclippedInnerRect().getSize());
 }
 
@@ -202,7 +202,7 @@ UVector2 LayoutContainer::getOffsetForWindow(Window* window) const
 //----------------------------------------------------------------------------//
 UVector2 LayoutContainer::getBoundingSizeForWindow(Window* window) const
 {
-    const Size<>& pixelSize = window->getPixelSize();
+    const Sizef& pixelSize = window->getPixelSize();
 
     // we rely on pixelSize rather than mixed absolute and relative getSize
     // this seems to solve problems when windows overlap because their size

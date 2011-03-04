@@ -55,7 +55,7 @@ public:
     \return
         Rect object describing the ScrollablePane's viewable area.
     */
-    virtual Rect<> getViewableArea(void) const = 0;
+    virtual Rectf getViewableArea(void) const = 0;
 };
 
 /*!
@@ -212,7 +212,7 @@ public:
         Rect object that details the current pixel extents of the content
         pane attached to this ScrollablePane.
     */
-    const Rect<>& getContentPaneArea(void) const;
+    const Rectf& getContentPaneArea(void) const;
 
     /*!
     \brief
@@ -229,7 +229,7 @@ public:
     \return
         Nothing.
     */
-    void setContentPaneArea(const Rect<>& area);
+    void setContentPaneArea(const Rectf& area);
 
     /*!
     \brief
@@ -385,7 +385,7 @@ public:
     \return
         Rect object describing the ScrollablePane's viewable area.
     */
-    Rect<> getViewableArea(void) const;
+    Rectf getViewableArea(void) const;
 
     /*!
     \brief
@@ -595,7 +595,7 @@ protected:
     //! true if horizontal scrollbar should always be displayed
     bool d_forceHorzScroll;
     //! holds content area so we can track changes.
-    Rect<> d_contentRect;
+    Rectf d_contentRect;
     //! vertical scroll step fraction.
     float d_vertStep;
     //! vertical scroll overlap fraction.

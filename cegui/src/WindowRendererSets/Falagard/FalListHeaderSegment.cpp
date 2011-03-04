@@ -85,8 +85,8 @@ namespace CEGUI
         // draw ghost copy if the segment is being dragged.
         if (w->isBeingDragMoved())
         {
-            Size<> pixel_size = w->getPixelSize();
-            Rect<> targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
+            Sizef pixel_size = w->getPixelSize();
+            Rectf targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
             targetArea.offset(w->getDragMoveOffset());
             imagery = &wlf.getStateImagery("DragGhost");
             imagery->render(*w, targetArea);

@@ -103,21 +103,21 @@ void ListboxTextItem::setFont(Font* font)
 /*************************************************************************
 	Return the rendered pixel size of this list box item.
 *************************************************************************/
-Size<> ListboxTextItem::getPixelSize(void) const
+Sizef ListboxTextItem::getPixelSize(void) const
 {
     Font* fnt = getFont();
 
     if (!fnt)
-        return Size<>(0, 0);
+        return Sizef(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Size<> sz(0.0f, 0.0f);
+    Sizef sz(0.0f, 0.0f);
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Size<> line_sz(d_renderedString.getPixelSize(i));
+        const Sizef line_sz(d_renderedString.getPixelSize(i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)
@@ -131,8 +131,8 @@ Size<> ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
-                           float alpha, const Rect<>* clipper) const
+void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+                           float alpha, const Rectf* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
         d_selectBrush->render(buffer, targetRect, clipper,
@@ -143,7 +143,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect<>& targetRect,
     if (!font)
         return;
 
-    Vector2<> draw_pos(targetRect.getPosition());
+    Vector2f draw_pos(targetRect.getPosition());
 
     draw_pos.d_y += PixelAligned(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);

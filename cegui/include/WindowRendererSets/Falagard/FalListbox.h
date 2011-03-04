@@ -80,7 +80,7 @@ namespace CEGUI
         // overriden from ListboxWindowRenderer
         void render();
 
-        Rect<> getListRenderArea(void) const;
+        Rectf getListRenderArea(void) const;
     };
 } // End of  CEGUI namespace section
 

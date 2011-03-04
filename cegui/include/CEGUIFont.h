@@ -124,7 +124,7 @@ public:
         Nothing.
     */
     void drawText(GeometryBuffer& buffer, const String& text,
-                  const Vector2<>& position, const Rect<>* clip_rect,
+                  const Vector2f& position, const Rectf* clip_rect,
                   const ColourRect& colours, const float space_extra = 0.0f,
                   const float x_scale = 1.0f, const float y_scale = 1.0f);
 
@@ -135,7 +135,7 @@ public:
     \param size
         Size object describing the new native screen resolution for this Font.
     */
-    void setNativeResolution(const Size<>& size);
+    void setNativeResolution(const Sizef& size);
 
     /*!
     \brief
@@ -145,7 +145,7 @@ public:
     \return
         Size object describing the native display size for this Font.
     */
-    Size<> getNativeResolution() const;
+    Sizef getNativeResolution() const;
 
     /*!
     \brief
@@ -174,7 +174,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    virtual void notifyDisplaySizeChanged(const Size<>& size);
+    virtual void notifyDisplaySizeChanged(const Sizef& size);
 
     /*!
     \brief

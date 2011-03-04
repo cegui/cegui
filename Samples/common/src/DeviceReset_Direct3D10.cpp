@@ -124,7 +124,7 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
 
             // notify CEGUI of change.
             CEGUI::System::getSingleton().notifyDisplaySizeChanged(
-                CEGUI::Size<>((float)width, (float)height));
+                CEGUI::Sizef((float)width, (float)height));
         }
     }
 }

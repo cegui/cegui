@@ -37,7 +37,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <>
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Size<>& area_size)
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Sizef& area_size)
 {
     deleteFormatters();
 

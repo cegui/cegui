@@ -108,7 +108,7 @@ void PixmapFont::updateFont()
         if (bi)
         {
             bi->setAutoScaled(d_autoScale);
-            bi->setNativeResolution(Size<>(d_nativeHorzRes, d_nativeVertRes));
+            bi->setNativeResolution(Sizef(d_nativeHorzRes, d_nativeVertRes));
         }
 
         if (img->getRenderedOffset().d_y < d_ascender)

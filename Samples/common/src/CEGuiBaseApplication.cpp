@@ -106,7 +106,7 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
     initialiseResourceGroupDirectories();
     initialiseDefaultResourceGroups();
 
-    const CEGUI::Rect<> scrn(CEGUI::Vector2<>(0, 0), d_renderer->getDisplaySize());
+    const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
 
     // setup for FPS value
     d_FPSGeometry = &d_renderer->createGeometryBuffer();
@@ -114,14 +114,14 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
 
     // setup for spinning logo
     d_logoGeometry = &d_renderer->createGeometryBuffer();
-    d_logoGeometry->setPivot(CEGUI::Vector3<>(50, 34.75f, 0));
+    d_logoGeometry->setPivot(CEGUI::Vector3f(50, 34.75f, 0));
     positionLogo();
 
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        *d_logoGeometry, CEGUI::Rect<>(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
+        *d_logoGeometry, CEGUI::Rectf(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
     d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -280,7 +280,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
             sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
 
             d_FPSGeometry->reset();
-            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2<>(0, 0), 0,
+            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0,
                         CEGUI::Colour(0xFFFFFFFF));
         }
 
@@ -302,12 +302,12 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::positionLogo()
 {
-    const CEGUI::Rect<> scrn(d_renderer->getDefaultRenderingRoot().
+    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderingRoot().
         getRenderTarget().getArea());
 
     d_logoGeometry->setClippingRegion(scrn);
     d_logoGeometry->setTranslation(
-        CEGUI::Vector3<>(10.0f, scrn.getSize().d_height - 80.0f, 0.0f));
+        CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 80.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------//

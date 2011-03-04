@@ -67,7 +67,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -82,7 +82,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect<>& baseRect, const ColourRect* modcols = 0, const Rect<>* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief

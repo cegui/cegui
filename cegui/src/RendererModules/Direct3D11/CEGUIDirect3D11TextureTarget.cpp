@@ -49,7 +49,7 @@ Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner) :
         d_owner.createTexture(generateTextureName()));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size<>(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -93,13 +93,13 @@ Texture& Direct3D11TextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11TextureTarget::declareRenderSize(const Size<>& sz)
+void Direct3D11TextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect<>(d_area.getPosition(), sz));
+    setArea(Rectf(d_area.getPosition(), sz));
     resizeRenderTexture();
     clear();
 }

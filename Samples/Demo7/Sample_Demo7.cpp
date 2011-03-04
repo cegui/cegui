@@ -111,34 +111,34 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             rig_adj = ((rig_adj*rig_adj) / 3) * (dragY < 0 ? -1 : 1);
 
             // vertex 0
-            vb[idx + 0].position   = Vector3<>(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 0].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 0].colour_val = c;
-            vb[idx + 0].tex_coords = Vector2<>(i * tcx, j*tcy);
+            vb[idx + 0].tex_coords = Vector2f(i * tcx, j*tcy);
 
             // vertex 1
-            vb[idx + 1].position   = Vector3<>(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
+            vb[idx + 1].position   = Vector3f(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
             vb[idx + 1].colour_val = c;
-            vb[idx + 1].tex_coords = Vector2<>(i*tcx, j*tcy+tcy);
+            vb[idx + 1].tex_coords = Vector2f(i*tcx, j*tcy+tcy);
 
             // vertex 2
-            vb[idx + 2].position   = Vector3<>(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 2].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 2].colour_val = c;
-            vb[idx + 2].tex_coords = Vector2<>(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 2].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 3
-            vb[idx + 3].position   = Vector3<>(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 3].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 3].colour_val = c;
-            vb[idx + 3].tex_coords = Vector2<>(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 3].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 4
-            vb[idx + 4].position   = Vector3<>(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
+            vb[idx + 4].position   = Vector3f(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
             vb[idx + 4].colour_val = c;
-            vb[idx + 4].tex_coords = Vector2<>(i*tcx+tcx, j*tcy);
+            vb[idx + 4].tex_coords = Vector2f(i*tcx+tcx, j*tcy);
 
             // vertex 5
-            vb[idx + 5].position   = Vector3<>(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 5].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 5].colour_val = c;
-            vb[idx + 5].tex_coords = Vector2<>(i * tcx, j*tcy);
+            vb[idx + 5].tex_coords = Vector2f(i * tcx, j*tcy);
         }
     }
 
@@ -163,7 +163,7 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
         return true;
     }
 
-    const Vector2<> pos(window.getPosition());
+    const Vector2f pos(window.getPosition());
 
     //
     // Set up for X axis animation.

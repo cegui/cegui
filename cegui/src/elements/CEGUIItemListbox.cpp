@@ -72,7 +72,7 @@ void ItemListbox::layoutItemWidgets()
     while (i!=end)
     {
         ItemEntry* entry = *i;
-        const Size<> pxs = entry->getItemPixelSize();
+        const Sizef pxs = entry->getItemPixelSize();
         if (pxs.d_width > widest)
         {
             widest = pxs.d_width;
@@ -89,13 +89,13 @@ void ItemListbox::layoutItemWidgets()
     }
 
     // reconfigure scrollbars
-    configureScrollbars(Size<>(widest, y));
+    configureScrollbars(Sizef(widest, y));
 }
 
 /************************************************************************
     Get size of items
 ************************************************************************/
-Size<> ItemListbox::getContentSize() const
+Sizef ItemListbox::getContentSize() const
 {
     float h = 0;
 
@@ -107,7 +107,7 @@ Size<> ItemListbox::getContentSize() const
         ++i;
     }
 
-    return Size<>(getItemRenderArea().getWidth(), h);
+    return Sizef(getItemRenderArea().getWidth(), h);
 }
 
 /************************************************************************

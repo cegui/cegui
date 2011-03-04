@@ -94,7 +94,7 @@ void Direct3D9GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setTranslation(const Vector3<>& t)
+void Direct3D9GeometryBuffer::setTranslation(const Vector3f& t)
 {
     d_translation = t;
     d_matrixValid = false;
@@ -108,14 +108,14 @@ void Direct3D9GeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setPivot(const Vector3<>& p)
+void Direct3D9GeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setClippingRegion(const Rect<>& region)
+void Direct3D9GeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
     d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));

@@ -175,7 +175,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         const String texture_name(d_name + "_auto_glyph_images_" +
                                    PropertyHelper<int>::toString(s->first));
         Texture& texture = System::getSingleton().getRenderer()->createTexture(
-            texture_name, Size<>(texsize, texsize));
+            texture_name, Sizef(texsize, texsize));
         d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
@@ -216,12 +216,12 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
-                    Rect<> area(0, 0, 0, 0);
-                    Vector2<> offset(0, 0);
+                    Rectf area(0, 0, 0, 0);
+                    Vector2f offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
                         new BasicImage(name, &texture, area, offset, false,
-                                       Size<>(d_nativeHorzRes, d_nativeVertRes));
+                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
                 }
@@ -248,18 +248,18 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     drawGlyphToBuffer(mem_buffer + (y * texsize) + x, texsize);
 
                     // Create a new image in the imageset
-                    const Rect<> area(static_cast<float>(x),
+                    const Rectf area(static_cast<float>(x),
                                       static_cast<float>(y),
                                       static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
                                       static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
 
-                    Vector2<> offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
+                    Vector2f offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
                                     -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
                         new BasicImage(name, &texture, area, offset, false,
-                                       Size<>(d_nativeHorzRes, d_nativeVertRes));
+                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
 
@@ -287,7 +287,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         }
 
         // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(mem_buffer, Size<>(texsize, texsize), Texture::PF_RGBA);
+        texture.loadFromMemory(mem_buffer, Sizef(texsize, texsize), Texture::PF_RGBA);
         CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
 
         if (finished)

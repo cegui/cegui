@@ -178,7 +178,7 @@ namespace CEGUI
         addProperty(&d_useFixedDragOffsetProperty);
     }
 
-    bool DragContainer::isDraggingThresholdExceeded(const Vector2<>& local_mouse)
+    bool DragContainer::isDraggingThresholdExceeded(const Vector2f& local_mouse)
     {
         // calculate amount mouse has moved.
         float	deltaX = fabsf(local_mouse.d_x - CoordConverter::asAbsolute(d_dragPoint.d_x, d_pixelSize.d_width));
@@ -209,7 +209,7 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::doDragging(const Vector2<>& local_mouse)
+    void DragContainer::doDragging(const Vector2f& local_mouse)
     {
         // calculate amount to move
         UVector2 offset(cegui_absdim(local_mouse.d_x), cegui_absdim(local_mouse.d_y));
@@ -237,7 +237,7 @@ namespace CEGUI
             if (captureInput())
             {
                 // get position of mouse as co-ordinates local to this window.
-                Vector2<> localPos = CoordConverter::screenToWindow(*this, e.position);
+                Vector2f localPos = CoordConverter::screenToWindow(*this, e.position);
 
                 // store drag point for possible sizing or moving operation.
                 d_dragPoint.d_x = cegui_absdim(localPos.d_x);
@@ -286,7 +286,7 @@ namespace CEGUI
         Window::onMouseMove(e);
 
         // get position of mouse as co-ordinates local to this window.
-        Vector2<> localMousePos = CoordConverter::screenToWindow(*this, e.position);
+        Vector2f localMousePos = CoordConverter::screenToWindow(*this, e.position);
 
         // handle dragging
         if (d_dragging)
@@ -492,7 +492,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
     ctx.owner = root->getRenderingSurface() == ctx.surface ? root : 0;
     // ensure use of correct offset for the surface we're targetting
     ctx.offset = ctx.owner ? ctx.owner->getOuterRectClipper().getPosition() :
-                             Vector2<>(0, 0);
+                             Vector2f(0, 0);
     // draw to overlay queue
     ctx.queue = RQ_OVERLAY;
 }
@@ -538,7 +538,7 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
             initialiseDragging();
 
             // get position of mouse as co-ordinates local to this window.
-            const Vector2<> localMousePos(CoordConverter::screenToWindow(*this,
+            const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
                 MouseCursor::getSingleton().getPosition()));
             doDragging(localMousePos);
 

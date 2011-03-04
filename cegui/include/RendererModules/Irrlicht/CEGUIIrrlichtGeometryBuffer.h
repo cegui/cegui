@@ -63,10 +63,10 @@ public:
 
     // implement GeometryBuffer interface
     void draw() const;
-    void setTranslation(const Vector3<>& v);
+    void setTranslation(const Vector3f& v);
     void setRotation(const Quaternion& r);
-    void setPivot(const Vector3<>& p);
-    void setClippingRegion(const Rect<>& region);
+    void setPivot(const Vector3f& p);
+    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -90,7 +90,7 @@ protected:
     //! material used with the texture for rendering.
     mutable irr::video::SMaterial d_material;
     //! rectangular clip region
-    Rect<> d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
     irr::core::vector3d<irr::f32> d_translation;
     //! rotation quaternion

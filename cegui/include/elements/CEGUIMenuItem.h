@@ -282,7 +282,7 @@ protected:
     \return
         Nothing
     */
-    void    updateInternalState(const Vector2<>& mouse_pos);
+    void    updateInternalState(const Vector2f& mouse_pos);
 
 
     /*!

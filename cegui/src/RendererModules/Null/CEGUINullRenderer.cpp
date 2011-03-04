@@ -189,7 +189,7 @@ Texture& NullRenderer::createTexture(const String& name, const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& NullRenderer::createTexture(const String& name, const Size<>& size)
+Texture& NullRenderer::createTexture(const String& name, const Sizef& size)
 {
     throwIfNameExists(name);
 
@@ -274,13 +274,13 @@ void NullRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& NullRenderer::getDisplaySize() const
+const Sizef& NullRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& NullRenderer::getDisplayDPI() const
+const Vector2f& NullRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -326,14 +326,14 @@ void NullRenderer::constructor_impl()
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderer::setDisplaySize(const Size<>& sz)
+void NullRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
         d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect<> area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }

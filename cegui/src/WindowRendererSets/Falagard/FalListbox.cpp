@@ -42,7 +42,7 @@ namespace CEGUI
     {
     }
 
-    Rect<> FalagardListbox::getListRenderArea(void) const
+    Rectf FalagardListbox::getListRenderArea(void) const
     {
     	Listbox* lb = (Listbox*)d_window;
         // get WidgetLookFeel for the assigned look.
@@ -92,13 +92,13 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3<> itemPos;
-        Size<> itemSize;
-        Rect<> itemClipper, itemRect;
+        Vector3f itemPos;
+        Sizef itemSize;
+        Rectf itemClipper, itemRect;
         const float widest = lb->getWidestItemWidth();
 
         // calculate position of area we have to render into
-        Rect<> itemsArea(getListRenderArea());
+        Rectf itemsArea(getListRenderArea());
 
         // set up some initial positional details for items
         itemPos.d_x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();

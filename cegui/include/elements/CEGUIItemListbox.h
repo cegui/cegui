@@ -212,7 +212,7 @@ public:
     \brief
         Returns the Size in unclipped pixels of the content attached to this ItemListbox.
     */
-    virtual Size<> getContentSize() const;
+    virtual Sizef getContentSize() const;
 
     /*!
     \brief

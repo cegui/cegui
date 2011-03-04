@@ -43,19 +43,19 @@ const String& NullTexture::getName() const
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& NullTexture::getSize() const
+const Sizef& NullTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& NullTexture::getOriginalDataSize() const
+const Sizef& NullTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& NullTexture::getTexelScaling() const
+const Vector2f& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -88,7 +88,7 @@ void NullTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
+void NullTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                                  PixelFormat pixel_format)
 {
     const size_t pixel_size = pixel_format == PF_RGBA ? 4 : 3;
@@ -101,7 +101,7 @@ void NullTexture::loadFromMemory(const void* buffer, const Size<>& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::blitFromMemory(void* /*sourceData*/, const Rect<>& /*area*/)
+void NullTexture::blitFromMemory(void* /*sourceData*/, const Rectf& /*area*/)
 {
     // do nothing
 }
@@ -133,7 +133,7 @@ NullTexture::NullTexture(const String& name, const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const String& name, const Size<>& sz) :
+NullTexture::NullTexture(const String& name, const Sizef& sz) :
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),

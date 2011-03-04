@@ -103,16 +103,16 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
-                                        const Vector2<>& position,
+                                        const Vector2f& position,
                                         const ColourRect* mod_colours,
-                                        const Rect<>* clip_rect,
+                                        const Rectf* clip_rect,
                                         const float vertical_space,
                                         const float /*space_extra*/) const
 {
     if (!d_image)
         return;
 
-    CEGUI::Rect<> dest(position.d_x, position.d_y, 0, 0);
+    CEGUI::Rectf dest(position.d_x, position.d_y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options
@@ -140,7 +140,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
             "unknown VerticalFormatting option specified."));
     }
 
-    Size<> sz(d_image->getRenderedSize());
+    Sizef sz(d_image->getRenderedSize());
     if (d_size.d_width != 0.0)
         sz.d_width = d_size.d_width;
     if (d_size.d_height != 0.0)
@@ -162,9 +162,9 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Size<> RenderedStringImageComponent::getPixelSize() const
+Sizef RenderedStringImageComponent::getPixelSize() const
 {
-    Size<> sz(0, 0);
+    Sizef sz(0, 0);
 
     if (d_image)
     {
@@ -209,13 +209,13 @@ size_t RenderedStringImageComponent::getSpaceCount() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setSize(const Size<>& sz)
+void RenderedStringImageComponent::setSize(const Sizef& sz)
 {
     d_size = sz;
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& RenderedStringImageComponent::getSize() const
+const Sizef& RenderedStringImageComponent::getSize() const
 {
     return d_size;
 }

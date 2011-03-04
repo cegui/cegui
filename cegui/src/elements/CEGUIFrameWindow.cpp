@@ -224,7 +224,7 @@ void FrameWindow::toggleRollup(void)
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
-void FrameWindow::offsetPixelPosition(const Vector2<>& offset)
+void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 {
     UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
                      cegui_absdim(PixelAligned(offset.d_y)));
@@ -238,9 +238,9 @@ void FrameWindow::offsetPixelPosition(const Vector2<>& offset)
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
 *************************************************************************/
-FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2<>& pt) const
+FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& pt) const
 {
-	Rect<> frame(getSizingRect());
+	Rectf frame(getSizingRect());
 
 	// we can only size if the frame is enabled and sizing is on
 	if (isSizingEnabled() && isFrameEnabled())
@@ -494,7 +494,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 	Set the appropriate mouse cursor for the given window-relative pixel
 	point.
 *************************************************************************/
-void FrameWindow::setCursorForPoint(const Vector2<>& pt) const
+void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
@@ -566,7 +566,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-		Vector2<> localMousePos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2f localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
@@ -627,7 +627,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 		if (isSizingEnabled())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
+			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)

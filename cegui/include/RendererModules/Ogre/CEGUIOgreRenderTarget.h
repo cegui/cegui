@@ -59,17 +59,17 @@ public:
         This function is deprecated and will be removed or changed considerably
         in future releases.
     */
-    void setOgreViewportDimensions(const Rect<>& area);
+    void setOgreViewportDimensions(const Rectf& area);
 
     // implement parts of CEGUI::RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect<>& area);
-    const Rect<>& getArea() const;
+    void setArea(const Rectf& area);
+    const Rectf& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2<>& p_in, Vector2<>& p_out) const;
+                        const Vector2f& p_in, Vector2f& p_out) const;
 
 protected:
     //! helper that initialises the cached matrix
@@ -84,7 +84,7 @@ protected:
     //! Ogre RendererSystem used to affect the rendering process
     Ogre::RenderSystem& d_renderSystem;
     //! holds defined area for the RenderTarget
-    Rect<> d_area;
+    Rectf d_area;
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
     //! Ogre viewport used for this target.
@@ -98,7 +98,7 @@ protected:
     //! true when d_viewport is up to date and valid.
     bool d_viewportValid;
     //! holds set Ogre viewport dimensions
-    Rect<> d_ogreViewportDimensions;
+    Rectf d_ogreViewportDimensions;
 };
 
 } // End of  CEGUI namespace section

@@ -71,7 +71,7 @@ namespace CEGUI
         FalagardFrameWindow(const String& type);
 
         void render();
-        Rect<> getUnclippedInnerRect(void) const;
+        Rectf getUnclippedInnerRect(void) const;
     };
 
 } // End of  CEGUI namespace section

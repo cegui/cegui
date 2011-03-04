@@ -58,7 +58,7 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
     registerProperty(&d_blinkCaretTimeoutProperty);
 }
 
-Rect<> FalagardMultiLineEditbox::getTextRenderArea(void) const
+Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
     const WidgetLookFeel& wlf = getLookNFeel();
@@ -103,7 +103,7 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
     imagery->render(*w);
 }
 
-void FalagardMultiLineEditbox::cacheCaretImagery(const Rect<>& textArea)
+void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
     Font* fnt = w->getFont();
@@ -134,12 +134,12 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rect<>& textArea)
             const ImagerySection& caretImagery = wlf.getImagerySection("Caret");
 
             // calculate finat destination area for caret
-            Rect<> caretArea;
+            Rectf caretArea;
             caretArea.left(textArea.left() + xpos);
             caretArea.top(textArea.top() + ypos);
             caretArea.setWidth(caretImagery.getBoundingRect(*w).getSize().d_width);
             caretArea.setHeight(fnt->getLineSpacing());
-            caretArea.offset(Vector2<>(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
+            caretArea.offset(Vector2f(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
 
             // cache the caret image for rendering.
             caretImagery.render(*w, caretArea, 0, &textArea);
@@ -154,7 +154,7 @@ void FalagardMultiLineEditbox::render()
     cacheEditboxBaseImagery();
 
     // Render edit box text
-    Rect<> textarea(getTextRenderArea());
+    Rectf textarea(getTextRenderArea());
     cacheTextLines(textarea);
 
     // draw caret
@@ -163,13 +163,13 @@ void FalagardMultiLineEditbox::render()
             cacheCaretImagery(textarea);
 }
 
-void FalagardMultiLineEditbox::cacheTextLines(const Rect<>& dest_area)
+void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
     // text is already formatted, we just grab the lines and render them with the required alignment.
-    Rect<> drawArea(dest_area);
+    Rectf drawArea(dest_area);
     float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
-    drawArea.offset(Vector2<>(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
+    drawArea.offset(Vector2f(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
 
     Font* fnt = w->getFont();
 
@@ -199,7 +199,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rect<>& dest_area)
         // for each formatted line.
         for (size_t i = sidx; i < eidx; ++i)
         {
-            Rect<> lineRect(drawArea);
+            Rectf lineRect(drawArea);
             const MultiLineEditbox::LineInfo& currLine = d_lines[i];
             String lineText(w->getTextVisual().substr(currLine.d_startIdx, currLine.d_length));
 

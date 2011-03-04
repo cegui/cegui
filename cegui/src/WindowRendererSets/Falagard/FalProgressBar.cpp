@@ -63,10 +63,10 @@ namespace CEGUI
         imagery = &wlf.getStateImagery(d_window->isDisabled() ? "DisabledProgress" : "EnabledProgress");
 
         // get target rect for this imagery
-        Rect<> progressRect(wlf.getNamedArea("ProgressArea").getArea().getPixelRect(*d_window));
+        Rectf progressRect(wlf.getNamedArea("ProgressArea").getArea().getPixelRect(*d_window));
 
         // calculate a clipper according to the current progress.
-        Rect<> progressClipper(progressRect);
+        Rectf progressClipper(progressRect);
 
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
