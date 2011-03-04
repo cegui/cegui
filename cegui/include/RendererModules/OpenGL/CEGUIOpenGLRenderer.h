@@ -126,7 +126,7 @@ public:
     \return
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
-    static OpenGLRenderer& bootstrapSystem(const Size<>& display_size,
+    static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
                                            const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
@@ -167,7 +167,7 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    static OpenGLRenderer& create(const Size<>& display_size,
+    static OpenGLRenderer& create(const Sizef& display_size,
                                   const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
@@ -191,16 +191,16 @@ public:
     Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Size<>& size);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
     Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size<>& sz);
-    const Size<>& getDisplaySize() const;
-    const Vector2<>& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -226,7 +226,7 @@ public:
         - AlreadyExistsException - thrown if a Texture object named \a name
           already exists within the system.
     */
-    Texture& createTexture(const String& name, GLuint tex, const Size<>& sz);
+    Texture& createTexture(const String& name, GLuint tex, const Sizef& sz);
 
     /*!
     \brief
@@ -268,7 +268,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Size<> getAdjustedTextureSize(const Size<>& sz) const;
+    Sizef getAdjustedTextureSize(const Sizef& sz) const;
 
     /*!
     \brief
@@ -302,7 +302,7 @@ private:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    OpenGLRenderer(const Size<>& display_size, const TextureTargetType tt_type);
+    OpenGLRenderer(const Sizef& display_size, const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -327,9 +327,9 @@ private:
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size<> d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2<> d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)

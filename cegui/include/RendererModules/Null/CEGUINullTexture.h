@@ -45,20 +45,20 @@ class NULL_GUIRENDERER_API NullTexture : public Texture
 public:
     // implement CEGUI::Texture interface
     const String& getName() const;
-    const Size<>& getSize() const;
-    const Size<>& getOriginalDataSize() const;
-    const Vector2<>& getTexelScaling() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                                 PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect<>& area);
+    void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
 
 protected:
     // we all need a little help from out friends ;)
     friend Texture& NullRenderer::createTexture(const String&);
     friend Texture& NullRenderer::createTexture(const String&, const String&, const String&);
-    friend Texture& NullRenderer::createTexture(const String&, const Size<>&);
+    friend Texture& NullRenderer::createTexture(const String&, const Sizef&);
     friend void NullRenderer::destroyTexture(Texture&);
     friend void NullRenderer::destroyTexture(const String&);
 
@@ -68,7 +68,7 @@ protected:
     NullTexture(const String& name, const String& filename,
                 const String& resourceGroup);
     //! construct texture with a specified initial size.
-    NullTexture(const String& name, const Size<>& sz);
+    NullTexture(const String& name, const Sizef& sz);
 
     //! destructor.
     virtual ~NullTexture();
@@ -78,11 +78,11 @@ protected:
     //! Counter used to provide unique texture names.
     static uint32 d_textureNumber;
     //! Size of the texture.
-    Size<> d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size<> d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2<> d_texelScaling;
+    Vector2f d_texelScaling;
     //! Name this texture was created with.
     const String d_name;
 };

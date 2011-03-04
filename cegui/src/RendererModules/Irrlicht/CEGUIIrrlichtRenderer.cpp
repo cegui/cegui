@@ -225,7 +225,7 @@ Texture& IrrlichtRenderer::createTexture(const String& name,
 }
 
 //----------------------------------------------------------------------------//
-Texture& IrrlichtRenderer::createTexture(const String& name, const Size<>& size)
+Texture& IrrlichtRenderer::createTexture(const String& name, const Sizef& size)
 {
     throwIfNameExists(name);
 
@@ -310,14 +310,14 @@ void IrrlichtRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtRenderer::setDisplaySize(const Size<>& sz)
+void IrrlichtRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
         d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect<> area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
@@ -325,13 +325,13 @@ void IrrlichtRenderer::setDisplaySize(const Size<>& sz)
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& IrrlichtRenderer::getDisplaySize() const
+const Sizef& IrrlichtRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& IrrlichtRenderer::getDisplayDPI() const
+const Vector2f& IrrlichtRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -381,9 +381,9 @@ IrrlichtRenderer::~IrrlichtRenderer()
 }
 
 //----------------------------------------------------------------------------//
-Size<> IrrlichtRenderer::getAdjustedTextureSize(const Size<>& sz) const
+Sizef IrrlichtRenderer::getAdjustedTextureSize(const Sizef& sz) const
 {
-    Size<> out(sz);
+    Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
     if (!d_supportsNPOTTextures)

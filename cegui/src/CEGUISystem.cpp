@@ -133,7 +133,7 @@ struct MouseClickTracker
 
 	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
-	Rect<>			d_click_area;		//!< area used to detect multi-clicks
+	Rectf			d_click_area;		//!< area used to detect multi-clicks
     Window*         d_target_window;    //!< target window for any events generated.
 };
 
@@ -153,7 +153,7 @@ template<> System* Singleton<System>::ms_Singleton	= 0;
 // click event generation defaults
 const double	System::DefaultSingleClickTimeout	= 0.0; // was 0.2
 const double	System::DefaultMultiClickTimeout	= 0.33;
-const Size<>	System::DefaultMultiClickAreaSize(12,12);
+const Sizef	System::DefaultMultiClickAreaSize(12,12);
 
 // event names
 const String System::EventGUISheetChanged( "GUISheetChanged" );
@@ -715,7 +715,7 @@ bool System::injectMouseLeaves(void)
 	{
 		ma.position = d_wndWithMouse->
           getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
-		ma.moveDelta = Vector2<>(0.0f, 0.0f);
+		ma.moveDelta = Vector2f(0.0f, 0.0f);
 		ma.button = NoButton;
 		ma.sysKeys = d_sysKeys;
 		ma.wheelChange = 0;
@@ -740,7 +740,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2<>(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -768,7 +768,7 @@ bool System::injectMouseButtonDown(MouseButton button)
         // build new allowable area for multi-clicks
         tkr.d_click_area.setPosition(ma.position);
         tkr.d_click_area.setSize(d_dblclick_size);
-        tkr.d_click_area.offset(Vector2<>(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+        tkr.d_click_area.offset(Vector2f(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 
         // set target window for click events on this tracker
         tkr.d_target_window = ma.window;
@@ -821,7 +821,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2<>(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -934,7 +934,7 @@ bool System::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2<>(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = delta;
@@ -958,7 +958,7 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-    const Vector2<> new_position(x_pos, y_pos);
+    const Vector2f new_position(x_pos, y_pos);
     MouseCursor& mouse(MouseCursor::getSingleton());
 
     // setup mouse movement event args object.
@@ -1004,7 +1004,7 @@ bool System::injectTimePulse(float timeElapsed)
 /*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window* System::getTargetWindow(const Vector2<>& pt,
+Window* System::getTargetWindow(const Vector2f& pt,
                                 const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
@@ -1219,7 +1219,7 @@ void System::setMultiClickTimeout(double timeout)
 	Set the size of the allowable mouse movement tolerance used when
 	generating multi-click events.
 *************************************************************************/
-void System::setMultiClickToleranceAreaSize(const Size<>& sz)
+void System::setMultiClickToleranceAreaSize(const Sizef& sz)
 {
 	d_dblclick_size = sz;
 
@@ -1319,7 +1319,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-void System::notifyDisplaySizeChanged(const Size<>& new_size)
+void System::notifyDisplaySizeChanged(const Sizef& new_size)
 {
     // notify other components of the display size change
     d_renderer->setDisplaySize(new_size);
@@ -1698,7 +1698,7 @@ void System::notifyMouseTransition(Window* top, Window* bottom,
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
-    const Vector2<> mouse_pos(MouseCursor::getSingleton().getPosition());
+    const Vector2f mouse_pos(MouseCursor::getSingleton().getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -1945,7 +1945,7 @@ bool System::injectMouseButtonClick(const MouseButton button)
     if (ma.window)
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2<>(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1968,7 +1968,7 @@ bool System::injectMouseButtonDoubleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2<>(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1991,7 +1991,7 @@ bool System::injectMouseButtonTripleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2<>(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;

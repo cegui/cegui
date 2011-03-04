@@ -135,7 +135,7 @@ public:
     bool supportsNPOTTextures();
 
     //! returns Size object from \a sz adjusted for hardware capabilities.
-    Size<> getAdjustedSize(const Size<>& sz);
+    Sizef getAdjustedSize(const Sizef& sz);
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -153,16 +153,16 @@ public:
     Texture& createTexture(const String& name,
                            const String& filename,
                            const String& resourceGroup);
-    Texture& createTexture(const String& name, const Size<>& size);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
     void destroyTexture(const String& name);
     void destroyAllTextures();
     Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size<>& sz);
-    const Size<>& getDisplaySize() const;
-    const Vector2<>& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -181,7 +181,7 @@ private:
     static void logTextureDestruction(const String& name);
 
     //! return size of device view port (if possible).
-    Size<> getViewportSize();
+    Sizef getViewportSize();
     //! returns next power of 2 size if \a size is not power of 2
     float getSizeNextPOT(float sz) const;
 
@@ -190,9 +190,9 @@ private:
     //! Direct3DDevice9 interface we were given when constructed.
     LPDIRECT3DDEVICE9 d_device;
     //! What the renderer considers to be the current display size.
-    Size<> d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2<> d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)

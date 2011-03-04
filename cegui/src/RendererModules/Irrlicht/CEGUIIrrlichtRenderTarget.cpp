@@ -63,14 +63,14 @@ void IrrlichtRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtRenderTarget::setArea(const Rect<>& area)
+void IrrlichtRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& IrrlichtRenderTarget::getArea() const
+const Rectf& IrrlichtRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -98,8 +98,8 @@ void IrrlichtRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void IrrlichtRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                          const Vector2<>& p_in,
-                                          Vector2<>& p_out) const
+                                          const Vector2f& p_in,
+                                          Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();

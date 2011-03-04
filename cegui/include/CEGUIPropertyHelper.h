@@ -323,23 +323,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Size<> >
+class PropertyHelper<Sizef >
 {
 public:
-    typedef Size<> return_type;
-    typedef const Size<>& pass_type;
+    typedef Sizef return_type;
+    typedef const Sizef& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Size<>");
+        static String type("Sizef");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Size<> val(0, 0);
+        Sizef val(0, 0);
         sscanf(str.c_str(), " w:%g h:%g", &val.d_width, &val.d_height);
 
         return val;
@@ -355,23 +355,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Vector2<> >
+class PropertyHelper<Vector2f >
 {
 public:
-    typedef Vector2<> return_type;
-    typedef const Vector2<>& pass_type;
+    typedef Vector2f return_type;
+    typedef const Vector2f& pass_type;
     typedef String string_return_type;
 
     static const String& getDataTypeName()
     {
-        static String type("Vector2<>");
+        static String type("Vector2f");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Vector2<> val(0, 0) ;
+        Vector2f val(0, 0) ;
         sscanf(str.c_str(), " x:%g y:%g", &val.d_x, &val.d_y);
 
         return val;
@@ -387,23 +387,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Vector3<> >
+class PropertyHelper<Vector3f >
 {
 public:
-    typedef Vector3<> return_type;
-    typedef const Vector3<>& pass_type;
+    typedef Vector3f return_type;
+    typedef const Vector3f& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Vector3<>");
+        static String type("Vector3f");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Vector3<> val(0, 0, 0);
+        Vector3f val(0, 0, 0);
         sscanf(str.c_str(), " x:%g y:%g z:%g", &val.d_x, &val.d_y, &val.d_z);
 
         return val;
@@ -451,23 +451,23 @@ public:
 };
 
 template<>
-class PropertyHelper<Rect<> >
+class PropertyHelper<Rectf >
 {
 public:
-    typedef Rect<> return_type;
-    typedef const Rect<>& pass_type;
+    typedef Rectf return_type;
+    typedef const Rectf& pass_type;
     typedef String string_return_type;
     
     static const String& getDataTypeName()
     {
-        static String type("Rect<>");
+        static String type("Rectf");
 
         return type;
     }
 
     static return_type fromString(const String& str)
     {
-        Rect<> val(0, 0, 0, 0);
+        Rectf val(0, 0, 0, 0);
         sscanf(str.c_str(), " l:%g t:%g r:%g b:%g", &val.d_min.d_x, &val.d_min.d_y, &val.d_max.d_x, &val.d_max.d_y);
 
         return val;

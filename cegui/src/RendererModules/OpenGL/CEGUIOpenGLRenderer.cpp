@@ -125,7 +125,7 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Size<>& display_size,
+OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Sizef& display_size,
                                                 const TextureTargetType tt_type)
 {
     if (System::getSingletonPtr())
@@ -163,7 +163,7 @@ OpenGLRenderer& OpenGLRenderer::create(const TextureTargetType tt_type)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create(const Size<>& display_size,
+OpenGLRenderer& OpenGLRenderer::create(const Sizef& display_size,
                                        const TextureTargetType tt_type)
 {
     return *new OpenGLRenderer(display_size, tt_type);
@@ -189,7 +189,7 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
     // initialise display size
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    d_displaySize = Size<>(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
+    d_displaySize = Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
 
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
@@ -205,7 +205,7 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const Size<>& display_size,
+OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
                                const TextureTargetType tt_type) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
@@ -333,7 +333,7 @@ Texture& OpenGLRenderer::createTexture(const String& name,
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::createTexture(const String& name, const Size<>& size)
+Texture& OpenGLRenderer::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
         CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
@@ -456,13 +456,13 @@ void OpenGLRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& OpenGLRenderer::getDisplaySize() const
+const Sizef& OpenGLRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& OpenGLRenderer::getDisplayDPI() const
+const Vector2f& OpenGLRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -481,7 +481,7 @@ const String& OpenGLRenderer::getIdentifierString() const
 
 //----------------------------------------------------------------------------//
 Texture& OpenGLRenderer::createTexture(const String& name, GLuint tex,
-                                       const Size<>& sz)
+                                       const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
         CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
@@ -496,14 +496,14 @@ Texture& OpenGLRenderer::createTexture(const String& name, GLuint tex,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::setDisplaySize(const Size<>& sz)
+void OpenGLRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
         d_displaySize = sz;
 
         // update the default target's area
-        Rect<> area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
@@ -628,9 +628,9 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 }
 
 //----------------------------------------------------------------------------//
-Size<> OpenGLRenderer::getAdjustedTextureSize(const Size<>& sz) const
+Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz) const
 {
-    Size<> out(sz);
+    Sizef out(sz);
 
     // if we can't support non power of two sizes, get appropriate POT values.
     if (!GLEW_ARB_texture_non_power_of_two)

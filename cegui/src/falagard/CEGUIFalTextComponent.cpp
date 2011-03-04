@@ -225,7 +225,7 @@ namespace CEGUI
         }
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool /*clipToDisplay*/) const
+    void TextComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
     {
         // get font to use
         Font* font;

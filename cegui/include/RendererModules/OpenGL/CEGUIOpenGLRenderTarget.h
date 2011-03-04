@@ -53,12 +53,12 @@ public:
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect<>& area);
-    const Rect<>& getArea() const;
+    void setArea(const Rectf& area);
+    const Rectf& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2<>& p_in, Vector2<>& p_out) const;
+                        const Vector2f& p_in, Vector2f& p_out) const;
 
 protected:
     //! helper that initialises the cached matrix
@@ -67,7 +67,7 @@ protected:
     //! OpenGLRenderer that created this object
     OpenGLRenderer& d_owner;
     //! holds defined area for the RenderTarget
-    Rect<> d_area;
+    Rectf d_area;
     //! tangent of the y FOV half-angle; used to calculate viewing distance.
     static const double d_yfov_tan;
     //! saved copy of projection matrix

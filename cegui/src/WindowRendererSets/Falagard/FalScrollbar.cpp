@@ -69,7 +69,7 @@ namespace CEGUI
     {
         Scrollbar* w = (Scrollbar*)d_window;
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
         Thumb* theThumb = w->getThumb();
 
@@ -96,7 +96,7 @@ namespace CEGUI
     {
         Scrollbar* w = (Scrollbar*)d_window;
         const WidgetLookFeel& wlf = getLookNFeel();
-        const Rect<> area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
         Thumb* theThumb = w->getThumb();
         float posExtent = w->getDocumentSize() - w->getPageSize();
@@ -113,10 +113,10 @@ namespace CEGUI
         }
     }
 
-    float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2<>& pt) const
+    float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
     {
         Scrollbar* w = (Scrollbar*)d_window;
-        const Rect<> absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rectf absrect(w->getThumb()->getUnclippedOuterRect());
 
         if ((d_vertical && (pt.d_y > absrect.bottom())) ||
             (!d_vertical && (pt.d_x > absrect.right())))

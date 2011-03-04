@@ -63,10 +63,10 @@ public:
 
     // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
-    virtual void setTranslation(const Vector3<>& v);
+    virtual void setTranslation(const Vector3f& v);
     virtual void setRotation(const Quaternion& r);
-    virtual void setPivot(const Vector3<>& p);
-    virtual void setClippingRegion(const Rect<>& region);
+    virtual void setPivot(const Vector3f& p);
+    virtual void setClippingRegion(const Rectf& region);
     virtual void appendVertex(const Vertex& vertex);
     virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     virtual void setActiveTexture(Texture* texture);
@@ -102,17 +102,17 @@ protected:
     //! Texture that is set as active
     OgreTexture* d_activeTexture;
     //! rectangular clip region
-    Rect<> d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
-    Vector3<> d_translation;
+    Vector3f d_translation;
     //! rotation quaternion
     Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3<> d_pivot;
+    Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! offset to be applied to all geometry
-    Vector2<> d_texelOffset;
+    Vector2f d_texelOffset;
     //! model matrix cache
     mutable Ogre::Matrix4 d_matrix;
     //! true when d_matrix is valid and up to date

@@ -84,7 +84,7 @@ namespace CEGUI
         return val;
     }
 
-    float BaseDim::getValue(const Window& wnd, const Rect<>& container) const
+    float BaseDim::getValue(const Window& wnd, const Rectf& container) const
     {
         // get sub-class to return value for this dimension.
         float val = getValue_impl(wnd, container);
@@ -188,7 +188,7 @@ namespace CEGUI
         return d_val;
     }
 
-    float AbsoluteDim::getValue_impl(const Window&, const Rect<>&) const
+    float AbsoluteDim::getValue_impl(const Window&, const Rectf&) const
     {
         return d_val;
     }
@@ -275,7 +275,7 @@ namespace CEGUI
         }
     }
 
-    float ImageDim::getValue_impl(const Window& wnd, const Rect<>&) const
+    float ImageDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -332,7 +332,7 @@ namespace CEGUI
         }
 
         // get size of parent; required to extract pixel values
-        Size<> parentSize(widget->getParentPixelSize());
+        Sizef parentSize(widget->getParentPixelSize());
 
         switch (d_what)
         {
@@ -378,7 +378,7 @@ namespace CEGUI
         }
     }
 
-    float WidgetDim::getValue_impl(const Window& wnd, const Rect<>&) const
+    float WidgetDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -446,7 +446,7 @@ namespace CEGUI
         }
     }
 
-    float FontDim::getValue_impl(const Window& wnd, const Rect<>&) const
+    float FontDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         return getValue_impl(wnd);
     }
@@ -499,7 +499,7 @@ namespace CEGUI
             return PropertyHelper<float>::fromString(sourceWindow.getProperty(d_property));
 
         const UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
-        const Size<> s = sourceWindow.getPixelSize();
+        const Sizef s = sourceWindow.getPixelSize();
 
         switch (d_type)
         {
@@ -514,7 +514,7 @@ namespace CEGUI
         }
     }
 
-    float PropertyDim::getValue_impl(const Window& wnd, const Rect<>&) const
+    float PropertyDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         return getValue_impl(wnd);
     }
@@ -646,7 +646,7 @@ namespace CEGUI
         }
     }
 
-    float UnifiedDim::getValue_impl(const Window&, const Rect<>& container) const
+    float UnifiedDim::getValue_impl(const Window&, const Rectf& container) const
     {
         switch (d_what)
         {
@@ -703,9 +703,9 @@ namespace CEGUI
         d_bottom_or_height(UnifiedDim(UDim(1.0f, 0.0f), DT_HEIGHT), DT_BOTTOM_EDGE)
     {}
 
-    Rect<> ComponentArea::getPixelRect(const Window& wnd) const
+    Rectf ComponentArea::getPixelRect(const Window& wnd) const
     {
-        Rect<> pixelRect;
+        Rectf pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())
@@ -747,9 +747,9 @@ namespace CEGUI
         return pixelRect;
     }
 
-    Rect<> ComponentArea::getPixelRect(const Window& wnd, const Rect<>& container) const
+    Rectf ComponentArea::getPixelRect(const Window& wnd, const Rectf& container) const
     {
-        Rect<> pixelRect;
+        Rectf pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())

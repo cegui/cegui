@@ -30,6 +30,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIRenderer.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,7 +61,7 @@ public:
     \param v
         Vector3 describing the three axis translation vector to be used.
     */
-    virtual void setTranslation(const Vector3<>& v) = 0;
+    virtual void setTranslation(const Vector3f& v) = 0;
 
     /*!
     \brief
@@ -80,13 +81,13 @@ public:
         Vector3 describing the location of the pivot point to be used when
         applying the rotation to the geometry.
     */
-    virtual void setPivot(const Vector3<>& p) = 0;
+    virtual void setPivot(const Vector3f& p) = 0;
 
     /*!
     \brief
         Set the clipping region to be used when rendering this buffer.
     */
-    virtual void setClippingRegion(const Rect<>& region) = 0;
+    virtual void setClippingRegion(const Rectf& region) = 0;
 
     /*!
     \brief

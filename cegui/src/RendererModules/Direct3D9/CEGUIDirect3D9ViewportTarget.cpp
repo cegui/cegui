@@ -45,9 +45,9 @@ Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner) :
         CEGUI_THROW(RendererException("Direct3D9RenderTarget: Unable to access "
             "required view port information from Direct3DDevice9."));
 
-    Rect<> area(
-        Vector2<>(static_cast<float>(vp.X), static_cast<float>(vp.Y)),
-        Size<>(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
+    Rectf area(
+        Vector2f(static_cast<float>(vp.X), static_cast<float>(vp.Y)),
+        Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 
     setArea(area);
@@ -55,7 +55,7 @@ Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner,
-    const Rect<>& area) :
+    const Rectf& area) :
         Direct3D9RenderTarget(owner)
 {
     setArea(area);

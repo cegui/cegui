@@ -149,13 +149,13 @@ void ScrollablePane::setContentPaneAutoSized(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& ScrollablePane::getContentPaneArea(void) const
+const Rectf& ScrollablePane::getContentPaneArea(void) const
 {
     return getScrolledContainer()->getContentArea();
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::setContentPaneArea(const Rect<>& area)
+void ScrollablePane::setContentPaneArea(const Rectf& area)
 {
     getScrolledContainer()->setContentArea(area);
 }
@@ -305,7 +305,7 @@ void ScrollablePane::configureScrollbars(void)
     performChildWindowLayout();
     
     // get viewable area
-    Rect<> viewableArea(getViewableArea());
+    Rectf viewableArea(getViewableArea());
     
     // set up vertical scroll bar values
     vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
@@ -400,7 +400,7 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
     Scrollbar* horzScrollbar = getHorzScrollbar();
     
     // get updated extents of the content
-    Rect<> contentArea(getScrolledContainer()->getContentArea());
+    Rectf contentArea(getScrolledContainer()->getContentArea());
     
     // calculate any change on the top and left edges.
     float xChange = contentArea.d_min.d_x - d_contentRect.d_min.d_x;
@@ -557,7 +557,7 @@ ScrolledContainer* ScrollablePane::getScrolledContainer() const
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ScrollablePane::getViewableArea() const
+Rectf ScrollablePane::getViewableArea() const
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException("ScrollablePane::getViewableArea: "

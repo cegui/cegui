@@ -63,7 +63,7 @@ Font::Font(const String& name, const String& type_name, const String& filename,
 {
     addFontProperties();
 
-    const Size<> size(System::getSingleton().getRenderer()->getDisplaySize());
+    const Sizef size(System::getSingleton().getRenderer()->getDisplaySize());
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
@@ -189,12 +189,12 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 
 //----------------------------------------------------------------------------//
 void Font::drawText(GeometryBuffer& buffer, const String& text,
-                    const Vector2<>& position, const Rect<>* clip_rect,
+                    const Vector2f& position, const Rectf* clip_rect,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale)
 {
     const float base_y = position.d_y + getBaseline(y_scale);
-    Vector2<> glyph_pos(position);
+    Vector2f glyph_pos(position);
 
     for (size_t c = 0; c < text.length(); ++c)
     {
@@ -215,7 +215,7 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
 }
 
 //----------------------------------------------------------------------------//
-void Font::setNativeResolution(const Size<>& size)
+void Font::setNativeResolution(const Sizef& size)
 {
     d_nativeHorzRes = size.d_width;
     d_nativeVertRes = size.d_height;
@@ -226,9 +226,9 @@ void Font::setNativeResolution(const Size<>& size)
 }
 
 //----------------------------------------------------------------------------//
-Size<> Font::getNativeResolution() const
+Sizef Font::getNativeResolution() const
 {
-    return Size<>(d_nativeHorzRes, d_nativeVertRes);
+    return Sizef(d_nativeHorzRes, d_nativeVertRes);
 }
 
 //----------------------------------------------------------------------------//
@@ -248,7 +248,7 @@ bool Font::isAutoScaled() const
 }
 
 //----------------------------------------------------------------------------//
-void Font::notifyDisplaySizeChanged(const Size<>& size)
+void Font::notifyDisplaySizeChanged(const Sizef& size)
 {
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;

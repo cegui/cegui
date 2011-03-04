@@ -54,7 +54,7 @@ public:
     // implement CEGUI::TextureTarget interface.
     void clear();
     Texture& getTexture() const;
-    void declareRenderSize(const Size<>& sz);
+    void declareRenderSize(const Sizef& sz);
     bool isRenderingInverted() const;
 
 protected:

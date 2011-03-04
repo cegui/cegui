@@ -39,7 +39,7 @@ namespace CEGUI
 // Helper utility function that copies an RGBA buffer into a region of a second
 // buffer as D3DCOLOR data values
 void blitToSurface(const uint32* src, uint32* dst,
-                   const Size<>& sz, size_t dest_pitch)
+                   const Sizef& sz, size_t dest_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
     {
@@ -59,7 +59,7 @@ void blitToSurface(const uint32* src, uint32* dst,
 // Helper utility function that copies a region of a buffer containing D3DCOLOR
 // values into a second buffer as RGBA values.
 void blitFromSurface(const uint32* src, uint32* dst,
-                     const Size<>& sz, size_t source_pitch)
+                     const Sizef& sz, size_t source_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
     {
@@ -98,7 +98,7 @@ public:
     }
 
     //------------------------------------------------------------------------//
-    void blitFromMemory(const uint32* source, const Rect<>& area)
+    void blitFromMemory(const uint32* source, const Rectf& area)
     {
         if (!d_texture)
             return;
@@ -123,7 +123,7 @@ public:
         lockRect(0, true);
 
         blitFromSurface(static_cast<uint32*>(d_lockedRect.pBits), dest,
-                        Size<>(d_surfDesc.Width, d_surfDesc.Height),
+                        Sizef(d_surfDesc.Width, d_surfDesc.Height),
                         d_lockedRect.Pitch);
 
         unlockRect();
@@ -308,7 +308,7 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
 
 //----------------------------------------------------------------------------//
 Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
-                                   const String& name, const Size<>& sz) :
+                                   const String& name, const Sizef& sz) :
     d_owner(owner),
     d_texture(0),
     d_size(0, 0),
@@ -317,7 +317,7 @@ Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner,
     d_savedSurfaceDescValid(false),
     d_name(name)
 {
-    Size<> tex_sz(d_owner.getAdjustedSize(sz));
+    Sizef tex_sz(d_owner.getAdjustedSize(sz));
 
     HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
                                    static_cast<UINT>(tex_sz.d_width),
@@ -386,19 +386,19 @@ const String& Direct3D9Texture::getName() const
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& Direct3D9Texture::getSize() const
+const Sizef& Direct3D9Texture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& Direct3D9Texture::getOriginalDataSize() const
+const Sizef& Direct3D9Texture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& Direct3D9Texture::getTexelScaling() const
+const Vector2f& Direct3D9Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -432,7 +432,7 @@ void Direct3D9Texture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void Direct3D9Texture::loadFromMemory(const void* buffer,
-                                      const Size<>& buffer_size,
+                                      const Sizef& buffer_size,
                                       PixelFormat pixel_format)
 {
     cleanupDirect3D9Texture();
@@ -453,7 +453,7 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
             "Invalid PixelFormat value specified."));
     }
 
-    Size<> tex_sz(d_owner.getAdjustedSize(buffer_size));
+    Sizef tex_sz(d_owner.getAdjustedSize(buffer_size));
 
     HRESULT hr = D3DXCreateTexture(d_owner.getDevice(),
                                    static_cast<UINT>(tex_sz.d_width),
@@ -514,7 +514,7 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Texture::blitFromMemory(void* sourceData, const Rect<>& area)
+void Direct3D9Texture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     D3DSurfaceBlitter blitter(d_owner.getDevice(), d_texture);
     blitter.blitFromMemory(static_cast<const uint32*>(sourceData), area);
@@ -583,7 +583,7 @@ void Direct3D9Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Texture::setOriginalDataSize(const Size<>& sz)
+void Direct3D9Texture::setOriginalDataSize(const Sizef& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();

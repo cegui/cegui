@@ -625,7 +625,7 @@ void Listbox::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect<> renderArea(getListRenderArea());
+	Rectf renderArea(getListRenderArea());
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -742,10 +742,10 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Vector2<>& pt) const
+ListboxItem* Listbox::getItemAtPoint(const Vector2f& pt) const
 {
-    const Vector2<> local_pos(CoordConverter::screenToWindow(*this, pt));
-	const Rect<> renderArea(getListRenderArea());
+    const Vector2f local_pos(CoordConverter::screenToWindow(*this, pt));
+	const Rectf renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
 	if (renderArea.isPointInRect(local_pos))
@@ -1123,7 +1123,7 @@ Scrollbar* Listbox::getHorzScrollbar() const
     Return a Rect object describing, in un-clipped pixels, the window
     relative area that is to be used for rendering list items.
 *************************************************************************/
-Rect<> Listbox::getListRenderArea() const
+Rectf Listbox::getListRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

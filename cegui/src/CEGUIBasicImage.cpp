@@ -51,8 +51,8 @@ BasicImage::BasicImage(const String& name) :
 
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name, Texture* texture,
-                       const Rect<>& pixel_area, const Vector2<>& pixel_offset,
-                       const bool autoscaled, const Size<>& native_res) :
+                       const Rectf& pixel_area, const Vector2f& pixel_offset,
+                       const bool autoscaled, const Sizef& native_res) :
     d_name(name),
     d_texture(texture),
     d_area(pixel_area),
@@ -74,7 +74,7 @@ void BasicImage::setTexture(Texture* texture)
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setArea(const Rect<>& pixel_area)
+void BasicImage::setArea(const Rectf& pixel_area)
 {
     d_area = pixel_area;
     d_pixelSize = pixel_area.getSize();
@@ -85,7 +85,7 @@ void BasicImage::setArea(const Rect<>& pixel_area)
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setOffset(const Vector2<>& pixel_offset)
+void BasicImage::setOffset(const Vector2f& pixel_offset)
 {
     d_pixelOffset = pixel_offset;
 
@@ -112,7 +112,7 @@ void BasicImage::setAutoScaled(const bool autoscaled)
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setNativeResolution(const Size<>& native_res)
+void BasicImage::setNativeResolution(const Sizef& native_res)
 {
     d_nativeResolution = native_res;
 
@@ -128,40 +128,40 @@ const String& BasicImage::getName() const
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& BasicImage::getRenderedSize() const
+const Sizef& BasicImage::getRenderedSize() const
 {
     return d_scaledSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& BasicImage::getRenderedOffset() const
+const Vector2f& BasicImage::getRenderedOffset() const
 {
     return d_scaledOffset;
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::render(GeometryBuffer& buffer, const Rect<>& dest_area,
-                        const Rect<>* clip_area, const ColourRect& colours) const
+void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
+                        const Rectf* clip_area, const ColourRect& colours) const
 {
     const QuadSplitMode quad_split_mode(TopLeftToBottomRight);
 
-    Rect<> dest(dest_area);
+    Rectf dest(dest_area);
     // apply rendering offset to the destination Rect
     dest.offset(d_scaledOffset);
 
     // get the rect area that we will actually draw to (i.e. perform clipping)
-    Rect<> final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
+    Rectf final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
 
     // check if rect was totally clipped
     if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
         return;
 
     // Obtain correct scale values from the texture
-    const Vector2<>& scale = d_texture->getTexelScaling();
-    const Vector2<> tex_per_pix(d_area.getWidth() / dest.getWidth(), d_area.getHeight() / dest.getHeight());
+    const Vector2f& scale = d_texture->getTexelScaling();
+    const Vector2f tex_per_pix(d_area.getWidth() / dest.getWidth(), d_area.getHeight() / dest.getHeight());
 
     // calculate final, clipped, texture co-ordinates
-    const Rect<> tex_rect((d_area.d_min + ((final_rect.d_min - dest.d_min) * tex_per_pix)) * scale,
+    const Rectf tex_rect((d_area.d_min + ((final_rect.d_min - dest.d_min) * tex_per_pix)) * scale,
                           (d_area.d_max + ((final_rect.d_max - dest.d_max) * tex_per_pix)) * scale);
 
     final_rect.d_min.d_x = PixelAligned(final_rect.d_min.d_x);
@@ -172,14 +172,14 @@ void BasicImage::render(GeometryBuffer& buffer, const Rect<>& dest_area,
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = Vector3<>(final_rect.left(), final_rect.top(), 0.0f);
+    vbuffer[0].position   = Vector3f(final_rect.left(), final_rect.top(), 0.0f);
     vbuffer[0].colour_val = colours.d_top_left;
-    vbuffer[0].tex_coords = Vector2<>(tex_rect.left(), tex_rect.top());
+    vbuffer[0].tex_coords = Vector2f(tex_rect.left(), tex_rect.top());
 
     // vertex 1
-    vbuffer[1].position   = Vector3<>(final_rect.left(), final_rect.bottom(), 0.0f);
+    vbuffer[1].position   = Vector3f(final_rect.left(), final_rect.bottom(), 0.0f);
     vbuffer[1].colour_val = colours.d_bottom_left;
-    vbuffer[1].tex_coords = Vector2<>(tex_rect.left(), tex_rect.bottom());
+    vbuffer[1].tex_coords = Vector2f(tex_rect.left(), tex_rect.bottom());
 
     // vertex 2
     vbuffer[2].position.d_x   = final_rect.right();
@@ -201,9 +201,9 @@ void BasicImage::render(GeometryBuffer& buffer, const Rect<>& dest_area,
     }
 
     // vertex 3
-    vbuffer[3].position   = Vector3<>(final_rect.right(), final_rect.top(), 0.0f);
+    vbuffer[3].position   = Vector3f(final_rect.right(), final_rect.top(), 0.0f);
     vbuffer[3].colour_val = colours.d_top_right;
-    vbuffer[3].tex_coords = Vector2<>(tex_rect.right(), tex_rect.top());
+    vbuffer[3].tex_coords = Vector2f(tex_rect.right(), tex_rect.top());
 
     // vertex 4
     vbuffer[4].position.d_x   = final_rect.left();
@@ -225,19 +225,19 @@ void BasicImage::render(GeometryBuffer& buffer, const Rect<>& dest_area,
     }
 
     // vertex 5
-    vbuffer[5].position = Vector3<>(final_rect.right(), final_rect.bottom(), 0.0f);
+    vbuffer[5].position = Vector3f(final_rect.right(), final_rect.bottom(), 0.0f);
     vbuffer[5].colour_val= colours.d_bottom_right;
-    vbuffer[5].tex_coords = Vector2<>(tex_rect.right(), tex_rect.bottom());
+    vbuffer[5].tex_coords = Vector2f(tex_rect.right(), tex_rect.bottom());
 
     buffer.setActiveTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::notifyDisplaySizeChanged(const Size<>& size)
+void BasicImage::notifyDisplaySizeChanged(const Sizef& size)
 {
     // TODO: This could be cleaned up by adding some more operators to
-    // Size<> and Vector2<>
+    // Sizef and Vector2f
 
     const float x_scale =
         d_autoscaled ? size.d_width / d_nativeResolution.d_width : 1.0f;

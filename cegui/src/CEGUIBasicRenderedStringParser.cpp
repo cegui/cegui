@@ -234,7 +234,7 @@ void BasicRenderedStringParser::processControlString(RenderedString& rs,
 //----------------------------------------------------------------------------//
 void BasicRenderedStringParser::initialiseDefaultState()
 {
-    d_padding = Rect<>(0, 0, 0, 0);
+    d_padding = Rectf(0, 0, 0, 0);
     d_colours = d_initialColours;
     d_fontName = d_initialFontName;
     d_imageSize.d_width = d_imageSize.d_height = 0.0f;
@@ -343,7 +343,7 @@ void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const St
 void BasicRenderedStringParser::handlePadding(RenderedString& rs,
                                               const String& value)
 {
-    d_padding = PropertyHelper<Rect<> >::fromString(value);
+    d_padding = PropertyHelper<Rectf >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
@@ -385,7 +385,7 @@ void BasicRenderedStringParser::handleAspectLock(RenderedString& rs,
 void BasicRenderedStringParser::handleImageSize(RenderedString& rs,
                                                 const String& value)
 {
-    d_imageSize = PropertyHelper<Size<> >::fromString(value);
+    d_imageSize = PropertyHelper<Sizef >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//

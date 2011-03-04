@@ -1347,7 +1347,7 @@ void MultiColumnList::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect<> renderArea(getListRenderArea());
+	Rectf renderArea(getListRenderArea());
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -1441,7 +1441,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size<> sz(item->getPixelSize());
+				Sizef sz(item->getPixelSize());
 
 				// see if this item is wider than the previous widest
 				if (sz.d_width > width)
@@ -1482,7 +1482,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size<> sz(item->getPixelSize());
+				Sizef sz(item->getPixelSize());
 
 				// see if this item is higher than the previous highest
 				if (sz.d_height > height)
@@ -1536,10 +1536,10 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2<>& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rect<> listArea(getListRenderArea());
+    Rectf listArea(getListRenderArea());
 
     float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
     float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
@@ -1873,7 +1873,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Vector2<> localPos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
@@ -2342,7 +2342,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     Return a Rect object describing, in un-clipped pixels, the window
     relative area that is to be used for rendering list items.
 *************************************************************************/
-Rect<> MultiColumnList::getListRenderArea() const
+Rectf MultiColumnList::getListRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

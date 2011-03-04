@@ -186,7 +186,7 @@ protected:
     \brief
         Configure scrollbars
     */
-    void configureScrollbars(const Size<>& doc_size);
+    void configureScrollbars(const Sizef& doc_size);
 
     /************************************************************************
         New event handlers

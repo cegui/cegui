@@ -394,7 +394,7 @@ namespace CEGUI
             - true if the threshold has been exceeded and dragging should be initiated.
             - false if the threshold has not been exceeded.
         */		
-        bool isDraggingThresholdExceeded(const Vector2<>& local_mouse);
+        bool isDraggingThresholdExceeded(const Vector2f& local_mouse);
 
 	    /*!
 	    \brief
@@ -415,7 +415,7 @@ namespace CEGUI
 	    \return
 		    Nothing.
 	    */
-        void doDragging(const Vector2<>& local_mouse);
+        void doDragging(const Vector2f& local_mouse);
 
         /*!
         \brief

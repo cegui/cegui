@@ -119,9 +119,9 @@ const ColourRect& RenderedStringTextComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
-                                       const Vector2<>& position,
+                                       const Vector2f& position,
                                        const ColourRect* mod_colours,
-                                       const Rect<>* clip_rect,
+                                       const Rectf* clip_rect,
                                        const float vertical_space,
                                        const float space_extra) const
 {
@@ -130,7 +130,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
     if (!fnt)
         return;
 
-    Vector2<> final_pos(position);
+    Vector2f final_pos(position);
     float y_scale = 1.0f;
 
     // handle formatting options
@@ -171,11 +171,11 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Size<> RenderedStringTextComponent::getPixelSize() const
+Sizef RenderedStringTextComponent::getPixelSize() const
 {
     Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
-    Size<> psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
+    Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
                d_padding.d_min.d_y + d_padding.d_max.d_y);
 
     if (fnt)

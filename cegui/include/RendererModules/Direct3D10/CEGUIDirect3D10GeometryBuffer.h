@@ -60,10 +60,10 @@ public:
 
     // Implement GeometryBuffer interface.
     void draw() const;
-    void setTranslation(const Vector3<>& v);
+    void setTranslation(const Vector3f& v);
     void setRotation(const Quaternion& r);
-    void setPivot(const Vector3<>& p);
-    void setClippingRegion(const Rect<>& region);
+    void setPivot(const Vector3f& p);
+    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -118,13 +118,13 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect<> d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
-    Vector3<> d_translation;
+    Vector3f d_translation;
     //! rotation Quaternion
     Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3<> d_pivot;
+    Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache

@@ -31,6 +31,7 @@
 #include "CEGUISingleton.h"
 #include "CEGUIXMLHandler.h"
 #include "CEGUIString.h"
+#include "CEGUISize.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -76,7 +77,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    void notifyDisplaySizeChanged(const Size<>& size);
+    void notifyDisplaySizeChanged(const Sizef& size);
 
     /*!
     \brief

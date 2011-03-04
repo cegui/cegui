@@ -136,21 +136,21 @@ bool ceguiLua_PropertyHelper::stringToBool(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Size<> ceguiLua_PropertyHelper::stringToSize(const String& str)
+Sizef ceguiLua_PropertyHelper::stringToSize(const String& str)
 {
-    return PropertyHelper<Size<> >::fromString(str);
+    return PropertyHelper<Sizef >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
-Vector2<> ceguiLua_PropertyHelper::stringToVector2(const String& str)
+Vector2f ceguiLua_PropertyHelper::stringToVector2(const String& str)
 {
-    return PropertyHelper<Vector2<> >::fromString(str);
+    return PropertyHelper<Vector2f >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
-Rect<> ceguiLua_PropertyHelper::stringToRect(const String& str)
+Rectf ceguiLua_PropertyHelper::stringToRect(const String& str)
 {
-    return PropertyHelper<Rect<> >::fromString(str);
+    return PropertyHelper<Rectf >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -208,21 +208,21 @@ String ceguiLua_PropertyHelper::boolToString(bool val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::sizeToString(const Size<>& val)
+String ceguiLua_PropertyHelper::sizeToString(const Sizef& val)
 {
-    return PropertyHelper<Size<> >::toString(val);
+    return PropertyHelper<Sizef >::toString(val);
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::vector2ToString(const Vector2<>& val)
+String ceguiLua_PropertyHelper::vector2ToString(const Vector2f& val)
 {
-    return PropertyHelper<Vector2<> >::toString(val);
+    return PropertyHelper<Vector2f >::toString(val);
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::rectToString(const Rect<>& val)
+String ceguiLua_PropertyHelper::rectToString(const Rectf& val)
 {
-    return PropertyHelper<Rect<> >::toString(val);
+    return PropertyHelper<Rectf >::toString(val);
 }
 
 //----------------------------------------------------------------------------//

@@ -50,16 +50,16 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
-    Size<> FalagardTooltip::getTextSize() const
+    Sizef FalagardTooltip::getTextSize() const
     {
         Tooltip* w = (Tooltip*)d_window;
-        Size<> sz(w->getTextSize_impl());
+        Sizef sz(w->getTextSize_impl());
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-        const Rect<> textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-        const Rect<> wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
+        const Rectf textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
+        const Rectf wndArea(CoordConverter::asAbsolute(w->getArea(), w->getParentPixelSize()));
 
         sz.d_width  = PixelAligned(sz.d_width + wndArea.getWidth() - textArea.getWidth());
         sz.d_height = PixelAligned(sz.d_height + wndArea.getHeight() - textArea.getHeight());

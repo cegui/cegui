@@ -72,9 +72,9 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
-                                         const Vector2<>& position,
+                                         const Vector2f& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
-                                         const Rect<>* /*clip_rect*/,
+                                         const Rectf* /*clip_rect*/,
                                          const float vertical_space,
                                          const float /*space_extra*/) const
 {
@@ -87,14 +87,14 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     
     if (parent)
     {
-        const Rect<> outer(parent->getUnclippedOuterRect());
-        const Rect<> inner(parent->getUnclippedInnerRect());
+        const Rectf outer(parent->getUnclippedOuterRect());
+        const Rectf inner(parent->getUnclippedInnerRect());
         x_adj = inner.d_min.d_x - outer.d_min.d_x;
         y_adj = inner.d_min.d_y - outer.d_min.d_y;
     }
     // HACK: re-adjust for inner-rect of parent (Ends)
 
-    Vector2<> final_pos(position);
+    Vector2f final_pos(position);
     // handle formatting options
     switch (d_verticalFormatting)
     {
@@ -131,9 +131,9 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
 }
 
 //----------------------------------------------------------------------------//
-Size<> RenderedStringWidgetComponent::getPixelSize() const
+Sizef RenderedStringWidgetComponent::getPixelSize() const
 {
-    Size<> sz(0, 0);
+    Sizef sz(0, 0);
 
     if (d_window)
     {

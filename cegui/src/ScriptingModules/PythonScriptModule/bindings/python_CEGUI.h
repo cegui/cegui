@@ -24,17 +24,17 @@ public:
 	{
 	   return PropertyHelper<bool>::fromString(str);
     }
-	static Size<> stringToSize(const String& str)
+	static Sizef stringToSize(const String& str)
 	{
-	   return PropertyHelper<Size<> >::fromString(str);
+	   return PropertyHelper<Sizef >::fromString(str);
     }
-	static Vector2<> stringToVector2(const String& str)
+	static Vector2f stringToVector2(const String& str)
 	{
-	   return PropertyHelper<Vector2<> >::fromString(str);
+	   return PropertyHelper<Vector2f >::fromString(str);
     }
-	static Rect<> stringToRect(const String& str)
+	static Rectf stringToRect(const String& str)
 	{
-	   return PropertyHelper<Rect<> >::fromString(str);
+	   return PropertyHelper<Rectf >::fromString(str);
     }
 	static const Image*	stringToImage(const String& str)
 	{
@@ -77,17 +77,17 @@ public:
 	{
 	   return PropertyHelper<bool>::toString(val);
     }
-	static String sizeToString(const Size<>& val)
+	static String sizeToString(const Sizef& val)
 	{
-	   return PropertyHelper<Size<> >::toString(val);
+	   return PropertyHelper<Sizef >::toString(val);
     }
-	static String vector2ToString(const Vector2<>& val)
+	static String vector2ToString(const Vector2f& val)
 	{
-	   return PropertyHelper<Vector2<> >::toString(val);
+	   return PropertyHelper<Vector2f >::toString(val);
     }
-	static String rectToString(const Rect<>& val)
+	static String rectToString(const Rectf& val)
 	{
-	   return PropertyHelper<Rect<> >::toString(val);
+	   return PropertyHelper<Rectf >::toString(val);
     }
 	static String imageToString(const Image* val)
 	{

@@ -60,7 +60,7 @@ namespace CEGUI
         FalagardTooltip(const String& type);
 
         void render();
-        Size<> getTextSize() const;
+        Sizef getTextSize() const;
     };
 
 } // End of  CEGUI namespace section

@@ -49,13 +49,13 @@ public:
 
     // implement CEGUI::Texture interface
     const String& getName() const;
-    const Size<>& getSize() const;
-    const Size<>& getOriginalDataSize() const;
-    const Vector2<>& getTexelScaling() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size<>& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect<>& area);
+    void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
 
 protected:
@@ -63,7 +63,7 @@ protected:
     friend Texture& OgreRenderer::createTexture(const String&);
     friend Texture& OgreRenderer::createTexture(const String&, const String&,
                                                 const String&);
-    friend Texture& OgreRenderer::createTexture(const String&, const Size<>&);
+    friend Texture& OgreRenderer::createTexture(const String&, const Sizef&);
     friend Texture& OgreRenderer::createTexture(const String&, Ogre::TexturePtr&,
                                                 bool);
     friend void OgreRenderer::destroyTexture(Texture&);
@@ -75,7 +75,7 @@ protected:
     OgreTexture(const String& name, const String& filename,
                 const String& resourceGroup);
     //! construct texture with a specified initial size.
-    OgreTexture(const String& name, const Size<>& sz);
+    OgreTexture(const String& name, const Sizef& sz);
     //! construct texture from existing Ogre texture.
     OgreTexture(const String& name, Ogre::TexturePtr& tex, bool take_ownership);
 
@@ -93,11 +93,11 @@ protected:
     //! specifies whether d_texture was created externally (not owned by us).
     bool d_isLinked;
     //! Size of the texture.
-    Size<> d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size<> d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2<> d_texelScaling;
+    Vector2f d_texelScaling;
     //! Name this texture was created with.
     const String d_name;
 };

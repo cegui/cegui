@@ -33,6 +33,9 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUISize.h"
+#include "CEGUIVector.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -87,7 +90,7 @@ public:
         Reference to a Size object that describes the size of the texture in
         pixels.
     */
-    virtual const Size<>& getSize() const = 0;
+    virtual const Sizef& getSize() const = 0;
 
     /*!
     \brief
@@ -97,7 +100,7 @@ public:
         reference to a Size object that describes the original size, in pixels,
         of the data loaded into the texture.
     */
-    virtual const Size<>& getOriginalDataSize() const = 0;
+    virtual const Sizef& getOriginalDataSize() const = 0;
 
     /*!
     \brief
@@ -108,7 +111,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2<>& getTexelScaling() const = 0;
+    virtual const Vector2f& getTexelScaling() const = 0;
 
     /*!
     \brief
@@ -146,7 +149,7 @@ public:
         Nothing.
     */
     virtual void loadFromMemory(const void* buffer,
-                                const Size<>& buffer_size,
+                                const Sizef& buffer_size,
                                 PixelFormat pixel_format) = 0;
 
     /*!
@@ -161,7 +164,7 @@ public:
 
     \note The pixel format must match current Texture's pixel format!
     */
-    virtual void blitFromMemory(void* sourceData, const Rect<>& area) = 0;
+    virtual void blitFromMemory(void* sourceData, const Rectf& area) = 0;
 
     /*!
     \brief

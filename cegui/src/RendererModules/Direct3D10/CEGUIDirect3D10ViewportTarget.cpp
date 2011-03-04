@@ -44,9 +44,9 @@ Direct3D10ViewportTarget::Direct3D10ViewportTarget(Direct3D10Renderer& owner) :
         CEGUI_THROW(RendererException("Direct3D10RenderTarget: Unable to access "
             "required view port information from ID3D10Device."));
 
-    Rect<> area(
-        Vector2<>(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
-        Size<>(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
+    Rectf area(
+        Vector2f(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
+        Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 
     setArea(area);
@@ -54,7 +54,7 @@ Direct3D10ViewportTarget::Direct3D10ViewportTarget(Direct3D10Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 Direct3D10ViewportTarget::Direct3D10ViewportTarget(Direct3D10Renderer& owner,
-                                                   const Rect<>& area) :
+                                                   const Rectf& area) :
     Direct3D10RenderTarget(owner)
 {
     setArea(area);

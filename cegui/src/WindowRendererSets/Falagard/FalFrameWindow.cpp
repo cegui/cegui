@@ -72,11 +72,11 @@ namespace CEGUI
         imagery->render(*w);
     }
 
-    Rect<> FalagardFrameWindow::getUnclippedInnerRect(void) const
+    Rectf FalagardFrameWindow::getUnclippedInnerRect(void) const
     {
         FrameWindow* w = (FrameWindow*)d_window;
         if (w->isRolledup())
-            return Rect<>(0, 0, 0, 0);
+            return Rectf(0, 0, 0, 0);
 
         // build name of area to fetch
         String areaName("Client");

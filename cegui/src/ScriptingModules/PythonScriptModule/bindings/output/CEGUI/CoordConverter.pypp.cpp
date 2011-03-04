@@ -41,7 +41,7 @@ void register_CoordConverter_class(){
                 , ( bp::arg("v"), bp::arg("base") )
                 , "*!\n\
             \n\
-                converts given Vector2<UDim> to absolute Vector2<>\n\
+                converts given Vector2<UDim> to absolute Vector2f\n\
             *\n" );
         
         }
@@ -79,7 +79,7 @@ void register_CoordConverter_class(){
                 , ( bp::arg("v"), bp::arg("base") )
                 , "*!\n\
             \n\
-                converts given Vector2<UDim> to relative Vector2<>\n\
+                converts given Vector2<UDim> to relative Vector2f\n\
             *\n" );
         
         }

@@ -92,12 +92,12 @@ namespace CEGUI
         }
     }
 
-    void FrameComponent::render_impl(Window& srcWindow, Rect<>& destRect, const CEGUI::ColourRect* modColours, const Rect<>* clipper, bool clipToDisplay) const
+    void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
     {
-        Rect<> backgroundRect(destRect);
-        Rect<> finalRect;
-        Size<> imageSize;
-        Vector2<> imageOffsets;
+        Rectf backgroundRect(destRect);
+        Rectf finalRect;
+        Sizef imageSize;
+        Vector2f imageOffsets;
         ColourRect imageColours;
         float leftfactor, rightfactor, topfactor, bottomfactor;
         bool calcColoursPerImage;
@@ -379,7 +379,7 @@ namespace CEGUI
         }
     }
 
-    void FrameComponent::doBackgroundRender(Window& srcWindow, Rect<>& destRect, const ColourRect& colours, const Rect<>* clipper, bool /*clipToDisplay*/) const
+    void FrameComponent::doBackgroundRender(Window& srcWindow, Rectf& destRect, const ColourRect& colours, const Rectf* clipper, bool /*clipToDisplay*/) const
     {
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
             FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
@@ -390,7 +390,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size<> imgSz(d_frameImages[FIC_BACKGROUND]->getRenderedSize());
+        Sizef imgSz(d_frameImages[FIC_BACKGROUND]->getRenderedSize());
 
         // calculate initial x co-ordinate and horizontal tile count according to formatting options
         switch (horzFormatting)
@@ -461,9 +461,9 @@ namespace CEGUI
         }
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rect<> finalRect;
-        Rect<> finalClipper;
-        const Rect<>* clippingRect;
+        Rectf finalRect;
+        Rectf finalClipper;
+        const Rectf* clippingRect;
         finalRect.d_min.d_y = ypos;
         finalRect.d_max.d_y = ypos + imgSz.d_height;
 

@@ -147,7 +147,7 @@ Scrollbar* ScrolledItemListBase::getHorzScrollbar() const
 /************************************************************************
     Configure scroll bars
 ************************************************************************/
-void ScrolledItemListBase::configureScrollbars(const Size<>& doc_size)
+void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
 {
     Scrollbar* v = getVertScrollbar();
     Scrollbar* h = getHorzScrollbar();
@@ -155,7 +155,7 @@ void ScrolledItemListBase::configureScrollbars(const Size<>& doc_size)
     const bool old_vert_visible = v->isVisible(true);
     const bool old_horz_visible = h->isVisible(true);
 
-    Size<> render_area_size = getItemRenderArea().getSize();
+    Sizef render_area_size = getItemRenderArea().getSize();
 
     // setup the pane size
     float pane_size_w = ceguimax(doc_size.d_width, render_area_size.d_width);
@@ -195,7 +195,7 @@ void ScrolledItemListBase::configureScrollbars(const Size<>& doc_size)
     }
 
     // get a fresh item render area
-    Rect<> render_area = getItemRenderArea();
+    Rectf render_area = getItemRenderArea();
     render_area_size = render_area.getSize();
 
     // update the pane clipper area
@@ -312,7 +312,7 @@ void ScrolledItemListBase::addScrolledItemListBaseProperties()
 //----------------------------------------------------------------------------//
 void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
 {
-    const Rect<> render_area = getItemRenderArea();
+    const Rectf render_area = getItemRenderArea();
     Scrollbar* const v = getVertScrollbar();
     const float currPos = v->getScrollPosition();
 
@@ -331,7 +331,7 @@ void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
 //----------------------------------------------------------------------------//
 void ScrolledItemListBase::ensureItemIsVisibleHorz(const ItemEntry& item)
 {
-    const Rect<> render_area = getItemRenderArea();
+    const Rectf render_area = getItemRenderArea();
     Scrollbar* const h = getHorzScrollbar();
     const float currPos = h->getScrollPosition();
 

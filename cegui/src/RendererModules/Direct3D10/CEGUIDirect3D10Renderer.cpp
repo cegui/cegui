@@ -189,7 +189,7 @@ Texture& Direct3D10Renderer::createTexture(const String& name,
 
 //----------------------------------------------------------------------------//
 Texture& Direct3D10Renderer::createTexture(const String& name,
-                                           const Size<>& size)
+                                           const Sizef& size)
 {
     throwIfNameExists(name);
 
@@ -276,14 +276,14 @@ void Direct3D10Renderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Renderer::setDisplaySize(const Size<>& sz)
+void Direct3D10Renderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
         d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect<> area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
@@ -291,13 +291,13 @@ void Direct3D10Renderer::setDisplaySize(const Size<>& sz)
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& Direct3D10Renderer::getDisplaySize() const
+const Sizef& Direct3D10Renderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& Direct3D10Renderer::getDisplayDPI() const
+const Vector2f& Direct3D10Renderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -403,7 +403,7 @@ Direct3D10Renderer::~Direct3D10Renderer()
 }
 
 //----------------------------------------------------------------------------//
-Size<> Direct3D10Renderer::getViewportSize()
+Sizef Direct3D10Renderer::getViewportSize()
 {
     D3D10_VIEWPORT vp;
     UINT vp_count = 1;
@@ -415,7 +415,7 @@ Size<> Direct3D10Renderer::getViewportSize()
             "Direct3D10Renderer::getViewportSize: Unable "
             "to access required view port information from IDirect3DDevice10."));
     else
-        return Size<>(static_cast<float>(vp.Width),
+        return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));
 }
 

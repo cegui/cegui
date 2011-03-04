@@ -246,7 +246,7 @@ void PopupMenu::updateSelf(float elapsed)
 void PopupMenu::layoutItemWidgets()
 {
 	// get render area
-	Rect<> render_rect = getItemRenderArea();
+	Rectf render_rect = getItemRenderArea();
 
 	// get starting position
 	const float x0 = PixelAligned(render_rect.d_min.d_x);
@@ -279,7 +279,7 @@ void PopupMenu::layoutItemWidgets()
 /*************************************************************************
 	Returns the "optimal" size for the content in unclipped pixels
 *************************************************************************/
-Size<> PopupMenu::getContentSize() const
+Sizef PopupMenu::getContentSize() const
 {
 	// find the content sizes
 	float widest = 0;
@@ -289,7 +289,7 @@ Size<> PopupMenu::getContentSize() const
 	size_t max = d_listItems.size();
 	while (i < max)
 	{
-		const Size<> sz = d_listItems[i]->getItemPixelSize();
+		const Sizef sz = d_listItems[i]->getItemPixelSize();
 		if (sz.d_width > widest)
 			widest = sz.d_width;
 		total_height += sz.d_height;
@@ -306,7 +306,7 @@ Size<> PopupMenu::getContentSize() const
 	}
 
 	// return the content size
-	return Size<>(widest, total_height);
+	return Sizef(widest, total_height);
 }
 
 

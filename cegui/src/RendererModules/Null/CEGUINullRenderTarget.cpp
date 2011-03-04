@@ -58,13 +58,13 @@ void NullRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderTarget::setArea(const Rect<>& area)
+void NullRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
 }
 
 //----------------------------------------------------------------------------//
-const Rect<>& NullRenderTarget::getArea() const
+const Rectf& NullRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -81,7 +81,7 @@ void NullRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void NullRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2<>& p_in, Vector2<>& p_out) const
+                                      const Vector2f& p_in, Vector2f& p_out) const
 {
 	p_out = p_in;
 }

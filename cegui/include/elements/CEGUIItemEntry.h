@@ -64,7 +64,7 @@ public:
         Size describing the size in pixel that this ItemEntry's content requires
         for non-clipped rendering
     */
-    virtual Size<> getItemPixelSize(void) const = 0;
+    virtual Sizef getItemPixelSize(void) const = 0;
 };
 
 /*!
@@ -100,7 +100,7 @@ public:
 		Size describing the size in pixel that this ItemEntry's content requires
 		for non-clipped rendering
 	*/
-	Size<> getItemPixelSize(void) const;
+	Sizef getItemPixelSize(void) const;
 
     /*!
     \brief

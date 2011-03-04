@@ -85,7 +85,7 @@ const String ImageYOffsetAttribute( "YOffset" );
 // Internal variables used when parsing XML
 static Texture* s_texture = 0;
 static bool s_autoscaled = false;
-static Size<> s_nativeResolution(640.0f, 480.0f);
+static Sizef s_nativeResolution(640.0f, 480.0f);
 
 //----------------------------------------------------------------------------//
 ImageManager::ImageManager()
@@ -210,15 +210,15 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
         createTexture(name, filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
-    const Rect<> rect(Vector2<>(0.0f, 0.0f), tex->getOriginalDataSize());
+    const Rectf rect(Vector2f(0.0f, 0.0f), tex->getOriginalDataSize());
 
     BasicImage image(name, tex, rect,
-                     Vector2<>(0, 0), false, Size<>(0, 0));
+                     Vector2f(0, 0), false, Sizef(0, 0));
     add(image);
 }
 
 //----------------------------------------------------------------------------//
-void ImageManager::notifyDisplaySizeChanged(const Size<>& size)
+void ImageManager::notifyDisplaySizeChanged(const Sizef& size)
 {
     for (ImageMap::iterator i = d_images.begin() ; i != d_images.end(); ++i)
         i->second->notifyDisplaySizeChanged(size);
@@ -263,7 +263,7 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
     // set native resolution for imageset
-    s_nativeResolution = Size<>(
+    s_nativeResolution = Sizef(
         attributes.getValueAsFloat(ImagesetNativeHorzResAttribute, 640),
         attributes.getValueAsFloat(ImagesetNativeVertResAttribute, 480));
 
@@ -277,7 +277,7 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 {
     const String name(attributes.getValueAsString(ImageNameAttribute));
 
-    Rect<> rect;
+    Rectf rect;
     rect.left(
         attributes.getValueAsInteger(ImageXPosAttribute));
     rect.top(
@@ -287,7 +287,7 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
     rect.setHeight(
         attributes.getValueAsInteger(ImageHeightAttribute));
 
-    const Vector2<> offset(
+    const Vector2f offset(
         attributes.getValueAsInteger(ImageXOffsetAttribute, 0),
         attributes.getValueAsInteger(ImageYOffsetAttribute, 0));
 

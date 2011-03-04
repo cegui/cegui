@@ -63,9 +63,9 @@ namespace CEGUI
 
         // overridden from ItemListBaseWindowRenderer base class.
         void render();
-        Rect<> getItemRenderArea(void) const;
+        Rectf getItemRenderArea(void) const;
         // overridden from WindowRenderer base class.
-        Rect<> getUnclippedInnerRect() const;
+        Rectf getUnclippedInnerRect() const;
 
     protected:
         // overridden from WindowRenderer base class.

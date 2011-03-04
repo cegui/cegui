@@ -118,7 +118,7 @@ void Thumb::setVertRange(float min, float max)
 *************************************************************************/
 void Thumb::setHorzRange(float min, float max)
 {
-    Size<> parentSize(getParentPixelSize());
+    Sizef parentSize(getParentPixelSize());
 
 	// ensure min <= max, swap if not.
 	if (min > max)
@@ -184,9 +184,9 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
-        Size<> parentSize(getParentPixelSize());
+        Sizef parentSize(getParentPixelSize());
 
-		Vector2<> delta;
+		Vector2f delta;
 		float hmin, hmax, vmin, vmax;
 
         delta = CoordConverter::screenToWindow(*this, e.position);

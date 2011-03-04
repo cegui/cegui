@@ -88,9 +88,9 @@ struct OgreRenderer_impl
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size<> d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2<> d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -319,7 +319,7 @@ Texture& OgreRenderer::createTexture(const String& name, const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture(const String& name, const Size<>& size)
+Texture& OgreRenderer::createTexture(const String& name, const Sizef& size)
 {
     throwIfNameExists(name);
 
@@ -450,13 +450,13 @@ void OgreRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& OgreRenderer::getDisplaySize() const
+const Sizef& OgreRenderer::getDisplaySize() const
 {
     return d_pimpl->d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& OgreRenderer::getDisplayDPI() const
+const Vector2f& OgreRenderer::getDisplayDPI() const
 {
     return d_pimpl->d_displayDPI;
 }
@@ -545,14 +545,14 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setDisplaySize(const Size<>& sz)
+void OgreRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_pimpl->d_displaySize)
     {
         d_pimpl->d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect<> area(d_pimpl->d_defaultTarget->getArea());
+        Rectf area(d_pimpl->d_defaultTarget->getArea());
         area.setSize(sz);
         d_pimpl->d_defaultTarget->setArea(area);
     }

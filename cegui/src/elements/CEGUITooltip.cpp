@@ -90,19 +90,19 @@ namespace CEGUI
         d_inPositionSelf = true;
 
         MouseCursor& cursor = MouseCursor::getSingleton();
-        Rect<> screen(Vector2<>(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
-        Rect<> tipRect(getUnclippedOuterRect());
+        Rectf screen(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
+        Rectf tipRect(getUnclippedOuterRect());
         const Image* mouseImage = cursor.getImage();
 
-        Vector2<> mousePos(cursor.getPosition());
-        Size<> mouseSz(0,0);
+        Vector2f mousePos(cursor.getPosition());
+        Sizef mouseSz(0,0);
 
         if (mouseImage)
         {
             mouseSz = mouseImage->getRenderedSize();
         }
 
-        Vector2<> tmpPos(mousePos.d_x + mouseSz.d_width, mousePos.d_y + mouseSz.d_height);
+        Vector2f tmpPos(mousePos.d_x + mouseSz.d_width, mousePos.d_y + mouseSz.d_height);
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
@@ -129,7 +129,7 @@ namespace CEGUI
 
     void Tooltip::sizeSelf(void)
     {
-        Size<> textSize(getTextSize());
+        Sizef textSize(getTextSize());
 
         setSize(
             UVector2(cegui_absdim(textSize.d_width),
@@ -166,7 +166,7 @@ namespace CEGUI
         return d_target;
     }
 
-    Size<> Tooltip::getTextSize() const
+    Sizef Tooltip::getTextSize() const
     {
         if (d_windowRenderer != 0)
         {
@@ -179,14 +179,14 @@ namespace CEGUI
         }
     }
 
-    Size<> Tooltip::getTextSize_impl() const
+    Sizef Tooltip::getTextSize_impl() const
     {
         const RenderedString& rs(getRenderedString());
-        Size<> sz(0.0f, 0.0f);
+        Sizef sz(0.0f, 0.0f);
 
         for (size_t i = 0; i < rs.getLineCount(); ++i)
         {
-            const Size<> line_sz(rs.getPixelSize(i));
+            const Sizef line_sz(rs.getPixelSize(i));
             sz.d_height += line_sz.d_height;
 
             if (line_sz.d_width > sz.d_width)

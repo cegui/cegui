@@ -171,7 +171,7 @@ protected:
     //! initial colours
     ColourRect d_initialColours;
     //! active padding values.
-    Rect<> d_padding;
+    Rectf d_padding;
     //! active colour values.
     ColourRect d_colours;
     //! active font.
@@ -179,7 +179,7 @@ protected:
     //! active vertical alignment
     VerticalFormatting d_vertAlignment;
     //! active image size
-    Size<> d_imageSize;
+    Sizef d_imageSize;
     //! active 'aspect lock' state
     bool d_aspectLock;
 

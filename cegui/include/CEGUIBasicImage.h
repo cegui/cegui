@@ -46,24 +46,24 @@ public:
     BasicImage(const String& name);
 
     BasicImage(const String& name, Texture* texture,
-               const Rect<>& tex_area, const Vector2<>& offset,
-               const bool autoscaled, const Size<>& native_res);
+               const Rectf& tex_area, const Vector2f& offset,
+               const bool autoscaled, const Sizef& native_res);
 
     void setTexture(Texture* texture);
-    void setArea(const Rect<>& pixel_area);
-    void setOffset(const Vector2<>& pixel_offset);
+    void setArea(const Rectf& pixel_area);
+    void setOffset(const Vector2f& pixel_offset);
     void setAutoScaled(const bool autoscaled);
-    void setNativeResolution(const Size<>& native_res);
+    void setNativeResolution(const Sizef& native_res);
 
     // Implement CEGUI::Image interface
     const String& getName() const;
-    const Size<>& getRenderedSize() const;
-    const Vector2<>& getRenderedOffset() const;
+    const Sizef& getRenderedSize() const;
+    const Vector2f& getRenderedOffset() const;
     void render(GeometryBuffer& buffer,
-                const Rect<>& dest_area,
-                const Rect<>* clip_area,
+                const Rectf& dest_area,
+                const Rectf* clip_area,
                 const ColourRect& colours) const;
-    void notifyDisplaySizeChanged(const Size<>& size);
+    void notifyDisplaySizeChanged(const Sizef& size);
     Image& clone() const;
 
 protected:
@@ -72,19 +72,19 @@ protected:
     //! Texture used by this image.
     Texture* d_texture;
     //! Rect defining texture co-ords for this image.
-    Rect<> d_area;
+    Rectf d_area;
     //! Actual pixel size.
-    Size<> d_pixelSize;
+    Sizef d_pixelSize;
     //! Defined pixel offset
-    Vector2<> d_pixelOffset;
+    Vector2f d_pixelOffset;
     //! Whether image is auto-scaled or not.
     bool d_autoscaled;
     //! Native resolution used for autoscaling.
-    Size<> d_nativeResolution;
+    Sizef d_nativeResolution;
     //! Size after having autoscaling applied.
-    Size<> d_scaledSize;
+    Sizef d_scaledSize;
     //! Offset after having autoscaling applied.
-    Vector2<> d_scaledOffset;
+    Vector2f d_scaledOffset;
 };
 
 } // End of  CEGUI namespace section

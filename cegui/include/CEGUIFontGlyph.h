@@ -55,8 +55,8 @@ public:
     { return d_image; }
 
     //! Return the scaled pixel size of the glyph.
-    Size<> getSize(float x_scale, float y_scale) const
-    { return Size<>(getWidth(x_scale), getHeight(y_scale)); }
+    Sizef getSize(float x_scale, float y_scale) const
+    { return Sizef(getWidth(x_scale), getHeight(y_scale)); }
 
     //! Return the scaled width of the glyph.
     float getWidth(float x_scale) const

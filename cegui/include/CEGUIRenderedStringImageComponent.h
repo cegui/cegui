@@ -62,15 +62,15 @@ public:
     //! return the ColourRect object used when drawing this component.
     const ColourRect& getColours() const;
     //! set the size for rendering the image (0s mean 'normal' size)
-    void setSize(const Size<>& sz);
+    void setSize(const Sizef& sz);
     //! return the size for rendering the image (0s mean 'normal' size)
-    const Size<>& getSize() const;
+    const Sizef& getSize() const;
 
     // implementation of abstract base interface
-    void draw(GeometryBuffer& buffer, const Vector2<>& position,
-              const ColourRect* mod_colours, const Rect<>* clip_rect,
+    void draw(GeometryBuffer& buffer, const Vector2f& position,
+              const ColourRect* mod_colours, const Rectf* clip_rect,
               const float vertical_space, const float space_extra) const;
-    Size<> getPixelSize() const;
+    Sizef getPixelSize() const;
     bool canSplit() const;
     RenderedStringImageComponent* split(float split_point, bool first_component);
     RenderedStringImageComponent* clone() const;
@@ -82,7 +82,7 @@ protected:
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours;
     //! target size to render the image at (0s mean natural size)
-    Size<> d_size;
+    Sizef d_size;
 };
 
 } // End of  CEGUI namespace section

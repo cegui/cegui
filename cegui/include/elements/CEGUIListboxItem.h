@@ -34,6 +34,8 @@
 #include "../CEGUIString.h"
 #include "../CEGUIColourRect.h"
 #include "../CEGUITextUtils.h"
+#include "../CEGUISize.h"
+#include "../CEGUIRect.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -376,7 +378,7 @@ public:
     \return
         Size object describing the size of the list box item in pixels.
     */
-    virtual Size<> getPixelSize(void) const = 0;
+    virtual Sizef getPixelSize(void) const = 0;
 
 
     /*!
@@ -395,8 +397,8 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rect<>& targetRect,
-                      float alpha, const Rect<>* clipper) const = 0;
+    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+                      float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
         Operators

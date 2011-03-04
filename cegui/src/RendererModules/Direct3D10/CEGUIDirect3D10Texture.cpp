@@ -39,7 +39,7 @@ namespace CEGUI
 // Helper utility function that copies an RGBA buffer into a region of a second
 // buffer as D3DCOLOR data values
 void blitToSurface(const uint32* src, uint32* dst,
-                   const Size<>& sz, size_t dest_pitch)
+                   const Sizef& sz, size_t dest_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
     {
@@ -59,7 +59,7 @@ void blitToSurface(const uint32* src, uint32* dst,
 // Helper utility function that copies a region of a buffer containing D3DCOLOR
 // values into a second buffer as RGBA values.
 void blitFromSurface(const uint32* src, uint32* dst,
-                     const Size<>& sz, size_t source_pitch)
+                     const Sizef& sz, size_t source_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
     {
@@ -108,7 +108,7 @@ ID3D10ShaderResourceView* Direct3D10Texture::getDirect3DShaderResourceView() con
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::setOriginalDataSize(const Size<>& sz)
+void Direct3D10Texture::setOriginalDataSize(const Sizef& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
@@ -121,19 +121,19 @@ const String& Direct3D10Texture::getName() const
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& Direct3D10Texture::getSize() const
+const Sizef& Direct3D10Texture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size<>& Direct3D10Texture::getOriginalDataSize() const
+const Sizef& Direct3D10Texture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2<>& Direct3D10Texture::getTexelScaling() const
+const Vector2f& Direct3D10Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -167,7 +167,7 @@ void Direct3D10Texture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void Direct3D10Texture::loadFromMemory(const void* buffer,
-                                       const Size<>& buffer_size,
+                                       const Sizef& buffer_size,
                                        PixelFormat pixel_format)
 {
     cleanupDirect3D10Texture();
@@ -226,7 +226,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::blitFromMemory(void* sourceData, const Rect<>& area)
+void Direct3D10Texture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     if (!d_texture)
         return;
@@ -274,7 +274,7 @@ void Direct3D10Texture::blitToMemory(void* targetData)
         {
             blitFromSurface(static_cast<uint32*>(mapped_tex.pData),
                             static_cast<uint32*>(targetData),
-                            Size<>(static_cast<float>(tex_desc.Width),
+                            Sizef(static_cast<float>(tex_desc.Width),
                                    static_cast<float>(tex_desc.Height)),
                             mapped_tex.RowPitch);
 
@@ -381,7 +381,7 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
 
 //----------------------------------------------------------------------------//
 Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
-                                     const Size<>& sz) :
+                                     const Sizef& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),

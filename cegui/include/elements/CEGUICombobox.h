@@ -181,7 +181,7 @@ public:
     static const String ButtonNameSuffix;           //!< Widget name suffix for the button component.
 
     // override from Window class
-    bool isHit(const Vector2<>& position,
+    bool isHit(const Vector2f& position,
                const bool allow_disabled = false) const;
 
 	/*!

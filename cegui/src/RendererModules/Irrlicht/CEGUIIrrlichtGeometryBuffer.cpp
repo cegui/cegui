@@ -73,8 +73,8 @@ void IrrlichtGeometryBuffer::draw() const
     const irr::core::matrix4 proj
         (d_driver.getTransform(irr::video::ETS_PROJECTION));
 
-    const Size<> csz(d_clipRect.getSize());
-    const Size<> tsz(static_cast<float>(target_vp.getWidth()),
+    const Sizef csz(d_clipRect.getSize());
+    const Sizef tsz(static_cast<float>(target_vp.getWidth()),
                      static_cast<float>(target_vp.getHeight()));
 
     // set modified projection 'scissor' matix that negates scale and
@@ -134,7 +134,7 @@ void IrrlichtGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3<>& v)
+void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation.X = v.d_x;
     d_translation.Y = v.d_y;
@@ -153,7 +153,7 @@ void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3<>& p)
+void IrrlichtGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot.X = p.d_x;
     d_pivot.Y = p.d_y;
@@ -162,7 +162,7 @@ void IrrlichtGeometryBuffer::setPivot(const Vector3<>& p)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setClippingRegion(const Rect<>& region)
+void IrrlichtGeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
     d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));

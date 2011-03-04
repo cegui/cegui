@@ -61,7 +61,7 @@ public:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    virtual size_t getTextIndexFromPosition(const Vector2<>& pt) const = 0;
+    virtual size_t getTextIndexFromPosition(const Vector2f& pt) const = 0;
 };
 
 //----------------------------------------------------------------------------//
@@ -411,7 +411,7 @@ protected:
         Code point index into the text that is rendered closest to screen
         position \a pt.
     */
-    size_t getTextIndexFromPosition(const Vector2<>& pt) const;
+    size_t getTextIndexFromPosition(const Vector2f& pt) const;
 
     //! Clear the currently defined selection (just the region, not the text).
     void clearSelection(void);

@@ -88,7 +88,7 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0; 
     }
     result->loadFromMemory(texImg->getPixels(),
-                           Size<>(texImg->getWidth(),
+                           Sizef(texImg->getWidth(),
                                   texImg->getHeight()),
                            cefmt);
     delete texImg;
