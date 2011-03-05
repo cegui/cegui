@@ -1870,18 +1870,17 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 	{
 		bool modified = false;
 
-		// clear old selections if no control key is pressed or if multi-select is off
-		if (!(e.sysKeys & Control) || !d_multiSelect)
-		{
-			modified = clearAllSelections_impl();
-		}
-
 		Point localPos(CoordConverter::screenToWindow(*this, e.position));
-
 		ListboxItem* item = getItemAtPoint(localPos);
 
 		if (item)
 		{
+            // clear old selections if no control key is pressed or if multi-select is off
+            if (!(e.sysKeys & Control) || !d_multiSelect)
+            {
+                modified = clearAllSelections_impl();
+            }
+
 			modified = true;
 
 			// select range or item, depending upon keys and last selected item
