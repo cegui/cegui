@@ -123,6 +123,14 @@ public:
         return Vector2(d_x * c, d_y * c);
     }
 
+	inline Vector2& operator*=(const T& c)
+    {
+	    d_x *= c;
+	    d_y *= c;
+
+	    return *this;
+    }
+
     inline Vector2 operator/(const T& c) const
     {
         return Vector2(d_x / c, d_y / c);

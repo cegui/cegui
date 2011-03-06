@@ -653,12 +653,20 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     quaternion.include()
     
     # CEGUIRect.h
-    rect = CEGUI_ns.class_("Rect<float>")
-    rect.include()
+    rectf = CEGUI_ns.class_("Rect<float>")
+    rectf.rename("Rectf")
+    rectf.include()
     
     urect = CEGUI_ns.class_("Rect<CEGUI::UDim>")
+    urect.rename("URect")
     urect.include()
-
+    # UDim doesn't have the necessary operators for this
+    urect.member_function("getIntersection").exclude()
+    urect.member_function("isPointInRect").exclude()
+    urect.member_function("constrainSizeMin").exclude()
+    urect.member_function("constrainSizeMax").exclude()
+    urect.member_function("constrainSize").exclude()
+    
     # CEGUIRefCounted.h
     # handled elsewhere
     
@@ -760,9 +768,11 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     
     # CEGUISize.h
     size = CEGUI_ns.class_("Size<float>")
+    size.rename("Sizef")
     size.include()
 
     usize = CEGUI_ns.class_("Size<CEGUI::UDim>")
+    usize.rename("USize")
     usize.include()
     
     # CEGUISlotFunctorBase.h
@@ -813,13 +823,16 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     ubox.include()
     
     # CEGUIVector.h
-    vector2 = CEGUI_ns.class_("Vector2<float>")
-    vector2.include()
+    vector2f = CEGUI_ns.class_("Vector2<float>")
+    vector2f.rename("Vector2f")
+    vector2f.include()
     
-    vector3 = CEGUI_ns.class_("Vector3<float>")
-    vector3.include()
+    vector3f = CEGUI_ns.class_("Vector3<float>")
+    vector3f.rename("Vector3f")
+    vector3f.include()
     
     uvector2 = CEGUI_ns.class_("Vector2<CEGUI::UDim>")
+    uvector2.rename("UVector2")
     uvector2.include()
     
     # CEGUIVersion.h
