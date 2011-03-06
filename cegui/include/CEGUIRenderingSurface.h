@@ -207,8 +207,8 @@ public:
         Clears all GeometryBuffers from all rendering queues.
 
     \note
-        Clearing the rendering queues does destory the attached GeometryBuffers,
-        which remain under thier original ownership.
+        Clearing the rendering queues does destroy the attached GeometryBuffers,
+        which remain under their original ownership.
     */
     void clearGeometry();
 

@@ -28,7 +28,8 @@ OUTPUT_DIR = os.path.join(os.path.abspath("."), "output")
 GLOBAL_PACKAGE_VERSION = "0.7.5"
 GCCXML_PATH = "C:\\Users\\Martin Preisler\\Devel\\PythonPackages\\gccxml_bin\\v09\\win32\\bin\\"
 INCLUDE_PATHS = [
-"../../../../include" # trespassers will be shot!
+"../../../../include", # trespassers will be shot!
+"../../../../../build/cegui/include" # the usual build include dir
 ]
 
 def createModuleBuilder(input_file, defined_symbols):
