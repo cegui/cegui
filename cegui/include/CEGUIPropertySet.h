@@ -36,6 +36,9 @@
 #include "CEGUIProperty.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUITypedProperty.h"
+// not needed in this header but you are likely to use it if you include this,
+// we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
+#include "CEGUITplProperty.h"
 #include "CEGUIExceptions.h"
 #include <map>
 
@@ -287,59 +290,29 @@ public:
     Iterator getIterator(void) const;
 };
 
-//! Helper class, don't use directly unless you are the guruest guru!
-class CEGUIEXPORT PropertyHolder
-{
-public:
-    PropertyHolder(Property* prop):
-        property(prop)
-    {}
-
-    ~PropertyHolder()
-    {
-        CEGUI_DELETE_AO property;
-    }
-
-    Property* property;
-};
-
 /*!
-Example of usage inside addStandardProperties or similar method
-called in the PropertySet derived class' constructor:
+\note
+    Whatever you use as propertyOrigin, you have to keep it alive infinitely! The property only takes
+    a reference to it so if you use just a string on stack the compiler won't warn you and you will get
+    crashes! If you use static String instances you should be fine.
 
-CEGUI_DEFINE_PROPERTY((CEGUI_NEW_AO TplProperty<Window, float>(
-    "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.", "OriginClass"
-    &Window::setAlpha, &Window::getAlpha, 1.0f)
-));
-*/
-#define CEGUI_DEFINE_PROPERTY(expression)\
-{\
-    static ::CEGUI::PropertyHolder sProp(expression);\
-    \
-    addProperty(sProp.property);\
-}
-
-/*!
 Example of usage inside addStandardProperties or similar method.
 {
-    static String& propertyOrigin = Window::WidgetTypeName; // this is automatically used by the macro
+    static String propertyOrigin("MyAwesomeClass"); // this is automatically used by the macro
+    // you can also reference WidgetTypeName or any other string if applicable
 
-    CEGUI_DEFINE_TPL_PROPERTY(Window, float, "Alpha",
+    CEGUI_DEFINE_PROPERTY(Window, float, "Alpha",
         "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f)
 };
 
-\note
-    For completeness, this macro is kept here but you need to include CEGUITplProperty.h separately
-    if you want to use TplProperties.
-
 */
-#define CEGUI_DEFINE_TPL_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
+#define CEGUI_DEFINE_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
-    static ::CEGUI::PropertyHolder sProp(CEGUI_NEW_AO ::CEGUI::TplProperty<class_type, property_native_type>(\
-            name, help, propertyOrigin, setter, getter, default_value));\
+    static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
+            name, help, propertyOrigin, setter, getter, default_value);\
     \
-    addProperty(sProp.property);\
+    this->addProperty(&sProperty);\
 }
 
 } // End of  CEGUI namespace section
