@@ -1515,12 +1515,12 @@ void Window::addStandardProperties(void)
 
     // experimental, even easier to maintain property definition, neat eh?
 
-    CEGUI_DEFINE_TPL_PROPERTY(Window, float,
+    CEGUI_DEFINE_PROPERTY(Window, float,
         "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f
     );
 
-    CEGUI_DEFINE_TPL_PROPERTY(Window, bool,
+    CEGUI_DEFINE_PROPERTY(Window, bool,
         "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
         &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false
     );
