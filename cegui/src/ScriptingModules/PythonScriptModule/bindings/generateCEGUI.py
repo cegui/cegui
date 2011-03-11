@@ -778,34 +778,7 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     
     # CEGUIString.h
     string = CEGUI_ns.class_("String")
-    # it might seem weird to include the String class when we provide converters,
-    # the reason for this is simple: we want users to be able to override methods and
-    # thus create inherited classes, if CEGUI::String is in the argument list, that
-    # would fail no matter the converters
-    string.include()
-    
-    # won't work in python no matter what
-    string.mem_funs("data").exclude()
-    string.mem_funs("ptr").exclude()
-    string.mem_funs("at", lambda decl: decl.has_const == False).exclude()
-    
-    # add custom wrappers
-    string.add_declaration_code(
-"""
-// Helper function to pass a python string to a CEGUI::String
-void StringAssign(CEGUI::String &me, PyObject * stringin)
-{
-    if (PyUnicode_Check( stringin )) { // OK so it's a unicodeobject
-        me.assign ( (CEGUI::utf8 * ) PyUnicode_AS_DATA ( stringin ) );
-        }
-    else if (PyString_Check( stringin )) { // OK so it's a unicodeobject
-        me.assign ( (CEGUI::utf8 * ) PyString_AsString ( stringin ) );
-        }
-    return ;
-    }
-"""
-)
-    string.add_registration_code("""def ( "assign",&StringAssign);""")
+    #string.include()
     
     # CEGUISubscriberSlot.h
     # todo: probably not needed with current setup, should we exclude this?
