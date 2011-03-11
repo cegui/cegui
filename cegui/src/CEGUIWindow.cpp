@@ -128,11 +128,11 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false);
-TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setClippedByParent, &Window::isClippedByParent, true);
-TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setDestroyedByParent, &Window::isDestroyedByParent, true);
 /*TplProperty<Window, bool>           Window::d_disabledProperty("Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
                                                             &Window::setDisabled, &Window::isDisabled, false);*/
@@ -140,27 +140,27 @@ TplProperty<Window, bool>           Window::d_destroyedByParentProperty("Destroy
 WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
 
-TplProperty<Window, uint>           Window::d_IDProperty("ID", "Property to get/set the ID value of the Window.  Value is an unsigned integer number.",
+TplProperty<Window, uint>           Window::d_IDProperty("ID", "Property to get/set the ID value of the Window.  Value is an unsigned integer number.", "Window",
                                                             &Window::setID, &Window::getID, 0);
-TplProperty<Window, bool>           Window::d_inheritsAlphaProperty("InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_inheritsAlphaProperty("InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setInheritsAlpha, &Window::inheritsAlpha, true);
 /*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
                                                             &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
-TplProperty<Window, bool>           Window::d_restoreOldCaptureProperty("RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_restoreOldCaptureProperty("RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setRestoreOldCapture, &Window::restoresOldCapture, false);
-TplProperty<Window, String>         Window::d_textProperty("Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
+TplProperty<Window, String>         Window::d_textProperty("Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.", "Window",
                                                             &Window::setText, &Window::getText, "");
 /*
 TplProperty<Window, bool>           Window::d_visibleProperty("Visible", "Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
                                                             &Window::setVisible, &Window::isVisible, true);*/
 WindowProperties::Visible           Window::d_visibleProperty;
 // TODO: inconsistency between property and setter getter names
-TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
-TplProperty<Window, bool>           Window::d_wantsMultiClicksProperty("WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_wantsMultiClicksProperty("WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true);
-TplProperty<Window, bool>           Window::d_mouseButtonAutoRepeatProperty("MouseButtonDownAutoRepeat", "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".",
+TplProperty<Window, bool>           Window::d_mouseButtonAutoRepeatProperty("MouseButtonDownAutoRepeat", "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false);
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
 WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
@@ -1511,14 +1511,20 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 //----------------------------------------------------------------------------//
 void Window::addStandardProperties(void)
 {
-    // experimental, even easier to maintan, property definition, neat eh?
-    CEGUI_DEFINE_PROPERTY((CEGUI_NEW_AO TplProperty<Window, float>(
-        "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
-        &Window::setAlpha, &Window::getAlpha, 1.0f)
-    ));
+    static String propertyOrigin("Window");
 
-    //addProperty(&d_alphaProperty);
-    addProperty(&d_alwaysOnTopProperty);
+    // experimental, even easier to maintain property definition, neat eh?
+
+    CEGUI_DEFINE_TPL_PROPERTY(Window, float,
+        "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f
+    );
+
+    CEGUI_DEFINE_TPL_PROPERTY(Window, bool,
+        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+        &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false
+    );
+
     addProperty(&d_clippedByParentProperty);
     addProperty(&d_destroyedByParentProperty);
     addProperty(&d_disabledProperty);

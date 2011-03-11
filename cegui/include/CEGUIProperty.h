@@ -64,6 +64,8 @@ class CEGUIEXPORT Property :
 public:
     //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
     static String UnknownDataType;
+    //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
+    static String UnknownOrigin;
 
 	/*!
 	\brief
@@ -81,13 +83,20 @@ public:
     \param writesXML
         Specifies whether the writeXMLToStream method should do anything for this Property.  This
         enables selectivity in what properties within a PropertySet will get output as XML.
+
+	\param dataType
+	    String representation of the data type this property is held in ("int", "UVector2", ...)
+
+	\param origin
+	    String describing the origin class of this Property (Window, FrameWindow, ...)
 	*/
-	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true, const String& dataType = UnknownDataType) :
+	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true, const String& dataType = UnknownDataType, const String& origin = UnknownOrigin) :
 	  d_name(name),
 	  d_help(help),
 	  d_default(defaultValue),
 	  d_writeXML(writesXML),
-      d_dataType(&dataType)
+      d_dataType(&dataType),
+      d_origin(&origin)
     {}
 
 	/*!
@@ -125,6 +134,14 @@ public:
 	*/
     const String& getDataType(void) const   {return *d_dataType;}
 
+    /*!
+    \brief
+        Return string origin of this Property
+
+    \return
+        String containing the origin of the Property
+    */
+    const String& getOrigin(void) const   {return *d_origin;}
 
 	/*!
 	\brief
@@ -201,6 +218,8 @@ protected:
 	bool d_writeXML; //!< Specifies whether writeXMLToStream should do anything for this property.
     // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
     String const* d_dataType; //!< Holds data type of this property
+    // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
+    String const* d_origin; //!< Holds origin of this property
 };
 
 } // End of  CEGUI namespace section
