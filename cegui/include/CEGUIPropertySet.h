@@ -307,14 +307,38 @@ public:
 Example of usage inside addStandardProperties or similar method
 called in the PropertySet derived class' constructor:
 
-CEGUI_DEFINE_PROPERTY((new TplProperty<Window, float>(
-    "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
+CEGUI_DEFINE_PROPERTY((CEGUI_NEW_AO TplProperty<Window, float>(
+    "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.", "OriginClass"
     &Window::setAlpha, &Window::getAlpha, 1.0f)
 ));
 */
 #define CEGUI_DEFINE_PROPERTY(expression)\
 {\
     static ::CEGUI::PropertyHolder sProp(expression);\
+    \
+    addProperty(sProp.property);\
+}
+
+/*!
+Example of usage inside addStandardProperties or similar method.
+{
+    static String& propertyOrigin = Window::WidgetTypeName; // this is automatically used by the macro
+
+    CEGUI_DEFINE_TPL_PROPERTY(Window, float, "Alpha",
+        "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f)
+};
+
+\note
+    For completeness, this macro is kept here but you need to include CEGUITplProperty.h separately
+    if you want to use TplProperties.
+
+*/
+#define CEGUI_DEFINE_TPL_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
+{\
+    static ::CEGUI::PropertyHolder sProp(CEGUI_NEW_AO ::CEGUI::TplProperty<class_type, property_native_type>(\
+            name, help, propertyOrigin, setter, getter, default_value));\
+    \
     addProperty(sProp.property);\
 }
 

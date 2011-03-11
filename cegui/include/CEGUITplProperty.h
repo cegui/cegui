@@ -51,8 +51,8 @@ public:
     
     // do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
     // but more typo prone (passing string default value)
-    TplProperty(const String& name, const String& help, Setter setter, Getter getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
-        TypedProperty<T>(name, help, defaultValue, writesXML),
+    TplProperty(const String& name, const String& help, const String& origin, Setter setter, Getter getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
+        TypedProperty<T>(name, help, origin, defaultValue, writesXML),
         
         d_setter(setter),
         d_getter(getter)
