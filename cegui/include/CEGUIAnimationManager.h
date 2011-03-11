@@ -45,7 +45,7 @@ namespace CEGUI
 {
 
 class CEGUIEXPORT AnimationManager :
-    public Singleton <AnimationManager>,
+    public Singleton<AnimationManager>,
     public AllocatedObject<AnimationManager>
 {
 public:
