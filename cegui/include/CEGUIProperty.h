@@ -63,9 +63,9 @@ class CEGUIEXPORT Property :
 {
 public:
     //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
-    static String UnknownDataType;
+    static const String UnknownDataType;
     //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
-    static String UnknownOrigin;
+    static const String UnknownOrigin;
 
 	/*!
 	\brief
@@ -95,8 +95,8 @@ public:
 	  d_help(help),
 	  d_default(defaultValue),
 	  d_writeXML(writesXML),
-      d_dataType(&dataType),
-      d_origin(&origin)
+      d_dataType(dataType),
+      d_origin(origin)
     {}
 
 	/*!
@@ -132,7 +132,7 @@ public:
 	\return
 		String containing the data type of the Property
 	*/
-    const String& getDataType(void) const   {return *d_dataType;}
+    const String& getDataType(void) const   {return d_dataType;}
 
     /*!
     \brief
@@ -141,7 +141,7 @@ public:
     \return
         String containing the origin of the Property
     */
-    const String& getOrigin(void) const   {return *d_origin;}
+    const String& getOrigin(void) const   {return d_origin;}
 
 	/*!
 	\brief
@@ -217,9 +217,9 @@ protected:
 	String d_default;	//!< String that stores the Property default value string.
 	bool d_writeXML; //!< Specifies whether writeXMLToStream should do anything for this property.
     // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
-    String const* d_dataType; //!< Holds data type of this property
+    String d_dataType; //!< Holds data type of this property
     // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
-    String const* d_origin; //!< Holds origin of this property
+    String d_origin; //!< Holds origin of this property
 };
 
 } // End of  CEGUI namespace section
