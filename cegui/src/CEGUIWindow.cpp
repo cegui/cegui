@@ -128,29 +128,11 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-TplProperty<Window, bool>           Window::d_alwaysOnTopProperty("AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false);
-TplProperty<Window, bool>           Window::d_clippedByParentProperty("ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setClippedByParent, &Window::isClippedByParent, true);
-TplProperty<Window, bool>           Window::d_destroyedByParentProperty("DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setDestroyedByParent, &Window::isDestroyedByParent, true);
-/*TplProperty<Window, bool>           Window::d_disabledProperty("Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::setDisabled, &Window::isDisabled, false);*/
-
 WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
-
-TplProperty<Window, uint>           Window::d_IDProperty("ID", "Property to get/set the ID value of the Window.  Value is an unsigned integer number.", "Window",
-                                                            &Window::setID, &Window::getID, 0);
-TplProperty<Window, bool>           Window::d_inheritsAlphaProperty("InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setInheritsAlpha, &Window::inheritsAlpha, true);
 /*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
                                                             &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
-TplProperty<Window, bool>           Window::d_restoreOldCaptureProperty("RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setRestoreOldCapture, &Window::restoresOldCapture, false);
-TplProperty<Window, String>         Window::d_textProperty("Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.", "Window",
-                                                            &Window::setText, &Window::getText, "");
 /*
 TplProperty<Window, bool>           Window::d_visibleProperty("Visible", "Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
                                                             &Window::setVisible, &Window::isVisible, true);*/
@@ -1511,7 +1493,7 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 //----------------------------------------------------------------------------//
 void Window::addStandardProperties(void)
 {
-    static String propertyOrigin("Window");
+    static const String propertyOrigin("Window");
 
     // experimental, even easier to maintain property definition, neat eh?
 
@@ -1521,20 +1503,46 @@ void Window::addStandardProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+        "AlwaysOnTop", "Property to get/set the 'always on top' setting for the Window. Value is either \"True\" or \"False\".",
         &Window::setAlwaysOnTop, &Window::isAlwaysOnTop, false
     );
 
-    addProperty(&d_clippedByParentProperty);
-    addProperty(&d_destroyedByParentProperty);
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "ClippedByParent", "Property to get/set the 'clipped by parent' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setClippedByParent, &Window::isClippedByParent, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "DestroyedByParent", "Property to get/set the 'destroyed by parent' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setDestroyedByParent, &Window::isDestroyedByParent, true
+    );
+
     addProperty(&d_disabledProperty);
     addProperty(&d_fontProperty);
-    addProperty(&d_IDProperty);
-    addProperty(&d_inheritsAlphaProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, uint,
+        "ID", "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
+        &Window::setID, &Window::getID, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "InheritsAlpha", "Property to get/set the 'inherits alpha' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setInheritsAlpha, &Window::inheritsAlpha, true
+    );
+
     addProperty(&d_mouseCursorProperty);
-    addProperty(&d_restoreOldCaptureProperty);
-    addProperty(&d_textProperty);
     addProperty(&d_visibleProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setRestoreOldCapture, &Window::restoresOldCapture, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, String,
+        "Text", "Property to get/set the text / caption for the Window. Value is the text string to use. Meaning of this property heavily depends on the type of the Window.",
+        &Window::setText, &Window::getText, ""
+    );
+
     addProperty(&d_zOrderChangeProperty);
     addProperty(&d_wantsMultiClicksProperty);
     addProperty(&d_mouseButtonAutoRepeatProperty);
@@ -1571,7 +1579,7 @@ void Window::addStandardProperties(void)
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
     {
-        banPropertyFromXML(&d_destroyedByParentProperty);
+        banPropertyFromXML("DestroyedByParent");
         banPropertyFromXML(&d_vertAlignProperty);
         banPropertyFromXML(&d_horzAlignProperty);
         banPropertyFromXML(&d_unifiedAreaRectProperty);

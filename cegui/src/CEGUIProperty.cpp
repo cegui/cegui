@@ -33,8 +33,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    String Property::UnknownDataType("Unknown");
-    String Property::UnknownOrigin("Unknown");
+    const String Property::UnknownDataType("Unknown");
+    const String Property::UnknownOrigin("Unknown");
 
 	/*************************************************************************
 		Returns whether the property is at it's default value.

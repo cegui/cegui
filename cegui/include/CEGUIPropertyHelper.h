@@ -436,7 +436,7 @@ public:
     static return_type fromString(const String& str)
     {
         Quaternion val(1, 0, 0, 0);
-        sscanf(str.c_str(), " w:&g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
+        sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
 
         return val;
     }
@@ -444,7 +444,7 @@ public:
     static string_return_type toString(pass_type val)
     {
         char buff[128];
-        snprintf(buff, sizeof(buff), "w:&g x:%g y:%g z:%g", val.d_w, val.d_x, val.d_y, val.d_z);
+        snprintf(buff, sizeof(buff), "w:%g x:%g y:%g z:%g", val.d_w, val.d_x, val.d_y, val.d_z);
 
         return String(buff);
     }

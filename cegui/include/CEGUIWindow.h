@@ -4213,19 +4213,11 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static TplProperty<Window, bool>            d_alwaysOnTopProperty;
-    static TplProperty<Window, bool>            d_clippedByParentProperty;
-    static TplProperty<Window, bool>            d_destroyedByParentProperty;
-
     static  WindowProperties::Disabled          d_disabledProperty;
     static  WindowProperties::Font              d_fontProperty;
 
-    static TplProperty<Window, uint>            d_IDProperty;
-    static TplProperty<Window, bool>            d_inheritsAlphaProperty;
     //static TplProperty<Window, Image*>          d_mouseCursorProperty;
     static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    static TplProperty<Window, bool>            d_restoreOldCaptureProperty;
-    static TplProperty<Window, String>          d_textProperty;
     //static TplProperty<Window, bool>            d_visibleProperty;
     static  WindowProperties::Visible           d_visibleProperty;
     static TplProperty<Window, bool>            d_zOrderChangeProperty;
