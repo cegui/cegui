@@ -575,15 +575,33 @@ public:
         is not completely obscured by other windows, just that the window will
         be processed when rendering, and is not explicitly marked as hidden.
 
-    \param localOnly
-        States whether to only return the state set for this window, and not to
+    \note
+        Only checks the state set for this window, and does not
         factor in inherited state from ancestor windows.
+
+    \return
+        - true if the window is set as visible.
+        - false if the window is set as hidden.
+    */
+    bool isVisible() const;
+
+    /*!
+    \brief
+        return true if the Window is currently visible.
+
+        When true is returned from this function does not mean that the window
+        is not completely obscured by other windows, just that the window will
+        be processed when rendering, and is not explicitly marked as hidden.
+
+    \note
+        Does check the state set for this window, but also
+        factors in inherited state from ancestor windows.
 
     \return
         - true if the window will be drawn.
         - false if the window is hidden and therefore ignored when rendering.
     */
-    bool isVisible(bool localOnly = false) const;
+    bool isEffectiveVisible() const;
 
     /*!
     \brief
@@ -4245,8 +4263,6 @@ protected:
 
     //static TplProperty<Window, Image*>          d_mouseCursorProperty;
     static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    //static TplProperty<Window, bool>            d_visibleProperty;
-    static  WindowProperties::Visible           d_visibleProperty;
     static TplProperty<Window, bool>            d_zOrderChangeProperty;
     static TplProperty<Window, bool>            d_wantsMultiClicksProperty;
     static TplProperty<Window, bool>            d_mouseButtonAutoRepeatProperty;

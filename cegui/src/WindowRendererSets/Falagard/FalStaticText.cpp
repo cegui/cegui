@@ -116,7 +116,7 @@ namespace CEGUI
 
         // see if we may need to adjust horizontal position
         const Scrollbar* const horzScrollbar = getHorzScrollbar();
-        if (horzScrollbar->isVisible())
+        if (horzScrollbar->isEffectiveVisible())
         {
             switch(d_horzFormatting)
             {
@@ -151,7 +151,7 @@ namespace CEGUI
 
         case VTF_CENTRE_ALIGNED:
             // if scroll bar is in use, act like TopAligned
-            if (vertScrollbar->isVisible())
+            if (vertScrollbar->isEffectiveVisible())
                 absarea.d_min.d_y -= vertScrollbar->getScrollPosition();
             // no scroll bar, so centre text instead.
             else
@@ -198,8 +198,8 @@ namespace CEGUI
     {
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
-        bool v_visible = vertScrollbar->isVisible(true);
-        bool h_visible = horzScrollbar->isVisible(true);
+        bool v_visible = vertScrollbar->isVisible();
+        bool h_visible = horzScrollbar->isVisible();
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
@@ -395,11 +395,11 @@ namespace CEGUI
 
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
-        if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+        if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
         {
             vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
         }
-        else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+        else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
         {
             horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
         }

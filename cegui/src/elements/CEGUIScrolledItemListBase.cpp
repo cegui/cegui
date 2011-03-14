@@ -152,8 +152,8 @@ void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
     Scrollbar* v = getVertScrollbar();
     Scrollbar* h = getHorzScrollbar();
 
-    const bool old_vert_visible = v->isVisible(true);
-    const bool old_horz_visible = h->isVisible(true);
+    const bool old_vert_visible = v->isVisible();
+    const bool old_horz_visible = h->isVisible();
 
     Sizef render_area_size = getItemRenderArea().getSize();
 
@@ -187,8 +187,8 @@ void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
     }
 
     // if some change occurred, invalidate the inner rect area caches.
-    if ((old_vert_visible != v->isVisible(true)) ||
-        (old_horz_visible != h->isVisible(true)))
+    if ((old_vert_visible != v->isVisible()) ||
+        (old_horz_visible != h->isVisible()))
     {
         d_innerUnclippedRectValid = false;
         d_innerRectClipperValid = false;
@@ -226,7 +226,7 @@ void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
 
     // dont do anything if we are no using scrollbars
     // or have'nt got any items
-    if (!v->isVisible(true) || !count)
+    if (!v->isVisible() || !count)
     {
         return;
     }

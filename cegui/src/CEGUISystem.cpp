@@ -991,7 +991,7 @@ bool System::injectTimePulse(float timeElapsed)
     AnimationManager::getSingleton().stepInstances(timeElapsed);
 
     // if no visible active sheet, input can't be handled
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return false;
 
     // else pass to sheet for distribution.
@@ -1008,7 +1008,7 @@ Window* System::getTargetWindow(const Vector2f& pt,
                                 const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return 0;
 
     Window* dest_window = Window::getCaptureWindow();
@@ -1048,7 +1048,7 @@ Window* System::getTargetWindow(const Vector2f& pt,
 Window* System::getKeyboardTargetWindow(void) const
 {
     // if no active sheet, there is no target widow.
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return 0;
 
     // handle normal non-modal situations

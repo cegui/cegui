@@ -47,8 +47,8 @@ namespace CEGUI
     	Listbox* lb = (Listbox*)d_window;
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = lb->getVertScrollbar()->isVisible(true);
-        bool h_visible = lb->getHorzScrollbar()->isVisible(true);
+        bool v_visible = lb->getVertScrollbar()->isVisible();
+        bool h_visible = lb->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)

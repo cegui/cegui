@@ -714,7 +714,7 @@ bool TabControl::handleScrollPane(const EventArgs& e)
     // Find the leftmost visible button
     for (i = 0; i < d_tabButtonVector.size(); ++i)
     {
-        if (d_tabButtonVector [i]->isVisible (true))
+        if (d_tabButtonVector [i]->isVisible())
             break;
         delta = d_tabButtonVector [i]->getPixelSize ().d_width;
     }
@@ -787,7 +787,7 @@ void TabControl::removeTab_impl(Window* window)
     // delete connection to event we subscribed earlier
     d_eventConnections.erase(window);
     // Was this selected?
-    bool reselect = window->isVisible();
+    bool reselect = window->isEffectiveVisible();
     // Tab buttons are the 2nd onward children
     getTabPane()->removeChild(window);
 

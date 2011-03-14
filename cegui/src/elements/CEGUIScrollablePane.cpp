@@ -297,7 +297,7 @@ void ScrollablePane::configureScrollbars(void)
     
     // Check if the addition of the horizontal scrollbar means we
     // now also need the vertical bar.
-    if (horzScrollbar->isVisible())
+    if (horzScrollbar->isEffectiveVisible())
     {
         vertScrollbar->setVisible(isVertScrollbarNeeded());
     }
@@ -501,13 +501,13 @@ void ScrollablePane::onMouseWheel(MouseEventArgs& e)
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
     
-    if (vertScrollbar->isVisible() &&
+    if (vertScrollbar->isEffectiveVisible() &&
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
         vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() +
                             vertScrollbar->getStepSize() * -e.wheelChange);
     }
-    else if (horzScrollbar->isVisible() &&
+    else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() +
