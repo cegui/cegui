@@ -128,7 +128,6 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-WindowProperties::Disabled          Window::d_disabledProperty;
 WindowProperties::Font              Window::d_fontProperty;
 /*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
                                                             &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
@@ -311,10 +310,16 @@ const String& Window::getType(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isDisabled(bool localOnly) const
+bool Window::isDisabled() const
+{
+    return !d_enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isEffectiveDisabled() const
 {
     const bool parent_disabled =
-        (!d_parent || localOnly) ? false : d_parent->isDisabled();
+        !d_parent ? false : d_parent->isDisabled();
 
     return !d_enabled || parent_disabled;
 }
@@ -808,6 +813,12 @@ void Window::setEnabled(bool setting)
     }
 
     System::getSingleton().updateWindowContainingMouse();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setDisabled(bool setting)
+{
+    setEnabled(!setting);
 }
 
 //----------------------------------------------------------------------------//
@@ -1517,7 +1528,11 @@ void Window::addStandardProperties(void)
         &Window::setDestroyedByParent, &Window::isDestroyedByParent, true
     );
 
-    addProperty(&d_disabledProperty);
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "Disabled", "Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
+        &Window::setDisabled, &Window::isDisabled, false
+    );
+
     addProperty(&d_fontProperty);
 
     CEGUI_DEFINE_PROPERTY(Window, uint,

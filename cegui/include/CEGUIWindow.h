@@ -543,15 +543,29 @@ public:
     \brief
         return whether the Window is currently disabled
 
-    \param localOnly
-        States whether to only return the state set for this window, and not to
+    \note
+        Only checks the state set for this window, and does not
         factor in inherited state from ancestor windows.
 
     \return
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    bool isDisabled(bool localOnly = false) const;
+    bool isDisabled() const;
+
+    /*!
+    \brief
+        return whether the Window is currently disabled
+
+    \note
+        Not only checks the state set for this window, but also
+        factors in inherited state from ancestor windows.
+
+    \return
+        - true if the window is disabled.
+        - false if the window is enabled.
+    */
+    bool isEffectiveDisabled() const;
 
     /*!
     \brief
@@ -1721,6 +1735,20 @@ public:
         Nothing
     */
     void setEnabled(bool setting);
+
+    /*!
+    \brief
+        Set whether this window is enabled or disabled.  A disabled window
+        normally can not be interacted with, and may have different rendering.
+
+    \param setting
+        - true to disable the Window
+        - false to enable the Window.
+
+    \return
+        Nothing
+    */
+    void setDisabled(bool setting);
 
     /*!
     \brief
@@ -4213,7 +4241,6 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::Disabled          d_disabledProperty;
     static  WindowProperties::Font              d_fontProperty;
 
     //static TplProperty<Window, Image*>          d_mouseCursorProperty;
