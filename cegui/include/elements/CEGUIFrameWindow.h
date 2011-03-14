@@ -721,19 +721,7 @@ private:
 	/*************************************************************************
 		Static Properties for this class
 	*************************************************************************/
-	static FrameWindowProperties::SizingEnabled		d_sizingEnabledProperty;
-	static FrameWindowProperties::FrameEnabled		d_frameEnabledProperty;
-	static FrameWindowProperties::TitlebarEnabled	d_titlebarEnabledProperty;
-	static FrameWindowProperties::CloseButtonEnabled d_closeButtonEnabledProperty;
 	static FrameWindowProperties::RollUpState		d_rollUpStateProperty;
-	static FrameWindowProperties::RollUpEnabled		d_rollUpEnabledProperty;
-	static FrameWindowProperties::DragMovingEnabled	d_dragMovingEnabledProperty;
-	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
-    static FrameWindowProperties::NSSizingCursorImage   d_nsSizingCursorProperty;
-    static FrameWindowProperties::EWSizingCursorImage   d_ewSizingCursorProperty;
-    static FrameWindowProperties::NWSESizingCursorImage d_nwseSizingCursorProperty;
-    static FrameWindowProperties::NESWSizingCursorImage d_neswSizingCursorProperty;
-
 
 	/*************************************************************************
 		Private methods

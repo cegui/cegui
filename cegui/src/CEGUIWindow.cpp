@@ -1507,7 +1507,7 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 //----------------------------------------------------------------------------//
 void Window::addStandardProperties(void)
 {
-    static const String propertyOrigin("Window");
+    const String propertyOrigin("Window");
 
     // experimental, even easier to maintain property definition, neat eh?
 
