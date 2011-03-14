@@ -132,10 +132,7 @@ WindowProperties::Font              Window::d_fontProperty;
 /*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
                                                             &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
-/*
-TplProperty<Window, bool>           Window::d_visibleProperty("Visible", "Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
-                                                            &Window::setVisible, &Window::isVisible, true);*/
-WindowProperties::Visible           Window::d_visibleProperty;
+
 // TODO: inconsistency between property and setter getter names
 TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
                                                             &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
@@ -319,16 +316,22 @@ bool Window::isDisabled() const
 bool Window::isEffectiveDisabled() const
 {
     const bool parent_disabled =
-        !d_parent ? false : d_parent->isDisabled();
+        !d_parent ? false : d_parent->isEffectiveDisabled();
 
     return !d_enabled || parent_disabled;
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isVisible(bool localOnly) const
+bool Window::isVisible() const
+{
+    return d_visible;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isEffectiveVisible() const
 {
     const bool parent_visible =
-        (!d_parent || localOnly) ? true : d_parent->isVisible();
+        !d_parent ? true : d_parent->isEffectiveVisible();
 
     return d_visible && parent_visible;
 }
@@ -709,7 +712,7 @@ Window* Window::getChildAtPosition(const Vector2f& position) const
     ChildList::const_reverse_iterator child;
     for (child = d_drawList.rbegin(); child != end; ++child)
     {
-        if ((*child)->isVisible())
+        if ((*child)->isEffectiveVisible())
         {
             // recursively scan children of this child windows...
             Window* const wnd = (*child)->getChildAtPosition(p);
@@ -743,7 +746,7 @@ Window* Window::getTargetChildAtPosition(const Vector2f& position,
     ChildList::const_reverse_iterator child;
     for (child = d_drawList.rbegin(); child != end; ++child)
     {
-        if ((*child)->isVisible())
+        if ((*child)->isEffectiveVisible())
         {
             // recursively scan children of this child windows...
             Window* const wnd =
@@ -840,7 +843,7 @@ void Window::activate(void)
 {
     // exit if the window is not visible, since a hidden window may not be the
     // active window.
-    if (!isVisible())
+    if (!isEffectiveVisible())
         return;
 
     // force complete release of input capture.
@@ -1220,7 +1223,7 @@ void Window::invalidate_impl(const bool recursive)
 void Window::render()
 {
     // don't do anything if window is not visible
-    if (!isVisible())
+    if (!isEffectiveVisible())
         return;
 
     // get rendering context
@@ -1546,7 +1549,11 @@ void Window::addStandardProperties(void)
     );
 
     addProperty(&d_mouseCursorProperty);
-    addProperty(&d_visibleProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "Visible", "Property to get/set the 'visible state' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setVisible, &Window::isVisible, true
+    );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "RestoreOldCapture", "Property to get/set the 'restore old capture' setting for the Window. Value is either \"True\" or \"False\".",
@@ -1704,7 +1711,7 @@ void Window::update(float elapsed)
         // update children based on their WindowUpdateMode setting.
         if (d_children[i]->d_updateMode == WUM_ALWAYS ||
                 (d_children[i]->d_updateMode == WUM_VISIBLE &&
-                 d_children[i]->isVisible(true)))
+                 d_children[i]->isVisible()))
         {
             d_children[i]->update(elapsed);
         }

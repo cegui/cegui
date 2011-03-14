@@ -105,22 +105,6 @@ bool MouseCursorImage::isDefault(const PropertyReceiver* receiver) const
     return static_cast<const Window*>(receiver)->getMouseCursor(false) == 0;
 }
 
-String Visible::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isVisible());
-}
-
-
-void Visible::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setVisible(PropertyHelper<bool>::fromString(value));
-}
-
-bool Visible::isDefault(const PropertyReceiver* receiver) const
-{
-    return static_cast<const Window*>(receiver)->isVisible(true);
-}
-
 String DestroyedByParent::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDestroyedByParent());

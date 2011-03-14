@@ -171,12 +171,12 @@ DemoConsole::~DemoConsole()
 
 void DemoConsole::toggleVisibility()
 {
-    d_root->isVisible(true) ? d_root->hide() : d_root->show();
+    d_root->isVisible() ? d_root->hide() : d_root->show();
 }
 
 bool DemoConsole::isVisible() const
 {
-    return d_root->isVisible();
+    return d_root->isEffectiveVisible();
 }
 
 bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)

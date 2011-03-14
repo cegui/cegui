@@ -877,7 +877,7 @@ bool Combobox::getSingleClickEnabled(void) const
 *************************************************************************/
 bool Combobox::isDropDownListVisible(void) const
 {
-	return getDropList()->isVisible();
+	return getDropList()->isEffectiveVisible();
 }
 
 

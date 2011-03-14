@@ -324,7 +324,7 @@ void Scrollbar::addScrollbarProperties(void)
 
         // scrollbars tend to have their visibility toggled alot, so we ban
         // that as well
-        banPropertyFromXML(&d_visibleProperty);
+        banPropertyFromXML("Visible");
     }
 }
 

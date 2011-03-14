@@ -62,8 +62,8 @@ Rectf FalagardMultiLineEditbox::getTextRenderArea(void) const
 {
     MultiLineEditbox* w = (MultiLineEditbox*)d_window;
     const WidgetLookFeel& wlf = getLookNFeel();
-    bool v_visible = w->getVertScrollbar()->isVisible(true);
-    bool h_visible = w->getHorzScrollbar()->isVisible(true);
+    bool v_visible = w->getVertScrollbar()->isVisible();
+    bool h_visible = w->getHorzScrollbar()->isVisible();
 
     // if either of the scrollbars are visible, we might want to use another text rendering area
     if (v_visible || h_visible)

@@ -56,8 +56,8 @@ namespace CEGUI
         const WidgetLookFeel& wlf = getLookNFeel();
 		Tree* tree = (Tree*)d_window;
 
-        bool v_visible = tree->getVertScrollbar()->isVisible(true);
-        bool h_visible = tree->getHorzScrollbar()->isVisible(true);
+        bool v_visible = tree->getVertScrollbar()->isVisible();
+        bool h_visible = tree->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)

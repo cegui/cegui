@@ -102,34 +102,6 @@ public:
 
 /*!
 \brief
-	Property to access window Visible setting.
-
-	This property offers access to the visible setting for the window.
-
-	\par Usage:
-		- Name: Visible
-		- Format: "[text]".
-
-	\par Where [Text] is:
-		- "True" to indicate the Window is visible.
-		- "False" to indicate the Window is not visible.
-*/
-class Visible : public Property
-{
-public:
-	Visible() : Property(
-		"Visible",
-		"Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
-		"True")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-	bool	isDefault(const PropertyReceiver* receiver) const;
-};
-
-/*!
-\brief
 	Property to access window Destroyed by Parent setting.
 
 	This property offers access to the destryed by parent setting for the window.

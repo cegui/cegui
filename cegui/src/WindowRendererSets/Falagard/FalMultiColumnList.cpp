@@ -50,8 +50,8 @@ namespace CEGUI
         MultiColumnList* w = (MultiColumnList*)d_window;
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = w->getVertScrollbar()->isVisible(true);
-        bool h_visible = w->getHorzScrollbar()->isVisible(true);
+        bool v_visible = w->getVertScrollbar()->isVisible();
+        bool h_visible = w->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another item rendering area
         if (v_visible || h_visible)
