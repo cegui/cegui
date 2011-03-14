@@ -105,48 +105,6 @@ bool MouseCursorImage::isDefault(const PropertyReceiver* receiver) const
     return static_cast<const Window*>(receiver)->getMouseCursor(false) == 0;
 }
 
-
-String ClippedByParent::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isClippedByParent());
-}
-
-
-void ClippedByParent::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setClippedByParent(PropertyHelper<bool>::fromString(value));
-}
-
-
-String AlwaysOnTop::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isAlwaysOnTop());
-}
-
-
-void AlwaysOnTop::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setAlwaysOnTop(PropertyHelper<bool>::fromString(value));
-}
-
-
-String Disabled::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isDisabled());
-}
-
-
-void Disabled::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Window*>(receiver)->setEnabled(!PropertyHelper<bool>::fromString(value));
-}
-
-bool Disabled::isDefault(const PropertyReceiver* receiver) const
-{
-    return !static_cast<const Window*>(receiver)->isDisabled(true);
-}
-
-
 String Visible::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper<bool>::toString(static_cast<const Window*>(receiver)->isVisible());
