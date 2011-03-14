@@ -65,7 +65,7 @@ void FalagardMenuItem::render()
 {
     MenuItem* w = (MenuItem*)d_window;
     // build name of state we're in
-    String stateName(w->isDisabled() ? "Disabled" : "Enabled");
+    String stateName(w->isEffectiveDisabled() ? "Disabled" : "Enabled");
 
     String suffix;
 

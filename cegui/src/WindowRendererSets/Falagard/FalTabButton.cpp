@@ -52,7 +52,7 @@ namespace CEGUI
         String state;
 		String prefix((tc->getTabPanePosition() == TabControl::Top) ? "Top" : "Bottom");
 
-		if (w->isDisabled())
+		if (w->isEffectiveDisabled())
 		    state = "Disabled";
 		else if (w->isSelected())
 		    state = "Selected";

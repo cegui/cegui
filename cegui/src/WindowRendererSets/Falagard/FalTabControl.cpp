@@ -50,7 +50,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // render basic imagery
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         imagery->render(*d_window);
     }
 

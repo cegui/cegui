@@ -55,12 +55,12 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
 
         // get imagery for actual progress rendering
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "DisabledProgress" : "EnabledProgress");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "DisabledProgress" : "EnabledProgress");
 
         // get target rect for this imagery
         Rectf progressRect(wlf.getNamedArea("ProgressArea").getArea().getPixelRect(*d_window));

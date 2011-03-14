@@ -49,7 +49,7 @@ namespace CEGUI
         const StateImagery* imagery;
 
         // get imagery for main state.
-        if (w->isDisabled())
+        if (w->isEffectiveDisabled())
         {
             imagery = &wlf.getStateImagery("Disabled");
         }

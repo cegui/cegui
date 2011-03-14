@@ -47,7 +47,7 @@ namespace CEGUI
         bool norm = false;
         String state;
 
-		if (w->isDisabled())
+		if (w->isEffectiveDisabled())
 		{
 		    state = "Disabled";
 		}

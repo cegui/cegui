@@ -69,7 +69,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-		bool is_enabled = !d_window->isDisabled();
+		bool is_enabled = !d_window->isEffectiveDisabled();
 
         // render frame section
         if (d_frameEnabled)
