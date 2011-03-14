@@ -98,7 +98,7 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
     // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
     // try and get imagery for our current state
-    imagery = &wlf.getStateImagery(w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
+    imagery = &wlf.getStateImagery(w->isEffectiveDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
     // peform the rendering operation.
     imagery->render(*w);
 }

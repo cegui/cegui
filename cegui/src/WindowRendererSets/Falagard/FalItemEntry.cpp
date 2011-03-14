@@ -48,14 +48,14 @@ namespace CEGUI
 
         const StateImagery* imagery;
         // render basic imagery
-        String state = item->isDisabled() ? "Disabled" : "Enabled";
+        String state = item->isEffectiveDisabled() ? "Disabled" : "Enabled";
         if (item->isSelectable() && item->isSelected())
         {
-            imagery = &wlf.getStateImagery(item->isDisabled()?"SelectedDisabled":"SelectedEnabled");
+            imagery = &wlf.getStateImagery(item->isEffectiveDisabled() ? "SelectedDisabled" : "SelectedEnabled");
         }
         else
         {
-            imagery = &wlf.getStateImagery(item->isDisabled()?"Disabled":"Enabled");
+            imagery = &wlf.getStateImagery(item->isEffectiveDisabled() ? "Disabled" : "Enabled");
         }
         imagery->render(*d_window);
     }

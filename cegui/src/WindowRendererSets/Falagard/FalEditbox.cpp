@@ -113,7 +113,7 @@ void FalagardEditbox::renderBaseImagery(const WidgetLookFeel& wlf) const
     Editbox* w = static_cast<Editbox*>(d_window);
 
     const StateImagery* imagery = &wlf.getStateImagery(
-        w->isDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
+        w->isEffectiveDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
 
     imagery->render(*w);
 }

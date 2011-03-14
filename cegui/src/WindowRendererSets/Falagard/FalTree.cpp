@@ -94,7 +94,7 @@ namespace CEGUI
 
 		const StateImagery* imagery;
 		//Get the Falagard imagery to render
-		imagery = &wlf.getStateImagery(tree->isDisabled()? "Disabled" : "Enabled");
+		imagery = &wlf.getStateImagery(tree->isEffectiveDisabled()? "Disabled" : "Enabled");
 		//Render the window
 		imagery->render(*tree);
 		//Fix Scrollbars

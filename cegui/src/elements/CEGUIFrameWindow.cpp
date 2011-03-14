@@ -133,7 +133,7 @@ void FrameWindow::initialiseComponents(void)
 *************************************************************************/
 bool FrameWindow::isTitleBarEnabled(void) const
 {
-    return !getTitlebar()->isDisabled(true);
+    return !getTitlebar()->isDisabled();
 }
 
 
@@ -142,7 +142,7 @@ bool FrameWindow::isTitleBarEnabled(void) const
 *************************************************************************/
 bool FrameWindow::isCloseButtonEnabled(void) const
 {
-    return !getCloseButton()->isDisabled(true);
+    return !getCloseButton()->isDisabled();
 }
 
 
