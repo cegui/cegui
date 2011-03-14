@@ -46,19 +46,7 @@ const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
 /*************************************************************************
 	Definitions for Properties
 *************************************************************************/
-FrameWindowProperties::SizingEnabled			FrameWindow::d_sizingEnabledProperty;
-FrameWindowProperties::FrameEnabled				FrameWindow::d_frameEnabledProperty;
-FrameWindowProperties::TitlebarEnabled			FrameWindow::d_titlebarEnabledProperty;
-FrameWindowProperties::CloseButtonEnabled		FrameWindow::d_closeButtonEnabledProperty;
 FrameWindowProperties::RollUpState				FrameWindow::d_rollUpStateProperty;
-FrameWindowProperties::RollUpEnabled			FrameWindow::d_rollUpEnabledProperty;
-FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProperty;
-FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
-FrameWindowProperties::NSSizingCursorImage      FrameWindow::d_nsSizingCursorProperty;
-FrameWindowProperties::EWSizingCursorImage      FrameWindow::d_ewSizingCursorProperty;
-FrameWindowProperties::NWSESizingCursorImage    FrameWindow::d_nwseSizingCursorProperty;
-FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorProperty;
-
 
 /*************************************************************************
 	Constants
@@ -745,20 +733,65 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::addFrameWindowProperties(void)
 {
-	addProperty(&d_sizingEnabledProperty);
-	addProperty(&d_frameEnabledProperty);
-	addProperty(&d_titlebarEnabledProperty);
-	addProperty(&d_closeButtonEnabledProperty);
-	addProperty(&d_rollUpEnabledProperty);
-	addProperty(&d_rollUpStateProperty);
-	addProperty(&d_dragMovingEnabledProperty);
-	addProperty(&d_sizingBorderThicknessProperty);
-    addProperty(&d_nsSizingCursorProperty);
-    addProperty(&d_ewSizingCursorProperty);
-    addProperty(&d_nwseSizingCursorProperty);
-    addProperty(&d_neswSizingCursorProperty);
-}
+    const String& propertyOrigin = WidgetTypeName;
 
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "SizingEnabled", "Property to get/set the state of the sizable setting for the FrameWindow. Value is either \"True\" or \"False\".",
+        &FrameWindow::setSizingEnabled, &FrameWindow::isSizingEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "FrameEnabled", "Property to get/set the setting for whether the window frame will be displayed. Value is either \"True\" or \"False\".",
+        &FrameWindow::setFrameEnabled, &FrameWindow::isFrameEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "TitlebarEnabled", "Property to get/set the setting for whether the window title-bar will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        &FrameWindow::setTitleBarEnabled, &FrameWindow::isTitleBarEnabled, true
+    ); // TODO: Inconsistency between Titlebar and TitleBar
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "CloseButtonEnabled", "Property to get/set the setting for whether the window close button will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        &FrameWindow::setCloseButtonEnabled, &FrameWindow::isCloseButtonEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "RollUpEnabled", "Property to get/set the setting for whether the user is able to roll-up / shade the window. Value is either \"True\" or \"False\".",
+        &FrameWindow::setRollupEnabled, &FrameWindow::isRollupEnabled, true
+    ); // TODO: Inconsistency between RollUp and Rollup
+
+	addProperty(&d_rollUpStateProperty);
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "DragMovingEnabled", "Property to get/set the setting for whether the user may drag the window around by its title bar. Value is either \"True\" or \"False\".",
+        &FrameWindow::setDragMovingEnabled, &FrameWindow::isDragMovingEnabled, true
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, float,
+        "SizingBorderThickness", "Property to get/set the setting for the sizing border thickness. Value is a float specifying the border thickness in pixels.",
+        &FrameWindow::setSizingBorderThickness, &FrameWindow::getSizingBorderThickness, 8.0f
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NSSizingCursorImage", "Property to get/set the N-S (up-down) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNSSizingCursorImage, &FrameWindow::getNSSizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "EWSizingCursorImage", "Property to get/set the E-W (left-right) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setEWSizingCursorImage, &FrameWindow::getEWSizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NWSESizingCursorImage", "Property to get/set the NW-SE diagonal sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNWSESizingCursorImage, &FrameWindow::getNWSESizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NESWSizingCursorImage", "Property to get/set the NE-SW diagonal sizing cursor image for the FramwWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNESWSizingCursorImage, &FrameWindow::getNESWSizingCursorImage, 0
+    );
+}
 
 /*************************************************************************
     return the image used for the north-south sizing cursor.
