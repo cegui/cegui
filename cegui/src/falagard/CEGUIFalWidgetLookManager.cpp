@@ -133,8 +133,7 @@ namespace CEGUI
 
     void WidgetLookManager::eraseAllWidgetLooks()
     {
-        while (!d_widgetLooks.empty())
-            d_widgetLooks.erase(d_widgetLooks.begin());
+        d_widgetLooks.clear();
     }
 
     void WidgetLookManager::addWidgetLook(const WidgetLookFeel& look)
