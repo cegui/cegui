@@ -22,14 +22,14 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
     
     }
 
-    BasicImage_wrapper(::CEGUI::String const & name, ::CEGUI::Texture * texture, ::CEGUI::Rect< float > const & tex_area, ::CEGUI::Vector2< float > const & offset, bool const autoscaled, ::CEGUI::Size< float > const & native_res )
+    BasicImage_wrapper(::CEGUI::String const & name, ::CEGUI::Texture * texture, ::CEGUI::Rectf const & tex_area, ::CEGUI::Vector2f const & offset, bool const autoscaled, ::CEGUI::Sizef const & native_res )
     : CEGUI::BasicImage( boost::ref(name), boost::python::ptr(texture), boost::ref(tex_area), boost::ref(offset), autoscaled, boost::ref(native_res) )
       , bp::wrapper< CEGUI::BasicImage >(){
         // constructor
     
     }
 
-    virtual void notifyDisplaySizeChanged( ::CEGUI::Size< float > const & size ) {
+    virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         if( bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" ) )
             func_notifyDisplaySizeChanged( boost::ref(size) );
         else{
@@ -37,11 +37,11 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
         }
     }
     
-    void default_notifyDisplaySizeChanged( ::CEGUI::Size< float > const & size ) {
+    void default_notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         CEGUI::BasicImage::notifyDisplaySizeChanged( boost::ref(size) );
     }
 
-    virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & dest_area, ::CEGUI::Rect< float > const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
+    virtual void render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & dest_area, ::CEGUI::Rectf const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
         if( bp::override func_render = this->get_override( "render" ) )
             func_render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
         else{
@@ -49,7 +49,7 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
         }
     }
     
-    void default_render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & dest_area, ::CEGUI::Rect< float > const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
+    void default_render( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & dest_area, ::CEGUI::Rectf const * clip_area, ::CEGUI::ColourRect const & colours ) const  {
         CEGUI::BasicImage::render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
     }
 
@@ -62,7 +62,7 @@ void register_BasicImage_class(){
         BasicImage_exposer_t BasicImage_exposer = BasicImage_exposer_t( "BasicImage", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
         bp::scope BasicImage_scope( BasicImage_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::BasicImage >();
-        BasicImage_exposer.def( bp::init< CEGUI::String const &, CEGUI::Texture *, CEGUI::Rect< float > const &, CEGUI::Vector2< float > const &, bool, CEGUI::Size< float > const & >(( bp::arg("name"), bp::arg("texture"), bp::arg("tex_area"), bp::arg("offset"), bp::arg("autoscaled"), bp::arg("native_res") )) );
+        BasicImage_exposer.def( bp::init< CEGUI::String const &, CEGUI::Texture *, CEGUI::Rectf const &, CEGUI::Vector2f const &, bool, CEGUI::Sizef const & >(( bp::arg("name"), bp::arg("texture"), bp::arg("tex_area"), bp::arg("offset"), bp::arg("autoscaled"), bp::arg("native_res") )) );
         { //::CEGUI::BasicImage::clone
         
             typedef ::CEGUI::Image & ( ::CEGUI::BasicImage::*clone_function_type )(  ) const;
@@ -85,7 +85,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::getRenderedOffset
         
-            typedef ::CEGUI::Vector2< float > const & ( ::CEGUI::BasicImage::*getRenderedOffset_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::BasicImage::*getRenderedOffset_function_type )(  ) const;
             
             BasicImage_exposer.def( 
                 "getRenderedOffset"
@@ -95,7 +95,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::getRenderedSize
         
-            typedef ::CEGUI::Size< float > const & ( ::CEGUI::BasicImage::*getRenderedSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::BasicImage::*getRenderedSize_function_type )(  ) const;
             
             BasicImage_exposer.def( 
                 "getRenderedSize"
@@ -105,8 +105,8 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::BasicImage::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
-            typedef void ( BasicImage_wrapper::*default_notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::BasicImage::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( BasicImage_wrapper::*default_notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             BasicImage_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -117,8 +117,8 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::render
         
-            typedef void ( ::CEGUI::BasicImage::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const & ) const;
-            typedef void ( BasicImage_wrapper::*default_render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const & ) const;
+            typedef void ( ::CEGUI::BasicImage::*render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const & ) const;
+            typedef void ( BasicImage_wrapper::*default_render_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const & ) const;
             
             BasicImage_exposer.def( 
                 "render"
@@ -129,7 +129,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::setArea
         
-            typedef void ( ::CEGUI::BasicImage::*setArea_function_type )( ::CEGUI::Rect< float > const & ) ;
+            typedef void ( ::CEGUI::BasicImage::*setArea_function_type )( ::CEGUI::Rectf const & ) ;
             
             BasicImage_exposer.def( 
                 "setArea"
@@ -149,7 +149,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::setNativeResolution
         
-            typedef void ( ::CEGUI::BasicImage::*setNativeResolution_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::BasicImage::*setNativeResolution_function_type )( ::CEGUI::Sizef const & ) ;
             
             BasicImage_exposer.def( 
                 "setNativeResolution"
@@ -159,7 +159,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::setOffset
         
-            typedef void ( ::CEGUI::BasicImage::*setOffset_function_type )( ::CEGUI::Vector2< float > const & ) ;
+            typedef void ( ::CEGUI::BasicImage::*setOffset_function_type )( ::CEGUI::Vector2f const & ) ;
             
             BasicImage_exposer.def( 
                 "setOffset"

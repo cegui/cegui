@@ -15,7 +15,7 @@ struct FalagardComponentBase_wrapper : CEGUI::FalagardComponentBase, bp::wrapper
     
     }
 
-    virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rect< float > & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rect< float > const * clipper, bool clipToDisplay ) const {
+    virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
         bp::override func_render_impl = this->get_override( "render_impl" );
         func_render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
     }
@@ -67,7 +67,7 @@ void register_FalagardComponentBase_class(){
         }
         { //::CEGUI::FalagardComponentBase::render
         
-            typedef void ( ::CEGUI::FalagardComponentBase::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::FalagardComponentBase::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             FalagardComponentBase_exposer.def( 
                 "render"
@@ -93,7 +93,7 @@ void register_FalagardComponentBase_class(){
         }
         { //::CEGUI::FalagardComponentBase::render
         
-            typedef void ( ::CEGUI::FalagardComponentBase::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::FalagardComponentBase::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             FalagardComponentBase_exposer.def( 
                 "render"
@@ -123,7 +123,7 @@ void register_FalagardComponentBase_class(){
         }
         { //::CEGUI::FalagardComponentBase::render_impl
         
-            typedef void ( FalagardComponentBase_wrapper::*render_impl_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( FalagardComponentBase_wrapper::*render_impl_function_type )( ::CEGUI::Window &,::CEGUI::Rectf &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             FalagardComponentBase_exposer.def( 
                 "render_impl"

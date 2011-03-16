@@ -140,7 +140,7 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         return CEGUI::OgreRenderer::getMaxTextureSize( );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size< float > const & sz ) {
+    virtual void setDisplaySize( ::CEGUI::Sizef const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
         else{
@@ -148,7 +148,7 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         }
     }
     
-    void default_setDisplaySize( ::CEGUI::Size< float > const & sz ) {
+    void default_setDisplaySize( ::CEGUI::Sizef const & sz ) {
         CEGUI::OgreRenderer::setDisplaySize( boost::ref(sz) );
     }
 
@@ -355,7 +355,7 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OgreRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Sizef const & ) ;
             
             OgreRenderer_exposer.def( 
                 "createTexture"
@@ -538,7 +538,7 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2< float > const & ( ::CEGUI::OgreRenderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::OgreRenderer::*getDisplayDPI_function_type )(  ) const;
             
             OgreRenderer_exposer.def( 
                 "getDisplayDPI"
@@ -548,7 +548,7 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::getDisplaySize
         
-            typedef ::CEGUI::Size< float > const & ( ::CEGUI::OgreRenderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::OgreRenderer::*getDisplaySize_function_type )(  ) const;
             
             OgreRenderer_exposer.def( 
                 "getDisplaySize"
@@ -662,8 +662,8 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::setDisplaySize
         
-            typedef void ( ::CEGUI::OgreRenderer::*setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
-            typedef void ( OgreRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::OgreRenderer::*setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( OgreRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
             
             OgreRenderer_exposer.def( 
                 "setDisplaySize"

@@ -22,7 +22,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
         else{
@@ -30,11 +30,11 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         CEGUI::TreeItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size< float > getPixelSize(  ) const  {
+    virtual ::CEGUI::Sizef getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
         else{
@@ -42,7 +42,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         }
     }
     
-    ::CEGUI::Size< float > default_getPixelSize(  ) const  {
+    ::CEGUI::Sizef default_getPixelSize(  ) const  {
         return CEGUI::TreeItem::getPixelSize( );
     }
 
@@ -86,8 +86,8 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::draw
         
-            typedef void ( ::CEGUI::TreeItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,float,::CEGUI::Rect< float > const * ) const;
-            typedef void ( TreeItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect< float > const &,float,::CEGUI::Rect< float > const * ) const;
+            typedef void ( ::CEGUI::TreeItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
+            typedef void ( TreeItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
             
             TreeItem_exposer.def( 
                 "draw"
@@ -98,7 +98,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getButtonLocation
         
-            typedef ::CEGUI::Rect< float > & ( ::CEGUI::TreeItem::*getButtonLocation_function_type )(  ) ;
+            typedef ::CEGUI::Rectf & ( ::CEGUI::TreeItem::*getButtonLocation_function_type )(  ) ;
             
             TreeItem_exposer.def( 
                 "getButtonLocation"
@@ -198,8 +198,8 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getPixelSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Size< float > ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
             
             TreeItem_exposer.def( 
                 "getPixelSize"
@@ -432,7 +432,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setButtonLocation
         
-            typedef void ( ::CEGUI::TreeItem::*setButtonLocation_function_type )( ::CEGUI::Rect< float > & ) ;
+            typedef void ( ::CEGUI::TreeItem::*setButtonLocation_function_type )( ::CEGUI::Rectf & ) ;
             
             TreeItem_exposer.def( 
                 "setButtonLocation"

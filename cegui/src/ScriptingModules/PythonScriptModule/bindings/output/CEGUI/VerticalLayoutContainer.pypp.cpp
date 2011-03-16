@@ -111,7 +111,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,7 +119,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         }
     }
     
-    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -135,7 +135,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -143,7 +143,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -388,8 +388,8 @@ void register_VerticalLayoutContainer_class(){
         }
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect< float > ( VerticalLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( VerticalLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             VerticalLayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -410,8 +410,8 @@ void register_VerticalLayoutContainer_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
-            typedef bool ( VerticalLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( VerticalLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             VerticalLayoutContainer_exposer.def( 
                 "isHit"

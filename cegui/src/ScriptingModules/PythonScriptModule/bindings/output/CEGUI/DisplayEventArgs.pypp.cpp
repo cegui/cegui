@@ -14,9 +14,9 @@ void register_DisplayEventArgs_class(){
         \n\
             EventArgs based class that is used for notifications regarding the main\n\
             display.\n\
-        *\n", bp::init< CEGUI::Size< float > const & >(( bp::arg("sz") )) );
+        *\n", bp::init< CEGUI::Sizef const & >(( bp::arg("sz") )) );
         bp::scope DisplayEventArgs_scope( DisplayEventArgs_exposer );
-        bp::implicitly_convertible< CEGUI::Size< float > const &, CEGUI::DisplayEventArgs >();
+        bp::implicitly_convertible< CEGUI::Sizef const &, CEGUI::DisplayEventArgs >();
         DisplayEventArgs_exposer.def_readwrite( "size", &CEGUI::DisplayEventArgs::size, "! current  new size of the display.\n" );
     }
 

@@ -331,7 +331,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::getMultiClickToleranceAreaSize
         
-            typedef ::CEGUI::Size< float > const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
             
             System_exposer.def( 
                 "getMultiClickToleranceAreaSize"
@@ -861,7 +861,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             System_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -1324,7 +1324,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::setMultiClickToleranceAreaSize
         
-            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Sizef const & ) ;
             
             System_exposer.def( 
                 "setMultiClickToleranceAreaSize"

@@ -8,7 +8,7 @@ namespace bp = boost::python;
 
 struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
 
-    virtual void notifyDisplaySizeChanged( ::CEGUI::Size< float > const & size ) {
+    virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         if( bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" ) )
             func_notifyDisplaySizeChanged( boost::ref(size) );
         else{
@@ -16,7 +16,7 @@ struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
         }
     }
     
-    void default_notifyDisplaySizeChanged( ::CEGUI::Size< float > const & size ) {
+    void default_notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         CEGUI::Font::notifyDisplaySizeChanged( boost::ref(size) );
     }
 
@@ -40,7 +40,7 @@ void register_Font_class(){
         bp::scope Font_scope( Font_exposer );
         { //::CEGUI::Font::drawText
         
-            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2< float > const &,::CEGUI::Rect< float > const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
+            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
             
             Font_exposer.def( 
                 "drawText"
@@ -239,7 +239,7 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::getNativeResolution
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::Font::*getNativeResolution_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::Font::*getNativeResolution_function_type )(  ) const;
             
             Font_exposer.def( 
                 "getNativeResolution"
@@ -332,8 +332,8 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::Font::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
-            typedef void ( Font_wrapper::*default_notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::Font::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( Font_wrapper::*default_notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             Font_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -382,7 +382,7 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::setNativeResolution
         
-            typedef void ( ::CEGUI::Font::*setNativeResolution_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::Font::*setNativeResolution_function_type )( ::CEGUI::Sizef const & ) ;
             
             Font_exposer.def( 
                 "setNativeResolution"

@@ -140,7 +140,7 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
         return CEGUI::OpenGLRenderer::getMaxTextureSize( );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size< float > const & sz ) {
+    virtual void setDisplaySize( ::CEGUI::Sizef const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
         else{
@@ -148,7 +148,7 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
         }
     }
     
-    void default_setDisplaySize( ::CEGUI::Size< float > const & sz ) {
+    void default_setDisplaySize( ::CEGUI::Sizef const & sz ) {
         CEGUI::OpenGLRenderer::setDisplaySize( boost::ref(sz) );
     }
 
@@ -214,7 +214,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::bootstrapSystem
         
-            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::Size< float > const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
             
             OpenGLRenderer_exposer.def( 
                 "bootstrapSystem"
@@ -267,7 +267,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::create
         
-            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::Size< float > const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
             
             OpenGLRenderer_exposer.def( 
                 "create"
@@ -321,7 +321,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Sizef const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
@@ -332,7 +332,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::GLuint,::CEGUI::Size< float > const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::*createTexture_function_type )( ::CEGUI::String const &,::GLuint,::CEGUI::Sizef const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "createTexture"
@@ -531,7 +531,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::getAdjustedTextureSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::OpenGLRenderer::*getAdjustedTextureSize_function_type )( ::CEGUI::Size< float > const & ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::OpenGLRenderer::*getAdjustedTextureSize_function_type )( ::CEGUI::Sizef const & ) const;
             
             OpenGLRenderer_exposer.def( 
                 "getAdjustedTextureSize"
@@ -562,7 +562,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2< float > const & ( ::CEGUI::OpenGLRenderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::OpenGLRenderer::*getDisplayDPI_function_type )(  ) const;
             
             OpenGLRenderer_exposer.def( 
                 "getDisplayDPI"
@@ -572,7 +572,7 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::getDisplaySize
         
-            typedef ::CEGUI::Size< float > const & ( ::CEGUI::OpenGLRenderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::OpenGLRenderer::*getDisplaySize_function_type )(  ) const;
             
             OpenGLRenderer_exposer.def( 
                 "getDisplaySize"
@@ -659,8 +659,8 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::setDisplaySize
         
-            typedef void ( ::CEGUI::OpenGLRenderer::*setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
-            typedef void ( OpenGLRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::OpenGLRenderer::*setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( OpenGLRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
             
             OpenGLRenderer_exposer.def( 
                 "setDisplaySize"

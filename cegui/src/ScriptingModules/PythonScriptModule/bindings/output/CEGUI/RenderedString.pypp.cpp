@@ -46,7 +46,7 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::draw
         
-            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,float const ) const;
+            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const ) const;
             
             RenderedString_exposer.def( 
                 "draw"
@@ -76,7 +76,7 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::getPixelSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
             
             RenderedString_exposer.def( 
                 "getPixelSize"

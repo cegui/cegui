@@ -111,7 +111,7 @@ struct Scrollbar_wrapper : CEGUI::Scrollbar, bp::wrapper< CEGUI::Scrollbar > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct Scrollbar_wrapper : CEGUI::Scrollbar, bp::wrapper< CEGUI::Scrollbar > {
         }
     }
     
-    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct Scrollbar_wrapper : CEGUI::Scrollbar, bp::wrapper< CEGUI::Scrollbar > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -760,8 +760,8 @@ void register_Scrollbar_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect< float > ( Scrollbar_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Scrollbar_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Scrollbar_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -771,8 +771,8 @@ void register_Scrollbar_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
-            typedef bool ( Scrollbar_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( Scrollbar_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             Scrollbar_exposer.def( 
                 "isHit"

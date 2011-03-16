@@ -97,7 +97,7 @@ void register_FontManager_class(){
         }
         { //::CEGUI::FontManager::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::FontManager::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::FontManager::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             FontManager_exposer.def( 
                 "notifyDisplaySizeChanged"

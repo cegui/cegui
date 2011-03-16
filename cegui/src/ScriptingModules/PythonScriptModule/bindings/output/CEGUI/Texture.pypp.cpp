@@ -15,7 +15,7 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         
     }
 
-    virtual void blitFromMemory( void * sourceData, ::CEGUI::Rect< float > const & area ){
+    virtual void blitFromMemory( void * sourceData, ::CEGUI::Rectf const & area ){
         bp::override func_blitFromMemory = this->get_override( "blitFromMemory" );
         func_blitFromMemory( sourceData, boost::ref(area) );
     }
@@ -29,15 +29,15 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Size< float > const & getOriginalDataSize(  ) const {
+    virtual ::CEGUI::Sizef const & getOriginalDataSize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Size< float > const & getSize(  ) const {
+    virtual ::CEGUI::Sizef const & getSize(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
-    virtual ::CEGUI::Vector2< float > const & getTexelScaling(  ) const {
+    virtual ::CEGUI::Vector2f const & getTexelScaling(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -46,7 +46,7 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         func_loadFromFile( boost::ref(filename), boost::ref(resourceGroup) );
     }
 
-    virtual void loadFromMemory( void const * buffer, ::CEGUI::Size< float > const & buffer_size, ::CEGUI::Texture::PixelFormat pixel_format ){
+    virtual void loadFromMemory( void const * buffer, ::CEGUI::Sizef const & buffer_size, ::CEGUI::Texture::PixelFormat pixel_format ){
         bp::override func_loadFromMemory = this->get_override( "loadFromMemory" );
         func_loadFromMemory( buffer, boost::ref(buffer_size), pixel_format );
     }
@@ -66,7 +66,7 @@ void register_Texture_class(){
             ;
         { //::CEGUI::Texture::blitFromMemory
         
-            typedef void ( ::CEGUI::Texture::*blitFromMemory_function_type )( void *,::CEGUI::Rect<float> const & ) ;
+            typedef void ( ::CEGUI::Texture::*blitFromMemory_function_type )( void *,::CEGUI::Rectf const & ) ;
             
             Texture_exposer.def( 
                 "blitFromMemory"
@@ -125,7 +125,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::getOriginalDataSize
         
-            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Texture::*getOriginalDataSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Texture::*getOriginalDataSize_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getOriginalDataSize"
@@ -143,7 +143,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::getSize
         
-            typedef ::CEGUI::Size<float> const & ( ::CEGUI::Texture::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Texture::*getSize_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getSize"
@@ -161,7 +161,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::getTexelScaling
         
-            typedef ::CEGUI::Vector2<float> const & ( ::CEGUI::Texture::*getTexelScaling_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::Texture::*getTexelScaling_function_type )(  ) const;
             
             Texture_exposer.def( 
                 "getTexelScaling"
@@ -205,7 +205,7 @@ void register_Texture_class(){
         }
         { //::CEGUI::Texture::loadFromMemory
         
-            typedef void ( ::CEGUI::Texture::*loadFromMemory_function_type )( void const *,::CEGUI::Size<float> const &,::CEGUI::Texture::PixelFormat ) ;
+            typedef void ( ::CEGUI::Texture::*loadFromMemory_function_type )( void const *,::CEGUI::Sizef const &,::CEGUI::Texture::PixelFormat ) ;
             
             Texture_exposer.def( 
                 "loadFromMemory"

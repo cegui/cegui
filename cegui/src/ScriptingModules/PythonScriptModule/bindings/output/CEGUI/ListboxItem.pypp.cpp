@@ -15,12 +15,12 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect< float > const & targetRect, float alpha, ::CEGUI::Rect< float > const * clipper ) const {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size< float > getPixelSize(  ) const {
+    virtual ::CEGUI::Sizef getPixelSize(  ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
         return func_getPixelSize(  );
     }
@@ -53,7 +53,7 @@ void register_ListboxItem_class(){
         bp::scope ListboxItem_scope( ListboxItem_exposer );
         { //::CEGUI::ListboxItem::draw
         
-            typedef void ( ::CEGUI::ListboxItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect<float> const &,float,::CEGUI::Rect<float> const * ) const;
+            typedef void ( ::CEGUI::ListboxItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
             
             ListboxItem_exposer.def( 
                 "draw"
@@ -120,7 +120,7 @@ void register_ListboxItem_class(){
         }
         { //::CEGUI::ListboxItem::getPixelSize
         
-            typedef ::CEGUI::Size<float> ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::ListboxItem::*getPixelSize_function_type )(  ) const;
             
             ListboxItem_exposer.def( 
                 "getPixelSize"

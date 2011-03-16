@@ -38,73 +38,6 @@ void register_URect_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::Rect< CEGUI::UDim >::constrainSize
-        
-            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
-            typedef void ( exported_class_t::*constrainSize_function_type )( ::CEGUI::Size< CEGUI::UDim > const &,::CEGUI::Size< CEGUI::UDim > const & ) ;
-            
-            URect_exposer.def( 
-                "constrainSize"
-                , constrainSize_function_type( &::CEGUI::Rect< CEGUI::UDim >::constrainSize )
-                , ( bp::arg("max_sz"), bp::arg("min_sz") )
-                , "*!\n\
-               \n\
-                  check the size of the Rect object and if it is bigger than  max_sz or smaller than  min_sz,\
-                  resize it so it isn't.\n\
-            \n\
-               @param max_sz\n\
-                  Size object that describes the maximum dimensions that this Rect should be limited to.\n\
-            \n\
-               @param min_sz\n\
-                  Size object that describes the minimum dimensions that this Rect should be limited to.\n\
-            \n\
-               @return\n\
-                  'this' Rect object after the constrain operation\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::Rect< CEGUI::UDim >::constrainSizeMax
-        
-            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
-            typedef void ( exported_class_t::*constrainSizeMax_function_type )( ::CEGUI::Size< CEGUI::UDim > const & ) ;
-            
-            URect_exposer.def( 
-                "constrainSizeMax"
-                , constrainSizeMax_function_type( &::CEGUI::Rect< CEGUI::UDim >::constrainSizeMax )
-                , ( bp::arg("size") )
-                , "*!\n\
-               \n\
-                  check the size of the Rect object and if it is bigger than  sz, resize it so it isn't.\n\
-            \n\
-               @param sz\n\
-                  Size object that describes the maximum dimensions that this Rect should be limited to.\n\
-            \n\
-               @return\n\
-                  'this' Rect object after the constrain operation\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::Rect< CEGUI::UDim >::constrainSizeMin
-        
-            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
-            typedef void ( exported_class_t::*constrainSizeMin_function_type )( ::CEGUI::Size< CEGUI::UDim > const & ) ;
-            
-            URect_exposer.def( 
-                "constrainSizeMin"
-                , constrainSizeMin_function_type( &::CEGUI::Rect< CEGUI::UDim >::constrainSizeMin )
-                , ( bp::arg("size") )
-                , "*!\n\
-               \n\
-                  check the size of the Rect object and if it is smaller than  sz, resize it so it isn't.\n\
-            \n\
-               @param sz\n\
-                  Size object that describes the minimum dimensions that this Rect should be limited to.\n\
-            \n\
-               @return\n\
-                  'this' Rect object after the constrain operation\n\
-               *\n" );
-        
-        }
         { //::CEGUI::Rect< CEGUI::UDim >::getHeight
         
             typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
@@ -117,26 +50,6 @@ void register_URect_class(){
             \n\
                return height of Rect area\n\
             *\n" );
-        
-        }
-        { //::CEGUI::Rect< CEGUI::UDim >::getIntersection
-        
-            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
-            typedef ::CEGUI::Rect< CEGUI::UDim > ( exported_class_t::*getIntersection_function_type )( ::CEGUI::Rect< CEGUI::UDim > const & ) const;
-            
-            URect_exposer.def( 
-                "getIntersection"
-                , getIntersection_function_type( &::CEGUI::Rect< CEGUI::UDim >::getIntersection )
-                , ( bp::arg("rect") )
-                , "*!\n\
-               \n\
-                  return a Rect that is the intersection of 'this' Rect with the Rect 'rect'\n\
-            \n\
-               \note\n\
-                  It can be assumed that if d_left == d_right, or d_top == d_bottom, or getWidth() == 0, or\
-                  getHeight() == 0, then\n\
-                  'this' rect was totally outside 'rect'.\n\
-               *\n" );
         
         }
         { //::CEGUI::Rect< CEGUI::UDim >::getPosition
@@ -180,27 +93,6 @@ void register_URect_class(){
             \n\
                return width of Rect area\n\
             *\n" );
-        
-        }
-        { //::CEGUI::Rect< CEGUI::UDim >::isPointInRect
-        
-            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
-            typedef bool ( exported_class_t::*isPointInRect_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const;
-            
-            URect_exposer.def( 
-                "isPointInRect"
-                , isPointInRect_function_type( &::CEGUI::Rect< CEGUI::UDim >::isPointInRect )
-                , ( bp::arg("v") )
-                , "*!\n\
-               \n\
-                  Return true if the given Vector2 falls within this Rect\n\
-            \n\
-               @param pt\n\
-                  Vector2 object describing the position to test.\n\
-            \n\
-               @return\n\
-                  true if position  pt is within this Rect's area, else false\n\
-               *\n" );
         
         }
         { //::CEGUI::Rect< CEGUI::UDim >::left

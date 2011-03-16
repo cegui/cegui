@@ -79,7 +79,7 @@ void register_LayerSpecification_class(){
         LayerSpecification_exposer.def( bp::self < bp::self );
         { //::CEGUI::LayerSpecification::render
         
-            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             LayerSpecification_exposer.def( 
                 "render"
@@ -99,7 +99,7 @@ void register_LayerSpecification_class(){
         }
         { //::CEGUI::LayerSpecification::render
         
-            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             LayerSpecification_exposer.def( 
                 "render"
