@@ -26,8 +26,8 @@ class Affector
     tolua_throws|CEGUI::InvalidRequestException,error| void destroyKeyFrame(KeyFrame* keyframe);
 
     tolua_throws|CEGUI::InvalidRequestException,nil| KeyFrame* getKeyFrameAtPosition(float position) const;
-    tolua_throws|CEGUI::InvalidRequestException,nil| KeyFrame* getKeyFrameAtIdx(size_t index) const;
-    size_t getNumKeyFrames() const;
+    tolua_throws|CEGUI::InvalidRequestException,nil| KeyFrame* getKeyFrameAtIdx(unsigned int index) const;
+    unsigned int getNumKeyFrames() const;
 
 };
 

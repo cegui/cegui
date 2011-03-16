@@ -14,18 +14,18 @@ class AnimationManager
     tolua_throws|CEGUI::UnknownObjectException,nil| void destroyAnimation(Animation* animation);
     tolua_throws|CEGUI::UnknownObjectException,nil| void destroyAnimation(utf8string name);
     tolua_throws|CEGUI::UnknownObjectException,nil| Animation* getAnimation(utf8string name) const;
-    tolua_throws|CEGUI::InvalidRequestException,nil| Animation* getAnimationAtIdx(size_t index) const;
+    tolua_throws|CEGUI::InvalidRequestException,nil| Animation* getAnimationAtIdx(unsigned int index) const;
 
-    size_t getNumAnimations() const;
+    unsigned int getNumAnimations() const;
 
     tolua_throws|CEGUI::UnknownObjectException,nil| AnimationInstance* instantiateAnimation(Animation* animation);
     tolua_throws|CEGUI::UnknownObjectException,nil| AnimationInstance* instantiateAnimation(utf8string name);
     tolua_throws|CEGUI::InvalidRequestException,nil| void destroyAnimationInstance(AnimationInstance* instance);
     void destroyAllInstancesOfAnimation(Animation* animation);
 
-    tolua_throws|CEGUI::InvalidRequestException,nil| AnimationInstance* getAnimationInstanceAtIdx(size_t index) const;
+    tolua_throws|CEGUI::InvalidRequestException,nil| AnimationInstance* getAnimationInstanceAtIdx(unsigned int index) const;
 
-    size_t getNumAnimationInstances() const;
+    unsigned int getNumAnimationInstances() const;
 
     void stepInstances(float delta);
 
