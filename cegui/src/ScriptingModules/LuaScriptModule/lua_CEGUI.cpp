@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Wed Mar 16 15:33:29 2011.
+** Generated automatically by tolua++-1.0.92 on Wed Mar 16 16:01:05 2011.
 */
 
 #ifndef __cplusplus
@@ -57501,6 +57501,37 @@ static int tolua_CEGUI_CEGUI_WidgetLookManager_eraseWidgetLook00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: eraseAllWidgetLooks of class  CEGUI::WidgetLookManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetLookManager_eraseAllWidgetLooks00
+static int tolua_CEGUI_CEGUI_WidgetLookManager_eraseAllWidgetLooks00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WidgetLookManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WidgetLookManager* self = (CEGUI::WidgetLookManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'eraseAllWidgetLooks'",NULL);
+#endif
+ {
+  self->eraseAllWidgetLooks();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'eraseAllWidgetLooks'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: addWidgetLook of class  CEGUI::WidgetLookManager */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetLookManager_addWidgetLook00
 static int tolua_CEGUI_CEGUI_WidgetLookManager_addWidgetLook00(lua_State* tolua_S)
@@ -60792,6 +60823,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isWidgetLookAvailable",tolua_CEGUI_CEGUI_WidgetLookManager_isWidgetLookAvailable00);
    tolua_function(tolua_S,"getWidgetLook",tolua_CEGUI_CEGUI_WidgetLookManager_getWidgetLook00);
    tolua_function(tolua_S,"eraseWidgetLook",tolua_CEGUI_CEGUI_WidgetLookManager_eraseWidgetLook00);
+   tolua_function(tolua_S,"eraseAllWidgetLooks",tolua_CEGUI_CEGUI_WidgetLookManager_eraseAllWidgetLooks00);
    tolua_function(tolua_S,"addWidgetLook",tolua_CEGUI_CEGUI_WidgetLookManager_addWidgetLook00);
    tolua_function(tolua_S,"writeWidgetLookToStream",tolua_CEGUI_CEGUI_WidgetLookManager_writeWidgetLookToStream00);
    tolua_function(tolua_S,"writeWidgetLookSeriesToStream",tolua_CEGUI_CEGUI_WidgetLookManager_writeWidgetLookSeriesToStream00);
