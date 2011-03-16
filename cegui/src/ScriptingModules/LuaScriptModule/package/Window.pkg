@@ -42,8 +42,10 @@ class Window //: public EventSet
 
 	bool isDestroyedByParent() const;
 	bool isAlwaysOnTop() const;
-	bool isDisabled(bool localOnly=false) const;
-	bool isVisible(bool localOnly=false) const;
+	bool isDisabled() const;
+	bool isEffectiveDisabled() const;
+	bool isVisible() const;
+	bool isEffectiveVisible() const;
 	bool isActive() const;
 	bool isClippedByParent() const;
 
