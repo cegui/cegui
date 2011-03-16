@@ -44,6 +44,16 @@ void register_WidgetLookManager_class(){
                     *\n" );
         
         }
+        { //::CEGUI::WidgetLookManager::eraseAllWidgetLooks
+        
+            typedef void ( ::CEGUI::WidgetLookManager::*eraseAllWidgetLooks_function_type )(  ) ;
+            
+            WidgetLookManager_exposer.def( 
+                "eraseAllWidgetLooks"
+                , eraseAllWidgetLooks_function_type( &::CEGUI::WidgetLookManager::eraseAllWidgetLooks )
+                , "! erase all defined WidgetLookFeel.\n" );
+        
+        }
         { //::CEGUI::WidgetLookManager::eraseWidgetLook
         
             typedef void ( ::CEGUI::WidgetLookManager::*eraseWidgetLook_function_type )( ::CEGUI::String const & ) ;

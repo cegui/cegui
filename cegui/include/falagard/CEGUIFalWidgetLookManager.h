@@ -150,6 +150,8 @@ namespace CEGUI
         */
         void eraseWidgetLook(const String& widget);
 
+        //! erase all defined WidgetLookFeel.
+        void eraseAllWidgetLooks();
 
         /*!
         \brief
