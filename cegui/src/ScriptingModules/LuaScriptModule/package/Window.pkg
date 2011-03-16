@@ -281,7 +281,7 @@ class Window //: public EventSet
 
     Window* clone(utf8string newName, bool deepCopy = true) const;
 
-    size_t getZIndex() const;
+    unsigned int getZIndex() const;
     bool isInFront(const Window& wnd) const;
     bool isBehind(const Window& wnd) const;
 
