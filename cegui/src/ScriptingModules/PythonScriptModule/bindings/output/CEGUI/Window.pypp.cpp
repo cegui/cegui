@@ -87,7 +87,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect< float > getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -95,7 +95,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    ::CEGUI::Rect< float > default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -111,7 +111,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -119,7 +119,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2< float > const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -871,7 +871,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildAtPosition_function_type )( ::CEGUI::Vector2< float > const & ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildAtPosition_function_type )( ::CEGUI::Vector2f const & ) const;
             
             Window_exposer.def( 
                 "getChildAtPosition"
@@ -978,7 +978,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getChildWindowContentArea
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getChildWindowContentArea"
@@ -1007,7 +1007,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getClipRect
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getClipRect_function_type )( bool const ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getClipRect_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getClipRect"
@@ -1162,7 +1162,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getHitTestRect
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getHitTestRect"
@@ -1216,7 +1216,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getInnerRectClipper
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getInnerRectClipper"
@@ -1377,7 +1377,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getOuterRectClipper
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getOuterRectClipper"
@@ -1434,7 +1434,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getParentPixelSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::Window::*getParentPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::Window::*getParentPixelSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getParentPixelSize"
@@ -1470,7 +1470,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getPixelSize
         
-            typedef ::CEGUI::Size< float > ( ::CEGUI::Window::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::Window::*getPixelSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getPixelSize"
@@ -1619,7 +1619,7 @@ void register_Window_class(){
             \n\
                 @return\n\
                     A pointer to the root window of the hierarchy that this window is\n\
-                    attched to.\n\
+                    attached to.\n\
                 *\n" );
         
         }
@@ -1639,7 +1639,7 @@ void register_Window_class(){
             \n\
                 @return\n\
                     A pointer to the root window of the hierarchy that this window is\n\
-                    attched to.\n\
+                    attached to.\n\
                 *\n" );
         
         }
@@ -1683,7 +1683,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getTargetChildAtPosition
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getTargetChildAtPosition_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getTargetChildAtPosition_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             Window_exposer.def( 
                 "getTargetChildAtPosition"
@@ -1824,7 +1824,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect"
@@ -1838,8 +1838,8 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect< float > ( Window_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Window_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -1849,7 +1849,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedOuterRect
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedOuterRect"
@@ -1863,7 +1863,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedRect
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "getUnclippedRect"
@@ -1884,7 +1884,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnprojectedPosition
         
-            typedef ::CEGUI::Vector2< float > ( ::CEGUI::Window::*getUnprojectedPosition_function_type )( ::CEGUI::Vector2< float > const & ) const;
+            typedef ::CEGUI::Vector2f ( ::CEGUI::Window::*getUnprojectedPosition_function_type )( ::CEGUI::Vector2f const & ) const;
             
             Window_exposer.def( 
                 "getUnprojectedPosition"
@@ -2577,18 +2577,17 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::isDisabled
         
-            typedef bool ( ::CEGUI::Window::*isDisabled_function_type )( bool ) const;
+            typedef bool ( ::CEGUI::Window::*isDisabled_function_type )(  ) const;
             
             Window_exposer.def( 
                 "isDisabled"
                 , isDisabled_function_type( &::CEGUI::Window::isDisabled )
-                , ( bp::arg("localOnly")=(bool)(false) )
                 , "*!\n\
                 \n\
                     return whether the Window is currently disabled\n\
             \n\
-                @param localOnly\n\
-                    States whether to only return the state set for this window, and not to\n\
+                \note\n\
+                    Only checks the state set for this window, and does not\n\
                     factor in inherited state from ancestor windows.\n\
             \n\
                 @return\n\
@@ -2615,10 +2614,56 @@ void register_Window_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Window::isEffectiveDisabled
+        
+            typedef bool ( ::CEGUI::Window::*isEffectiveDisabled_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "isEffectiveDisabled"
+                , isEffectiveDisabled_function_type( &::CEGUI::Window::isEffectiveDisabled )
+                , "*!\n\
+                \n\
+                    return whether the Window is currently disabled\n\
+            \n\
+                \note\n\
+                    Not only checks the state set for this window, but also\n\
+                    factors in inherited state from ancestor windows.\n\
+            \n\
+                @return\n\
+                    - true if the window is disabled.\n\
+                    - false if the window is enabled.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::isEffectiveVisible
+        
+            typedef bool ( ::CEGUI::Window::*isEffectiveVisible_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "isEffectiveVisible"
+                , isEffectiveVisible_function_type( &::CEGUI::Window::isEffectiveVisible )
+                , "*!\n\
+                \n\
+                    return true if the Window is currently visible.\n\
+            \n\
+                    When true is returned from this function does not mean that the window\n\
+                    is not completely obscured by other windows, just that the window will\n\
+                    be processed when rendering, and is not explicitly marked as hidden.\n\
+            \n\
+                \note\n\
+                    Does check the state set for this window, but also\n\
+                    factors in inherited state from ancestor windows.\n\
+            \n\
+                @return\n\
+                    - true if the window will be drawn.\n\
+                    - false if the window is hidden and therefore ignored when rendering.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
-            typedef bool ( Window_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2< float > const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( Window_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             Window_exposer.def( 
                 "isHit"
@@ -2850,12 +2895,11 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::isVisible
         
-            typedef bool ( ::CEGUI::Window::*isVisible_function_type )( bool ) const;
+            typedef bool ( ::CEGUI::Window::*isVisible_function_type )(  ) const;
             
             Window_exposer.def( 
                 "isVisible"
                 , isVisible_function_type( &::CEGUI::Window::isVisible )
-                , ( bp::arg("localOnly")=(bool)(false) )
                 , "*!\n\
                 \n\
                     return true if the Window is currently visible.\n\
@@ -2864,13 +2908,13 @@ void register_Window_class(){
                     is not completely obscured by other windows, just that the window will\n\
                     be processed when rendering, and is not explicitly marked as hidden.\n\
             \n\
-                @param localOnly\n\
-                    States whether to only return the state set for this window, and not to\n\
+                \note\n\
+                    Only checks the state set for this window, and does not\n\
                     factor in inherited state from ancestor windows.\n\
             \n\
                 @return\n\
-                    - true if the window will be drawn.\n\
-                    - false if the window is hidden and therefore ignored when rendering.\n\
+                    - true if the window is set as visible.\n\
+                    - false if the window is set as hidden.\n\
                 *\n" );
         
         }
@@ -3465,6 +3509,28 @@ void register_Window_class(){
                     - true to have the Window auto-destroyed when its parent is destroyed\n\
                       (default behaviour)\n\
                     - false to have the Window remain after its parent is destroyed.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::setDisabled
+        
+            typedef void ( ::CEGUI::Window::*setDisabled_function_type )( bool ) ;
+            
+            Window_exposer.def( 
+                "setDisabled"
+                , setDisabled_function_type( &::CEGUI::Window::setDisabled )
+                , ( bp::arg("setting") )
+                , "*!\n\
+                \n\
+                    Set whether this window is enabled or disabled.  A disabled window\n\
+                    normally can not be interacted with, and may have different rendering.\n\
+            \n\
+                @param setting\n\
+                    - true to disable the Window\n\
+                    - false to enable the Window.\n\
             \n\
                 @return\n\
                     Nothing\n\

@@ -22,7 +22,7 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
         else{
@@ -30,11 +30,11 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2< float > const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect< float > const * clip_rect ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
         CEGUI::CentredRenderedString::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
     }
 
-    virtual void format( ::CEGUI::Size< float > const & area_size ) {
+    virtual void format( ::CEGUI::Sizef const & area_size ) {
         if( bp::override func_format = this->get_override( "format" ) )
             func_format( boost::ref(area_size) );
         else{
@@ -42,7 +42,7 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
         }
     }
     
-    void default_format( ::CEGUI::Size< float > const & area_size ) {
+    void default_format( ::CEGUI::Sizef const & area_size ) {
         CEGUI::CentredRenderedString::format( boost::ref(area_size) );
     }
 
@@ -97,8 +97,8 @@ void register_CentredRenderedString_class(){
         bp::implicitly_convertible< CEGUI::RenderedString const &, CEGUI::CentredRenderedString >();
         { //::CEGUI::CentredRenderedString::draw
         
-            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
-            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const * ) const;
+            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
+            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
             
             CentredRenderedString_exposer.def( 
                 "draw"
@@ -109,8 +109,8 @@ void register_CentredRenderedString_class(){
         }
         { //::CEGUI::CentredRenderedString::format
         
-            typedef void ( ::CEGUI::CentredRenderedString::*format_function_type )( ::CEGUI::Size< float > const & ) ;
-            typedef void ( CentredRenderedString_wrapper::*default_format_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::CentredRenderedString::*format_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( CentredRenderedString_wrapper::*default_format_function_type )( ::CEGUI::Sizef const & ) ;
             
             CentredRenderedString_exposer.def( 
                 "format"

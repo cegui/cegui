@@ -33,7 +33,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::asAbsolute
         
-            typedef ::CEGUI::Vector2< float > ( *asAbsolute_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Size< float > const & );
+            typedef ::CEGUI::Vector2f ( *asAbsolute_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Sizef const & );
             
             CoordConverter_exposer.def( 
                 "asAbsolute"
@@ -47,7 +47,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::asAbsolute
         
-            typedef ::CEGUI::Rect< float > ( *asAbsolute_function_type )( ::CEGUI::URect const &,::CEGUI::Size< float > const & );
+            typedef ::CEGUI::Rectf ( *asAbsolute_function_type )( ::CEGUI::URect const &,::CEGUI::Sizef const & );
             
             CoordConverter_exposer.def( 
                 "asAbsolute"
@@ -71,7 +71,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::asRelative
         
-            typedef ::CEGUI::Vector2< float > ( *asRelative_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Size< float > const & );
+            typedef ::CEGUI::Vector2f ( *asRelative_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Sizef const & );
             
             CoordConverter_exposer.def( 
                 "asRelative"
@@ -85,7 +85,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::asRelative
         
-            typedef ::CEGUI::Rect< float > ( *asRelative_function_type )( ::CEGUI::URect const &,::CEGUI::Size< float > const & );
+            typedef ::CEGUI::Rectf ( *asRelative_function_type )( ::CEGUI::URect const &,::CEGUI::Sizef const & );
             
             CoordConverter_exposer.def( 
                 "asRelative"
@@ -95,7 +95,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Vector2< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
+            typedef ::CEGUI::Vector2f ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -120,7 +120,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Vector2< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2< float > const & );
+            typedef ::CEGUI::Vector2f ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2f const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -145,7 +145,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Rect< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::URect const & );
+            typedef ::CEGUI::Rectf ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::URect const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -169,7 +169,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::screenToWindow
         
-            typedef ::CEGUI::Rect< float > ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Rect< float > const & );
+            typedef ::CEGUI::Rectf ( *screenToWindow_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & );
             
             CoordConverter_exposer.def( 
                 "screenToWindow"
@@ -293,7 +293,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Vector2< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
+            typedef ::CEGUI::Vector2f ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::UVector2 const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"
@@ -318,7 +318,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Vector2< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2< float > const & );
+            typedef ::CEGUI::Vector2f ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Vector2f const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"
@@ -343,7 +343,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Rect< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::URect const & );
+            typedef ::CEGUI::Rectf ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::URect const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"
@@ -364,7 +364,7 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::windowToScreen
         
-            typedef ::CEGUI::Rect< float > ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Rect< float > const & );
+            typedef ::CEGUI::Rectf ( *windowToScreen_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & );
             
             CoordConverter_exposer.def( 
                 "windowToScreen"

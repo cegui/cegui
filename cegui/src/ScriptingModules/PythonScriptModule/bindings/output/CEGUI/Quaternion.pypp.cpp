@@ -16,7 +16,7 @@ void register_Quaternion_class(){
         Quaternion_exposer.def( bp::init< CEGUI::Quaternion const & >(( bp::arg("v") ), "! copy constructor\n") );
         { //::CEGUI::Quaternion::axisAngleDegrees
         
-            typedef ::CEGUI::Quaternion ( *axisAngleDegrees_function_type )( ::CEGUI::Vector3< float > const &,float );
+            typedef ::CEGUI::Quaternion ( *axisAngleDegrees_function_type )( ::CEGUI::Vector3f const &,float );
             
             Quaternion_exposer.def( 
                 "axisAngleDegrees"
@@ -34,7 +34,7 @@ void register_Quaternion_class(){
         }
         { //::CEGUI::Quaternion::axisAngleRadians
         
-            typedef ::CEGUI::Quaternion ( *axisAngleRadians_function_type )( ::CEGUI::Vector3< float > const &,float );
+            typedef ::CEGUI::Quaternion ( *axisAngleRadians_function_type )( ::CEGUI::Vector3f const &,float );
             
             Quaternion_exposer.def( 
                 "axisAngleRadians"

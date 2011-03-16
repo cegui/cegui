@@ -35,7 +35,7 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         func_draw( boost::ref(queue) );
     }
 
-    virtual ::CEGUI::Rect< float > const & getArea(  ) const {
+    virtual ::CEGUI::Rectf const & getArea(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -44,12 +44,12 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         return func_isImageryCache(  );
     }
 
-    virtual void setArea( ::CEGUI::Rect< float > const & area ){
+    virtual void setArea( ::CEGUI::Rectf const & area ){
         bp::override func_setArea = this->get_override( "setArea" );
         func_setArea( boost::ref(area) );
     }
 
-    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2< float > const & p_in, ::CEGUI::Vector2< float > & p_out ) const {
+    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2f const & p_in, ::CEGUI::Vector2f & p_out ) const {
         bp::override func_unprojectPoint = this->get_override( "unprojectPoint" );
         func_unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
     }
@@ -138,7 +138,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::getArea
         
-            typedef ::CEGUI::Rect<float> const & ( ::CEGUI::RenderTarget::*getArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::RenderTarget::*getArea_function_type )(  ) const;
             
             RenderTarget_exposer.def( 
                 "getArea"
@@ -177,7 +177,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::setArea
         
-            typedef void ( ::CEGUI::RenderTarget::*setArea_function_type )( ::CEGUI::Rect<float> const & ) ;
+            typedef void ( ::CEGUI::RenderTarget::*setArea_function_type )( ::CEGUI::Rectf const & ) ;
             
             RenderTarget_exposer.def( 
                 "setArea"
@@ -201,7 +201,7 @@ void register_RenderTarget_class(){
         }
         { //::CEGUI::RenderTarget::unprojectPoint
         
-            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const;
+            typedef void ( ::CEGUI::RenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) const;
             
             RenderTarget_exposer.def( 
                 "unprojectPoint"

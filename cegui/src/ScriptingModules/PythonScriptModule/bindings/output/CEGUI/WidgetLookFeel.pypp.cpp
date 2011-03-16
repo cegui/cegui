@@ -10,9 +10,8 @@ void register_WidgetLookFeel_class(){
 
     { //::CEGUI::WidgetLookFeel
         typedef bp::class_< CEGUI::WidgetLookFeel > WidgetLookFeel_exposer_t;
-        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
+        WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("name"), bp::arg("inherits") )) );
         bp::scope WidgetLookFeel_scope( WidgetLookFeel_exposer );
-        bp::implicitly_convertible< CEGUI::String const &, CEGUI::WidgetLookFeel >();
         WidgetLookFeel_exposer.def( bp::init< >() );
         { //::CEGUI::WidgetLookFeel::addAnimationName
         

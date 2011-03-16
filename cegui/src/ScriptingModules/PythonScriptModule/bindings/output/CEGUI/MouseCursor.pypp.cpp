@@ -80,7 +80,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getConstraintArea
         
-            typedef ::CEGUI::Rect< float > ( ::CEGUI::MouseCursor::*getConstraintArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::MouseCursor::*getConstraintArea_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getConstraintArea"
@@ -96,7 +96,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getDisplayIndependantPosition
         
-            typedef ::CEGUI::Vector2< float > ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f ( ::CEGUI::MouseCursor::*getDisplayIndependantPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getDisplayIndependantPosition"
@@ -116,7 +116,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getExplicitRenderSize
         
-            typedef ::CEGUI::Size< float > const & ( ::CEGUI::MouseCursor::*getExplicitRenderSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::MouseCursor::*getExplicitRenderSize_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getExplicitRenderSize"
@@ -147,7 +147,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::getPosition
         
-            typedef ::CEGUI::Vector2< float > ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f ( ::CEGUI::MouseCursor::*getPosition_function_type )(  ) const;
             
             MouseCursor_exposer.def( 
                 "getPosition"
@@ -244,7 +244,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::MouseCursor::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             MouseCursor_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -265,7 +265,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::offsetPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*offsetPosition_function_type )( ::CEGUI::Vector2f const & ) ;
             
             MouseCursor_exposer.def( 
                 "offsetPosition"
@@ -285,7 +285,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setConstraintArea
         
-            typedef void ( ::CEGUI::MouseCursor::*setConstraintArea_function_type )( ::CEGUI::Rect< float > const * ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setConstraintArea_function_type )( ::CEGUI::Rectf const * ) ;
             
             MouseCursor_exposer.def( 
                 "setConstraintArea"
@@ -309,7 +309,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setExplicitRenderSize
         
-            typedef void ( ::CEGUI::MouseCursor::*setExplicitRenderSize_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setExplicitRenderSize_function_type )( ::CEGUI::Sizef const & ) ;
             
             MouseCursor_exposer.def( 
                 "setExplicitRenderSize"
@@ -370,7 +370,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setInitialMousePosition
         
-            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Vector2< float > const & );
+            typedef void ( *setInitialMousePosition_function_type )( ::CEGUI::Vector2f const & );
             
             MouseCursor_exposer.def( 
                 "setInitialMousePosition"
@@ -394,7 +394,7 @@ void register_MouseCursor_class(){
         }
         { //::CEGUI::MouseCursor::setPosition
         
-            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Vector2< float > const & ) ;
+            typedef void ( ::CEGUI::MouseCursor::*setPosition_function_type )( ::CEGUI::Vector2f const & ) ;
             
             MouseCursor_exposer.def( 
                 "setPosition"

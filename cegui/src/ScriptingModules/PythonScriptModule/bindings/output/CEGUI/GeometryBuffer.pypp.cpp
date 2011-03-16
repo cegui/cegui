@@ -77,12 +77,12 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         CEGUI::GeometryBuffer::setBlendMode( mode );
     }
 
-    virtual void setClippingRegion( ::CEGUI::Rect< float > const & region ){
+    virtual void setClippingRegion( ::CEGUI::Rectf const & region ){
         bp::override func_setClippingRegion = this->get_override( "setClippingRegion" );
         func_setClippingRegion( boost::ref(region) );
     }
 
-    virtual void setPivot( ::CEGUI::Vector3< float > const & p ){
+    virtual void setPivot( ::CEGUI::Vector3f const & p ){
         bp::override func_setPivot = this->get_override( "setPivot" );
         func_setPivot( boost::ref(p) );
     }
@@ -97,7 +97,7 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         func_setRotation( boost::ref(r) );
     }
 
-    virtual void setTranslation( ::CEGUI::Vector3< float > const & v ){
+    virtual void setTranslation( ::CEGUI::Vector3f const & v ){
         bp::override func_setTranslation = this->get_override( "setTranslation" );
         func_setTranslation( boost::ref(v) );
     }
@@ -293,7 +293,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setClippingRegion
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setClippingRegion_function_type )( ::CEGUI::Rect<float> const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setClippingRegion_function_type )( ::CEGUI::Rectf const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setClippingRegion"
@@ -307,7 +307,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setPivot
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setPivot_function_type )( ::CEGUI::Vector3<float> const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setPivot_function_type )( ::CEGUI::Vector3f const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setPivot"
@@ -367,7 +367,7 @@ void register_GeometryBuffer_class(){
         }
         { //::CEGUI::GeometryBuffer::setTranslation
         
-            typedef void ( ::CEGUI::GeometryBuffer::*setTranslation_function_type )( ::CEGUI::Vector3<float> const & ) ;
+            typedef void ( ::CEGUI::GeometryBuffer::*setTranslation_function_type )( ::CEGUI::Vector3f const & ) ;
             
             GeometryBuffer_exposer.def( 
                 "setTranslation"

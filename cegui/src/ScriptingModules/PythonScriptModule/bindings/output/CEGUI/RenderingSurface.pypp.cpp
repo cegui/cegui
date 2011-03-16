@@ -200,8 +200,8 @@ void register_RenderingSurface_class(){
                     Clears all GeometryBuffers from all rendering queues.\n\
             \n\
                 \note\n\
-                    Clearing the rendering queues does destory the attached GeometryBuffers,\n\
-                    which remain under thier original ownership.\n\
+                    Clearing the rendering queues does destroy the attached GeometryBuffers,\n\
+                    which remain under their original ownership.\n\
                 *\n" );
         
         }

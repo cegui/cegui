@@ -86,7 +86,7 @@ void register_SectionSpecification_class(){
         }
         { //::CEGUI::SectionSpecification::render
         
-            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             SectionSpecification_exposer.def( 
                 "render"
@@ -106,7 +106,7 @@ void register_SectionSpecification_class(){
         }
         { //::CEGUI::SectionSpecification::render
         
-            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect< float > const &,::CEGUI::ColourRect const *,::CEGUI::Rect< float > const *,bool ) const;
+            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             SectionSpecification_exposer.def( 
                 "render"

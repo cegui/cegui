@@ -18,6 +18,7 @@ void register_UVector2_class(){
         UVector2_exposer.def( bp::self * bp::self );
         UVector2_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         UVector2_exposer.def( bp::self *= bp::self );
+        UVector2_exposer.def( bp::self *= bp::other< CEGUI::UDim >() );
         UVector2_exposer.def( bp::self + bp::self );
         UVector2_exposer.def( bp::self += bp::self );
         UVector2_exposer.def( bp::self - bp::self );

@@ -192,7 +192,7 @@ void register_ImageManager_class(){
         }
         { //::CEGUI::ImageManager::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::ImageManager::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size< float > const & ) ;
+            typedef void ( ::CEGUI::ImageManager::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             ImageManager_exposer.def( 
                 "notifyDisplaySizeChanged"

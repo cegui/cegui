@@ -224,7 +224,7 @@
 
 #include "RawDataContainer.pypp.hpp"
 
-#include "Rect.pypp.hpp"
+#include "Rectf.pypp.hpp"
 
 #include "RenderEffect.pypp.hpp"
 
@@ -312,7 +312,7 @@
 
 #include "SingletonWindowRendererManager.pypp.hpp"
 
-#include "Size.pypp.hpp"
+#include "Sizef.pypp.hpp"
 
 #include "Slider.pypp.hpp"
 
@@ -370,9 +370,9 @@
 
 #include "UpdateEventArgs.pypp.hpp"
 
-#include "Vector2.pypp.hpp"
+#include "Vector2f.pypp.hpp"
 
-#include "Vector3.pypp.hpp"
+#include "Vector3f.pypp.hpp"
 
 #include "Vertex.pypp.hpp"
 
@@ -535,7 +535,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_AnimationManager_class();
 
-    register_Rect_class();
+    register_Rectf_class();
 
     register_Image_class();
 
@@ -819,7 +819,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_USize_class();
 
-    register_Size_class();
+    register_Sizef_class();
 
     register_Slider_class();
 
@@ -867,9 +867,9 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_UVector2_class();
 
-    register_Vector2_class();
+    register_Vector2f_class();
 
-    register_Vector3_class();
+    register_Vector3f_class();
 
     register_Vertex_class();
 

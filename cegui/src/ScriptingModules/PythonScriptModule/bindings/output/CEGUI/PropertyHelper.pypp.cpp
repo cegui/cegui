@@ -64,7 +64,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::rectToString
         
-            typedef ::CEGUI::String ( *rectToString_function_type )( ::CEGUI::Rect< float > const & );
+            typedef ::CEGUI::String ( *rectToString_function_type )( ::CEGUI::Rectf const & );
             
             PropertyHelper_exposer.def( 
                 "rectToString"
@@ -74,7 +74,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::sizeToString
         
-            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Size< float > const & );
+            typedef ::CEGUI::String ( *sizeToString_function_type )( ::CEGUI::Sizef const & );
             
             PropertyHelper_exposer.def( 
                 "sizeToString"
@@ -135,7 +135,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToRect
         
-            typedef ::CEGUI::Rect< float > ( *stringToRect_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Rectf ( *stringToRect_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToRect"
@@ -145,7 +145,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToSize
         
-            typedef ::CEGUI::Size< float > ( *stringToSize_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Sizef ( *stringToSize_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToSize"
@@ -205,7 +205,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::stringToVector2
         
-            typedef ::CEGUI::Vector2< float > ( *stringToVector2_function_type )( ::CEGUI::String const & );
+            typedef ::CEGUI::Vector2f ( *stringToVector2_function_type )( ::CEGUI::String const & );
             
             PropertyHelper_exposer.def( 
                 "stringToVector2"
@@ -265,7 +265,7 @@ void register_PropertyHelper_class(){
         }
         { //::CEGUI::PropertyHelper_wrapper::vector2ToString
         
-            typedef ::CEGUI::String ( *vector2ToString_function_type )( ::CEGUI::Vector2< float > const & );
+            typedef ::CEGUI::String ( *vector2ToString_function_type )( ::CEGUI::Vector2f const & );
             
             PropertyHelper_exposer.def( 
                 "vector2ToString"
