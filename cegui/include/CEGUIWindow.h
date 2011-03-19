@@ -517,6 +517,15 @@ public:
     */
     const String& getName(void) const  {return d_name;}
 
+    /*
+    \brief
+        return a String object that describes the name path for this Window.
+
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+    */
+    String getNamePath() const;
+
     /*!
     \brief
         returns whether or not this Window is set to be destroyed when its
@@ -652,17 +661,26 @@ public:
 
     /*!
     \brief
-        returns whether a Window with the specified name is currently attached
-        to this Window as a child.
+        returns whether the specified name path references a Window that is
+        currently attached to this Window.
 
-    \param name
-        String object containing the name of the Window to look for.
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+        \par
+        For example, if this window has a child attached to it named "Panel"
+        which has its own children attached named "Okay" and "Cancel",
+        you can check for the window "Okay" from this window by using the
+        name path "Panel/Okay".  To check for "Panel", you would simply pass
+        the name "Panel".
+
+    \param name_path
+        String object holding the name path of the child window to test.
 
     \return
-        - true if a Window named \a name is currently attached to this Window.
-        - false if no such child Window is attached.
+         - true if the window referenced by \a name_path is attached.
+         - false if the window referenced by \a name_path is not attached.
     */
-    bool isChild(const String& name) const;
+    bool isChild(const String& name_path) const;
 
     /*!
     \brief
@@ -719,26 +737,28 @@ public:
 
     /*!
     \brief
-        return a pointer to the child window with the specified name.
+        return the attached child window that the given name path references.
 
-        This function will throw an exception if no child object with the given
-        name is attached.  This decision was made (over returning NULL if no
-        window was found) so that client code can assume that if the call
-        returns it has a valid window pointer.  We provide the isChild()
-        functions for checking if a given window is attached.
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+        \par
+        For example, if this window has a child attached to it named "Panel"
+        which has its own children attached named "Okay" and "Cancel",
+        you can access the window "Okay" from this window by using the
+        name path "Panel/Okay".  To access "Panel", you would simply pass the
+        name "Panel".
 
-    \param name
-        String object holding the name of the child window for which a pointer
-        is to be returned.
+    \param name_path
+        String object holding the name path of the child window to return.
 
     \return
-        Pointer to the Window object attached to this window that has the name
-        \a name.
+        the Window object referenced by \a name_path.
 
     \exception UnknownObjectException
-        thrown if no window named \a name is attached to this Window.
+        thrown if \a name_path does not reference a Window attached to this
+        Window.
     */
-    Window* getChild(const String& name) const;
+    Window* getChild(const String& name_path) const;
 
     /*!
     \brief
@@ -762,31 +782,6 @@ public:
         thrown if no window with the ID code \a ID is attached to this Window.
     */
     Window* getChild(uint ID) const;
-
-    /*!
-    \brief
-        return a pointer to the first attached child window with the specified
-        name. Children are traversed recursively.
-
-        Contrary to the non recursive version of this function, this one will
-        not throw an exception, but return 0 in case no child was found.
-
-    \note
-        WARNING! This function can be very expensive and should only be used
-        when you have no other option available. If you decide to use it anyway,
-        make sure the window hierarchy from the entry point is small.
-
-    \param name
-        String object holding the name of the child window for which a pointer
-        is to be returned.
-
-    \return
-        Pointer to the Window object attached to this window that has the name
-        \a name.
-
-        If no child is found with the name \a name, 0 is returned.
-    */
-    Window* getChildRecursive(const String& name) const;
 
     /*!
     \brief
