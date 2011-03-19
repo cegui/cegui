@@ -36,6 +36,7 @@ class Window //: public EventSet
 {
 	string getType() const;
 	string getName() const;
+    string getNamePath() const;
     tolua_throws|CEGUI::Exception,error| void rename(utf8string new_name);
 
     bool isAutoWindow() const;
