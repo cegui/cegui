@@ -307,6 +307,19 @@ const String& Window::getType(void) const
 }
 
 //----------------------------------------------------------------------------//
+String Window::getNamePath() const
+{
+    String path;
+
+    if (d_parent)
+        path = d_parent->getNamePath() + '/';
+
+    path += getName();
+
+    return path;
+}
+
+//----------------------------------------------------------------------------//
 bool Window::isDisabled() const
 {
     return !d_enabled;
@@ -345,13 +358,19 @@ bool Window::isActive(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChild(const String& name) const
+bool Window::isChild(const String& name_path) const
 {
-    const size_t child_count = getChildCount();
+    const size_t sep = name_path.find_first_of('/');
+    const String base_child(name_path.substr(0, sep));
+
+    const size_t child_count = d_children.size();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (d_children[i]->getName() == name)
-            return true;
+        if (d_children[i]->getName() == base_child)
+            if (sep != String::npos && sep < name_path.length() - 1)
+                return d_children[i]->isChild(name_path.substr(sep + 1));
+            else
+                return true;
 
     return false;
 }
@@ -393,16 +412,23 @@ bool Window::isChild(const Window* window) const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::getChild(const String& name) const
+Window* Window::getChild(const String& name_path) const
 {
-    const size_t child_count = getChildCount();
+    const size_t sep = name_path.find_first_of('/');
+    const String base_child(name_path.substr(0, sep));
+
+    const size_t child_count = d_children.size();
 
     for (size_t i = 0; i < child_count; ++i)
-        if (d_children[i]->getName() == name)
-            return d_children[i];
+        if (d_children[i]->getName() == base_child)
+            if (sep != String::npos && sep < name_path.length() - 1)
+                return d_children[i]->getChild(name_path.substr(sep + 1));
+            else
+                return d_children[i];
 
     CEGUI_THROW(UnknownObjectException("Window::getChild - The Window object "
-        "named '" + name + "' is not attached to Window '" + d_name + "'."));
+        "referenced by '" + name_path + "' is not attached to Window at '"
+        + getNamePath() + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -418,25 +444,6 @@ Window* Window::getChild(uint ID) const
     sprintf(strbuf, "%X", ID);
     CEGUI_THROW(UnknownObjectException("Window::getChild: A Window with ID: '" +
         String(strbuf) + "' is not attached to Window '" + d_name + "'."));
-}
-
-//----------------------------------------------------------------------------//
-Window* Window::getChildRecursive(const String& name) const
-{
-    const size_t child_count = getChildCount();
-
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        const String childName(d_children[i]->getName());
-        if (childName == name)
-            return d_children[i];
-
-        Window* tmp = d_children[i]->getChildRecursive(name);
-        if (tmp)
-            return tmp;
-    }
-
-    return 0;
 }
 
 //----------------------------------------------------------------------------//
