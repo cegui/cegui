@@ -6,26 +6,18 @@ class WindowManager : public EventSet
 	static WindowManager& getSingleton();
 
 	tolua_throws|CEGUI::AlreadyExistsException,nil|CEGUI::InvalidRequestException,nil| Window* createWindow(utf8string type, utf8string name="");
-	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(utf8string filename, utf8string name_prefix="", utf8string resourcegroup="");
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(utf8string filename, utf8string resourcegroup="");
 
-    void writeWindowLayoutToStream(utf8string window, OutStream& out, bool writeParent=false) const;
     void writeWindowLayoutToStream(const Window& window, OutStream& out, bool writeParent=false) const;
-
-    void saveWindowLayout(utf8string window, utf8string filename, bool writeParent = false) const;
     void saveWindowLayout(const Window& window, utf8string filename, bool writeParent = false) const;
 
-	void destroyWindow(utf8string name);
 	void destroyWindow(Window* window);
 	void destroyAllWindows();
 
-	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getWindow(utf8string name) const;
-	bool isWindowPresent(utf8string name) const;
+	bool isAlive(Window* window) const;
 
 	bool isDeadPoolEmpty() const;
 	void cleanDeadPool();
-
-    void renameWindow(Window* window, utf8string  new_name);
-    void renameWindow(utf8string window, utf8string new_name);
 
     WindowIterator getIterator() const;
 

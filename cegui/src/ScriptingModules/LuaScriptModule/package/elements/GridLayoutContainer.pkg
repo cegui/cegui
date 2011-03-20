@@ -23,7 +23,6 @@ class GridLayoutContainer : public LayoutContainer
     void autoPositioningSkipCells(unsigned int cells);
 
     void addChildToPosition(Window* window, unsigned int gridX, unsigned int gridY);
-    void addChildToPosition(utf8string name, unsigned int gridX, unsigned int gridY);
 
     Window* getChildAtPosition(unsigned int gridX, unsigned int gridY);
 

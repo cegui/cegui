@@ -91,7 +91,6 @@ $]
 *************************************************************************/
 class WindowIterator
 {
-    string getCurrentKey @ key() const;
     Window* getCurrentValue @ value() const;
 
     bool isAtEnd() const;
