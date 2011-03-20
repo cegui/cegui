@@ -16,7 +16,7 @@ end
 -----------------------------------------
 function panelSlideHandler(args)
     local scroller = CEGUI.toScrollbar(CEGUI.toWindowEventArgs(args).window)
-    local demoWnd = CEGUI.WindowManager:getSingleton():getWindow("Demo8")
+    local demoWnd = CEGUI.System:getSingleton():getGUISheet():getChild("Demo8")
 
     local relHeight = CEGUI.CoordConverter:asRelative(demoWnd:getHeight(), demoWnd:getParentPixelHeight())
 
@@ -29,15 +29,15 @@ end
 -- colour selector scrollers change
 -----------------------------------------
 function colourChangeHandler(args)
-    local winMgr = CEGUI.WindowManager:getSingleton()
+    local root = CEGUI.System:getSingleton():getGUISheet()
     
-    local r = CEGUI.toScrollbar(winMgr:getWindow("Demo8/Window1/Controls/Red")):getScrollPosition()
-    local g = CEGUI.toScrollbar(winMgr:getWindow("Demo8/Window1/Controls/Green")):getScrollPosition()
-    local b = CEGUI.toScrollbar(winMgr:getWindow("Demo8/Window1/Controls/Blue")):getScrollPosition()
+    local r = CEGUI.toScrollbar(root:getChild("Demo8/Window1/Controls/Red")):getScrollPosition()
+    local g = CEGUI.toScrollbar(root:getChild("Demo8/Window1/Controls/Green")):getScrollPosition()
+    local b = CEGUI.toScrollbar(root:getChild("Demo8/Window1/Controls/Blue")):getScrollPosition()
     local col = CEGUI.Colour:new_local(r, g, b, 1)
     local crect = CEGUI.ColourRect(col)
 
-    winMgr:getWindow("Demo8/Window1/Controls/ColourSample"):setProperty("ImageColours", CEGUI.PropertyHelper:colourRectToString(crect))
+    root:getChild("Demo8/Window1/Controls/ColourSample"):setProperty("ImageColours", CEGUI.PropertyHelper:colourRectToString(crect))
 end
 
 
@@ -45,16 +45,16 @@ end
 -- Handler to add an item to the box
 -----------------------------------------
 function addItemHandler(args)
-    local winMgr = CEGUI.WindowManager:getSingleton()
+    local root = CEGUI.System:getSingleton():getGUISheet()
 
-    local text = winMgr:getWindow("Demo8/Window1/Controls/Editbox"):getText()
-    local cols = CEGUI.PropertyHelper:stringToColourRect(winMgr:getWindow("Demo8/Window1/Controls/ColourSample"):getProperty("ImageColours"))
+    local text = root:getChild("Demo8/Window1/Controls/Editbox"):getText()
+    local cols = CEGUI.PropertyHelper:stringToColourRect(root:getChild("Demo8/Window1/Controls/ColourSample"):getProperty("ImageColours"))
 
     local newItem = CEGUI.createListboxTextItem(text, 0, nil, false, true)
     newItem:setSelectionBrushImage("TaharezLook/MultiListSelectionBrush")
     newItem:setSelectionColours(cols)
 
-    CEGUI.toListbox(winMgr:getWindow("Demo8/Window1/Listbox")):addItem(newItem)
+    CEGUI.toListbox(root:getChild("Demo8/Window1/Listbox")):addItem(newItem)
 end
 
 -----------------------------------------
@@ -76,8 +76,8 @@ guiSystem:setDefaultMouseCursor("TaharezLook/MouseArrow")
 guiSystem:setDefaultTooltip("TaharezLook/Tooltip")
 
 -- subscribe required events
-winMgr:getWindow("Demo8/ViewScroll"):subscribeEvent("ScrollPositionChanged", "panelSlideHandler")
-winMgr:getWindow("Demo8/Window1/Controls/Blue"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
-winMgr:getWindow("Demo8/Window1/Controls/Red"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
-winMgr:getWindow("Demo8/Window1/Controls/Green"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
-winMgr:getWindow("Demo8/Window1/Controls/Add"):subscribeEvent("Clicked", "addItemHandler")
+root:getChild("Demo8/ViewScroll"):subscribeEvent("ScrollPositionChanged", "panelSlideHandler")
+root:getChild("Demo8/Window1/Controls/Blue"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
+root:getChild("Demo8/Window1/Controls/Red"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
+root:getChild("Demo8/Window1/Controls/Green"):subscribeEvent("ScrollPositionChanged", "colourChangeHandler")
+root:getChild("Demo8/Window1/Controls/Add"):subscribeEvent("Clicked", "addItemHandler")

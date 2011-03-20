@@ -11,8 +11,8 @@ class WidgetComponent
   void setBaseWidgetType(utf8string type);
   string getWidgetLookName() const;
   void setWidgetLookName(utf8string look);
-  string getWidgetNameSuffix() const;
-  void setWidgetNameSuffix(utf8string suffix);
+  string getWidgetName() const;
+  void setWidgetName(utf8string suffix);
   string getWindowRendererType() const;
   void setWindowRendererType(utf8string type);
   VerticalAlignment getVerticalWidgetAlignment() const;

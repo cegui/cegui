@@ -19,7 +19,6 @@ class SequentialLayoutContainer : public LayoutContainer
     void moveChild(Window* window, int delta = 1);
 
     void addChildToPosition(Window* window, unsigned int position);
-    void addChildToPosition(utf8string window, unsigned int position);
 
     void removeChildFromPosition(unsigned int position);
 };
