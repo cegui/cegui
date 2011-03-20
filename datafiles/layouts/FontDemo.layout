@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUILayout>
-<Window Type="DefaultWindow" Name="root">
-    <Window Type="TaharezLook/FrameWindow" Name="FontDemo/Window">
+<Window Name="root" Type="DefaultWindow">
+    <Window Name="FontDemo" Type="TaharezLook/FrameWindow">
         <Property Name="UnifiedPosition" Value="{{0.1,0},{0.1,0}}" />
         <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
@@ -9,24 +9,24 @@
         <Property Name="Text" Value="Font Demo" />
         <Property Name="Tooltip" Value="This is a simple demonstration of what the font subsystem can do." />
 
-        <Window Type="TaharezLook/MultiLineEditbox" Name="FontDemo/FontSample">
+        <Window Name="FontSample" Type="TaharezLook/MultiLineEditbox">
             <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.75,0},{0.5,0}}" />
             <Property Name="Tooltip" Value="This window shows a sample of the selected font" />
 			<Property Name="WordWrap" Value="True" />
         </Window>
 
-        <Window Type="TaharezLook/Listbox" Name="FontDemo/LangList">
+        <Window Name="LangList" Type="TaharezLook/Listbox">
             <Property Name="UnifiedAreaRect" Value="{{0.8,0},{0.05,0},{0.95,0},{0.5,0}}" />
             <Property Name="Tooltip" Value="Contains a list of languages to select sample text from" />
-			<Property Name="Font" Value="DejaVuSans-10"/>
+			<Property Name="Font" Value="DejaVuSans-10" />
         </Window>
 
-        <Window Type="TaharezLook/Listbox" Name="FontDemo/FontList">
+        <Window Name="FontList" Type="TaharezLook/Listbox">
             <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.55,0},{0.45,0},{0.95,0}}" />
             <Property Name="Tooltip" Value="This listbox shows a list of available fonts to experiment with" />
         </Window>
 
-        <Window Type="TaharezLook/StaticText" Name="FontDemo/FontDesc" >
+        <Window Name="FontDesc" Type="TaharezLook/StaticText">
             <Property Name="FrameEnabled" Value="False" />
             <Property Name="HorzFormatting" Value="WordWrapCentred" />
             <Property Name="VertFormatting" Value="CentreAligned" />
@@ -34,19 +34,19 @@
             <Property Name="BackgroundEnabled" Value="False" />
         </Window>
 
-        <Window Type="TaharezLook/Checkbox" Name="FontDemo/AutoScaled" >
+        <Window Name="AutoScaled" Type="TaharezLook/Checkbox">
             <Property Name="Text" Value="Auto scale font to current resolution" />
             <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.7,0},{0.95,0},{0.75,0}}" />
             <Property Name="Tooltip" Value="Choose between autoscaled/non-autoscaled font versions" />
         </Window>
 
-        <Window Type="TaharezLook/Checkbox" Name="FontDemo/Antialiased" >
+        <Window Name="Antialiased" Type="TaharezLook/Checkbox">
             <Property Name="Text" Value="Antialias the font for smoother look" />
             <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.8,0},{0.95,0},{0.85,0}}" />
             <Property Name="Tooltip" Value="Choose between antialiased/non-antialiased font versions" />
         </Window>
 
-        <Window Type="TaharezLook/HorizontalScrollbar" Name="FontDemo/PointSize" >
+        <Window Name="PointSize" Type="TaharezLook/HorizontalScrollbar">
             <Property Name="DocumentSize" Value="72" />
             <Property Name="PageSize" Value="1" />
             <Property Name="StepSize" Value="1" />

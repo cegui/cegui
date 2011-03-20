@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <GUILayout>
 
-<Window Type="DefaultWindow" Name="">
-    <Window Type="TaharezLook/StaticText" Name="Text">
+<Window Name="" Type="DefaultWindow">
+    <Window Name="Text" Type="TaharezLook/StaticText">
         <Property Name="FrameEnabled" Value="False" />
         <Property Name="HorzFormatting" Value="WordWrapCentred" />
         <Property Name="VertFormatting" Value="CentreAligned" />
@@ -10,22 +10,22 @@
         <Property Name="BackgroundEnabled" Value="False" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Button1">
+    <Window Name="Button1" Type="TaharezLook/Button">
         <Property Name="Text" Value="- One -" />
         <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.1,0},{0.3,0},{0.2,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Button2">
+    <Window Name="Button2" Type="TaharezLook/Button">
         <Property Name="Text" Value="- Two -" />
         <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.3,0},{0.5,0},{0.4,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Button3">
+    <Window Name="Button3" Type="TaharezLook/Button">
         <Property Name="Text" Value="- Three -" />
         <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.5,0},{0.7,0},{0.6,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Button4">
+    <Window Name="Button4" Type="TaharezLook/Button">
         <Property Name="Text" Value="- Four -" />
         <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.7,0},{0.9,0},{0.8,0}}" />
     </Window>

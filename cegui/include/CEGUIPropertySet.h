@@ -280,7 +280,7 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-    typedef	ConstBaseIterator<PropertyRegistry> Iterator;
+    typedef	ConstMapIterator<PropertyRegistry> Iterator;
 
     /*!
     \brief

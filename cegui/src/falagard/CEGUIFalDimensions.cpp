@@ -328,7 +328,7 @@ namespace CEGUI
         // name not empty, so find window with required name
         else
         {
-            widget = WindowManager::getSingleton().getWindow(wnd.getName() + d_widgetName);
+            widget = wnd.getChild(d_widgetName);
         }
 
         // get size of parent; required to extract pixel values
@@ -408,7 +408,7 @@ namespace CEGUI
     FontDim::FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding) :
         d_font(font),
         d_text(text),
-        d_childSuffix(name),
+        d_childName(name),
         d_metric(metric),
         d_padding(padding)
     {
@@ -417,7 +417,7 @@ namespace CEGUI
     float FontDim::getValue_impl(const Window& wnd) const
     {
         // get window to use.
-        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
+        const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
         // get font to use
         Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
 
@@ -453,7 +453,7 @@ namespace CEGUI
 
     BaseDim* FontDim::clone_impl() const
     {
-        FontDim* ndim = CEGUI_NEW_AO FontDim(d_childSuffix, d_font, d_text, d_metric, d_padding);
+        FontDim* ndim = CEGUI_NEW_AO FontDim(d_childName, d_font, d_text, d_metric, d_padding);
         return ndim;
     }
 
@@ -464,8 +464,8 @@ namespace CEGUI
 
     void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        if (!d_childSuffix.empty())
-            xml_stream.attribute("widget", d_childSuffix);
+        if (!d_childName.empty())
+            xml_stream.attribute("widget", d_childName);
 
         if (!d_font.empty())
             xml_stream.attribute("font", d_font);
@@ -484,7 +484,7 @@ namespace CEGUI
     PropertyDim::PropertyDim(const String& name, const String& property,
 	    DimensionType type) :
         d_property(property),
-        d_childSuffix(name),
+        d_childName(name),
 		d_type (type)
     {
     }
@@ -492,7 +492,7 @@ namespace CEGUI
     float PropertyDim::getValue_impl(const Window& wnd) const
     {
         // get window to use.
-        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
+        const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
 
         if (d_type == DT_INVALID)
             // return float property value.
@@ -521,7 +521,7 @@ namespace CEGUI
 
     BaseDim* PropertyDim::clone_impl() const
     {
-        PropertyDim* ndim = CEGUI_NEW_AO PropertyDim(d_childSuffix, d_property, d_type);
+        PropertyDim* ndim = CEGUI_NEW_AO PropertyDim(d_childName, d_property, d_type);
         return ndim;
     }
 
@@ -532,8 +532,8 @@ namespace CEGUI
 
     void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        if (!d_childSuffix.empty())
-            xml_stream.attribute("widget", d_childSuffix);
+        if (!d_childName.empty())
+            xml_stream.attribute("widget", d_childName);
         xml_stream.attribute("name", d_property);
         if (d_type != DT_INVALID)
             xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));

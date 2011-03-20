@@ -308,7 +308,6 @@ System::System(Renderer& renderer,
     config.initialiseDefaultFont();
     config.initialiseDefaultMouseCursor();
     config.initialiseDefaulTooltip();
-    config.initialiseDefaultGUISheet();
 
     // scripting available?
     if (d_scriptModule)

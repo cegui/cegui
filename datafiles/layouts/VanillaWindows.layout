@@ -1,13 +1,12 @@
 <?xml version="1.0" ?>
 <GUILayout>
-    <Window Type="Vanilla/StaticImage" Name="root">
+    <Window Name="root" Type="Vanilla/StaticImage">
         <Property Name="UnifiedPosition" Value="{{0,0},{0,0}}" />
         <Property Name="UnifiedSize" Value="{{1,0},{1,0}}" />
         <Property Name="FrameEnabled" Value="False" />
         <Property Name="BackgroundEnabled" Value="False" />
-<!--        <Property Name="Image" Value="Backdrop-Images/Magic" />
--->
-        <Window Type="Vanilla/FrameWindow" Name="Demo/NewNode">
+
+        <Window Name="NewNode" Type="Vanilla/FrameWindow">
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
             <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="UnifiedPosition" Value="{{0.6,0},{0.1,0}}" />
@@ -15,13 +14,13 @@
             <Property Name="Text" Value="New Node" />
             <Property Name="CloseButtonEnabled" Value="False" />
 
-            <Window Type="Vanilla/Listbox" Name="Demo7/Window2/Listbox">
+            <Window Name="Listbox" Type="Vanilla/Listbox">
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
                 <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
                 <Property Name="UnifiedSize" Value="{{1,-14},{1,-80}}" />
             </Window>
 
-            <Window Type="Vanilla/StaticText" Name="Demo/NewNode/label1">
+            <Window Name="label1" Type="Vanilla/StaticText">
                 <Property Name="BackgroundEnabled" Value="False" />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="VerticalAlignment" Value="Bottom" />
@@ -31,7 +30,7 @@
                 <Property Name="Text" Value="Name:" />
             </Window>
 
-            <Window Type="Vanilla/Editbox" Name="Demo/NewNode/Editbox">
+            <Window Name="Editbox" Type="Vanilla/Editbox">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="HorizontalAlignment" Value="Right" />
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
@@ -40,7 +39,7 @@
                 <Property Name="Text" Value="" />
             </Window>
 
-            <Window Type="Vanilla/Button" Name="Demo/NewNode/Okay">
+            <Window Name="Okay" Type="Vanilla/Button">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
                 <Property Name="UnifiedPosition" Value="{{0,7},{0,-7}}" />
@@ -48,7 +47,7 @@
                 <Property Name="Text" Value="Okay" />
             </Window>
 
-            <Window Type="Vanilla/Button" Name="Demo/NewNode/Cancel">
+            <Window Name="Cancel" Type="Vanilla/Button">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="HorizontalAlignment" Value="Right" />
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
@@ -59,7 +58,7 @@
 
         </Window>
 
-        <Window Type="Vanilla/FrameWindow" Name="Demo/NamespaceViewer">
+        <Window Name="NamespaceViewer" Type="Vanilla/FrameWindow">
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
             <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="UnifiedPosition" Value="{{0.25,0},{0.48,0}}" />
@@ -67,13 +66,13 @@
             <Property Name="Text" Value="Namespace Viewer" />
             <Property Name="CloseButtonEnabled" Value="False" />
 
-            <Window Type="Vanilla/StaticText" Name="Demo/NamespaceViewer/area1">
+            <Window Name="area1" Type="Vanilla/StaticText">
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
                 <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
                 <Property Name="UnifiedSize" Value="{{1,-14},{0,93}}" />
             </Window>
 
-            <Window Type="Vanilla/Listbox" Name="Demo/NamespaceViewer/area2">
+            <Window Name="area2" Type="Vanilla/Listbox">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
                 <Property Name="UnifiedPosition" Value="{{0,7},{0,-7}}" />

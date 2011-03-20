@@ -62,9 +62,9 @@ const String Slider::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Slider::EventThumbTrackEnded( "ThumbTrackEnded" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String Slider::ThumbNameSuffix( "__auto_thumb__" );
+const String Slider::ThumbName( "__auto_thumb__" );
 
 /*************************************************************************
 	Slider base class constructor
@@ -272,8 +272,7 @@ void Slider::addSliderProperties(void)
 *************************************************************************/
 Thumb* Slider::getThumb() const
 {
-    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
-                               getName() + ThumbNameSuffix));
+    return static_cast<Thumb*>(getChild(ThumbName));
 }
 
 /*************************************************************************

@@ -275,8 +275,7 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
     else if (d_renderControlWidget == S_parentIdentifier)
         property_source = wnd.getParent();
     else
-        property_source = WindowManager::getSingleton().getWindow(
-            wnd.getName() + d_renderControlWidget);
+        property_source = wnd.getChild(d_renderControlWidget);
 
     // if no source window, we can't access the property, so never draw
     if (!property_source)

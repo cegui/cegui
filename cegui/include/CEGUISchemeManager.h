@@ -62,7 +62,7 @@ public:
     ~SchemeManager();
 
     //! Definition of SchemeIterator type.
-    typedef ConstBaseIterator<ObjectRegistry> SchemeIterator;
+    typedef ConstMapIterator<ObjectRegistry> SchemeIterator;
 
     /*!
     \brief

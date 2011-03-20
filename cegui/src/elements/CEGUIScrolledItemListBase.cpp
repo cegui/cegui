@@ -45,9 +45,9 @@ const String ScrolledItemListBase::EventVertScrollbarModeChanged("VertScrollbarM
 const String ScrolledItemListBase::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 
 // component widget name suffixes
-const String ScrolledItemListBase::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String ScrolledItemListBase::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
-const String ScrolledItemListBase::ContentPaneNameSuffix("__auto_content_pane__");
+const String ScrolledItemListBase::VertScrollbarName( "__auto_vscrollbar__" );
+const String ScrolledItemListBase::HorzScrollbarName( "__auto_hscrollbar__" );
+const String ScrolledItemListBase::ContentPaneName("__auto_content_pane__");
 
 /*************************************************************************
     Properties
@@ -97,7 +97,7 @@ void ScrolledItemListBase::initialiseComponents()
     {
         // IMPORTANT:
         // we must do this before the base class handling or we'll lose the onChildRemoved subscriber!!!
-        d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", d_name+ContentPaneNameSuffix);
+        d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", ContentPaneName);
 
         // set up clipping
         static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
@@ -131,8 +131,7 @@ void ScrolledItemListBase::initialiseComponents()
 ************************************************************************/
 Scrollbar* ScrolledItemListBase::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton()
-        .getWindow(d_name+VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 /************************************************************************
@@ -140,8 +139,7 @@ Scrollbar* ScrolledItemListBase::getVertScrollbar() const
 ************************************************************************/
 Scrollbar* ScrolledItemListBase::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton()
-        .getWindow(d_name+HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 /************************************************************************

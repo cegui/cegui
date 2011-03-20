@@ -164,12 +164,6 @@ public:
 
     /*!
     \brief
-        Adds a window to given position
-    */
-    void addChildToPosition(const String& window, size_t position);
-
-    /*!
-    \brief
         Removes a window from given position
     */
     void removeChildFromPosition(size_t position);

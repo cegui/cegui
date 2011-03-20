@@ -1943,26 +1943,6 @@ public:
 
     /*!
     \brief
-        Add the named Window as a child of this Window.  If the Window \a name
-        is already attached to a Window, it is detached before being added to
-        this Window.
-
-    \param name
-        String object holding the name of the Window to be added.
-
-    \return
-        Nothing.
-
-    \exception UnknownObjectException
-        thrown if no Window named \a name exists.
-    \exception InvalidRequestException
-        thrown if Window \a name is an ancestor of this Window, to prevent
-        cyclic Window structures.
-    */
-    void addChild(const String& name);
-
-    /*!
-    \brief
         Add the specified Window as a child of this Window.  If the Window
         \a window is already attached to a Window, it is detached before
         being added to this Window.
@@ -1981,11 +1961,13 @@ public:
 
     /*!
     \brief
-        Remove the named Window from this windows child list.
+        Remove the Window referenced by the given name path from this Windows
+        child list.
 
-    \param name
-        String object holding the name of the Window to be removed.  If the
-        Window specified is not attached to this Window, nothing happens.
+    \param name_path
+        String the name path that references the the Window to be removed.
+        If the Window specified is not attached to this Window, nothing
+        happens.
 
     \return
         Nothing.
@@ -2025,19 +2007,17 @@ public:
 		Creates a child window attached to this window.
 	
 	\param type
-		String that describes the type of Window to be created.  A valid WindowFactory for the specified type must be registered.
+		String that describes the type of Window to be created.  A valid
+        WindowFactory for the specified type must be registered.
 
 	\param name
-		String that holds a unique name that is to be given to the new window.  If this string is empty (""), a name
-		will be generated for the window.
-	
-	\param nameLocal
-		If true, the name is considered local (the absolute name will be ParentWindowName/Name)
+		String that holds the name that is to be given to the new window.  If
+        this string is empty, a name will be generated for the window.
 
 	\return
 		Pointer to the newly created child Window object.
 	*/
-    Window* createChild(const String& type, const String& name, bool nameLocal = true);
+    Window* createChild(const String& type, const String& name);
 
     /*!
     \brief
@@ -2052,13 +2032,10 @@ public:
     \brief
         Destroys a child window of this window
 
-    \param name
-        Name of the child window to destroy
-
-    \param nameLocal
-        If true, the name is considered local (the absolute name will be ParentWindowName/Name)
+    \param name_path
+        Name path that references the window to destroy
     */
-    void destroyChild(const String& name, bool nameLocal = true);
+    void destroyChild(const String& name_path);
 
     /*!
     \brief
@@ -4250,6 +4227,9 @@ protected:
     bool constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz);
     // constrain given UVector2 to window's max size, return if size changed.
     bool constrainUVector2ToMaxSize(const Sizef& base_sz, UVector2& sz);
+    
+    //! implementation function to get window at name_path, returns 0 if none.
+    virtual Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************
         Properties for Window base class

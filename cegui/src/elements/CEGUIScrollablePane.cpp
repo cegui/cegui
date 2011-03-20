@@ -43,9 +43,9 @@ const String ScrollablePane::EventVertScrollbarModeChanged("VertScrollbarModeCha
 const String ScrollablePane::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 const String ScrollablePane::EventAutoSizeSettingChanged("AutoSizeSettingChanged");
 const String ScrollablePane::EventContentPaneScrolled("ContentPaneScrolled");
-const String ScrollablePane::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String ScrollablePane::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
-const String ScrollablePane::ScrolledContainerNameSuffix( "__auto_container__" );
+const String ScrollablePane::VertScrollbarName( "__auto_vscrollbar__" );
+const String ScrollablePane::HorzScrollbarName( "__auto_hscrollbar__" );
+const String ScrollablePane::ScrolledContainerName( "__auto_container__" );
 
 //----------------------------------------------------------------------------//
 ScrollablePaneProperties::ForceHorzScrollbar   ScrollablePane::d_horzScrollbarProperty;
@@ -82,7 +82,7 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
     ScrolledContainer* container = static_cast<ScrolledContainer*>(
         WindowManager::getSingleton().createWindow(
             ScrolledContainer::WidgetTypeName,
-            d_name + ScrolledContainerNameSuffix));
+            ScrolledContainerName));
 
     // add scrolled container widget as child
     addChild(container);
@@ -535,25 +535,19 @@ void ScrollablePane::addScrollablePaneProperties(void)
 //----------------------------------------------------------------------------//
 Scrollbar* ScrollablePane::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(
-        WindowManager::getSingleton().getWindow(
-            getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 //----------------------------------------------------------------------------//
 Scrollbar* ScrollablePane::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(
-        WindowManager::getSingleton().getWindow(
-            getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 //----------------------------------------------------------------------------//
 ScrolledContainer* ScrollablePane::getScrolledContainer() const
 {
-    return static_cast<ScrolledContainer*>(
-        WindowManager::getSingleton().getWindow(
-            getName() + ScrolledContainerNameSuffix));
+    return static_cast<ScrolledContainer*>(getChild(ScrolledContainerName));
 }
 
 //----------------------------------------------------------------------------//

@@ -448,9 +448,9 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-	typedef	ConstBaseIterator<WindowFactoryRegistry>	WindowFactoryIterator;
-	typedef ConstBaseIterator<TypeAliasRegistry>		TypeAliasIterator;
-    typedef ConstBaseIterator<FalagardMapRegistry>      FalagardMappingIterator;
+	typedef	ConstMapIterator<WindowFactoryRegistry>	WindowFactoryIterator;
+	typedef ConstMapIterator<TypeAliasRegistry>		TypeAliasIterator;
+    typedef ConstMapIterator<FalagardMapRegistry>   FalagardMappingIterator;
 
 	/*!
 	\brief

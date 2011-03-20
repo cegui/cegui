@@ -54,6 +54,8 @@ bool FalagardDemo1Sample::initialiseSample()
 {
     using namespace CEGUI;
 
+    Logger::getSingleton().setLoggingLevel(Informative);
+
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
     // Load the scheme to initialse the VanillaSkin which we use in this sample
@@ -82,7 +84,7 @@ bool FalagardDemo1Sample::initialiseSample()
     background->addChild(winMgr.loadWindowLayout("VanillaWindows.layout"));
 
     // create an instance of the console class.
-    d_console = new DemoConsole("Demo");
+    d_console = new DemoConsole();
 
     // listen for key presses on the root window.
     background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
@@ -137,8 +139,8 @@ const unsigned int DemoConsole::EntryBoxID     = 2;
 const unsigned int DemoConsole::HistoryID      = 3;
 
 
-DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
-    d_root(CEGUI::WindowManager::getSingleton().loadWindowLayout("VanillaConsole.layout", id_name)),
+DemoConsole::DemoConsole(CEGUI::Window* parent) :
+    d_root(CEGUI::WindowManager::getSingleton().loadWindowLayout("VanillaConsole.layout")),
     d_historyPos(0)
 {
     using namespace CEGUI;

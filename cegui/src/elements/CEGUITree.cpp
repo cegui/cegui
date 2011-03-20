@@ -116,8 +116,8 @@ void Tree::initialise(void)
     d_closeButtonImagery = (ImagerySection *)&tempCloseImagery;
     
     // create the component sub-widgets
-    d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
-    d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
+    d_vertScrollbar = createVertScrollbar("__auto_vscrollbar__");
+    d_horzScrollbar = createHorzScrollbar("__auto_hscrollbar__");
     
     addChild(d_vertScrollbar);
     addChild(d_horzScrollbar);
@@ -721,9 +721,9 @@ void Tree::configureScrollbars(void)
     
     //This is becuase CEGUI IS GAY! and fires events before the item is initialized
     if(!d_vertScrollbar)
-        d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
+        d_vertScrollbar = createVertScrollbar("__auto_vscrollbar__");
     if(!d_horzScrollbar)
-        d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
+        d_horzScrollbar = createHorzScrollbar("__auto_hscrollbar__");
     
     float totalHeight = getTotalItemsHeight();
     float widestItem  = getWidestItemWidth() + 20;

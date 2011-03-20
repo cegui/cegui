@@ -189,7 +189,7 @@ public:
     void writeFontToStream(const String& name, OutStream& out_stream) const;
 
     //! ConstBaseIterator type definition.
-    typedef ConstBaseIterator<ObjectRegistry> FontIterator;
+    typedef ConstMapIterator<ObjectRegistry> FontIterator;
 
     /*!
     \brief

@@ -91,11 +91,11 @@ const String Combobox::EventDropListRemoved( "DropListRemoved" );
 const String Combobox::EventListSelectionAccepted( "ListSelectionAccepted" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String Combobox::EditboxNameSuffix( "__auto_editbox__" );
-const String Combobox::DropListNameSuffix( "__auto_droplist__" );
-const String Combobox::ButtonNameSuffix( "__auto_button__" );
+const String Combobox::EditboxName( "__auto_editbox__" );
+const String Combobox::DropListName( "__auto_droplist__" );
+const String Combobox::ButtonName( "__auto_button__" );
 
 
 /*************************************************************************
@@ -896,8 +896,7 @@ void Combobox::setSingleClickEnabled(bool setting)
 ************************************************************************/
 Editbox* Combobox::getEditbox() const
 {
-    return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(
-                                 getName() + EditboxNameSuffix));
+    return static_cast<Editbox*>(getChild(EditboxName));
 }
 
 /************************************************************************
@@ -905,8 +904,7 @@ Editbox* Combobox::getEditbox() const
 ************************************************************************/
 PushButton* Combobox::getPushButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                    getName() + ButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(ButtonName));
 }
 
 /************************************************************************
@@ -915,8 +913,7 @@ PushButton* Combobox::getPushButton() const
 ************************************************************************/
 ComboDropList* Combobox::getDropList() const
 {
-    return static_cast<ComboDropList*>(WindowManager::getSingleton().getWindow(
-                                       getName() + DropListNameSuffix));
+    return static_cast<ComboDropList*>(getChild(DropListName));
 }
 
 //----------------------------------------------------------------------------//

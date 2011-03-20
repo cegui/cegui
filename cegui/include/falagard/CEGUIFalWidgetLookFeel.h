@@ -345,21 +345,6 @@ public:
 
     /*!
     \brief
-        Uses the WindowManager to rename the child windows that are
-        created for this WidgetLookFeel.
-
-    \param widget
-        The target Window containing the child windows that are to be
-        renamed.
-
-    \param newBaseName
-        String object holding the new base name that will be used when
-        constructing new names for the child windows.
-    */
-    void renameChildren(const Window& widget, const String& newBaseName) const;
-
-    /*!
-    \brief
         Takes the name of a property and returns a pointer to the last
         PropertyInitialiser for this property or 0 if the is no
         PropertyInitialiser for this property in the WidgetLookFeel
@@ -371,13 +356,13 @@ public:
 
     /*!
     \brief
-        Takes the namesuffix for a widget component and returns a pointer to
+        Takes the name for a widget component and returns a pointer to
         it if it exists or 0 if it does'nt.
 
-    \param nameSuffix
-        The name suffix of the Child component to look for.
+    \param name
+        The name of the Child component to look for.
     */
-    const WidgetComponent* findWidgetComponent(const String& nameSuffix) const;
+    const WidgetComponent* findWidgetComponent(const String& name) const;
 
     /** Typedefs for property related lists. */
     typedef std::vector<PropertyInitialiser

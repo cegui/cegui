@@ -48,25 +48,18 @@ const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
 const String GUILayout_xmlHandler::EventElement( "Event" );
 const String GUILayout_xmlHandler::WindowTypeAttribute( "Type" );
 const String GUILayout_xmlHandler::WindowNameAttribute( "Name" );
-const String GUILayout_xmlHandler::AutoWindowNameSuffixAttribute( "NameSuffix" );
+const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "NamePath" );
 const String GUILayout_xmlHandler::PropertyNameAttribute( "Name" );
 const String GUILayout_xmlHandler::PropertyValueAttribute( "Value" );
-const String GUILayout_xmlHandler::LayoutParentAttribute( "Parent" );
 const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "Filename" );
-const String GUILayout_xmlHandler::LayoutImportPrefixAttribute( "Prefix" );
 const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "ResourceGroup" );
 const String GUILayout_xmlHandler::EventNameAttribute( "Name" );
 const String GUILayout_xmlHandler::EventFunctionAttribute( "Function" );
 
 void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
-    // handle root GUILayoutElement element
-    if (element == GUILayoutElement)
-    {
-        elementGUILayoutStart(attributes);
-    }
     // handle Window element (create window and make an entry on our "window stack")
-    else if (element == WindowElement)
+    if (element == WindowElement)
     {
         elementWindowStart(attributes);
     }
@@ -99,13 +92,8 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 
 void GUILayout_xmlHandler::elementEnd(const String& element)
 {
-    // handle root GUILayoutElement element
-    if (element == GUILayoutElement)
-    {
-        elementGUILayoutEnd();
-    }
     // handle Window element
-    else if (element == WindowElement)
+    if (element == WindowElement)
     {
         elementWindowEnd();
     }
@@ -172,24 +160,6 @@ Window* GUILayout_xmlHandler::getLayoutRootWindow(void) const
 }
 
 /*************************************************************************
-    Method that handles the opening GUILayout XML element.
-*************************************************************************/
-void GUILayout_xmlHandler::elementGUILayoutStart(const XMLAttributes& attributes)
-{
-    d_layoutParent = attributes.getValueAsString(LayoutParentAttribute);
-
-    // before we go to the trouble of creating the layout, see if this parent exists
-    if (!d_layoutParent.empty())
-    {
-        if (!WindowManager::getSingleton().isWindowPresent(d_layoutParent))
-        {
-            // signal error - with more info about what we have done.
-            CEGUI_THROW(InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since the specified parent Window ('" + d_layoutParent + "') does not exist."));
-        }
-    }
-}
-
-/*************************************************************************
     Method that handles the opening Window XML element.
 *************************************************************************/
 void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
@@ -202,7 +172,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
     // attempt to create window
     CEGUI_TRY
     {
-        Window* wnd = WindowManager::getSingleton().createWindow(windowType, d_namingPrefix + windowName);
+        Window* wnd = WindowManager::getSingleton().createWindow(windowType, windowName);
 
         // add this window to the current parent (if any)
         if (!d_stack.empty())
@@ -240,17 +210,14 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attributes)
 {
     // get window name
-    String nameSuffix(attributes.getValueAsString(AutoWindowNameSuffixAttribute));
-    String windowName;
+    String name_path(attributes.getValueAsString(AutoWindowNamePathAttribute));
 
-    // attempt to create window
     CEGUI_TRY
     {
         // we need a window to fetch children
         if (!d_stack.empty())
         {
-            windowName = d_stack.back().first->getName() + nameSuffix;
-            Window* wnd = WindowManager::getSingleton().getWindow(windowName);
+            Window* wnd = d_stack.back().first->getChild(name_path);
             // make this window the top of the stack
             d_stack.push_back(WindowStackEntry(wnd,false));
         }
@@ -261,7 +228,10 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
         cleanupLoadedWindows();
 
         // signal error - with more info about what we have done.
-        CEGUI_THROW(InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since no auto window named '" + windowName + "' exists."));
+        CEGUI_THROW(InvalidRequestException(
+            "GUILayout_xmlHandler::startElement - layout loading has been "
+            "aborted since auto window '" + name_path + "' could not be "
+            "referenced."));
     }
 }
 
@@ -326,17 +296,11 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
 *************************************************************************/
 void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attributes)
 {
-    // get base prefix
-    String prefixName(d_namingPrefix);
-    // append the prefix specified in the layout doing the import
-    prefixName += attributes.getValueAsString(LayoutImportPrefixAttribute);
-
     CEGUI_TRY
     {
         // attempt to load the imported sub-layout
         Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
                 attributes.getValueAsString( LayoutImportFilenameAttribute),
-                prefixName,
                 attributes.getValueAsString(LayoutImportResourceGroupAttribute),
                 d_propertyCallback,
                 d_userData);
@@ -375,18 +339,6 @@ void GUILayout_xmlHandler::elementEventStart(const XMLAttributes& attributes)
     CEGUI_CATCH (Exception&)
     {
         // Don't do anything here, but the error will have been logged.
-    }
-}
-
-/*************************************************************************
-    Method that handles the closing GUILayout XML element.
-*************************************************************************/
-void GUILayout_xmlHandler::elementGUILayoutEnd()
-{
-    // attach to named parent if needed
-    if (!d_layoutParent.empty() && (d_root != 0))
-    {
-        WindowManager::getSingleton().getWindow(d_layoutParent)->addChild(d_root);
     }
 }
 

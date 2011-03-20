@@ -68,8 +68,8 @@ namespace CEGUI
         const String& getWidgetLookName() const;
         void setWidgetLookName(const String& look);
 
-        const String& getWidgetNameSuffix() const;
-        void setWidgetNameSuffix(const String& suffix);
+        const String& getWidgetName() const;
+        void setWidgetName(const String& name);
 
         const String& getWindowRendererType() const;
         void setWindowRendererType(const String& type);
@@ -116,7 +116,7 @@ namespace CEGUI
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
         String   d_baseType;                 //!< Type of widget to be created.
         String   d_imageryName;              //!< Name of a WidgetLookFeel to be used for the widget.
-        String   d_nameSuffix;               //!< Suffix to apply to the parent Window name to create this widgets unique name.
+        String   d_name;                     //!< name to create this widget with.
         String   d_rendererType;             //!< Name of the window renderer type to assign to the widget.
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.

@@ -61,10 +61,10 @@ const String FrameWindow::EventDragSizingEnded("DragSizingEnded");
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String FrameWindow::TitlebarNameSuffix( "__auto_titlebar__" );
-const String FrameWindow::CloseButtonNameSuffix( "__auto_closebutton__" );
+const String FrameWindow::TitlebarName( "__auto_titlebar__" );
+const String FrameWindow::CloseButtonName( "__auto_closebutton__" );
 
 
 /*************************************************************************
@@ -894,8 +894,7 @@ void FrameWindow::setNESWSizingCursorImage(const String& name)
 *************************************************************************/
 Titlebar* FrameWindow::getTitlebar() const
 {
-    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(
-                                  getName() + TitlebarNameSuffix));
+    return static_cast<Titlebar*>(getChild(TitlebarName));
 }
 
 /*************************************************************************
@@ -904,8 +903,7 @@ Titlebar* FrameWindow::getTitlebar() const
 *************************************************************************/
 PushButton* FrameWindow::getCloseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                    getName() + CloseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(CloseButtonName));
 }
 
 //----------------------------------------------------------------------------//

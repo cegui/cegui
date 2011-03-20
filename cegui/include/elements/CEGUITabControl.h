@@ -101,13 +101,13 @@ public:
 	static const String EventSelectionChanged;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    static const String ContentPaneNameSuffix; //!< Widget name suffix for the tab content pane component.
-    static const String TabButtonNameSuffix;   //!< Widget name suffix for the tab button components.
-    static const String TabButtonPaneNameSuffix; //!< Widget name suffix for the tab button pane component.
-    static const String ButtonScrollLeftSuffix;//!< Widget name suffix for the scroll tabs to right pane component.
-    static const String ButtonScrollRightSuffix; //!< Widget name suffix for the scroll tabs to left pane component.
+    static const String ContentPaneName;   //!< Widget name for the tab content pane component.
+    static const String TabButtonName;     //!< Widget name for the tab button components.
+    static const String TabButtonPaneName; //!< Widget name for the tab button pane component.
+    static const String ButtonScrollLeft;  //!< Widget name for the scroll tabs to right pane component.
+    static const String ButtonScrollRight; //!< Widget name for the scroll tabs to left pane component.
 
 
 	/*************************************************************************
@@ -522,6 +522,7 @@ protected:
 
     void    addChild_impl(Window* wnd);
     void    removeChild_impl(Window* wnd);
+    Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************
     Event handlers

@@ -174,11 +174,11 @@ public:
 	static const String EventListSelectionAccepted;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    static const String EditboxNameSuffix;          //!< Widget name suffix for the editbox component.
-    static const String DropListNameSuffix;   //!< Widget name suffix for the drop list component.
-    static const String ButtonNameSuffix;           //!< Widget name suffix for the button component.
+    static const String EditboxName;    //!< Widget name for the editbox component.
+    static const String DropListName;   //!< Widget name for the drop list component.
+    static const String ButtonName;     //!< Widget suffix for the button component.
 
     // override from Window class
     bool isHit(const Vector2f& position,

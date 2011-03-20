@@ -88,9 +88,9 @@ const String MultiColumnList::EventListColumnMoved( "ListColumnMoved" );
 /*************************************************************************
     Child Widget name suffix constants
 *************************************************************************/
-const String MultiColumnList::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String MultiColumnList::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
-const String MultiColumnList::ListHeaderNameSuffix( "__auto_listheader__" );
+const String MultiColumnList::VertScrollbarName( "__auto_vscrollbar__" );
+const String MultiColumnList::HorzScrollbarName( "__auto_hscrollbar__" );
+const String MultiColumnList::ListHeaderName( "__auto_listheader__" );
 
 
 /*************************************************************************
@@ -2253,8 +2253,7 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 *************************************************************************/
 Scrollbar* MultiColumnList::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 
@@ -2264,8 +2263,7 @@ Scrollbar* MultiColumnList::getVertScrollbar() const
 *************************************************************************/
 Scrollbar* MultiColumnList::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 
@@ -2275,8 +2273,7 @@ Scrollbar* MultiColumnList::getHorzScrollbar() const
 *************************************************************************/
 ListHeader* MultiColumnList::getListHeader() const
 {
-    return static_cast<ListHeader*>(WindowManager::getSingleton().getWindow(
-                                    getName() + ListHeaderNameSuffix));
+    return static_cast<ListHeader*>(getChild(ListHeaderName));
 }
 
 

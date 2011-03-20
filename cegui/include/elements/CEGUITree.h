@@ -622,7 +622,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree vertically.
      */
     virtual Scrollbar* createVertScrollbar(const String& name) const
-        { return (Scrollbar*)(WindowManager::getSingleton().getWindow(name)); }
+        { return (Scrollbar*)getChild(name); }
 
     /*!
      \brief
@@ -636,7 +636,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree horizontally.
      */
     virtual Scrollbar* createHorzScrollbar(const String& name) const
-        { return (Scrollbar*)(WindowManager::getSingleton().getWindow(name)); }
+        { return (Scrollbar*)getChild(name); }
 
     /*!
      \brief

@@ -72,10 +72,10 @@ const String Listbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" 
 const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String Listbox::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String Listbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+const String Listbox::VertScrollbarName( "__auto_vscrollbar__" );
+const String Listbox::HorzScrollbarName( "__auto_hscrollbar__" );
 
 /*************************************************************************
 	Constructor for Listbox base class.
@@ -1105,8 +1105,7 @@ bool Listbox::handle_scrollChange(const EventArgs&)
 *************************************************************************/
 Scrollbar* Listbox::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 /*************************************************************************
@@ -1115,8 +1114,7 @@ Scrollbar* Listbox::getVertScrollbar() const
 *************************************************************************/
 Scrollbar* Listbox::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 /*************************************************************************

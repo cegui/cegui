@@ -71,7 +71,7 @@ namespace CEGUI
             the value specified here.
 
         \param controlPropertyWidget
-            String holding either a widget name suffix or the special value of
+            String holding either a child widget name or the special value of
             '__parent__' indicating the window upon which the property named
             in controlPropertySource should be accessed.  If this is empty then
             the window itself is used as the source, rather than a child or the
@@ -104,7 +104,7 @@ namespace CEGUI
             the value specified here.
 
         \param controlPropertyWidget
-            String holding either a widget name suffix or the special value of
+            String holding either a child widget name or the special value of
             '__parent__' indicating the window upon which the property named
             in controlPropertySource should be accessed.  If this is empty then
             the window itself is used as the source, rather than a child or the
@@ -270,9 +270,9 @@ namespace CEGUI
               the property value.
             - '__parent__': The parent of the widget being drawn will be the
               source of the property value.
-            - any other value: The value will be taken as a name suffix and
-              a window with the name of the widget being drawn with the
-              specified suffix will be the source of the property value.
+            - any other value: The value will be taken as a name and
+              a child window with the specified name will be the source of the
+              property value.
         */
         void setRenderControlWidget(const String& widget);
 
