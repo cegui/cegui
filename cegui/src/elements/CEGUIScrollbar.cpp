@@ -52,9 +52,9 @@ const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
 const String Scrollbar::EventScrollConfigChanged("ScrollConfigChanged");
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::ThumbNameSuffix("__auto_thumb__");
-const String Scrollbar::IncreaseButtonNameSuffix("__auto_incbtn__");
-const String Scrollbar::DecreaseButtonNameSuffix("__auto_decbtn__");
+const String Scrollbar::ThumbName("__auto_thumb__");
+const String Scrollbar::IncreaseButtonName("__auto_incbtn__");
+const String Scrollbar::DecreaseButtonName("__auto_decbtn__");
 
 //----------------------------------------------------------------------------//
 ScrollbarWindowRenderer::ScrollbarWindowRenderer(const String& name) :
@@ -331,22 +331,19 @@ void Scrollbar::addScrollbarProperties(void)
 //----------------------------------------------------------------------------//
 PushButton* Scrollbar::getIncreaseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + IncreaseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(IncreaseButtonName));
 }
 
 //----------------------------------------------------------------------------//
 PushButton* Scrollbar::getDecreaseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + DecreaseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(DecreaseButtonName));
 }
 
 //----------------------------------------------------------------------------//
 Thumb* Scrollbar::getThumb() const
 {
-    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
-                                   getName() + ThumbNameSuffix));
+    return static_cast<Thumb*>(getChild(ThumbName));
 }
 
 //----------------------------------------------------------------------------//

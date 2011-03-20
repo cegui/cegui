@@ -100,10 +100,10 @@ const String MultiLineEditbox::EventHorzScrollbarModeChanged( "HorzScrollbarMode
 String MultiLineEditbox::d_lineBreakChars("\n");
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String MultiLineEditbox::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String MultiLineEditbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+const String MultiLineEditbox::VertScrollbarName( "__auto_vscrollbar__" );
+const String MultiLineEditbox::HorzScrollbarName( "__auto_hscrollbar__" );
 
 /*************************************************************************
 	Constructor for the MultiLineEditbox base class.
@@ -1577,8 +1577,7 @@ bool MultiLineEditbox::handle_scrollChange(const EventArgs&)
 *************************************************************************/
 Scrollbar* MultiLineEditbox::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 /*************************************************************************
@@ -1594,8 +1593,7 @@ bool MultiLineEditbox::isVertScrollbarAlwaysShown(void) const
 *************************************************************************/
 Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 /*************************************************************************

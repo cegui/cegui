@@ -132,14 +132,14 @@ public:
     static const String EventScrollConfigChanged;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    //! Widget name suffix for the thumb component.
-    static const String ThumbNameSuffix;
-    //! Widget name suffix for the increase button component.
-    static const String IncreaseButtonNameSuffix;
-    //! Widget name suffix for the decrease button component.
-    static const String DecreaseButtonNameSuffix;
+    //! Widget name for the thumb component.
+    static const String ThumbName;
+    //! Widget name for the increase button component.
+    static const String IncreaseButtonName;
+    //! Widget name for the decrease button component.
+    static const String DecreaseButtonName;
 
     /*************************************************************************
         Accessor functions

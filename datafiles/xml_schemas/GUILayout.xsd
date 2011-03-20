@@ -36,7 +36,7 @@
 			</xsd:choice>
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="NameSuffix" type="xsd:string" use="required"/>
+		<xsd:attribute name="NamePath" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
@@ -50,7 +50,6 @@
 
 	<xsd:complexType name="LayoutImportType">
 		<xsd:attribute name="Filename" type="xsd:string" use="required"/>
-		<xsd:attribute name="Prefix" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
 	</xsd:complexType>
 

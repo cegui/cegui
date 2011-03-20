@@ -65,13 +65,13 @@ TabControlProperties::TabPanePosition		    TabControl::d_tabPanePosition;
 const String TabControl::EventSelectionChanged( "SelectionChanged" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String TabControl::ContentPaneNameSuffix( "__auto_TabPane__" );
-const String TabControl::TabButtonNameSuffix( "__auto_btn" );
-const String TabControl::TabButtonPaneNameSuffix( "__auto_TabPane__Buttons" );
-const String TabControl::ButtonScrollLeftSuffix( "__auto_TabPane__ScrollLeft" );
-const String TabControl::ButtonScrollRightSuffix( "__auto_TabPane__ScrollRight" );
+const String TabControl::ContentPaneName( "__auto_TabPane__" );
+const String TabControl::TabButtonName( "__auto_btn" );
+const String TabControl::TabButtonPaneName( "__auto_TabPane__Buttons" );
+const String TabControl::ButtonScrollLeft( "__auto_TabPane__ScrollLeft" );
+const String TabControl::ButtonScrollRight( "__auto_TabPane__ScrollRight" );
 
 /*************************************************************************
     Miscelaneous private strings
@@ -110,15 +110,13 @@ void TabControl::initialiseComponents(void)
 {
 	performChildWindowLayout();
 
-    String name = getName () + ButtonScrollLeftSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
-        WindowManager::getSingleton().getWindow (name)->subscribeEvent (
+    if (isChild(ButtonScrollLeft))
+        getChild(ButtonScrollLeft)->subscribeEvent (
             PushButton::EventClicked, Event::Subscriber(
                 &CEGUI::TabControl::handleScrollPane, this));
 
-    name = getName() + ButtonScrollRightSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
-        WindowManager::getSingleton().getWindow (name)->subscribeEvent (
+    if (isChild(ButtonScrollRight))
+        getChild(ButtonScrollRight)->subscribeEvent (
             PushButton::EventClicked, Event::Subscriber(
                 &CEGUI::TabControl::handleScrollPane, this));
 }
@@ -354,11 +352,7 @@ Remove tab button
 *************************************************************************/
 String TabControl::makeButtonName(Window* wnd)
 {
-    // Create the button name as "'auto' parent + 'auto' button + tab name"
-    String buttonName = getTabButtonPane()->getName();
-    buttonName.append(TabButtonNameSuffix);
-    buttonName.append(wnd->getName());
-    return buttonName;
+    return TabButtonName + wnd->getName();
 }
 /*************************************************************************
 Select tab implementation
@@ -415,18 +409,16 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     float lx = 0, rx = ww;
 
     Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
-    String name = getName() + ButtonScrollLeftSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
+    if (isChild(ButtonScrollLeft))
     {
-        scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
+        scrollLeftBtn = getChild(ButtonScrollLeft);
         lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
         scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
-    name = getName() + ButtonScrollRightSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
+    if (isChild(ButtonScrollRight))
     {
-        scrollRightBtn = WindowManager::getSingleton().getWindow (name);
+        scrollRightBtn = getChild(ButtonScrollRight);
         rx = CoordConverter::asAbsolute(scrollRightBtn->getXPosition(), ww);
         scrollRightBtn->setWantsMultiClickEvents(false);
     }
@@ -457,8 +449,7 @@ Internal version of adding a child window
 *************************************************************************/
 void TabControl::addChild_impl(Window* wnd)
 {
-    // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
-    if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
+    if (wnd->isAutoWindow())
     {
         // perform normal addChild
         Window::addChild_impl(wnd);
@@ -477,8 +468,7 @@ void TabControl::removeChild_impl(Window* wnd)
     // protect against possible null pointers
     if (!wnd) return;
 
-    // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
-    if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
+    if (wnd->isAutoWindow())
     {
         // perform normal removeChild
         Window::removeChild_impl(wnd);
@@ -560,13 +550,11 @@ void TabControl::performChildWindowLayout()
 
     // Calculate the size & position of the tab scroll buttons
     Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
-    String name = getName() + ButtonScrollLeftSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
-        scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
+    if (isChild(ButtonScrollLeft))
+        scrollLeftBtn = getChild(ButtonScrollLeft);
 
-    name = getName() + ButtonScrollRightSuffix;
-    if (WindowManager::getSingleton().isWindowPresent (name))
-        scrollRightBtn = WindowManager::getSingleton().getWindow (name);
+    if (isChild(ButtonScrollRight))
+        scrollRightBtn = getChild(ButtonScrollRight);
 
     // Calculate the positions and sizes of the tab buttons
     if (d_firstTabOffset > 0)
@@ -646,8 +634,7 @@ bool TabControl::handleTabButtonClicked(const EventArgs& args)
 *************************************************************************/
 Window* TabControl::getTabButtonPane() const
 {
-    return WindowManager::getSingleton().getWindow(getName() +
-                                                   TabButtonPaneNameSuffix);
+    return getChild(TabButtonPaneName);
 }
 
 /*************************************************************************
@@ -656,7 +643,7 @@ Window* TabControl::getTabButtonPane() const
 *************************************************************************/
 Window* TabControl::getTabPane() const
 {
-    return WindowManager::getSingleton().getWindow(getName() + ContentPaneNameSuffix);
+    return getChild(ContentPaneName);
 }
 
 int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
@@ -719,7 +706,7 @@ bool TabControl::handleScrollPane(const EventArgs& e)
         delta = d_tabButtonVector [i]->getPixelSize ().d_width;
     }
 
-    if (wargs.window->getName () == getName() + ButtonScrollLeftSuffix)
+    if (wargs.window->getName () == ButtonScrollLeft)
     {
         if (delta == 0.0f && i < d_tabButtonVector.size ())
             delta = d_tabButtonVector [i]->getPixelSize ().d_width;
@@ -801,6 +788,14 @@ void TabControl::removeTab_impl(Window* window)
     performChildWindowLayout();
 
     invalidate();
+}
+
+Window* TabControl::getChild_impl(const String& name_path) const
+{
+    if (name_path.substr(0, 7) == "__auto_")
+        return Window::getChild_impl(name_path);
+    else
+        return Window::getChild_impl(ContentPaneName + '/' + name_path);
 }
 
 } // End of  CEGUI namespace section

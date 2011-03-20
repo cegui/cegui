@@ -81,6 +81,8 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
+    Window* root = System::getSingleton().getGUISheet();
+
     WindowManager& wmgr = WindowManager::getSingleton();
 
     /*
@@ -88,7 +90,7 @@ void DragDropDemo::subscribeEvents()
      */
     CEGUI_TRY
     {
-        Window* main_wnd = wmgr.getWindow("Root/MainWindow");
+        Window* main_wnd = root->getChild("MainWindow");
         main_wnd->subscribeEvent(
             FrameWindow::EventCloseClicked,
             Event::Subscriber(&DragDropDemo::handle_CloseButton, this));
@@ -100,7 +102,7 @@ void DragDropDemo::subscribeEvents()
     /*
      * Subscribe the same handler to each of the twelve slots
      */
-    String base_name = "Root/MainWindow/Slot";
+    String base_name = "MainWindow/Slot";
 
     for (int i = 1; i <= 12; ++i)
     {
@@ -108,7 +110,7 @@ void DragDropDemo::subscribeEvents()
         {
             // get the window pointer for this slot
             Window* wnd =
-                wmgr.getWindow(base_name + PropertyHelper<int>::toString(i));
+                root->getChild(base_name + PropertyHelper<int>::toString(i));
 
             // subscribe the handler.
             wnd->subscribeEvent(

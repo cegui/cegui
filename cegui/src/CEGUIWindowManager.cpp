@@ -38,6 +38,7 @@
 #include "CEGUIRenderingWindow.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -102,11 +103,6 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 
     String finalName(name.empty() ? generateUniqueWindowName() : name);
 
-	if (isWindowPresent(finalName))
-	{
-		CEGUI_THROW(AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + finalName +"' already exists within the system."));
-	}
-
     WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
     WindowFactory* factory = wfMgr.getFactory(type);
 
@@ -130,7 +126,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
         initialiseRenderEffect(newWindow, fwm.d_effectName);
     }
 
-	d_windowRegistry[finalName] = newWindow;
+	d_windowRegistry.push_back(newWindow);
 
     // fire event to notify interested parites about the new window.
     WindowEventArgs args(newWindow);
@@ -193,79 +189,41 @@ void WindowManager::initialiseRenderEffect(
 *************************************************************************/
 void WindowManager::destroyWindow(Window* window)
 {
-	if (window)
-	{
-		// this is done because the name is used for the log after the window is destroyed,
-		// if we just did getName() we would get a const ref to the Window's internal name
-		// string which is destroyed along with the window so wouldn't exist when the log tried
-		// to use it (as I soon discovered).
-		String name = window->getName();
+	WindowVector::iterator iter =
+        std::find(d_windowRegistry.begin(),
+                  d_windowRegistry.end(),
+                  window);
 
-		destroyWindow(name);
-	}
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(&window));
 
-}
+	if (iter == d_windowRegistry.end())
+    {
+        Logger::getSingleton().logEvent("[WindowManager] Attempt to delete "
+            "Window that does not exist!  Address was: " + String(addr_buff) +
+            ". WARNING: This could indicate a double-deletion issue!!",
+            Errors);
+        return;
+    }
 
+    d_windowRegistry.erase(iter);
 
-/*************************************************************************
-	Destroy the given window by name
-*************************************************************************/
-void WindowManager::destroyWindow(const String& window)
-{
-	WindowRegistry::iterator wndpos = d_windowRegistry.find(window);
+    Logger::getSingleton().logEvent("Window at '" + window->getNamePath() +
+        "' will be added to dead pool. " + addr_buff, Informative);
 
-	if (wndpos != d_windowRegistry.end())
-	{
-        Window* wnd = wndpos->second;
+    // do 'safe' part of cleanup
+    window->destroy();
 
-        // remove entry from the WindowRegistry.
-        d_windowRegistry.erase(wndpos);
+    // add window to dead pool
+    d_deathrow.push_back(window);
 
-        // do 'safe' part of cleanup
-        wnd->destroy();
+    // notify system object of the window destruction
+    System::getSingleton().notifyWindowDestroyed(window);
 
-        // add window to dead pool
-        d_deathrow.push_back(wnd);
-
-        // notify system object of the window destruction
-        System::getSingleton().notifyWindowDestroyed(wnd);
-
-        char addr_buff[32];
-        sprintf(addr_buff, "(%p)", static_cast<void*>(wnd));
-        Logger::getSingleton().logEvent("Window '" + window + "' has been "
-            "added to dead pool. " + addr_buff, Informative);
-    
-        // fire event to notify interested parites about window destruction.
-        // TODO: Perhaps this should fire first, so window is still usable?
-        WindowEventArgs args(wnd);
-        fireEvent(EventWindowDestroyed, args, EventNamespace);
-	}
-
-}
-
-
-/*************************************************************************
-	Return a pointer to the named window
-*************************************************************************/
-Window* WindowManager::getWindow(const String& name) const
-{
-	WindowRegistry::const_iterator pos = d_windowRegistry.find(name);
-
-	if (pos == d_windowRegistry.end())
-	{
-		CEGUI_THROW(UnknownObjectException("WindowManager::getWindow - A Window object with the name '" + name +"' does not exist within the system"));
-	}
-
-	return pos->second;
-}
-
-
-/*************************************************************************
-	Return true if a window with the given name is present
-*************************************************************************/
-bool WindowManager::isWindowPresent(const String& name) const
-{
-	return (d_windowRegistry.find(name) != d_windowRegistry.end());
+    // fire event to notify interested parites about window destruction.
+    // TODO: Perhaps this should fire first, so window is still usable?
+    WindowEventArgs args(window);
+    fireEvent(EventWindowDestroyed, args, EventNamespace);
 }
 
 
@@ -274,21 +232,26 @@ bool WindowManager::isWindowPresent(const String& name) const
 *************************************************************************/
 void WindowManager::destroyAllWindows(void)
 {
-	String window_name;
 	while (!d_windowRegistry.empty())
-	{
-		window_name = d_windowRegistry.begin()->first;
-		destroyWindow(window_name);
-	}
-
+		destroyWindow(*d_windowRegistry.begin());
 }
 
+//----------------------------------------------------------------------------//
+bool WindowManager::isAlive(const Window* window) const
+{
+	WindowVector::const_iterator iter =
+        std::find(d_windowRegistry.begin(),
+                  d_windowRegistry.end(),
+                  window);
+
+	return iter != d_windowRegistry.end();
+}
 
 /*************************************************************************
 	Creates a set of windows (a Gui layout) from the information in the
 	specified XML file.
 *************************************************************************/
-Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, const String& resourceGroup, PropertyCallback* callback, void* userdata)
+Window* WindowManager::loadWindowLayout(const String& filename, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
 	if (filename.empty())
 	{
@@ -299,7 +262,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from '" + filename + "' ----", Informative);
 
     // create handler object
-    GUILayout_xmlHandler handler(name_prefix, callback, userdata);
+    GUILayout_xmlHandler handler(callback, userdata);
 
 	// do parse (which uses handler to create actual data)
 	CEGUI_TRY
@@ -359,11 +322,6 @@ void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& o
     xml.closeTag();
 }
 
-void WindowManager::writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent) const
-{
-    writeWindowLayoutToStream(*getWindow(window), out_stream, writeParent);
-}
-
 String WindowManager::generateUniqueWindowName()
 {
     // build name
@@ -382,41 +340,6 @@ String WindowManager::generateUniqueWindowName()
     return String(uidname.str().c_str());
 }
 
-void WindowManager::renameWindow(const String& window, const String& new_name)
-{
-    renameWindow(getWindow(window), new_name);
-}
-
-void WindowManager::renameWindow(Window* window, const String& new_name)
-{
-    if (window)
-    {
-        WindowRegistry::iterator pos = d_windowRegistry.find(window->getName());
-
-        if (pos != d_windowRegistry.end())
-        {
-            // erase old window name from registry
-            d_windowRegistry.erase(pos);
-
-            CEGUI_TRY
-            {
-                // attempt to rename the window
-                window->rename(new_name);
-            }
-            // rename fails if target name already exists
-            CEGUI_CATCH (AlreadyExistsException&)
-            {
-                // re-add window to registry under it's old name
-                d_windowRegistry[window->getName()] = window;
-                // rethrow exception.
-                CEGUI_RETHROW;
-            }
-
-            // add window to registry under new name
-            d_windowRegistry[new_name] = window;
-        }
-    }
-}
 
 /*************************************************************************
 	Return a WindowManager::WindowIterator object to iterate over the
@@ -430,15 +353,16 @@ WindowManager::WindowIterator WindowManager::getIterator(void) const
 /*************************************************************************
     Outputs the names of ALL existing windows to log (DEBUG function).
 *************************************************************************/
-void WindowManager::DEBUG_dumpWindowNames(String zone)
+void WindowManager::DEBUG_dumpWindowNames(String zone) const
 {
     Logger::getSingleton().logEvent("WINDOW NAMES DUMP (" + zone + ")");
     Logger::getSingleton().logEvent("-----------------");
-    CEGUI::WindowManager::WindowIterator windowIt = getIterator();
-    while (!windowIt.isAtEnd())
+
+    for (WindowVector::const_iterator i = d_windowRegistry.begin();
+         i != d_windowRegistry.end();
+         ++i)
     {
-        Logger::getSingleton().logEvent("Window : " + windowIt.getCurrentValue()->getName());
-        ++windowIt;
+        Logger::getSingleton().logEvent("Window : " + (*i)->getNamePath());
     }
     Logger::getSingleton().logEvent("-----------------");
 }
@@ -460,14 +384,6 @@ void WindowManager::unlock()
 bool WindowManager::isLocked() const
 {
     return d_lockCount != 0;
-}
-
-//----------------------------------------------------------------------------//
-void WindowManager::saveWindowLayout(const String& window,
-                                     const String& filename,
-                                     const bool writeParent) const
-{
-    saveWindowLayout(*getWindow(window), filename, writeParent);
 }
 
 //----------------------------------------------------------------------------//

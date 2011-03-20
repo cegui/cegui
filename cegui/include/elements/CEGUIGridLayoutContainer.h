@@ -81,8 +81,8 @@ public:
     /*************************************************************************
         Child Widget name suffix constants
     *************************************************************************/
-    //! Widget name suffix for dummies.
-    static const String DummyNameSuffix;
+    //! Widget name for dummies.
+    static const String DummyName;
 
     /*************************************************************************
         Event name constants
@@ -180,25 +180,6 @@ public:
         Window::addChild
     */
     void addChildToPosition(Window* window, size_t gridX, size_t gridY);
-
-    /*!
-    \brief
-        Add the named Window to specified grid position as a child of
-        this Grid Layout Container.  If the Window \a window is already
-        attached to a Window, it is detached before being added to this Window.
-
-    \par
-        If something is already in given grid cell, it gets removed!
-
-    \par
-        This disabled auto positioning from further usage! You need to call
-        setAutoPositioning(..) to set it back to your desired value and use
-        setAutoPositioningIdx(..) to set it's starting point back
-
-    \see
-        Window::addChild
-    */
-    void addChildToPosition(const String& name, size_t gridX, size_t gridY);
 
     /*!
     \brief

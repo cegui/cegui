@@ -39,8 +39,8 @@ namespace CEGUI
 *************************************************************************/
 // type name for this widget
 const String GridLayoutContainer::WidgetTypeName("GridLayoutContainer");
-// suffix for dummies, a number is added to the end of that
-const String GridLayoutContainer::DummyNameSuffix("__auto_dummy_");
+// name for dummies, a number is added to the end of that
+const String GridLayoutContainer::DummyName("__auto_dummy_");
 
 const String GridLayoutContainer::EventNamespace("GridLayoutContainer");
 
@@ -208,14 +208,6 @@ void GridLayoutContainer::addChildToPosition(Window* window,
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::addChildToPosition(const String& name,
-                                             size_t gridX, size_t gridY)
-{
-    addChildToPosition(WindowManager::getSingleton().getWindow(name),
-                             gridX, gridY);
-}
-
-//----------------------------------------------------------------------------//
 Window* GridLayoutContainer::getChildAtPosition(size_t gridX,
                                                 size_t gridY)
 {
@@ -264,13 +256,13 @@ void GridLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::swapChildren(Window* wnd1, const String& wnd2)
 {
-    swapChildren(wnd1, WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(wnd1, getChild(wnd2));
 }
 
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::swapChildren(const String& wnd1, Window* wnd2)
 {
-    swapChildren(WindowManager::getSingleton().getWindow(wnd1), wnd2);
+    swapChildren(getChild(wnd1), wnd2);
 }
 
 //----------------------------------------------------------------------------//
@@ -285,8 +277,7 @@ void GridLayoutContainer::moveChildToPosition(Window* wnd,
 void GridLayoutContainer::moveChildToPosition(const String& wnd,
                                                     size_t gridX, size_t gridY)
 {
-    moveChildToPosition(WindowManager::getSingleton().getWindow(wnd),
-                              gridX, gridY);
+    moveChildToPosition(getChild(wnd), gridX, gridY);
 }
 
 //----------------------------------------------------------------------------//
@@ -500,7 +491,7 @@ Window* GridLayoutContainer::createDummy()
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
-                    getName() + DummyNameSuffix + String(i_buff));
+                    DummyName + String(i_buff));
 
     dummy->setVisible(false);
     dummy->setSize(UVector2(UDim(0, 0), UDim(0, 0)));

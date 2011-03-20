@@ -242,8 +242,8 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
          wci != wcl.end();
          ++wci)
     {
-        WindowManager::getSingleton().destroyWindow(
-            widget.getName() + wci->second->getWidgetNameSuffix());
+        if (widget.isChild(wci->second->getWidgetName()))
+            widget.destroyChild(wci->second->getWidgetName());
     }
 
     // delete added named Events
@@ -474,23 +474,6 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::renameChildren(const Window& widget,
-                                    const String& newBaseName) const
-{
-    WindowManager& winMgr = WindowManager::getSingleton();
-
-    WidgetComponentPtrMap wcl;
-    appendChildWidgetComponents(wcl);
-    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
-         wci != wcl.end();
-         ++wci)
-    {
-        winMgr.renameWindow(widget.getName() + wci->second->getWidgetNameSuffix(),
-                            newBaseName + wci->second->getWidgetNameSuffix());
-    }
-}
-
-//---------------------------------------------------------------------------//
 const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
                                             const String& propertyName) const
 {
@@ -507,12 +490,12 @@ const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
 
 //---------------------------------------------------------------------------//
 const WidgetComponent* WidgetLookFeel::findWidgetComponent(
-                                            const String& nameSuffix) const
+                                            const String& name) const
 {
     WidgetComponentPtrMap wcl;
     appendChildWidgetComponents(wcl);
 
-    WidgetComponentPtrMap::const_iterator wci = wcl.find(nameSuffix);
+    WidgetComponentPtrMap::const_iterator wci = wcl.find(name);
 
     if (wci == wcl.end())
         return 0;
@@ -554,7 +537,7 @@ void WidgetLookFeel::appendChildWidgetComponents(WidgetComponentPtrMap& map) con
          i != d_childWidgets.end();
          ++i)
     {
-        map[(*i).getWidgetNameSuffix()] = &(*i);
+        map[(*i).getWidgetName()] = &(*i);
     }
 
 }

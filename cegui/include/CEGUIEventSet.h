@@ -321,7 +321,7 @@ public:
     /*************************************************************************
         Iterator stuff
     *************************************************************************/
-    typedef ConstBaseIterator<EventMap> Iterator;
+    typedef ConstMapIterator<EventMap> Iterator;
 
     /*!
     \brief

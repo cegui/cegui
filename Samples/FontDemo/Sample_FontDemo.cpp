@@ -145,7 +145,7 @@ public:
         background->addChild (winMgr.loadWindowLayout ("FontDemo.layout"));
 
         // Add the font names to the listbox
-        Listbox *lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/FontList"));
+        Listbox *lbox = static_cast<Listbox *> (background->getChild("root/FontDemo/FontList"));
 		lbox->setFont("DefaultFont");
 
         FontManager::FontIterator fi = FontManager::getSingleton().getIterator();    
@@ -164,7 +164,7 @@ public:
         lbox->setItemSelectState (size_t (0), true);
 
         // Add language list to the listbox
-        lbox = static_cast<Listbox *> (winMgr.getWindow ("FontDemo/LangList"));
+        lbox = static_cast<Listbox *> (background->getChild("root/FontDemo/LangList"));
 		lbox->setFont("DefaultFont");
         for (size_t i = 0; i < (sizeof (LangList) / sizeof (LangList [0])); i++)
             // only add a language if 'preferred' font is available
@@ -176,13 +176,13 @@ public:
         // select the first language
         lbox->setItemSelectState (size_t (0), true);
 
-        winMgr.getWindow("FontDemo/AutoScaled")->subscribeEvent (
+        background->getChild("root/FontDemo/AutoScaled")->subscribeEvent (
             Checkbox::EventCheckStateChanged,
             Event::Subscriber (&FontDemo::handleAutoScaled, this));
-        winMgr.getWindow("FontDemo/Antialiased")->subscribeEvent (
+        background->getChild("root/FontDemo/Antialiased")->subscribeEvent (
             Checkbox::EventCheckStateChanged,
             Event::Subscriber (&FontDemo::handleAntialiased, this));
-        winMgr.getWindow("FontDemo/PointSize")->subscribeEvent (
+       background->getChild("root/FontDemo/PointSize")->subscribeEvent (
             Scrollbar::EventScrollPositionChanged,
             Event::Subscriber (&FontDemo::handlePointSize, this));
 
@@ -200,10 +200,10 @@ public:
 	to query a widget's font. */
     void setFontDesc ()
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getGUISheet();
 
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
-            (winMgr.getWindow("FontDemo/FontSample"));
+            (root->getChild("root/FontDemo/FontSample"));
 
 		// Query the font from the textbox
         Font *f = mle->getFont ();
@@ -214,12 +214,14 @@ public:
             s += "." + f->getProperty ("PointSize");
 
 		// ...and set it
-        winMgr.getWindow("FontDemo/FontDesc")->setText (s);
+        root->getChild("root/FontDemo/FontDesc")->setText (s);
     }
 
 	/** Called when the used selects a different font from the font list.*/
     bool handleFontSelection (const EventArgs& e)
     {
+        Window* root = System::getSingleton().getGUISheet();
+
 		// Access the listbox which sent the event
         Listbox *lbox = static_cast<Listbox*> (
             static_cast<const WindowEventArgs&> (e).window);
@@ -230,24 +232,23 @@ public:
                 lbox->getFirstSelectedItem ()->getText ());
 
 			// Tell the textbox to use the newly selected font
-            WindowManager& winMgr = WindowManager::getSingleton ();
-            winMgr.getWindow("FontDemo/FontSample")->setFont (font);
+            root->getChild("root/FontDemo/FontSample")->setFont (font);
 
             bool b = font->isPropertyPresent ("AutoScaled");
-            Checkbox *cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/AutoScaled"));
+            Checkbox *cb = static_cast<Checkbox *> (root->getChild("root/FontDemo/AutoScaled"));
             cb->setEnabled (b);
             if (b)
                 cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("AutoScaled")));
 
             b = font->isPropertyPresent ("Antialiased");
-            cb = static_cast<Checkbox *> (winMgr.getWindow("FontDemo/Antialiased"));
+            cb = static_cast<Checkbox *> (root->getChild("root/FontDemo/Antialiased"));
             cb->setEnabled (b);
             if (b)
                 cb->setSelected (PropertyHelper<bool>::fromString(font->getProperty ("Antialiased")));
 
             b = font->isPropertyPresent ("PointSize");
             Scrollbar *sb = static_cast<Scrollbar *> (
-                winMgr.getWindow("FontDemo/PointSize"));
+                root->getChild("root/FontDemo/PointSize"));
             sb->setEnabled (b);
 			
 			// Set the textbox' font to have the current scale
@@ -264,13 +265,13 @@ public:
 
     bool handleAutoScaled (const EventArgs& e)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getGUISheet();
 
         Checkbox *cb = static_cast<Checkbox *> (
             static_cast<const WindowEventArgs&> (e).window);
 
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
-            (winMgr.getWindow("FontDemo/FontSample"));
+            (root->getChild("root/FontDemo/FontSample"));
 
         Font *f = mle->getFont ();
         f->setProperty ("AutoScaled",
@@ -282,13 +283,13 @@ public:
 
     bool handleAntialiased (const EventArgs& e)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getGUISheet();
 
         Checkbox *cb = static_cast<Checkbox *> (
             static_cast<const WindowEventArgs&> (e).window);
 
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
-            (winMgr.getWindow("FontDemo/FontSample"));
+            (root->getChild("root/FontDemo/FontSample"));
 
         Font *f = mle->getFont ();
         f->setProperty ("Antialiased",
@@ -300,12 +301,12 @@ public:
 
     bool handlePointSize (const EventArgs& e)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getGUISheet();
 
         Scrollbar *sb = static_cast<Scrollbar *> (
             static_cast<const WindowEventArgs&> (e).window);
 
-        Font *f = winMgr.getWindow ("FontDemo/FontSample")->getFont ();
+        Font *f = root->getChild("root/FontDemo/FontSample")->getFont ();
 
         f->setProperty ("PointSize",
                         PropertyHelper<int>::toString (
@@ -331,9 +332,9 @@ public:
             size_t idx = sel_item ? sel_item->getID() : 0;
             const String fontName(LangList[idx].Font);
 
-            WindowManager& winMgr = WindowManager::getSingleton ();
+            Window* root = System::getSingleton().getGUISheet();
 			// Access the font list
-			Listbox *fontList = static_cast<Listbox*>(winMgr.getWindow ("FontDemo/FontList"));
+			Listbox *fontList = static_cast<Listbox*>(root->getChild("root/FontDemo/FontList"));
             ListboxItem* lbi = fontList->findItemWithText(fontName, 0);
 			// Select correct font when not set already
 			if (lbi && !lbi->isSelected())
@@ -342,7 +343,7 @@ public:
 			}
 
 			// Finally, set the sample text for the selected language
-            winMgr.getWindow ("FontDemo/FontSample")->setText((encoded_char*)LangList[idx].Text);
+            root->getChild("root/FontDemo/FontSample")->setText((encoded_char*)LangList[idx].Text);
         }
 
         return true;
@@ -351,9 +352,9 @@ public:
     //! Ensure window content and layout is updated.
     void updateTextWindows()
     {
-        WindowManager& winMgr(WindowManager::getSingleton());
+        Window* root = System::getSingleton().getGUISheet();
         MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(
-            winMgr.getWindow("FontDemo/FontSample"));
+            root->getChild("root/FontDemo/FontSample"));
         // this is a hack to force the editbox to update it's state, and is
         // needed because no facility currently exists for a font to notify that
         // it's internal size or state has changed (ideally all affected windows
@@ -361,9 +362,9 @@ public:
 		eb->setWordWrapping(false);
 		eb->setWordWrapping(true);
         // inform lists of updated data too
-        Listbox* lb = static_cast<Listbox*>(winMgr.getWindow("FontDemo/LangList"));
+        Listbox* lb = static_cast<Listbox*>(root->getChild("root/FontDemo/LangList"));
 		lb->handleUpdatedItemData();
-        lb = static_cast<Listbox*>(winMgr.getWindow("FontDemo/FontList"));
+        lb = static_cast<Listbox*>(root->getChild("root/FontDemo/FontList"));
 		lb->handleUpdatedItemData();
     }
 };

@@ -59,8 +59,7 @@ size_t SequentialLayoutContainer::getPositionOfChild(Window* wnd) const
 //----------------------------------------------------------------------------//
 size_t SequentialLayoutContainer::getPositionOfChild(const String& wnd) const
 {
-    return getPositionOfChild(
-                WindowManager::getSingleton().getWindow(wnd));
+    return getPositionOfChild(getChild(wnd));
 }
 
 //----------------------------------------------------------------------------//
@@ -95,22 +94,21 @@ void SequentialLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
 void SequentialLayoutContainer::swapChildren(const String& wnd1,
                                              Window* wnd2)
 {
-    swapChildren(WindowManager::getSingleton().getWindow(wnd1), wnd2);
+    swapChildren(getChild(wnd1), wnd2);
 }
 
 //----------------------------------------------------------------------------//
 void SequentialLayoutContainer::swapChildren(Window* wnd1,
                                              const String& wnd2)
 {
-    swapChildren(wnd1, WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(wnd1, getChild(wnd2));
 }
 
 //----------------------------------------------------------------------------//
 void SequentialLayoutContainer::swapChildren(const String& wnd1,
                                              const String& wnd2)
 {
-    swapChildren(WindowManager::getSingleton().getWindow(wnd1),
-                 WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(getChild(wnd1), getChild(wnd2));
 }
 
 //----------------------------------------------------------------------------//
@@ -157,7 +155,7 @@ void SequentialLayoutContainer::moveChildToPosition(Window* wnd,
 void SequentialLayoutContainer::moveChildToPosition(const String& wnd,
                                                           size_t position)
 {
-    moveChildToPosition(WindowManager::getSingleton().getWindow(wnd), position);
+    moveChildToPosition(getChild(wnd), position);
 }
 
 //----------------------------------------------------------------------------//
@@ -179,14 +177,6 @@ void SequentialLayoutContainer::addChildToPosition(Window* window,
     addChild(window);
 
     moveChildToPosition(window, position);
-}
-
-//----------------------------------------------------------------------------//
-void SequentialLayoutContainer::addChildToPosition(const String& window,
-                                                         size_t position)
-{
-    addChildToPosition(WindowManager::getSingleton().getWindow(window),
-                             position);
 }
 
 //----------------------------------------------------------------------------//

@@ -143,10 +143,10 @@ public:
 	static const String EventHorzScrollbarModeChanged;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
-    static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
+    static const String VertScrollbarName;   //!< Widget name for the vertical scrollbar component.
+    static const String HorzScrollbarName;   //!< Widget name for the horizontal scrollbar component.
 
     /*************************************************************************
         Implementation struct

@@ -70,7 +70,7 @@ void EventLinkDefinition::initialiseWidget(Window& window) const
     LinkTargetCollection::const_iterator i = d_targets.begin();
     for ( ; i != d_targets.end(); ++i)
     {
-        Window* target = getTargetWindow(window, (*i).d_widgetNameSuffix);
+        Window* target = getTargetWindow(window, (*i).d_widgetName);
 
         if (target)
             e->addLinkedTarget(*target->getEventObject((*i).d_targetEvent,true));
@@ -91,16 +91,15 @@ const String& EventLinkDefinition:: getName() const
 
 //----------------------------------------------------------------------------//
 Window* EventLinkDefinition::getTargetWindow(Window& start_wnd,
-                                             const String& name_suffix) const
+                                             const String& name) const
 {
-    if (name_suffix.empty())
+    if (name.empty())
         return &start_wnd;
 
-    if (name_suffix == S_parentIdentifier)
+    if (name== S_parentIdentifier)
         return start_wnd.getParent();
 
-    return WindowManager::getSingleton().
-        getWindow(start_wnd.getName() + name_suffix);
+    return start_wnd.getChild(name);
 }
 
 //----------------------------------------------------------------------------//

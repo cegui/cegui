@@ -64,7 +64,7 @@ namespace CEGUI
 		// temp
 		static const String WidgetTypeName;
 
-		static const String ContentPaneNameSuffix;
+		static const String ContentPaneName;
 
 
 		/*************************************************************************

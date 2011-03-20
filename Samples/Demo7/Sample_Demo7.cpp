@@ -297,9 +297,9 @@ bool Demo7Sample::initialiseSample()
     // attach this to the 'real' root
     background->addChild(sheet);
     // set-up the contents of the list boxes.
-    createListContent();
+    createListContent(sheet);
     // initialise the event handling.
-    initDemoEventWiring();
+    initDemoEventWiring(sheet);
 
     // success!
     return true;
@@ -316,7 +316,7 @@ void Demo7Sample::cleanupSample()
 /*************************************************************************
     create the windows & widgets for this demo
 *************************************************************************/
-void Demo7Sample::createListContent(void)
+void Demo7Sample::createListContent(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
@@ -325,7 +325,7 @@ void Demo7Sample::createListContent(void)
     //
     // Combobox setup
     //
-    Combobox* cbobox = static_cast<Combobox*>(winMgr.getWindow("Demo7/Window2/Combobox"));
+    Combobox* cbobox = static_cast<Combobox*>(root->getChild("Window2/Combobox"));
     // add items to the combobox list
     cbobox->addItem(new MyListItem("Combobox Item 1"));
     cbobox->addItem(new MyListItem("Combobox Item 2"));
@@ -341,7 +341,7 @@ void Demo7Sample::createListContent(void)
     //
     // Multi-Column List setup
     //
-    MultiColumnList* mclbox = static_cast<MultiColumnList*>(winMgr.getWindow("Demo7/Window2/MultiColumnList"));
+    MultiColumnList* mclbox = static_cast<MultiColumnList*>(root->getChild("Window2/MultiColumnList"));
     // Add some empty rows to the MCL
     mclbox->addRow();
     mclbox->addRow();
@@ -379,32 +379,32 @@ void Demo7Sample::createListContent(void)
 /*************************************************************************
     Perform required event hook-ups for this demo.
 *************************************************************************/
-void Demo7Sample::initDemoEventWiring(void)
+void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
     // Subscribe handler that quits the application
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Quit")->
+    root->getChild("Window1/Quit")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo7Sample::handleQuit, this));
 
     // Subscribe handler that processes changes to the slider position.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Slider1")->
+    root->getChild("Window1/Slider1")->
         subscribeEvent(Slider::EventValueChanged, Event::Subscriber(&Demo7Sample::handleSlider, this));
 
     // Subscribe handler that processes changes to the checkbox selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Checkbox")->
+    root->getChild("Window1/Checkbox")->
         subscribeEvent(Checkbox::EventCheckStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio1")->
+    root->getChild("Window1/Radio1")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio2")->
+    root->getChild("Window1/Radio2")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio3")->
+    root->getChild("Window1/Radio3")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 }
 
@@ -425,11 +425,11 @@ bool Demo7Sample::handleSlider(const CEGUI::EventArgs& e)
     float val = static_cast<Slider*>(static_cast<const WindowEventArgs&>(e).window)->getCurrentValue();
 
     // set the progress for the first bar according to the slider value
-    static_cast<ProgressBar*>(WindowManager::getSingleton().getWindow("Demo7/Window2/Progbar1"))->setProgress(val);
+    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar1"))->setProgress(val);
     // set second bar's progress - this time the reverse of the first one
-    static_cast<ProgressBar*>(WindowManager::getSingleton().getWindow("Demo7/Window2/Progbar2"))->setProgress(1.0f - val);
+    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar2"))->setProgress(1.0f - val);
     // set the alpha on the window containing all the controls.
-    WindowManager::getSingleton().getWindow("root")->setAlpha(val);
+    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root")->setAlpha(val);
 
     // event was handled.
     return true;
@@ -442,7 +442,7 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     // get the ID of the selected radio button
     CEGUI::uint id = static_cast<RadioButton*>(static_cast<const WindowEventArgs&>(e).window)->getSelectedButtonInGroup()->getID();
     // get the StaticImage window
-    Window* img = WindowManager::getSingleton().getWindow("Demo7/Window2/Image1");
+    Window* img = static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Image1");
 
     // set an image into the StaticImage according to the ID of the selected radio button.
     switch (id)
@@ -470,7 +470,7 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
 
     // show or hide the FrameWindow containing the multi-line editbox according to the state of the
     // checkbox widget
-    WindowManager::getSingleton().getWindow("Demo7/Window3")->
+    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window3")->
         setVisible(static_cast<Checkbox*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
 
     // event was handled.

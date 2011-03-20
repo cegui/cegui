@@ -360,19 +360,7 @@ bool Window::isActive(void) const
 //----------------------------------------------------------------------------//
 bool Window::isChild(const String& name_path) const
 {
-    const size_t sep = name_path.find_first_of('/');
-    const String base_child(name_path.substr(0, sep));
-
-    const size_t child_count = d_children.size();
-
-    for (size_t i = 0; i < child_count; ++i)
-        if (d_children[i]->getName() == base_child)
-            if (sep != String::npos && sep < name_path.length() - 1)
-                return d_children[i]->isChild(name_path.substr(sep + 1));
-            else
-                return true;
-
-    return false;
+    return getChild_impl(name_path) != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -414,6 +402,19 @@ bool Window::isChild(const Window* window) const
 //----------------------------------------------------------------------------//
 Window* Window::getChild(const String& name_path) const
 {
+    Window* w = getChild_impl(name_path);
+
+    if (w)
+        return w;
+
+    CEGUI_THROW(UnknownObjectException("Window::getChild - The Window object "
+        "referenced by '" + name_path + "' is not attached to Window at '"
+        + getNamePath() + "'."));
+}
+
+//----------------------------------------------------------------------------//
+Window* Window::getChild_impl(const String& name_path) const
+{
     const size_t sep = name_path.find_first_of('/');
     const String base_child(name_path.substr(0, sep));
 
@@ -422,13 +423,11 @@ Window* Window::getChild(const String& name_path) const
     for (size_t i = 0; i < child_count; ++i)
         if (d_children[i]->getName() == base_child)
             if (sep != String::npos && sep < name_path.length() - 1)
-                return d_children[i]->getChild(name_path.substr(sep + 1));
+                return d_children[i]->getChild_impl(name_path.substr(sep + 1));
             else
                 return d_children[i];
 
-    CEGUI_THROW(UnknownObjectException("Window::getChild - The Window object "
-        "referenced by '" + name_path + "' is not attached to Window at '"
-        + getNamePath() + "'."));
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -915,12 +914,6 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChild(const String& name)
-{
-    addChild(WindowManager::getSingleton().getWindow(name));
-}
-
-//----------------------------------------------------------------------------//
 void Window::addChild(Window* window)
 {
     // don't add null window or ourself as a child
@@ -934,18 +927,12 @@ void Window::addChild(Window* window)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild(const String& name)
+void Window::removeChild(const String& name_path)
 {
-    const size_t child_count = getChildCount();
+    Window* w = getChild_impl(name_path);
 
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        if (d_children[i]->getName() == name)
-        {
-            removeChild(d_children[i]);
-            return;
-        }
-    }
+    if (w)
+        w->d_parent->removeChild(w);
 }
 
 //----------------------------------------------------------------------------//
@@ -974,12 +961,11 @@ void Window::removeChild(uint ID)
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::createChild(const String& type, const String& name, bool nameLocal)
+Window* Window::createChild(const String& type, const String& name)
 {
-    Window* ret = WindowManager::getSingleton().createWindow(type,
-        nameLocal ? (getName() + "/" + name) : name );
-
+    Window* ret = WindowManager::getSingleton().createWindow(type, name);
     addChild(ret);
+
     return ret;
 }
 
@@ -992,12 +978,9 @@ void Window::destroyChild(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void Window::destroyChild(const String& name, bool nameLocal)
+void Window::destroyChild(const String& name_path)
 {
-    Window* wnd = WindowManager::getSingleton().getWindow(
-        nameLocal ? (getName() + "/" + name) : name);
-
-    destroyChild(wnd);
+    destroyChild(getChild_impl(name_path));
 }
 
 //----------------------------------------------------------------------------//
@@ -1363,7 +1346,19 @@ void Window::cleanupChildren(void)
 //----------------------------------------------------------------------------//
 void Window::addChild_impl(Window* wnd)
 {
-    // if window is already attached, detach it first (will fire normal events)
+    const Window* const existing = Window::getChild_impl(wnd->getName());
+
+    if (existing == wnd)
+        return;
+
+    // ensure only one immediate child will exist with a given name.
+    if (existing)
+        CEGUI_THROW(AlreadyExistsException("Window::addChild - Failed to add "
+            "Window named: " + wnd->getName() + " to window at: " +
+            getNamePath() + " since a Window with that name is already "
+            "attached."));
+
+    // if window is attached elsewhere, detach it first (will fire normal events)
     Window* const old_parent = wnd->getParent();
     if (old_parent)
         old_parent->removeChild(wnd);
@@ -1812,7 +1807,7 @@ void Window::destroy(void)
     // destruction and not anyone else.
     WindowManager& wmgr = WindowManager::getSingleton();
 
-    if (wmgr.isWindowPresent(this->getName()))
+    if (wmgr.isAlive(this))
     {
         wmgr.destroyWindow(this);
 
@@ -2560,54 +2555,13 @@ Window* Window::getActiveSibling()
 //----------------------------------------------------------------------------//
 void Window::rename(const String& new_name)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
-    /*
-     * Client code should never call this, but again, since we know people do
-     * not read and stick to the API reference, here is some built-in protection
-     * which ensures that things are handled via the WindowManager anyway.
-     */
-    if (winMgr.isWindowPresent(d_name))
-    {
-        winMgr.renameWindow(this, new_name);
-        // now we return, since the work was already done when WindowManager
-        // re-called this function in the proper manner.
-        return;
-    }
-
-    if (winMgr.isWindowPresent(new_name))
+    if (d_parent && d_parent->isChild(new_name))
         CEGUI_THROW(AlreadyExistsException("Window::rename - Failed to rename "
-            "Window: " + d_name + " as: " + new_name + ".  A Window named:" +
-            new_name + "' already exists within the system."));
-
-    // rename Falagard created child windows
-    if (!d_lookName.empty())
-    {
-        const WidgetLookFeel& wlf =
-                WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-
-        // get WidgetLookFeel to rename the children it created
-        wlf.renameChildren(*this, new_name);
-    }
-
-    // how to detect other auto created windows.
-    const String autoPrefix(d_name + AutoWidgetNameSuffix);
-    // length of current name
-    const size_t oldNameLength = d_name.length();
-
-    // now rename all remaining auto-created windows attached
-    for (size_t i = 0; i < getChildCount(); ++i)
-    {
-        // is this an auto created window that we created?
-        if (!d_children[i]->d_name.compare(0, autoPrefix.length(), autoPrefix))
-        {
-            winMgr.renameWindow(d_children[i],
-                                new_name +
-                                d_children[i]->d_name.substr(oldNameLength));
-        }
-    }
+            "Window at: " + getNamePath() + " as: " + new_name + ".  A Window "
+            "a window with that name is already attached."));
 
     // log this under informative level
-    Logger::getSingleton().logEvent("Renamed window: " + d_name +
+    Logger::getSingleton().logEvent("Renamed window at: " + getNamePath() +
                                     " as: " + new_name,
                                     Informative);
 

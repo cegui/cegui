@@ -37,7 +37,7 @@ namespace CEGUI
     WidgetComponent::WidgetComponent(const String& type, const String& look, const String& suffix, const String& renderer) :
         d_baseType(type),
         d_imageryName(look),
-        d_nameSuffix(suffix),
+        d_name(suffix),
         d_rendererType(renderer),
         d_vertAlign(VA_TOP),
         d_horzAlign(HA_LEFT)
@@ -45,9 +45,7 @@ namespace CEGUI
 
     void WidgetComponent::create(Window& parent) const
     {
-        // build final name and create widget.
-        String widgetName = parent.getName() + d_nameSuffix;
-        Window* widget = WindowManager::getSingleton().createWindow(d_baseType, widgetName);
+        Window* widget = WindowManager::getSingleton().createWindow(d_baseType, d_name);
 
         // set the window renderer
         if (!d_rendererType.empty())
@@ -106,14 +104,14 @@ namespace CEGUI
         d_imageryName = look;
     }
 
-    const String& WidgetComponent::getWidgetNameSuffix() const
+    const String& WidgetComponent::getWidgetName() const
     {
-        return d_nameSuffix;
+        return d_name;
     }
 
-    void WidgetComponent::setWidgetNameSuffix(const String& suffix)
+    void WidgetComponent::setWidgetName(const String& name)
     {
-        d_nameSuffix = suffix;
+        d_name= name;
     }
 
     const String& WidgetComponent::getWindowRendererType() const
@@ -166,7 +164,7 @@ namespace CEGUI
                               cegui_absdim(pixelArea.right()),
                               cegui_absdim(pixelArea.bottom()));
 
-            Window* wnd = WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix);
+            Window* wnd = owner.getChild(d_name);
             wnd->setArea(window_area);
             wnd->notifyScreenAreaChanged();
         }
@@ -179,7 +177,7 @@ namespace CEGUI
         // output opening tag
         xml_stream.openTag("Child")
             .attribute("type", d_baseType)
-            .attribute("nameSuffix", d_nameSuffix);
+            .attribute("name", d_name);
 
         if (!d_imageryName.empty())
             xml_stream.attribute("look", d_imageryName);

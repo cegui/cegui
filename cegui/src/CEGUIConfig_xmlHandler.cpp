@@ -54,7 +54,6 @@ const String Config_xmlHandler::ImageCodecElement("DefaultImageCodec");
 const String Config_xmlHandler::DefaultFontElement("DefaultFont");
 const String Config_xmlHandler::DefaultMouseCursorElement("DefaultMouseCursor");
 const String Config_xmlHandler::DefaultTooltipElement("DefaultTooltip");
-const String Config_xmlHandler::DefaultGUISheetElement("DefaultGUISheet");
 const String Config_xmlHandler::FilenameAttribute("filename");
 const String Config_xmlHandler::LevelAttribute("level");
 const String Config_xmlHandler::TypeAttribute("type");
@@ -103,8 +102,6 @@ void Config_xmlHandler::elementStart(const String& element,
         handleDefaultMouseCursorElement(attributes);
     else if (element == DefaultTooltipElement)
         handleDefaultTooltipElement(attributes);
-    else if (element == DefaultGUISheetElement)
-        handleDefaultGUISheetElement(attributes);
     else
         Logger::getSingleton().logEvent("Config_xmlHandler::elementStart: "
             "Unknown element encountered: <" + element + ">", Errors);
@@ -208,12 +205,6 @@ void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& att
 void Config_xmlHandler::handleDefaultTooltipElement(const XMLAttributes& attr)
 {
     d_defaultTooltipType = attr.getValueAsString(NameAttribute, "");
-}
-
-//----------------------------------------------------------------------------//
-void Config_xmlHandler::handleDefaultGUISheetElement(const XMLAttributes& attr)
-{
-    d_defaultGUISheet = attr.getValueAsString(NameAttribute, "");
 }
 
 //----------------------------------------------------------------------------//
@@ -324,10 +315,6 @@ void Config_xmlHandler::loadAutoResources() const
             autoLoadLookNFeels((*i).pattern, (*i).group);
             break;
 
-        case RT_LAYOUT:
-            autoLoadLayouts((*i).pattern, (*i).group);
-            break;
-
         default:
             CEGUI_THROW(InvalidRequestException(
                 "Config_xmlHandler::loadAutoResources: AutoLoad of resource "
@@ -357,14 +344,6 @@ void Config_xmlHandler::initialiseDefaulTooltip() const
 {
     if (!d_defaultTooltipType.empty())
         System::getSingleton().setDefaultTooltip(d_defaultTooltipType);
-}
-
-//----------------------------------------------------------------------------//
-void Config_xmlHandler::initialiseDefaultGUISheet() const
-{
-    if (!d_defaultGUISheet.empty())
-        System::getSingleton().setGUISheet(
-            WindowManager::getSingleton().getWindow(d_defaultGUISheet));
 }
 
 //----------------------------------------------------------------------------//
@@ -400,18 +379,6 @@ Config_xmlHandler::ResourceType Config_xmlHandler::stringToResourceType(
         return RT_XMLSCHEMA;
     else
         return RT_DEFAULT;
-}
-
-//----------------------------------------------------------------------------//
-void Config_xmlHandler::autoLoadLayouts(const String& pattern,
-                                        const String& group) const
-{
-    std::vector<String> names;
-    const size_t num = System::getSingleton().getResourceProvider()->
-        getResourceGroupFileNames(names, pattern, group);
-
-    for (size_t i = 0; i < num; ++i)
-        WindowManager::getSingleton().loadWindowLayout(names[i], "", group);
 }
 
 //----------------------------------------------------------------------------//

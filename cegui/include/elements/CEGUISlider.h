@@ -126,7 +126,7 @@ public:
     /*************************************************************************
         Child Widget name suffix constants
     *************************************************************************/
-    static const String ThumbNameSuffix;            //!< Widget name suffix for the thumb component.
+    static const String ThumbName;            //!< Widget name for the thumb component.
 
 	/*************************************************************************
 		Accessors
