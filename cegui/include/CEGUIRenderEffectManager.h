@@ -68,7 +68,7 @@ private:
 
 public:
     //! Iterator type that iterates over entries in the RenderEffectRegistry
-    typedef ConstBaseIterator<RenderEffectRegistry> RenderEffectIterator;
+    typedef ConstMapIterator<RenderEffectRegistry> RenderEffectIterator;
 
     //! Constructor for RenderEffectManager objects.
     RenderEffectManager();
