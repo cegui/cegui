@@ -887,15 +887,15 @@ Window_getUserData ( ::CEGUI::Window & me) {
 """
 CEGUI::Window*
 WindowManager_loadWindowLayout(::CEGUI::WindowManager & me,
-    const CEGUI::String& filename, const CEGUI::String& name_prefix = "", const CEGUI::String& resourceGroup = "") {
-      return me.loadWindowLayout( filename, name_prefix , resourceGroup);
+    const CEGUI::String& filename, const CEGUI::String& resourceGroup = "") {
+      return me.loadWindowLayout( filename, resourceGroup);
     }
 """
     )
     windowManager.add_registration_code(
 """
 def ("loadWindowLayout", &::WindowManager_loadWindowLayout,\
-        ( bp::arg("filename"), bp::arg("name_prefix")="", bp::arg("resourceGroup")="" ), \
+        ( bp::arg("filename"), bp::arg("resourceGroup")="" ), \
         bp::return_value_policy< bp::reference_existing_object,bp::default_call_policies >());
 """   
     )
@@ -949,7 +949,7 @@ def ("loadWindowLayout", &::WindowManager_loadWindowLayout,\
         tplName = declarations.templates.name(cls.name)
         if not tplName.endswith("Iterator"):
             continue
-        
+
         # now cls is sure to be "Iterator" class
         cls.include()
         
@@ -957,9 +957,20 @@ def ("loadWindowLayout", &::WindowManager_loadWindowLayout,\
         # se lets exclude every constructor that has parameters
         cls.constructors(lambda decl: bool(decl.arguments), allow_empty = True, recursive = False).exclude()
         
-        # we have to make aliases for operator++ and operator--, these are not supported by python
-        # instead of operator++, we use next(self) and instead of operator--, we use previous(self)
-        cls.add_declaration_code(
+        if tplName.endswith("BaseIterator"):
+            import hashlib
+            
+            # note: I don't like what I am doing here but it's a lazy solution to
+            #       an annoying problem of windows not being able to handle long paths :-/
+            #
+            #       These are base classes, never instantiated anyways so I think
+            #       it doesn't do much except look nasty :-D
+            cls.rename("ConstBaseIterator_" + hashlib.md5(cls.name).hexdigest())
+            
+        else:
+            # we have to make aliases for operator++ and operator--, these are not supported by python
+            # instead of operator++, we use next(self) and instead of operator--, we use previous(self)
+            cls.add_declaration_code(
 """
 void Iterator_next(::CEGUI::%s& t)
 {
@@ -971,8 +982,8 @@ void Iterator_previous(::CEGUI::%s& t)
     t--;
 }
 """ % (cls.name, cls.name))
-        cls.add_registration_code('def("next", &::Iterator_next)')
-        cls.add_registration_code('def("previous", &::Iterator_previous)')
+            cls.add_registration_code('def("next", &::Iterator_next)')
+            cls.add_registration_code('def("previous", &::Iterator_previous)')
     
     ### ELEMENTS ###
     
