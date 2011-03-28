@@ -128,71 +128,6 @@ public:
 		return d_currIter == d_startIter;
 	}
 
-
-	/*!
-	\brief
-		Increase the iterator position (prefix increment).
-
-	\note
-		The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
-	*/
-	ConstBaseIterator<T, V>&	operator++()
-	{
-		if (d_currIter != d_endIter)
-			++d_currIter;
-
-		return *this;
-	}
-
-
-	/*!
-	\brief
-		Increase the iterator position (postfix increment).
-
-	\note
-		The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
-	*/
-	ConstBaseIterator<T, V>	operator++(int)
-	{
-		ConstBaseIterator<T, V> tmp = *this;
-		++*this;
-
-		return tmp;
-	}
-
-
-	/*!
-	\brief
-		Decrease the iterator position (prefix decrement).
-
-	\note
-		The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
-	*/
-	ConstBaseIterator<T, V>&	operator--()
-	{
-		if (d_currIter != d_startIter)
-			--d_currIter;
-
-		return *this;
-	}
-
-
-	/*!
-	\brief
-		Decrease the iterator position (postfix decrement).
-
-	\note
-		The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
-	*/
-	ConstBaseIterator<T, V>	operator--(int)
-	{
-		ConstBaseIterator<T, V> tmp = *this;
-		--*this;
-
-		return tmp;
-	}
-
-
 	/*!
 	\brief
 		Compares two iterators.  Return true if the current position of both iterators are equivalent.
@@ -281,6 +216,66 @@ public:
         return this->d_currIter->first;
     }
 
+    /*!
+    \brief
+        Increase the iterator position (prefix increment).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstMapIterator<T>&    operator++()
+    {
+        if (ConstBaseIterator<T, typename T::mapped_type>::d_currIter != ConstBaseIterator<T, typename T::mapped_type>::d_endIter)
+            ++ConstBaseIterator<T, typename T::mapped_type>::d_currIter;
+
+        return *this;
+    }
+
+    /*!
+    \brief
+        Decrease the iterator position (prefix decrement).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstMapIterator<T>&    operator--()
+    {
+        if (ConstBaseIterator<T, typename T::mapped_type>::d_currIter != ConstBaseIterator<T, typename T::mapped_type>::d_startIter)
+            --ConstBaseIterator<T, typename T::mapped_type>::d_currIter;
+
+        return *this;
+    }
+
+    /*!
+    \brief
+        Increase the iterator position (postfix increment).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstMapIterator<T> operator++(int)
+    {
+        ConstMapIterator<T> tmp = *this;
+        ++*this;
+
+        return tmp;
+    }
+
+    /*!
+    \brief
+        Decrease the iterator position (postfix decrement).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstMapIterator<T> operator--(int)
+    {
+        ConstMapIterator<T> tmp = *this;
+        --*this;
+
+        return tmp;
+    }
+
 };
 
 //! iterator for vectors
@@ -296,6 +291,66 @@ public:
     getCurrentValue() const
     {
         return *this->d_currIter;
+    }
+
+    /*!
+    \brief
+        Increase the iterator position (prefix increment).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstVectorIterator<T>&    operator++()
+    {
+        if (ConstBaseIterator<T, typename T::value_type>::d_currIter != ConstBaseIterator<T, typename T::value_type>::d_endIter)
+            ++ConstBaseIterator<T, typename T::value_type>::d_currIter;
+
+        return *this;
+    }
+
+    /*!
+    \brief
+        Decrease the iterator position (prefix decrement).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstVectorIterator<T>&    operator--()
+    {
+        if (ConstBaseIterator<T, typename T::value_type>::d_currIter != ConstBaseIterator<T, typename T::value_type>::d_startIter)
+            --ConstBaseIterator<T, typename T::value_type>::d_currIter;
+
+        return *this;
+    }
+
+    /*!
+    \brief
+        Increase the iterator position (postfix increment).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstVectorIterator<T> operator++(int)
+    {
+        ConstVectorIterator<T> tmp = *this;
+        ++*this;
+
+        return tmp;
+    }
+
+    /*!
+    \brief
+        Decrease the iterator position (postfix decrement).
+
+    \note
+        The iterator is checked, and this call will always succeed, so do not rely on some exception to exit a loop.
+    */
+    ConstVectorIterator<T> operator--(int)
+    {
+        ConstVectorIterator<T> tmp = *this;
+        --*this;
+
+        return tmp;
     }
 };
 
