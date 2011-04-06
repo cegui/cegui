@@ -125,6 +125,26 @@ public:
 
     /*!
     \brief
+        Creates a new T object from a RawDataContainer and adds it to the collection.
+
+        Use an instance of the xml resource loading class \a U to process the
+        XML source thereby creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param source
+        RawDataContainer holding the XML source to be used when creating the
+        new object instance.
+
+    \param action
+        One of the XMLResourceExistsAction enumerated values indicating what
+        action should be taken when an object with the specified name
+        already exists within the collection.
+    */
+    T& createFromContainer(const RawDataContainer& source,
+                           XMLResourceExistsAction action = XREA_RETURN);
+
+    /*!
+    \brief
         Creates a new T object from an XML file and adds it to the collection.
 
         Use an instance of the xml resource loading class \a U to process the
@@ -145,8 +165,28 @@ public:
         action should be taken when an object with the specified name
         already exists within the collection.
     */
-    T& create(const String& xml_filename, const String& resource_group = "",
-              XMLResourceExistsAction action = XREA_RETURN);
+    T& createFromFile(const String& xml_filename, const String& resource_group = "",
+                      XMLResourceExistsAction action = XREA_RETURN);
+
+    /*!
+    \brief
+        Creates a new T object from a string and adds it to the collection.
+
+        Use an instance of the xml resource loading class \a U to process the
+        XML source thereby creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param source
+        String holding the XML source to be used when creating the
+        new object instance.
+
+    \param action
+        One of the XMLResourceExistsAction enumerated values indicating what
+        action should be taken when an object with the specified name
+        already exists within the collection.
+    */
+    T& createFromString(const String& source,
+                        XMLResourceExistsAction action = XREA_RETURN);
 
     /*!
     \brief
@@ -224,11 +264,37 @@ NamedXMLResourceManager<T, U>::~NamedXMLResourceManager()
 
 //----------------------------------------------------------------------------//
 template<typename T, typename U>
-T& NamedXMLResourceManager<T, U>::create(const String& xml_filename,
-                                        const String& resource_group,
-                                        XMLResourceExistsAction action)
+T& NamedXMLResourceManager<T, U>::createFromContainer(const RawDataContainer& source,
+                                                      XMLResourceExistsAction action)
 {
-    U xml_loader(xml_filename, resource_group);
+    U xml_loader;
+
+    xml_loader.handleContainer(source);
+    return doExistingObjectAction(xml_loader.getObjectName(),
+                                  &xml_loader.getObject(), action);
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+T& NamedXMLResourceManager<T, U>::createFromFile(const String& xml_filename,
+                                                 const String& resource_group,
+                                                 XMLResourceExistsAction action)
+{
+    U xml_loader;
+
+    xml_loader.handleFile(xml_filename, resource_group);
+    return doExistingObjectAction(xml_loader.getObjectName(),
+                                  &xml_loader.getObject(), action);
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+T& NamedXMLResourceManager<T, U>::createFromString(const String& source,
+                                                   XMLResourceExistsAction action)
+{
+    U xml_loader;
+
+    xml_loader.handleString(source);
     return doExistingObjectAction(xml_loader.getObjectName(),
                                   &xml_loader.getObject(), action);
 }
@@ -384,7 +450,7 @@ void NamedXMLResourceManager<T, U>::createAll(const String& pattern,
         getResourceGroupFileNames(names, pattern, resource_group);
 
     for (size_t i = 0; i < num; ++i)
-        create(names[i], resource_group);
+        createFromFile(names[i], resource_group);
 }
 
 //----------------------------------------------------------------------------//

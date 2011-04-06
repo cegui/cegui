@@ -46,9 +46,9 @@ namespace CEGUI
 // singleton instance pointer
 template<> AnimationManager* Singleton<AnimationManager>::ms_Singleton  = 0;
 // Name of the xsd schema file used to validate animation XML files.
-const String AnimationManager::s_xmlSchemaName("Animation.xsd");
+const String AnimationManager::XMLSchemaName("Animation.xsd");
 // String that holds the default resource group for loading animations
-String AnimationManager::s_defaultResourceGroup;
+String AnimationManager::s_defaultResourceGroup("");
 
 /*************************************************************************
     Constructor
@@ -344,7 +344,7 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
     CEGUI_TRY
     {
         System::getSingleton().getXMLParser()->
-            parseXMLFile(handler, filename, s_xmlSchemaName,
+            parseXMLFile(handler, filename, XMLSchemaName,
                          resourceGroup.empty() ? s_defaultResourceGroup :
                                                  resourceGroup);
     }

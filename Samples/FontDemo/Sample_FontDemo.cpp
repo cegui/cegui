@@ -110,7 +110,7 @@ public:
         WindowManager& winMgr = WindowManager::getSingleton ();
 
         // load scheme and set up defaults
-        SchemeManager::getSingleton().create("TaharezLook.scheme");
+        SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
         System::getSingleton().setDefaultMouseCursor ("TaharezLook/MouseArrow");
 
 		// Create a custom font which we use to draw the list items. This custom
@@ -136,13 +136,13 @@ public:
         // set the background image
         background->setProperty ("Image", "BackgroundImage");
         // install this as the root GUI sheet
-        System::getSingleton ().setGUISheet (background);
+        System::getSingleton().setGUISheet (background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton ().setDefaultTooltip ("TaharezLook/Tooltip");
+        System::getSingleton().setDefaultTooltip ("TaharezLook/Tooltip");
 
         // load some demo windows and attach to the background 'root'
-        background->addChild (winMgr.loadWindowLayout ("FontDemo.layout"));
+        background->addChild(winMgr.loadLayoutFromFile("FontDemo.layout"));
 
         // Add the font names to the listbox
         Listbox *lbox = static_cast<Listbox *> (background->getChild("root/FontDemo/FontList"));

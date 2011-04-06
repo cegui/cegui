@@ -75,11 +75,11 @@ public:
         WindowManager& winMgr = WindowManager::getSingleton ();
 
         // load scheme and set up defaults
-        SchemeManager::getSingleton().create(SKIN ".scheme");
+        SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
         System::getSingleton().setDefaultMouseCursor (SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
-        FontManager::getSingleton().create("DejaVuSans-10.font");
+        FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
         // load an image to use as a background
         ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -101,13 +101,13 @@ public:
         System::getSingleton ().setDefaultTooltip (SKIN "/Tooltip");
 
         // load some demo windows and attach to the background 'root'
-        background->addChild(winMgr.loadWindowLayout("TabControlDemo.layout"));
+        background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));
 
         TabControl *tc = static_cast<TabControl *>(background->getChild("Frame/TabControl"));
 
         // Add some pages to tab control
-        tc->addTab(winMgr.loadWindowLayout("TabPage1.layout"));
-        tc->addTab(winMgr.loadWindowLayout("TabPage2.layout"));
+        tc->addTab(winMgr.loadLayoutFromFile("TabPage1.layout"));
+        tc->addTab(winMgr.loadLayoutFromFile("TabPage2.layout"));
 
         // What did it load?
         WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
@@ -289,7 +289,7 @@ public:
                 Window *pg = NULL;
                 CEGUI_TRY
                 {
-                    pg = WindowManager::getSingleton().loadWindowLayout("TabPage.layout");
+                    pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
                     pg->rename(String(pgname.str()));
                 }
                 CEGUI_CATCH (CEGUI::Exception&)

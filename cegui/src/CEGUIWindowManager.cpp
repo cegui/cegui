@@ -55,7 +55,7 @@ String WindowManager::d_defaultResourceGroup;
 	Definition of constant data for WindowManager
 *************************************************************************/
 // Declared in WindowManager
-const char	WindowManager::GUILayoutSchemaName[]	= "GUILayout.xsd";
+const String WindowManager::GUILayoutSchemaName("GUILayout.xsd");
 const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
 const String WindowManager::EventNamespace("WindowManager");
 const String WindowManager::EventWindowCreated("WindowCreated");
@@ -247,11 +247,32 @@ bool WindowManager::isAlive(const Window* window) const
 	return iter != d_windowRegistry.end();
 }
 
-/*************************************************************************
-	Creates a set of windows (a Gui layout) from the information in the
-	specified XML file.
-*************************************************************************/
-Window* WindowManager::loadWindowLayout(const String& filename, const String& resourceGroup, PropertyCallback* callback, void* userdata)
+Window* WindowManager::loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback, void* userdata)
+{
+    // log the fact we are about to load a layout
+    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from a RawDataContainer ----", Informative);
+
+    // create handler object
+    GUILayout_xmlHandler handler(callback, userdata);
+
+    // do parse (which uses handler to create actual data)
+    CEGUI_TRY
+    {
+        System::getSingleton().getXMLParser()->parseXML(handler, source, GUILayoutSchemaName);
+    }
+    CEGUI_CATCH(...)
+    {
+        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from a RawDataContainer failed.", Errors);
+        CEGUI_RETHROW;
+    }
+
+    // log the completion of loading
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from a RawDataContainer ----", Standard);
+
+    return handler.getLayoutRootWindow();
+}
+
+Window* WindowManager::loadLayoutFromFile(const String& filename, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
 	if (filename.empty())
 	{
@@ -282,6 +303,31 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& re
 	return handler.getLayoutRootWindow();
 }
 
+Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallback* callback, void* userdata)
+{
+    // log the fact we are about to load a layout
+    Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from string ----", Informative);
+
+    // create handler object
+    GUILayout_xmlHandler handler(callback, userdata);
+
+    // do parse (which uses handler to create actual data)
+    CEGUI_TRY
+    {
+        System::getSingleton().getXMLParser()->parseXMLString(handler, source, GUILayoutSchemaName);
+    }
+    CEGUI_CATCH(...)
+    {
+        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from string failed.", Errors);
+        CEGUI_RETHROW;
+    }
+
+    // log the completion of loading
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from string ----", Standard);
+
+    return handler.getLayoutRootWindow();
+}
+
 bool WindowManager::isDeadPoolEmpty(void) const
 {
     return d_deathrow.empty();
@@ -305,7 +351,7 @@ void WindowManager::cleanDeadPool(void)
     d_deathrow.clear();
 }
 
-void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent) const
+void WindowManager::writeLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent) const
 {
 
     XMLSerializer xml(out_stream);
@@ -320,6 +366,28 @@ void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& o
     window.writeXMLToStream(xml);
     // write closing GUILayout element
     xml.closeTag();
+}
+
+String WindowManager::getLayoutAsString(const Window& window, bool writeParent) const
+{
+    std::ostringstream str;
+    writeLayoutToStream(window, str, writeParent);
+
+    return String(str.str());
+}
+
+//----------------------------------------------------------------------------//
+void WindowManager::saveLayoutToFile(const Window& window,
+                                     const String& filename,
+                                     const bool writeParent) const
+{
+    std::ofstream stream(filename.c_str());
+
+    if (!stream.good())
+        CEGUI_THROW(FileIOException("WindowManager::saveWindowLayout: "
+            "failed to create stream for writing."));
+
+    writeLayoutToStream(window, stream, writeParent);
 }
 
 String WindowManager::generateUniqueWindowName()
@@ -384,20 +452,6 @@ void WindowManager::unlock()
 bool WindowManager::isLocked() const
 {
     return d_lockCount != 0;
-}
-
-//----------------------------------------------------------------------------//
-void WindowManager::saveWindowLayout(const Window& window,
-                                     const String& filename,
-                                     const bool writeParent) const
-{
-    std::ofstream stream(filename.c_str());
-
-    if (!stream.good())
-        CEGUI_THROW(FileIOException("WindowManager::saveWindowLayout: "
-            "failed to create stream for writing."));
-
-    writeWindowLayoutToStream(window, stream, writeParent);
 }
 
 //----------------------------------------------------------------------------//

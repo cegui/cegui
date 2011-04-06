@@ -93,7 +93,7 @@ namespace CEGUI
         ~XercesParser(void);
 
         // Implementation of public abstract interface
-        void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+        void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
 
         // Internal methods
         /*!
@@ -139,9 +139,9 @@ namespace CEGUI
             { return d_defaultSchemaResourceGroup; }
 
     protected:
-        static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName, const String& xmlFilename, const String& resourceGroup);
+        static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName);
         static XERCES_CPP_NAMESPACE::SAX2XMLReader* createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler);
-        static void doParse(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& xmlFilename, const String& resourceGroup);
+        static void doParse(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const RawDataContainer& source);
 
         // Implementation of abstract interface.
         bool initialiseImpl(void);

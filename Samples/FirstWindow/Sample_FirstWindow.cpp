@@ -56,7 +56,7 @@ bool FirstWindowSample::initialiseSample()
     // So, we use the SchemeManager singleton to load in a scheme that loads the
     // imagery and registers widgets for the TaharezLook skin.  This scheme also
     // loads in a font that gets used as the system default.
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
     // The next thing we do is to set a default mouse cursor image.  This is
     // not strictly essential, although it is nice to always have a visible

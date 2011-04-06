@@ -828,8 +828,8 @@ class Rotation : public Property
         Rotation() : Property(
         "Rotation",
         "Property to get/set the windows rotation factors.  Value is "
-        "\"x:[x_float] y:[y_float] z:[z_float]\".",
-        "x:0 y:0 z:0")
+        "\"w:[x_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
+		"w:1 x:0 y:0 z:0")
         {}
 
         String  get(const PropertyReceiver* receiver) const;

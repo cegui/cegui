@@ -64,7 +64,7 @@ namespace CEGUI
     XercesParser::~XercesParser(void)
     {}
 
-    void XercesParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    void XercesParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
     {
         XERCES_CPP_NAMESPACE_USE;
 
@@ -76,9 +76,9 @@ namespace CEGUI
         CEGUI_TRY
         {
             // set up schema
-            initialiseSchema(reader, schemaName, filename, resourceGroup);
+            initialiseSchema(reader, schemaName);
             // do parse
-            doParse(reader, filename, resourceGroup);
+            doParse(reader, source);
         }
         CEGUI_CATCH(const XMLException& exc)
         {
@@ -87,7 +87,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -100,7 +100,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
@@ -110,7 +110,7 @@ namespace CEGUI
         {
             delete reader;
 
-            Logger::getSingleton().logEvent("XercesParser::parseXMLFile - An unexpected error occurred while parsing XML file '" + filename + "'.", Errors);
+            Logger::getSingleton().logEvent("XercesParser::parseXMLFile - An unexpected error occurred while parsing XML", Errors);
             CEGUI_RETHROW;
         }
 
@@ -206,7 +206,7 @@ namespace CEGUI
 
     }
 
-    void XercesParser::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName, const String& xmlFilename, const String& resourceGroup)
+    void XercesParser::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName)
     {
         XERCES_CPP_NAMESPACE_USE;
 
@@ -217,27 +217,10 @@ namespace CEGUI
 
         // load in the raw schema data
         RawDataContainer rawSchemaData;
-        // try base filename first, from default resource group
-        CEGUI_TRY
-        {
-            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
-            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
-        }
-        // oops, no file.  Try an alternative instead, using base path and
-        // resource group from the XML file we're going to be processing.
-        CEGUI_CATCH(InvalidRequestException)
-        {
-            // get path from filename
-            String schemaFilename;
-            size_t pos = xmlFilename.rfind("/");
-            if (pos == String::npos) pos = xmlFilename.rfind("\\");
-            if (pos != String::npos) schemaFilename.assign(xmlFilename, 0, pos + 1);
-            // append schema filename
-            schemaFilename += schemaName;
-            // re-try the load operation.
-            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaFilename + "'.");
-            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaFilename, rawSchemaData, resourceGroup);
-        }
+        // load the schema from the resource group
+        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
+
         // wrap schema data in a xerces MemBufInputSource object
         MemBufInputSource  schemaData(
             rawSchemaData.getDataPtr(),
@@ -274,36 +257,18 @@ namespace CEGUI
         return reader;
     }
 
-    void XercesParser::doParse(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& xmlFilename, const String& resourceGroup)
+    void XercesParser::doParse(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const RawDataContainer& source)
     {
         XERCES_CPP_NAMESPACE_USE;
 
-        // use resource provider to load file data
-        RawDataContainer rawXMLData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(xmlFilename, rawXMLData, resourceGroup);
         MemBufInputSource  fileData(
-            rawXMLData.getDataPtr(),
-            static_cast<const unsigned int>(rawXMLData.getSize()),
-            xmlFilename.c_str(),
+            source.getDataPtr(),
+            static_cast<const unsigned int>(source.getSize()),
+            "Unknown",
             false);
 
-         // perform parse
-         CEGUI_TRY
-         {
-             parser->parse(fileData);
-         }
-         CEGUI_CATCH(...)
-         {
-             // use resource provider to release loaded XML source (if it supports this)
-             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
-
-             CEGUI_RETHROW;
-         }
-
-         // use resource provider to release loaded XML source (if it supports this)
-         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+         parser->parse(fileData);
     }
-
     
     ////////////////////////////////////////////////////////////////////////////////
     //

@@ -32,7 +32,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIXMLAttributes.h"
-
+#include "CEGUIWindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -55,6 +55,15 @@ const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "Filename" );
 const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "ResourceGroup" );
 const String GUILayout_xmlHandler::EventNameAttribute( "Name" );
 const String GUILayout_xmlHandler::EventFunctionAttribute( "Function" );
+
+const String& GUILayout_xmlHandler::getSchemaName() const
+{
+    return WindowManager::GUILayoutSchemaName;
+}
+const String& GUILayout_xmlHandler::getDefaultResourceGroup() const
+{
+    return WindowManager::getSingleton().getDefaultResourceGroup();
+}
 
 void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
@@ -299,8 +308,8 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
     CEGUI_TRY
     {
         // attempt to load the imported sub-layout
-        Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
-                attributes.getValueAsString( LayoutImportFilenameAttribute),
+        Window* subLayout = WindowManager::getSingleton().loadLayoutFromFile(
+                attributes.getValueAsString(LayoutImportFilenameAttribute),
                 attributes.getValueAsString(LayoutImportResourceGroupAttribute),
                 d_propertyCallback,
                 d_userData);

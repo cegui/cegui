@@ -55,9 +55,9 @@ bool Demo6Sample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");

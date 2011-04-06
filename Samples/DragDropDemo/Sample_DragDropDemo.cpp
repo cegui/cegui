@@ -47,10 +47,10 @@ bool DragDropDemo::initialiseSample()
     using namespace CEGUI;
 
     // load windows look
-    SchemeManager::getSingleton().create("WindowsLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load font and setup default if not loaded via scheme
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
     System::getSingleton().setDefaultMouseCursor("WindowsLook/MouseArrow");
@@ -61,7 +61,7 @@ bool DragDropDemo::initialiseSample()
 
     // load the initial layout
     System::getSingleton().setGUISheet(
-        WindowManager::getSingleton().loadWindowLayout("DragDropDemo.layout"));
+        WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
     subscribeEvents();

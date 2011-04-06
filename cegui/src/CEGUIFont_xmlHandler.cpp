@@ -65,16 +65,10 @@ const String Font_xmlHandler::MappingImageAttribute("Image");
 const String Font_xmlHandler::MappingHorzAdvanceAttribute("HorzAdvance");
 
 //----------------------------------------------------------------------------//
-Font_xmlHandler::Font_xmlHandler(const String& filename,
-                                 const String& resource_group) :
+Font_xmlHandler::Font_xmlHandler():
     d_font(0),
     d_objectRead(false)
-{
-    System::getSingleton().getXMLParser()->parseXMLFile(
-            *this, filename, FontSchemaName,
-            resource_group.empty() ? Font::getDefaultResourceGroup() :
-                                     resource_group);
-}
+{}
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::~Font_xmlHandler()
@@ -102,6 +96,18 @@ Font& Font_xmlHandler::getObject() const
 
     d_objectRead = true;
     return *d_font;
+}
+
+//----------------------------------------------------------------------------//
+const String& Font_xmlHandler::getSchemaName() const
+{
+    return FontSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Font_xmlHandler::getDefaultResourceGroup() const
+{
+    return Font::getDefaultResourceGroup();
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +153,7 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
-void Font_xmlHandler::elementFontEnd ()
+void Font_xmlHandler::elementFontEnd()
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_font));

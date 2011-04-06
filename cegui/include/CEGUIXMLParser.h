@@ -83,7 +83,26 @@ namespace CEGUI
 
         /*!
         \brief
-            abstract method which initiates parsing of an XML file.
+            abstract method which initiates parsing of an XML.
+
+        \param handler
+            XMLHandler based object which will process the XML elements.
+
+        \param source
+            RawDataContainer containing the data to parse
+
+        \param schemaName
+            String object holding the name of the XML schema file to use for validating the XML.
+            Note that whether this is used or not is dependant upon the XMLParser in use.
+
+        \return
+            Nothing.
+         */
+        virtual void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName) = 0;
+
+        /*!
+        \brief
+            convenience method which initiates parsing of an XML file.
 
         \param handler
             XMLHandler based object which will process the XML elements.
@@ -102,7 +121,26 @@ namespace CEGUI
         \return
             Nothing.
          */
-        virtual void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup) = 0;
+        virtual void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+
+        /*!
+        \brief
+            convenience method which initiates parsing of an XML source from string.
+
+        \param handler
+            XMLHandler based object which will process the XML elements.
+
+        \param source
+            The XML source passed as a String
+
+        \param schemaName
+            String object holding the name of the XML schema file to use for validating the XML.
+            Note that whether this is used or not is dependant upon the XMLParser in use.
+
+        \return
+            Nothing.
+         */
+        virtual void parseXMLString(XMLHandler& handler, const String& source, const String& schemaName);
 
         /*!
         \brief

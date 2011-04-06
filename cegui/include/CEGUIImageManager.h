@@ -101,6 +101,9 @@ public:
         { return d_imagesetDefaultResourceGroup; }
 
     // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
+
     void elementStart(const String& element, const XMLAttributes& attributes);
 
 private:

@@ -60,16 +60,10 @@ const String Scheme_xmlHandler::WindowRendererAttribute("Renderer");
 const String Scheme_xmlHandler::RenderEffectAttribute("RenderEffect");
 
 //----------------------------------------------------------------------------//
-Scheme_xmlHandler::Scheme_xmlHandler(const String& filename,
-                                     const String& resource_group) :
+Scheme_xmlHandler::Scheme_xmlHandler():
     d_scheme(0),
     d_objectRead(false)
-{
-    System::getSingleton().getXMLParser()->parseXMLFile(
-            *this, filename, GUISchemeSchemaName,
-            resource_group.empty() ? Scheme::getDefaultResourceGroup() :
-                                     resource_group);
-}
+{}
 
 //----------------------------------------------------------------------------//
 Scheme_xmlHandler::~Scheme_xmlHandler()
@@ -97,6 +91,18 @@ Scheme& Scheme_xmlHandler::getObject() const
 
     d_objectRead = true;
     return *d_scheme;
+}
+
+//----------------------------------------------------------------------------//
+const String& Scheme_xmlHandler::getSchemaName() const
+{
+    return GUISchemeSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Scheme_xmlHandler::getDefaultResourceGroup() const
+{
+    return Scheme::getDefaultResourceGroup();
 }
 
 //----------------------------------------------------------------------------//

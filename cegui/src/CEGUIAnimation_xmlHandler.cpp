@@ -86,12 +86,22 @@ static const String ProgressionQuadraticDecelerating("quadratic decelerating");
 
 //----------------------------------------------------------------------------//
 Animation_xmlHandler::Animation_xmlHandler()
-{
-}
+{}
 
 //----------------------------------------------------------------------------//
 Animation_xmlHandler::~Animation_xmlHandler()
+{}
+
+//----------------------------------------------------------------------------//
+const String& Animation_xmlHandler::getSchemaName() const
 {
+    return AnimationManager::XMLSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Animation_xmlHandler::getDefaultResourceGroup() const
+{
+    return AnimationManager::getDefaultResourceGroup();
 }
 
 //----------------------------------------------------------------------------//
