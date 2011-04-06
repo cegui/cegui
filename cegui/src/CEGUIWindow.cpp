@@ -2461,16 +2461,15 @@ bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
 
     // output opening AutoWindow tag
     xml_stream.openTag("AutoWindow");
-    // extract the name suffix
-    String suffix(getName(), getParent()->getName().length(), String::npos);
     // write name suffix attribute
-    xml_stream.attribute("NameSuffix", suffix);
+    xml_stream.attribute("NamePath", getName());
     // Inefficient : do the XML serialization again
     // write out properties.
     writePropertiesXML(xml_stream);
     // write out attached child windows.
     writeChildWindowsXML(xml_stream);
     xml_stream.closeTag();
+
     return true;
 }
 
@@ -3327,13 +3326,8 @@ bool Window::isPropertyAtDefault(const Property* property) const
                 WidgetLookManager::getSingleton().
                     getWidgetLook(getParent()->getLookNFeel());
 
-            // find our name suffix
-            const String suffix(getName(),
-                                getParent()->getName().length(),
-                                String::npos);
-
             // find the widget component if possible
-            const WidgetComponent* const wc = wlf.findWidgetComponent(suffix);
+            const WidgetComponent* const wc = wlf.findWidgetComponent(getName());
             if (wc)
             {
                 const PropertyInitialiser* const propinit =

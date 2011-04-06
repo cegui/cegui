@@ -369,7 +369,7 @@ namespace CEGUI
         assert(d_childcomponent == 0);
         d_childcomponent = CEGUI_NEW_AO WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute), attributes.getValueAsString(RendererAttribute));
 
-        CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
+        CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Name: " + d_childcomponent->getWidgetName() + " Look: " + d_childcomponent->getWidgetLookName());
     }
 
     /*************************************************************************

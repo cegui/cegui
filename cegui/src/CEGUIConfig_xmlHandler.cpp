@@ -77,6 +77,19 @@ Config_xmlHandler::~Config_xmlHandler()
 }
 
 //----------------------------------------------------------------------------//
+const String& Config_xmlHandler::getSchemaName() const
+{
+    return CEGUIConfigSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Config_xmlHandler::getDefaultResourceGroup() const
+{
+    static String ret = "";
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
 void Config_xmlHandler::elementStart(const String& element,
                                      const XMLAttributes& attributes)
 {

@@ -66,7 +66,7 @@ public:
     /*************************************************************************
         Public static data
     *************************************************************************/
-    static const String GeneratedWindowNameBase;      //!< Base name to use for generated window names.
+    static const String GeneratedWindowNameBase; //!< Base name to use for generated window names.
     //! Namespace for global events.
     static const String EventNamespace;
     /** Event fired when a new Window object is created.
@@ -79,6 +79,8 @@ public:
      * WindowEventArgs::window set to the Window that has been destroyed.
      */
     static const String EventWindowDestroyed;
+
+    static const String GUILayoutSchemaName; //!< Filename of the XML schema used for validating GUILayout files.
 
 	/*!
 	\brief
@@ -181,9 +183,29 @@ public:
     //! return whether Window is alive.
     bool isAlive(const Window* window) const;
 
+    /*!
+    \brief
+        Creates a set of windows (a GUI layout) from the information in the specified XML.
+
+    \param source
+        RawDataContainer holding the XML source
+
+    \param callback
+        PropertyCallback function to be called for each Property element loaded from the layout.  This is
+        called prior to the property value being applied to the window enabling client code manipulation of
+        properties.
+
+    \param userdata
+        Client code data pointer passed to the PropertyCallback function.
+
+    \return
+        Pointer to the root Window object defined in the layout.
+    */
+    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = 0, void* userdata = 0);
+
 	/*!
 	\brief
-		Creates a set of windows (a Gui layout) from the information in the specified XML file.	
+		Creates a set of windows (a GUI layout) from the information in the specified XML file.
 
 	\param filename
 		String object holding the filename of the XML file to be processed.
@@ -205,7 +227,27 @@ public:
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadWindowLayout(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+
+    /*!
+    \brief
+        Creates a set of windows (a GUI layout) from the information in the specified XML.
+
+    \param source
+        String holding the XML source
+
+    \param callback
+        PropertyCallback function to be called for each Property element loaded from the layout.  This is
+        called prior to the property value being applied to the window enabling client code manipulation of
+        properties.
+
+    \param userdata
+        Client code data pointer passed to the PropertyCallback function.
+
+    \return
+        Pointer to the root Window object defined in the layout.
+    */
+    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = 0, void* userdata = 0);
 
     /*!
     \brief
@@ -247,7 +289,27 @@ public:
     \return
         Nothing.
     */
-    void writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
+    void writeLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
+
+    /*!
+    \brief
+        Writes a full XML window layout, starting at the given Window and returns the result as string
+
+    \param window
+        Window object to become the root of the layout.
+
+    \param writeParent
+        If the starting window has a parent window, specifies whether to write the parent name into
+        the Parent attribute of the GUILayout XML element.
+
+    \warning
+        This is a convenience function and isn't designed to be fast at all! Use the other alternatives
+        if you want performance.
+
+    \return
+        String containing XML of the resulting layout
+    */
+    String getLayoutAsString(const Window& window, bool writeParent = false) const;
 
     /*!
     \brief
@@ -267,7 +329,7 @@ public:
         If the starting window has a parent window, specifies whether to write
         the parent name into the Parent attribute of the GUILayout XML element.
     */
-    void saveWindowLayout(const Window& window, const String& filename, const bool writeParent = false) const;
+    void saveLayoutToFile(const Window& window, const String& filename, const bool writeParent = false) const;
 
     /*!
     \brief
@@ -354,13 +416,7 @@ private:
     //! function to set up RenderEffect on a window
     void initialiseRenderEffect(Window* wnd, const String& effect) const;
 
-	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const char	GUILayoutSchemaName[];			//!< Filename of the XML schema used for validating GUILayout files.
-
-
-	/*************************************************************************
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
     typedef std::vector<Window*

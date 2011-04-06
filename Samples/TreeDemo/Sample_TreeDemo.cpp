@@ -130,7 +130,7 @@ bool TreeDemoSample::initialiseSample()
    CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Insane);
 
    // Load the scheme to initialise the skin which we use in this sample
-   SchemeManager::getSingleton().create(SCHEME_FILE_NAME);
+   SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
    System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME "/MouseArrow");
@@ -156,12 +156,12 @@ bool TreeDemoSample::initialiseSample()
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 //	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
 //		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
 
-   TreeDemoWindow = winMgr.loadWindowLayout(LAYOUT_FILE_NAME);
+   TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
    background->addChild(TreeDemoWindow);
 

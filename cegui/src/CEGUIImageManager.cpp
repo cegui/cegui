@@ -224,6 +224,16 @@ void ImageManager::notifyDisplaySizeChanged(const Sizef& size)
         i->second->notifyDisplaySizeChanged(size);
 }
 
+const String& ImageManager::getSchemaName() const
+{
+    return ImagesetSchemaName;
+}
+
+const String& ImageManager::getDefaultResourceGroup() const
+{
+    return d_imagesetDefaultResourceGroup;
+}
+
 //----------------------------------------------------------------------------//
 void ImageManager::elementStart(const String& element,
                                 const XMLAttributes& attributes)

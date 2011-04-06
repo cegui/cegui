@@ -47,12 +47,12 @@ ExpatParser::~ExpatParser(void)
 {
 }
 
-void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& /*schemaName*/, const String& resourceGroup)
+void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
 {
     // All stuff goes here
     XML_Parser parser = XML_ParserCreate(0); // Create a parser
 
-    if (! parser)
+    if (!parser)
     {
         CEGUI_THROW(GenericException("ExpatParser::parseXMLFile - Unable to create a new Expat Parser"));
     }
@@ -61,14 +61,9 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
     XML_SetElementHandler(parser, startElement, endElement); // Register callback for elements
     XML_SetCharacterDataHandler(parser, characterData); // Register callback for character data
 
-    // Aquire resource using CEGUI ResourceProvider
-    CEGUI::RawDataContainer rawXMLData;
-    CEGUI::System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-
     // Parse the data (note that the last true parameter tels Expat that this is the last chunk of the document
-    if ( ! XML_Parse(parser, reinterpret_cast<const char*>(rawXMLData.getDataPtr()), rawXMLData.getSize(), true))
+    if (!XML_Parse(parser, reinterpret_cast<const char*>(source.getDataPtr()), source.getSize(), true))
     {
-        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
         String exception (String((const encoded_char*)"ExpatParser::parseXMLFile - XML Parsing error '") +
                           String((const encoded_char*)XML_ErrorString(XML_GetErrorCode(parser))) +
                           String((const encoded_char*)"' at line ") +
@@ -78,8 +73,6 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
         CEGUI_THROW(GenericException(exception));
     }
 
-    // Release resource
-    CEGUI::System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
     XML_ParserFree(parser);
 }
@@ -90,9 +83,7 @@ bool ExpatParser::initialiseImpl(void)
 }
 
 void ExpatParser::cleanupImpl(void)
-{
-
-}
+{}
 
 void ExpatParser::startElement(void* data, const char* element, const char** attr)
 {

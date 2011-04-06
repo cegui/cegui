@@ -41,10 +41,10 @@ bool TextDemo::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     // We need a font
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting
     if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
     {
@@ -68,7 +68,7 @@ bool TextDemo::initialiseSample()
     System::getSingleton().setGUISheet(background);
 
     // Load our layout as a basic
-    background->addChild (winMgr.loadWindowLayout ("TextDemo.layout"));
+    background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
 
     // Init the seperate blocks which make up this sample
     initStaticText();

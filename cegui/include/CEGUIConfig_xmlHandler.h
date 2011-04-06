@@ -102,6 +102,9 @@ public:
     const String& getTerminateScriptName() const;
 
     // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
+
     void elementStart(const String& element, const XMLAttributes& attributes);
     void elementEnd(const String& element);
 

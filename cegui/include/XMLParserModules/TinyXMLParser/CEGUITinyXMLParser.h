@@ -54,7 +54,7 @@ namespace CEGUI
         ~TinyXMLParser(void);
 
         // Implementation of public abstract interface
-        void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+        void parseXML(XMLHandler& handler, const RawDataContainer& filename, const String& schemaName);
 
     protected:
         // Implementation of abstract interface.

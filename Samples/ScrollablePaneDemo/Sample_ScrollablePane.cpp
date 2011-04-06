@@ -98,10 +98,10 @@ bool ScrollablePaneSample::initialiseSample()
     using namespace CEGUI;
 
     // this sample will use WindowsLook
-    SchemeManager::getSingleton().create("WindowsLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load the default font
-    d_font = &FontManager::getSingleton().create("DejaVuSans-10.font");
+    d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font

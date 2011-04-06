@@ -58,13 +58,16 @@ public:
 	  d_root(0),
 	  d_propertyCallback(callback),
 	  d_userData(userdata)
-	  {}
+	{}
 
 	/*!
 	\brief
 		Destructor for GUILayout_xmlHandler objects
 	*/
 	virtual ~GUILayout_xmlHandler(void) {}
+
+    virtual const String& getSchemaName() const;
+    virtual const String& getDefaultResourceGroup() const;
 
 	/*************************************************************************
 		SAX2 Handler overrides
@@ -173,8 +176,8 @@ private:
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	PropertyCallback*	d_propertyCallback; //!< Callback for every property loaded
 	void*				d_userData;			//!< User data for the property callback
-  String d_propertyName; //!< Use for long property value 
-  String d_propertyValue; //!< Use for long property value 
+    String d_propertyName; //!< Use for long property value
+    String d_propertyValue; //!< Use for long property value
 };
 
 

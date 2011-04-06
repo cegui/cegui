@@ -206,7 +206,7 @@ void Scheme::loadFonts()
             continue;
 
         // create font using specified xml file.
-        Font& font = fntmgr.create((*pos).filename, (*pos).resourceGroup);
+        Font& font = fntmgr.createFromFile((*pos).filename, (*pos).resourceGroup);
         const String realname(font.getName());
 
         // if name was not in scheme, set it now and proceed to next font

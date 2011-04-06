@@ -39,7 +39,7 @@ class CEGUIEXPORT Scheme_xmlHandler : public XMLHandler
 {
 public:
     //! Constructor.
-    Scheme_xmlHandler(const String& filename, const String& resource_group);
+    Scheme_xmlHandler();
 
     //! Destructor.
     ~Scheme_xmlHandler();
@@ -51,6 +51,8 @@ public:
     Scheme& getObject() const;
 
     // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
     void elementStart(const String& element, const XMLAttributes& attributes);
     void elementEnd(const String& element);
 

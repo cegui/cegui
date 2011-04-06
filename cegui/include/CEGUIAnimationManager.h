@@ -49,6 +49,9 @@ class CEGUIEXPORT AnimationManager :
     public AllocatedObject<AnimationManager>
 {
 public:
+    //! Name of the schema used for loading animation xml files.
+    static const String XMLSchemaName;
+
     /*************************************************************************
         Construction and Destruction
     *************************************************************************/
@@ -248,8 +251,6 @@ private:
         CEGUI_MULTIMAP_ALLOC(Animation*, AnimationInstance*)> AnimationInstanceMap;
     //! all instances of animations
     AnimationInstanceMap d_animationInstances;
-    //! Name of the schema used for loading animation xml files.
-    static const String s_xmlSchemaName;
     //! Default resource group used when loading animation xml files.
     static String s_defaultResourceGroup;
 };

@@ -26,6 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIXMLHandler.h"
+#include "CEGUISystem.h"
+#include "CEGUIXMLParser.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -37,6 +39,34 @@ namespace CEGUI
 
     XMLHandler::~XMLHandler(void)
     {}
+
+    const String& XMLHandler::getSchemaName() const
+    {
+        static String ret = "";
+
+        // by default, don't use XML schemas
+        return ret;
+    }
+
+    void XMLHandler::handleContainer(const RawDataContainer& source)
+    {
+        System::getSingleton().getXMLParser()->parseXML(
+                    *this, source, getSchemaName());
+    }
+
+    void XMLHandler::handleFile(const String& fileName, const String& resourceGroup)
+    {
+        System::getSingleton().getXMLParser()->parseXMLFile(
+                    *this, fileName, getSchemaName(),
+                    resourceGroup.empty() ? getDefaultResourceGroup() :
+                                             resourceGroup);
+    }
+
+    void XMLHandler::handleString(const String& source)
+    {
+        System::getSingleton().getXMLParser()->parseXMLString(
+                    *this, source, getSchemaName());
+    }
 
     void XMLHandler::elementStart(const String&, const XMLAttributes&)
     {}

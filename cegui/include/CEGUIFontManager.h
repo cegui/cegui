@@ -199,7 +199,9 @@ public:
     FontIterator getIterator() const;
 
     // ensure we see overloads from template base class
-    using NamedXMLResourceManager<Font, Font_xmlHandler>::create;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromContainer;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromFile;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromString;
 
 protected:
     // override from base
