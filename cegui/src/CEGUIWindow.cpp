@@ -4118,10 +4118,10 @@ bool Window::isMouseInputPropagationEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-Window* Window::clone(const String& newName, const bool deepCopy) const
+Window* Window::clone(const bool deepCopy) const
 {
     Window* ret =
-        WindowManager::getSingleton().createWindow(getType(), newName);
+        WindowManager::getSingleton().createWindow(getType(), getName());
 
     // always copy properties
     clonePropertiesTo(*ret);
@@ -4170,9 +4170,6 @@ void Window::clonePropertiesTo(Window& target) const
 //----------------------------------------------------------------------------//
 void Window::cloneChildWidgetsTo(Window& target) const
 {
-    const String& oldName = getName();
-    const String& newName = target.getName();
-
     // todo: ChildWindowIterator?
     for (size_t childI = 0; childI < getChildCount(); ++childI)
     {
@@ -4195,26 +4192,7 @@ void Window::cloneChildWidgetsTo(Window& target) const
             continue;
         }
 
-        String newChildName = child->getName();
-        String::size_type idxBegin = newChildName.find(oldName + "/");
-        if (idxBegin == String::npos)
-        {
-            // not found, user is using non-standard naming
-            // use a pretty safe but long and non readable new name
-            newChildName = newChildName + "_clone_" + newName;
-        }
-        else
-        {
-            // +1 because of the "/"
-            String::size_type idxEnd = idxBegin + oldName.length() + 1;
-
-            // we replace the first occurence of the old parent's name with the new name
-            // this works great in case user uses the default recommended naming scheme
-            // like this: "Parent/ChildWindow/ChildChildWindow"
-            newChildName.replace(idxBegin, idxEnd, newName + "/");
-        }
-
-        Window* newChild = child->clone(newChildName, true);
+        Window* newChild = child->clone(true);
         target.addChild(newChild);
     }
 }

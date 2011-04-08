@@ -3312,9 +3312,6 @@ public:
     \brief
         Clones this Window and returns the result
 
-    \param 
-        newName new name of the cloned window
-
     \param
         deepCopy if true, even children are copied (the old name prefix will
         be replaced with new name prefix)
@@ -3322,7 +3319,7 @@ public:
     \return
         the cloned Window
     */
-    Window* clone(const String& newName, const bool deepCopy = true) const;
+    Window* clone(const bool deepCopy = true) const;
 
     //! copies this widget's properties to given target widget
     virtual void clonePropertiesTo(Window& target) const;
