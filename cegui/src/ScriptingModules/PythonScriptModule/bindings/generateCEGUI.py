@@ -881,23 +881,63 @@ Window_getUserData ( ::CEGUI::Window & me) {
     # CEGUIWindowManager.h
     windowManager = CEGUI_ns.class_("WindowManager")
     windowManager.include()
-    # we do this in custom code below
-    windowManager.mem_fun("loadWindowLayout").exclude()
+    # we do all the layout loading in custom code because we can't use PropertyCallback in python
+       
+    windowManager.mem_fun("loadLayoutFromContainer").exclude()
     windowManager.add_declaration_code(
 """
 CEGUI::Window*
-WindowManager_loadWindowLayout(::CEGUI::WindowManager & me,
-    const CEGUI::String& filename, const CEGUI::String& resourceGroup = "") {
-      return me.loadWindowLayout( filename, resourceGroup);
-    }
+WindowManager_loadLayoutFromContainer(::CEGUI::WindowManager & me,
+    const CEGUI::RawDataContainer& container)
+{
+    return me.loadLayoutFromContainer(container);
+}
 """
     )
     windowManager.add_registration_code(
 """
-def ("loadWindowLayout", &::WindowManager_loadWindowLayout,\
-        ( bp::arg("filename"), bp::arg("resourceGroup")="" ), \
-        bp::return_value_policy< bp::reference_existing_object,bp::default_call_policies >());
+def ("loadLayoutFromContainer", &::WindowManager_loadLayoutFromContainer,\
+        (bp::arg("source")), \
+        bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());
+"""
+    )
+    
+    windowManager.mem_fun("loadLayoutFromFile").exclude()
+    windowManager.add_declaration_code(
+"""
+CEGUI::Window*
+WindowManager_loadLayoutFromFile(::CEGUI::WindowManager & me,
+    const CEGUI::String& filename, const CEGUI::String& resourceGroup = "")
+{
+    return me.loadLayoutFromFile(filename, resourceGroup);
+}
+"""
+    )
+    windowManager.add_registration_code(
+"""
+def ("loadLayoutFromFile", &::WindowManager_loadLayoutFromFile,\
+        (bp::arg("filename"), bp::arg("resourceGroup") = ""), \
+        bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());
 """   
+    )
+    
+    windowManager.mem_fun("loadLayoutFromString").exclude()
+    windowManager.add_declaration_code(
+"""
+CEGUI::Window*
+WindowManager_loadLayoutFromString(::CEGUI::WindowManager & me,
+    const CEGUI::String& source)
+{
+    return me.loadLayoutFromString(source);
+}
+"""
+    )
+    windowManager.add_registration_code(
+"""
+def ("loadLayoutFromString", &::WindowManager_loadLayoutFromString,\
+        (bp::arg("source")), \
+        bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());
+"""
     )
     
     # CEGUIWindowProperties.h
