@@ -21,7 +21,7 @@ void register_EventLinkDefinition_class(){
                 "addLinkTarget"
                 , addLinkTarget_function_type( &::CEGUI::EventLinkDefinition::addLinkTarget )
                 , ( bp::arg("widget"), bp::arg("event") )
-                , "! add a new link target to  event on  widget (name suffix).\n" );
+                , "! add a new link target to  event on  widget (name).\n" );
         
         }
         { //::CEGUI::EventLinkDefinition::cleanUpWidget
@@ -42,7 +42,7 @@ void register_EventLinkDefinition_class(){
             EventLinkDefinition_exposer.def( 
                 "clearLinkTargets"
                 , clearLinkTargets_function_type( &::CEGUI::EventLinkDefinition::clearLinkTargets )
-                , "! add a new link target to  event on  widget (name suffix).\n\
+                , "! add a new link target to  event on  widget (name).\n\
             ! clear all link targets from this link definition.\n" );
         
         }

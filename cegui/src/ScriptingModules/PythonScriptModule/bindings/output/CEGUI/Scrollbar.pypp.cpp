@@ -646,8 +646,8 @@ void register_Scrollbar_class(){
                 *\n" );
         
         }
-        Scrollbar_exposer.add_static_property( "DecreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Scrollbar::DecreaseButtonNameSuffix
+        Scrollbar_exposer.add_static_property( "DecreaseButtonName"
+                        , bp::make_getter( &CEGUI::Scrollbar::DecreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Scrollbar_exposer.add_static_property( "EventScrollConfigChanged"
                         , bp::make_getter( &CEGUI::Scrollbar::EventScrollConfigChanged
@@ -661,11 +661,11 @@ void register_Scrollbar_class(){
         Scrollbar_exposer.add_static_property( "EventThumbTrackStarted"
                         , bp::make_getter( &CEGUI::Scrollbar::EventThumbTrackStarted
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Scrollbar_exposer.add_static_property( "IncreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Scrollbar::IncreaseButtonNameSuffix
+        Scrollbar_exposer.add_static_property( "IncreaseButtonName"
+                        , bp::make_getter( &CEGUI::Scrollbar::IncreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Scrollbar_exposer.add_static_property( "ThumbNameSuffix"
-                        , bp::make_getter( &CEGUI::Scrollbar::ThumbNameSuffix
+        Scrollbar_exposer.add_static_property( "ThumbName"
+                        , bp::make_getter( &CEGUI::Scrollbar::ThumbName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

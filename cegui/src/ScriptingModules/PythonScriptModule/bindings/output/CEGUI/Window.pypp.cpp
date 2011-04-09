@@ -267,34 +267,6 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::addChild
         
-            typedef void ( ::CEGUI::Window::*addChild_function_type )( ::CEGUI::String const & ) ;
-            
-            Window_exposer.def( 
-                "addChild"
-                , addChild_function_type( &::CEGUI::Window::addChild )
-                , ( bp::arg("name") )
-                , "*!\n\
-                \n\
-                    Add the named Window as a child of this Window.  If the Window  name\n\
-                    is already attached to a Window, it is detached before being added to\n\
-                    this Window.\n\
-            \n\
-                @param name\n\
-                    String object holding the name of the Window to be added.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-            \n\
-                @exception UnknownObjectException\n\
-                    thrown if no Window named  name exists.\n\
-                @exception InvalidRequestException\n\
-                    thrown if Window  name is an ancestor of this Window, to prevent\n\
-                    cyclic Window structures.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::addChild
-        
             typedef void ( ::CEGUI::Window::*addChild_function_type )( ::CEGUI::Window * ) ;
             
             Window_exposer.def( 
@@ -391,19 +363,16 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::clone
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*clone_function_type )( ::CEGUI::String const &,bool const ) const;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*clone_function_type )( bool const ) const;
             
             Window_exposer.def( 
                 "clone"
                 , clone_function_type( &::CEGUI::Window::clone )
-                , ( bp::arg("newName"), bp::arg("deepCopy")=(bool const)(true) )
+                , ( bp::arg("deepCopy")=(bool const)(true) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
                     Clones this Window and returns the result\n\
-            \n\
-                @param \n\
-                    newName new name of the cloned window\n\
             \n\
                 @param\n\
                     deepCopy if true, even children are copied (the old name prefix will\n\
@@ -440,28 +409,24 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::createChild
         
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*createChild_function_type )( ::CEGUI::String const &,::CEGUI::String const &,bool ) ;
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*createChild_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
             
             Window_exposer.def( 
                 "createChild"
                 , createChild_function_type( &::CEGUI::Window::createChild )
-                , ( bp::arg("type"), bp::arg("name"), bp::arg("nameLocal")=(bool)(true) )
+                , ( bp::arg("type"), bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                \n\
                   Creates a child window attached to this window.\n\
                \n\
                @param type\n\
-                  String that describes the type of Window to be created.  A valid WindowFactory for the\
-                  specified type must be registered.\n\
+                  String that describes the type of Window to be created.  A valid\n\
+                    WindowFactory for the specified type must be registered.\n\
             \n\
                @param name\n\
-                  String that holds a unique name that is to be given to the new window.  If this string is\
-                  empty (), a name\n\
-                  will be generated for the window.\n\
-               \n\
-               @param nameLocal\n\
-                  If true, the name is considered local (the absolute name will be ParentWindowNameName)\n\
+                  String that holds the name that is to be given to the new window.  If\n\
+                    this string is empty, a name will be generated for the window.\n\
             \n\
                @return\n\
                   Pointer to the newly created child Window object.\n\
@@ -516,21 +481,18 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::destroyChild
         
-            typedef void ( ::CEGUI::Window::*destroyChild_function_type )( ::CEGUI::String const &,bool ) ;
+            typedef void ( ::CEGUI::Window::*destroyChild_function_type )( ::CEGUI::String const & ) ;
             
             Window_exposer.def( 
                 "destroyChild"
                 , destroyChild_function_type( &::CEGUI::Window::destroyChild )
-                , ( bp::arg("name"), bp::arg("nameLocal")=(bool)(true) )
+                , ( bp::arg("name_path") )
                 , "*!\n\
                 \n\
                     Destroys a child window of this window\n\
             \n\
-                @param name\n\
-                    Name of the child window to destroy\n\
-            \n\
-                @param nameLocal\n\
-                    If true, the name is considered local (the absolute name will be ParentWindowNameName)\n\
+                @param name_path\n\
+                    Name path that references the window to destroy\n\
                 *\n" );
         
         }
@@ -788,28 +750,30 @@ void register_Window_class(){
             Window_exposer.def( 
                 "getChild"
                 , getChild_function_type( &::CEGUI::Window::getChild )
-                , ( bp::arg("name") )
+                , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
-                    return a pointer to the child window with the specified name.\n\
+                    return the attached child window that the given name path references.\n\
             \n\
-                    This function will throw an exception if no child object with the given\n\
-                    name is attached.  This decision was made (over returning NULL if no\n\
-                    window was found) so that client code can assume that if the call\n\
-                    returns it has a valid window pointer.  We provide the isChild()\n\
-                    functions for checking if a given window is attached.\n\
+                    A name path is a string that describes a path down the window\n\
+                    hierarchy using window names and the forward slash '' as a separator.\n\
+                    \n\
+                    For example, if this window has a child attached to it named Panel\n\
+                    which has its own children attached named Okay and Cancel,\n\
+                    you can access the window Okay from this window by using the\n\
+                    name path PanelOkay.  To access Panel, you would simply pass the\n\
+                    name Panel.\n\
             \n\
-                @param name\n\
-                    String object holding the name of the child window for which a pointer\n\
-                    is to be returned.\n\
+                @param name_path\n\
+                    String object holding the name path of the child window to return.\n\
             \n\
                 @return\n\
-                    Pointer to the Window object attached to this window that has the name\n\
-                     name.\n\
+                    the Window object referenced by  name_path.\n\
             \n\
                 @exception UnknownObjectException\n\
-                    thrown if no window named  name is attached to this Window.\n\
+                    thrown if  name_path does not reference a Window attached to this\n\
+                    Window.\n\
                 *\n" );
         
         }
@@ -907,40 +871,6 @@ void register_Window_class(){
                 @return\n\
                     size_t value equal to the number of Window objects directly attached\n\
                     to this Window as children.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getChildRecursive
-        
-            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildRecursive_function_type )( ::CEGUI::String const & ) const;
-            
-            Window_exposer.def( 
-                "getChildRecursive"
-                , getChildRecursive_function_type( &::CEGUI::Window::getChildRecursive )
-                , ( bp::arg("name") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    return a pointer to the first attached child window with the specified\n\
-                    name. Children are traversed recursively.\n\
-            \n\
-                    Contrary to the non recursive version of this function, this one will\n\
-                    not throw an exception, but return 0 in case no child was found.\n\
-            \n\
-                \note\n\
-                    WARNING! This function can be very expensive and should only be used\n\
-                    when you have no other option available. If you decide to use it anyway,\n\
-                    make sure the window hierarchy from the entry point is small.\n\
-            \n\
-                @param name\n\
-                    String object holding the name of the child window for which a pointer\n\
-                    is to be returned.\n\
-            \n\
-                @return\n\
-                    Pointer to the Window object attached to this window that has the name\n\
-                     name.\n\
-            \n\
-                    If no child is found with the name  name, 0 is returned.\n\
                 *\n" );
         
         }
@@ -1065,7 +995,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getEventIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::Window::*getEventIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::Window::*getEventIterator_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getEventIterator"
@@ -1375,6 +1305,22 @@ void register_Window_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Window::getNamePath
+        
+            typedef ::CEGUI::String ( ::CEGUI::Window::*getNamePath_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getNamePath"
+                , getNamePath_function_type( &::CEGUI::Window::getNamePath )
+                , "*\n\
+                \n\
+                    return a String object that describes the name path for this Window.\n\
+            \n\
+                    A name path is a string that describes a path down the window\n\
+                    hierarchy using window names and the forward slash '' as a separator.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::getOuterRectClipper
         
             typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
@@ -1513,7 +1459,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getPropertyIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::Window::*getPropertyIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::Window::*getPropertyIterator_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getPropertyIterator"
@@ -2447,18 +2393,27 @@ void register_Window_class(){
             Window_exposer.def( 
                 "isChild"
                 , isChild_function_type( &::CEGUI::Window::isChild )
-                , ( bp::arg("name") )
+                , ( bp::arg("name_path") )
                 , "*!\n\
                 \n\
-                    returns whether a Window with the specified name is currently attached\n\
-                    to this Window as a child.\n\
+                    returns whether the specified name path references a Window that is\n\
+                    currently attached to this Window.\n\
             \n\
-                @param name\n\
-                    String object containing the name of the Window to look for.\n\
+                    A name path is a string that describes a path down the window\n\
+                    hierarchy using window names and the forward slash '' as a separator.\n\
+                    \n\
+                    For example, if this window has a child attached to it named Panel\n\
+                    which has its own children attached named Okay and Cancel,\n\
+                    you can check for the window Okay from this window by using the\n\
+                    name path PanelOkay.  To check for Panel, you would simply pass\n\
+                    the name Panel.\n\
+            \n\
+                @param name_path\n\
+                    String object holding the name path of the child window to test.\n\
             \n\
                 @return\n\
-                    - true if a Window named  name is currently attached to this Window.\n\
-                    - false if no such child Window is attached.\n\
+                     - true if the window referenced by  name_path is attached.\n\
+                     - false if the window referenced by  name_path is not attached.\n\
                 *\n" );
         
         }
@@ -3154,11 +3109,13 @@ void register_Window_class(){
                 , ( bp::arg("name") )
                 , "*!\n\
                 \n\
-                    Remove the named Window from this windows child list.\n\
+                    Remove the Window referenced by the given name path from this Windows\n\
+                    child list.\n\
             \n\
-                @param name\n\
-                    String object holding the name of the Window to be removed.  If the\n\
-                    Window specified is not attached to this Window, nothing happens.\n\
+                @param name_path\n\
+                    String the name path that references the the Window to be removed.\n\
+                    If the Window specified is not attached to this Window, nothing\n\
+                    happens.\n\
             \n\
                 @return\n\
                     Nothing.\n\

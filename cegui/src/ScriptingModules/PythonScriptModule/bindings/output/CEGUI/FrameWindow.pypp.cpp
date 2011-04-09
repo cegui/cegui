@@ -873,8 +873,8 @@ void register_FrameWindow_class(){
                *\n" );
         
         }
-        FrameWindow_exposer.add_static_property( "CloseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::FrameWindow::CloseButtonNameSuffix
+        FrameWindow_exposer.add_static_property( "CloseButtonName"
+                        , bp::make_getter( &CEGUI::FrameWindow::CloseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         FrameWindow_exposer.def_readonly( "DefaultSizingBorderSize", CEGUI::FrameWindow::DefaultSizingBorderSize, "other bits\n" );
         FrameWindow_exposer.add_static_property( "EventCloseClicked"
@@ -889,8 +889,8 @@ void register_FrameWindow_class(){
         FrameWindow_exposer.add_static_property( "EventRollupToggled"
                         , bp::make_getter( &CEGUI::FrameWindow::EventRollupToggled
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        FrameWindow_exposer.add_static_property( "TitlebarNameSuffix"
-                        , bp::make_getter( &CEGUI::FrameWindow::TitlebarNameSuffix
+        FrameWindow_exposer.add_static_property( "TitlebarName"
+                        , bp::make_getter( &CEGUI::FrameWindow::TitlebarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

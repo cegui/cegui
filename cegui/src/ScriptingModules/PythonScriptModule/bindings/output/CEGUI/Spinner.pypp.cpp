@@ -448,11 +448,11 @@ void register_Spinner_class(){
                     *\n" );
         
         }
-        Spinner_exposer.add_static_property( "DecreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::DecreaseButtonNameSuffix
+        Spinner_exposer.add_static_property( "DecreaseButtonName"
+                        , bp::make_getter( &CEGUI::Spinner::DecreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Spinner_exposer.add_static_property( "EditboxNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::EditboxNameSuffix
+        Spinner_exposer.add_static_property( "EditboxName"
+                        , bp::make_getter( &CEGUI::Spinner::EditboxName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Spinner_exposer.add_static_property( "EventMaximumValueChanged"
                         , bp::make_getter( &CEGUI::Spinner::EventMaximumValueChanged
@@ -469,8 +469,8 @@ void register_Spinner_class(){
         Spinner_exposer.add_static_property( "EventValueChanged"
                         , bp::make_getter( &CEGUI::Spinner::EventValueChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Spinner_exposer.add_static_property( "IncreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::IncreaseButtonNameSuffix
+        Spinner_exposer.add_static_property( "IncreaseButtonName"
+                        , bp::make_getter( &CEGUI::Spinner::IncreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

@@ -979,11 +979,11 @@ void register_Listbox_class(){
         Listbox_exposer.add_static_property( "EventVertScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::Listbox::EventVertScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Listbox_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::Listbox::HorzScrollbarNameSuffix
+        Listbox_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::Listbox::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Listbox_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::Listbox::VertScrollbarNameSuffix
+        Listbox_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::Listbox::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

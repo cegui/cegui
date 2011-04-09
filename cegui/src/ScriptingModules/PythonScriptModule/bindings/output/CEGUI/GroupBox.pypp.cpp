@@ -295,8 +295,8 @@ void register_GroupBox_class(){
                 , ( bp::arg("class_name") ) );
         
         }
-        GroupBox_exposer.add_static_property( "ContentPaneNameSuffix"
-                        , bp::make_getter( &CEGUI::GroupBox::ContentPaneNameSuffix
+        GroupBox_exposer.add_static_property( "ContentPaneName"
+                        , bp::make_getter( &CEGUI::GroupBox::ContentPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

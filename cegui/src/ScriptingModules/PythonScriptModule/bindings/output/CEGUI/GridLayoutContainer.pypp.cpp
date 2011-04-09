@@ -305,33 +305,6 @@ void register_GridLayoutContainer_class(){
                 *\n" );
         
         }
-        { //::CEGUI::GridLayoutContainer::addChildToPosition
-        
-            typedef void ( ::CEGUI::GridLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::String const &,::size_t,::size_t ) ;
-            
-            GridLayoutContainer_exposer.def( 
-                "addChildToPosition"
-                , addChildToPosition_function_type( &::CEGUI::GridLayoutContainer::addChildToPosition )
-                , ( bp::arg("name"), bp::arg("gridX"), bp::arg("gridY") )
-                , "*!\n\
-                \n\
-                    Add the named Window to specified grid position as a child of\n\
-                    this Grid Layout Container.  If the Window  window is already\n\
-                    attached to a Window, it is detached before being added to this Window.\n\
-            \n\
-                \n\
-                    If something is already in given grid cell, it gets removed!\n\
-            \n\
-                \n\
-                    This disabled auto positioning from further usage! You need to call\n\
-                    setAutoPositioning(..) to set it back to your desired value and use\n\
-                    setAutoPositioningIdx(..) to set it's starting point back\n\
-            \n\
-                @see\n\
-                    Window.addChild\n\
-                *\n" );
-        
-        }
         { //::CEGUI::GridLayoutContainer::autoPositioningSkipCells
         
             typedef void ( ::CEGUI::GridLayoutContainer::*autoPositioningSkipCells_function_type )( ::size_t ) ;
@@ -585,8 +558,8 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
-        GridLayoutContainer_exposer.add_static_property( "DummyNameSuffix"
-                        , bp::make_getter( &CEGUI::GridLayoutContainer::DummyNameSuffix
+        GridLayoutContainer_exposer.add_static_property( "DummyName"
+                        , bp::make_getter( &CEGUI::GridLayoutContainer::DummyName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         GridLayoutContainer_exposer.add_static_property( "EventChildOrderChanged"
                         , bp::make_getter( &CEGUI::GridLayoutContainer::EventChildOrderChanged

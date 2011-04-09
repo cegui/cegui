@@ -60,18 +60,6 @@ void register_NamedXMLResourceManagerScheme_class(){
         NamedXMLResourceManagerScheme_exposer_t NamedXMLResourceManagerScheme_exposer = NamedXMLResourceManagerScheme_exposer_t( "NamedXMLResourceManagerScheme", bp::init< CEGUI::String const & >(( bp::arg("resource_type") )) );
         bp::scope NamedXMLResourceManagerScheme_scope( NamedXMLResourceManagerScheme_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > >();
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::create
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef ::CEGUI::Scheme & ( exported_class_t::*create_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::XMLResourceExistsAction ) ;
-            
-            NamedXMLResourceManagerScheme_exposer.def( 
-                "create"
-                , create_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::create )
-                , ( bp::arg("xml_filename"), bp::arg("resource_group")="", bp::arg("action")=CEGUI::XREA_RETURN )
-                , bp::return_value_policy< bp::reference_existing_object >() );
-        
-        }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createAll
         
             typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
@@ -81,6 +69,42 @@ void register_NamedXMLResourceManagerScheme_class(){
                 "createAll"
                 , createAll_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createAll )
                 , ( bp::arg("pattern"), bp::arg("resource_group") ) );
+        
+        }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromContainer
+        
+            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
+            typedef ::CEGUI::Scheme & ( exported_class_t::*createFromContainer_function_type )( ::CEGUI::RawDataContainer const &,::CEGUI::XMLResourceExistsAction ) ;
+            
+            NamedXMLResourceManagerScheme_exposer.def( 
+                "createFromContainer"
+                , createFromContainer_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromContainer )
+                , ( bp::arg("source"), bp::arg("action")=CEGUI::XREA_RETURN )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromFile
+        
+            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
+            typedef ::CEGUI::Scheme & ( exported_class_t::*createFromFile_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::XMLResourceExistsAction ) ;
+            
+            NamedXMLResourceManagerScheme_exposer.def( 
+                "createFromFile"
+                , createFromFile_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromFile )
+                , ( bp::arg("xml_filename"), bp::arg("resource_group")="", bp::arg("action")=CEGUI::XREA_RETURN )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromString
+        
+            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
+            typedef ::CEGUI::Scheme & ( exported_class_t::*createFromString_function_type )( ::CEGUI::String const &,::CEGUI::XMLResourceExistsAction ) ;
+            
+            NamedXMLResourceManagerScheme_exposer.def( 
+                "createFromString"
+                , createFromString_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::createFromString )
+                , ( bp::arg("source"), bp::arg("action")=CEGUI::XREA_RETURN )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroy
