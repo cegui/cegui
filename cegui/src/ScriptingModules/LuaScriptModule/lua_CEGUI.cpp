@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Mar 20 09:20:31 2011.
+** Generated automatically by tolua++-1.0.92 on Sat Apr  9 08:40:44 2011.
 */
 
 #ifndef __cplusplus
@@ -8219,9 +8219,9 @@ static int tolua_CEGUI_CEGUI_FontManager_getSingleton00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: create of class  CEGUI::FontManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_create00
-static int tolua_CEGUI_CEGUI_FontManager_create00(lua_State* tolua_S)
+/* method: createFromFile of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFromFile00
+static int tolua_CEGUI_CEGUI_FontManager_createFromFile00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -8229,7 +8229,8 @@ static int tolua_CEGUI_CEGUI_FontManager_create00(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,3,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
+ !tolua_isnumber(tolua_S,4,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -8237,20 +8238,21 @@ static int tolua_CEGUI_CEGUI_FontManager_create00(lua_State* tolua_S)
  {
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
   utf8string xml_filename = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  utf8string resourcegroup = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
+  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,4,CEGUI::XREA_RETURN));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFromFile'",NULL);
 #endif
  char errorBuffer[512];
  bool errorDoIt = false;
  try
  {
-  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->create(xml_filename,resourcegroup);
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFromFile(xml_filename,resource_group,action);
  tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
  }
 catch(CEGUI::AlreadyExistsException&e)
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'create'\nMessage: %s",e.getMessage().c_str());
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFromFile'\nMessage: %s",e.getMessage().c_str());
  errorDoIt = true;
 }
  if (errorDoIt) {
@@ -8260,7 +8262,54 @@ catch(CEGUI::AlreadyExistsException&e)
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'createFromFile'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createFromString of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFromString00
+static int tolua_CEGUI_CEGUI_FontManager_createFromString00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string source = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,3,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFromString'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFromString(source,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFromString'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createFromString'.",&tolua_err);
  return 0;
 #endif
 }
@@ -20275,22 +20324,20 @@ static int tolua_CEGUI_CEGUI_Window_clone00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
- !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
+ !tolua_isboolean(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-  utf8string newName = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  bool deepCopy = ((bool)  tolua_toboolean(tolua_S,3,true));
+  bool deepCopy = ((bool)  tolua_toboolean(tolua_S,2,true));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'clone'",NULL);
 #endif
  {
-  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->clone(newName,deepCopy);
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->clone(deepCopy);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
  }
@@ -23399,9 +23446,9 @@ catch(CEGUI::AlreadyExistsException CEGUIDeadException(&e))
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: loadWindowLayout of class  CEGUI::WindowManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_loadWindowLayout00
-static int tolua_CEGUI_CEGUI_WindowManager_loadWindowLayout00(lua_State* tolua_S)
+/* method: loadLayoutFromFile of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromFile00
+static int tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromFile00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23417,30 +23464,30 @@ static int tolua_CEGUI_CEGUI_WindowManager_loadWindowLayout00(lua_State* tolua_S
  {
   CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
   utf8string filename = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  utf8string resourcegroup = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
+  utf8string resourceGroup = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadWindowLayout'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadLayoutFromFile'",NULL);
 #endif
  char errorBuffer[512];
  bool errorDoIt = false;
  try
  {
-  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->loadWindowLayout(filename,resourcegroup);
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->loadLayoutFromFile(filename,resourceGroup);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
 catch(CEGUI::Exception&e)
 {
- snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'loadWindowLayout'\nMessage: %s",e.getMessage().c_str());
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'loadLayoutFromFile'\nMessage: %s",e.getMessage().c_str());
  errorDoIt = true;
 }
  catch(std::exception&e)
 {
- snprintf(errorBuffer,512,"Exception of type 'std::exception' was thrown by function 'loadWindowLayout'\nMessage: %s",e.what());
+ snprintf(errorBuffer,512,"Exception of type 'std::exception' was thrown by function 'loadLayoutFromFile'\nMessage: %s",e.what());
  errorDoIt = true;
 }
  catch(...)
 {
- snprintf(errorBuffer,512,"Unknown exception thrown by function 'loadWindowLayout'");
+ snprintf(errorBuffer,512,"Unknown exception thrown by function 'loadLayoutFromFile'");
  errorDoIt = true;
 }
  if (errorDoIt) {
@@ -23450,15 +23497,70 @@ catch(CEGUI::Exception&e)
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'loadWindowLayout'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'loadLayoutFromFile'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: writeWindowLayoutToStream of class  CEGUI::WindowManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_writeWindowLayoutToStream00
-static int tolua_CEGUI_CEGUI_WindowManager_writeWindowLayoutToStream00(lua_State* tolua_S)
+/* method: loadLayoutFromString of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromString00
+static int tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromString00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string source = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'loadLayoutFromString'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->loadLayoutFromString(source);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'loadLayoutFromString'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ catch(std::exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'std::exception' was thrown by function 'loadLayoutFromString'\nMessage: %s",e.what());
+ errorDoIt = true;
+}
+ catch(...)
+{
+ snprintf(errorBuffer,512,"Unknown exception thrown by function 'loadLayoutFromString'");
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'loadLayoutFromString'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: writeLayoutToStream of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_writeLayoutToStream00
+static int tolua_CEGUI_CEGUI_WindowManager_writeLayoutToStream00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23478,24 +23580,24 @@ static int tolua_CEGUI_CEGUI_WindowManager_writeWindowLayoutToStream00(lua_State
   CEGUI::OutStream* out = ((CEGUI::OutStream*)  tolua_tousertype(tolua_S,3,0));
   bool writeParent = ((bool)  tolua_toboolean(tolua_S,4,false));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'writeWindowLayoutToStream'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'writeLayoutToStream'",NULL);
 #endif
  {
-  self->writeWindowLayoutToStream(*window,*out,writeParent);
+  self->writeLayoutToStream(*window,*out,writeParent);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'writeWindowLayoutToStream'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'writeLayoutToStream'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: saveWindowLayout of class  CEGUI::WindowManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_saveWindowLayout00
-static int tolua_CEGUI_CEGUI_WindowManager_saveWindowLayout00(lua_State* tolua_S)
+/* method: saveLayoutToFile of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_saveLayoutToFile00
+static int tolua_CEGUI_CEGUI_WindowManager_saveLayoutToFile00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -23515,16 +23617,16 @@ static int tolua_CEGUI_CEGUI_WindowManager_saveWindowLayout00(lua_State* tolua_S
   utf8string filename = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
   bool writeParent = ((bool)  tolua_toboolean(tolua_S,4,false));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'saveWindowLayout'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'saveLayoutToFile'",NULL);
 #endif
  {
-  self->saveWindowLayout(*window,filename,writeParent);
+  self->saveLayoutToFile(*window,filename,writeParent);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'saveWindowLayout'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'saveLayoutToFile'.",&tolua_err);
  return 0;
 #endif
 }
@@ -24779,9 +24881,9 @@ static int tolua_CEGUI_CEGUI_SchemeManager_getSingleton00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: create of class  CEGUI::SchemeManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_create00
-static int tolua_CEGUI_CEGUI_SchemeManager_create00(lua_State* tolua_S)
+/* method: createFromFile of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_createFromFile00
+static int tolua_CEGUI_CEGUI_SchemeManager_createFromFile00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -24789,6 +24891,55 @@ static int tolua_CEGUI_CEGUI_SchemeManager_create00(lua_State* tolua_S)
  !tolua_isusertype(tolua_S,1,"CEGUI::SchemeManager",0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnumber(tolua_S,4,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::SchemeManager* self = (CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string xml_filename = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,4,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFromFile'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Scheme& tolua_ret = (CEGUI::Scheme&)  self->createFromFile(xml_filename,resource_group,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Scheme");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFromFile'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createFromFile'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createFromString of class  CEGUI::SchemeManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_SchemeManager_createFromString00
+static int tolua_CEGUI_CEGUI_SchemeManager_createFromString00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::SchemeManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,1,&tolua_err) ||
  !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
@@ -24796,20 +24947,31 @@ static int tolua_CEGUI_CEGUI_SchemeManager_create00(lua_State* tolua_S)
 #endif
  {
   CEGUI::SchemeManager* self = (CEGUI::SchemeManager*)  tolua_tousertype(tolua_S,1,0);
-  utf8string filename = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  utf8string resourcegroup = ((utf8string)  tolua_toutf8string(tolua_S,3,""));
+  utf8string source = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,3,CEGUI::XREA_RETURN));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFromString'",NULL);
 #endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
  {
-  CEGUI::Scheme& tolua_ret = (CEGUI::Scheme&)  self->create(filename,resourcegroup);
+  CEGUI::Scheme& tolua_ret = (CEGUI::Scheme&)  self->createFromString(source,action);
  tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Scheme");
  }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFromString'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'createFromString'.",&tolua_err);
  return 0;
 #endif
 }
@@ -58109,7 +58271,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"FontManager","CEGUI::FontManager","",NULL);
   tolua_beginmodule(tolua_S,"FontManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_FontManager_getSingleton00);
-   tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_FontManager_create00);
+   tolua_function(tolua_S,"createFromFile",tolua_CEGUI_CEGUI_FontManager_createFromFile00);
+   tolua_function(tolua_S,"createFromString",tolua_CEGUI_CEGUI_FontManager_createFromString00);
    tolua_function(tolua_S,"createFreeTypeFont",tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00);
    tolua_function(tolua_S,"createPixmapFont",tolua_CEGUI_CEGUI_FontManager_createPixmapFont00);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_FontManager_destroy00);
@@ -59037,9 +59200,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"WindowManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_WindowManager_getSingleton00);
    tolua_function(tolua_S,"createWindow",tolua_CEGUI_CEGUI_WindowManager_createWindow00);
-   tolua_function(tolua_S,"loadWindowLayout",tolua_CEGUI_CEGUI_WindowManager_loadWindowLayout00);
-   tolua_function(tolua_S,"writeWindowLayoutToStream",tolua_CEGUI_CEGUI_WindowManager_writeWindowLayoutToStream00);
-   tolua_function(tolua_S,"saveWindowLayout",tolua_CEGUI_CEGUI_WindowManager_saveWindowLayout00);
+   tolua_function(tolua_S,"loadLayoutFromFile",tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromFile00);
+   tolua_function(tolua_S,"loadLayoutFromString",tolua_CEGUI_CEGUI_WindowManager_loadLayoutFromString00);
+   tolua_function(tolua_S,"writeLayoutToStream",tolua_CEGUI_CEGUI_WindowManager_writeLayoutToStream00);
+   tolua_function(tolua_S,"saveLayoutToFile",tolua_CEGUI_CEGUI_WindowManager_saveLayoutToFile00);
    tolua_function(tolua_S,"destroyWindow",tolua_CEGUI_CEGUI_WindowManager_destroyWindow00);
    tolua_function(tolua_S,"destroyAllWindows",tolua_CEGUI_CEGUI_WindowManager_destroyAllWindows00);
    tolua_function(tolua_S,"isAlive",tolua_CEGUI_CEGUI_WindowManager_isAlive00);
@@ -59097,7 +59261,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"SchemeManager","CEGUI::SchemeManager","",NULL);
   tolua_beginmodule(tolua_S,"SchemeManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_SchemeManager_getSingleton00);
-   tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_SchemeManager_create00);
+   tolua_function(tolua_S,"createFromFile",tolua_CEGUI_CEGUI_SchemeManager_createFromFile00);
+   tolua_function(tolua_S,"createFromString",tolua_CEGUI_CEGUI_SchemeManager_createFromString00);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_SchemeManager_destroy00);
    tolua_function(tolua_S,"isDefined",tolua_CEGUI_CEGUI_SchemeManager_isDefined00);
    tolua_function(tolua_S,"get",tolua_CEGUI_CEGUI_SchemeManager_get00);
