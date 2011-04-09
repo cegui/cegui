@@ -1961,14 +1961,14 @@ void register_MultiColumnList_class(){
         MultiColumnList_exposer.add_static_property( "EventVertScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::MultiColumnList::EventVertScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiColumnList_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiColumnList::HorzScrollbarNameSuffix
+        MultiColumnList_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiColumnList::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiColumnList_exposer.add_static_property( "ListHeaderNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiColumnList::ListHeaderNameSuffix
+        MultiColumnList_exposer.add_static_property( "ListHeaderName"
+                        , bp::make_getter( &CEGUI::MultiColumnList::ListHeaderName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiColumnList_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiColumnList::VertScrollbarNameSuffix
+        MultiColumnList_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiColumnList::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

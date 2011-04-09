@@ -1183,14 +1183,14 @@ void register_Combobox_class(){
                *\n" );
         
         }
-        Combobox_exposer.add_static_property( "ButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::ButtonNameSuffix
+        Combobox_exposer.add_static_property( "ButtonName"
+                        , bp::make_getter( &CEGUI::Combobox::ButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "DropListNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::DropListNameSuffix
+        Combobox_exposer.add_static_property( "DropListName"
+                        , bp::make_getter( &CEGUI::Combobox::DropListName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "EditboxNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::EditboxNameSuffix
+        Combobox_exposer.add_static_property( "EditboxName"
+                        , bp::make_getter( &CEGUI::Combobox::EditboxName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Combobox_exposer.add_static_property( "EventCaretMoved"
                         , bp::make_getter( &CEGUI::Combobox::EventCaretMoved

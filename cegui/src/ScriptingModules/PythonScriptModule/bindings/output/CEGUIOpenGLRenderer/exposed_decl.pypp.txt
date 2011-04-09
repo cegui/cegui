@@ -3170,7 +3170,6 @@
 ~@class_declaration_t@ScriptModule@::CEGUI::ScriptModule
 ~@class_declaration_t@ListboxTextItem@::CEGUI::ListboxTextItem
 ~@class_declaration_t@Menubar@::CEGUI::Menubar
-~@class_declaration_t@ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > >@::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > >
 ~@class_declaration_t@basic_ostringstream< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > >@::std::basic_ostringstream< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > >
 ~@class_declaration_t@Thumb@::CEGUI::Thumb
 ~@class_declaration_t@value_compare@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >::value_compare
@@ -3184,6 +3183,7 @@
 ~@class_declaration_t@Tree@::CEGUI::Tree
 ~@class_declaration_t@UpdateEventArgs@::CEGUI::UpdateEventArgs
 ~@class_declaration_t@WRFactoryRegisterer@::CEGUI::WRFactoryRegisterer
+~@class_declaration_t@ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > >@::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > >
 ~@class_declaration_t@_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >@::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >
 ~@class_declaration_t@TextUtils@::CEGUI::TextUtils
 ~@class_declaration_t@__numeric_traits_floating< long int >@::__gnu_cxx::__numeric_traits_floating< long int >
@@ -4413,7 +4413,7 @@
 ~@member_function_t@_M_ibegin@::__gnu_cxx::__normal_iterator< char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > > ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) const::__gnu_cxx::__normal_iterator<char*,std::basic_string<char, std::char_traits<char>, std::allocator<char> > > ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) const
 ~@member_function_t@_M_ibegin@::__gnu_cxx::__normal_iterator< wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) const::__gnu_cxx::__normal_iterator<wchar_t*,std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) const
 ~@member_function_t@getActiveTexture@::CEGUI::Texture * ( ::CEGUI::GeometryBuffer::* )(  ) const::CEGUI::Texture * ( ::CEGUI::GeometryBuffer::* )(  ) const
-~@member_function_t@getIterator@::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const
+~@member_function_t@getIterator@::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const::CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const
 ~@member_function_t@_M_set_sharable@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) 
 ~@member_function_t@_M_set_sharable@void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) 
 +@member_function_t@logTextureCreation@void (*)( ::CEGUI::String const & )void (*)( ::CEGUI::String const & )

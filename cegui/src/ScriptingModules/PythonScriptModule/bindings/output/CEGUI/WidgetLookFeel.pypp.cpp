@@ -353,15 +353,15 @@ void register_WidgetLookFeel_class(){
             WidgetLookFeel_exposer.def( 
                 "findWidgetComponent"
                 , findWidgetComponent_function_type( &::CEGUI::WidgetLookFeel::findWidgetComponent )
-                , ( bp::arg("nameSuffix") )
+                , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
-                    Takes the namesuffix for a widget component and returns a pointer to\n\
+                    Takes the name for a widget component and returns a pointer to\n\
                     it if it exists or 0 if it does'nt.\n\
             \n\
-                @param nameSuffix\n\
-                    The name suffix of the Child component to look for.\n\
+                @param name\n\
+                    The name of the Child component to look for.\n\
                 *\n" );
         
         }
@@ -568,29 +568,6 @@ void register_WidgetLookFeel_class(){
             \n\
                 @return\n\
                     Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::WidgetLookFeel::renameChildren
-        
-            typedef void ( ::CEGUI::WidgetLookFeel::*renameChildren_function_type )( ::CEGUI::Window const &,::CEGUI::String const & ) const;
-            
-            WidgetLookFeel_exposer.def( 
-                "renameChildren"
-                , renameChildren_function_type( &::CEGUI::WidgetLookFeel::renameChildren )
-                , ( bp::arg("widget"), bp::arg("newBaseName") )
-                , "*!\n\
-                \n\
-                    Uses the WindowManager to rename the child windows that are\n\
-                    created for this WidgetLookFeel.\n\
-            \n\
-                @param widget\n\
-                    The target Window containing the child windows that are to be\n\
-                    renamed.\n\
-            \n\
-                @param newBaseName\n\
-                    String object holding the new base name that will be used when\n\
-                    constructing new names for the child windows.\n\
                 *\n" );
         
         }

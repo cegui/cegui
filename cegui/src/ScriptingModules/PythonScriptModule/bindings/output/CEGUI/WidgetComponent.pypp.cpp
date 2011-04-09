@@ -120,13 +120,13 @@ void register_WidgetComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::WidgetComponent::getWidgetNameSuffix
+        { //::CEGUI::WidgetComponent::getWidgetName
         
-            typedef ::CEGUI::String const & ( ::CEGUI::WidgetComponent::*getWidgetNameSuffix_function_type )(  ) const;
+            typedef ::CEGUI::String const & ( ::CEGUI::WidgetComponent::*getWidgetName_function_type )(  ) const;
             
             WidgetComponent_exposer.def( 
-                "getWidgetNameSuffix"
-                , getWidgetNameSuffix_function_type( &::CEGUI::WidgetComponent::getWidgetNameSuffix )
+                "getWidgetName"
+                , getWidgetName_function_type( &::CEGUI::WidgetComponent::getWidgetName )
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
@@ -200,14 +200,14 @@ void register_WidgetComponent_class(){
                 , ( bp::arg("look") ) );
         
         }
-        { //::CEGUI::WidgetComponent::setWidgetNameSuffix
+        { //::CEGUI::WidgetComponent::setWidgetName
         
-            typedef void ( ::CEGUI::WidgetComponent::*setWidgetNameSuffix_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::WidgetComponent::*setWidgetName_function_type )( ::CEGUI::String const & ) ;
             
             WidgetComponent_exposer.def( 
-                "setWidgetNameSuffix"
-                , setWidgetNameSuffix_function_type( &::CEGUI::WidgetComponent::setWidgetNameSuffix )
-                , ( bp::arg("suffix") ) );
+                "setWidgetName"
+                , setWidgetName_function_type( &::CEGUI::WidgetComponent::setWidgetName )
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::WidgetComponent::setWindowRendererType

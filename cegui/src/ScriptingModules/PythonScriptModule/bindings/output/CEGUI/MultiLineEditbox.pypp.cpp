@@ -696,11 +696,11 @@ void register_MultiLineEditbox_class(){
         MultiLineEditbox_exposer.add_static_property( "EventWordWrapModeChanged"
                         , bp::make_getter( &CEGUI::MultiLineEditbox::EventWordWrapModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiLineEditbox_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::HorzScrollbarNameSuffix
+        MultiLineEditbox_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiLineEditbox_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::VertScrollbarNameSuffix
+        MultiLineEditbox_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

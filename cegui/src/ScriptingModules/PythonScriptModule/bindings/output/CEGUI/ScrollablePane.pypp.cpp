@@ -751,14 +751,14 @@ void register_ScrollablePane_class(){
         ScrollablePane_exposer.add_static_property( "EventVertScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::ScrollablePane::EventVertScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::HorzScrollbarNameSuffix
+        ScrollablePane_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "ScrolledContainerNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::ScrolledContainerNameSuffix
+        ScrollablePane_exposer.add_static_property( "ScrolledContainerName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::ScrolledContainerName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::VertScrollbarNameSuffix
+        ScrollablePane_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

@@ -397,8 +397,8 @@ void register_Slider_class(){
         Slider_exposer.add_static_property( "EventValueChanged"
                         , bp::make_getter( &CEGUI::Slider::EventValueChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Slider_exposer.add_static_property( "ThumbNameSuffix"
-                        , bp::make_getter( &CEGUI::Slider::ThumbNameSuffix
+        Slider_exposer.add_static_property( "ThumbName"
+                        , bp::make_getter( &CEGUI::Slider::ThumbName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

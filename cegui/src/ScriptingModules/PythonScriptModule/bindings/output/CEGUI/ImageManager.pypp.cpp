@@ -143,6 +143,16 @@ void register_ImageManager_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
+        { //::CEGUI::ImageManager::getDefaultResourceGroup
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImageManager::*getDefaultResourceGroup_function_type )(  ) const;
+            
+            ImageManager_exposer.def( 
+                "getDefaultResourceGroup"
+                , getDefaultResourceGroup_function_type(&::CEGUI::ImageManager::getDefaultResourceGroup)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::ImageManager::getImageCount
         
             typedef ::CEGUI::uint ( ::CEGUI::ImageManager::*getImageCount_function_type )(  ) const;
@@ -168,6 +178,16 @@ void register_ImageManager_class(){
                     String describing the default resource group identifier that will be\n\
                     used when loading Imageset data.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::ImageManager::getSchemaName
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImageManager::*getSchemaName_function_type )(  ) const;
+            
+            ImageManager_exposer.def( 
+                "getSchemaName"
+                , getSchemaName_function_type(&::CEGUI::ImageManager::getSchemaName)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::ImageManager::isDefined
