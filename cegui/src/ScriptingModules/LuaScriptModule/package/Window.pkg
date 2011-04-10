@@ -282,7 +282,7 @@ class Window //: public EventSet
     void setMouseInputPropagationEnabled(bool enabled);
     bool isMouseInputPropagationEnabled() const;
 
-    Window* clone(utf8string newName, bool deepCopy = true) const;
+    Window* clone(bool deepCopy = true) const;
 
     unsigned int getZIndex() const;
     bool isInFront(const Window& wnd) const;

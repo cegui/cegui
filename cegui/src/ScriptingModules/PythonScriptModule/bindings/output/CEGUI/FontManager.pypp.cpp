@@ -83,7 +83,7 @@ void register_FontManager_class(){
         }
         { //::CEGUI::FontManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > ( ::CEGUI::FontManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > ( ::CEGUI::FontManager::*getIterator_function_type )(  ) const;
             
             FontManager_exposer.def( 
                 "getIterator"

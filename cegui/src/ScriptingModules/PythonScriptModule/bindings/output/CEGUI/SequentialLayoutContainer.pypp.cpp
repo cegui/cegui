@@ -298,20 +298,6 @@ void register_SequentialLayoutContainer_class(){
             *\n" );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::addChildToPosition
-        
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*addChildToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
-            
-            SequentialLayoutContainer_exposer.def( 
-                "addChildToPosition"
-                , addChildToPosition_function_type( &::CEGUI::SequentialLayoutContainer::addChildToPosition )
-                , ( bp::arg("window"), bp::arg("position") )
-                , "*!\n\
-            \n\
-                Adds a window to given position\n\
-            *\n" );
-        
-        }
         { //::CEGUI::SequentialLayoutContainer::getChildAtPosition
         
             typedef ::CEGUI::Window * ( ::CEGUI::SequentialLayoutContainer::*getChildAtPosition_function_type )( ::size_t ) const;

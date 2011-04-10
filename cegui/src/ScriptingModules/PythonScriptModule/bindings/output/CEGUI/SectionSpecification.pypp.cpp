@@ -248,9 +248,9 @@ void register_SectionSpecification_class(){
                           the property value.\n\
                         - '__parent__': The parent of the widget being drawn will be the\n\
                           source of the property value.\n\
-                        - any other value: The value will be taken as a name suffix and\n\
-                          a window with the name of the widget being drawn with the\n\
-                          specified suffix will be the source of the property value.\n\
+                        - any other value: The value will be taken as a name and\n\
+                          a child window with the specified name will be the source of the\n\
+                          property value.\n\
                     *\n" );
         
         }

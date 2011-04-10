@@ -427,8 +427,8 @@ void register_ScrolledItemListBase_class(){
             *\n" );
         
         }
-        ScrolledItemListBase_exposer.add_static_property( "ContentPaneNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrolledItemListBase::ContentPaneNameSuffix
+        ScrolledItemListBase_exposer.add_static_property( "ContentPaneName"
+                        , bp::make_getter( &CEGUI::ScrolledItemListBase::ContentPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         ScrolledItemListBase_exposer.add_static_property( "EventHorzScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::ScrolledItemListBase::EventHorzScrollbarModeChanged
@@ -436,11 +436,11 @@ void register_ScrolledItemListBase_class(){
         ScrolledItemListBase_exposer.add_static_property( "EventVertScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::ScrolledItemListBase::EventVertScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrolledItemListBase_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrolledItemListBase::HorzScrollbarNameSuffix
+        ScrolledItemListBase_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrolledItemListBase::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrolledItemListBase_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrolledItemListBase::VertScrollbarNameSuffix
+        ScrolledItemListBase_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrolledItemListBase::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         

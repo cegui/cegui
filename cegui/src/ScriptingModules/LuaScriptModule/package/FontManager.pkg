@@ -5,7 +5,10 @@ class FontManager
 {
 	static FontManager& getSingleton();
 
-    tolua_throws|CEGUI::AlreadyExistsException,error| Font& create(utf8string xml_filename, utf8string resourcegroup="");
+    //tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromContainer(const RawDataContainer& source, XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromFile(utf8string xml_filename, utf8string resource_group = "", XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromString(utf8string source, XMLResourceExistsAction action = XREA_RETURN);
+
     tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::GenericException,error| Font& createFreeTypeFont(utf8string font_name, float point_size, bool anti_aliased,
                                                                 string font_filename, utf8string resource_group = "", bool auto_scaled = false,
                                                                 float native_horz_res = 640.0f, float native_vert_res = 480.0f,
