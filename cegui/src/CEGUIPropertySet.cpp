@@ -65,6 +65,21 @@ void PropertySet::removeProperty(const String& name)
 }
 
 /*************************************************************************
+    Retrieves a property instance from the set
+*************************************************************************/
+Property* PropertySet::getPropertyInstance(const String& name) const
+{
+    PropertyRegistry::const_iterator pos = d_properties.find(name);
+
+    if (pos == d_properties.end())
+    {
+        CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+    }
+
+    return pos->second;
+}
+
+/*************************************************************************
 	Remove all properties from the set
 *************************************************************************/
 void PropertySet::clearProperties(void)
