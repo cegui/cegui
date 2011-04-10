@@ -25,9 +25,33 @@ struct XMLParser_wrapper : CEGUI::XMLParser, bp::wrapper< CEGUI::XMLParser > {
         return func_initialiseImpl(  );
     }
 
-    virtual void parseXMLFile( ::CEGUI::XMLHandler & handler, ::CEGUI::String const & filename, ::CEGUI::String const & schemaName, ::CEGUI::String const & resourceGroup ){
-        bp::override func_parseXMLFile = this->get_override( "parseXMLFile" );
-        func_parseXMLFile( boost::ref(handler), boost::ref(filename), boost::ref(schemaName), boost::ref(resourceGroup) );
+    virtual void parseXML( ::CEGUI::XMLHandler & handler, ::CEGUI::RawDataContainer const & source, ::CEGUI::String const & schemaName ){
+        bp::override func_parseXML = this->get_override( "parseXML" );
+        func_parseXML( boost::ref(handler), boost::ref(source), boost::ref(schemaName) );
+    }
+
+    virtual void parseXMLFile( ::CEGUI::XMLHandler & handler, ::CEGUI::String const & filename, ::CEGUI::String const & schemaName, ::CEGUI::String const & resourceGroup ) {
+        if( bp::override func_parseXMLFile = this->get_override( "parseXMLFile" ) )
+            func_parseXMLFile( boost::ref(handler), boost::ref(filename), boost::ref(schemaName), boost::ref(resourceGroup) );
+        else{
+            this->CEGUI::XMLParser::parseXMLFile( boost::ref(handler), boost::ref(filename), boost::ref(schemaName), boost::ref(resourceGroup) );
+        }
+    }
+    
+    void default_parseXMLFile( ::CEGUI::XMLHandler & handler, ::CEGUI::String const & filename, ::CEGUI::String const & schemaName, ::CEGUI::String const & resourceGroup ) {
+        CEGUI::XMLParser::parseXMLFile( boost::ref(handler), boost::ref(filename), boost::ref(schemaName), boost::ref(resourceGroup) );
+    }
+
+    virtual void parseXMLString( ::CEGUI::XMLHandler & handler, ::CEGUI::String const & source, ::CEGUI::String const & schemaName ) {
+        if( bp::override func_parseXMLString = this->get_override( "parseXMLString" ) )
+            func_parseXMLString( boost::ref(handler), boost::ref(source), boost::ref(schemaName) );
+        else{
+            this->CEGUI::XMLParser::parseXMLString( boost::ref(handler), boost::ref(source), boost::ref(schemaName) );
+        }
+    }
+    
+    void default_parseXMLString( ::CEGUI::XMLHandler & handler, ::CEGUI::String const & source, ::CEGUI::String const & schemaName ) {
+        CEGUI::XMLParser::parseXMLString( boost::ref(handler), boost::ref(source), boost::ref(schemaName) );
     }
 
 };
@@ -133,35 +157,55 @@ void register_XMLParser_class(){
                      *\n" );
         
         }
-        { //::CEGUI::XMLParser::parseXMLFile
+        { //::CEGUI::XMLParser::parseXML
         
-            typedef void ( ::CEGUI::XMLParser::*parseXMLFile_function_type )( ::CEGUI::XMLHandler &,::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::XMLParser::*parseXML_function_type )( ::CEGUI::XMLHandler &,::CEGUI::RawDataContainer const &,::CEGUI::String const & ) ;
             
             XMLParser_exposer.def( 
-                "parseXMLFile"
-                , bp::pure_virtual( parseXMLFile_function_type(&::CEGUI::XMLParser::parseXMLFile) )
-                , ( bp::arg("handler"), bp::arg("filename"), bp::arg("schemaName"), bp::arg("resourceGroup") )
+                "parseXML"
+                , bp::pure_virtual( parseXML_function_type(&::CEGUI::XMLParser::parseXML) )
+                , ( bp::arg("handler"), bp::arg("source"), bp::arg("schemaName") )
                 , "*!\n\
                     \n\
-                        abstract method which initiates parsing of an XML file.\n\
+                        abstract method which initiates parsing of an XML.\n\
             \n\
                     @param handler\n\
                         XMLHandler based object which will process the XML elements.\n\
             \n\
-                    @param filename\n\
-                        String object holding the filename of the XML file to be parsed.\n\
+                    @param source\n\
+                        RawDataContainer containing the data to parse\n\
             \n\
                     @param schemaName\n\
                         String object holding the name of the XML schema file to use for validating the XML.\n\
                         Note that whether this is used or not is dependant upon the XMLParser in use.\n\
             \n\
-                    @param resourceGroup\n\
-                        String object holding the resource group identifier which will be passed to the\n\
-                        ResourceProvider when loading the XML and schema files.\n\
-            \n\
                     @return\n\
                         Nothing.\n\
                      *\n" );
+        
+        }
+        { //::CEGUI::XMLParser::parseXMLFile
+        
+            typedef void ( ::CEGUI::XMLParser::*parseXMLFile_function_type )( ::CEGUI::XMLHandler &,::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( XMLParser_wrapper::*default_parseXMLFile_function_type )( ::CEGUI::XMLHandler &,::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            XMLParser_exposer.def( 
+                "parseXMLFile"
+                , parseXMLFile_function_type(&::CEGUI::XMLParser::parseXMLFile)
+                , default_parseXMLFile_function_type(&XMLParser_wrapper::default_parseXMLFile)
+                , ( bp::arg("handler"), bp::arg("filename"), bp::arg("schemaName"), bp::arg("resourceGroup") ) );
+        
+        }
+        { //::CEGUI::XMLParser::parseXMLString
+        
+            typedef void ( ::CEGUI::XMLParser::*parseXMLString_function_type )( ::CEGUI::XMLHandler &,::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( XMLParser_wrapper::*default_parseXMLString_function_type )( ::CEGUI::XMLHandler &,::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            XMLParser_exposer.def( 
+                "parseXMLString"
+                , parseXMLString_function_type(&::CEGUI::XMLParser::parseXMLString)
+                , default_parseXMLString_function_type(&XMLParser_wrapper::default_parseXMLString)
+                , ( bp::arg("handler"), bp::arg("source"), bp::arg("schemaName") ) );
         
         }
     }
