@@ -105,6 +105,19 @@ public:
 
 
 	/*!
+    \brief
+        Retrieves a property instance (that was previously added)
+
+    \param name
+        String containing the name of the Property to be retrieved. If Property \a name is not in the set, exception is thrown.
+
+    \return
+        Pointer to the property instance
+    */
+	Property* getPropertyInstance(const String& name) const;
+
+
+	/*!
 	\brief
 		Removes all Property objects from the PropertySet.
 
