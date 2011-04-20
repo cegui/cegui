@@ -82,7 +82,7 @@ public:
         FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
         // load an image to use as a background
-        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow (SKIN "/StaticImage");
