@@ -136,7 +136,7 @@ bool TreeDemoSample::initialiseSample()
    System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
-   ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+   ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
    // Load some icon images for our test tree
    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
