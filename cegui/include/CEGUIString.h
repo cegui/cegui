@@ -31,9 +31,9 @@
 #define _CEGUIString_h_
 
 #include "CEGUIBase.h"
-#include <string>
 #include <string.h>
 #include <stdexcept>
+#include <cstddef>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -62,7 +62,7 @@ public:
 	*************************************************************************/
 	typedef		utf32			value_type;					//!< Basic 'code point' type used for String (utf32)
 	typedef		size_t			size_type;					//!< Unsigned type used for size values and indices
-	typedef		ptrdiff_t		difference_type;			//!< Signed type used for differences
+	typedef		std::ptrdiff_t	difference_type;			//!< Signed type used for differences
 	typedef		utf32&			reference;					//!< Type used for utf32 code point references
 	typedef		const utf32&	const_reference;			//!< Type used for constant utf32 code point references
 	typedef		utf32*			pointer;					//!< Type used for utf32 code point pointers
