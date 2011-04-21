@@ -49,7 +49,7 @@ template<> AnimationManager* Singleton<AnimationManager>::ms_Singleton  = 0;
 const String AnimationManager::s_xmlSchemaName("Animation.xsd");
 // String that holds the default resource group for loading animations
 String AnimationManager::s_defaultResourceGroup;
-
+const String AnimationManager::GeneratedAnimationNameBase("__ceanim_uid_");
 /*************************************************************************
     Constructor
 *************************************************************************/
@@ -171,15 +171,17 @@ Interpolator* AnimationManager::getInterpolator(const String& type) const
 //----------------------------------------------------------------------------//
 Animation* AnimationManager::createAnimation(const String& name)
 {
-    if (d_animations.find(name) != d_animations.end())
+    if (isAnimationPresent(name))
     {
         CEGUI_THROW(UnknownObjectException(
             "AnimationManager::createAnimation: Animation with given name "
             "already exists."));
     }
 
-    Animation* ret = new Animation(name);
-    d_animations.insert(std::make_pair(name, ret));
+	String finalName(name.empty() ? generateUniqueAnimationName() : name);
+
+    Animation* ret = new Animation(finalName);
+    d_animations.insert(std::make_pair(finalName, ret));
 
     return ret;
 }
@@ -358,6 +360,31 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
+
+bool AnimationManager::isAnimationPresent(const String& name) const
+{
+	return (d_animations.find(name) != d_animations.end());
+}
+
+//---------------------------------------------------------------------------//
+
+String AnimationManager::generateUniqueAnimationName()
+{
+	// build name
+	std::ostringstream uidname;
+	uidname << GeneratedAnimationNameBase.c_str() << d_uid_counter;
+
+	// update counter for next time
+	unsigned long old_uid = d_uid_counter;
+	++d_uid_counter;
+
+	// log if we ever wrap-around (which should be pretty unlikely)
+	if (d_uid_counter < old_uid)
+		Logger::getSingleton().logEvent("UID counter for generated Animation names has wrapped around - the fun shall now commence!");
+
+	// return generated name as a CEGUI::String.
+	return String(uidname.str());
+}
 
 } // End of  CEGUI namespace section
 
