@@ -103,7 +103,7 @@ public:
     \see
         Animation
     */
-    Animation* createAnimation(const String& name);
+    Animation* createAnimation(const String& name = "");
 
     /*!
     \brief
@@ -227,8 +227,21 @@ public:
     {
         return s_defaultResourceGroup;
     }
+/*!
+	\brief
+		Examines the list of Animations to see if one exists with the given name
+
+	\param name
+		String holding the name of the Animation to look for.
+
+	\return
+		true if an Animation was found with a name matching \a name.  false if no matching Animation was found.
+	*/
+	bool isAnimationPresent(const String& name) const;
 
 private:
+	String generateUniqueAnimationName();
+	
     typedef std::map<String, Interpolator*> InterpolatorMap;
     //! stores available interpolators
     InterpolatorMap d_interpolators;
@@ -247,6 +260,8 @@ private:
     static const String s_xmlSchemaName;
     //! Default resource group used when loading animation xml files.
     static String s_defaultResourceGroup;
+	static const String GeneratedAnimationNameBase;      //!< Base name to use for generated window names.
+	unsigned long   d_uid_counter;  //!< Counter used to generate unique animation names.
 };
 
 } // End of  CEGUI namespace section
