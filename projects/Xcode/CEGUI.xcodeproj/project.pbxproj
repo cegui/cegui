@@ -8750,9 +8750,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
@@ -8776,9 +8774,7 @@
 				CEGUI_RAPIDXML_PATH = "../../../../../SDKs/rapidxml-1.13";
 				CEGUI_VERSION = 0.7.6;
 				COPY_PHASE_STRIP = YES;
-				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../../cegui/include;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Release;
 		};
@@ -9718,7 +9714,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUI;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Debug;
 		};
@@ -9752,7 +9747,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUI;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -10545,7 +10539,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUIOpenGLRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Debug;
 		};
@@ -10582,7 +10575,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUIOpenGLRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -10621,7 +10613,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUINullRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Debug;
 		};
@@ -10658,7 +10649,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUINullRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -10698,7 +10688,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUIOgreRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Debug;
 		};
@@ -10736,7 +10725,6 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = PyCEGUIOgreRenderer;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				ZERO_LINK = NO;
 			};
 			name = Release;
