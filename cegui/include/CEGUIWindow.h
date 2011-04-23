@@ -3286,6 +3286,37 @@ public:
 
     /*!
     \brief
+        Sets current aspect mode and recalculates the area rect
+
+    \param
+        mode the new aspect mode to set
+    */
+    void setAspectMode(AspectMode mode);
+
+    /*!
+    \brief
+        Retrieves currently used aspect mode
+    */
+    AspectMode getAspectMode() const;
+
+    /*!
+    \brief
+        Sets target aspect ratio
+
+    This is ignored if AspectMode is AM_IGNORE.
+    */
+    void setAspectRatio(float ratio);
+
+    /*!
+    \brief
+        Retrieves target aspect ratio
+
+    \see Window::setAspectRatio
+    */
+    float getAspectRatio() const;
+
+    /*!
+    \brief
         Set whether mouse input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
@@ -4392,7 +4423,7 @@ protected:
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
-    //! secons between further repeats after delay has expired.
+    //! seconds between further repeats after delay has expired.
     float d_repeatRate;
     //! button we're tracking for auto-repeat purposes.
     MouseButton d_repeatButton;
@@ -4452,9 +4483,14 @@ protected:
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
+
+    //! How to satisfy current aspect ratio
+    AspectMode d_aspectMode;
+    //! The target aspect ratio
+    float d_aspectRatio;
+
     //! specifies whether mouse inputs should be propagated to parent(s)
     bool d_propagateMouseInputs;
-
 
 private:
     /*************************************************************************
