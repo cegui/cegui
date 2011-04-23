@@ -39,6 +39,7 @@ nobase_dist_pkgdata_DATA = animations/example.xml \
              layouts/TreeDemoTaharez.layout \
              layouts/VanillaConsole.layout \
              layouts/VanillaWindows.layout \
+			 looknfeel/InventoryComponents.looknfeel \
 			 looknfeel/OgreTray.looknfeel \
              looknfeel/TaharezLook.looknfeel \
              looknfeel/Vanilla.looknfeel \
