@@ -12,6 +12,7 @@ SUBDIRS = . \
           FalagardDemo1 \
           FirstWindow \
           FontDemo \
+		  InventoryDemo \
           Minesweeper \
           ScrollablePaneDemo \
           TabControlDemo \
