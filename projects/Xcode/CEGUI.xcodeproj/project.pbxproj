@@ -78,6 +78,7 @@
 				DAAABB730F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB750F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB770F6E592A0003BE03 /* PBXTargetDependency */,
+				DA05438D1362F60400940490 /* PBXTargetDependency */,
 				DAAABB7B0F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB7D0F6E592A0003BE03 /* PBXTargetDependency */,
 				DAAABB7F0F6E592A0003BE03 /* PBXTargetDependency */,
@@ -105,6 +106,12 @@
 /* Begin PBXBuildFile section */
 		DA00829910026ECA00134255 /* CEGUIJustifiedRenderedString.h in Headers */ = {isa = PBXBuildFile; fileRef = DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */; };
 		DA00829B10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */; };
+		DA0543841362F56A00940490 /* BoolArray2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0543781362F56A00940490 /* BoolArray2D.cpp */; };
+		DA0543851362F56A00940490 /* InventoryBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA05437A1362F56A00940490 /* InventoryBase.cpp */; };
+		DA0543861362F56A00940490 /* InventoryItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA05437C1362F56A00940490 /* InventoryItem.cpp */; };
+		DA0543871362F56A00940490 /* InventoryItemRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA05437E1362F56A00940490 /* InventoryItemRenderer.cpp */; };
+		DA0543881362F56A00940490 /* InventoryReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0543801362F56A00940490 /* InventoryReceiver.cpp */; };
+		DA0543891362F56A00940490 /* Sample_InventoryDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0543821362F56A00940490 /* Sample_InventoryDemo.cpp */; };
 		DA1097A90F6D841500B8A582 /* CEGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095420F6D5F9B00B8A582 /* CEGUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1097AA0F6D841500B8A582 /* CEGUIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA1095050F6D5F4000B8A582 /* CEGUIBase.cpp */; };
 		DA1097AB0F6D841500B8A582 /* CEGUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = DA1095430F6D5F9B00B8A582 /* CEGUIBase.h */; };
@@ -589,6 +596,8 @@
 		DA5449320F739ED200983E1A /* CEGUIWRFactoryRegisterer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */; };
 		DA5449330F739ED300983E1A /* CEGUIWRFactoryRegisterer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA54492B0F739DF800983E1A /* CEGUIWRFactoryRegisterer.h */; };
 		DA5449AC0F73A0D800983E1A /* CEGUIAll.h in Headers */ = {isa = PBXBuildFile; fileRef = DA5449AB0F73A0D800983E1A /* CEGUIAll.h */; };
+		DA57E1C21362FB240056FD85 /* CEGUIBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1097A30F6D838D00B8A582 /* CEGUIBase.framework */; };
+		DA57E1C31362FB300056FD85 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA109FDB0F6DB65000B8A582 /* CEGUISampleHelper.framework */; };
 		DA57F8780F7B90E800C7E72D /* CEGUIOgreImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = DA57F8770F7B90E800C7E72D /* CEGUIOgreImageCodec.h */; };
 		DA57F87A0F7B910000C7E72D /* CEGUIOgreImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA57F8790F7B910000C7E72D /* CEGUIOgreImageCodec.cpp */; };
 		DA61D5880FCE9E3500EC1A0C /* CEGUIRenderedStringParser.h in Headers */ = {isa = PBXBuildFile; fileRef = DA61D5870FCE9E3500EC1A0C /* CEGUIRenderedStringParser.h */; };
@@ -983,6 +992,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DA05438C1362F60400940490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA73EADE1362F0C500D06595;
+			remoteInfo = InventoryDemo;
+		};
 		DA1099900F6D8D4A00B8A582 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
@@ -1094,6 +1110,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = DA1097A20F6D838D00B8A582;
 			remoteInfo = CEGUIBase;
+		};
+		DA57E1BA1362F90F0056FD85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAAABB580F6E58F00003BE03;
+			remoteInfo = "CEGUI Frameworks";
+		};
+		DA57E1BC1362F90F0056FD85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAAABB220F6E58450003BE03;
+			remoteInfo = "Loadable Modules";
+		};
+		DA57E1BE1362F90F0056FD85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA10933D0F6D51AE00B8A582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA109FDA0F6DB65000B8A582;
+			remoteInfo = CEGUISampleHelper;
 		};
 		DAAAB8050F6E4AC40003BE03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1752,6 +1789,18 @@
 /* Begin PBXFileReference section */
 		DA00829810026ECA00134255 /* CEGUIJustifiedRenderedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIJustifiedRenderedString.h; path = ../../cegui/include/CEGUIJustifiedRenderedString.h; sourceTree = SOURCE_ROOT; };
 		DA00829A10026EDF00134255 /* CEGUIJustifiedRenderedString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIJustifiedRenderedString.cpp; path = ../../cegui/src/CEGUIJustifiedRenderedString.cpp; sourceTree = SOURCE_ROOT; };
+		DA0543781362F56A00940490 /* BoolArray2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BoolArray2D.cpp; path = ../../Samples/InventoryDemo/BoolArray2D.cpp; sourceTree = SOURCE_ROOT; };
+		DA0543791362F56A00940490 /* BoolArray2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoolArray2D.h; path = ../../Samples/InventoryDemo/BoolArray2D.h; sourceTree = SOURCE_ROOT; };
+		DA05437A1362F56A00940490 /* InventoryBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InventoryBase.cpp; path = ../../Samples/InventoryDemo/InventoryBase.cpp; sourceTree = SOURCE_ROOT; };
+		DA05437B1362F56A00940490 /* InventoryBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InventoryBase.h; path = ../../Samples/InventoryDemo/InventoryBase.h; sourceTree = SOURCE_ROOT; };
+		DA05437C1362F56A00940490 /* InventoryItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InventoryItem.cpp; path = ../../Samples/InventoryDemo/InventoryItem.cpp; sourceTree = SOURCE_ROOT; };
+		DA05437D1362F56A00940490 /* InventoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InventoryItem.h; path = ../../Samples/InventoryDemo/InventoryItem.h; sourceTree = SOURCE_ROOT; };
+		DA05437E1362F56A00940490 /* InventoryItemRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InventoryItemRenderer.cpp; path = ../../Samples/InventoryDemo/InventoryItemRenderer.cpp; sourceTree = SOURCE_ROOT; };
+		DA05437F1362F56A00940490 /* InventoryItemRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InventoryItemRenderer.h; path = ../../Samples/InventoryDemo/InventoryItemRenderer.h; sourceTree = SOURCE_ROOT; };
+		DA0543801362F56A00940490 /* InventoryReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InventoryReceiver.cpp; path = ../../Samples/InventoryDemo/InventoryReceiver.cpp; sourceTree = SOURCE_ROOT; };
+		DA0543811362F56A00940490 /* InventoryReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InventoryReceiver.h; path = ../../Samples/InventoryDemo/InventoryReceiver.h; sourceTree = SOURCE_ROOT; };
+		DA0543821362F56A00940490 /* Sample_InventoryDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_InventoryDemo.cpp; path = ../../Samples/InventoryDemo/Sample_InventoryDemo.cpp; sourceTree = SOURCE_ROOT; };
+		DA0543831362F56A00940490 /* Sample_InventoryDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sample_InventoryDemo.h; path = ../../Samples/InventoryDemo/Sample_InventoryDemo.h; sourceTree = SOURCE_ROOT; };
 		DA1093890F6D568600B8A582 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = ../../doc/COPYING; sourceTree = SOURCE_ROOT; };
 		DA10938A0F6D568600B8A582 /* GLEW-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "GLEW-LICENSE"; path = "../../doc/GLEW-LICENSE"; sourceTree = SOURCE_ROOT; };
 		DA10938B0F6D568600B8A582 /* PCRE-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "PCRE-LICENSE"; path = "../../doc/PCRE-LICENSE"; sourceTree = SOURCE_ROOT; };
@@ -2897,6 +2946,7 @@
 		DA54492C0F739E1900983E1A /* CEGUIWindowRendererModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWindowRendererModule.cpp; path = ../../cegui/src/CEGUIWindowRendererModule.cpp; sourceTree = SOURCE_ROOT; };
 		DA54492D0F739E1900983E1A /* CEGUIWRFactoryRegisterer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIWRFactoryRegisterer.cpp; path = ../../cegui/src/CEGUIWRFactoryRegisterer.cpp; sourceTree = SOURCE_ROOT; };
 		DA5449AB0F73A0D800983E1A /* CEGUIAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIAll.h; sourceTree = "<group>"; };
+		DA57E1C11362F9A30056FD85 /* InventoryComponents.looknfeel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = InventoryComponents.looknfeel; path = ../../datafiles/looknfeel/InventoryComponents.looknfeel; sourceTree = SOURCE_ROOT; };
 		DA57F8770F7B90E800C7E72D /* CEGUIOgreImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOgreImageCodec.h; path = ../../cegui/include/RendererModules/Ogre/CEGUIOgreImageCodec.h; sourceTree = SOURCE_ROOT; };
 		DA57F8790F7B910000C7E72D /* CEGUIOgreImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOgreImageCodec.cpp; path = ../../cegui/src/RendererModules/Ogre/CEGUIOgreImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		DA61D5870FCE9E3500EC1A0C /* CEGUIRenderedStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderedStringParser.h; path = ../../cegui/include/CEGUIRenderedStringParser.h; sourceTree = SOURCE_ROOT; };
@@ -3116,6 +3166,11 @@
 		DA6F8F151292997800B718C8 /* XMLSerializer.pypp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XMLSerializer.pypp.cpp; path = ../../cegui/src/ScriptingModules/PythonScriptModule/bindings/output/CEGUI/XMLSerializer.pypp.cpp; sourceTree = SOURCE_ROOT; };
 		DA6F8FF712929ABC00B718C8 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		DA6F901312929F2600B718C8 /* PyCEGUI.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PyCEGUI.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA73EADF1362F0C500D06595 /* InventoryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InventoryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA73EAE51362F0C600D06595 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DA73EAE61362F0C600D06595 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DA73EAE71362F0C600D06595 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DA73EAEA1362F0C600D06595 /* InventoryDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InventoryDemo-Info.plist"; sourceTree = "<group>"; };
 		DA831173120D6F8F006D045E /* CEGUIGridLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainer.h; sourceTree = "<group>"; };
 		DA831174120D6F8F006D045E /* CEGUIGridLayoutContainerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGridLayoutContainerProperties.h; sourceTree = "<group>"; };
 		DA831175120D6F8F006D045E /* CEGUIHorizontalLayoutContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIHorizontalLayoutContainer.h; sourceTree = "<group>"; };
@@ -3409,6 +3464,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA73EADC1362F0C500D06595 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA57E1C21362FB240056FD85 /* CEGUIBase.framework in Frameworks */,
+				DA57E1C31362FB300056FD85 /* CEGUISampleHelper.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAAAB7FB0F6E4A970003BE03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3599,6 +3663,7 @@
 				DA1093530F6D520100B8A582 /* Samples */,
 				DA1093540F6D520800B8A582 /* Datafiles */,
 				DA1093580F6D522F00B8A582 /* Documentation */,
+				DA73EAE11362F0C600D06595 /* Frameworks */,
 				DA1097A40F6D838D00B8A582 /* Products */,
 				DA109FC50F6DB51800B8A582 /* External Frameworks and Libs */,
 			);
@@ -3615,6 +3680,7 @@
 				DA1093760F6D54F900B8A582 /* FalagardDemo1 */,
 				DA1093770F6D550200B8A582 /* FirstWindow */,
 				DA1093780F6D550800B8A582 /* FontDemo */,
+				DA73EAE81362F0C600D06595 /* InventoryDemo */,
 				DA10937B0F6D552B00B8A582 /* Minesweeper */,
 				DA10937C0F6D556E00B8A582 /* ScrollablePaneDemo */,
 				DA10937D0F6D557600B8A582 /* TabControlDemo */,
@@ -4122,6 +4188,7 @@
 		DA1093830F6D55F200B8A582 /* looknfeel */ = {
 			isa = PBXGroup;
 			children = (
+				DA57E1C11362F9A30056FD85 /* InventoryComponents.looknfeel */,
 				DAC332E41192BA83009031FB /* OgreTray.looknfeel */,
 				DA10941B0F6D5CAB00B8A582 /* TaharezLook.looknfeel */,
 				DA10941C0F6D5CAB00B8A582 /* Vanilla.looknfeel */,
@@ -5318,6 +5385,7 @@
 				DAAAB8450F6E4C540003BE03 /* DragDropDemo.app */,
 				DAAAB8660F6E4CC80003BE03 /* FalagardDemo1.app */,
 				DAAAB8830F6E4D400003BE03 /* FontDemo.app */,
+				DA73EADF1362F0C500D06595 /* InventoryDemo.app */,
 				DAAAB8A20F6E4DAF0003BE03 /* Minesweeper.app */,
 				DAAAB8C90F6E4E0D0003BE03 /* ScrollablePaneDemo.app */,
 				DAAAB8EA0F6E4EA70003BE03 /* TabControlDemo.app */,
@@ -5951,6 +6019,44 @@
 				DA3C62EC12140DD3002A2BF0 /* example.xml */,
 			);
 			name = animations;
+			sourceTree = "<group>";
+		};
+		DA73EAE11362F0C600D06595 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA73EAE41362F0C600D06595 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA73EAE41362F0C600D06595 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA73EAE51362F0C600D06595 /* AppKit.framework */,
+				DA73EAE61362F0C600D06595 /* CoreData.framework */,
+				DA73EAE71362F0C600D06595 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DA73EAE81362F0C600D06595 /* InventoryDemo */ = {
+			isa = PBXGroup;
+			children = (
+				DA73EAEA1362F0C600D06595 /* InventoryDemo-Info.plist */,
+				DA0543781362F56A00940490 /* BoolArray2D.cpp */,
+				DA0543791362F56A00940490 /* BoolArray2D.h */,
+				DA05437A1362F56A00940490 /* InventoryBase.cpp */,
+				DA05437B1362F56A00940490 /* InventoryBase.h */,
+				DA05437C1362F56A00940490 /* InventoryItem.cpp */,
+				DA05437D1362F56A00940490 /* InventoryItem.h */,
+				DA05437E1362F56A00940490 /* InventoryItemRenderer.cpp */,
+				DA05437F1362F56A00940490 /* InventoryItemRenderer.h */,
+				DA0543801362F56A00940490 /* InventoryReceiver.cpp */,
+				DA0543811362F56A00940490 /* InventoryReceiver.h */,
+				DA0543821362F56A00940490 /* Sample_InventoryDemo.cpp */,
+				DA0543831362F56A00940490 /* Sample_InventoryDemo.h */,
+			);
+			name = InventoryDemo;
 			sourceTree = "<group>";
 		};
 		DAE8ABA1112071A90091DDF3 /* NullRenderer */ = {
@@ -6655,6 +6761,26 @@
 			productReference = DA6F901312929F2600B718C8 /* PyCEGUI.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		DA73EADE1362F0C500D06595 /* InventoryDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA73EAFC1362F0C600D06595 /* Build configuration list for PBXNativeTarget "InventoryDemo" */;
+			buildPhases = (
+				DA73EADB1362F0C500D06595 /* Sources */,
+				DA73EADC1362F0C500D06595 /* Frameworks */,
+				DA57E1C01362F9280056FD85 /* Create Required Symlinks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA57E1BF1362F90F0056FD85 /* PBXTargetDependency */,
+				DA57E1BB1362F90F0056FD85 /* PBXTargetDependency */,
+				DA57E1BD1362F90F0056FD85 /* PBXTargetDependency */,
+			);
+			name = InventoryDemo;
+			productName = InventoryDemo;
+			productReference = DA73EADF1362F0C500D06595 /* InventoryDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		DAAAB7FC0F6E4A970003BE03 /* Demo7 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAAAB8020F6E4A980003BE03 /* Build configuration list for PBXNativeTarget "Demo7" */;
@@ -7058,6 +7184,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = DA10933B0F6D51AE00B8A582;
 			productRefGroup = DA1097A40F6D838D00B8A582 /* Products */;
@@ -7101,6 +7228,7 @@
 				DAAAB8650F6E4CC80003BE03 /* FalagardDemo1 */,
 				DA10A0170F6DB83200B8A582 /* FirstWindow */,
 				DAAAB8820F6E4D400003BE03 /* FontDemo */,
+				DA73EADE1362F0C500D06595 /* InventoryDemo */,
 				DAAAB8A10F6E4DAF0003BE03 /* Minesweeper */,
 				DAAAB8C80F6E4E0D0003BE03 /* ScrollablePaneDemo */,
 				DAAAB8E90F6E4EA70003BE03 /* TabControlDemo */,
@@ -7278,6 +7406,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\n  ln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\n  ln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\n    mkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\n  ln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
+		};
+		DA57E1C01362F9280056FD85 /* Create Required Symlinks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Create Required Symlinks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This links in frameworks, plugins and resource files (instead of copying).\n# The result is a much smaller overall footprint, at the cost of some flexibility.\n\n# Link in the frameworks\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ]; then\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nfi\nfor FWK in `find \"${TARGET_BUILD_DIR}\" -name \"*.framework\" -depth 1`; do\nln -sf \"$FWK\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the plug-ins\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\" ]; then\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}\"\nfi\nfor BDL in `find \"${TARGET_BUILD_DIR}\" -name \"*.bundle\" -depth 1`; do\nln -sf \"$BDL\" \"${BUILT_PRODUCTS_DIR}/${PLUGINS_FOLDER_PATH}/\" > /dev/null 2>&1\ndone\n\n# Link in the data files\nif [ ! -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" ]; then\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nfi\nln -sf \"${SRCROOT}/../../datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link Ogre framework if we can find it\nif [ -d \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" ]; then\nln -sf \"${SRCROOT}/${CEGUI_OGRE_FWK_PATH}/Ogre.framework\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/\" > /dev/null 2>&1\nfi\n\n# Finally, link the app into the bin directory\nmkdir -p \"${SRCROOT}/../../bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DAAAB8110F6E4B6F0003BE03 /* Create Required Symlinks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8048,6 +8190,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA73EADB1362F0C500D06595 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA0543841362F56A00940490 /* BoolArray2D.cpp in Sources */,
+				DA0543851362F56A00940490 /* InventoryBase.cpp in Sources */,
+				DA0543861362F56A00940490 /* InventoryItem.cpp in Sources */,
+				DA0543871362F56A00940490 /* InventoryItemRenderer.cpp in Sources */,
+				DA0543881362F56A00940490 /* InventoryReceiver.cpp in Sources */,
+				DA0543891362F56A00940490 /* Sample_InventoryDemo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAAAB7FA0F6E4A970003BE03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8245,6 +8400,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DA05438D1362F60400940490 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA73EADE1362F0C500D06595 /* InventoryDemo */;
+			targetProxy = DA05438C1362F60400940490 /* PBXContainerItemProxy */;
+		};
 		DA1099910F6D8D4A00B8A582 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
@@ -8324,6 +8484,21 @@
 			isa = PBXTargetDependency;
 			target = DA1097A20F6D838D00B8A582 /* CEGUIBase */;
 			targetProxy = DA32027C1292B33D00B2B97D /* PBXContainerItemProxy */;
+		};
+		DA57E1BB1362F90F0056FD85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAAABB580F6E58F00003BE03 /* CEGUI Frameworks */;
+			targetProxy = DA57E1BA1362F90F0056FD85 /* PBXContainerItemProxy */;
+		};
+		DA57E1BD1362F90F0056FD85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAAABB220F6E58450003BE03 /* Loadable Modules */;
+			targetProxy = DA57E1BC1362F90F0056FD85 /* PBXContainerItemProxy */;
+		};
+		DA57E1BF1362F90F0056FD85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA109FDA0F6DB65000B8A582 /* CEGUISampleHelper */;
+			targetProxy = DA57E1BE1362F90F0056FD85 /* PBXContainerItemProxy */;
 		};
 		DAAAB8060F6E4AC40003BE03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -9751,6 +9926,50 @@
 			};
 			name = Release;
 		};
+		DA73EAFA1362F0C600D06595 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "InventoryDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = InventoryDemo;
+			};
+			name = Debug;
+		};
+		DA73EAFB1362F0C600D06595 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "InventoryDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = InventoryDemo;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		DAAAB8000F6E4A980003BE03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -11117,6 +11336,15 @@
 			buildConfigurations = (
 				DA6F901912929F2700B718C8 /* Debug */,
 				DA6F901A12929F2700B718C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA73EAFC1362F0C600D06595 /* Build configuration list for PBXNativeTarget "InventoryDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA73EAFA1362F0C600D06595 /* Debug */,
+				DA73EAFB1362F0C600D06595 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
