@@ -58,6 +58,7 @@ local pkg_table =
         "DragDropDemo",
         "FalagardDemo1",
         "FontDemo",
+        "InventoryDemo",
         "Minesweeper",
         "ScrollablePaneDemo",
         "TabControlDemo",
