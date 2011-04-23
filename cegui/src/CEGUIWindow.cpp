@@ -284,6 +284,10 @@ Window::Window(const String& type, const String& name) :
     // Initial update mode
     d_updateMode(WUM_VISIBLE),
 
+    // Ignore the aspect ratio by default
+    d_aspectMode(AM_IGNORE),
+    d_aspectRatio(1.0f / 1.0f),
+
     // Don't propagate mouse inputs by default.
     d_propagateMouseInputs(false)
 {
@@ -1598,6 +1602,17 @@ void Window::addStandardProperties(void)
     addProperty(&d_textParsingEnabledProperty);
     addProperty(&d_marginProperty);
     addProperty(&d_updateModeProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, AspectMode,
+        "AspectMode", "Property to get/set the 'aspect mode' setting for the Window. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
+        &Window::setAspectMode, &Window::getAspectMode, AM_IGNORE
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, float,
+        "AspectRatio", "Property to get/set the aspect ratio. Only applies when aspect mode is not \"Ignore\".",
+        &Window::setAspectRatio, &Window::getAspectRatio, 1.0 / 1.0
+    );
+
     addProperty(&d_mouseInputPropagationProperty);
 
     // we ban some of these properties from xml for auto windows by default
@@ -1982,14 +1997,54 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
     d_pixelSize = Sizef(pixelSizeVector.d_x, pixelSizeVector.d_y);
 
     // limit new pixel size to: minSize <= newSize <= maxSize
-    if (d_pixelSize.d_width < absMin.d_x)
-        d_pixelSize.d_width = absMin.d_x;
-    else if (d_pixelSize.d_width > absMax.d_x)
-        d_pixelSize.d_width = absMax.d_x;
-    if (d_pixelSize.d_height < absMin.d_y)
-        d_pixelSize.d_height = absMin.d_y;
-    else if (d_pixelSize.d_height > absMax.d_y)
-        d_pixelSize.d_height = absMax.d_y;
+    d_pixelSize.clamp(Sizef(absMin.d_x, absMin.d_y), Sizef(absMax.d_x, absMax.d_y));
+
+	if (d_aspectMode != AM_IGNORE)
+	{
+		// make sure we respect current aspect mode and ratio
+		d_pixelSize.scaleToAspect(d_aspectMode, d_aspectRatio);
+
+		// make sure we haven't blown any of the hard limits
+		// still maintain the aspect when we do this
+		if (d_aspectMode == AM_SHRINK)
+		{
+			float ratio = 1.0f;
+			// check that we haven't blown the min size
+			if (d_pixelSize.d_width < absMin.d_x)
+			{
+				ratio = absMin.d_x / d_pixelSize.d_width;
+			}
+			if (d_pixelSize.d_height < absMin.d_y)
+			{
+				const float newRatio = absMin.d_y / d_pixelSize.d_height;
+				if (newRatio > ratio)
+					ratio = newRatio;
+			}
+
+			d_pixelSize.d_width *= ratio;
+			d_pixelSize.d_height *= ratio;
+		}
+		else if (d_aspectMode == AM_EXPAND)
+		{
+			float ratio = 1.0f;
+			// check that we haven't blown the min size
+			if (d_pixelSize.d_width > absMax.d_x)
+			{
+				ratio = absMax.d_x / d_pixelSize.d_width;
+			}
+			if (d_pixelSize.d_height > absMax.d_y)
+			{
+				const float newRatio = absMax.d_y / d_pixelSize.d_height;
+				if (newRatio > ratio)
+					ratio = newRatio;
+			}
+
+			d_pixelSize.d_width *= ratio;
+			d_pixelSize.d_height *= ratio;
+		}
+		// NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
+		//       the result won't be limited by both limits!
+	}
 
     // TODO: size vs vector
     d_area.setSize(USize(size.d_x, size.d_y));
@@ -4031,6 +4086,46 @@ void Window::setUpdateMode(const WindowUpdateMode mode)
 WindowUpdateMode Window::getUpdateMode() const
 {
     return d_updateMode;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setAspectMode(AspectMode mode)
+{
+    if (d_aspectMode == mode)
+        return;
+
+    d_aspectMode = mode;
+
+    // ensure the area is calculated with the new aspect mode
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+AspectMode Window::getAspectMode() const
+{
+    return d_aspectMode;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setAspectRatio(float ratio)
+{
+    if (d_aspectRatio == ratio)
+        return;
+
+    d_aspectRatio = ratio;
+
+    // ensure the area is calculated with the new aspect ratio
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+float Window::getAspectRatio() const
+{
+    return d_aspectRatio;
 }
 
 //----------------------------------------------------------------------------//

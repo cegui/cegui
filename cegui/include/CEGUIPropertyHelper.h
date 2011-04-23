@@ -323,13 +323,66 @@ public:
 };
 
 template<>
+class PropertyHelper<AspectMode>
+{
+public:
+    typedef AspectMode return_type;
+    typedef AspectMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("AspectMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "Shrink")
+        {
+            return AM_SHRINK;
+        }
+        else if (str == "Expand")
+        {
+            return AM_EXPAND;
+        }
+        else
+        {
+            return AM_IGNORE;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == AM_IGNORE)
+        {
+            return "Ignore";
+        }
+        else if (val == AM_SHRINK)
+        {
+            return "Shrink";
+        }
+        else if (val == AM_EXPAND)
+        {
+            return "Expand";
+        }
+        else
+        {
+            assert(false && "Invalid aspect mode");
+            return "Ignore";
+        }
+    }
+};
+
+template<>
 class PropertyHelper<Sizef >
 {
 public:
     typedef Sizef return_type;
     typedef const Sizef& pass_type;
     typedef String string_return_type;
-    
+
     static const String& getDataTypeName()
     {
         static String type("Sizef");
