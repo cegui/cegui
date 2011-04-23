@@ -772,6 +772,9 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     usize = CEGUI_ns.class_("Size<CEGUI::UDim>")
     usize.rename("USize")
     usize.include()
+    # UDim doesn't have the necessary operators for this
+    usize.member_function("clamp").exclude()
+    usize.member_function("scaleToAspect").exclude()
     
     # CEGUISlotFunctorBase.h
     # not needed in python
