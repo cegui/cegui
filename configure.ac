@@ -206,6 +206,7 @@ AC_CONFIG_FILES([cegui/CEGUI-NULL.pc
                  Samples/DragDropDemo/Makefile
                  Samples/FalagardDemo1/Makefile
                  Samples/FirstWindow/Makefile
+                 Samples/InventoryDemo/Makefile
                  Samples/FontDemo/Makefile
                  Samples/Makefile
                  Samples/Minesweeper/Makefile
