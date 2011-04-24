@@ -152,6 +152,8 @@ public:
     static UDim stringToUDim(const String& str);
     static UVector2 stringToUVector2(const String& str);
     static URect stringToURect(const String& str);
+    static AspectMode stringToAspectMode(const String& str);
+
     static String floatToString(float val);
     static String uintToString(unsigned int val);
     static String boolToString(bool val);
@@ -164,6 +166,7 @@ public:
     static String udimToString(const UDim& val);
     static String uvector2ToString(const UVector2& val);
     static String urectToString(const URect& val);
+    static String aspectModeToString(AspectMode val);
 };
 
 }

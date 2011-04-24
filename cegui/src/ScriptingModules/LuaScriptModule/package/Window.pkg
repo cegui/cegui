@@ -279,6 +279,11 @@ class Window //: public EventSet
     void setUpdateMode(WindowUpdateMode mode);
     WindowUpdateMode getUpdateMode() const;
 
+    void setAspectMode(AspectMode mode);
+    AspectMode getAspectMode() const;
+    void setAspectRatio(float ratio);
+    float getAspectRatio() const;
+
     void setMouseInputPropagationEnabled(bool enabled);
     bool isMouseInputPropagationEnabled() const;
 

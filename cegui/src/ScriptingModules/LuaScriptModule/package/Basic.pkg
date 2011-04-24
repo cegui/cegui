@@ -6,6 +6,13 @@ $renaming Vector3_float @ Vector3
 $renaming Size_float @ Size
 $renaming Rect_float @ Rect
 
+// How aspect ratio should be maintained
+enum AspectMode
+{
+    AM_IGNORE,
+    AM_SHRINK,
+    AM_EXPAND
+};
 
 // Possible actions when loading an XML resource that already exists.
 enum XMLResourceExistsAction
@@ -65,6 +72,9 @@ class Size
 	T d_height @ height;
 
 	bool operator== (const Size<T>& sz) const;
+
+	void clamp(Size<T> min, Size<T> max);
+	void scaleToAspect(AspectMode mode, T ratio);
 
 	Size();
 	Size(T w, T h);

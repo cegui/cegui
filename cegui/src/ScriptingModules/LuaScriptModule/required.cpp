@@ -190,6 +190,12 @@ URect ceguiLua_PropertyHelper::stringToURect(const String& str)
 }
 
 //----------------------------------------------------------------------------//
+AspectMode ceguiLua_PropertyHelper::stringToAspectMode(const String& str)
+{
+    return PropertyHelper<AspectMode>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
 String ceguiLua_PropertyHelper::floatToString(float val)
 {
     return PropertyHelper<float>::toString(val);
@@ -259,6 +265,12 @@ String ceguiLua_PropertyHelper::uvector2ToString(const UVector2& val)
 String ceguiLua_PropertyHelper::urectToString(const URect& val)
 {
     return PropertyHelper<URect>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::aspectModeToString(AspectMode val)
+{
+    return PropertyHelper<AspectMode>::toString(val);
 }
 
 //----------------------------------------------------------------------------//

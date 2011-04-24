@@ -18,6 +18,7 @@ class ceguiLua_PropertyHelper
 	static	UDim			stringToUDim(utf8string str);
 	static	UVector2		stringToUVector2(utf8string str);
 	static	URect			stringToURect(utf8string str);
+    static AspectMode stringToAspectMode(const String& str);
 
 	static string	floatToString(float val);
 	static string	uintToString(unsigned int val);
@@ -32,4 +33,5 @@ class ceguiLua_PropertyHelper
 	static string	udimToString(const UDim& val);
 	static string	uvector2ToString(const UVector2& val);
 	static string	urectToString(const URect& val);
+    static String aspectModeToString(AspectMode val);
 };
