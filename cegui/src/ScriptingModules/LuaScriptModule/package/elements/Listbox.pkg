@@ -32,10 +32,10 @@ class Listbox : public Window
 	void ensureItemIsVisible(unsigned long item_index);
 	void ensureItemIsVisible(const ListboxItem* item);
 	
-	Rect getListRenderArea() const;
+	Rect<float> getListRenderArea() const;
 	Scrollbar* getVertScrollbar() const;
 	Scrollbar* getHorzScrollbar() const;
 	float getWidestItemWidth() const;
 	float getTotalItemsHeight() const;
-    ListboxItem* getItemAtPoint(const Vector2& pt) const;
+    ListboxItem* getItemAtPoint(const Vector2<float>& pt) const;
 };

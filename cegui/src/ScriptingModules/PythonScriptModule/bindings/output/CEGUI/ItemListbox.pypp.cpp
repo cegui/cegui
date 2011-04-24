@@ -15,7 +15,7 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
     
     }
 
-    virtual ::CEGUI::Size getContentSize(  ) const  {
+    virtual ::CEGUI::Sizef getContentSize(  ) const  {
         if( bp::override func_getContentSize = this->get_override( "getContentSize" ) )
             return func_getContentSize(  );
         else{
@@ -23,7 +23,7 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         }
     }
     
-    ::CEGUI::Size default_getContentSize(  ) const  {
+    ::CEGUI::Sizef default_getContentSize(  ) const  {
         return CEGUI::ItemListbox::getContentSize( );
     }
 
@@ -171,7 +171,7 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -179,11 +179,11 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -191,7 +191,7 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -323,8 +323,8 @@ void register_ItemListbox_class(){
         }
         { //::CEGUI::ItemListbox::getContentSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::ItemListbox::*getContentSize_function_type )(  ) const;
-            typedef ::CEGUI::Size ( ItemListbox_wrapper::*default_getContentSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::ItemListbox::*getContentSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ItemListbox_wrapper::*default_getContentSize_function_type )(  ) const;
             
             ItemListbox_exposer.def( 
                 "getContentSize"
@@ -674,8 +674,8 @@ void register_ItemListbox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ItemListbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ItemListbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ItemListbox_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -685,8 +685,8 @@ void register_ItemListbox_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ItemListbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( ItemListbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             ItemListbox_exposer.def( 
                 "isHit"

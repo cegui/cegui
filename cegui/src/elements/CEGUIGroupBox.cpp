@@ -36,7 +36,7 @@ namespace CEGUI
 
 	const String GroupBox::EventNamespace("GroupBox");
 	const String GroupBox::WidgetTypeName("CEGUI/GroupBox");
-	const String GroupBox::ContentPaneNameSuffix("__auto_contentpane__");
+	const String GroupBox::ContentPaneName("__auto_contentpane__");
 
 	/*************************************************************************
 	Base class constructor
@@ -62,12 +62,12 @@ void GroupBox::initialiseComponents()
 void GroupBox::addChild_impl(Window* wnd)
 {
     // Only add it when it's not the __auto_contentpane__ (auto-child) itself
-	if (wnd && wnd->getName().find(ContentPaneNameSuffix) == String::npos)
+	if (wnd && wnd->getName() == ContentPaneName)
 	{
-		Window * pane = getContentPane();
+		Window* pane = getContentPane();
 		if (pane)
 		{
-			pane->addChildWindow(wnd);
+			pane->addChild(wnd);
 		}
 		else
 		{
@@ -80,7 +80,7 @@ void GroupBox::removeChild_impl(Window* wnd)
 {
 	if (wnd)
 	{   // Auto pane itself?
-        if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
+        if (wnd->getName() == ContentPaneName)
         {   // Yes
             Window::removeChild_impl(wnd);
             WindowManager::getSingleton().destroyWindow(wnd);
@@ -90,7 +90,7 @@ void GroupBox::removeChild_impl(Window* wnd)
             Window* wndPane = getContentPane();
             if (wndPane)
             {
-                wndPane->removeChildWindow(wnd);
+                wndPane->removeChild(wnd);
 		        if (wnd->isDestroyedByParent())
 		        {
 			        WindowManager::getSingleton().destroyWindow(wnd);
@@ -102,12 +102,9 @@ void GroupBox::removeChild_impl(Window* wnd)
 
 Window * GroupBox::getContentPane() const
 {
-    String paneName = d_name + ContentPaneNameSuffix;
-    WindowManager* winMgr = WindowManager::getSingletonPtr();
-    if (winMgr->isWindowPresent(paneName))
-    {
-        return winMgr->getWindow(paneName);
-    }
+    if (isChild(ContentPaneName))
+        return getChild(ContentPaneName);
+    
     return 0;
 }
 
@@ -136,7 +133,7 @@ bool GroupBox::drawAroundWidget(const CEGUI::Window*)
 
 bool GroupBox::drawAroundWidget(const String& name)
 {
-	return drawAroundWidget(WindowManager::getSingletonPtr()->getWindow(name));
+	return drawAroundWidget(getChild(name));
 }
 
 

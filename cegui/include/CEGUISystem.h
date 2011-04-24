@@ -61,7 +61,10 @@ struct MouseClickTrackerImpl;
 	an initialised Renderer object which it can use to interface to whatever rendering system will be
 	used to display the GUI imagery.
 */
-class CEGUIEXPORT System : public Singleton<System>, public EventSet
+class CEGUIEXPORT System :
+    public Singleton<System>,
+    public EventSet,
+    public AllocatedObject<System>
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
@@ -71,7 +74,7 @@ public:
 	*************************************************************************/
 	static const double		DefaultSingleClickTimeout;		//!< Default timeout for generation of single click events.
 	static const double		DefaultMultiClickTimeout;		//!< Default timeout for generation of multi-click events.
-	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
+	static const Sizef		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
     /** Event fired whenever the GUI sheet is changed.
@@ -315,7 +318,7 @@ public:
 	\return
 		Size object describing the current multi-click tolerance area size.
 	*/
-	const Size&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
+	const Sizef&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
 
 
 	/*!
@@ -376,7 +379,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void setMultiClickToleranceAreaSize(const Size&	sz);
+	void setMultiClickToleranceAreaSize(const Sizef&	sz);
 
     /*!
     \brief
@@ -450,18 +453,15 @@ public:
 	\brief
 		Set the image to be used as the default mouse cursor.
 
-	\param imageset
-		String object that contains the name of the Imageset  that contains the image to be used.
-
-	\param image_name
-		String object that contains the name of the Image on \a imageset that is to be used.
+	\param name
+		String object that contains the name of the Image that is to be used.
 
 	\return
 		Nothing.
 
-	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	\exception UnknownObjectException	thrown if no Image named \a name exists.
 	*/
-	void	setDefaultMouseCursor(const String& imageset, const String& image_name);
+	void	setDefaultMouseCursor(const String& name);
 
 
 	/*!
@@ -814,7 +814,7 @@ public:
     \param new_size
         Size object describing the new display size in pixels.
     */
-    void notifyDisplaySizeChanged(const Size& new_size);
+    void notifyDisplaySizeChanged(const Sizef& new_size);
 
     /*!
     \brief
@@ -951,13 +951,13 @@ public:
 		Method that injects a typed character event into the system.
 
 	\param code_point
-		Unicode code point of the character that was typed.
+		Unicode or ASCII (depends on used String class) code point of the character that was typed.
 
 	\return
 		- true if the input was processed by the gui system.
 		- false if the input was not processed by the gui system.
 	*/
-	bool	injectChar(utf32 code_point);
+	bool	injectChar(String::value_type code_point);
 
 
 	/*!
@@ -1142,7 +1142,7 @@ private:
 	\return
 		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
 	*/
-	Window*	getTargetWindow(const Point& pt, const bool allow_disabled) const;
+	Window*	getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
 
 
 	/*!
@@ -1322,7 +1322,7 @@ private:
 
 	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
-	Size		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
+	Sizef		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
 
 	MouseClickTrackerImpl* const	d_clickTrackerPimpl;		//!< Tracks mouse button click generation.
 

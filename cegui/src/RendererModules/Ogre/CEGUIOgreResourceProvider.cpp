@@ -103,7 +103,7 @@ size_t OgreResourceProvider::getResourceGroupFileNames(
     Ogre::StringVector::iterator i = vp->begin();
     for (; i != vp->end(); ++i)
     {
-        out_vec.push_back(*i);
+        out_vec.push_back(i->c_str());
         ++entries;
     }
 

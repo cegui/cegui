@@ -33,7 +33,7 @@
 
 #include "CEGUISystem.h"
 #include "CEGUIDefaultLogger.h"
-#include "CEGUIImagesetManager.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUITplWindowFactory.h"
@@ -43,7 +43,6 @@
 #include "CEGUIAnimationManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
-#include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
@@ -134,7 +133,7 @@ struct MouseClickTracker
 
 	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
-	Rect			d_click_area;		//!< area used to detect multi-clicks
+	Rectf			d_click_area;		//!< area used to detect multi-clicks
     Window*         d_target_window;    //!< target window for any events generated.
 };
 
@@ -154,7 +153,7 @@ template<> System* Singleton<System>::ms_Singleton	= 0;
 // click event generation defaults
 const double	System::DefaultSingleClickTimeout	= 0.0; // was 0.2
 const double	System::DefaultMultiClickTimeout	= 0.33;
-const Size		System::DefaultMultiClickAreaSize(12,12);
+const Sizef	System::DefaultMultiClickAreaSize(12,12);
 
 // event names
 const String System::EventGUISheetChanged( "GUISheetChanged" );
@@ -230,7 +229,7 @@ System::System(Renderer& renderer,
     // seeing its configuration overwritten by this.
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     if (d_ourLogger)
-        new DefaultLogger();
+        CEGUI_NEW_AO DefaultLogger();
 #endif
 
     Logger& logger(Logger::getSingleton());
@@ -238,7 +237,7 @@ System::System(Renderer& renderer,
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
     {
-        d_resourceProvider = new DefaultResourceProvider;
+        d_resourceProvider = CEGUI_NEW_AO DefaultResourceProvider();
         d_ourResourceProvider = true;
     }
 
@@ -259,7 +258,7 @@ System::System(Renderer& renderer,
         {
             // cleanup XML stuff
             d_xmlParser->cleanup();
-            delete d_xmlParser;
+            CEGUI_DELETE_AO d_xmlParser;
             CEGUI_RETHROW;
         }
     }
@@ -296,9 +295,6 @@ System::System(Renderer& renderer,
     // add the window factories for the core window types
     addStandardWindowFactories();
 
-    // GUISheet's name was changed, register an alias so both can be used
-    WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
-
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     logger.logEvent("CEGUI::System singleton created. " + String(addr_buff));
@@ -312,7 +308,6 @@ System::System(Renderer& renderer,
     config.initialiseDefaultFont();
     config.initialiseDefaultMouseCursor();
     config.initialiseDefaulTooltip();
-    config.initialiseDefaultGUISheet();
 
     // scripting available?
     if (d_scriptModule)
@@ -370,7 +365,7 @@ System::~System(void)
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
-        delete d_resourceProvider;
+        CEGUI_DELETE_AO d_resourceProvider;
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -381,7 +376,7 @@ System::~System(void)
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     // delete the Logger object only if we created it.
     if (d_ourLogger)
-        delete Logger::getSingletonPtr();
+        CEGUI_DELETE_AO Logger::getSingletonPtr();
 #endif
 
 	delete d_clickTrackerPimpl;
@@ -519,9 +514,10 @@ void System::setDefaultMouseCursor(const Image* image)
 /*************************************************************************
 	Set the image to be used as the default mouse cursor.
 *************************************************************************/
-void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
+void System::setDefaultMouseCursor(const String& name)
 {
-	setDefaultMouseCursor(&ImagesetManager::getSingleton().get(imageset).getImage(image_name));
+	setDefaultMouseCursor(
+        &ImageManager::getSingleton().get(name));
 }
 
 
@@ -718,7 +714,7 @@ bool System::injectMouseLeaves(void)
 	{
 		ma.position = d_wndWithMouse->
           getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
-		ma.moveDelta = Vector2(0.0f, 0.0f);
+		ma.moveDelta = Vector2f(0.0f, 0.0f);
 		ma.button = NoButton;
 		ma.sysKeys = d_sysKeys;
 		ma.wheelChange = 0;
@@ -743,7 +739,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -771,7 +767,7 @@ bool System::injectMouseButtonDown(MouseButton button)
         // build new allowable area for multi-clicks
         tkr.d_click_area.setPosition(ma.position);
         tkr.d_click_area.setSize(d_dblclick_size);
-        tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+        tkr.d_click_area.offset(Vector2f(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 
         // set target window for click events on this tracker
         tkr.d_target_window = ma.window;
@@ -824,7 +820,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = 0;
@@ -914,7 +910,7 @@ bool System::injectKeyUp(uint key_code)
 /*************************************************************************
 	Method that injects a typed character event into the system.
 *************************************************************************/
-bool System::injectChar(utf32 code_point)
+bool System::injectChar(String::value_type code_point)
 {
     KeyEventArgs args(getKeyboardTargetWindow());
 
@@ -937,7 +933,7 @@ bool System::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
     ma.position = MouseCursor::getSingleton().getPosition();
-    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_sysKeys;
     ma.wheelChange = delta;
@@ -961,7 +957,7 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-    const Point new_position(x_pos, y_pos);
+    const Vector2f new_position(x_pos, y_pos);
     MouseCursor& mouse(MouseCursor::getSingleton());
 
     // setup mouse movement event args object.
@@ -994,7 +990,7 @@ bool System::injectTimePulse(float timeElapsed)
     AnimationManager::getSingleton().stepInstances(timeElapsed);
 
     // if no visible active sheet, input can't be handled
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return false;
 
     // else pass to sheet for distribution.
@@ -1007,11 +1003,11 @@ bool System::injectTimePulse(float timeElapsed)
 /*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window* System::getTargetWindow(const Point& pt,
+Window* System::getTargetWindow(const Vector2f& pt,
                                 const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return 0;
 
     Window* dest_window = Window::getCaptureWindow();
@@ -1051,7 +1047,7 @@ Window* System::getTargetWindow(const Point& pt,
 Window* System::getKeyboardTargetWindow(void) const
 {
     // if no active sheet, there is no target widow.
-    if (!d_activeSheet || !d_activeSheet->isVisible())
+    if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())
         return 0;
 
     // handle normal non-modal situations
@@ -1222,7 +1218,7 @@ void System::setMultiClickTimeout(double timeout)
 	Set the size of the allowable mouse movement tolerance used when
 	generating multi-click events.
 *************************************************************************/
-void System::setMultiClickToleranceAreaSize(const Size&	sz)
+void System::setMultiClickToleranceAreaSize(const Sizef& sz)
 {
 	d_dblclick_size = sz;
 
@@ -1322,11 +1318,11 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-void System::notifyDisplaySizeChanged(const Size& new_size)
+void System::notifyDisplaySizeChanged(const Sizef& new_size)
 {
     // notify other components of the display size change
     d_renderer->setDisplaySize(new_size);
-    ImagesetManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    ImageManager::getSingleton().notifyDisplaySizeChanged(new_size);
     FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
     MouseCursor::getSingleton().notifyDisplaySizeChanged(new_size);
 
@@ -1349,8 +1345,8 @@ void System::notifyDisplaySizeChanged(const Size& new_size)
 
     Logger::getSingleton().logEvent(
         "Display resize:"
-        " w=" + PropertyHelper::floatToString(new_size.d_width) +
-        " h=" + PropertyHelper::floatToString(new_size.d_height));
+        " w=" + PropertyHelper<float>::toString(new_size.d_width) +
+        " h=" + PropertyHelper<float>::toString(new_size.d_height));
 }
 
 
@@ -1464,7 +1460,7 @@ void System::outputLogHeader()
 void System::addStandardWindowFactories()
 {
     // Add factories for types all base elements
-    WindowFactoryManager::addFactory< TplWindowFactory<GUISheet> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<DefaultWindow> >();
     WindowFactoryManager::addFactory< TplWindowFactory<DragContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<ScrolledContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<ClippedContainer> >();
@@ -1497,6 +1493,7 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addFactory< TplWindowFactory<ItemListbox> >();
     WindowFactoryManager::addFactory< TplWindowFactory<GroupBox> >();
     WindowFactoryManager::addFactory< TplWindowFactory<Tree> >();
+    WindowFactoryManager::addFactory< TplWindowFactory<LayoutCell> >();
     WindowFactoryManager::addFactory< TplWindowFactory<HorizontalLayoutContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<VerticalLayoutContainer> >();
     WindowFactoryManager::addFactory< TplWindowFactory<GridLayoutContainer> >();
@@ -1505,32 +1502,32 @@ void System::addStandardWindowFactories()
 void System::createSingletons()
 {
     // cause creation of other singleton objects
-    new ImagesetManager();
-    new FontManager();
-    new WindowFactoryManager();
-    new WindowManager();
-    new SchemeManager();
-    new MouseCursor();
-    new GlobalEventSet();
-    new AnimationManager();
-    new WidgetLookManager();
-    new WindowRendererManager();
-    new RenderEffectManager();
+    CEGUI_NEW_AO ImageManager();
+    CEGUI_NEW_AO FontManager();
+    CEGUI_NEW_AO WindowFactoryManager();
+    CEGUI_NEW_AO WindowManager();
+    CEGUI_NEW_AO SchemeManager();
+    CEGUI_NEW_AO MouseCursor();
+    CEGUI_NEW_AO GlobalEventSet();
+    CEGUI_NEW_AO AnimationManager();
+    CEGUI_NEW_AO WidgetLookManager();
+    CEGUI_NEW_AO WindowRendererManager();
+    CEGUI_NEW_AO RenderEffectManager();
 }
 
 void System::destroySingletons()
 {
-    delete  SchemeManager::getSingletonPtr();
-    delete  WindowManager::getSingletonPtr();
-    delete  WindowFactoryManager::getSingletonPtr();
-    delete  WidgetLookManager::getSingletonPtr();
-    delete  WindowRendererManager::getSingletonPtr();
-    delete  AnimationManager::getSingletonPtr();
-    delete  RenderEffectManager::getSingletonPtr();
-    delete  FontManager::getSingletonPtr();
-    delete  MouseCursor::getSingletonPtr();
-    delete  ImagesetManager::getSingletonPtr();
-    delete  GlobalEventSet::getSingletonPtr();
+    CEGUI_DELETE_AO SchemeManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowFactoryManager::getSingletonPtr();
+    CEGUI_DELETE_AO WidgetLookManager::getSingletonPtr();
+    CEGUI_DELETE_AO WindowRendererManager::getSingletonPtr();
+    CEGUI_DELETE_AO AnimationManager::getSingletonPtr();
+    CEGUI_DELETE_AO RenderEffectManager::getSingletonPtr();
+    CEGUI_DELETE_AO FontManager::getSingletonPtr();
+    CEGUI_DELETE_AO MouseCursor::getSingletonPtr();
+    CEGUI_DELETE_AO ImageManager::getSingletonPtr();
+    CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -1578,7 +1575,7 @@ void System::cleanupXMLParser()
         deleteFunc(d_xmlParser);
 
         // delete the dynamic module for the xml parser
-        delete d_parserModule;
+        CEGUI_DELETE_AO d_parserModule;
         d_parserModule = 0;
     }
 #ifdef CEGUI_STATIC
@@ -1596,7 +1593,7 @@ void System::setXMLParser(const String& parserName)
 #ifndef CEGUI_STATIC
     cleanupXMLParser();
     // load dynamic module
-    d_parserModule = new DynamicModule(String("CEGUI") + parserName);
+    d_parserModule = CEGUI_NEW_AO DynamicModule(String("CEGUI") + parserName);
     // get pointer to parser creation function
     XMLParser* (*createFunc)(void) =
         (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
@@ -1700,7 +1697,7 @@ void System::notifyMouseTransition(Window* top, Window* bottom,
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
-    const Vector2 mouse_pos(MouseCursor::getSingleton().getPosition());
+    const Vector2f mouse_pos(MouseCursor::getSingleton().getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -1802,7 +1799,7 @@ void System::cleanupImageCodec()
         ((void(*)(ImageCodec*))d_imageCodecModule->
             getSymbolAddress("destroyImageCodec"))(d_imageCodec);
 
-        delete d_imageCodecModule;
+        CEGUI_DELETE_AO d_imageCodecModule;
         d_imageCodecModule = 0;
     }
 #if defined(CEGUI_STATIC)
@@ -1828,9 +1825,9 @@ const String& System::getDefaultImageCodecName()
 //----------------------------------------------------------------------------//
 void System::initialiseVersionString()
 {
-    d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
-       PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
+    d_strVersion = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
+       PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
+       PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
 
     d_strVersion += " (Build: " __DATE__;
 
@@ -1896,14 +1893,14 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
                        ScriptModule* scriptModule, const String& configFile,
                        const String& logFile)
 {
-    return *new System(renderer, resourceProvider, xmlParser, imageCodec,
+    return *CEGUI_NEW_AO System(renderer, resourceProvider, xmlParser, imageCodec,
                        scriptModule, configFile, logFile);
 }
 
 //----------------------------------------------------------------------------//
 void System::destroy()
 {
-    delete System::getSingletonPtr();
+    CEGUI_DELETE_AO System::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//
@@ -1947,7 +1944,7 @@ bool System::injectMouseButtonClick(const MouseButton button)
     if (ma.window)
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1970,7 +1967,7 @@ bool System::injectMouseButtonDoubleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;
@@ -1993,7 +1990,7 @@ bool System::injectMouseButtonTripleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_sysKeys;
         ma.wheelChange = 0;

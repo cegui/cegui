@@ -74,7 +74,7 @@ public:
         May be thrown if the TextureTarget would not be able to handle the
         operations rendering content of the given size.
     */
-    virtual void declareRenderSize(const Size& sz) = 0;
+    virtual void declareRenderSize(const Sizef& sz) = 0;
 
     /*!
     \brief

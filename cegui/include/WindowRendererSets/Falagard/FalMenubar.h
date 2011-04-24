@@ -50,7 +50,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardMenubar : public ItemListBaseWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -61,7 +61,7 @@ namespace CEGUI
         // overridden from Menubar base class.
         void render();
         //void sizeToContent_impl(void);
-        Rect getItemRenderArea(void) const;
+        Rectf getItemRenderArea(void) const;
     };
 
 } // End of  CEGUI namespace section

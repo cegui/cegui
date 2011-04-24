@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -54,12 +54,13 @@ public:
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rectf& area);
+    const Rectf& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2& p_in, Vector2& p_out) const;
+                        const Vector2f& p_in,
+                        Vector2f& p_out) const;
 
 protected:
     //! helper that initialises the cached matrix
@@ -72,7 +73,7 @@ protected:
     //! Direct3DDevice9 interface obtained from our owner.
     LPDIRECT3DDEVICE9 d_device;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rectf d_area;
     //! projection / view matrix cache
     mutable D3DXMATRIX d_matrix;
     //! true when d_matrix is valid and up to date

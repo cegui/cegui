@@ -53,8 +53,9 @@ class CEGUIEXPATPARSER_API ExpatParser : public XMLParser
 public:
     ExpatParser(void);
     ~ExpatParser(void);
+
     // Implementation of public abstract interface
-    void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
 
 protected:
     // Implementation of protected abstract interface.

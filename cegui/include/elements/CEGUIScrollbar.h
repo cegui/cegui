@@ -84,7 +84,7 @@ public:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    virtual float getAdjustDirectionFromPoint(const Point& pt) const  = 0;
+    virtual float getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
 };
 
 /*!
@@ -132,14 +132,14 @@ public:
     static const String EventScrollConfigChanged;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    //! Widget name suffix for the thumb component.
-    static const String ThumbNameSuffix;
-    //! Widget name suffix for the increase button component.
-    static const String IncreaseButtonNameSuffix;
-    //! Widget name suffix for the decrease button component.
-    static const String DecreaseButtonNameSuffix;
+    //! Widget name for the thumb component.
+    static const String ThumbName;
+    //! Widget name for the increase button component.
+    static const String IncreaseButtonName;
+    //! Widget name for the decrease button component.
+    static const String DecreaseButtonName;
 
     /*************************************************************************
         Accessor functions
@@ -527,7 +527,7 @@ protected:
         -  0 to indicate scroll bar position should not be changed.
         - +1 to indicate scroll bar position should be moved to a higher value.
     */
-    float getAdjustDirectionFromPoint(const Point& pt) const;
+    float getAdjustDirectionFromPoint(const Vector2f& pt) const;
 
     /** implementation func that updates scroll position value, returns true if
      * value was changed.  NB: Fires no events and does no other updates.

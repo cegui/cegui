@@ -98,7 +98,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         // create cegui texture
         CEGUI_TRY
         {
-            result->loadFromMemory(tmpBuff, Size(width, height), cefmt);
+            result->loadFromMemory(tmpBuff, Sizef(width, height), cefmt);
         }
         CEGUI_CATCH(...)
         {

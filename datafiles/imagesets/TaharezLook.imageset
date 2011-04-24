@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="TaharezLook" Imagefile="TaharezLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="TaharezLook" Imagefile="TaharezLook.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
     <Image Name="ClientBrush" XPos="2" YPos="2" Width="64" Height="64" />
     <Image Name="GenericBrush" XPos="9" YPos="71" Width="1" Height="1" />
 	<Image Name="WindowLeftEdge" XPos="6" YPos="95" Width="1" Height="22" XOffset="4" />
@@ -50,7 +50,7 @@
 	<Image Name="EditBoxLeft" XPos="41" YPos="108" Width="4" Height="18" />
 	<Image Name="EditBoxMiddle" XPos="47" YPos="108" Width="4" Height="18" />
 	<Image Name="EditBoxRight" XPos="53" YPos="108" Width="4" Height="18" />
-	<Image Name="EditBoxCarat" XPos="60" YPos="108" Width="4" Height="18" />
+	<Image Name="EditBoxCaret" XPos="60" YPos="108" Width="4" Height="18" />
 	<Image Name="SpinnerUpNormal" XPos="68" YPos="110" Width="10" Height="6" />
 	<Image Name="SpinnerDownNormal" XPos="68" YPos="118" Width="10" Height="6" />
 	<Image Name="SpinnerUpHover" XPos="82" YPos="110" Width="10" Height="6" />

@@ -4,7 +4,7 @@
 class BaseDim
 {
   tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd) const;
-  tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd, const Rect& container) const;
+  tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd, const Rect<float>& container) const;
   BaseDim* clone() const;
   DimensionOperator getDimensionOperator() const;
   void setDimensionOperator(DimensionOperator op);
@@ -27,9 +27,9 @@ class AbsoluteDim : public BaseDim
 ******************************************************************************/
 class ImageDim : public BaseDim 
 {
-  void setSourceImage(utf8string imageset, utf8string image);
+  void setSourceImage(utf8string name);
   void setSourceDimension(DimensionType dim);
-  ImageDim(utf8string imageset, utf8string image, DimensionType dim);
+  ImageDim(utf8string name, DimensionType dim);
 };
 
 /******************************************************************************
@@ -88,12 +88,16 @@ class Dimension
 ******************************************************************************/
 class ComponentArea
 {
-  Rect getPixelRect(const Window& wnd) const;
-  Rect getPixelRect(const Window& wnd, const Rect& container) const;
+  Rect<float> getPixelRect(const Window& wnd) const;
+  Rect<float> getPixelRect(const Window& wnd, const Rect<float>& container) const;
   //void writeXMLToStream(OutStream& out_stream) const;
   bool isAreaFetchedFromProperty() const;
   string getAreaPropertySource() const;
   void setAreaPropertySource(utf8string property);
+
+  void setNamedAreaSouce(utf8string widget_look, utf8string area_name);
+  bool isAreaFetchedFromNamedArea() const;
+
   Dimension d_left;
   Dimension d_top;
   Dimension d_right_or_width;

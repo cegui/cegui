@@ -70,7 +70,7 @@ public:
         Rect object describing the window relative area of the that is to be used for rendering
         the items.
     */
-    virtual Rect getItemRenderArea(void) const = 0;
+    virtual Rectf getItemRenderArea(void) const = 0;
 };
 
 /*!
@@ -370,7 +370,7 @@ public:
         Rect object describing the window relative area of the that is to be used for rendering
         the items.
     */
-    Rect getItemRenderArea(void) const;
+    Rectf getItemRenderArea(void) const;
 
     /*!
     \brief
@@ -472,7 +472,7 @@ protected:
 	\return
 		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
-	virtual Size getContentSize() const		= 0;
+	virtual Sizef getContentSize() const = 0;
 
 
 	/*!
@@ -573,7 +573,8 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::vector<ItemEntry*>	ItemEntryList;
+	typedef	std::vector<ItemEntry*
+        CEGUI_VECTOR_ALLOC(ItemEntry*)> ItemEntryList;
 	ItemEntryList	d_listItems;		//!< list of items in the list.
 
     //!< True if this ItemListBase widget should automatically resize to fit its content. False if not.

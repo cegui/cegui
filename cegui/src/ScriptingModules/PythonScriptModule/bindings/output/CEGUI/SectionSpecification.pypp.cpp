@@ -10,15 +10,7 @@ void register_SectionSpecification_class(){
 
     { //::CEGUI::SectionSpecification
         typedef bp::class_< CEGUI::SectionSpecification > SectionSpecification_exposer_t;
-        SectionSpecification_exposer_t SectionSpecification_exposer = SectionSpecification_exposer_t( "SectionSpecification", "*!\n\
-            \n\
-                Class that represents a simple 'link' to an ImagerySection.\n\
-        \n\
-                This class enables sections to be easily re-used, by different states andor layers, by\
-                allowing\n\
-                sections to be specified by name rather than having mutiple copies of the same thing all\
-                over the place.\n\
-            *\n", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const & >(( bp::arg("owner"), bp::arg("sectionName"), bp::arg("controlPropertySource"), bp::arg("controlPropertyValue"), bp::arg("controlPropertyWidget") )) );
+        SectionSpecification_exposer_t SectionSpecification_exposer = SectionSpecification_exposer_t( "SectionSpecification", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const & >(( bp::arg("owner"), bp::arg("sectionName"), bp::arg("controlPropertySource"), bp::arg("controlPropertyValue"), bp::arg("controlPropertyWidget") )) );
         bp::scope SectionSpecification_scope( SectionSpecification_exposer );
         SectionSpecification_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::ColourRect const & >(( bp::arg("owner"), bp::arg("sectionName"), bp::arg("controlPropertySource"), bp::arg("controlPropertyValue"), bp::arg("controlPropertyWidget"), bp::arg("cols") )) );
         { //::CEGUI::SectionSpecification::getOverrideColours
@@ -94,7 +86,7 @@ void register_SectionSpecification_class(){
         }
         { //::CEGUI::SectionSpecification::render
         
-            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             SectionSpecification_exposer.def( 
                 "render"
@@ -114,7 +106,7 @@ void register_SectionSpecification_class(){
         }
         { //::CEGUI::SectionSpecification::render
         
-            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::SectionSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             SectionSpecification_exposer.def( 
                 "render"
@@ -256,9 +248,9 @@ void register_SectionSpecification_class(){
                           the property value.\n\
                         - '__parent__': The parent of the widget being drawn will be the\n\
                           source of the property value.\n\
-                        - any other value: The value will be taken as a name suffix and\n\
-                          a window with the name of the widget being drawn with the\n\
-                          specified suffix will be the source of the property value.\n\
+                        - any other value: The value will be taken as a name and\n\
+                          a child window with the specified name will be the source of the\n\
+                          property value.\n\
                     *\n" );
         
         }

@@ -26,7 +26,7 @@ void register_RenderedStringParser_class(){
 
     { //::CEGUI::RenderedStringParser
         typedef bp::class_< RenderedStringParser_wrapper, boost::noncopyable > RenderedStringParser_exposer_t;
-        RenderedStringParser_exposer_t RenderedStringParser_exposer = RenderedStringParser_exposer_t( "RenderedStringParser", "! Specifies interface for classes that parse text into RenderedString objects.\n" );
+        RenderedStringParser_exposer_t RenderedStringParser_exposer = RenderedStringParser_exposer_t( "RenderedStringParser" );
         bp::scope RenderedStringParser_scope( RenderedStringParser_exposer );
         { //::CEGUI::RenderedStringParser::parse
         

@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTabButton::TypeName[] = "Falagard/TabButton";
+    const String FalagardTabButton::TypeName("Falagard/TabButton");
 
     FalagardTabButton::FalagardTabButton(const String& type) :
         WindowRenderer(type, "TabButton")
@@ -52,7 +52,7 @@ namespace CEGUI
         String state;
 		String prefix((tc->getTabPanePosition() == TabControl::Top) ? "Top" : "Bottom");
 
-		if (w->isDisabled())
+		if (w->isEffectiveDisabled())
 		    state = "Disabled";
 		else if (w->isSelected())
 		    state = "Selected";

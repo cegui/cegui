@@ -30,6 +30,7 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 
 // begin CEGUI namespace
 namespace CEGUI
@@ -44,9 +45,9 @@ const String ScrolledItemListBase::EventVertScrollbarModeChanged("VertScrollbarM
 const String ScrolledItemListBase::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
 
 // component widget name suffixes
-const String ScrolledItemListBase::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String ScrolledItemListBase::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
-const String ScrolledItemListBase::ContentPaneNameSuffix("__auto_content_pane__");
+const String ScrolledItemListBase::VertScrollbarName( "__auto_vscrollbar__" );
+const String ScrolledItemListBase::HorzScrollbarName( "__auto_hscrollbar__" );
+const String ScrolledItemListBase::ContentPaneName("__auto_content_pane__");
 
 /*************************************************************************
     Properties
@@ -96,14 +97,14 @@ void ScrolledItemListBase::initialiseComponents()
     {
         // IMPORTANT:
         // we must do this before the base class handling or we'll lose the onChildRemoved subscriber!!!
-        d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", d_name+ContentPaneNameSuffix);
+        d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", ContentPaneName);
 
         // set up clipping
         static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
         // allow propagation back to us
         d_pane->setMouseInputPropagationEnabled(true);
 
-        addChildWindow(d_pane);
+        addChild(d_pane);
     }
 
     // base class handling
@@ -130,8 +131,7 @@ void ScrolledItemListBase::initialiseComponents()
 ************************************************************************/
 Scrollbar* ScrolledItemListBase::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton()
-        .getWindow(d_name+VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 /************************************************************************
@@ -139,22 +139,21 @@ Scrollbar* ScrolledItemListBase::getVertScrollbar() const
 ************************************************************************/
 Scrollbar* ScrolledItemListBase::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton()
-        .getWindow(d_name+HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 /************************************************************************
     Configure scroll bars
 ************************************************************************/
-void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
+void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
 {
     Scrollbar* v = getVertScrollbar();
     Scrollbar* h = getHorzScrollbar();
 
-    const bool old_vert_visible = v->isVisible(true);
-    const bool old_horz_visible = h->isVisible(true);
+    const bool old_vert_visible = v->isVisible();
+    const bool old_horz_visible = h->isVisible();
 
-    Size render_area_size = getItemRenderArea().getSize();
+    Sizef render_area_size = getItemRenderArea().getSize();
 
     // setup the pane size
     float pane_size_w = ceguimax(doc_size.d_width, render_area_size.d_width);
@@ -186,15 +185,15 @@ void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
     }
 
     // if some change occurred, invalidate the inner rect area caches.
-    if ((old_vert_visible != v->isVisible(true)) ||
-        (old_horz_visible != h->isVisible(true)))
+    if ((old_vert_visible != v->isVisible()) ||
+        (old_horz_visible != h->isVisible()))
     {
         d_innerUnclippedRectValid = false;
         d_innerRectClipperValid = false;
     }
 
     // get a fresh item render area
-    Rect render_area = getItemRenderArea();
+    Rectf render_area = getItemRenderArea();
     render_area_size = render_area.getSize();
 
     // update the pane clipper area
@@ -225,7 +224,7 @@ void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
 
     // dont do anything if we are no using scrollbars
     // or have'nt got any items
-    if (!v->isVisible(true) || !count)
+    if (!v->isVisible() || !count)
     {
         return;
     }
@@ -311,38 +310,38 @@ void ScrolledItemListBase::addScrolledItemListBaseProperties()
 //----------------------------------------------------------------------------//
 void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
 {
-    const Rect render_area = getItemRenderArea();
+    const Rectf render_area = getItemRenderArea();
     Scrollbar* const v = getVertScrollbar();
     const float currPos = v->getScrollPosition();
 
     const float top =
-        item.getYPosition().asAbsolute(this->getPixelSize().d_height) - currPos;
+        CoordConverter::asAbsolute(item.getYPosition(), getPixelSize().d_height) - currPos;
     const float bottom = top + item.getItemPixelSize().d_height;
 
     // if top is above the view area, or if item is too big, scroll item to top
-    if ((top < render_area.d_top) || ((bottom - top) > render_area.getHeight()))
+    if ((top < render_area.d_min.d_y) || ((bottom - top) > render_area.getHeight()))
         v->setScrollPosition(currPos + top);
     // if bottom is below the view area, scroll item to bottom of list
-    else if (bottom >= render_area.d_bottom)
+    else if (bottom >= render_area.d_max.d_y)
         v->setScrollPosition(currPos + bottom - render_area.getHeight());
 }
 
 //----------------------------------------------------------------------------//
 void ScrolledItemListBase::ensureItemIsVisibleHorz(const ItemEntry& item)
 {
-    const Rect render_area = getItemRenderArea();
+    const Rectf render_area = getItemRenderArea();
     Scrollbar* const h = getHorzScrollbar();
     const float currPos = h->getScrollPosition();
 
     const float left =
-        item.getXPosition().asAbsolute(this->getPixelSize().d_width) - currPos;
+        CoordConverter::asAbsolute(item.getXPosition(), getPixelSize().d_width) - currPos;
     const float right = left + item.getItemPixelSize().d_width;
 
     // if left is left of the view area, or if item too big, scroll item to left
-    if ((left < render_area.d_left) || ((right - left) > render_area.getWidth()))
+    if ((left < render_area.d_min.d_x) || ((right - left) > render_area.getWidth()))
         h->setScrollPosition(currPos + left);
     // if right is right of the view area, scroll item to right of list
-    else if (right >= render_area.d_right)
+    else if (right >= render_area.d_max.d_x)
         h->setScrollPosition(currPos + right - render_area.getWidth());
 }
 

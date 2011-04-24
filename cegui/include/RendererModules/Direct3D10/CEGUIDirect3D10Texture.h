@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -32,6 +32,11 @@
 #include "CEGUIDirect3D10Renderer.h"
 #include "../../CEGUISize.h"
 #include "../../CEGUIVector.h"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
 
 // d3d forward refs
 struct ID3D10Device;
@@ -77,34 +82,40 @@ public:
     \note
         This also causes the texel scaling values to be updated.
     */
-    void setOriginalDataSize(const Size& sz);
+    void setOriginalDataSize(const Sizef& sz);
 
     // implement abstract members from base class.
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const String& getName() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // Friends to allow Renderer to peform construction and destruction
-    friend Texture& Direct3D10Renderer::createTexture();
-    friend Texture& Direct3D10Renderer::createTexture(const String&, const String&);
-    friend Texture& Direct3D10Renderer::createTexture(const Size&);
+    friend Texture& Direct3D10Renderer::createTexture(const String&);
+    friend Texture& Direct3D10Renderer::createTexture(const String&,
+                                                      const String&,
+                                                      const String&);
+    friend Texture& Direct3D10Renderer::createTexture(const String&,
+                                                      const Sizef&);
     //friend Texture& Direct3D10Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D10Renderer::destroyTexture(Texture&);
+    friend void Direct3D10Renderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    Direct3D10Texture(ID3D10Device& device);
+    Direct3D10Texture(ID3D10Device& device, const String&);
     //! Construct texture from an image file.
-    Direct3D10Texture(ID3D10Device& device, const String& filename,
-                      const String& resourceGroup);
+    Direct3D10Texture(ID3D10Device& device, const String&,
+                      const String& filename, const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D10Texture(ID3D10Device& device, const Size& sz);
+    Direct3D10Texture(ID3D10Device& device, const String&, const Sizef& sz);
     //! Construct texture that wraps an existing D3D10 texture.
-    Direct3D10Texture(ID3D10Device& device, ID3D10Texture2D* tex);
+    Direct3D10Texture(ID3D10Device& device, const String&, ID3D10Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D10Texture();
 
@@ -124,14 +135,20 @@ protected:
     //! Shader resource view for the texture.
     ID3D10ShaderResourceView* d_resourceView;
     //! Size of the texture.
-    Size d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2f d_texelScaling;
+    //! The name used when the texture was created.
+    const String d_name;
 };
 
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIDirect3D10Texture_h_

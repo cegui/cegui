@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,6 +31,11 @@
 #include "../../CEGUITexture.h"
 #include "CEGUINullRenderer.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -39,27 +44,31 @@ class NULL_GUIRENDERER_API NullTexture : public Texture
 {
 public:
     // implement CEGUI::Texture interface
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const String& getName() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
-                        PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
+                                PixelFormat pixel_format);
+    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // we all need a little help from out friends ;)
-    friend Texture& NullRenderer::createTexture();
-    friend Texture& NullRenderer::createTexture(const String&, const String&);
-    friend Texture& NullRenderer::createTexture(const Size&);
+    friend Texture& NullRenderer::createTexture(const String&);
+    friend Texture& NullRenderer::createTexture(const String&, const String&, const String&);
+    friend Texture& NullRenderer::createTexture(const String&, const Sizef&);
     friend void NullRenderer::destroyTexture(Texture&);
+    friend void NullRenderer::destroyTexture(const String&);
 
     //! standard constructor
-    NullTexture();
+    NullTexture(const String& name);
     //! construct texture via an image file.
-    NullTexture(const String& filename, const String& resourceGroup);
+    NullTexture(const String& name, const String& filename,
+                const String& resourceGroup);
     //! construct texture with a specified initial size.
-    NullTexture(const Size& sz);
+    NullTexture(const String& name, const Sizef& sz);
 
     //! destructor.
     virtual ~NullTexture();
@@ -69,13 +78,19 @@ protected:
     //! Counter used to provide unique texture names.
     static uint32 d_textureNumber;
     //! Size of the texture.
-    Size d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2f d_texelScaling;
+    //! Name this texture was created with.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUINullTexture_h_

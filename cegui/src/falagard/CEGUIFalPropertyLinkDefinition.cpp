@@ -39,7 +39,7 @@ namespace CEGUI
 
     PropertyLinkDefinition::PropertyLinkDefinition(
                                 const String& propertyName,
-                                const String& widgetNameSuffix,
+                                const String& widgetName,
                                 const String& targetProperty,
                                 const String& initialValue,
                                 bool redrawOnWrite,
@@ -56,8 +56,8 @@ namespace CEGUI
     {
         // add initial target if it was specified via constructor
         // (typically meaning it came via XML attributes)
-        if (!widgetNameSuffix.empty() || !targetProperty.empty())
-            addLinkTarget(widgetNameSuffix, targetProperty);
+        if (!widgetName.empty() || !targetProperty.empty())
+            addLinkTarget(widgetName, targetProperty);
     }
 
     String PropertyLinkDefinition::get(const PropertyReceiver* receiver) const
@@ -65,7 +65,7 @@ namespace CEGUI
         const LinkTargetCollection::const_iterator i(d_targets.begin());
 
         const Window* const target_wnd =
-            getTargetWindow(receiver, (*i).d_widgetNameSuffix);
+            getTargetWindow(receiver, (*i).d_widgetName);
 
         // if no target, or target (currently) invalid, return the default value
         if (d_targets.empty() || !target_wnd)
@@ -84,7 +84,7 @@ namespace CEGUI
         for ( ; i != d_targets.end(); ++i)
         {
             Window* target_wnd = getTargetWindow(receiver,
-                                                 (*i).d_widgetNameSuffix);
+                                                 (*i).d_widgetName);
 
             // only try to set property if target is currently valid.
             if (target_wnd)
@@ -103,7 +103,7 @@ namespace CEGUI
             return static_cast<const Window*>(receiver);
 
         return getTargetWindow(receiver,
-                               (*d_targets.begin()).d_widgetNameSuffix);
+                               (*d_targets.begin()).d_widgetName);
     }
 
     Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver)
@@ -127,25 +127,24 @@ namespace CEGUI
 
     const Window* PropertyLinkDefinition::getTargetWindow(
                                             const PropertyReceiver* receiver,
-                                            const String& name_suffix) const
+                                            const String& name) const
     {
-        if (name_suffix.empty())
+        if (name.empty())
             return static_cast<const Window*>(receiver);
 
         // handle link back to parent.  Return receiver if no parent.
-        if (name_suffix == S_parentIdentifier)
+        if (name== S_parentIdentifier)
             return static_cast<const Window*>(receiver)->getParent();
 
-        return WindowManager::getSingleton().getWindow(
-            static_cast<const Window*>(receiver)->getName() + name_suffix);
+        return static_cast<const Window*>(receiver)->getChild(name);
     }
 
     Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver,
-                                                    const String& name_suffix)
+                                                    const String& name)
     {
         return const_cast<Window*>(
             static_cast<const PropertyLinkDefinition*>(this)->
-                getTargetWindow(receiver, name_suffix));
+                getTargetWindow(receiver, name));
     }
 
     void PropertyLinkDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
@@ -167,8 +166,8 @@ namespace CEGUI
         // if there is one target only, write it out as attributes
         if (d_targets.size() == 1)
         {
-            if (!(*i).d_widgetNameSuffix.empty())
-                xml_stream.attribute("widget", (*i).d_widgetNameSuffix);
+            if (!(*i).d_widgetName.empty())
+                xml_stream.attribute("widget", (*i).d_widgetName);
 
             if (!(*i).d_targetProperty.empty())
                 xml_stream.attribute("targetProperty", (*i).d_targetProperty);
@@ -180,8 +179,8 @@ namespace CEGUI
             {
                 xml_stream.openTag("PropertyLinkTarget");
 
-                if (!(*i).d_widgetNameSuffix.empty())
-                    xml_stream.attribute("widget", (*i).d_widgetNameSuffix);
+                if (!(*i).d_widgetName.empty())
+                    xml_stream.attribute("widget", (*i).d_widgetName);
 
                 if (!(*i).d_targetProperty.empty())
                     xml_stream.attribute("property", (*i).d_targetProperty);

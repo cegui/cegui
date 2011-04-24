@@ -27,7 +27,7 @@ struct WindowRenderer_wrapper : CEGUI::WindowRenderer, bp::wrapper< CEGUI::Windo
         CEGUI::WindowRenderer::getRenderingContext( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect(  ) const  {
         if( bp::override func_getUnclippedInnerRect = this->get_override( "getUnclippedInnerRect" ) )
             return func_getUnclippedInnerRect(  );
         else{
@@ -35,7 +35,7 @@ struct WindowRenderer_wrapper : CEGUI::WindowRenderer, bp::wrapper< CEGUI::Windo
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect(  ) const  {
         return CEGUI::WindowRenderer::getUnclippedInnerRect( );
     }
 
@@ -74,10 +74,7 @@ void register_WindowRenderer_class(){
 
     { //::CEGUI::WindowRenderer
         typedef bp::class_< WindowRenderer_wrapper, boost::noncopyable > WindowRenderer_exposer_t;
-        WindowRenderer_exposer_t WindowRenderer_exposer = WindowRenderer_exposer_t( "WindowRenderer", "*!\n\
-        \n\
-            Base-class for the assignable WindowRenderer object\n\
-        *\n", bp::init< CEGUI::String const &, bp::optional< CEGUI::String const & > >(( bp::arg("name"), bp::arg("class_name")="Window" ), "*************************************************************************\n\
+        WindowRenderer_exposer_t WindowRenderer_exposer = WindowRenderer_exposer_t( "WindowRenderer", bp::init< CEGUI::String const &, bp::optional< CEGUI::String const & > >(( bp::arg("name"), bp::arg("class_name")="Window" ), "*************************************************************************\n\
                 Constructor  Destructor\n\
             **************************************************************************\n\
             *!\n\
@@ -148,8 +145,8 @@ void register_WindowRenderer_class(){
         }
         { //::CEGUI::WindowRenderer::getUnclippedInnerRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::WindowRenderer::*getUnclippedInnerRect_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( WindowRenderer_wrapper::*default_getUnclippedInnerRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::WindowRenderer::*getUnclippedInnerRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( WindowRenderer_wrapper::*default_getUnclippedInnerRect_function_type )(  ) const;
             
             WindowRenderer_exposer.def( 
                 "getUnclippedInnerRect"

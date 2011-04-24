@@ -15,8 +15,8 @@ struct PropertyLinkDefinition_wrapper : CEGUI::PropertyLinkDefinition, bp::wrapp
         
     }
 
-    PropertyLinkDefinition_wrapper(::CEGUI::String const & propertyName, ::CEGUI::String const & widgetNameSuffix, ::CEGUI::String const & targetProperty, ::CEGUI::String const & initialValue, bool redrawOnWrite, bool layoutOnWrite )
-    : CEGUI::PropertyLinkDefinition( boost::ref(propertyName), boost::ref(widgetNameSuffix), boost::ref(targetProperty), boost::ref(initialValue), redrawOnWrite, layoutOnWrite )
+    PropertyLinkDefinition_wrapper(::CEGUI::String const & propertyName, ::CEGUI::String const & widgetName, ::CEGUI::String const & targetProperty, ::CEGUI::String const & initialValue, bool redrawOnWrite, bool layoutOnWrite )
+    : CEGUI::PropertyLinkDefinition( boost::ref(propertyName), boost::ref(widgetName), boost::ref(targetProperty), boost::ref(initialValue), redrawOnWrite, layoutOnWrite )
       , bp::wrapper< CEGUI::PropertyLinkDefinition >(){
         // constructor
     
@@ -104,7 +104,7 @@ void register_PropertyLinkDefinition_class(){
         \n\
             Class representing a property that links to another property defined on\n\
             an attached child widget.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool, bool >(( bp::arg("propertyName"), bp::arg("widgetNameSuffix"), bp::arg("targetProperty"), bp::arg("initialValue"), bp::arg("redrawOnWrite"), bp::arg("layoutOnWrite") )) );
+        *\n", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool, bool >(( bp::arg("propertyName"), bp::arg("widgetName"), bp::arg("targetProperty"), bp::arg("initialValue"), bp::arg("redrawOnWrite"), bp::arg("layoutOnWrite") )) );
         bp::scope PropertyLinkDefinition_scope( PropertyLinkDefinition_exposer );
         { //::CEGUI::PropertyLinkDefinition::addLinkTarget
         
@@ -114,7 +114,7 @@ void register_PropertyLinkDefinition_class(){
                 "addLinkTarget"
                 , addLinkTarget_function_type( &::CEGUI::PropertyLinkDefinition::addLinkTarget )
                 , ( bp::arg("widget"), bp::arg("property") )
-                , "! add a new link target to  property on  widget (name suffix).\n" );
+                , "! add a new link target to  property on  widget (name).\n" );
         
         }
         { //::CEGUI::PropertyLinkDefinition::clearLinkTargets
@@ -124,7 +124,7 @@ void register_PropertyLinkDefinition_class(){
             PropertyLinkDefinition_exposer.def( 
                 "clearLinkTargets"
                 , clearLinkTargets_function_type( &::CEGUI::PropertyLinkDefinition::clearLinkTargets )
-                , "! add a new link target to  property on  widget (name suffix).\n\
+                , "! add a new link target to  property on  widget (name).\n\
             ! clear all link targets from this link definition.\n" );
         
         }

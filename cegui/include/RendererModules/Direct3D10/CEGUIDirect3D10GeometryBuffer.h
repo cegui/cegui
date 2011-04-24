@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@
 #include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D10Renderer.h"
 #include "../../CEGUIRect.h"
+#include "../../CEGUIQuaternion.h"
 
 #include <d3dx10.h>
 
@@ -59,10 +60,10 @@ public:
 
     // Implement GeometryBuffer interface.
     void draw() const;
-    void setTranslation(const Vector3& v);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
-    void setClippingRegion(const Rect& region);
+    void setTranslation(const Vector3f& v);
+    void setRotation(const Quaternion& r);
+    void setPivot(const Vector3f& p);
+    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -117,13 +118,13 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
-    Vector3 d_translation;
-    //! rotation vector
-    Vector3 d_rotation;
+    Vector3f d_translation;
+    //! rotation Quaternion
+    Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3 d_pivot;
+    Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache

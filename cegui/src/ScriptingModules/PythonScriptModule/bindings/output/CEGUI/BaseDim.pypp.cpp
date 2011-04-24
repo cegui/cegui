@@ -25,7 +25,7 @@ struct BaseDim_wrapper : CEGUI::BaseDim, bp::wrapper< CEGUI::BaseDim > {
         return func_getValue_impl( boost::ref(wnd) );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rect const & container ) const {
+    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
         bp::override func_getValue_impl = this->get_override( "getValue_impl" );
         return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
     }
@@ -46,10 +46,7 @@ void register_BaseDim_class(){
 
     { //::CEGUI::BaseDim
         typedef bp::class_< BaseDim_wrapper, boost::noncopyable > BaseDim_exposer_t;
-        BaseDim_exposer_t BaseDim_exposer = BaseDim_exposer_t( "BaseDim", "*!\n\
-        \n\
-            Abstract interface for a generic 'dimension' class.\n\
-        *\n", bp::init< >() );
+        BaseDim_exposer_t BaseDim_exposer = BaseDim_exposer_t( "BaseDim", bp::init< >() );
         bp::scope BaseDim_scope( BaseDim_exposer );
         { //::CEGUI::BaseDim::clone
         
@@ -147,7 +144,7 @@ void register_BaseDim_class(){
         }
         { //::CEGUI::BaseDim::getValue
         
-            typedef float ( ::CEGUI::BaseDim::*getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rect const & ) const;
+            typedef float ( ::CEGUI::BaseDim::*getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
             
             BaseDim_exposer.def( 
                 "getValue"
@@ -189,7 +186,7 @@ void register_BaseDim_class(){
         }
         { //::CEGUI::BaseDim::getValue_impl
         
-            typedef float ( BaseDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rect const & ) const;
+            typedef float ( BaseDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
             
             BaseDim_exposer.def( 
                 "getValue_impl"

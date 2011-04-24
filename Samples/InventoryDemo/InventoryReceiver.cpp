@@ -58,7 +58,7 @@ bool InventoryReceiver::addItemAtLocation(InventoryItem& item, int x, int y)
 
         item.setLocationOnReceiver(x, y);
         writeItemToContentMap(item);
-        addChildWindow(&item);
+        addChild(&item);
 
         // set position and size.  This ensures the items visually match the
         // logical content map.
@@ -86,7 +86,7 @@ void InventoryReceiver::removeItem(InventoryItem& item)
 
     eraseItemFromContentMap(item);
     item.setLocationOnReceiver(-1, -1);
-    removeChildWindow(&item);
+    removeChild(&item);
 }
 
 //------------------------------------------------------------------------------//
@@ -178,13 +178,13 @@ void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
     if (!item)
         return;
 
-    const Size square_size(squarePixelSize());
+    const Sizef square_size(squarePixelSize());
 
-    Rect item_area(item->getUnclippedOuterRect());
-    item_area.offset(Point(square_size.d_width / 2, square_size.d_height / 2));
+    Rectf item_area(item->getUnclippedOuterRect());
+    item_area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
 
-    const int drop_x = gridXLocationFromPixelPosition(item_area.d_left);
-    const int drop_y = gridYLocationFromPixelPosition(item_area.d_top);
+    const int drop_x = gridXLocationFromPixelPosition(item_area.left());
+    const int drop_y = gridYLocationFromPixelPosition(item_area.top());
 
     addItemAtLocation(*item, drop_x, drop_y);
 }
@@ -195,12 +195,12 @@ void InventoryReceiver::populateGeometryBuffer()
     if (!isUserStringDefined("BlockImage"))
         return;
 
-    const Image* img = PropertyHelper::stringToImage(getUserString("BlockImage"));
+    const Image* img = PropertyHelper<Image*>::fromString(getUserString("BlockImage"));
 
     if (!img)
         return;
 
-    const Size square_size(squarePixelSize());
+    const Sizef square_size(squarePixelSize());
 
     for (int y = 0; y < d_content.height(); ++y)
     {
@@ -210,16 +210,16 @@ void InventoryReceiver::populateGeometryBuffer()
             if (d_content.elementAtLocation(x, y))
                 colour = 0xFF0000FF;
 
-            img->draw(*d_geometry,
-                      Vector2(x * square_size.d_width + 1, y * square_size.d_height + 1),
-                      Size(square_size.d_width - 2, square_size.d_height - 2), 0,
-                      colour, colour, colour, colour);
+            img->render(*d_geometry,
+                        Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                        Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
+                        ColourRect(colour));
         }
     }
 }
 
 //------------------------------------------------------------------------------//
-Rect InventoryReceiver::gridBasePixelRect() const
+Rectf InventoryReceiver::gridBasePixelRect() const
 {
     return getChildWindowContentArea();
 }

@@ -32,6 +32,11 @@
 #include "CEGUINullRenderer.h"
 #include "../../CEGUIRect.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -48,21 +53,25 @@ public:
     // implement parts of CEGUI::RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rectf& area);
+    const Rectf& getArea() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2& p_in, Vector2& p_out) const;
+                        const Vector2f& p_in, Vector2f& p_out) const;
     bool isImageryCache() const;
 
 protected:
     //! NullRenderer object that owns this RenderTarget
     NullRenderer& d_owner;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rectf d_area;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUINullRenderTarget_h_

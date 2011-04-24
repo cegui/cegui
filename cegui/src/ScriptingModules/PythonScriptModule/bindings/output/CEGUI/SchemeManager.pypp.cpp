@@ -61,7 +61,7 @@ void register_SchemeManager_class(){
         bp::scope SchemeManager_scope( SchemeManager_exposer );
         { //::CEGUI::SchemeManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > > > ( ::CEGUI::SchemeManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > > > ( ::CEGUI::SchemeManager::*getIterator_function_type )(  ) const;
             
             SchemeManager_exposer.def( 
                 "getIterator"

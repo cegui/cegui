@@ -111,7 +111,7 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -269,7 +269,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::getContentPaneArea
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::ScrollablePane::*getContentPaneArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::ScrollablePane::*getContentPaneArea_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getContentPaneArea"
@@ -435,7 +435,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::getViewableArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrollablePane::*getViewableArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ScrollablePane::*getViewableArea_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getViewableArea"
@@ -515,7 +515,7 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::setContentPaneArea
         
-            typedef void ( ::CEGUI::ScrollablePane::*setContentPaneArea_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::ScrollablePane::*setContentPaneArea_function_type )( ::CEGUI::Rectf const & ) ;
             
             ScrollablePane_exposer.def( 
                 "setContentPaneArea"
@@ -751,14 +751,14 @@ void register_ScrollablePane_class(){
         ScrollablePane_exposer.add_static_property( "EventVertScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::ScrollablePane::EventVertScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::HorzScrollbarNameSuffix
+        ScrollablePane_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "ScrolledContainerNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::ScrolledContainerNameSuffix
+        ScrollablePane_exposer.add_static_property( "ScrolledContainerName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::ScrolledContainerName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        ScrollablePane_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::ScrollablePane::VertScrollbarNameSuffix
+        ScrollablePane_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::ScrollablePane::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -842,8 +842,8 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ScrollablePane_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrollablePane_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrollablePane_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -853,8 +853,8 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ScrollablePane_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( ScrollablePane_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             ScrollablePane_exposer.def( 
                 "isHit"

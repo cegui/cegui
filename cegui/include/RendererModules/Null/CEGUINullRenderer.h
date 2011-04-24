@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@
 #include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef NULL_GUIRENDERER_EXPORTS
+#   ifdef CEGUINULLRENDERER_EXPORTS
 #       define NULL_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define NULL_GUIRENDERER_API __declspec(dllimport)
@@ -112,16 +112,20 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -133,12 +137,19 @@ protected:
     //! destructor.
     virtual ~NullRenderer();
 
+    //! helper to throw exception if name is already used.
+    void throwIfNameExists(const String& name) const;
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
+
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -152,9 +163,10 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<NullTexture*> TextureList;
+    typedef std::map<String, NullTexture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, NullTexture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
 };

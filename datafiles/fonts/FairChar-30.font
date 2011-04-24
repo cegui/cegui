@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Font Name="FairChar-30" Filename="FairChar.imageset" Type="Pixmap" NativeHorzRes="640" NativeVertRes="480" AutoScaled="false">
+<Font Name="FairChar" Filename="FairChar.imageset" Type="Pixmap" NativeHorzRes="640" NativeVertRes="480" AutoScaled="false">
 	<Mapping Codepoint="32" Image=" " HorzAdvance="15" />
 	<Mapping Codepoint="65" Image="A" />
 	<Mapping Codepoint="66" Image="B" />

@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,6 +33,7 @@
 #include "CEGUIRenderEffect.h"
 #include "CEGUIIrrlichtTexture.h"
 #include "CEGUIVertex.h"
+#include "CEGUIQuaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,17 +55,10 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_material.Lighting = false;
     d_material.ZBuffer = 0;
     d_material.ZWriteEnable = false;
-    #if CEGUI_IRR_SDK_VERSION >= 16
-        d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
-        d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(
-                irr::video::EBF_SRC_ALPHA,
-                irr::video::EBF_ONE_MINUS_SRC_ALPHA,
-                irr::video::EMFN_MODULATE_1X,
-                irr::video::EAS_NONE);
-    #else
-        d_material.MaterialType = irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-        d_material.MaterialTypeParam = 0;
-    #endif
+
+    // force upate of blending options to suit the default 'normal' mode
+    d_blendMode = BM_INVALID;
+    setBlendMode(BM_NORMAL);
 }
 
 //----------------------------------------------------------------------------//
@@ -79,9 +73,9 @@ void IrrlichtGeometryBuffer::draw() const
     const irr::core::matrix4 proj
         (d_driver.getTransform(irr::video::ETS_PROJECTION));
 
-    const Size csz(d_clipRect.getSize());
-    const Size tsz(static_cast<float>(target_vp.getWidth()),
-                   static_cast<float>(target_vp.getHeight()));
+    const Sizef csz(d_clipRect.getSize());
+    const Sizef tsz(static_cast<float>(target_vp.getWidth()),
+                     static_cast<float>(target_vp.getHeight()));
 
     // set modified projection 'scissor' matix that negates scale and
     // translation that would be done by setting the viewport to the clip area.
@@ -90,19 +84,19 @@ void IrrlichtGeometryBuffer::draw() const
     scsr(1, 1) = tsz.d_height / csz.d_height;
     scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
                    (target_vp.UpperLeftCorner.X -
-                     (d_clipRect.d_left + csz.d_width * 0.5f))) / csz.d_width;
+                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
     scsr(3, 1) = -(tsz.d_height + 2.0f *
                    (target_vp.UpperLeftCorner.Y -
-                     (d_clipRect.d_top + csz.d_height * 0.5f))) / csz.d_height;
+                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
     scsr *= proj;
     d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
 
     // set new viewport for the clipping area
     const irr::core::rect<irr::s32> vp(
-            static_cast<irr::s32>(d_clipRect.d_left),
-            static_cast<irr::s32>(d_clipRect.d_top),
-            static_cast<irr::s32>(d_clipRect.d_right),
-            static_cast<irr::s32>(d_clipRect.d_bottom));
+            static_cast<irr::s32>(d_clipRect.left()),
+            static_cast<irr::s32>(d_clipRect.top()),
+            static_cast<irr::s32>(d_clipRect.right()),
+            static_cast<irr::s32>(d_clipRect.bottom()));
     d_driver.setViewPort(vp);
 
     if (!d_matrixValid)
@@ -140,7 +134,7 @@ void IrrlichtGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3& v)
+void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation.X = v.d_x;
     d_translation.Y = v.d_y;
@@ -149,8 +143,9 @@ void IrrlichtGeometryBuffer::setTranslation(const Vector3& v)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Vector3& r)
+void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
 {
+    d_rotation.W = -r.d_w;
     d_rotation.X = r.d_x;
     d_rotation.Y = r.d_y;
     d_rotation.Z = r.d_z;
@@ -158,7 +153,7 @@ void IrrlichtGeometryBuffer::setRotation(const Vector3& r)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3& p)
+void IrrlichtGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot.X = p.d_x;
     d_pivot.Y = p.d_y;
@@ -167,12 +162,12 @@ void IrrlichtGeometryBuffer::setPivot(const Vector3& p)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setClippingRegion(const Rect& region)
+void IrrlichtGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//
@@ -258,6 +253,52 @@ RenderEffect* IrrlichtGeometryBuffer::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
+void IrrlichtGeometryBuffer::setBlendMode(const BlendMode mode)
+{
+    // if blend mode is already set to this, ignore.
+    if (d_blendMode == mode)
+        return;
+
+    // call default to set mode field (in case we change how that's done)
+    GeometryBuffer::setBlendMode(mode);
+
+#if CEGUI_IRR_SDK_VERSION >= 16
+    // FIXME: Here we just use the 'best of a bad situation' option
+    // FIXME: which results in incorrect accumulation of alpha values
+    // FIXME: in texture based targets.  There is no fix for this that is
+    // FIXME: possible with the stock Irrlicht; while we could creata an
+    // FIXME: appropriate custom material, it would involve directly linking
+    // FIXME: with the various underlying rendering APIs - which is fine for
+    // FIXME: an end user, but is definitely not what _we_ want to be doing.
+    //
+    // If anybody knows the above information to be incorrect, and has a fix
+    // for this issue, please let us know! :)
+
+/*    if (d_blendMode == BM_RTT_PREMULTIPLIED)
+    {
+        d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
+        d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(
+                irr::video::EBF_ONE,
+                irr::video::EBF_ONE_MINUS_SRC_ALPHA,
+                irr::video::EMFN_MODULATE_1X,
+                irr::video::EAS_NONE);
+    }
+    else */
+    {
+        d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
+        d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(
+                irr::video::EBF_SRC_ALPHA,
+                irr::video::EBF_ONE_MINUS_SRC_ALPHA,
+                irr::video::EMFN_MODULATE_1X,
+                irr::video::EAS_NONE);
+    }
+#else
+    d_material.MaterialType = irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+    d_material.MaterialTypeParam = 0;
+#endif
+}
+
+//----------------------------------------------------------------------------//
 const irr::core::matrix4& IrrlichtGeometryBuffer::getMatrix() const
 {
     return d_matrix;
@@ -269,12 +310,10 @@ void IrrlichtGeometryBuffer::updateMatrix() const
     d_matrix.makeIdentity();
     d_matrix.setTranslation(d_translation + d_pivot);
 
-    irr::core::matrix4 rot;
-    rot.setRotationDegrees(d_rotation);
     irr::core::matrix4 ptrans;
     ptrans.setTranslation(-d_pivot);
 
-    d_matrix *= rot;
+    d_matrix *= d_rotation.getMatrix();
     d_matrix *= ptrans;
 
     d_matrixValid = true;

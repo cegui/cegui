@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -42,7 +42,6 @@ Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner) :
     d_vertexBuffer(0),
     d_bufferSize(0),
     d_bufferSynched(false),
-    d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -62,10 +61,10 @@ void Direct3D11GeometryBuffer::draw() const
 {
     // setup clip region
     D3D11_RECT clip;
-    clip.left   = static_cast<LONG>(d_clipRect.d_left);
-    clip.top    = static_cast<LONG>(d_clipRect.d_top);
-    clip.right  = static_cast<LONG>(d_clipRect.d_right);
-    clip.bottom = static_cast<LONG>(d_clipRect.d_bottom);
+    clip.left   = static_cast<LONG>(d_clipRect.left());
+    clip.top    = static_cast<LONG>(d_clipRect.top());
+    clip.right  = static_cast<LONG>(d_clipRect.right());
+    clip.bottom = static_cast<LONG>(d_clipRect.bottom());
     d_device.d_context->RSSetScissorRects(1, &clip);
 
     if (!d_bufferSynched)
@@ -110,33 +109,33 @@ void Direct3D11GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setTranslation(const Vector3& v)
+void Direct3D11GeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setRotation(const Vector3& r)
+void Direct3D11GeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setPivot(const Vector3& p)
+void Direct3D11GeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setClippingRegion(const Rect& region)
+void Direct3D11GeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//
@@ -232,10 +231,10 @@ void Direct3D11GeometryBuffer::updateMatrix() const
                         d_translation.d_z);
 
     D3DXQUATERNION r;
-    D3DXQuaternionRotationYawPitchRoll(&r,
-        D3DXToRadian(d_rotation.d_y),
-        D3DXToRadian(d_rotation.d_x),
-        D3DXToRadian(d_rotation.d_z));
+    r.x = d_rotation.d_x;
+    r.y = d_rotation.d_y;
+    r.z = d_rotation.d_z;
+    r.w = d_rotation.d_w;
 
     D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
 
@@ -311,3 +310,4 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

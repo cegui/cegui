@@ -60,7 +60,7 @@ namespace CEGUI
         \return
             Size object describing the size of the rendered tooltip text in pixels.
         */
-        virtual Size getTextSize() const = 0;
+        virtual Sizef getTextSize() const = 0;
     };
 
     /*!
@@ -261,7 +261,7 @@ namespace CEGUI
         \return
             Size object describing the size of the rendered tooltip text in pixels.
         */
-        Size getTextSize() const;
+        Sizef getTextSize() const;
 
         /*!
         \brief
@@ -271,7 +271,7 @@ namespace CEGUI
         \return
             Size object describing the size of the rendered tooltip text in pixels.
         */
-        virtual Size getTextSize_impl() const;
+        virtual Sizef getTextSize_impl() const;
 
     protected:
         /*************************************************************************

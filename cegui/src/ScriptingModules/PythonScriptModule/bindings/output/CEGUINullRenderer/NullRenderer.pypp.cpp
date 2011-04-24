@@ -103,6 +103,18 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         CEGUI::NullRenderer::destroyTexture( boost::ref(texture) );
     }
 
+    virtual void destroyTexture( ::CEGUI::String const & name ) {
+        if( bp::override func_destroyTexture = this->get_override( "destroyTexture" ) )
+            func_destroyTexture( boost::ref(name) );
+        else{
+            this->CEGUI::NullRenderer::destroyTexture( boost::ref(name) );
+        }
+    }
+    
+    void default_destroyTexture( ::CEGUI::String const & name ) {
+        CEGUI::NullRenderer::destroyTexture( boost::ref(name) );
+    }
+
     virtual void destroyTextureTarget( ::CEGUI::TextureTarget * target ) {
         if( bp::override func_destroyTextureTarget = this->get_override( "destroyTextureTarget" ) )
             func_destroyTextureTarget( boost::python::ptr(target) );
@@ -139,7 +151,15 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         return CEGUI::NullRenderer::getMaxTextureSize( );
     }
 
-    virtual void setDisplaySize( ::CEGUI::Size const & sz ) {
+    static void logTextureCreation( ::CEGUI::String const & name ){
+        CEGUI::NullRenderer::logTextureCreation( boost::ref(name) );
+    }
+
+    static void logTextureDestruction( ::CEGUI::String const & name ){
+        CEGUI::NullRenderer::logTextureDestruction( boost::ref(name) );
+    }
+
+    virtual void setDisplaySize( ::CEGUI::Sizef const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
         else{
@@ -147,8 +167,12 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         }
     }
     
-    void default_setDisplaySize( ::CEGUI::Size const & sz ) {
+    void default_setDisplaySize( ::CEGUI::Sizef const & sz ) {
         CEGUI::NullRenderer::setDisplaySize( boost::ref(sz) );
+    }
+
+    void throwIfNameExists( ::CEGUI::String const & name ) const {
+        CEGUI::NullRenderer::throwIfNameExists( boost::ref(name) );
     }
 
 };
@@ -232,33 +256,34 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )(  ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::String const & ) ;
             
             NullRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
+                , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::NullRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
             
             NullRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
-                , ( bp::arg("filename"), bp::arg("resourceGroup") )
+                , ( bp::arg("name"), bp::arg("filename"), bp::arg("resourceGroup") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::NullRenderer::createTexture
         
-            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::Size const & ) ;
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*createTexture_function_type )( ::CEGUI::String const &,::CEGUI::Sizef const & ) ;
             
             NullRenderer_exposer.def( 
                 "createTexture"
                 , createTexture_function_type(&::CEGUI::NullRenderer::createTexture)
-                , ( bp::arg("size") )
+                , ( bp::arg("name"), bp::arg("size") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -366,6 +391,18 @@ void register_NullRenderer_class(){
                 , ( bp::arg("texture") ) );
         
         }
+        { //::CEGUI::NullRenderer::destroyTexture
+        
+            typedef void ( ::CEGUI::NullRenderer::*destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( NullRenderer_wrapper::*default_destroyTexture_function_type )( ::CEGUI::String const & ) ;
+            
+            NullRenderer_exposer.def( 
+                "destroyTexture"
+                , destroyTexture_function_type(&::CEGUI::NullRenderer::destroyTexture)
+                , default_destroyTexture_function_type(&NullRenderer_wrapper::default_destroyTexture)
+                , ( bp::arg("name") ) );
+        
+        }
         { //::CEGUI::NullRenderer::destroyTextureTarget
         
             typedef void ( ::CEGUI::NullRenderer::*destroyTextureTarget_function_type )( ::CEGUI::TextureTarget * ) ;
@@ -401,7 +438,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplayDPI
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::NullRenderer::*getDisplayDPI_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplayDPI"
@@ -411,7 +448,7 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::getDisplaySize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::NullRenderer::*getDisplaySize_function_type )(  ) const;
             
             NullRenderer_exposer.def( 
                 "getDisplaySize"
@@ -440,10 +477,45 @@ void register_NullRenderer_class(){
                 , default_getMaxTextureSize_function_type(&NullRenderer_wrapper::default_getMaxTextureSize) );
         
         }
+        { //::CEGUI::NullRenderer::getTexture
+        
+            typedef ::CEGUI::Texture & ( ::CEGUI::NullRenderer::*getTexture_function_type )( ::CEGUI::String const & ) const;
+            
+            NullRenderer_exposer.def( 
+                "getTexture"
+                , getTexture_function_type(&::CEGUI::NullRenderer::getTexture)
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::NullRenderer::logTextureCreation
+        
+            typedef void ( *logTextureCreation_function_type )( ::CEGUI::String const & );
+            
+            NullRenderer_exposer.def( 
+                "logTextureCreation"
+                , logTextureCreation_function_type( &NullRenderer_wrapper::logTextureCreation )
+                , ( bp::arg("name") )
+                , "! helper to throw exception if name is already used.\n\
+            ! helper to safely log the creation of a named texture\n" );
+        
+        }
+        { //::CEGUI::NullRenderer::logTextureDestruction
+        
+            typedef void ( *logTextureDestruction_function_type )( ::CEGUI::String const & );
+            
+            NullRenderer_exposer.def( 
+                "logTextureDestruction"
+                , logTextureDestruction_function_type( &NullRenderer_wrapper::logTextureDestruction )
+                , ( bp::arg("name") )
+                , "! helper to safely log the creation of a named texture\n\
+            ! helper to safely log the destruction of a named texture\n" );
+        
+        }
         { //::CEGUI::NullRenderer::setDisplaySize
         
-            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
-            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::NullRenderer::*setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( NullRenderer_wrapper::*default_setDisplaySize_function_type )( ::CEGUI::Sizef const & ) ;
             
             NullRenderer_exposer.def( 
                 "setDisplaySize"
@@ -452,10 +524,23 @@ void register_NullRenderer_class(){
                 , ( bp::arg("sz") ) );
         
         }
+        { //::CEGUI::NullRenderer::throwIfNameExists
+        
+            typedef void ( NullRenderer_wrapper::*throwIfNameExists_function_type )( ::CEGUI::String const & ) const;
+            
+            NullRenderer_exposer.def( 
+                "throwIfNameExists"
+                , throwIfNameExists_function_type( &NullRenderer_wrapper::throwIfNameExists )
+                , ( bp::arg("name") )
+                , "! helper to throw exception if name is already used.\n" );
+        
+        }
         NullRenderer_exposer.staticmethod( "bootstrapSystem" );
         NullRenderer_exposer.staticmethod( "create" );
         NullRenderer_exposer.staticmethod( "destroy" );
         NullRenderer_exposer.staticmethod( "destroySystem" );
+        NullRenderer_exposer.staticmethod( "logTextureCreation" );
+        NullRenderer_exposer.staticmethod( "logTextureDestruction" );
     }
 
 }

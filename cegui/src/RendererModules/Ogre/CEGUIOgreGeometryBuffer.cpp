@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -113,7 +113,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
-    d_rotation(0, 0, 0),
+    d_rotation(Quaternion::IDENTITY),
     d_pivot(0, 0, 0),
     d_effect(0),
     d_texelOffset(rs.getHorizontalTexelOffset(), rs.getVerticalTexelOffset()),
@@ -133,8 +133,8 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 void OgreGeometryBuffer::draw() const
 {
     // Set up clipping for this buffer
-    d_renderSystem.setScissorTest(true, d_clipRect.d_left, d_clipRect.d_top,
-                                  d_clipRect.d_right, d_clipRect.d_bottom);
+    d_renderSystem.setScissorTest(true, d_clipRect.left(), d_clipRect.top(),
+                                  d_clipRect.right(), d_clipRect.bottom());
 
     if (!d_sync)
         syncHardwareBuffer();
@@ -173,33 +173,33 @@ void OgreGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setTranslation(const Vector3& v)
+void OgreGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setRotation(const Vector3& r)
+void OgreGeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setPivot(const Vector3& p)
+void OgreGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setClippingRegion(const Rect& region)
+void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//
@@ -288,7 +288,7 @@ RenderEffect* OgreGeometryBuffer::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
-Ogre::RGBA OgreGeometryBuffer::colourToOgre(const colour& col) const
+Ogre::RGBA OgreGeometryBuffer::colourToOgre(const Colour& col) const
 {
     Ogre::ColourValue ocv(col.getRed(),
                           col.getGreen(),
@@ -311,13 +311,8 @@ void OgreGeometryBuffer::updateMatrix() const
                     d_translation.d_z + d_pivot.d_z);
 
     // rotation
-    Ogre::Quaternion qz(Ogre::Degree(d_rotation.d_z),
-                        Ogre::Vector3::UNIT_Z);
-    Ogre::Quaternion qy(Ogre::Degree(d_rotation.d_y),
-                        Ogre::Vector3::UNIT_Y);
-    Ogre::Quaternion qx(Ogre::Degree(d_rotation.d_x),
-                        Ogre::Vector3::UNIT_X);
-    Ogre::Matrix4 rot(qz * qy * qx);
+    Ogre::Matrix4 rot(Ogre::Quaternion(
+        d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;

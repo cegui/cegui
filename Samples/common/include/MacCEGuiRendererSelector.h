@@ -31,6 +31,10 @@
 #include "CEGuiRendererSelector.h"
 #include <string>
 
+#ifdef __APPLE__
+#   include <Carbon/Carbon.h>
+#endif
+
 //! RendererSelector for Apple Mac via Carbon
 class MacCEGuiRendererSelector : public CEGuiRendererSelector
 {

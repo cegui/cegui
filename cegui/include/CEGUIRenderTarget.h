@@ -29,6 +29,8 @@
 #define _CEGUIRenderTarget_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIVector.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,7 +41,8 @@ namespace CEGUI
     instances of objects that implement the RenderTarget interface are
     normally created via the Renderer object.
 */
-class CEGUIEXPORT RenderTarget
+class CEGUIEXPORT RenderTarget :
+    public AllocatedObject<RenderTarget>
 {
 public:
     //! Destructor
@@ -82,7 +85,7 @@ public:
         May be thrown if the RenderTarget does not support setting or changing
         its area, or if the area change can not be satisfied for some reason.
     */
-    virtual void setArea(const Rect& area) = 0;
+    virtual void setArea(const Rectf& area) = 0;
 
     /*!
     \brief
@@ -91,7 +94,7 @@ public:
     \return
         Rect object describing the currently defined area for this RenderTarget.
     */
-    virtual const Rect& getArea() const = 0;
+    virtual const Rectf& getArea() const = 0;
 
     /*!
     \brief
@@ -136,7 +139,7 @@ public:
         Resulting point is local to GeometryBuffer \a buff.
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
-                                const Vector2& p_in, Vector2& p_out) const = 0;
+                                const Vector2f& p_in, Vector2f& p_out) const = 0;
 };
 
 } // End of  CEGUI namespace section

@@ -41,10 +41,10 @@ bool TextDemo::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     // We need a font
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting
     if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
     {
@@ -52,7 +52,7 @@ bool TextDemo::initialiseSample()
     }
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -63,12 +63,12 @@ bool TextDemo::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
     // Load our layout as a basic
-    background->addChildWindow (winMgr.loadWindowLayout ("TextDemo.layout"));
+    background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
 
     // Init the seperate blocks which make up this sample
     initStaticText();
@@ -76,7 +76,7 @@ bool TextDemo::initialiseSample()
     initMultiLineEdit();
 
     // Quit button
-    subscribeEvent("TextDemo/Quit", PushButton::EventClicked, Event::Subscriber(&TextDemo::quit, this));
+    subscribeEvent("Root/TextDemo/Quit", PushButton::EventClicked, Event::Subscriber(&TextDemo::quit, this));
 
     // Success (so far)
     return true;
@@ -85,38 +85,38 @@ bool TextDemo::initialiseSample()
 void TextDemo::initStaticText()
 {
     // Name, Group, Selected
-    initRadio("TextDemo/HorzLeft", 0, true);
-    initRadio("TextDemo/HorzRight", 0, false);
-    initRadio("TextDemo/HorzCentered", 0, false);
+    initRadio("Root/TextDemo/HorzLeft", 0, true);
+    initRadio("Root/TextDemo/HorzRight", 0, false);
+    initRadio("Root/TextDemo/HorzCentered", 0, false);
     // New group!
-    initRadio("TextDemo/VertTop", 1, true);
-    initRadio("TextDemo/VertBottom", 1, false);
-    initRadio("TextDemo/VertCentered", 1, false);
+    initRadio("Root/TextDemo/VertTop", 1, true);
+    initRadio("Root/TextDemo/VertBottom", 1, false);
+    initRadio("Root/TextDemo/VertCentered", 1, false);
     //
     // Events
     //
     // Word-wrap checkbox (we can't re-use a handler struct for the last argument!!)
-    subscribeEvent("TextDemo/Wrap", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("TextDemo/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/Wrap", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
 }
 
 void TextDemo::initSingleLineEdit()
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    Window* root = System::getSingleton().getGUISheet();
     // Only accepts digits for the age field
-    if (winMgr.isWindowPresent("TextDemo/editAge"))
+    if (root->isChild("Root/TextDemo/editAge"))
     {
-        static_cast<Editbox*>(winMgr.getWindow("TextDemo/editAge"))->setValidationString("[0-9]*");
+        static_cast<Editbox*>(root->getChild("Root/TextDemo/editAge"))->setValidationString("[0-9]*");
     }
     // Set password restrictions
-    if (winMgr.isWindowPresent("TextDemo/editAge"))
+    if (root->isChild("Root/TextDemo/editPasswd"))
     {
-        Editbox* passwd = static_cast<Editbox*>(winMgr.getWindow("TextDemo/editPasswd"));
+        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextDemo/editPasswd"));
         passwd->setValidationString("[A-Za-z0-9]*");
         // Render masked
         passwd->setTextMasked(true);
@@ -126,15 +126,15 @@ void TextDemo::initSingleLineEdit()
 void TextDemo::initMultiLineEdit()
 {
     // Scrollbar checkbox
-    subscribeEvent("TextDemo/forceScroll", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
+    subscribeEvent("Root/TextDemo/forceScroll", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
 }
 
 void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
-    if (winMgr.isWindowPresent(radio))
+    Window* root = System::getSingleton().getGUISheet();
+    if (root->isChild(radio))
     {
-        RadioButton* button = static_cast<RadioButton*>(winMgr.getWindow(radio));
+        RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
         button->setGroupID(group);
         button->setSelected(selected);
     }
@@ -142,21 +142,21 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 
 void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
-    if (winMgr.isWindowPresent(widget))
+    Window* root = System::getSingleton().getGUISheet();
+    if (root->isChild(widget))
     {
-        Window* window = winMgr.getWindow(widget);
+        Window* window = root->getChild(widget);
         window->subscribeEvent(event, method);
     }
 }
 
 bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    Window* root = System::getSingleton().getGUISheet();
     // Check
-    if (winMgr.isWindowPresent(radio))
+    if (root->isChild(radio))
     {
-        RadioButton* button = static_cast<RadioButton*>(winMgr.getWindow(radio));
+        RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
         return button->isSelected();
     }
     return false;
@@ -164,11 +164,11 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 
 bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    Window* root = System::getSingleton().getGUISheet();
     // Check
-    if (winMgr.isWindowPresent(checkbox))
+    if (root->isChild(checkbox))
     {
-        Checkbox* button = static_cast<Checkbox*>(winMgr.getWindow(checkbox));
+        Checkbox* button = static_cast<Checkbox*>(root->getChild(checkbox));
         return button->isSelected();
     }
     return false;
@@ -176,30 +176,29 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 
 bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 {
-    // we will use the WindowManager to get access to the widgets
-    WindowManager& winMgr = WindowManager::getSingleton();
+    Window* root = System::getSingleton().getGUISheet();
 
-    if (winMgr.isWindowPresent("TextDemo/StaticText"))
+    if (root->isChild("Root/TextDemo/StaticText"))
     {
         // and also the static text for which we will set the formatting options
-        Window* st = winMgr.getWindow("TextDemo/StaticText");
+        Window* st = root->getChild("Root/TextDemo/StaticText");
 
         // handle vertical formatting settings
-        if (isRadioSelected("TextDemo/VertTop"))
+        if (isRadioSelected("Root/TextDemo/VertTop"))
             st->setProperty("VertFormatting", "TopAligned");
-        else if (isRadioSelected("TextDemo/VertBottom"))
+        else if (isRadioSelected("Root/TextDemo/VertBottom"))
             st->setProperty("VertFormatting", "BottomAligned");
-        else if (isRadioSelected("TextDemo/VertCentered"))
+        else if (isRadioSelected("Root/TextDemo/VertCentered"))
             st->setProperty("VertFormatting", "VertCentred");
 
         // handle horizontal formatting settings
-        bool wrap = isCheckboxSelected("TextDemo/Wrap");
+        bool wrap = isCheckboxSelected("Root/TextDemo/Wrap");
 
-        if (isRadioSelected("TextDemo/HorzLeft"))
+        if (isRadioSelected("Root/TextDemo/HorzLeft"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
-        else if (isRadioSelected("TextDemo/HorzRight"))
+        else if (isRadioSelected("Root/TextDemo/HorzRight"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
-        else if (isRadioSelected("TextDemo/HorzCentered"))
+        else if (isRadioSelected("Root/TextDemo/HorzCentered"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapCentred" : "HorzCentred");
     }
 
@@ -209,13 +208,13 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    Window* root = System::getSingleton().getGUISheet();
 
-    if (winMgr.isWindowPresent("TextDemo/editMulti"))
+    if (root->isChild("Root/TextDemo/editMulti"))
     {
-        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(winMgr.getWindow("TextDemo/editMulti"));
+        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextDemo/editMulti"));
         // Use setter for a change
-        multiEdit->setShowVertScrollbar(isCheckboxSelected("TextDemo/forceScroll"));
+        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextDemo/forceScroll"));
     }
 
     // event was handled

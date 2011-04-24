@@ -101,11 +101,11 @@ namespace CEGUI
         static const String EventTextInputModeChanged;
 
         /*************************************************************************
-            Component widget name suffix strings
+            Component widget name strings
         *************************************************************************/
-        static const String EditboxNameSuffix;          //!< Widget name suffix for the editbox thumb component.
-        static const String IncreaseButtonNameSuffix;   //!< Widget name suffix for the increase button component.
-        static const String DecreaseButtonNameSuffix;   //!< Widget name suffix for the decrease button component.
+        static const String EditboxName;          //!< Widget name for the editbox thumb component.
+        static const String IncreaseButtonName;   //!< Widget name for the increase button component.
+        static const String DecreaseButtonName;   //!< Widget name for the decrease button component.
 
         /*************************************************************************
             Object Construction and Destruction

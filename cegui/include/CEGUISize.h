@@ -38,33 +38,107 @@ namespace CEGUI
 
 /*!
 \brief
+    How aspect ratio should be maintained
+*/
+enum AspectMode
+{
+    //! Ignores the target aspect (default)
+    AM_IGNORE,
+    /*!
+    Satisfies the aspect ratio by shrinking the size as little
+    as possible to fit inside it
+    */
+    AM_SHRINK,
+    /*!
+    Satisfies the aspect ratio by expanding the widget as little
+    as possible outside it
+    */
+    AM_EXPAND
+};
+
+/*!
+\brief
 	Class that holds the size (width & height) of something.
 */
-class CEGUIEXPORT Size
+template<typename T>
+class Size:
+    public AllocatedObject<Size<T> >
 {
 public:
-	Size(void) {}
-	Size(float width, float height) : d_width(width), d_height(height) {}
-	Size(const Size& v): d_width(v.d_width), d_height(v.d_height) {}
+	inline Size()
+    {}
 
-	bool operator==(const Size& other) const;
-	bool operator!=(const Size& other) const;
+	inline Size(const T& width, const T& height):
+        d_width(width),
+        d_height(height)
+    {}
 
-	float d_width, d_height;
+	inline Size(const Size& v):
+        d_width(v.d_width),
+        d_height(v.d_height)
+    {}
 
-	Size operator*(float c) const
+	inline bool operator==(const Size& other) const
+    {
+	    return d_width == other.d_width && d_height == other.d_height;
+    }
+
+	inline bool operator!=(const Size& other) const
+    {
+	    return !operator==(other);
+    }
+
+	inline Size operator*(const T& c) const
 	{
 		return Size(d_width * c, d_height * c);
 	}
 
-	Size operator+(const Size& s) const
+	inline Size operator+(const Size& s) const
 	{
 		return Size(d_width + s.d_width, d_height + s.d_height);
 	}
+
+	inline void clamp(Size min, Size max)
+	{
+        if (d_width < min.d_width)
+            d_width = min.d_width;
+        else if (d_width > max.d_width)
+            d_width = max.d_width;
+        if (d_height < min.d_height)
+            d_height = min.d_height;
+        else if (d_height > max.d_height)
+            d_height = max.d_height;
+	}
+
+	inline void scaleToAspect(AspectMode mode, T ratio)
+	{
+	    if (mode == AM_IGNORE)
+	        return;
+
+	    assert(d_width > 0 || d_height > 0);
+	    assert(ratio > 0);
+
+	    const T expectedWidth = d_height * ratio;
+        const bool keepHeight = (mode == AM_SHRINK) ?
+                expectedWidth <= d_width : expectedWidth >= d_width;
+
+        if (keepHeight)
+        {
+            d_width = expectedWidth;
+        }
+        else
+        {
+            d_height = d_width / ratio;
+        }
+	}
+
+	T d_width;
+    T d_height;
 };
+
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Size<float> Sizef;
 
 } // End of  CEGUI namespace section
 
-
 #endif	// end of guard _CEGUISize_h_
-

@@ -88,25 +88,22 @@ public:
     void defineMapping(const utf32 codepoint, const String& image_name, 
                        const float horz_advance);
 
-    //! Return the name of the imageset the font is using for it's glyphs.
-    const String& getImageset() const;
+    //! Return the image name prefix that the font is using for it's glyphs.
+    const String& getImageNamePrefix() const;
 
     /*!
     \brief
-        Set Imageset the font is using for it's glyphs.
+        Set image name prefix font should use for it's glyphs.
 
-        This will potentially cause an existing imageset to be unloaded (if it
-        was created specifically by, and for, this Font).  The new Imageset
-        must already exist within the system.
+        This will potentially cause existing images to be destroyed (if they
+        were created specifically by, and for, this Font).  Images using the new
+        name prefix must already exist within the system.
 
-    \param imageset
-        Name ofan existing image set to be used as the glyph source for this
-        Font.
-
-    \exception UnknownObjectException
-        thrown if \a imageset is not known in the system.
+    \param name_prefix
+        Name prefix used by an existing set of images to be used as the glyph
+        source for this Font.
     */
-    void setImageset(const String& imageset);
+    void setImageNamePrefix(const String& name_prefix);
 
 protected:
     //! Initialize the imageset.
@@ -118,8 +115,8 @@ protected:
     void updateFont ();
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const;
 
-    //! The imageset with the glyphs
-    Imageset* d_glyphImages;
+    //! The Image name prefix used for the glyphs
+    String d_imageNamePrefix;
     //! Current X scaling for glyph images
     float d_origHorzScaling;
     //! true if we own the imageset

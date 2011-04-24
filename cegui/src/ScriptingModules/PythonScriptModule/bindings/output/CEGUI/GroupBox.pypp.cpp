@@ -111,7 +111,7 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -295,8 +295,8 @@ void register_GroupBox_class(){
                 , ( bp::arg("class_name") ) );
         
         }
-        GroupBox_exposer.add_static_property( "ContentPaneNameSuffix"
-                        , bp::make_getter( &CEGUI::GroupBox::ContentPaneNameSuffix
+        GroupBox_exposer.add_static_property( "ContentPaneName"
+                        , bp::make_getter( &CEGUI::GroupBox::ContentPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -391,8 +391,8 @@ void register_GroupBox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( GroupBox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( GroupBox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             GroupBox_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -402,8 +402,8 @@ void register_GroupBox_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( GroupBox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( GroupBox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             GroupBox_exposer.def( 
                 "isHit"

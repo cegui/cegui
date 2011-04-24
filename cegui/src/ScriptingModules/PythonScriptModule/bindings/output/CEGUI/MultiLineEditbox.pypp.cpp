@@ -111,7 +111,7 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -251,32 +251,32 @@ void register_MultiLineEditbox_class(){
             LineInfo_exposer.def_readwrite( "d_length", &CEGUI::MultiLineEditbox::LineInfo::d_length );
             LineInfo_exposer.def_readwrite( "d_startIdx", &CEGUI::MultiLineEditbox::LineInfo::d_startIdx );
         }
-        { //::CEGUI::MultiLineEditbox::ensureCaratIsVisible
+        { //::CEGUI::MultiLineEditbox::ensureCaretIsVisible
         
-            typedef void ( ::CEGUI::MultiLineEditbox::*ensureCaratIsVisible_function_type )(  ) ;
+            typedef void ( ::CEGUI::MultiLineEditbox::*ensureCaretIsVisible_function_type )(  ) ;
             
             MultiLineEditbox_exposer.def( 
-                "ensureCaratIsVisible"
-                , ensureCaratIsVisible_function_type( &::CEGUI::MultiLineEditbox::ensureCaratIsVisible )
+                "ensureCaretIsVisible"
+                , ensureCaretIsVisible_function_type( &::CEGUI::MultiLineEditbox::ensureCaretIsVisible )
                 , "*!\n\
             \n\
-               Scroll the view so that the current carat position is visible.\n\
+               Scroll the view so that the current caret position is visible.\n\
             *\n" );
         
         }
-        { //::CEGUI::MultiLineEditbox::getCaratIndex
+        { //::CEGUI::MultiLineEditbox::getCaretIndex
         
-            typedef ::size_t ( ::CEGUI::MultiLineEditbox::*getCaratIndex_function_type )(  ) const;
+            typedef ::size_t ( ::CEGUI::MultiLineEditbox::*getCaretIndex_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
-                "getCaratIndex"
-                , getCaratIndex_function_type( &::CEGUI::MultiLineEditbox::getCaratIndex )
+                "getCaretIndex"
+                , getCaretIndex_function_type( &::CEGUI::MultiLineEditbox::getCaretIndex )
                 , "*!\n\
                \n\
-                  return the current position of the carat.\n\
+                  return the current position of the caret.\n\
             \n\
                @return\n\
-                  Index of the insert carat relative to the start of the text.\n\
+                  Index of the insert caret relative to the start of the text.\n\
                *\n" );
         
         }
@@ -369,7 +369,7 @@ void register_MultiLineEditbox_class(){
                @return\n\
                   Index of the selection end point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
@@ -403,13 +403,13 @@ void register_MultiLineEditbox_class(){
                @return\n\
                   Index of the selection start point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
         { //::CEGUI::MultiLineEditbox::getTextRenderArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::MultiLineEditbox::*getTextRenderArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::MultiLineEditbox::*getTextRenderArea_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
                 "getTextRenderArea"
@@ -528,22 +528,22 @@ void register_MultiLineEditbox_class(){
                *\n" );
         
         }
-        { //::CEGUI::MultiLineEditbox::setCaratIndex
+        { //::CEGUI::MultiLineEditbox::setCaretIndex
         
-            typedef void ( ::CEGUI::MultiLineEditbox::*setCaratIndex_function_type )( ::size_t ) ;
+            typedef void ( ::CEGUI::MultiLineEditbox::*setCaretIndex_function_type )( ::size_t ) ;
             
             MultiLineEditbox_exposer.def( 
-                "setCaratIndex"
-                , setCaratIndex_function_type( &::CEGUI::MultiLineEditbox::setCaratIndex )
-                , ( bp::arg("carat_pos") )
+                "setCaretIndex"
+                , setCaretIndex_function_type( &::CEGUI::MultiLineEditbox::setCaretIndex )
+                , ( bp::arg("caret_pos") )
                 , "*!\n\
                \n\
-                  Set the current position of the carat.\n\
+                  Set the current position of the caret.\n\
             \n\
-               @param carat_pos\n\
-                  New index for the insert carat relative to the start of the text.  If the value specified is\
+               @param caret_pos\n\
+                  New index for the insert caret relative to the start of the text.  If the value specified is\
                   greater than the\n\
-                  number of characters in the edit box, the carat is positioned at the end of the text.\n\
+                  number of characters in the edit box, the caret is positioned at the end of the text.\n\
             \n\
                @return\n\
                   Nothing.\n\
@@ -672,8 +672,8 @@ void register_MultiLineEditbox_class(){
                *\n" );
         
         }
-        MultiLineEditbox_exposer.add_static_property( "EventCaratMoved"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::EventCaratMoved
+        MultiLineEditbox_exposer.add_static_property( "EventCaretMoved"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::EventCaretMoved
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         MultiLineEditbox_exposer.add_static_property( "EventEditboxFull"
                         , bp::make_getter( &CEGUI::MultiLineEditbox::EventEditboxFull
@@ -696,11 +696,11 @@ void register_MultiLineEditbox_class(){
         MultiLineEditbox_exposer.add_static_property( "EventWordWrapModeChanged"
                         , bp::make_getter( &CEGUI::MultiLineEditbox::EventWordWrapModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiLineEditbox_exposer.add_static_property( "HorzScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::HorzScrollbarNameSuffix
+        MultiLineEditbox_exposer.add_static_property( "HorzScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::HorzScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        MultiLineEditbox_exposer.add_static_property( "VertScrollbarNameSuffix"
-                        , bp::make_getter( &CEGUI::MultiLineEditbox::VertScrollbarNameSuffix
+        MultiLineEditbox_exposer.add_static_property( "VertScrollbarName"
+                        , bp::make_getter( &CEGUI::MultiLineEditbox::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -795,8 +795,8 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( MultiLineEditbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( MultiLineEditbox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             MultiLineEditbox_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -806,8 +806,8 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( MultiLineEditbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( MultiLineEditbox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             MultiLineEditbox_exposer.def( 
                 "isHit"

@@ -36,14 +36,17 @@ class Window //: public EventSet
 {
 	string getType() const;
 	string getName() const;
+    string getNamePath() const;
     tolua_throws|CEGUI::Exception,error| void rename(utf8string new_name);
 
     bool isAutoWindow() const;
 
 	bool isDestroyedByParent() const;
 	bool isAlwaysOnTop() const;
-	bool isDisabled(bool localOnly=false) const;
-	bool isVisible(bool localOnly=false) const;
+	bool isDisabled() const;
+	bool isEffectiveDisabled() const;
+	bool isVisible() const;
+	bool isEffectiveVisible() const;
 	bool isActive() const;
 	bool isClippedByParent() const;
 
@@ -70,20 +73,22 @@ class Window //: public EventSet
 	bool isChild(const Window* window) const;
 	bool isChildRecursive(unsigned int ID) const;
 
-	void addChildWindow(utf8string name);
-	void addChildWindow(Window* window);
+	void addChild(Window* window);
 
-	void removeChildWindow(unsigned int ID);
-	void removeChildWindow(utf8string name);
-	void removeChildWindow(Window* window);
+	void removeChild(unsigned int ID);
+	void removeChild(utf8string name);
+	void removeChild(Window* window);
+
+    Window* createChild(utf8string type, utf8string name);
+    void destroyChild(Window* wnd);
+    void destroyChild(utf8string name_path);
 
 	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(unsigned int ID) const;
 	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(utf8string name) const;
     Window* getChildRecursive(unsigned int ID) const;
-    Window* getChildRecursive(utf8string name) const;
 	Window* getChildAtIdx(unsigned int ID) const;
-	Window* getChildAtPosition(const Vector2& pos) const;
-    Window* getTargetChildAtPosition(const Vector2& pos) const;
+	Window* getChildAtPosition(const Vector2<float>& pos) const;
+    Window* getTargetChildAtPosition(const Vector2<float>& pos) const;
 
     Window* getActiveChild() const;
     Window* getActiveSibling();
@@ -117,21 +122,21 @@ class Window //: public EventSet
 	bool isZOrderingEnabled() const;
 	void setZOrderingEnabled(bool setting);
 
-    Rect getUnclippedOuterRect() const;
-    Rect getUnclippedInnerRect() const;
-    Rect getUnclippedRect(bool inner) const;
-    Rect getOuterRectClipper() const;
-    Rect getInnerRectClipper() const;
-    Rect getClipRect(bool non_client = false) const;
-    Rect getHitTestRect() const;
+    Rect<float> getUnclippedOuterRect() const;
+    Rect<float> getUnclippedInnerRect() const;
+    Rect<float> getUnclippedRect(bool inner) const;
+    Rect<float> getOuterRectClipper() const;
+    Rect<float> getInnerRectClipper() const;
+    Rect<float> getClipRect(bool non_client = false) const;
+    Rect<float> getHitTestRect() const;
 
-    Size getPixelSize() const;
-    Size getParentPixelSize() const;
+    Size<float> getPixelSize() const;
+    Size<float> getParentPixelSize() const;
     float getParentPixelWidth() const;
     float getParentPixelHeight() const;
 
 	static Window* getCaptureWindow();
-	void setRestoreCapture(bool setting);
+	void setRestoreOldCapture(bool setting);
 	bool restoresOldCapture() const;
 
 	bool distributesCapturedInputs() const;
@@ -144,7 +149,7 @@ class Window //: public EventSet
 	bool isCapturedByAncestor() const;
 	bool isCapturedByChild() const;
 
-	bool isHit(const Vector2& pos) const;
+	bool isHit(const Vector2<float>& pos) const;
 
 	bool isRiseOnClickEnabled() const;
 	void setRiseOnClickEnabled(bool setting);
@@ -152,7 +157,7 @@ class Window //: public EventSet
 	const Image* getMouseCursor() const;
 	void setMouseCursor(MouseCursorImage cursor);
 	void setMouseCursor(const Image* image);
-	void setMouseCursor(utf8string imageset, utf8string image);
+	void setMouseCursor(utf8string name);
 
 	void moveToFront();
 	void moveToBack();
@@ -244,8 +249,8 @@ class Window //: public EventSet
     void setWritingXMLAllowed(bool allow);
 
     // rotation
-    const Vector3& getRotation() const;
-    void setRotation(const Vector3& rotation);
+    const Quaternion& getRotation() const;
+    void setRotation(const Quaternion& rotation);
 
     // rendering surface related
     RenderingSurface& getTargetRenderingSurface() const;
@@ -265,7 +270,7 @@ class Window //: public EventSet
     bool isTextParsingEnabled() const;
     void setTextParsingEnabled(bool setting);
 
-    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+    Vector2<float> getUnprojectedPosition(const Vector2<float>& pos) const;
 
     void banPropertyFromXML(utf8string property_name);
     void unbanPropertyFromXML(utf8string property_name);
@@ -274,10 +279,15 @@ class Window //: public EventSet
     void setUpdateMode(WindowUpdateMode mode);
     WindowUpdateMode getUpdateMode() const;
 
+    void setAspectMode(AspectMode mode);
+    AspectMode getAspectMode() const;
+    void setAspectRatio(float ratio);
+    float getAspectRatio() const;
+
     void setMouseInputPropagationEnabled(bool enabled);
     bool isMouseInputPropagationEnabled() const;
 
-    Window* clone(utf8string newName, bool deepCopy = true) const;
+    Window* clone(bool deepCopy = true) const;
 
     unsigned int getZIndex() const;
     bool isInFront(const Window& wnd) const;

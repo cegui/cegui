@@ -46,11 +46,7 @@ void register_RenderEffect_class(){
 
     { //::CEGUI::RenderEffect
         typedef bp::class_< RenderEffect_wrapper, boost::noncopyable > RenderEffect_exposer_t;
-        RenderEffect_exposer_t RenderEffect_exposer = RenderEffect_exposer_t( "RenderEffect", "*!\n\
-        \n\
-            Interface for objects that hook into RenderingWindow to affect the rendering\n\
-            process, thus allowing various effects to be achieved.\n\
-        *\n" );
+        RenderEffect_exposer_t RenderEffect_exposer = RenderEffect_exposer_t( "RenderEffect" );
         bp::scope RenderEffect_scope( RenderEffect_exposer );
         { //::CEGUI::RenderEffect::getPassCount
         

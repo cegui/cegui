@@ -125,6 +125,26 @@ public:
 
     /*!
     \brief
+        Creates a new T object from a RawDataContainer and adds it to the collection.
+
+        Use an instance of the xml resource loading class \a U to process the
+        XML source thereby creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param source
+        RawDataContainer holding the XML source to be used when creating the
+        new object instance.
+
+    \param action
+        One of the XMLResourceExistsAction enumerated values indicating what
+        action should be taken when an object with the specified name
+        already exists within the collection.
+    */
+    T& createFromContainer(const RawDataContainer& source,
+                           XMLResourceExistsAction action = XREA_RETURN);
+
+    /*!
+    \brief
         Creates a new T object from an XML file and adds it to the collection.
 
         Use an instance of the xml resource loading class \a U to process the
@@ -145,8 +165,28 @@ public:
         action should be taken when an object with the specified name
         already exists within the collection.
     */
-    T& create(const String& xml_filename, const String& resource_group = "",
-              XMLResourceExistsAction action = XREA_RETURN);
+    T& createFromFile(const String& xml_filename, const String& resource_group = "",
+                      XMLResourceExistsAction action = XREA_RETURN);
+
+    /*!
+    \brief
+        Creates a new T object from a string and adds it to the collection.
+
+        Use an instance of the xml resource loading class \a U to process the
+        XML source thereby creating an instance of class \a T and add it to the collection under
+        the name specified in the XML file.
+
+    \param source
+        String holding the XML source to be used when creating the
+        new object instance.
+
+    \param action
+        One of the XMLResourceExistsAction enumerated values indicating what
+        action should be taken when an object with the specified name
+        already exists within the collection.
+    */
+    T& createFromString(const String& source,
+                        XMLResourceExistsAction action = XREA_RETURN);
 
     /*!
     \brief
@@ -191,8 +231,10 @@ public:
     void createAll(const String& pattern, const String& resource_group);
 
 protected:
+    // singleton allocator fits here, resource managers are very likely to be singletons
     //! type of collection used to store and manage objects
-    typedef std::map<String, T*, String::FastLessCompare> ObjectRegistry;
+    typedef std::map<String, T*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, T*)> ObjectRegistry;
     //! implementation of object destruction.
     void destroyObject(typename ObjectRegistry::iterator ob);
     //! function to enforce XMLResourceExistsAction policy.
@@ -222,11 +264,37 @@ NamedXMLResourceManager<T, U>::~NamedXMLResourceManager()
 
 //----------------------------------------------------------------------------//
 template<typename T, typename U>
-T& NamedXMLResourceManager<T, U>::create(const String& xml_filename,
-                                        const String& resource_group,
-                                        XMLResourceExistsAction action)
+T& NamedXMLResourceManager<T, U>::createFromContainer(const RawDataContainer& source,
+                                                      XMLResourceExistsAction action)
 {
-    U xml_loader(xml_filename, resource_group);
+    U xml_loader;
+
+    xml_loader.handleContainer(source);
+    return doExistingObjectAction(xml_loader.getObjectName(),
+                                  &xml_loader.getObject(), action);
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+T& NamedXMLResourceManager<T, U>::createFromFile(const String& xml_filename,
+                                                 const String& resource_group,
+                                                 XMLResourceExistsAction action)
+{
+    U xml_loader;
+
+    xml_loader.handleFile(xml_filename, resource_group);
+    return doExistingObjectAction(xml_loader.getObjectName(),
+                                  &xml_loader.getObject(), action);
+}
+
+//----------------------------------------------------------------------------//
+template<typename T, typename U>
+T& NamedXMLResourceManager<T, U>::createFromString(const String& source,
+                                                   XMLResourceExistsAction action)
+{
+    U xml_loader;
+
+    xml_loader.handleString(source);
     return doExistingObjectAction(xml_loader.getObjectName(),
                                   &xml_loader.getObject(), action);
 }
@@ -302,7 +370,7 @@ void NamedXMLResourceManager<T, U>::destroyObject(
     // Set up event args for event notification
     ResourceEventArgs args(d_resourceType, ob->first);
 
-    delete ob->second;
+    CEGUI_DELETE_AO ob->second;
     d_objects.erase(ob);
 
     // fire event signalling an object has been destroyed
@@ -326,7 +394,7 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             Logger::getSingleton().logEvent("---- Returning existing instance "
                 "of " + d_resourceType + " named '" + object_name + "'.");
             // delete any new object we already had created
-            delete object;
+            CEGUI_DELETE_AO object;
             // return existing instance of object.
             return *d_objects[object_name];
 
@@ -339,14 +407,14 @@ T& NamedXMLResourceManager<T, U>::doExistingObjectAction(
             break;
 
         case XREA_THROW:
-            delete object;
+            CEGUI_DELETE_AO object;
             CEGUI_THROW(AlreadyExistsException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "an object of type '" + d_resourceType + "' named '" +
                 object_name + "' already exists in the collection."));
 
         default:
-            delete object;
+            CEGUI_DELETE_AO object;
             CEGUI_THROW(InvalidRequestException(
                 "NamedXMLResourceManager::checkExistingObjectAction: "
                 "Invalid CEGUI::XMLResourceExistsAction was specified."));
@@ -382,7 +450,7 @@ void NamedXMLResourceManager<T, U>::createAll(const String& pattern,
         getResourceGroupFileNames(names, pattern, resource_group);
 
     for (size_t i = 0; i < num; ++i)
-        create(names[i], resource_group);
+        createFromFile(names[i], resource_group);
 }
 
 //----------------------------------------------------------------------------//

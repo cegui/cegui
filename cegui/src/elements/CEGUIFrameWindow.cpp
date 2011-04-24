@@ -33,8 +33,7 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -47,19 +46,7 @@ const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
 /*************************************************************************
 	Definitions for Properties
 *************************************************************************/
-FrameWindowProperties::SizingEnabled			FrameWindow::d_sizingEnabledProperty;
-FrameWindowProperties::FrameEnabled				FrameWindow::d_frameEnabledProperty;
-FrameWindowProperties::TitlebarEnabled			FrameWindow::d_titlebarEnabledProperty;
-FrameWindowProperties::CloseButtonEnabled		FrameWindow::d_closeButtonEnabledProperty;
 FrameWindowProperties::RollUpState				FrameWindow::d_rollUpStateProperty;
-FrameWindowProperties::RollUpEnabled			FrameWindow::d_rollUpEnabledProperty;
-FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProperty;
-FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
-FrameWindowProperties::NSSizingCursorImage      FrameWindow::d_nsSizingCursorProperty;
-FrameWindowProperties::EWSizingCursorImage      FrameWindow::d_ewSizingCursorProperty;
-FrameWindowProperties::NWSESizingCursorImage    FrameWindow::d_nwseSizingCursorProperty;
-FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorProperty;
-
 
 /*************************************************************************
 	Constants
@@ -74,10 +61,10 @@ const String FrameWindow::EventDragSizingEnded("DragSizingEnded");
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String FrameWindow::TitlebarNameSuffix( "__auto_titlebar__" );
-const String FrameWindow::CloseButtonNameSuffix( "__auto_closebutton__" );
+const String FrameWindow::TitlebarName( "__auto_titlebar__" );
+const String FrameWindow::CloseButtonName( "__auto_closebutton__" );
 
 
 /*************************************************************************
@@ -134,7 +121,7 @@ void FrameWindow::initialiseComponents(void)
 *************************************************************************/
 bool FrameWindow::isTitleBarEnabled(void) const
 {
-    return !getTitlebar()->isDisabled(true);
+    return !getTitlebar()->isDisabled();
 }
 
 
@@ -143,7 +130,7 @@ bool FrameWindow::isTitleBarEnabled(void) const
 *************************************************************************/
 bool FrameWindow::isCloseButtonEnabled(void) const
 {
-    return !getCloseButton()->isDisabled(true);
+    return !getCloseButton()->isDisabled();
 }
 
 
@@ -225,7 +212,7 @@ void FrameWindow::toggleRollup(void)
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
-void FrameWindow::offsetPixelPosition(const Vector2& offset)
+void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 {
     UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
                      cegui_absdim(PixelAligned(offset.d_y)));
@@ -239,9 +226,9 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
 *************************************************************************/
-FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt) const
+FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& pt) const
 {
-	Rect	frame(getSizingRect());
+	Rectf frame(getSizingRect());
 
 	// we can only size if the frame is enabled and sizing is on
 	if (isSizingEnabled() && isFrameEnabled())
@@ -250,16 +237,16 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 		if (frame.isPointInRect(pt))
 		{
 			// adjust rect to get inner edge
-			frame.d_left	+= d_borderSize;
-			frame.d_top		+= d_borderSize;
-			frame.d_right	-= d_borderSize;
-			frame.d_bottom	-= d_borderSize;
+			frame.d_min.d_x += d_borderSize;
+			frame.d_min.d_y += d_borderSize;
+			frame.d_max.d_x -= d_borderSize;
+			frame.d_max.d_y -= d_borderSize;
 
 			// detect which edges we are on
-			bool top	= (pt.d_y < frame.d_top);
-			bool bottom = (pt.d_y >= frame.d_bottom);
-			bool left	= (pt.d_x < frame.d_left);
-			bool right	= (pt.d_x >= frame.d_right);
+			bool top = (pt.d_y < frame.d_min.d_y);
+			bool bottom = (pt.d_y >= frame.d_max.d_y);
+			bool left = (pt.d_x < frame.d_min.d_x);
+			bool right = (pt.d_x >= frame.d_max.d_x);
 
 			// return appropriate 'SizingLocation' value
 			if (top && left)
@@ -317,8 +304,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -359,8 +346,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -403,8 +390,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -447,8 +434,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -495,7 +482,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 	Set the appropriate mouse cursor for the given window-relative pixel
 	point.
 *************************************************************************/
-void FrameWindow::setCursorForPoint(const Point& pt) const
+void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
@@ -567,7 +554,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-		Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2f localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
@@ -599,7 +586,9 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 				top_left_sizing |= moveBottomEdge(deltaY, new_area);
 			}
 
-            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
+            // todo: vector vs size
+            const USize sz = new_area.getSize();
+            setArea_impl(new_area.d_min, UVector2(sz.d_width, sz.d_height), top_left_sizing);
 		}
 		else
 		{
@@ -626,7 +615,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 		if (isSizingEnabled())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(CoordConverter::screenToWindow(*this, e.position));
+			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
@@ -744,20 +733,65 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::addFrameWindowProperties(void)
 {
-	addProperty(&d_sizingEnabledProperty);
-	addProperty(&d_frameEnabledProperty);
-	addProperty(&d_titlebarEnabledProperty);
-	addProperty(&d_closeButtonEnabledProperty);
-	addProperty(&d_rollUpEnabledProperty);
-	addProperty(&d_rollUpStateProperty);
-	addProperty(&d_dragMovingEnabledProperty);
-	addProperty(&d_sizingBorderThicknessProperty);
-    addProperty(&d_nsSizingCursorProperty);
-    addProperty(&d_ewSizingCursorProperty);
-    addProperty(&d_nwseSizingCursorProperty);
-    addProperty(&d_neswSizingCursorProperty);
-}
+    const String& propertyOrigin = WidgetTypeName;
 
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "SizingEnabled", "Property to get/set the state of the sizable setting for the FrameWindow. Value is either \"True\" or \"False\".",
+        &FrameWindow::setSizingEnabled, &FrameWindow::isSizingEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "FrameEnabled", "Property to get/set the setting for whether the window frame will be displayed. Value is either \"True\" or \"False\".",
+        &FrameWindow::setFrameEnabled, &FrameWindow::isFrameEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "TitlebarEnabled", "Property to get/set the setting for whether the window title-bar will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        &FrameWindow::setTitleBarEnabled, &FrameWindow::isTitleBarEnabled, true
+    ); // TODO: Inconsistency between Titlebar and TitleBar
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "CloseButtonEnabled", "Property to get/set the setting for whether the window close button will be enabled (or displayed depending upon choice of final widget type). Value is either \"True\" or \"False\".",
+        &FrameWindow::setCloseButtonEnabled, &FrameWindow::isCloseButtonEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "RollUpEnabled", "Property to get/set the setting for whether the user is able to roll-up / shade the window. Value is either \"True\" or \"False\".",
+        &FrameWindow::setRollupEnabled, &FrameWindow::isRollupEnabled, true
+    ); // TODO: Inconsistency between RollUp and Rollup
+
+	addProperty(&d_rollUpStateProperty);
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "DragMovingEnabled", "Property to get/set the setting for whether the user may drag the window around by its title bar. Value is either \"True\" or \"False\".",
+        &FrameWindow::setDragMovingEnabled, &FrameWindow::isDragMovingEnabled, true
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, float,
+        "SizingBorderThickness", "Property to get/set the setting for the sizing border thickness. Value is a float specifying the border thickness in pixels.",
+        &FrameWindow::setSizingBorderThickness, &FrameWindow::getSizingBorderThickness, 8.0f
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NSSizingCursorImage", "Property to get/set the N-S (up-down) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNSSizingCursorImage, &FrameWindow::getNSSizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "EWSizingCursorImage", "Property to get/set the E-W (left-right) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setEWSizingCursorImage, &FrameWindow::getEWSizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NWSESizingCursorImage", "Property to get/set the NW-SE diagonal sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNWSESizingCursorImage, &FrameWindow::getNWSESizingCursorImage, 0
+    );
+
+	CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
+        "NESWSizingCursorImage", "Property to get/set the NE-SW diagonal sizing cursor image for the FramwWindow. Value should be \"set:[imageset name] image:[image name]\".",
+        &FrameWindow::setNESWSizingCursorImage, &FrameWindow::getNESWSizingCursorImage, 0
+    );
+}
 
 /*************************************************************************
     return the image used for the north-south sizing cursor.
@@ -826,33 +860,33 @@ void FrameWindow::setNESWSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
-void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNSSizingCursorImage(const String& name)
 {
-    d_nsSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nsSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the east-west sizing cursor.
 *************************************************************************/
-void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setEWSizingCursorImage(const String& name)
 {
-    d_ewSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_ewSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNWSESizingCursorImage(const String& name)
 {
-    d_nwseSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_nwseSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
     set the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
+void FrameWindow::setNESWSizingCursorImage(const String& name)
 {
-    d_neswSizingCursor = &ImagesetManager::getSingleton().get(imageset).getImage(image);
+    d_neswSizingCursor = &ImageManager::getSingleton().get(name);
 }
 
 /*************************************************************************
@@ -860,8 +894,7 @@ void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String&
 *************************************************************************/
 Titlebar* FrameWindow::getTitlebar() const
 {
-    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(
-                                  getName() + TitlebarNameSuffix));
+    return static_cast<Titlebar*>(getChild(TitlebarName));
 }
 
 /*************************************************************************
@@ -870,8 +903,7 @@ Titlebar* FrameWindow::getTitlebar() const
 *************************************************************************/
 PushButton* FrameWindow::getCloseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                    getName() + CloseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(CloseButtonName));
 }
 
 //----------------------------------------------------------------------------//

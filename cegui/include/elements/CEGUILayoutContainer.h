@@ -49,7 +49,7 @@ namespace CEGUI
     required interface for derived classes.
 
     Layout Container provide means for automatic positioning based on sizes of
-    it's child Windows. This is usefull for dynamic UIs.
+    it's child Windows. This is useful for dynamic UIs.
 */
 class CEGUIEXPORT LayoutContainer : public Window
 {
@@ -104,24 +104,25 @@ public:
     virtual void layoutIfNecessary();
 
     /// @copydoc Window::getUnclippedInnerRect_impl
-    virtual Rect getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
     /// @copydoc Window::update
     virtual void update(float elapsed);
 
 protected:
     /// @copydoc Window::getClientChildWindowContentArea_impl
-    virtual Rect getClientChildWindowContentArea_impl() const;
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     //! @copydoc Window::testClassName_impl
-    virtual bool    testClassName_impl(const String& class_name) const
+    virtual bool testClassName_impl(const String& class_name) const
     {
-        if (class_name == "LayoutContainer")  return true;
+        if (class_name == "LayoutContainer")
+            return true;
 
         return Window::testClassName_impl(class_name);
     }
 
-    size_t getIdxOfChildWindow(Window* wnd) const;
+    size_t getIdxOfChild(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl
     virtual void addChild_impl(Window* wnd);

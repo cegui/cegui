@@ -58,7 +58,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardTree : public WindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -73,7 +73,7 @@ namespace CEGUI
         */
         ~FalagardTree();
     protected:
-        Rect getTreeRenderArea(void) const;
+        Rectf getTreeRenderArea(void) const;
 		void render();
     };
 

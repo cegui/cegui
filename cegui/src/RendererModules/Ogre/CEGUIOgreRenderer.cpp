@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,6 +35,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIOgreResourceProvider.h"
 #include "CEGUIOgreImageCodec.h"
+#include "CEGUILogger.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
@@ -67,7 +68,8 @@ typedef std::vector<TextureTarget*> TextureTargetList;
 //! container type used to hold GeometryBuffers we create.
 typedef std::vector<OgreGeometryBuffer*> GeometryBufferList;
 //! container type used to hold Textures we create.
-typedef std::vector<OgreTexture*> TextureList;
+typedef std::map<String, OgreTexture*, StringFastLessCompare
+                 CEGUI_MAP_ALLOC(String, OgreTexture*)> TextureMap;
 
 //----------------------------------------------------------------------------//
 // Implementation data for the OgreRenderer
@@ -86,9 +88,9 @@ struct OgreRenderer_impl
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -98,7 +100,7 @@ struct OgreRenderer_impl
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! OGRE root object ptr
@@ -290,57 +292,119 @@ void OgreRenderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture()
+Texture& OgreRenderer::createTexture(const String& name)
 {
-    OgreTexture* t = new OgreTexture;
-    d_pimpl->d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    OgreTexture* t = new OgreTexture(name);
+    d_pimpl->d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture(const String& filename,
+Texture& OgreRenderer::createTexture(const String& name, const String& filename,
                                      const String& resourceGroup)
 {
-    OgreTexture* t = new OgreTexture(filename, resourceGroup);
-    d_pimpl->d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    OgreTexture* t = new OgreTexture(name, filename, resourceGroup);
+    d_pimpl->d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture(const Size& size)
+Texture& OgreRenderer::createTexture(const String& name, const Sizef& size)
 {
-    OgreTexture* t = new OgreTexture(size);
-    d_pimpl->d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    OgreTexture* t = new OgreTexture(name, size);
+    d_pimpl->d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OgreRenderer::createTexture(Ogre::TexturePtr& tex, bool take_ownership)
+Texture& OgreRenderer::createTexture(const String& name, Ogre::TexturePtr& tex,
+                                     bool take_ownership)
 {
-    OgreTexture* t = new OgreTexture(tex, take_ownership);
-    d_pimpl->d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    OgreTexture* t = new OgreTexture(name, tex, take_ownership);
+    d_pimpl->d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::throwIfNameExists(const String& name) const
+{
+    if (d_pimpl->d_textures.find(name) != d_pimpl->d_textures.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[OgreRenderer] Texture already exists: " + name));
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::logTextureCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[OgreRenderer] Created texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_pimpl->d_textures.begin(),
-                                        d_pimpl->d_textures.end(),
-                                        &texture);
+    destroyTexture(texture.getName());
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_pimpl->d_textures.find(name);
 
     if (d_pimpl->d_textures.end() != i)
     {
+        logTextureDestruction(name);
+        delete i->second;
         d_pimpl->d_textures.erase(i);
-        delete &static_cast<OgreTexture&>(texture);
     }
+}
+
+//----------------------------------------------------------------------------//
+void OgreRenderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[OgreRenderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void OgreRenderer::destroyAllTextures()
 {
     while (!d_pimpl->d_textures.empty())
-        destroyTexture(**d_pimpl->d_textures.begin());
+        destroyTexture(d_pimpl->d_textures.begin()->first);
+}
+
+//----------------------------------------------------------------------------//
+Texture& OgreRenderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_pimpl->d_textures.find(name);
+    
+    if (i == d_pimpl->d_textures.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[OgreRenderer] Texture does not exist: " + name));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -386,13 +450,13 @@ void OgreRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size& OgreRenderer::getDisplaySize() const
+const Sizef& OgreRenderer::getDisplaySize() const
 {
     return d_pimpl->d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OgreRenderer::getDisplayDPI() const
+const Vector2f& OgreRenderer::getDisplayDPI() const
 {
     return d_pimpl->d_displayDPI;
 }
@@ -481,14 +545,14 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderer::setDisplaySize(const Size& sz)
+void OgreRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_pimpl->d_displaySize)
     {
         d_pimpl->d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect area(d_pimpl->d_defaultTarget->getArea());
+        Rectf area(d_pimpl->d_defaultTarget->getArea());
         area.setSize(sz);
         d_pimpl->d_defaultTarget->setArea(area);
     }

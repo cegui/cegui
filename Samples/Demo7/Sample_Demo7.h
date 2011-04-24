@@ -73,8 +73,8 @@ public:
 
 protected:
     // initialisation helpers
-    void createListContent(void);
-    void initDemoEventWiring(void);
+    void createListContent(CEGUI::Window* root);
+    void initDemoEventWiring(CEGUI::Window* root);
 
     // methods that process GUI events
     bool handleQuit(const CEGUI::EventArgs& e);
@@ -91,7 +91,7 @@ class MyListItem : public CEGUI::ListboxTextItem
 public:
     MyListItem(const CEGUI::String& text) : ListboxTextItem(text)
     {
-        setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
     }
 };
 

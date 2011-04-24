@@ -31,6 +31,7 @@
 #include "../../CEGUIGeometryBuffer.h"
 #include "CEGUIOpenGLRenderer.h"
 #include "../../CEGUIRect.h"
+#include "../../CEGUIQuaternion.h"
 
 #include <utility>
 #include <vector>
@@ -57,10 +58,10 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-    void setTranslation(const Vector3& t);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
-    void setClippingRegion(const Rect& region);
+    void setTranslation(const Vector3f& t);
+    void setRotation(const Quaternion& r);
+    void setPivot(const Vector3f& p);
+    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -104,16 +105,16 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
-    Vector3 d_translation;
-    //! rotation vector
-    Vector3 d_rotation;
+    Vector3f d_translation;
+    //! rotation quaternion
+    Quaternion d_rotation;
     //! pivot point for rotation
-    Vector3 d_pivot;
+    Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
-    //! model matrix cache
+    //! model matrix cache - we use double because gluUnproject takes double
     mutable double d_matrix[16];
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;

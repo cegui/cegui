@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardButton::TypeName[] = "Falagard/Button";
+    const String FalagardButton::TypeName("Falagard/Button");
 
     FalagardButton::FalagardButton(const String& type) :
         WindowRenderer(type)
@@ -47,7 +47,7 @@ namespace CEGUI
         bool norm = false;
         String state;
 
-		if (w->isDisabled())
+		if (w->isEffectiveDisabled())
 		{
 		    state = "Disabled";
 		}

@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIListHeader.h"
 #include "elements/CEGUIListboxItem.h"
@@ -36,7 +37,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardMultiColumnList::TypeName[] = "Falagard/MultiColumnList";
+    const String FalagardMultiColumnList::TypeName("Falagard/MultiColumnList");
 
 
     FalagardMultiColumnList::FalagardMultiColumnList(const String& type) :
@@ -44,13 +45,13 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardMultiColumnList::getListRenderArea(void) const
+    Rectf FalagardMultiColumnList::getListRenderArea(void) const
     {
         MultiColumnList* w = (MultiColumnList*)d_window;
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = w->getVertScrollbar()->isVisible(true);
-        bool h_visible = w->getHorzScrollbar()->isVisible(true);
+        bool v_visible = w->getVertScrollbar()->isVisible();
+        bool h_visible = w->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another item rendering area
         if (v_visible || h_visible)
@@ -90,24 +91,24 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3 itemPos;
-        Size    itemSize;
-        Rect    itemClipper, itemRect;;
+        Vector3f itemPos;
+        Sizef itemSize;
+        Rectf itemClipper, itemRect;
 
         // calculate position of area we have to render into
-        Rect itemsArea(getListRenderArea());
+        Rectf itemsArea(getListRenderArea());
 
         // set up initial positional details for items
-        itemPos.d_y = itemsArea.d_top - vertScrollbar->getScrollPosition();
+        itemPos.d_y = itemsArea.top() - vertScrollbar->getScrollPosition();
         itemPos.d_z = 0.0f;
 
-        float alpha = w->getEffectiveAlpha();
+        const float alpha = w->getEffectiveAlpha();
 
         // loop through the items
         for (uint i = 0; i < w->getRowCount(); ++i)
         {
             // set initial x position for this row.
-            itemPos.d_x = itemsArea.d_left - horzScrollbar->getScrollPosition();
+            itemPos.d_x = itemsArea.left() - horzScrollbar->getScrollPosition();
 
             // calculate height for this row.
             itemSize.d_height = w->getHighestRowItemHeight(i);
@@ -116,7 +117,7 @@ namespace CEGUI
             for (uint j = 0; j < w->getColumnCount(); ++j)
             {
                 // allow item to use full width of the column
-                itemSize.d_width = header->getColumnWidth(j).asAbsolute(header->getPixelSize().d_width);
+                itemSize.d_width = CoordConverter::asAbsolute(header->getColumnWidth(j), header->getPixelSize().d_width);
 
                 ListboxItem* item = w->getItemAtGridReference(MCLGridRef(i,j));
 
@@ -124,8 +125,8 @@ namespace CEGUI
                 if (item)
                 {
                     // calculate destination area for this item.
-                    itemRect.d_left = itemPos.d_x;
-                    itemRect.d_top  = itemPos.d_y;
+                    itemRect.left(itemPos.d_x);
+                    itemRect.top(itemPos.d_y);
                     itemRect.setSize(itemSize);
                     itemClipper = itemRect.getIntersection(itemsArea);
 
@@ -156,7 +157,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }

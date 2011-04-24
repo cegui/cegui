@@ -72,16 +72,13 @@ namespace CEGUI
         \brief
             Set the Image that will be drawn by this ImageryComponent.
 
-        \param imageset
-            String holding the name of the Imagset that contains the Image to be rendered.
-
-        \param image
+        \param name
             String holding the name of the Image to be rendered.
 
         \return
             Nothing.
         */
-        void setImage(const String& imageset, const String& image);
+        void setImage(const String& name);
 
         /*!
         \brief
@@ -171,7 +168,7 @@ namespace CEGUI
 
     protected:
         // implemets abstract from base
-        void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
+        void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
 
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
         VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the image component.

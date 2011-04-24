@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUIOgreTextureTarget.h"
 #include "CEGUIOgreTexture.h"
+#include "CEGUIPropertyHelper.h"
 
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
@@ -39,6 +40,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float OgreTextureTarget::DEFAULT_SIZE = 128.0f;
+uint OgreTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
@@ -46,10 +48,11 @@ OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
     OgreRenderTarget(owner, rs),
     d_CEGUITexture(0)
 {
-    d_CEGUITexture = static_cast<OgreTexture*>(&d_owner.createTexture());
+    d_CEGUITexture = static_cast<OgreTexture*>(
+        &d_owner.createTexture(generateTextureName()));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -82,7 +85,7 @@ Texture& OgreTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreTextureTarget::declareRenderSize(const Size& sz)
+void OgreTextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
@@ -96,9 +99,9 @@ void OgreTextureTarget::declareRenderSize(const Size& sz)
 
     d_renderTarget = rttTex->getBuffer()->getRenderTarget();
 
-    Rect init_area(
-        Vector2(0, 0),
-        Size(d_renderTarget->getWidth(), d_renderTarget->getHeight())
+    Rectf init_area(
+        Vector2f(0, 0),
+        Sizef(d_renderTarget->getWidth(), d_renderTarget->getHeight())
     );
 
     setArea(init_area);
@@ -119,6 +122,15 @@ void OgreTextureTarget::declareRenderSize(const Size& sz)
 bool OgreTextureTarget::isRenderingInverted() const
 {
     return false;
+}
+
+//----------------------------------------------------------------------------//
+String OgreTextureTarget::generateTextureName()
+{
+    String tmp("_ogre_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//

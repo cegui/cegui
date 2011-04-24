@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,22 +31,25 @@
 
 #include "CEGUIIrrlichtTextureTarget.h"
 #include "CEGUIIrrlichtTexture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float IrrlichtTextureTarget::DEFAULT_SIZE = 128.0f;
+uint IrrlichtTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
                                              irr::video::IVideoDriver& driver) :
     IrrlichtRenderTarget(owner, driver),
     d_texture(0),
-    d_CEGUITexture(static_cast<IrrlichtTexture*>(&d_owner.createTexture()))
+    d_CEGUITexture(static_cast<IrrlichtTexture*>(
+        &d_owner.createTexture(generateTextureName())))
 {
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -91,7 +94,7 @@ Texture& IrrlichtTextureTarget::getTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
+void IrrlichtTextureTarget::declareRenderSize(const Sizef& sz)
 {
     const bool realloc =
                 !d_texture ||
@@ -99,14 +102,14 @@ void IrrlichtTextureTarget::declareRenderSize(const Size& sz)
                 static_cast<float>(d_texture->getSize().Height) < sz.d_height;
 
     // update area to render into.
-    setArea(Rect(d_area.getPosition(), sz));
+    setArea(Rectf(d_area.getPosition(), sz));
 
     // exit if current texture size is large enough
     if (!realloc)
         return;
 
     // get adjusted size - to account for device capabilities
-    const Size final_sz(d_owner.getAdjustedTextureSize(sz));
+    const Sizef final_sz(d_owner.getAdjustedTextureSize(sz));
 
     cleanupTargetTexture();
 
@@ -144,6 +147,15 @@ void IrrlichtTextureTarget::cleanupTargetTexture()
         d_driver.removeTexture(d_texture);
         d_texture = 0;
     }
+}
+
+//----------------------------------------------------------------------------//
+String IrrlichtTextureTarget::generateTextureName()
+{
+    String tmp("_irr_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//

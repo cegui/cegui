@@ -8,127 +8,251 @@ namespace bp = boost::python;
 
 void register_URect_class(){
 
-    { //::CEGUI::URect
-        typedef bp::class_< CEGUI::URect > URect_exposer_t;
-        URect_exposer_t URect_exposer = URect_exposer_t( "URect", "*!\n\
-        \n\
-            Area rectangle class built using unified dimensions (UDims).\n\
-        *\n", bp::init< >() );
+    { //::CEGUI::Rect< CEGUI::UDim >
+        typedef bp::class_< CEGUI::Rect< CEGUI::UDim > > URect_exposer_t;
+        URect_exposer_t URect_exposer = URect_exposer_t( "URect", bp::init< >() );
         bp::scope URect_scope( URect_exposer );
-        URect_exposer.def( bp::init< CEGUI::UVector2 const &, CEGUI::UVector2 const & >(( bp::arg("min"), bp::arg("max") )) );
         URect_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("left"), bp::arg("top"), bp::arg("right"), bp::arg("bottom") )) );
-        URect_exposer.def( bp::init< CEGUI::URect const & >(( bp::arg("v") )) );
-        { //::CEGUI::URect::asAbsolute
+        URect_exposer.def( bp::init< CEGUI::Vector2< CEGUI::UDim > const &, CEGUI::Vector2< CEGUI::UDim > const & >(( bp::arg("min"), bp::arg("max") )) );
+        URect_exposer.def( bp::init< CEGUI::Vector2< CEGUI::UDim > const &, CEGUI::Size< CEGUI::UDim > const & >(( bp::arg("pos"), bp::arg("size") )) );
+        URect_exposer.def( bp::init< CEGUI::Rect< CEGUI::UDim > const & >(( bp::arg("r") )) );
+        { //::CEGUI::Rect< CEGUI::UDim >::bottom
         
-            typedef ::CEGUI::Rect ( ::CEGUI::URect::*asAbsolute_function_type )( ::CEGUI::Size const & ) const;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*bottom_function_type )( ::CEGUI::UDim const & ) ;
             
             URect_exposer.def( 
-                "asAbsolute"
-                , asAbsolute_function_type( &::CEGUI::URect::asAbsolute )
-                , ( bp::arg("base") ) );
+                "bottom"
+                , bottom_function_type( &::CEGUI::Rect< CEGUI::UDim >::bottom )
+                , ( bp::arg("v") ) );
         
         }
-        { //::CEGUI::URect::asRelative
+        { //::CEGUI::Rect< CEGUI::UDim >::bottom
         
-            typedef ::CEGUI::Rect ( ::CEGUI::URect::*asRelative_function_type )( ::CEGUI::Size const & ) const;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim const & ( exported_class_t::*bottom_function_type )(  ) const;
             
             URect_exposer.def( 
-                "asRelative"
-                , asRelative_function_type( &::CEGUI::URect::asRelative )
-                , ( bp::arg("base") ) );
-        
-        }
-        { //::CEGUI::URect::getHeight
-        
-            typedef ::CEGUI::UDim ( ::CEGUI::URect::*getHeight_function_type )(  ) const;
-            
-            URect_exposer.def( 
-                "getHeight"
-                , getHeight_function_type( &::CEGUI::URect::getHeight ) );
-        
-        }
-        { //::CEGUI::URect::getPosition
-        
-            typedef ::CEGUI::UVector2 const & ( ::CEGUI::URect::*getPosition_function_type )(  ) const;
-            
-            URect_exposer.def( 
-                "getPosition"
-                , getPosition_function_type( &::CEGUI::URect::getPosition )
+                "bottom"
+                , bottom_function_type( &::CEGUI::Rect< CEGUI::UDim >::bottom )
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
-        { //::CEGUI::URect::getSize
+        { //::CEGUI::Rect< CEGUI::UDim >::getHeight
         
-            typedef ::CEGUI::UVector2 ( ::CEGUI::URect::*getSize_function_type )(  ) const;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim ( exported_class_t::*getHeight_function_type )(  ) const;
+            
+            URect_exposer.def( 
+                "getHeight"
+                , getHeight_function_type( &::CEGUI::Rect< CEGUI::UDim >::getHeight )
+                , "*!\n\
+            \n\
+               return height of Rect area\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::getPosition
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::Vector2< CEGUI::UDim > const & ( exported_class_t::*getPosition_function_type )(  ) const;
+            
+            URect_exposer.def( 
+                "getPosition"
+                , getPosition_function_type( &::CEGUI::Rect< CEGUI::UDim >::getPosition )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+            \n\
+               Return top-left position of Rect as a Vector2<T>\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::getSize
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::Size< CEGUI::UDim > ( exported_class_t::*getSize_function_type )(  ) const;
             
             URect_exposer.def( 
                 "getSize"
-                , getSize_function_type( &::CEGUI::URect::getSize ) );
+                , getSize_function_type( &::CEGUI::Rect< CEGUI::UDim >::getSize )
+                , "*!\n\
+            \n\
+               return the size of the Rect area\n\
+            *\n" );
         
         }
-        { //::CEGUI::URect::getWidth
+        { //::CEGUI::Rect< CEGUI::UDim >::getWidth
         
-            typedef ::CEGUI::UDim ( ::CEGUI::URect::*getWidth_function_type )(  ) const;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim ( exported_class_t::*getWidth_function_type )(  ) const;
             
             URect_exposer.def( 
                 "getWidth"
-                , getWidth_function_type( &::CEGUI::URect::getWidth ) );
+                , getWidth_function_type( &::CEGUI::Rect< CEGUI::UDim >::getWidth )
+                , "*!\n\
+            \n\
+               return width of Rect area\n\
+            *\n" );
         
         }
-        { //::CEGUI::URect::offset
+        { //::CEGUI::Rect< CEGUI::UDim >::left
         
-            typedef void ( ::CEGUI::URect::*offset_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*left_function_type )( ::CEGUI::UDim const & ) ;
+            
+            URect_exposer.def( 
+                "left"
+                , left_function_type( &::CEGUI::Rect< CEGUI::UDim >::left )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::left
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim const & ( exported_class_t::*left_function_type )(  ) const;
+            
+            URect_exposer.def( 
+                "left"
+                , left_function_type( &::CEGUI::Rect< CEGUI::UDim >::left )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::offset
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*offset_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ;
             
             URect_exposer.def( 
                 "offset"
-                , offset_function_type( &::CEGUI::URect::offset )
-                , ( bp::arg("sz") ) );
+                , offset_function_type( &::CEGUI::Rect< CEGUI::UDim >::offset )
+                , ( bp::arg("v") )
+                , "*!\n\
+               \n\
+                  Applies an offset the Rect object\n\
+            \n\
+               @param pt\n\
+                  Vector2 object containing the offsets to be applied to the Rect.\n\
+            \n\
+               @return\n\
+                  this Rect after the offset is performed\n\
+               *\n" );
         
         }
+        URect_exposer.def( bp::self != bp::self );
         URect_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
+        URect_exposer.def( bp::self *= bp::other< CEGUI::UDim >() );
         URect_exposer.def( bp::self + bp::self );
-        { //::CEGUI::URect::setHeight
+        { //::CEGUI::Rect< CEGUI::UDim >::operator=
         
-            typedef void ( ::CEGUI::URect::*setHeight_function_type )( ::CEGUI::UDim const & ) ;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::Rect< CEGUI::UDim > & ( exported_class_t::*assign_function_type )( ::CEGUI::Rect< CEGUI::UDim > const & ) ;
+            
+            URect_exposer.def( 
+                "assign"
+                , assign_function_type( &::CEGUI::Rect< CEGUI::UDim >::operator= )
+                , ( bp::arg("rhs") )
+                , bp::return_self< >() );
+        
+        }
+        URect_exposer.def( bp::self == bp::self );
+        { //::CEGUI::Rect< CEGUI::UDim >::right
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*right_function_type )( ::CEGUI::UDim const & ) ;
+            
+            URect_exposer.def( 
+                "right"
+                , right_function_type( &::CEGUI::Rect< CEGUI::UDim >::right )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::right
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim const & ( exported_class_t::*right_function_type )(  ) const;
+            
+            URect_exposer.def( 
+                "right"
+                , right_function_type( &::CEGUI::Rect< CEGUI::UDim >::right )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::setHeight
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*setHeight_function_type )( ::CEGUI::UDim const & ) ;
             
             URect_exposer.def( 
                 "setHeight"
-                , setHeight_function_type( &::CEGUI::URect::setHeight )
+                , setHeight_function_type( &::CEGUI::Rect< CEGUI::UDim >::setHeight )
                 , ( bp::arg("h") ) );
         
         }
-        { //::CEGUI::URect::setPosition
+        { //::CEGUI::Rect< CEGUI::UDim >::setPosition
         
-            typedef void ( ::CEGUI::URect::*setPosition_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*setPosition_function_type )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ;
             
             URect_exposer.def( 
                 "setPosition"
-                , setPosition_function_type( &::CEGUI::URect::setPosition )
-                , ( bp::arg("pos") ) );
+                , setPosition_function_type( &::CEGUI::Rect< CEGUI::UDim >::setPosition )
+                , ( bp::arg("min") )
+                , "*!\n\
+            \n\
+               set the position of the Rect (leaves size in tact)\n\
+            *\n" );
         
         }
-        { //::CEGUI::URect::setSize
+        { //::CEGUI::Rect< CEGUI::UDim >::setSize
         
-            typedef void ( ::CEGUI::URect::*setSize_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*setSize_function_type )( ::CEGUI::Size< CEGUI::UDim > const & ) ;
             
             URect_exposer.def( 
                 "setSize"
-                , setSize_function_type( &::CEGUI::URect::setSize )
-                , ( bp::arg("sz") ) );
+                , setSize_function_type( &::CEGUI::Rect< CEGUI::UDim >::setSize )
+                , ( bp::arg("size") ) );
         
         }
-        { //::CEGUI::URect::setWidth
+        { //::CEGUI::Rect< CEGUI::UDim >::setWidth
         
-            typedef void ( ::CEGUI::URect::*setWidth_function_type )( ::CEGUI::UDim const & ) ;
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*setWidth_function_type )( ::CEGUI::UDim const & ) ;
             
             URect_exposer.def( 
                 "setWidth"
-                , setWidth_function_type( &::CEGUI::URect::setWidth )
+                , setWidth_function_type( &::CEGUI::Rect< CEGUI::UDim >::setWidth )
                 , ( bp::arg("w") ) );
         
         }
-        URect_exposer.def_readwrite( "d_max", &CEGUI::URect::d_max );
-        URect_exposer.def_readwrite( "d_min", &CEGUI::URect::d_min );
+        { //::CEGUI::Rect< CEGUI::UDim >::top
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef void ( exported_class_t::*top_function_type )( ::CEGUI::UDim const & ) ;
+            
+            URect_exposer.def( 
+                "top"
+                , top_function_type( &::CEGUI::Rect< CEGUI::UDim >::top )
+                , ( bp::arg("v") ) );
+        
+        }
+        { //::CEGUI::Rect< CEGUI::UDim >::top
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::UDim const & ( exported_class_t::*top_function_type )(  ) const;
+            
+            URect_exposer.def( 
+                "top"
+                , top_function_type( &::CEGUI::Rect< CEGUI::UDim >::top )
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        URect_exposer.def_readwrite( "d_max", &CEGUI::Rect< CEGUI::UDim >::d_max, "*************************************************************************\n\
+           Data Fields\n\
+        *************************************************************************\n" );
+        URect_exposer.def_readwrite( "d_min", &CEGUI::Rect< CEGUI::UDim >::d_min, "*************************************************************************\n\
+           Data Fields\n\
+        *************************************************************************\n" );
     }
 
 }

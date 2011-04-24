@@ -10,10 +10,7 @@ void register_LayerSpecification_class(){
 
     { //::CEGUI::LayerSpecification
         typedef bp::class_< CEGUI::LayerSpecification > LayerSpecification_exposer_t;
-        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", "*!\n\
-        \n\
-            Class that encapsulates a single layer of imagery.\n\
-        *\n", bp::init< CEGUI::uint >(( bp::arg("priority") ), "*!\n\
+        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", bp::init< CEGUI::uint >(( bp::arg("priority") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
@@ -82,7 +79,7 @@ void register_LayerSpecification_class(){
         LayerSpecification_exposer.def( bp::self < bp::self );
         { //::CEGUI::LayerSpecification::render
         
-            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             LayerSpecification_exposer.def( 
                 "render"
@@ -102,7 +99,7 @@ void register_LayerSpecification_class(){
         }
         { //::CEGUI::LayerSpecification::render
         
-            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::LayerSpecification::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             LayerSpecification_exposer.def( 
                 "render"

@@ -25,11 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
+#include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
 
 #include "CEGUI.h"
 #include "RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h"
@@ -126,7 +124,7 @@ void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer)
 
             // notify CEGUI of change.
             CEGUI::System::getSingleton().notifyDisplaySizeChanged(
-                CEGUI::Size((float)width, (float)height));
+                CEGUI::Sizef((float)width, (float)height));
         }
     }
 }

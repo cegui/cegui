@@ -10,10 +10,7 @@ void register_StateImagery_class(){
 
     { //::CEGUI::StateImagery
         typedef bp::class_< CEGUI::StateImagery > StateImagery_exposer_t;
-        StateImagery_exposer_t StateImagery_exposer = StateImagery_exposer_t( "StateImagery", "*!\n\
-        \n\
-            Class the encapsulates imagery for a given widget state.\n\
-        *\n", bp::init< >("*!\n\
+        StateImagery_exposer_t StateImagery_exposer = StateImagery_exposer_t( "StateImagery", bp::init< >("*!\n\
         \n\
             Constructor\n\
         *\n") );
@@ -102,7 +99,7 @@ void register_StateImagery_class(){
         }
         { //::CEGUI::StateImagery::render
         
-            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
             
             StateImagery_exposer.def( 
                 "render"
@@ -122,7 +119,7 @@ void register_StateImagery_class(){
         }
         { //::CEGUI::StateImagery::render
         
-            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::StateImagery::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
             
             StateImagery_exposer.def( 
                 "render"

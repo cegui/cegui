@@ -40,7 +40,8 @@ namespace CEGUI
     \brief
         Abstract interface for a generic 'dimension' class.
     */
-    class CEGUIEXPORT BaseDim
+    class CEGUIEXPORT BaseDim :
+        public AllocatedObject<BaseDim>
     {
     public:
         BaseDim();
@@ -77,7 +78,7 @@ namespace CEGUI
         \return
             float value which represents, in pixels, the same value as this BaseDim.
         */
-        float getValue(const Window& wnd, const Rect& container) const;
+        float getValue(const Window& wnd, const Rectf& container) const;
 
         /*!
         \brief
@@ -163,7 +164,7 @@ namespace CEGUI
             Implementataion method to return the base value for this BaseDim.  This method should
             not attempt to apply the mathematical operator; this is handled automatically by BaseDim.
         */
-        virtual float getValue_impl(const Window& wnd, const Rect& container) const = 0;
+        virtual float getValue_impl(const Window& wnd, const Rectf& container) const = 0;
 
         /*!
         \brief
@@ -216,7 +217,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
 
@@ -238,32 +239,26 @@ namespace CEGUI
         \brief
             Constructor.
 
-        \param imageset
-            String object holding the name of the imagseset which contains the image.
-
-        \param image
+        \param name
             String object holding the name of the image.
 
         \param dim
             DimensionType value indicating which dimension of the described image that this ImageDim
             is to represent.
         */
-        ImageDim(const String& imageset, const String& image, DimensionType dim);
+        ImageDim(const String& name, DimensionType dim);
 
         /*!
         \brief
             Sets the source image information for this ImageDim.
 
-        \param imageset
-            String object holding the name of the imagseset which contains the image.
-
-        \param image
+        \param name
             String object holding the name of the image.
 
         \return
             Nothing.
         */
-        void setSourceImage(const String& imageset, const String& image);
+        void setSourceImage(const String& name);
 
         /*!
         \brief
@@ -281,13 +276,12 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
-        String d_imageset;      //!< name of the Imageset containing the image.
         String d_image;         //!< name of the Image.
         DimensionType d_what;   //!< the dimension of the image that we are to represent.
     };
@@ -346,7 +340,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -381,7 +375,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -425,7 +419,7 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
@@ -433,7 +427,7 @@ namespace CEGUI
     private:
         String  d_font;          //!< Name of Font.  If empty font will be taken from Window.
         String  d_text;          //!< String to measure for extents, if empty will use window text.
-        String  d_childSuffix;   //!< String to hold the name suffix of the window to use for fetching missing font and/or text.
+        String  d_childName;     //!< String to hold the name of the window to use for fetching missing font and/or text.
         FontMetricType d_metric; //!< what metric we represent.
         float   d_padding;       //!< padding value to be added.
     };
@@ -476,14 +470,14 @@ namespace CEGUI
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
-        float getValue_impl(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd, const Rectf& container) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
         String d_property;      //!< Propery that this object represents.
-        String d_childSuffix;   //!< String to hold the name suffix of the child to access the property form.
+        String d_childName;     //!< String to hold the name of the child to access the property form.
         DimensionType d_type;   //!< String to hold the type of dimension
     };
 
@@ -606,6 +600,8 @@ namespace CEGUI
     class CEGUIEXPORT ComponentArea
     {
     public:
+        ComponentArea();
+
         /*!
         \brief
             Return a Rect describing the absolute pixel area represented by this ComponentArea.
@@ -617,7 +613,7 @@ namespace CEGUI
             Rect object describing the pixels area represented by this ComponentArea when using \a wnd
             as a reference for calculating the final pixel dimensions.
         */
-        Rect getPixelRect(const Window& wnd) const;
+        Rectf getPixelRect(const Window& wnd) const;
 
         /*!
         \brief
@@ -633,7 +629,7 @@ namespace CEGUI
             Rect object describing the pixels area represented by this ComponentArea when using \a wnd
             and \a container as a reference for calculating the final pixel dimensions.
         */
-        Rect getPixelRect(const Window& wnd, const Rect& container) const;
+        Rectf getPixelRect(const Window& wnd, const Rectf& container) const;
 
         /*!
         \brief
@@ -654,7 +650,7 @@ namespace CEGUI
 
         \return
             - true if the area comes via a Propery.
-            - false if the area is defined explicitly via the Dimension fields.
+            - false if the area is not sourced from a Property.
         */
         bool isAreaFetchedFromProperty() const;
 
@@ -671,6 +667,9 @@ namespace CEGUI
         \brief
             Set the name of the property that will be used to determine the pixel area for this ComponentArea.
 
+        \note
+            Calling this will replace any existing souce, such as a named area.
+
         \param property
             String object holding the name of a Propery.  The property should access a URect type property.
 
@@ -679,6 +678,19 @@ namespace CEGUI
         */
         void setAreaPropertySource(const String& property);
 
+        //! Set the named area source of the ComponentArea.
+        void setNamedAreaSouce(const String& widget_look, const String& area_name);
+
+        /*!
+        \brief
+            Return whether this ComponentArea fetches it's area via a named area
+            defined.
+
+        \return
+            - true if the area comes via a named area defined in a WidgetLook.
+            - false if the area is not sourced from a named area.
+        */
+        bool isAreaFetchedFromNamedArea() const;
 
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.
@@ -686,7 +698,10 @@ namespace CEGUI
         Dimension d_bottom_or_height;   //!< Either the bototm edge or the height of the area.
 
     private:
-        String  d_areaProperty;         //!< Property to access.  Must be a URect style property.
+        //! name of property or named area.  Property must access a URect style value.
+        String d_namedSource;
+        //! name of widget look holding the named area to fetch
+        String d_namedAreaSourceLook;
     };
 
 } // End of  CEGUI namespace section

@@ -44,10 +44,7 @@ void register_RenderingContext_class(){
 
     { //::CEGUI::RenderingContext
         typedef bp::class_< RenderingContext_wrapper > RenderingContext_exposer_t;
-        RenderingContext_exposer_t RenderingContext_exposer = RenderingContext_exposer_t( "RenderingContext", "*!\n\
-        \n\
-            struct that holds some context relating to a RenderingSurface object.\n\
-        *\n" );
+        RenderingContext_exposer_t RenderingContext_exposer = RenderingContext_exposer_t( "RenderingContext" );
         bp::scope RenderingContext_scope( RenderingContext_exposer );
         RenderingContext_exposer.def_readwrite( "offset", &CEGUI::RenderingContext::offset, "! The Window object that owns the RenederingSurface (0 for default root)\n\
         ! The offset of the owning window on the root RenderingSurface.\n" );

@@ -6,7 +6,7 @@
     purpose:    Implements FreeTypeFont class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,8 +30,8 @@
 #include "CEGUIFreeTypeFont.h"
 #include "CEGUIExceptions.h"
 #include "CEGUITexture.h"
-#include "CEGUIImageset.h"
-#include "CEGUIImagesetManager.h"
+#include "CEGUIImageManager.h"
+#include "CEGUISystem.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIFont_xmlHandler.h"
@@ -158,12 +158,12 @@ uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
 //----------------------------------------------------------------------------//
 void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 {
-    CodepointMap::const_iterator s = d_cp_map.lower_bound(start_codepoint);
+    CodepointMap::iterator s = d_cp_map.lower_bound(start_codepoint);
     if (s == d_cp_map.end())
         return;
 
-    CodepointMap::const_iterator orig_s = s;
-    CodepointMap::const_iterator e = d_cp_map.upper_bound(end_codepoint);
+    CodepointMap::iterator orig_s = s;
+    CodepointMap::iterator e = d_cp_map.upper_bound(end_codepoint);
     while (true)
     {
         // Create a new Imageset for glyphs
@@ -172,13 +172,14 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         if (!texsize)
             break;
 
-        Imageset& is = ImagesetManager::getSingleton().create(
-                           d_name + "_auto_glyph_images_" + int (s->first),
-                           System::getSingleton().getRenderer()->createTexture());
-        d_glyphImages.push_back(&is);
+        const String texture_name(d_name + "_auto_glyph_images_" +
+                                   PropertyHelper<int>::toString(s->first));
+        Texture& texture = System::getSingleton().getRenderer()->createTexture(
+            texture_name, Sizef(texsize, texsize));
+        d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
-        argb_t *mem_buffer = new argb_t [texsize * texsize];
+        argb_t* mem_buffer = CEGUI_NEW_ARRAY_PT(argb_t, texsize * texsize, BufferAllocator);
         memset(mem_buffer, 0, texsize * texsize * sizeof(argb_t));
 
         // Go ahead, line by line, top-left to bottom-right
@@ -212,15 +213,17 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
                     err << static_cast<unsigned int>(s->first);
                     err << ".  Will use an empty image for this glyph!";
-                    Logger::getSingleton().logEvent(err.str(), Errors);
+                    Logger::getSingleton().logEvent(err.str().c_str(), Errors);
 
                     // Create a 'null' image for this glyph so we do not seg later
-                    Rect area(0, 0, 0, 0);
-                    Point offset(0, 0);
-                    String name;
-                    name += s->first;
-                    is.defineImage(name, area, offset);
-                    ((FontGlyph &)s->second).setImage(&is.getImage(name));
+                    Rectf area(0, 0, 0, 0);
+                    Vector2f offset(0, 0);
+                    const String name(PropertyHelper<unsigned long>::toString(s->first));
+                    BasicImage* img =
+                        new BasicImage(name, &texture, area, offset, false,
+                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
+                    d_glyphImages.push_back(img);
+                    s->second.setImage(img);
                 }
                 else
                 {
@@ -245,18 +248,20 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     drawGlyphToBuffer(mem_buffer + (y * texsize) + x, texsize);
 
                     // Create a new image in the imageset
-                    Rect area(static_cast<float>(x),
-                              static_cast<float>(y),
-                              static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
-                              static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
+                    const Rectf area(static_cast<float>(x),
+                                      static_cast<float>(y),
+                                      static_cast<float>(x + glyph_w - INTER_GLYPH_PAD_SPACE),
+                                      static_cast<float>(y + glyph_h - INTER_GLYPH_PAD_SPACE));
 
-                    Point offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
-                                 -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
+                    Vector2f offset(d_fontFace->glyph->metrics.horiBearingX * static_cast<float>(FT_POS_COEF),
+                                    -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
-                    String name;
-                    name += s->first;
-                    is.defineImage(name, area, offset);
-                    ((FontGlyph &)s->second).setImage(&is.getImage(name));
+                    const String name(PropertyHelper<unsigned long>::toString(s->first));
+                    BasicImage* img =
+                        new BasicImage(name, &texture, area, offset, false,
+                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
+                    d_glyphImages.push_back(img);
+                    s->second.setImage(img);
 
                     // Advance to next position
                     x = x_next;
@@ -282,8 +287,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         }
 
         // Copy our memory buffer into the texture and free it
-        is.getTexture()->loadFromMemory(mem_buffer, Size(texsize, texsize), Texture::PF_RGBA);
-        delete [] mem_buffer;
+        texture.loadFromMemory(mem_buffer, Sizef(texsize, texsize), Texture::PF_RGBA);
+        CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
 
         if (finished)
             break;
@@ -338,9 +343,13 @@ void FreeTypeFont::free()
 
     d_cp_map.clear();
 
-    for (size_t i = 0; i < d_glyphImages.size(); i++)
-        ImagesetManager::getSingleton().destroy(d_glyphImages [i]->getName());
+    for (size_t i = 0; i < d_glyphImages.size(); ++i)
+        delete d_glyphImages[i];
     d_glyphImages.clear();
+
+    for (size_t i = 0; i < d_glyphTextures.size(); i++)
+        System::getSingleton().getRenderer()->destroyTexture(*d_glyphTextures[i]);
+    d_glyphTextures.clear();
 
     FT_Done_Face(d_fontFace);
     d_fontFace = 0;
@@ -464,13 +473,13 @@ void FreeTypeFont::updateFont()
 void FreeTypeFont::writeXMLToStream_impl(XMLSerializer& xml_stream) const
 {
     xml_stream.attribute(Font_xmlHandler::FontSizeAttribute,
-                         PropertyHelper::floatToString(d_ptSize));
+                         PropertyHelper<float>::toString(d_ptSize));
     if (!d_antiAliased)
         xml_stream.attribute(Font_xmlHandler::FontAntiAliasedAttribute, "False");
 
     if (d_specificLineSpacing > 0.0f)
         xml_stream.attribute(Font_xmlHandler::FontLineSpacingAttribute,
-                             PropertyHelper::floatToString(d_specificLineSpacing));
+                             PropertyHelper<float>::toString(d_specificLineSpacing));
 }
 
 //----------------------------------------------------------------------------//

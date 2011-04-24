@@ -111,7 +111,7 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -610,23 +610,23 @@ void register_TabControl_class(){
             *\n" );
         
         }
-        TabControl_exposer.add_static_property( "ButtonScrollLeftSuffix"
-                        , bp::make_getter( &CEGUI::TabControl::ButtonScrollLeftSuffix
+        TabControl_exposer.add_static_property( "ButtonScrollLeft"
+                        , bp::make_getter( &CEGUI::TabControl::ButtonScrollLeft
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        TabControl_exposer.add_static_property( "ButtonScrollRightSuffix"
-                        , bp::make_getter( &CEGUI::TabControl::ButtonScrollRightSuffix
+        TabControl_exposer.add_static_property( "ButtonScrollRight"
+                        , bp::make_getter( &CEGUI::TabControl::ButtonScrollRight
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        TabControl_exposer.add_static_property( "ContentPaneNameSuffix"
-                        , bp::make_getter( &CEGUI::TabControl::ContentPaneNameSuffix
+        TabControl_exposer.add_static_property( "ContentPaneName"
+                        , bp::make_getter( &CEGUI::TabControl::ContentPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         TabControl_exposer.add_static_property( "EventSelectionChanged"
                         , bp::make_getter( &CEGUI::TabControl::EventSelectionChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        TabControl_exposer.add_static_property( "TabButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::TabControl::TabButtonNameSuffix
+        TabControl_exposer.add_static_property( "TabButtonName"
+                        , bp::make_getter( &CEGUI::TabControl::TabButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        TabControl_exposer.add_static_property( "TabButtonPaneNameSuffix"
-                        , bp::make_getter( &CEGUI::TabControl::TabButtonPaneNameSuffix
+        TabControl_exposer.add_static_property( "TabButtonPaneName"
+                        , bp::make_getter( &CEGUI::TabControl::TabButtonPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -721,8 +721,8 @@ void register_TabControl_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( TabControl_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             TabControl_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -732,8 +732,8 @@ void register_TabControl_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( TabControl_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( TabControl_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             TabControl_exposer.def( 
                 "isHit"

@@ -51,8 +51,8 @@ bool InventoryDemo::initialiseSample()
     
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
     System::getSingleton().setGUISheet(root);
 
@@ -75,55 +75,55 @@ bool InventoryDemo::initialiseSample()
 
     // Create Backpack window
     Window* wnd = winMgr.createWindow("TaharezLook/FrameWindow");
-    root->addChildWindow(wnd);
+    root->addChild(wnd);
     wnd->setPosition(UVector2(UDim(0.1f, 0), UDim(0.1f, 0)));
     wnd->setSize(UVector2(UDim(0.2f, 0), UDim(0.4f, 0)));
     wnd->setText("Backpack");
 
     InventoryReceiver& receiver1 = dynamic_cast<InventoryReceiver&>(*winMgr.createWindow("InventoryReceiver"));
-    wnd->addChildWindow(&receiver1);
+    wnd->addChild(&receiver1);
     receiver1.setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim( 0.0f)));
     receiver1.setSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     receiver1.setContentSize(3, 6);
-    receiver1.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    receiver1.setUserString("BlockImage", "TaharezLook/GenericBrush");
 
     // Create vault window
     Window* wnd2 = winMgr.createWindow("TaharezLook/FrameWindow");
-    root->addChildWindow(wnd2);
+    root->addChild(wnd2);
     wnd2->setPosition(UVector2(UDim(0.48f, 0), UDim(0.2f, 0)));
     wnd2->setSize(UVector2(UDim(0.5f, 0), UDim(0.5f, 0)));
     wnd2->setText("Bank Vault");
 
     InventoryReceiver& receiver2 = dynamic_cast<InventoryReceiver&>(*winMgr.createWindow("InventoryReceiver"));
-    wnd2->addChildWindow(&receiver2);
+    wnd2->addChild(&receiver2);
     receiver2.setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim( 0.0f)));
     receiver2.setSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     receiver2.setContentSize(10, 10);
-    receiver2.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    receiver2.setUserString("BlockImage", "TaharezLook/GenericBrush");
 
     // create some items and add them to the vault.
     InventoryItem& item1 = dynamic_cast<InventoryItem&>(*winMgr.createWindow("TaharezLook/InventoryItem"));
     item1.setContentSize(2, 2);
     receiver2.addItemAtLocation(item1, 0, 0);
-    item1.setProperty("Image", "set:TaharezLook image:MouseArrow");
+    item1.setProperty("Image", "TaharezLook/MouseArrow");
 
     InventoryItem& item2 = dynamic_cast<InventoryItem&>(*winMgr.createWindow("InventoryItem"));
-    item2.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    item2.setUserString("BlockImage", "TaharezLook/GenericBrush");
     item2.setContentSize(3, 1);
     receiver2.addItemAtLocation(item2, 1, 3);
 
     InventoryItem& item3 = dynamic_cast<InventoryItem&>(*winMgr.createWindow("InventoryItem"));
-    item3.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    item3.setUserString("BlockImage", "TaharezLook/GenericBrush");
     item3.setContentSize(1, 4);
     receiver2.addItemAtLocation(item3, 5, 2);
 
     InventoryItem& item4 = dynamic_cast<InventoryItem&>(*winMgr.createWindow("InventoryItem"));
-    item4.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    item4.setUserString("BlockImage", "TaharezLook/GenericBrush");
     item4.setContentSize(1, 1);
     receiver2.addItemAtLocation(item4, 8, 6);
 
     InventoryItem& item5 = dynamic_cast<InventoryItem&>(*winMgr.createWindow("InventoryItem"));
-    item5.setUserString("BlockImage", "set:TaharezLook image:GenericBrush");
+    item5.setUserString("BlockImage", "TaharezLook/GenericBrush");
     item5.setContentSize(2, 3);
 
     bool data[] = {

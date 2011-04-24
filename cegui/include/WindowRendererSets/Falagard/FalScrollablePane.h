@@ -58,7 +58,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardScrollablePane : public ScrollablePaneWindowRenderer
     {
     public:
-        static const utf8   TypeName[];     //! type name for this widget.
+        static const String TypeName;     //! type name for this widget.
 
         /*!
         \brief
@@ -67,10 +67,10 @@ namespace CEGUI
         FalagardScrollablePane(const String& type);
 
         void render();
-        Rect getViewableArea(void) const;
+        Rectf getViewableArea(void) const;
 
         // overridden from WindowRenderer base class.
-        Rect getUnclippedInnerRect() const;
+        Rectf getUnclippedInnerRect() const;
 
     protected:
         // overridden from WindowRenderer base class.

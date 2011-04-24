@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -48,30 +48,36 @@ public:
     static Ogre::String getUniqueName();
 
     // implement CEGUI::Texture interface
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const String& getName() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void saveToMemory(void* buffer);
+    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitToMemory(void* targetData);
 
 protected:
     // we all need a little help from out friends ;)
-    friend Texture& OgreRenderer::createTexture();
-    friend Texture& OgreRenderer::createTexture(const String&, const String&);
-    friend Texture& OgreRenderer::createTexture(const Size&);
-    friend Texture& OgreRenderer::createTexture(Ogre::TexturePtr&, bool);
+    friend Texture& OgreRenderer::createTexture(const String&);
+    friend Texture& OgreRenderer::createTexture(const String&, const String&,
+                                                const String&);
+    friend Texture& OgreRenderer::createTexture(const String&, const Sizef&);
+    friend Texture& OgreRenderer::createTexture(const String&, Ogre::TexturePtr&,
+                                                bool);
     friend void OgreRenderer::destroyTexture(Texture&);
+    friend void OgreRenderer::destroyTexture(const String&);
 
     //! standard constructor
-    OgreTexture();
+    OgreTexture(const String& name);
     //! construct texture via an image file.
-    OgreTexture(const String& filename, const String& resourceGroup);
+    OgreTexture(const String& name, const String& filename,
+                const String& resourceGroup);
     //! construct texture with a specified initial size.
-    OgreTexture(const Size& sz);
+    OgreTexture(const String& name, const Sizef& sz);
     //! construct texture from existing Ogre texture.
-    OgreTexture(Ogre::TexturePtr& tex, bool take_ownership);
+    OgreTexture(const String& name, Ogre::TexturePtr& tex, bool take_ownership);
 
     //! destructor.
     virtual ~OgreTexture();
@@ -87,11 +93,13 @@ protected:
     //! specifies whether d_texture was created externally (not owned by us).
     bool d_isLinked;
     //! Size of the texture.
-    Size d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2f d_texelScaling;
+    //! Name this texture was created with.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section

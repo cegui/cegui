@@ -43,7 +43,7 @@ DefaultRenderedStringParser ListboxTextItem::d_noTagsStringParser;
 /*************************************************************************
 	Constants
 *************************************************************************/
-const colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
+const Colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 
 
 /*************************************************************************
@@ -103,21 +103,21 @@ void ListboxTextItem::setFont(Font* font)
 /*************************************************************************
 	Return the rendered pixel size of this list box item.
 *************************************************************************/
-Size ListboxTextItem::getPixelSize(void) const
+Sizef ListboxTextItem::getPixelSize(void) const
 {
     Font* fnt = getFont();
 
     if (!fnt)
-        return Size(0, 0);
+        return Sizef(0, 0);
 
     if (!d_renderedStringValid)
         parseTextString();
 
-    Size sz(0.0f, 0.0f);
+    Sizef sz(0.0f, 0.0f);
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Size line_sz(d_renderedString.getPixelSize(i));
+        const Sizef line_sz(d_renderedString.getPixelSize(i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)
@@ -131,11 +131,11 @@ Size ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
-                           float alpha, const Rect* clipper) const
+void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+                           float alpha, const Rectf* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->draw(buffer, targetRect, clipper,
+        d_selectBrush->render(buffer, targetRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
     Font* font = getFont();
@@ -143,7 +143,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
     if (!font)
         return;
 
-    Vector2 draw_pos(targetRect.getPosition());
+    Vector2f draw_pos(targetRect.getPosition());
 
     draw_pos.d_y += PixelAligned(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
@@ -165,10 +165,10 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rect& targetRect,
 /*************************************************************************
 	Set the colours used for text rendering.	
 *************************************************************************/
-void ListboxTextItem::setTextColours(colour top_left_colour,
-                                     colour top_right_colour,
-                                     colour bottom_left_colour,
-                                     colour bottom_right_colour)
+void ListboxTextItem::setTextColours(Colour top_left_colour,
+                                     Colour top_right_colour,
+                                     Colour bottom_left_colour,
+                                     Colour bottom_right_colour)
 {
 	d_textCols.d_top_left		= top_left_colour;
 	d_textCols.d_top_right		= top_right_colour;

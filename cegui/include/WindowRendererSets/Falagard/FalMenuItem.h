@@ -61,7 +61,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardMenuItem : public ItemEntryWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -70,7 +70,7 @@ namespace CEGUI
         FalagardMenuItem(const String& type);
 
         void render();
-        Size getItemPixelSize(void) const;
+        Sizef getItemPixelSize(void) const;
     };
 
 } // End of  CEGUI namespace section

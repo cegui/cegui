@@ -54,10 +54,25 @@ struct WindowManager_wrapper : CEGUI::WindowManager, bp::wrapper< CEGUI::WindowM
 };
 
 CEGUI::Window*
-WindowManager_loadWindowLayout(::CEGUI::WindowManager & me,
-    const CEGUI::String& filename, const CEGUI::String& name_prefix = "", const CEGUI::String& resourceGroup = "") {
-      return me.loadWindowLayout( filename, name_prefix , resourceGroup);
-    }
+WindowManager_loadLayoutFromContainer(::CEGUI::WindowManager & me,
+    const CEGUI::RawDataContainer& container)
+{
+    return me.loadLayoutFromContainer(container);
+}
+
+CEGUI::Window*
+WindowManager_loadLayoutFromFile(::CEGUI::WindowManager & me,
+    const CEGUI::String& filename, const CEGUI::String& resourceGroup = "")
+{
+    return me.loadLayoutFromFile(filename, resourceGroup);
+}
+
+CEGUI::Window*
+WindowManager_loadLayoutFromString(::CEGUI::WindowManager & me,
+    const CEGUI::String& source)
+{
+    return me.loadLayoutFromString(source);
+}
 
 void register_WindowManager_class(){
 
@@ -79,7 +94,7 @@ void register_WindowManager_class(){
         bp::scope WindowManager_scope( WindowManager_exposer );
         { //::CEGUI::WindowManager::DEBUG_dumpWindowNames
         
-            typedef void ( ::CEGUI::WindowManager::*DEBUG_dumpWindowNames_function_type )( ::CEGUI::String ) ;
+            typedef void ( ::CEGUI::WindowManager::*DEBUG_dumpWindowNames_function_type )( ::CEGUI::String ) const;
             
             WindowManager_exposer.def( 
                 "DEBUG_dumpWindowNames"
@@ -138,16 +153,14 @@ void register_WindowManager_class(){
                   specified type must be registered.\n\
             \n\
                @param name\n\
-                  String that holds a unique name that is to be given to the new window.  If this string is\
-                  empty (), a name\n\
-                  will be generated for the window.\n\
+                  String that holds the name that is to be given to the new window.  If\n\
+                     name is empty, a name will be generated for the window.\n\
             \n\
                @return\n\
                   Pointer to the newly created Window object.\n\
             \n\
                 @exception  InvalidRequestException WindowManager is locked and no Windows\n\
                                                     may be created.\n\
-               @exception  AlreadyExistsException     A Window object with the name  name already exists.\n\
                @exception  UnknownObjectException     No WindowFactory is registered for  type Window objects.\n\
                @exception  GenericException        Some other error occurred (Exception message has details).\n\
                *\n" );
@@ -185,35 +198,10 @@ void register_WindowManager_class(){
                   Destroy the specified Window object.\n\
             \n\
                @param window\n\
-                  Pointer to the Window object to be destroyed.  If the  window is null, or is not recognised,\
-                  nothing happens.\n\
+                  Pointer to the Window object to be destroyed.\n\
             \n\
                @return\n\
                   Nothing\n\
-            \n\
-               @exception  InvalidRequestException    Can be thrown if the WindowFactory for  window's object\
-               type was removed.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::WindowManager::destroyWindow
-        
-            typedef void ( ::CEGUI::WindowManager::*destroyWindow_function_type )( ::CEGUI::String const & ) ;
-            
-            WindowManager_exposer.def( 
-                "destroyWindow"
-                , destroyWindow_function_type( &::CEGUI::WindowManager::destroyWindow )
-                , ( bp::arg("window") )
-                , "*!\n\
-               \n\
-                  Destroy the specified Window object.\n\
-            \n\
-               @param\n\
-                  window   String containing the name of the Window object to be destroyed.  If  window is not\
-                  recognised, nothing happens.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
             \n\
                @exception  InvalidRequestException    Can be thrown if the WindowFactory for  window's object\
                type was removed.\n\
@@ -240,7 +228,7 @@ void register_WindowManager_class(){
         }
         { //::CEGUI::WindowManager::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Window*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Window*> > > > ( ::CEGUI::WindowManager::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::Window* > > ( ::CEGUI::WindowManager::*getIterator_function_type )(  ) const;
             
             WindowManager_exposer.def( 
                 "getIterator"
@@ -251,27 +239,46 @@ void register_WindowManager_class(){
             *\n" );
         
         }
-        { //::CEGUI::WindowManager::getWindow
+        { //::CEGUI::WindowManager::getLayoutAsString
         
-            typedef ::CEGUI::Window * ( ::CEGUI::WindowManager::*getWindow_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::String ( ::CEGUI::WindowManager::*getLayoutAsString_function_type )( ::CEGUI::Window const &,bool ) const;
             
             WindowManager_exposer.def( 
-                "getWindow"
-                , getWindow_function_type( &::CEGUI::WindowManager::getWindow )
-                , ( bp::arg("name") )
-                , bp::return_value_policy< bp::reference_existing_object >()
+                "getLayoutAsString"
+                , getLayoutAsString_function_type( &::CEGUI::WindowManager::getLayoutAsString )
+                , ( bp::arg("window"), bp::arg("writeParent")=(bool)(false) )
                 , "*!\n\
-               \n\
-                  Return a pointer to the specified Window object.\n\
+                \n\
+                    Writes a full XML window layout, starting at the given Window and returns the result as\
+                    string\n\
             \n\
-               @param name\n\
-                  String holding the name of the Window object to be returned.\n\
+                @param window\n\
+                    Window object to become the root of the layout.\n\
             \n\
-               @return\n\
-                  Pointer to the Window object with the name  name.\n\
+                @param writeParent\n\
+                    If the starting window has a parent window, specifies whether to write the parent name\
+                    into\n\
+                    the Parent attribute of the GUILayout XML element.\n\
             \n\
-               @exception UnknownObjectException   No Window object with a name matching  name was found.\n\
-               *\n" );
+                @Warning: \n\
+                    This is a convenience function and isn't designed to be fast at all! Use the other\
+                    alternatives\n\
+                    if you want performance.\n\
+            \n\
+                @return\n\
+                    String containing XML of the resulting layout\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::WindowManager::isAlive
+        
+            typedef bool ( ::CEGUI::WindowManager::*isAlive_function_type )( ::CEGUI::Window const * ) const;
+            
+            WindowManager_exposer.def( 
+                "isAlive"
+                , isAlive_function_type( &::CEGUI::WindowManager::isAlive )
+                , ( bp::arg("window") )
+                , "! return whether Window is alive.\n" );
         
         }
         { //::CEGUI::WindowManager::isDeadPoolEmpty
@@ -316,27 +323,6 @@ void register_WindowManager_class(){
                 *\n" );
         
         }
-        { //::CEGUI::WindowManager::isWindowPresent
-        
-            typedef bool ( ::CEGUI::WindowManager::*isWindowPresent_function_type )( ::CEGUI::String const & ) const;
-            
-            WindowManager_exposer.def( 
-                "isWindowPresent"
-                , isWindowPresent_function_type( &::CEGUI::WindowManager::isWindowPresent )
-                , ( bp::arg("name") )
-                , "*!\n\
-               \n\
-                  Examines the list of Window objects to see if one exists with the given name\n\
-            \n\
-               @param name\n\
-                  String holding the name of the Window object to look for.\n\
-            \n\
-               @return\n\
-                  true if a Window object was found with a name matching  name.  false if no matching Window\
-                  object was found.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::WindowManager::lock
         
             typedef void ( ::CEGUI::WindowManager::*lock_function_type )(  ) ;
@@ -359,91 +345,13 @@ void register_WindowManager_class(){
                 *\n" );
         
         }
-        { //::CEGUI::WindowManager::renameWindow
+        { //::CEGUI::WindowManager::saveLayoutToFile
         
-            typedef void ( ::CEGUI::WindowManager::*renameWindow_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::WindowManager::*saveLayoutToFile_function_type )( ::CEGUI::Window const &,::CEGUI::String const &,bool const ) const;
             
             WindowManager_exposer.def( 
-                "renameWindow"
-                , renameWindow_function_type( &::CEGUI::WindowManager::renameWindow )
-                , ( bp::arg("window"), bp::arg("new_name") )
-                , "*!\n\
-                \n\
-                    Rename a window.\n\
-            \n\
-                @param window\n\
-                    String holding the current name of the window to be renamed.\n\
-            \n\
-                @param new_name\n\
-                    String holding the new name for the window\n\
-            \n\
-                @exception UnknownObjectException\n\
-                    thrown if  window is not known in the system.\n\
-            \n\
-                @exception AlreadyExistsException\n\
-                    thrown if a Window named  new_name already exists.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::WindowManager::renameWindow
-        
-            typedef void ( ::CEGUI::WindowManager::*renameWindow_function_type )( ::CEGUI::Window *,::CEGUI::String const & ) ;
-            
-            WindowManager_exposer.def( 
-                "renameWindow"
-                , renameWindow_function_type( &::CEGUI::WindowManager::renameWindow )
-                , ( bp::arg("window"), bp::arg("new_name") )
-                , "*!\n\
-                \n\
-                    Rename a window.\n\
-            \n\
-                @param window\n\
-                    Pointer to the window to be renamed.\n\
-            \n\
-                @param new_name\n\
-                    String holding the new name for the window\n\
-            \n\
-                @exception AlreadyExistsException\n\
-                    thrown if a Window named  new_name already exists.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::WindowManager::saveWindowLayout
-        
-            typedef void ( ::CEGUI::WindowManager::*saveWindowLayout_function_type )( ::CEGUI::String const &,::CEGUI::String const &,bool const ) const;
-            
-            WindowManager_exposer.def( 
-                "saveWindowLayout"
-                , saveWindowLayout_function_type( &::CEGUI::WindowManager::saveWindowLayout )
-                , ( bp::arg("window"), bp::arg("filename"), bp::arg("writeParent")=(bool const)(false) )
-                , "*!\n\
-                \n\
-                    Save a full XML window layout, starting at the given Window, to a file\n\
-                    with the given file name.\n\
-            \n\
-                @param window\n\
-                    String holding the name of the Window object to become the root of the\n\
-                    layout.\n\
-            \n\
-                @param filename\n\
-                    The name of the file to which the XML will be written.  Note that this\n\
-                    does not use any part of the ResourceProvider system, but rather will\n\
-                    write directly to disk.  If this is not desirable, you should prefer the\n\
-                    OutStream based writeWindowLayoutToStream functions.\n\
-            \n\
-                @param writeParent\n\
-                    If the starting window has a parent window, specifies whether to write\n\
-                    the parent name into the Parent attribute of the GUILayout XML element.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::WindowManager::saveWindowLayout
-        
-            typedef void ( ::CEGUI::WindowManager::*saveWindowLayout_function_type )( ::CEGUI::Window const &,::CEGUI::String const &,bool const ) const;
-            
-            WindowManager_exposer.def( 
-                "saveWindowLayout"
-                , saveWindowLayout_function_type( &::CEGUI::WindowManager::saveWindowLayout )
+                "saveLayoutToFile"
+                , saveLayoutToFile_function_type( &::CEGUI::WindowManager::saveLayoutToFile )
                 , ( bp::arg("window"), bp::arg("filename"), bp::arg("writeParent")=(bool const)(false) )
                 , "*!\n\
                 \n\
@@ -507,13 +415,13 @@ void register_WindowManager_class(){
                 *\n" );
         
         }
-        { //::CEGUI::WindowManager::writeWindowLayoutToStream
+        { //::CEGUI::WindowManager::writeLayoutToStream
         
-            typedef void ( ::CEGUI::WindowManager::*writeWindowLayoutToStream_function_type )( ::CEGUI::Window const &,::CEGUI::OutStream &,bool ) const;
+            typedef void ( ::CEGUI::WindowManager::*writeLayoutToStream_function_type )( ::CEGUI::Window const &,::CEGUI::OutStream &,bool ) const;
             
             WindowManager_exposer.def( 
-                "writeWindowLayoutToStream"
-                , writeWindowLayoutToStream_function_type( &::CEGUI::WindowManager::writeWindowLayoutToStream )
+                "writeLayoutToStream"
+                , writeLayoutToStream_function_type( &::CEGUI::WindowManager::writeLayoutToStream )
                 , ( bp::arg("window"), bp::arg("out_stream"), bp::arg("writeParent")=(bool)(false) )
                 , "*!\n\
                 \n\
@@ -535,39 +443,14 @@ void register_WindowManager_class(){
                 *\n" );
         
         }
-        { //::CEGUI::WindowManager::writeWindowLayoutToStream
-        
-            typedef void ( ::CEGUI::WindowManager::*writeWindowLayoutToStream_function_type )( ::CEGUI::String const &,::CEGUI::OutStream &,bool ) const;
-            
-            WindowManager_exposer.def( 
-                "writeWindowLayoutToStream"
-                , writeWindowLayoutToStream_function_type( &::CEGUI::WindowManager::writeWindowLayoutToStream )
-                , ( bp::arg("window"), bp::arg("out_stream"), bp::arg("writeParent")=(bool)(false) )
-                , "*!\n\
-                \n\
-                    Writes a full XML window layout, starting at the given Window to the given OutStream.\n\
-            \n\
-                @param window\n\
-                    String holding the name of the Window object to become the root of the layout.\n\
-            \n\
-                @param out_stream\n\
-                    OutStream (std.ostream based) object where data is to be sent.\n\
-            \n\
-                @param writeParent\n\
-                    If the starting window has a parent window, specifies whether to write the parent name\
-                    into\n\
-                    the Parent attribute of the GUILayout XML element.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
         WindowManager_exposer.add_static_property( "EventWindowCreated"
                         , bp::make_getter( &CEGUI::WindowManager::EventWindowCreated
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         WindowManager_exposer.add_static_property( "EventWindowDestroyed"
                         , bp::make_getter( &CEGUI::WindowManager::EventWindowDestroyed
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        WindowManager_exposer.add_static_property( "GUILayoutSchemaName"
+                        , bp::make_getter( &CEGUI::WindowManager::GUILayoutSchemaName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         WindowManager_exposer.add_static_property( "GeneratedWindowNameBase"
                         , bp::make_getter( &CEGUI::WindowManager::GeneratedWindowNameBase
@@ -610,7 +493,9 @@ void register_WindowManager_class(){
         }
         WindowManager_exposer.staticmethod( "getDefaultResourceGroup" );
         WindowManager_exposer.staticmethod( "setDefaultResourceGroup" );
-        WindowManager_exposer.def ("loadWindowLayout", &::WindowManager_loadWindowLayout,        ( bp::arg("filename"), bp::arg("name_prefix")="", bp::arg("resourceGroup")="" ),         bp::return_value_policy< bp::reference_existing_object,bp::default_call_policies >());;
+        WindowManager_exposer.def ("loadLayoutFromContainer", &::WindowManager_loadLayoutFromContainer,        (bp::arg("source")),         bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());;
+        WindowManager_exposer.def ("loadLayoutFromFile", &::WindowManager_loadLayoutFromFile,        (bp::arg("filename"), bp::arg("resourceGroup") = ""),         bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());;
+        WindowManager_exposer.def ("loadLayoutFromString", &::WindowManager_loadLayoutFromString,        (bp::arg("source")),         bp::return_value_policy<bp::reference_existing_object, bp::default_call_policies>());;
     }
 
 }

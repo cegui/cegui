@@ -76,7 +76,7 @@ public:
     static const String FontTypePixmap;
 
     //! Constructor.
-    Font_xmlHandler(const String& filename, const String& resource_group);
+    Font_xmlHandler();
 
     //! Destructor.
     ~Font_xmlHandler();
@@ -88,6 +88,9 @@ public:
     Font& getObject() const;
 
     // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
+
     void elementStart(const String& element, const XMLAttributes& attributes);
     void elementEnd(const String& element);
 

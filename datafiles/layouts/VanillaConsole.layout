@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <GUILayout>
-    <Window Type="Vanilla/FrameWindow" Name="Vanilla/Console">
+    <Window Name="Console" Type="Vanilla/FrameWindow">
         <Property Name="AlwaysOnTop" Value="True" />
         <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
         <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
@@ -9,7 +9,7 @@
         <Property Name="Text" Value="Console" />
         <Property Name="CloseButtonEnabled" Value="False" />
 
-        <Window Type="Vanilla/Button" Name="Vanilla/Console/Submit">
+        <Window Name="Submit" Type="Vanilla/Button">
             <Property Name="ID" Value="1" />
             <Property Name="VerticalAlignment" Value="Bottom" />
             <Property Name="HorizontalAlignment" Value="Right" />
@@ -19,7 +19,7 @@
             <Property Name="Text" Value="Submit" />
         </Window>
 
-        <Window Type="Vanilla/Editbox" Name="Vanilla/Console/Editbox">
+        <Window Name="Editbox" Type="Vanilla/Editbox">
             <Property Name="ID" Value="2" />
             <Property Name="VerticalAlignment" Value="Bottom" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
@@ -28,7 +28,7 @@
             <Property Name="Text" Value="" />
         </Window>
 
-        <Window Type="Vanilla/MultiLineEditbox" Name="Vanilla/Console/History">
+        <Window Name="History" Type="Vanilla/MultiLineEditbox">
             <Property Name="ID" Value="3" />
             <Property Name="ReadOnly" Value="True" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
@@ -38,9 +38,9 @@
 
 It's now easy to add multiline text property.
 Line 1
-<![CDATA[
-You can now put <xml>stuff</xml> in your property easly " " "
-]]>
+
+You can now put &lt;xml&gt;stuff&lt;/xml&gt; in your property easly " " "
+
 Line 2
 Line 3
 </Property>

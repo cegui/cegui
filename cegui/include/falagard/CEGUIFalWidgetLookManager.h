@@ -47,7 +47,9 @@ namespace CEGUI
     \brief
         Manager class that gives top-level access to widget data based "look and feel" specifications loaded into the system.
     */
-    class CEGUIEXPORT WidgetLookManager : public Singleton<WidgetLookManager>
+    class CEGUIEXPORT WidgetLookManager :
+        public Singleton<WidgetLookManager>,
+        public AllocatedObject<WidgetLookManager>
     {
     public:
         /*!
@@ -148,6 +150,8 @@ namespace CEGUI
         */
         void eraseWidgetLook(const String& widget);
 
+        //! erase all defined WidgetLookFeel.
+        void eraseAllWidgetLooks();
 
         /*!
         \brief
@@ -227,7 +231,7 @@ namespace CEGUI
     private:
         static const String FalagardSchemaName;     //!< Name of schema file used for XML validation.
 
-        typedef std::map<String, WidgetLookFeel, String::FastLessCompare> WidgetLookList;
+        typedef std::map<String, WidgetLookFeel, StringFastLessCompare> WidgetLookList;
         WidgetLookList  d_widgetLooks;
 
         static String d_defaultResourceGroup;   //!< holds default resource group

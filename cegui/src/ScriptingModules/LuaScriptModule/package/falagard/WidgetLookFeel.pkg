@@ -27,11 +27,10 @@ class WidgetLookFeel
     void clearPropertyDefinitions();
     void clearPropertyLinkDefinitions();
     //void writeXMLToStream(XMLSerializer& out_stream) const;
-    void renameChildren(const Window& widget, utf8string newBaseName) const;
 
     const PropertyInitialiser* findPropertyInitialiser(utf8string propertyName) const;
     const WidgetComponent* findWidgetComponent(utf8string nameSuffix) const;
 
-    WidgetLookFeel(utf8string name);
+    WidgetLookFeel(utf8string name, utf8string inherits);
     WidgetLookFeel();
 };

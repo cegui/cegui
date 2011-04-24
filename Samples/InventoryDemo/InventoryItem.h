@@ -73,7 +73,7 @@ public:
     bool currentDropTargetIsValid() const;
 
     // base class overrides
-    bool isHit(const Vector2& position, const bool allow_disabled = false) const;
+    bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
     void setContentSize(int width, int height);
 
 protected:
@@ -81,7 +81,7 @@ protected:
     void onMoved(WindowEventArgs& e);
     void onDragDropTargetChanged(DragDropEventArgs& e);
     void populateGeometryBuffer();
-    Rect gridBasePixelRect() const;
+    Rectf gridBasePixelRect() const;
 
     // whether the current drag / drop target is a valid drop location for this
     // item

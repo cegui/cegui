@@ -32,10 +32,10 @@
 #endif
 
 #include "CEGUIPixmapFont.h"
-#include "CEGUIImageset.h"
 #include "CEGUIXMLSerializer.h" 
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
+#include "CEGUILogger.h"
 
 #ifdef CEGUI_HAS_FREETYPE
 #   include "CEGUIFreeTypeFont.h"
@@ -65,14 +65,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::sizeToString(
+        return PropertyHelper<Sizef >::toString(
             static_cast<const Font*>(receiver)->getNativeResolution());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<Font*>(receiver)->
-            setNativeResolution(PropertyHelper::stringToSize(value));
+            setNativeResolution(PropertyHelper<Sizef >::fromString(value));
     }
 };
 
@@ -110,14 +110,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const Font*>(receiver)->isAutoScaled());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<Font*>(receiver)->setAutoScaled(
-            PropertyHelper::stringToBool(value));
+            PropertyHelper<bool>::fromString(value));
     }
 };
 
@@ -133,14 +133,14 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(
+        return PropertyHelper<float>::toString(
             static_cast<const FreeTypeFont*>(receiver)->getPointSize());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<FreeTypeFont*>(receiver)->
-            setPointSize(PropertyHelper::stringToFloat (value));
+            setPointSize(PropertyHelper<float>::fromString(value));
     }
 };
 
@@ -156,36 +156,36 @@ public:
 
     String get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(
+        return PropertyHelper<bool>::toString(
             static_cast<const FreeTypeFont*>(receiver)->isAntiAliased());
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
         static_cast<FreeTypeFont*>(receiver)->
-            setAntiAliased(PropertyHelper::stringToBool(value));
+            setAntiAliased(PropertyHelper<bool>::fromString(value));
 }
 };
 #endif // CEGUI_HAS_FREETYPE
 
 // PixmapFont property
-class PixmapImageset : public Property
+class PixmapImageNamePrefix : public Property
 {
 public:
-    PixmapImageset() : Property(
-        "Imageset",
-        "This is the name of the imageset which contains the glyph images for "
-        "this font.")
+    PixmapImageNamePrefix() : Property(
+        "ImageNamePrefix",
+        "This is the name prefix used by the images that contain the glyph "
+        "imagery for this font.")
     {}
 
     String get(const PropertyReceiver* receiver) const
     {
-        return static_cast<const PixmapFont*>(receiver)->getImageset();
+        return static_cast<const PixmapFont*>(receiver)->getImageNamePrefix();
     }
 
     void set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<PixmapFont*>(receiver)->setImageset(value);
+        static_cast<PixmapFont*>(receiver)->setImageNamePrefix(value);
     }
 };
 
@@ -207,7 +207,7 @@ public:
     void set (PropertyReceiver* receiver, const String& value)
     {
         char img[33];
-        utf32 codepoint;
+        String::value_type codepoint;
         float adv;
         if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
             CEGUI_THROW(InvalidRequestException(
@@ -242,10 +242,10 @@ void FreeTypeFont::addFreeTypeFontProperties ()
 
 void PixmapFont::addPixmapFontProperties ()
 {
-    static FontProperties::PixmapImageset PixmapImageset;
+    static FontProperties::PixmapImageNamePrefix PixmapImageNamePrefix;
     static FontProperties::PixmapMapping PixmapMapping;
 
-    addProperty(&PixmapImageset);
+    addProperty(&PixmapImageNamePrefix);
     addProperty(&PixmapMapping);
 }
 

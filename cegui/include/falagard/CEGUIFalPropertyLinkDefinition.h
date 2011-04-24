@@ -47,9 +47,9 @@ namespace CEGUI
     class CEGUIEXPORT PropertyLinkDefinition : public PropertyDefinitionBase
     {
     public:
-        PropertyLinkDefinition(const String& propertyName, const String& widgetNameSuffix, const String& targetProperty, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+        PropertyLinkDefinition(const String& propertyName, const String& widgetName, const String& targetProperty, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
 
-        //! add a new link target to \a property on \a widget (name suffix).
+        //! add a new link target to \a property on \a widget (name).
         void addLinkTarget(const String& widget, const String& property);
         //! clear all link targets from this link definition.
         void clearLinkTargets();
@@ -83,25 +83,26 @@ namespace CEGUI
         */
         Window* getTargetWindow(PropertyReceiver* receiver);
 
-        //! Return a pointer to the target window with the given suffix.
+        //! Return a pointer to the target window with the given name.
         const Window* getTargetWindow(const PropertyReceiver* receiver,
-                                      const String& name_suffix) const;
+                                      const String& name) const;
 
-        //! Return a pointer to the target window with the given suffix.
+        //! Return a pointer to the target window with the given name.
         Window* getTargetWindow(PropertyReceiver* receiver,
-                                const String& name_suffix);
+                                const String& name);
 
         //! Internal struct used to keep track of targets.
         struct LinkTarget
         {
-            //! name suffix of the target widget.
-            String d_widgetNameSuffix;
+            //! name of the target widget.
+            String d_widgetName;
             //! the property to use on the target widget.
             String d_targetProperty;
         };
 
         //! type used for the collection of targets.
-        typedef std::vector<LinkTarget> LinkTargetCollection;
+        typedef std::vector<LinkTarget
+            CEGUI_VECTOR_ALLOC(LinkTarget)> LinkTargetCollection;
 
         //! collection of targets for this PropertyLinkDefinition.
         LinkTargetCollection d_targets;

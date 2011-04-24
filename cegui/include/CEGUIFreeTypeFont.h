@@ -6,7 +6,7 @@
 	purpose:    Implementation of the Font class via the FreeType library
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,8 +31,8 @@
 #define _CEGUIFreeTypeFont_h_
 
 #include "CEGUIFont.h"
-#include "CEGUIImage.h"
 #include "CEGUIDataContainer.h"
+#include "CEGUIBasicImage.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -166,10 +166,15 @@ protected:
     FT_Face d_fontFace;
     //! Font file data
     RawDataContainer d_fontData;
-    //! Type definition for ImagesetVector.
-    typedef std::vector<Imageset*> ImagesetVector;
-    //! Imagesets that holds the glyphs for this font.
-    mutable ImagesetVector d_glyphImages;
+    //! Type definition for TextureVector.
+    typedef std::vector<Texture*
+        CEGUI_VECTOR_ALLOC(Imageset*)> TextureVector;
+    //! Textures that hold the glyph imagery for this font.
+    mutable TextureVector d_glyphTextures;
+    typedef std::vector<BasicImage*
+        CEGUI_VECTOR_ALLOC(BasicImage*)> ImageVector;
+    //! collection of images defined for this font.
+    mutable ImageVector d_glyphImages;
 };
 
 } // End of  CEGUI namespace section

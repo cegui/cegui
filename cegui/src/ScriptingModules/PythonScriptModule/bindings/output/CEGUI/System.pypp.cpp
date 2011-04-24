@@ -50,16 +50,7 @@ void register_System_class(){
 
     { //::CEGUI::System
         typedef bp::class_< System_wrapper, bp::bases< CEGUI::Singleton< CEGUI::System >, CEGUI::EventSet >, boost::noncopyable > System_exposer_t;
-        System_exposer_t System_exposer = System_exposer_t( "System", "*!\n\
-        \n\
-           The System class is the CEGUI class that provides access to all other elements in this system.\n\
-        \n\
-           This object must be created by the client application.  The System object requires that you pass\
-           it\n\
-           an initialised Renderer object which it can use to interface to whatever rendering system will\
-           be\n\
-           used to display the GUI imagery.\n\
-        *\n", bp::no_init );
+        System_exposer_t System_exposer = System_exposer_t( "System", bp::no_init );
         bp::scope System_scope( System_exposer );
         { //::CEGUI::System::create
         
@@ -340,7 +331,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::getMultiClickToleranceAreaSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
             
             System_exposer.def( 
                 "getMultiClickToleranceAreaSize"
@@ -506,7 +497,7 @@ void register_System_class(){
                   Method that injects a typed character event into the system.\n\
             \n\
                @param code_point\n\
-                  Unicode code point of the character that was typed.\n\
+                  Unicode or ASCII (depends on used String class) code point of the character that was typed.\n\
             \n\
                @return\n\
                   - true if the input was processed by the gui system.\n\
@@ -870,7 +861,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::notifyDisplaySizeChanged
         
-            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
             
             System_exposer.def( 
                 "notifyDisplaySizeChanged"
@@ -1056,27 +1047,23 @@ void register_System_class(){
         }
         { //::CEGUI::System::setDefaultMouseCursor
         
-            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::String const & ) ;
             
             System_exposer.def( 
                 "setDefaultMouseCursor"
                 , setDefaultMouseCursor_function_type( &::CEGUI::System::setDefaultMouseCursor )
-                , ( bp::arg("imageset"), bp::arg("image_name") )
+                , ( bp::arg("name") )
                 , "*!\n\
                \n\
                   Set the image to be used as the default mouse cursor.\n\
             \n\
-               @param imageset\n\
-                  String object that contains the name of the Imageset  that contains the image to be used.\n\
-            \n\
-               @param image_name\n\
-                  String object that contains the name of the Image on  imageset that is to be used.\n\
+               @param name\n\
+                  String object that contains the name of the Image that is to be used.\n\
             \n\
                @return\n\
                   Nothing.\n\
             \n\
-               @exception UnknownObjectException   thrown if  imageset is not known, or if  imageset contains no\
-               Image named  image_name.\n\
+               @exception UnknownObjectException   thrown if no Image named  name exists.\n\
                *\n" );
         
         }
@@ -1337,7 +1324,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::setMultiClickToleranceAreaSize
         
-            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Sizef const & ) ;
             
             System_exposer.def( 
                 "setMultiClickToleranceAreaSize"

@@ -18,7 +18,7 @@ class ItemListBase : public Window
 	bool isAutoResizeEnabled() const;
 	bool isSortEnabled() const;
 	SortMode getSortMode() const;
-	Rect getItemRenderArea() const;
+	Rect<float> getItemRenderArea() const;
     Window* getContentPane() const;
 
 	void resetList();

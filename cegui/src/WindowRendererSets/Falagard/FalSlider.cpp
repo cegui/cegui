@@ -29,12 +29,14 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIThumb.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardSlider::TypeName[] = "Falagard/Slider";
+    const String FalagardSlider::TypeName("Falagard/Slider");
+
     FalagardSliderProperties::VerticalSlider FalagardSlider::d_verticalProperty;
     FalagardSliderProperties::ReversedDirection FalagardSlider::d_reversedProperty;
 
@@ -55,7 +57,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }
@@ -70,14 +72,14 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
-        const Size w_pixel_size(w->getPixelSize());
+        const Sizef w_pixel_size(w->getPixelSize());
 
-        float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.d_left / w_pixel_size.d_width);
-        float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.d_top / w_pixel_size.d_height);
+        const float thumbRelXPos = w_pixel_size.d_width == 0.0f ? 0.0f : (area.left() / w_pixel_size.d_width);
+        const float thumbRelYPos = w_pixel_size.d_height == 0.0f ? 0.0f : (area.top() / w_pixel_size.d_height);
         // get base location for thumb widget
         UVector2 thumbPosition(cegui_reldim(thumbRelXPos), cegui_reldim(thumbRelYPos));
 
@@ -89,8 +91,8 @@ namespace CEGUI
 
             // Set range of motion for the thumb widget
             if (w_pixel_size.d_height != 0.0f)
-                theThumb->setVertRange(area.d_top  / w_pixel_size.d_height,
-                                       (area.d_top + slideExtent) / w_pixel_size.d_height);
+                theThumb->setVertRange(area.top()  / w_pixel_size.d_height,
+                                      (area.top() + slideExtent) / w_pixel_size.d_height);
             else
                 theThumb->setVertRange(0.0f, 0.0f);
 
@@ -109,8 +111,8 @@ namespace CEGUI
 
             // Set range of motion for the thumb widget
             if (w_pixel_size.d_width != 0.0f)
-                theThumb->setHorzRange(area.d_left / w_pixel_size.d_width,
-                                       (area.d_left + slideExtent) / w_pixel_size.d_width);
+                theThumb->setHorzRange(area.left() / w_pixel_size.d_width,
+                                      (area.left() + slideExtent) / w_pixel_size.d_width);
             else
                 theThumb->setHorzRange(0.0f, 0.0f);
 
@@ -132,7 +134,7 @@ namespace CEGUI
         Slider* w = (Slider*)d_window;
         // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
         // get accesss to the thumb
         Thumb* theThumb = w->getThumb();
 
@@ -142,7 +144,8 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / w->getMaxValue());
+            float thumbValue = (CoordConverter::asAbsolute(
+                theThumb->getYPosition(), w->getPixelSize().d_height) - area.top()) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? thumbValue : w->getMaxValue() - thumbValue;
         }
@@ -152,24 +155,25 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / w->getMaxValue());
+            float thumbValue = (CoordConverter::asAbsolute(
+                theThumb->getXPosition(), w->getPixelSize().d_width) - area.left()) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? w->getMaxValue() - thumbValue : thumbValue;
         }
     }
 
-    float FalagardSlider::getAdjustDirectionFromPoint(const Point& pt) const
+    float FalagardSlider::getAdjustDirectionFromPoint(const Vector2f& pt) const
     {
         Slider* w = (Slider*)d_window;
-        Rect absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rectf absrect(w->getThumb()->getUnclippedOuterRect());
 
-        if ((d_vertical && (pt.d_y < absrect.d_top)) ||
-            (!d_vertical && (pt.d_x > absrect.d_right)))
+        if ((d_vertical && (pt.d_y < absrect.top())) ||
+            (!d_vertical && (pt.d_x > absrect.right())))
         {
             return d_reversed ? -1.0f : 1.0f;
         }
-        else if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
-            (!d_vertical && (pt.d_x < absrect.d_left)))
+        else if ((d_vertical && (pt.d_y > absrect.bottom())) ||
+            (!d_vertical && (pt.d_x < absrect.left())))
         {
             return d_reversed ? 1.0f : -1.0f;
         }

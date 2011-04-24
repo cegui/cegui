@@ -10,10 +10,7 @@ void register_RawDataContainer_class(){
 
     { //::CEGUI::RawDataContainer
         typedef bp::class_< CEGUI::RawDataContainer > RawDataContainer_exposer_t;
-        RawDataContainer_exposer_t RawDataContainer_exposer = RawDataContainer_exposer_t( "RawDataContainer", "*!\n\
-        \n\
-            Class used as the databuffer for loading files throughout the library.\n\
-        *\n", bp::init< >("*************************************************************************\n\
+        RawDataContainer_exposer_t RawDataContainer_exposer = RawDataContainer_exposer_t( "RawDataContainer", bp::init< >("*************************************************************************\n\
            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\

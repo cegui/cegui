@@ -28,6 +28,7 @@
 #include "elements/CEGUIGridLayoutContainer.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
+#include "CEGUICoordConverter.h"
 #include <limits>
 
 // Start of CEGUI namespace section
@@ -38,12 +39,12 @@ namespace CEGUI
 *************************************************************************/
 // type name for this widget
 const String GridLayoutContainer::WidgetTypeName("GridLayoutContainer");
-// suffix for dummies, a number is added to the end of that
-const String GridLayoutContainer::DummyNameSuffix("__auto_dummy_");
+// name for dummies, a number is added to the end of that
+const String GridLayoutContainer::DummyName("__auto_dummy_");
 
 const String GridLayoutContainer::EventNamespace("GridLayoutContainer");
 
-const String GridLayoutContainer::EventChildWindowOrderChanged("ChildWindowOrderChanged");
+const String GridLayoutContainer::EventChildOrderChanged("ChildOrderChanged");
 
 /*************************************************************************
     Properties
@@ -89,7 +90,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     while (getChildCount() != 0)
     {
         Window* wnd = d_children[0];
-        removeChildWindow(wnd);
+        removeChild(wnd);
     }
 
     // we simply fill the grid with dummies to ensure everything works smoothly
@@ -97,7 +98,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     for (size_t i = 0; i < width * height; ++i)
     {
         Window* dummy = createDummy();
-        addChildWindow(dummy);
+        addChild(dummy);
     }
 
     const size_t oldWidth = d_gridWidth;
@@ -128,7 +129,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
             }
             else
             {
-                addChildWindowToPosition(previous, x, y);
+                addChildToPosition(previous, x, y);
             }
 
             oldChildren[oldIdx] = 0;
@@ -195,28 +196,20 @@ void GridLayoutContainer::autoPositioningSkipCells(size_t cells)
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::addChildWindowToPosition(Window* window,
-                                                   size_t gridX, size_t gridY)
+void GridLayoutContainer::addChildToPosition(Window* window,
+                                             size_t gridX, size_t gridY)
 {
     // when user starts to add windows to specific locations, AO has to be disabled
     setAutoPositioning(AP_Disabled);
     d_nextGridX = gridX;
     d_nextGridY = gridY;
 
-    LayoutContainer::addChildWindow(window);
+    LayoutContainer::addChild(window);
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::addChildWindowToPosition(const String& name,
-                                                   size_t gridX, size_t gridY)
-{
-    addChildWindowToPosition(WindowManager::getSingleton().getWindow(name),
-                             gridX, gridY);
-}
-
-//----------------------------------------------------------------------------//
-Window* GridLayoutContainer::getChildWindowAtPosition(size_t gridX,
-                                                      size_t gridY)
+Window* GridLayoutContainer::getChildAtPosition(size_t gridX,
+                                                size_t gridY)
 {
     assert(gridX < d_gridWidth && "out of bounds");
     assert(gridY < d_gridHeight && "out of bounds");
@@ -226,66 +219,65 @@ Window* GridLayoutContainer::getChildWindowAtPosition(size_t gridX,
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::removeChildWindowFromPosition(size_t gridX,
-                                                        size_t gridY)
+void GridLayoutContainer::removeChildFromPosition(size_t gridX,
+                                                  size_t gridY)
 {
-    removeChildWindow(getChildWindowAtPosition(gridX, gridY));
+    removeChild(getChildAtPosition(gridX, gridY));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildWindowPositions(size_t wnd1, size_t wnd2)
+void GridLayoutContainer::swapChildPositions(size_t wnd1, size_t wnd2)
 {
     if (wnd1 < d_children.size() && wnd2 < d_children.size())
     {
         std::swap(d_children[wnd1], d_children[wnd2]);
 
         WindowEventArgs args(this);
-        onChildWindowOrderChanged(args);
+        onChildOrderChanged(args);
     }
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildWindowPositions(size_t gridX1, size_t gridY1,
-                                                   size_t gridX2, size_t gridY2)
+void GridLayoutContainer::swapChildPositions(size_t gridX1, size_t gridY1,
+                                             size_t gridX2, size_t gridY2)
 {
-    swapChildWindowPositions(
+    swapChildPositions(
         mapFromGridToIdx(gridX1, gridY1, d_gridWidth, d_gridHeight),
         mapFromGridToIdx(gridX2, gridY2, d_gridWidth, d_gridHeight));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildWindows(Window* wnd1, Window* wnd2)
+void GridLayoutContainer::swapChildren(Window* wnd1, Window* wnd2)
 {
-    swapChildWindowPositions(getIdxOfChildWindow(wnd1),
-                             getIdxOfChildWindow(wnd2));
+    swapChildPositions(getIdxOfChild(wnd1),
+                       getIdxOfChild(wnd2));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildWindows(Window* wnd1, const String& wnd2)
+void GridLayoutContainer::swapChildren(Window* wnd1, const String& wnd2)
 {
-    swapChildWindows(wnd1, WindowManager::getSingleton().getWindow(wnd2));
+    swapChildren(wnd1, getChild(wnd2));
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::swapChildWindows(const String& wnd1, Window* wnd2)
+void GridLayoutContainer::swapChildren(const String& wnd1, Window* wnd2)
 {
-    swapChildWindows(WindowManager::getSingleton().getWindow(wnd1), wnd2);
+    swapChildren(getChild(wnd1), wnd2);
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::moveChildWindowToPosition(Window* wnd,
+void GridLayoutContainer::moveChildToPosition(Window* wnd,
                                                     size_t gridX, size_t gridY)
 {
-    removeChildWindow(wnd);
-    addChildWindowToPosition(wnd, gridX, gridY);
+    removeChild(wnd);
+    addChildToPosition(wnd, gridX, gridY);
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::moveChildWindowToPosition(const String& wnd,
+void GridLayoutContainer::moveChildToPosition(const String& wnd,
                                                     size_t gridX, size_t gridY)
 {
-    moveChildWindowToPosition(WindowManager::getSingleton().getWindow(wnd),
-                              gridX, gridY);
+    moveChildToPosition(getChild(wnd), gridX, gridY);
 }
 
 //----------------------------------------------------------------------------//
@@ -311,12 +303,14 @@ void GridLayoutContainer::layout()
             Window* window = getChildAtIdx(childIdx);
             const UVector2 size = getBoundingSizeForWindow(window);
 
-            if (colSizes[x].asAbsolute(absWidth) < size.d_x.asAbsolute(absWidth))
+            if (CoordConverter::asAbsolute(colSizes[x], absWidth) <
+                CoordConverter::asAbsolute(size.d_x, absWidth))
             {
                 colSizes[x] = size.d_x;
             }
 
-            if (rowSizes[y].asAbsolute(absHeight) < size.d_y.asAbsolute(absHeight))
+            if (CoordConverter::asAbsolute(rowSizes[y], absHeight) <
+                CoordConverter::asAbsolute(size.d_y, absHeight))
             {
                 rowSizes[y] = size.d_y;
             }
@@ -349,11 +343,11 @@ void GridLayoutContainer::layout()
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::onChildWindowOrderChanged(WindowEventArgs& e)
+void GridLayoutContainer::onChildOrderChanged(WindowEventArgs& e)
 {
     markNeedsLayouting();
 
-    fireEvent(EventChildWindowOrderChanged, e, EventNamespace);
+    fireEvent(EventChildOrderChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -497,7 +491,7 @@ Window* GridLayoutContainer::createDummy()
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
-                    getName() + DummyNameSuffix + String(i_buff));
+                    DummyName + String(i_buff));
 
     dummy->setVisible(false);
     dummy->setSize(UVector2(UDim(0, 0), UDim(0, 0)));
@@ -538,7 +532,7 @@ void GridLayoutContainer::addChild_impl(Window* wnd)
                     "GridLayoutContainer::addChild_impl: Unable to add child "
                     "without explicit grid position because auto positioning is "
                     "disabled.  Consider using the "
-                    "GridLayoutContainer::addChildWindowToPosition functions.");
+                    "GridLayoutContainer::addChildToPosition functions.");
             }
 
             idx = mapFromGridToIdx(d_nextGridX, d_nextGridY,
@@ -559,7 +553,7 @@ void GridLayoutContainer::addChild_impl(Window* wnd)
         std::swap(d_children[idx], d_children[d_children.size() - 1]);
 
         Window* toBeRemoved = d_children[d_children.size() - 1];
-        removeChildWindow(toBeRemoved);
+        removeChild(toBeRemoved);
 
         if (toBeRemoved->isDestroyedByParent())
         {
@@ -576,9 +570,9 @@ void GridLayoutContainer::removeChild_impl(Window* wnd)
         // before we remove the child, we must add new dummy and place it
         // instead of the removed child
         Window* dummy = createDummy();
-        addChildWindow(dummy);
+        addChild(dummy);
 
-        const size_t i = getIdxOfChildWindow(wnd);
+        const size_t i = getIdxOfChild(wnd);
         std::swap(d_children[i], d_children[d_children.size() - 1]);
     }
 

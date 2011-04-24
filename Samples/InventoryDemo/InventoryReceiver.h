@@ -66,7 +66,7 @@ protected:
     // base class overrides
     void onDragDropItemDropped(DragDropEventArgs &e);
     void populateGeometryBuffer();
-    Rect gridBasePixelRect() const;
+    Rectf gridBasePixelRect() const;
 };
 
 } // End of  CEGUI namespace section

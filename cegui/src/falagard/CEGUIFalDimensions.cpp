@@ -27,8 +27,8 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalDimensions.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIWindow.h"
@@ -36,6 +36,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 #include <cassert>
 
 // Start of CEGUI namespace section
@@ -49,7 +50,7 @@ namespace CEGUI
 
     BaseDim::~BaseDim()
     {
-        delete d_operand;
+        CEGUI_DELETE_AO d_operand;
     }
 
     float BaseDim::getValue(const Window& wnd) const
@@ -83,7 +84,7 @@ namespace CEGUI
         return val;
     }
 
-    float BaseDim::getValue(const Window& wnd, const Rect& container) const
+    float BaseDim::getValue(const Window& wnd, const Rectf& container) const
     {
         // get sub-class to return value for this dimension.
         float val = getValue_impl(wnd, container);
@@ -147,7 +148,8 @@ namespace CEGUI
     void BaseDim::setOperand(const BaseDim& operand)
     {
         // release old operand, if any.
-        if(d_operand) delete d_operand;
+        if(d_operand)
+            CEGUI_DELETE_AO d_operand;
 
         d_operand = operand.clone();
     }
@@ -186,14 +188,14 @@ namespace CEGUI
         return d_val;
     }
 
-    float AbsoluteDim::getValue_impl(const Window&, const Rect&) const
+    float AbsoluteDim::getValue_impl(const Window&, const Rectf&) const
     {
         return d_val;
     }
 
     BaseDim* AbsoluteDim::clone_impl() const
     {
-        AbsoluteDim* ndim = new AbsoluteDim(d_val);
+        AbsoluteDim* ndim = CEGUI_NEW_AO AbsoluteDim(d_val);
         return ndim;
     }
 
@@ -204,22 +206,20 @@ namespace CEGUI
 
     void AbsoluteDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        xml_stream.attribute("value", PropertyHelper::floatToString(d_val));
+        xml_stream.attribute("value", PropertyHelper<float>::toString(d_val));
     }
 
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    ImageDim::ImageDim(const String& imageset, const String& image, DimensionType dim) :
-        d_imageset(imageset),
-        d_image(image),
+    ImageDim::ImageDim(const String& name, DimensionType dim) :
+        d_image(name),
         d_what(dim)
     {}
 
-    void ImageDim::setSourceImage(const String& imageset, const String& image)
+    void ImageDim::setSourceImage(const String& name)
     {
-        d_imageset = imageset;
-        d_image = image;
+        d_image = name;
     }
 
     void ImageDim::setSourceDimension(DimensionType dim)
@@ -229,27 +229,27 @@ namespace CEGUI
 
     float ImageDim::getValue_impl(const Window&) const
     {
-        const Image* img = &ImagesetManager::getSingleton().get(d_imageset).getImage(d_image);
+        const Image* img = &ImageManager::getSingleton().get(d_image);
 
         switch (d_what)
         {
             case DT_WIDTH:
-                return img->getWidth();
+                return img->getRenderedSize().d_width;
                 break;
 
             case DT_HEIGHT:
-                return img->getHeight();
+                return img->getRenderedSize().d_height;
                 break;
 
             case DT_X_OFFSET:
-                return img->getOffsetX();
+                return img->getRenderedOffset().d_x;
                 break;
 
             case DT_Y_OFFSET:
-                return img->getOffsetY();
+                return img->getRenderedOffset().d_y;
                 break;
 
-            // these other options will not be particularly useful for most people since they return the edges of the
+/*            // these other options will not be particularly useful for most people since they return the edges of the
             // image on the source texture.
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
@@ -268,14 +268,14 @@ namespace CEGUI
             case DT_BOTTOM_EDGE:
                 return img->getSourceTextureArea().d_bottom;
                 break;
-
+*/
             default:
                 CEGUI_THROW(InvalidRequestException("ImageDim::getValue - unknown or unsupported DimensionType encountered."));
                 break;
         }
     }
 
-    float ImageDim::getValue_impl(const Window& wnd, const Rect&) const
+    float ImageDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -284,7 +284,7 @@ namespace CEGUI
 
     BaseDim* ImageDim::clone_impl() const
     {
-        ImageDim* ndim = new ImageDim(d_imageset, d_image, d_what);
+        ImageDim* ndim = CEGUI_NEW_AO ImageDim(d_image, d_what);
         return ndim;
     }
 
@@ -295,8 +295,7 @@ namespace CEGUI
 
     void ImageDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        xml_stream.attribute("imageset", d_imageset)
-            .attribute("image", d_image)
+        xml_stream.attribute("name", d_image)
             .attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 
@@ -329,11 +328,11 @@ namespace CEGUI
         // name not empty, so find window with required name
         else
         {
-            widget = WindowManager::getSingleton().getWindow(wnd.getName() + d_widgetName);
+            widget = wnd.getChild(d_widgetName);
         }
 
         // get size of parent; required to extract pixel values
-        Size parentSize(widget->getParentPixelSize());
+        Sizef parentSize(widget->getParentPixelSize());
 
         switch (d_what)
         {
@@ -357,20 +356,20 @@ namespace CEGUI
 
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
-                return widget->getPosition().d_x.asAbsolute(parentSize.d_width);
+                return CoordConverter::asAbsolute(widget->getPosition().d_x, parentSize.d_width);
                 break;
 
             case DT_TOP_EDGE:
             case DT_Y_POSITION:
-                return widget->getPosition().d_y.asAbsolute(parentSize.d_height);
+                return CoordConverter::asAbsolute(widget->getPosition().d_y, parentSize.d_height);
                 break;
 
             case DT_RIGHT_EDGE:
-                return widget->getArea().d_max.d_x.asAbsolute(parentSize.d_width);
+                return CoordConverter::asAbsolute(widget->getArea().d_max.d_x, parentSize.d_width);
                 break;
 
             case DT_BOTTOM_EDGE:
-                return widget->getArea().d_max.d_y.asAbsolute(parentSize.d_height);
+                return CoordConverter::asAbsolute(widget->getArea().d_max.d_y, parentSize.d_height);
                 break;
 
             default:
@@ -379,7 +378,7 @@ namespace CEGUI
         }
     }
 
-    float WidgetDim::getValue_impl(const Window& wnd, const Rect&) const
+    float WidgetDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
@@ -387,7 +386,7 @@ namespace CEGUI
 
     BaseDim* WidgetDim::clone_impl() const
     {
-        WidgetDim* ndim = new WidgetDim(d_widgetName, d_what);
+        WidgetDim* ndim = CEGUI_NEW_AO WidgetDim(d_widgetName, d_what);
         return ndim;
     }
 
@@ -409,7 +408,7 @@ namespace CEGUI
     FontDim::FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding) :
         d_font(font),
         d_text(text),
-        d_childSuffix(name),
+        d_childName(name),
         d_metric(metric),
         d_padding(padding)
     {
@@ -418,7 +417,7 @@ namespace CEGUI
     float FontDim::getValue_impl(const Window& wnd) const
     {
         // get window to use.
-        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
+        const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
         // get font to use
         Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
 
@@ -447,14 +446,14 @@ namespace CEGUI
         }
     }
 
-    float FontDim::getValue_impl(const Window& wnd, const Rect&) const
+    float FontDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         return getValue_impl(wnd);
     }
 
     BaseDim* FontDim::clone_impl() const
     {
-        FontDim* ndim = new FontDim(d_childSuffix, d_font, d_text, d_metric, d_padding);
+        FontDim* ndim = CEGUI_NEW_AO FontDim(d_childName, d_font, d_text, d_metric, d_padding);
         return ndim;
     }
 
@@ -465,8 +464,8 @@ namespace CEGUI
 
     void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        if (!d_childSuffix.empty())
-            xml_stream.attribute("widget", d_childSuffix);
+        if (!d_childName.empty())
+            xml_stream.attribute("widget", d_childName);
 
         if (!d_font.empty())
             xml_stream.attribute("font", d_font);
@@ -475,7 +474,7 @@ namespace CEGUI
             xml_stream.attribute("string", d_text);
 
         if (d_padding != 0)
-            xml_stream.attribute("padding", PropertyHelper::floatToString(d_padding));
+            xml_stream.attribute("padding", PropertyHelper<float>::toString(d_padding));
 
         xml_stream.attribute("type", FalagardXMLHelper::fontMetricTypeToString(d_metric));
     }
@@ -485,7 +484,7 @@ namespace CEGUI
     PropertyDim::PropertyDim(const String& name, const String& property,
 	    DimensionType type) :
         d_property(property),
-        d_childSuffix(name),
+        d_childName(name),
 		d_type (type)
     {
     }
@@ -493,36 +492,36 @@ namespace CEGUI
     float PropertyDim::getValue_impl(const Window& wnd) const
     {
         // get window to use.
-        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
+        const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
 
         if (d_type == DT_INVALID)
             // return float property value.
-            return PropertyHelper::stringToFloat(sourceWindow.getProperty(d_property));
+            return PropertyHelper<float>::fromString(sourceWindow.getProperty(d_property));
 
-        UDim d = PropertyHelper::stringToUDim(sourceWindow.getProperty(d_property));
-        Size s = sourceWindow.getPixelSize();
+        const UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
+        const Sizef s = sourceWindow.getPixelSize();
 
         switch (d_type)
         {
             case DT_WIDTH:
-                return d.asAbsolute(s.d_width);
+                return CoordConverter::asAbsolute(d, s.d_width);
 
             case DT_HEIGHT:
-                return d.asAbsolute(s.d_height);
+                return CoordConverter::asAbsolute(d, s.d_height);
 
             default:
                 CEGUI_THROW(InvalidRequestException("PropertyDim::getValue - unknown or unsupported DimensionType encountered."));
         }
     }
 
-    float PropertyDim::getValue_impl(const Window& wnd, const Rect&) const
+    float PropertyDim::getValue_impl(const Window& wnd, const Rectf&) const
     {
         return getValue_impl(wnd);
     }
 
     BaseDim* PropertyDim::clone_impl() const
     {
-        PropertyDim* ndim = new PropertyDim(d_childSuffix, d_property, d_type);
+        PropertyDim* ndim = CEGUI_NEW_AO PropertyDim(d_childName, d_property, d_type);
         return ndim;
     }
 
@@ -533,8 +532,8 @@ namespace CEGUI
 
     void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        if (!d_childSuffix.empty())
-            xml_stream.attribute("widget", d_childSuffix);
+        if (!d_childName.empty())
+            xml_stream.attribute("widget", d_childName);
         xml_stream.attribute("name", d_property);
         if (d_type != DT_INVALID)
             xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));
@@ -551,7 +550,7 @@ namespace CEGUI
     Dimension::~Dimension()
     {
         if (d_value)
-            delete d_value;
+            CEGUI_DELETE_AO d_value;
     }
 
     Dimension::Dimension(const BaseDim& dim, DimensionType type)
@@ -569,7 +568,8 @@ namespace CEGUI
     Dimension& Dimension::operator=(const Dimension& other)
     {
         // release old value, if any.
-        if (d_value)  delete d_value;
+        if (d_value)
+            CEGUI_DELETE_AO d_value;
 
         d_value = other.d_value ? other.d_value->clone() : 0;
         d_type = other.d_type;
@@ -586,7 +586,8 @@ namespace CEGUI
     void Dimension::setBaseDimension(const BaseDim& dim)
     {
         // release old value, if any.
-        if (d_value)  delete d_value;
+        if (d_value)
+            CEGUI_DELETE_AO d_value;
 
         d_value = dim.clone();
     }
@@ -628,7 +629,7 @@ namespace CEGUI
             case DT_X_POSITION:
             case DT_X_OFFSET:
             case DT_WIDTH:
-                return d_value.asAbsolute(wnd.getPixelSize().d_width);
+                return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_width);
                 break;
 
             case DT_TOP_EDGE:
@@ -636,7 +637,7 @@ namespace CEGUI
             case DT_Y_POSITION:
             case DT_Y_OFFSET:
             case DT_HEIGHT:
-                return d_value.asAbsolute(wnd.getPixelSize().d_height);
+                return CoordConverter::asAbsolute(d_value, wnd.getPixelSize().d_height);
                 break;
 
             default:
@@ -645,7 +646,7 @@ namespace CEGUI
         }
     }
 
-    float UnifiedDim::getValue_impl(const Window&, const Rect& container) const
+    float UnifiedDim::getValue_impl(const Window&, const Rectf& container) const
     {
         switch (d_what)
         {
@@ -654,7 +655,7 @@ namespace CEGUI
             case DT_X_POSITION:
             case DT_X_OFFSET:
             case DT_WIDTH:
-                return d_value.asAbsolute(container.getWidth());
+                return CoordConverter::asAbsolute(d_value, container.getWidth());
                 break;
 
             case DT_TOP_EDGE:
@@ -662,7 +663,7 @@ namespace CEGUI
             case DT_Y_POSITION:
             case DT_Y_OFFSET:
             case DT_HEIGHT:
-                return d_value.asAbsolute(container.getHeight());
+                return CoordConverter::asAbsolute(d_value, container.getHeight());
                 break;
 
             default:
@@ -673,7 +674,7 @@ namespace CEGUI
 
     BaseDim* UnifiedDim::clone_impl() const
     {
-        UnifiedDim* ndim = new UnifiedDim(d_value, d_what);
+        UnifiedDim* ndim = CEGUI_NEW_AO UnifiedDim(d_value, d_what);
         return ndim;
     }
 
@@ -685,26 +686,42 @@ namespace CEGUI
     void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         if (d_value.d_scale != 0)
-            xml_stream.attribute("scale", PropertyHelper::floatToString(d_value.d_scale));
+            xml_stream.attribute("scale", PropertyHelper<float>::toString(d_value.d_scale));
 
         if (d_value.d_offset != 0)
-            xml_stream.attribute("offset", PropertyHelper::floatToString(d_value.d_offset));
+            xml_stream.attribute("offset", PropertyHelper<float>::toString(d_value.d_offset));
 
         xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    Rect ComponentArea::getPixelRect(const Window& wnd) const
+    ComponentArea::ComponentArea() :
+        d_left(AbsoluteDim(0.0f), DT_LEFT_EDGE),
+        d_top(AbsoluteDim(0.0f), DT_TOP_EDGE),
+        d_right_or_width(UnifiedDim(UDim(1.0f, 0.0f), DT_WIDTH), DT_RIGHT_EDGE),
+        d_bottom_or_height(UnifiedDim(UDim(1.0f, 0.0f), DT_HEIGHT), DT_BOTTOM_EDGE)
+    {}
+
+    Rectf ComponentArea::getPixelRect(const Window& wnd) const
     {
-        Rect pixelRect;
+        Rectf pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = CoordConverter::asAbsolute(
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_namedSource)), wnd.getPixelSize());
         }
-        // not via property - calculate using Dimensions
+        else if (isAreaFetchedFromNamedArea())
+        {
+            return WidgetLookManager::getSingleton()
+                .getWidgetLook(d_namedAreaSourceLook)
+                .getNamedArea(d_namedSource)
+                .getArea()
+                .getPixelRect(wnd);
+        }
+        // not via property or named area- calculate using Dimensions
         else
         {
             // sanity check, we mus be able to form a Rect from what we represent.
@@ -713,33 +730,42 @@ namespace CEGUI
             assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
             assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd);
-            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd);
+            pixelRect.left(d_left.getBaseDimension().getValue(wnd));
+            pixelRect.top(d_top.getBaseDimension().getValue(wnd));
 
             if (d_right_or_width.getDimensionType() == DT_WIDTH)
                 pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd));
             else
-                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd);
+                pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd));
 
             if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
                 pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
             else
-                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd);
+                pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd));
         }
 
         return pixelRect;
     }
 
-    Rect ComponentArea::getPixelRect(const Window& wnd, const Rect& container) const
+    Rectf ComponentArea::getPixelRect(const Window& wnd, const Rectf& container) const
     {
-        Rect pixelRect;
+        Rectf pixelRect;
 
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
+            pixelRect = CoordConverter::asAbsolute(
+                PropertyHelper<URect>::fromString(wnd.getProperty(d_namedSource)), wnd.getPixelSize());
         }
-        // not via property - calculate using Dimensions
+        else if (isAreaFetchedFromNamedArea())
+        {
+            return WidgetLookManager::getSingleton()
+                .getWidgetLook(d_namedAreaSourceLook)
+                .getNamedArea(d_namedSource)
+                .getArea()
+                .getPixelRect(wnd, container);
+        }
+        // not via property or named area- calculate using Dimensions
         else
         {
             // sanity check, we mus be able to form a Rect from what we represent.
@@ -748,18 +774,18 @@ namespace CEGUI
             assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
             assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd, container) + container.d_left;
-            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd, container) + container.d_top;
+            pixelRect.left(d_left.getBaseDimension().getValue(wnd, container) + container.left());
+            pixelRect.top(d_top.getBaseDimension().getValue(wnd, container) + container.top());
 
             if (d_right_or_width.getDimensionType() == DT_WIDTH)
                 pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
             else
-                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd, container) + container.d_left;
+                pixelRect.right(d_right_or_width.getBaseDimension().getValue(wnd, container) + container.left());
 
             if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
                 pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
             else
-                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
+                pixelRect.bottom(d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.top());
         }
 
         return pixelRect;
@@ -773,7 +799,14 @@ namespace CEGUI
         if (isAreaFetchedFromProperty())
         {
             xml_stream.openTag("AreaProperty")
-                .attribute("name", d_areaProperty)
+                .attribute("name", d_namedSource)
+                .closeTag();
+        }
+        else if (isAreaFetchedFromNamedArea())
+        {
+            xml_stream.openTag("NamedAreaSource")
+                .attribute("look", d_namedAreaSourceLook)
+                .attribute("name", d_namedSource)
                 .closeTag();
         }
         // not a property, write out individual dimensions explicitly.
@@ -789,17 +822,30 @@ namespace CEGUI
 
     bool ComponentArea::isAreaFetchedFromProperty() const
     {
-        return !d_areaProperty.empty();
+        return !d_namedSource.empty() && d_namedAreaSourceLook.empty();
     }
 
     const String& ComponentArea::getAreaPropertySource() const
     {
-        return d_areaProperty;
+        return d_namedSource;
     }
 
     void ComponentArea::setAreaPropertySource(const String& property)
     {
-        d_areaProperty = property;
+        d_namedSource = property;
+        d_namedAreaSourceLook.clear();
+    }
+    
+    void ComponentArea::setNamedAreaSouce(const String& widget_look,
+                                          const String& area_name)
+    {
+        d_namedSource = area_name;
+        d_namedAreaSourceLook = widget_look;
+    }
+
+    bool ComponentArea::isAreaFetchedFromNamedArea() const
+    {
+        return !d_namedAreaSourceLook.empty() && !d_namedSource.empty();
     }
 
 } // End of  CEGUI namespace section

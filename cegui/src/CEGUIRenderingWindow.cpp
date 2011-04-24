@@ -47,7 +47,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),
-    d_rotation(0, 0, 0)
+    d_rotation(Quaternion::IDENTITY)
 {
     d_geometry->setBlendMode(BM_RTT_PREMULTIPLIED);
 }
@@ -59,28 +59,28 @@ RenderingWindow::~RenderingWindow()
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setClippingRegion(const Rect& region)
+void RenderingWindow::setClippingRegion(const Rectf& region)
 {
-    Rect final_region(region);
+    Rectf final_region(region);
 
     // clip region position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
         final_region.offset(
-            Vector2(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
-                    -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
+            Vector2f(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
+                      -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
     }
 
     d_geometry->setClippingRegion(final_region);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPosition(const Vector2& position)
+void RenderingWindow::setPosition(const Vector2f& position)
 {
     d_position = position;
 
-    Vector3 trans(d_position.d_x, d_position.d_y, 0.0f);
+    Vector3f trans(d_position.d_x, d_position.d_y, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
@@ -93,7 +93,7 @@ void RenderingWindow::setPosition(const Vector2& position)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setSize(const Size& size)
+void RenderingWindow::setSize(const Sizef& size)
 {
     d_size.d_width = PixelAligned(size.d_width);
     d_size.d_height = PixelAligned(size.d_height);
@@ -103,39 +103,39 @@ void RenderingWindow::setSize(const Size& size)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setRotation(const Vector3& rotation)
+void RenderingWindow::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
     d_geometry->setRotation(d_rotation);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPivot(const Vector3& pivot)
+void RenderingWindow::setPivot(const Vector3f& pivot)
 {
     d_pivot = pivot;
     d_geometry->setPivot(d_pivot);
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& RenderingWindow::getPosition() const
+const Vector2f& RenderingWindow::getPosition() const
 {
     return d_position;
 }
 
 //----------------------------------------------------------------------------//
-const Size& RenderingWindow::getSize() const
+const Sizef& RenderingWindow::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Vector3& RenderingWindow::getRotation() const
+const Quaternion& RenderingWindow::getRotation() const
 {
     return d_rotation;
 }
 
 //----------------------------------------------------------------------------//
-const Vector3& RenderingWindow::getPivot() const
+const Vector3f& RenderingWindow::getPivot() const
 {
     return d_pivot;
 }
@@ -256,61 +256,59 @@ void RenderingWindow::realiseGeometry_impl()
 
     const float tu = d_size.d_width * tex.getTexelScaling().d_x;
     const float tv = d_size.d_height * tex.getTexelScaling().d_y;
-    const Rect tex_rect(d_textarget.isRenderingInverted() ?
-                        Rect(0, 1, tu, 1 - tv) :
-                        Rect(0, 0, tu, tv));
+    const Rectf tex_rect(d_textarget.isRenderingInverted() ?
+                          Rectf(0, 1, tu, 1 - tv) :
+                          Rectf(0, 0, tu, tv));
 
-    const Rect area(0, 0, d_size.d_width, d_size.d_height);
-    const colour c(1, 1, 1, 1);
+    const Rectf area(0, 0, d_size.d_width, d_size.d_height);
+    const Colour c(1, 1, 1, 1);
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = Vector3(area.d_left, area.d_top, 0.0f);
+    vbuffer[0].position   = Vector3f(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[0].colour_val = c;
-    vbuffer[0].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[0].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 1
-    vbuffer[1].position   = Vector3(area.d_left, area.d_bottom, 0.0f);
+    vbuffer[1].position   = Vector3f(area.d_min.d_x, area.d_max.d_y, 0.0f);
     vbuffer[1].colour_val = c;
-    vbuffer[1].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_bottom);
+    vbuffer[1].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
 
     // vertex 2
-    vbuffer[2].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[2].position   = Vector3f(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[2].colour_val = c;
-    vbuffer[2].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[2].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     // vertex 3
-    vbuffer[3].position   = Vector3(area.d_right, area.d_top, 0.0f);
+    vbuffer[3].position   = Vector3f(area.d_max.d_x, area.d_min.d_y, 0.0f);
     vbuffer[3].colour_val = c;
-    vbuffer[3].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_top);
+    vbuffer[3].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
 
     // vertex 4
-    vbuffer[4].position   = Vector3(area.d_left, area.d_top, 0.0f);
+    vbuffer[4].position   = Vector3f(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[4].colour_val = c;
-    vbuffer[4].tex_coords = Vector2(tex_rect.d_left, tex_rect.d_top);
+    vbuffer[4].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 5
-    vbuffer[5].position   = Vector3(area.d_right, area.d_bottom, 0.0f);
+    vbuffer[5].position   = Vector3f(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[5].colour_val = c;
-    vbuffer[5].tex_coords = Vector2(tex_rect.d_right, tex_rect.d_bottom);
+    vbuffer[5].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     d_geometry->setActiveTexture(&tex);
     d_geometry->appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
+void RenderingWindow::unprojectPoint(const Vector2f& p_in, Vector2f& p_out)
 {
     // quick test for rotations to save us a lot of work in the unrotated case
-    if ((d_rotation.d_x == 0.0f) &&
-        (d_rotation.d_y == 0.0f) &&
-        (d_rotation.d_z == 0.0f))
+    if ((d_rotation == Quaternion::IDENTITY))
     {
         p_out = p_in;
         return;
     }
 
-    Vector2 in(p_in);
+    Vector2f in(p_in);
 
     // localise point for cases where owner is also a RenderingWindow
     if (d_owner->isRenderingWindow())

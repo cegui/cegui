@@ -41,6 +41,10 @@ public:
     Animation_xmlHandler();
     ~Animation_xmlHandler();
 
+    // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
+
 protected:
     // implement ChainedXMLHandler interface.
     void elementStartLocal(const String& element,

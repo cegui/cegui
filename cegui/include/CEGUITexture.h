@@ -33,6 +33,9 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUISize.h"
+#include "CEGUIVector.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -47,7 +50,8 @@ namespace CEGUI
     for the rest of the system to work.  Texture objects are only created
     through the Renderer object's texture creation functions.
 */
-class CEGUIEXPORT Texture
+class CEGUIEXPORT Texture :
+    public AllocatedObject<Texture>
 {
 public:
     /*!
@@ -65,13 +69,28 @@ public:
 
     /*!
     \brief
+        Destructor for Texture base class.
+    */
+    virtual ~Texture() {}
+
+    /*!
+    \brief
+        Returns the name given to the texture when it was created.
+
+    \return
+        Reference to a String object that holds the name of the texture.
+    */
+    virtual const String& getName() const = 0;
+
+    /*!
+    \brief
         Returns the current pixel size of the texture.
 
     \return
         Reference to a Size object that describes the size of the texture in
         pixels.
     */
-    virtual const Size& getSize() const = 0;
+    virtual const Sizef& getSize() const = 0;
 
     /*!
     \brief
@@ -81,7 +100,7 @@ public:
         reference to a Size object that describes the original size, in pixels,
         of the data loaded into the texture.
     */
-    virtual const Size& getOriginalDataSize() const = 0;
+    virtual const Sizef& getOriginalDataSize() const = 0;
 
     /*!
     \brief
@@ -92,7 +111,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2& getTexelScaling() const = 0;
+    virtual const Vector2f& getTexelScaling() const = 0;
 
     /*!
     \brief
@@ -130,26 +149,34 @@ public:
         Nothing.
     */
     virtual void loadFromMemory(const void* buffer,
-                                const Size& buffer_size,
+                                const Sizef& buffer_size,
                                 PixelFormat pixel_format) = 0;
 
     /*!
     \brief
-        Save / dump the content of the texture to a memory buffer.  The dumped
-        pixel format is always RGBA (4 bytes per pixel).
+        Performs an area memory blit to the texture
 
-    \param buffer
-        Pointer to the buffer that is to receive the image data.  You must make
-        sure that this buffer is large enough to hold the dumped texture data,
-        the required pixel dimensions can be established by calling getSize.
+    \param sourceData
+        input data, the size must match area described by the given Rect
+
+    \param area
+        area where the blit will happen
+
+    \note The pixel format must match current Texture's pixel format!
     */
-    virtual void saveToMemory(void* buffer) = 0;
+    virtual void blitFromMemory(void* sourceData, const Rectf& area) = 0;
 
     /*!
     \brief
-        Destructor for Texture base class.
+    	Performs a complete blit from the texture surface to memory
+
+    \param
+    	targetData the buffer where the target is stored
+
+    \note
+    	You have to (correctly) preallocate the target buffer!
     */
-    virtual ~Texture() {}
+    virtual void blitToMemory(void* targetData) = 0;
 };
 
 } // End of  CEGUI namespace section

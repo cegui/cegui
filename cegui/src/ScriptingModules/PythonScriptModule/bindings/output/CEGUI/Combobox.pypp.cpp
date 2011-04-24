@@ -27,7 +27,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Combobox::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -35,7 +35,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Combobox::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -123,7 +123,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -131,7 +131,7 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -318,19 +318,19 @@ void register_Combobox_class(){
                *\n" );
         
         }
-        { //::CEGUI::Combobox::getCaratIndex
+        { //::CEGUI::Combobox::getCaretIndex
         
-            typedef ::size_t ( ::CEGUI::Combobox::*getCaratIndex_function_type )(  ) const;
+            typedef ::size_t ( ::CEGUI::Combobox::*getCaretIndex_function_type )(  ) const;
             
             Combobox_exposer.def( 
-                "getCaratIndex"
-                , getCaratIndex_function_type( &::CEGUI::Combobox::getCaratIndex )
+                "getCaretIndex"
+                , getCaretIndex_function_type( &::CEGUI::Combobox::getCaretIndex )
                 , "*!\n\
                \n\
-                  return the current position of the carat.\n\
+                  return the current position of the caret.\n\
             \n\
                @return\n\
-                  Index of the insert carat relative to the start of the text.\n\
+                  Index of the insert caret relative to the start of the text.\n\
                *\n" );
         
         }
@@ -513,7 +513,7 @@ void register_Combobox_class(){
                @return\n\
                   Index of the selection end point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
@@ -547,7 +547,7 @@ void register_Combobox_class(){
                @return\n\
                   Index of the selection start point relative to the start of the text.  If no selection is\
                   defined this function returns\n\
-                  the position of the carat.\n\
+                  the position of the caret.\n\
                *\n" );
         
         }
@@ -708,8 +708,8 @@ void register_Combobox_class(){
         }
         { //::CEGUI::Combobox::isHit
         
-            typedef bool ( ::CEGUI::Combobox::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Combobox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Combobox::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( Combobox_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             Combobox_exposer.def( 
                 "isHit"
@@ -894,22 +894,22 @@ void register_Combobox_class(){
                *\n" );
         
         }
-        { //::CEGUI::Combobox::setCaratIndex
+        { //::CEGUI::Combobox::setCaretIndex
         
-            typedef void ( ::CEGUI::Combobox::*setCaratIndex_function_type )( ::size_t ) ;
+            typedef void ( ::CEGUI::Combobox::*setCaretIndex_function_type )( ::size_t ) ;
             
             Combobox_exposer.def( 
-                "setCaratIndex"
-                , setCaratIndex_function_type( &::CEGUI::Combobox::setCaratIndex )
-                , ( bp::arg("carat_pos") )
+                "setCaretIndex"
+                , setCaretIndex_function_type( &::CEGUI::Combobox::setCaretIndex )
+                , ( bp::arg("caret_pos") )
                 , "*!\n\
                \n\
-                  Set the current position of the carat.\n\
+                  Set the current position of the caret.\n\
             \n\
-               @param carat_pos\n\
-                  New index for the insert carat relative to the start of the text.  If the value specified is\
+               @param caret_pos\n\
+                  New index for the insert caret relative to the start of the text.  If the value specified is\
                   greater than the\n\
-                  number of characters in the Editbox, the carat is positioned at the end of the text.\n\
+                  number of characters in the Editbox, the caret is positioned at the end of the text.\n\
             \n\
                @return\n\
                   Nothing.\n\
@@ -1183,17 +1183,17 @@ void register_Combobox_class(){
                *\n" );
         
         }
-        Combobox_exposer.add_static_property( "ButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::ButtonNameSuffix
+        Combobox_exposer.add_static_property( "ButtonName"
+                        , bp::make_getter( &CEGUI::Combobox::ButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "DropListNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::DropListNameSuffix
+        Combobox_exposer.add_static_property( "DropListName"
+                        , bp::make_getter( &CEGUI::Combobox::DropListName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "EditboxNameSuffix"
-                        , bp::make_getter( &CEGUI::Combobox::EditboxNameSuffix
+        Combobox_exposer.add_static_property( "EditboxName"
+                        , bp::make_getter( &CEGUI::Combobox::EditboxName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "EventCaratMoved"
-                        , bp::make_getter( &CEGUI::Combobox::EventCaratMoved
+        Combobox_exposer.add_static_property( "EventCaretMoved"
+                        , bp::make_getter( &CEGUI::Combobox::EventCaretMoved
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Combobox_exposer.add_static_property( "EventDropListDisplayed"
                         , bp::make_getter( &CEGUI::Combobox::EventDropListDisplayed
@@ -1336,8 +1336,8 @@ void register_Combobox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( Combobox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Combobox_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Combobox_exposer.def( 
                 "getUnclippedInnerRect_impl"

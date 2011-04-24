@@ -1,12 +1,12 @@
 /***********************************************************************
 	filename: 	CEGUIVector.h
-	created:	14/3/2004
-	author:		Paul D Turner
+	created:	13/2/2011
+	author:		Martin Preisler (reworked from code by Paul D Turner)
 	
 	purpose:	Defines interfaces for Vector classes
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,8 +31,6 @@
 #define _CEGUIVector_h_
 
 #include "CEGUIBase.h"
-#include "CEGUISize.h"
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,16 +38,35 @@ namespace CEGUI
 
 /*!
 \brief
- Class used as a two dimensional vector (aka a Point)
+    Class used as a two dimensional vector (aka a Point)
+
+\par
+    This class is templated now, this allows us to use it as a Vector2 of floats,
+    ints or even UDims without replicating the code all over the place.
+
+\par
+    For a simple Vector2 of floats (what was called Vector2 before), use Vector2f
+    as the T template parameter defaults to float to save fingertips.
 */
-class CEGUIEXPORT Vector2
+template<typename T>
+class Vector2:
+    public AllocatedObject<Vector2<T> >
 {
 public:
-    Vector2(void) {}
-    Vector2(float x, float y) : d_x(x), d_y(y) {}
-    Vector2(const Vector2& v) : d_x(v.d_x), d_y(v.d_y) {}
+    inline Vector2()
+    {}
+    
+    inline Vector2(const T& x, const T& y):
+        d_x(x),
+        d_y(y)
+    {}
 
-    Vector2& operator*=(const Vector2& vec)
+    inline Vector2(const Vector2& v):
+        d_x(v.d_x),
+        d_y(v.d_y)
+    {}
+
+    inline Vector2& operator*=(const Vector2& vec)
     {
         d_x *= vec.d_x;
         d_y *= vec.d_y;
@@ -57,7 +74,7 @@ public:
         return *this;
     }
 
-    Vector2& operator/=(const Vector2& vec)
+    inline Vector2& operator/=(const Vector2& vec)
     {
         d_x /= vec.d_x;
         d_y /= vec.d_y;
@@ -65,7 +82,7 @@ public:
         return *this;
     }
 
-    Vector2& operator+=(const Vector2& vec)
+    inline Vector2& operator+=(const Vector2& vec)
     {
         d_x += vec.d_x;
         d_y += vec.d_y;
@@ -73,7 +90,7 @@ public:
         return *this;
     }
 
-    Vector2& operator-=(const Vector2& vec)
+    inline Vector2& operator-=(const Vector2& vec)
     {
         d_x -= vec.d_x;
         d_y -= vec.d_y;
@@ -81,84 +98,132 @@ public:
         return *this;
     }
 
-    Vector2 operator+(const Vector2& vec) const
+    inline Vector2 operator+(const Vector2& vec) const
     {
         return Vector2(d_x + vec.d_x, d_y + vec.d_y);
     }
 
-    Vector2 operator-(const Vector2& vec) const
+    inline Vector2 operator-(const Vector2& vec) const
     {
         return Vector2(d_x - vec.d_x, d_y - vec.d_y);
     }
 
-    Vector2 operator*(const Vector2& vec) const
+    inline Vector2 operator*(const Vector2& vec) const
     {
         return Vector2(d_x * vec.d_x, d_y * vec.d_y);
     }
 
-	Vector2 operator*(float c) const
+    inline Vector2 operator/(const Vector2& vec) const
+    {
+        return Vector2(d_x / vec.d_x, d_y / vec.d_y);
+    }
+
+	inline Vector2 operator*(const T& c) const
     {
         return Vector2(d_x * c, d_y * c);
     }
 
-    bool operator==(const Vector2& vec) const
+	inline Vector2& operator*=(const T& c)
+    {
+	    d_x *= c;
+	    d_y *= c;
+
+	    return *this;
+    }
+
+    inline Vector2 operator/(const T& c) const
+    {
+        return Vector2(d_x / c, d_y / c);
+    }
+
+    inline bool operator==(const Vector2& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y));
     }
 
-    bool operator!=(const Vector2& vec) const
+    inline bool operator!=(const Vector2& vec) const
     {
         return !(operator==(vec));
     }
 
-    Size asSize() const     { return Size(d_x, d_y); }
-
-    float d_x, d_y;
+    T d_x;
+    T d_y;
 };
 
-/*!
-\brief
- Point class
-*/
-typedef Vector2  Point;
-
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Vector2<float> Vector2f;
 
 /*!
 \brief
- Class used as a three dimensional vector
+    Class used as a three dimensional vector
+
+\par
+    This class is templated now, this allows us to use it as a Vector3 of floats,
+    ints or even UDims without replicating the code all over the place.
+
+\par
+    For a simple Vector3 of floats (what was called Vector3 before), use Vector3f
+    as the T template parameter defaults to float to save fingertips.
 */
-class CEGUIEXPORT Vector3
+template<typename T>
+class Vector3:
+    public AllocatedObject<Vector3<T> >
 {
 public:
-    Vector3(void) {}
-    Vector3(float x, float y, float z) : d_x(x), d_y(y), d_z(z) {}
-    Vector3(const Vector3& v) : d_x(v.d_x), d_y(v.d_y), d_z(v.d_z) {}
+    inline Vector3()
+    {}
 
-    bool operator==(const Vector3& vec) const
+    inline Vector3(const T& x, const T& y, const T& z):
+        d_x(x),
+        d_y(y),
+        d_z(z)
+    {}
+
+    inline explicit Vector3(const Vector2<T>& v, const T& z):
+        d_x(v.d_x),
+        d_y(v.d_y),
+        d_z(z)
+    {}
+
+    inline Vector3(const Vector3& v):
+        d_x(v.d_x),
+        d_y(v.d_y),
+        d_z(v.d_z)
+    {}
+
+    inline bool operator==(const Vector3& vec) const
     {
         return ((d_x == vec.d_x) && (d_y == vec.d_y) && (d_z == vec.d_z));
     }
 
-    bool operator!=(const Vector3& vec) const
+    inline bool operator!=(const Vector3& vec) const
     {
         return !(operator==(vec));
     }
 
-	Vector3 operator*(float c) const
+	inline Vector3 operator*(const T& c) const
 	{
 		return Vector3(d_x * c, d_y * c, d_z * c);
 	}
 
-	Vector3 operator+(const Vector3& v) const
+	inline Vector3 operator+(const Vector3& v) const
 	{
 		return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
 	}
 
-    float d_x, d_y, d_z;
+    inline Vector3 operator-(const Vector3& v) const
+	{
+		return Vector3(d_x - v.d_x, d_y - v.d_y, d_z - v.d_z);
+	}
+
+    T d_x;
+    T d_y;
+    T d_z;
 };
+
+// the main reason for this is to keep C++ API in sync with other languages
+typedef Vector3<float> Vector3f;
 
 } // End of  CEGUI namespace section
 
-
 #endif	// end of guard _CEGUIVector_h_
-

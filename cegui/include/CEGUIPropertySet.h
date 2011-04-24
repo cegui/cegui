@@ -34,6 +34,12 @@
 #include "CEGUIString.h"
 #include "CEGUIIteratorBase.h"
 #include "CEGUIProperty.h"
+#include "CEGUIPropertyHelper.h"
+#include "CEGUITypedProperty.h"
+// not needed in this header but you are likely to use it if you include this,
+// we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
+#include "CEGUITplProperty.h"
+#include "CEGUIExceptions.h"
 #include <map>
 
 
@@ -41,6 +47,9 @@
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
+
+// for the crazy people not wanting RTTI
+//#define CEGUI_NO_RTTI
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -96,6 +105,19 @@ public:
 
 
 	/*!
+    \brief
+        Retrieves a property instance (that was previously added)
+
+    \param name
+        String containing the name of the Property to be retrieved. If Property \a name is not in the set, exception is thrown.
+
+    \return
+        Pointer to the property instance
+    */
+	Property* getPropertyInstance(const String& name) const;
+
+
+	/*!
 	\brief
 		Removes all Property objects from the PropertySet.
 
@@ -147,6 +169,40 @@ public:
 	*/
 	String	getProperty(const String& name) const;
 
+    /*!
+    \copydoc PropertySet::getProperty
+    
+    This method tries to do a native type get without string conversion if possible,
+    if that is not possible, it gracefully falls back to string conversion
+    */
+    template<typename T>
+    typename PropertyHelper<T>::return_type getProperty(const String& name)
+    {
+#ifdef CEGUI_NO_RTTI
+        return PropertyHelper<T>::fromString(getProperty(name));
+#else
+        PropertyRegistry::iterator pos = d_properties.find(name);
+
+        if (pos == d_properties.end())
+        {
+            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+        }
+
+        Property* baseProperty = pos->second;
+        TypedProperty<T>* typedProperty = dynamic_cast<TypedProperty<T>* >(baseProperty);
+        
+        if (typedProperty)
+        {
+            // yay, we can get native!
+            return typedProperty->getNative(this);
+        }
+        else
+        {
+            // fall back to string get
+            return PropertyHelper<T>::fromString(baseProperty->get(this));
+        }
+#endif
+    }
 
 	/*!
 	\brief
@@ -166,6 +222,40 @@ public:
 	*/
 	void	setProperty(const String& name, const String& value);
 
+    /*!
+    \copydoc PropertySet::setProperty
+    
+    This method tries to do a native type set without string conversion if possible,
+    if that is not possible, it gracefully falls back to string conversion
+    */
+    template<typename T>
+    void    setProperty(const String& name, typename PropertyHelper<T>::pass_type value)
+    {
+#ifdef CEGUI_NO_RTTI
+        setProperty(name, PropertyHelper<T>::toString(value));
+#else
+        PropertyRegistry::iterator pos = d_properties.find(name);
+
+        if (pos == d_properties.end())
+        {
+            CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+        }
+
+        Property* baseProperty = pos->second;
+        TypedProperty<T>* typedProperty = dynamic_cast<TypedProperty<T>* >(baseProperty);
+        
+        if (typedProperty)
+        {
+            // yay, we can set native!
+            typedProperty->setNative(this, value);
+        }
+        else
+        {
+            // fall back to string set
+            baseProperty->set(this, PropertyHelper<T>::toString(value));
+        }
+#endif
+    }
 
 	/*!
 	\brief
@@ -194,7 +284,8 @@ public:
 	String	getPropertyDefault(const String& name) const;
 
 private:
-	typedef std::map<String, Property*, String::FastLessCompare>	PropertyRegistry;
+	typedef std::map<String, Property*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, Property*)> PropertyRegistry;
 	PropertyRegistry	d_properties;
 
 
@@ -202,15 +293,40 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-    typedef	ConstBaseIterator<PropertyRegistry> Iterator;
+    typedef	ConstMapIterator<PropertyRegistry> Iterator;
 
     /*!
     \brief
-        Return a PropertySet::Iterator object to iterate over the available
+        Return a PropertySet::PropertyIterator object to iterate over the available
         Properties.
     */
     Iterator getIterator(void) const;
 };
+
+/*!
+\note
+    Whatever you use as propertyOrigin, you have to keep it alive infinitely! The property only takes
+    a reference to it so if you use just a string on stack the compiler won't warn you and you will get
+    crashes! If you use static String instances you should be fine.
+
+Example of usage inside addStandardProperties or similar method.
+{
+    static String propertyOrigin("MyAwesomeClass"); // this is automatically used by the macro
+    // you can also reference WidgetTypeName or any other string if applicable
+
+    CEGUI_DEFINE_PROPERTY(Window, float, "Alpha",
+        "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f)
+};
+
+*/
+#define CEGUI_DEFINE_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
+{\
+    static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
+            name, help, propertyOrigin, setter, getter, default_value);\
+    \
+    this->addProperty(&sProperty);\
+}
 
 } // End of  CEGUI namespace section
 

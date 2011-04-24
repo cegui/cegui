@@ -10,8 +10,8 @@ from glob import *
 global_defines = []# [("CEGUI_STATIC", "1")]
 # turn on exceptions for MSVC
 global_extra_compile_args = ["/EHsc"]
-global_include_dirs = [get_python_inc(plat_specific = True), "../", "../../../../../include", BOOST_BASEDIR]
-global_library_dirs = [CEGUI_BASEDIR + "/lib", BOOST_BASEDIR + "/lib"]
+global_include_dirs = [get_python_inc(plat_specific = True), "../", "../../../../../include", "../../../../../../build/cegui/include", BOOST_BASEDIR]
+global_library_dirs = [CEGUI_BASEDIR + "/build/lib", BOOST_BASEDIR + "/lib"]
 # Windows is special and picks the libraries magically!
 global_libraries = []
 
@@ -22,7 +22,7 @@ PyCEGUINullRenderer_sources = glob(os.path.join("..", "output", "CEGUINullRender
 
 setup(
     name = "PyCEGUI",
-    version = "0.7.5",
+    version = "0.8",
     description = "Python bindings for CEGUI library",
     long_description =
 """Crazy Eddie's GUI System is a free library providing windowing
@@ -120,12 +120,13 @@ note: For Linux and MacOSX packages, see http://www.cegui.org.uk, we provide the
             [
                 BOOST_BASEDIR + "/lib/boost_python-vc90-mt-1_44.dll",
                 
-                CEGUI_BASEDIR + "/bin/CEGUIBase.dll",
-                CEGUI_BASEDIR + "/bin/CEGUIOpenGLRenderer.dll",
-                CEGUI_BASEDIR + "/bin/CEGUIFalagardWRBase.dll",
-                CEGUI_BASEDIR + "/bin/CEGUISILLYImageCodec.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUIBase.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUIOpenGLRenderer.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUINullRenderer.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUIFalagardWRBase.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUISILLYImageCodec.dll",
                 CEGUI_BASEDIR + "/dependencies/bin/SILLY.dll",
-                CEGUI_BASEDIR + "/bin/CEGUIExpatParser.dll",
+                CEGUI_BASEDIR + "/build/bin/CEGUIExpatParser.dll",
             ]
         ),
         

@@ -47,21 +47,21 @@ bool DragDropDemo::initialiseSample()
     using namespace CEGUI;
 
     // load windows look
-    SchemeManager::getSingleton().create("WindowsLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load font and setup default if not loaded via scheme
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+    System::getSingleton().setDefaultMouseCursor("WindowsLook/MouseArrow");
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
-    ImagesetManager::getSingleton().create("DriveIcons.imageset");
+    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
     System::getSingleton().setGUISheet(
-        WindowManager::getSingleton().loadWindowLayout("DragDropDemo.layout"));
+        WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
     subscribeEvents();
@@ -81,6 +81,8 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
+    Window* root = System::getSingleton().getGUISheet();
+
     WindowManager& wmgr = WindowManager::getSingleton();
 
     /*
@@ -88,7 +90,7 @@ void DragDropDemo::subscribeEvents()
      */
     CEGUI_TRY
     {
-        Window* main_wnd = wmgr.getWindow("Root/MainWindow");
+        Window* main_wnd = root->getChild("MainWindow");
         main_wnd->subscribeEvent(
             FrameWindow::EventCloseClicked,
             Event::Subscriber(&DragDropDemo::handle_CloseButton, this));
@@ -100,7 +102,7 @@ void DragDropDemo::subscribeEvents()
     /*
      * Subscribe the same handler to each of the twelve slots
      */
-    String base_name = "Root/MainWindow/Slot";
+    String base_name = "MainWindow/Slot";
 
     for (int i = 1; i <= 12; ++i)
     {
@@ -108,7 +110,7 @@ void DragDropDemo::subscribeEvents()
         {
             // get the window pointer for this slot
             Window* wnd =
-                wmgr.getWindow(base_name + PropertyHelper::intToString(i));
+                root->getChild(base_name + PropertyHelper<int>::toString(i));
 
             // subscribe the handler.
             wnd->subscribeEvent(
@@ -133,7 +135,7 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
     if (!dd_args.window->getChildCount())
     {
         // add dragdrop item as child of target if target has no item already
-        dd_args.window->addChildWindow(dd_args.dragDropItem);
+        dd_args.window->addChild(dd_args.dragDropItem);
         // Now we must reset the item position from it's 'dropped' location,
         // since we're now a child of an entirely different window
         dd_args.dragDropItem->setPosition(

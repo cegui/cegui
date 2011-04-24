@@ -6,123 +6,70 @@
 
 namespace bp = boost::python;
 
-void Iterator_next(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >& t)
+struct ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Font_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Font_ptr__greater___greater___greater___greater__wrapper : CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >, bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > > {
+
+    ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Font_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Font_ptr__greater___greater___greater___greater__wrapper(CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > const & arg )
+    : CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >( arg )
+      , bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > >(){
+        // copy constructor
+        
+    }
+
+    virtual ::CEGUI::Font * getCurrentValue(  ) const  {
+        if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
+            return func_getCurrentValue(  );
+        else{
+            return this->CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue(  );
+        }
+    }
+    
+    ::CEGUI::Font * default_getCurrentValue(  ) const  {
+        return CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue( );
+    }
+
+};
+
+void Iterator_next(::CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >& t)
 {
     t++;
 }
 
-void Iterator_previous(::CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >& t)
+void Iterator_previous(::CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >& t)
 {
     t--;
 }
 
 void register_FontIterator_class(){
 
-    { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >
-        typedef bp::class_< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > > FontIterator_exposer_t;
+    { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >
+        typedef bp::class_< ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Font_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Font_ptr__greater___greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > >, CEGUI::Font* > > > FontIterator_exposer_t;
         FontIterator_exposer_t FontIterator_exposer = FontIterator_exposer_t( "FontIterator", bp::no_init );
         bp::scope FontIterator_scope( FontIterator_exposer );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentKey
+        { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentKey
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
+            typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
             typedef ::CEGUI::String ( exported_class_t::*getCurrentKey_function_type )(  ) const;
             
             FontIterator_exposer.def( 
                 "getCurrentKey"
-                , getCurrentKey_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentKey )
+                , getCurrentKey_function_type( &::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentKey )
                 , "*!\n\
             \n\
-               Return the key for the item at the current iterator position.\n\
+                Return the key for the item at the current iterator position.\n\
             *\n" );
         
         }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue
+        { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue
         
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
+            typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
             typedef ::CEGUI::Font * ( exported_class_t::*getCurrentValue_function_type )(  ) const;
+            typedef ::CEGUI::Font * ( ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Font_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Font_ptr__greater___greater___greater___greater__wrapper::*default_getCurrentValue_function_type )(  ) const;
             
             FontIterator_exposer.def( 
                 "getCurrentValue"
-                , getCurrentValue_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-            \n\
-               Return the value for the item at the current iterator position.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::isAtEnd
-        
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
-            typedef bool ( exported_class_t::*isAtEnd_function_type )(  ) const;
-            
-            FontIterator_exposer.def( 
-                "isAtEnd"
-                , isAtEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::isAtEnd )
-                , "*!\n\
-            \n\
-               Return whether the current iterator position is at the end of the iterators range.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::isAtStart
-        
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
-            typedef bool ( exported_class_t::*isAtStart_function_type )(  ) const;
-            
-            FontIterator_exposer.def( 
-                "isAtStart"
-                , isAtStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::isAtStart )
-                , "*!\n\
-            \n\
-               Return whether the current iterator position is at the start of the iterators range.\n\
-            *\n" );
-        
-        }
-        FontIterator_exposer.def( bp::self != bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::operator=
-        
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > & ( exported_class_t::*assign_function_type )( ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > const & ) ;
-            
-            FontIterator_exposer.def( 
-                "assign"
-                , assign_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::operator= )
-                , ( bp::arg("rhs") )
-                , bp::return_self< >()
-                , "*!\n\
-            \n\
-               ConstBaseIterator assignment operator\n\
-            *\n" );
-        
-        }
-        FontIterator_exposer.def( bp::self == bp::self );
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::toEnd
-        
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
-            typedef void ( exported_class_t::*toEnd_function_type )(  ) ;
-            
-            FontIterator_exposer.def( 
-                "toEnd"
-                , toEnd_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::toEnd )
-                , "*!\n\
-            \n\
-               Set the iterator current position to the end position.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::toStart
-        
-            typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > exported_class_t;
-            typedef void ( exported_class_t::*toStart_function_type )(  ) ;
-            
-            FontIterator_exposer.def( 
-                "toStart"
-                , toStart_function_type( &::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::toStart )
-                , "*!\n\
-            \n\
-               Set the iterator current position to the start position.\n\
-            *\n" );
+                , getCurrentValue_function_type(&::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > >::getCurrentValue)
+                , default_getCurrentValue_function_type(&ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Font_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Font_ptr__greater___greater___greater___greater__wrapper::default_getCurrentValue)
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         FontIterator_exposer.def("next", &::Iterator_next);

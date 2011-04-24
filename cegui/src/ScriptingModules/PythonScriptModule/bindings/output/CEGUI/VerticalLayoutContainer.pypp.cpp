@@ -111,7 +111,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,7 +119,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -135,7 +135,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -143,7 +143,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -159,16 +159,16 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::LayoutContainer::layoutIfNecessary( );
     }
 
-    virtual void moveChildWindowToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
-        if( bp::override func_moveChildWindowToPosition = this->get_override( "moveChildWindowToPosition" ) )
-            func_moveChildWindowToPosition( boost::python::ptr(wnd), position );
+    virtual void moveChildToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
+        if( bp::override func_moveChildToPosition = this->get_override( "moveChildToPosition" ) )
+            func_moveChildToPosition( boost::python::ptr(wnd), position );
         else{
-            this->CEGUI::SequentialLayoutContainer::moveChildWindowToPosition( boost::python::ptr(wnd), position );
+            this->CEGUI::SequentialLayoutContainer::moveChildToPosition( boost::python::ptr(wnd), position );
         }
     }
     
-    void default_moveChildWindowToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
-        CEGUI::SequentialLayoutContainer::moveChildWindowToPosition( boost::python::ptr(wnd), position );
+    void default_moveChildToPosition( ::CEGUI::Window * wnd, ::size_t position ) {
+        CEGUI::SequentialLayoutContainer::moveChildToPosition( boost::python::ptr(wnd), position );
     }
 
     virtual void performChildWindowLayout(  ) {
@@ -231,16 +231,16 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
     }
 
-    virtual void swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        if( bp::override func_swapChildWindowPositions = this->get_override( "swapChildWindowPositions" ) )
-            func_swapChildWindowPositions( wnd1, wnd2 );
+    virtual void swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        if( bp::override func_swapChildPositions = this->get_override( "swapChildPositions" ) )
+            func_swapChildPositions( wnd1, wnd2 );
         else{
-            this->CEGUI::SequentialLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+            this->CEGUI::SequentialLayoutContainer::swapChildPositions( wnd1, wnd2 );
         }
     }
     
-    void default_swapChildWindowPositions( ::size_t wnd1, ::size_t wnd2 ) {
-        CEGUI::SequentialLayoutContainer::swapChildWindowPositions( wnd1, wnd2 );
+    void default_swapChildPositions( ::size_t wnd1, ::size_t wnd2 ) {
+        CEGUI::SequentialLayoutContainer::swapChildPositions( wnd1, wnd2 );
     }
 
     virtual void update( float elapsed ) {
@@ -388,8 +388,8 @@ void register_VerticalLayoutContainer_class(){
         }
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( VerticalLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( VerticalLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             VerticalLayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -410,8 +410,8 @@ void register_VerticalLayoutContainer_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( VerticalLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( VerticalLayoutContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             VerticalLayoutContainer_exposer.def( 
                 "isHit"
@@ -431,25 +431,25 @@ void register_VerticalLayoutContainer_class(){
                 , default_layoutIfNecessary_function_type(&VerticalLayoutContainer_wrapper::default_layoutIfNecessary) );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
-            typedef void ( VerticalLayoutContainer_wrapper::*default_moveChildWindowToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
+            typedef void ( VerticalLayoutContainer_wrapper::*default_moveChildToPosition_function_type )( ::CEGUI::Window *,::size_t ) ;
             
             VerticalLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type(&::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition)
-                , default_moveChildWindowToPosition_function_type(&VerticalLayoutContainer_wrapper::default_moveChildWindowToPosition)
+                "moveChildToPosition"
+                , moveChildToPosition_function_type(&::CEGUI::SequentialLayoutContainer::moveChildToPosition)
+                , default_moveChildToPosition_function_type(&VerticalLayoutContainer_wrapper::default_moveChildToPosition)
                 , ( bp::arg("wnd"), bp::arg("position") ) );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition
+        { //::CEGUI::SequentialLayoutContainer::moveChildToPosition
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildWindowToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*moveChildToPosition_function_type )( ::CEGUI::String const &,::size_t ) ;
             
             VerticalLayoutContainer_exposer.def( 
-                "moveChildWindowToPosition"
-                , moveChildWindowToPosition_function_type( &::CEGUI::SequentialLayoutContainer::moveChildWindowToPosition )
+                "moveChildToPosition"
+                , moveChildToPosition_function_type( &::CEGUI::SequentialLayoutContainer::moveChildToPosition )
                 , ( bp::arg("wnd"), bp::arg("position") )
                 , "*!\n\
             \n\
@@ -519,15 +519,15 @@ void register_VerticalLayoutContainer_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
-        { //::CEGUI::SequentialLayoutContainer::swapChildWindowPositions
+        { //::CEGUI::SequentialLayoutContainer::swapChildPositions
         
-            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
-            typedef void ( VerticalLayoutContainer_wrapper::*default_swapChildWindowPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( ::CEGUI::SequentialLayoutContainer::*swapChildPositions_function_type )( ::size_t,::size_t ) ;
+            typedef void ( VerticalLayoutContainer_wrapper::*default_swapChildPositions_function_type )( ::size_t,::size_t ) ;
             
             VerticalLayoutContainer_exposer.def( 
-                "swapChildWindowPositions"
-                , swapChildWindowPositions_function_type(&::CEGUI::SequentialLayoutContainer::swapChildWindowPositions)
-                , default_swapChildWindowPositions_function_type(&VerticalLayoutContainer_wrapper::default_swapChildWindowPositions)
+                "swapChildPositions"
+                , swapChildPositions_function_type(&::CEGUI::SequentialLayoutContainer::swapChildPositions)
+                , default_swapChildPositions_function_type(&VerticalLayoutContainer_wrapper::default_swapChildPositions)
                 , ( bp::arg("wnd1"), bp::arg("wnd2") ) );
         
         }

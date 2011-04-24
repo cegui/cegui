@@ -33,11 +33,11 @@ namespace TimerProperties
 {
 CEGUI::String Delay::get(const CEGUI::PropertyReceiver* receiver) const
 {
-    return CEGUI::PropertyHelper::floatToString(static_cast<const Timer*>(receiver)->getDelay());
+    return CEGUI::PropertyHelper<float>::toString(static_cast<const Timer*>(receiver)->getDelay());
 }
 void Delay::set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value)
 {
-    static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper::stringToFloat(value));
+    static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper<float>::fromString(value));
 }
 
 }

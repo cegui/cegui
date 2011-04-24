@@ -43,8 +43,8 @@ public:
 
 protected:
     // helper methods
-    void createDemoWindows(void);
-    void initDemoEventWiring(void);
+    void createDemoWindows(CEGUI::Window* root);
+    void initDemoEventWiring(CEGUI::Window* root);
 
     // event handlers
     bool handleQuit(const CEGUI::EventArgs& e);

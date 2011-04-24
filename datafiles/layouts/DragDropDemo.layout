@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
+<GUILayout>
+    <Window Name="Root" Type="DefaultWindow">
 
-<GUILayout >
-    <Window Type="DefaultWindow" Name="Root" >
-
-        <Window Type="WindowsLook/FrameWindow" Name="Root/MainWindow" >
+        <Window Name="MainWindow" Type="WindowsLook/FrameWindow">
             <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.25,0},{0.75,0},{0.75,0}" />
             <Property Name="Text" Value="Drag and Drop Demo" />
             <Property Name="RollUpEnabled" Value="False" />
             <Property Name="SizingEnabled" Value="False" />
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot1" >
+            <Window Name="Slot1" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.05,0},{0.05,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
 
-                <Window Type="DragContainer" Name="DragContainer1" >
+                <Window Name="DragContainer1" Type="DragContainer">
                     <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
 
-                    <Window Type="WindowsLook/StaticImage" Name="DragContainer1/Image" >
+                    <Window Name="Image" Type="WindowsLook/StaticImage">
                         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="set:DriveIcons image:Lime" />
+                        <Property Name="Image" Value="DriveIcons/Lime" />
                         <Property Name="MousePassThroughEnabled" Value="True" />
                     </Window>
 
@@ -26,36 +25,36 @@
 
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot2" >
+            <Window Name="Slot2" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.283,0},{0.05,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot3" >
+            <Window Name="Slot3" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.516,0},{0.05,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot4" >
+            <Window Name="Slot4" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.749,0},{0.05,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot5" >
+            <Window Name="Slot5" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.05,0},{0.37,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot6" >
+            <Window Name="Slot6" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.283,0},{0.37,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
 
-                <Window Type="DragContainer" Name="DragContainer2" >
+                <Window Name="DragContainer2" Type="DragContainer">
                     <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
 
-                    <Window Type="WindowsLook/StaticImage" Name="DragContainer2/Image" >
+                    <Window Name="Image" Type="WindowsLook/StaticImage">
                         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="set:DriveIcons image:GlobalDrive" />
+                        <Property Name="Image" Value="DriveIcons/GlobalDrive" />
                         <Property Name="MousePassThroughEnabled" Value="True" />
                     </Window>
 
@@ -63,32 +62,32 @@
 
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot7" >
+            <Window Name="Slot7" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.516,0},{0.37,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot8" >
+            <Window Name="Slot8" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.749,0},{0.37,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot9" >
+            <Window Name="Slot9" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.05,0},{0.69,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot10" >
+            <Window Name="Slot10" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.283,0},{0.69,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot11" >
+            <Window Name="Slot11" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.516,0},{0.69,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot12" >
+            <Window Name="Slot12" Type="WindowsLook/Static">
                 <Property Name="UnifiedPosition" Value="{{0.749,0},{0.69,0}}" />
                 <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
             </Window>
@@ -97,4 +96,3 @@
 
     </Window>
 </GUILayout>
-

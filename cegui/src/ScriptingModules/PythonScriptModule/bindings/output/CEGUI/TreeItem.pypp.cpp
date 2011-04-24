@@ -22,7 +22,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
         else{
@@ -30,11 +30,11 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         CEGUI::TreeItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const  {
+    virtual ::CEGUI::Sizef getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
         else{
@@ -42,7 +42,7 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         }
     }
     
-    ::CEGUI::Size default_getPixelSize(  ) const  {
+    ::CEGUI::Sizef default_getPixelSize(  ) const  {
         return CEGUI::TreeItem::getPixelSize( );
     }
 
@@ -86,8 +86,8 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::draw
         
-            typedef void ( ::CEGUI::TreeItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
-            typedef void ( TreeItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::TreeItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
+            typedef void ( TreeItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
             
             TreeItem_exposer.def( 
                 "draw"
@@ -98,7 +98,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getButtonLocation
         
-            typedef ::CEGUI::Rect & ( ::CEGUI::TreeItem::*getButtonLocation_function_type )(  ) ;
+            typedef ::CEGUI::Rectf & ( ::CEGUI::TreeItem::*getButtonLocation_function_type )(  ) ;
             
             TreeItem_exposer.def( 
                 "getButtonLocation"
@@ -198,8 +198,8 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Size ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::TreeItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( TreeItem_wrapper::*default_getPixelSize_function_type )(  ) const;
             
             TreeItem_exposer.def( 
                 "getPixelSize"
@@ -432,7 +432,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setButtonLocation
         
-            typedef void ( ::CEGUI::TreeItem::*setButtonLocation_function_type )( ::CEGUI::Rect & ) ;
+            typedef void ( ::CEGUI::TreeItem::*setButtonLocation_function_type )( ::CEGUI::Rectf & ) ;
             
             TreeItem_exposer.def( 
                 "setButtonLocation"
@@ -611,20 +611,17 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionBrushImage
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionBrushImage_function_type )( ::CEGUI::String const & ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionBrushImage"
                 , setSelectionBrushImage_function_type( &::CEGUI::TreeItem::setSelectionBrushImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
              \n\
                 Set the selection highlighting brush image.\n\
              \n\
-             @param imageset\n\
-                Name of the imagest containing the image to be used.\n\
-             \n\
-             @param image\n\
+             @param name\n\
                 Name of the image to be used.\n\
              \n\
              @return\n\
@@ -654,7 +651,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionColours
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionColours"
@@ -664,7 +661,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setSelectionColours
         
-            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setSelectionColours_function_type )( ::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setSelectionColours"
@@ -730,7 +727,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setTextColours
         
-            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setTextColours"
@@ -763,7 +760,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setTextColours
         
-            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::TreeItem::*setTextColours_function_type )( ::CEGUI::Colour ) ;
             
             TreeItem_exposer.def( 
                 "setTextColours"

@@ -75,7 +75,9 @@ public:
 class CEGUIEXPORT Tree : public Window
 {
     friend class TreeItem;
-    typedef	std::vector<TreeItem*>	LBItemList;
+
+    typedef	std::vector<TreeItem*
+        CEGUI_VECTOR_ALLOC(TreeItem*)> LBItemList;
     
 public:
     //! Namespace for global events
@@ -225,7 +227,7 @@ public:
     bool isSortEnabled(void) const
         { return d_sorted; }
     
-    void setItemRenderArea(Rect& r)
+    void setItemRenderArea(Rectf& r)
         { d_itemArea = r; }
     
     Scrollbar* getVertScrollbar()
@@ -605,7 +607,7 @@ protected:
         Rect object describing the area of the Window to be used for rendering
         tree items.
      */
-    virtual	Rect getTreeRenderArea(void) const
+    virtual	Rectf getTreeRenderArea(void) const
         { return d_itemArea; }
     
     /*!
@@ -620,7 +622,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree vertically.
      */
     virtual Scrollbar* createVertScrollbar(const String& name) const
-        { return (Scrollbar*)(WindowManager::getSingleton().getWindow(name)); }
+        { return (Scrollbar*)getChild(name); }
 
     /*!
      \brief
@@ -634,7 +636,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree horizontally.
      */
     virtual Scrollbar* createHorzScrollbar(const String& name) const
-        { return (Scrollbar*)(WindowManager::getSingleton().getWindow(name)); }
+        { return (Scrollbar*)getChild(name); }
 
     /*!
      \brief
@@ -726,9 +728,9 @@ protected:
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
      */
-    TreeItem* getItemAtPoint(const Point& pt) const;
+    TreeItem* getItemAtPoint(const Vector2f& pt) const;
     TreeItem* getItemFromListAtPoint(const LBItemList &itemList, float *bottomY,
-                                     const Point& pt) const;
+                                     const Vector2f& pt) const;
 
     /*!
      \brief
@@ -756,7 +758,7 @@ protected:
      */
     virtual bool testClassName_impl(const String& class_name) const
     {
-        if (class_name==(const utf8*)"Tree")
+        if (class_name == "Tree")
             return true;
 
         return Window::testClassName_impl(class_name);
@@ -772,8 +774,8 @@ protected:
      // overridden from Window base class.
      virtual void populateGeometryBuffer();
  
-     void drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
-                       Vector2& itemPos, GeometryBuffer& geometry, float alpha);
+     void drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
+                       Vector2f& itemPos, GeometryBuffer& geometry, float alpha);
     
     /*************************************************************************
         New event handlers
@@ -875,7 +877,7 @@ private:
         Private methods
      *************************************************************************/
     void addTreeProperties(void);
-    Rect d_itemArea;
+    Rectf d_itemArea;
 };
 
 /*!

@@ -18,12 +18,12 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_clone(  );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2 const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rect const * clip_rect, float const vertical_space, float const space_extra ) const {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const {
+    virtual ::CEGUI::Sizef getPixelSize(  ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
         return func_getPixelSize(  );
     }
@@ -44,11 +44,7 @@ void register_RenderedStringComponent_class(){
 
     { //::CEGUI::RenderedStringComponent
         typedef bp::class_< RenderedStringComponent_wrapper, boost::noncopyable > RenderedStringComponent_exposer_t;
-        RenderedStringComponent_exposer_t RenderedStringComponent_exposer = RenderedStringComponent_exposer_t( "RenderedStringComponent", "*!\n\
-        \n\
-            Base class representing a part of a rendered string.  The 'part' represented\n\
-            may be a text string, an image or some other entity.\n\
-        *\n", bp::no_init );
+        RenderedStringComponent_exposer_t RenderedStringComponent_exposer = RenderedStringComponent_exposer_t( "RenderedStringComponent", bp::no_init );
         bp::scope RenderedStringComponent_scope( RenderedStringComponent_exposer );
         { //::CEGUI::RenderedStringComponent::canSplit
         
@@ -73,7 +69,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
             
             RenderedStringComponent_exposer.def( 
                 "draw"
@@ -116,7 +112,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::getPadding
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::RenderedStringComponent::*getPadding_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::RenderedStringComponent::*getPadding_function_type )(  ) const;
             
             RenderedStringComponent_exposer.def( 
                 "getPadding"
@@ -128,7 +124,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )(  ) const;
             
             RenderedStringComponent_exposer.def( 
                 "getPixelSize"
@@ -217,7 +213,7 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::setPadding
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*setPadding_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::RenderedStringComponent::*setPadding_function_type )( ::CEGUI::Rectf const & ) ;
             
             RenderedStringComponent_exposer.def( 
                 "setPadding"

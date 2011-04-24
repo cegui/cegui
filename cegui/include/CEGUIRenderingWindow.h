@@ -30,7 +30,14 @@
 
 #include "CEGUIRenderingSurface.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUISize.h"
+#include "CEGUIRect.h"
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -85,7 +92,7 @@ public:
         relative to the owner of the RenderingWindow.
 
     */
-    void setClippingRegion(const Rect& region);
+    void setClippingRegion(const Rectf& region);
 
     /*!
     \brief
@@ -101,7 +108,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    void setPosition(const Vector2& position);
+    void setPosition(const Vector2f& position);
 
     /*!
     \brief
@@ -111,18 +118,17 @@ public:
         Size object that describes the desired size of the RenderingWindow, in
         pixels.
     */
-    void setSize(const Size& size);
+    void setSize(const Sizef& size);
 
     /*!
     \brief
-        Set the rotation factors to be used when rendering the RenderingWindow
+        Set the rotation quaternion to be used when rendering the RenderingWindow
         back onto it's owning RenderingSurface.
 
     \param rotation
-        Vector3 object describing the rotaions to be used. Values are in
-        degrees.
+        Quaternion object describing the rotation.
     */
-    void setRotation(const Vector3& rotation);
+    void setRotation(const Quaternion& rotation);
 
     /*!
     \brief
@@ -133,7 +139,7 @@ public:
         Vector3 describing the three dimensional point around which the
         RenderingWindow will be rotated.
     */
-    void setPivot(const Vector3& pivot);
+    void setPivot(const Vector3f& pivot);
 
     /*!
     \brief
@@ -148,7 +154,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const Vector2& getPosition() const;
+    const Vector2f& getPosition() const;
 
     /*!
     \brief
@@ -157,17 +163,16 @@ public:
     \return
         Size object describing the current pixel size of the RenderingWindow.
     */
-    const Size& getSize() const;
+    const Sizef& getSize() const;
 
     /*!
     \brief
-        Return the current rotations being applied to the RenderingWindow, in
-        degrees.
+        Return the current rotation being applied to the RenderingWindow
 
     \return
-        Vector3 object describing the rotations for the RenderingWindow.
+        Quaternion object describing the rotation for the RenderingWindow.
     */
-    const Vector3& getRotation()const;
+    const Quaternion& getRotation()const;
 
     /*!
     \brief
@@ -177,7 +182,7 @@ public:
         Vector3 object describing the current location of the pivot point used
         when rotating the RenderingWindow.
     */
-    const Vector3& getPivot() const;
+    const Vector3f& getPivot() const;
 
     /*!
     \brief
@@ -272,7 +277,7 @@ public:
         Fill in Vector2 object \a p_out with an unprojected version of the
         point described by Vector2 \a p_in.
     */
-    void unprojectPoint(const Vector2& p_in, Vector2& p_out);
+    void unprojectPoint(const Vector2f& p_in, Vector2f& p_out);
 
     // overrides from base
     void draw();
@@ -299,15 +304,19 @@ protected:
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow
-    Vector2 d_position;
+    Vector2f d_position;
     //! Size of this RenderingWindow
-    Size d_size;
-    //! Rotaions for this RenderingWindow
-    Vector3 d_rotation;
+    Sizef d_size;
+    //! Rotation for this RenderingWindow
+    Quaternion d_rotation;
     //! Pivot point used for the rotation.
-    Vector3 d_pivot;
+    Vector3f d_pivot;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIRenderingWindow_h_

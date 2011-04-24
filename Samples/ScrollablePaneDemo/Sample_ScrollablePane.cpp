@@ -29,8 +29,7 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIFontManager.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindow.h"
 #include "CEGUICoordConverter.h"
@@ -99,20 +98,20 @@ bool ScrollablePaneSample::initialiseSample()
     using namespace CEGUI;
 
     // this sample will use WindowsLook
-    SchemeManager::getSingleton().create("WindowsLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load the default font
-    d_font = &FontManager::getSingleton().create("DejaVuSans-10.font");
+    d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font
-    Imageset& wndlook = ImagesetManager::getSingleton().get("WindowsLook");
-    wndlook.setAutoScalingEnabled(false);
+//    Imageset& wndlook = ImageManager::getSingleton().get("WindowsLook");
+//    wndlook.setAutoScalingEnabled(false);
     d_font->setProperty("AutoScaled", "false");
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->setDefaultMouseCursor(&wndlook.getImage("MouseArrow"));
+    d_system->setDefaultMouseCursor("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_system->setDefaultTooltip("WindowsLook/Tooltip");
@@ -135,7 +134,7 @@ bool ScrollablePaneSample::initialiseSample()
     Window* bar = d_wm->createWindow("WindowsLook/Menubar");
     bar->setArea(UDim(0,0),UDim(0,0),UDim(1,0),bar_bottom);
     bar->setAlwaysOnTop(true); // we want the menu on top
-    d_root->addChildWindow(bar);
+    d_root->addChild(bar);
 
     // fill out the menubar
     createMenu(bar);
@@ -146,15 +145,15 @@ bool ScrollablePaneSample::initialiseSample()
     // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
     // the screen. 3000 x 3000 pixels
     d_pane->setContentPaneAutoSized(false);
-    d_pane->setContentPaneArea(CEGUI::Rect(0,0,3000,3000));
-    d_root->addChildWindow(d_pane);
+    d_pane->setContentPaneArea(CEGUI::Rectf(0, 0, 3000, 3000));
+    d_root->addChild(d_pane);
 
     // add a dialog to this pane so we have something to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
     dlg->setMinSize(UVector2(UDim(0,250),UDim(0,100)));
     dlg->setSize(UVector2(UDim(0,250),UDim(0,100)));
     dlg->setText("Drag me around");
-    d_pane->addChildWindow(dlg);
+    d_pane->addChild(dlg);
 
     return true;
 }
@@ -169,33 +168,33 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
     // file menu item
     Window* file = d_wm->createWindow("WindowsLook/MenuItem");
     file->setText("File");
-    bar->addChildWindow(file);
+    bar->addChild(file);
     
     // file popup
     Window* popup = d_wm->createWindow("WindowsLook/PopupMenu");
-    file->addChildWindow(popup);
+    file->addChild(popup);
     
     // quit item in file menu
     Window* item = d_wm->createWindow("WindowsLook/MenuItem");
     item->setText("Quit");
     item->subscribeEvent("Clicked", Event::Subscriber(&ScrollablePaneSample::fileQuit, this));
-    popup->addChildWindow(item);
+    popup->addChild(item);
 
     // demo menu item
     Window* demo = d_wm->createWindow("WindowsLook/MenuItem");
     demo->setText("Demo");
-    bar->addChildWindow(demo);
+    bar->addChild(demo);
 
     // demo popup
     popup = d_wm->createWindow("WindowsLook/PopupMenu");
-    demo->addChildWindow(popup);
+    demo->addChild(popup);
 
     // demo -> new window
     item = d_wm->createWindow("WindowsLook/MenuItem");
     item->setText("New dialog");
     item->setTooltipText("Hotkey: Space");
     item->subscribeEvent("Clicked", Event::Subscriber(&ScrollablePaneSample::demoNewDialog, this));
-    popup->addChildWindow(item);
+    popup->addChild(item);
 }
 
 /*************************************************************************
@@ -221,11 +220,11 @@ bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
     
     // we put this in the center of the viewport into the scrollable pane
     UVector2 uni_center(UDim(0.5f,0), UDim(0.5f,0));
-    Vector2 center = CoordConverter::windowToScreen(*d_root, uni_center);
-    Vector2 target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);
+    Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);
+    Vector2f target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);
     dlg->setPosition(UVector2(UDim(0,target.d_x-100), UDim(0,target.d_y-50)));
     
-    d_pane->addChildWindow(dlg);
+    d_pane->addChild(dlg);
     
     return true;
 }
