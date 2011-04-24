@@ -47,7 +47,7 @@ LayoutContainer::LayoutContainer(const String& type, const String& name):
         d_needsLayouting(false)
 {
     // layout should take the whole window by default I think
-    setSize(UVector2(cegui_reldim(1), cegui_reldim(1)));
+    setSize(USize(cegui_reldim(1), cegui_reldim(1)));
 
     subscribeEvent(Window::EventChildAdded,
                    Event::Subscriber(&LayoutContainer::handleChildAdded, this));

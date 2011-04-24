@@ -304,14 +304,9 @@ public:
 };
 
 /*!
-\note
-    Whatever you use as propertyOrigin, you have to keep it alive infinitely! The property only takes
-    a reference to it so if you use just a string on stack the compiler won't warn you and you will get
-    crashes! If you use static String instances you should be fine.
-
 Example of usage inside addStandardProperties or similar method.
 {
-    static String propertyOrigin("MyAwesomeClass"); // this is automatically used by the macro
+    const String propertyOrigin("MyAwesomeClass"); // this is automatically used by the macro
     // you can also reference WidgetTypeName or any other string if applicable
 
     CEGUI_DEFINE_PROPERTY(Window, float, "Alpha",
@@ -324,6 +319,28 @@ Example of usage inside addStandardProperties or similar method.
 {\
     static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
             name, help, propertyOrigin, setter, getter, default_value);\
+    \
+    this->addProperty(&sProperty);\
+}
+
+/*!
+Same as CEGUI_DEFINE_PROPERTY but writeXML is set to false
+
+Example of usage inside addStandardProperties or similar method.
+{
+    const String propertyOrigin("MyAwesomeClass"); // this is automatically used by the macro
+    // you can also reference WidgetTypeName or any other string if applicable
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, float, "Alpha",
+        "Property to get/set the alpha value of the Window. Value is floating point number.",
+        &Window::setAlpha, &Window::getAlpha, 1.0f)
+};
+
+*/
+#define CEGUI_DEFINE_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
+{\
+    static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
+            name, help, propertyOrigin, setter, getter, default_value, false);\
     \
     this->addProperty(&sProperty);\
 }

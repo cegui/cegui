@@ -85,7 +85,7 @@ public:
     
     \see Property::get
     */
-    virtual typename Helper::return_type getNative(const PropertyReceiver* receiver) const = 0;
+    virtual typename Helper::safe_method_return_type getNative(const PropertyReceiver* receiver) const = 0;
 };
 
 } // End of  CEGUI namespace section

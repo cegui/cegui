@@ -157,7 +157,7 @@ void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
 
     // setup the pane size
     float pane_size_w = ceguimax(doc_size.d_width, render_area_size.d_width);
-    UVector2 pane_size(cegui_absdim(pane_size_w), cegui_absdim(doc_size.d_height));
+    USize pane_size(cegui_absdim(pane_size_w), cegui_absdim(doc_size.d_height));
 
     d_pane->setMinSize(pane_size);
     d_pane->setMaxSize(pane_size);

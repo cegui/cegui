@@ -726,8 +726,8 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	d_uniqueIDNumber++;
 
 	// setup segment;
-	newseg->setSize(UVector2(width, cegui_reldim(1.0f)));
-	newseg->setMinSize(UVector2(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
+	newseg->setSize(USize(width, cegui_reldim(1.0f)));
+	newseg->setMinSize(USize(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
 	newseg->setText(text);
 	newseg->setID(id);
     newseg->setSizingEnabled(d_sizingEnabled);

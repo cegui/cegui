@@ -1,55 +1,55 @@
 <?xml version="1.0" ?>
 <GUILayout>
     <Window Name="root" Type="DefaultWindow">
-        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="Area" Value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window Name="Window1" Type="TaharezLook/WobblyFrameWindow">
             <Property Name="Text" Value="Demo 7 - Window 1" />
-            <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.2,0},{0.2,0},{0.7,0},{0.7,0}}" />
+            <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
+            <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
+            <Property Name="Area" Value="{{0.2,0},{0.2,0},{0.7,0},{0.7,0}}" />
             <Property Name="CloseButtonEnabled" Value="False" />
             <Window Name="Quit" Type="TaharezLook/Button">
                 <Property Name="Text" Value="Exit Demo" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.03,0},{0.27,0},{0.13,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.03,0},{0.27,0},{0.13,0}}" />
             </Window>
             <Window Name="Radio1" Type="TaharezLook/RadioButton">
                 <Property Name="Text" Value="Option 1" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.16,0},{0.27,0},{0.235,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.16,0},{0.27,0},{0.235,0}}" />
             </Window>
             <Window Name="Radio2" Type="TaharezLook/RadioButton">
                 <Property Name="ID" Value="1" />
                 <Property Name="Text" Value="Option 2" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.236,0},{0.27,0},{0.311,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.236,0},{0.27,0},{0.311,0}}" />
             </Window>
             <Window Name="Radio3" Type="TaharezLook/RadioButton">
                 <Property Name="ID" Value="2" />
                 <Property Name="Text" Value="Option 3" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.312,0},{0.27,0},{0.387,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.312,0},{0.27,0},{0.387,0}}" />
             </Window>
             <Window Name="Checkbox" Type="TaharezLook/Checkbox">
                 <Property Name="Text" Value="Enable some option" />
                 <Property Name="Selected" Value="True" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.41,0},{0.47,0},{0.485,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.41,0},{0.47,0},{0.485,0}}" />
             </Window>
             <Window Name="Text1" Type="TaharezLook/StaticText">
                 <Property Name="Text" Value="This is a re-creation of the original 'Demo7' preview application, it shows many of the CEGUI widgets." />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="HorzFormatting" Value="WordWrapCentred" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.03,0},{0.95,0},{0.53,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.5,0},{0.03,0},{0.95,0},{0.53,0}}" />
                 <Property Name="BackgroundEnabled" Value="False" />
             </Window>
             <Window Name="Editbox" Type="TaharezLook/Editbox">
                 <Property Name="Text" Value="Single-line editbox" />
                 <Property Name="MaxTextLength" Value="1073741823" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.2,0},{0.53,0},{0.8,0},{0.63,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.2,0},{0.53,0},{0.8,0},{0.63,0}}" />
             </Window>
             <Window Name="Scrollbar1" Type="TaharezLook/LargeVerticalScrollbar">
                 <Property Name="PageSize" Value="0" />
@@ -57,40 +57,40 @@
                 <Property Name="OverlapSize" Value="0" />
                 <Property Name="DocumentSize" Value="1" />
                 <Property Name="ScrollPosition" Value="0" />
-                <Property Name="UnifiedMaxSize" Value="{{0.03,0},{1,0}}" />
-                <Property Name="UnifiedMinSize" Value="{{0.01,0},{0.1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.06,0},{0.53,0},{0.12,0},{0.95,0}}" />
+                <Property Name="MaxSize" Value="{{0.03,0},{1,0}}" />
+                <Property Name="MinSize" Value="{{0.01,0},{0.1,0}}" />
+                <Property Name="Area" Value="{{0.06,0},{0.53,0},{0.12,0},{0.95,0}}" />
             </Window>
             <Window Name="Slider1" Type="TaharezLook/Slider">
                 <Property Name="CurrentValue" Value="1" />
                 <Property Name="MaximumValue" Value="1" />
                 <Property Name="ClickStepSize" Value="0.01" />
-                <Property Name="UnifiedMaxSize" Value="{{0.03,0},{1,0}}" />
-                <Property Name="UnifiedMinSize" Value="{{0.01,0},{0.1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.9,0},{0.555,0},{0.93,0},{0.855,0}}" />
+                <Property Name="MaxSize" Value="{{0.03,0},{1,0}}" />
+                <Property Name="MinSize" Value="{{0.01,0},{0.1,0}}" />
+                <Property Name="Area" Value="{{0.9,0},{0.555,0},{0.93,0},{0.855,0}}" />
             </Window>
         </Window>
         <Window Name="Window2" Type="TaharezLook/WobblyFrameWindow">
             <Property Name="Text" Value="Demo 7 - Window 2" />
-            <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.4,0},{0.1,0},{0.9,0},{0.7,0}}" />
+            <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
+            <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
+            <Property Name="Area" Value="{{0.4,0},{0.1,0},{0.9,0},{0.7,0}}" />
             <Property Name="CloseButtonEnabled" Value="False" />
             <Window Name="Progbar1" Type="TaharezLook/ProgressBar">
                 <Property Name="StepSize" Value="0.01" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="CurrentProgress" Value="0.33" />
-                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.03,0},{0.96,0},{0.08,0}}" />
+                <Property Name="Area" Value="{{0.04,0},{0.03,0},{0.96,0},{0.08,0}}" />
             </Window>
             <Window Name="Progbar2" Type="TaharezLook/AlternateProgressBar">
                 <Property Name="StepSize" Value="0.01" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="CurrentProgress" Value="0.7" />
-                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.09,0},{0.96,0},{0.14,0}}" />
+                <Property Name="Area" Value="{{0.04,0},{0.09,0},{0.96,0},{0.14,0}}" />
             </Window>
             <Window Name="Listbox" Type="TaharezLook/ItemListbox">
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.18,0},{0.46,0},{0.48,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.04,0},{0.18,0},{0.46,0},{0.48,0}}" />
                 <Window Name="" Type="TaharezLook/ListboxItem">
                     <Property Name="Text" Value="Listbox Item 1" />
                 </Window>
@@ -114,13 +114,13 @@
                 </Window>
             </Window>
             <Window Name="Combobox" Type="TaharezLook/Combobox">
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.18,0},{0.96,0},{0.63,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.5,0},{0.18,0},{0.96,0},{0.63,0}}" />
                 <Property Name="MaxEditTextLength" Value="1073741823" />
             </Window>
             <Window Name="MultiColumnList" Type="TaharezLook/MultiColumnList">
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.515,0},{0.96,0},{0.96,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.04,0},{0.515,0},{0.96,0},{0.96,0}}" />
                 <Property Name="ColumnHeader" Value="text:Server Name width:{0.33,0} id:0" />
                 <Property Name="ColumnHeader" Value="text:Address width:{0.5,0} id:1" />
                 <Property Name="ColumnHeader" Value="text:Ping width:{0.2,0} id:2" />
@@ -128,24 +128,24 @@
             <Window Name="Image1" Type="TaharezLook/StaticImage">
                 <Property Name="Image" Value="BackgroundImage" />
                 <Property Name="FrameEnabled" Value="False" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.52,0},{0.30,0},{0.90,0},{0.47,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.52,0},{0.30,0},{0.90,0},{0.47,0}}" />
                 <Property Name="BackgroundEnabled" Value="False" />
             </Window>
         </Window>
         <Window Name="Window3" Type="TaharezLook/WobblyFrameWindow">
             <Property Name="Text" Value="Demo 7 - Window 3" />
-            <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.4,0},{0.75,0},{0.9,0}}" />
+            <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
+            <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
+            <Property Name="Area" Value="{{0.25,0},{0.4,0},{0.75,0},{0.9,0}}" />
             <Property Name="CloseButtonEnabled" Value="False" />
             <Window Name="MLEditbox" Type="TaharezLook/MultiLineEditbox">
                 <Property Name="Text">This text is a multiline text:
 Line 1
 Line 2 
 Line 3</Property>
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedAreaRect" Value="{{0.02,0},{0.03,0},{0.98,0},{0.98,0}}" />
+                <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="Area" Value="{{0.02,0},{0.03,0},{0.98,0},{0.98,0}}" />
             </Window>
         </Window>
     </Window>

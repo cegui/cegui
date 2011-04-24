@@ -414,19 +414,19 @@ UVector2 GridLayoutContainer::getGridCellOffset(
 }
 
 //----------------------------------------------------------------------------//
-UVector2 GridLayoutContainer::getGridSize(const std::vector<UDim>& colSizes,
+USize GridLayoutContainer::getGridSize(const std::vector<UDim>& colSizes,
         const std::vector<UDim>& rowSizes) const
 {
-    UVector2 ret(UDim(0, 0), UDim(0, 0));
+    USize ret(UDim(0, 0), UDim(0, 0));
 
     for (size_t i = 0; i < colSizes.size(); ++i)
     {
-        ret.d_x += colSizes[i];
+        ret.d_width += colSizes[i];
     }
 
     for (size_t i = 0; i < rowSizes.size(); ++i)
     {
-        ret.d_y += rowSizes[i];
+        ret.d_height += rowSizes[i];
     }
 
     return ret;
@@ -494,7 +494,7 @@ Window* GridLayoutContainer::createDummy()
                     DummyName + String(i_buff));
 
     dummy->setVisible(false);
-    dummy->setSize(UVector2(UDim(0, 0), UDim(0, 0)));
+    dummy->setSize(USize(UDim(0, 0), UDim(0, 0)));
     dummy->setDestroyedByParent(true);
 
     return dummy;

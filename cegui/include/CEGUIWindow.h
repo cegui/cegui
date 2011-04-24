@@ -2622,7 +2622,7 @@ public:
     \param size
         UVector2 describing the new size of the window area.
      */
-    void setArea(const UVector2& pos, const UVector2& size);
+    void setArea(const UVector2& pos, const USize& size);
 
     /*!
     \brief
@@ -2713,9 +2713,9 @@ public:
         determining the final value used.
 
     \param size
-        UVector2 describing the new size of the window area.
+        USize describing the new size of the window area.
      */
-    void setSize(const UVector2& size);
+    void setSize(const USize& size);
 
     /*!
     \brief
@@ -2763,9 +2763,9 @@ public:
         determining the final value used.
 
     \param size
-        UVector2 describing the new maximum size of the window area.
+        USize describing the new maximum size of the window area.
      */
-    void setMaxSize(const UVector2& size);
+    void setMaxSize(const USize& size);
 
     /*!
     \brief
@@ -2781,9 +2781,9 @@ public:
         determining the final value used.
 
     \param size
-        UVector2 describing the new minimum size of the window area.
+        USize describing the new minimum size of the window area.
      */
-    void setMinSize(const UVector2& size);
+    void setMinSize(const USize& size);
 
     /*!
     \brief
@@ -2873,9 +2873,9 @@ public:
         determining the final value used.
 
     \return
-        UVector2 describing the size of the window area.
+        USize describing the size of the window area.
      */
-    UVector2 getSize() const;
+    USize getSize() const;
 
     /*!
     \brief
@@ -2925,7 +2925,7 @@ public:
     \return
         UVector2 describing the maximum size of the window area.
      */
-    const UVector2& getMaxSize() const;
+    const USize& getMaxSize() const;
 
     /*!
     \brief
@@ -2943,7 +2943,7 @@ public:
     \return
         UVector2 describing the minimum size of the window area.
      */
-    const UVector2& getMinSize() const;
+    const USize& getMinSize() const;
 
     /*!
     \brief
@@ -4142,7 +4142,7 @@ protected:
         UVector2 object describing the new area position.
 
     /param size
-        UVector2 object describing the new area size.
+        USize object describing the new area size.
 
     /param topLeftSizing
         - true to indicate the the operation is a sizing operation on the top
@@ -4157,7 +4157,7 @@ protected:
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
      */
-    void setArea_impl(const UVector2& pos, const UVector2& size,
+    void setArea_impl(const UVector2& pos, const USize& size,
                       bool topLeftSizing = false, bool fireEvents = true);
 
     /*!
@@ -4251,10 +4251,10 @@ protected:
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
-    // constrain given UVector2 to window's min size, return if size changed.
-    bool constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz);
-    // constrain given UVector2 to window's max size, return if size changed.
-    bool constrainUVector2ToMaxSize(const Sizef& base_sz, UVector2& sz);
+    // constrain given USize to window's min size, return if size changed.
+    bool constrainToMinSize(const Sizef& base_sz, USize& sz);
+    // constrain given USize to window's max size, return if size changed.
+    bool constrainToMaxSize(const Sizef& base_sz, USize& sz);
     
     //! implementation function to get window at name_path, returns 0 if none.
     virtual Window* getChild_impl(const String& name_path) const;
@@ -4264,30 +4264,11 @@ protected:
     *************************************************************************/
     static  WindowProperties::Font              d_fontProperty;
 
-    //static TplProperty<Window, Image*>          d_mouseCursorProperty;
     static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    static TplProperty<Window, bool>            d_zOrderChangeProperty;
-    static TplProperty<Window, bool>            d_wantsMultiClicksProperty;
-    static TplProperty<Window, bool>            d_mouseButtonAutoRepeatProperty;
     
-    static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
-    static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
-    static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
-    static  WindowProperties::CustomTooltipType d_tooltipTypeProperty;
-    static  WindowProperties::Tooltip           d_tooltipProperty;
-    static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
-    static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
     static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
     static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
-    static  WindowProperties::UnifiedAreaRect   d_unifiedAreaRectProperty;
-    static  WindowProperties::UnifiedPosition   d_unifiedPositionProperty;
-    static  WindowProperties::UnifiedXPosition  d_unifiedXPositionProperty;
-    static  WindowProperties::UnifiedYPosition  d_unifiedYPositionProperty;
-    static  WindowProperties::UnifiedSize       d_unifiedSizeProperty;
-    static  WindowProperties::UnifiedWidth      d_unifiedWidthProperty;
-    static  WindowProperties::UnifiedHeight     d_unifiedHeightProperty;
-    static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
-    static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
+ 
     static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
     static  WindowProperties::WindowRenderer    d_windowRendererProperty;
     static  WindowProperties::LookNFeel         d_lookNFeelProperty;
@@ -4454,9 +4435,9 @@ protected:
     //! Current constrained pixel size of the window.
     Sizef d_pixelSize;
     //! current minimum size for the window.
-    UVector2 d_minSize;
+    USize d_minSize;
     //! current maximum size for the window.
-    UVector2 d_maxSize;
+    USize d_maxSize;
     //! Specifies the base for horizontal alignment.
     HorizontalAlignment d_horzAlign;
     //! Specifies the base for vertical alignment.

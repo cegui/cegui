@@ -133,31 +133,9 @@ WindowProperties::Font              Window::d_fontProperty;
                                                             &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
 WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
 
-// TODO: inconsistency between property and setter getter names
-TplProperty<Window, bool>           Window::d_zOrderChangeProperty("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true);
-TplProperty<Window, bool>           Window::d_wantsMultiClicksProperty("WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true);
-TplProperty<Window, bool>           Window::d_mouseButtonAutoRepeatProperty("MouseButtonDownAutoRepeat", "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".", "Window",
-                                                            &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false);
-WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
-WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
-WindowProperties::DistributeCapturedInputs Window::d_distInputsProperty;
-WindowProperties::CustomTooltipType Window::d_tooltipTypeProperty;
-WindowProperties::Tooltip           Window::d_tooltipProperty;
-WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
-WindowProperties::RiseOnClick       Window::d_riseOnClickProperty;
 WindowProperties::VerticalAlignment   Window::d_vertAlignProperty;
 WindowProperties::HorizontalAlignment Window::d_horzAlignProperty;
-WindowProperties::UnifiedAreaRect   Window::d_unifiedAreaRectProperty;
-WindowProperties::UnifiedPosition   Window::d_unifiedPositionProperty;
-WindowProperties::UnifiedXPosition  Window::d_unifiedXPositionProperty;
-WindowProperties::UnifiedYPosition  Window::d_unifiedYPositionProperty;
-WindowProperties::UnifiedSize       Window::d_unifiedSizeProperty;
-WindowProperties::UnifiedWidth      Window::d_unifiedWidthProperty;
-WindowProperties::UnifiedHeight     Window::d_unifiedHeightProperty;
-WindowProperties::UnifiedMinSize    Window::d_unifiedMinSizeProperty;
-WindowProperties::UnifiedMaxSize    Window::d_unifiedMaxSizeProperty;
+
 WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
 WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
@@ -1515,8 +1493,6 @@ void Window::addStandardProperties(void)
 {
     const String propertyOrigin("Window");
 
-    // experimental, even easier to maintain property definition, neat eh?
-
     CEGUI_DEFINE_PROPERTY(Window, float,
         "Alpha", "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f
@@ -1571,27 +1547,104 @@ void Window::addStandardProperties(void)
         &Window::setText, &Window::getText, ""
     );
 
-    addProperty(&d_zOrderChangeProperty);
-    addProperty(&d_wantsMultiClicksProperty);
-    addProperty(&d_mouseButtonAutoRepeatProperty);
-    addProperty(&d_autoRepeatDelayProperty);
-    addProperty(&d_autoRepeatRateProperty);
-    addProperty(&d_distInputsProperty);
-    addProperty(&d_tooltipTypeProperty);
-    addProperty(&d_tooltipProperty);
-    addProperty(&d_inheritsTooltipProperty);
-    addProperty(&d_riseOnClickProperty);
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "ZOrderingEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window. Value is either \"True\" or \"False\".",
+        &Window::setZOrderingEnabled, &Window::isZOrderingEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events. Value is either \"True\" or \"False\".",
+        &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "MouseAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat mouse button down events. Value is either \"True\" or \"False\".",
+        &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, float,
+        "AutoRepeatDelay", "Property to get/set the autorepeat delay. Value is a floating point number indicating the delay required in seconds.",
+        &Window::setAutoRepeatDelay, &Window::getAutoRepeatDelay, 0.3f
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, float,
+        "AutoRepeatRate", "Property to get/set the autorepeat rate. Value is a floating point number indicating the rate required in seconds.",
+        &Window::setAutoRepeatRate, &Window::getAutoRepeatRate, 0.06f
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "DistributeCapturedInputs", "Property to get/set whether captured inputs are passed to child windows. Value is either \"True\" or \"False\".",
+        &Window::setDistributesCapturedInputs, &Window::distributesCapturedInputs, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, String,
+       "TooltipType", "Property to get/set the custom tooltip for the window. Value is the type name of the custom tooltip. If \"\", the default System tooltip is used.",
+        &Window::setTooltipType, &Window::getTooltipType, ""
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, String,
+        "TooltipText", "Property to get/set the tooltip text for the window. Value is the tooltip text for the window.",
+        &Window::setTooltipText, &Window::getTooltipText, ""
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "InheritsTooltipText", "Property to get/set whether the window inherits its parents tooltip text when it has none of its own. Value is either \"True\" or \"False\".",
+        &Window::setInheritsTooltipText, &Window::inheritsTooltipText, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"True\" or \"False\".",
+        &Window::setRiseOnClickEnabled, &Window::isRiseOnClickEnabled, true
+    );
+
     addProperty(&d_vertAlignProperty);
     addProperty(&d_horzAlignProperty);
-    addProperty(&d_unifiedAreaRectProperty);
-    addProperty(&d_unifiedPositionProperty);
-    addProperty(&d_unifiedXPositionProperty);
-    addProperty(&d_unifiedYPositionProperty);
-    addProperty(&d_unifiedSizeProperty);
-    addProperty(&d_unifiedWidthProperty);
-    addProperty(&d_unifiedHeightProperty);
-    addProperty(&d_unifiedMinSizeProperty);
-    addProperty(&d_unifiedMaxSizeProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, URect,
+        "Area", "Property to get/set the windows unified area rectangle. Value is a \"URect\".",
+        &Window::setArea, &Window::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, UVector2,
+        "Position", "Property to get/set the windows unified position. Value is a \"UVector2\".",
+        &Window::setPosition, &Window::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
+    );
+
+	CEGUI_DEFINE_PROPERTY_NO_XML(Window, UDim,
+		"XPosition", "Property to get/set the windows unified position x-coordinate. Value is a \"UDim\".",
+		&Window::setXPosition, &Window::getXPosition, UDim(0, 0)
+	);
+		
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, UDim,
+		"YPosition", "Property to get/set the windows unified position y-coordinate. Value is a \"UDim\".",
+		&Window::setYPosition, &Window::getYPosition, UDim(0, 0)
+	);
+	
+	CEGUI_DEFINE_PROPERTY_NO_XML(Window, USize,
+		"Size", "Property to get/set the windows unified size.  Value is a \"USize\".",
+		&Window::setSize, &Window::getSize, USize(UDim(0, 0), UDim(0, 0))
+	);
+	
+	CEGUI_DEFINE_PROPERTY_NO_XML(Window, UDim,
+		"Width", "Property to get/set the windows unified width.  Value is a \"UDim\".",
+		&Window::setWidth, &Window::getWidth, UDim(0, 0)
+	);
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(Window, UDim,
+		"Height", "Property to get/set the windows unified height.  Value is a \"UDim\".",
+		&Window::setHeight, &Window::getHeight, UDim(0, 0)
+	);
+
+	CEGUI_DEFINE_PROPERTY(Window, USize,
+		"MinSize", "Property to get/set the windows unified minimum size.  Value is a \"USize\".",
+		&Window::setMinSize, &Window::getMinSize, USize(UDim(0, 0), UDim(0, 0))
+	);
+
+    CEGUI_DEFINE_PROPERTY(Window, USize,
+		"MaxSize", "Property to get/set the windows unified maximum size.  Value is a \"USize\".",
+		&Window::setMaxSize, &Window::getMaxSize, USize(UDim(0, 0), UDim(0, 0))
+	);
+
     addProperty(&d_mousePassThroughEnabledProperty);
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
@@ -1621,15 +1674,15 @@ void Window::addStandardProperties(void)
         banPropertyFromXML("DestroyedByParent");
         banPropertyFromXML(&d_vertAlignProperty);
         banPropertyFromXML(&d_horzAlignProperty);
-        banPropertyFromXML(&d_unifiedAreaRectProperty);
-        banPropertyFromXML(&d_unifiedPositionProperty);
-        banPropertyFromXML(&d_unifiedXPositionProperty);
-        banPropertyFromXML(&d_unifiedYPositionProperty);
-        banPropertyFromXML(&d_unifiedSizeProperty);
-        banPropertyFromXML(&d_unifiedWidthProperty);
-        banPropertyFromXML(&d_unifiedHeightProperty);
-        banPropertyFromXML(&d_unifiedMinSizeProperty);
-        banPropertyFromXML(&d_unifiedMaxSizeProperty);
+        banPropertyFromXML("Area");
+        banPropertyFromXML("Position");
+		banPropertyFromXML("XPosition");
+        banPropertyFromXML("YPosition");
+		banPropertyFromXML("Size");
+		banPropertyFromXML("Width");
+        banPropertyFromXML("Height");
+        banPropertyFromXML("MinSize");
+        banPropertyFromXML("MaxSize");
         banPropertyFromXML(&d_windowRendererProperty);
         banPropertyFromXML(&d_lookNFeelProperty);
     }
@@ -1965,7 +2018,7 @@ void Window::setInheritsTooltipText(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea_impl(const UVector2& pos, const UVector2& size,
+void Window::setArea_impl(const UVector2& pos, const USize& size,
                           bool topLeftSizing, bool fireEvents)
 {
     // we make sure the screen areas are recached when this is called as we need
@@ -1984,20 +2037,19 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    Vector2f absMax(CoordConverter::asAbsolute(d_maxSize,
+    Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
-    Vector2f absMin(CoordConverter::asAbsolute(d_minSize,
+    Sizef absMin(CoordConverter::asAbsolute(d_minSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     const Sizef base_size((d_parent && !d_nonClientContent) ?
                             d_parent->getUnclippedInnerRect().getSize() :
                             getParentPixelSize());
 
-    const Vector2f pixelSizeVector = CoordConverter::asAbsolute(size, base_size);
-    d_pixelSize = Sizef(pixelSizeVector.d_x, pixelSizeVector.d_y);
+    d_pixelSize = CoordConverter::asAbsolute(size, base_size);
 
     // limit new pixel size to: minSize <= newSize <= maxSize
-    d_pixelSize.clamp(Sizef(absMin.d_x, absMin.d_y), Sizef(absMax.d_x, absMax.d_y));
+    d_pixelSize.clamp(absMin, absMax);
 
 	if (d_aspectMode != AM_IGNORE)
 	{
@@ -2010,13 +2062,13 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 		{
 			float ratio = 1.0f;
 			// check that we haven't blown the min size
-			if (d_pixelSize.d_width < absMin.d_x)
+			if (d_pixelSize.d_width < absMin.d_width)
 			{
-				ratio = absMin.d_x / d_pixelSize.d_width;
+				ratio = absMin.d_width / d_pixelSize.d_width;
 			}
-			if (d_pixelSize.d_height < absMin.d_y)
+			if (d_pixelSize.d_height < absMin.d_height)
 			{
-				const float newRatio = absMin.d_y / d_pixelSize.d_height;
+				const float newRatio = absMin.d_height / d_pixelSize.d_height;
 				if (newRatio > ratio)
 					ratio = newRatio;
 			}
@@ -2028,13 +2080,13 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 		{
 			float ratio = 1.0f;
 			// check that we haven't blown the min size
-			if (d_pixelSize.d_width > absMax.d_x)
+			if (d_pixelSize.d_width > absMax.d_width)
 			{
-				ratio = absMax.d_x / d_pixelSize.d_width;
+				ratio = absMax.d_width / d_pixelSize.d_width;
 			}
-			if (d_pixelSize.d_height > absMax.d_y)
+			if (d_pixelSize.d_height > absMax.d_height)
 			{
-				const float newRatio = absMax.d_y / d_pixelSize.d_height;
+				const float newRatio = absMax.d_height / d_pixelSize.d_height;
 				if (newRatio > ratio)
 					ratio = newRatio;
 			}
@@ -2046,8 +2098,7 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 		//       the result won't be limited by both limits!
 	}
 
-    // TODO: size vs vector
-    d_area.setSize(USize(size.d_x, size.d_y));
+    d_area.setSize(size);
     sized = (d_pixelSize != oldSize);
 
     // If this is a top/left edge sizing op, only modify position if the size
@@ -2093,13 +2144,13 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
 void Window::setArea(const UDim& xpos, const UDim& ypos,
                      const UDim& width, const UDim& height)
 {
-    setArea(UVector2(xpos, ypos), UVector2(width, height));
+    setArea(UVector2(xpos, ypos), USize(width, height));
 }
 
 //----------------------------------------------------------------------------//
-void Window::setArea(const UVector2& pos, const UVector2& size)
+void Window::setArea(const UVector2& pos, const USize& size)
 {
-    // Limit the value we set to something that's within the constraints
+	// Limit the value we set to something that's within the constraints
     // specified via the min and max size settings.
 
     // get size of 'base' - i.e. the size of the parent region.
@@ -2107,9 +2158,9 @@ void Window::setArea(const UVector2& pos, const UVector2& size)
                               d_parent->getUnclippedInnerRect().getSize() :
                               getParentPixelSize());
 
-    UVector2 newsz(size);
-    constrainUVector2ToMinSize(base_sz, newsz);
-    constrainUVector2ToMaxSize(base_sz, newsz);
+    USize newsz(size);
+    constrainToMinSize(base_sz, newsz);
+    constrainToMaxSize(base_sz, newsz);
 
     setArea_impl(pos, newsz);
 }
@@ -2117,49 +2168,41 @@ void Window::setArea(const UVector2& pos, const UVector2& size)
 //----------------------------------------------------------------------------//
 void Window::setArea(const URect& area)
 {
-    // TODO: size vs vector
-    const USize sz = area.getSize();
-    setArea(area.d_min, UVector2(sz.d_width, sz.d_height));
+    setArea(area.d_min, area.getSize());
 }
 
 //----------------------------------------------------------------------------//
 void Window::setPosition(const UVector2& pos)
 {
-    // todo: vector vs size
-    const USize sz = d_area.getSize();
-    setArea_impl(pos, UVector2(sz.d_width, sz.d_height));
+    setArea_impl(pos, d_area.getSize());
 }
 
 //----------------------------------------------------------------------------//
 void Window::setXPosition(const UDim& x)
 {
-    // todo: vector vs size
-    const USize sz = d_area.getSize();
-    setArea_impl(UVector2(x, d_area.d_min.d_y), UVector2(sz.d_width, sz.d_height));
+    setArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
 }
 
 //----------------------------------------------------------------------------//
 void Window::setYPosition(const UDim& y)
 {
-    // todo: vector vs size
-    const USize sz = d_area.getSize();
-    setArea_impl(UVector2(d_area.d_min.d_x, y), UVector2(sz.d_width, sz.d_height));
+    setArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
 }
 
 //----------------------------------------------------------------------------//
-void Window::setSize(const UVector2& size)
+void Window::setSize(const USize& size)
 {
     // Limit the value we set to something that's within the constraints
     // specified via the min and max size settings.
 
     // get size of 'base' - i.e. the size of the parent region.
     const Sizef base_sz((d_parent && !d_nonClientContent) ?
-                              d_parent->getUnclippedInnerRect().getSize() :
-                              getParentPixelSize());
+                         d_parent->getUnclippedInnerRect().getSize() :
+                         getParentPixelSize());
 
-    UVector2 newsz(size);
-    constrainUVector2ToMinSize(base_sz, newsz);
-    constrainUVector2ToMaxSize(base_sz, newsz);
+    USize newsz(size);
+    constrainToMinSize(base_sz, newsz);
+    constrainToMaxSize(base_sz, newsz);
 
     // set the new size.
     setArea_impl(d_area.getPosition(), newsz);
@@ -2168,17 +2211,17 @@ void Window::setSize(const UVector2& size)
 //----------------------------------------------------------------------------//
 void Window::setWidth(const UDim& width)
 {
-    setSize(UVector2(width, d_area.getSize().d_height));
+    setSize(USize(width, d_area.getSize().d_height));
 }
 
 //----------------------------------------------------------------------------//
 void Window::setHeight(const UDim& height)
 {
-    setSize(UVector2(d_area.getSize().d_width, height));
+    setSize(USize(d_area.getSize().d_width, height));
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMaxSize(const UVector2& size)
+void Window::setMaxSize(const USize& size)
 {
     d_maxSize = size;
 
@@ -2190,17 +2233,17 @@ void Window::setMaxSize(const UVector2& size)
 
     // get size of 'base' - i.e. the size of the parent region.
     const Sizef base_sz((d_parent && !d_nonClientContent) ?
-                              d_parent->getUnclippedInnerRect().getSize() :
-                              getParentPixelSize());
+						 d_parent->getUnclippedInnerRect().getSize() :
+                         getParentPixelSize());
 
-    UVector2 wnd_sz(getSize());
+    USize wnd_sz(getSize());
 
-    if (constrainUVector2ToMaxSize(base_sz, wnd_sz))
+    if (constrainToMaxSize(base_sz, wnd_sz))
         setSize(wnd_sz);
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMinSize(const UVector2& size)
+void Window::setMinSize(const USize& size)
 {
     d_minSize = size;
 
@@ -2212,12 +2255,12 @@ void Window::setMinSize(const UVector2& size)
 
     // get size of 'base' - i.e. the size of the parent region.
     const Sizef base_sz((d_parent && !d_nonClientContent) ?
-                              d_parent->getUnclippedInnerRect().getSize() :
-                              getParentPixelSize());
+                         d_parent->getUnclippedInnerRect().getSize() :
+                         getParentPixelSize());
 
-    UVector2 wnd_sz(getSize());
+    USize wnd_sz(getSize());
 
-    if (constrainUVector2ToMinSize(base_sz, wnd_sz))
+    if (constrainToMinSize(base_sz, wnd_sz))
         setSize(wnd_sz);
 }
 
@@ -2246,11 +2289,9 @@ const UDim& Window::getYPosition() const
 }
 
 //----------------------------------------------------------------------------//
-UVector2 Window::getSize() const
+USize Window::getSize() const
 {
-    // todo: vector vs size
-    const USize sz = d_area.getSize();
-    return UVector2(sz.d_width, sz.d_height);
+    return d_area.getSize();
 }
 
 //----------------------------------------------------------------------------//
@@ -2266,13 +2307,13 @@ UDim Window::getHeight() const
 }
 
 //----------------------------------------------------------------------------//
-const UVector2& Window::getMaxSize() const
+const USize& Window::getMaxSize() const
 {
     return d_maxSize;
 }
 
 //----------------------------------------------------------------------------//
-const UVector2& Window::getMinSize() const
+const USize& Window::getMinSize() const
 {
     return d_minSize;
 }
@@ -2894,9 +2935,7 @@ void Window::onParentSized(WindowEventArgs& e)
     // set window area back on itself to cause minimum and maximum size
     // constraints to be applied as required.  (fire no events though)
 
-    // todo: vector vs size
-    const USize sz = d_area.getSize();
-    setArea_impl(d_area.getPosition(), UVector2(sz.d_width, sz.d_height), false, false);
+    setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
@@ -4129,33 +4168,33 @@ float Window::getAspectRatio() const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz)
+bool Window::constrainToMinSize(const Sizef& base_sz, USize& sz)
 {
-    const Vector2f pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
-    const Vector2f min_sz(CoordConverter::asAbsolute(d_minSize,
+    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Sizef min_sz(CoordConverter::asAbsolute(d_minSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;
 
     // check width is not less than the minimum
-    if (pixel_sz.d_x < min_sz.d_x)
+    if (pixel_sz.d_width < min_sz.d_width)
     {
-        sz.d_x.d_offset = ceguimin(sz.d_x.d_offset, d_minSize.d_x.d_offset);
+        sz.d_width.d_offset = ceguimin(sz.d_width.d_offset, d_minSize.d_width.d_offset);
 
-        sz.d_x.d_scale = (base_sz.d_width != 0.0f) ?
-            (min_sz.d_x - sz.d_x.d_offset) / base_sz.d_width :
+        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
+            (min_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
             0.0f;
 
         size_changed = true;
     }
 
     // check height is not less than the minimum
-    if (pixel_sz.d_y < min_sz.d_y)
+    if (pixel_sz.d_height < min_sz.d_height)
     {
-        sz.d_y.d_offset = ceguimin(sz.d_y.d_offset, d_minSize.d_y.d_offset);
+        sz.d_height.d_offset = ceguimin(sz.d_height.d_offset, d_minSize.d_height.d_offset);
 
-        sz.d_y.d_scale = (base_sz.d_height != 0.0f) ?
-            (min_sz.d_y - sz.d_y.d_offset) / base_sz.d_height :
+        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
+            (min_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
             0.0f;
 
         size_changed = true;
@@ -4165,33 +4204,33 @@ bool Window::constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::constrainUVector2ToMaxSize(const Sizef& base_sz, UVector2& sz)
+bool Window::constrainToMaxSize(const Sizef& base_sz, USize& sz)
 {
-    const Vector2f pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
-    const Vector2f max_sz(CoordConverter::asAbsolute(d_maxSize,
+    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Sizef max_sz(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
     bool size_changed = false;
 
     // check width is not greater than the maximum
-    if (pixel_sz.d_x > max_sz.d_x)
+    if (pixel_sz.d_width > max_sz.d_width)
     {
-        sz.d_x.d_offset = ceguimax(sz.d_x.d_offset, d_maxSize.d_x.d_offset);
+        sz.d_width.d_offset = ceguimax(sz.d_width.d_offset, d_maxSize.d_width.d_offset);
 
-        sz.d_x.d_scale = (base_sz.d_width != 0.0f) ?
-            (max_sz.d_x - sz.d_x.d_offset) / base_sz.d_width :
+        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
+            (max_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
             0.0f;
 
         size_changed = true;
     }
 
     // check height is not greater than the maximum
-    if (pixel_sz.d_y > max_sz.d_y)
+    if (pixel_sz.d_height > max_sz.d_height)
     {
-        sz.d_y.d_offset = ceguimax(sz.d_y.d_offset, d_maxSize.d_y.d_offset);
+        sz.d_height.d_offset = ceguimax(sz.d_height.d_offset, d_maxSize.d_height.d_offset);
 
-        sz.d_y.d_scale = (base_sz.d_height != 0.0f) ?
-            (max_sz.d_y - sz.d_y.d_offset) / base_sz.d_height :
+        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
+            (max_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
             0.0f;
 
         size_changed = true;

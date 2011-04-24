@@ -150,8 +150,8 @@ bool ScrollablePaneSample::initialiseSample()
 
     // add a dialog to this pane so we have something to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setMinSize(UVector2(UDim(0,250),UDim(0,100)));
-    dlg->setSize(UVector2(UDim(0,250),UDim(0,100)));
+    dlg->setMinSize(USize(UDim(0,250),UDim(0,100)));
+    dlg->setSize(USize(UDim(0,250),UDim(0,100)));
     dlg->setText("Drag me around");
     d_pane->addChild(dlg);
 
@@ -214,8 +214,8 @@ bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
     
     // add a dialog to this pane so we have some more stuff to drag around :)
     Window* dlg = d_wm->createWindow("WindowsLook/FrameWindow");
-    dlg->setMinSize(UVector2(UDim(0,200),UDim(0,100)));
-    dlg->setSize(UVector2(UDim(0,200),UDim(0,100)));
+    dlg->setMinSize(USize(UDim(0,200),UDim(0,100)));
+    dlg->setSize(USize(UDim(0,200),UDim(0,100)));
     dlg->setText("Drag me around too!");
     
     // we put this in the center of the viewport into the scrollable pane
