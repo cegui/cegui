@@ -270,6 +270,7 @@
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 173)@::std::__is_integer< wchar_t >
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 354)@::std::__is_char< char >
 ~@enumeration_t@RenderQueueID@::CEGUI::RenderQueueID
+~@enumeration_t@AspectMode@::CEGUI::AspectMode
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 124)@::std::__is_void< void >
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 218)@::std::__is_integer< unsigned int >
 ~@enumeration_t@('/usr/include/bits/confname.h', 73)@::
@@ -1789,6 +1790,12 @@
 ~@member_function_t@subscribe@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::Event::* )( unsigned int,::CEGUI::SubscriberSlot const & ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::Event::* )( unsigned int,::CEGUI::SubscriberSlot const & ) 
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) 
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) 
+~@member_function_t@draw@void ( ::CEGUI::RenderQueue::* )(  ) constvoid ( ::CEGUI::RenderQueue::* )(  ) const
+~@member_function_t@draw@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const & ) 
+~@member_function_t@draw@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderQueue const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderQueue const & ) 
+~@member_function_t@draw@void ( ::CEGUI::GeometryBuffer::* )(  ) constvoid ( ::CEGUI::GeometryBuffer::* )(  ) const
+~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )(  ) void ( ::CEGUI::RenderingSurface::* )(  ) 
+~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) 
 ~@member_function_t@allocate@::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::NullTexture* > > * ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::NullTexture*> > >::* )( ::size_t,void const * ) ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::NullTexture*> > * ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::NullTexture*> > >::* )( ::size_t,void const * ) 
 ~@member_function_t@allocate@::std::pair< const CEGUI::String, CEGUI::NullTexture* > * ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::NullTexture*> >::* )( ::size_t,void const * ) ::std::pair<const CEGUI::String,CEGUI::NullTexture*> * ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::NullTexture*> >::* )( ::size_t,void const * ) 
 ~@member_function_t@allocate@::CEGUI::NullGeometryBuffer * * ( ::__gnu_cxx::new_allocator<CEGUI::NullGeometryBuffer*>::* )( ::size_t,void const * ) ::CEGUI::NullGeometryBuffer * * ( ::__gnu_cxx::new_allocator<CEGUI::NullGeometryBuffer*>::* )( ::size_t,void const * ) 
@@ -1817,12 +1824,7 @@
 ~@member_function_t@setTranslation@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
-~@member_function_t@draw@void ( ::CEGUI::RenderQueue::* )(  ) constvoid ( ::CEGUI::RenderQueue::* )(  ) const
-~@member_function_t@draw@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const & ) 
-~@member_function_t@draw@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderQueue const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderQueue const & ) 
-~@member_function_t@draw@void ( ::CEGUI::GeometryBuffer::* )(  ) constvoid ( ::CEGUI::GeometryBuffer::* )(  ) const
-~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )(  ) void ( ::CEGUI::RenderingSurface::* )(  ) 
-~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) 
+~@member_function_t@clamp@void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float >,::CEGUI::Size< float > ) void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float>,::CEGUI::Size<float> ) 
 ~@member_function_t@activate@void ( ::CEGUI::RenderTarget::* )(  ) void ( ::CEGUI::RenderTarget::* )(  ) 
 ~@member_function_t@setArea@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) 
 ~@member_function_t@appendGeometry@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const * const,::CEGUI::uint ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const * const,::CEGUI::uint ) 
@@ -2458,6 +2460,7 @@
 ~@member_function_t@inside@bool ( ::CEGUI::String::* )( ::CEGUI::utf32 * ) bool ( ::CEGUI::String::* )( ::CEGUI::utf32 * ) 
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) 
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) 
+~@member_function_t@scaleToAspect@void ( ::CEGUI::Size<float>::* )( ::CEGUI::AspectMode,float ) void ( ::CEGUI::Size<float>::* )( ::CEGUI::AspectMode,float ) 
 ~@member_function_t@flip@void ( ::std::_Bit_reference::* )(  ) void ( ::std::_Bit_reference::* )(  ) 
 ~@member_function_t@_M_fill_insert@void ( ::std::vector<CEGUI::NullGeometryBuffer*, std::allocator<CEGUI::NullGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator< CEGUI::NullGeometryBuffer**, std::vector< CEGUI::NullGeometryBuffer* > >,::size_t,::CEGUI::NullGeometryBuffer * const & ) void ( ::std::vector<CEGUI::NullGeometryBuffer*, std::allocator<CEGUI::NullGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator<CEGUI::NullGeometryBuffer**,std::vector<CEGUI::NullGeometryBuffer*, std::allocator<CEGUI::NullGeometryBuffer*> > >,::size_t,::CEGUI::NullGeometryBuffer * const & ) 
 ~@member_function_t@_M_fill_insert@void ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )( ::__gnu_cxx::__normal_iterator< CEGUI::TextureTarget**, std::vector< CEGUI::TextureTarget* > >,::size_t,::CEGUI::TextureTarget * const & ) void ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )( ::__gnu_cxx::__normal_iterator<CEGUI::TextureTarget**,std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> > >,::size_t,::CEGUI::TextureTarget * const & ) 
