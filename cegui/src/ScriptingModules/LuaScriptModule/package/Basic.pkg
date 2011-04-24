@@ -1,10 +1,10 @@
 /************************************************************************
     rename the default template basic types to be shorter :)
 *************************************************************************/
-$renaming Vector2_float @ Vector2
-$renaming Vector3_float @ Vector3
-$renaming Size_float @ Size
-$renaming Rect_float @ Rect
+$renaming Vector2<float> @ Vector2f
+$renaming Vector3<float> @ Vector3f
+$renaming Size<float> @ Sizef
+$renaming Rect<float> @ Rectf
 
 // How aspect ratio should be maintained
 enum AspectMode
