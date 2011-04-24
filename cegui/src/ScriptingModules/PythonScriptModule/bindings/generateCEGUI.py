@@ -765,6 +765,7 @@ EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree,
     # handled separately
     
     # CEGUISize.h
+    CEGUI_ns.enum("AspectMode").include()
     size = CEGUI_ns.class_("Size<float>")
     size.rename("Sizef")
     size.include()
