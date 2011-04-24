@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sun Apr 24 11:21:49 2011.
+** Generated automatically by tolua++-1.0.92 on Sun Apr 24 11:44:26 2011.
 */
 
 #ifndef __cplusplus
@@ -619,8 +619,8 @@ static int tolua_set_CEGUI__Vector2_float__y(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator+ of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float___add00
-static int tolua_CEGUI_CEGUI_Vector2_float___add00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f__add00
+static int tolua_CEGUI_CEGUI_Vector2f__add00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -661,8 +661,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float___add00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator- of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float___sub00
-static int tolua_CEGUI_CEGUI_Vector2_float___sub00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f__sub00
+static int tolua_CEGUI_CEGUI_Vector2f__sub00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -703,8 +703,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float___sub00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator* of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float___mul00
-static int tolua_CEGUI_CEGUI_Vector2_float___mul00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f__mul00
+static int tolua_CEGUI_CEGUI_Vector2f__mul00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -745,8 +745,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float___mul00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator== of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float___eq00
-static int tolua_CEGUI_CEGUI_Vector2_float___eq00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f__eq00
+static int tolua_CEGUI_CEGUI_Vector2f__eq00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -779,8 +779,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float___eq00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float__new00
-static int tolua_CEGUI_CEGUI_Vector2_float__new00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f_new00
+static int tolua_CEGUI_CEGUI_Vector2f_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -807,8 +807,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float__new00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float__new00_local
-static int tolua_CEGUI_CEGUI_Vector2_float__new00_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f_new00_local
+static int tolua_CEGUI_CEGUI_Vector2f_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -835,8 +835,8 @@ static int tolua_CEGUI_CEGUI_Vector2_float__new00_local(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float__new01
-static int tolua_CEGUI_CEGUI_Vector2_float__new01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f_new01
+static int tolua_CEGUI_CEGUI_Vector2f_new01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -857,13 +857,13 @@ static int tolua_CEGUI_CEGUI_Vector2_float__new01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Vector2_float__new00(tolua_S);
+ return tolua_CEGUI_CEGUI_Vector2f_new00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Vector2<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2_float__new01_local
-static int tolua_CEGUI_CEGUI_Vector2_float__new01_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector2f_new01_local
+static int tolua_CEGUI_CEGUI_Vector2f_new01_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -884,7 +884,7 @@ static int tolua_CEGUI_CEGUI_Vector2_float__new01_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Vector2_float__new00_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Vector2f_new00_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -979,8 +979,8 @@ static int tolua_set_CEGUI__Vector3_float__z(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator== of class  CEGUI::Vector3<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_float___eq00
-static int tolua_CEGUI_CEGUI_Vector3_float___eq00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3f__eq00
+static int tolua_CEGUI_CEGUI_Vector3f__eq00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1013,8 +1013,8 @@ static int tolua_CEGUI_CEGUI_Vector3_float___eq00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Vector3<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_float__new00
-static int tolua_CEGUI_CEGUI_Vector3_float__new00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3f_new00
+static int tolua_CEGUI_CEGUI_Vector3f_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1041,8 +1041,8 @@ static int tolua_CEGUI_CEGUI_Vector3_float__new00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Vector3<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_float__new00_local
-static int tolua_CEGUI_CEGUI_Vector3_float__new00_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3f_new00_local
+static int tolua_CEGUI_CEGUI_Vector3f_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1069,8 +1069,8 @@ static int tolua_CEGUI_CEGUI_Vector3_float__new00_local(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Vector3<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_float__new01
-static int tolua_CEGUI_CEGUI_Vector3_float__new01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3f_new01
+static int tolua_CEGUI_CEGUI_Vector3f_new01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1093,13 +1093,13 @@ static int tolua_CEGUI_CEGUI_Vector3_float__new01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Vector3_float__new00(tolua_S);
+ return tolua_CEGUI_CEGUI_Vector3f_new00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Vector3<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3_float__new01_local
-static int tolua_CEGUI_CEGUI_Vector3_float__new01_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Vector3f_new01_local
+static int tolua_CEGUI_CEGUI_Vector3f_new01_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1122,7 +1122,7 @@ static int tolua_CEGUI_CEGUI_Vector3_float__new01_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Vector3_float__new00_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Vector3f_new00_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -1187,8 +1187,8 @@ static int tolua_set_CEGUI__Size_float__height(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator== of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float___eq00
-static int tolua_CEGUI_CEGUI_Size_float___eq00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef__eq00
+static int tolua_CEGUI_CEGUI_Sizef__eq00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1221,8 +1221,8 @@ static int tolua_CEGUI_CEGUI_Size_float___eq00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: clamp of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__clamp00
-static int tolua_CEGUI_CEGUI_Size_float__clamp00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_clamp00
+static int tolua_CEGUI_CEGUI_Sizef_clamp00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1256,8 +1256,8 @@ static int tolua_CEGUI_CEGUI_Size_float__clamp00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: scaleToAspect of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__scaleToAspect00
-static int tolua_CEGUI_CEGUI_Size_float__scaleToAspect00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_scaleToAspect00
+static int tolua_CEGUI_CEGUI_Sizef_scaleToAspect00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1291,8 +1291,8 @@ static int tolua_CEGUI_CEGUI_Size_float__scaleToAspect00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__new00
-static int tolua_CEGUI_CEGUI_Size_float__new00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_new00
+static int tolua_CEGUI_CEGUI_Sizef_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1319,8 +1319,8 @@ static int tolua_CEGUI_CEGUI_Size_float__new00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__new00_local
-static int tolua_CEGUI_CEGUI_Size_float__new00_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_new00_local
+static int tolua_CEGUI_CEGUI_Sizef_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1347,8 +1347,8 @@ static int tolua_CEGUI_CEGUI_Size_float__new00_local(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__new01
-static int tolua_CEGUI_CEGUI_Size_float__new01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_new01
+static int tolua_CEGUI_CEGUI_Sizef_new01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1369,13 +1369,13 @@ static int tolua_CEGUI_CEGUI_Size_float__new01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Size_float__new00(tolua_S);
+ return tolua_CEGUI_CEGUI_Sizef_new00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Size<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Size_float__new01_local
-static int tolua_CEGUI_CEGUI_Size_float__new01_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Sizef_new01_local
+static int tolua_CEGUI_CEGUI_Sizef_new01_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1396,7 +1396,7 @@ static int tolua_CEGUI_CEGUI_Size_float__new01_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Size_float__new00_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Sizef_new00_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -1461,8 +1461,8 @@ static int tolua_set_CEGUI__Rect_float__max(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new00
-static int tolua_CEGUI_CEGUI_Rect_float__new00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new00
+static int tolua_CEGUI_CEGUI_Rectf_new00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1489,8 +1489,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__new00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new00_local
-static int tolua_CEGUI_CEGUI_Rect_float__new00_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new00_local
+static int tolua_CEGUI_CEGUI_Rectf_new00_local(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1517,8 +1517,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__new00_local(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new01
-static int tolua_CEGUI_CEGUI_Rect_float__new01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new01
+static int tolua_CEGUI_CEGUI_Rectf_new01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1547,13 +1547,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new01(lua_State* tolua_S)
  }
  return 5;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new00(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new01_local
-static int tolua_CEGUI_CEGUI_Rect_float__new01_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new01_local
+static int tolua_CEGUI_CEGUI_Rectf_new01_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1582,13 +1582,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new01_local(lua_State* tolua_S)
  }
  return 5;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new00_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new00_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new02
-static int tolua_CEGUI_CEGUI_Rect_float__new02(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new02
+static int tolua_CEGUI_CEGUI_Rectf_new02(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1609,13 +1609,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new02(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new01(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new01(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new02_local
-static int tolua_CEGUI_CEGUI_Rect_float__new02_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new02_local
+static int tolua_CEGUI_CEGUI_Rectf_new02_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1636,13 +1636,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new02_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new01_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new01_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new03
-static int tolua_CEGUI_CEGUI_Rect_float__new03(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new03
+static int tolua_CEGUI_CEGUI_Rectf_new03(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1663,13 +1663,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new03(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new02(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new02(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new03_local
-static int tolua_CEGUI_CEGUI_Rect_float__new03_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new03_local
+static int tolua_CEGUI_CEGUI_Rectf_new03_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1690,13 +1690,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new03_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new02_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new02_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new04
-static int tolua_CEGUI_CEGUI_Rect_float__new04(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new04
+static int tolua_CEGUI_CEGUI_Rectf_new04(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1715,13 +1715,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new04(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new03(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new03(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: new_local of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__new04_local
-static int tolua_CEGUI_CEGUI_Rect_float__new04_local(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_new04_local
+static int tolua_CEGUI_CEGUI_Rectf_new04_local(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1740,13 +1740,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__new04_local(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__new03_local(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_new03_local(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: left of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__left00
-static int tolua_CEGUI_CEGUI_Rect_float__left00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_left00
+static int tolua_CEGUI_CEGUI_Rectf_left00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1779,8 +1779,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__left00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: top of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__top00
-static int tolua_CEGUI_CEGUI_Rect_float__top00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_top00
+static int tolua_CEGUI_CEGUI_Rectf_top00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1813,8 +1813,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__top00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: right of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__right00
-static int tolua_CEGUI_CEGUI_Rect_float__right00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_right00
+static int tolua_CEGUI_CEGUI_Rectf_right00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1847,8 +1847,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__right00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: bottom of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__bottom00
-static int tolua_CEGUI_CEGUI_Rect_float__bottom00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_bottom00
+static int tolua_CEGUI_CEGUI_Rectf_bottom00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -1881,8 +1881,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__bottom00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: left of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__left01
-static int tolua_CEGUI_CEGUI_Rect_float__left01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_left01
+static int tolua_CEGUI_CEGUI_Rectf_left01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1903,13 +1903,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__left01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__left00(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_left00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: top of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__top01
-static int tolua_CEGUI_CEGUI_Rect_float__top01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_top01
+static int tolua_CEGUI_CEGUI_Rectf_top01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1930,13 +1930,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__top01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__top00(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_top00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: right of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__right01
-static int tolua_CEGUI_CEGUI_Rect_float__right01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_right01
+static int tolua_CEGUI_CEGUI_Rectf_right01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1957,13 +1957,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__right01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__right00(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_right00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: bottom of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__bottom01
-static int tolua_CEGUI_CEGUI_Rect_float__bottom01(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_bottom01
+static int tolua_CEGUI_CEGUI_Rectf_bottom01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -1984,13 +1984,13 @@ static int tolua_CEGUI_CEGUI_Rect_float__bottom01(lua_State* tolua_S)
  }
  return 1;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_Rect_float__bottom00(tolua_S);
+ return tolua_CEGUI_CEGUI_Rectf_bottom00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: setPosition of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__setPosition00
-static int tolua_CEGUI_CEGUI_Rect_float__setPosition00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_setPosition00
+static int tolua_CEGUI_CEGUI_Rectf_setPosition00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2022,8 +2022,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__setPosition00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: getPosition of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__getPosition00
-static int tolua_CEGUI_CEGUI_Rect_float__getPosition00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_getPosition00
+static int tolua_CEGUI_CEGUI_Rectf_getPosition00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2054,8 +2054,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__getPosition00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: setSize of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__setSize00
-static int tolua_CEGUI_CEGUI_Rect_float__setSize00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_setSize00
+static int tolua_CEGUI_CEGUI_Rectf_setSize00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2087,8 +2087,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__setSize00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: getSize of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__getSize00
-static int tolua_CEGUI_CEGUI_Rect_float__getSize00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_getSize00
+static int tolua_CEGUI_CEGUI_Rectf_getSize00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2127,8 +2127,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__getSize00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: setWidth of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__setWidth00
-static int tolua_CEGUI_CEGUI_Rect_float__setWidth00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_setWidth00
+static int tolua_CEGUI_CEGUI_Rectf_setWidth00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2161,8 +2161,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__setWidth00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: getWidth of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__getWidth00
-static int tolua_CEGUI_CEGUI_Rect_float__getWidth00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_getWidth00
+static int tolua_CEGUI_CEGUI_Rectf_getWidth00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2193,8 +2193,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__getWidth00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: setHeight of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__setHeight00
-static int tolua_CEGUI_CEGUI_Rect_float__setHeight00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_setHeight00
+static int tolua_CEGUI_CEGUI_Rectf_setHeight00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2227,8 +2227,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__setHeight00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: getHeight of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__getHeight00
-static int tolua_CEGUI_CEGUI_Rect_float__getHeight00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_getHeight00
+static int tolua_CEGUI_CEGUI_Rectf_getHeight00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2259,8 +2259,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__getHeight00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: getIntersection of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__getIntersection00
-static int tolua_CEGUI_CEGUI_Rect_float__getIntersection00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_getIntersection00
+static int tolua_CEGUI_CEGUI_Rectf_getIntersection00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2301,8 +2301,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__getIntersection00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: offset of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__offset00
-static int tolua_CEGUI_CEGUI_Rect_float__offset00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_offset00
+static int tolua_CEGUI_CEGUI_Rectf_offset00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2334,8 +2334,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__offset00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: isPointInRect of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__isPointInRect00
-static int tolua_CEGUI_CEGUI_Rect_float__isPointInRect00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_isPointInRect00
+static int tolua_CEGUI_CEGUI_Rectf_isPointInRect00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2368,8 +2368,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__isPointInRect00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: constrainSizeMax of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__constrainSizeMax00
-static int tolua_CEGUI_CEGUI_Rect_float__constrainSizeMax00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_constrainSizeMax00
+static int tolua_CEGUI_CEGUI_Rectf_constrainSizeMax00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2401,8 +2401,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__constrainSizeMax00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: constrainSizeMin of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__constrainSizeMin00
-static int tolua_CEGUI_CEGUI_Rect_float__constrainSizeMin00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_constrainSizeMin00
+static int tolua_CEGUI_CEGUI_Rectf_constrainSizeMin00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2434,8 +2434,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__constrainSizeMin00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: constrainSize of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float__constrainSize00
-static int tolua_CEGUI_CEGUI_Rect_float__constrainSize00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf_constrainSize00
+static int tolua_CEGUI_CEGUI_Rectf_constrainSize00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2469,8 +2469,8 @@ static int tolua_CEGUI_CEGUI_Rect_float__constrainSize00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator== of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float___eq00
-static int tolua_CEGUI_CEGUI_Rect_float___eq00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf__eq00
+static int tolua_CEGUI_CEGUI_Rectf__eq00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2503,8 +2503,8 @@ static int tolua_CEGUI_CEGUI_Rect_float___eq00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator* of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float___mul00
-static int tolua_CEGUI_CEGUI_Rect_float___mul00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf__mul00
+static int tolua_CEGUI_CEGUI_Rectf__mul00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -2545,8 +2545,8 @@ static int tolua_CEGUI_CEGUI_Rect_float___mul00(lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: operator+ of class  CEGUI::Rect<float> */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rect_float___add00
-static int tolua_CEGUI_CEGUI_Rect_float___add00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Rectf__add00
+static int tolua_CEGUI_CEGUI_Rectf__add00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -58165,107 +58165,107 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_constant(tolua_S,"XREA_REPLACE",CEGUI::XREA_REPLACE);
   tolua_constant(tolua_S,"XREA_THROW",CEGUI::XREA_THROW);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Vector2_float_","CEGUI::Vector2<float>","",tolua_collect_CEGUI__Vector2_float_);
+  tolua_cclass(tolua_S,"Vector2f","CEGUI::Vector2<float>","",tolua_collect_CEGUI__Vector2_float_);
   #else
-  tolua_cclass(tolua_S,"Vector2_float_","CEGUI::Vector2<float>","",NULL);
+  tolua_cclass(tolua_S,"Vector2f","CEGUI::Vector2<float>","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"Vector2_float_");
+  tolua_beginmodule(tolua_S,"Vector2f");
    tolua_variable(tolua_S,"x",tolua_get_CEGUI__Vector2_float__x,tolua_set_CEGUI__Vector2_float__x);
    tolua_variable(tolua_S,"y",tolua_get_CEGUI__Vector2_float__y,tolua_set_CEGUI__Vector2_float__y);
-   tolua_function(tolua_S,".add",tolua_CEGUI_CEGUI_Vector2_float___add00);
-   tolua_function(tolua_S,".sub",tolua_CEGUI_CEGUI_Vector2_float___sub00);
-   tolua_function(tolua_S,".mul",tolua_CEGUI_CEGUI_Vector2_float___mul00);
-   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector2_float___eq00);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2_float__new00);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2_float__new00_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector2_float__new00_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2_float__new01);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2_float__new01_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector2_float__new01_local);
+   tolua_function(tolua_S,".add",tolua_CEGUI_CEGUI_Vector2f__add00);
+   tolua_function(tolua_S,".sub",tolua_CEGUI_CEGUI_Vector2f__sub00);
+   tolua_function(tolua_S,".mul",tolua_CEGUI_CEGUI_Vector2f__mul00);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector2f__eq00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2f_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2f_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector2f_new00_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2f_new01);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2f_new01_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector2f_new01_local);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Vector3_float_","CEGUI::Vector3<float>","",tolua_collect_CEGUI__Vector3_float_);
+  tolua_cclass(tolua_S,"Vector3f","CEGUI::Vector3<float>","",tolua_collect_CEGUI__Vector3_float_);
   #else
-  tolua_cclass(tolua_S,"Vector3_float_","CEGUI::Vector3<float>","",NULL);
+  tolua_cclass(tolua_S,"Vector3f","CEGUI::Vector3<float>","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"Vector3_float_");
+  tolua_beginmodule(tolua_S,"Vector3f");
    tolua_variable(tolua_S,"x",tolua_get_CEGUI__Vector3_float__x,tolua_set_CEGUI__Vector3_float__x);
    tolua_variable(tolua_S,"y",tolua_get_CEGUI__Vector3_float__y,tolua_set_CEGUI__Vector3_float__y);
    tolua_variable(tolua_S,"z",tolua_get_CEGUI__Vector3_float__z,tolua_set_CEGUI__Vector3_float__z);
-   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector3_float___eq00);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3_float__new00);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3_float__new00_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3_float__new00_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3_float__new01);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3_float__new01_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3_float__new01_local);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector3f__eq00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3f_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3f_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3f_new00_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector3f_new01);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector3f_new01_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Vector3f_new01_local);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Size_float_","CEGUI::Size<float>","",tolua_collect_CEGUI__Size_float_);
+  tolua_cclass(tolua_S,"Sizef","CEGUI::Size<float>","",tolua_collect_CEGUI__Size_float_);
   #else
-  tolua_cclass(tolua_S,"Size_float_","CEGUI::Size<float>","",NULL);
+  tolua_cclass(tolua_S,"Sizef","CEGUI::Size<float>","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"Size_float_");
+  tolua_beginmodule(tolua_S,"Sizef");
    tolua_variable(tolua_S,"width",tolua_get_CEGUI__Size_float__width,tolua_set_CEGUI__Size_float__width);
    tolua_variable(tolua_S,"height",tolua_get_CEGUI__Size_float__height,tolua_set_CEGUI__Size_float__height);
-   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Size_float___eq00);
-   tolua_function(tolua_S,"clamp",tolua_CEGUI_CEGUI_Size_float__clamp00);
-   tolua_function(tolua_S,"scaleToAspect",tolua_CEGUI_CEGUI_Size_float__scaleToAspect00);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Size_float__new00);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Size_float__new00_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Size_float__new00_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Size_float__new01);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Size_float__new01_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Size_float__new01_local);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Sizef__eq00);
+   tolua_function(tolua_S,"clamp",tolua_CEGUI_CEGUI_Sizef_clamp00);
+   tolua_function(tolua_S,"scaleToAspect",tolua_CEGUI_CEGUI_Sizef_scaleToAspect00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Sizef_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Sizef_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Sizef_new00_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Sizef_new01);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Sizef_new01_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Sizef_new01_local);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Rect_float_","CEGUI::Rect<float>","",tolua_collect_CEGUI__Rect_float_);
+  tolua_cclass(tolua_S,"Rectf","CEGUI::Rect<float>","",tolua_collect_CEGUI__Rect_float_);
   #else
-  tolua_cclass(tolua_S,"Rect_float_","CEGUI::Rect<float>","",NULL);
+  tolua_cclass(tolua_S,"Rectf","CEGUI::Rect<float>","",NULL);
   #endif
-  tolua_beginmodule(tolua_S,"Rect_float_");
+  tolua_beginmodule(tolua_S,"Rectf");
    tolua_variable(tolua_S,"min",tolua_get_CEGUI__Rect_float__min,tolua_set_CEGUI__Rect_float__min);
    tolua_variable(tolua_S,"max",tolua_get_CEGUI__Rect_float__max,tolua_set_CEGUI__Rect_float__max);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_float__new00);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_float__new00_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rect_float__new00_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_float__new01);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_float__new01_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rect_float__new01_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_float__new02);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_float__new02_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rect_float__new02_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_float__new03);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_float__new03_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rect_float__new03_local);
-   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_float__new04);
-   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_float__new04_local);
-   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rect_float__new04_local);
-   tolua_function(tolua_S,"left",tolua_CEGUI_CEGUI_Rect_float__left00);
-   tolua_function(tolua_S,"top",tolua_CEGUI_CEGUI_Rect_float__top00);
-   tolua_function(tolua_S,"right",tolua_CEGUI_CEGUI_Rect_float__right00);
-   tolua_function(tolua_S,"bottom",tolua_CEGUI_CEGUI_Rect_float__bottom00);
-   tolua_function(tolua_S,"left",tolua_CEGUI_CEGUI_Rect_float__left01);
-   tolua_function(tolua_S,"top",tolua_CEGUI_CEGUI_Rect_float__top01);
-   tolua_function(tolua_S,"right",tolua_CEGUI_CEGUI_Rect_float__right01);
-   tolua_function(tolua_S,"bottom",tolua_CEGUI_CEGUI_Rect_float__bottom01);
-   tolua_function(tolua_S,"setPosition",tolua_CEGUI_CEGUI_Rect_float__setPosition00);
-   tolua_function(tolua_S,"getPosition",tolua_CEGUI_CEGUI_Rect_float__getPosition00);
-   tolua_function(tolua_S,"setSize",tolua_CEGUI_CEGUI_Rect_float__setSize00);
-   tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Rect_float__getSize00);
-   tolua_function(tolua_S,"setWidth",tolua_CEGUI_CEGUI_Rect_float__setWidth00);
-   tolua_function(tolua_S,"getWidth",tolua_CEGUI_CEGUI_Rect_float__getWidth00);
-   tolua_function(tolua_S,"setHeight",tolua_CEGUI_CEGUI_Rect_float__setHeight00);
-   tolua_function(tolua_S,"getHeight",tolua_CEGUI_CEGUI_Rect_float__getHeight00);
-   tolua_function(tolua_S,"getIntersection",tolua_CEGUI_CEGUI_Rect_float__getIntersection00);
-   tolua_function(tolua_S,"offset",tolua_CEGUI_CEGUI_Rect_float__offset00);
-   tolua_function(tolua_S,"isPointInRect",tolua_CEGUI_CEGUI_Rect_float__isPointInRect00);
-   tolua_function(tolua_S,"constrainSizeMax",tolua_CEGUI_CEGUI_Rect_float__constrainSizeMax00);
-   tolua_function(tolua_S,"constrainSizeMin",tolua_CEGUI_CEGUI_Rect_float__constrainSizeMin00);
-   tolua_function(tolua_S,"constrainSize",tolua_CEGUI_CEGUI_Rect_float__constrainSize00);
-   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Rect_float___eq00);
-   tolua_function(tolua_S,".mul",tolua_CEGUI_CEGUI_Rect_float___mul00);
-   tolua_function(tolua_S,".add",tolua_CEGUI_CEGUI_Rect_float___add00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rectf_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rectf_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rectf_new00_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rectf_new01);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rectf_new01_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rectf_new01_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rectf_new02);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rectf_new02_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rectf_new02_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rectf_new03);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rectf_new03_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rectf_new03_local);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rectf_new04);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rectf_new04_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Rectf_new04_local);
+   tolua_function(tolua_S,"left",tolua_CEGUI_CEGUI_Rectf_left00);
+   tolua_function(tolua_S,"top",tolua_CEGUI_CEGUI_Rectf_top00);
+   tolua_function(tolua_S,"right",tolua_CEGUI_CEGUI_Rectf_right00);
+   tolua_function(tolua_S,"bottom",tolua_CEGUI_CEGUI_Rectf_bottom00);
+   tolua_function(tolua_S,"left",tolua_CEGUI_CEGUI_Rectf_left01);
+   tolua_function(tolua_S,"top",tolua_CEGUI_CEGUI_Rectf_top01);
+   tolua_function(tolua_S,"right",tolua_CEGUI_CEGUI_Rectf_right01);
+   tolua_function(tolua_S,"bottom",tolua_CEGUI_CEGUI_Rectf_bottom01);
+   tolua_function(tolua_S,"setPosition",tolua_CEGUI_CEGUI_Rectf_setPosition00);
+   tolua_function(tolua_S,"getPosition",tolua_CEGUI_CEGUI_Rectf_getPosition00);
+   tolua_function(tolua_S,"setSize",tolua_CEGUI_CEGUI_Rectf_setSize00);
+   tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Rectf_getSize00);
+   tolua_function(tolua_S,"setWidth",tolua_CEGUI_CEGUI_Rectf_setWidth00);
+   tolua_function(tolua_S,"getWidth",tolua_CEGUI_CEGUI_Rectf_getWidth00);
+   tolua_function(tolua_S,"setHeight",tolua_CEGUI_CEGUI_Rectf_setHeight00);
+   tolua_function(tolua_S,"getHeight",tolua_CEGUI_CEGUI_Rectf_getHeight00);
+   tolua_function(tolua_S,"getIntersection",tolua_CEGUI_CEGUI_Rectf_getIntersection00);
+   tolua_function(tolua_S,"offset",tolua_CEGUI_CEGUI_Rectf_offset00);
+   tolua_function(tolua_S,"isPointInRect",tolua_CEGUI_CEGUI_Rectf_isPointInRect00);
+   tolua_function(tolua_S,"constrainSizeMax",tolua_CEGUI_CEGUI_Rectf_constrainSizeMax00);
+   tolua_function(tolua_S,"constrainSizeMin",tolua_CEGUI_CEGUI_Rectf_constrainSizeMin00);
+   tolua_function(tolua_S,"constrainSize",tolua_CEGUI_CEGUI_Rectf_constrainSize00);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Rectf__eq00);
+   tolua_function(tolua_S,".mul",tolua_CEGUI_CEGUI_Rectf__mul00);
+   tolua_function(tolua_S,".add",tolua_CEGUI_CEGUI_Rectf__add00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"Quaternion","CEGUI::Quaternion","",tolua_collect_CEGUI__Quaternion);
