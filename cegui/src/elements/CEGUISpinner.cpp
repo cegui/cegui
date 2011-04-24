@@ -52,10 +52,10 @@ namespace CEGUI
     const String Spinner::IntegerValidator("-?\\d*");
     const String Spinner::HexValidator("[0-9a-fA-F]*");
     const String Spinner::OctalValidator("[0-7]*");
-    // component widget name suffix strings
-    const String Spinner::EditboxNameSuffix( "__auto_editbox__" );
-    const String Spinner::IncreaseButtonNameSuffix( "__auto_incbtn__" );
-    const String Spinner::DecreaseButtonNameSuffix( "__auto_decbtn__" );
+    // component widget name strings
+    const String Spinner::EditboxName( "__auto_editbox__" );
+    const String Spinner::IncreaseButtonName( "__auto_incbtn__" );
+    const String Spinner::DecreaseButtonName( "__auto_decbtn__" );
     // properties
     SpinnerProperties::CurrentValue  Spinner::d_currentValueProperty;
     SpinnerProperties::StepSize      Spinner::d_stepSizeProperty;
@@ -285,7 +285,7 @@ namespace CEGUI
             CEGUI_THROW(InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered."));
         }
 
-        return String(tmp.str());
+        return String(tmp.str().c_str());
     }
 
     void Spinner::onFontChanged(WindowEventArgs& e)
@@ -421,20 +421,17 @@ namespace CEGUI
 
     PushButton* Spinner::getIncreaseButton() const
     {
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + IncreaseButtonNameSuffix));
+        return static_cast<PushButton*>(getChild(IncreaseButtonName));
     }
 
     PushButton* Spinner::getDecreaseButton() const
     {
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + DecreaseButtonNameSuffix));
+        return static_cast<PushButton*>(getChild(DecreaseButtonName));
     }
 
     Editbox* Spinner::getEditbox() const
     {
-        return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(
-                                     getName() + EditboxNameSuffix));
+        return static_cast<Editbox*>(getChild(EditboxName));
     }
 
 //////////////////////////////////////////////////////////////////////////

@@ -60,7 +60,6 @@ public:
     static const String DefaultFontElement;
     static const String DefaultMouseCursorElement;
     static const String DefaultTooltipElement;
-    static const String DefaultGUISheetElement;
     // xml attribute names
     static const String FilenameAttribute;
     static const String LevelAttribute;
@@ -70,7 +69,6 @@ public:
     static const String DirectoryAttribute;
     static const String InitScriptAttribute;
     static const String TerminateScriptAttribute;
-    static const String ImagesetAttribute;
     static const String ImageAttribute;
     static const String NameAttribute;
 
@@ -98,14 +96,15 @@ public:
     void initialiseDefaultMouseCursor() const;
     //! initialise the system default tooltip according to the config.
     void initialiseDefaulTooltip() const;
-    //! initialise the initial / default GUI Sheet according to the config.
-    void initialiseDefaultGUISheet() const;
     //! execute the init script as specified in the config.
     void executeInitScript() const;
     //! return the name of the terminate script from the config (hacky!)
     const String& getTerminateScriptName() const;
 
     // XMLHandler overrides
+    const String& getSchemaName() const;
+    const String& getDefaultResourceGroup() const;
+
     void elementStart(const String& element, const XMLAttributes& attributes);
     void elementEnd(const String& element);
 
@@ -156,23 +155,25 @@ private:
     void handleXMLParserElement(const XMLAttributes& attr);
     void handleImageCodecElement(const XMLAttributes& attr);
     void handleDefaultTooltipElement(const XMLAttributes& attr);
-    void handleDefaultGUISheetElement(const XMLAttributes& attr);
     void handleDefaultFontElement(const XMLAttributes& attr);
     void handleDefaultMouseCursorElement(const XMLAttributes& attr);
 
     //! helper to convert resource type string to something more useful.
     ResourceType stringToResourceType(const String& type) const;
-    //! helper to auto-load layouts
-    void autoLoadLayouts(const String& pattern, const String& group) const;
     //! helper to auto-load looknfeels
     void autoLoadLookNFeels(const String& pattern, const String& group) const;
+    //! helper to auto-load imagesets
+    void autoLoadImagesets(const String& pattern, const String& group) const;
 
     //! type of collection holding resource group directory specifications.
-    typedef std::vector<ResourceDirectory> ResourceDirVector;
+    typedef std::vector<ResourceDirectory
+        CEGUI_VECTOR_ALLOC(ResourceDirectory)> ResourceDirVector;
     //! type of collection holding default resource group specifications.
-    typedef std::vector<DefaultResourceGroup> DefaultGroupVector;
+    typedef std::vector<DefaultResourceGroup
+        CEGUI_VECTOR_ALLOC(DefaultResourceGroup)> DefaultGroupVector;
     //! type of collection holding specifications of resources to auto-load.
-    typedef std::vector<AutoLoadResource> AutoResourceVector;
+    typedef std::vector<AutoLoadResource
+        CEGUI_VECTOR_ALLOC(AutoLoadResource)> AutoResourceVector;
     //! The name to use for the CEGUI log file.
     String d_logFileName;
     //! The logging level to be set.
@@ -183,14 +184,10 @@ private:
     String d_imageCodecName;
     //! The name of the default font to be set.
     String d_defaultFont;
-    //! The name of the imageset holding the default mouse cursor image.
-    String d_defaultMouseImageset;
     //! The name of the default mouse cursor image to use.
     String d_defaultMouseImage;
     //! The name of the default tooltip window type.
     String d_defaultTooltipType;
-    //! The name of Window to use as the default GUI layout / sheet
-    String d_defaultGUISheet;
     //! name of the initialisation script.
     String d_scriptingInitScript;
     //! name of the termination script.

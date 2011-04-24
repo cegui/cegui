@@ -86,7 +86,7 @@ public:
         -  0 to indicate slider should not be moved.
         - +1 to indicate slider should be moved to a higher setting.
     */
-    virtual float   getAdjustDirectionFromPoint(const Point& pt) const  = 0;
+    virtual float   getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
 };
 
 
@@ -126,7 +126,7 @@ public:
     /*************************************************************************
         Child Widget name suffix constants
     *************************************************************************/
-    static const String ThumbNameSuffix;            //!< Widget name suffix for the thumb component.
+    static const String ThumbName;            //!< Widget name for the thumb component.
 
 	/*************************************************************************
 		Accessors
@@ -286,7 +286,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Point& pt) const;
+	virtual float	getAdjustDirectionFromPoint(const Vector2f& pt) const;
 
 
     /*!

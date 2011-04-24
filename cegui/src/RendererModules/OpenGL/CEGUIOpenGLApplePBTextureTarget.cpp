@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -84,7 +84,7 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
     // set default size (and cause initialisation of the pbuffer)
     CEGUI_TRY
     {
-        declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+        declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
     }
     CEGUI_CATCH(...)
     {
@@ -156,14 +156,14 @@ void OpenGLApplePBTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLApplePBTextureTarget::declareRenderSize(const Size& sz)
+void OpenGLApplePBTextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) &&
         (d_area.getHeight() >= sz.d_height))
             return;
 
-    setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
+    setArea(Rectf(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
 
     // dump any previous pbuffer
     if (d_pbuffer)
@@ -257,8 +257,8 @@ void OpenGLApplePBTextureTarget::grabTexture()
 //----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::restoreTexture()
 {
-    const Size sz(d_area.getSize());
-    d_area.setSize(Size(0.0f, 0.0f));
+    const Sizef sz(d_area.getSize());
+    d_area.setSize(Sizef(0.0f, 0.0f));
 
     OpenGLTextureTarget::restoreTexture();
     initialiseTexture();

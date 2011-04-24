@@ -111,7 +111,7 @@ struct Spinner_wrapper : CEGUI::Spinner, bp::wrapper< CEGUI::Spinner > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -119,11 +119,11 @@ struct Spinner_wrapper : CEGUI::Spinner, bp::wrapper< CEGUI::Spinner > {
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct Spinner_wrapper : CEGUI::Spinner, bp::wrapper< CEGUI::Spinner > {
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -448,11 +448,11 @@ void register_Spinner_class(){
                     *\n" );
         
         }
-        Spinner_exposer.add_static_property( "DecreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::DecreaseButtonNameSuffix
+        Spinner_exposer.add_static_property( "DecreaseButtonName"
+                        , bp::make_getter( &CEGUI::Spinner::DecreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Spinner_exposer.add_static_property( "EditboxNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::EditboxNameSuffix
+        Spinner_exposer.add_static_property( "EditboxName"
+                        , bp::make_getter( &CEGUI::Spinner::EditboxName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Spinner_exposer.add_static_property( "EventMaximumValueChanged"
                         , bp::make_getter( &CEGUI::Spinner::EventMaximumValueChanged
@@ -469,8 +469,8 @@ void register_Spinner_class(){
         Spinner_exposer.add_static_property( "EventValueChanged"
                         , bp::make_getter( &CEGUI::Spinner::EventValueChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Spinner_exposer.add_static_property( "IncreaseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::Spinner::IncreaseButtonNameSuffix
+        Spinner_exposer.add_static_property( "IncreaseButtonName"
+                        , bp::make_getter( &CEGUI::Spinner::IncreaseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -565,8 +565,8 @@ void register_Spinner_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( Spinner_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Spinner_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Spinner_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -576,8 +576,8 @@ void register_Spinner_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( Spinner_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( Spinner_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             Spinner_exposer.def( 
                 "isHit"

@@ -31,7 +31,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardDefault::TypeName[] = "Falagard/Default";
+    const String FalagardDefault::TypeName("Falagard/Default");
 
     FalagardDefault::FalagardDefault(const String& type) :
         WindowRenderer(type)
@@ -43,7 +43,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // render basic imagery
-        wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled").render(*d_window);
+        wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled").render(*d_window);
     }
 
 } // End of  CEGUI namespace section

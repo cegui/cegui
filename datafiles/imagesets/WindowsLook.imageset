@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="WindowsLook" Imagefile="WindowsLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="WindowsLook" Imagefile="WindowsLook.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
 	<Image Name="Background" XPos="9" YPos="9" Width="2" Height="2" />
 	<Image Name="WindowFrameLeft" XPos="2" YPos="9" Width="4" Height="2" />
 	<Image Name="WindowFrameRight" XPos="14" YPos="9" Width="4" Height="2" />
@@ -86,7 +86,7 @@
 	<Image Name="SmallRightArrow" XPos="24" YPos="73" Width="5" Height="5" />
 	<Image Name="SmallUpArrow" XPos="17" YPos="80" Width="5" Height="5" />
 	<Image Name="SmallDownArrow" XPos="24" YPos="80" Width="5" Height="5" />
-	<Image Name="EditBoxCarat" XPos="29" YPos="118" Width="2" Height="8" />
+	<Image Name="EditBoxCaret" XPos="29" YPos="118" Width="2" Height="8" />
 	<Image Name="MouseArrow" XPos="2" YPos="90" Width="10" Height="19" XOffset="0" YOffset="0" />
 	<Image Name="MouseMoveCursor" XPos="14" YPos="90" Width="22" Height="22" XOffset="-10" YOffset="-10" />
 	<Image Name="MouseNoSoCursor" XPos="38" YPos="89" Width="11" Height="19" XOffset="-4" YOffset="-9" />

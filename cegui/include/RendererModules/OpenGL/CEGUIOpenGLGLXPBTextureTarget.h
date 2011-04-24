@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,7 +31,6 @@
 #include <GL/glxew.h>
 
 #include "CEGUIOpenGLTextureTarget.h"
-#include "../../CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,7 +53,7 @@ public:
     void deactivate();
     // implementation of TextureTarget interface
     void clear();
-    void declareRenderSize(const Size& sz);
+    void declareRenderSize(const Sizef& sz);
     // specialise functions from OpenGLTextureTarget
     void grabTexture();
     void restoreTexture();

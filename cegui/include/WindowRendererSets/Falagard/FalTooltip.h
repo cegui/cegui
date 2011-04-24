@@ -51,7 +51,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardTooltip : public TooltipWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -60,8 +60,7 @@ namespace CEGUI
         FalagardTooltip(const String& type);
 
         void render();
-        Size getTextSize() const;
-
+        Sizef getTextSize() const;
     };
 
 } // End of  CEGUI namespace section

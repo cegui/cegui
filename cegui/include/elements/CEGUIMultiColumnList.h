@@ -89,7 +89,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    virtual Rect    getListRenderArea(void) const = 0;
+    virtual Rectf getListRenderArea(void) const = 0;
 };
 
 /*!
@@ -174,11 +174,11 @@ public:
 	static const String EventListColumnMoved;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
-    static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
-    static const String ListHeaderNameSuffix;      //!< Widget name suffix for the list header component.
+    static const String VertScrollbarName;   //!< Widget name for the vertical scrollbar component.
+    static const String HorzScrollbarName;   //!< Widget name for the horizontal scrollbar component.
+    static const String ListHeaderName;      //!< Widget name for the list header component.
 
 	/*************************************************************************
 		Enumerations
@@ -703,7 +703,7 @@ public:
         Rect object describing the area of the Window to be used for rendering
         list box items.
     */
-    Rect    getListRenderArea(void) const;
+    Rectf getListRenderArea(void) const;
 
 
     /*!
@@ -1399,7 +1399,7 @@ protected:
 		ListboxItem that is under window pixel co-ordinate \a pt, or NULL if no
 		item is under that position.
 	*/
-	ListboxItem*	getItemAtPoint(const Point& pt) const;
+	ListboxItem*	getItemAtPoint(const Vector2f& pt) const;
 
 
 	/*!
@@ -1589,7 +1589,8 @@ protected:
     */
 	struct ListRow
 	{
-		typedef	std::vector<ListboxItem*>	RowItems;
+		typedef	std::vector<ListboxItem*
+            CEGUI_VECTOR_ALLOC(ListboxItem*)> RowItems;
 		RowItems	d_items;
 		uint		d_sortColumn;
 		uint		d_rowID;
@@ -1630,7 +1631,8 @@ protected:
     uint    d_columnCount;          //!< keeps track of the number of columns.
 
 	// storage of items in the list box.
-	typedef std::vector<ListRow>		ListItemGrid;
+	typedef std::vector<ListRow
+        CEGUI_VECTOR_ALLOC(ListRow)> ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
 
     friend class MultiColumnListWindowRenderer;

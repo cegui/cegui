@@ -3,7 +3,7 @@
     created:    Wed May 5 2010
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,9 +31,10 @@
 #include "../../CEGUISize.h"
 #include "../../CEGUIVector.h"
 #include <vector>
+#include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef DIRECT3D11_GUIRENDERER_EXPORTS
+#   ifdef CEGUIDIRECT3D11RENDERER_EXPORTS
 #       define D3D11_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define D3D11_GUIRENDERER_API __declspec(dllimport)
@@ -164,16 +165,20 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -185,7 +190,14 @@ protected:
     ~Direct3D11Renderer();
 
     //! return size of the D3D device viewport.
-    Size getViewportSize();
+    Sizef getViewportSize();
+
+    //! helper to throw exception if name is already used.
+    void throwIfNameExists(const String& name) const;
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -194,9 +206,9 @@ protected:
 	IDevice11 d_device;
 
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! The default rendering root object
@@ -210,9 +222,10 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<Direct3D11Texture*> TextureList;
+    typedef std::map<String, Direct3D11Texture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, Direct3D11Texture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! Effect (shader) used when rendering.
     ID3DX11Effect* d_effect;
     //! Rendering technique that supplies BM_NORMAL type rendering

@@ -29,7 +29,7 @@
 #define _CEGUIXMLHandler_h_
 
 #include "CEGUIBase.h"
-
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -49,6 +49,51 @@ namespace CEGUI
          */
         virtual ~XMLHandler(void);
         
+        /*!
+        \brief
+            Retrieves the schema file name to use with resources handled by this handler
+         */
+        virtual const String& getSchemaName() const;
+
+        /*!
+        \brief
+            Retrieves the default resource group to be used when handling files
+         */
+        virtual const String& getDefaultResourceGroup() const = 0;
+
+        /*!
+        \brief
+            Takes given RawDataContainer containing XML and handles it
+
+        This is basically a convenience function used by NamedXMLResourceManager
+
+        \internal
+            No need for this to be virtual
+         */
+        void handleContainer(const RawDataContainer& source);
+
+        /*!
+        \brief
+            Takes given file containing XML and handles it
+
+        This is basically a convenience function used by NamedXMLResourceManager
+
+        \internal
+            No need for this to be virtual
+         */
+        void handleFile(const String& fileName, const String& resourceGroup);
+
+        /*!
+        \brief
+            Takes given string containing XML source and handles it
+
+        This is basically a convenience function used by NamedXMLResourceManager
+
+        \internal
+            No need for this to be virtual
+         */
+        void handleString(const String& source);
+
         /*!
         \brief
             Method called to notify the handler at the start of each XML element encountered.

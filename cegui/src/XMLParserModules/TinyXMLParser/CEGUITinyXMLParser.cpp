@@ -44,7 +44,7 @@ namespace CEGUI
     class TinyXMLDocument : public CEGUI_TINYXML_NAMESPACE::TiXmlDocument
     {
     public:
-        TinyXMLDocument(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+        TinyXMLDocument(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
         ~TinyXMLDocument()
         {}
     protected:
@@ -54,20 +54,14 @@ namespace CEGUI
         XMLHandler* d_handler;
     };
 
-    TinyXMLDocument::TinyXMLDocument(XMLHandler& handler, const String& filename, const String& /*schemaName*/, const String& resourceGroup)
+    TinyXMLDocument::TinyXMLDocument(XMLHandler& handler, const RawDataContainer& source, const String& /*schemaName*/)
     {
         d_handler = &handler;
 
-        // use resource provider to load file data
-        // Fixed using patch from tracker item #000057
-        // cegui_mk2-0.4.1-fixtinyxml.patch
-        RawDataContainer rawXMLData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-
         // Create a buffer with extra bytes for a newline and a terminating null
-        size_t size = rawXMLData.getSize();
+        size_t size = source.getSize();
         char* buf = new char[size + 2];
-        memcpy(buf, rawXMLData.getDataPtr(), size);
+        memcpy(buf, source.getDataPtr(), size);
         // PDT: The addition of the newline is a kludge to resolve an issue
         // whereby parse returns 0 if the xml file has no newline at the end but
         // is otherwise well formed.
@@ -80,12 +74,10 @@ namespace CEGUI
         {
             // error detected, cleanup out buffers
             delete[] buf;
-            System::getSingleton().getResourceProvider()->
-                unloadRawDataContainer(rawXMLData);
+
             // throw exception
             CEGUI_THROW(FileIOException("TinyXMLParser: an error occurred while "
-                "parsing the XML document '" + filename +
-                "' - check it for potential errors!."));
+                "parsing the XML document - check it for potential errors!."));
         }
 
         const CEGUI_TINYXML_NAMESPACE::TiXmlElement* currElement = doc.RootElement();
@@ -99,16 +91,14 @@ namespace CEGUI
             CEGUI_CATCH(...)
             {
                 delete [] buf;
-                System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+
                 CEGUI_RETHROW;
             }
         } // if (currElement)
 
         // Free memory
         delete [] buf;
-        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
-
 
     void TinyXMLDocument::processElement(const CEGUI_TINYXML_NAMESPACE::TiXmlElement* element)
     {
@@ -118,12 +108,12 @@ namespace CEGUI
         const CEGUI_TINYXML_NAMESPACE::TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add((utf8*)currAttr->Name(), (utf8*)currAttr->Value());
+            attrs.add((encoded_char*)currAttr->Name(), (encoded_char*)currAttr->Value());
             currAttr = currAttr->Next();
         }
 
         // start element
-        d_handler->elementStart((utf8*)element->Value(), attrs);
+        d_handler->elementStart((encoded_char*)element->Value(), attrs);
 
         // do children
         const CEGUI_TINYXML_NAMESPACE::TiXmlNode* childNode = element->FirstChild();
@@ -136,7 +126,7 @@ namespace CEGUI
                 break;
             case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TEXT:
                 if (childNode->ToText()->Value() != '\0')
-                    d_handler->text((utf8*)childNode->ToText()->Value());
+                    d_handler->text((encoded_char*)childNode->ToText()->Value());
                 break;
 
                 // Silently ignore unhandled node type
@@ -145,7 +135,7 @@ namespace CEGUI
         }
 
         // end element
-        d_handler->elementEnd((utf8*)element->Value());
+        d_handler->elementEnd((encoded_char*)element->Value());
     }
 
     TinyXMLParser::TinyXMLParser(void)
@@ -157,11 +147,10 @@ namespace CEGUI
     TinyXMLParser::~TinyXMLParser(void)
     {}
 
-    void TinyXMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    void TinyXMLParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
     {
-      TinyXMLDocument doc(handler, filename, schemaName, resourceGroup);
+      TinyXMLDocument doc(handler, source, schemaName);
     }
-
 
     bool TinyXMLParser::initialiseImpl(void)
     {

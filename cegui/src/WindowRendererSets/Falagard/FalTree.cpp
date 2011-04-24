@@ -34,8 +34,7 @@ author:		Jonathan Welch (Based on Code by David Durant)
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardTree::TypeName[] = "Falagard/Tree";
-
+    const String FalagardTree::TypeName("Falagard/Tree");
 
     FalagardTree::FalagardTree(const String& type, const String&) :
         WindowRenderer(type)
@@ -51,14 +50,14 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardTree::getTreeRenderArea(void) const
+    Rectf FalagardTree::getTreeRenderArea(void) const
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 		Tree* tree = (Tree*)d_window;
 
-        bool v_visible = tree->getVertScrollbar()->isVisible(true);
-        bool h_visible = tree->getHorzScrollbar()->isVisible(true);
+        bool v_visible = tree->getVertScrollbar()->isVisible();
+        bool h_visible = tree->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
@@ -89,13 +88,13 @@ namespace CEGUI
 	{
 		Tree* tree = (Tree*)d_window;
 		//Set the render area for this.
-        Rect rect = getTreeRenderArea();
+        Rectf rect = getTreeRenderArea();
         tree->setItemRenderArea(rect);
 		const WidgetLookFeel& wlf = getLookNFeel();
 
 		const StateImagery* imagery;
 		//Get the Falagard imagery to render
-		imagery = &wlf.getStateImagery(tree->isDisabled()? "Disabled" : "Enabled");
+		imagery = &wlf.getStateImagery(tree->isEffectiveDisabled()? "Disabled" : "Enabled");
 		//Render the window
 		imagery->render(*tree);
 		//Fix Scrollbars

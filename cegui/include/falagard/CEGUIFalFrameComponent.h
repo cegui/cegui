@@ -127,16 +127,13 @@ namespace CEGUI
         \param part
             One of the FrameImageComponent enumerated values specifying the component image to be accessed.
 
-        \param imageset
-            String holding the name of the Imagset that contains the Image to be rendered.
-
-        \param image
+        \param name
             String holding the name of the Image to be rendered.
 
         \return
             Nothing.
         */
-        void setImage(FrameImageComponent part, const String& imageset, const String& image);
+        void setImage(FrameImageComponent part, const String& name);
 
         /*!
         \brief
@@ -153,10 +150,10 @@ namespace CEGUI
 
     protected:
         // implemets abstract from base
-        void render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
+        void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
 
         // renders the background image (basically a clone of render_impl from ImageryComponent - maybe we need a helper class?)
-        void doBackgroundRender(Window& srcWindow, Rect& destRect, const ColourRect& colours, const Rect* clipper, bool clipToDisplay) const;
+        void doBackgroundRender(Window& srcWindow, Rectf& destRect, const ColourRect& colours, const Rectf* clipper, bool clipToDisplay) const;
 
         // formatting options for background
         VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the background for the component.

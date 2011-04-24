@@ -26,8 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIRenderedStringImageComponent.h"
-#include "CEGUIImagesetManager.h"
-#include "CEGUIImageset.h"
+#include "CEGUIImageManager.h"
+#include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
@@ -43,12 +43,11 @@ RenderedStringImageComponent::RenderedStringImageComponent() :
 }
 
 //----------------------------------------------------------------------------//
-RenderedStringImageComponent::RenderedStringImageComponent(
-        const String& imageset, const String& image) :
+RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
     d_size(0, 0)
 {
-    setImage(imageset, image);
+    setImage(name);
 }
 
 //----------------------------------------------------------------------------//
@@ -60,13 +59,11 @@ RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setImage(const String& imageset,
-                                            const String& image)
+void RenderedStringImageComponent::setImage(const String& name)
 {
-    if (!imageset.empty() && !image.empty())
+    if (!name.empty())
     {
-        Imageset& is = ImagesetManager::getSingleton().get(imageset);
-        d_image = &is.getImage(image);
+        d_image = &ImageManager::getSingleton().get(name);
     }
     else
     {
@@ -93,7 +90,7 @@ void RenderedStringImageComponent::setColours(const ColourRect& cr)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setColours(const colour& c)
+void RenderedStringImageComponent::setColours(const Colour& c)
 {
     d_colours.setColours(c);
 }
@@ -106,27 +103,27 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
-                                        const Vector2& position,
+                                        const Vector2f& position,
                                         const ColourRect* mod_colours,
-                                        const Rect* clip_rect,
+                                        const Rectf* clip_rect,
                                         const float vertical_space,
                                         const float /*space_extra*/) const
 {
     if (!d_image)
         return;
 
-    CEGUI::Rect dest(position.d_x, position.d_y, 0, 0);
+    CEGUI::Rectf dest(position.d_x, position.d_y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        dest.d_top += vertical_space - getPixelSize().d_height;
+        dest.d_min.d_y += vertical_space - getPixelSize().d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        dest.d_top += (vertical_space - getPixelSize().d_height) / 2 ;
+        dest.d_min.d_y += (vertical_space - getPixelSize().d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
@@ -143,7 +140,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
             "unknown VerticalFormatting option specified."));
     }
 
-    Size sz(d_image->getSize());
+    Sizef sz(d_image->getRenderedSize());
     if (d_size.d_width != 0.0)
         sz.d_width = d_size.d_width;
     if (d_size.d_height != 0.0)
@@ -161,23 +158,23 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
         final_cols *= *mod_colours;
 
     // draw the image.
-    d_image->draw(buffer, dest, clip_rect, final_cols);
+    d_image->render(buffer, dest, clip_rect, final_cols);
 }
 
 //----------------------------------------------------------------------------//
-Size RenderedStringImageComponent::getPixelSize() const
+Sizef RenderedStringImageComponent::getPixelSize() const
 {
-    Size sz(0, 0);
+    Sizef sz(0, 0);
 
     if (d_image)
     {
-        sz = d_image->getSize();
+        sz = d_image->getRenderedSize();
         if (d_size.d_width != 0.0)
             sz.d_width = d_size.d_width;
         if (d_size.d_height != 0.0)
             sz.d_height = d_size.d_height;
-        sz.d_width += (d_padding.d_left + d_padding.d_right);
-        sz.d_height += (d_padding.d_top + d_padding.d_bottom);
+        sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
+        sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
     }
 
     return sz;
@@ -201,7 +198,7 @@ RenderedStringImageComponent* RenderedStringImageComponent::split(
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::clone() const
 {
-    return new RenderedStringImageComponent(*this);
+    return CEGUI_NEW_AO RenderedStringImageComponent(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -212,13 +209,13 @@ size_t RenderedStringImageComponent::getSpaceCount() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setSize(const Size& sz)
+void RenderedStringImageComponent::setSize(const Sizef& sz)
 {
     d_size = sz;
 }
 
 //----------------------------------------------------------------------------//
-const Size& RenderedStringImageComponent::getSize() const
+const Sizef& RenderedStringImageComponent::getSize() const
 {
     return d_size;
 }

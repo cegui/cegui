@@ -45,7 +45,8 @@ namespace CEGUI
     \brief
         Class that encapsulates a re-usable collection of imagery specifications.
     */
-    class CEGUIEXPORT ImagerySection
+    class CEGUIEXPORT ImagerySection :
+        public AllocatedObject<ImagerySection>
     {
     public:
         /*!
@@ -76,7 +77,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -94,7 +95,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -218,13 +219,13 @@ namespace CEGUI
         \brief
             Return smallest Rect that could contain all imagery within this section.
         */
-        Rect getBoundingRect(const Window& wnd) const;
+        Rectf getBoundingRect(const Window& wnd) const;
 
         /*!
         \brief
             Return smallest Rect that could contain all imagery within this section.
         */
-        Rect getBoundingRect(const Window& wnd, const Rect& rect) const;
+        Rectf getBoundingRect(const Window& wnd, const Rectf& rect) const;
 
         /*!
         \brief
@@ -252,9 +253,12 @@ namespace CEGUI
         void initMasterColourRect(const Window& wnd, ColourRect& cr) const;
 
     private:
-        typedef std::vector<ImageryComponent> ImageryList;
-        typedef std::vector<TextComponent> TextList;
-        typedef std::vector<FrameComponent> FrameList;
+        typedef std::vector<ImageryComponent
+            CEGUI_VECTOR_ALLOC(ImageryComponent)> ImageryList;
+        typedef std::vector<TextComponent
+            CEGUI_VECTOR_ALLOC(TextComponent)> TextList;
+        typedef std::vector<FrameComponent
+            CEGUI_VECTOR_ALLOC(FrameComponent)> FrameList;
 
         CEGUI::String       d_name;             //!< Holds the name of the ImagerySection.
         CEGUI::ColourRect   d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).

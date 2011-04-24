@@ -62,9 +62,9 @@ const String Slider::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Slider::EventThumbTrackEnded( "ThumbTrackEnded" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String Slider::ThumbNameSuffix( "__auto_thumb__" );
+const String Slider::ThumbName( "__auto_thumb__" );
 
 /*************************************************************************
 	Slider base class constructor
@@ -272,8 +272,7 @@ void Slider::addSliderProperties(void)
 *************************************************************************/
 Thumb* Slider::getThumb() const
 {
-    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
-                               getName() + ThumbNameSuffix));
+    return static_cast<Thumb*>(getChild(ThumbName));
 }
 
 /*************************************************************************
@@ -316,7 +315,7 @@ float Slider::getValueFromThumb(void) const
     Given window location 'pt', return a value indicating what change
     should be made to the scroll bar.
 *************************************************************************/
-float Slider::getAdjustDirectionFromPoint(const Point& pt) const
+float Slider::getAdjustDirectionFromPoint(const Vector2f& pt) const
 {
     if (d_windowRenderer != 0)
     {

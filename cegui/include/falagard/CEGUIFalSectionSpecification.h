@@ -45,7 +45,8 @@ namespace CEGUI
         This class enables sections to be easily re-used, by different states and/or layers, by allowing
         sections to be specified by name rather than having mutiple copies of the same thing all over the place.
     */
-    class CEGUIEXPORT SectionSpecification
+    class CEGUIEXPORT SectionSpecification :
+        public AllocatedObject<SectionSpecification>
     {
     public:
         /*!
@@ -70,7 +71,7 @@ namespace CEGUI
             the value specified here.
 
         \param controlPropertyWidget
-            String holding either a widget name suffix or the special value of
+            String holding either a child widget name or the special value of
             '__parent__' indicating the window upon which the property named
             in controlPropertySource should be accessed.  If this is empty then
             the window itself is used as the source, rather than a child or the
@@ -103,7 +104,7 @@ namespace CEGUI
             the value specified here.
 
         \param controlPropertyWidget
-            String holding either a widget name suffix or the special value of
+            String holding either a child widget name or the special value of
             '__parent__' indicating the window upon which the property named
             in controlPropertySource should be accessed.  If this is empty then
             the window itself is used as the source, rather than a child or the
@@ -128,7 +129,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -143,7 +144,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -269,9 +270,9 @@ namespace CEGUI
               the property value.
             - '__parent__': The parent of the widget being drawn will be the
               source of the property value.
-            - any other value: The value will be taken as a name suffix and
-              a window with the name of the widget being drawn with the
-              specified suffix will be the source of the property value.
+            - any other value: The value will be taken as a name and
+              a child window with the specified name will be the source of the
+              property value.
         */
         void setRenderControlWidget(const String& widget);
 

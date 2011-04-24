@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardStatic::TypeName[] = "Falagard/Static";
+    const String FalagardStatic::TypeName("Falagard/Static");
 
     FalagardStaticProperties::FrameEnabled          FalagardStatic::d_frameEnabledProperty;
     FalagardStaticProperties::BackgroundEnabled     FalagardStatic::d_backgroundEnabledProperty;
@@ -69,7 +69,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-		bool is_enabled = !d_window->isDisabled();
+		bool is_enabled = !d_window->isEffectiveDisabled();
 
         // render frame section
         if (d_frameEnabled)

@@ -29,12 +29,14 @@
 #define _CEGUIRenderedStringParser_h_
 
 #include "CEGUIRenderedString.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //! Specifies interface for classes that parse text into RenderedString objects.
-class CEGUIEXPORT RenderedStringParser
+class CEGUIEXPORT RenderedStringParser :
+    public AllocatedObject<RenderedStringParser>
 {
 public:
     /*!

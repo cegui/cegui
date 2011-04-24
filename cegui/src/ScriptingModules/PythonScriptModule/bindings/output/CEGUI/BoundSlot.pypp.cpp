@@ -10,14 +10,7 @@ void register_BoundSlot_class(){
 
     { //::CEGUI::BoundSlot
         typedef bp::class_< CEGUI::BoundSlot > BoundSlot_exposer_t;
-        BoundSlot_exposer_t BoundSlot_exposer = BoundSlot_exposer_t( "BoundSlot", "*!\n\
-        \n\
-            Class that tracks a SubscriberSlot, its group, and the Event to which it was\n\
-            subscribed.  This is effectively what gets returned from the calls to the\n\
-            Event.subscribe members, though BoundSlot is always wrapped in a\n\
-            reference counted pointer.  When a BoundSlot is deleted, the connection is\n\
-            unsubscribed and the SubscriberSlot is deleted.\n\
-        *\n", bp::init< unsigned int, CEGUI::SubscriberSlot const &, CEGUI::Event & >(( bp::arg("group"), bp::arg("subscriber"), bp::arg("event") ), "*!\n\
+        BoundSlot_exposer_t BoundSlot_exposer = BoundSlot_exposer_t( "BoundSlot", bp::init< unsigned int, CEGUI::SubscriberSlot const &, CEGUI::Event & >(( bp::arg("group"), bp::arg("subscriber"), bp::arg("event") ), "*!\n\
             \n\
                 Constructor.\n\
         \n\

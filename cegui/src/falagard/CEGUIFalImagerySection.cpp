@@ -43,7 +43,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -71,7 +71,7 @@ namespace CEGUI
         }
     }
 
-    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -162,12 +162,12 @@ namespace CEGUI
             // if property accesses a ColourRect
             if (d_colourProperyIsRect)
             {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
             }
             // property accesses a colour
             else
             {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
                 cr.d_top_left     = val;
                 cr.d_top_right    = val;
                 cr.d_bottom_left  = val;
@@ -181,79 +181,79 @@ namespace CEGUI
         }
     }
 
-    Rect ImagerySection::getBoundingRect(const Window& wnd) const
+    Rectf ImagerySection::getBoundingRect(const Window& wnd) const
     {
-        Rect compRect;
-        Rect bounds(0, 0, 0, 0);
+        Rectf compRect;
+        Rectf bounds(0, 0, 0, 0);
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
             compRect = (*frame).getComponentArea().getPixelRect(wnd);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
         // measure all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
             compRect = (*image).getComponentArea().getPixelRect(wnd);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
         // measure all text components
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
             compRect = (*text).getComponentArea().getPixelRect(wnd);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
 
         return bounds;
     }
 
-    Rect ImagerySection::getBoundingRect(const Window& wnd, const Rect& rect) const
+    Rectf ImagerySection::getBoundingRect(const Window& wnd, const Rectf& rect) const
     {
-        Rect compRect;
-        Rect bounds(0, 0, 0, 0);
+        Rectf compRect;
+        Rectf bounds(0, 0, 0, 0);
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
             compRect = (*frame).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
         // measure all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
             compRect = (*image).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
         // measure all text components
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
             compRect = (*text).getComponentArea().getPixelRect(wnd, rect);
 
-            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
-            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
-            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
-            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+            bounds.left(ceguimin(bounds.left(), compRect.left()));
+            bounds.top(ceguimin(bounds.top(), compRect.top()));
+            bounds.right(ceguimax(bounds.right(), compRect.right()));
+            bounds.bottom(ceguimax(bounds.bottom(), compRect.bottom()));
         }
 
         return bounds;
@@ -276,13 +276,13 @@ namespace CEGUI
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();
         }
-        else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != colour(1,1,1,1))
+        else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != Colour(1,1,1,1))
         {
             xml_stream.openTag("Colours")
-                .attribute("topLeft", PropertyHelper::colourToString(d_masterColours.d_top_left))
-                .attribute("topRight", PropertyHelper::colourToString(d_masterColours.d_top_right))
-                .attribute("bottomLeft", PropertyHelper::colourToString(d_masterColours.d_bottom_left))
-                .attribute("bottomRight", PropertyHelper::colourToString(d_masterColours.d_bottom_right))
+                .attribute("topLeft", PropertyHelper<Colour>::toString(d_masterColours.d_top_left))
+                .attribute("topRight", PropertyHelper<Colour>::toString(d_masterColours.d_top_right))
+                .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_masterColours.d_bottom_left))
+                .attribute("bottomRight", PropertyHelper<Colour>::toString(d_masterColours.d_bottom_right))
                 .closeTag();
         }
 

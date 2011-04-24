@@ -29,6 +29,7 @@
 #define _CEGUIRenderedString_h_
 
 #include "CEGUISize.h"
+#include "CEGUIRect.h"
 #include <vector>
 #include <utility>
 
@@ -47,7 +48,8 @@ namespace CEGUI
     Here 'string' does not refer solely to a text string, rather a string of
     any renderable items.
 */
-class CEGUIEXPORT RenderedString
+class CEGUIEXPORT RenderedString :
+    public AllocatedObject<RenderedString>
 {
 public:
     //! Constructor.
@@ -92,11 +94,10 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void draw(const size_t line, GeometryBuffer& buffer, const Vector2& position,
-              const ColourRect* mod_colours, const Rect* clip_rect,
+    void draw(const size_t line, GeometryBuffer& buffer, const Vector2f& position,
+              const ColourRect* mod_colours, const Rectf* clip_rect,
               const float space_extra) const;
 
-    //! return the pixel size of the specified line.
     /*!
     \brief
         Return the pixel size of a specified line for the RenderedString.
@@ -111,7 +112,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    Size getPixelSize(const size_t line) const;
+    Sizef getPixelSize(const size_t line) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);
@@ -163,13 +164,15 @@ public:
 
 protected:
     //! Collection type used to hold the string components.
-    typedef std::vector<RenderedStringComponent*> ComponentList;
+    typedef std::vector<RenderedStringComponent*
+        CEGUI_VECTOR_ALLOC(RenderedStringComponent*)> ComponentList;
     //! RenderedStringComponent objects that comprise this RenderedString.
     ComponentList d_components;
     //! track info for a line.  first is componetn idx, second is component count.
     typedef std::pair<size_t, size_t> LineInfo;
     //! Collection type used to hold details about the lines.
-    typedef std::vector<LineInfo> LineList;
+    typedef std::vector<LineInfo
+        CEGUI_VECTOR_ALLOC(LineInfo)> LineList;
     //! lines that make up this string.
     LineList d_lines;
     //! Make this object's component list a clone of \a list.

@@ -91,7 +91,6 @@ $]
 *************************************************************************/
 class WindowIterator
 {
-    string getCurrentKey @ key() const;
     Window* getCurrentValue @ value() const;
 
     bool isAtEnd() const;
@@ -171,66 +170,6 @@ class FalagardMappingIterator
 $[
 
 CEGUI.FalagardMappingIterator.iterator = CEGUI.iterator_impl;
-
-$]
-
-
-
-/************************************************************************
-    ImagesetIterator
-*************************************************************************/
-class ImagesetIterator
-{
-    string getCurrentKey @ key() const;
-    Imageset* getCurrentValue @ value() const;
-
-    bool isAtEnd() const;
-    bool isAtStart() const;
-
-    ImagesetIterator& __operator_increment @ next();
-    ImagesetIterator& __operator_decrement @ previous();
-    bool operator== (const ImagesetIterator& rhs) const;
-
-    void toStart();
-    void toEnd();
-
-    ImagesetIterator(const ImagesetIterator& org);
-};
-
-// lua iterator
-$[
-
-CEGUI.ImagesetIterator.iterator = CEGUI.iterator_impl;
-
-$]
-
-
-
-/************************************************************************
-    ImageIterator
-*************************************************************************/
-class ImageIterator
-{
-    string getCurrentKey @ key() const;
-    Image getCurrentValue @ value() const;
-
-    bool isAtEnd() const;
-    bool isAtStart() const;
-
-    ImageIterator& __operator_increment @ next();
-    ImageIterator& __operator_decrement @ previous();
-    bool operator== (const ImageIterator& rhs) const;
-
-    void toStart();
-    void toEnd();
-
-    ImageIterator(const ImageIterator& org);
-};
-
-// lua iterator
-$[
-
-CEGUI.ImageIterator.iterator = CEGUI.iterator_impl;
 
 $]
 

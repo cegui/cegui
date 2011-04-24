@@ -59,11 +59,11 @@ public:
     void unregisterFactory();
 
     //! describes the WindowRenderer type this class registers a factory for.
-    const CEGUI::utf8* d_type;
+    const String d_type;
 
 protected:
     //! Constructor.
-    WRFactoryRegisterer(const CEGUI::utf8* type);
+    WRFactoryRegisterer(const String& type);
 
     //! Function to do the actual addition of a factory to the CEGUI system.
     virtual void doFactoryAdd() = 0;

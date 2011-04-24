@@ -49,35 +49,35 @@ int InventoryBase::contentHeight() const
 }
 
 //------------------------------------------------------------------------------//
-Size InventoryBase::squarePixelSize() const
+Sizef InventoryBase::squarePixelSize() const
 {
-    const Rect area(gridBasePixelRect());
-    return Size(area.getWidth() / d_content.width(),
-                area.getHeight() / d_content.height());
+    const Rectf area(gridBasePixelRect());
+    return Sizef(area.getWidth() / d_content.width(),
+                 area.getHeight() / d_content.height());
 }
 
 //------------------------------------------------------------------------------//
 int InventoryBase::gridXLocationFromPixelPosition(float x_pixel_location) const
 {
-    const Rect area(gridBasePixelRect());
+    const Rectf area(gridBasePixelRect());
 
-    if (x_pixel_location < static_cast<int>(area.d_left) ||
-        x_pixel_location >= static_cast<int>(area.d_right))
+    if (x_pixel_location < static_cast<int>(area.left()) ||
+        x_pixel_location >= static_cast<int>(area.right()))
         return -1;
 
-    return (x_pixel_location - static_cast<int>(area.d_left)) / (area.getWidth() / d_content.width());
+    return (x_pixel_location - static_cast<int>(area.left())) / (area.getWidth() / d_content.width());
 }
 
 //------------------------------------------------------------------------------//
 int InventoryBase::gridYLocationFromPixelPosition(float y_pixel_location) const
 {
-    const Rect area(gridBasePixelRect());
+    const Rectf area(gridBasePixelRect());
 
-    if (y_pixel_location < static_cast<int>(area.d_top) ||
-        y_pixel_location >= static_cast<int>(area.d_bottom))
+    if (y_pixel_location < static_cast<int>(area.top()) ||
+        y_pixel_location >= static_cast<int>(area.bottom()))
         return -1;
 
-    return (y_pixel_location - static_cast<int>(area.d_top)) / (area.getHeight() / d_content.height());
+    return (y_pixel_location - static_cast<int>(area.top())) / (area.getHeight() / d_content.height());
 }
 
 //------------------------------------------------------------------------------//

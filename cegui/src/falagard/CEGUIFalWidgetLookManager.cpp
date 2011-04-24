@@ -130,6 +130,12 @@ namespace CEGUI
         }
     }
 
+
+    void WidgetLookManager::eraseAllWidgetLooks()
+    {
+        d_widgetLooks.clear();
+    }
+
     void WidgetLookManager::addWidgetLook(const WidgetLookFeel& look)
     {
         if (isWidgetLookAvailable(look.getName()))

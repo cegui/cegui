@@ -25,11 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
+#include "CEGUISamplesConfig.h"
 
-#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9) || defined(CEGUI_SAMPLES_USE_DIRECTX_10)
+#if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10)
 
 #include "Win32AppHelper.h"
 #include "CEGUI.h"

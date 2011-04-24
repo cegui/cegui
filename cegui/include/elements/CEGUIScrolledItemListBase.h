@@ -52,9 +52,9 @@ public:
     /************************************************************************
         Constants
     *************************************************************************/
-    static const String VertScrollbarNameSuffix; //!< Name suffix for vertical scrollbar component
-    static const String HorzScrollbarNameSuffix; //!< Name suffix for horizontal scrollbar component
-    static const String ContentPaneNameSuffix;   //!< Name suffix for the content pane component
+    static const String VertScrollbarName; //!< Name for vertical scrollbar component
+    static const String HorzScrollbarName; //!< Name for horizontal scrollbar component
+    static const String ContentPaneName;   //!< Name for the content pane component
 
     /** Event fired when the vertical scroll bar mode changes.
      * Handlers are passed a const WindowEventArgs reference with
@@ -186,7 +186,7 @@ protected:
     \brief
         Configure scrollbars
     */
-    void configureScrollbars(const Size& doc_size);
+    void configureScrollbars(const Sizef& doc_size);
 
     /************************************************************************
         New event handlers

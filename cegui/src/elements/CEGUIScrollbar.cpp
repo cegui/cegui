@@ -46,15 +46,15 @@ ScrollbarProperties::ScrollPosition Scrollbar::d_scrollPositionProperty;
 ScrollbarProperties::EndLockEnabled Scrollbar::d_endLockEnabledProperty;
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::EventScrollPositionChanged("ScrollPosChanged");
+const String Scrollbar::EventScrollPositionChanged( "ScrollPositionChanged" );
 const String Scrollbar::EventThumbTrackStarted("ThumbTrackStarted");
 const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
 const String Scrollbar::EventScrollConfigChanged("ScrollConfigChanged");
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::ThumbNameSuffix("__auto_thumb__");
-const String Scrollbar::IncreaseButtonNameSuffix("__auto_incbtn__");
-const String Scrollbar::DecreaseButtonNameSuffix("__auto_decbtn__");
+const String Scrollbar::ThumbName("__auto_thumb__");
+const String Scrollbar::IncreaseButtonName("__auto_incbtn__");
+const String Scrollbar::DecreaseButtonName("__auto_decbtn__");
 
 //----------------------------------------------------------------------------//
 ScrollbarWindowRenderer::ScrollbarWindowRenderer(const String& name) :
@@ -324,29 +324,26 @@ void Scrollbar::addScrollbarProperties(void)
 
         // scrollbars tend to have their visibility toggled alot, so we ban
         // that as well
-        banPropertyFromXML(&d_visibleProperty);
+        banPropertyFromXML("Visible");
     }
 }
 
 //----------------------------------------------------------------------------//
 PushButton* Scrollbar::getIncreaseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + IncreaseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(IncreaseButtonName));
 }
 
 //----------------------------------------------------------------------------//
 PushButton* Scrollbar::getDecreaseButton() const
 {
-    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
-                                        getName() + DecreaseButtonNameSuffix));
+    return static_cast<PushButton*>(getChild(DecreaseButtonName));
 }
 
 //----------------------------------------------------------------------------//
 Thumb* Scrollbar::getThumb() const
 {
-    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
-                                   getName() + ThumbNameSuffix));
+    return static_cast<Thumb*>(getChild(ThumbName));
 }
 
 //----------------------------------------------------------------------------//
@@ -373,7 +370,7 @@ float Scrollbar::getValueFromThumb(void) const
 }
 
 //----------------------------------------------------------------------------//
-float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+float Scrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException(

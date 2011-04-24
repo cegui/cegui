@@ -14,8 +14,8 @@ class ScrollablePane : public Window
 	bool isContentPaneAutoSized() const;
 	void setContentPaneAutoSized(bool setting);
 
-	const Rect& getContentPaneArea() const;
-	void setContentPaneArea(const Rect& area);
+	const Rect<float>& getContentPaneArea() const;
+	void setContentPaneArea(const Rect<float>& area);
 
 	float getHorizontalStepSize() const;
 	void setHorizontalStepSize(float step);
@@ -35,7 +35,7 @@ class ScrollablePane : public Window
 	float getVerticalScrollPosition() const;
 	void setVerticalScrollPosition(float position);
 
-    Rect getViewableArea() const;
+    Rect<float> getViewableArea() const;
     Scrollbar* getVertScrollbar() const;
     Scrollbar* getHorzScrollbar() const;
 };

@@ -3,13 +3,34 @@
 ***********************************************************************/
 class Image
 {
-	Size getSize() const;
-	float getWidth() const;
-	float getHeight() const;
-	Vector2 getOffsets() const;
-	float getOffsetX() const;
-	float getOffsetY() const;
-	string getName() const;
-	string getImagesetName() const;
-	Rect getSourceTextureArea() const;
+
+    const string getName() const;
+
+    const Size<float>& getRenderedSize() const;
+    const Vector2<float>& getRenderedOffset() const;
+
+    void render(GeometryBuffer& buffer,
+                        const Rect<float>& dest_area,
+                        const Rect<float>* clip_area,
+                        const ColourRect& colours) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Rect<float>* clip_area = 0) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Rect<float>* clip_area,
+                const ColourRect& colours) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Size<float>& size,
+                const Rect<float>* clip_area = 0) const;
+
+    void render(GeometryBuffer& buffer,
+                const Vector2<float>& position,
+                const Size<float>& size,
+                const Rect<float>* clip_area,
+                const ColourRect& colours) const;
 };

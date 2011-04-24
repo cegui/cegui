@@ -4,7 +4,7 @@
     author:     Paul D Turner (based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -48,7 +48,7 @@ void IrrlichtTexture::setIrrlichtTexture(irr::video::ITexture* tex)
 
     if (d_texture)
     {
-        d_size = d_dataSize = Size(
+        d_size = d_dataSize = Sizef(
                 static_cast<float>(d_texture->getSize().Width),
                 static_cast<float>(d_texture->getSize().Height));
 
@@ -63,19 +63,25 @@ irr::video::ITexture* IrrlichtTexture::getIrrlichtTexture() const
 }
 
 //----------------------------------------------------------------------------//
-const Size& IrrlichtTexture::getSize() const
+const String& IrrlichtTexture::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& IrrlichtTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& IrrlichtTexture::getOriginalDataSize() const
+const Sizef& IrrlichtTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& IrrlichtTexture::getTexelScaling() const
+const Vector2f& IrrlichtTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -109,7 +115,7 @@ void IrrlichtTexture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void IrrlichtTexture::loadFromMemory(const void* buffer,
-                                     const Size& buffer_size,
+                                     const Sizef& buffer_size,
                                      PixelFormat pixel_format)
 {
     using namespace irr;
@@ -147,37 +153,79 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::saveToMemory(void* buffer)
+void IrrlichtTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     if (!d_texture)
         return;
 
-    const size_t sz = static_cast<size_t>(d_size.d_width * d_size.d_height) * 4;
-    memcpy(buffer, d_texture->lock(), sz);
+    const size_t pitch = d_texture->getPitch();
+    const uint32* src = static_cast<uint32*>(sourceData);
+    uint32* dst = static_cast<uint32*>(d_texture->lock());
+
+    if (!dst)
+        CEGUI_THROW(RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed."));
+
+    dst += static_cast<size_t>(area.top()) * (pitch / 4) +
+        static_cast<size_t>(area.left());
+
+    const Sizef sz(area.getSize());
+
+    for (int j = 0; j < sz.d_height; ++j)
+    {
+        for (int i = 0; i < sz.d_width; ++i)
+        {
+            dst[i] = src[i];
+        }
+
+        src += static_cast<int>(sz.d_width);
+        dst += pitch / 4;
+    }
+    
+    d_texture->unlock();
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtTexture::blitToMemory(void* targetData)
+{
+    if (!d_texture)
+        return;
+
+    const void* src = d_texture->lock(true);
+    if (!src)
+        CEGUI_THROW(RendererException(
+            "[IrrlichtRenderer] ITexture::lock failed."));
+
+    memcpy(targetData, src,
+           static_cast<size_t>(d_size.d_width * d_size.d_height) * 4);
+
     d_texture->unlock();
 }
 
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
-                                 irr::video::IVideoDriver& driver) :
+                                 irr::video::IVideoDriver& driver,
+                                 const String& name) :
     d_driver(driver),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver,
+                                 const String& name,
                                  const String& filename,
                                  const String& resourceGroup) :
     d_driver(driver),
     d_texture(0),
-    d_owner(owner)
-
+    d_owner(owner),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
@@ -185,10 +233,12 @@ IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
 //----------------------------------------------------------------------------//
 IrrlichtTexture::IrrlichtTexture(IrrlichtRenderer& owner,
                                  irr::video::IVideoDriver& driver,
-                                 const Size& size) :
+                                 const String& name,
+                                 const Sizef& size) :
     d_driver(driver),
     d_dataSize(size),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 
 {
     createIrrlichtTexture(size);
@@ -206,11 +256,11 @@ IrrlichtTexture::~IrrlichtTexture()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::createIrrlichtTexture(const Size& sz)
+void IrrlichtTexture::createIrrlichtTexture(const Sizef& sz)
 {
     using namespace irr;
 
-    const Size tex_sz(d_owner.getAdjustedTextureSize(sz));
+    const Sizef tex_sz(d_owner.getAdjustedTextureSize(sz));
 
     #if CEGUI_IRR_SDK_VERSION >= 16
         const core::dimension2d<u32> irr_sz(
@@ -283,7 +333,7 @@ std::string IrrlichtTexture::getUniqueName()
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::setOriginalDataSize(const Size& sz)
+void IrrlichtTexture::setOriginalDataSize(const Sizef& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();

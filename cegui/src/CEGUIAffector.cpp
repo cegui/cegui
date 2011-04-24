@@ -111,7 +111,7 @@ KeyFrame* Affector::createKeyFrame(float position)
                         "on that position."));
     }
 
-    KeyFrame* ret = new KeyFrame(this, position);
+    KeyFrame* ret = CEGUI_NEW_AO KeyFrame(this, position);
     d_keyFrames.insert(std::make_pair(position, ret));
 
     return ret;

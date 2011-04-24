@@ -64,18 +64,18 @@ ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
 	Constants
 *************************************************************************/
 // event names
-const String Listbox::EventListContentsChanged( "ListItemsChanged" );
-const String Listbox::EventSelectionChanged( "ItemSelectionChanged" );
+const String Listbox::EventListContentsChanged( "ListContentsChanged" );
+const String Listbox::EventSelectionChanged( "SelectionChanged" );
 const String Listbox::EventSortModeChanged( "SortModeChanged" );
-const String Listbox::EventMultiselectModeChanged( "MuliselectModeChanged" );
-const String Listbox::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
-const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
+const String Listbox::EventMultiselectModeChanged( "MultiselectModeChanged" );
+const String Listbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
 /*************************************************************************
-    Child Widget name suffix constants
+    Child Widget name constants
 *************************************************************************/
-const String Listbox::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String Listbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+const String Listbox::VertScrollbarName( "__auto_vscrollbar__" );
+const String Listbox::HorzScrollbarName( "__auto_hscrollbar__" );
 
 /*************************************************************************
 	Constructor for Listbox base class.
@@ -381,7 +381,7 @@ void Listbox::removeItem(const ListboxItem* item)
 			if (item->isAutoDeleted())
 			{
 				// clean up this item.
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 			WindowEventArgs args(this);
@@ -625,7 +625,7 @@ void Listbox::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect renderArea(getListRenderArea());
+	Rectf renderArea(getListRenderArea());
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -742,15 +742,15 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
+ListboxItem* Listbox::getItemAtPoint(const Vector2f& pt) const
 {
-    const Point local_pos(CoordConverter::screenToWindow(*this, pt));
-	const Rect renderArea(getListRenderArea());
+    const Vector2f local_pos(CoordConverter::screenToWindow(*this, pt));
+	const Rectf renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
 	if (renderArea.isPointInRect(local_pos))
 	{
-		float y = renderArea.d_top - getVertScrollbar()->getScrollPosition();
+		float y = renderArea.d_min.d_x - getVertScrollbar()->getScrollPosition();
 
 		// test if point is above first item
 		if (local_pos.d_y >= y)
@@ -911,11 +911,11 @@ void Listbox::onMouseWheel(MouseEventArgs& e)
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-	if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
 		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
 	}
-	else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
@@ -1074,7 +1074,7 @@ bool Listbox::resetList_impl(void)
 			if (d_listItems[i]->isAutoDeleted())
 			{
 				// clean up this item.
-				delete d_listItems[i];
+				CEGUI_DELETE_AO d_listItems[i];
 			}
 
 		}
@@ -1105,8 +1105,7 @@ bool Listbox::handle_scrollChange(const EventArgs&)
 *************************************************************************/
 Scrollbar* Listbox::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 /*************************************************************************
@@ -1115,15 +1114,14 @@ Scrollbar* Listbox::getVertScrollbar() const
 *************************************************************************/
 Scrollbar* Listbox::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 /*************************************************************************
     Return a Rect object describing, in un-clipped pixels, the window
     relative area that is to be used for rendering list items.
 *************************************************************************/
-Rect Listbox::getListRenderArea() const
+Rectf Listbox::getListRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

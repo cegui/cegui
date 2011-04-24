@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -45,9 +45,9 @@ Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner) :
         CEGUI_THROW(RendererException("Direct3D9RenderTarget: Unable to access "
             "required view port information from Direct3DDevice9."));
 
-    Rect area(
-        Point(static_cast<float>(vp.X), static_cast<float>(vp.Y)),
-        Size(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
+    Rectf area(
+        Vector2f(static_cast<float>(vp.X), static_cast<float>(vp.Y)),
+        Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 
     setArea(area);
@@ -55,7 +55,7 @@ Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 Direct3D9ViewportTarget::Direct3D9ViewportTarget(Direct3D9Renderer& owner,
-    const Rect& area) :
+    const Rectf& area) :
         Direct3D9RenderTarget(owner)
 {
     setArea(area);

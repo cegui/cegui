@@ -89,7 +89,7 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
         font_name + "' using font file '" + font_filename + "'.");
 
     // create new object ahead of time
-    Font* object = new FreeTypeFont(font_name, point_size, anti_aliased,
+    Font* object = CEGUI_NEW_AO FreeTypeFont(font_name, point_size, anti_aliased,
                                     font_filename, resource_group, auto_scaled,
                                     native_horz_res, native_vert_res);
 
@@ -115,7 +115,7 @@ Font& FontManager::createPixmapFont(const String& font_name,
         font_name + "' using imageset file '" + imageset_filename + "'.");
 
     // create new object ahead of time
-    Font* object = new PixmapFont(font_name, imageset_filename, resource_group,
+    Font* object = CEGUI_NEW_AO PixmapFont(font_name, imageset_filename, resource_group,
                                   auto_scaled, native_horz_res, native_vert_res);
 
     // return appropriate object instance (deleting any not required)
@@ -123,7 +123,7 @@ Font& FontManager::createPixmapFont(const String& font_name,
 }
 
 //----------------------------------------------------------------------------//
-void FontManager::notifyDisplaySizeChanged(const Size& size)
+void FontManager::notifyDisplaySizeChanged(const Sizef& size)
 {
     // notify all attached Font objects of the change in resolution
     ObjectRegistry::iterator pos = d_objects.begin(), end = d_objects.end();

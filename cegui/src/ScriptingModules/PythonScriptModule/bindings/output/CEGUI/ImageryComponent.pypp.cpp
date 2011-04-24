@@ -145,20 +145,17 @@ void register_ImageryComponent_class(){
         }
         { //::CEGUI::ImageryComponent::setImage
         
-            typedef void ( ::CEGUI::ImageryComponent::*setImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::ImageryComponent::*setImage_function_type )( ::CEGUI::String const & ) ;
             
             ImageryComponent_exposer.def( 
                 "setImage"
                 , setImage_function_type( &::CEGUI::ImageryComponent::setImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                     \n\
                         Set the Image that will be drawn by this ImageryComponent.\n\
             \n\
-                    @param imageset\n\
-                        String holding the name of the Imagset that contains the Image to be rendered.\n\
-            \n\
-                    @param image\n\
+                    @param name\n\
                         String holding the name of the Image to be rendered.\n\
             \n\
                     @return\n\

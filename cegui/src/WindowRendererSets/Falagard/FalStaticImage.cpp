@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardStaticImage::TypeName[] = "Falagard/StaticImage";
+    const String FalagardStaticImage::TypeName("Falagard/StaticImage");
     
     FalagardStaticImageProperties::Image    FalagardStaticImage::d_imageProperty;
 

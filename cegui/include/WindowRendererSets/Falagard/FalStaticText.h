@@ -72,13 +72,13 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardStaticText : public FalagardStatic
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*************************************************************************
-            Child Widget name suffix constants
+            Child Widget name constants
         *************************************************************************/
-        static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
-        static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
+        static const String VertScrollbarName;   //!< Widget name for the vertical scrollbar component.
+        static const String HorzScrollbarName;   //!< Widget name for the horizontal scrollbar component.
 
         /************************************************************************
             Constructor / Destructor
@@ -167,7 +167,7 @@ namespace CEGUI
         //! update string formatting (gets area size to use from looknfeel)
         void updateFormatting() const;
         //! update string formatting using given area size.
-        void updateFormatting(const Size& sz) const;
+        void updateFormatting(const Sizef& sz) const;
 
         // overridden from FalagardStatic base class
         void onLookNFeelAssigned();
@@ -178,8 +178,8 @@ namespace CEGUI
         void configureScrollbars(void);
         Scrollbar* getVertScrollbar(void) const;
         Scrollbar* getHorzScrollbar(void) const;
-        Rect getTextRenderArea(void) const;
-        Size getDocumentSize(const Rect& renderArea) const;
+        Rectf getTextRenderArea(void) const;
+        Sizef getDocumentSize(const Rectf& renderArea) const;
         void setupStringFormatter() const;
 
         // overridden event handlers

@@ -73,24 +73,24 @@ MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
 	Constants
 *************************************************************************/
 // Event names
-const String MultiColumnList::EventSelectionModeChanged( "SelectModeChanged" );
-const String MultiColumnList::EventNominatedSelectColumnChanged( "NomSelColChanged" );
-const String MultiColumnList::EventNominatedSelectRowChanged( "NomSelRowChanged" );
-const String MultiColumnList::EventVertScrollbarModeChanged( "VertBarModeChanged" );
-const String MultiColumnList::EventHorzScrollbarModeChanged( "HorzBarModeChanged" );
+const String MultiColumnList::EventSelectionModeChanged( "SelectionModeChanged" );
+const String MultiColumnList::EventNominatedSelectColumnChanged( "NominatedSelectColumnChanged" );
+const String MultiColumnList::EventNominatedSelectRowChanged( "NominatedSelectRowChanged" );
+const String MultiColumnList::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String MultiColumnList::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 const String MultiColumnList::EventSelectionChanged( "SelectionChanged" );
-const String MultiColumnList::EventListContentsChanged( "ContentsChanged" );
-const String MultiColumnList::EventSortColumnChanged( "SortColChanged" );
-const String MultiColumnList::EventSortDirectionChanged( "SortDirChanged" );
-const String MultiColumnList::EventListColumnSized( "ColSized" );
-const String MultiColumnList::EventListColumnMoved( "ColMoved" );
+const String MultiColumnList::EventListContentsChanged( "ListContentsChanged" );
+const String MultiColumnList::EventSortColumnChanged( "SortColumnChanged" );
+const String MultiColumnList::EventSortDirectionChanged( "SortDirectionChanged" );
+const String MultiColumnList::EventListColumnSized( "ListColumnSized" );
+const String MultiColumnList::EventListColumnMoved( "ListColumnMoved" );
 
 /*************************************************************************
     Child Widget name suffix constants
 *************************************************************************/
-const String MultiColumnList::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
-const String MultiColumnList::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
-const String MultiColumnList::ListHeaderNameSuffix( "__auto_listheader__" );
+const String MultiColumnList::VertScrollbarName( "__auto_vscrollbar__" );
+const String MultiColumnList::HorzScrollbarName( "__auto_hscrollbar__" );
+const String MultiColumnList::ListHeaderName( "__auto_listheader__" );
 
 
 /*************************************************************************
@@ -746,7 +746,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 			// delete the ListboxItem as needed.
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -920,7 +920,7 @@ void MultiColumnList::removeRow(uint row_idx)
 
 			if ((item != 0) && item->isAutoDeleted())
 			{
-				delete item;
+				CEGUI_DELETE_AO item;
 			}
 
 		}
@@ -963,7 +963,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 
 	if ((oldItem != 0) && oldItem->isAutoDeleted())
 	{
-		delete oldItem;
+		CEGUI_DELETE_AO oldItem;
 	}
 
 	// set new item.
@@ -1347,7 +1347,7 @@ void MultiColumnList::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	Rect renderArea(getListRenderArea());
+	Rectf renderArea(getListRenderArea());
 
 	vertScrollbar->setDocumentSize(totalHeight);
 	vertScrollbar->setPageSize(renderArea.getHeight());
@@ -1441,7 +1441,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Sizef sz(item->getPixelSize());
 
 				// see if this item is wider than the previous widest
 				if (sz.d_width > width)
@@ -1482,7 +1482,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 			// if the slot has an item in it
 			if (item)
 			{
-				Size sz(item->getPixelSize());
+				Sizef sz(item->getPixelSize());
 
 				// see if this item is higher than the previous highest
 				if (sz.d_height > height)
@@ -1536,13 +1536,13 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
 {
     const ListHeader* header = getListHeader();
-    Rect listArea(getListRenderArea());
+    Rectf listArea(getListRenderArea());
 
-    float y = listArea.d_top - getVertScrollbar()->getScrollPosition();
-    float x = listArea.d_left - getHorzScrollbar()->getScrollPosition();
+    float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
+    float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
 
     for (uint i = 0; i < getRowCount(); ++i)
     {
@@ -1555,7 +1555,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
             for (uint j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
-                x += seg.getWidth().asAbsolute(header->getPixelSize().d_width);
+                x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
                 if (pt.d_x < x)
@@ -1563,11 +1563,8 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
                 }
-
             }
-
         }
-
     }
 
     return 0;
@@ -1870,7 +1867,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 	{
 		bool modified = false;
 
-		Point localPos(CoordConverter::screenToWindow(*this, e.position));
+		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 		ListboxItem* item = getItemAtPoint(localPos);
 
 		if (item)
@@ -1921,11 +1918,11 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
-	if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
 		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
 	}
-	else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
 		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
@@ -2190,7 +2187,7 @@ bool MultiColumnList::resetList_impl(void)
 				// delete item as needed.
 				if ((item != 0) && item->isAutoDeleted())
 				{
-					delete item;
+					CEGUI_DELETE_AO item;
 				}
 
 			}
@@ -2256,8 +2253,7 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 *************************************************************************/
 Scrollbar* MultiColumnList::getVertScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + VertScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(VertScrollbarName));
 }
 
 
@@ -2267,8 +2263,7 @@ Scrollbar* MultiColumnList::getVertScrollbar() const
 *************************************************************************/
 Scrollbar* MultiColumnList::getHorzScrollbar() const
 {
-    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
-                                   getName() + HorzScrollbarNameSuffix));
+    return static_cast<Scrollbar*>(getChild(HorzScrollbarName));
 }
 
 
@@ -2278,8 +2273,7 @@ Scrollbar* MultiColumnList::getHorzScrollbar() const
 *************************************************************************/
 ListHeader* MultiColumnList::getListHeader() const
 {
-    return static_cast<ListHeader*>(WindowManager::getSingleton().getWindow(
-                                    getName() + ListHeaderNameSuffix));
+    return static_cast<ListHeader*>(getChild(ListHeaderName));
 }
 
 
@@ -2305,10 +2299,10 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += seg.getText();
         // column width
         propString += " width:";
-        propString += PropertyHelper::udimToString(seg.getWidth());
+        propString += PropertyHelper<UDim>::toString(seg.getWidth());
         // column id
         propString += " id:";
-        propString += PropertyHelper::uintToString(seg.getID());
+        propString += PropertyHelper<uint>::toString(seg.getID());
         // create the tag
         xml_stream.openTag("Property")
             .attribute("Name", "ColumnHeader")
@@ -2325,7 +2319,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			{
                 xml_stream.openTag("Property")
                     .attribute("Name", "SortColumnID")
-                    .attribute("Value", PropertyHelper::uintToString(sortColumnID))
+                    .attribute("Value", PropertyHelper<uint>::toString(sortColumnID))
                     .closeTag();
 			    ++propCnt;
 			}
@@ -2344,7 +2338,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     Return a Rect object describing, in un-clipped pixels, the window
     relative area that is to be used for rendering list items.
 *************************************************************************/
-Rect MultiColumnList::getListRenderArea() const
+Rectf MultiColumnList::getListRenderArea() const
 {
     if (d_windowRenderer != 0)
     {

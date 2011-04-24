@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="Vanilla-Images" Imagefile="vanilla.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="Vanilla-Images" Imagefile="vanilla.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
 	<Image Name="GenericBrush" XPos="46" YPos="46" Width="3" Height="3" />
 	<Image Name="FrameTopLeft" XPos="1" YPos="1" Width="6" Height="6" />
 	<Image Name="FrameTopRight" XPos="10" YPos="1" Width="6" Height="6" />

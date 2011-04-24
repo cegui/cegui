@@ -58,14 +58,15 @@ namespace CEGUI
 	WindowFactoryManager.  Additionally, the WindowManager tracks every Window object created, and can be
 	used to access those Window objects by name.
 */
-class CEGUIEXPORT WindowManager : public Singleton <WindowManager>,
-                                  public EventSet
+class CEGUIEXPORT WindowManager : public Singleton<WindowManager>,
+                                  public EventSet,
+                                  public AllocatedObject<WindowManager>
 {
 public:
     /*************************************************************************
         Public static data
     *************************************************************************/
-    static const String GeneratedWindowNameBase;      //!< Base name to use for generated window names.
+    static const String GeneratedWindowNameBase; //!< Base name to use for generated window names.
     //! Namespace for global events.
     static const String EventNamespace;
     /** Event fired when a new Window object is created.
@@ -78,6 +79,8 @@ public:
      * WindowEventArgs::window set to the Window that has been destroyed.
      */
     static const String EventWindowDestroyed;
+
+    static const String GUILayoutSchemaName; //!< Filename of the XML schema used for validating GUILayout files.
 
 	/*!
 	\brief
@@ -137,15 +140,14 @@ public:
 		String that describes the type of Window to be created.  A valid WindowFactory for the specified type must be registered.
 
 	\param name
-		String that holds a unique name that is to be given to the new window.  If this string is empty (""), a name
-		will be generated for the window.
+		String that holds the name that is to be given to the new window.  If
+        \a name is empty, a name will be generated for the window.
 
 	\return
 		Pointer to the newly created Window object.
 
     \exception  InvalidRequestException WindowManager is locked and no Windows
                                         may be created.
-	\exception	AlreadyExistsException		A Window object with the name \a name already exists.
 	\exception	UnknownObjectException		No WindowFactory is registered for \a type Window objects.
 	\exception	GenericException			Some other error occurred (Exception message has details).
 	*/
@@ -157,7 +159,7 @@ public:
 		Destroy the specified Window object.
 
 	\param window
-		Pointer to the Window object to be destroyed.  If the \a window is null, or is not recognised, nothing happens.
+		Pointer to the Window object to be destroyed.
 
 	\return
 		Nothing
@@ -165,49 +167,6 @@ public:
 	\exception	InvalidRequestException		Can be thrown if the WindowFactory for \a window's object type was removed.
 	*/
 	void	destroyWindow(Window* window);
-
-
-	/*!
-	\brief
-		Destroy the specified Window object.
-
-	\param
-		window	String containing the name of the Window object to be destroyed.  If \a window is not recognised, nothing happens.
-
-	\return
-		Nothing.
-
-	\exception	InvalidRequestException		Can be thrown if the WindowFactory for \a window's object type was removed.
-	*/
-	void	destroyWindow(const String& window);
-
-
-	/*!
-	\brief
-		Return a pointer to the specified Window object.
-
-	\param name
-		String holding the name of the Window object to be returned.
-
-	\return
-		Pointer to the Window object with the name \a name.
-
-	\exception UnknownObjectException	No Window object with a name matching \a name was found.
-	*/
-	Window*	getWindow(const String& name) const;
-
-
-	/*!
-	\brief
-		Examines the list of Window objects to see if one exists with the given name
-
-	\param name
-		String holding the name of the Window object to look for.
-
-	\return
-		true if a Window object was found with a name matching \a name.  false if no matching Window object was found.
-	*/
-	bool	isWindowPresent(const String& name) const;
 
 
 	/*!
@@ -221,19 +180,35 @@ public:
 	*/
 	void	destroyAllWindows(void);
 
+    //! return whether Window is alive.
+    bool isAlive(const Window* window) const;
+
+    /*!
+    \brief
+        Creates a set of windows (a GUI layout) from the information in the specified XML.
+
+    \param source
+        RawDataContainer holding the XML source
+
+    \param callback
+        PropertyCallback function to be called for each Property element loaded from the layout.  This is
+        called prior to the property value being applied to the window enabling client code manipulation of
+        properties.
+
+    \param userdata
+        Client code data pointer passed to the PropertyCallback function.
+
+    \return
+        Pointer to the root Window object defined in the layout.
+    */
+    Window* loadLayoutFromContainer(const RawDataContainer& source, PropertyCallback* callback = 0, void* userdata = 0);
 
 	/*!
 	\brief
-		Creates a set of windows (a Gui layout) from the information in the specified XML file.	
+		Creates a set of windows (a GUI layout) from the information in the specified XML file.
 
 	\param filename
 		String object holding the filename of the XML file to be processed.
-
-	\param name_prefix
-		String object holding the prefix that is to be used when creating the windows in the layout file, this
-		function allows a layout to be loaded multiple times without having name clashes.  Note that if you use
-		this facility, then all windows defined within the layout must have names assigned; you currently can not
-		use this feature in combination with automatically generated window names.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when loading the layout file.
@@ -252,7 +227,27 @@ public:
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadWindowLayout(const String& filename, const String& name_prefix = "", const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+	Window*	loadLayoutFromFile(const String& filename, const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+
+    /*!
+    \brief
+        Creates a set of windows (a GUI layout) from the information in the specified XML.
+
+    \param source
+        String holding the XML source
+
+    \param callback
+        PropertyCallback function to be called for each Property element loaded from the layout.  This is
+        called prior to the property value being applied to the window enabling client code manipulation of
+        properties.
+
+    \param userdata
+        Client code data pointer passed to the PropertyCallback function.
+
+    \return
+        Pointer to the root Window object defined in the layout.
+    */
+    Window* loadLayoutFromString(const String& source, PropertyCallback* callback = 0, void* userdata = 0);
 
     /*!
     \brief
@@ -294,47 +289,27 @@ public:
     \return
         Nothing.
     */
-    void writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
+    void writeLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
 
     /*!
     \brief
-        Writes a full XML window layout, starting at the given Window to the given OutStream.
+        Writes a full XML window layout, starting at the given Window and returns the result as string
 
     \param window
-        String holding the name of the Window object to become the root of the layout.
-
-    \param out_stream
-        OutStream (std::ostream based) object where data is to be sent.
+        Window object to become the root of the layout.
 
     \param writeParent
         If the starting window has a parent window, specifies whether to write the parent name into
         the Parent attribute of the GUILayout XML element.
 
+    \warning
+        This is a convenience function and isn't designed to be fast at all! Use the other alternatives
+        if you want performance.
+
     \return
-        Nothing.
+        String containing XML of the resulting layout
     */
-    void writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent = false) const;
-
-    /*!
-    \brief
-        Save a full XML window layout, starting at the given Window, to a file
-        with the given file name.
-
-    \param window
-        String holding the name of the Window object to become the root of the
-        layout.
-
-    \param filename
-        The name of the file to which the XML will be written.  Note that this
-        does not use any part of the ResourceProvider system, but rather will
-        write directly to disk.  If this is not desirable, you should prefer the
-        OutStream based writeWindowLayoutToStream functions.
-
-    \param writeParent
-        If the starting window has a parent window, specifies whether to write
-        the parent name into the Parent attribute of the GUILayout XML element.
-    */
-    void saveWindowLayout(const String& window, const String& filename, const bool writeParent = false) const;
+    String getLayoutAsString(const Window& window, bool writeParent = false) const;
 
     /*!
     \brief
@@ -354,40 +329,7 @@ public:
         If the starting window has a parent window, specifies whether to write
         the parent name into the Parent attribute of the GUILayout XML element.
     */
-    void saveWindowLayout(const Window& window, const String& filename, const bool writeParent = false) const;
-
-    /*!
-    \brief
-        Rename a window.
-
-    \param window
-        String holding the current name of the window to be renamed.
-
-    \param new_name
-        String holding the new name for the window
-
-    \exception UnknownObjectException
-        thrown if \a window is not known in the system.
-
-    \exception AlreadyExistsException
-        thrown if a Window named \a new_name already exists.
-    */
-    void renameWindow(const String& window, const String& new_name);
-
-    /*!
-    \brief
-        Rename a window.
-
-    \param window
-        Pointer to the window to be renamed.
-
-    \param new_name
-        String holding the new name for the window
-
-    \exception AlreadyExistsException
-        thrown if a Window named \a new_name already exists.
-    */
-    void renameWindow(Window* window, const String& new_name);
+    void saveLayoutToFile(const Window& window, const String& filename, const bool writeParent = false) const;
 
     /*!
     \brief
@@ -474,20 +416,15 @@ private:
     //! function to set up RenderEffect on a window
     void initialiseRenderEffect(Window* wnd, const String& effect) const;
 
-	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
-	static const char	GUILayoutSchemaName[];			//!< Filename of the XML schema used for validating GUILayout files.
-
-
-	/*************************************************************************
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef std::map<String, Window*, String::FastLessCompare>			WindowRegistry;				//!< Type used to implement registry of Window objects
-    typedef std::vector<Window*>    WindowVector;   //!< Type to use for a collection of Window pointers.
+    typedef std::vector<Window*
+        CEGUI_VECTOR_ALLOC(Window*)> WindowVector; //!< Type to use for a collection of Window pointers.
 
-	WindowRegistry			d_windowRegistry;			//!< The container that forms the Window registry
-    WindowVector    d_deathrow;     //!< Collection of 'destroyed' windows.
+    //! collection of created windows.
+	WindowVector d_windowRegistry;
+    WindowVector d_deathrow; //!< Collection of 'destroyed' windows.
 
     unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
     static String d_defaultResourceGroup;   //!< holds default resource group
@@ -498,7 +435,7 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-	typedef	ConstBaseIterator<WindowRegistry>	WindowIterator;
+	typedef	ConstVectorIterator<WindowVector>	WindowIterator;
 
 	/*!
 	\brief
@@ -516,7 +453,7 @@ public:
     \return
     Nothing.
     */
-    void DEBUG_dumpWindowNames(String zone);    
+    void DEBUG_dumpWindowNames(String zone) const;    
 };
 
 } // End of  CEGUI namespace section

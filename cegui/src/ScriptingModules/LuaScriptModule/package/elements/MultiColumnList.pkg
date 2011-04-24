@@ -81,7 +81,7 @@ class MultiColumnList : public Window
 	unsigned int getRowID(unsigned int row_idx) const;
     unsigned int getRowWithID(unsigned int row_id) const;
 
-    Rect getListRenderArea() const;
+    Rect<float> getListRenderArea() const;
 
     Scrollbar* getVertScrollbar() const;
     Scrollbar* getHorzScrollbar() const;

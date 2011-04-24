@@ -57,7 +57,8 @@ class PixmapFont;
 */
 class CEGUIEXPORT FontManager :
         public Singleton<FontManager>,
-        public NamedXMLResourceManager<Font, Font_xmlHandler>
+        public NamedXMLResourceManager<Font, Font_xmlHandler>,
+        public AllocatedObject<FontManager>
 {
 public:
     //! Constructor.
@@ -172,7 +173,7 @@ public:
     \param size
         Size object describing the display resolution
     */
-    void notifyDisplaySizeChanged(const Size& size);
+    void notifyDisplaySizeChanged(const Sizef& size);
 
     /*!
     \brief
@@ -188,7 +189,7 @@ public:
     void writeFontToStream(const String& name, OutStream& out_stream) const;
 
     //! ConstBaseIterator type definition.
-    typedef ConstBaseIterator<ObjectRegistry> FontIterator;
+    typedef ConstMapIterator<ObjectRegistry> FontIterator;
 
     /*!
     \brief
@@ -198,7 +199,9 @@ public:
     FontIterator getIterator() const;
 
     // ensure we see overloads from template base class
-    using NamedXMLResourceManager<Font, Font_xmlHandler>::create;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromContainer;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromFile;
+    using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromString;
 
 protected:
     // override from base

@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -54,10 +54,14 @@ public:
     // implement CEGUI::TextureTarget interface.
     void clear();
     Texture& getTexture() const;
-    void declareRenderSize(const Size& sz);
+    void declareRenderSize(const Sizef& sz);
     bool isRenderingInverted() const;
 
 protected:
+    //! helper to generate unique texture names
+    static String generateTextureName();
+    //! static data used for creating texture names
+    static uint s_textureNumber;
     //! default / initial size for the underlying texture.
     static const float DEFAULT_SIZE;
     //! This wraps d_texture so it can be used by the core CEGUI lib.

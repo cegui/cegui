@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,12 +33,14 @@
 #include "CEGUIGeometryBuffer.h"
 #include "CEGUIDirect3D9Renderer.h"
 #include "CEGUIDirect3D9Texture.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const float Direct3D9TextureTarget::DEFAULT_SIZE = 128.0f;
+uint Direct3D9TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
@@ -47,10 +49,11 @@ Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
     d_surface(0)
 {
     // this essentially creates a 'null' CEGUI::Texture
-    d_CEGUITexture = &static_cast<Direct3D9Texture&>(d_owner.createTexture(0));
+    d_CEGUITexture = &static_cast<Direct3D9Texture&>(
+        d_owner.createTexture(generateTextureName(), 0));
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
 }
 
 //----------------------------------------------------------------------------//
@@ -61,13 +64,13 @@ Direct3D9TextureTarget::~Direct3D9TextureTarget()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9TextureTarget::declareRenderSize(const Size& sz)
+void Direct3D9TextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect(d_area.getPosition(), sz));
+    setArea(Rectf(d_area.getPosition(), sz));
     resizeRenderTexture();
     clear();
 }
@@ -112,7 +115,7 @@ Texture& Direct3D9TextureTarget::getTexture() const
 //----------------------------------------------------------------------------//
 void Direct3D9TextureTarget::initialiseRenderTexture()
 {
-    Size tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
+    Sizef tex_sz(d_owner.getAdjustedSize(d_area.getSize()));
 
     d_device->CreateTexture(static_cast<UINT>(tex_sz.d_width),
                             static_cast<UINT>(tex_sz.d_height),
@@ -212,6 +215,15 @@ void Direct3D9TextureTarget::postD3DReset()
         // now obtain the surface
         d_texture->GetSurfaceLevel(0, &d_surface);
     }
+}
+
+//----------------------------------------------------------------------------//
+String Direct3D9TextureTarget::generateTextureName()
+{
+    String tmp("_d3d9_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//

@@ -26,9 +26,11 @@
 
 #include "BaseDim.pypp.hpp"
 
+#include "BasicImage.pypp.hpp"
+
 #include "BasicRenderedStringParser.pypp.hpp"
 
-#include "BiDiVisualMapping.pypp.hpp"
+#include "BidiVisualMapping.pypp.hpp"
 
 #include "BoundSlot.pypp.hpp"
 
@@ -37,6 +39,8 @@
 #include "CentredRenderedString.pypp.hpp"
 
 #include "Checkbox.pypp.hpp"
+
+#include "Colour.pypp.hpp"
 
 #include "ColourRect.pypp.hpp"
 
@@ -48,11 +52,29 @@
 
 #include "Connection.pypp.hpp"
 
+#include "ConstBaseIterator_3dfe55a685a628d9556dccd6ce85e923.pypp.hpp"
+
+#include "ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c.pypp.hpp"
+
+#include "ConstBaseIterator_47ddd968107e89ff0051bf3212fbb472.pypp.hpp"
+
+#include "ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b.pypp.hpp"
+
+#include "ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174.pypp.hpp"
+
+#include "ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b.pypp.hpp"
+
+#include "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd.pypp.hpp"
+
+#include "ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f.pypp.hpp"
+
 #include "CoordConverter.pypp.hpp"
 
 #include "DefaultLogger.pypp.hpp"
 
 #include "DefaultResourceProvider.pypp.hpp"
+
+#include "DefaultWindow.pypp.hpp"
 
 #include "Dimension.pypp.hpp"
 
@@ -69,6 +91,8 @@
 #include "EventArgs.pypp.hpp"
 
 #include "EventIterator.pypp.hpp"
+
+#include "EventLinkDefinition.pypp.hpp"
 
 #include "EventSet.pypp.hpp"
 
@@ -92,8 +116,6 @@
 
 #include "FrameWindow.pypp.hpp"
 
-#include "GUISheet.pypp.hpp"
-
 #include "GeometryBuffer.pypp.hpp"
 
 #include "GlobalEventSet.pypp.hpp"
@@ -112,17 +134,11 @@
 
 #include "ImageDim.pypp.hpp"
 
-#include "ImageIterator.pypp.hpp"
+#include "ImageManager.pypp.hpp"
 
 #include "ImageryComponent.pypp.hpp"
 
 #include "ImagerySection.pypp.hpp"
-
-#include "Imageset.pypp.hpp"
-
-#include "ImagesetIterator.pypp.hpp"
-
-#include "ImagesetManager.pypp.hpp"
 
 #include "Interpolator.pypp.hpp"
 
@@ -145,6 +161,8 @@
 #include "LayoutContainer.pypp.hpp"
 
 #include "LineList.pypp.hpp"
+
+#include "LinkedEventArgs.pypp.hpp"
 
 #include "ListHeader.pypp.hpp"
 
@@ -179,8 +197,6 @@
 #include "NamedArea.pypp.hpp"
 
 #include "NamedXMLResourceManagerFont.pypp.hpp"
-
-#include "NamedXMLResourceManagerImageset.pypp.hpp"
 
 #include "NamedXMLResourceManagerScheme.pypp.hpp"
 
@@ -218,11 +234,13 @@
 
 #include "PyCEGUI_enumerations.pypp.hpp"
 
+#include "Quaternion.pypp.hpp"
+
 #include "RadioButton.pypp.hpp"
 
 #include "RawDataContainer.pypp.hpp"
 
-#include "Rect.pypp.hpp"
+#include "Rectf.pypp.hpp"
 
 #include "RenderEffect.pypp.hpp"
 
@@ -290,7 +308,7 @@
 
 #include "SingletonGlobalEventSet.pypp.hpp"
 
-#include "SingletonImagesetManager.pypp.hpp"
+#include "SingletonImageManager.pypp.hpp"
 
 #include "SingletonLogger.pypp.hpp"
 
@@ -310,7 +328,7 @@
 
 #include "SingletonWindowRendererManager.pypp.hpp"
 
-#include "Size.pypp.hpp"
+#include "Sizef.pypp.hpp"
 
 #include "Slider.pypp.hpp"
 
@@ -360,15 +378,17 @@
 
 #include "URect.pypp.hpp"
 
+#include "USize.pypp.hpp"
+
 #include "UVector2.pypp.hpp"
 
 #include "UnifiedDim.pypp.hpp"
 
 #include "UpdateEventArgs.pypp.hpp"
 
-#include "Vector2.pypp.hpp"
+#include "Vector2f.pypp.hpp"
 
-#include "Vector3.pypp.hpp"
+#include "Vector3f.pypp.hpp"
 
 #include "Vertex.pypp.hpp"
 
@@ -410,8 +430,6 @@
 
 #include "XMLSerializer.pypp.hpp"
 
-#include "colour.pypp.hpp"
-
 namespace bp = boost::python;
 
 struct CEGUI_String_to_python
@@ -424,7 +442,7 @@ struct CEGUI_String_to_python
 		// "replace" replaces invalid utf32 chars with "?"
 		
 		// python wants the size of the buffer, not length of the string,
-        // this is the reason for the sizeof
+		// this is the reason for the sizeof
 		return boost::python::incref(
 			PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
 		);
@@ -533,11 +551,17 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_AnimationManager_class();
 
+    register_Rectf_class();
+
+    register_Image_class();
+
+    register_BasicImage_class();
+
     register_RenderedStringParser_class();
 
     register_BasicRenderedStringParser_class();
 
-    register_BiDiVisualMapping_class();
+    register_BidiVisualMapping_class();
 
     register_BoundSlot_class();
 
@@ -555,6 +579,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_Checkbox_class();
 
+    register_Colour_class();
+
+    bp::implicitly_convertible< CEGUI::Colour, CEGUI::argb_t >();
+
     register_ColourRect_class();
 
     register_Listbox_class();
@@ -565,25 +593,37 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ComponentArea_class();
 
+    register_ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_class();
+
+    register_ConstBaseIterator_47ddd968107e89ff0051bf3212fbb472_class();
+
+    register_ConstBaseIterator_3dfe55a685a628d9556dccd6ce85e923_class();
+
+    register_ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_class();
+
+    register_ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f_class();
+
+    register_ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_class();
+
+    register_ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_class();
+
+    register_ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b_class();
+
     register_EventIterator_class();
 
     register_FontIterator_class();
 
-    register_ImageIterator_class();
-
-    register_ImagesetIterator_class();
-
     register_PropertyIterator_class();
 
     register_SchemeIterator_class();
-
-    register_WindowIterator_class();
 
     register_WindowFactoryIterator_class();
 
     register_TypeAliasIterator_class();
 
     register_FalagardMappingIterator_class();
+
+    register_WindowIterator_class();
 
     register_CoordConverter_class();
 
@@ -596,6 +636,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_ResourceProvider_class();
 
     register_DefaultResourceProvider_class();
+
+    register_DefaultWindow_class();
 
     register_Dimension_class();
 
@@ -611,7 +653,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_Event_class();
 
-    register_Rect_class();
+    register_EventLinkDefinition_class();
 
     register_FalagardComponentBase_class();
 
@@ -620,12 +662,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Font_class();
 
     register_FontDim_class();
-
-    register_colour_class();
-
-    bp::implicitly_convertible< CEGUI::colour, CEGUI::argb_t >();
-
-    register_Image_class();
 
     register_FontGlyph_class();
 
@@ -640,8 +676,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_FrameComponent_class();
 
     register_FrameWindow_class();
-
-    register_GUISheet_class();
 
     register_GeometryBuffer_class();
 
@@ -665,17 +699,15 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ImageDim_class();
 
+    register_SingletonImageManager_class();
+
+    register_XMLHandler_class();
+
+    register_ImageManager_class();
+
     register_ImageryComponent_class();
 
     register_ImagerySection_class();
-
-    register_Imageset_class();
-
-    register_NamedXMLResourceManagerImageset_class();
-
-    register_SingletonImagesetManager_class();
-
-    register_ImagesetManager_class();
 
     register_Interpolator_class();
 
@@ -692,6 +724,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_KeyEventArgs_class();
 
     register_LayerSpecification_class();
+
+    register_LinkedEventArgs_class();
 
     register_ListHeaderSegment_class();
 
@@ -745,9 +779,13 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PushButton_class();
 
+    register_Quaternion_class();
+
     register_RadioButton_class();
 
     register_RawDataContainer_class();
+
+    register_URect_class();
 
     register_RenderEffect_class();
 
@@ -811,7 +849,9 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_SingletonWindowRendererManager_class();
 
-    register_Size_class();
+    register_USize_class();
+
+    register_Sizef_class();
 
     register_Slider_class();
 
@@ -853,17 +893,15 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_UDim_class();
 
-    register_URect_class();
-
-    register_UVector2_class();
-
     register_UnifiedDim_class();
 
     register_UpdateEventArgs_class();
 
-    register_Vector2_class();
+    register_UVector2_class();
 
-    register_Vector3_class();
+    register_Vector2f_class();
+
+    register_Vector3f_class();
 
     register_Vertex_class();
 
@@ -890,8 +928,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_WindowRendererManager_class();
 
     register_XMLAttributes_class();
-
-    register_XMLHandler_class();
 
     register_XMLSerializer_class();
 

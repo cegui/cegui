@@ -44,6 +44,62 @@ class CEGUIEXPORT CoordConverter
 public:
     /*!
     \brief
+        converts given UDim to absolute value
+    */
+    inline static float asAbsolute(const UDim& u, float base)
+    {
+        return PixelAligned(base * u.d_scale) + u.d_offset;
+    }
+
+    /*!
+    \brief
+        converts given UDim to relative value
+    */
+    inline static float asRelative(const UDim& u, float base)
+    {
+        return (base != 0.0f) ? u.d_offset / base + u.d_scale : 0.0f;
+    }
+
+    /*!
+    \brief
+        converts given Vector2<UDim> to absolute Vector2f
+    */
+    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base)
+    {
+        return Vector2f(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
+    }
+
+    /*!
+    \brief
+        converts given Vector2<UDim> to relative Vector2f
+    */
+    inline static Vector2f asRelative(const Vector2<UDim>& v, const Sizef& base)
+    {
+        return Vector2f(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
+    }
+
+    inline static Rectf asAbsolute(const URect& r, const Sizef& base)
+    {
+        return Rectf(
+                   asAbsolute(r.d_min.d_x, base.d_width),
+                   asAbsolute(r.d_min.d_y, base.d_height),
+                   asAbsolute(r.d_max.d_x, base.d_width),
+                   asAbsolute(r.d_max.d_y, base.d_height)
+               );
+    }
+
+    inline static Rectf asRelative(const URect& r, const Sizef& base)
+    {
+        return Rectf(
+                   asRelative(r.d_min.d_x, base.d_width),
+                   asRelative(r.d_min.d_y, base.d_height),
+                   asRelative(r.d_max.d_x, base.d_width),
+                   asRelative(r.d_max.d_y, base.d_height)
+               );
+    }
+
+    /*!
+    \brief
         Convert a window co-ordinate value, specified as a UDim, to a screen
         relative pixel co-ordinate.
 
@@ -125,7 +181,7 @@ public:
         Vector2 object describing a screen co-ordinate position that is
         equivalent to window based UVector2 \a vec.
     */
-    static Vector2 windowToScreen(const Window& window, const UVector2& vec);
+    static Vector2f windowToScreen(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -142,7 +198,7 @@ public:
         Vector2 object describing a screen co-ordinate position that is
         equivalent to window based Vector2 \a vec.
     */
-    static Vector2 windowToScreen(const Window& window, const Vector2& vec);
+    static Vector2f windowToScreen(const Window& window, const Vector2f& vec);
 
     /*!
     \brief
@@ -155,7 +211,7 @@ public:
         Rect object describing a screen area that is equivalent to window
         area \a rect.
     */
-    static Rect windowToScreen(const Window& window, const URect& rect);
+    static Rectf windowToScreen(const Window& window, const URect& rect);
 
     /*!
     \brief
@@ -171,7 +227,7 @@ public:
         Rect object describing a screen area that is equivalent to window
         area \a rect.
     */
-    static Rect windowToScreen(const Window& window, const Rect& rect);
+    static Rectf windowToScreen(const Window& window, const Rectf& rect);
 
     /*!
     \brief
@@ -256,7 +312,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based UVector2 point \a vec.
     */
-    static Vector2 screenToWindow(const Window& window, const UVector2& vec);
+    static Vector2f screenToWindow(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -273,7 +329,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based Vector2 point \a vec.
     */
-    static Vector2 screenToWindow(const Window& window, const Vector2& vec);
+    static Vector2f screenToWindow(const Window& window, const Vector2f& vec);
 
     /*!
     \brief
@@ -289,7 +345,7 @@ public:
         Rect object describing a window area that is equivalent to URect screen
         area \a rect.
     */
-    static Rect screenToWindow(const Window& window, const URect& rect);
+    static Rectf screenToWindow(const Window& window, const URect& rect);
 
     /*!
     \brief
@@ -305,9 +361,12 @@ public:
         Rect object describing a window area that is equivalent to Rect screen
         area \a rect.
     */
-    static Rect screenToWindow(const Window& window, const Rect& rect);
+    static Rectf screenToWindow(const Window& window, const Rectf& rect);
 
 private:
+    //! disallows construction of this class
+    CoordConverter();
+
     /*!
     \brief
         Return the base X co-ordinate of the given Window object.
@@ -345,7 +404,7 @@ private:
         Vector2 value indicating the base on-screen pixel location of the window
         object. (i.e. The screen co-ord of the window's top-left corner).
     */
-    static Vector2 getBaseValue(const Window& window);
+    static Vector2f getBaseValue(const Window& window);
 };
 
 } // End of  CEGUI namespace section

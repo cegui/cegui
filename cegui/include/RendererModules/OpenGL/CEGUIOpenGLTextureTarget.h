@@ -31,6 +31,11 @@
 #include "CEGUIOpenGLRenderTarget.h"
 #include "../../CEGUITextureTarget.h"
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4250)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -71,6 +76,14 @@ public:
     virtual void restoreTexture();
 
 protected:
+    //! helper to generate unique texture names
+    static String generateTextureName();
+    //! static data used for creating texture names
+    static uint s_textureNumber;
+
+    //! helper to create CEGUI::Texture d_CEGUITexture;
+    void createCEGUITexture();
+
     //! Associated OpenGL texture ID
     GLuint d_texture;
     //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
@@ -78,5 +91,9 @@ protected:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIOpenGLTextureTarget_h_

@@ -80,8 +80,11 @@ namespace CEGUI
                 "PropertyDefiniton::get: Defining new user string: " +
                 d_userStringName);
 
-            // get a non-const reference to target window.
-            WindowManager::getSingleton().getWindow(wnd->getName())->
+            // HACK: FIXME: TODO: This const_cast is basically to allow the
+            // above mentioned performance measure; the alternative would be
+            // to just return d_default, and while technically correct, it
+            // would be very slow.
+            const_cast<Window*>(wnd)->
                 setUserString(d_userStringName, d_default);
 
             return d_default;

@@ -31,6 +31,11 @@
 #include "CEGUIRect.h"
 #include "CEGUIVector.h"
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 // some macros to aid in the creation of UDims
 #define cegui_absdim(x)     CEGUI::UDim(0,(x))
 #define cegui_reldim(x)     CEGUI::UDim((x),0)
@@ -44,22 +49,14 @@ namespace CEGUI
     Class representing a unified dimension; that is a dimension that has both
     a relative 'scale' portion and and absolute 'offset' portion.
 */
-class CEGUIEXPORT UDim
+class CEGUIEXPORT UDim :
+    public AllocatedObject<UDim>
 {
 public:
     UDim() {}
     UDim(float scale, float offset) : d_scale(scale), d_offset(offset) {}
     UDim(const UDim& v): d_scale(v.d_scale), d_offset(v.d_offset) {}
     ~UDim() {}
-
-    float asAbsolute(float base) const
-    {
-        return PixelAligned(base * d_scale) + d_offset;
-    }
-    float asRelative(float base) const
-    {
-        return (base != 0.0f) ? d_offset / base + d_scale : 0.0f;
-    }
 
     UDim operator+(const UDim& other) const
     {
@@ -68,6 +65,10 @@ public:
     UDim operator-(const UDim& other) const
     {
         return UDim(d_scale - other.d_scale, d_offset - other.d_offset);
+    }
+    UDim operator*(const float val) const
+    {
+        return UDim(d_scale * val, d_offset * val);
     }
     UDim operator*(const UDim& other) const
     {
@@ -120,223 +121,22 @@ public:
     float d_scale, d_offset;
 };
 
-/*!
-\brief
-    Two dimensional vector class built using unified dimensions (UDims).
-    The UVector2 class is used for representing both positions and sizes.
-*/
-class CEGUIEXPORT UVector2
+// we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
+inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
 {
-public:
-    UVector2() {}
-    UVector2(const UDim& x, const UDim& y) : d_x(x), d_y(y) {}
-    UVector2(const UVector2& v): d_x(v.d_x), d_y(v.d_y) {}
-    ~UVector2() {}
+    return Vector2<UDim>(v.d_x * c, v.d_y * c);
+}
 
-    Vector2 asAbsolute(const Size& base) const
-    {
-        return Vector2(d_x.asAbsolute(base.d_width), d_y.asAbsolute(base.d_height));
-    }
-    Vector2 asRelative(const Size& base) const
-    {
-        return Vector2(d_x.asRelative(base.d_width), d_y.asRelative(base.d_height));
-    }
+typedef Vector2<UDim> UVector2;
 
-    UVector2 operator+(const UVector2& other) const
-    {
-        return UVector2(d_x + other.d_x, d_y + other.d_y);
-    }
-    UVector2 operator-(const UVector2& other) const
-    {
-        return UVector2(d_x - other.d_x, d_y - other.d_y);
-    }
-    UVector2 operator/(const UVector2& other) const
-    {
-        return UVector2(d_x / other.d_x, d_y / other.d_y);
-    }
-    UVector2 operator*(const UVector2& other) const
-    {
-        return UVector2(d_x * other.d_x, d_y * other.d_y);
-    }
-
-    const UVector2& operator+=(const UVector2& other)
-    {
-        d_x += other.d_x;
-        d_y += other.d_y;
-        return *this;
-    }
-    const UVector2& operator-=(const UVector2& other)
-    {
-        d_x -= other.d_x;
-        d_y -= other.d_y;
-        return *this;
-    }
-    const UVector2& operator/=(const UVector2& other)
-    {
-        d_x /= other.d_x;
-        d_y /= other.d_y;
-        return *this;
-    }
-    const UVector2& operator*=(const UVector2& other)
-    {
-        d_x *= other.d_x;
-        d_y *= other.d_y;
-        return *this;
-    }
-
-    UVector2 operator+(const UDim& dim) const
-    {
-        return UVector2(d_x + dim, d_y + dim);
-    }
-    UVector2 operator-(const UDim& dim) const
-    {
-        return UVector2(d_x - dim, d_y - dim);
-    }
-    UVector2 operator/(const UDim& dim) const
-    {
-        return UVector2(d_x / dim, d_y / dim);
-    }
-    UVector2 operator*(const UDim& dim) const
-    {
-        return UVector2(d_x * dim, d_y * dim);
-    }
-
-    const UVector2& operator+=(const UDim& dim)
-    {
-        d_x += dim;
-        d_y += dim;
-        return *this;
-    }
-    const UVector2& operator-=(const UDim& dim)
-    {
-        d_x -= dim;
-        d_y -= dim;
-        return *this;
-    }
-    const UVector2& operator/=(const UDim& dim)
-    {
-        d_x /= dim;
-        d_y /= dim;
-        return *this;
-    }
-    const UVector2& operator*=(const UDim& dim)
-    {
-        d_x *= dim;
-        d_y *= dim;
-        return *this;
-    }
-
-    bool operator==(const UVector2& other) const
-    {
-        return d_x == other.d_x && d_y == other.d_y;
-    }
-    bool operator!=(const UVector2& other) const
-    {
-        return !operator==(other);
-    }
-
-    UDim d_x, d_y;
-};
-
-/*!
-\brief
-    Area rectangle class built using unified dimensions (UDims).
-*/
-class CEGUIEXPORT URect
+// we need to allow URect to be multiplied by floats, this is the most elegant way to do that
+inline Rect<UDim> operator * (const Rect<UDim>& v, const float c)
 {
-public:
-    URect() {}
+    return Rect<UDim>(v.d_min * c, v.d_max * c);
+}
 
-    URect(const UVector2& min, const UVector2& max) : d_min(min), d_max(max) {}
-
-    URect(const UDim& left, const UDim& top, const UDim& right, const UDim& bottom)
-    {
-        d_min.d_x = left;
-        d_min.d_y = top;
-        d_max.d_x = right;
-        d_max.d_y = bottom;
-    }
-
-    URect(const URect& v): d_min(v.d_min), d_max(v.d_max) {}
-
-    ~URect() {}
-
-    Rect asAbsolute(const Size& base) const
-    {
-        return Rect(
-                   d_min.d_x.asAbsolute(base.d_width),
-                   d_min.d_y.asAbsolute(base.d_height),
-                   d_max.d_x.asAbsolute(base.d_width),
-                   d_max.d_y.asAbsolute(base.d_height)
-               );
-    }
-
-    Rect asRelative(const Size& base) const
-    {
-        return Rect(
-                   d_min.d_x.asRelative(base.d_width),
-                   d_min.d_y.asRelative(base.d_height),
-                   d_max.d_x.asRelative(base.d_width),
-                   d_max.d_y.asRelative(base.d_height)
-               );
-    }
-
-    const UVector2& getPosition() const
-    {
-        return d_min;
-    }
-    UVector2 getSize() const
-    {
-        return d_max - d_min;
-    }
-    UDim getWidth() const
-    {
-        return d_max.d_x - d_min.d_x;
-    }
-    UDim getHeight() const
-    {
-        return d_max.d_y - d_min.d_y;
-    }
-
-    void setPosition(const UVector2& pos)
-    {
-        UVector2 sz(d_max - d_min);
-        d_min = pos;
-        d_max = d_min + sz;
-    }
-
-    void setSize(const UVector2& sz)
-    {
-        d_max = d_min + sz;
-    }
-
-    void setWidth(const UDim& w)
-    {
-        d_max.d_x = d_min.d_x + w;
-    }
-    void setHeight(const UDim& h)
-    {
-        d_max.d_y = d_min.d_y + h;
-    }
-
-    void offset(const UVector2& sz)
-    {
-        d_min += sz;
-        d_max += sz;
-    }
-
-    URect operator*(const UDim& dim) const
-    {
-        return URect(d_min * dim, d_max * dim);
-    }
-
-    URect operator+(const URect& r) const
-    {
-        return URect(d_min + r.d_min, d_max + r.d_max);
-    }
-
-    UVector2 d_min, d_max;
-};
+typedef Size<UDim> USize;
+typedef Rect<UDim> URect;
 
 /*!
 \brief
@@ -348,7 +148,8 @@ public:
 \note
     Name taken from W3 'box model'
 */
-class CEGUIEXPORT UBox
+class CEGUIEXPORT UBox :
+    public AllocatedObject<UBox>
 {
 public:
     UBox():
@@ -404,6 +205,13 @@ public:
 
         return *this;
     }
+    
+    UBox operator*(const float val) const
+    {
+        return UBox(
+                   d_top * val, d_left * val,
+                   d_bottom * val, d_right * val);
+    }
 
     UBox operator*(const UDim& dim) const
     {
@@ -430,6 +238,10 @@ public:
 
 } // End of  CEGUI namespace section
 
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIUDim_h_
 

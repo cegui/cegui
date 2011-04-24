@@ -51,7 +51,8 @@ namespace CEGUI
 */
 class CEGUIEXPORT SchemeManager :
         public Singleton<SchemeManager>,
-        public NamedXMLResourceManager<Scheme, Scheme_xmlHandler>
+        public NamedXMLResourceManager<Scheme, Scheme_xmlHandler>,
+        public AllocatedObject<SchemeManager>
 {
 public:
     //! Constructor.
@@ -61,7 +62,7 @@ public:
     ~SchemeManager();
 
     //! Definition of SchemeIterator type.
-    typedef ConstBaseIterator<ObjectRegistry> SchemeIterator;
+    typedef ConstMapIterator<ObjectRegistry> SchemeIterator;
 
     /*!
     \brief

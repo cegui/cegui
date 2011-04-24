@@ -8,13 +8,6 @@ namespace bp = boost::python;
 
 struct XMLHandler_wrapper : CEGUI::XMLHandler, bp::wrapper< CEGUI::XMLHandler > {
 
-    XMLHandler_wrapper(CEGUI::XMLHandler const & arg )
-    : CEGUI::XMLHandler( arg )
-      , bp::wrapper< CEGUI::XMLHandler >(){
-        // copy constructor
-        
-    }
-
     XMLHandler_wrapper( )
     : CEGUI::XMLHandler( )
       , bp::wrapper< CEGUI::XMLHandler >(){
@@ -46,6 +39,10 @@ struct XMLHandler_wrapper : CEGUI::XMLHandler, bp::wrapper< CEGUI::XMLHandler > 
         CEGUI::XMLHandler::elementStart( boost::ref(element), boost::ref(attributes) );
     }
 
+    virtual ::CEGUI::String const & getDefaultResourceGroup(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
     virtual void text( ::CEGUI::String const & text ) {
         if( bp::override func_text = this->get_override( "text" ) )
             func_text( boost::ref(text) );
@@ -63,7 +60,7 @@ struct XMLHandler_wrapper : CEGUI::XMLHandler, bp::wrapper< CEGUI::XMLHandler > 
 void register_XMLHandler_class(){
 
     { //::CEGUI::XMLHandler
-        typedef bp::class_< XMLHandler_wrapper > XMLHandler_exposer_t;
+        typedef bp::class_< XMLHandler_wrapper, boost::noncopyable > XMLHandler_exposer_t;
         XMLHandler_exposer_t XMLHandler_exposer = XMLHandler_exposer_t( "XMLHandler", bp::init< >("*!\n\
         \n\
             XMLHandler base class constructor.\n\
@@ -91,6 +88,87 @@ void register_XMLHandler_class(){
                 , elementStart_function_type(&::CEGUI::XMLHandler::elementStart)
                 , default_elementStart_function_type(&XMLHandler_wrapper::default_elementStart)
                 , ( bp::arg("element"), bp::arg("attributes") ) );
+        
+        }
+        { //::CEGUI::XMLHandler::getDefaultResourceGroup
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::XMLHandler::*getDefaultResourceGroup_function_type )(  ) const;
+            
+            XMLHandler_exposer.def( 
+                "getDefaultResourceGroup"
+                , bp::pure_virtual( getDefaultResourceGroup_function_type(&::CEGUI::XMLHandler::getDefaultResourceGroup) )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+            \n\
+                Retrieves the default resource group to be used when handling files\n\
+             *\n" );
+        
+        }
+        { //::CEGUI::XMLHandler::getSchemaName
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::XMLHandler::*getSchemaName_function_type )(  ) const;
+            
+            XMLHandler_exposer.def( 
+                "getSchemaName"
+                , getSchemaName_function_type(&::CEGUI::XMLHandler::getSchemaName)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::XMLHandler::handleContainer
+        
+            typedef void ( ::CEGUI::XMLHandler::*handleContainer_function_type )( ::CEGUI::RawDataContainer const & ) ;
+            
+            XMLHandler_exposer.def( 
+                "handleContainer"
+                , handleContainer_function_type( &::CEGUI::XMLHandler::handleContainer )
+                , ( bp::arg("source") )
+                , "*!\n\
+                    \n\
+                        Takes given RawDataContainer containing XML and handles it\n\
+            \n\
+                    This is basically a convenience function used by NamedXMLResourceManager\n\
+            \n\
+                     internal\n\
+                        No need for this to be virtual\n\
+                     *\n" );
+        
+        }
+        { //::CEGUI::XMLHandler::handleFile
+        
+            typedef void ( ::CEGUI::XMLHandler::*handleFile_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            XMLHandler_exposer.def( 
+                "handleFile"
+                , handleFile_function_type( &::CEGUI::XMLHandler::handleFile )
+                , ( bp::arg("fileName"), bp::arg("resourceGroup") )
+                , "*!\n\
+                    \n\
+                        Takes given file containing XML and handles it\n\
+            \n\
+                    This is basically a convenience function used by NamedXMLResourceManager\n\
+            \n\
+                     internal\n\
+                        No need for this to be virtual\n\
+                     *\n" );
+        
+        }
+        { //::CEGUI::XMLHandler::handleString
+        
+            typedef void ( ::CEGUI::XMLHandler::*handleString_function_type )( ::CEGUI::String const & ) ;
+            
+            XMLHandler_exposer.def( 
+                "handleString"
+                , handleString_function_type( &::CEGUI::XMLHandler::handleString )
+                , ( bp::arg("source") )
+                , "*!\n\
+                    \n\
+                        Takes given string containing XML source and handles it\n\
+            \n\
+                    This is basically a convenience function used by NamedXMLResourceManager\n\
+            \n\
+                     internal\n\
+                        No need for this to be virtual\n\
+                     *\n" );
         
         }
         { //::CEGUI::XMLHandler::text

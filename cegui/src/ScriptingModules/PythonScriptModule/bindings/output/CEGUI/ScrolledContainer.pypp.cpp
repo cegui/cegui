@@ -15,7 +15,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
     
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -23,7 +23,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::ScrolledContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -123,7 +123,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         CEGUI::Window::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -131,7 +131,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -233,7 +233,7 @@ void register_ScrolledContainer_class(){
         bp::scope ScrolledContainer_scope( ScrolledContainer_exposer );
         { //::CEGUI::ScrolledContainer::getChildExtentsArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrolledContainer::*getChildExtentsArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getChildExtentsArea_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getChildExtentsArea"
@@ -251,7 +251,7 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::getContentArea
         
-            typedef ::CEGUI::Rect const & ( ::CEGUI::ScrolledContainer::*getContentArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::ScrolledContainer::*getContentArea_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getContentArea"
@@ -269,8 +269,8 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -298,7 +298,7 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::setContentArea
         
-            typedef void ( ::CEGUI::ScrolledContainer::*setContentArea_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::ScrolledContainer::*setContentArea_function_type )( ::CEGUI::Rectf const & ) ;
             
             ScrolledContainer_exposer.def( 
                 "setContentArea"
@@ -453,8 +453,8 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ScrolledContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( ScrolledContainer_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             ScrolledContainer_exposer.def( 
                 "isHit"

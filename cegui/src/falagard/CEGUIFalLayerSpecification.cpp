@@ -35,7 +35,7 @@ namespace CEGUI
         d_layerPriority(priority)
     {}
 
-    void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
+    void LayerSpecification::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
     {
         // render all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
@@ -44,7 +44,7 @@ namespace CEGUI
         }
     }
 
-    void LayerSpecification::render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
+    void LayerSpecification::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper, bool clipToDisplay) const
     {
         // render all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
@@ -78,7 +78,7 @@ namespace CEGUI
         xml_stream.openTag("Layer");
 
         if (d_layerPriority != 0)
-            xml_stream.attribute("priority", PropertyHelper::uintToString(d_layerPriority));
+            xml_stream.attribute("priority", PropertyHelper<uint>::toString(d_layerPriority));
 
         // ouput all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)

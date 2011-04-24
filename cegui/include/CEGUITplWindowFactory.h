@@ -72,14 +72,14 @@ TplWindowFactory<T>::TplWindowFactory() :
 template <typename T>
 Window* TplWindowFactory<T>::createWindow(const String& name)
 {
-    return new T(d_type, name);
+    return CEGUI_NEW_AO T(d_type, name);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void TplWindowFactory<T>::destroyWindow(Window* window)
 {
-    delete window;
+    CEGUI_DELETE_AO window;
 }
 
 //----------------------------------------------------------------------------//

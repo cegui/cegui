@@ -193,7 +193,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::getPivot
         
-            typedef ::CEGUI::Vector3 const & ( ::CEGUI::RenderingWindow::*getPivot_function_type )(  ) const;
+            typedef ::CEGUI::Vector3f const & ( ::CEGUI::RenderingWindow::*getPivot_function_type )(  ) const;
             
             RenderingWindow_exposer.def( 
                 "getPivot"
@@ -211,7 +211,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::getPosition
         
-            typedef ::CEGUI::Vector2 const & ( ::CEGUI::RenderingWindow::*getPosition_function_type )(  ) const;
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::RenderingWindow::*getPosition_function_type )(  ) const;
             
             RenderingWindow_exposer.def( 
                 "getPosition"
@@ -254,7 +254,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::getRotation
         
-            typedef ::CEGUI::Vector3 const & ( ::CEGUI::RenderingWindow::*getRotation_function_type )(  ) const;
+            typedef ::CEGUI::Quaternion const & ( ::CEGUI::RenderingWindow::*getRotation_function_type )(  ) const;
             
             RenderingWindow_exposer.def( 
                 "getRotation"
@@ -262,17 +262,16 @@ void register_RenderingWindow_class(){
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
-                    Return the current rotations being applied to the RenderingWindow, in\n\
-                    degrees.\n\
+                    Return the current rotation being applied to the RenderingWindow\n\
             \n\
                 @return\n\
-                    Vector3 object describing the rotations for the RenderingWindow.\n\
+                    Quaternion object describing the rotation for the RenderingWindow.\n\
                 *\n" );
         
         }
         { //::CEGUI::RenderingWindow::getSize
         
-            typedef ::CEGUI::Size const & ( ::CEGUI::RenderingWindow::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::RenderingWindow::*getSize_function_type )(  ) const;
             
             RenderingWindow_exposer.def( 
                 "getSize"
@@ -389,7 +388,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::setClippingRegion
         
-            typedef void ( ::CEGUI::RenderingWindow::*setClippingRegion_function_type )( ::CEGUI::Rect const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setClippingRegion_function_type )( ::CEGUI::Rectf const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setClippingRegion"
@@ -418,7 +417,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::setPivot
         
-            typedef void ( ::CEGUI::RenderingWindow::*setPivot_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setPivot_function_type )( ::CEGUI::Vector3f const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setPivot"
@@ -437,7 +436,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::setPosition
         
-            typedef void ( ::CEGUI::RenderingWindow::*setPosition_function_type )( ::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setPosition_function_type )( ::CEGUI::Vector2f const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setPosition"
@@ -481,7 +480,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::setRotation
         
-            typedef void ( ::CEGUI::RenderingWindow::*setRotation_function_type )( ::CEGUI::Vector3 const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setRotation_function_type )( ::CEGUI::Quaternion const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setRotation"
@@ -489,18 +488,17 @@ void register_RenderingWindow_class(){
                 , ( bp::arg("rotation") )
                 , "*!\n\
                 \n\
-                    Set the rotation factors to be used when rendering the RenderingWindow\n\
+                    Set the rotation quaternion to be used when rendering the RenderingWindow\n\
                     back onto it's owning RenderingSurface.\n\
             \n\
                 @param rotation\n\
-                    Vector3 object describing the rotaions to be used. Values are in\n\
-                    degrees.\n\
+                    Quaternion object describing the rotation.\n\
                 *\n" );
         
         }
         { //::CEGUI::RenderingWindow::setSize
         
-            typedef void ( ::CEGUI::RenderingWindow::*setSize_function_type )( ::CEGUI::Size const & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*setSize_function_type )( ::CEGUI::Sizef const & ) ;
             
             RenderingWindow_exposer.def( 
                 "setSize"
@@ -518,7 +516,7 @@ void register_RenderingWindow_class(){
         }
         { //::CEGUI::RenderingWindow::unprojectPoint
         
-            typedef void ( ::CEGUI::RenderingWindow::*unprojectPoint_function_type )( ::CEGUI::Vector2 const &,::CEGUI::Vector2 & ) ;
+            typedef void ( ::CEGUI::RenderingWindow::*unprojectPoint_function_type )( ::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) ;
             
             RenderingWindow_exposer.def( 
                 "unprojectPoint"

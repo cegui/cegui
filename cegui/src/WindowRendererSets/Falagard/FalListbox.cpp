@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardListbox::TypeName[] = "Falagard/Listbox";
+    const String FalagardListbox::TypeName("Falagard/Listbox");
 
 
     FalagardListbox::FalagardListbox(const String& type) :
@@ -42,13 +42,13 @@ namespace CEGUI
     {
     }
 
-    Rect FalagardListbox::getListRenderArea(void) const
+    Rectf FalagardListbox::getListRenderArea(void) const
     {
     	Listbox* lb = (Listbox*)d_window;
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = lb->getVertScrollbar()->isVisible(true);
-        bool h_visible = lb->getHorzScrollbar()->isVisible(true);
+        bool v_visible = lb->getVertScrollbar()->isVisible();
+        bool h_visible = lb->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
@@ -92,20 +92,20 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3 itemPos;
-        Size    itemSize;
-        Rect    itemClipper, itemRect;
-        float   widest = lb->getWidestItemWidth();
+        Vector3f itemPos;
+        Sizef itemSize;
+        Rectf itemClipper, itemRect;
+        const float widest = lb->getWidestItemWidth();
 
         // calculate position of area we have to render into
-        Rect itemsArea(getListRenderArea());
+        Rectf itemsArea(getListRenderArea());
 
         // set up some initial positional details for items
-        itemPos.d_x = itemsArea.d_left - lb->getHorzScrollbar()->getScrollPosition();
-        itemPos.d_y = itemsArea.d_top - lb->getVertScrollbar()->getScrollPosition();
+        itemPos.d_x = itemsArea.left() - lb->getHorzScrollbar()->getScrollPosition();
+        itemPos.d_y = itemsArea.top() - lb->getVertScrollbar()->getScrollPosition();
         itemPos.d_z = 0.0f;
 
-        float alpha = lb->getEffectiveAlpha();
+        const float alpha = lb->getEffectiveAlpha();
 
         // loop through the items
         size_t itemCount = lb->getItemCount();
@@ -119,8 +119,8 @@ namespace CEGUI
             itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
 
             // calculate destination area for this item.
-            itemRect.d_left = itemPos.d_x;
-            itemRect.d_top  = itemPos.d_y;
+            itemRect.left(itemPos.d_x);
+            itemRect.top(itemPos.d_y);
             itemRect.setSize(itemSize);
             itemClipper = itemRect.getIntersection(itemsArea);
 
@@ -147,7 +147,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }

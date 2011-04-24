@@ -39,22 +39,22 @@ namespace MenuItemProperties
 
 String PopupOffset::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const MenuItem*>(receiver)->getPopupOffset());
+    return PropertyHelper<UVector2>::toString(static_cast<const MenuItem*>(receiver)->getPopupOffset());
 }
 
 void PopupOffset::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<MenuItem*>(receiver)->setPopupOffset(PropertyHelper::stringToUVector2(value));
+    static_cast<MenuItem*>(receiver)->setPopupOffset(PropertyHelper<UVector2>::fromString(value));
 }
 
 String AutoPopupTimeout::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::floatToString(static_cast<const MenuItem*>(receiver)->getAutoPopupTimeout());
+    return PropertyHelper<float>::toString(static_cast<const MenuItem*>(receiver)->getAutoPopupTimeout());
 }
 
 void AutoPopupTimeout::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<MenuItem*>(receiver)->setAutoPopupTimeout(PropertyHelper::stringToFloat(value));
+    static_cast<MenuItem*>(receiver)->setAutoPopupTimeout(PropertyHelper<float>::fromString(value));
 }
 
 } // End of  MenuItemProperties namespace section

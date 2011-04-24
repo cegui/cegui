@@ -60,22 +60,16 @@ const String Scheme_xmlHandler::WindowRendererAttribute("Renderer");
 const String Scheme_xmlHandler::RenderEffectAttribute("RenderEffect");
 
 //----------------------------------------------------------------------------//
-Scheme_xmlHandler::Scheme_xmlHandler(const String& filename,
-                                     const String& resource_group) :
+Scheme_xmlHandler::Scheme_xmlHandler():
     d_scheme(0),
     d_objectRead(false)
-{
-    System::getSingleton().getXMLParser()->parseXMLFile(
-            *this, filename, GUISchemeSchemaName,
-            resource_group.empty() ? Scheme::getDefaultResourceGroup() :
-                                     resource_group);
-}
+{}
 
 //----------------------------------------------------------------------------//
 Scheme_xmlHandler::~Scheme_xmlHandler()
 {
     if (!d_objectRead)
-        delete d_scheme;
+        CEGUI_DELETE_AO d_scheme;
 }
 
 //----------------------------------------------------------------------------//
@@ -97,6 +91,18 @@ Scheme& Scheme_xmlHandler::getObject() const
 
     d_objectRead = true;
     return *d_scheme;
+}
+
+//----------------------------------------------------------------------------//
+const String& Scheme_xmlHandler::getSchemaName() const
+{
+    return GUISchemeSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Scheme_xmlHandler::getDefaultResourceGroup() const
+{
+    return Scheme::getDefaultResourceGroup();
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +153,7 @@ void Scheme_xmlHandler::elementGUISchemeStart(const XMLAttributes& attributes)
     logger.logEvent("---- CEGUI GUIScheme name: " + name);
 
     // create empty scheme with desired name
-    d_scheme = new Scheme(name);
+    d_scheme = CEGUI_NEW_AO Scheme(name);
 }
 
 //----------------------------------------------------------------------------//

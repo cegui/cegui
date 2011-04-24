@@ -38,7 +38,7 @@ NullGeometryBuffer::NullGeometryBuffer() :
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
-    d_rotation(0, 0, 0),
+    d_rotation(),
     d_pivot(0, 0, 0),
     d_effect(0)
 {
@@ -66,30 +66,30 @@ void NullGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setTranslation(const Vector3& v)
+void NullGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRotation(const Vector3& r)
+void NullGeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setPivot(const Vector3& p)
+void NullGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setClippingRegion(const Rect& region)
+void NullGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
+    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
+    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
+    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
 }
 
 //----------------------------------------------------------------------------//

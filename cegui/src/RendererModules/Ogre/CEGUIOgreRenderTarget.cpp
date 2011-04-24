@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -70,7 +70,7 @@ void OgreRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderTarget::setArea(const Rect& area)
+void OgreRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     setOgreViewportDimensions(area);
@@ -79,7 +79,7 @@ void OgreRenderTarget::setArea(const Rect& area)
 }
 
 //----------------------------------------------------------------------------//
-void OgreRenderTarget::setOgreViewportDimensions(const Rect& area)
+void OgreRenderTarget::setOgreViewportDimensions(const Rectf& area)
 {
     d_ogreViewportDimensions = area;
 
@@ -96,15 +96,15 @@ void OgreRenderTarget::updateOgreViewportDimensions(
     if (rt)
     {
         d_viewport->setDimensions(
-            d_ogreViewportDimensions.d_left / rt->getWidth(),
-            d_ogreViewportDimensions.d_top / rt->getHeight(),
+            d_ogreViewportDimensions.left() / rt->getWidth(),
+            d_ogreViewportDimensions.top() / rt->getHeight(),
             d_ogreViewportDimensions.getWidth() / rt->getWidth(),
             d_ogreViewportDimensions.getHeight() / rt->getHeight());
     }
 }
 
 //----------------------------------------------------------------------------//
-const Rect& OgreRenderTarget::getArea() const
+const Rectf& OgreRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -131,7 +131,8 @@ void OgreRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2& p_in, Vector2& p_out) const
+                                      const Vector2f& p_in,
+                                      Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -143,8 +144,8 @@ void OgreRenderTarget::unprojectPoint(const GeometryBuffer& buff,
 
     // viewport matrix
     const Ogre::Matrix4 vpmat(
-        midx,    0,    0,    d_area.d_left + midx,
-         0,    -midy,  0,    d_area.d_top + midy,
+        midx,    0,    0,    d_area.left() + midx,
+         0,    -midy,  0,    d_area.top() + midy,
          0,      0,    1,    0,
          0,      0,    0,    1
     );

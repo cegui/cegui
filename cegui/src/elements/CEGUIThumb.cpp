@@ -51,7 +51,7 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String Thumb::EventThumbPositionChanged( "ThumbPosChanged" );
+const String Thumb::EventThumbPositionChanged( "ThumbPositionChanged" );
 const String Thumb::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Thumb::EventThumbTrackEnded( "ThumbTrackEnded" );
 
@@ -99,7 +99,7 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	float cp = getYPosition().asRelative(getParentPixelHeight());
+	const float cp = CoordConverter::asRelative(getYPosition(), getParentPixelHeight());
 
 	if (cp < min)
 	{
@@ -118,7 +118,7 @@ void Thumb::setVertRange(float min, float max)
 *************************************************************************/
 void Thumb::setHorzRange(float min, float max)
 {
-    Size parentSize(getParentPixelSize());
+    Sizef parentSize(getParentPixelSize());
 
 	// ensure min <= max, swap if not.
 	if (min > max)
@@ -132,7 +132,7 @@ void Thumb::setHorzRange(float min, float max)
 	d_horzMin = min;
 
 	// validate current position.
-	float cp = getXPosition().asAbsolute(parentSize.d_width);
+	const float cp = CoordConverter::asAbsolute(getXPosition(), parentSize.d_width);
 
 	if (cp < min)
 	{
@@ -184,9 +184,9 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
-        Size parentSize(getParentPixelSize());
+        Sizef parentSize(getParentPixelSize());
 
-		Vector2 delta;
+		Vector2f delta;
 		float hmin, hmax, vmin, vmax;
 
         delta = CoordConverter::screenToWindow(*this, e.position);

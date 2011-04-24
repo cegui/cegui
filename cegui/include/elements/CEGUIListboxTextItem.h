@@ -46,7 +46,7 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	static const colour	DefaultTextColour;			//!< Default text colour.
+	static const Colour	DefaultTextColour;			//!< Default text colour.
 
 
 	/*************************************************************************
@@ -153,7 +153,7 @@ public:
 	\return 
 		Nothing.
 	*/
-	void	setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void	setTextColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
 
 
 	/*!
@@ -166,7 +166,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setTextColours(colour col)		{setTextColours(col, col, col, col);}
+	void	setTextColours(Colour col)		{setTextColours(col, col, col, col);}
 
     /*!
     \brief
@@ -189,8 +189,8 @@ public:
 	/*************************************************************************
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/
-    Size getPixelSize(void) const;
-    void draw(GeometryBuffer& buffer, const Rect& targetRect, float alpha, const Rect* clipper) const;
+    Sizef getPixelSize(void) const;
+    void draw(GeometryBuffer& buffer, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
 
 protected:
     void parseTextString() const;

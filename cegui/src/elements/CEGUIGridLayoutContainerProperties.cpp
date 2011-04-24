@@ -45,17 +45,17 @@ String GridSize::get(const PropertyReceiver* receiver) const
     const GridLayoutContainer* grid =
         static_cast<const GridLayoutContainer*>(receiver);
 
-    const Size size(static_cast<float>(grid->getGridWidth()),
-                    static_cast<float>(grid->getGridHeight()));
+    const Sizef size(static_cast<float>(grid->getGridWidth()),
+                      static_cast<float>(grid->getGridHeight()));
 
-    return PropertyHelper::sizeToString(size);
+    return PropertyHelper<Sizef >::toString(size);
 }
 
 //----------------------------------------------------------------------------//
 void GridSize::set(PropertyReceiver* receiver, const String& value)
 {
     GridLayoutContainer* grid = static_cast<GridLayoutContainer*>(receiver);
-    Size size = PropertyHelper::stringToSize(value);
+    Sizef size = PropertyHelper<Sizef >::fromString(value);
     size.d_width = std::max(0.0f, size.d_width);
     size.d_height = std::max(0.0f, size.d_height);
 

@@ -26,6 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIXMLParser.h"
+#include "CEGUIDataContainer.h"
+#include "CEGUISystem.h"
+#include "CEGUIResourceProvider.h"
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,6 +52,51 @@ namespace CEGUI
         }
 
         return d_initialised;
+    }
+
+    void XMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    {
+        // Acquire resource using CEGUI ResourceProvider
+        RawDataContainer rawXMLData;
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
+
+        try
+        {
+            // The actual parsing action (this is overridden and depends on the specific parser)
+            parseXML(handler, rawXMLData, schemaName);
+        }
+        catch (const Exception&)
+        {
+            // hint the related file name in the log
+            Logger::getSingleton().logEvent("The last thrown exception was related to XML file '" +
+                                            filename + "' from resource group '" + resourceGroup + "'.", Errors);
+
+            // exception safety
+            System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+
+            CEGUI_RETHROW;
+        }
+
+        // Release resource
+        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+    }
+
+    void XMLParser::parseXMLString(XMLHandler& handler, const String& source, const String& schemaName)
+    {
+        // Put the source string into a RawDataContainer
+        RawDataContainer rawXMLData;
+
+		const char* c_str = source.c_str();
+        rawXMLData.setData((uint8*)c_str);
+		rawXMLData.setSize(strlen(c_str));
+
+        // The actual parsing action (this is overridden and depends on the specific parser)
+        parseXML(handler, rawXMLData, schemaName);
+
+        // !!! We don't have to release the rawXMLData because it contains data that is owned by String source
+        //
+        //     This code is exception safe as it is, if exception is thrown, rawXMLData is just destroyed when
+        //     the stack is being left
     }
 
     void XMLParser::cleanup(void)

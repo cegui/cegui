@@ -31,6 +31,11 @@
 #include "../CEGUIWindow.h"
 #include "../CEGUIWindowFactory.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -80,7 +85,7 @@ public:
     \return
         Rect object describing the clipping area in pixel that will be applied during rendering.
     */
-    const Rect& getClipArea(void) const;
+    const Rectf& getClipArea(void) const;
 
     /*!
     \brief
@@ -92,7 +97,7 @@ public:
     \brief
         Set the custom clipper area in pixels.
     */
-    void setClipArea(const Rect& r);
+    void setClipArea(const Rectf& r);
 
     /*!
     \brief
@@ -105,7 +110,7 @@ public:
     void setClipperWindow(Window* w);
 
     // Overridden from Window.
-    virtual Rect getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
 protected:
     /*************************************************************************
@@ -136,11 +141,15 @@ protected:
     	Data fields
     *************************************************************************/
     //! the pixel rect to be used for clipping relative to either a window or the screen.
-    Rect d_clipArea;
+    Rectf d_clipArea;
     //! the base window which the clipping rect is relative to.
     Window* d_clipperWindow;
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIClippedContainer_h_

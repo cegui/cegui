@@ -85,7 +85,7 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     result->loadFromMemory(img.getPixelsDataPtr(),
-                           Size(img.getWidth(), img.getHeight()), cefmt);
+                           Sizef(img.getWidth(), img.getHeight()), cefmt);
     return result;
 }
 

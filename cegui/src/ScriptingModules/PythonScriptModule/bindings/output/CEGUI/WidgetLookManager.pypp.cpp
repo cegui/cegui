@@ -10,11 +10,7 @@ void register_WidgetLookManager_class(){
 
     { //::CEGUI::WidgetLookManager
         typedef bp::class_< CEGUI::WidgetLookManager, bp::bases< CEGUI::Singleton< CEGUI::WidgetLookManager > >, boost::noncopyable > WidgetLookManager_exposer_t;
-        WidgetLookManager_exposer_t WidgetLookManager_exposer = WidgetLookManager_exposer_t( "WidgetLookManager", "*!\n\
-        \n\
-            Manager class that gives top-level access to widget data based look and feel specifications\
-            loaded into the system.\n\
-        *\n", bp::init< >("*!\n\
+        WidgetLookManager_exposer_t WidgetLookManager_exposer = WidgetLookManager_exposer_t( "WidgetLookManager", bp::init< >("*!\n\
         \n\
             Constructor.\n\
         *\n") );
@@ -46,6 +42,16 @@ void register_WidgetLookManager_class(){
                     @return\n\
                         Nothing.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookManager::eraseAllWidgetLooks
+        
+            typedef void ( ::CEGUI::WidgetLookManager::*eraseAllWidgetLooks_function_type )(  ) ;
+            
+            WidgetLookManager_exposer.def( 
+                "eraseAllWidgetLooks"
+                , eraseAllWidgetLooks_function_type( &::CEGUI::WidgetLookManager::eraseAllWidgetLooks )
+                , "! erase all defined WidgetLookFeel.\n" );
         
         }
         { //::CEGUI::WidgetLookManager::eraseWidgetLook

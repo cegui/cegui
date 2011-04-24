@@ -10,6 +10,7 @@ class WidgetLookManager
   bool isWidgetLookAvailable(utf8string widget) const;
   const WidgetLookFeel& getWidgetLook(utf8string widget) const;
   void eraseWidgetLook(utf8string widget);
+  void eraseAllWidgetLooks();
   void addWidgetLook(WidgetLookFeel& look);
 
   void writeWidgetLookToStream(utf8string name, OutStream& out_stream) const;

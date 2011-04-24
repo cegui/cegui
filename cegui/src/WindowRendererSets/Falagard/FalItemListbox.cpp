@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardItemListbox::TypeName[] = "Falagard/ItemListbox";
+    const String FalagardItemListbox::TypeName("Falagard/ItemListbox");
 
     FalagardItemListbox::FalagardItemListbox(const String& type) :
         ItemListBaseWindowRenderer(type),
@@ -49,18 +49,18 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }
 
-    Rect FalagardItemListbox::getItemRenderArea(void) const
+    Rectf FalagardItemListbox::getItemRenderArea(void) const
     {
         ItemListbox* lb = static_cast<ItemListbox*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = lb->getVertScrollbar()->isVisible(true);
-        bool h_visible = lb->getHorzScrollbar()->isVisible(true);
+        bool v_visible = lb->getVertScrollbar()->isVisible();
+        bool h_visible = lb->getHorzScrollbar()->isVisible();
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
@@ -97,12 +97,12 @@ namespace CEGUI
         d_widgetLookAssigned = false;
     }
 
-    Rect FalagardItemListbox::getUnclippedInnerRect() const
+    Rectf FalagardItemListbox::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
             return d_window->getUnclippedOuterRect();
 
-        const Rect lr(getItemRenderArea());
+        const Rectf lr(getItemRenderArea());
         return CoordConverter::windowToScreen(*d_window, lr);
     }
 

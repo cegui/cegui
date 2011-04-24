@@ -29,13 +29,15 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUIThumb.h"
 #include "elements/CEGUIPushButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardScrollbar::TypeName[] = "Falagard/Scrollbar";
+    const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
+
     FalagardScrollbarProperties::VerticalScrollbar FalagardScrollbar::d_verticalProperty;
 
 
@@ -53,7 +55,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }
@@ -67,7 +69,7 @@ namespace CEGUI
     {
         Scrollbar* w = (Scrollbar*)d_window;
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
         Thumb* theThumb = w->getThumb();
 
@@ -77,16 +79,16 @@ namespace CEGUI
         if (d_vertical)
         {
             slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            theThumb->setVertRange(area.d_top / w->getPixelSize().d_height, (area.d_top + slideExtent) / w->getPixelSize().d_height);
-            theThumb->setPosition(UVector2(cegui_absdim(area.d_left),
-                                                 cegui_reldim((area.d_top + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
+            theThumb->setVertRange(area.top() / w->getPixelSize().d_height, (area.top() + slideExtent) / w->getPixelSize().d_height);
+            theThumb->setPosition(UVector2(cegui_absdim(area.left()),
+                                                 cegui_reldim((area.top() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
         }
         else
         {
             slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            theThumb->setHorzRange(area.d_left / w->getPixelSize().d_width, (area.d_left + slideExtent)  / w->getPixelSize().d_width);
-            theThumb->setPosition(UVector2(cegui_reldim((area.d_left + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
-                                                 cegui_absdim(area.d_top)));
+            theThumb->setHorzRange(area.left() / w->getPixelSize().d_width, (area.left() + slideExtent)  / w->getPixelSize().d_width);
+            theThumb->setPosition(UVector2(cegui_reldim((area.left() + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
+                                                 cegui_absdim(area.top())));
         }
     }
 
@@ -94,7 +96,7 @@ namespace CEGUI
     {
         Scrollbar* w = (Scrollbar*)d_window;
         const WidgetLookFeel& wlf = getLookNFeel();
-        Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
+        const Rectf area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*w));
 
         Thumb* theThumb = w->getThumb();
         float posExtent = w->getDocumentSize() - w->getPageSize();
@@ -102,27 +104,27 @@ namespace CEGUI
         if (d_vertical)
         {
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            return (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getYPosition(), w->getPixelSize().d_height) - area.top()) / (slideExtent / posExtent);
         }
         else
         {
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            return (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
+            return (CoordConverter::asAbsolute(theThumb->getXPosition(), w->getPixelSize().d_width) - area.left()) / (slideExtent / posExtent);
         }
     }
 
-    float FalagardScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+    float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
     {
         Scrollbar* w = (Scrollbar*)d_window;
-        Rect absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rectf absrect(w->getThumb()->getUnclippedOuterRect());
 
-        if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
-            (!d_vertical && (pt.d_x > absrect.d_right)))
+        if ((d_vertical && (pt.d_y > absrect.bottom())) ||
+            (!d_vertical && (pt.d_x > absrect.right())))
         {
             return 1;
         }
-        else if ((d_vertical && (pt.d_y < absrect.d_top)) ||
-            (!d_vertical && (pt.d_x < absrect.d_left)))
+        else if ((d_vertical && (pt.d_y < absrect.top())) ||
+            (!d_vertical && (pt.d_x < absrect.left())))
         {
             return -1;
         }

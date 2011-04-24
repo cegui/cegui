@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on original code by Thomas Suter)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,7 +37,7 @@ IrrlichtWindowTarget::IrrlichtWindowTarget(IrrlichtRenderer& owner,
 {
     irr::core::dimension2d<irr::s32> sz(d_driver.getScreenSize());
 
-    const Rect init_area(0, 0,
+    const Rectf init_area(0, 0,
                          static_cast<float>(sz.Width),
                          static_cast<float>(sz.Height));
     setArea(init_area);

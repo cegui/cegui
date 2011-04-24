@@ -65,22 +65,16 @@ const String Font_xmlHandler::MappingImageAttribute("Image");
 const String Font_xmlHandler::MappingHorzAdvanceAttribute("HorzAdvance");
 
 //----------------------------------------------------------------------------//
-Font_xmlHandler::Font_xmlHandler(const String& filename,
-                                 const String& resource_group) :
+Font_xmlHandler::Font_xmlHandler():
     d_font(0),
     d_objectRead(false)
-{
-    System::getSingleton().getXMLParser()->parseXMLFile(
-            *this, filename, FontSchemaName,
-            resource_group.empty() ? Font::getDefaultResourceGroup() :
-                                     resource_group);
-}
+{}
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::~Font_xmlHandler()
 {
     if (!d_objectRead)
-        delete d_font;
+        CEGUI_DELETE_AO d_font;
 }
 
 //----------------------------------------------------------------------------//
@@ -102,6 +96,18 @@ Font& Font_xmlHandler::getObject() const
 
     d_objectRead = true;
     return *d_font;
+}
+
+//----------------------------------------------------------------------------//
+const String& Font_xmlHandler::getSchemaName() const
+{
+    return FontSchemaName;
+}
+
+//----------------------------------------------------------------------------//
+const String& Font_xmlHandler::getDefaultResourceGroup() const
+{
+    return Font::getDefaultResourceGroup();
 }
 
 //----------------------------------------------------------------------------//
@@ -147,7 +153,7 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
-void Font_xmlHandler::elementFontEnd ()
+void Font_xmlHandler::elementFontEnd()
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(d_font));
@@ -192,7 +198,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     logger.logEvent("---- Real point size: " +
             attributes.getValueAsString(FontSizeAttribute, "12"));
 
-    d_font = new FreeTypeFont(name,
+    d_font = CEGUI_NEW_AO FreeTypeFont(name,
         attributes.getValueAsFloat(FontSizeAttribute, 12.0f),
         attributes.getValueAsBool(FontAntiAliasedAttribute, true),
         filename, resource_group,
@@ -220,7 +226,7 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
                     " in resource group: " + (resource_group.empty() ?
                                               "(Default)" : resource_group));
 
-    d_font = new PixmapFont(name, filename, resource_group,
+    d_font = CEGUI_NEW_AO PixmapFont(name, filename, resource_group,
         attributes.getValueAsBool(FontAutoScaledAttribute, false),
         attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
         attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));

@@ -32,6 +32,11 @@
 #include "CEGUIRect.h"
 #include "falagard/CEGUIFalEnums.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -40,7 +45,8 @@ namespace CEGUI
     Base class representing a part of a rendered string.  The 'part' represented
     may be a text string, an image or some other entity.
 */
-class CEGUIEXPORT RenderedStringComponent
+class CEGUIEXPORT RenderedStringComponent :
+    public AllocatedObject<RenderedStringComponent>
 {
 public:
     //! Destructor.
@@ -51,7 +57,7 @@ public:
     //! return the current VerticalFormatting option.
     VerticalFormatting getVerticalFormatting() const;
     //! set the padding values.
-    void setPadding(const Rect& padding);
+    void setPadding(const Rectf& padding);
     //! set the left padding value.
     void setLeftPadding(const float padding);
     //! set the right padding value.
@@ -61,7 +67,7 @@ public:
     //! set the Bottom padding value.
     void setBottomPadding(const float padding);
     //! return the current padding value Rect.
-    const Rect& getPadding() const;
+    const Rectf& getPadding() const;
     //! return the left padding value.
     float getLeftPadding() const;
     //! return the right padding value.
@@ -76,14 +82,14 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(GeometryBuffer& buffer, const Vector2& position,
+    virtual void draw(GeometryBuffer& buffer, const Vector2f& position,
                       const ColourRect* mod_colours,
-                      const Rect* clip_rect,
+                      const Rectf* clip_rect,
                       const float vertical_space,
                       const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
-    virtual Size getPixelSize() const = 0;
+    virtual Sizef getPixelSize() const = 0;
 
     //! return whether the component can be split
     virtual bool canSplit() const = 0;
@@ -112,7 +118,7 @@ protected:
     RenderedStringComponent();
 
     //! Rect object holding the padding values for this component.
-    Rect d_padding;
+    Rectf d_padding;
     //! Vertical formatting to be used for this component.
     VerticalFormatting d_verticalFormatting;
     //! true if the aspect ratio should be maintained where possible.
@@ -120,5 +126,9 @@ protected:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif // end of guard _CEGUIRenderedStringComponent_h_

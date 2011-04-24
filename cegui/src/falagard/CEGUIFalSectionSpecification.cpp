@@ -74,7 +74,7 @@ namespace CEGUI
 
     void SectionSpecification::render(Window& srcWindow,
                                       const ColourRect* modcols,
-                                      const Rect* clipper,
+                                      const Rectf* clipper,
                                       bool clipToDisplay) const
     {
         // see if we need to bother rendering
@@ -103,9 +103,9 @@ namespace CEGUI
         {}
     }
 
-    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect,
+    void SectionSpecification::render(Window& srcWindow, const Rectf& baseRect,
                                       const ColourRect* modcols,
-                                      const Rect* clipper,
+                                      const Rectf* clipper,
                                       bool clipToDisplay) const
     {
         // see if we need to bother rendering
@@ -174,7 +174,7 @@ namespace CEGUI
         // if no override set
         if (!d_usingColourOverride)
         {
-            colour val(1,1,1,1);
+            Colour val(1,1,1,1);
             cr.d_top_left     = val;
             cr.d_top_right    = val;
             cr.d_bottom_left  = val;
@@ -186,12 +186,12 @@ namespace CEGUI
             // if property accesses a ColourRect
             if (d_colourProperyIsRect)
             {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
             }
             // property accesses a colour
             else
             {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
                 cr.d_top_left     = val;
                 cr.d_top_right    = val;
                 cr.d_bottom_left  = val;
@@ -245,13 +245,13 @@ namespace CEGUI
                 xml_stream.attribute("name", d_colourPropertyName)
                     .closeTag();
             }
-            else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != colour(1,1,1,1))
+            else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != Colour(1,1,1,1))
             {
                 xml_stream.openTag("Colours")
-                    .attribute("topLeft", PropertyHelper::colourToString(d_coloursOverride.d_top_left))
-                    .attribute("topRight", PropertyHelper::colourToString(d_coloursOverride.d_top_right))
-                    .attribute("bottomLeft", PropertyHelper::colourToString(d_coloursOverride.d_bottom_left))
-                    .attribute("bottomRight", PropertyHelper::colourToString(d_coloursOverride.d_bottom_right))
+                    .attribute("topLeft", PropertyHelper<Colour>::toString(d_coloursOverride.d_top_left))
+                    .attribute("topRight", PropertyHelper<Colour>::toString(d_coloursOverride.d_top_right))
+                    .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_left))
+                    .attribute("bottomRight", PropertyHelper<Colour>::toString(d_coloursOverride.d_bottom_right))
                     .closeTag();
             }
 
@@ -275,8 +275,7 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
     else if (d_renderControlWidget == S_parentIdentifier)
         property_source = wnd.getParent();
     else
-        property_source = WindowManager::getSingleton().getWindow(
-            wnd.getName() + d_renderControlWidget);
+        property_source = wnd.getChild(d_renderControlWidget);
 
     // if no source window, we can't access the property, so never draw
     if (!property_source)
@@ -284,7 +283,7 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
 
     // return whether to draw based on property value.
     if (d_renderControlValue.empty())
-        return PropertyHelper::stringToBool(
+        return PropertyHelper<bool>::fromString(
             property_source->getProperty(d_renderControlProperty));
     else
         return property_source->

@@ -115,4 +115,164 @@ void EventConnection::disconnect()
 
 //----------------------------------------------------------------------------//
 
+/************************************************************************
+    ceguiLua_PropertyHelper class implementation
+*************************************************************************/
+float ceguiLua_PropertyHelper::stringToFloat(const String& str)
+{
+    return PropertyHelper<float>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+unsigned int ceguiLua_PropertyHelper::stringToUint(const String& str)
+{
+    return PropertyHelper<uint>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+bool ceguiLua_PropertyHelper::stringToBool(const String& str)
+{
+    return PropertyHelper<bool>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+Sizef ceguiLua_PropertyHelper::stringToSize(const String& str)
+{
+    return PropertyHelper<Sizef >::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+Vector2f ceguiLua_PropertyHelper::stringToVector2(const String& str)
+{
+    return PropertyHelper<Vector2f >::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+Rectf ceguiLua_PropertyHelper::stringToRect(const String& str)
+{
+    return PropertyHelper<Rectf >::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+const Image* ceguiLua_PropertyHelper::stringToImage(const String& str)
+{
+    return PropertyHelper<const Image*>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+Colour ceguiLua_PropertyHelper::stringToColour(const String& str)
+{
+    return PropertyHelper<Colour>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+ColourRect ceguiLua_PropertyHelper::stringToColourRect(const String& str)
+{
+    return PropertyHelper<ColourRect>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+UDim ceguiLua_PropertyHelper::stringToUDim(const String& str)
+{
+    return PropertyHelper<UDim>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+UVector2 ceguiLua_PropertyHelper::stringToUVector2(const String& str)
+{
+    return PropertyHelper<UVector2>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+URect ceguiLua_PropertyHelper::stringToURect(const String& str)
+{
+    return PropertyHelper<URect>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+AspectMode ceguiLua_PropertyHelper::stringToAspectMode(const String& str)
+{
+    return PropertyHelper<AspectMode>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::floatToString(float val)
+{
+    return PropertyHelper<float>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::uintToString(unsigned int val)
+{
+    return PropertyHelper<uint>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::boolToString(bool val)
+{
+    return PropertyHelper<bool>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::sizeToString(const Sizef& val)
+{
+    return PropertyHelper<Sizef >::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::vector2ToString(const Vector2f& val)
+{
+    return PropertyHelper<Vector2f >::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::rectToString(const Rectf& val)
+{
+    return PropertyHelper<Rectf >::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::imageToString(const Image* val)
+{
+    return PropertyHelper<const Image*>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::colourToString(const Colour& val)
+{
+    return PropertyHelper<Colour>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::colourRectToString(const ColourRect& val)
+{
+    return PropertyHelper<ColourRect>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::udimToString(const UDim& val)
+{
+    return PropertyHelper<UDim>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::uvector2ToString(const UVector2& val)
+{
+    return PropertyHelper<UVector2>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::urectToString(const URect& val)
+{
+    return PropertyHelper<URect>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::aspectModeToString(AspectMode val)
+{
+    return PropertyHelper<AspectMode>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+
 } // namespace CEGUI

@@ -34,9 +34,10 @@
 #include "../../CEGUIVector.h"
 #include "CEGUIOpenGL.h"
 #include <vector>
+#include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef OPENGL_GUIRENDERER_EXPORTS
+#   ifdef CEGUIOPENGLRENDERER_EXPORTS
 #       define OPENGL_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define OPENGL_GUIRENDERER_API __declspec(dllimport)
@@ -125,8 +126,8 @@ public:
     \return
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
-    static OpenGLRenderer& bootstrapSystem(const Size& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO);
+    static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
+                                           const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
     \brief
@@ -166,7 +167,7 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    static OpenGLRenderer& create(const Size& display_size,
+    static OpenGLRenderer& create(const Sizef& display_size,
                                   const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
@@ -186,16 +187,20 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -209,11 +214,19 @@ public:
         Size object that describes the pixel size of the OpenGL texture
         identified by \a tex.
 
+    \param name
+        String holding the name for the new texture.  Texture names must be
+        unique within the Renderer.
+
     \return
         Texture object that wraps the OpenGL texture \a tex, and whose size is
         specified to be \a sz.
+
+    \exceptions
+        - AlreadyExistsException - thrown if a Texture object named \a name
+          already exists within the system.
     */
-    Texture& createTexture(GLuint tex, const Size& sz);
+    Texture& createTexture(const String& name, GLuint tex, const Sizef& sz);
 
     /*!
     \brief
@@ -255,7 +268,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Size getAdjustedTextureSize(const Size& sz) const;
+    Sizef getAdjustedTextureSize(const Sizef& sz) const;
 
     /*!
     \brief
@@ -289,7 +302,7 @@ private:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    OpenGLRenderer(const Size& display_size, const TextureTargetType tt_type);
+    OpenGLRenderer(const Sizef& display_size, const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -306,12 +319,17 @@ private:
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory(const TextureTargetType tt_type);
 
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
+
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -325,9 +343,10 @@ private:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<OpenGLTexture*> TextureList;
+    typedef std::map<String, OpenGLTexture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, OpenGLTexture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
@@ -336,7 +355,7 @@ private:
     OGLTextureTargetFactory* d_textureTargetFactory;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
-  };
+};
 
 } // End of  CEGUI namespace section
 

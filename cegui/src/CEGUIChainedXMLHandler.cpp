@@ -44,6 +44,22 @@ ChainedXMLHandler::~ChainedXMLHandler()
 }
 
 //----------------------------------------------------------------------------//
+const String& ChainedXMLHandler::getSchemaName() const
+{
+    // this isn't likely to be used in ChainedXMLHandler instances
+    static String empty = "";
+    return empty;
+}
+
+//----------------------------------------------------------------------------//
+const String& ChainedXMLHandler::getDefaultResourceGroup() const
+{
+    // this isn't likely to be used in ChainedXMLHandler instances
+    static String empty = "";
+    return empty;
+}
+
+//----------------------------------------------------------------------------//
 void ChainedXMLHandler::elementStart(const String& element,
                                      const XMLAttributes& attributes)
 {
@@ -83,7 +99,7 @@ bool ChainedXMLHandler::completed() const
 //----------------------------------------------------------------------------//
 void ChainedXMLHandler::cleanupChainedHandler()
 {
-    delete d_chainedHandler;
+    CEGUI_DELETE_AO d_chainedHandler;
     d_chainedHandler = 0;
 }
 

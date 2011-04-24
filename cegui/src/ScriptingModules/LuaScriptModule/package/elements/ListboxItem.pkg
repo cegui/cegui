@@ -21,13 +21,13 @@ class ListboxItem
 	void setAutoDeleted(bool setting);
 	void setOwnerWindow(const Window* owner);
 	void setSelectionColours(const ColourRect& cols);
-	void setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
-	void setSelectionColours(colour col);
+	void setSelectionColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
+	void setSelectionColours(Colour col);
 	void setSelectionBrushImage(const Image* image);
-	void setSelectionBrushImage(utf8string imageset, utf8string image);
+	void setSelectionBrushImage(utf8string name);
 
-	Size getPixelSize() const;
+	Size<float> getPixelSize() const;
 
-	//void draw(const Vector3& position, float alpha, const Rect& clipper) const;
+	//void draw(const Vector3<float>& position, float alpha, const Rect<float>& clipper) const;
 	// operators missing
 };

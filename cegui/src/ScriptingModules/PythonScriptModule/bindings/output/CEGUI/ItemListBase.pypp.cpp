@@ -27,7 +27,7 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         CEGUI::ItemListBase::endInitialisation( );
     }
 
-    virtual ::CEGUI::Size getContentSize(  ) const {
+    virtual ::CEGUI::Sizef getContentSize(  ) const {
         bp::override func_getContentSize = this->get_override( "getContentSize" );
         return func_getContentSize(  );
     }
@@ -169,7 +169,7 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -177,11 +177,11 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
-    virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
         else{
@@ -189,7 +189,7 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         }
     }
     
-    bool default_isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
@@ -369,7 +369,7 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::ItemListBase::getContentSize
         
-            typedef ::CEGUI::Size ( ItemListBase_wrapper::*getContentSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ItemListBase_wrapper::*getContentSize_function_type )(  ) const;
             
             ItemListBase_exposer.def( 
                 "getContentSize"
@@ -451,7 +451,7 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::ItemListBase::getItemRenderArea
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ItemListBase::*getItemRenderArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ItemListBase::*getItemRenderArea_function_type )(  ) const;
             
             ItemListBase_exposer.def( 
                 "getItemRenderArea"
@@ -855,8 +855,8 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( ItemListBase_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ItemListBase_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ItemListBase_exposer.def( 
                 "getUnclippedInnerRect_impl"
@@ -866,8 +866,8 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::Window::isHit
         
-            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
-            typedef bool ( ItemListBase_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
+            typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( ItemListBase_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             ItemListBase_exposer.def( 
                 "isHit"

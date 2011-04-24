@@ -27,7 +27,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::FrameWindow::initialiseComponents( );
     }
 
-    virtual bool isHit( ::CEGUI::Point const & position, bool const arg1 ) const  {
+    virtual bool isHit( ::CEGUI::Vector2f const & position, bool const arg1 ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), arg1 );
         else{
@@ -35,7 +35,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         }
     }
     
-    bool default_isHit( ::CEGUI::Point const & position, bool const arg1 ) const  {
+    bool default_isHit( ::CEGUI::Vector2f const & position, bool const arg1 ) const  {
         return CEGUI::FrameWindow::isHit( boost::ref(position), arg1 );
     }
 
@@ -123,7 +123,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rect getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -131,7 +131,7 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         }
     }
     
-    ::CEGUI::Rect default_getUnclippedInnerRect_impl(  ) const  {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -441,8 +441,8 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::isHit
         
-            typedef bool ( ::CEGUI::FrameWindow::*isHit_function_type )( ::CEGUI::Point const &,bool const ) const;
-            typedef bool ( FrameWindow_wrapper::*default_isHit_function_type )( ::CEGUI::Point const &,bool const ) const;
+            typedef bool ( ::CEGUI::FrameWindow::*isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
+            typedef bool ( FrameWindow_wrapper::*default_isHit_function_type )( ::CEGUI::Vector2f const &,bool const ) const;
             
             FrameWindow_exposer.def( 
                 "isHit"
@@ -519,7 +519,7 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::offsetPixelPosition
         
-            typedef void ( ::CEGUI::FrameWindow::*offsetPixelPosition_function_type )( ::CEGUI::Vector2 const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*offsetPixelPosition_function_type )( ::CEGUI::Vector2f const & ) ;
             
             FrameWindow_exposer.def( 
                 "offsetPixelPosition"
@@ -604,20 +604,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setEWSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setEWSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setEWSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setEWSizingCursorImage"
                 , setEWSizingCursorImage_function_type( &::CEGUI::FrameWindow::setEWSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the east-west sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -671,20 +668,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNESWSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNESWSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNESWSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNESWSizingCursorImage"
                 , setNESWSizingCursorImage_function_type( &::CEGUI::FrameWindow::setNESWSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the northeast-southwest sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -717,20 +711,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNSSizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNSSizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNSSizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNSSizingCursorImage"
                 , setNSSizingCursorImage_function_type( &::CEGUI::FrameWindow::setNSSizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the north-south sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -763,20 +754,17 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::FrameWindow::setNWSESizingCursorImage
         
-            typedef void ( ::CEGUI::FrameWindow::*setNWSESizingCursorImage_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::FrameWindow::*setNWSESizingCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             FrameWindow_exposer.def( 
                 "setNWSESizingCursorImage"
                 , setNWSESizingCursorImage_function_type( &::CEGUI::FrameWindow::setNWSESizingCursorImage )
-                , ( bp::arg("imageset"), bp::arg("image") )
+                , ( bp::arg("name") )
                 , "*!\n\
                 \n\
                     Set the image to be used for the northwest-southeast sizing mouse cursor.\n\
             \n\
-                @param imageset\n\
-                    String holding the name of the Imageset containing the Image to be used.\n\
-            \n\
-                @param image\n\
+                @param name\n\
                     String holding the name of the Image to be used.\n\
             \n\
                 @return\n\
@@ -885,8 +873,8 @@ void register_FrameWindow_class(){
                *\n" );
         
         }
-        FrameWindow_exposer.add_static_property( "CloseButtonNameSuffix"
-                        , bp::make_getter( &CEGUI::FrameWindow::CloseButtonNameSuffix
+        FrameWindow_exposer.add_static_property( "CloseButtonName"
+                        , bp::make_getter( &CEGUI::FrameWindow::CloseButtonName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         FrameWindow_exposer.def_readonly( "DefaultSizingBorderSize", CEGUI::FrameWindow::DefaultSizingBorderSize, "other bits\n" );
         FrameWindow_exposer.add_static_property( "EventCloseClicked"
@@ -901,8 +889,8 @@ void register_FrameWindow_class(){
         FrameWindow_exposer.add_static_property( "EventRollupToggled"
                         , bp::make_getter( &CEGUI::FrameWindow::EventRollupToggled
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        FrameWindow_exposer.add_static_property( "TitlebarNameSuffix"
-                        , bp::make_getter( &CEGUI::FrameWindow::TitlebarNameSuffix
+        FrameWindow_exposer.add_static_property( "TitlebarName"
+                        , bp::make_getter( &CEGUI::FrameWindow::TitlebarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::beginInitialisation
         
@@ -997,8 +985,8 @@ void register_FrameWindow_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rect ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rect ( FrameWindow_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             FrameWindow_exposer.def( 
                 "getUnclippedInnerRect_impl"

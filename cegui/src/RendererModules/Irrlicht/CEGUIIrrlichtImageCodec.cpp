@@ -104,8 +104,8 @@ Texture* IrrlichtImageCodec::load(const RawDataContainer& data, Texture* result)
     // load the resulting image into the texture
     CEGUI_TRY
     {
-        result->loadFromMemory(image_data, Size(static_cast<float>(sz.Width),
-                                                static_cast<float>(sz.Height)),
+        result->loadFromMemory(image_data, Sizef(static_cast<float>(sz.Width),
+                                                  static_cast<float>(sz.Height)),
                                format);
     }
     CEGUI_CATCH (...)

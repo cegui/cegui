@@ -22,7 +22,7 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
         else{
@@ -30,11 +30,11 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rect const & targetRect, float alpha, ::CEGUI::Rect const * clipper ) const  {
+    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         CEGUI::ListboxTextItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
-    virtual ::CEGUI::Size getPixelSize(  ) const  {
+    virtual ::CEGUI::Sizef getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
         else{
@@ -42,7 +42,7 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
         }
     }
     
-    ::CEGUI::Size default_getPixelSize(  ) const  {
+    ::CEGUI::Sizef default_getPixelSize(  ) const  {
         return CEGUI::ListboxTextItem::getPixelSize( );
     }
 
@@ -78,8 +78,8 @@ void register_ListboxTextItem_class(){
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::ListboxTextItem >();
         { //::CEGUI::ListboxTextItem::draw
         
-            typedef void ( ::CEGUI::ListboxTextItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
-            typedef void ( ListboxTextItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rect const &,float,::CEGUI::Rect const * ) const;
+            typedef void ( ::CEGUI::ListboxTextItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
+            typedef void ( ListboxTextItem_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
             
             ListboxTextItem_exposer.def( 
                 "draw"
@@ -113,8 +113,8 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::ListboxTextItem::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Size ( ListboxTextItem_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::ListboxTextItem::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ListboxTextItem_wrapper::*default_getPixelSize_function_type )(  ) const;
             
             ListboxTextItem_exposer.def( 
                 "getPixelSize"
@@ -225,7 +225,7 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::setTextColours
         
-            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::colour,::CEGUI::colour,::CEGUI::colour,::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour,::CEGUI::Colour ) ;
             
             ListboxTextItem_exposer.def( 
                 "setTextColours"
@@ -254,7 +254,7 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::setTextColours
         
-            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::colour ) ;
+            typedef void ( ::CEGUI::ListboxTextItem::*setTextColours_function_type )( ::CEGUI::Colour ) ;
             
             ListboxTextItem_exposer.def( 
                 "setTextColours"

@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardFrameWindow::TypeName[] = "Falagard/FrameWindow";
+    const String FalagardFrameWindow::TypeName("Falagard/FrameWindow");
 
     FalagardFrameWindow::FalagardFrameWindow(const String& type) :
         WindowRenderer(type)
@@ -49,7 +49,7 @@ namespace CEGUI
             return;
 
         // build state name
-        String stateName(w->isDisabled() ? "Disabled" : (w->isActive() ? "Active" : "Inactive"));
+        String stateName(w->isEffectiveDisabled() ? "Disabled" : (w->isActive() ? "Active" : "Inactive"));
         stateName += w->isTitleBarEnabled() ? "WithTitle" : "NoTitle";
         stateName += w->isFrameEnabled() ? "WithFrame" : "NoFrame";
 
@@ -72,11 +72,11 @@ namespace CEGUI
         imagery->render(*w);
     }
 
-    Rect FalagardFrameWindow::getUnclippedInnerRect(void) const
+    Rectf FalagardFrameWindow::getUnclippedInnerRect(void) const
     {
         FrameWindow* w = (FrameWindow*)d_window;
         if (w->isRolledup())
-            return Rect(0,0,0,0);
+            return Rectf(0, 0, 0, 0);
 
         // build name of area to fetch
         String areaName("Client");

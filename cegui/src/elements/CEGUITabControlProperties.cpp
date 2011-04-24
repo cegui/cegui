@@ -42,25 +42,25 @@ namespace TabControlProperties
 
 String	TabHeight::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const TabControl*>(receiver)->getTabHeight());
+    return PropertyHelper<UDim>::toString(static_cast<const TabControl*>(receiver)->getTabHeight());
 }
 
 
 void	TabHeight::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<TabControl*>(receiver)->setTabHeight(PropertyHelper::stringToUDim(value));
+    static_cast<TabControl*>(receiver)->setTabHeight(PropertyHelper<UDim>::fromString(value));
 }
 
 
 String	TabTextPadding::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const TabControl*>(receiver)->getTabTextPadding());
+    return PropertyHelper<UDim>::toString(static_cast<const TabControl*>(receiver)->getTabTextPadding());
 }
 
 
 void	TabTextPadding::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<TabControl*>(receiver)->setTabTextPadding(PropertyHelper::stringToUDim(value));
+    static_cast<TabControl*>(receiver)->setTabTextPadding(PropertyHelper<UDim>::fromString(value));
 }
 
 

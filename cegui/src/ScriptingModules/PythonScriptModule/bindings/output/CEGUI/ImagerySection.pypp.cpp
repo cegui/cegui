@@ -10,10 +10,7 @@ void register_ImagerySection_class(){
 
     { //::CEGUI::ImagerySection
         typedef bp::class_< CEGUI::ImagerySection > ImagerySection_exposer_t;
-        ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", "*!\n\
-        \n\
-            Class that encapsulates a re-usable collection of imagery specifications.\n\
-        *\n", bp::init< >("*!\n\
+        ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", bp::init< >("*!\n\
         \n\
             Constructor.\n\
         *\n") );
@@ -137,7 +134,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::getBoundingRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const & ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const & ) const;
             
             ImagerySection_exposer.def( 
                 "getBoundingRect"
@@ -151,7 +148,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::getBoundingRect
         
-            typedef ::CEGUI::Rect ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rect const & ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ImagerySection::*getBoundingRect_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
             
             ImagerySection_exposer.def( 
                 "getBoundingRect"
@@ -199,7 +196,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::render
         
-            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             ImagerySection_exposer.def( 
                 "render"
@@ -223,7 +220,7 @@ void register_ImagerySection_class(){
         }
         { //::CEGUI::ImagerySection::render
         
-            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rect const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
+            typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::Rectf const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
             
             ImagerySection_exposer.def( 
                 "render"

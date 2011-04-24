@@ -39,7 +39,7 @@
 class DemoConsole
 {
 public:
-    DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent = 0);
+    DemoConsole(CEGUI::Window* parent = 0);
     ~DemoConsole();
 
     void toggleVisibility();

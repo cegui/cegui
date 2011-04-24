@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -53,7 +53,7 @@ public:
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    Direct3D10ViewportTarget(Direct3D10Renderer& owner, const Rect& area);
+    Direct3D10ViewportTarget(Direct3D10Renderer& owner, const Rectf& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

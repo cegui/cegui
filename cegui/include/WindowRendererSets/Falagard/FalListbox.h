@@ -57,7 +57,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardListbox : public ListboxWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -79,7 +79,8 @@ namespace CEGUI
 
         // overriden from ListboxWindowRenderer
         void render();
-        Rect getListRenderArea(void) const;
+
+        Rectf getListRenderArea(void) const;
     };
 } // End of  CEGUI namespace section
 

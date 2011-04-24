@@ -83,7 +83,8 @@ namespace CEGUI
     }
     @endcode
     */
-    class CEGUIEXPORT XMLSerializer
+    class CEGUIEXPORT XMLSerializer :
+        public AllocatedObject<XMLSerializer>
     {
     public:
         /*!
@@ -176,7 +177,8 @@ namespace CEGUI
         bool d_needClose; //!< Store whether the next operation need to close the tag or not 
         bool d_lastIsText; //!< Store whether the last operation was a text node or not 
         OutStream& d_stream; //!< A reference to the stream object use
-        std::vector<String> d_tagStack; //!< Store the tag stack for correct closing of the tags. 
+        std::vector<String
+            CEGUI_VECTOR_ALLOC(String)> d_tagStack; //!< Store the tag stack for correct closing of the tags. 
   
         /*!
         \brief put padding in the stream before line data 

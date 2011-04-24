@@ -85,7 +85,7 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     using namespace CEGUI;
     Texture& tex = window.getTextureTarget().getTexture();
 
-    static const CEGUI::colour c(1, 1, 1, 1);
+    static const CEGUI::Colour c(1, 1, 1, 1);
 
     const float qw = window.getSize().d_width / tess_x;
     const float qh = window.getSize().d_height / tess_y;
@@ -111,34 +111,34 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             rig_adj = ((rig_adj*rig_adj) / 3) * (dragY < 0 ? -1 : 1);
 
             // vertex 0
-            vb[idx + 0].position   = Vector3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 0].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 0].colour_val = c;
-            vb[idx + 0].tex_coords = Vector2(i * tcx, j*tcy);
+            vb[idx + 0].tex_coords = Vector2f(i * tcx, j*tcy);
 
             // vertex 1
-            vb[idx + 1].position   = Vector3(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
+            vb[idx + 1].position   = Vector3f(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
             vb[idx + 1].colour_val = c;
-            vb[idx + 1].tex_coords = Vector2(i*tcx, j*tcy+tcy);
+            vb[idx + 1].tex_coords = Vector2f(i*tcx, j*tcy+tcy);
 
             // vertex 2
-            vb[idx + 2].position   = Vector3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 2].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 2].colour_val = c;
-            vb[idx + 2].tex_coords = Vector2(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 2].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 3
-            vb[idx + 3].position   = Vector3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 3].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
             vb[idx + 3].colour_val = c;
-            vb[idx + 3].tex_coords = Vector2(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 3].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 4
-            vb[idx + 4].position   = Vector3(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
+            vb[idx + 4].position   = Vector3f(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
             vb[idx + 4].colour_val = c;
-            vb[idx + 4].tex_coords = Vector2(i*tcx+tcx, j*tcy);
+            vb[idx + 4].tex_coords = Vector2f(i*tcx+tcx, j*tcy);
 
             // vertex 5
-            vb[idx + 5].position   = Vector3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 5].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
             vb[idx + 5].colour_val = c;
-            vb[idx + 5].tex_coords = Vector2(i * tcx, j*tcy);
+            vb[idx + 5].tex_coords = Vector2f(i * tcx, j*tcy);
         }
     }
 
@@ -163,7 +163,7 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
         return true;
     }
 
-    const Vector2 pos(window.getPosition());
+    const Vector2f pos(window.getPosition());
 
     //
     // Set up for X axis animation.
@@ -272,12 +272,12 @@ bool Demo7Sample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -288,18 +288,18 @@ bool Demo7Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
     // load the windows for Demo7 from the layout file.
-    Window* sheet = winMgr.loadWindowLayout("Demo7Windows.layout");
+    Window* sheet = winMgr.loadLayoutFromFile("Demo7Windows.layout");
     // attach this to the 'real' root
-    background->addChildWindow(sheet);
+    background->addChild(sheet);
     // set-up the contents of the list boxes.
-    createListContent();
+    createListContent(sheet);
     // initialise the event handling.
-    initDemoEventWiring();
+    initDemoEventWiring(sheet);
 
     // success!
     return true;
@@ -316,7 +316,7 @@ void Demo7Sample::cleanupSample()
 /*************************************************************************
     create the windows & widgets for this demo
 *************************************************************************/
-void Demo7Sample::createListContent(void)
+void Demo7Sample::createListContent(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
@@ -325,7 +325,7 @@ void Demo7Sample::createListContent(void)
     //
     // Combobox setup
     //
-    Combobox* cbobox = static_cast<Combobox*>(winMgr.getWindow("Demo7/Window2/Combobox"));
+    Combobox* cbobox = static_cast<Combobox*>(root->getChild("Window2/Combobox"));
     // add items to the combobox list
     cbobox->addItem(new MyListItem("Combobox Item 1"));
     cbobox->addItem(new MyListItem("Combobox Item 2"));
@@ -341,7 +341,7 @@ void Demo7Sample::createListContent(void)
     //
     // Multi-Column List setup
     //
-    MultiColumnList* mclbox = static_cast<MultiColumnList*>(winMgr.getWindow("Demo7/Window2/MultiColumnList"));
+    MultiColumnList* mclbox = static_cast<MultiColumnList*>(root->getChild("Window2/MultiColumnList"));
     // Add some empty rows to the MCL
     mclbox->addRow();
     mclbox->addRow();
@@ -379,32 +379,32 @@ void Demo7Sample::createListContent(void)
 /*************************************************************************
     Perform required event hook-ups for this demo.
 *************************************************************************/
-void Demo7Sample::initDemoEventWiring(void)
+void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
     // Subscribe handler that quits the application
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Quit")->
+    root->getChild("Window1/Quit")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo7Sample::handleQuit, this));
 
     // Subscribe handler that processes changes to the slider position.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Slider1")->
+    root->getChild("Window1/Slider1")->
         subscribeEvent(Slider::EventValueChanged, Event::Subscriber(&Demo7Sample::handleSlider, this));
 
     // Subscribe handler that processes changes to the checkbox selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Checkbox")->
+    root->getChild("Window1/Checkbox")->
         subscribeEvent(Checkbox::EventCheckStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio1")->
+    root->getChild("Window1/Radio1")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio2")->
+    root->getChild("Window1/Radio2")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
-    WindowManager::getSingleton().getWindow("Demo7/Window1/Radio3")->
+    root->getChild("Window1/Radio3")->
         subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
 }
 
@@ -425,11 +425,11 @@ bool Demo7Sample::handleSlider(const CEGUI::EventArgs& e)
     float val = static_cast<Slider*>(static_cast<const WindowEventArgs&>(e).window)->getCurrentValue();
 
     // set the progress for the first bar according to the slider value
-    static_cast<ProgressBar*>(WindowManager::getSingleton().getWindow("Demo7/Window2/Progbar1"))->setProgress(val);
+    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar1"))->setProgress(val);
     // set second bar's progress - this time the reverse of the first one
-    static_cast<ProgressBar*>(WindowManager::getSingleton().getWindow("Demo7/Window2/Progbar2"))->setProgress(1.0f - val);
+    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar2"))->setProgress(1.0f - val);
     // set the alpha on the window containing all the controls.
-    WindowManager::getSingleton().getWindow("root")->setAlpha(val);
+    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root")->setAlpha(val);
 
     // event was handled.
     return true;
@@ -442,17 +442,17 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     // get the ID of the selected radio button
     CEGUI::uint id = static_cast<RadioButton*>(static_cast<const WindowEventArgs&>(e).window)->getSelectedButtonInGroup()->getID();
     // get the StaticImage window
-    Window* img = WindowManager::getSingleton().getWindow("Demo7/Window2/Image1");
+    Window* img = static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Image1");
 
     // set an image into the StaticImage according to the ID of the selected radio button.
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "set:BackgroundImage image:full_image");
+        img->setProperty("Image", "BackgroundImage");
         break;
 
     case 1:
-        img->setProperty("Image", "set:TaharezLook image:MouseArrow");
+        img->setProperty("Image", "TaharezLook/MouseArrow");
         break;
 
     default:
@@ -470,7 +470,7 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
 
     // show or hide the FrameWindow containing the multi-line editbox according to the state of the
     // checkbox widget
-    WindowManager::getSingleton().getWindow("Demo7/Window3")->
+    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window3")->
         setVisible(static_cast<Checkbox*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
 
     // event was handled.

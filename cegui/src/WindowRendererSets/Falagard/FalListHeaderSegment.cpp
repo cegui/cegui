@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardListHeaderSegment::TypeName[] = "Falagard/ListHeaderSegment";
+    const String FalagardListHeaderSegment::TypeName("Falagard/ListHeaderSegment");
 
     FalagardListHeaderSegment::FalagardListHeaderSegment(const String& type) :
         WindowRenderer(type)
@@ -49,7 +49,7 @@ namespace CEGUI
         const StateImagery* imagery;
 
         // get imagery for main state.
-        if (w->isDisabled())
+        if (w->isEffectiveDisabled())
         {
             imagery = &wlf.getStateImagery("Disabled");
         }
@@ -85,8 +85,8 @@ namespace CEGUI
         // draw ghost copy if the segment is being dragged.
         if (w->isBeingDragMoved())
         {
-            Size pixel_size = w->getPixelSize();
-            Rect targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
+            Sizef pixel_size = w->getPixelSize();
+            Rectf targetArea(0, 0, pixel_size.d_width, pixel_size.d_height);
             targetArea.offset(w->getDragMoveOffset());
             imagery = &wlf.getStateImagery("DragGhost");
             imagery->render(*w, targetArea);

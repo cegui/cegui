@@ -109,7 +109,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging && (d_parent != 0))
 	{
-		Vector2 delta(CoordConverter::screenToWindow(*this, e.position));
+		Vector2f delta(CoordConverter::screenToWindow(*this, e.position));
 
 		// calculate amount that window has been moved
 		delta -= d_dragPoint;
@@ -145,12 +145,12 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();
 
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
-				Rect constrainArea;
+				Rectf constrainArea;
 
 				if ((d_parent == 0) || (d_parent->getParent() == 0))
 				{
-                    Rect screen(Vector2(0, 0),
-                                System::getSingleton().getRenderer()->getDisplaySize());
+                    Rectf screen(Vector2f(0, 0),
+                                  System::getSingleton().getRenderer()->getDisplaySize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
 				else 
@@ -160,7 +160,6 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				MouseCursor::getSingleton().setConstraintArea(&constrainArea);
 			}
-
 		}
 
 		++e.handled;

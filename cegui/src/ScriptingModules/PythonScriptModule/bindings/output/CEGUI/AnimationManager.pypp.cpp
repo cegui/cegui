@@ -330,6 +330,9 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        AnimationManager_exposer.add_static_property( "XMLSchemaName"
+                        , bp::make_getter( &CEGUI::AnimationManager::XMLSchemaName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         AnimationManager_exposer.staticmethod( "getDefaultResourceGroup" );
         AnimationManager_exposer.staticmethod( "setDefaultResourceGroup" );
     }

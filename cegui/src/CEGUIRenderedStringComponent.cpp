@@ -57,7 +57,7 @@ VerticalFormatting RenderedStringComponent::getVerticalFormatting() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringComponent::setPadding(const Rect& padding)
+void RenderedStringComponent::setPadding(const Rectf& padding)
 {
     d_padding = padding;
 }
@@ -65,29 +65,29 @@ void RenderedStringComponent::setPadding(const Rect& padding)
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setLeftPadding(const float padding)
 {
-    d_padding.d_left = padding;
+    d_padding.d_min.d_x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setRightPadding(const float padding)
 {
-    d_padding.d_right = padding;
+    d_padding.d_max.d_x = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setTopPadding(const float padding)
 {
-    d_padding.d_top = padding;
+    d_padding.d_min.d_y = padding;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringComponent::setBottomPadding(const float padding)
 {
-    d_padding.d_bottom = padding;
+    d_padding.d_max.d_x = padding;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& RenderedStringComponent::getPadding() const
+const Rectf& RenderedStringComponent::getPadding() const
 {
     return d_padding;
 }
@@ -95,25 +95,25 @@ const Rect& RenderedStringComponent::getPadding() const
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getLeftPadding() const
 {
-    return d_padding.d_left;
+    return d_padding.d_min.d_x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getRightPadding() const
 {
-    return d_padding.d_right;
+    return d_padding.d_max.d_x;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getTopPadding() const
 {
-    return d_padding.d_top;
+    return d_padding.d_min.d_y;
 }
 
 //----------------------------------------------------------------------------//
 float RenderedStringComponent::getBottomPadding() const
 {
-    return d_padding.d_bottom;
+    return d_padding.d_max.d_y;
 }
 
 //----------------------------------------------------------------------------//

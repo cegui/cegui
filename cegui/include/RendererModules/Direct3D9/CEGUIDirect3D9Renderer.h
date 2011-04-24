@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,9 +35,10 @@
 
 #include <d3d9.h>
 #include <vector>
+#include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef DIRECT3D9_GUIRENDERER_EXPORTS
+#   ifdef CEGUIDIRECT3D9RENDERER_EXPORTS
 #       define DIRECT3D9_GUIRENDERER_API __declspec(dllexport)
 #   else
 #       define DIRECT3D9_GUIRENDERER_API __declspec(dllimport)
@@ -125,7 +126,7 @@ public:
     LPDIRECT3DDEVICE9 getDevice() const;
 
     //! create a CEGUI::texture from an existing D3D texture
-    Texture& createTexture(LPDIRECT3DTEXTURE9 tex);
+    Texture& createTexture(const String& name, LPDIRECT3DTEXTURE9 tex);
 
     //! return true if we can use non square textures.
     bool supportsNonSquareTexture();
@@ -134,7 +135,7 @@ public:
     bool supportsNPOTTextures();
 
     //! returns Size object from \a sz adjusted for hardware capabilities.
-    Size getAdjustedSize(const Size& sz);
+    Sizef getAdjustedSize(const Sizef& sz);
 
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode,
@@ -148,16 +149,20 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -168,8 +173,15 @@ private:
     //! Destructor for Direct3D9Renderer objects.
     virtual ~Direct3D9Renderer();
 
+    //! helper to throw exception if name is already used.
+    void throwIfNameExists(const String& name) const;
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
+
     //! return size of device view port (if possible).
-    Size getViewportSize();
+    Sizef getViewportSize();
     //! returns next power of 2 size if \a size is not power of 2
     float getSizeNextPOT(float sz) const;
 
@@ -178,9 +190,9 @@ private:
     //! Direct3DDevice9 interface we were given when constructed.
     LPDIRECT3DDEVICE9 d_device;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -194,9 +206,10 @@ private:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<Direct3D9Texture*> TextureList;
+    typedef std::map<String, Direct3D9Texture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, Direct3D9Texture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! whether the hardware supports non-power of two textures

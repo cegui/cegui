@@ -55,12 +55,12 @@ bool Demo6Sample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
@@ -71,13 +71,13 @@ bool Demo6Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
     // do demo stuff
-    createDemoWindows();
-    initDemoEventWiring();
+    createDemoWindows(background);
+    initDemoEventWiring(background);
 
     // success!
     return true;
@@ -94,37 +94,36 @@ void Demo6Sample::cleanupSample()
 /*************************************************************************
     Create the windows and widgets for the demo
 *************************************************************************/
-void Demo6Sample::createDemoWindows(void)
+void Demo6Sample::createDemoWindows(CEGUI::Window* root)
 {
     using namespace CEGUI;
     ListboxTextItem* itm;
 
     WindowManager& winMgr = WindowManager::getSingleton();
-    Window* root = winMgr.getWindow("root_wnd");
 
     // create the main list.
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(winMgr.createWindow("TaharezLook/MultiColumnList", "Demo6/MainList"));
-    root->addChildWindow(mcl);
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(winMgr.createWindow("TaharezLook/MultiColumnList", "MainList"));
+    root->addChild(mcl);
     mcl->setPosition(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.1f)));
     mcl->setSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.8f)));
 
     // create frame window for control panel
-    FrameWindow* fwnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "Demo6/ControlPanel"));
-    root->addChildWindow(fwnd);
+    FrameWindow* fwnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "ControlPanel"));
+    root->addChild(fwnd);
     fwnd->setPosition(UVector2(cegui_reldim(0.53f), cegui_reldim( 0.03f)));
     fwnd->setMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     fwnd->setSize(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.94f)));
     fwnd->setText("Demo 6 - Control Panel");
 
     // create combo-box.
-    Combobox* cbbo = static_cast<Combobox*>(winMgr.createWindow("TaharezLook/Combobox", "Demo6/ControlPanel/SelModeBox"));
-    fwnd->addChildWindow(cbbo);
+    Combobox* cbbo = static_cast<Combobox*>(winMgr.createWindow("TaharezLook/Combobox", "SelModeBox"));
+    fwnd->addChild(cbbo);
     cbbo->setPosition(UVector2(cegui_reldim(0.04f), cegui_reldim( 0.06f)));
     cbbo->setSize(UVector2(cegui_reldim(0.66f), cegui_reldim( 0.33f)));
     //cbbo->setSortingEnabled(true);
 
     // populate combobox with possible selection modes
-    const CEGUI::Image* sel_img = &ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush");
+    const CEGUI::Image* sel_img = &ImageManager::getSingleton().get("TaharezLook/MultiListSelectionBrush");
     itm = new ListboxTextItem("Full Row (Single)", 0);
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
@@ -164,272 +163,272 @@ void Demo6Sample::createDemoWindows(void)
     //cbbo->handleUpdatedListItemData();
 
     // column control section
-    Window* st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/ColumnPanel");
-    fwnd->addChildWindow(st);
+    Window* st = winMgr.createWindow("TaharezLook/StaticText", "ColumnPanel");
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.12f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Column Control");
     st->setProperty("VertFormatting", "TopAligned");
 
-    Window* label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label1");
-    st->addChildWindow(label);
+    Window* label = winMgr.createWindow("TaharezLook/StaticText", "Label1");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("ID Code:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label2");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label2");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Width:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label3");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label3");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Caption:");
 
-    PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/AddColButton"));
-    st->addChildWindow(btn);
+    PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "AddColButton"));
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Add");
 
-    Editbox* ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColIDBox"));
-    st->addChildWindow(ebox);
+    Editbox* ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "NewColIDBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
     ebox->setText("Test -- ");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColWidthBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "NewColWidthBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColTextBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "NewColTextBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.36f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label4");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label4");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("ID Code:");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/DelColIDBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "DelColIDBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/DelColButton"));
-    st->addChildWindow(btn);
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "DelColButton"));
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.67f)));
     btn->setSize(UVector2(cegui_reldim(0.4f), cegui_reldim( 0.2f)));
     btn->setText("Delete Column");
 
     // Row control box
-    st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/RowControl");
-    fwnd->addChildWindow(st);
+    st = winMgr.createWindow("TaharezLook/StaticText", "RowControl");
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.38f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Row Control");
     st->setProperty("VertFormatting", "TopAligned");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label5");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label5");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Col ID:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label6");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label6");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.55f), cegui_reldim( 0.12f)));
     label->setText("Item Text:");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/RowColIDBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "RowColIDBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/RowTextBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "RowTextBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.55f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/AddRowButton"));
-    st->addChildWindow(btn);
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "AddRowButton"));
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Add");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label7");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label7");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Row Idx:");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/DelRowIdxBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "DelRowIdxBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/DelRowButton"));
-    st->addChildWindow(btn);
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "DelRowButton"));
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.67f)));
     btn->setSize(UVector2(cegui_reldim(0.4f), cegui_reldim( 0.2f)));
     btn->setText("Delete Row");
 
     // set item box
-    st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/SetItemPanel");
-    fwnd->addChildWindow(st);
+    st = winMgr.createWindow("TaharezLook/StaticText", "SetItemPanel");
+    fwnd->addChild(st);
     st->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.65f)));
     st->setSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.25f)));
     st->setText("Item Modification");
     st->setProperty("VertFormatting", "TopAligned");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label8");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label8");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Row Idx:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label9");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label9");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Col ID:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/Label10");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "Label10");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.2f)));
     label->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.12f)));
     label->setText("Item Text:");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemRowBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "SetItemRowBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemIDBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "SetItemIDBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.23f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
 
-    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/SetItemTextBox"));
-    st->addChildWindow(ebox);
+    ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "SetItemTextBox"));
+    st->addChild(ebox);
     ebox->setPosition(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.36f), cegui_reldim( 0.2f)));
     ebox->setValidationString(".*");
 
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/ControlPanel/ColumnPanel/SetItemButton"));
-    st->addChildWindow(btn);
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "SetItemButton"));
+    st->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.81f), cegui_reldim( 0.32f)));
     btn->setSize(UVector2(cegui_reldim(0.15f), cegui_reldim( 0.2f)));
     btn->setText("Set");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/RowCount");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "RowCount");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.55f)));
     label->setSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 0.12f)));
     label->setText("Current Row Count:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/ColCount");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "ColCount");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.67f)));
     label->setSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 0.12f)));
     label->setText("Current Column Count:");
 
-    label = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/SelCount");
-    st->addChildWindow(label);
+    label = winMgr.createWindow("TaharezLook/StaticText", "SelCount");
+    st->addChild(label);
     label->setProperty("FrameEnabled", "false");
     label->setProperty("BackgroundEnabled", "false");
     label->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.79f)));
     label->setSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 0.12f)));
     label->setText("Current Selected Count:");
 
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "Demo6/QuitButton"));
-    fwnd->addChildWindow(btn);
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "QuitButton"));
+    fwnd->addChild(btn);
     btn->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.93f)));
     btn->setSize(UVector2(cegui_reldim(0.50f), cegui_reldim( 0.05f)));
     btn->setText("Quit This Demo!");
 }
 
 
-void Demo6Sample::initDemoEventWiring(void)
+void Demo6Sample::initDemoEventWiring(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // subscribe handler that adds a new column
-    winMgr.getWindow("Demo6/ControlPanel/ColumnPanel/AddColButton")->
+    root->getChild("ControlPanel/ColumnPanel/AddColButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleAddColumn, this));
 
     // subscribe handler that deletes a column
-    winMgr.getWindow("Demo6/ControlPanel/ColumnPanel/DelColButton")->
+    root->getChild("ControlPanel/ColumnPanel/DelColButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleDeleteColumn, this));
 
     // subscribe handler that adds a new row
-    winMgr.getWindow("Demo6/ControlPanel/ColumnPanel/AddRowButton")->
+    root->getChild("ControlPanel/RowControl/AddRowButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleAddRow, this));
 
     // subscribe handler that deletes a row
-    winMgr.getWindow("Demo6/ControlPanel/ColumnPanel/DelRowButton")->
+    root->getChild("ControlPanel/RowControl/DelRowButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleDeleteRow, this));
 
     // subscribe handler that sets the text for an existing item
-    winMgr.getWindow("Demo6/ControlPanel/ColumnPanel/SetItemButton")->
+    root->getChild("ControlPanel/SetItemPanel/SetItemButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleSetItem, this));
 
     // subscribe handler that quits the application
-   winMgr.getWindow("Demo6/QuitButton")->
+   root->getChild("ControlPanel/QuitButton")->
        subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleQuit, this));
 
     // subscribe handler that processes a change in the 'selection mode' combobox
-    winMgr.getWindow("Demo6/ControlPanel/SelModeBox")->
+    root->getChild("ControlPanel/SelModeBox")->
         subscribeEvent(Combobox::EventListSelectionAccepted, Event::Subscriber(&Demo6Sample::handleSelectModeChanged, this));
 
     // subscribe handler that processes a change in the item(s) selected in the list
-    winMgr.getWindow("Demo6/MainList")->
+    root->getChild("MainList")->
         subscribeEvent(MultiColumnList::EventSelectionChanged, Event::Subscriber(&Demo6Sample::handleSelectChanged, this));
 
     // subscribe handler that processes a change in the list content.
-    winMgr.getWindow("Demo6/MainList")->
+    root->getChild("MainList")->
         subscribeEvent(MultiColumnList::EventListContentsChanged, Event::Subscriber(&Demo6Sample::handleContentsChanged, this));
 }
 
@@ -442,15 +441,15 @@ bool Demo6Sample::handleQuit(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs&)
+bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to the widgets that contain details about the column to add
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Editbox* idbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/NewColIDBox"));
-    Editbox* widthbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/NewColWidthBox"));
-    Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/NewColTextBox"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColIDBox"));
+    Editbox* widthbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColWidthBox"));
+    Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/NewColTextBox"));
 
     // get ID for new column
     CEGUI::uint id = atoi(idbox->getText().c_str());
@@ -475,13 +474,13 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs&)
+bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to the widgets that contain details about the column to delete
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Editbox* idbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/DelColIDBox"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/ColumnPanel/DelColIDBox"));
 
     // obtain the id of the column to be deleted
     CEGUI::uint id = atoi(idbox->getText().c_str());
@@ -501,14 +500,14 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
+bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to the widgets that contain details about the row to add
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Editbox* idbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/RowColIDBox"));
-    Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/RowTextBox"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/RowColIDBox"));
+    Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/RowTextBox"));
 
     // get the ID of the initial column item to set
     CEGUI::uint id = atoi(idbox->getText().c_str());
@@ -522,7 +521,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
     // construct a new ListboxTextItem with the required string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to use for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to add a new row, using the new ListboxTextItem as the initial content for one of the columns
     CEGUI_TRY
@@ -539,13 +538,13 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs&)
+bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to the widgets that contain details about the row to delete.
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Editbox* idxbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/DelRowIdxBox"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Editbox* idxbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/RowControl/DelRowIdxBox"));
 
     // get index of row to delete.
     CEGUI::uint idx = atoi(idxbox->getText().c_str());
@@ -565,15 +564,15 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
+bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to the widgets that contain details about the item to be modified
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Editbox* idbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/SetItemIDBox"));
-    Editbox* rowbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/SetItemRowBox"));
-    Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/SetItemTextBox"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Editbox* idbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemIDBox"));
+    Editbox* rowbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemRowBox"));
+    Editbox* textbox = static_cast<Editbox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SetItemTextBox"));
 
     // get ID of column to be affected
     CEGUI::uint id = atoi(idbox->getText().c_str());
@@ -590,7 +589,7 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
     // create a new ListboxTextItem using the new text string
     ListboxTextItem* item = new ListboxTextItem(text);
     // set the selection brush to be used for this item.
-    item->setSelectionBrushImage(&ImagesetManager::getSingleton().get("TaharezLook").getImage("MultiListSelectionBrush"));
+    item->setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
 
     // attempt to set the new item in place
     CEGUI_TRY
@@ -607,12 +606,12 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs&)
+bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // Get access to the list
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
 
     // update the selected count
     std::string tmp("Current Selected Count: ");
@@ -622,20 +621,20 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs&)
 
     tmp += buff;
 
-    WindowManager::getSingleton().getWindow("Demo6/ControlPanel/SelCount")->setText(tmp);
+    static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SelCount")->setText(tmp);
 
     // event was handled.
     return true;
 }
 
-bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs&)
+bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to list
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
     // get access to the combobox
-    Combobox* combo = static_cast<Combobox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/SelModeBox"));
+    Combobox* combo = static_cast<Combobox*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SelModeBox"));
 
     // find the selected item in the combobox
     ListboxItem* item = combo->findItemWithText(combo->getText(), 0);
@@ -696,14 +695,14 @@ bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs&)
     return true;
 }
 
-bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs&)
+bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
 
     // get access to required widgets
-    MultiColumnList* mcl = static_cast<MultiColumnList*>(WindowManager::getSingleton().getWindow("Demo6/MainList"));
-    Window* colText = WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColCount");
-    Window* rowText = WindowManager::getSingleton().getWindow("Demo6/ControlPanel/RowCount");
+    MultiColumnList* mcl = static_cast<MultiColumnList*>(static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("MainList"));
+    Window* colText = static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/ColCount");
+    Window* rowText = static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/RowCount");
 
     std::string tmp;
     char buff[16];

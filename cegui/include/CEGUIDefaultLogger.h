@@ -103,7 +103,12 @@ protected:
 		Implementation Data
 	*************************************************************************/
 	std::ofstream	d_ostream;		//!< Stream used to implement the logger
-    std::vector<std::pair<String, LoggingLevel> > d_cache;    //!< Used to cache log entries before log file is created.
+    typedef std::pair<String, LoggingLevel> CacheItem;
+
+    typedef std::vector<CacheItem
+        CEGUI_VECTOR_ALLOC(CacheItem)> Cache;
+
+    Cache d_cache;                  //!< Used to cache log entries before log file is created.
     std::ostringstream d_workstream;//!< Used to build log entry strings. 
     bool d_caching;                 //!< true while log entries are beign cached (prior to logfile creation)
 };

@@ -60,14 +60,14 @@ void register_PropertySet_class(){
         }
         { //::CEGUI::PropertySet::getIterator
         
-            typedef ::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::PropertySet::*getIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::PropertySet::*getIterator_function_type )(  ) const;
             
             PropertySet_exposer.def( 
                 "getIterator"
                 , getIterator_function_type( &::CEGUI::PropertySet::getIterator )
                 , "*!\n\
             \n\
-                Return a PropertySet.Iterator object to iterate over the available\n\
+                Return a PropertySet.PropertyIterator object to iterate over the available\n\
                 Properties.\n\
             *\n" );
         
@@ -135,6 +135,28 @@ void register_PropertySet_class(){
             \n\
                @exception UnknownObjectException   Thrown if no Property named  name is in the PropertySet.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::PropertySet::getPropertyInstance
+        
+            typedef ::CEGUI::Property * ( ::CEGUI::PropertySet::*getPropertyInstance_function_type )( ::CEGUI::String const & ) const;
+            
+            PropertySet_exposer.def( 
+                "getPropertyInstance"
+                , getPropertyInstance_function_type( &::CEGUI::PropertySet::getPropertyInstance )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Retrieves a property instance (that was previously added)\n\
+            \n\
+                @param name\n\
+                    String containing the name of the Property to be retrieved. If Property  name is not in the\
+                    set, exception is thrown.\n\
+            \n\
+                @return\n\
+                    Pointer to the property instance\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertySet::isPropertyDefault

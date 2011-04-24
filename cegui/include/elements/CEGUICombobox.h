@@ -96,7 +96,7 @@ public:
      * WindowEventArgs::window set to the Combobox whose caret position has
      * been changed.
      */
-	static const String EventCaratMoved;
+	static const String EventCaretMoved;
     /** Event fired when the current edit box text selection is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox whose edit box text selection
@@ -174,14 +174,14 @@ public:
 	static const String EventListSelectionAccepted;
 
     /*************************************************************************
-        Child Widget name suffix constants
+        Child Widget name constants
     *************************************************************************/
-    static const String EditboxNameSuffix;          //!< Widget name suffix for the editbox component.
-    static const String DropListNameSuffix;   //!< Widget name suffix for the drop list component.
-    static const String ButtonNameSuffix;           //!< Widget name suffix for the button component.
+    static const String EditboxName;    //!< Widget name for the editbox component.
+    static const String DropListName;   //!< Widget name for the drop list component.
+    static const String ButtonName;     //!< Widget suffix for the button component.
 
     // override from Window class
-    bool isHit(const Vector2& position,
+    bool isHit(const Vector2f& position,
                const bool allow_disabled = false) const;
 
 	/*!
@@ -302,12 +302,12 @@ public:
 
 	/*!
 	\brief
-		return the current position of the carat.
+		return the current position of the caret.
 
 	\return
-		Index of the insert carat relative to the start of the text.
+		Index of the insert caret relative to the start of the text.
 	*/
-	size_t	getCaratIndex(void) const;
+	size_t	getCaretIndex(void) const;
 
 
 	/*!
@@ -316,7 +316,7 @@ public:
 
 	\return
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
-		the position of the carat.
+		the position of the caret.
 	*/
 	size_t	getSelectionStartIndex(void) const;
 
@@ -327,7 +327,7 @@ public:
 
 	\return
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
-		the position of the carat.
+		the position of the caret.
 	*/
 	size_t	getSelectionEndIndex(void) const;
 
@@ -573,16 +573,16 @@ public:
 
 	/*!
 	\brief
-		Set the current position of the carat.
+		Set the current position of the caret.
 
-	\param carat_pos
-		New index for the insert carat relative to the start of the text.  If the value specified is greater than the
-		number of characters in the Editbox, the carat is positioned at the end of the text.
+	\param caret_pos
+		New index for the insert caret relative to the start of the text.  If the value specified is greater than the
+		number of characters in the Editbox, the caret is positioned at the end of the text.
 
 	\return
 		Nothing.
 	*/
-	void	setCaratIndex(size_t carat_pos);
+	void	setCaretIndex(size_t caret_pos);
 
 
 	/*!
@@ -881,7 +881,7 @@ protected:
 	bool editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
 	bool editbox_TextInvalidatedEventHandler(const EventArgs& e);
 	bool editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
-	bool editbox_CaratMovedHandler(const EventArgs& e);
+	bool editbox_CaretMovedHandler(const EventArgs& e);
 	bool editbox_TextSelectionChangedHandler(const EventArgs& e);
 	bool editbox_EditboxFullEventHandler(const EventArgs& e);
 	bool editbox_TextAcceptedEventHandler(const EventArgs& e);
@@ -933,9 +933,9 @@ protected:
 
 	/*!
 	\brief
-		Handler called internally when the carat in the Comboxbox's Editbox moves.
+		Handler called internally when the caret in the Comboxbox's Editbox moves.
 	*/
-	virtual	void	onCaratMoved(WindowEventArgs& e);
+	virtual	void	onCaretMoved(WindowEventArgs& e);
 
 
 	/*!
@@ -1038,7 +1038,7 @@ private:
 	*************************************************************************/
 	static ComboboxProperties::ReadOnly						d_readOnlyProperty;
 	static ComboboxProperties::ValidationString				d_validationStringProperty;
-	static ComboboxProperties::CaratIndex					d_caratIndexProperty;
+	static ComboboxProperties::CaretIndex					d_caretIndexProperty;
 	static ComboboxProperties::EditSelectionStart			d_selStartProperty;
 	static ComboboxProperties::EditSelectionLength			d_selLengthProperty;
 	static ComboboxProperties::MaxEditTextLength			d_maxTextLengthProperty;

@@ -5,7 +5,7 @@ class MultiLineEditbox : public Window
 {
 	bool hasInputFocus() const;
 	bool isReadOnly() const;
-	unsigned long getCaratIndex() const;
+	unsigned long getCaretIndex() const;
 	unsigned long getSelectionStartIndex() const;
 	unsigned long getSelectionEndIndex() const;
 	unsigned long getSelectionLength() const;
@@ -15,14 +15,14 @@ class MultiLineEditbox : public Window
     Scrollbar* getVertScrollbar() const;
     bool isVertScrollbarAlwaysShown() const;
     Scrollbar* getHorzScrollbar() const;
-    Rect getTextRenderArea() const;
+    Rect<float> getTextRenderArea() const;
     unsigned long getLineNumberFromIndex(unsigned long index) const;
 
 	void setReadOnly(bool setting);
-	void setCaratIndex(unsigned long carat_pos);
+	void setCaretIndex(unsigned long caret_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaxTextLength(unsigned long max_len);
-	void ensureCaratIsVisible();
+	void ensureCaretIsVisible();
 	void setWordWrapping(bool setting);
     void setShowVertScrollbar(bool setting);
 

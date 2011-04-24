@@ -39,7 +39,7 @@ class InventoryBase
 {
 public:
     // returns the pixel size of a single square in the content grid.
-    virtual Size squarePixelSize() const;
+    virtual Sizef squarePixelSize() const;
 
     // set the size of the content grid and initialise it.
     virtual void setContentSize(int width, int height);
@@ -60,7 +60,7 @@ public:
 
 protected:
     // return the screen rect where the content grid is rendered.
-    virtual Rect gridBasePixelRect() const = 0;
+    virtual Rectf gridBasePixelRect() const = 0;
 
     // array holding the content grid data.
     BoolArray2D d_content;

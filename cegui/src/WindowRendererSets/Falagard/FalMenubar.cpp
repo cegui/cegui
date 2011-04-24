@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardMenubar::TypeName[] = "Falagard/Menubar";
+    const String FalagardMenubar::TypeName("Falagard/Menubar");
 
     FalagardMenubar::FalagardMenubar(const String& type) :
         ItemListBaseWindowRenderer(type)
@@ -47,12 +47,12 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
     }
 
-    Rect FalagardMenubar::getItemRenderArea(void) const
+    Rectf FalagardMenubar::getItemRenderArea(void) const
     {
         const WidgetLookFeel& wlf = getLookNFeel();
         return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*d_window);

@@ -34,6 +34,8 @@
 #include "../CEGUIString.h"
 #include "../CEGUIColourRect.h"
 #include "../CEGUITextUtils.h"
+#include "../CEGUISize.h"
+#include "../CEGUIRect.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -47,13 +49,14 @@ namespace CEGUI
 \brief
     Base class for list box items
 */
-class CEGUIEXPORT ListboxItem
+class CEGUIEXPORT ListboxItem :
+    public AllocatedObject<ListboxItem>
 {
 public:
     /*************************************************************************
         Constants
     *************************************************************************/
-    static const colour DefaultSelectionColour;     //!< Default selection brush colour.
+    static const Colour DefaultSelectionColour;     //!< Default selection brush colour.
 
 
     /*************************************************************************
@@ -323,7 +326,7 @@ public:
     \return
         Nothing.
     */
-    void    setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+    void    setSelectionColours(Colour top_left_colour, Colour top_right_colour, Colour bottom_left_colour, Colour bottom_right_colour);
 
 
     /*!
@@ -336,7 +339,7 @@ public:
     \return
         Nothing.
     */
-    void    setSelectionColours(colour col)     {setSelectionColours(col, col, col, col);}
+    void    setSelectionColours(Colour col)     {setSelectionColours(col, col, col, col);}
 
 
     /*!
@@ -356,16 +359,13 @@ public:
     \brief
         Set the selection highlighting brush image.
 
-    \param imageset
-        Name of the imagest containing the image to be used.
-
-    \param image
+    \param name
         Name of the image to be used
 
     \return
         Nothing.
     */
-    void    setSelectionBrushImage(const String& imageset, const String& image);
+    void    setSelectionBrushImage(const String& name);
 
 
     /*************************************************************************
@@ -378,7 +378,7 @@ public:
     \return
         Size object describing the size of the list box item in pixels.
     */
-    virtual Size    getPixelSize(void) const    = 0;
+    virtual Sizef getPixelSize(void) const = 0;
 
 
     /*!
@@ -397,8 +397,8 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rect& targetRect,
-                      float alpha, const Rect* clipper) const = 0;
+    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+                      float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************
         Operators
@@ -434,7 +434,7 @@ protected:
         Return a colour value describing the colour specified by \a col after having its alpha
         component modulated by the value \a alpha.
     */
-    colour calculateModulatedAlphaColour(colour col, float alpha) const;
+    Colour calculateModulatedAlphaColour(Colour col, float alpha) const;
 
 
     /*************************************************************************
@@ -442,7 +442,7 @@ protected:
     *************************************************************************/
     String d_textLogical;
     //! pointer to bidirection support object
-    BiDiVisualMapping* d_bidiVisualMapping;
+    BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     String  d_tooltipText;  //!< Text for the individual tooltip of this item

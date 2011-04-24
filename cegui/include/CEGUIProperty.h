@@ -58,9 +58,15 @@ public:
 	Property objects allow (via a PropertySet) access to certain properties of objects
 	by using simple get/set functions and the name of the property to be accessed.
 */
-class CEGUIEXPORT Property
+class CEGUIEXPORT Property :
+    public AllocatedObject<Property>
 {
 public:
+    //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
+    static const String UnknownDataType;
+    //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
+    static const String UnknownOrigin;
+
 	/*!
 	\brief
 		Creates a new Property object.
@@ -77,15 +83,21 @@ public:
     \param writesXML
         Specifies whether the writeXMLToStream method should do anything for this Property.  This
         enables selectivity in what properties within a PropertySet will get output as XML.
+
+	\param dataType
+	    String representation of the data type this property is held in ("int", "UVector2", ...)
+
+	\param origin
+	    String describing the origin class of this Property (Window, FrameWindow, ...)
 	*/
-	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true) :
+	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true, const String& dataType = UnknownDataType, const String& origin = UnknownOrigin) :
 	  d_name(name),
 	  d_help(help),
 	  d_default(defaultValue),
-	  d_writeXML(writesXML)
-	{
-	}
-
+	  d_writeXML(writesXML),
+      d_dataType(dataType),
+      d_origin(origin)
+    {}
 
 	/*!
 	\brief
@@ -113,6 +125,23 @@ public:
 	*/
 	const String& getName(void) const		{return d_name;}
 
+    /*!
+	\brief
+		Return string data type of this Property
+
+	\return
+		String containing the data type of the Property
+	*/
+    const String& getDataType(void) const   {return d_dataType;}
+
+    /*!
+    \brief
+        Return string origin of this Property
+
+    \return
+        String containing the origin of the Property
+    */
+    const String& getOrigin(void) const   {return d_origin;}
 
 	/*!
 	\brief
@@ -183,10 +212,14 @@ public:
     virtual void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 
 protected:
-	String	d_name;		//!< String that stores the Property name.
-	String	d_help;		//!< String that stores the Property help text.
-	String	d_default;	//!< String that stores the Property default value string.
-	bool    d_writeXML; //!< Specifies whether writeXMLToStream should do anything for this property.
+	String d_name;		//!< String that stores the Property name.
+	String d_help;		//!< String that stores the Property help text.
+	String d_default;	//!< String that stores the Property default value string.
+	bool d_writeXML; //!< Specifies whether writeXMLToStream should do anything for this property.
+    // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
+    String d_dataType; //!< Holds data type of this property
+    // TODO: This is really ugly but PropertyDefinition forced me to do this to support operator=
+    String d_origin; //!< Holds origin of this property
 };
 
 } // End of  CEGUI namespace section

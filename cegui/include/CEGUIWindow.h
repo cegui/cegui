@@ -33,10 +33,12 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIVector.h"
+#include "CEGUIQuaternion.h"
 #include "CEGUIRect.h"
 #include "CEGUISize.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIPropertySet.h"
+#include "CEGUITplProperty.h"
 #include "CEGUISystem.h"
 #include "CEGUIInputEvent.h"
 #include "CEGUIWindowProperties.h"
@@ -135,7 +137,10 @@ enum WindowUpdateMode
     and specifies the minimal interface required to be implemented by derived
     classes.
 */
-class CEGUIEXPORT Window : public PropertySet, public EventSet
+class CEGUIEXPORT Window :
+    public PropertySet,
+    public EventSet,
+    public AllocatedObject<Window>
 {
 public:
     /*************************************************************************
@@ -148,7 +153,7 @@ public:
     /** Event fired as part of the time based update of the window.
      * Handlers are passed a const UpdateEventArgs reference.
      */
-    static const String EventWindowUpdated;
+    static const String EventUpdated;
     /** Event fired when the parent of this Window has been re-sized.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window pointing to the <em>parent window</em> that
@@ -245,7 +250,7 @@ public:
      */
     static const String EventAlwaysOnTopChanged;
     /** Event fired when the Window gains capture of mouse inputs.
-     * Handlers are passed a cont WindowEventArgs reference with
+     * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window that has captured mouse inputs.
      */
     static const String EventInputCaptureGained;
@@ -342,7 +347,7 @@ public:
      * detached from it.
      */
     static const String EventWindowRendererDetached;
-    /** Event fired whrn the rotation factor(s) for the window are changed.
+    /** Event fired when the rotation factor(s) for the window are changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose rotation was changed.
      */
@@ -373,7 +378,7 @@ public:
      * valid.
      */
     static const String EventMouseEntersArea;
-    /** Event fired when themouse cursor has left the Window's area.
+    /** Event fired when the mouse cursor has left the Window's area.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
@@ -388,7 +393,7 @@ public:
      * For an alternative version of this event see the
      * Window::EventMouseEntersArea event.
      */
-    static const String EventMouseEnters;
+    static const String EventMouseEntersSurface;
     /** Event fired when the mouse cursor is no longer over the Window's surface
      * area.
      * Handlers are passed a const MouseEventArgs reference with all fields
@@ -399,7 +404,7 @@ public:
      * actually 'left' this Window's area).  For an alternative version of this
      * event see the Window::EventMouseLeavesArea event.
      */
-    static const String EventMouseLeaves;
+    static const String EventMouseLeavesSurface;
     /** Event fired when the mouse cursor moves within the area of the Window.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
@@ -512,6 +517,15 @@ public:
     */
     const String& getName(void) const  {return d_name;}
 
+    /*
+    \brief
+        return a String object that describes the name path for this Window.
+
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+    */
+    String getNamePath() const;
+
     /*!
     \brief
         returns whether or not this Window is set to be destroyed when its
@@ -538,15 +552,29 @@ public:
     \brief
         return whether the Window is currently disabled
 
-    \param localOnly
-        States whether to only return the state set for this window, and not to
+    \note
+        Only checks the state set for this window, and does not
         factor in inherited state from ancestor windows.
 
     \return
         - true if the window is disabled.
         - false if the window is enabled.
     */
-    bool isDisabled(bool localOnly = false) const;
+    bool isDisabled() const;
+
+    /*!
+    \brief
+        return whether the Window is currently disabled
+
+    \note
+        Not only checks the state set for this window, but also
+        factors in inherited state from ancestor windows.
+
+    \return
+        - true if the window is disabled.
+        - false if the window is enabled.
+    */
+    bool isEffectiveDisabled() const;
 
     /*!
     \brief
@@ -556,15 +584,33 @@ public:
         is not completely obscured by other windows, just that the window will
         be processed when rendering, and is not explicitly marked as hidden.
 
-    \param localOnly
-        States whether to only return the state set for this window, and not to
+    \note
+        Only checks the state set for this window, and does not
         factor in inherited state from ancestor windows.
+
+    \return
+        - true if the window is set as visible.
+        - false if the window is set as hidden.
+    */
+    bool isVisible() const;
+
+    /*!
+    \brief
+        return true if the Window is currently visible.
+
+        When true is returned from this function does not mean that the window
+        is not completely obscured by other windows, just that the window will
+        be processed when rendering, and is not explicitly marked as hidden.
+
+    \note
+        Does check the state set for this window, but also
+        factors in inherited state from ancestor windows.
 
     \return
         - true if the window will be drawn.
         - false if the window is hidden and therefore ignored when rendering.
     */
-    bool isVisible(bool localOnly = false) const;
+    bool isEffectiveVisible() const;
 
     /*!
     \brief
@@ -615,17 +661,26 @@ public:
 
     /*!
     \brief
-        returns whether a Window with the specified name is currently attached
-        to this Window as a child.
+        returns whether the specified name path references a Window that is
+        currently attached to this Window.
 
-    \param name
-        String object containing the name of the Window to look for.
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+        \par
+        For example, if this window has a child attached to it named "Panel"
+        which has its own children attached named "Okay" and "Cancel",
+        you can check for the window "Okay" from this window by using the
+        name path "Panel/Okay".  To check for "Panel", you would simply pass
+        the name "Panel".
+
+    \param name_path
+        String object holding the name path of the child window to test.
 
     \return
-        - true if a Window named \a name is currently attached to this Window.
-        - false if no such child Window is attached.
+         - true if the window referenced by \a name_path is attached.
+         - false if the window referenced by \a name_path is not attached.
     */
-    bool isChild(const String& name) const;
+    bool isChild(const String& name_path) const;
 
     /*!
     \brief
@@ -682,26 +737,28 @@ public:
 
     /*!
     \brief
-        return a pointer to the child window with the specified name.
+        return the attached child window that the given name path references.
 
-        This function will throw an exception if no child object with the given
-        name is attached.  This decision was made (over returning NULL if no
-        window was found) so that client code can assume that if the call
-        returns it has a valid window pointer.  We provide the isChild()
-        functions for checking if a given window is attached.
+        A name path is a string that describes a path down the window
+        hierarchy using window names and the forward slash '/' as a separator.
+        \par
+        For example, if this window has a child attached to it named "Panel"
+        which has its own children attached named "Okay" and "Cancel",
+        you can access the window "Okay" from this window by using the
+        name path "Panel/Okay".  To access "Panel", you would simply pass the
+        name "Panel".
 
-    \param name
-        String object holding the name of the child window for which a pointer
-        is to be returned.
+    \param name_path
+        String object holding the name path of the child window to return.
 
     \return
-        Pointer to the Window object attached to this window that has the name
-        \a name.
+        the Window object referenced by \a name_path.
 
     \exception UnknownObjectException
-        thrown if no window named \a name is attached to this Window.
+        thrown if \a name_path does not reference a Window attached to this
+        Window.
     */
-    Window* getChild(const String& name) const;
+    Window* getChild(const String& name_path) const;
 
     /*!
     \brief
@@ -725,31 +782,6 @@ public:
         thrown if no window with the ID code \a ID is attached to this Window.
     */
     Window* getChild(uint ID) const;
-
-    /*!
-    \brief
-        return a pointer to the first attached child window with the specified
-        name. Children are traversed recursively.
-
-        Contrary to the non recursive version of this function, this one will
-        not throw an exception, but return 0 in case no child was found.
-
-    \note
-        WARNING! This function can be very expensive and should only be used
-        when you have no other option available. If you decide to use it anyway,
-        make sure the window hierarchy from the entry point is small.
-
-    \param name
-        String object holding the name of the child window for which a pointer
-        is to be returned.
-
-    \return
-        Pointer to the Window object attached to this window that has the name
-        \a name.
-
-        If no child is found with the name \a name, 0 is returned.
-    */
-    Window* getChildRecursive(const String& name) const;
 
     /*!
     \brief
@@ -920,14 +952,14 @@ public:
         Return a Rect that describes the unclipped outer rect area of the Window
         in screen pixels.
     */
-    Rect getUnclippedOuterRect() const;
+    Rectf getUnclippedOuterRect() const;
 
     /*!
     \brief
         Return a Rect that describes the unclipped inner rect area of the Window
         in screen pixels.
     */
-    Rect getUnclippedInnerRect() const;
+    Rectf getUnclippedInnerRect() const;
 
     /*!
     \brief
@@ -940,7 +972,7 @@ public:
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
     */
-    Rect getUnclippedRect(const bool inner) const;
+    Rectf getUnclippedRect(const bool inner) const;
 
     /*!
     \brief
@@ -954,7 +986,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rect getOuterRectClipper() const;
+    Rectf getOuterRectClipper() const;
 
     /*!
     \brief
@@ -968,7 +1000,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rect getInnerRectClipper() const;
+    Rectf getInnerRectClipper() const;
 
     /*!
     \brief
@@ -988,7 +1020,7 @@ public:
         - true to return the non-client clipping area (based on outer rect).
         - false to return the client clipping area (based on inner rect).
     */
-    Rect getClipRect(const bool non_client = false) const;
+    Rectf getClipRect(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1000,7 +1032,7 @@ public:
         as opposed to what is used for rendering (since the actual rendering
         clipper rects should not to be used if reliable results are desired).
     */
-    Rect getHitTestRect() const;
+    Rectf getHitTestRect() const;
 
     /*!
     \brief
@@ -1021,7 +1053,7 @@ public:
         - true to return the non-client child content area.
         - false to return the client child content area (default).
     */
-    Rect getChildWindowContentArea(const bool non_client = false) const;
+    Rectf getChildWindowContentArea(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1039,7 +1071,7 @@ public:
         All code accessing the area rects via external code should be using the
         regular getUnclippedInnerRect function.
     */
-    virtual Rect getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
     /*!
     \brief
@@ -1099,7 +1131,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2& position,
+    virtual bool isHit(const Vector2f& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -1114,7 +1146,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2& position) const;
+    Window* getChildAtPosition(const Vector2f& position) const;
 
     /*!
     \brief
@@ -1133,7 +1165,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2& position, 
+    Window* getTargetChildAtPosition(const Vector2f& position, 
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -1169,7 +1201,7 @@ public:
     \return
         Size object describing this windows size in pixels.
     */
-    Size getPixelSize(void) const    { return d_pixelSize; }
+    Sizef getPixelSize(void) const    { return d_pixelSize; }
 
     /*!
     \brief
@@ -1475,7 +1507,7 @@ public:
         Size object that describes the pixel dimensions of this Window objects
         parent
     */
-    Size getParentPixelSize(void) const;
+    Sizef getParentPixelSize(void) const;
 
     /*!
     \brief
@@ -1628,13 +1660,10 @@ public:
 
     \return
         A pointer to the root window of the hierarchy that this window is
-        attched to.
+        attached to.
     */
     const Window* getRootWindow() const;
     Window* getRootWindow();
-
-    //! return the rotations set for this window.
-    const Vector3& getRotation() const;
 
     /*!
     \brief
@@ -1719,6 +1748,20 @@ public:
         Nothing
     */
     void setEnabled(bool setting);
+
+    /*!
+    \brief
+        Set whether this window is enabled or disabled.  A disabled window
+        normally can not be interacted with, and may have different rendering.
+
+    \param setting
+        - true to disable the Window
+        - false to enable the Window.
+
+    \return
+        Nothing
+    */
+    void setDisabled(bool setting);
 
     /*!
     \brief
@@ -1900,26 +1943,6 @@ public:
 
     /*!
     \brief
-        Add the named Window as a child of this Window.  If the Window \a name
-        is already attached to a Window, it is detached before being added to
-        this Window.
-
-    \param name
-        String object holding the name of the Window to be added.
-
-    \return
-        Nothing.
-
-    \exception UnknownObjectException
-        thrown if no Window named \a name exists.
-    \exception InvalidRequestException
-        thrown if Window \a name is an ancestor of this Window, to prevent
-        cyclic Window structures.
-    */
-    void addChildWindow(const String& name);
-
-    /*!
-    \brief
         Add the specified Window as a child of this Window.  If the Window
         \a window is already attached to a Window, it is detached before
         being added to this Window.
@@ -1934,20 +1957,22 @@ public:
         thrown if Window \a window is an ancestor of this Window, to prevent
         cyclic Window structures.
     */
-    void addChildWindow(Window* window);
+    void addChild(Window* window);
 
     /*!
     \brief
-        Remove the named Window from this windows child list.
+        Remove the Window referenced by the given name path from this Windows
+        child list.
 
-    \param name
-        String object holding the name of the Window to be removed.  If the
-        Window specified is not attached to this Window, nothing happens.
+    \param name_path
+        String the name path that references the the Window to be removed.
+        If the Window specified is not attached to this Window, nothing
+        happens.
 
     \return
         Nothing.
     */
-    void removeChildWindow(const String& name);
+    void removeChild(const String& name);
 
     /*!
     \brief
@@ -1960,7 +1985,7 @@ public:
     \return
         Nothing.
     */
-    void removeChildWindow(Window* window);
+    void removeChild(Window* window);
 
     /*!
     \brief
@@ -1975,7 +2000,42 @@ public:
     \return
         Nothing.
     */
-    void removeChildWindow(uint ID);
+    void removeChild(uint ID);
+
+    /*!
+	\brief
+		Creates a child window attached to this window.
+	
+	\param type
+		String that describes the type of Window to be created.  A valid
+        WindowFactory for the specified type must be registered.
+
+	\param name
+		String that holds the name that is to be given to the new window.  If
+        this string is empty, a name will be generated for the window.
+
+	\return
+		Pointer to the newly created child Window object.
+	*/
+    Window* createChild(const String& type, const String& name);
+
+    /*!
+    \brief
+        Destroys a child window of this window
+
+    \param wnd
+        The child window to destroy
+    */
+    void destroyChild(Window* wnd);
+
+    /*!
+    \brief
+        Destroys a child window of this window
+
+    \param name_path
+        Name path that references the window to destroy
+    */
+    void destroyChild(const String& name_path);
 
     /*!
     \brief
@@ -2078,7 +2138,7 @@ public:
     \return
         Nothing
     */
-    void setRestoreCapture(bool setting);
+    void setRestoreOldCapture(bool setting);
 
     /*!
     \brief
@@ -2100,7 +2160,7 @@ public:
     \return
         Nothing
     */
-    void setAlpha(float alpha);
+    void setAlpha(const float alpha);
 
     /*!
     \brief
@@ -2178,18 +2238,16 @@ public:
         String object that contains the name of the Imageset that contains the
         image to be used.
 
-    \param image_name
-        String object that contains the name of the Image on \a imageset that
-        is to be used.
+    \param name
+        String object that contains the name of the Image to use.
 
     \return
         Nothing.
 
     \exception UnknownObjectException
-        thrown if \a imageset is not known, or if \a imageset contains no Image
-        named \a image_name.
+        thrown if no Image named \a name exists.
     */
-    void setMouseCursor(const String& imageset, const String& image_name);
+    void setMouseCursor(const String& name);
 
     /*!
     \brief
@@ -3109,8 +3167,25 @@ public:
     */
     void setUsingAutoRenderingSurface(bool setting);
 
-    //! set the rotations for this window.
-    void setRotation(const Vector3& rotation);
+    /*!
+    \brief sets rotation of this widget
+
+    \param rotation
+        A Quaternion describing the rotation
+
+    CEGUI used Euler angles previously. Whilst this is easy to use and seems
+    intuitive, it causes Gimbal locks when animating and is just the worse
+    solution than using Quaternions. You can still use Euler angles, see
+    the \a Quaternion class for more info about that.
+    */
+    void setRotation(const Quaternion& rotation);
+
+    /*!
+    \brief retrieves rotation of this widget
+
+    \see Window::setRotation
+    */
+    const Quaternion& getRotation() const;
 
     /*!
     \brief
@@ -3147,10 +3222,10 @@ public:
     const UBox& getMargin() const;
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2 getUnprojectedPosition(const Vector2& pos) const;
+    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
 
-    //! return the pointer to the BiDiVisualMapping for this window, if any.
-    const BiDiVisualMapping* getBiDiVisualMapping() const
+    //! return the pointer to the BidiVisualMapping for this window, if any.
+    const BidiVisualMapping* getBidiVisualMapping() const
         {return d_bidiVisualMapping;}
 
     //! Add the named property to the XML ban list for this window.
@@ -3211,6 +3286,37 @@ public:
 
     /*!
     \brief
+        Sets current aspect mode and recalculates the area rect
+
+    \param
+        mode the new aspect mode to set
+    */
+    void setAspectMode(AspectMode mode);
+
+    /*!
+    \brief
+        Retrieves currently used aspect mode
+    */
+    AspectMode getAspectMode() const;
+
+    /*!
+    \brief
+        Sets target aspect ratio
+
+    This is ignored if AspectMode is AM_IGNORE.
+    */
+    void setAspectRatio(float ratio);
+
+    /*!
+    \brief
+        Retrieves target aspect ratio
+
+    \see Window::setAspectRatio
+    */
+    float getAspectRatio() const;
+
+    /*!
+    \brief
         Set whether mouse input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
@@ -3237,9 +3343,6 @@ public:
     \brief
         Clones this Window and returns the result
 
-    \param 
-        newName new name of the cloned window
-
     \param
         deepCopy if true, even children are copied (the old name prefix will
         be replaced with new name prefix)
@@ -3247,7 +3350,7 @@ public:
     \return
         the cloned Window
     */
-    Window* clone(const String& newName, const bool deepCopy = true) const;
+    Window* clone(const bool deepCopy = true) const;
 
     //! copies this widget's properties to given target widget
     virtual void clonePropertiesTo(Window& target) const;
@@ -3944,8 +4047,6 @@ protected:
     */
     void setParent(Window* parent);
 
-    Size getSize_impl(const Window* window) const;
-
     /*!
     \brief
         Fires off a repeated mouse button down event for this window.
@@ -4117,7 +4218,7 @@ protected:
     void transferChildSurfaces();
 
     //! helper function for calculating clipping rectangles.
-    Rect getParentElementClipIntersection(const Rect& unclipped_area) const;
+    Rectf getParentElementClipIntersection(const Rectf& unclipped_area) const;
 
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
@@ -4134,45 +4235,41 @@ protected:
     const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
     //! Default implementation of function to return Window outer rect area.
-    virtual Rect getUnclippedOuterRect_impl() const;
+    virtual Rectf getUnclippedOuterRect_impl() const;
     //! Default implementation of function to return Window outer clipper area.
-    virtual Rect getOuterRectClipper_impl() const;
+    virtual Rectf getOuterRectClipper_impl() const;
     //! Default implementation of function to return Window inner clipper area.
-    virtual Rect getInnerRectClipper_impl() const;
+    virtual Rectf getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
-    virtual Rect getHitTestRect_impl() const;
+    virtual Rectf getHitTestRect_impl() const;
     //! Default implementation of function to return non-client content area
-    virtual Rect getNonClientChildWindowContentArea_impl() const;
+    virtual Rectf getNonClientChildWindowContentArea_impl() const;
     //! Default implementation of function to return client content area
-    virtual Rect getClientChildWindowContentArea_impl() const;
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
     // constrain given UVector2 to window's min size, return if size changed.
-    bool constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz);
+    bool constrainUVector2ToMinSize(const Sizef& base_sz, UVector2& sz);
     // constrain given UVector2 to window's max size, return if size changed.
-    bool constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz);
+    bool constrainUVector2ToMaxSize(const Sizef& base_sz, UVector2& sz);
+    
+    //! implementation function to get window at name_path, returns 0 if none.
+    virtual Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::Alpha             d_alphaProperty;
-    static  WindowProperties::AlwaysOnTop       d_alwaysOnTopProperty;
-    static  WindowProperties::ClippedByParent   d_clippedByParentProperty;
-    static  WindowProperties::DestroyedByParent d_destroyedByParentProperty;
-    static  WindowProperties::Disabled          d_disabledProperty;
     static  WindowProperties::Font              d_fontProperty;
-    static  WindowProperties::ID                d_IDProperty;
-    static  WindowProperties::InheritsAlpha     d_inheritsAlphaProperty;
+
+    //static TplProperty<Window, Image*>          d_mouseCursorProperty;
     static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
-    static  WindowProperties::RestoreOldCapture d_restoreOldCaptureProperty;
-    static  WindowProperties::Text              d_textProperty;
-    static  WindowProperties::Visible           d_visibleProperty;
-    static  WindowProperties::ZOrderChangeEnabled   d_zOrderChangeProperty;
-    static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
-    static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
+    static TplProperty<Window, bool>            d_zOrderChangeProperty;
+    static TplProperty<Window, bool>            d_wantsMultiClicksProperty;
+    static TplProperty<Window, bool>            d_mouseButtonAutoRepeatProperty;
+    
     static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
     static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
     static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
@@ -4197,9 +4294,6 @@ protected:
     static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
     static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
     static  WindowProperties::Rotation d_rotationProperty;
-    static  WindowProperties::XRotation d_xRotationProperty;
-    static  WindowProperties::YRotation d_yRotationProperty;
-    static  WindowProperties::ZRotation d_zRotationProperty;
     static  WindowProperties::NonClient d_nonClientProperty;
     static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
     static  WindowProperties::Margin d_marginProperty;
@@ -4210,11 +4304,14 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child windows.
-    typedef std::vector<Window*> ChildList;
+    typedef std::vector<Window*
+        CEGUI_VECTOR_ALLOC(Window*)> ChildList;
     //! definition of type used for the UserString dictionary.
-    typedef std::map<String, String, String::FastLessCompare> UserStringMap;
+    typedef std::map<String, String, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, String)> UserStringMap;
     //! definition of type used to track properties banned from writing XML.
-    typedef std::set<String, String::FastLessCompare> BannedXMLPropertySet;
+    typedef std::set<String, StringFastLessCompare
+        CEGUI_SET_ALLOC(String)> BannedXMLPropertySet;
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
@@ -4285,7 +4382,7 @@ protected:
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
     //! pointer to bidirection support object
-    BiDiVisualMapping* d_bidiVisualMapping;
+    BidiVisualMapping* d_bidiVisualMapping;
     //! whether bidi visual mapping has been updated since last text change.
     mutable bool d_bidiDataValid;
     //! RenderedString representation of text string as ouput from a parser.
@@ -4326,7 +4423,7 @@ protected:
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
-    //! secons between further repeats after delay has expired.
+    //! seconds between further repeats after delay has expired.
     float d_repeatRate;
     //! button we're tracking for auto-repeat purposes.
     MouseButton d_repeatButton;
@@ -4355,7 +4452,7 @@ protected:
     //! This Window objects area as defined by a URect.
     URect d_area;
     //! Current constrained pixel size of the window.
-    Size d_pixelSize;
+    Sizef d_pixelSize;
     //! current minimum size for the window.
     UVector2 d_minSize;
     //! current maximum size for the window.
@@ -4364,19 +4461,19 @@ protected:
     HorizontalAlignment d_horzAlign;
     //! Specifies the base for vertical alignment.
     VerticalAlignment d_vertAlign;
-    //! Rotation angles for this window
-    Vector3 d_rotation;
+    //! Rotation of this window (relative to the parent)
+    Quaternion d_rotation;
 
     //! outer area rect in screen pixels
-    mutable Rect d_outerUnclippedRect;
+    mutable Rectf d_outerUnclippedRect;
     //! inner area rect in screen pixels
-    mutable Rect d_innerUnclippedRect;
+    mutable Rectf d_innerUnclippedRect;
     //! outer area clipping rect in screen pixels
-    mutable Rect d_outerRectClipper;
+    mutable Rectf d_outerRectClipper;
     //! inner area clipping rect in screen pixels
-    mutable Rect d_innerRectClipper;
-    //! area rect used for hit-testing agains this window
-    mutable Rect d_hitTestRect;
+    mutable Rectf d_innerRectClipper;
+    //! area rect used for hit-testing against this window
+    mutable Rectf d_hitTestRect;
 
     mutable bool d_outerUnclippedRectValid;
     mutable bool d_innerUnclippedRectValid;
@@ -4386,9 +4483,14 @@ protected:
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
+
+    //! How to satisfy current aspect ratio
+    AspectMode d_aspectMode;
+    //! The target aspect ratio
+    float d_aspectRatio;
+
     //! specifies whether mouse inputs should be propagated to parent(s)
     bool d_propagateMouseInputs;
-
 
 private:
     /*************************************************************************

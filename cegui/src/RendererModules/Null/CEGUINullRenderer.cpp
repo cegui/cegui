@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,6 +34,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUILogger.h"
 
 #include <algorithm>
 
@@ -161,49 +162,105 @@ void NullRenderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& NullRenderer::createTexture()
+Texture& NullRenderer::createTexture(const String& name)
 {
-    NullTexture* t = new NullTexture;
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    NullTexture* t = new NullTexture(name);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& NullRenderer::createTexture(const String& filename,
+Texture& NullRenderer::createTexture(const String& name, const String& filename,
                                      const String& resourceGroup)
 {
-    NullTexture* t = new NullTexture(filename, resourceGroup);
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    NullTexture* t = new NullTexture(name, filename, resourceGroup);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
 }
 
 //----------------------------------------------------------------------------//
-Texture& NullRenderer::createTexture(const Size& size)
+Texture& NullRenderer::createTexture(const String& name, const Sizef& size)
 {
-    NullTexture* t = new NullTexture(size);
-    d_textures.push_back(t);
+    throwIfNameExists(name);
+
+    NullTexture* t = new NullTexture(name, size);
+    d_textures[name] = t;
+
+    logTextureCreation(name);
+
     return *t;
+}
+
+//----------------------------------------------------------------------------//
+void NullRenderer::throwIfNameExists(const String& name) const
+{
+    if (d_textures.find(name) != d_textures.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[NullRenderer] Texture already exists: " + name));
+}
+
+//----------------------------------------------------------------------------//
+void NullRenderer::logTextureCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[NullRenderer] Created texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void NullRenderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
-                                        &texture);
+    destroyTexture(texture.getName());
+}
+
+//----------------------------------------------------------------------------//
+void NullRenderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_textures.find(name);
 
     if (d_textures.end() != i)
     {
+        logTextureDestruction(name);
+        delete i->second;
         d_textures.erase(i);
-        delete &static_cast<NullTexture&>(texture);
     }
+}
+
+//----------------------------------------------------------------------------//
+void NullRenderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[NullRenderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void NullRenderer::destroyAllTextures()
 {
     while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+        destroyTexture(d_textures.begin()->first);
+}
+
+//----------------------------------------------------------------------------//
+Texture& NullRenderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[NullRenderer] Texture does not exist: " + name));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//
@@ -217,13 +274,13 @@ void NullRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size& NullRenderer::getDisplaySize() const
+const Sizef& NullRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullRenderer::getDisplayDPI() const
+const Vector2f& NullRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -269,18 +326,19 @@ void NullRenderer::constructor_impl()
 }
 
 //----------------------------------------------------------------------------//
-void NullRenderer::setDisplaySize(const Size& sz)
+void NullRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
         d_displaySize = sz;
 
         // FIXME: This is probably not the right thing to do in all cases.
-        Rect area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
-
 }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

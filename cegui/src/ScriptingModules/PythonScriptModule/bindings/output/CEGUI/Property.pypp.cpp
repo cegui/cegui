@@ -8,8 +8,8 @@ namespace bp = boost::python;
 
 struct Property_wrapper : CEGUI::Property, bp::wrapper< CEGUI::Property > {
 
-    Property_wrapper(::CEGUI::String const & name, ::CEGUI::String const & help, ::CEGUI::String const & defaultValue="", bool writesXML=true )
-    : CEGUI::Property( boost::ref(name), boost::ref(help), boost::ref(defaultValue), writesXML )
+    Property_wrapper(::CEGUI::String const & name, ::CEGUI::String const & help, ::CEGUI::String const & defaultValue="", bool writesXML=true, ::CEGUI::String const & dataType=CEGUI::Property::UnknownDataType, ::CEGUI::String const & origin=CEGUI::Property::UnknownOrigin )
+    : CEGUI::Property( boost::ref(name), boost::ref(help), boost::ref(defaultValue), writesXML, boost::ref(dataType), boost::ref(origin) )
       , bp::wrapper< CEGUI::Property >(){
         // constructor
     
@@ -67,13 +67,7 @@ void register_Property_class(){
 
     { //::CEGUI::Property
         typedef bp::class_< Property_wrapper, boost::noncopyable > Property_exposer_t;
-        Property_exposer_t Property_exposer = Property_exposer_t( "Property", "*!\n\
-        \n\
-           An abstract class that defines the interface to access object properties by name.\n\
-        \n\
-           Property objects allow (via a PropertySet) access to certain properties of objects\n\
-           by using simple getset functions and the name of the property to be accessed.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const &, bp::optional< CEGUI::String const &, bool > >(( bp::arg("name"), bp::arg("help"), bp::arg("defaultValue")="", bp::arg("writesXML")=(bool)(true) ), "*!\n\
+        Property_exposer_t Property_exposer = Property_exposer_t( "Property", bp::init< CEGUI::String const &, CEGUI::String const &, bp::optional< CEGUI::String const &, bool, CEGUI::String const &, CEGUI::String const & > >(( bp::arg("name"), bp::arg("help"), bp::arg("defaultValue")="", bp::arg("writesXML")=(bool)(true), bp::arg("dataType")=CEGUI::Property::UnknownDataType, bp::arg("origin")=CEGUI::Property::UnknownOrigin ), "*!\n\
            \n\
               Creates a new Property object.\n\
         \n\
@@ -89,6 +83,12 @@ void register_Property_class(){
             @param writesXML\n\
                 Specifies whether the writeXMLToStream method should do anything for this Property.  This\n\
                 enables selectivity in what properties within a PropertySet will get output as XML.\n\
+        \n\
+           @param dataType\n\
+               String representation of the data type this property is held in (int, UVector2, ...)\n\
+        \n\
+           @param origin\n\
+               String describing the origin class of this Property (Window, FrameWindow, ...)\n\
            *\n") );
         bp::scope Property_scope( Property_exposer );
         { //::CEGUI::Property::get
@@ -108,6 +108,23 @@ void register_Property_class(){
             \n\
                @return\n\
                   String object containing a textual representation of the current value of the Property\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::Property::getDataType
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::Property::*getDataType_function_type )(  ) const;
+            
+            Property_exposer.def( 
+                "getDataType"
+                , getDataType_function_type( &::CEGUI::Property::getDataType )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+               \n\
+                  Return string data type of this Property\n\
+            \n\
+               @return\n\
+                  String containing the data type of the Property\n\
                *\n" );
         
         }
@@ -155,6 +172,23 @@ void register_Property_class(){
                @return\n\
                   String containing the name of the Property\n\
                *\n" );
+        
+        }
+        { //::CEGUI::Property::getOrigin
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::Property::*getOrigin_function_type )(  ) const;
+            
+            Property_exposer.def( 
+                "getOrigin"
+                , getOrigin_function_type( &::CEGUI::Property::getOrigin )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Return string origin of this Property\n\
+            \n\
+                @return\n\
+                    String containing the origin of the Property\n\
+                *\n" );
         
         }
         { //::CEGUI::Property::isDefault
@@ -208,6 +242,12 @@ void register_Property_class(){
                 , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
         
         }
+        Property_exposer.add_static_property( "UnknownDataType"
+                        , bp::make_getter( &CEGUI::Property::UnknownDataType
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Property_exposer.add_static_property( "UnknownOrigin"
+                        , bp::make_getter( &CEGUI::Property::UnknownOrigin
+                                , bp::return_value_policy< bp::return_by_value >() ) );
     }
 
 }

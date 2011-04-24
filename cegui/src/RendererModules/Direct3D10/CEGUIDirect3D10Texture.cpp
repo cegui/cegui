@@ -4,7 +4,7 @@
     author:     Paul D Turner (parts based on code by Rajko Stojadinovic)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,6 +35,46 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+// Helper utility function that copies an RGBA buffer into a region of a second
+// buffer as D3DCOLOR data values
+void blitToSurface(const uint32* src, uint32* dst,
+                   const Sizef& sz, size_t dest_pitch)
+{
+    for (uint i = 0; i < sz.d_height; ++i)
+    {
+        for (uint j = 0; j < sz.d_width; ++j)
+        {
+            const uint32 pixel = src[j];
+            const uint32 tmp = pixel & 0x00FF00FF;
+            dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
+        }
+
+        dst += dest_pitch / sizeof(uint32);
+        src += static_cast<uint32>(sz.d_width);
+    }
+}
+
+//----------------------------------------------------------------------------//
+// Helper utility function that copies a region of a buffer containing D3DCOLOR
+// values into a second buffer as RGBA values.
+void blitFromSurface(const uint32* src, uint32* dst,
+                     const Sizef& sz, size_t source_pitch)
+{
+    for (uint i = 0; i < sz.d_height; ++i)
+    {
+        for (uint j = 0; j < sz.d_width; ++j)
+        {
+            const uint32 pixel = src[j];
+            const uint32 tmp = pixel & 0x00FF00FF;
+            dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
+        }
+
+        src += source_pitch / sizeof(uint32);
+        dst += static_cast<uint32>(sz.d_width);
+    }
+}
+
 //----------------------------------------------------------------------------//
 void Direct3D10Texture::setDirect3DTexture(ID3D10Texture2D* tex)
 {
@@ -68,26 +108,32 @@ ID3D10ShaderResourceView* Direct3D10Texture::getDirect3DShaderResourceView() con
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::setOriginalDataSize(const Size& sz)
+void Direct3D10Texture::setOriginalDataSize(const Sizef& sz)
 {
     d_dataSize = sz;
     updateCachedScaleValues();
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D10Texture::getSize() const
+const String& Direct3D10Texture::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& Direct3D10Texture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& Direct3D10Texture::getOriginalDataSize() const
+const Sizef& Direct3D10Texture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& Direct3D10Texture::getTexelScaling() const
+const Vector2f& Direct3D10Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -121,7 +167,7 @@ void Direct3D10Texture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void Direct3D10Texture::loadFromMemory(const void* buffer,
-                                       const Size& buffer_size,
+                                       const Sizef& buffer_size,
                                        PixelFormat pixel_format)
 {
     cleanupDirect3D10Texture();
@@ -180,11 +226,72 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::saveToMemory(void* buffer)
+void Direct3D10Texture::blitFromMemory(void* sourceData, const Rectf& area)
 {
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D10Texture::saveToMemory: unimplemented!"));
+    if (!d_texture)
+        return;
+
+    uint32* buff = new uint32[static_cast<size_t>(area.getWidth()) *
+                              static_cast<size_t>(area.getHeight())];
+    blitFromSurface(static_cast<uint32*>(sourceData), buff,
+                    area.getSize(), static_cast<size_t>(area.getWidth()) * 4);
+
+    D3D10_BOX dst_box = {static_cast<UINT>(area.left()),
+                         static_cast<UINT>(area.top()),
+                         0,
+                         static_cast<UINT>(area.right()),
+                         static_cast<UINT>(area.bottom()),
+                         1};
+
+    d_device.UpdateSubresource(d_texture, 0, &dst_box, buff,
+                               static_cast<UINT>(area.getWidth()) * 4, 0);
+
+    delete[] buff;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D10Texture::blitToMemory(void* targetData)
+{
+    if (!d_texture)
+        return;
+
+    String exception_msg;
+
+    D3D10_TEXTURE2D_DESC tex_desc;
+    d_texture->GetDesc(&tex_desc);
+
+    tex_desc.Usage = D3D10_USAGE_STAGING;
+    tex_desc.BindFlags = 0;
+    tex_desc.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
+
+    ID3D10Texture2D* offscreen;
+    if (SUCCEEDED(d_device.CreateTexture2D(&tex_desc, 0, &offscreen)))
+    {
+        d_device.CopyResource(offscreen, d_texture);
+
+        D3D10_MAPPED_TEXTURE2D mapped_tex;
+        if (SUCCEEDED(offscreen->Map(0, D3D10_MAP_READ, 0, &mapped_tex)))
+        {
+            blitFromSurface(static_cast<uint32*>(mapped_tex.pData),
+                            static_cast<uint32*>(targetData),
+                            Sizef(static_cast<float>(tex_desc.Width),
+                                   static_cast<float>(tex_desc.Height)),
+                            mapped_tex.RowPitch);
+
+            offscreen->Unmap(0);
+        }
+        else
+            exception_msg.assign("[Direct3D10Renderer] "
+                "ID3D10Texture2D::Map failed.");
+
+        offscreen->Release();
+    }
+    else
+        exception_msg.assign("[Direct3D10Renderer] "
+            "ID3D10Device::CreateTexture2D failed for 'offscreen'.");
+
+    if (!exception_msg.empty())
+        CEGUI_THROW(RendererException(exception_msg));
 }
 
 //----------------------------------------------------------------------------//
@@ -246,18 +353,19 @@ void Direct3D10Texture::updateTextureSize()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device) :
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
                                      const String& filename,
                                      const String& resourceGroup) :
     d_device(device),
@@ -265,19 +373,22 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size& sz) :
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
+                                     const Sizef& sz) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     D3D10_TEXTURE2D_DESC tex_desc;
     ZeroMemory(&tex_desc, sizeof(tex_desc));
@@ -305,14 +416,15 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const Size& sz) :
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Texture::Direct3D10Texture(ID3D10Device& device,
+Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
                                      ID3D10Texture2D* tex) :
     d_device(device),
     d_texture(0),
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     setDirect3DTexture(tex);
 }

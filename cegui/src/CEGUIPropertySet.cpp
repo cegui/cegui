@@ -45,12 +45,10 @@ void PropertySet::addProperty(Property* property)
 		CEGUI_THROW(NullObjectException("The given Property object pointer is invalid."));
 	}
 
-	if (d_properties.find(property->getName()) != d_properties.end())
+	if (!d_properties.insert(std::make_pair(property->getName(), property)).second)
 	{
 		CEGUI_THROW(AlreadyExistsException("A Property named '" + property->getName() + "' already exists in the PropertySet."));
 	}
-
-	d_properties[property->getName()] = property;
 }
 
 /*************************************************************************
@@ -64,6 +62,21 @@ void PropertySet::removeProperty(const String& name)
 	{
 		d_properties.erase(pos);
 	}
+}
+
+/*************************************************************************
+    Retrieves a property instance from the set
+*************************************************************************/
+Property* PropertySet::getPropertyInstance(const String& name) const
+{
+    PropertyRegistry::const_iterator pos = d_properties.find(name);
+
+    if (pos == d_properties.end())
+    {
+        CEGUI_THROW(UnknownObjectException("There is no Property named '" + name + "' available in the set."));
+    }
+
+    return pos->second;
 }
 
 /*************************************************************************

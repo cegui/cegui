@@ -38,22 +38,22 @@ namespace ScrolledItemListBaseProperties
 
     String ForceVertScrollbar::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ScrolledItemListBase*>(receiver)->isVertScrollbarAlwaysShown());
+        return PropertyHelper<bool>::toString(static_cast<const ScrolledItemListBase*>(receiver)->isVertScrollbarAlwaysShown());
     }
 
     void ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrolledItemListBase*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+        static_cast<ScrolledItemListBase*>(receiver)->setShowVertScrollbar(PropertyHelper<bool>::fromString(value));
     }
 
     String ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::boolToString(static_cast<const ScrolledItemListBase*>(receiver)->isHorzScrollbarAlwaysShown());
+        return PropertyHelper<bool>::toString(static_cast<const ScrolledItemListBase*>(receiver)->isHorzScrollbarAlwaysShown());
     }
 
     void ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
     {
-        static_cast<ScrolledItemListBase*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
+        static_cast<ScrolledItemListBase*>(receiver)->setShowHorzScrollbar(PropertyHelper<bool>::fromString(value));
     }
 
 } // End of ScrolledItemListBaseProperties namespace section

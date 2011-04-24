@@ -1,3 +1,19 @@
+/************************************************************************
+    rename the default template basic types to be shorter :)
+*************************************************************************/
+$renaming Vector2<float> @ Vector2f
+$renaming Vector3<float> @ Vector3f
+$renaming Size<float> @ Sizef
+$renaming Rect<float> @ Rectf
+
+// How aspect ratio should be maintained
+enum AspectMode
+{
+    AM_IGNORE,
+    AM_SHRINK,
+    AM_EXPAND
+};
+
 // Possible actions when loading an XML resource that already exists.
 enum XMLResourceExistsAction
 {
@@ -11,55 +27,57 @@ enum XMLResourceExistsAction
 ***********************************************************************/
 class Vector2
 {
-    // rename 'd_x' and 'd_y' to just 'x' and 'y'
-    float d_x @ x;
-    float d_y @ y;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-    Vector2 operator+ (const Vector2& vec) const;
-    Vector2 operator- (const Vector2& vec) const;
-    Vector2 operator* (const Vector2& vec) const;
-    bool operator== (const Vector2& vec) const;
+    // rename 'd_x' and 'd_y' to just 'x' and 'y'
+    T d_x @ x;
+    T d_y @ y;
+
+    Vector2<T> operator+ (const Vector2<T>& vec) const;
+    Vector2<T> operator- (const Vector2<T>& vec) const;
+    Vector2<T> operator* (const Vector2<T>& vec) const;
+    bool operator== (const Vector2<T>& vec) const;
 
     Vector2();
-    Vector2(float x, float y);
+    Vector2(T x, T y);
 };
-
-// do a simple copy of Point to Vector2
-$[
-CEGUI.Point = CEGUI.Vector2
-$]
 
 /***********************************************************************
     Vector3
 ***********************************************************************/
 class Vector3
 {
-    // rename 'd_x', 'd_y' and 'd_z' to just 'x', 'y' and 'z'
-    float d_x @ x;
-    float d_y @ y;
-    float d_z @ z;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-    bool operator== (const Vector3& vec) const;
+    // rename 'd_x', 'd_y' and 'd_z' to just 'x', 'y' and 'z'
+    T d_x @ x;
+    T d_y @ y;
+    T d_z @ z;
+
+    bool operator== (const Vector3<T>& vec) const;
 
     Vector3();
-    Vector3(float x, float y, float z);
+    Vector3(T x, T y, T z);
 };
-
-
 
 /***********************************************************************
 	Size
 ***********************************************************************/
 class Size
 {
-	// rename 'd_width' and 'd_height' to just 'width' and 'height'
-	float d_width @ width;
-	float d_height @ height;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-	bool operator== (const Size& sz) const;
+	// rename 'd_width' and 'd_height' to just 'width' and 'height'
+	T d_width @ width;
+	T d_height @ height;
+
+	bool operator== (const Size<T>& sz) const;
+
+	void clamp(Size<T> min, Size<T> max);
+	void scaleToAspect(AspectMode mode, T ratio);
 
 	Size();
-	Size(float w, float h);
+	Size(T w, T h);
 };
 
 
@@ -69,42 +87,94 @@ class Size
 ***********************************************************************/
 class Rect
 {
-	// remove member variable 'd_' prefix
-	float d_top @ top;
-	float d_bottom @ bottom;
-	float d_left @ left;
-	float d_right @ right;
+    TOLUA_TEMPLATE_BIND(T, float)
 
-	Vector2 getPosition() const;
-	float getWidth() const;
-	float getHeight() const;
-	Size getSize() const;
-
-	Rect getIntersection(const Rect& rect) const;
-	bool isPointInRect(const Vector2& p) const;
-
-	void setPosition(const Vector2& p);
-	void setWidth(float w);
-	void setHeight(float h);
-	void setSize(const Size& sz);
-
-	Rect& offset(const Vector2& p);
-	Rect& constrainSizeMax(const Size& sz);
-	Rect& constrainSizeMin(const Size& sz);
-	Rect& constrainSize(const Size& min, const Size& max);
-
-	bool operator== (const Rect& r) const;
+    Vector2<T> d_min @ min;
+    Vector2<T> d_max @ max;
 
 	Rect();
-	Rect(float l, float t, float r, float b);
+
+	Rect(const T& left, const T& top, const T& right, const T& bottom);
+    Rect(const Vector2<T>& min, const Vector2<T>& max);
+    Rect(const Vector2<T>& pos, const Size<T>& size);
+    Rect(const Rect<T>& r);
+
+    void left(const T& v);
+    void top(const T& v);
+    void right(const T& v);
+    void bottom(const T& v);
+
+    const T& left() const;
+    const T& top() const;
+    const T& right() const;
+    const T& bottom() const;
+
+	void setPosition(const Vector2<T>& min);
+	const Vector2<T>& getPosition() const;
+
+    void setSize(const Size<T>& size);
+	Size<T> getSize() const;
+
+    void setWidth(const T& w);
+	T getWidth() const;
+
+    void setHeight(const T& h);
+	T getHeight() const;
+
+	Rect<T> getIntersection(const Rect<T>& rect) const;
+
+	void offset(const Vector2<T>& v);
+
+	bool isPointInRect(const Vector2<T>& v) const;
+
+	void constrainSizeMax(const Size<T>& size);
+	void constrainSizeMin(const Size<T>& size);
+	void constrainSize(const Size<T>& max_sz, const Size<T>& min_sz);
+
+	bool operator==(const Rect<T>& rhs) const;
+    Rect<T> operator*(T scalar) const;
+	Rect<T> operator+(const Rect<T>& r) const;
+};
+
+class Quaternion
+{
+    float d_w @ w;
+    float d_x @ x;
+    float d_y @ y;
+    float d_z @ z;
+
+    static const Quaternion ZERO;
+    static const Quaternion IDENTITY;
+
+    static Quaternion eulerAnglesRadians(float x, float y, float z);
+    static Quaternion eulerAnglesDegrees(float x, float y, float z);
+    static Quaternion axisAngleRadians(const Vector3<float>& axis, float rotation);
+    static Quaternion axisAngleDegrees(const Vector3<float>& axis, float rotation);
+
+    static Quaternion slerp(const Quaternion& left, const Quaternion& right, float position, bool shortestPath = false);
+
+    Quaternion(float w = 1.0, float x = 0.0, float y = 0.0, float z = 0.0);
+    Quaternion(const Quaternion& v);
+    //Quaternion& operator= (const Quaternion& v);
+
+    bool operator== (const Quaternion& v) const;
+    //bool operator!= (const Quaternion& v) const;
+    Quaternion operator- () const;
+    Quaternion operator+ (const Quaternion& v) const;
+    Quaternion operator* (const Quaternion& v) const;
+    Quaternion operator* (float v) const;
+    //inline friend Quaternion operator * (float v, const Quaternion& q);
+
+    float dot(const Quaternion& v) const;
+    float length() const;
+    float normalise();
 };
 
 
-
 /***********************************************************************
-	colour
+	Colour
 ***********************************************************************/
-class colour
+class Colour
 {
 	float getAlpha() const;
 	float getRed() const;
@@ -122,13 +192,13 @@ class colour
 	void setRGB(float r, float g, float b);
 	void setHSL(float hue, float saturation, float luminance, float alpha=1);
 
-	colour operator+ (const colour& c) const;
-	colour operator- (const colour& c) const;
-	//colour operator* (const colour& c) const; // gives a warning about argb_t to colour conversion
-	bool operator== (const colour& c) const;
+	Colour operator+ (const Colour& c) const;
+	Colour operator- (const Colour& c) const;
+	//Colour operator* (const Colour& c) const; // gives a warning about argb_t to Colour conversion
+	bool operator== (const Colour& c) const;
 
-	colour();
-	colour(float r, float g, float b, float a);
+	Colour();
+	Colour(float r, float g, float b, float a);
 };
 
 
@@ -138,10 +208,10 @@ class colour
 ***********************************************************************/
 class ColourRect
 {
-	colour d_top_left @ top_left;
-	colour d_top_right @ top_right;
-	colour d_bottom_left @ bottom_left;
-	colour d_bottom_right @ bottom_right;
+	Colour d_top_left @ top_left;
+	Colour d_top_right @ top_right;
+	Colour d_bottom_left @ bottom_left;
+	Colour d_bottom_right @ bottom_right;
 
 	void	setAlpha(float alpha);
 	void	setTopAlpha(float alpha);
@@ -150,18 +220,18 @@ class ColourRect
 	void	setRightAlpha(float alpha);
 	void	modulateAlpha(float alpha);
 
-	void	setColours(const colour& col);
+	void	setColours(const Colour& col);
 
 	bool	isMonochromatic() const;
 
 	ColourRect getSubRectangle( float left, float right, float top, float bottom ) const;
-	colour getColourAtPoint( float x, float y ) const;
+	Colour getColourAtPoint( float x, float y ) const;
 
 	//ColourRect& operator*= (const ColourRect& other); // no support for *= operators
 
 	ColourRect();
-	ColourRect(const colour& col);
-	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
+	ColourRect(const Colour& col);
+	ColourRect(const Colour& top_left, const Colour& top_right, const Colour& bottom_left, const Colour& bottom_right);
 };
 
 

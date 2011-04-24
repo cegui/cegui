@@ -4,7 +4,7 @@
     author:     Eugene Marcotte
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,19 +37,25 @@ namespace CEGUI
 uint32 NullTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-const Size& NullTexture::getSize() const
+const String& NullTexture::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& NullTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& NullTexture::getOriginalDataSize() const
+const Sizef& NullTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& NullTexture::getTexelScaling() const
+const Vector2f& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -82,7 +88,7 @@ void NullTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
+void NullTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                                  PixelFormat pixel_format)
 {
     const size_t pixel_size = pixel_format == PF_RGBA ? 4 : 3;
@@ -95,34 +101,43 @@ void NullTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::saveToMemory(void* buffer)
+void NullTexture::blitFromMemory(void* /*sourceData*/, const Rectf& /*area*/)
 {
-    // TODO: If we make loadFromMemory save a copy of the data, we could
-    // implement this function too :)
+    // do nothing
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture() :
+void NullTexture::blitToMemory(void* /*targetData*/)
+{
+    // do nothing
+}
+
+//----------------------------------------------------------------------------//
+NullTexture::NullTexture(const String& name) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const String& filename, const String& resourceGroup) :
+NullTexture::NullTexture(const String& name, const String& filename,
+                         const String& resourceGroup) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-NullTexture::NullTexture(const Size& sz) :
+NullTexture::NullTexture(const String& name, const Sizef& sz) :
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     d_size.d_width = sz.d_width;
     d_size.d_height = sz.d_height;

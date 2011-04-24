@@ -63,6 +63,10 @@ namespace CEGUI
         static String fontMetricTypeToString(FontMetricType metric);
         static String dimensionOperatorToString(DimensionOperator op);
         static String frameImageComponentToString(FrameImageComponent imageComp);
+
+    private:
+        /// disallow construction
+        FalagardXMLHelper() {}
     };
 } // End of  CEGUI namespace section
 

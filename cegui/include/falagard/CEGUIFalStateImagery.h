@@ -44,7 +44,8 @@ namespace CEGUI
     \brief
         Class the encapsulates imagery for a given widget state.
     */
-    class CEGUIEXPORT StateImagery
+    class CEGUIEXPORT StateImagery :
+        public AllocatedObject<StateImagery>
     {
     public:
         /*!
@@ -72,7 +73,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
 
         /*!
         \brief
@@ -87,7 +88,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols = 0, const Rectf* clipper = 0) const;
 
         /*!
         \brief

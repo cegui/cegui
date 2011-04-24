@@ -53,7 +53,7 @@ namespace CEGUI
     class FALAGARDBASE_API FalagardItemListbox : public ItemListBaseWindowRenderer
     {
     public:
-        static const utf8   TypeName[];       //!< type name for this widget.
+        static const String TypeName;       //!< type name for this widget.
 
         /*!
         \brief
@@ -63,9 +63,9 @@ namespace CEGUI
 
         // overridden from ItemListBaseWindowRenderer base class.
         void render();
-        Rect getItemRenderArea(void) const;
+        Rectf getItemRenderArea(void) const;
         // overridden from WindowRenderer base class.
-        Rect getUnclippedInnerRect() const;
+        Rectf getUnclippedInnerRect() const;
 
     protected:
         // overridden from WindowRenderer base class.

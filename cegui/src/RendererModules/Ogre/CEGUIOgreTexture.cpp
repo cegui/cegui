@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -50,19 +50,25 @@ void _byteSwap(unsigned char* b, int n)
 uint32 OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getSize() const
+const String& OgreTexture::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& OgreTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& OgreTexture::getOriginalDataSize() const
+const Sizef& OgreTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OgreTexture::getTexelScaling() const
+const Vector2f& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -107,7 +113,7 @@ void OgreTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
+void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                                  PixelFormat pixel_format)
 {
     using namespace Ogre;
@@ -157,47 +163,57 @@ void OgreTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::saveToMemory(void* buffer)
+void OgreTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
-    if (d_texture.isNull())
+    if (d_texture.isNull()) // TODO: exception?
         return;
-    
-    Ogre::HardwarePixelBufferSharedPtr src = d_texture->getBuffer();
 
-    if (src.isNull())
-        CEGUI_THROW(RendererException("OgreTexture::saveToMemory: unable to "
-            "obtain hardware pixel buffer pointer."));
-
-    Ogre::PixelBox pb(Ogre::Box(0, 0, d_size.d_width, d_size.d_height),
-                      Ogre::PF_A8R8G8B8, buffer);
-    src->blitToMemory(pb);
+    Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
+                      1, Ogre::PF_A8R8G8B8, sourceData);
+    Ogre::Image::Box box(area.left(), area.top(), area.right(), area.bottom());
+    d_texture->getBuffer()->blitFromMemory(pb, box);
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture() :
+void OgreTexture::blitToMemory(void* targetData)
+{
+    if (d_texture.isNull()) // TODO: exception?
+        return;
+
+    Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
+                      1, Ogre::PF_A8R8G8B8, targetData);
+    d_texture->getBuffer()->blitToMemory(pb);
+}
+
+//----------------------------------------------------------------------------//
+OgreTexture::OgreTexture(const String& name) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& filename, const String& resourceGroup) :
+OgreTexture::OgreTexture(const String& name, const String& filename,
+                         const String& resourceGroup) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const Size& sz) :
+OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     using namespace Ogre;
 
@@ -219,11 +235,13 @@ OgreTexture::OgreTexture(const Size& sz) :
 }
 
 //----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(Ogre::TexturePtr& tex, bool take_ownership) :
+OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
+                         bool take_ownership) :
     d_isLinked(false),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     setOgreTexture(tex, take_ownership);
 }
@@ -295,7 +313,7 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
         d_dataSize = d_size;
     }
     else
-        d_size = d_dataSize = Size(0, 0);
+        d_size = d_dataSize = Sizef(0, 0);
 
     updateCachedScaleValues();
 }

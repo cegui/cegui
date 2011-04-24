@@ -61,7 +61,7 @@ namespace CEGUI
                              selection area.)
 
     NamedAreas:
-        - TextArea: area where text, selection, and carat imagery will appear.
+        - TextArea: area where text, selection, and caret imagery will appear.
 
     PropertyDefinitions (optional)
         - NormalTextColour: property that accesses a colour value to be used to
@@ -72,13 +72,14 @@ namespace CEGUI
                               not defined, the colour defaults to black.
 
     Imagery Sections:
-        - Carat
+        - Caret
 */
 class FALAGARDBASE_API FalagardEditbox : public EditboxWindowRenderer
 {
 public:
     //! type name for this widget.
-    static const utf8 TypeName[];
+    static const String TypeName;
+
     //! Name of property to access for unselected text colour.
     static const String UnselectedTextColourPropertyName;
     //! Name of property to access for selected text colour.
@@ -100,7 +101,7 @@ public:
     \return
         colour value describing the colour to be used.
     */
-    colour getUnselectedTextColour() const;
+    Colour getUnselectedTextColour() const;
 
     /*!
     \brief
@@ -110,7 +111,7 @@ public:
     \return
         colour value describing the colour to be used.
     */
-    colour getSelectedTextColour() const;
+    Colour getSelectedTextColour() const;
 
     /*!
     \brief
@@ -121,7 +122,7 @@ public:
         String object holding the name of the property to be accessed if it
         exists.
     */
-    colour getOptionalPropertyColour(const String& propertyName) const;
+    Colour getOptionalPropertyColour(const String& propertyName) const;
 
     //! return whether the blinking caret is enabled.
     bool isCaretBlinkEnabled() const;
@@ -149,7 +150,7 @@ public:
     void render();
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const Point& pt) const;
+    size_t getTextIndexFromPosition(const Vector2f& pt) const;
     // overridden from WindowRenderer class
     void update(float elapsed);
 
@@ -164,21 +165,21 @@ protected:
     //! helper to set 'visual' to the string we will render (part of)
     void setupVisualString(String& visual) const;
     size_t getCaretIndex(const String& visual_string) const;
-    float calculateTextOffset(const Rect& text_area,
+    float calculateTextOffset(const Rectf& text_area,
                               const float text_extent,
                               const float caret_width,
                               const float extent_to_caret);
     void renderTextNoBidi(const WidgetLookFeel& wlf,
                           const String& text,
-                          const Rect& text_area,
+                          const Rectf& text_area,
                           float text_offset);
     void renderTextBidi(const WidgetLookFeel& wlf,
                         const String& text,
-                        const Rect& text_area,
+                        const Rectf& text_area,
                         float text_offset);
     bool editboxIsFocussed() const;
     void renderCaret(const ImagerySection& imagery,
-                     const Rect& text_area,
+                     const Rectf& text_area,
                      const float text_offset,
                      const float extent_to_caret) const;
 

@@ -10,13 +10,7 @@ void register_FontGlyph_class(){
 
     { //::CEGUI::FontGlyph
         typedef bp::class_< CEGUI::FontGlyph > FontGlyph_exposer_t;
-        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", "*!\n\
-        \n\
-            internal class representing a single font glyph.\n\
-        \n\
-            For TrueType fonts initially all FontGlyph's are empty\n\
-            (getImage() will return 0), but they are filled by demand.\n\
-        *\n", bp::init< bp::optional< float, CEGUI::Image const * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
+        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
         bp::scope FontGlyph_scope( FontGlyph_exposer );
         bp::implicitly_convertible< float, CEGUI::FontGlyph >();
         { //::CEGUI::FontGlyph::getAdvance
@@ -51,24 +45,13 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::getImage
         
-            typedef ::CEGUI::Image const * ( ::CEGUI::FontGlyph::*getImage_function_type )(  ) const;
+            typedef ::CEGUI::Image * ( ::CEGUI::FontGlyph::*getImage_function_type )(  ) const;
             
             FontGlyph_exposer.def( 
                 "getImage"
                 , getImage_function_type( &::CEGUI::FontGlyph::getImage )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "! Return the CEGUI.Image object rendered for this glyph.\n" );
-        
-        }
-        { //::CEGUI::FontGlyph::getImageset
-        
-            typedef ::CEGUI::Imageset const * ( ::CEGUI::FontGlyph::*getImageset_function_type )(  ) const;
-            
-            FontGlyph_exposer.def( 
-                "getImageset"
-                , getImageset_function_type( &::CEGUI::FontGlyph::getImageset )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "! Return the parent CEGUI.Imageset object for this glyph.\n" );
         
         }
         { //::CEGUI::FontGlyph::getRenderedAdvance
@@ -90,7 +73,7 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::getSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::FontGlyph::*getSize_function_type )( float,float ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::FontGlyph::*getSize_function_type )( float,float ) const;
             
             FontGlyph_exposer.def( 
                 "getSize"
@@ -123,7 +106,7 @@ void register_FontGlyph_class(){
         }
         { //::CEGUI::FontGlyph::setImage
         
-            typedef void ( ::CEGUI::FontGlyph::*setImage_function_type )( ::CEGUI::Image const * ) ;
+            typedef void ( ::CEGUI::FontGlyph::*setImage_function_type )( ::CEGUI::Image * ) ;
             
             FontGlyph_exposer.def( 
                 "setImage"

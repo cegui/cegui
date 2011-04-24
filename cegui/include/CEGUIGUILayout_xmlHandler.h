@@ -54,18 +54,20 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(const String& name_prefix, PropertyCallback* callback = 0, void* userdata = 0) :
+	GUILayout_xmlHandler(PropertyCallback* callback = 0, void* userdata = 0) :
 	  d_root(0),
-	  d_namingPrefix(name_prefix),
 	  d_propertyCallback(callback),
 	  d_userData(userdata)
-	  {}
+	{}
 
 	/*!
 	\brief
 		Destructor for GUILayout_xmlHandler objects
 	*/
 	virtual ~GUILayout_xmlHandler(void) {}
+
+    virtual const String& getSchemaName() const;
+    virtual const String& getDefaultResourceGroup() const;
 
 	/*************************************************************************
 		SAX2 Handler overrides
@@ -106,21 +108,13 @@ private:
 	static const String EventElement;					//!< Tag name for Event elements.
 	static const String WindowTypeAttribute;			//!< Attribute name that stores the type of Window to create.
 	static const String WindowNameAttribute;			//!< Attribute name that stores the name of the window to create.
-    static const String AutoWindowNameSuffixAttribute;  //!< Attribute name that stores the name suffix of the auto window to get.
+    static const String AutoWindowNamePathAttribute;  //!< Attribute name that stores the name path of the auto window to get.
 	static const String PropertyNameAttribute;		//!< Attribute name that stores the name of the property to set.
 	static const String PropertyValueAttribute;		//!< Attribute name that stores the value to pass to the property.
-	static const String LayoutParentAttribute;		//!< Attribute name that stores the name of the window to attach the layout to.
 	static const String LayoutImportFilenameAttribute;//!< Attribute name that stores the file name of the layout to import.
-	static const String LayoutImportPrefixAttribute;	//!< Attribute name that stores the prefix to use when loading the imported layout.
     static const String LayoutImportResourceGroupAttribute; //!< Attribute name that stores the resource group identifier used when loading imported file.
 	static const String EventNameAttribute;			//!< Attribute name that stores the event name to be subscribed.
 	static const String EventFunctionAttribute;		//!< Attribute name that stores the name of the scripted function to be bound.
-
-    /*!
-    \brief
-        Method that handles the opening GUILayout XML element.
-    */
-    void elementGUILayoutStart(const XMLAttributes& attributes);
 
     /*!
     \brief
@@ -154,12 +148,6 @@ private:
 
     /*!
     \brief
-        Method that handles the closing GUILayout XML element.
-    */
-    void elementGUILayoutEnd();
-
-    /*!
-    \brief
         Method that handles the closing Window XML element.
     */
     void elementWindowEnd();
@@ -181,16 +169,15 @@ private:
     /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    typedef std::pair<Window*,bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
-	typedef std::vector<WindowStackEntry>	WindowStack;
+    typedef std::pair<Window*, bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
+	typedef std::vector<WindowStackEntry
+        CEGUI_VECTOR_ALLOC(WindowStackEntry)> WindowStack;
 	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
-	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.
-	const String&		d_namingPrefix;	//!< Prefix that is to prepend all names of created windows.
 	PropertyCallback*	d_propertyCallback; //!< Callback for every property loaded
 	void*				d_userData;			//!< User data for the property callback
-  String d_propertyName; //!< Use for long property value 
-  String d_propertyValue; //!< Use for long property value 
+    String d_propertyName; //!< Use for long property value
+    String d_propertyValue; //!< Use for long property value
 };
 
 

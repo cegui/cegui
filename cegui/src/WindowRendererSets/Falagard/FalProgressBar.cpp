@@ -33,7 +33,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardProgressBar::TypeName[] = "Falagard/ProgressBar";
+    const String FalagardProgressBar::TypeName("Falagard/ProgressBar");
+
     FalagardProgressBarProperties::VerticalProgress FalagardProgressBar::d_verticalProperty;
     FalagardProgressBarProperties::ReversedProgress FalagardProgressBar::d_reversedProperty;
 
@@ -54,18 +55,18 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
         // peform the rendering operation.
         imagery->render(*d_window);
 
         // get imagery for actual progress rendering
-        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "DisabledProgress" : "EnabledProgress");
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "DisabledProgress" : "EnabledProgress");
 
         // get target rect for this imagery
-        Rect progressRect(wlf.getNamedArea("ProgressArea").getArea().getPixelRect(*d_window));
+        Rectf progressRect(wlf.getNamedArea("ProgressArea").getArea().getPixelRect(*d_window));
 
         // calculate a clipper according to the current progress.
-        Rect progressClipper(progressRect);
+        Rectf progressClipper(progressRect);
 
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
@@ -78,7 +79,7 @@ namespace CEGUI
             }
             else
             {
-                progressClipper.d_top = progressClipper.d_bottom - height;
+                progressClipper.top(progressClipper.bottom() - height);
             }
         }
         else
@@ -87,7 +88,7 @@ namespace CEGUI
 
             if (d_reversed)
             {
-                progressClipper.d_left = progressClipper.d_right - width;
+                progressClipper.left(progressClipper.right() - width);
             }
             else
             {

@@ -4,8 +4,8 @@
 
 class StateImagery
 {
-  void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
-  void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
+  void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect<float>* clipper = 0) const;
+  void render(Window& srcWindow, const Rect<float>& baseRect, const ColourRect* modcols = 0, const Rect<float>* clipper = 0) const;
 
   void addLayer(const LayerSpecification& layer);
   void clearLayers();

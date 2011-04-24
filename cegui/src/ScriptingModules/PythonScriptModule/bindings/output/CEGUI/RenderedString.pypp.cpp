@@ -10,13 +10,7 @@ void register_RenderedString_class(){
 
     { //::CEGUI::RenderedString
         typedef bp::class_< CEGUI::RenderedString > RenderedString_exposer_t;
-        RenderedString_exposer_t RenderedString_exposer = RenderedString_exposer_t( "RenderedString", "*!\n\
-        \n\
-            Class representing a rendered string of entities.\n\
-        \n\
-            Here 'string' does not refer solely to a text string, rather a string of\n\
-            any renderable items.\n\
-        *\n", bp::init< >("! Constructor.\n") );
+        RenderedString_exposer_t RenderedString_exposer = RenderedString_exposer_t( "RenderedString", bp::init< >("! Constructor.\n") );
         bp::scope RenderedString_scope( RenderedString_exposer );
         RenderedString_exposer.def( bp::init< CEGUI::RenderedString const & >(( bp::arg("other") ), "! Copy constructor.\n") );
         { //::CEGUI::RenderedString::appendComponent
@@ -52,7 +46,7 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::draw
         
-            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2 const &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,float const ) const;
+            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const ) const;
             
             RenderedString_exposer.def( 
                 "draw"
@@ -82,14 +76,13 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::getPixelSize
         
-            typedef ::CEGUI::Size ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
             
             RenderedString_exposer.def( 
                 "getPixelSize"
                 , getPixelSize_function_type( &::CEGUI::RenderedString::getPixelSize )
                 , ( bp::arg("line") )
-                , "! return the pixel size of the specified line.\n\
-                *!\n\
+                , "*!\n\
                 \n\
                     Return the pixel size of a specified line for the RenderedString.\n\
             \n\
