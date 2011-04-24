@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 void register_enumerations(){
 
+    bp::enum_< CEGUI::AspectMode>("AspectMode")
+        .value("AM_IGNORE", CEGUI::AM_IGNORE)
+        .value("AM_SHRINK", CEGUI::AM_SHRINK)
+        .value("AM_EXPAND", CEGUI::AM_EXPAND)
+        .export_values()
+        ;
+
     bp::enum_< CEGUI::BidiCharType>("BidiCharType")
         .value("BCT_RIGHT_TO_LEFT", CEGUI::BCT_RIGHT_TO_LEFT)
         .value("BCT_LEFT_TO_RIGHT", CEGUI::BCT_LEFT_TO_RIGHT)

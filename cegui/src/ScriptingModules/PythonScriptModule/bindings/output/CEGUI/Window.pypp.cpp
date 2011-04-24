@@ -679,6 +679,34 @@ void register_Window_class(){
                  *\n" );
         
         }
+        { //::CEGUI::Window::getAspectMode
+        
+            typedef ::CEGUI::AspectMode ( ::CEGUI::Window::*getAspectMode_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getAspectMode"
+                , getAspectMode_function_type( &::CEGUI::Window::getAspectMode )
+                , "*!\n\
+            \n\
+                Retrieves currently used aspect mode\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::getAspectRatio
+        
+            typedef float ( ::CEGUI::Window::*getAspectRatio_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getAspectRatio"
+                , getAspectRatio_function_type( &::CEGUI::Window::getAspectRatio )
+                , "*!\n\
+                \n\
+                    Retrieves target aspect ratio\n\
+            \n\
+                @see Window.setAspectRatio\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::getAutoRepeatDelay
         
             typedef float ( ::CEGUI::Window::*getAutoRepeatDelay_function_type )(  ) const;
@@ -3370,6 +3398,39 @@ void register_Window_class(){
                 @param area\n\
                     URect describing the new area rectangle of the window area.\n\
                  *\n" );
+        
+        }
+        { //::CEGUI::Window::setAspectMode
+        
+            typedef void ( ::CEGUI::Window::*setAspectMode_function_type )( ::CEGUI::AspectMode ) ;
+            
+            Window_exposer.def( 
+                "setAspectMode"
+                , setAspectMode_function_type( &::CEGUI::Window::setAspectMode )
+                , ( bp::arg("mode") )
+                , "*!\n\
+                \n\
+                    Sets current aspect mode and recalculates the area rect\n\
+            \n\
+                @param\n\
+                    mode the new aspect mode to set\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::setAspectRatio
+        
+            typedef void ( ::CEGUI::Window::*setAspectRatio_function_type )( float ) ;
+            
+            Window_exposer.def( 
+                "setAspectRatio"
+                , setAspectRatio_function_type( &::CEGUI::Window::setAspectRatio )
+                , ( bp::arg("ratio") )
+                , "*!\n\
+                \n\
+                    Sets target aspect ratio\n\
+            \n\
+                This is ignored if AspectMode is AM_IGNORE.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::setAutoRepeatDelay

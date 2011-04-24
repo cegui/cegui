@@ -137,6 +137,28 @@ void register_PropertySet_class(){
                *\n" );
         
         }
+        { //::CEGUI::PropertySet::getPropertyInstance
+        
+            typedef ::CEGUI::Property * ( ::CEGUI::PropertySet::*getPropertyInstance_function_type )( ::CEGUI::String const & ) const;
+            
+            PropertySet_exposer.def( 
+                "getPropertyInstance"
+                , getPropertyInstance_function_type( &::CEGUI::PropertySet::getPropertyInstance )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Retrieves a property instance (that was previously added)\n\
+            \n\
+                @param name\n\
+                    String containing the name of the Property to be retrieved. If Property  name is not in the\
+                    set, exception is thrown.\n\
+            \n\
+                @return\n\
+                    Pointer to the property instance\n\
+                *\n" );
+        
+        }
         { //::CEGUI::PropertySet::isPropertyDefault
         
             typedef bool ( ::CEGUI::PropertySet::*isPropertyDefault_function_type )( ::CEGUI::String const & ) const;

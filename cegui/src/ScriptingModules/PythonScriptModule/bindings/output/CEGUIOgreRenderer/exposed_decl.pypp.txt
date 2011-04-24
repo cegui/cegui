@@ -255,6 +255,7 @@
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 173)@::std::__is_integer< wchar_t >
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 354)@::std::__is_char< char >
 ~@enumeration_t@RenderQueueID@::CEGUI::RenderQueueID
+~@enumeration_t@AspectMode@::CEGUI::AspectMode
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 124)@::std::__is_void< void >
 ~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 218)@::std::__is_integer< unsigned int >
 ~@enumeration_t@('/usr/include/bits/confname.h', 73)@::
