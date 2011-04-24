@@ -1642,7 +1642,7 @@ void Window::addStandardProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, USize,
 		"MaxSize", "Property to get/set the windows unified maximum size.  Value is a \"USize\".",
-		&Window::setMaxSize, &Window::getMaxSize, USize(UDim(0, 0), UDim(0, 0))
+		&Window::setMaxSize, &Window::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
 	);
 
     addProperty(&d_mousePassThroughEnabledProperty);

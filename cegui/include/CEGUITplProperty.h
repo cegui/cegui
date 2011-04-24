@@ -53,17 +53,17 @@ public:
 	*/
 	struct GetterFunctor
 	{	
-		template<typename T> struct EnsurePlain { typedef T result; };
-		template<typename T> struct EnsurePlain<T&> { typedef T result; };
-		template<typename T> struct EnsurePlain<const T&> { typedef T result; };
+		template<typename DT> struct EnsurePlain { typedef DT result; };
+		template<typename DT> struct EnsurePlain<DT&> { typedef DT result; };
+		template<typename DT> struct EnsurePlain<const DT&> { typedef DT result; };
 
-		template<typename T> struct EnsureRef { typedef T& result; };
-		template<typename T> struct EnsureRef<T&> { typedef T& result; };
-		template<typename T> struct EnsureRef<const T&> { typedef T& result; };
+		template<typename DT> struct EnsureRef { typedef DT& result; };
+		template<typename DT> struct EnsureRef<DT&> { typedef DT& result; };
+		template<typename DT> struct EnsureRef<const DT&> { typedef DT& result; };
 
-		template<typename T> struct EnsureConstRef { typedef const T& result; };
-		template<typename T> struct EnsureConstRef<T&> { typedef const T& result; };
-		template<typename T> struct EnsureConstRef<const T&> { typedef const T& result; };
+		template<typename DT> struct EnsureConstRef { typedef const DT& result; };
+		template<typename DT> struct EnsureConstRef<DT&> { typedef const DT& result; };
+		template<typename DT> struct EnsureConstRef<const DT&> { typedef const DT& result; };
 
 		typedef typename EnsurePlain<typename Helper::safe_method_return_type>::result (C::*PlainGetter)() const;
 		typedef typename EnsureRef<typename Helper::safe_method_return_type>::result (C::*RefGetter)() const;
