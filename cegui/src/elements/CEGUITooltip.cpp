@@ -131,9 +131,8 @@ namespace CEGUI
     {
         Sizef textSize(getTextSize());
 
-        setSize(
-            UVector2(cegui_absdim(textSize.d_width),
-                     cegui_absdim(textSize.d_height)));
+        setSize(USize(cegui_absdim(textSize.d_width),
+                      cegui_absdim(textSize.d_height)));
     }
 
     void Tooltip::setTargetWindow(Window* wnd)

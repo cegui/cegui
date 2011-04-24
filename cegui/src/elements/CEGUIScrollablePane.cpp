@@ -261,7 +261,7 @@ void ScrollablePane::initialiseComponents(void)
     vertScrollbar->setAlwaysOnTop(true);
     // container pane is always same size as this parent pane,
     // scrolling is actually implemented via positioning and clipping tricks.
-    container->setSize(UVector2(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    container->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     
     // subscribe to events we need to hear about
     vertScrollbar->subscribeEvent(

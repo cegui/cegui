@@ -532,7 +532,7 @@ void ItemListBase::sizeToContent_impl(void)
     // calculate the full size with the frame accounted for and resize the window to this
     sz.d_width  += wndArea.getWidth() - renderArea.getWidth();
     sz.d_height += wndArea.getHeight() - renderArea.getHeight();
-    setSize(UVector2(cegui_absdim(sz.d_width), cegui_absdim(sz.d_height)));
+    setSize(USize(cegui_absdim(sz.d_width), cegui_absdim(sz.d_height)));
 }
 
 /************************************************************************

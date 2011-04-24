@@ -58,7 +58,7 @@ bool TextDemo::initialiseSample()
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
     // set position and size
     background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
-    background->setSize(UVector2(cegui_reldim(1), cegui_reldim( 1)));
+    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");

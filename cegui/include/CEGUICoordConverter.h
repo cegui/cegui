@@ -78,6 +78,24 @@ public:
         return Vector2f(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
 
+	/*!
+    \brief
+        converts given Size<UDim> to absolute Sizef
+    */
+    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base)
+    {
+        return Sizef(asAbsolute(v.d_width, base.d_width), asAbsolute(v.d_height, base.d_height));
+    }
+
+    /*!
+    \brief
+        converts given Size<UDim> to relative Sizef
+    */
+    inline static Sizef asRelative(const Size<UDim>& v, const Sizef& base)
+    {
+        return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
+    }
+
     inline static Rectf asAbsolute(const URect& r, const Sizef& base)
     {
         return Rectf(

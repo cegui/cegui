@@ -61,7 +61,7 @@ Timer::Timer(const CEGUI::String& type, const CEGUI::String& name) :
     d_currentValue(0),
     d_started(false)
 {
-    CEGUI::UVector2 sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
+    CEGUI::USize sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
     setMaxSize(sz);
     setSize(sz);
     addTimerProperties();

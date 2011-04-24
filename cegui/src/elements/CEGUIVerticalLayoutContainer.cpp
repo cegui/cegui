@@ -81,7 +81,7 @@ void VerticalLayoutContainer::layout()
         topOffset += boundingSize.d_y;
     }
 
-    setSize(UVector2(layoutWidth, topOffset));
+    setSize(USize(layoutWidth, topOffset));
 }
 //----------------------------------------------------------------------------//
 

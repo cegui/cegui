@@ -304,8 +304,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -346,8 +346,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -390,8 +390,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -434,8 +434,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_y, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -586,9 +586,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 				top_left_sizing |= moveBottomEdge(deltaY, new_area);
 			}
 
-            // todo: vector vs size
-            const USize sz = new_area.getSize();
-            setArea_impl(new_area.d_min, UVector2(sz.d_width, sz.d_height), top_left_sizing);
+            setArea_impl(new_area.d_min, new_area.getSize(), top_left_sizing);
 		}
 		else
 		{

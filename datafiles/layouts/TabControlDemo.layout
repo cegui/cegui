@@ -5,16 +5,16 @@
         <Property Name="Text" Value="Tab Control Demo" />
         <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />
         <Property Name="TitlebarFont" Value="DejaVuSans-10" />
-        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-        <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
+        <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="MinSize" Value="{{0,128},{0,128}}" />
         <Property Name="TitlebarEnabled" Value="True" />
-        <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
+        <Property Name="Area" Value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
         <Window Type="TaharezLook/TabControl" Name="TabControl" >
             <Property Name="Tooltip" Value="This is the tab control" />
             <Property Name="TabHeight" Value="{0,-1}" />
-            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="TabPanePosition" Value="Bottom" />
-            <Property Name="UnifiedAreaRect" Value="{{0,10},{0,10},{1,-10},{1,-10}}" />
+            <Property Name="Area" Value="{{0,10},{0,10},{1,-10},{1,-10}}" />
         </Window>
     </Window>
 </GUILayout>

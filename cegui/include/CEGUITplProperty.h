@@ -47,11 +47,70 @@ public:
     typedef PropertyHelper<T> Helper;
     
     typedef void (C::*Setter)(typename Helper::pass_type);
-    typedef typename Helper::return_type (C::*Getter)() const;
-    
+
+	/*!
+	Template madness to sort out getters returning ref T, const ref T or just T.
+	*/
+	struct GetterFunctor
+	{	
+		template<typename T> struct EnsurePlain { typedef T result; };
+		template<typename T> struct EnsurePlain<T&> { typedef T result; };
+		template<typename T> struct EnsurePlain<const T&> { typedef T result; };
+
+		template<typename T> struct EnsureRef { typedef T& result; };
+		template<typename T> struct EnsureRef<T&> { typedef T& result; };
+		template<typename T> struct EnsureRef<const T&> { typedef T& result; };
+
+		template<typename T> struct EnsureConstRef { typedef const T& result; };
+		template<typename T> struct EnsureConstRef<T&> { typedef const T& result; };
+		template<typename T> struct EnsureConstRef<const T&> { typedef const T& result; };
+
+		typedef typename EnsurePlain<typename Helper::safe_method_return_type>::result (C::*PlainGetter)() const;
+		typedef typename EnsureRef<typename Helper::safe_method_return_type>::result (C::*RefGetter)() const;
+		typedef typename EnsureConstRef<typename Helper::safe_method_return_type>::result (C::*ConstRefGetter)() const;
+
+		GetterFunctor(PlainGetter getter):
+			d_plainGetter(getter)
+			//d_refGetter(0), no need to initialise these, we will never use them
+			//d_constRefGetter(0)
+		{}
+
+		GetterFunctor(RefGetter getter):
+			d_plainGetter(0),
+			d_refGetter(getter)
+			//d_constRefGetter(0) no need to initialise this, we will never use it
+		{}
+
+		GetterFunctor(ConstRefGetter getter):
+			d_plainGetter(0),
+			d_refGetter(0),
+			d_constRefGetter(getter)
+		{}
+
+		typename Helper::safe_method_return_type operator()(const C* instance) const
+		{
+			// FIXME: Ideally we want this to be done during compilation, not runtime
+
+			if (d_plainGetter)
+				return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+			if (d_refGetter)
+				return CEGUI_CALL_MEMBER_FN(*instance, d_refGetter)();
+			if (d_constRefGetter)
+				return CEGUI_CALL_MEMBER_FN(*instance, d_constRefGetter)();
+
+			assert(false);
+			// just to get rid of the warning
+			return CEGUI_CALL_MEMBER_FN(*instance, d_plainGetter)();
+		}
+
+		PlainGetter d_plainGetter;
+		RefGetter d_refGetter;
+		ConstRefGetter d_constRefGetter;
+	};
+
     // do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
     // but more typo prone (passing string default value)
-    TplProperty(const String& name, const String& help, const String& origin, Setter setter, Getter getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
+    TplProperty(const String& name, const String& help, const String& origin, Setter setter, GetterFunctor getter, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
         TypedProperty<T>(name, help, origin, defaultValue, writesXML),
         
         d_setter(setter),
@@ -69,15 +128,15 @@ public:
     }
 
     //! \copydoc TypedProperty::getNative
-    virtual typename Helper::return_type getNative(const PropertyReceiver* receiver) const
+    virtual typename Helper::safe_method_return_type getNative(const PropertyReceiver* receiver) const
     {
         const C* instance = static_cast<const C*>(receiver);
-        return CEGUI_CALL_MEMBER_FN(*instance, d_getter)();
+		return d_getter(instance);
     }
     
 private:
     Setter d_setter;
-    Getter d_getter;
+    GetterFunctor d_getter;
 };
 
 } // End of  CEGUI namespace section

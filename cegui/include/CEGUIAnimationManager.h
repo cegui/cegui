@@ -130,6 +130,19 @@ public:
 
     /*!
     \brief
+        Examines the list of Animations to see if one exists with the given name
+
+    \param name
+        String holding the name of the Animation to look for.
+
+    \return
+        true if an Animation was found with a name matching \a name.  false if
+        no matching Animation was found.
+    */
+    bool isAnimationPresent(const String& name) const;
+
+    /*!
+    \brief
         Retrieves animation by index
     */
     Animation* getAnimationAtIdx(size_t index) const;
@@ -232,19 +245,6 @@ public:
     {
         return s_defaultResourceGroup;
     }
-
-    /*!
-    \brief
-        Examines the list of Animations to see if one exists with the given name
-
-    \param name
-        String holding the name of the Animation to look for.
-
-    \return
-        true if an Animation was found with a name matching \a name.  false if
-        no matching Animation was found.
-    */
-    bool isAnimationPresent(const String& name) const;
 
 private:
     typedef std::map<String, Interpolator*, std::less<String>

@@ -281,8 +281,8 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_x, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -292,9 +292,7 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     
     // update segment area rect
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
-    // todo: vector vs size
-    const USize sz = area.getSize();
-    setArea_impl(area.d_min, UVector2(sz.d_width, sz.d_height));
+    setArea_impl(area.d_min, area.getSize());
 
     // move the dragging point so mouse remains 'attached' to edge of segment
     d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;

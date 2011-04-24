@@ -271,7 +271,7 @@ protected:
                                const std::vector<UDim>& rowSizes,
                                size_t gridX, size_t gridY) const;
     //! calculates total grid size
-    UVector2 getGridSize(const std::vector<UDim>& colSizes,
+    USize getGridSize(const std::vector<UDim>& colSizes,
                          const std::vector<UDim>& rowSizes) const;
 
     //! translates auto positioning index to absolute grid index

@@ -229,6 +229,12 @@ Animation* AnimationManager::getAnimation(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool AnimationManager::isAnimationPresent(const String& name) const
+{
+    return (d_animations.find(name) != d_animations.end());
+}
+
+//----------------------------------------------------------------------------//
 Animation* AnimationManager::getAnimationAtIdx(size_t index) const
 {
     if (index >= d_animations.size())
@@ -362,15 +368,7 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
     }
 }
 
-//----------------------------------------------------------------------------//
-
-bool AnimationManager::isAnimationPresent(const String& name) const
-{
-    return (d_animations.find(name) != d_animations.end());
-}
-
 //---------------------------------------------------------------------------//
-
 String AnimationManager::generateUniqueAnimationName()
 {
     // build name
@@ -391,4 +389,3 @@ String AnimationManager::generateUniqueAnimationName()
 }
 
 } // End of  CEGUI namespace section
-

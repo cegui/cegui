@@ -6,47 +6,47 @@
         <Window Name="TabPaneTop" Type="TaharezLook/RadioButton">
             <Property Name="ID" Value="0" />
             <Property Name="Text" Value="Tab pane at top" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.1,0},{0.45,0},{0.2,0}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.1,0},{0.45,0},{0.2,0}}" />
         </Window>
 
         <Window Name="TabPaneBottom" Type="TaharezLook/RadioButton">
             <Property Name="ID" Value="1" />
             <Property Name="Text" Value="Tab pane at bottom" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.2,0},{0.45,0},{0.3,0}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.2,0},{0.45,0},{0.3,0}}" />
         </Window>
 
         <Window Name="AddTab" Type="TaharezLook/Button">
             <Property Name="Text" Value="Add a new tab" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.35,0},{0.45,0},{0.45,0}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.35,0},{0.45,0},{0.45,0}}" />
             <Property Name="Tooltip" Value="Switch active page to selected" />
         </Window>
 
         <Window Name="PageList" Type="TaharezLook/Listbox">
-            <Property Name="UnifiedAreaRect" Value="{{0.55,0},{0.1,0},{0.95,0},{0.48,0}}" />
+            <Property Name="Area" Value="{{0.55,0},{0.1,0},{0.95,0},{0.48,0}}" />
             <Property Name="Tooltip" Value="A list of available tabs to experiment with" />
         </Window>
 
         <Window Name="Go" Type="TaharezLook/Button">
             <Property Name="Text" Value="Goto" />
-            <Property Name="UnifiedAreaRect" Value="{{0.55,0},{0.5,0},{0.67,0},{0.57,0}}" />
+            <Property Name="Area" Value="{{0.55,0},{0.5,0},{0.67,0},{0.57,0}}" />
             <Property Name="Tooltip" Value="Switch active page to selected" />
         </Window>
 
         <Window Name="Show" Type="TaharezLook/Button">
             <Property Name="Text" Value="Show" />
-            <Property Name="UnifiedAreaRect" Value="{{0.69,0},{0.5,0},{0.81,0},{0.57,0}}" />
+            <Property Name="Area" Value="{{0.69,0},{0.5,0},{0.81,0},{0.57,0}}" />
             <Property Name="Tooltip" Value="Make the selected tab visible in the tab pane" />
         </Window>
 
         <Window Name="Del" Type="TaharezLook/Button">
             <Property Name="Text" Value="Del" />
-            <Property Name="UnifiedAreaRect" Value="{{0.83,0},{0.5,0},{0.95,0},{0.57,0}}" />
+            <Property Name="Area" Value="{{0.83,0},{0.5,0},{0.95,0},{0.57,0}}" />
             <Property Name="Tooltip" Value="Delete the selected pane" />
         </Window>
 
         <Window Name="TabHeightDesc" Type="TaharezLook/StaticText">
             <Property Name="FrameEnabled" Value="False" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.6,0},{0.95,0},{0.7,0}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.6,0},{0.95,0},{0.7,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
             <Property Name="Text" Value="Change the height of tab buttons in pixels" />
         </Window>
@@ -55,12 +55,12 @@
             <Property Name="PageSize" Value="4" />
             <Property Name="StepSize" Value="1" />
             <Property Name="OverlapSize" Value="0" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.7,0},{0.95,0},{0.7,12}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.7,0},{0.95,0},{0.7,12}}" />
         </Window>
 
         <Window Name="TabPaddingDesc" Type="TaharezLook/StaticText">
             <Property Name="FrameEnabled" Value="False" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.8,0},{0.95,0},{0.9,0}}" />
+            <Property Name="Area" Value="{{0.05,0},{0.8,0},{0.95,0},{0.9,0}}" />
             <Property Name="BackgroundEnabled" Value="False" />
             <Property Name="Text" Value="Change the padding of the text on buttons in pixels" />
         </Window>
@@ -69,7 +69,7 @@
             <Property Name="PageSize" Value="5" />
             <Property Name="StepSize" Value="1" />
             <Property Name="OverlapSize" Value="0" />
-            <Property Name="UnifiedAreaRect" Value="{{0.06,0},{0.9,0},{0.95,0},{0.9,12}}" />
+            <Property Name="Area" Value="{{0.06,0},{0.9,0},{0.95,0},{0.9,12}}" />
         </Window>
     </Window>
 </GUILayout>

@@ -68,6 +68,7 @@ class PropertyHelper<const T>
 {
 public:
     typedef typename PropertyHelper<T>::return_type return_type;
+    typedef typename PropertyHelper<T>::safe_method_return_type safe_method_return_type;
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
@@ -93,6 +94,7 @@ class PropertyHelper<const T&>
 {
 public:
     typedef typename PropertyHelper<T>::return_type return_type;
+    typedef typename PropertyHelper<T>::safe_method_return_type safe_method_return_type;
     typedef typename PropertyHelper<T>::pass_type pass_type;
     typedef typename PropertyHelper<T>::string_return_type string_return_type;
 
@@ -118,6 +120,7 @@ class PropertyHelper<const T*>
 {
 public:
     typedef typename PropertyHelper<T*>::return_type return_type;
+    typedef typename PropertyHelper<T>::safe_method_return_type safe_method_return_type;
     typedef typename PropertyHelper<T*>::pass_type pass_type;
     typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
@@ -142,6 +145,7 @@ class PropertyHelper<String>
 {
 public:
     typedef const String& return_type;
+    typedef String safe_method_return_type;
     typedef const String& pass_type;
     typedef const String& string_return_type;
 
@@ -168,6 +172,7 @@ class PropertyHelper<float>
 {
 public:
     typedef float return_type;
+    typedef return_type safe_method_return_type;
     typedef const float pass_type;
     typedef String string_return_type;
     
@@ -200,6 +205,7 @@ class PropertyHelper<int>
 {
 public:
     typedef int return_type;
+    typedef return_type safe_method_return_type;
     typedef const int pass_type;
     typedef String string_return_type;
     
@@ -232,6 +238,7 @@ class PropertyHelper<uint>
 {
 public:
     typedef uint return_type;
+    typedef return_type safe_method_return_type;
     typedef const uint pass_type;
     typedef String string_return_type;
     
@@ -264,6 +271,7 @@ class PropertyHelper<unsigned long>
 {
 public:
     typedef unsigned long return_type;
+    typedef return_type safe_method_return_type;
     typedef const unsigned long pass_type;
     typedef String string_return_type;
     
@@ -296,6 +304,7 @@ class PropertyHelper<bool>
 {
 public:
     typedef bool return_type;
+    typedef return_type safe_method_return_type;
     typedef const bool pass_type;
     typedef const String& string_return_type;
     
@@ -327,6 +336,7 @@ class PropertyHelper<AspectMode>
 {
 public:
     typedef AspectMode return_type;
+    typedef return_type safe_method_return_type;
     typedef AspectMode pass_type;
     typedef String string_return_type;
 
@@ -380,6 +390,7 @@ class PropertyHelper<Sizef >
 {
 public:
     typedef Sizef return_type;
+    typedef return_type safe_method_return_type;
     typedef const Sizef& pass_type;
     typedef String string_return_type;
 
@@ -412,6 +423,7 @@ class PropertyHelper<Vector2f >
 {
 public:
     typedef Vector2f return_type;
+    typedef return_type safe_method_return_type;
     typedef const Vector2f& pass_type;
     typedef String string_return_type;
 
@@ -444,6 +456,7 @@ class PropertyHelper<Vector3f >
 {
 public:
     typedef Vector3f return_type;
+    typedef return_type safe_method_return_type;
     typedef const Vector3f& pass_type;
     typedef String string_return_type;
     
@@ -476,6 +489,7 @@ class PropertyHelper<Quaternion>
 {
 public:
     typedef Quaternion return_type;
+    typedef return_type safe_method_return_type;
     typedef const Quaternion& pass_type;
     typedef String string_return_type;
     
@@ -508,6 +522,7 @@ class PropertyHelper<Rectf >
 {
 public:
     typedef Rectf return_type;
+    typedef return_type safe_method_return_type;
     typedef const Rectf& pass_type;
     typedef String string_return_type;
     
@@ -541,6 +556,7 @@ class CEGUIEXPORT PropertyHelper<Image*>
 {
 public:
     typedef const Image* return_type;
+    typedef return_type safe_method_return_type;
     typedef const Image* const pass_type;
     typedef String string_return_type;
     
@@ -561,6 +577,7 @@ class PropertyHelper<Colour>
 {
 public:
     typedef Colour return_type;
+    typedef return_type safe_method_return_type;
     typedef const Colour& pass_type;
     typedef String string_return_type;
     
@@ -593,6 +610,7 @@ class PropertyHelper<ColourRect>
 {
 public:
     typedef ColourRect return_type;
+    typedef return_type safe_method_return_type;
     typedef const ColourRect& pass_type;
     typedef String string_return_type;
     
@@ -632,6 +650,7 @@ class PropertyHelper<UDim>
 {
 public:
     typedef UDim return_type;
+    typedef return_type safe_method_return_type;
     typedef const UDim& pass_type;
     typedef String string_return_type;
     
@@ -664,6 +683,7 @@ class PropertyHelper<UVector2>
 {
 public:
     typedef UVector2 return_type;
+    typedef return_type safe_method_return_type;
     typedef const UVector2& pass_type;
     typedef String string_return_type;
     
@@ -695,10 +715,47 @@ public:
 };
 
 template<>
+class PropertyHelper<USize>
+{
+public:
+    typedef USize return_type;
+    typedef return_type safe_method_return_type;
+    typedef const USize& pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("USize");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        USize uv;
+        sscanf(str.c_str(), " { { %g , %g } , { %g , %g } }",
+               &uv.d_width.d_scale, &uv.d_width.d_offset,
+               &uv.d_height.d_scale, &uv.d_height.d_offset);
+
+        return uv;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[256];
+        snprintf(buff, sizeof(buff), "{{%g,%g},{%g,%g}}",
+                 val.d_width.d_scale, val.d_width.d_offset, val.d_height.d_scale, val.d_height.d_offset);
+
+        return String(buff);
+    }
+};
+
+template<>
 class PropertyHelper<URect>
 {
 public:
     typedef URect return_type;
+    typedef return_type safe_method_return_type;
     typedef const URect& pass_type;
     typedef String string_return_type;
     
@@ -742,6 +799,7 @@ class PropertyHelper<UBox>
 {
 public:
     typedef UBox return_type;
+    typedef return_type safe_method_return_type;
     typedef const UBox& pass_type;
     typedef String string_return_type;
     

@@ -81,7 +81,7 @@ void HorizontalLayoutContainer::layout()
         leftOffset += boundingSize.d_x;
     }
 
-    setSize(UVector2(leftOffset, layoutHeight));
+    setSize(USize(leftOffset, layoutHeight));
 }
 
 //----------------------------------------------------------------------------//

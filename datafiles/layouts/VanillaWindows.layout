@@ -1,58 +1,58 @@
 <?xml version="1.0" ?>
 <GUILayout>
     <Window Name="root" Type="Vanilla/StaticImage">
-        <Property Name="UnifiedPosition" Value="{{0,0},{0,0}}" />
-        <Property Name="UnifiedSize" Value="{{1,0},{1,0}}" />
+        <Property Name="Position" Value="{{0,0},{0,0}}" />
+        <Property Name="Size" Value="{{1,0},{1,0}}" />
         <Property Name="FrameEnabled" Value="False" />
         <Property Name="BackgroundEnabled" Value="False" />
 
         <Window Name="NewNode" Type="Vanilla/FrameWindow">
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
-            <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="UnifiedPosition" Value="{{0.6,0},{0.1,0}}" />
-            <Property Name="UnifiedSize" Value="{{0.3,0},{0.5,0}}" />
+            <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
+            <Property Name="Position" Value="{{0.6,0},{0.1,0}}" />
+            <Property Name="Size" Value="{{0.3,0},{0.5,0}}" />
             <Property Name="Text" Value="New Node" />
             <Property Name="CloseButtonEnabled" Value="False" />
 
             <Window Name="Listbox" Type="Vanilla/Listbox">
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
-                <Property Name="UnifiedSize" Value="{{1,-14},{1,-80}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,7},{0,7}}" />
+                <Property Name="Size" Value="{{1,-14},{1,-80}}" />
             </Window>
 
             <Window Name="label1" Type="Vanilla/StaticText">
                 <Property Name="BackgroundEnabled" Value="False" />
                 <Property Name="FrameEnabled" Value="False" />
                 <Property Name="VerticalAlignment" Value="Bottom" />
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,-45}}" />
-                <Property Name="UnifiedSize" Value="{{0,60},{0,30}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,7},{0,-45}}" />
+                <Property Name="Size" Value="{{0,60},{0,30}}" />
                 <Property Name="Text" Value="Name:" />
             </Window>
 
             <Window Name="Editbox" Type="Vanilla/Editbox">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="HorizontalAlignment" Value="Right" />
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,-7},{0,-40}}" />
-                <Property Name="UnifiedSize" Value="{{1,-74},{0,30}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,-7},{0,-40}}" />
+                <Property Name="Size" Value="{{1,-74},{0,30}}" />
                 <Property Name="Text" Value="" />
             </Window>
 
             <Window Name="Okay" Type="Vanilla/Button">
                 <Property Name="VerticalAlignment" Value="Bottom" />
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,-7}}" />
-                <Property Name="UnifiedSize" Value="{{0,60},{0,30}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,7},{0,-7}}" />
+                <Property Name="Size" Value="{{0,60},{0,30}}" />
                 <Property Name="Text" Value="Okay" />
             </Window>
 
             <Window Name="Cancel" Type="Vanilla/Button">
                 <Property Name="VerticalAlignment" Value="Bottom" />
                 <Property Name="HorizontalAlignment" Value="Right" />
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,-7},{0,-7}}" />
-                <Property Name="UnifiedSize" Value="{{0,60},{0,30}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,-7},{0,-7}}" />
+                <Property Name="Size" Value="{{0,60},{0,30}}" />
                 <Property Name="Text" Value="Cancel" />
             </Window>
 
@@ -60,23 +60,23 @@
 
         <Window Name="NamespaceViewer" Type="Vanilla/FrameWindow">
             <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
-            <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="UnifiedPosition" Value="{{0.25,0},{0.48,0}}" />
-            <Property Name="UnifiedSize" Value="{{0.5,0},{0.5,0}}" />
+            <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
+            <Property Name="Position" Value="{{0.25,0},{0.48,0}}" />
+            <Property Name="Size" Value="{{0.5,0},{0.5,0}}" />
             <Property Name="Text" Value="Namespace Viewer" />
             <Property Name="CloseButtonEnabled" Value="False" />
 
             <Window Name="area1" Type="Vanilla/StaticText">
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
-                <Property Name="UnifiedSize" Value="{{1,-14},{0,93}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,7},{0,7}}" />
+                <Property Name="Size" Value="{{1,-14},{0,93}}" />
             </Window>
 
             <Window Name="area2" Type="Vanilla/Listbox">
                 <Property Name="VerticalAlignment" Value="Bottom" />
-                <Property Name="UnifiedMaxSize" Value="{{1.0,0},{1.0,0}}" />
-                <Property Name="UnifiedPosition" Value="{{0,7},{0,-7}}" />
-                <Property Name="UnifiedSize" Value="{{1,-14},{1,-110}}" />
+                <Property Name="MaxSize" Value="{{1.0,0},{1.0,0}}" />
+                <Property Name="Position" Value="{{0,7},{0,-7}}" />
+                <Property Name="Size" Value="{{1,-14},{1,-110}}" />
             </Window>
         </Window>
 
