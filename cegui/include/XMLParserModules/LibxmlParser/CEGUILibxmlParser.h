@@ -54,7 +54,7 @@ public:
     ~LibxmlParser(void);
 
     // implementation of abstract members of base class
-    void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+    void parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
 
 protected:
     // implementation of abstract members of base class
