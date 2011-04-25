@@ -218,49 +218,49 @@
 ~@destructor_t@~random_access_iterator_tag@ ( ::std::random_access_iterator_tag::* )(  )  ( ::std::random_access_iterator_tag::* )(  ) 
 ~@destructor_t@~._36@ ( ::__mbstate_t::* )(  )  ( ::__mbstate_t::* )(  ) 
 ~@destructor_t@~._35@ ( ::__mbstate_t::* )(  )  ( ::__mbstate_t::* )(  ) 
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 384)@::std::__is_byte< signed char >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 278)@::std::__is_floating< long double >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 144)@::std::__is_integer< bool >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 264)@::std::__is_floating< float >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 391)@::std::__is_byte< unsigned char >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 204)@::std::__is_integer< unsigned short >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/stl_bvector.h', 65)@::std
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 377)@::std::__is_byte< char >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 173)@::std::__is_integer< wchar_t >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 225)@::std::__is_integer< long >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 354)@::std::__is_char< char >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 218)@::std::__is_integer< unsigned int >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 246)@::std::__is_integer< unsigned long long >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 197)@::std::__is_integer< short >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 158)@::std::__is_integer< signed char >
-~@enumeration_t@('/usr/include/bits/confname.h', 26)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 144)@::std::__is_integer< bool >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 204)@::std::__is_integer< unsigned short >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 264)@::std::__is_floating< float >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 151)@::std::__is_integer< char >
+~@enumeration_t@_Rb_tree_color@::std::_Rb_tree_color
 ~@enumeration_t@('/usr/include/pthread.h', 80)@::
-~@enumeration_t@('/usr/include/bits/confname.h', 535)@::
-~@enumeration_t@('/usr/include/pthread.h', 169)@::
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 124)@::std::__is_void< void >
-~@enumeration_t@('/usr/include/ctype.h', 48)@::
-~@enumeration_t@('/usr/include/pthread.h', 36)@::
-~@enumeration_t@QuadSplitMode@::CEGUI::QuadSplitMode
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 362)@::std::__is_char< wchar_t >
-~@enumeration_t@RenderQueueID@::CEGUI::RenderQueueID
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 211)@::std::__is_integer< int >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 165)@::std::__is_integer< unsigned char >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 151)@::std::__is_integer< char >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 239)@::std::__is_integer< long long >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/stl_bvector.h', 65)@::std
 ~@enumeration_t@('/usr/include/pthread.h', 149)@::
+~@enumeration_t@('/usr/include/pthread.h', 193)@::
+~@enumeration_t@('/usr/include/bits/confname.h', 26)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 391)@::std::__is_byte< unsigned char >
+~@enumeration_t@PixelFormat@::CEGUI::Texture::PixelFormat
+~@enumeration_t@('/usr/include/bits/confname.h', 535)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 362)@::std::__is_char< wchar_t >
+~@enumeration_t@('/usr/include/pthread.h', 169)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 158)@::std::__is_integer< signed char >
+~@enumeration_t@('/usr/include/ctype.h', 48)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 165)@::std::__is_integer< unsigned char >
+~@enumeration_t@('/usr/include/pthread.h', 36)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 232)@::std::__is_integer< unsigned long >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 271)@::std::__is_floating< double >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 173)@::std::__is_integer< wchar_t >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 354)@::std::__is_char< char >
+~@enumeration_t@RenderQueueID@::CEGUI::RenderQueueID
+~@enumeration_t@QuadSplitMode@::CEGUI::QuadSplitMode
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 124)@::std::__is_void< void >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 218)@::std::__is_integer< unsigned int >
 ~@enumeration_t@('/usr/include/bits/confname.h', 73)@::
 ~@enumeration_t@BlendMode@::CEGUI::BlendMode
 ~@enumeration_t@('/usr/include/pthread.h', 117)@::
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 271)@::std::__is_floating< double >
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 232)@::std::__is_integer< unsigned long >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 197)@::std::__is_integer< short >
 ~@enumeration_t@('/usr/include/pthread.h', 159)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 384)@::std::__is_byte< signed char >
 ~@enumeration_t@('/usr/include/pthread.h', 200)@::
 ~@enumeration_t@('/usr/include/pthread.h', 46)@::
-~@enumeration_t@('/usr/include/pthread.h', 193)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 278)@::std::__is_floating< long double >
 ~@enumeration_t@('/usr/include/pthread.h', 68)@::
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 246)@::std::__is_integer< unsigned long long >
 ~@enumeration_t@('/usr/include/bits/locale.h', 27)@::
-~@enumeration_t@PixelFormat@::CEGUI::Texture::PixelFormat
-~@enumeration_t@_Rb_tree_color@::std::_Rb_tree_color
-~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.3/include/g++-v4/bits/cpp_type_traits.h', 239)@::std::__is_integer< long long >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 211)@::std::__is_integer< int >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 377)@::std::__is_byte< char >
+~@enumeration_t@('/usr/lib/gcc/x86_64-pc-linux-gnu/4.4.5/include/g++-v4/bits/cpp_type_traits.h', 225)@::std::__is_integer< long >
 ~@typedef_t@__uint16_t@::__uint16_t
 ~@typedef_t@_Const_Link_type@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Const_Link_type
 ~@typedef_t@_Const_Link_type@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::String::FastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Const_Link_type
@@ -3005,6 +3005,10 @@
 ~@variable_t@_ZTIN5CEGUI20OgreResourceProviderE@::_ZTIN5CEGUI20OgreResourceProviderE
 ~@variable_t@__locales@::__locale_struct::__locales
 ~@variable_t@n_sep_by_space@::lconv::n_sep_by_space
+~@variable_t@('/home/paul/dev/cegui/src/v0-7/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/paul/dev/cegui/src/v0-7/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/paul/dev/cegui/src/v0-7/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/paul/dev/cegui/src/v0-7/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@d_ptr@::CEGUI::String::const_iterator::d_ptr
 ~@variable_t@d_ptr@::CEGUI::String::iterator::d_ptr
 ~@variable_t@tv_nsec@::timespec::tv_nsec
@@ -3052,10 +3056,6 @@
 ~@variable_t@_M_t@::std::map< CEGUI::RenderQueueID, CEGUI::RenderQueue >::_M_t
 ~@variable_t@_M_t@::std::map<CEGUI::String, CEGUI::Event*, CEGUI::String::FastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::_M_t
 ~@variable_t@_M_t@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >::_M_t
-~@variable_t@('/home/paul/dev/cegui/src/pythonbinding-devel/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/pythonbinding-devel/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/pythonbinding-devel/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/pythonbinding-devel/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@_M_header@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >::_M_header
 ~@variable_t@_M_header@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::String::FastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Rb_tree_impl< CEGUI::String::FastLessCompare, false >::_M_header
 ~@variable_t@_M_header@::std::_Rb_tree< unsigned int, std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > >, std::_Select1st< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >::_Rb_tree_impl< std::less< unsigned int >, false >::_M_header

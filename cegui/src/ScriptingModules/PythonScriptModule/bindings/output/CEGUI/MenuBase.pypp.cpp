@@ -273,13 +273,13 @@ void register_MenuBase_class(){
         typedef bp::class_< MenuBase_wrapper, bp::bases< CEGUI::ItemListBase >, boost::noncopyable > MenuBase_exposer_t;
         MenuBase_exposer_t MenuBase_exposer = MenuBase_exposer_t( "MenuBase", "*!\n\
         \n\
-           Abstract base class for menus.\n\
+            Abstract base class for menus.\n\
         *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*************************************************************************\n\
-           Construction and Destruction\n\
+            Construction and Destruction\n\
         *************************************************************************\n\
         *!\n\
         \n\
-           Constructor for MenuBase objects\n\
+            Constructor for MenuBase objects\n\
         *\n") );
         bp::scope MenuBase_scope( MenuBase_exposer );
         { //::CEGUI::MenuBase::changePopupMenuItem
@@ -291,12 +291,28 @@ void register_MenuBase_class(){
                 , changePopupMenuItem_function_type( &::CEGUI::MenuBase::changePopupMenuItem )
                 , ( bp::arg("item") )
                 , "*!\n\
-               \n\
-                  Change the currently open MenuItem in this menu.\n\
+                \n\
+                    Change the currently open MenuItem in this menu.\n\
             \n\
-               @param item\n\
-                  Pointer to a MenuItem to open or NULL to close any opened.\n\
-               *\n" );
+                @param item\n\
+                    Pointer to a MenuItem to open or NULL to close any opened.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MenuBase::getAutoCloseNestedPopups
+        
+            typedef bool ( ::CEGUI::MenuBase::*getAutoCloseNestedPopups_function_type )(  ) const;
+            
+            MenuBase_exposer.def( 
+                "getAutoCloseNestedPopups"
+                , getAutoCloseNestedPopups_function_type( &::CEGUI::MenuBase::getAutoCloseNestedPopups )
+                , "*!\n\
+                \n\
+                    Return whether this menu should close all its open child popups, when it gets hidden\n\
+            \n\
+                @return\n\
+                    true if the menu should close all its open child popups, when it gets hidden\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuBase::getItemSpacing
@@ -307,15 +323,15 @@ void register_MenuBase_class(){
                 "getItemSpacing"
                 , getItemSpacing_function_type( &::CEGUI::MenuBase::getItemSpacing )
                 , "*************************************************************************\n\
-                  Accessor type functions\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  Get the item spacing for this menu.\n\
+                    Accessor type functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Get the item spacing for this menu.\n\
             \n\
-               @return\n\
-                  A float value with the current item spacing for this menu\n\
-               *\n" );
+                @return\n\
+                    A float value with the current item spacing for this menu\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuBase::getPopupMenuItem
@@ -327,12 +343,12 @@ void register_MenuBase_class(){
                 , getPopupMenuItem_function_type( &::CEGUI::MenuBase::getPopupMenuItem )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-               \n\
-                  Get currently opened MenuItem in this menu. Returns NULL if no menu item is open.\n\
+                \n\
+                    Get currently opened MenuItem in this menu. Returns NULL if no menu item is open.\n\
             \n\
-               @return\n\
-                  Pointer to the MenuItem currently open.\n\
-               *\n" );
+                @return\n\
+                    Pointer to the MenuItem currently open.\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuBase::isMultiplePopupsAllowed
@@ -343,12 +359,12 @@ void register_MenuBase_class(){
                 "isMultiplePopupsAllowed"
                 , isMultiplePopupsAllowed_function_type( &::CEGUI::MenuBase::isMultiplePopupsAllowed )
                 , "*!\n\
-               \n\
-                  Return whether this menu allows multiple popup menus to open at the same time.\n\
+                \n\
+                    Return whether this menu allows multiple popup menus to open at the same time.\n\
             \n\
-               @return\n\
-                  true if this menu allows multiple popup menus to be opened simultaneously. false if not\n\
-               *\n" );
+                @return\n\
+                    true if this menu allows multiple popup menus to be opened simultaneously. false if not\n\
+                *\n" );
         
         }
         { //::CEGUI::MenuBase::setAllowMultiplePopups
@@ -361,7 +377,21 @@ void register_MenuBase_class(){
                 , ( bp::arg("setting") )
                 , "*!\n\
             \n\
-               Set whether this menu allows multiple popup menus to be opened simultaneously.\n\
+                Set whether this menu allows multiple popup menus to be opened simultaneously.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MenuBase::setAutoCloseNestedPopups
+        
+            typedef void ( ::CEGUI::MenuBase::*setAutoCloseNestedPopups_function_type )( bool ) ;
+            
+            MenuBase_exposer.def( 
+                "setAutoCloseNestedPopups"
+                , setAutoCloseNestedPopups_function_type( &::CEGUI::MenuBase::setAutoCloseNestedPopups )
+                , ( bp::arg("setting") )
+                , "*!\n\
+            \n\
+                Set whether the menu should close all its open child popups, when it gets hidden\n\
             *\n" );
         
         }
@@ -374,11 +404,24 @@ void register_MenuBase_class(){
                 , setItemSpacing_function_type( &::CEGUI::MenuBase::setItemSpacing )
                 , ( bp::arg("spacing") )
                 , "*************************************************************************\n\
-               Manipulators\n\
+                Manipulators\n\
             *************************************************************************\n\
             *!\n\
             \n\
-               Set the item spacing for this menu.\n\
+                Set the item spacing for this menu.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MenuBase::setPopupMenuItemClosing
+        
+            typedef void ( ::CEGUI::MenuBase::*setPopupMenuItemClosing_function_type )(  ) ;
+            
+            MenuBase_exposer.def( 
+                "setPopupMenuItemClosing"
+                , setPopupMenuItemClosing_function_type( &::CEGUI::MenuBase::setPopupMenuItemClosing )
+                , "*!\n\
+            \n\
+                tells the current popup that it should start its closing timer.\n\
             *\n" );
         
         }

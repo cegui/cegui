@@ -2016,6 +2016,27 @@ void register_Window_class(){
                  *\n" );
         
         }
+        { //::CEGUI::Window::getZIndex
+        
+            typedef ::size_t ( ::CEGUI::Window::*getZIndex_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getZIndex"
+                , getZIndex_function_type( &::CEGUI::Window::getZIndex )
+                , "*!\n\
+                \n\
+                    Return the (visual) z index of the window on it's parent.\n\
+                    \n\
+                    The z index is a number that indicates the order that windows will be\n\
+                    drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in\n\
+                    front of lower numbers.\n\
+            \n\
+                    The number returned will not be stable, and generally should be used to\n\
+                    compare with the z index of sibling windows (and only sibling windows)\n\
+                    to discover the current z ordering of those windows.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::hide
         
             typedef void ( ::CEGUI::Window::*hide_function_type )(  ) ;
@@ -2289,6 +2310,25 @@ void register_Window_class(){
             *\n" );
         
         }
+        { //::CEGUI::Window::isBehind
+        
+            typedef bool ( ::CEGUI::Window::*isBehind_function_type )( ::CEGUI::Window const & ) const;
+            
+            Window_exposer.def( 
+                "isBehind"
+                , isBehind_function_type( &::CEGUI::Window::isBehind )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return whether a this Window is behind the given window.\n\
+            \n\
+                \note\n\
+                    Here 'behind' just means that one window is drawn before the other, it\n\
+                    is not meant to imply that the windows are overlapping nor that one\n\
+                    window is obscured by the other.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::isCapturedByAncestor
         
             typedef bool ( ::CEGUI::Window::*isCapturedByAncestor_function_type )(  ) const;
@@ -2526,6 +2566,25 @@ void register_Window_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&Window_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isInFront
+        
+            typedef bool ( ::CEGUI::Window::*isInFront_function_type )( ::CEGUI::Window const & ) const;
+            
+            Window_exposer.def( 
+                "isInFront"
+                , isInFront_function_type( &::CEGUI::Window::isInFront )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return whether a this Window is in front of the given window.\n\
+            \n\
+                \note\n\
+                    Here 'in front' just means that one window is drawn after the other, it\n\
+                    is not meant to imply that the windows are overlapping nor that one\n\
+                    window is obscured by the other.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::isMouseAutoRepeatEnabled
