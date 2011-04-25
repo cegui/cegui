@@ -7,7 +7,7 @@
         <Property Name="BackgroundEnabled" Value="False" />
 
         <Window Name="NewNode" Type="Vanilla/FrameWindow">
-            <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
+            <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
             <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="Position" Value="{{0.6,0},{0.1,0}}" />
             <Property Name="Size" Value="{{0.3,0},{0.5,0}}" />
@@ -59,7 +59,7 @@
         </Window>
 
         <Window Name="NamespaceViewer" Type="Vanilla/FrameWindow">
-            <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
+            <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
             <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
             <Property Name="Position" Value="{{0.25,0},{0.48,0}}" />
             <Property Name="Size" Value="{{0.5,0},{0.5,0}}" />

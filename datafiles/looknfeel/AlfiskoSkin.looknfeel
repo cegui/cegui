@@ -1193,7 +1193,7 @@
                 </Dim>
                 <Dim type="Width" ><UnifiedDim scale="0.1" type="Width" /></Dim>
             </Area>
-            <Property name="UnifiedMinSize" value="{{0,25},{0,0}}" />
+            <Property name="MinSize" value="{{0,25},{0,0}}" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
@@ -1604,7 +1604,7 @@
                 </Dim>
                 <Dim type="Height" ><UnifiedDim scale="0.1" type="Height" /></Dim>
             </Area>
-            <Property name="UnifiedMinSize" value="{{0,0},{0,25}}" />
+            <Property name="MinSize" value="{{0,0},{0,25}}" />
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
