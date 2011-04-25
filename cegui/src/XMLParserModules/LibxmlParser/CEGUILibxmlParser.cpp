@@ -89,19 +89,11 @@ LibxmlParser::~LibxmlParser(void)
 {
 }
 
-void LibxmlParser::parseXMLFile(XMLHandler& handler, const String& filename, const String&, const String& resourceGroup)
+void LibxmlParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
 {
-    // load xml file data into buffer using resource provider
-    CEGUI::RawDataContainer rawXMLData;
-    CEGUI::System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-
     xmlDocPtr doc = xmlParseMemory(
-        reinterpret_cast<char*>(rawXMLData.getDataPtr()),
-        rawXMLData.getSize());
-
-    // release loaded xml data.
-    System::getSingleton().getResourceProvider()->
-        unloadRawDataContainer(rawXMLData);
+        reinterpret_cast<const char*>(source.getDataPtr()),
+        source.getSize());
 
     if (!doc)
     {
