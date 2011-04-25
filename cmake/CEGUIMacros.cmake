@@ -60,7 +60,6 @@ macro (cegui_add_sample _NAME)
     endif()
 
     add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
-    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES VERSION ${CEGUI_VERSION})
 
     # append the _d (or whatever) for debug builds as needed.
     if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
