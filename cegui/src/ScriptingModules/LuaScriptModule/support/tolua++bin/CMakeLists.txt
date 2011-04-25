@@ -1,4 +1,4 @@
-set( CEGUI_TARGET_NAME tolua++cegui)
+set( CEGUI_TARGET_NAME toluappcegui)
 
 set( CORE_SOURCE_FILES
     toluabind.c
