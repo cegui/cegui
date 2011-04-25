@@ -339,7 +339,7 @@ set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
 set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
 set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
-set (CEGUI_TOLUAPP_LIBNAME CEGUItolua++)
+set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
 
 #
 # make some adjustments if we will be building and using the bundled tolua++ lib
