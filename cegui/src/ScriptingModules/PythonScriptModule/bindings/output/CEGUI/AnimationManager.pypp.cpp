@@ -51,7 +51,7 @@ void register_AnimationManager_class(){
             AnimationManager_exposer.def( 
                 "createAnimation"
                 , createAnimation_function_type( &::CEGUI::AnimationManager::createAnimation )
-                , ( bp::arg("name") )
+                , ( bp::arg("name")="" )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -257,6 +257,27 @@ void register_AnimationManager_class(){
             \n\
                 @see\n\
                     AnimationInstance\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::AnimationManager::isAnimationPresent
+        
+            typedef bool ( ::CEGUI::AnimationManager::*isAnimationPresent_function_type )( ::CEGUI::String const & ) const;
+            
+            AnimationManager_exposer.def( 
+                "isAnimationPresent"
+                , isAnimationPresent_function_type( &::CEGUI::AnimationManager::isAnimationPresent )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Examines the list of Animations to see if one exists with the given name\n\
+            \n\
+                @param name\n\
+                    String holding the name of the Animation to look for.\n\
+            \n\
+                @return\n\
+                    true if an Animation was found with a name matching  name.  false if\n\
+                    no matching Animation was found.\n\
                 *\n" );
         
         }

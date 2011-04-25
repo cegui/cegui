@@ -47,6 +47,20 @@ void register_CoordConverter_class(){
         }
         { //::CEGUI::CoordConverter::asAbsolute
         
+            typedef ::CEGUI::Sizef ( *asAbsolute_function_type )( ::CEGUI::Size< CEGUI::UDim > const &,::CEGUI::Sizef const & );
+            
+            CoordConverter_exposer.def( 
+                "asAbsolute"
+                , asAbsolute_function_type( &::CEGUI::CoordConverter::asAbsolute )
+                , ( bp::arg("v"), bp::arg("base") )
+                , "*!\n\
+             \n\
+                 converts given Size<UDim> to absolute Sizef\n\
+             *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asAbsolute
+        
             typedef ::CEGUI::Rectf ( *asAbsolute_function_type )( ::CEGUI::URect const &,::CEGUI::Sizef const & );
             
             CoordConverter_exposer.def( 
@@ -80,6 +94,20 @@ void register_CoordConverter_class(){
                 , "*!\n\
             \n\
                 converts given Vector2<UDim> to relative Vector2f\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::CoordConverter::asRelative
+        
+            typedef ::CEGUI::Sizef ( *asRelative_function_type )( ::CEGUI::Size< CEGUI::UDim > const &,::CEGUI::Sizef const & );
+            
+            CoordConverter_exposer.def( 
+                "asRelative"
+                , asRelative_function_type( &::CEGUI::CoordConverter::asRelative )
+                , ( bp::arg("v"), bp::arg("base") )
+                , "*!\n\
+            \n\
+                converts given Size<UDim> to relative Sizef\n\
             *\n" );
         
         }
