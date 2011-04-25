@@ -120,7 +120,7 @@ class PropertyHelper<const T*>
 {
 public:
     typedef typename PropertyHelper<T*>::return_type return_type;
-    typedef typename PropertyHelper<T>::safe_method_return_type safe_method_return_type;
+    typedef typename PropertyHelper<T*>::safe_method_return_type safe_method_return_type;
     typedef typename PropertyHelper<T*>::pass_type pass_type;
     typedef typename PropertyHelper<T*>::string_return_type string_return_type;
 
