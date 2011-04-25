@@ -219,26 +219,26 @@ class Window //: public EventSet
 
 	// unified stuff
 	void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
-	void setArea(const UVector2& pos, const UVector2& size);
+	void setArea(const UVector2& pos, const USize& size);
 	void setArea(const URect& area);
 	void setPosition(const UVector2& pos);
 	void setXPosition(const UDim& x);
 	void setYPosition(const UDim& y);
-	void setSize(const UVector2& size);
+	void setSize(const USize& size);
 	void setWidth(const UDim& width);
 	void setHeight(const UDim& height);
-	void setMaxSize(const UVector2& size);
-	void setMinSize(const UVector2& size);
+	void setMaxSize(const USize& size);
+	void setMinSize(const USize& size);
 
 	const URect& getArea() const;
 	const UVector2& getPosition() const;
 	const UDim& getXPosition() const;
 	const UDim& getYPosition() const;
-	UVector2 getSize() const;
+	USize getSize() const;
 	UDim getWidth() const;
 	UDim getHeight() const;
-	const UVector2& getMaxSize() const;
-	const UVector2& getMinSize() const;
+	const USize& getMaxSize() const;
+	const USize& getMinSize() const;
 
     // event pass through
     bool isMousePassThroughEnabled() const;

@@ -184,6 +184,12 @@ UVector2 ceguiLua_PropertyHelper::stringToUVector2(const String& str)
 }
 
 //----------------------------------------------------------------------------//
+USize ceguiLua_PropertyHelper::stringToUSize(const String& str)
+{
+    return PropertyHelper<USize>::fromString(str);
+}
+
+//----------------------------------------------------------------------------//
 URect ceguiLua_PropertyHelper::stringToURect(const String& str)
 {
     return PropertyHelper<URect>::fromString(str);
@@ -259,6 +265,12 @@ String ceguiLua_PropertyHelper::udimToString(const UDim& val)
 String ceguiLua_PropertyHelper::uvector2ToString(const UVector2& val)
 {
     return PropertyHelper<UVector2>::toString(val);
+}
+
+//----------------------------------------------------------------------------//
+String ceguiLua_PropertyHelper::usizeToString(const USize& val)
+{
+    return PropertyHelper<USize>::toString(val);
 }
 
 //----------------------------------------------------------------------------//

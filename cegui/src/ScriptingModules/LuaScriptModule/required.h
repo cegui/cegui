@@ -151,6 +151,7 @@ public:
     static ColourRect stringToColourRect(const String& str);
     static UDim stringToUDim(const String& str);
     static UVector2 stringToUVector2(const String& str);
+    static USize stringToUSize(const String& str);
     static URect stringToURect(const String& str);
     static AspectMode stringToAspectMode(const String& str);
 
@@ -165,6 +166,7 @@ public:
     static String colourRectToString(const ColourRect& val);
     static String udimToString(const UDim& val);
     static String uvector2ToString(const UVector2& val);
+    static String usizeToString(const USize& val);
     static String urectToString(const URect& val);
     static String aspectModeToString(AspectMode val);
 };
