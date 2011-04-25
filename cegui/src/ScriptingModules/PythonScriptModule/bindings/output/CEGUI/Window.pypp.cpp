@@ -1225,7 +1225,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getMaxSize
         
-            typedef ::CEGUI::UVector2 const & ( ::CEGUI::Window::*getMaxSize_function_type )(  ) const;
+            typedef ::CEGUI::USize const & ( ::CEGUI::Window::*getMaxSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getMaxSize"
@@ -1251,7 +1251,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getMinSize
         
-            typedef ::CEGUI::UVector2 const & ( ::CEGUI::Window::*getMinSize_function_type )(  ) const;
+            typedef ::CEGUI::USize const & ( ::CEGUI::Window::*getMinSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getMinSize"
@@ -1634,7 +1634,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getSize
         
-            typedef ::CEGUI::UVector2 ( ::CEGUI::Window::*getSize_function_type )(  ) const;
+            typedef ::CEGUI::USize ( ::CEGUI::Window::*getSize_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getSize"
@@ -1651,7 +1651,7 @@ void register_Window_class(){
                     determining the final value used.\n\
             \n\
                 @return\n\
-                    UVector2 describing the size of the window area.\n\
+                    USize describing the size of the window area.\n\
                  *\n" );
         
         }
@@ -3344,7 +3344,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setArea
         
-            typedef void ( ::CEGUI::Window::*setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::UVector2 const & ) ;
+            typedef void ( ::CEGUI::Window::*setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
             
             Window_exposer.def( 
                 "setArea"
@@ -3820,7 +3820,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setMaxSize
         
-            typedef void ( ::CEGUI::Window::*setMaxSize_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef void ( ::CEGUI::Window::*setMaxSize_function_type )( ::CEGUI::USize const & ) ;
             
             Window_exposer.def( 
                 "setMaxSize"
@@ -3840,13 +3840,13 @@ void register_Window_class(){
                     determining the final value used.\n\
             \n\
                 @param size\n\
-                    UVector2 describing the new maximum size of the window area.\n\
+                    USize describing the new maximum size of the window area.\n\
                  *\n" );
         
         }
         { //::CEGUI::Window::setMinSize
         
-            typedef void ( ::CEGUI::Window::*setMinSize_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef void ( ::CEGUI::Window::*setMinSize_function_type )( ::CEGUI::USize const & ) ;
             
             Window_exposer.def( 
                 "setMinSize"
@@ -3866,7 +3866,7 @@ void register_Window_class(){
                     determining the final value used.\n\
             \n\
                 @param size\n\
-                    UVector2 describing the new minimum size of the window area.\n\
+                    USize describing the new minimum size of the window area.\n\
                  *\n" );
         
         }
@@ -4189,7 +4189,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setSize
         
-            typedef void ( ::CEGUI::Window::*setSize_function_type )( ::CEGUI::UVector2 const & ) ;
+            typedef void ( ::CEGUI::Window::*setSize_function_type )( ::CEGUI::USize const & ) ;
             
             Window_exposer.def( 
                 "setSize"
@@ -4207,7 +4207,7 @@ void register_Window_class(){
                     determining the final value used.\n\
             \n\
                 @param size\n\
-                    UVector2 describing the new size of the window area.\n\
+                    USize describing the new size of the window area.\n\
                  *\n" );
         
         }
