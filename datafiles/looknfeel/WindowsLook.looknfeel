@@ -775,7 +775,7 @@
         <Property name="EWSizingCursorImage" value="WindowsLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="WindowsLook/MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="WindowsLook/MouseNeSwCursor" />
-        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="MinSize" value="{{0.1,0},{0.1,0}}" />
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -2724,7 +2724,7 @@
     -->
     <WidgetLook name="WindowsLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
-        <Property name="UnifiedMinSize" value="{{0,0},{0,16}}" />
+        <Property name="MinSize" value="{{0,0},{0,16}}" />
         <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3012,7 +3012,7 @@
     -->
     <WidgetLook name="WindowsLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
-        <Property name="UnifiedMinSize" value="{{0,16},{0,0}}" />
+        <Property name="MinSize" value="{{0,16},{0,0}}" />
         <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>

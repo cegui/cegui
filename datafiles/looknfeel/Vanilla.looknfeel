@@ -233,7 +233,7 @@
         <Property name="NWSESizingCursorImage" value="Vanilla-Images/MouseArrow" />
         <Property name="NESWSizingCursorImage" value="Vanilla-Images/MouseArrow" />
         <Property name="RollUpEnabled" value="False" />
-        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="MinSize" value="{{0.1,0},{0.1,0}}" />
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>

@@ -532,7 +532,7 @@
         <Property name="EWSizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="TaharezLook/MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="TaharezLook/MouseNeSwCursor" />
-        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="MinSize" value="{{0.1,0},{0.1,0}}" />
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -1334,7 +1334,7 @@
             <Area>
                 <Dim type="Width" ><UnifiedDim scale="0.1" type="Width" /></Dim>
             </Area>
-            <Property name="UnifiedMinSize" value="{{0,25},{0,0}}" />
+            <Property name="MinSize" value="{{0,25},{0,0}}" />
         </Child>
         <ImagerySection name="main">
             <ImageryComponent>
@@ -1453,7 +1453,7 @@
             <Area>
                 <Dim type="Height" ><UnifiedDim scale="0.1" type="Height" /></Dim>
             </Area>
-            <Property name="UnifiedMinSize" value="{{0,0},{0,25}}" />
+            <Property name="MinSize" value="{{0,0},{0,25}}" />
         </Child>
         <ImagerySection name="main">
             <ImageryComponent>
