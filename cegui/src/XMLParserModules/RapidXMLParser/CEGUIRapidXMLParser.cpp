@@ -47,8 +47,8 @@ namespace CEGUI
 class RapidXMLDocument : public rapidxml::xml_document<>
 {
 public:
-    RapidXMLDocument(XMLHandler& handler, const String& filename,
-                     const String& schemaName, const String& resourceGroup);
+    RapidXMLDocument(XMLHandler& handler, const RawDataContainer& source,
+                     const String& schemaName);
 
     ~RapidXMLDocument()
     {
@@ -63,21 +63,15 @@ private:
 
 //----------------------------------------------------------------------------//
 RapidXMLDocument::RapidXMLDocument(XMLHandler& handler,
-                                   const String& filename,
-                                   const String& /*schemaName*/,
-                                   const String& resourceGroup)
+                                   const RawDataContainer& source,
+                                   const String& /*schemaName*/)
 {
     d_handler = &handler;
 
-    // use resource provider to load file data
-    RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->
-        loadRawDataContainer(filename, rawXMLData, resourceGroup);
-
     // Create a buffer with extra bytes for a newline and a terminating null
-    size_t size = rawXMLData.getSize();
+    size_t size = source.getSize();
     char* buf = new char[size + 2];
-    memcpy(buf, rawXMLData.getDataPtr(), size);
+    memcpy(buf, source.getDataPtr(), size);
     // PDT: The addition of the newline is a kludge to resolve an issue
     // whereby parse returns 0 if the xml file has no newline at the end but
     // is otherwise well formed.
@@ -95,12 +89,10 @@ RapidXMLDocument::RapidXMLDocument(XMLHandler& handler,
     {
         // error detected, cleanup out buffers
         delete[] buf;
-        System::getSingleton().getResourceProvider()->
-        unloadRawDataContainer(rawXMLData);
         // throw exception
         throw FileIOException("RapidXMLParser: an error occurred while "
-                              "parsing the XML document '" + filename +
-                              "' - check it for potential errors!.");
+                              "parsing the XML data - check it for "
+                              "potential errors!.");
     }
 
     rapidxml::xml_node<>* currElement = doc.first_node();
@@ -115,16 +107,12 @@ RapidXMLDocument::RapidXMLDocument(XMLHandler& handler,
         catch (...)
         {
             delete[] buf;
-            System::getSingleton().getResourceProvider()->
-                unloadRawDataContainer(rawXMLData);
             throw;
         }
     }
 
     // Free memory
     delete[] buf;
-    System::getSingleton().getResourceProvider()->
-        unloadRawDataContainer(rawXMLData);
 }
 
 //----------------------------------------------------------------------------//
@@ -186,12 +174,11 @@ RapidXMLParser::~RapidXMLParser(void)
 }
 
 //----------------------------------------------------------------------------//
-void RapidXMLParser::parseXMLFile(XMLHandler& handler,
-                                  const String& filename,
-                                  const String& schemaName,
-                                  const String& resourceGroup)
+void RapidXMLParser::parseXML(XMLHandler& handler,
+                              const RawDataContainer& source,
+                              const String& schemaName)
 {
-    RapidXMLDocument doc(handler, filename, schemaName, resourceGroup);
+    RapidXMLDocument doc(handler, source, schemaName);
 }
 
 //----------------------------------------------------------------------------//
