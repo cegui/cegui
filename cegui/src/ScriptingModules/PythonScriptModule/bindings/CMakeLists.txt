@@ -4,7 +4,7 @@ file (GLOB PYCEGUIOGRERENDERER_SOURCE_FILES output/CEGUIOgreRenderer/*.cpp)
 file (GLOB PYCEGUIOPENGLRENDERER_SOURCE_FILES output/CEGUIOpenGLRenderer/*.cpp)
 
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib()"
+    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib(prefix=\"\")"
     OUTPUT_VARIABLE CEGUI_PYTHON_INSTALL_DIR
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
