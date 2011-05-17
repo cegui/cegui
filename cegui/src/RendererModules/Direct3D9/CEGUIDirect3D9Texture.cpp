@@ -25,7 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#define NOMINMAX
 #include <d3dx9.h>
 #include "CEGUIDirect3D9Texture.h"
 #include "CEGUIExceptions.h"
