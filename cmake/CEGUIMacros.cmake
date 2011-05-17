@@ -81,6 +81,14 @@ macro (cegui_add_sample _NAME)
         ${CEGUI_SAMPLEHELPER_LIBNAME}
     )
 
+    if (NOT BUILD_SHARED_LIBS)
+        target_link_libraries(${CEGUI_TARGET_NAME}
+            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
+            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_FALAGARD_WR_LIBNAME}
+        )
+    endif()
+
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS ${CEGUI_TARGET_NAME}
             RUNTIME DESTINATION bin
