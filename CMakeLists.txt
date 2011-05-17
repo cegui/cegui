@@ -350,6 +350,24 @@ if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
 endif()
 
 #
+# When building statically, we still always build the python modules as shared
+# modules.  64bit g++ needs the libs to be compiled with -fPIC in this case.
+if (NOT BUILD_SHARED_LIBS AND CEGUI_BUILD_PYTHON_MODULES)
+    message( "WARNING!  You are building the PyCEGUI* modules against static CEGUI libs,
+which is known to have issues and not really work at all.  If you are doing
+this for CEGUI development purposes, carry on, otherwise you will probably need
+to adjust your configuration")
+
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        message( "ATTENTION!  You are building the PyCEGUI* modules against static CEGUI libs!
+Because the python modules are always built as shared libs, the main CEGUI libs
+must be compiled with the -fPIC option, so this flag has beeng added automatically.")
+
+        set( CEGUI_LIBRARY_EXTRA_BUILD_FLAGS "-fPIC" )
+    endif()
+endif()
+
+#
 # Deal with files we generate from template files
 #
 configure_file( cegui/include/CEGUIVersion.h.in cegui/include/CEGUIVersion.h )
