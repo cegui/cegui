@@ -30,7 +30,13 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
         SOVERSION ${CEGUI_ABI_CURRENT}
         DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS
     )
-    
+
+    if (CEGUI_LIBRARY_EXTRA_BUILD_FLAGS)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            COMPILE_FLAGS ${CEGUI_LIBRARY_EXTRA_BUILD_FLAGS}
+        )
+    endif()
+
     include_directories("${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
     if (${INSTALL_BIN} AND UNIX AND NOT APPLE AND NOT WIN32)

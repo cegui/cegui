@@ -18,6 +18,15 @@ add_library(PyCEGUI MODULE ${PYCEGUI_SOURCE_FILES})
 target_link_libraries(PyCEGUI ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 set_target_properties(PyCEGUI PROPERTIES PREFIX "")
 
+# link the default modules when doing a static build.
+if (NOT BUILD_SHARED_LIBS)
+    target_link_libraries(PyCEGUI
+        "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
+        "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+        ${CEGUI_FALAGARD_WR_LIBNAME}
+    )
+endif()
+
 if (CMAKE_COMPILER_IS_GNUCXX)
     set_target_properties(PyCEGUI PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
 endif()
@@ -31,6 +40,15 @@ if (CEGUI_BUILD_RENDERER_NULL)
     add_library(PyCEGUINullRenderer MODULE ${PYCEGUINULLRENDERER_SOURCE_FILES})
     target_link_libraries(PyCEGUINullRenderer ${CEGUI_NULL_RENDERER_LIBNAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
     set_target_properties(PyCEGUINullRenderer PROPERTIES PREFIX "")
+
+    # link the default modules when doing a static build.
+    if (NOT BUILD_SHARED_LIBS)
+        target_link_libraries(PyCEGUINullRenderer
+            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
+            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_FALAGARD_WR_LIBNAME}
+        )
+    endif()
 
     if (CMAKE_COMPILER_IS_GNUCXX)
         set_target_properties(PyCEGUINullRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
@@ -51,6 +69,15 @@ if (CEGUI_BUILD_RENDERER_OGRE)
         set_target_properties(PyCEGUIOgreRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
     endif()
 
+    # link the default modules when doing a static build.
+    if (NOT BUILD_SHARED_LIBS)
+        target_link_libraries(PyCEGUIOgreRenderer
+            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
+            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_FALAGARD_WR_LIBNAME}
+        )
+    endif()
+
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS PyCEGUIOgreRenderer LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
     endif()
@@ -61,6 +88,15 @@ if (CEGUI_BUILD_RENDERER_OPENGL)
     add_library(PyCEGUIOpenGLRenderer MODULE ${PYCEGUIOPENGLRENDERER_SOURCE_FILES})
     target_link_libraries(PyCEGUIOpenGLRenderer ${CEGUI_OPENGL_RENDERER_LIBNAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
     set_target_properties(PyCEGUIOpenGLRenderer PROPERTIES PREFIX "")
+
+    # link the default modules when doing a static build.
+    if (NOT BUILD_SHARED_LIBS)
+        target_link_libraries(PyCEGUIOpenGLRenderer
+            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
+            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_FALAGARD_WR_LIBNAME}
+        )
+    endif()
 
     if (CMAKE_COMPILER_IS_GNUCXX)
         set_target_properties(PyCEGUIOpenGLRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
