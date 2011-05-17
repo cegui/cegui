@@ -28,10 +28,6 @@
 #ifndef _CEGuiBaseApplication_h_
 #define _CEGuiBaseApplication_h_
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   define NOMINMAX
-#endif
-
 // If this looks wanky, it's becase it is!  Behold that this is not as fullblown
 // as it could be though.
 #ifndef PATH_MAX

@@ -32,7 +32,6 @@
 #include "CEGUI.h"
 #include "RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h"
 #define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
 #include <d3d10.h>
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the

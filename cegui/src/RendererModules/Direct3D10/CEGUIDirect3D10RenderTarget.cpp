@@ -25,7 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#define NOMINMAX
 #include "CEGUIDirect3D10RenderTarget.h"
 #include "CEGUIDirect3D10GeometryBuffer.h"
 #include "CEGUIRenderQueue.h"
