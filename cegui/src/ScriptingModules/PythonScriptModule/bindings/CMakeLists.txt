@@ -18,6 +18,10 @@ add_library(PyCEGUI MODULE ${PYCEGUI_SOURCE_FILES})
 target_link_libraries(PyCEGUI ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 set_target_properties(PyCEGUI PROPERTIES PREFIX "")
 
+if (CMAKE_COMPILER_IS_GNUCXX)
+    set_target_properties(PyCEGUI PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
+endif()
+
 if (UNIX AND NOT APPLE AND NOT WIN32)
     install(TARGETS PyCEGUI LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
 endif()
@@ -27,6 +31,10 @@ if (CEGUI_BUILD_RENDERER_NULL)
     add_library(PyCEGUINullRenderer MODULE ${PYCEGUINULLRENDERER_SOURCE_FILES})
     target_link_libraries(PyCEGUINullRenderer ${CEGUI_NULL_RENDERER_LIBNAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
     set_target_properties(PyCEGUINullRenderer PROPERTIES PREFIX "")
+
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(PyCEGUINullRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
+    endif()
 
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS PyCEGUINullRenderer LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
@@ -39,6 +47,10 @@ if (CEGUI_BUILD_RENDERER_OGRE)
     target_link_libraries(PyCEGUIOgreRenderer ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
     set_target_properties(PyCEGUIOgreRenderer PROPERTIES PREFIX "")
 
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(PyCEGUIOgreRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
+    endif()
+
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS PyCEGUIOgreRenderer LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
     endif()
@@ -49,6 +61,10 @@ if (CEGUI_BUILD_RENDERER_OPENGL)
     add_library(PyCEGUIOpenGLRenderer MODULE ${PYCEGUIOPENGLRENDERER_SOURCE_FILES})
     target_link_libraries(PyCEGUIOpenGLRenderer ${CEGUI_OPENGL_RENDERER_LIBNAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
     set_target_properties(PyCEGUIOpenGLRenderer PROPERTIES PREFIX "")
+
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(PyCEGUIOpenGLRenderer PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
+    endif()
 
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS PyCEGUIOpenGLRenderer LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
