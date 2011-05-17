@@ -63,7 +63,16 @@ endif()
 # mac specifics
 if (APPLE)
     set (CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X" FORCE)
+    set (CEGUI_APPLY_VERSION_TO_APPLE_DYLIBS FALSE CACHE BOOL "Specifies whether to set VERSION and SOVERSION for libraries.")
+
     find_library(CARBON_FWK NAMES Carbon)
+
+    find_program (IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
+    if (IBTOOL)
+        message (STATUS "Found ibtool: ${IBTOOL}")
+    else()
+        message (STATUS "Could NOT find ibtool - samples will not be built.")
+    endif()
 endif()
 
 #
@@ -216,11 +225,14 @@ set( CEGUI_SAMPLES_USE_DIRECTFB ${DIRECTFB_FOUND} CACHE BOOL "Specifies whether 
 set( CEGUI_SAMPLES_USE_DIRECT3D9 ${CEGUI_BUILD_RENDERER_DIRECT3D9} CACHE BOOL "Specifies whether the sample applications will make use of the Direct3D 9 renderer" )
 set( CEGUI_SAMPLES_USE_DIRECT3D10 ${CEGUI_BUILD_RENDERER_DIRECT3D10} CACHE BOOL "Specifies whether the sample applications will make use of the Direct3D 10 renderer" )
 
-if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECTFB)
-    set (CEGUI_SAMPLES_ENABLED TRUE CACHE BOOL "Build the CEGUI samples")
+if (APPLE AND NOT IBTOOL)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+elseif (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECTFB)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
-    set (CEGUI_SAMPLES_ENABLED FALSE CACHE BOOL "Build the CEGUI samples")
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
 endif()
+set (CEGUI_SAMPLES_ENABLED ${_CEGUI_SAMPLES_ENABLED_DEFAULT} CACHE BOOL "Build the CEGUI samples")
 
 set( CEGUI_SAMPLES_USE_GTK2 ${GTK2_FOUND} CACHE BOOL "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection" )
 

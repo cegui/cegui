@@ -25,11 +25,13 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
 
     add_library(${CEGUI_TARGET_NAME} ${CEGUI_LIBRARY_TYPE} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
-    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-        VERSION ${CEGUI_ABI_VERSION}
-        SOVERSION ${CEGUI_ABI_CURRENT}
-        DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS
-    )
+    if (NOT APPLE OR CEGUI_APPLY_VERSION_TO_APPLE_DYLIBS)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            VERSION ${CEGUI_ABI_VERSION}
+            SOVERSION ${CEGUI_ABI_CURRENT}
+            DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS
+        )
+    endif()
 
     if (CEGUI_LIBRARY_EXTRA_BUILD_FLAGS)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
@@ -93,6 +95,23 @@ macro (cegui_add_sample _NAME)
             "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
             ${CEGUI_FALAGARD_WR_LIBNAME}
         )
+    endif()
+
+    if (APPLE)
+        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
+            COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks)
+        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
+            COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources)
+
+        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
+            COMMAND ln -sf ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating symlinks to dependency libraries in ${CEGUI_TARGET_NAME}.app")
+        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
+            COMMAND ln -sf ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.{dylib,framework} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating symlinks to built cegui libraries and frameworks in ${CEGUI_TARGET_NAME}.app")
+        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
+            COMMAND ln -sf ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources/
+            COMMENT "Creating symlinks to sample datafiles ${CEGUI_TARGET_NAME}.app")
     endif()
 
     if (UNIX AND NOT APPLE AND NOT WIN32)
