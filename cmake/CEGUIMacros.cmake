@@ -25,7 +25,18 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
 
     add_library(${CEGUI_TARGET_NAME} ${CEGUI_LIBRARY_TYPE} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
-    if (NOT APPLE OR CEGUI_APPLY_VERSION_TO_APPLE_DYLIBS)
+    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+        LINK_INTERFACE_LIBRARIES ""
+    )
+
+    if (APPLE)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            INSTALL_NAME_DIR ${CEGUI_APPLE_DYLIB_INSTALL_PATH}
+            BUILD_WITH_INSTALL_RPATH TRUE
+        )
+    endif()
+
+    if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
             VERSION ${CEGUI_ABI_VERSION}
             SOVERSION ${CEGUI_ABI_CURRENT}
@@ -98,20 +109,40 @@ macro (cegui_add_sample _NAME)
     endif()
 
     if (APPLE)
-        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks)
-        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources)
+        # we add these to ensure the dynamically loaded modules we will be
+        # using are built before the .app's post build step that copies
+        # libs into the app bundle.
+        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_FALAGARD_WR_LIBNAME}
+                                              CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
+                                              CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
+        )
+
+        if (CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS)
+            set (_ACTIONCMD ln -sf)
+            set (_ACTIONMSG "symlinks to")
+        else()
+            set (_ACTIONCMD cp -Rf)
+            set (_ACTIONMSG "copies of")
+        endif()
+
+        file (REMOVE_RECURSE
+                ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks
+                ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources
+        )
+        file (MAKE_DIRECTORY
+                ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks
+                ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources
+        )
 
         add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND ln -sf ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
-            COMMENT "Creating symlinks to dependency libraries in ${CEGUI_TARGET_NAME}.app")
+            COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${CEGUI_TARGET_NAME}.app")
         add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND ln -sf ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.{dylib,framework} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
-            COMMENT "Creating symlinks to built cegui libraries and frameworks in ${CEGUI_TARGET_NAME}.app")
+            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.{dylib,framework} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating ${_ACTIONMSG} built cegui libraries and frameworks in ${CEGUI_TARGET_NAME}.app")
         add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND ln -sf ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources/
-            COMMENT "Creating symlinks to sample datafiles ${CEGUI_TARGET_NAME}.app")
+            COMMAND ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources/
+            COMMENT "Creating ${_ACTIONMSG} sample datafiles ${CEGUI_TARGET_NAME}.app")
     endif()
 
     if (UNIX AND NOT APPLE AND NOT WIN32)

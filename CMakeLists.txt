@@ -63,7 +63,11 @@ endif()
 # mac specifics
 if (APPLE)
     set (CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X" FORCE)
-    set (CEGUI_APPLY_VERSION_TO_APPLE_DYLIBS FALSE CACHE BOOL "Specifies whether to set VERSION and SOVERSION for libraries.")
+    set (CEGUI_APPLE_DYLIB_SET_VERSION_INFO FALSE CACHE BOOL "Specifies whether to set VERSION and SOVERSION for libraries.")
+    set (CEGUI_APPLE_DYLIB_INSTALL_PATH "@executable_path/../Frameworks" CACHE STRING "Specifies the install rpath for dylibs and frameworks.")
+    set (CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS TRUE CACHE BOOL "Specifies how to reference the dylibs, frameworks and datafiles in the sample app bundles:
+    TRUE: specifies that the files will be symlinked (saves space, but apps are not truly stand-alone)
+    FALSE: specifies that actual copies of the files will be used")
 
     find_library(CARBON_FWK NAMES Carbon)
 
