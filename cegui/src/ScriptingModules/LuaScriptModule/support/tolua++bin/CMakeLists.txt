@@ -1,4 +1,4 @@
-set( CEGUI_TARGET_NAME toluappcegui)
+set( CEGUI_TARGET_NAME ${CEGUI_TOLUAPP_GENERATOR_EXENAME} )
 
 set( CORE_SOURCE_FILES
     toluabind.c
