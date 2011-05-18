@@ -1,11 +1,11 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
 libdir=${prefix}/@CEGUI_LIB_INSTALL_DIR@
-includedir=${prefix}/include
-datafiles=${prefix}/share/@CMAKE_PROJECT_NAME@
+includedir=${prefix}/@CEGUI_INCLUDE_INSTALL_DIR@
+datafiles=${prefix}/@CEGUI_DATA_INSTALL_DIR@
 
 Name: CEGUI
 Description: The free GUI library for games and multi-media development.
 Version: @CEGUI_VERSION@
 Libs: -L${libdir} -l$@CEGUI_BASE_LIBNAME@
-Cflags: -I${includedir}/@CMAKE_PROJECT_NAME@
+Cflags: -I${includedir} -I${includedir}/@CMAKE_PROJECT_NAME@
