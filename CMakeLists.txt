@@ -398,6 +398,27 @@ configure_file( cegui/include/CEGUIVersion.h.in cegui/include/CEGUIVersion.h )
 configure_file( cegui/include/CEGUIConfig.h.in cegui/include/CEGUIConfig.h )
 configure_file( Samples/common/include/CEGUISamplesConfig.h.in Samples/common/include/CEGUISamplesConfig.h )
 
+if (UNIX)
+    configure_file( cegui/CEGUI.pc.in cegui/CEGUI.pc @ONLY )
+    install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI.pc DESTINATION ${CEGUI_LIB_INSTALL_DIR}/pkgconfig)
+
+    if (CEGUI_BUILD_RENDERER_NULL)
+        configure_file( cegui/CEGUI-NULL.pc.in cegui/CEGUI-NULL.pc @ONLY )
+        install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI-NULL.pc DESTINATION ${CEGUI_LIB_INSTALL_DIR}/pkgconfig)
+    endif()
+    if (CEGUI_BUILD_RENDERER_IRRLICHT)
+        configure_file( cegui/CEGUI-IRRLICHT.pc.in cegui/CEGUI-IRRLICHT.pc @ONLY )
+        install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI-IRRLICHT.pc DESTINATION ${CEGUI_LIB_INSTALL_DIR}/pkgconfig)
+    endif()
+    if (CEGUI_BUILD_RENDERER_OGRE)
+        configure_file( cegui/CEGUI-OGRE.pc.in cegui/CEGUI-OGRE.pc @ONLY )
+        install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI-OGRE.pc DESTINATION ${CEGUI_LIB_INSTALL_DIR}/pkgconfig)
+    endif()
+    if (CEGUI_BUILD_RENDERER_OPENGL)
+        configure_file( cegui/CEGUI-OPENGL.pc.in cegui/CEGUI-OPENGL.pc @ONLY )
+        install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI-OPENGL.pc DESTINATION ${CEGUI_LIB_INSTALL_DIR}/pkgconfig)
+    endif()
+endif()
 
 ################################################################################
 # descend into subdirs
