@@ -55,8 +55,8 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
     if (${INSTALL_BIN} AND UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS ${CEGUI_TARGET_NAME}
             RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
         )
     endif()
 
@@ -148,8 +148,8 @@ macro (cegui_add_sample _NAME)
     if (UNIX AND NOT APPLE AND NOT WIN32)
         install(TARGETS ${CEGUI_TARGET_NAME}
             RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
     endif()
 

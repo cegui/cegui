@@ -377,6 +377,19 @@ must be compiled with the -fPIC option, so this flag has beeng added automatical
     endif()
 endif()
 
+# try and decide the best candidate directory for putting libraries in
+if (UNIX AND NOT APPLE AND NOT WIN32 AND NOT CEGUI_LIB_INSTALL_DIR)
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
+        set( CEGUI_LIB_INSTALL_DIR lib64 )
+    elseif (CMAKE_SIZEOF_VOID_P EQUAL 4 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib32")
+        set( CEGUI_LIB_INSTALL_DIR lib32 )
+    else()
+        set( CEGUI_LIB_INSTALL_DIR lib )
+    endif()
+
+    set( CEGUI_LIB_INSTALL_DIR ${CEGUI_LIB_INSTALL_DIR} CACHE STRING "Specifies install sub directory for libraries" )
+    mark_as_advanced( CEGUI_LIB_INSTALL_DIR )
+endif()
 
 ################################################################################
 # Deal with files we generate from template files

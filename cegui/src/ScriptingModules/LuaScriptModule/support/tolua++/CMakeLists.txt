@@ -34,8 +34,8 @@ cegui_add_dependency(LUA51)
 if (UNIX AND NOT APPLE AND NOT WIN32)
     install(TARGETS ${CEGUI_TARGET_NAME}
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
 
     install(FILES ${CORE_HEADER_FILES} DESTINATION include/${CMAKE_PROJECT_NAME}/ScriptingModules/LuaScriptModule/support/tolua++)
