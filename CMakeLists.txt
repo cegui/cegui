@@ -1,8 +1,24 @@
+################################################################################
+# Top-level CMakeLists.txt file for Crazy Eddie's GUI System
+################################################################################
 cmake_minimum_required(VERSION 2.8)
 if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
 
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(CEGUIMacros)
+include(CMakeDependentOption)
+
+
+################################################################################
+# Start of main Project definitions
+################################################################################
+project(CEGUI)
+
+################################################################################
+# Set up version information
+################################################################################
 set( CEGUI_VERSION_MAJOR 0)
 set( CEGUI_VERSION_MINOR 7)
 set( CEGUI_VERSION_PATCH 9090)
@@ -13,46 +29,19 @@ set( CEGUI_ABI_REVISION 0)
 set( CEGUI_ABI_AGE 0)
 set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AGE} )
 
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-include(CEGUIMacros)
 
-project(CEGUI)
+option( BUILD_SHARED_LIBS "Specifies whether to build shared or static libraries" TRUE )
 
-set( BUILD_SHARED_LIBS TRUE CACHE BOOL "Whether to build shared or static libs" )
-
-# search the provided dependencies on Win32 and Mac OS X platforms
+################################################################################
+# Check for libs and other packages we might use.
+################################################################################
+# be sure to search the provided dependencies on Win32 and Mac OS X platforms
 if (WIN32 OR APPLE)
     set (CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/dependencies" CACHE PATH "Path to dependencies")
-
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif()
 
-if (NOT BUILD_SHARED_LIBS)
-    add_definitions(-DCEGUI_STATIC)
-    set (CEGUI_LIBRARY_TYPE STATIC)
-else()
-    set (CEGUI_LIBRARY_TYPE SHARED)
-endif()
-
+# make sure we look for the deps with the correct config on Windows
 if (WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
-
     if (BUILD_SHARED_LIBS)
         set (CMAKE_LIBRARY_PATH "${CMAKE_PREFIX_PATH}/lib/dynamic")
     else()
@@ -60,28 +49,7 @@ if (WIN32)
     endif()
 endif()
 
-# mac specifics
-if (APPLE)
-    set (CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X" FORCE)
-    set (CEGUI_APPLE_DYLIB_SET_VERSION_INFO FALSE CACHE BOOL "Specifies whether to set VERSION and SOVERSION for libraries.")
-    set (CEGUI_APPLE_DYLIB_INSTALL_PATH "@executable_path/../Frameworks" CACHE STRING "Specifies the install rpath for dylibs and frameworks.")
-    set (CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS TRUE CACHE BOOL "Specifies how to reference the dylibs, frameworks and datafiles in the sample app bundles:
-    TRUE: specifies that the files will be symlinked (saves space, but apps are not truly stand-alone)
-    FALSE: specifies that actual copies of the files will be used")
-
-    find_library(CARBON_FWK NAMES Carbon)
-
-    find_program (IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
-    if (IBTOOL)
-        message (STATUS "Found ibtool: ${IBTOOL}")
-    else()
-        message (STATUS "Could NOT find ibtool - samples will not be built.")
-    endif()
-endif()
-
-#
-# These check for libs and packages we might use.
-#
+# Look for packages
 find_package(PCRE)
 find_package(Freetype)
 find_package(ZLIB)
@@ -118,10 +86,24 @@ find_package(GTK2 COMPONENTS gtk)
 # set for consistency with other deps
 set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
-# These define the configurable options
-#
-set( CEGUI_CUSTOM_ALLOCATORS 0 CACHE BOOL "If checked, CEGUI can use custom allocation. (for experienced developers only!)" )
-set( CEGUI_CUSTOM_ALLOCATORS_DEGUG 0 CACHE BOOL "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" )
+if (APPLE)
+    find_library(CARBON_FWK NAMES Carbon)
+    find_program (IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
+
+    if (IBTOOL)
+        message (STATUS "Found ibtool: ${IBTOOL}")
+    else()
+        message (STATUS "Could NOT find ibtool - samples will not be built.")
+    endif()
+
+endif()
+
+
+################################################################################
+# Define the configurable options
+################################################################################
+option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
+cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_"If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
 set( CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h" CACHE STRING "Which include file contains memory allocators and allocation configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
 We have bundled 2 allocators, mostly for demonstrational purposes.
 CEGUIMemoryStdAllocator.h contains malloc allocator, use it as a starting point for your own allocators
@@ -132,79 +114,45 @@ set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
 2 - std::string without custom allocation,
 3 - std::basic_string allocated according to allocator config" )
 
-set( CEGUI_HAS_EXPRESSION_DIM FALSE CACHE BOOL "Build the ExpressionDim support" )
-set( CEGUI_HAS_DEFAULT_LOGGER TRUE CACHE BOOL "Include the default logger implementation" )
-set( CEGUI_HAS_FREETYPE ${FREETYPE_FOUND} CACHE BOOL "Include Freetype font support" )
-set( CEGUI_HAS_PCRE_REGEX ${PCRE_FOUND} CACHE BOOL "Include PCRE regexp matching for editbox string validation" )
-set( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER ${ZLIB_FOUND} CACHE BOOL "Build the minizip based resource provider" )
+cmake_dependent_option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" TRUE "FREETYPE_FOUND" FALSE )
+cmake_dependent_option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" TRUE "PCRE_FOUND" FALSE )
+cmake_dependent_option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" TRUE "ZLIB_FOUND" FALSE )
+option( CEGUI_HAS_EXPRESSION_DIM "Specifies whether to build the ExpressionDim support for Falagard" FALSE )
+option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
-set( CEGUI_BUILD_XMLPARSER_LIBXML2 ${LIBXML2_FOUND} CACHE BOOL "Build the libxml2 based XMLParser module" )
-set( CEGUI_BUILD_XMLPARSER_XERCES ${XERCESC_FOUND} CACHE BOOL "Build the Xerces-C++ based XMLParser module" )
-set( CEGUI_BUILD_XMLPARSER_EXPAT ${EXPAT_FOUND} CACHE BOOL "Build the Expat based XMLParser module" )
-set( CEGUI_BUILD_XMLPARSER_TINYXML TRUE CACHE BOOL "Build the TinyXML based XMLParser module" )
-set( CEGUI_BUILD_XMLPARSER_RAPIDXML FALSE CACHE BOOL "Build the RapidXML based XMLParser module" )
+cmake_dependent_option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build the Expat based XMLParser module" TRUE "EXPAT_FOUND" FALSE)
+cmake_dependent_option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" TRUE "XERCESC_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_XMLPARSER_LIBXML2 "Specifies whether to build the libxml2 based XMLParser module" TRUE "LIBXML2_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_XMLPARSER_RAPIDXML "Specifies whether to build the RapidXML based XMLParser module" TRUE "RAPIDXML_FOUND" FALSE )
+option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML based XMLParser module" TRUE )
 
-set( CEGUI_BUILD_IMAGECODEC_CORONA ${CORONA_FOUND} CACHE BOOL "Build the Corona based ImageCodec module" )
-set( CEGUI_BUILD_IMAGECODEC_DEVIL ${IL_FOUND} CACHE BOOL "Build the DevIL based ImageCodec module" )
-set( CEGUI_BUILD_IMAGECODEC_FREEIMAGE ${FREEIMAGE_FOUND} CACHE BOOL "Build the FreeImage based ImageCodec module" )
-set( CEGUI_BUILD_IMAGECODEC_SILLY ${SILLY_FOUND} CACHE BOOL "Build the SILLY based ImageCodec module" )
-set( CEGUI_BUILD_IMAGECODEC_TGA TRUE CACHE BOOL "Build the based TGA only ImageCodec module" )
-set( CEGUI_BUILD_IMAGECODEC_STB TRUE CACHE BOOL "Build the STB based ImageCodec module" )
+cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based ImageCodec module" TRUE "SILLY_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" TRUE "IL_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to build the FreeImage based ImageCodec module" TRUE "FREEIMAGE_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" TRUE "CORONA_FOUND" FALSE )
+option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" TRUE )
+option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" TRUE )
 
-set( CEGUI_BUILD_RENDERER_OPENGL ${OPENGL_FOUND} CACHE BOOL "Build the OpenGL renderer module" )
-set( CEGUI_BUILD_RENDERER_OGRE ${OGRE_FOUND} CACHE BOOL "Build the Ogre renderer module" )
-set( CEGUI_BUILD_RENDERER_IRRLICHT ${IRRLICHT_FOUND} CACHE BOOL "Build the Irrlicht renderer module" )
-set( CEGUI_BUILD_RENDERER_NULL TRUE CACHE BOOL "Build the null renderer module" )
-set( CEGUI_BUILD_RENDERER_DIRECTFB FALSE CACHE BOOL "Build the DirectFB renderer module" )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" TRUE "OGRE_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" TRUE "IRRLICHT_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module" FALSE "DIRECTFB_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" TRUE "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" TRUE "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" TRUE "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" FALSE )
+option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" TRUE )
 
-if (DIRECTXSDK_FOUND AND NOT (DIRECTSDK_MAX_D3D LESS 9))
-    set( CEGUI_BUILD_RENDERER_DIRECT3D9 TRUE CACHE BOOL "Build the Direct3D 9 renderer module" )
-else()
-    set( CEGUI_BUILD_RENDERER_DIRECT3D9 FALSE CACHE BOOL "Build the Direct3D 9 renderer module" )
-endif()
+cmake_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" TRUE "LUA51_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" FALSE "LUA51_FOUND" FALSE )
 
-if (DIRECTXSDK_FOUND AND NOT (DIRECTSDK_MAX_D3D LESS 10))
-    set( CEGUI_BUILD_RENDERER_DIRECT3D10 TRUE CACHE BOOL "Build the Direct3D 10 renderer module" )
-else()
-    set( CEGUI_BUILD_RENDERER_DIRECT3D10 FALSE CACHE BOOL "Build the Direct3D 10 renderer module" )
-endif()
+#cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" TRUE "PYTHONINTERP_FOUND;PYHONLIBS_FOUND;Boost_FOUND" FALSE )
+option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" FALSE )
 
-if (DIRECTXSDK_FOUND AND D3DX11EFFECTS_FOUND AND NOT (DIRECTSDK_MAX_D3D LESS 11))
-    set( CEGUI_BUILD_RENDERER_DIRECT3D11 TRUE CACHE BOOL "Build the Direct3D 11 renderer module" )
-else()
-    set( CEGUI_BUILD_RENDERER_DIRECT3D11 FALSE CACHE BOOL "Build the Direct3D 11 renderer module" )
-endif()
+cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TINYXML "Specifies whether to use embedded TinyXML when external library was found" FALSE "TINYXML_FOUND" TRUE )
+cmake_dependent_option( CEGUI_BUILD_EMBEDDED_GLEW "Specifies whether to use embedded GLEW when external library was found" FALSE "GLEW_FOUND" TRUE )
+cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TOLUAPP "Specifies whether to use embedded tolua++ when external library was found" FALSE "LUA51_FOUND;TOLUAPP_FOUND" ${LUA51_FOUND} )
 
-set( CEGUI_BUILD_LUA_MODULE ${LUA51_FOUND} CACHE BOOL "Build the Lua based script module" )
-set( CEGUI_BUILD_LUA_GENERATOR FALSE CACHE BOOL "Build ceguitolua, the custom tolua binding generator" )
-
-if (PYTHONINTERP_FOUND AND PYHONLIBS_FOUND AND Boost_FOUND)
-    set( CEGUI_BUILD_PYTHON_MODULES TRUE CACHE BOOL "Specifies whether the Python extension modules will be built." )
-else()
-    set( CEGUI_BUILD_PYTHON_MODULES FALSE CACHE BOOL "Specifies whether the Python extension modules will be built." )
-endif()
-
-if (TINYXML_FOUND)
-    set( CEGUI_BUILD_EMBEDDED_TINYXML FALSE CACHE BOOL "Specifies whether to use internal copy of TinyXML even if external library is available" )
-else()
-    set( CEGUI_BUILD_EMBEDDED_TINYXML TRUE CACHE BOOL "Specifies whether to use internal copy of TinyXML even if external library is available" )
-endif()
-
-if (GLEW_FOUND)
-    set( CEGUI_BUILD_EMBEDDED_GLEW FALSE CACHE BOOL "Specifies whether to use internal copy of GLEW even if external library is available" )
-else ()
-    set( CEGUI_BUILD_EMBEDDED_GLEW TRUE CACHE BOOL "Specifies whether to use internal copy of GLEW even if external library is available" )
-endif()
-
-if (LUA51_FOUND)
-    if (TOLUAPP_FOUND)
-        set( CEGUI_BUILD_EMBEDDED_TOLUAPP FALSE CACHE BOOL "Specifies whether to use internal copy of tolua++ even if external library is available" )
-    else()
-        set( CEGUI_BUILD_EMBEDDED_TOLUAPP TRUE CACHE BOOL "Specifies whether to use internal copy of tolua++ even if external library is available" )
-    endif()
-endif()
-
-set( CEGUI_OPTION_SAFE_LUA_MODULE FALSE CACHE BOOL "Specifies whether to enable extra validation in the Lua script module in non-debug builds" )
+cmake_dependent_option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE "CEGUI_BUILD_LUA_MODULE" FALSE )
 
 set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is enabled and which library should be used:
     0: Disabled.
@@ -212,22 +160,13 @@ set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is 
     2: Use external fribidi library."
 )
 
-if (OPENGL_FOUND AND GLUT_FOUND)
-    set( CEGUI_SAMPLES_USE_OPENGL TRUE CACHE BOOL "Specifies whether the sample applications will make use of the OpenGL renderer" )
-else()
-    set( CEGUI_SAMPLES_USE_OPENGL FALSE CACHE BOOL "Specifies whether the sample applications will make use of the OpenGL renderer" )
-endif()
+cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLUT_FOUND" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" TRUE "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" FALSE )
 
-if (OGRE_FOUND AND OIS_FOUND)
-    set( CEGUI_SAMPLES_USE_OGRE TRUE CACHE BOOL "Specifies whether the sample applications will make use of the Ogre renderer" )
-else()
-    set( CEGUI_SAMPLES_USE_OGRE FALSE CACHE BOOL "Specifies whether the sample applications will make use of the Ogre renderer" )
-endif()
-
-set( CEGUI_SAMPLES_USE_IRRLICHT ${IRRLICHT_FOUND} CACHE BOOL "Specifies whether the sample applications will make use of the Irrlicht renderer" )
-set( CEGUI_SAMPLES_USE_DIRECTFB ${DIRECTFB_FOUND} CACHE BOOL "Specifies whether the sample applications will make use of the DirectFB renderer" )
-set( CEGUI_SAMPLES_USE_DIRECT3D9 ${CEGUI_BUILD_RENDERER_DIRECT3D9} CACHE BOOL "Specifies whether the sample applications will make use of the Direct3D 9 renderer" )
-set( CEGUI_SAMPLES_USE_DIRECT3D10 ${CEGUI_BUILD_RENDERER_DIRECT3D10} CACHE BOOL "Specifies whether the sample applications will make use of the Direct3D 10 renderer" )
+cmake_dependent_option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" TRUE "CEGUI_BUILD_RENDERER_IRRLICHT" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample applications will use the DirectFB renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECTFB" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D9 "Specifies whether the sample applications will use the Direct3D 9 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D9" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D10 "Specifies whether the sample applications will use the Direct3D 10 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D10" FALSE )
 
 if (APPLE AND NOT IBTOOL)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
@@ -236,12 +175,14 @@ elseif (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
 endif()
-set (CEGUI_SAMPLES_ENABLED ${_CEGUI_SAMPLES_ENABLED_DEFAULT} CACHE BOOL "Build the CEGUI samples")
+cmake_dependent_option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" TRUE "_CEGUI_SAMPLES_ENABLED_DEFAULT" FALSE )
 
-set( CEGUI_SAMPLES_USE_GTK2 ${GTK2_FOUND} CACHE BOOL "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection" )
+if (UNIX AND NOT APPLE AND NOT WIN32)
+    cmake_dependent_option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE "GTK2_FOUND;CEGUI_SAMPLES_ENABLED" FALSE )
+endif()
 
-set (CEGUI_HAS_VERSION_SUFFIX FALSE CACHE BOOL "Whether to append some version number to the output binaries.")
-set (CEGUI_VERSION_SUFFIX ${CEGUI_VERSION} CACHE STRING "String holding a version suffix to optionally be appended to the name of output binaries.")
+option( CEGUI_HAS_VERSION_SUFFIX "Specifies whether to append a version number to the name of output binaries." FALSE )
+set (CEGUI_VERSION_SUFFIX ${CEGUI_VERSION} CACHE STRING "Specifies the version suffix to be appended to the name of output binaries when CEGUI_HAS_VERSION_SUFFIX is enabled." )
 
 if (WIN32)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
@@ -254,33 +195,31 @@ if (CEGUI_BUILD_SUFFIX)
     set (CMAKE_DEBUG_POSTFIX ${CEGUI_BUILD_SUFFIX})
 endif()
 
-# Set up Bidi variables based on option selected
-#
-if ( CEGUI_BIDI_SUPPORT EQUAL 1 )
-    set( CEGUI_USE_MINIBIDI TRUE)
-    set( CEGUI_USE_FRIBIDI FALSE)
-elseif ( CEGUI_BIDI_SUPPORT EQUAL 2 )
-    set( CEGUI_USE_MINIBIDI FALSE)
-    set( CEGUI_USE_FRIBIDI TRUE)
-else ()
-    set( CEGUI_USE_MINIBIDI FALSE)
-    set( CEGUI_USE_FRIBIDI FALSE)
-endif ()
+# Apple OS X specific options
+if (APPLE)
+    set( CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X" FORCE )
+    set( CEGUI_APPLE_DYLIB_INSTALL_PATH "@executable_path/../Frameworks" CACHE STRING "Specifies the install rpath for dylibs and frameworks." )
+    set( CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS TRUE CACHE BOOL "Specifies how to reference the dylibs, frameworks and datafiles in the sample app bundles:
+    TRUE: specifies that the files will be symlinked (saves space, but apps are not truly stand-alone)
+    FALSE: specifies that actual copies of the files will be used" )
+    option( CEGUI_APPLE_DYLIB_SET_VERSION_INFO "Specifies whether to set VERSION and SOVERSION for libraries." FALSE )
+endif()
 
-#
+
+################################################################################
 # Select one of the XML parser modules to be the default, warning if none are
 # available.
-#
+################################################################################
 if (CEGUI_BUILD_XMLPARSER_EXPAT)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CACHE STRING "Specifies the XMLParser module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
 elseif (CEGUI_BUILD_XMLPARSER_XERCES)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CACHE STRING "Specifies the XMLParser module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
 elseif (CEGUI_BUILD_XMLPARSER_LIBXML2)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "LibxmlParser" CACHE STRING "Specifies the XMLParser module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "LibxmlParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
 elseif (CEGUI_BUILD_XMLPARSER_RAPIDXML)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
 elseif (CEGUI_BUILD_XMLPARSER_TINYXML)
-    set( CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
 else()
     message(WARNING "None of the XML parser modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_XMLPARSER is set to something
@@ -288,39 +227,41 @@ appropriate.")
 endif()
 
 
-#
+################################################################################
 # Select one of the image codec modules to be the default, warning if none are
 # available.
-#
+################################################################################
 if (CEGUI_BUILD_IMAGECODEC_SILLY)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "SILLYImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "SILLYImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 elseif (CEGUI_BUILD_IMAGECODEC_DEVIL)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "DevILImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "DevILImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 elseif (CEGUI_BUILD_IMAGECODEC_FREEIMAGE)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "FreeImageImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "FreeImageImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 elseif (CEGUI_BUILD_IMAGECODEC_STB)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 elseif (CEGUI_BUILD_IMAGECODEC_CORONA)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 elseif (CEGUI_BUILD_IMAGECODEC_TGA)
-    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" FORCE)
+    set( CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
 else()
 message(WARNING "None of the image codec modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_IMAGECODEC is set to something
 appropriate.")
 endif()
 
-#
-# add main header locations
-#
+
+################################################################################
+# Add main header locations (for everything we build)
+################################################################################
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/cegui/include
     ${CMAKE_CURRENT_SOURCE_DIR}/cegui/include
 )
 
-#
-# Here we define vars to hold names for all the libs we can build for CEGUI.
-#
+
+################################################################################
+# Define vars holding the names for all the libs we can build for CEGUI.
+################################################################################
 # Core lib name
 set( CEGUI_BASE_LIBNAME CEGUIBase )
 
@@ -351,31 +292,84 @@ set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
 # WindowRenderer set module names
 set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
 
-# Scripting module names.
+# Scripting module names and related items.
+set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
+set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui )
 set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
-set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
-set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
+set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
+set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
+set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
+set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
-#
-# make some adjustments if we will be building and using the bundled tolua++ lib
-#
+# sample related module names
+set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
+
+
+################################################################################
+# Adjust configuration based on option settings
+################################################################################
+if (NOT BUILD_SHARED_LIBS)
+    add_definitions(-DCEGUI_STATIC)
+    set (CEGUI_LIBRARY_TYPE STATIC)
+else()
+    set (CEGUI_LIBRARY_TYPE SHARED)
+endif()
+
+# Windows specific config
+if (WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
+endif()
+
+# set output locations for Windows and Apple OS X builds
+if (WIN32 OR APPLE)
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endif()
+
+# Set up Bidi variables based on option selected
+if ( CEGUI_BIDI_SUPPORT EQUAL 1 )
+    set( CEGUI_USE_MINIBIDI TRUE)
+    set( CEGUI_USE_FRIBIDI FALSE)
+elseif ( CEGUI_BIDI_SUPPORT EQUAL 2 )
+    set( CEGUI_USE_MINIBIDI FALSE)
+    set( CEGUI_USE_FRIBIDI TRUE)
+else ()
+    set( CEGUI_USE_MINIBIDI FALSE)
+    set( CEGUI_USE_FRIBIDI FALSE)
+endif ()
+
+# Point TOLUAPP vars to location of embedded lib if using that option
 if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
     set (TOLUAPP_LIBRARIES ${CEGUI_TOLUAPP_LIBNAME})
     set (TOLUAPP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++)
 endif()
 
-#
 # When building statically, we still always build the python modules as shared
 # modules.  64bit g++ needs the libs to be compiled with -fPIC in this case.
 if (NOT BUILD_SHARED_LIBS AND CEGUI_BUILD_PYTHON_MODULES)
-    message( "WARNING!  You are building the PyCEGUI* modules against static CEGUI libs,
+    message(WARNING "You are building the PyCEGUI* modules against static CEGUI libs,
 which is known to have issues and not really work at all.  If you are doing
 this for CEGUI development purposes, carry on, otherwise you will probably need
 to adjust your configuration")
 
     if (CMAKE_COMPILER_IS_GNUCXX)
-        message( "ATTENTION!  You are building the PyCEGUI* modules against static CEGUI libs!
+        message(WARNING "You are building the PyCEGUI* modules against static CEGUI libs!
 Because the python modules are always built as shared libs, the main CEGUI libs
 must be compiled with the -fPIC option, so this flag has beeng added automatically.")
 
@@ -383,14 +377,18 @@ must be compiled with the -fPIC option, so this flag has beeng added automatical
     endif()
 endif()
 
-#
+
+################################################################################
 # Deal with files we generate from template files
-#
+################################################################################
 configure_file( cegui/include/CEGUIVersion.h.in cegui/include/CEGUIVersion.h )
 configure_file( cegui/include/CEGUIConfig.h.in cegui/include/CEGUIConfig.h )
 configure_file( Samples/common/include/CEGUISamplesConfig.h.in Samples/common/include/CEGUISamplesConfig.h )
 
+
+################################################################################
 # descend into subdirs
+################################################################################
 add_subdirectory(cegui/src)
 add_subdirectory(cegui/src/RendererModules)
 add_subdirectory(cegui/src/XMLParserModules)
