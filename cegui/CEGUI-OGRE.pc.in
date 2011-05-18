@@ -7,5 +7,5 @@ datafiles=${prefix}/@CEGUI_DATA_INSTALL_DIR@
 Name: CEGUI Ogre Renderer
 Description: Ogre based renderer module for CEGUI.
 Version: @CEGUI_VERSION@
-Requires: OGRE >= 1.6.0,CEGUI = @CEGUI_VERSION@
+Requires: OGRE >= 1.6.0,CEGUI@CEGUI_SLOT_VERSION@ = @CEGUI_VERSION@
 Libs: -l@CEGUI_OGRE_RENDERER_LIBNAME@
