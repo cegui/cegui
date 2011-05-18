@@ -34,6 +34,10 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
             INSTALL_NAME_DIR ${CEGUI_APPLE_DYLIB_INSTALL_PATH}
             BUILD_WITH_INSTALL_RPATH TRUE
         )
+    else()
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+        )
     endif()
 
     if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
@@ -62,7 +66,7 @@ macro (cegui_add_library INSTALL_BIN INSTALL_HEADERS)
 
     if (${INSTALL_HEADERS} AND UNIX AND NOT APPLE AND NOT WIN32)
         string (REPLACE "cegui/src" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
-        install(FILES ${CORE_HEADER_FILES} DESTINATION include/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR})
+        install(FILES ${CORE_HEADER_FILES} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR}")
     endif()
 endmacro()
 
@@ -70,7 +74,7 @@ endmacro()
 # Define a CEGUI sample app
 #
 macro (cegui_add_sample _NAME)
-    set (CEGUI_TARGET_NAME ${_NAME})
+    set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
 
     cegui_gather_files()
 
@@ -90,6 +94,10 @@ macro (cegui_add_sample _NAME)
     if (APPLE)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
             MACOSX_BUNDLE TRUE
+        )
+    else()
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
         )
     endif()
 
