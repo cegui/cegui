@@ -4,6 +4,8 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+set( CEGUI_PYTHON_INSTALL_DIR "${CEGUI_PYTHON_INSTALL_DIR}${CEGUI_SLOT_INSTALL_SUBDIR}" )
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${PYTHON_INCLUDE_DIR}
                     ${Boost_INCLUDE_DIR})
