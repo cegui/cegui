@@ -25,7 +25,7 @@ from pygccxml import declarations
 import extract_documentation as exdoc
 
 OUTPUT_DIR = os.path.join(os.path.abspath("."), "output")
-GLOBAL_PACKAGE_VERSION = "0.7.5"
+GLOBAL_PACKAGE_VERSION = "0.8.9090"
 GCCXML_PATH = "C:\\Users\\Martin Preisler\\Devel\\PythonPackages\\gccxml_bin\\v09\\win32\\bin\\"
 INCLUDE_PATHS = [
 "../../../../include", # trespassers will be shot!

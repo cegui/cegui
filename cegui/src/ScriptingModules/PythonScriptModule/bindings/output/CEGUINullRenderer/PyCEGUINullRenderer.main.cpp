@@ -13,9 +13,9 @@ BOOST_PYTHON_MODULE(PyCEGUINullRenderer){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUINullRenderer - version 0.7.5";
+    boost::python::scope().attr("__doc__") = "PyCEGUINullRenderer - version 0.8.9090";
 
-    boost::python::scope().attr("Version__") = "0.7.5";
+    boost::python::scope().attr("Version__") = "0.8.9090";
 
     register_NullRenderer_class();
 }

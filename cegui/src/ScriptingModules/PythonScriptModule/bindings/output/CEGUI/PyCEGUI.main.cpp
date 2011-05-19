@@ -937,9 +937,9 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUI - version 0.7.5";
+    boost::python::scope().attr("__doc__") = "PyCEGUI - version 0.8.9090";
 
-    boost::python::scope().attr("Version__") = "0.7.5";
+    boost::python::scope().attr("Version__") = "0.8.9090";
 
     register_StdPairFloatFloat_class();
 }
