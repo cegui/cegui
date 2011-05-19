@@ -206,19 +206,75 @@ endif()
 
 
 ################################################################################
+# Define vars holding the names for all the libs we can build for CEGUI.
+################################################################################
+if (WIN32 AND NOT BUILD_SHARED_LIBS)
+    set( CEGUI_STATIC_NAME_SUFFIX _Static )
+endif()
+
+# Core lib name
+set( CEGUI_BASE_LIBNAME CEGUIBase${CEGUI_STATIC_NAME_SUFFIX} )
+
+# Renderer module names.
+set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer${CEGUI_STATIC_NAME_SUFFIX} )
+
+# XML parser module names
+set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
+
+# ImageCodec module names
+set( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+
+# WindowRenderer set module names
+set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase${CEGUI_STATIC_NAME_SUFFIX} )
+
+# Scripting module names and related items.
+set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule${CEGUI_STATIC_NAME_SUFFIX} )
+
+set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
+set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
+set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
+set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
+
+# sample related module names
+set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
+
+
+################################################################################
 # Select one of the XML parser modules to be the default, warning if none are
 # available.
 ################################################################################
 if (CEGUI_BUILD_XMLPARSER_EXPAT)
     set( CEGUI_OPTION_DEFAULT_XMLPARSER "ExpatParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_EXPAT_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
 elseif (CEGUI_BUILD_XMLPARSER_XERCES)
     set( CEGUI_OPTION_DEFAULT_XMLPARSER "XercesParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_XERCES_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
 elseif (CEGUI_BUILD_XMLPARSER_LIBXML2)
     set( CEGUI_OPTION_DEFAULT_XMLPARSER "LibxmlParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_LIBXML2_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
 elseif (CEGUI_BUILD_XMLPARSER_RAPIDXML)
     set( CEGUI_OPTION_DEFAULT_XMLPARSER "RapidXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_RAPIDXML_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
 elseif (CEGUI_BUILD_XMLPARSER_TINYXML)
     set( CEGUI_OPTION_DEFAULT_XMLPARSER "TinyXMLParser" CACHE STRING "Specifies the XMLParser module to use as the default" )
+    set( CEGUI_STATIC_XMLPARSER_MODULE ${CEGUI_TINYXML_PARSER_LIBNAME} CACHE STRING "Specifies xml parser library to link to samples in static builds." )
 else()
     message(WARNING "None of the XML parser modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_XMLPARSER is set to something
@@ -232,16 +288,22 @@ endif()
 ################################################################################
 if (CEGUI_BUILD_IMAGECODEC_SILLY)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "SILLYImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_SILLY_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 elseif (CEGUI_BUILD_IMAGECODEC_DEVIL)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "DevILImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_DEVIL_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 elseif (CEGUI_BUILD_IMAGECODEC_FREEIMAGE)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "FreeImageImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 elseif (CEGUI_BUILD_IMAGECODEC_STB)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "STBImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_STB_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 elseif (CEGUI_BUILD_IMAGECODEC_CORONA)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "CoronaImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_CORONA_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 elseif (CEGUI_BUILD_IMAGECODEC_TGA)
     set( CEGUI_OPTION_DEFAULT_IMAGECODEC "TGAImageCodec" CACHE STRING "Specifies the ImageCodec module to use as the default" )
+    set( CEGUI_STATIC_IMAGECODEC_MODULE ${CEGUI_TGA_IMAGECODEC_LIBNAME} CACHE STRING "Specifies image codec library to link to samples in static builds." )
 else()
 message(WARNING "None of the image codec modules are going to be built.
 You should ensure that CEGUI_OPTION_DEFAULT_IMAGECODEC is set to something
@@ -256,53 +318,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/cegui/include
     ${CMAKE_CURRENT_SOURCE_DIR}/cegui/include
 )
-
-
-################################################################################
-# Define vars holding the names for all the libs we can build for CEGUI.
-################################################################################
-# Core lib name
-set( CEGUI_BASE_LIBNAME CEGUIBase )
-
-# Renderer module names.
-set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
-set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer )
-set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
-set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
-set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
-set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
-set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
-
-# XML parser module names
-set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )
-set( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser )
-set( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser )
-set( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser )
-set( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser )
-
-# ImageCodec module names
-set( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec )
-set( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec )
-set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec )
-set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec )
-set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec )
-set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
-
-# WindowRenderer set module names
-set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
-
-# Scripting module names and related items.
-set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
-set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui )
-set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
-
-set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
-set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
-set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
-set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
-
-# sample related module names
-set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
 
 
 ################################################################################
