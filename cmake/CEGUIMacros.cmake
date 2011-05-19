@@ -197,6 +197,12 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
         )
     endif()
 
+    if (NOT APPLE)
+        set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+        )
+    endif()
+
     if (CMAKE_COMPILER_IS_GNUCXX)
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
     endif()
