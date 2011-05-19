@@ -40,24 +40,6 @@
 #   undef max
 #endif
 
-//Updated for linking of static libs
-#if defined(_WIN32)
-#  pragma comment(lib, "d3d9.lib")
-#  if defined(_DEBUG)
-#	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static_d.lib")
-#	else
-#      pragma comment(lib, "CEGUIDirect3D9Renderer_d.lib")
-#	endif
-#  else
-#	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static.lib")
-#	else
-#      pragma comment(lib, "CEGUIDirect3D9Renderer.lib")
-#	endif
-#  endif
-#endif
-
 struct CEGuiBaseApplicationImpl;
 
 
