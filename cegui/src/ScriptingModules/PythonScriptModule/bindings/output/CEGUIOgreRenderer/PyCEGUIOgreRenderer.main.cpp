@@ -21,9 +21,9 @@ BOOST_PYTHON_MODULE(PyCEGUIOgreRenderer){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUIOgreRenderer - version 0.7.5";
+    boost::python::scope().attr("__doc__") = "PyCEGUIOgreRenderer - version 0.8.9090";
 
-    boost::python::scope().attr("Version__") = "0.7.5";
+    boost::python::scope().attr("Version__") = "0.8.9090";
 
     register_OgreResourceProvider_class();
 }
