@@ -145,8 +145,7 @@ option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer 
 cmake_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" TRUE "LUA51_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" FALSE "LUA51_FOUND" FALSE )
 
-#cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" TRUE "PYTHONINTERP_FOUND;PYHONLIBS_FOUND;Boost_FOUND" FALSE )
-option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" FALSE )
+cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" UNIX "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TINYXML "Specifies whether to use embedded TinyXML when external library was found" FALSE "TINYXML_FOUND" TRUE )
 cmake_dependent_option( CEGUI_BUILD_EMBEDDED_GLEW "Specifies whether to use embedded GLEW when external library was found" FALSE "GLEW_FOUND" TRUE )
