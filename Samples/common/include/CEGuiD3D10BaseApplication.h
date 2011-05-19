@@ -36,24 +36,6 @@
 #   include <windows.h>
 #endif
 
-// MSVC auto-linking
-#if defined(_MSC_VER)
-#   pragma comment(lib, "d3d10.lib")
-#   if defined(_DEBUG)
-#       if defined(CEGUI_STATIC)
-#           pragma comment(lib, "CEGUIDirect3D10Renderer_Static_d.lib")
-#       else
-#           pragma comment(lib, "CEGUIDirect3D10Renderer_d.lib")
-#       endif
-#   else
-#       if defined(CEGUI_STATIC)
-#           pragma comment(lib, "CEGUIDirect3D10Renderer_Static.lib")
-#       else
-#           pragma comment(lib, "CEGUIDirect3D10Renderer.lib")
-#       endif
-#   endif
-#endif
-
 // forward declare struct that will hold D3D10 specifics
 struct CEGuiBaseApplicationImpl;
 
