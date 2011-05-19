@@ -110,8 +110,8 @@ macro (cegui_add_sample _NAME)
 
     if (NOT BUILD_SHARED_LIBS)
         target_link_libraries(${CEGUI_TARGET_NAME}
-            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
-            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_STATIC_XMLPARSER_MODULE}
+            ${CEGUI_STATIC_IMAGECODEC_MODULE}
             ${CEGUI_FALAGARD_WR_LIBNAME}
         )
     endif()
@@ -174,6 +174,11 @@ macro (cegui_add_dependency _DEPNAME)
     else()
         target_link_libraries(${CEGUI_TARGET_NAME} ${${_DEPNAME}_LIBRARIES})
     endif()
+
+    if (${_DEPNAME}_DEFINITIONS)
+        set_property( TARGET ${CEGUI_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEPNAME}_DEFINITIONS} )
+    endif()
+
 endmacro()
 
 #
@@ -191,8 +196,8 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
     # link the default modules when doing a static build.
     if (NOT BUILD_SHARED_LIBS)
         target_link_libraries(${PYTHON_MODULE_NAME}
-            "CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}"
-            "CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}"
+            ${CEGUI_STATIC_XMLPARSER_MODULE}
+            ${CEGUI_STATIC_IMAGECODEC_MODULE}
             ${CEGUI_FALAGARD_WR_LIBNAME}
         )
     endif()
