@@ -37,7 +37,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 // Helper utility function that copies an RGBA buffer into a region of a second
 // buffer as D3DCOLOR data values
-void blitToSurface(const uint32* src, uint32* dst,
+static void blitToSurface(const uint32* src, uint32* dst,
                    const Sizef& sz, size_t dest_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
@@ -57,7 +57,7 @@ void blitToSurface(const uint32* src, uint32* dst,
 //----------------------------------------------------------------------------//
 // Helper utility function that copies a region of a buffer containing D3DCOLOR
 // values into a second buffer as RGBA values.
-void blitFromSurface(const uint32* src, uint32* dst,
+static void blitFromSurface(const uint32* src, uint32* dst,
                      const Sizef& sz, size_t source_pitch)
 {
     for (uint i = 0; i < sz.d_height; ++i)
