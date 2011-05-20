@@ -328,14 +328,8 @@ macro (cegui_add_sample _NAME)
             set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
         endif()
 
-        target_link_libraries(${CEGUI_TARGET_NAME}_Static
-            ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
-            ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
-        )
-
         if (APPLE)
-            cegui_apple_app_setup(${CEGUI_TARGET_NAME} TRUE)
+            cegui_apple_app_setup(${CEGUI_TARGET_NAME}_Static TRUE)
         endif()
     endif()
 
@@ -369,10 +363,22 @@ macro (cegui_add_sample _NAME)
         cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
     endif()
 
+    
+    ###########################################################################
+    #                      LIBRARY LINK SETUP
+    ###########################################################################
     cegui_target_link_libraries(${CEGUI_TARGET_NAME}
         ${CEGUI_BASE_LIBNAME}
         ${CEGUI_SAMPLEHELPER_LIBNAME}
     )
+
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        target_link_libraries(${CEGUI_TARGET_NAME}_Static
+            ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
+            ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
+            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+        )
+    endif()
 
     ###########################################################################
     #                           INSTALLATION
