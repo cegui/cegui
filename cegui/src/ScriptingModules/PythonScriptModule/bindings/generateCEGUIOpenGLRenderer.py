@@ -41,6 +41,16 @@ def filterDeclarations(mb):
     renderer = CEGUI_ns.class_("OpenGLRenderer")
     renderer.include()
     renderer.noncopyable = True
+    
+    # RendererModules/OpenGL/CEGUIOpenGLRenderTarget.h
+    renderTarget = CEGUI_ns.class_("OpenGLRenderTarget")
+    renderTarget.include()
+    renderTarget.noncopyable = True
+    
+    # RendererModules/OpenGL/CEGUIOpenGLViewportTarget.h
+    viewportTarget = CEGUI_ns.class_("OpenGLViewportTarget")
+    viewportTarget.include()
+    viewportTarget.noncopyable = True
 
 def generateCode():
     # "CEGUIBASE_EXPORTS" seems to help with internal compiler error with VS2008SP1 and gccxml 0.9

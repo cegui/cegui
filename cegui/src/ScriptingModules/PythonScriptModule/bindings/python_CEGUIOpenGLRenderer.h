@@ -5,3 +5,4 @@
 #include "CEGUIRenderingRoot.h"
 
 #include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
+#include "RendererModules/OpenGL/CEGUIOpenGLViewportTarget.h"
