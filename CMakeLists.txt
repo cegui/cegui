@@ -30,12 +30,6 @@ set( CEGUI_ABI_AGE 0)
 set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AGE} )
 
 
-option( BUILD_SHARED_LIBS "Specifies whether to build shared or static libraries" TRUE )
-option( CEGUI_MSVC_STATIC_RUNTIME "Specifies whether to the static runtime (/MT and /MTd) or the DLL runtime (/MD and /MDd).
-NOTE: This will also affect which set of dependency libraries are linked with." FALSE )
-
-cegui_set_msvc_runtime_flags()
-
 ################################################################################
 # Check for libs and other packages we might use.
 ################################################################################
@@ -97,6 +91,8 @@ endif()
 ################################################################################
 # Define the configurable options
 ################################################################################
+cmake_dependent_option( CEGUI_MSVC_STATIC_RUNTIME "Specifies whether to the static runtime (/MT and /MTd) or the DLL runtime (/MD and /MDd).
+NOTE: This will also affect which set of dependency libraries are linked with." FALSE "MSVC" FALSE )
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
 option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
 cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_DEBUG "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
@@ -318,6 +314,10 @@ include_directories(
 # Windows specific config
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
+
+    if (MSVC)
+        cegui_set_msvc_runtime_flags()
+    endif()
 endif()
 
 # set build output locations
