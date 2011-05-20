@@ -392,7 +392,7 @@ configure_file( cegui/include/CEGUIVersion.h.in cegui/include/CEGUIVersion.h )
 configure_file( cegui/include/CEGUIConfig.h.in cegui/include/CEGUIConfig.h )
 configure_file( Samples/common/include/CEGUISamplesConfig.h.in Samples/common/include/CEGUISamplesConfig.h )
 
-if (UNIX)
+if (UNIX AND NOT APPLE)
     configure_file( cegui/CEGUI.pc.in cegui/CEGUI${CEGUI_SLOT_VERSION}.pc @ONLY )
     install(FILES ${CMAKE_BINARY_DIR}/cegui/CEGUI${CEGUI_SLOT_VERSION}.pc DESTINATION ${CEGUI_PKGCONFIG_INSTALL_DIR})
 
