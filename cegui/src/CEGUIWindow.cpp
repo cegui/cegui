@@ -3715,9 +3715,17 @@ bool Window::isUsingAutoRenderingSurface() const
 void Window::setUsingAutoRenderingSurface(bool setting)
 {
     if (setting)
+    {
         allocateRenderingWindow();
+    }
     else
+    {
         releaseRenderingWindow();
+
+        // make sure we set this because releaseRenderingWindow won't do it
+        // unless the surface was already initialised
+        d_autoRenderingWindow = setting;
+    }
 
     // while the actal area on screen may not have changed, the arrangement of
     // surfaces and geometry did...
