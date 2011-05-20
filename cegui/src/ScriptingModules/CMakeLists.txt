@@ -1,4 +1,4 @@
-if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
+if (CEGUI_BUILD_EMBEDDED_TOLUAPP AND (CEGUI_BUILD_LUA_GENERATOR OR CEGUI_BUILD_LUA_MODULE))
     add_subdirectory(LuaScriptModule/support/tolua++)
 endif()
 

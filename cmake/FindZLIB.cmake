@@ -4,12 +4,18 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(ZLIB_H_PATH NAMES zlib.h)
-find_library(ZLIB_LIB NAMES z zlib zdll)
-find_library(ZLIB_LIB_DBG NAMES z_d zlib_d zdll_d)
+find_library(ZLIB_LIB NAMES z zlib zdll PATH_SUFFIXES dynamic)
+find_library(ZLIB_LIB_DBG NAMES z_d zlib_d zdll_d PATH_SUFFIXES dynamic)
+mark_as_advanced(ZLIB_H_PATH ZLIB_LIB ZLIB_LIB_DBG)
+
+if (WIN32)
+    find_library(ZLIB_LIB_STATIC NAMES z zlib zdll PATH_SUFFIXES static)
+    find_library(ZLIB_LIB_STATIC_DBG NAMES z_d zlib_d zdll_d PATH_SUFFIXES static)
+    mark_as_advanced(ZLIB_LIB_STATIC ZLIB_LIB_STATIC_DBG)
+endif()
 
 find_package_handle_standard_args(ZLIB DEFAULT_MSG ZLIB_LIB ZLIB_H_PATH)
 
-mark_as_advanced(ZLIB_H_PATH ZLIB_LIB ZLIB_LIB_DBG)
 
 # set up output vars
 if (ZLIB_FOUND)
@@ -18,9 +24,17 @@ if (ZLIB_FOUND)
     if (ZLIB_LIB_DBG)
         set (ZLIB_LIBRARIES_DBG ${ZLIB_LIB_DBG})
     endif()
+    if (ZLIB_LIB_STATIC)
+        set (ZLIB_LIBRARIES_STATIC ${ZLIB_LIB_STATIC})
+    endif()
+    if (ZLIB_LIB_STATIC_DBG)
+        set (ZLIB_LIBRARIES_STATIC_DBG ${ZLIB_LIB_STATIC_DBG})
+    endif()
 else()
     set (ZLIB_INCLUDE_DIR)
     set (ZLIB_LIBRARIES)
     set (ZLIB_LIBRARIES_DBG)
+    set (ZLIB_LIBRARIES_STATIC)
+    set (ZLIB_LIBRARIES_STATIC_DBG)
 endif()
 

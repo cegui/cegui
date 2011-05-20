@@ -6,10 +6,10 @@ include(FindPackageHandleStandardArgs)
 find_path(IRRLICHT_H_PATH NAMES irrlicht.h PATH_SUFFIXES irrlicht)
 find_library(IRRLICHT_LIB NAMES Irrlicht libIrrlicht)
 find_library(IRRLICHT_LIB_DBG NAMES Irrlicht_d libIrrlicht_d)
+mark_as_advanced(IRRLICHT_H_PATH IRRLICHT_LIB IRRLICHT_LIB_DBG)
 
 find_package_handle_standard_args(IRRLICHT DEFAULT_MSG IRRLICHT_LIB IRRLICHT_H_PATH)
 
-mark_as_advanced(IRRLICHT_H_PATH IRRLICHT_LIB IRRLICHT_LIB_DBG)
 
 # set up output vars
 if (IRRLICHT_FOUND)

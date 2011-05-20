@@ -4,12 +4,17 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(CORONA_H_PATH NAMES corona.h)
-find_library(CORONA_LIB NAMES corona libcorona)
-find_library(CORONA_LIB_DBG NAMES corona_d libcorona_d)
+find_library(CORONA_LIB NAMES corona libcorona PATH_SUFFIXES dynamic)
+find_library(CORONA_LIB_DBG NAMES corona_d libcorona_d PATH_SUFFIXES dynamic)
+mark_as_advanced(CORONA_H_PATH CORONA_LIB CORONA_LIB_DBG)
+
+if (WIN32)
+    find_library(CORONA_LIB_STATIC NAMES corona libcorona PATH_SUFFIXES static)
+    find_library(CORONA_LIB_STATIC_DBG NAMES corona_d libcorona_d PATH_SUFFIXES static)
+    mark_as_advanced(CORONA_LIB_STATIC CORONA_LIB_STATIC_DBG)
+endif()
 
 find_package_handle_standard_args(CORONA DEFAULT_MSG CORONA_LIB CORONA_H_PATH)
-
-mark_as_advanced(CORONA_H_PATH CORONA_LIB CORONA_LIB_DBG)
 
 # set up output vars
 if (CORONA_FOUND)
@@ -18,9 +23,17 @@ if (CORONA_FOUND)
     if (CORONA_LIB_DBG)
         set (CORONA_LIBRARIES_DBG ${CORONA_LIB_DBG})
     endif()
+    if (CORONA_LIB_STATIC)
+        set (CORONA_LIBRARIES_STATIC ${CORONA_LIB_STATIC})
+    endif()
+    if (CORONA_LIB_STATIC_DBG)
+        set (CORONA_LIBRARIES_STATIC_DBG ${CORONA_LIB_STATIC_DBG})
+    endif()
 else()
     set (CORONA_INCLUDE_DIR)
     set (CORONA_LIBRARIES)
     set (CORONA_LIBRARIES_DBG)
+    set (CORONA_LIBRARIES_STATIC)
+    set (CORONA_LIBRARIES_STATIC_DBG)
 endif()
 

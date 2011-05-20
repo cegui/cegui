@@ -59,30 +59,28 @@ endif()
 
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
-cegui_add_library(TRUE FALSE)
+cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
 
 if (CEGUI_HAS_FREETYPE)
-    cegui_add_dependency(FREETYPE)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
 endif ()
 
 if (CEGUI_HAS_PCRE_REGEX)
-    cegui_add_dependency(PCRE)
-    if (WIN32)
-        add_definitions(-DPCRE_STATIC)
-    endif()
+    cegui_add_dependency(${CEGUI_TARGET_NAME} PCRE)
 endif ()
 
 if (CEGUI_USE_FRIBIDI)
-    cegui_add_dependency(FRIBIDI)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} FRIBIDI)
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
-    cegui_add_dependency(ZLIB)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} ZLIB)
 endif ()
 
 if (WIN32)
-    target_link_libraries(${CEGUI_TARGET_NAME} winmm)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} winmm)
 elseif (UNIX AND NOT APPLE)
+    # This is intentionally not using 'cegui_target_link_libraries' 
     target_link_libraries(${CEGUI_TARGET_NAME} ${CMAKE_DL_LIBS})
 endif()
 
