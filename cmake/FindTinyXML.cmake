@@ -6,10 +6,10 @@ include(FindPackageHandleStandardArgs)
 find_path(TINYXML_H_PATH NAMES tinyxml.h)
 find_library(TINYXML_LIB NAMES tinyxml libtinyxml)
 find_library(TINYXML_LIB_DBG NAMES tinyxml_d libtinyxml_d)
+mark_as_advanced(TINYXML_H_PATH TINYXML_LIB TINYXML_LIB_DBG)
 
 find_package_handle_standard_args(TINYXML DEFAULT_MSG TINYXML_LIB TINYXML_H_PATH)
 
-mark_as_advanced(TINYXML_H_PATH TINYXML_LIB TINYXML_LIB_DBG)
 
 # set up output vars
 if (TINYXML_FOUND)

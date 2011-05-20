@@ -25,12 +25,12 @@ if (NOT UNIX OR APPLE)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/RendererModules/OpenGL/CEGUIOpenGLGLXPBTextureTarget.h)
 endif()
 
-cegui_add_library(TRUE TRUE)
-cegui_add_dependency(OPENGL)
+cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES TRUE TRUE)
+cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
 
 if (NOT CEGUI_BUILD_EMBEDDED_GLEW)
-    cegui_add_dependency(GLEW)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLEW)
 endif()
 
-target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 

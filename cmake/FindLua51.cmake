@@ -4,12 +4,18 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(LUA_H_PATH NAMES lua.h PATH_SUFFIXES lua5.1 lua51 lua)
-find_library(LUA_LIB NAMES lua5.1 lua51 lua)
-find_library(LUA_LIB_DBG NAMES lua5.1_d lua51_d lua_d)
+find_library(LUA_LIB NAMES lua5.1 lua51 lua PATH_SUFFIXES dynamic)
+find_library(LUA_LIB_DBG NAMES lua5.1_d lua51_d lua_d PATH_SUFFIXES dynamic)
+mark_as_advanced(LUA_H_PATH LUA_LIB LUA_LIB_DBG)
+
+if (WIN32)
+    find_library(LUA_LIB_STATIC NAMES lua5.1 lua51 lua PATH_SUFFIXES static)
+    find_library(LUA_LIB_STATIC_DBG NAMES lua5.1_d lua51_d lua_d PATH_SUFFIXES static)
+    mark_as_advanced(LUA_LIB_STATIC LUA_LIB_STATIC_DBG)
+endif()
 
 find_package_handle_standard_args(LUA51 DEFAULT_MSG LUA_LIB LUA_H_PATH)
 
-mark_as_advanced(LUA_H_PATH LUA_LIB LUA_LIB_DBG)
 
 # set up output vars
 if (LUA51_FOUND)
@@ -25,9 +31,17 @@ if (LUA51_FOUND)
     if (LUA_LIB_DBG)
         set (LUA51_LIBRARIES_DBG ${LUA_LIB_DBG})
     endif()
+    if (LUA_LIB_STATIC)
+        set (LUA51_LIBRARIES_STATIC ${LUA_LIB_STATIC})
+    endif()
+    if (LUA_LIB_STATIC_DBG)
+        set (LUA51_LIBRARIES_STATIC_DBG ${LUA_LIB_STATIC_DBG})
+    endif()
 else()
     set (LUA51_INCLUDE_DIR)
     set (LUA51_LIBRARIES)
     set (LUA51_LIBRARIES_DBG)
+    set (LUA51_LIBRARIES_STATIC)
+    set (LUA51_LIBRARIES_STATIC_DBG)
 endif()
 

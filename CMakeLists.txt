@@ -31,6 +31,10 @@ set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AG
 
 
 option( BUILD_SHARED_LIBS "Specifies whether to build shared or static libraries" TRUE )
+option( CEGUI_MSVC_STATIC_RUNTIME "Specifies whether to the static runtime (/MT and /MTd) or the DLL runtime (/MD and /MDd).
+NOTE: This will also affect which set of dependency libraries are linked with." FALSE )
+
+cegui_set_msvc_runtime_flags()
 
 ################################################################################
 # Check for libs and other packages we might use.
@@ -38,15 +42,6 @@ option( BUILD_SHARED_LIBS "Specifies whether to build shared or static libraries
 # be sure to search the provided dependencies on Win32 and Mac OS X platforms
 if (WIN32 OR APPLE)
     set (CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/dependencies" CACHE PATH "Path to dependencies")
-endif()
-
-# make sure we look for the deps with the correct config on Windows
-if (WIN32)
-    if (BUILD_SHARED_LIBS)
-        set (CMAKE_LIBRARY_PATH "${CMAKE_PREFIX_PATH}/lib/dynamic")
-    else()
-        set (CMAKE_LIBRARY_PATH "${CMAKE_PREFIX_PATH}/lib/static")
-    endif()
 endif()
 
 # Look for packages
@@ -102,6 +97,7 @@ endif()
 ################################################################################
 # Define the configurable options
 ################################################################################
+option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
 option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
 cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_DEBUG "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
 set( CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h" CACHE STRING "Which include file contains memory allocators and allocation configuration. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)
@@ -208,44 +204,40 @@ endif()
 ################################################################################
 # Define vars holding the names for all the libs we can build for CEGUI.
 ################################################################################
-if (WIN32 AND NOT BUILD_SHARED_LIBS)
-    set( CEGUI_STATIC_NAME_SUFFIX _Static )
-endif()
-
 # Core lib name
-set( CEGUI_BASE_LIBNAME CEGUIBase${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_BASE_LIBNAME CEGUIBase )
 
 # Renderer module names.
-set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
+set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
+set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
+set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
+set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
+set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
+set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
 
 # XML parser module names
-set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )
+set( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser )
+set( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser )
+set( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser )
+set( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser )
 
 # ImageCodec module names
-set( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec )
+set( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec )
+set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec )
+set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec )
+set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec )
+set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
 
 # WindowRenderer set module names
-set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
 
 # Scripting module names and related items.
-set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui${CEGUI_STATIC_NAME_SUFFIX} )
-set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule${CEGUI_STATIC_NAME_SUFFIX} )
+set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
+set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui )
+set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
 set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
 set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
@@ -323,13 +315,6 @@ include_directories(
 ################################################################################
 # Adjust configuration based on option settings
 ################################################################################
-if (NOT BUILD_SHARED_LIBS)
-    add_definitions(-DCEGUI_STATIC)
-    set (CEGUI_LIBRARY_TYPE STATIC)
-else()
-    set (CEGUI_LIBRARY_TYPE SHARED)
-endif()
-
 # Windows specific config
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
@@ -370,23 +355,6 @@ endif ()
 if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
     set (TOLUAPP_LIBRARIES ${CEGUI_TOLUAPP_LIBNAME})
     set (TOLUAPP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++)
-endif()
-
-# When building statically, we still always build the python modules as shared
-# modules.  64bit g++ needs the libs to be compiled with -fPIC in this case.
-if (NOT BUILD_SHARED_LIBS AND CEGUI_BUILD_PYTHON_MODULES)
-    message(WARNING "You are building the PyCEGUI* modules against static CEGUI libs,
-which is known to have issues and not really work at all.  If you are doing
-this for CEGUI development purposes, carry on, otherwise you will probably need
-to adjust your configuration")
-
-    if (CMAKE_COMPILER_IS_GNUCXX)
-        message(WARNING "You are building the PyCEGUI* modules against static CEGUI libs!
-Because the python modules are always built as shared libs, the main CEGUI libs
-must be compiled with the -fPIC option, so this flag has beeng added automatically.")
-
-        set( CEGUI_LIBRARY_EXTRA_BUILD_FLAGS "-fPIC" )
-    endif()
 endif()
 
 # set up install sub-directories

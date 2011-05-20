@@ -7,9 +7,10 @@ find_path(OIS_H_PATH NAMES OIS.h PATH_SUFFIXES OIS)
 find_library(OIS_LIB NAMES OIS libOIS)
 find_library(OIS_LIB_DBG NAMES OIS_d libOIS_d)
 
+mark_as_advanced(OIS_H_PATH OIS_LIB OIS_LIB_DBG)
+
 find_package_handle_standard_args(OIS DEFAULT_MSG OIS_LIB OIS_H_PATH)
 
-mark_as_advanced(OIS_H_PATH OIS_LIB OIS_LIB_DBG)
 
 # set up output vars
 if (OIS_FOUND)

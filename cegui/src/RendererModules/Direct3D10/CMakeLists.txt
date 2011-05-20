@@ -4,8 +4,8 @@ include_directories(${DIRECTXSDK_INCLUDE_DIR})
 link_directories(${DIRECTXSDK_LIBRARY_DIR})
 
 cegui_gather_files()
-cegui_add_library(TRUE TRUE)
+cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES TRUE TRUE)
 
-target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME} d3d10)
-target_link_libraries(${CEGUI_TARGET_NAME} optimized d3dx10 debug d3dx10d)
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME} d3d10)
+cegui_target_link_libraries(${CEGUI_TARGET_NAME} optimized d3dx10 debug d3dx10d)
 

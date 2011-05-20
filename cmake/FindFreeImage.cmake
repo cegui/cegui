@@ -4,12 +4,19 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(FREEIMAGE_H_PATH NAMES FreeImage.h)
-find_library(FREEIMAGE_LIB NAMES freeimage libfreeimage)
-find_library(FREEIMAGE_LIB_DBG NAMES freeimaged libfreeimaged)
+find_library(FREEIMAGE_LIB NAMES freeimage libfreeimage PATH_SUFFIXES dynamic)
+find_library(FREEIMAGE_LIB_DBG NAMES freeimaged libfreeimaged PATH_SUFFIXES dynamic)
+mark_as_advanced(FREEIMAGE_H_PATH FREEIMAGE_LIB FREEIMAGE_LIB_DBG)
+
+if (WIN32)
+    find_library(FREEIMAGE_LIB_STATIC NAMES freeimage libfreeimage PATH_SUFFIXES static)
+    find_library(FREEIMAGE_LIB_STATIC_DBG NAMES freeimaged libfreeimaged PATH_SUFFIXES static)
+    set( FREEIMAGE_DEFINITIONS_STATIC "FREEIMAGE_LIB" CACHE STRING "preprocessor definitions" )
+    mark_as_advanced(FREEIMAGE_DEFINITIONS_STATIC FREEIMAGE_LIB_STATIC FREEIMAGE_LIB_STATIC_DBG)
+endif()
 
 find_package_handle_standard_args(FREEIMAGE DEFAULT_MSG FREEIMAGE_LIB FREEIMAGE_H_PATH)
 
-mark_as_advanced(FREEIMAGE_H_PATH FREEIMAGE_LIB FREEIMAGE_LIB_DBG)
 
 # set up output vars
 if (FREEIMAGE_FOUND)
@@ -18,9 +25,17 @@ if (FREEIMAGE_FOUND)
     if (FREEIMAGE_LIB_DBG)
         set (FREEIMAGE_LIBRARIES_DBG ${FREEIMAGE_LIB_DBG})
     endif()
+    if (FREEIMAGE_LIB_STATIC)
+        set (FREEIMAGE_LIBRARIES_STATIC ${FREEIMAGE_LIB_STATIC})
+    endif()
+    if (FREEIMAGE_LIB_STATIC_DBG)
+        set (FREEIMAGE_LIBRARIES_STATIC_DBG ${FREEIMAGE_LIB_STATIC_DBG})
+    endif()
 else()
     set (FREEIMAGE_INCLUDE_DIR)
     set (FREEIMAGE_LIBRARIES)
     set (FREEIMAGE_LIBRARIES_DBG)
+    set (FREEIMAGE_LIBRARIES_STATIC)
+    set (FREEIMAGE_LIBRARIES_STATIC_DBG)
 endif()
 
