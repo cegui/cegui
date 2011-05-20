@@ -86,17 +86,28 @@ namespace CEGUI
         // Put the source string into a RawDataContainer
         RawDataContainer rawXMLData;
 
-		const char* c_str = source.c_str();
+        const char* c_str = source.c_str();
         rawXMLData.setData((uint8*)c_str);
-		rawXMLData.setSize(strlen(c_str));
+        rawXMLData.setSize(strlen(c_str));
 
-        // The actual parsing action (this is overridden and depends on the specific parser)
-        parseXML(handler, rawXMLData, schemaName);
+        try
+        {
+        	// The actual parsing action (this is overridden and depends on the specific parser)
+        	parseXML(handler, rawXMLData, schemaName);
+        }
+        catch(...)
+        {
+        	// make sure we don't allow rawXMLData to release String owned data no matter what!
+        	rawXMLData.setData(0);
+			rawXMLData.setSize(0);
 
-        // !!! We don't have to release the rawXMLData because it contains data that is owned by String source
-        //
-        //     This code is exception safe as it is, if exception is thrown, rawXMLData is just destroyed when
-        //     the stack is being left
+			CEGUI_RETHROW;
+        }
+
+        // !!! We must not allow DataContainer to delete String owned data,
+        //     therefore, we set it's data to 0 to avoid double-deletion
+        rawXMLData.setData(0);
+        rawXMLData.setSize(0);
     }
 
     void XMLParser::cleanup(void)
