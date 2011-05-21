@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   MacCEGuiRendererSelector.cpp
-    created:    Tue Mar 17 2009
+    created:    Sat May 21 2011
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,161 +26,175 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "MacCEGuiRendererSelector.h"
+#include <Carbon/Carbon.h>
 
 //----------------------------------------------------------------------------//
-MacCEGuiRendererSelector::MacCEGuiRendererSelector() :
-    d_dialog(0),
-    d_rendererPopup(0),
-    d_cancelled(false)
+// Implementation of the Carbon based dialog
+class RendererSelectorDialog
 {
-}
+    WindowRef d_dialog;
+    ControlRef d_cancel;
+    ControlRef d_okay;
+    ControlRef d_rendererList;
+    MenuRef d_rendererListMenu;
+    bool d_cancelled;
 
-//----------------------------------------------------------------------------//
-MacCEGuiRendererSelector::~MacCEGuiRendererSelector()
-{
-}
-
-//----------------------------------------------------------------------------//
-bool MacCEGuiRendererSelector::invokeDialog()
-{
-    loadDialogWindow();
-    int rendererCount = populateRendererMenu();
-
-    // 'cancel' if there are no renderers available
-    if (rendererCount == 0)
-        d_cancelled = true;
-    // only bother with the dialog if there is a choice ;)
-    else if (rendererCount > 1)
+    //------------------------------------------------------------------------//
+    OSStatus handleCommandID(UInt32 commandID)
     {
-        // set the event handling
+        switch (commandID)
+        {
+        case 1:
+            d_cancelled = true;
+            QuitAppModalLoopForWindow(d_dialog);
+            break;
+
+        case 2:
+            QuitAppModalLoopForWindow(d_dialog);
+            break;
+        }
+        return noErr;
+    }
+    
+    //------------------------------------------------------------------------//
+    static OSStatus eventDispatcher(EventHandlerCallRef, EventRef event, void* ob)
+    {
+        HICommand command;
+        GetEventParameter(event, kEventParamDirectObject, typeHICommand, 
+                          0, sizeof(command), 0, &command); 
+        
+        return reinterpret_cast<RendererSelectorDialog*>(ob)->
+            handleCommandID(command.commandID);
+    }
+
+public:
+    //------------------------------------------------------------------------//
+    RendererSelectorDialog() :
+        d_cancelled(false)
+    {
+        Rect dialogBounds = {100, 100, 200, 391};
+        CreateNewWindow(kMovableModalWindowClass,
+                        kWindowStandardHandlerAttribute|kWindowCompositingAttribute,
+                        &dialogBounds, &d_dialog);
+
+        SetWindowTitleWithCFString(d_dialog, CFSTR("CEGUI Sample Application"));
+
+        Rect cancelBounds = {69, 14, 89, 131};
+        CFStringRef cancelTitle = CFSTR("Cancel");
+        CreatePushButtonControl(d_dialog, &cancelBounds, cancelTitle, &d_cancel);
+        SetControlCommandID(d_cancel, 1);
+        
+        Rect okayBounds = {69, 160, 89, 277};
+        CFStringRef okayTitle = CFSTR("OK");
+        CreatePushButtonControl(d_dialog, &okayBounds, okayTitle, &d_okay);
+        SetControlCommandID(d_okay, 2);
+        
+        CreateNewMenu(0, 0, &d_rendererListMenu);
+
+        Rect rendererListBounds = {18, 17, 38, 274};
+        CFStringRef rendererListTitle = CFSTR("Renderer:");
+
+        CreatePopupButtonControl(d_dialog, &rendererListBounds, rendererListTitle,
+                                 -12345, false, 64, teFlushRight, 0, &d_rendererList);
+
+        SetControlPopupMenuHandle(d_rendererList, d_rendererListMenu);
+
+        SetWindowCancelButton(d_dialog, d_cancel);
+        SetWindowDefaultButton(d_dialog, d_okay);
+    
         EventTypeSpec cmdEvt;	
         cmdEvt.eventClass = kEventClassCommand;
         cmdEvt.eventKind = kEventCommandProcess;
         
-        InstallEventHandler(
-            GetWindowEventTarget(d_dialog),
-            NewEventHandlerUPP(MacCEGuiRendererSelector::eventDispatcher), 1,
-            &cmdEvt, this, 0); 
-
-        ShowWindow(d_dialog);
-        RunApplicationEventLoop();
+        InstallEventHandler(GetWindowEventTarget(d_dialog),
+                            NewEventHandlerUPP(RendererSelectorDialog::eventDispatcher),
+                            1, &cmdEvt, this, 0); 
+    }
+    
+    //------------------------------------------------------------------------//
+    ~RendererSelectorDialog()
+    {
+        DisposeWindow(d_dialog);
     }
 
-    SInt32 idx = HIViewGetValue(d_rendererPopup);
-    DisposeWindow(d_dialog);
+    //------------------------------------------------------------------------//
+    void addRendererNameToMenu(CFStringRef rendererName)
+    {
+        AppendMenuItemTextWithCFString(d_rendererListMenu, rendererName, 0, 0, 0);
 
-    // bail out if user cancelled dialog or if selected index is 0
-    if (d_cancelled || (idx == 0))
+        UInt16 count = CountMenuItems(d_rendererListMenu);
+        SetControlMaximum(d_rendererList, count);
+        
+        if (count == 1)
+            SetControlValue(d_rendererList, 1);
+    }
+
+    //------------------------------------------------------------------------//
+    // show dialog modally, returning selected item index or -1 if cancelled
+    int run()
+    {
+        ShowWindow(d_dialog);
+        SetUserFocusWindow(d_dialog);
+        ActivateControl(d_okay);
+        RunAppModalLoopForWindow(d_dialog);
+        HideWindow(d_dialog);
+
+        return d_cancelled ? -1 : static_cast<int>(GetControlValue(d_rendererList)) - 1;
+    }
+
+    //------------------------------------------------------------------------//
+};
+
+//----------------------------------------------------------------------------//
+bool MacCEGuiRendererSelector::invokeDialog()
+{
+    RendererSelectorDialog dialog;
+    int rendererCount = populateRendererMenu(dialog);
+
+    // 'cancel' if there are no renderers available
+    if (rendererCount == 0)
+        return false;
+
+    // only show the dialog if there is a choice ;)
+    int idx = (rendererCount > 1) ? dialog.run() : 0;
+
+    // bail out if user cancelled dialog
+    if (idx == -1)
         return false;
 
     // set the last selected renderer - i.e. the one we want to use.
-    d_lastSelected = d_rendererTypes[idx - 1];
+    d_lastSelected = d_rendererTypes[idx];
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
-OSStatus MacCEGuiRendererSelector::commandHandler(UInt32 command)
+int MacCEGuiRendererSelector::populateRendererMenu(RendererSelectorDialog& dialog)
 {
-	OSStatus status = noErr;
-
-    switch (command)
-    {
-    case 'ok  ':
-        QuitApplicationEventLoop();
-        break;
-
-    case 'not!':
-        d_cancelled = true;
-        QuitApplicationEventLoop();
-        break;
-
-    default:
-        status = eventNotHandledErr;
-        break;
-    }
-
-    return status;
-}
-
-//----------------------------------------------------------------------------//
-void MacCEGuiRendererSelector::loadDialogWindow()
-{
-    // get our framework bundle from the app
-    CFBundleRef helperFwk =
-        CFBundleGetBundleWithIdentifier(
-            CFSTR("uk.org.cegui.CEGUISampleHelper"));
-
-    if (helperFwk)
-    {
-        IBNibRef nib;
-        if (!CreateNibReferenceWithCFBundle(helperFwk,
-                                            CFSTR("RendererSelector"), &nib))
-        {
-            CreateWindowFromNib(nib, CFSTR("RendererSelector"), &d_dialog);
-            DisposeNibReference (nib);
-
-            // find popup button in the window
-            const HIViewID rendererPopupID = {'PBTN', 0};
-            HIViewFindByID(HIViewGetRoot(d_dialog),
-                           rendererPopupID,
-                           &d_rendererPopup);
-        }
-    }    
-}
-
-//----------------------------------------------------------------------------//
-int MacCEGuiRendererSelector::populateRendererMenu()
-{
-	// get the menu from the popup
-	MenuRef menu;
-	GetControlData(d_rendererPopup, 0, kControlPopupButtonMenuRefTag,
-                   sizeof(menu), &menu, 0);
-
     int idx = 0;
     // Put items in the combobox for enabled renderers.
     if (d_rendererAvailability[OpenGLGuiRendererType])
     {
         d_rendererTypes[idx++] = OpenGLGuiRendererType;
-        AppendMenuItemTextWithCFString(menu, CFSTR("OpenGL Renderer"),
-                                       0, 0, 0);
+        dialog.addRendererNameToMenu(CFSTR("OpenGL Renderer"));
     }
     if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
         d_rendererTypes[idx++] = IrrlichtGuiRendererType;
-        AppendMenuItemTextWithCFString(menu, CFSTR("Irrlicht Renderer"),
-                                       0, 0, 0);
+        dialog.addRendererNameToMenu(CFSTR("Irrlicht Renderer"));
     }
     if (d_rendererAvailability[OgreGuiRendererType])
     {
         d_rendererTypes[idx++] = OgreGuiRendererType;
-        AppendMenuItemTextWithCFString(menu, CFSTR("Ogre Renderer"),
-                                       0, 0, 0);
+        dialog.addRendererNameToMenu(CFSTR("Ogre Renderer"));
     }
     if (d_rendererAvailability[DirectFBGuiRendererType])
     {
         d_rendererTypes[idx++] = DirectFBGuiRendererType;
-        AppendMenuItemTextWithCFString(menu, CFSTR("DirectFB Renderer"),
-                                       0, 0, 0);
+        dialog.addRendererNameToMenu(CFSTR("DirectFB Renderer"));
     }
 
-	HIViewSetMaximum(d_rendererPopup, CountMenuItems(menu));
-    HIViewSetValue(d_rendererPopup, 1);
     return idx;
-}
-
-//----------------------------------------------------------------------------//
-OSStatus MacCEGuiRendererSelector::eventDispatcher(EventHandlerCallRef,
-                                                   EventRef event,
-                                                   void* ob)
-{
-	// get the command
-	HICommand command;
-	GetEventParameter(event, kEventParamDirectObject, typeHICommand, 
-				      0, sizeof(command), 0, &command); 
-
-    return reinterpret_cast<MacCEGuiRendererSelector*>(ob)->
-        commandHandler(command.commandID);
 }
 
 //----------------------------------------------------------------------------//

@@ -282,8 +282,8 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
 
     if (NOT _STATIC)
         add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.{dylib,framework} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
-            COMMENT "Creating ${_ACTIONMSG} built cegui libraries and frameworks in ${CEGUI_TARGET_NAME}.app")
+            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${CEGUI_TARGET_NAME}.app")
     endif()
 
     add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
