@@ -41,7 +41,7 @@ namespace CEGUI
 	*************************************************************************/
 	bool Property::isDefault(const PropertyReceiver* receiver) const
 	{
-		return (get(receiver) == d_default);
+		return (get(receiver) == getDefault(receiver));
 	}
 
 	/*************************************************************************
