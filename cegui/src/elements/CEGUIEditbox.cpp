@@ -94,6 +94,8 @@ Editbox::Editbox(const String& type, const String& name) :
 
     // override default and disable text parsing
     d_textParsingEnabled = false;
+    // ban the property too, since this being off is not optional.
+    banPropertyFromXML("TextParsingEnabled");
 
 #ifdef CEGUI_HAS_PCRE_REGEX
     d_validator = CEGUI_NEW_AO PCRERegexMatcher();
