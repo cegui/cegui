@@ -719,7 +719,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 {
 	// Build unique name
 	std::stringstream name;
-	name << getName().c_str() << SegmentNameSuffix << d_uniqueIDNumber;
+	name << SegmentNameSuffix << d_uniqueIDNumber;
 
 	// create segment.
 	ListHeaderSegment* newseg = createNewSegment(name.str().c_str());
