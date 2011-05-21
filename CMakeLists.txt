@@ -77,14 +77,6 @@ set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
 if (APPLE)
     find_library(CARBON_FWK NAMES Carbon)
-    find_program (IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
-
-    if (IBTOOL)
-        message (STATUS "Found ibtool: ${IBTOOL}")
-    else()
-        message (STATUS "Could NOT find ibtool - samples will not be built.")
-    endif()
-
 endif()
 
 
@@ -159,9 +151,7 @@ cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample
 cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D9 "Specifies whether the sample applications will use the Direct3D 9 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D9" FALSE )
 cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D10 "Specifies whether the sample applications will use the Direct3D 10 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D10" FALSE )
 
-if (APPLE AND NOT IBTOOL)
-    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
-elseif (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECTFB)
+if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECTFB)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)

@@ -115,18 +115,7 @@ endif()
 
 if (APPLE)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CARBON_FWK})
-    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-        FRAMEWORK TRUE
-        MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/CEGUISampleHelper-Info.plist"
-    )
-
-    add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-        COMMAND ${IBTOOL} --errors --warnings --notices --output-format human-readable-text 
-                          --compile ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.framework/Resources/RendererSelector.nib 
-                                    ${CMAKE_CURRENT_SOURCE_DIR}/RendererSelector.xib
-        COMMENT "Compiling RendererSelector.xib")
 endif()
-
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 
