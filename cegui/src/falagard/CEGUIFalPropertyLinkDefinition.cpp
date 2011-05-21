@@ -190,4 +190,18 @@ namespace CEGUI
         }
     }
 
+//----------------------------------------------------------------------------//
+bool PropertyLinkDefinition::isTargetProperty(const String& widget,
+                                              const String& property) const
+{
+    LinkTargetCollection::const_iterator i = d_targets.begin();
+    for (; i != d_targets.end(); ++i)
+    {
+        if (property == (*i).d_targetProperty && widget == (*i).d_widgetName)
+            return true;
+    }
+
+    return false;
+}
+
 } // End of  CEGUI namespace section

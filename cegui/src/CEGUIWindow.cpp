@@ -3412,24 +3412,38 @@ bool Window::isPropertyAtDefault(const Property* property) const
     // if we have a looknfeel we examine it for defaults
     if (!d_lookName.empty())
     {
-        // if we're an autowindow, we check our parent's looknfeel's Child
-        // section which we came from as we might be initialised there
-        if (d_autoWindow && getParent() && !getParent()->getLookNFeel().empty())
+        if (d_parent && !d_parent->getLookNFeel().empty())
         {
             const WidgetLookFeel& wlf =
                 WidgetLookManager::getSingleton().
                     getWidgetLook(getParent()->getLookNFeel());
 
-            // find the widget component if possible
-            const WidgetComponent* const wc = wlf.findWidgetComponent(getName());
-            if (wc)
+            // if this property is a target of a PropertyLink, we always report
+            // as being at default.  NB: This check is only performed on the
+            // immediate parent.
+            const WidgetLookFeel::PropertyLinkDefinitionList& pldl(wlf.getPropertyLinkDefinitions());
+            WidgetLookFeel::PropertyLinkDefinitionList::const_iterator i = pldl.begin();
+            for (; i != pldl.end(); ++i)
             {
-                const PropertyInitialiser* const propinit =
-                    wc->findPropertyInitialiser(property->getName());
+                if ((*i).isTargetProperty(getName(), property->getName()))
+                    return true;
+            }
 
-                if (propinit)
-                    return (getProperty(property->getName()) ==
-                            propinit->getInitialiserValue());
+            // for an auto-window see if the property is is set via a Property
+            // tag within the WidgetComponent that defines it.
+            if (d_autoWindow)
+            {
+                // find the widget component if possible
+                const WidgetComponent* const wc = wlf.findWidgetComponent(getName());
+                if (wc)
+                {
+                    const PropertyInitialiser* const propinit =
+                        wc->findPropertyInitialiser(property->getName());
+
+                    if (propinit)
+                        return (getProperty(property->getName()) ==
+                                propinit->getInitialiserValue());
+                }
             }
         }
 
