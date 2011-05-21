@@ -47,7 +47,6 @@
             </Window>
             <Window Name="Editbox" Type="TaharezLook/Editbox">
                 <Property Name="Text" Value="Single-line editbox" />
-                <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.2,0},{0.53,0},{0.8,0},{0.63,0}}" />
             </Window>
@@ -116,7 +115,6 @@
             <Window Name="Combobox" Type="TaharezLook/Combobox">
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.5,0},{0.18,0},{0.96,0},{0.63,0}}" />
-                <Property Name="MaxEditTextLength" Value="1073741823" />
             </Window>
             <Window Name="MultiColumnList" Type="TaharezLook/MultiColumnList">
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
