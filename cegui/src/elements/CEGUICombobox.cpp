@@ -126,8 +126,12 @@ void Combobox::initialiseComponents(void)
 	Editbox* editbox        = getEditbox();
 	ComboDropList* droplist = getDropList();
 	PushButton* button      = getPushButton();
-    droplist->setFont(getFont());
-    editbox->setFont(getFont());
+    droplist->setFont(d_font);
+    editbox->setFont(d_font);
+
+    // ban properties forwarded from here
+    droplist->banPropertyFromXML("Visible");
+    editbox->banPropertyFromXML("MaxTextLength");
 
 	// internal event wiring
 	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
@@ -658,8 +662,8 @@ void Combobox::onListSelectionAccepted(WindowEventArgs& e)
 void Combobox::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
-    getEditbox()->setFont(getFont());
-    getDropList()->setFont(getFont());
+    getEditbox()->setFont(d_font);
+    getDropList()->setFont(d_font);
 
     // Call base class handler
     Window::onFontChanged(e);
