@@ -142,6 +142,11 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Editbox*>(receiver)->setMaxTextLength(PropertyHelper<uint>::fromString(value));
 }
 
+String MaxTextLength::getDefault(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper<uint>::toString(String().max_size());
+}
+
 } // End of  EditboxProperties namespace section
 
 } // End of  CEGUI namespace section

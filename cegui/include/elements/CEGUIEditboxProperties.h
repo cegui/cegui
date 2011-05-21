@@ -244,11 +244,13 @@ public:
 	MaxTextLength() : Property(
 		"MaxTextLength",
 		"Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
-		"1073741824")
+		"")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+
+	String getDefault(const PropertyReceiver* receiver) const;
 };
 
 
