@@ -78,19 +78,16 @@
             </Window>
             <Window Name="editName" Type="TaharezLook/Editbox">
                 <Property Name="Text" Value="Your name" />
-                <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.032217,0},{0.497488,0},{0.282217,0},{0.548012,0}}" />
             </Window>
             <Window Name="editAge" Type="TaharezLook/Editbox">
                 <Property Name="Text" Value="18" />
-                <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.309388,0},{0.497488,0},{0.361665,0},{0.548012,0}}" />
             </Window>
             <Window Name="editPasswd" Type="TaharezLook/Editbox">
                 <Property Name="Text" Value="Secret" />
-                <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.386344,0},{0.497488,0},{0.576599,0},{0.548012,0}}" />
             </Window>
@@ -126,7 +123,6 @@
             <Window Name="editMulti" Type="TaharezLook/MultiLineEditbox">
                 <Property Name="Text">
 </Property>
-                <Property Name="MaxTextLength" Value="1073741823" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.032217,0},{0.631968,0},{0.579514,0},{0.910619,0}}" />
             </Window>
