@@ -116,6 +116,11 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 	static_cast<MultiLineEditbox*>(receiver)->setMaxTextLength(PropertyHelper<uint>::fromString(value));
 }
 
+String MaxTextLength::getDefault(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper<uint>::toString(String().max_size());
+}
+
 
 String SelectionBrushImage::get(const PropertyReceiver* receiver) const
 {
