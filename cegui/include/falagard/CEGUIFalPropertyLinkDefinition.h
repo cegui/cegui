@@ -54,6 +54,9 @@ namespace CEGUI
         //! clear all link targets from this link definition.
         void clearLinkTargets();
 
+        // return whether a the given widget / property pair is a target of this property link.
+        bool isTargetProperty(const String& widget, const String& property) const;
+
         // override members from PropertyDefinitionBase
         String get(const PropertyReceiver* receiver) const;
         void set(PropertyReceiver* receiver, const String& value);
