@@ -3352,7 +3352,7 @@
     -->
     <WidgetLook name="WindowsLook/Slider">
         <Property name="HorizontalSlider" value="True" />
-        <Property name="MouseButtonDownAutoRepeat" value="True" />
+        <Property name="MouseAutoRepeatEnabled" value="True" />
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ThumbTrackArea">
             <Area>
