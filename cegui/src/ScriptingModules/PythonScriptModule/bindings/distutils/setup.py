@@ -1,5 +1,5 @@
 CEGUI_BASEDIR = "C:\\Users\\Martin Preisler\\Devel\\CEGUI"
-BOOST_BASEDIR = "C:\\Program Files (x86)\\boost\\boost_1_44"
+BOOST_BASEDIR = "C:\\Program Files (x86)\\boost\\boost_1_46_1"
 
 from distutils.core import setup, Extension
 from distutils.sysconfig import get_python_inc
@@ -118,7 +118,7 @@ note: For Linux and MacOSX packages, see http://www.cegui.org.uk, we provide the
         # this is obviously a workaround, I would be happy to hear what the clean
         # solution should look like
             [
-                BOOST_BASEDIR + "/lib/boost_python-vc90-mt-1_44.dll",
+                BOOST_BASEDIR + "/lib/boost_python-vc90-mt-1_46_1.dll",
                 
                 CEGUI_BASEDIR + "/build/bin/CEGUIBase.dll",
                 CEGUI_BASEDIR + "/build/bin/CEGUIOpenGLRenderer.dll",
