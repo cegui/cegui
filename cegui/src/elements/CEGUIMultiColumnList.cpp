@@ -691,10 +691,12 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
     ++d_columnCount;
 
     // Set the font equal to that of our list
-    for (uint col = 0; col < getColumnCount(); col++)
-    {
-        getHeaderSegmentForColumn(col).setFont(getFont());
-    }
+    ListHeaderSegment& segment = getHeaderSegmentForColumn(position);
+    segment.setFont(d_font);
+    // ban properties from segment that we control from here.
+    segment.banPropertyFromXML("ID");
+    segment.banPropertyFromXML("Text");
+    segment.banPropertyFromXML("Font");
 
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
@@ -1834,7 +1836,7 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
     // Set the font equal to that of our list
     for (uint col = 0; col < getColumnCount(); col++)
     {
-        getHeaderSegmentForColumn(col).setFont(getFont());
+        getHeaderSegmentForColumn(col).setFont(d_font);
     }
 
     // Call base class handler
