@@ -31,7 +31,7 @@
 namespace CEGUI 
 {
 XMLSerializer::XMLSerializer(OutStream& out, size_t indentSpace)
-    : d_error(false), d_depth(0), d_indentSpace(indentSpace), 
+    : d_error(false), d_tagCount(0), d_depth(0), d_indentSpace(indentSpace), 
       d_needClose(false), d_lastIsText(false), d_stream(out)
 {
     d_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
