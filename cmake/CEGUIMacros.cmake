@@ -272,27 +272,27 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
     endif()
 
     file (REMOVE_RECURSE
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
     )
     file (MAKE_DIRECTORY
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
     )
 
-    if (NOT _STATIC)
-        add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
-            COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${CEGUI_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+        COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
+
+    if (NOT ${_STATIC})
+        add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+            COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${_TARGET_NAME}.app")
     endif()
 
-    add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Frameworks/
-        COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${CEGUI_TARGET_NAME}.app")
-
-    add_custom_command(TARGET ${CEGUI_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME}.app/Contents/Resources/
-        COMMENT "Creating ${_ACTIONMSG} sample datafiles ${CEGUI_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources/
+        COMMENT "Creating ${_ACTIONMSG} sample datafiles ${_TARGET_NAME}.app")
 endmacro()
 
 #
@@ -390,7 +390,7 @@ macro (cegui_add_sample _NAME)
             ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
 
-    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        if (CEGUI_BUILD_STATIC_CONFIGURATION)
             install(TARGETS ${CEGUI_TARGET_NAME}_Static
                 RUNTIME DESTINATION bin
                 LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
