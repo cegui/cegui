@@ -109,6 +109,14 @@ void FrameWindow::initialiseComponents(void)
     titlebar->setDraggingEnabled(d_dragMovable);
     titlebar->setText(getText());
 
+    // ban some properties on components, since they are linked to settings
+    // defined here.
+    titlebar->banPropertyFromXML("Text");
+    titlebar->banPropertyFromXML("Visible");
+    titlebar->banPropertyFromXML("Disabled");
+    closeButton->banPropertyFromXML("Visible");
+    closeButton->banPropertyFromXML("Disabled");
+
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 
