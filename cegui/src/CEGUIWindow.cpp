@@ -1356,7 +1356,11 @@ void Window::addChild_impl(Window* wnd)
     // update area rects and content for the added window
     wnd->notifyScreenAreaChanged(true);
     wnd->invalidate(true);
-    
+
+    // restore old capture setting is always inherited
+    wnd->setRestoreOldCapture(d_restoreOldCapture);
+    wnd->banPropertyFromXML("RestoreOldCapture");
+
     // correctly call parent sized notification if needed.
     if (!old_parent || old_parent->getPixelSize() != getPixelSize())
     {
@@ -1386,6 +1390,8 @@ void Window::removeChild_impl(Window* wnd)
         d_children.erase(position);
         // reset windows parent so it's no longer this window.
         wnd->setParent(0);
+        // unban properties window could write as a root window
+        wnd->unbanPropertyFromXML("RestoreOldCapture");
     }
 }
 

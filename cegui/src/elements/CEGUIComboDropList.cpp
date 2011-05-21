@@ -60,6 +60,7 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
 
     // pass captured inputs to children to enable scrollbars
     setDistributesCapturedInputs(true);
+    banPropertyFromXML("DistributeCapturedInputs");
 }
 
 
@@ -81,6 +82,10 @@ void ComboDropList::initialiseComponents(void)
 	// set-up scroll bars so they return capture to us.
 	getVertScrollbar()->setRestoreOldCapture(true);
 	getHorzScrollbar()->setRestoreOldCapture(true);
+
+    // ban these properties from being written
+    getVertScrollbar()->banPropertyFromXML("RestoreOldCapture");
+    getHorzScrollbar()->banPropertyFromXML("RestoreOldCapture");
 }
 
 
