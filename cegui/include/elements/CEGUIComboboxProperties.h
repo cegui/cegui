@@ -192,6 +192,8 @@ public:
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+
+	String getDefault(const PropertyReceiver* receiver) const;
 };
 
 

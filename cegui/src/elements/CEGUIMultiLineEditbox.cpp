@@ -127,6 +127,8 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 
     // override default and disable text parsing
     d_textParsingEnabled = false;
+    // Since parsing is ever allowed in the editbox, ban the property too.
+    banPropertyFromXML("TextParsingEnabled");
 }
 
 

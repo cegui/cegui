@@ -114,6 +114,11 @@ void	MaxEditTextLength::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Combobox*>(receiver)->setMaxTextLength(PropertyHelper<uint>::fromString(value));
 }
 
+String MaxEditTextLength::getDefault(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper<uint>::toString(String().max_size());
+}
+
 
 String	SortList::get(const PropertyReceiver* receiver) const
 {
