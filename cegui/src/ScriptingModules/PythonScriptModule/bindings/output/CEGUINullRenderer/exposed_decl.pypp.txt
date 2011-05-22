@@ -3406,6 +3406,10 @@
 ~@variable_t@_M_refcount@::std::wstring::_Rep_base::_M_refcount
 ~@variable_t@_M_refcount@::std::string::_Rep_base::_M_refcount
 ~@variable_t@p_sep_by_space@::lconv::p_sep_by_space
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
 ~@variable_t@_ZTIN5CEGUI14GeometryBufferE@::_ZTIN5CEGUI14GeometryBufferE
 ~@variable_t@_ZTISt14overflow_error@::_ZTISt14overflow_error
 ~@variable_t@_ZTIN5CEGUI16FreeFunctionSlotE@::_ZTIN5CEGUI16FreeFunctionSlotE
@@ -3568,11 +3572,11 @@
 ~@variable_t@handled@::CEGUI::EventArgs::handled
 ~@variable_t@_M_parent@::std::_Rb_tree_node_base::_M_parent
 ~@variable_t@__shared@::pthread_rwlock_t::__shared
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@_ZTIN5CEGUI5EventE@::_ZTIN5CEGUI5EventE
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
 ~@variable_t@int_p_sign_posn@::lconv::int_p_sign_posn
 ~@variable_t@thousands_sep@::lconv::thousands_sep
 ~@variable_t@n_sign_posn@::lconv::n_sign_posn
@@ -3591,10 +3595,6 @@
 ~@variable_t@__val@::__fsid_t::__val
 ~@variable_t@d_functor_impl@::CEGUI::SubscriberSlot::d_functor_impl
 ~@variable_t@d_encodeddatlen@::CEGUI::String::d_encodeddatlen
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@_ZTIN5CEGUI13TextureTargetE@::_ZTIN5CEGUI13TextureTargetE
 ~@variable_t@_S_max_size@::std::wstring::_Rep::_S_max_size
 ~@variable_t@_S_max_size@::std::string::_Rep::_S_max_size
