@@ -140,6 +140,17 @@ void register_PropertyLinkDefinition_class(){
                 , ( bp::arg("receiver") ) );
         
         }
+        { //::CEGUI::PropertyLinkDefinition::isTargetProperty
+        
+            typedef bool ( ::CEGUI::PropertyLinkDefinition::*isTargetProperty_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "isTargetProperty"
+                , isTargetProperty_function_type( &::CEGUI::PropertyLinkDefinition::isTargetProperty )
+                , ( bp::arg("widget"), bp::arg("property") )
+                , "return whether a the given widget  property pair is a target of this property link.\n" );
+        
+        }
         { //::CEGUI::PropertyLinkDefinition::set
         
             typedef void ( ::CEGUI::PropertyLinkDefinition::*set_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;

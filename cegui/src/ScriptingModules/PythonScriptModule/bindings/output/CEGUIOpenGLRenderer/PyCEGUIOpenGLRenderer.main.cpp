@@ -4,11 +4,19 @@
 
 #include "python_CEGUIOpenGLRenderer.h"
 
+#include "OpenGLRenderTarget.pypp.hpp"
+
 #include "OpenGLRenderer.pypp.hpp"
+
+#include "OpenGLViewportTarget.pypp.hpp"
 
 namespace bp = boost::python;
 
 BOOST_PYTHON_MODULE(PyCEGUIOpenGLRenderer){
+    register_OpenGLRenderTarget_class();
+
+    register_OpenGLRenderer_class();
+
     boost::python::scope().attr("CompileDate__") = __DATE__;
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
@@ -17,6 +25,6 @@ BOOST_PYTHON_MODULE(PyCEGUIOpenGLRenderer){
 
     boost::python::scope().attr("Version__") = "0.8.9090";
 
-    register_OpenGLRenderer_class();
+    register_OpenGLViewportTarget_class();
 }
 
