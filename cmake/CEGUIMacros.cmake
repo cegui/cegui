@@ -281,7 +281,7 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
     )
 
     add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+        COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
         COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
 
     if (NOT ${_STATIC})

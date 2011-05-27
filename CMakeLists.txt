@@ -36,6 +36,8 @@ set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AG
 # be sure to search the provided dependencies on Win32 and Mac OS X platforms
 if (WIN32 OR APPLE)
     set (CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/dependencies" CACHE PATH "Path to dependencies")
+    # prefer the dylib deps in the dependencies over some other framework
+    set (CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
 # Look for packages

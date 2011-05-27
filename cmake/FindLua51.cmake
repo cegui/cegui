@@ -8,7 +8,7 @@ find_library(LUA_LIB NAMES lua5.1 lua51 lua PATH_SUFFIXES dynamic)
 find_library(LUA_LIB_DBG NAMES lua5.1_d lua51_d lua_d PATH_SUFFIXES dynamic)
 mark_as_advanced(LUA_H_PATH LUA_LIB LUA_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(LUA_LIB_STATIC NAMES lua5.1 lua51 lua PATH_SUFFIXES static)
     find_library(LUA_LIB_STATIC_DBG NAMES lua5.1_d lua51_d lua_d PATH_SUFFIXES static)
     mark_as_advanced(LUA_LIB_STATIC LUA_LIB_STATIC_DBG)

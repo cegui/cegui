@@ -8,7 +8,7 @@ find_library(CORONA_LIB NAMES corona libcorona PATH_SUFFIXES dynamic)
 find_library(CORONA_LIB_DBG NAMES corona_d libcorona_d PATH_SUFFIXES dynamic)
 mark_as_advanced(CORONA_H_PATH CORONA_LIB CORONA_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(CORONA_LIB_STATIC NAMES corona libcorona PATH_SUFFIXES static)
     find_library(CORONA_LIB_STATIC_DBG NAMES corona_d libcorona_d PATH_SUFFIXES static)
     mark_as_advanced(CORONA_LIB_STATIC CORONA_LIB_STATIC_DBG)

@@ -8,9 +8,9 @@ find_library(XERCESC_LIB NAMES xerces-c libxerces-c xerces-c_3 xerces-c_2 Xerces
 find_library(XERCESC_LIB_DBG NAMES xerces-c_3D xerces-c_2D PATH_SUFFIXES dynamic)
 mark_as_advanced(XERCESC_H_PATH XERCESC_LIB XERCESC_LIB_DBG)
 
-if (WIN32)
-    find_library(XERCESC_LIB_STATIC NAMES xerces-c libxerces-c xerces-c_static_3 xerces-c_static_2 Xerces PATH_SUFFIXES static)
-    find_library(XERCESC_LIB_STATIC_DBG NAMES xerces-c_static_3D xerces-c_static_2D PATH_SUFFIXES static)
+if (WIN32 OR APPLE)
+    find_library(XERCESC_LIB_STATIC NAMES xerces-c_3 xerces-c libxerces-c xerces-c_static_3 xerces-c_static_2 Xerces PATH_SUFFIXES static)
+    find_library(XERCESC_LIB_STATIC_DBG NAMES xerces-c_3_d xerces-c_static_3D xerces-c_static_2D PATH_SUFFIXES static)
     set( XERCESC_DEFINITIONS_STATIC "XERCES_STATIC_LIBRARY" CACHE STRING "preprocessor definitions" )
     mark_as_advanced(XERCESC_DEFINITIONS_STATIC XERCESC_LIB_STATIC XERCESC_LIB_STATIC_DBG)
 endif()

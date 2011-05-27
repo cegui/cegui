@@ -8,7 +8,7 @@ find_library(SILLY_LIB NAMES SILLY libSILLY PATH_SUFFIXES dynamic)
 find_library(SILLY_LIB_DBG NAMES SILLY_d libSILLY_d PATH_SUFFIXES dynamic)
 mark_as_advanced(SILLY_H_PATH SILLY_LIB SILLY_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(SILLY_LIB_STATIC NAMES SILLY libSILLY PATH_SUFFIXES static)
     find_library(SILLY_LIB_STATIC_DBG NAMES SILLY_d libSILLY_d PATH_SUFFIXES static)
 

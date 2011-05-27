@@ -4,13 +4,13 @@
 include(FindPackageHandleStandardArgs)
 
 find_path(FREEIMAGE_H_PATH NAMES FreeImage.h)
-find_library(FREEIMAGE_LIB NAMES freeimage libfreeimage PATH_SUFFIXES dynamic)
-find_library(FREEIMAGE_LIB_DBG NAMES freeimaged libfreeimaged PATH_SUFFIXES dynamic)
+find_library(FREEIMAGE_LIB NAMES freeimage libfreeimage FreeImage libFreeImage PATH_SUFFIXES dynamic)
+find_library(FREEIMAGE_LIB_DBG NAMES freeimaged libfreeimaged FreeImage_d libFreeImage_d PATH_SUFFIXES dynamic)
 mark_as_advanced(FREEIMAGE_H_PATH FREEIMAGE_LIB FREEIMAGE_LIB_DBG)
 
-if (WIN32)
-    find_library(FREEIMAGE_LIB_STATIC NAMES freeimage libfreeimage PATH_SUFFIXES static)
-    find_library(FREEIMAGE_LIB_STATIC_DBG NAMES freeimaged libfreeimaged PATH_SUFFIXES static)
+if (WIN32 OR APPLE)
+    find_library(FREEIMAGE_LIB_STATIC NAMES freeimage libfreeimage FreeImage libFreeImage PATH_SUFFIXES static)
+    find_library(FREEIMAGE_LIB_STATIC_DBG NAMES freeimaged libfreeimaged FreeImage_d libFreeImage_d PATH_SUFFIXES static)
     set( FREEIMAGE_DEFINITIONS_STATIC "FREEIMAGE_LIB" CACHE STRING "preprocessor definitions" )
     mark_as_advanced(FREEIMAGE_DEFINITIONS_STATIC FREEIMAGE_LIB_STATIC FREEIMAGE_LIB_STATIC_DBG)
 endif()
