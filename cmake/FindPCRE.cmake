@@ -8,7 +8,7 @@ find_library(PCRE_LIB NAMES PCRE pcre libpcre PATH_SUFFIXES dynamic)
 find_library(PCRE_LIB_DBG NAMES pcre_d libpcre_d PATH_SUFFIXES dynamic)
 mark_as_advanced(PCRE_H_PATH PCRE_LIB PCRE_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(PCRE_LIB_STATIC NAMES PCRE pcre libpcre PATH_SUFFIXES static)
     find_library(PCRE_LIB_STATIC_DBG NAMES pcre_d libpcre_d PATH_SUFFIXES static)
     set( PCRE_DEFINITIONS "PCRE_STATIC" CACHE STRING "preprocessor definitions" )

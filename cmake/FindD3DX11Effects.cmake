@@ -5,7 +5,7 @@ include(FindPackageHandleStandardArgs)
 
 find_path(D3DX11EFFECTS_H_PATH NAMES d3dx11effect.h)
 find_library(D3DX11EFFECTS_LIB NAMES D3DX11Effects PATH_SUFFIXES dynamic)
-find_library(D3DX11EFFECTS_LIB_DBG NAMES D3DX11EffectsD PATH_SUFFIXES dynamic)
+find_library(D3DX11EFFECTS_LIB_DBG NAMES D3DX11EffectsD D3DX11Effects_d PATH_SUFFIXES dynamic)
 mark_as_advanced(D3DX11EFFECTS_H_PATH D3DX11EFFECTS_LIB D3DX11EFFECTS_LIB_DBG)
 
 if (WIN32)

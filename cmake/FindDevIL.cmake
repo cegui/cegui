@@ -10,7 +10,7 @@ find_library(ILU_LIB NAMES ILU PATH_SUFFIXES dynamic)
 find_library(ILU_LIB_DBG NAMES ILU_d PATH_SUFFIXES dynamic)
 mark_as_advanced(IL_H_PATH IL_LIB IL_LIB_DBG ILU_LIB ILU_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(IL_LIB_STATIC NAMES IL DevIL PATH_SUFFIXES static)
     find_library(IL_LIB_STATIC_DBG NAMES IL_d DevIL_d PATH_SUFFIXES static)
     find_library(ILU_LIB_STATIC NAMES ILU PATH_SUFFIXES static)

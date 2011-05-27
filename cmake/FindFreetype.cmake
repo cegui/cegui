@@ -9,7 +9,7 @@ find_library(FREETYPE_LIB NAMES freetype2 freetype libfreetype PATH_SUFFIXES dyn
 find_library(FREETYPE_LIB_DBG NAMES freetype_d libfreetype_d PATH_SUFFIXES dynamic)
 mark_as_advanced(FREETYPE_H_PATH_ft2build FREETYPE_H_PATH_ftconfig FREETYPE_LIB FREETYPE_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(FREETYPE_LIB_STATIC NAMES freetype2 freetype libfreetype PATH_SUFFIXES static)
     find_library(FREETYPE_LIB_STATIC_DBG NAMES freetype_d libfreetype_d PATH_SUFFIXES static)
     mark_as_advanced(FREETYPE_LIB_STATIC FREETYPE_LIB_STATIC_DBG)
