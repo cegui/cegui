@@ -87,6 +87,11 @@ endif()
 ################################################################################
 cmake_dependent_option( CEGUI_MSVC_STATIC_RUNTIME "Specifies whether to the static runtime (/MT and /MTd) or the DLL runtime (/MD and /MDd).
 NOTE: This will also affect which set of dependency libraries are linked with." FALSE "MSVC" FALSE )
+cmake_dependent_option( CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES "For WIN32 and APPLE where the dependency pack is used, prefer the static
+dependency libs over the shared/dynamic ones.  NOTE: On Windows you also need to
+be mindful of which C/C++ runtime setting has been used to compile the various
+components - they must all match or you will get crashes, heap corruption and/or
+other issues." FALSE "WIN32 OR APPLE" FALSE)
 option( CEGUI_BUILD_STATIC_CONFIGURATION "Specifies whether the static configs will be built.  (NB: Shared configs are always built)" FALSE)
 option( CEGUI_CUSTOM_ALLOCATORS "If checked, CEGUI can use custom allocation. (for experienced developers only!)" FALSE )
 cmake_dependent_option( CEGUI_CUSTOM_ALLOCATORS_DEBUG "If checked, CEGUI allocations will pass debug info to allocators. (only used if CEGUI_CUSTOM_ALLOCATORS is checked)" FALSE "CEGUI_CUSTOM_ALLOCATORS" FALSE )
