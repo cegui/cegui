@@ -128,17 +128,17 @@ macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
         set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS} )
     endif()
 
-    if (${_DEP_NAME}_DEFINITIONS_DYNAMIC AND NOT CEGUI_MSVC_STATIC_RUNTIME)
-        set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
-    endif()
+    if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+        if (${_DEP_NAME}_DEFINITIONS_STATIC)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
+        endif()
 
-    if (${_DEP_NAME}_DEFINITIONS_STATIC AND CEGUI_MSVC_STATIC_RUNTIME)
-        set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
-    endif()
-
-    if (CEGUI_MSVC_STATIC_RUNTIME)
         cegui_add_dependency_static_libs(${_TARGET_NAME} ${_DEP_NAME})
     else()
+        if (${_DEP_NAME}_DEFINITIONS_DYNAMIC)
+            set_property( TARGET ${_TARGET_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
+        endif()
+
         cegui_add_dependency_dynamic_libs(${_TARGET_NAME} ${_DEP_NAME})
     endif()
 
@@ -153,19 +153,11 @@ macro (cegui_add_dependency _TARGET_NAME _DEP_NAME)
             set_property( TARGET ${_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS} )
         endif()
 
-        if (${_DEP_NAME}_DEFINITIONS_DYNAMIC AND NOT CEGUI_MSVC_STATIC_RUNTIME)
-            set_property( TARGET ${_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_DYNAMIC} )
-        endif()
-
-        if (${_DEP_NAME}_DEFINITIONS_STATIC AND CEGUI_MSVC_STATIC_RUNTIME)
+        if (${_DEP_NAME}_DEFINITIONS_STATIC)
             set_property( TARGET ${_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS ${${_DEP_NAME}_DEFINITIONS_STATIC} )
         endif()
 
-        if (CEGUI_MSVC_STATIC_RUNTIME)
-            cegui_add_dependency_static_libs(${_TARGET_NAME}_Static ${_DEP_NAME})
-        else()
-            cegui_add_dependency_dynamic_libs(${_TARGET_NAME}_Static ${_DEP_NAME})
-        endif()
+        cegui_add_dependency_static_libs(${_TARGET_NAME}_Static ${_DEP_NAME})
     endif()
 
 endmacro()
@@ -205,7 +197,7 @@ macro (cegui_add_library _LIB_NAME _SOURCE_FILES_VAR _HEADER_FILES_VAR _INSTALL_
     ###########################################################################
     add_library(${_LIB_NAME} SHARED ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
 
-    if (NOT CEGUI_MSVC_STATIC_RUNTIME)
+    if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
         set_target_properties(${_LIB_NAME} PROPERTIES
             LINK_INTERFACE_LIBRARIES ""
         )
@@ -280,11 +272,13 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
             ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
     )
 
-    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
-        COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
-
     if (NOT ${_STATIC})
+        if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+            add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+                COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+                COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
+        endif()
+
         add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
             COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
             COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${_TARGET_NAME}.app")
