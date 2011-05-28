@@ -43,31 +43,30 @@ namespace CEGUI
 
     void FalagardTabButton::render()
     {
-        TabButton* w = (TabButton*)d_window;
+        TabButton* w = static_cast<TabButton*>(d_window);
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-		TabControl* tc = static_cast<TabControl*>(w->getParent()->getParent());
+        TabControl* tc = w->getParent() ? dynamic_cast<TabControl*>(w->getParent()->getParent()) : 0;
+        String prefix((tc && tc->getTabPanePosition() == TabControl::Bottom) ? "Bottom" : "Top");
 
         String state;
-		String prefix((tc->getTabPanePosition() == TabControl::Top) ? "Top" : "Bottom");
-
-		if (w->isEffectiveDisabled())
-		    state = "Disabled";
-		else if (w->isSelected())
-		    state = "Selected";
-		else if (w->isPushed())
-		    state = "Pushed";
-		else if (w->isHovering())
-		    state = "Hover";
-		else
-		    state = "Normal";
+        if (w->isEffectiveDisabled())
+            state = "Disabled";
+        else if (w->isSelected())
+            state = "Selected";
+        else if (w->isPushed())
+            state = "Pushed";
+        else if (w->isHovering())
+            state = "Hover";
+        else
+            state = "Normal";
 
         if (!wlf.isStateImageryPresent(prefix + state))
         {
             state = "Normal";
-			if (!wlf.isStateImageryPresent(prefix + state))
-				prefix = "";
+            if (!wlf.isStateImageryPresent(prefix + state))
+                prefix = "";
         }
 
         wlf.getStateImagery(prefix + state).render(*w);
