@@ -1085,6 +1085,33 @@ public:
         - false if nobody handled the event.
     */
     bool injectMouseButtonTripleClick(const MouseButton button);
+    
+    /*!
+    \brief
+        Tells the system to perform a clipboard copy on currently active widget
+        
+    \return
+        true if the copy was successful, false if it was denied
+    */
+    bool injectCopyRequest();
+    
+    /*!
+    \brief
+        Tells the system to perform a clipboard cut on currently active widget
+     
+    \return
+        true if the cut was successful, false if it was denied
+    */
+    bool injectCutRequest();
+    
+    /*!
+    \brief
+        Tells the system to perform a clipboard paste to the currently active widget
+     
+    \return
+        true if the paste was successful, false if it was denied
+    */
+    bool injectPasteRequest();
 
 private:
     // unimplemented constructors / assignment

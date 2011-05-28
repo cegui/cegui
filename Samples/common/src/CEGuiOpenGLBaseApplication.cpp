@@ -259,6 +259,8 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/
 {
     handleModifierKeys();
 
+    int mods = glutGetModifiers();
+    
     // extract some keys may be handled via key code and generate those too
     switch (key)
     {
@@ -274,12 +276,20 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int /*x*/, int /*y*/
     case 0x0D:  // CR (Return)
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Return);
         break;
+    case 0x03:  // CTRL+C
+        CEGUI::System::getSingleton().injectCopyRequest();
+        break;
+    case 0x18:  // CTRL+X
+        CEGUI::System::getSingleton().injectCutRequest();
+        break;
+    case 0x16:  // CTRL+V
+        CEGUI::System::getSingleton().injectPasteRequest();
+        break;
+        
     default:
-        // inject Character code
         CEGUI::System::getSingleton().injectChar(static_cast<CEGUI::utf32>(key));
         break;
     }
-
 }
 
 //----------------------------------------------------------------------------//

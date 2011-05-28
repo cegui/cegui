@@ -1829,6 +1829,27 @@ void Window::updateSelf(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
+bool Window::performCopy(Clipboard& /*clipboard*/)
+{
+    // deny copying by default
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::performCut(Clipboard& /*clipboard*/)
+{
+    // deny cutting by default
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::performPaste(Clipboard& /*clipboard*/)
+{
+    // deny pasting by default
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 bool Window::distributesCapturedInputs(void) const
 {
     return d_distCapturedInputs;
