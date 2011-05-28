@@ -172,7 +172,7 @@ endif()
 option( CEGUI_HAS_VERSION_SUFFIX "Specifies whether to append a version number to the name of output binaries." FALSE )
 set (CEGUI_VERSION_SUFFIX ${CEGUI_VERSION} CACHE STRING "Specifies the version suffix to be appended to the name of output binaries when CEGUI_HAS_VERSION_SUFFIX is enabled." )
 
-if (WIN32)
+if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
 else()
     set (CEGUI_BUILD_SUFFIX "" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
