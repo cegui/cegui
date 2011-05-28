@@ -2007,6 +2007,24 @@ bool System::injectMouseButtonTripleClick(const MouseButton button)
     return ma.handled != 0;
 }
 
+bool System::injectCopyRequest()
+{
+    Window* source = getKeyboardTargetWindow();
+    return source ? source->performCopy(*d_clipboard) : false;
+}
+
+bool System::injectCutRequest()
+{
+    Window* source = getKeyboardTargetWindow();
+    return source ? source->performCut(*d_clipboard) : false;
+}
+
+bool System::injectPasteRequest()
+{
+    Window* source = getKeyboardTargetWindow();
+    return source ? source->performPaste(*d_clipboard) : false;
+}
+
 //----------------------------------------------------------------------------//
 void System::invalidateAllCachedRendering()
 {

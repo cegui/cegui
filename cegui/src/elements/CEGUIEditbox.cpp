@@ -35,6 +35,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
+#include "CEGUIClipboard.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUIPCRERegexMatcher.h"
 #else
@@ -331,6 +332,78 @@ void Editbox::eraseSelectedText(bool modify_text)
 bool Editbox::isStringValid(const String& str) const
 {
     return d_validator ? d_validator->matchRegex(str) : true;
+}
+
+//----------------------------------------------------------------------------//
+bool Editbox::performCopy(Clipboard& clipboard)
+{
+    if (getSelectionLength() == 0)
+        return false;
+    
+    const String selectedText = getText().substr(
+        getSelectionStartIndex(), getSelectionLength());
+    
+    clipboard.setText(selectedText);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool Editbox::performCut(Clipboard& clipboard)
+{
+    if (isReadOnly())
+        return false;
+    
+    if (!performCopy(clipboard))
+        return false;
+    
+    handleDelete();
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool Editbox::performPaste(Clipboard& clipboard)
+{
+    if (isReadOnly())
+        return false;
+    
+    String clipboardText = clipboard.getText();
+    
+    if (clipboardText.empty())
+        return false;
+    
+    // backup current text
+    String tmp(getText());
+    tmp.erase(getSelectionStartIndex(), getSelectionLength());
+    
+    // if there is room
+    if (tmp.length() < d_maxTextLen)
+    {
+        tmp.insert(getSelectionStartIndex(), clipboardText);
+        
+        if (isStringValid(tmp))
+        {
+            // erase selection using mode that does not modify getText()
+            // (we just want to update state)
+            eraseSelectedText(false);
+            
+            // advance caret (done first so we can "do stuff" in event
+            // handlers!)
+            d_caretPos += clipboardText.length();
+            
+            // set text to the newly modified string
+            setText(tmp);
+            
+            return true;
+        }
+        else
+        {
+            // Trigger invalid modification attempted event.
+            WindowEventArgs args(this);
+            onInvalidEntryAttempted(args);
+
+            return false;
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//

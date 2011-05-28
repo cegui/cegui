@@ -392,6 +392,15 @@ public:
     */
     void setMaxTextLength(size_t max_len);
 
+    //! \copydoc Window::performCopy
+    virtual bool performCopy(Clipboard& clipboard);
+
+    //! \copydoc Window::performCut
+    virtual bool performCut(Clipboard& clipboard);
+    
+    //! \copydoc Window::performPaste
+    virtual bool performPaste(Clipboard& clipboard);
+    
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
 

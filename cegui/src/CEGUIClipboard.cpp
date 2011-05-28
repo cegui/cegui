@@ -147,11 +147,13 @@ String Clipboard::getText()
     // the native clipboard provider!
     getData(mimeType, buffer, size);
     
-    if (mimeType == "text/plain")
+    if (mimeType == "text/plain" && size != 0)
     {
-        // d_buffer is null terminated utf8 or ASCII (if std::string is used
-        // as CEGUI::String) C string
-        return String(static_cast<const char*>(d_buffer));
+        // d_buffer an utf8 or ASCII C string (ASCII if std::string is used)
+        
+        // !!! However it is not null terminated !!! So we have to tell String
+        // how many code units (not code points!) there are.
+        return String(static_cast<const char*>(d_buffer), d_bufferSize);
     }
     else
     {

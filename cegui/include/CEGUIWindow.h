@@ -2974,6 +2974,42 @@ public:
         Nothing.
     */
     virtual void update(float elapsed);
+    
+    /*!
+    \brief
+        Asks the widget to perform a clipboard copy to the provided clipboard
+        
+    \param clipboard
+        Target clipboard class
+        
+    \return
+        true if the copy was successful and allowed, false otherwise
+    */
+    virtual bool performCopy(Clipboard& clipboard);
+    
+    /*!
+    \brief
+        Asks the widget to perform a clipboard cut to the provided clipboard
+     
+    \param clipboard
+        Target clipboard class
+     
+    \return
+        true if the cut was successful and allowed, false otherwise
+    */
+    virtual bool performCut(Clipboard& clipboard);
+    
+    /*!
+    \brief
+        Asks the widget to perform a clipboard paste from the provided clipboard
+     
+    \param clipboard
+        Source clipboard class
+     
+    \return
+        true if the paste was successful and allowed, false otherwise
+     */
+    virtual bool performPaste(Clipboard& clipboard);
 
     /*!
     \brief
