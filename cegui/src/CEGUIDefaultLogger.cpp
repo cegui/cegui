@@ -28,6 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIDefaultLogger.h"
+#include "CEGUIExceptions.h"
 #include <ctime>
 #include <iomanip>
 
@@ -147,7 +148,7 @@ namespace CEGUI
 
         if (!d_ostream)
         {
-            CEGUI_THROW("Logger::setLogFilename - Failed to open file.");
+            CEGUI_THROW(FileIOException("Failed to open file '" + filename + "' for writing"));
         }
 
         // initialise width for date & time alignment.
