@@ -14,7 +14,7 @@ set( CORE_SOURCE_FILES
 
 include_directories(${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++)
 
-add_library(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES})
+add_library(${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES})
 set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
     DEFINE_SYMBOL TOLUA_EXPORTS
     VERSION ${CEGUI_ABI_VERSION}
@@ -22,8 +22,8 @@ set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
 )
 
 if (CEGUI_BUILD_STATIC_CONFIGURATION)
-    add_library(${CEGUI_TARGET_NAME}_Static ${CORE_SOURCE_FILES})
-    set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES DEFINE_SYMBOL TOLUA_STATIC)
+    add_library(${CEGUI_TARGET_NAME}_Static STATIC ${CORE_SOURCE_FILES})
+    set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES COMPILE_DEFINITIONS TOLUA_STATIC)
 endif()
 
 cegui_add_dependency(${CEGUI_TARGET_NAME} LUA51)
