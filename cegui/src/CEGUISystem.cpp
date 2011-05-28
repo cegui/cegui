@@ -2021,8 +2021,8 @@ bool System::injectCutRequest()
 
 bool System::injectPasteRequest()
 {
-    Window* source = getKeyboardTargetWindow();
-    return source ? source->performPaste(*d_clipboard) : false;
+    Window* target = getKeyboardTargetWindow();
+    return target ? target->performPaste(*d_clipboard) : false;
 }
 
 //----------------------------------------------------------------------------//

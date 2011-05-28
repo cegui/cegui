@@ -34,6 +34,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIClipboard.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -706,6 +707,69 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 
 }
 
+//----------------------------------------------------------------------------//
+bool MultiLineEditbox::performCopy(Clipboard& clipboard)
+{
+    if (getSelectionLength() == 0)
+        return false;
+    
+    const String selectedText = getText().substr(
+        getSelectionStartIndex(), getSelectionLength());
+    
+    clipboard.setText(selectedText);
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool MultiLineEditbox::performCut(Clipboard& clipboard)
+{
+    if (isReadOnly())
+        return false;
+    
+    if (!performCopy(clipboard))
+        return false;
+    
+    handleDelete();
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool MultiLineEditbox::performPaste(Clipboard& clipboard)
+{
+    if (isReadOnly())
+        return false;
+    
+    String clipboardText = clipboard.getText();
+    
+    if (clipboardText.empty())
+        return false;
+    
+    // backup current text
+    String tmp(getText());
+    tmp.erase(getSelectionStartIndex(), getSelectionLength());
+    
+    // erase selected text
+    eraseSelectedText();
+    
+    // if there is room
+    if (getText().length() - clipboardText.length() < d_maxTextLen)
+    {
+        String newText = getText();
+        newText.insert(getCaretIndex(), clipboardText);
+        setText(newText);
+        
+        d_caretPos += clipboardText.length();
+        
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+    else
+    {
+        // Trigger text box full event
+        WindowEventArgs args(this);
+        onEditboxFullEvent(args);
+    }
+}
 
 /*************************************************************************
 	Processing for backspace key

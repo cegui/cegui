@@ -421,6 +421,15 @@ public:
     // selection brush image property support
     void setSelectionBrushImage(const Image* image);
     const Image* getSelectionBrushImage() const;
+    
+    //! \copydoc Window::performCopy
+    virtual bool performCopy(Clipboard& clipboard);
+    
+    //! \copydoc Window::performCut
+    virtual bool performCut(Clipboard& clipboard);
+    
+    //! \copydoc Window::performPaste
+    virtual bool performPaste(Clipboard& clipboard);
 
 	/*************************************************************************
 		Construction and Destruction
