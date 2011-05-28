@@ -190,7 +190,12 @@ public:
 	*/
 	static	System*	getSingletonPtr(void);
 
-
+    /*!
+    \brief
+        Retrieves internal CEGUI clipboard, optionally synced with system wide clipboard
+    */
+    Clipboard* getClipboard() const         {return d_clipboard;}
+    
 	/*!
 	\brief
 		Set the default font to be used by the system
@@ -1311,6 +1316,8 @@ private:
 	Window*		d_modalTarget;		//!< Pointer to the window that is the current modal target. NULL is there is no modal target.
 
 	String d_strVersion;    //!< CEGUI version
+
+    Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
 
 	uint		d_sysKeys;			//!< Current set of system keys pressed (in mk1 these were passed in, here we track these ourself).
 	bool		d_lshift;			//!< Tracks state of left shift.

@@ -32,6 +32,7 @@
 #endif
 
 #include "CEGUISystem.h"
+#include "CEGUIClipboard.h"
 #include "CEGUIDefaultLogger.h"
 #include "CEGUIImageManager.h"
 #include "CEGUIFontManager.h"
@@ -190,6 +191,7 @@ System::System(Renderer& renderer,
   d_wndWithMouse(0),
   d_activeSheet(0),
   d_modalTarget(0),
+  d_clipboard(CEGUI_NEW_AO Clipboard()),
   d_sysKeys(0),
   d_lshift(false),
   d_rshift(false),
@@ -380,6 +382,8 @@ System::~System(void)
 #endif
 
 	delete d_clickTrackerPimpl;
+    
+    CEGUI_DELETE_AO d_clipboard;
 }
 
 
