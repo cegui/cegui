@@ -273,13 +273,20 @@ void
     Listbox_addItem(CEGUI::Listbox& self, PyObject* item)
     {
         CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(boost::python::incref(item));
+        // passed from python so don't delete it!
+        nativeItem->setAutoDeleted(false);
+        
         self.addItem(nativeItem);
     }
     
     void
     Listbox_removeItem(CEGUI::Listbox& self, PyObject* item)
     {
-        self.removeItem(boost::python::extract<CEGUI::ListboxItem*>(item));
+        CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(item);
+        // don't delete it, python will take care of it
+        nativeItem->setAutoDeleted(false);
+        
+        self.removeItem(nativeItem);
         boost::python::decref(item);
     }
 
