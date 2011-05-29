@@ -35,7 +35,7 @@ def filterDeclarations(mb):
     # by default we exclude everything and only include what we WANT in the module
     mb.global_ns.exclude()
     
-    # todo: python ogre does this, why?
+    # because of std::pair<float, float> CEGUI::Thumb::getHorzRange()
     mb.global_ns.namespace("std").class_("pair<float, float>").include()
     
     CEGUI_ns = mb.global_ns.namespace("CEGUI")
@@ -160,6 +160,24 @@ def filterDeclarations(mb):
     # this is done via custom code
     eventSet.mem_funs("subscribeEvent").exclude()
     eventSet.noncopyable = True
+    
+    # we use depth first to make sure classes "deep in the hierarchy" gets their casts tried first
+    def collectEventArgsDerived(node):
+        ret = []
+        for derived in node.derived:
+            ret.extend(collectEventArgsDerived(derived.related_class))
+            
+        ret.append(node)
+        
+        return ret
+    
+    eventArgsCastCode = ""
+    for derived in collectEventArgsDerived(CEGUI_ns.class_("EventArgs")):
+        eventArgsCastCode += "if (dynamic_cast<const CEGUI::%s*>(&args))\n" % (derived.name)
+        eventArgsCastCode += "{\n"
+        eventArgsCastCode += "    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::%s&>(args));\n" % (derived.name)
+        eventArgsCastCode += "}\n\n"
+        
     eventSet.add_declaration_code(
 """
 class PythonEventSubscription
@@ -180,7 +198,12 @@ public:
     
     bool operator() (const CEGUI::EventArgs& args) const
     {
-        return boost::python::call<bool>(d_callable, args);
+        // FIXME: We have to cast, otherwise only base class gets to python!
+        
+        // I don't understand why this is happening, I think boost::python should use typeid(args).name() and deduce that it's a
+        // derived class, not CEGUI::EventArgs base class
+        // However this is not happening so I have to go through all EventArgs classes and try casting one after another
+        """ + eventArgsCastCode + """
     }
 
     PyObject* d_callable;
