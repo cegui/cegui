@@ -859,6 +859,29 @@ void Iterator_previous(::CEGUI::%s& t)
     # elements/CEGUIListbox.h
     listbox = CEGUI_ns.class_("Listbox")
     listbox.include()
+    # we have to handle this separately because CEGUI is nasty and will deallocate this for us unless
+    # we remove it from it, also we have to prevent python from destroying the object
+    listbox.mem_fun("addItem").exclude()
+    listbox.mem_fun("removeItem").exclude()
+    listbox.add_declaration_code(
+    """
+    void
+    Listbox_addItem(CEGUI::Listbox& self, PyObject* item)
+    {
+        CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(boost::python::incref(item));
+        self.addItem(nativeItem);
+    }
+    
+    void
+    Listbox_removeItem(CEGUI::Listbox& self, PyObject* item)
+    {
+        self.removeItem(boost::python::extract<CEGUI::ListboxItem*>(item));
+        boost::python::decref(item);
+    }
+    """
+    )
+    listbox.add_registration_code('def ("addItem", &::Listbox_addItem, (bp::arg("item")));')
+    listbox.add_registration_code('def ("removeItem", &::Listbox_removeItem, (bp::arg("item")));')
     
     # elements/CEGUIListboxItem.h
     listboxItem = CEGUI_ns.class_("ListboxItem")

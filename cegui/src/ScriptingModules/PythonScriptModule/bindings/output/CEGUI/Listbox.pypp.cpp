@@ -269,6 +269,20 @@ struct Listbox_wrapper : CEGUI::Listbox, bp::wrapper< CEGUI::Listbox > {
 
 };
 
+void
+    Listbox_addItem(CEGUI::Listbox& self, PyObject* item)
+    {
+        CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(boost::python::incref(item));
+        self.addItem(nativeItem);
+    }
+    
+    void
+    Listbox_removeItem(CEGUI::Listbox& self, PyObject* item)
+    {
+        self.removeItem(boost::python::extract<CEGUI::ListboxItem*>(item));
+        boost::python::decref(item);
+    }
+
 void register_Listbox_class(){
 
     { //::CEGUI::Listbox
@@ -284,28 +298,6 @@ void register_Listbox_class(){
            Constructor for Listbox base class.\n\
         *\n") );
         bp::scope Listbox_scope( Listbox_exposer );
-        { //::CEGUI::Listbox::addItem
-        
-            typedef void ( ::CEGUI::Listbox::*addItem_function_type )( ::CEGUI::ListboxItem * ) ;
-            
-            Listbox_exposer.def( 
-                "addItem"
-                , addItem_function_type( &::CEGUI::Listbox::addItem )
-                , ( bp::arg("item") )
-                , "*!\n\
-               \n\
-                  Add the given ListboxItem to the list.\n\
-            \n\
-               @param item\n\
-                  Pointer to the ListboxItem to be added to the list.  Note that it is the passed object that is\
-                  added to the\n\
-                  list, a copy is not made.  If this parameter is NULL, nothing happens.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::Listbox::clearAllSelections
         
             typedef void ( ::CEGUI::Listbox::*clearAllSelections_function_type )(  ) ;
@@ -800,29 +792,6 @@ void register_Listbox_class(){
                *\n" );
         
         }
-        { //::CEGUI::Listbox::removeItem
-        
-            typedef void ( ::CEGUI::Listbox::*removeItem_function_type )( ::CEGUI::ListboxItem const * ) ;
-            
-            Listbox_exposer.def( 
-                "removeItem"
-                , removeItem_function_type( &::CEGUI::Listbox::removeItem )
-                , ( bp::arg("item") )
-                , "*!\n\
-               \n\
-                  Removes the given item from the list box.  If the item is has the auto delete state set, the\
-                  item will be deleted.\n\
-            \n\
-               @param item\n\
-                  Pointer to the ListboxItem that is to be removed.  If  item is not attached to this list box\
-                  then nothing\n\
-                  will happen.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::Listbox::resetList
         
             typedef void ( ::CEGUI::Listbox::*resetList_function_type )(  ) ;
@@ -1254,6 +1223,8 @@ void register_Listbox_class(){
                 , ( bp::arg("xml_stream") ) );
         
         }
+        Listbox_exposer.def ("addItem", &::Listbox_addItem, (bp::arg("item")));;
+        Listbox_exposer.def ("removeItem", &::Listbox_removeItem, (bp::arg("item")));;
     }
 
 }
