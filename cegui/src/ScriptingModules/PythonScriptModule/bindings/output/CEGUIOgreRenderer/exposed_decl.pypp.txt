@@ -904,6 +904,7 @@
 ~@class_declaration_t@ClippedContainer@::CEGUI::ClippedContainer
 ~@class_declaration_t@WindowManager@::CEGUI::WindowManager
 ~@class_declaration_t@MultiColumnList@::CEGUI::MultiColumnList
+~@class_declaration_t@NativeClipboardProvider@::CEGUI::NativeClipboardProvider
 ~@class_declaration_t@__add_unsigned< bool >@::__gnu_cxx::__add_unsigned< bool >
 ~@class_declaration_t@codecvt_base@::std::codecvt_base
 ~@class_declaration_t@basic_ifstream< wchar_t, std::char_traits< wchar_t > >@::std::basic_ifstream< wchar_t, std::char_traits< wchar_t > >
@@ -959,6 +960,7 @@
 ~@class_declaration_t@PopupMenu@::CEGUI::PopupMenu
 ~@class_declaration_t@basic_stringstream< char, std::char_traits< char >, std::allocator< char > >@::std::basic_stringstream< char, std::char_traits< char >, std::allocator< char > >
 ~@class_declaration_t@Vector3< float >@::CEGUI::Vector3< float >
+~@class_declaration_t@Clipboard@::CEGUI::Clipboard
 ~@class_declaration_t@reverse_iterator< __gnu_cxx::__normal_iterator< const wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > >@::std::reverse_iterator< __gnu_cxx::__normal_iterator< const wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > >
 ~@class_declaration_t@_Select1st< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > >@::std::_Select1st< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > >
 ~@class_declaration_t@OgreGeometryBuffer@::CEGUI::OgreGeometryBuffer
@@ -3109,6 +3111,10 @@
 ~@variable_t@_ZTISt11range_error@::_ZTISt11range_error
 ~@variable_t@d_encodedbufflen@::CEGUI::String::d_encodedbufflen
 ~@variable_t@_ZTIN5CEGUI15SlotFunctorBaseE@::_ZTIN5CEGUI15SlotFunctorBaseE
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
 ~@variable_t@_M_t@::std::map< CEGUI::RenderQueueID, CEGUI::RenderQueue >::_M_t
 ~@variable_t@_M_t@::std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::_M_t
 ~@variable_t@_M_t@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >::_M_t
@@ -3145,11 +3151,11 @@
 ~@variable_t@handled@::CEGUI::EventArgs::handled
 ~@variable_t@_M_parent@::std::_Rb_tree_node_base::_M_parent
 ~@variable_t@__shared@::pthread_rwlock_t::__shared
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
+~@variable_t@('/home/kulik/Devel/CEGUI/cegui_mk2/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@_ZTIN5CEGUI5EventE@::_ZTIN5CEGUI5EventE
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUIRenderingSurface.h', 112)@::__vmi_class_type_info_pseudo2
 ~@variable_t@int_p_sign_posn@::lconv::int_p_sign_posn
 ~@variable_t@thousands_sep@::lconv::thousands_sep
 ~@variable_t@n_sign_posn@::lconv::n_sign_posn
@@ -3170,10 +3176,6 @@
 ~@variable_t@__val@::__fsid_t::__val
 ~@variable_t@d_functor_impl@::CEGUI::SubscriberSlot::d_functor_impl
 ~@variable_t@d_encodeddatlen@::CEGUI::String::d_encodeddatlen
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
-~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUITextureTarget.h', 42)@::__vmi_class_type_info_pseudo1
 ~@variable_t@_ZTIN5CEGUI13TextureTargetE@::_ZTIN5CEGUI13TextureTargetE
 ~@variable_t@_S_max_size@::std::wstring::_Rep::_S_max_size
 ~@variable_t@_S_max_size@::std::string::_Rep::_S_max_size

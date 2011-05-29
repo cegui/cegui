@@ -40,6 +40,7 @@
 #include "CEGUIBidiVisualMapping.h"
 #include "CEGUIBoundSlot.h"
 #include "CEGUICentredRenderedString.h"
+#include "CEGUIClipboard.h"
 #include "CEGUIColour.h"
 #include "CEGUIColourRect.h"
 #include "CEGUICoordConverter.h"

@@ -27,6 +27,42 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         CEGUI::MultiLineEditbox::initialiseComponents( );
     }
 
+    virtual bool performCopy( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCopy = this->get_override( "performCopy" ) )
+            return func_performCopy( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::MultiLineEditbox::performCopy( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCopy( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::MultiLineEditbox::performCopy( boost::ref(clipboard) );
+    }
+
+    virtual bool performCut( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCut = this->get_override( "performCut" ) )
+            return func_performCut( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::MultiLineEditbox::performCut( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCut( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::MultiLineEditbox::performCut( boost::ref(clipboard) );
+    }
+
+    virtual bool performPaste( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performPaste = this->get_override( "performPaste" ) )
+            return func_performPaste( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::MultiLineEditbox::performPaste( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performPaste( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::MultiLineEditbox::performPaste( boost::ref(clipboard) );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -526,6 +562,42 @@ void register_MultiLineEditbox_class(){
                   - false if text will not be word-wrapped (a scroll bar will be used to access long text\
                   lines).\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::performCopy
+        
+            typedef bool ( ::CEGUI::MultiLineEditbox::*performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( MultiLineEditbox_wrapper::*default_performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "performCopy"
+                , performCopy_function_type(&::CEGUI::MultiLineEditbox::performCopy)
+                , default_performCopy_function_type(&MultiLineEditbox_wrapper::default_performCopy)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::performCut
+        
+            typedef bool ( ::CEGUI::MultiLineEditbox::*performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( MultiLineEditbox_wrapper::*default_performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "performCut"
+                , performCut_function_type(&::CEGUI::MultiLineEditbox::performCut)
+                , default_performCut_function_type(&MultiLineEditbox_wrapper::default_performCut)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::performPaste
+        
+            typedef bool ( ::CEGUI::MultiLineEditbox::*performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( MultiLineEditbox_wrapper::*default_performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "performPaste"
+                , performPaste_function_type(&::CEGUI::MultiLineEditbox::performPaste)
+                , default_performPaste_function_type(&MultiLineEditbox_wrapper::default_performPaste)
+                , ( bp::arg("clipboard") ) );
         
         }
         { //::CEGUI::MultiLineEditbox::setCaretIndex

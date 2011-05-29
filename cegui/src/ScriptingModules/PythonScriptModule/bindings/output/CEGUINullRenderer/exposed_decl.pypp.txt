@@ -1054,6 +1054,7 @@
 ~@class_declaration_t@ClippedContainer@::CEGUI::ClippedContainer
 ~@class_declaration_t@WindowManager@::CEGUI::WindowManager
 ~@class_declaration_t@MultiColumnList@::CEGUI::MultiColumnList
+~@class_declaration_t@NativeClipboardProvider@::CEGUI::NativeClipboardProvider
 ~@class_declaration_t@__add_unsigned< bool >@::__gnu_cxx::__add_unsigned< bool >
 ~@class_declaration_t@codecvt_base@::std::codecvt_base
 ~@class_declaration_t@RawDataContainer@::CEGUI::RawDataContainer
@@ -1109,6 +1110,7 @@
 ~@class_declaration_t@PopupMenu@::CEGUI::PopupMenu
 ~@class_declaration_t@basic_stringstream< char, std::char_traits< char >, std::allocator< char > >@::std::basic_stringstream< char, std::char_traits< char >, std::allocator< char > >
 ~@class_declaration_t@Vector3< float >@::CEGUI::Vector3< float >
+~@class_declaration_t@Clipboard@::CEGUI::Clipboard
 ~@class_declaration_t@reverse_iterator< __gnu_cxx::__normal_iterator< const wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > >@::std::reverse_iterator< __gnu_cxx::__normal_iterator< const wchar_t*, std::basic_string< wchar_t, std::char_traits< wchar_t >, std::allocator< wchar_t > > > >
 ~@class_declaration_t@_Select1st< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > >@::std::_Select1st< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > >
 ~@class_declaration_t@basic_filebuf< wchar_t, std::char_traits< wchar_t > >@::std::basic_filebuf< wchar_t, std::char_traits< wchar_t > >

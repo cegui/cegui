@@ -135,6 +135,20 @@ void register_System_class(){
                 *\n" );
         
         }
+        { //::CEGUI::System::getClipboard
+        
+            typedef ::CEGUI::Clipboard * ( ::CEGUI::System::*getClipboard_function_type )(  ) const;
+            
+            System_exposer.def( 
+                "getClipboard"
+                , getClipboard_function_type( &::CEGUI::System::getClipboard )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                Retrieves internal CEGUI clipboard, optionally synced with system wide clipboard\n\
+            *\n" );
+        
+        }
         { //::CEGUI::System::getDefaultCustomRenderedStringParser
         
             typedef ::CEGUI::RenderedStringParser * ( ::CEGUI::System::*getDefaultCustomRenderedStringParser_function_type )(  ) const;
@@ -505,6 +519,38 @@ void register_System_class(){
                *\n" );
         
         }
+        { //::CEGUI::System::injectCopyRequest
+        
+            typedef bool ( ::CEGUI::System::*injectCopyRequest_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "injectCopyRequest"
+                , injectCopyRequest_function_type( &::CEGUI::System::injectCopyRequest )
+                , "*!\n\
+            \n\
+                Tells the system to perform a clipboard copy on currently active widget\n\
+                \n\
+            @return\n\
+                true if the copy was successful, false if it was denied\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::System::injectCutRequest
+        
+            typedef bool ( ::CEGUI::System::*injectCutRequest_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "injectCutRequest"
+                , injectCutRequest_function_type( &::CEGUI::System::injectCutRequest )
+                , "*!\n\
+            \n\
+                Tells the system to perform a clipboard cut on currently active widget\n\
+             \n\
+            @return\n\
+                true if the cut was successful, false if it was denied\n\
+            *\n" );
+        
+        }
         { //::CEGUI::System::injectKeyDown
         
             typedef bool ( ::CEGUI::System::*injectKeyDown_function_type )( ::CEGUI::uint ) ;
@@ -778,6 +824,22 @@ void register_System_class(){
                   - true if the input was processed by the gui system.\n\
                   - false if the input was not processed by the gui system.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::System::injectPasteRequest
+        
+            typedef bool ( ::CEGUI::System::*injectPasteRequest_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "injectPasteRequest"
+                , injectPasteRequest_function_type( &::CEGUI::System::injectPasteRequest )
+                , "*!\n\
+            \n\
+                Tells the system to perform a clipboard paste to the currently active widget\n\
+             \n\
+            @return\n\
+                true if the paste was successful, false if it was denied\n\
+            *\n" );
         
         }
         { //::CEGUI::System::injectTimePulse
