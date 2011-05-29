@@ -147,6 +147,42 @@ struct ButtonBase_wrapper : CEGUI::ButtonBase, bp::wrapper< CEGUI::ButtonBase > 
         CEGUI::Window::performChildWindowLayout( );
     }
 
+    virtual bool performCopy( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCopy = this->get_override( "performCopy" ) )
+            return func_performCopy( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Window::performCopy( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCopy( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Window::performCopy( boost::ref(clipboard) );
+    }
+
+    virtual bool performCut( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCut = this->get_override( "performCut" ) )
+            return func_performCut( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Window::performCut( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCut( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Window::performCut( boost::ref(clipboard) );
+    }
+
+    virtual bool performPaste( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performPaste = this->get_override( "performPaste" ) )
+            return func_performPaste( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Window::performPaste( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performPaste( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Window::performPaste( boost::ref(clipboard) );
+    }
+
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
         if( bp::override func_setLookNFeel = this->get_override( "setLookNFeel" ) )
             func_setLookNFeel( boost::ref(look) );
@@ -407,6 +443,42 @@ void register_ButtonBase_class(){
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::Window::performChildWindowLayout)
                 , default_performChildWindowLayout_function_type(&ButtonBase_wrapper::default_performChildWindowLayout) );
+        
+        }
+        { //::CEGUI::Window::performCopy
+        
+            typedef bool ( ::CEGUI::Window::*performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( ButtonBase_wrapper::*default_performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            ButtonBase_exposer.def( 
+                "performCopy"
+                , performCopy_function_type(&::CEGUI::Window::performCopy)
+                , default_performCopy_function_type(&ButtonBase_wrapper::default_performCopy)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::Window::performCut
+        
+            typedef bool ( ::CEGUI::Window::*performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( ButtonBase_wrapper::*default_performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            ButtonBase_exposer.def( 
+                "performCut"
+                , performCut_function_type(&::CEGUI::Window::performCut)
+                , default_performCut_function_type(&ButtonBase_wrapper::default_performCut)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::Window::performPaste
+        
+            typedef bool ( ::CEGUI::Window::*performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( ButtonBase_wrapper::*default_performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            ButtonBase_exposer.def( 
+                "performPaste"
+                , performPaste_function_type(&::CEGUI::Window::performPaste)
+                , default_performPaste_function_type(&ButtonBase_wrapper::default_performPaste)
+                , ( bp::arg("clipboard") ) );
         
         }
         { //::CEGUI::Window::setLookNFeel

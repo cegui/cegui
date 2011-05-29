@@ -15,6 +15,42 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
     
     }
 
+    virtual bool performCopy( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCopy = this->get_override( "performCopy" ) )
+            return func_performCopy( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Editbox::performCopy( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCopy( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Editbox::performCopy( boost::ref(clipboard) );
+    }
+
+    virtual bool performCut( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performCut = this->get_override( "performCut" ) )
+            return func_performCut( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Editbox::performCut( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performCut( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Editbox::performCut( boost::ref(clipboard) );
+    }
+
+    virtual bool performPaste( ::CEGUI::Clipboard & clipboard ) {
+        if( bp::override func_performPaste = this->get_override( "performPaste" ) )
+            return func_performPaste( boost::ref(clipboard) );
+        else{
+            return this->CEGUI::Editbox::performPaste( boost::ref(clipboard) );
+        }
+    }
+    
+    bool default_performPaste( ::CEGUI::Clipboard & clipboard ) {
+        return CEGUI::Editbox::performPaste( boost::ref(clipboard) );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -437,6 +473,42 @@ void register_Editbox_class(){
                     - true if the current Editbox text passes validation.\n\
                     - false if the text does not pass validation.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Editbox::performCopy
+        
+            typedef bool ( ::CEGUI::Editbox::*performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( Editbox_wrapper::*default_performCopy_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            Editbox_exposer.def( 
+                "performCopy"
+                , performCopy_function_type(&::CEGUI::Editbox::performCopy)
+                , default_performCopy_function_type(&Editbox_wrapper::default_performCopy)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::Editbox::performCut
+        
+            typedef bool ( ::CEGUI::Editbox::*performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( Editbox_wrapper::*default_performCut_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            Editbox_exposer.def( 
+                "performCut"
+                , performCut_function_type(&::CEGUI::Editbox::performCut)
+                , default_performCut_function_type(&Editbox_wrapper::default_performCut)
+                , ( bp::arg("clipboard") ) );
+        
+        }
+        { //::CEGUI::Editbox::performPaste
+        
+            typedef bool ( ::CEGUI::Editbox::*performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            typedef bool ( Editbox_wrapper::*default_performPaste_function_type )( ::CEGUI::Clipboard & ) ;
+            
+            Editbox_exposer.def( 
+                "performPaste"
+                , performPaste_function_type(&::CEGUI::Editbox::performPaste)
+                , default_performPaste_function_type(&Editbox_wrapper::default_performPaste)
+                , ( bp::arg("clipboard") ) );
         
         }
         { //::CEGUI::Editbox::setCaretIndex

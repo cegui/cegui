@@ -53,279 +53,66 @@ struct EventSet_wrapper : CEGUI::EventSet, bp::wrapper< CEGUI::EventSet > {
 
 };
 
-class EventCallback
+class PythonEventSubscription
 {
 public:
-    EventCallback() : mSubscriber(0) {}
-
-    EventCallback(PyObject* subscriber, const CEGUI::String& method):
-        mSubscriber(boost::python::incref(subscriber)),
-        mMethod(method)
-    {} 
-    
-    EventCallback(const EventCallback& other):
-        mSubscriber(boost::python::incref(other.mSubscriber)),
-        mMethod(other.mMethod)
+    PythonEventSubscription(PyObject* callable):
+        d_callable(boost::python::incref(callable))
     {}
     
-    ~EventCallback()
+    PythonEventSubscription(const PythonEventSubscription& other):
+        d_callable(boost::python::incref(other.d_callable))
+    {}
+    
+    ~PythonEventSubscription()
     {
-        boost::python::decref(mSubscriber);
+        boost::python::decref(d_callable);
     } 
     
-    /*void setsubscriber( PyObject* subscriber )
+    bool operator() (const CEGUI::EventArgs& args) const
     {
-        mSubscriber = subscriber;
-    }*/
-    
-    bool operator() (const CEGUI::EventArgs &args) const
-    {
-        if (dynamic_cast<CEGUI::MouseCursorEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::MouseCursorEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber, 
-                                        static_cast<const CEGUI::MouseCursorEventArgs&>(args) );
-            
-        else if (dynamic_cast<CEGUI::KeyEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::KeyEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber, 
-                                        static_cast<const CEGUI::KeyEventArgs&>(args) );
-        
-        else if (dynamic_cast<CEGUI::ActivationEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::ActivationEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,  
-                                        static_cast<const CEGUI::ActivationEventArgs&>(args) );
-        
-        else if (dynamic_cast<CEGUI::DragDropEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::DragDropEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,  
-                                        static_cast<const CEGUI::DragDropEventArgs&>(args) );
-        
-        else if (dynamic_cast<CEGUI::HeaderSequenceEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::HeaderSequenceEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,
-                                        static_cast<const CEGUI::HeaderSequenceEventArgs&>(args) );
-        
-        else if (dynamic_cast<CEGUI::MouseEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::MouseEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber, 
-                                        static_cast<const CEGUI::MouseEventArgs&>(args) );
-
-        else if (dynamic_cast<CEGUI::DisplayEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(),
-                                        static_cast<const CEGUI::DisplayEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,
-                                        static_cast<const CEGUI::DisplayEventArgs&>(args) );
-
-        else if (dynamic_cast<CEGUI::ResourceEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(),
-                                        static_cast<const CEGUI::ResourceEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,
-                                        static_cast<const CEGUI::ResourceEventArgs&>(args) );
-
-         else if (dynamic_cast<CEGUI::TreeEventArgs *>((CEGUI::EventArgs *)&args))
-           if (mMethod.length() > 0 )
-               boost::python::call_method<void>(mSubscriber, mMethod.c_str(),
-                                        static_cast<const CEGUI::TreeEventArgs&>(args) );
-           else
-               boost::python::call<void>(mSubscriber, 
-                                        static_cast<const CEGUI::TreeEventArgs&>(args) );
-
-        else if (dynamic_cast<CEGUI::WindowEventArgs *>((CEGUI::EventArgs *)&args))
-            if (mMethod.length() > 0 )
-                boost::python::call_method<void>(mSubscriber, mMethod.c_str(), 
-                                        static_cast<const CEGUI::WindowEventArgs&>(args) );
-            else
-                boost::python::call<void>(mSubscriber,  
-                                        static_cast<const CEGUI::WindowEventArgs&>(args) );
-
-        else 
-            boost::python::call_method<void>(mSubscriber, mMethod.c_str(), args );
-     return true;
+        return boost::python::call<bool>(d_callable, args);
     }
 
-    PyObject* mSubscriber;
-    CEGUI::String mMethod;
+    PyObject* d_callable;
 };
 
-class EventConnection
+class PythonEventConnection
 {
 public:
-    EventConnection():
-        mConnection(0),
-        mValid(false)
+    PythonEventConnection():
+        d_connection()
+    {}
+
+    PythonEventConnection(const CEGUI::Event::Connection& connection):
+        d_connection(connection)
     {}
     
-    EventConnection(const CEGUI::Event::Connection &connection) 
-    : mConnection(connection), mValid(true) 
+    PythonEventConnection(const PythonEventConnection& v):
+        d_connection(v.d_connection)
     {}
     
-    ~EventConnection()
-    {
-        delete mCallback;
-    }   
     bool connected()
     {
-        return mValid && mConnection->connected();
+        return d_connection.isValid() ? d_connection->connected() : false;
     }
     
     void disconnect()
     {
-        if (mValid)
+        // TODO: Throw on invalid disconnects?
+        if (d_connection.isValid())
         {
-            mConnection->disconnect();
+            d_connection->disconnect();
         }
     }
     
-protected:
-    CEGUI::Event::Connection mConnection;
-    bool mValid;
-    EventCallback* mCallback;
+private:
+    CEGUI::Event::Connection d_connection;
 };
 
-EventConnection * EventSet_subscribeEventSet(CEGUI::EventSet *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
+PythonEventConnection EventSet_subscribeEvent(CEGUI::EventSet* self, const CEGUI::String& name, PyObject* callable)
 {
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-
-EventConnection * EventSet_subscribeEventPB(CEGUI::PushButton *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventTB(CEGUI::Titlebar *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventFW(CEGUI::FrameWindow *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventDefaultWindow(CEGUI::DefaultWindow *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventComboBox(CEGUI::Combobox *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventCheckBox(CEGUI::Checkbox *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventSB(CEGUI::Scrollbar *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventLB(CEGUI::Listbox *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventEB(CEGUI::Editbox *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventThumb(CEGUI::Thumb *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventSlider(CEGUI::Slider *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventSpinner(CEGUI::Spinner *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeEventRadioButton(CEGUI::RadioButton *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeDragContainer(CEGUI::DragContainer *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeMultiColumnList(CEGUI::MultiColumnList *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-
-EventConnection * EventSet_subscribeWindow(CEGUI::Window *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeMouseCursor(CEGUI::MouseCursor *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-EventConnection * EventSet_subscribeSystem(CEGUI::System *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
-}
-
-EventConnection * EventSet_subscribeTree(CEGUI::Tree *self , CEGUI::String const & name, 
-                                                PyObject* subscriber, CEGUI::String const & method="")
-{
-    EventConnection *connect = new EventConnection(self->subscribeEvent(name, EventCallback(subscriber, method))); 
-    return connect; 
+    return PythonEventConnection(self->subscribeEvent(name, PythonEventSubscription(callable)));
 }
 
 void register_EventSet_class(){
@@ -591,69 +378,30 @@ void register_EventSet_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventPB, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventTB, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventLB, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventComboBox, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventCheckBox, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSB, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventDefaultWindow, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventFW, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventEB, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventThumb, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSlider, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSpinner, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventRadioButton, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeDragContainer, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeMultiColumnList, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeWindow, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeMouseCursor, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeSystem, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEventSet, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
-        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeTree, 
-                    bp::return_value_policy< bp::reference_existing_object, bp::default_call_policies >());
+        EventSet_exposer.def( "subscribeEvent", &EventSet_subscribeEvent);
                                 
-        { //EventConnection
-                typedef bp::class_< EventConnection > EventConnection_exposer_t;
-                EventConnection_exposer_t EventConnection_exposer = EventConnection_exposer_t( "EventConnection" );
-                bp::scope EventConnection_scope( EventConnection_exposer );
-                EventConnection_exposer.def( bp::init< >() );
-                { //::CEGUI::EventConnection::connected
+            {   // PythonEventConnection
+            
+                typedef bp::class_< PythonEventConnection > PythonEventConnection_exposer_t;
+                PythonEventConnection_exposer_t PythonEventConnection_exposer = PythonEventConnection_exposer_t( "PythonEventConnection" );
+                bp::scope PythonEventConnection_scope( PythonEventConnection_exposer );
+                PythonEventConnection_exposer.def( bp::init<>() );
+                {
                 
-                    typedef bool ( EventConnection::*connected_function_type )(  ) ;
+                    typedef bool ( PythonEventConnection::*connected_function_type )(  ) ;
                     
-                    EventConnection_exposer.def( 
+                    PythonEventConnection_exposer.def( 
                         "connected"
-                        , connected_function_type( &EventConnection::connected ) );
+                        , connected_function_type( &PythonEventConnection::connected ) );
                 
                 }
-                { //::CEGUI::EventConnection::disconnect
+                {
                 
-                    typedef void ( EventConnection::*disconnect_function_type )(  ) ;
+                    typedef void ( PythonEventConnection::*disconnect_function_type )(  ) ;
                     
-                    EventConnection_exposer.def( 
+                    PythonEventConnection_exposer.def( 
                         "disconnect"
-                        , disconnect_function_type( &EventConnection::disconnect ) );
-                
+                        , disconnect_function_type( &PythonEventConnection::disconnect ) );
                 }
             };
     }
