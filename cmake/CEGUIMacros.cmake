@@ -407,13 +407,8 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
     target_link_libraries(${PYTHON_MODULE_NAME} ${CEGUI_BASE_LIBNAME} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${EXTRA_LIBS} )
     set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES PREFIX "")
 
-    # link the default modules when doing a static build.
-    if (NOT BUILD_SHARED_LIBS)
-        target_link_libraries(${PYTHON_MODULE_NAME}
-            ${CEGUI_STATIC_XMLPARSER_MODULE}
-            ${CEGUI_STATIC_IMAGECODEC_MODULE}
-            ${CEGUI_FALAGARD_WR_LIBNAME}
-        )
+    if (WIN32)
+        set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES SUFFIX ".pyd")
     endif()
 
     if (NOT APPLE)
