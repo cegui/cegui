@@ -185,7 +185,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
 
     include_directories("${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
-    if (_IS_MODULE)
+    if (${_IS_MODULE})
         set (_LIB_TYPE MODULE)
     else()
         set (_LIB_TYPE SHARED)
@@ -203,6 +203,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     #                       SHARED LIBRARY SET UP
     ###########################################################################
     add_library(${_LIB_NAME} ${_LIB_TYPE} ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
+    set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS)
 
     if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
         set_target_properties(${_LIB_NAME} PROPERTIES
@@ -221,12 +222,16 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         )
     endif()
 
-    if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
-        set_target_properties(${_LIB_NAME} PROPERTIES
-            VERSION ${CEGUI_ABI_VERSION}
-            SOVERSION ${CEGUI_ABI_CURRENT}
-            DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS
-        )
+    # Do not version modules, since we dlopen these directly and need to know
+    # the name is what we think it will be (and not rely on symlinks which will
+    # not be installed always, but usually only as part of *-dev packages).
+    if (NOT ${_IS_MODULE})
+        if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
+            set_target_properties(${_LIB_NAME} PROPERTIES
+                VERSION ${CEGUI_ABI_VERSION}
+                SOVERSION ${CEGUI_ABI_CURRENT}
+            )
+        endif()
     endif()
 
     ###########################################################################
