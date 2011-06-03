@@ -59,7 +59,7 @@ endif()
 
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
-cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
+cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
 
 if (CEGUI_HAS_FREETYPE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} FREETYPE)
