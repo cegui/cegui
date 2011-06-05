@@ -4,9 +4,9 @@ import os.path
 # atrocious and unholy!
 def get_my_path():
     import fake
-    return os.path.dirname(str(fake).split()[3][1:])
+    return os.path.dirname(os.path.abspath(fake.__file__))
 
-libpath = os.path.abspath(get_my_path())
+libpath = get_my_path()
 #print "libpath =", libpath
 os.environ['PATH'] = libpath + ";" + os.environ['PATH']
 
