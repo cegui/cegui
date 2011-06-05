@@ -97,9 +97,11 @@ DynamicModule::DynamicModule(const String& name) :
     #ifdef __APPLE__
         String fullpath("@executable_path/../Frameworks/" + d_moduleName);
         d_handle = DYNLIB_LOAD(fullpath.c_str());
-    #else
-        d_handle = DYNLIB_LOAD(d_moduleName.c_str());
+
+        // if that failed, try without the path
+        if (!d_handle)
     #endif
+        d_handle = DYNLIB_LOAD(d_moduleName.c_str());
 
 
 #if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
@@ -110,9 +112,11 @@ DynamicModule::DynamicModule(const String& name) :
         #ifdef __APPLE__
             String fullpath("@executable_path/../Frameworks/" + d_moduleName);
             d_handle = DYNLIB_LOAD(fullpath.c_str());
-        #else
-            d_handle = DYNLIB_LOAD(d_moduleName.c_str());
+
+            // if that failed, try without the path
+            if (!d_handle)
         #endif
+            d_handle = DYNLIB_LOAD(d_moduleName.c_str());
     }
 #endif
 
