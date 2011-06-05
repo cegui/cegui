@@ -216,6 +216,13 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             INSTALL_NAME_DIR ${CEGUI_APPLE_DYLIB_INSTALL_PATH}
             BUILD_WITH_INSTALL_RPATH TRUE
         )
+
+        # Force the somewhat standard .dylib extension for modules over the use of
+        # the .so extension
+        if (${_IS_MODULE})
+            set_target_properties(${_LIB_NAME} PROPERTIES SUFFIX ".dylib")
+        endif()
+
     else()
         set_target_properties(${_LIB_NAME} PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
