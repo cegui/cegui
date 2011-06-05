@@ -1,5 +1,8 @@
-CEGUI_BASEDIR = "C:\\Users\\Martin Preisler\\Devel\\CEGUI"
-BOOST_BASEDIR = "C:\\Program Files (x86)\\boost\\boost_1_46_1"
+import sys
+
+CEGUI_BASEDIR = "C:\\Users\\Admin\\Devel\\CEGUI\\cegui_mk2"
+is_64bits = sys.maxsize > 2**32
+BOOST_BASEDIR = "C:\\Program Files (x86)\\boost\\boost_1_46_1" if is_64bits else "C:\\Program Files\\boost\\boost_1_46_1"
 
 from distutils.core import setup, Extension
 from distutils.sysconfig import get_python_inc
