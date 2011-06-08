@@ -33,6 +33,9 @@
 namespace CEGUI
 {
 
+NativeClipboardProvider::~NativeClipboardProvider()
+{}
+    
 //----------------------------------------------------------------------------//
 Clipboard::Clipboard():
     d_mimeType("text/plain"), // reasonable default I think
@@ -97,12 +100,12 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
     // (if possible)
     if (d_nativeProvider)
     {
-        size_t size;
-        void* buffer;
+        size_t retrievedSize;
+        void* retrievedBuffer;
         
-        d_nativeProvider->retrieveFromClipboard(d_mimeType, buffer, size);
+        d_nativeProvider->retrieveFromClipboard(d_mimeType, retrievedBuffer, retrievedSize);
         
-        if (size != d_bufferSize)
+        if (retrievedSize != d_bufferSize)
         {
             if (d_buffer != 0)
             {
@@ -110,11 +113,11 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
                 d_buffer = 0;
             }
             
-            d_bufferSize = size;
+            d_bufferSize = retrievedSize;
             d_buffer = CEGUI_NEW_ARRAY_PT(BufferElement, d_bufferSize, Clipboard);
         }
         
-        memcpy(d_buffer, buffer, size);
+        memcpy(d_buffer, retrievedBuffer, retrievedSize);
     }
     
     mimeType = d_mimeType;
