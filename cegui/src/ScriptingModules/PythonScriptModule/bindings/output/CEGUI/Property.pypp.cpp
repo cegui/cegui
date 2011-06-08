@@ -8,7 +8,7 @@ namespace bp = boost::python;
 
 struct Property_wrapper : CEGUI::Property, bp::wrapper< CEGUI::Property > {
 
-    Property_wrapper(::CEGUI::String const & name, ::CEGUI::String const & help, ::CEGUI::String const & defaultValue="", bool writesXML=true, ::CEGUI::String const & dataType=CEGUI::Property::UnknownDataType, ::CEGUI::String const & origin=CEGUI::Property::UnknownOrigin )
+    Property_wrapper(::CEGUI::String const & name, ::CEGUI::String const & help, ::CEGUI::String const & defaultValue="", bool writesXML=true, ::CEGUI::String const & dataType="Unknown", ::CEGUI::String const & origin="Unknown" )
     : CEGUI::Property( boost::ref(name), boost::ref(help), boost::ref(defaultValue), writesXML, boost::ref(dataType), boost::ref(origin) )
       , bp::wrapper< CEGUI::Property >(){
         // constructor
@@ -67,7 +67,7 @@ void register_Property_class(){
 
     { //::CEGUI::Property
         typedef bp::class_< Property_wrapper, boost::noncopyable > Property_exposer_t;
-        Property_exposer_t Property_exposer = Property_exposer_t( "Property", bp::init< CEGUI::String const &, CEGUI::String const &, bp::optional< CEGUI::String const &, bool, CEGUI::String const &, CEGUI::String const & > >(( bp::arg("name"), bp::arg("help"), bp::arg("defaultValue")="", bp::arg("writesXML")=(bool)(true), bp::arg("dataType")=CEGUI::Property::UnknownDataType, bp::arg("origin")=CEGUI::Property::UnknownOrigin ), "*!\n\
+        Property_exposer_t Property_exposer = Property_exposer_t( "Property", bp::init< CEGUI::String const &, CEGUI::String const &, bp::optional< CEGUI::String const &, bool, CEGUI::String const &, CEGUI::String const & > >(( bp::arg("name"), bp::arg("help"), bp::arg("defaultValue")="", bp::arg("writesXML")=(bool)(true), bp::arg("dataType")="Unknown", bp::arg("origin")="Unknown" ), "*!\n\
            \n\
               Creates a new Property object.\n\
         \n\
@@ -242,12 +242,6 @@ void register_Property_class(){
                 , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
         
         }
-        Property_exposer.add_static_property( "UnknownDataType"
-                        , bp::make_getter( &CEGUI::Property::UnknownDataType
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Property_exposer.add_static_property( "UnknownOrigin"
-                        , bp::make_getter( &CEGUI::Property::UnknownOrigin
-                                , bp::return_value_policy< bp::return_by_value >() ) );
     }
 
 }
