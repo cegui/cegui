@@ -54,7 +54,7 @@ public:
     
     // TODO: do we want less bug prone code but a bit slower (string conversion for default values at construction) or faster
     //       but more typo prone (passing string default value)?
-    TypedProperty(const String& name, const String& help, const String& origin = Property::UnknownOrigin, typename Helper::pass_type defaultValue = T(), bool writesXML = true):
+    TypedProperty(const String& name, const String& help, const String& origin = "Unknown", typename Helper::pass_type defaultValue = T(), bool writesXML = true):
         Property(name, help, Helper::toString(defaultValue), writesXML, Helper::getDataTypeName(), origin)
     {}
     
