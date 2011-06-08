@@ -62,11 +62,6 @@ class CEGUIEXPORT Property :
     public AllocatedObject<Property>
 {
 public:
-    //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
-    static const String UnknownDataType;
-    //! Holds "Unknown", this is static to avoid copying the string hundreds of times over and over again
-    static const String UnknownOrigin;
-
 	/*!
 	\brief
 		Creates a new Property object.
@@ -90,7 +85,7 @@ public:
 	\param origin
 	    String describing the origin class of this Property (Window, FrameWindow, ...)
 	*/
-	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true, const String& dataType = UnknownDataType, const String& origin = UnknownOrigin) :
+	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true, const String& dataType = "Unknown", const String& origin = "Unknown") :
 	  d_name(name),
 	  d_help(help),
 	  d_default(defaultValue),
