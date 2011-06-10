@@ -175,7 +175,7 @@ void EventSet::setMutedState(bool setting)
 //----------------------------------------------------------------------------//
 Event* EventSet::getEventObject(const String& name, bool autoAdd)
 {
-    EventMap::iterator pos = d_events.find(name);
+    EventMap::const_iterator pos = d_events.find(name);
 
     // if event did not exist, add it as needed and then find it.
     if (pos == d_events.end())

@@ -43,8 +43,8 @@ namespace CEGUI
 \brief
     Class to represent rotation, avoids Gimbal lock
 
-Most people are afraid of Quaternions, I fully understand them. In CEGUI,
-you can just think of quaternions as magic opaque boxes that hold rotation
+Most people are afraid of Quaternions, you don't have to fully understand them.
+In CEGUI, you can just think of quaternions as magic opaque boxes that hold rotation
 data. No need to understand how they work and why. You obviously have to
 understand what degrees and radians are, I won't go into that here.
 
@@ -244,6 +244,15 @@ public:
     static const Quaternion ZERO;
     //! Quaternion(1, 0, 0, 0)
     static const Quaternion IDENTITY;
+    
+    /*!
+    \brief allows writing the quaternion to std ostream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Quaternion& v)
+    {
+        s << "CEGUI::Quaternion(" << v.d_w << ", " << v.d_x << ", " << v.d_y << ", " << v.d_z << ")";
+        return s;
+    }
 
     //! imaginary part
     float d_w;

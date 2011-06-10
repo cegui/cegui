@@ -31,6 +31,8 @@
 #define _CEGUISize_h_
 
 #include "CEGUIBase.h"
+#include <typeinfo>
+#include <ostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -65,41 +67,41 @@ class Size:
     public AllocatedObject<Size<T> >
 {
 public:
-	inline Size()
+    inline Size()
     {}
 
-	inline Size(const T& width, const T& height):
+    inline Size(const T& width, const T& height):
         d_width(width),
         d_height(height)
     {}
 
-	inline Size(const Size& v):
+    inline Size(const Size& v):
         d_width(v.d_width),
         d_height(v.d_height)
     {}
 
-	inline bool operator==(const Size& other) const
+    inline bool operator==(const Size& other) const
     {
-	    return d_width == other.d_width && d_height == other.d_height;
+        return d_width == other.d_width && d_height == other.d_height;
     }
 
-	inline bool operator!=(const Size& other) const
+    inline bool operator!=(const Size& other) const
     {
-	    return !operator==(other);
+        return !operator==(other);
     }
 
-	inline Size operator*(const T& c) const
-	{
-		return Size(d_width * c, d_height * c);
-	}
+    inline Size operator*(const T& c) const
+    {
+        return Size(d_width * c, d_height * c);
+    }
 
-	inline Size operator+(const Size& s) const
-	{
-		return Size(d_width + s.d_width, d_height + s.d_height);
-	}
+    inline Size operator+(const Size& s) const
+    {
+        return Size(d_width + s.d_width, d_height + s.d_height);
+    }
 
-	inline void clamp(Size min, Size max)
-	{
+    inline void clamp(Size min, Size max)
+    {
         if (d_width < min.d_width)
             d_width = min.d_width;
         else if (d_width > max.d_width)
@@ -108,17 +110,17 @@ public:
             d_height = min.d_height;
         else if (d_height > max.d_height)
             d_height = max.d_height;
-	}
+    }
 
-	inline void scaleToAspect(AspectMode mode, T ratio)
-	{
-	    if (mode == AM_IGNORE)
-	        return;
+    inline void scaleToAspect(AspectMode mode, T ratio)
+    {
+        if (mode == AM_IGNORE)
+            return;
 
-	    assert(d_width > 0 || d_height > 0);
-	    assert(ratio > 0);
+        assert(d_width > 0 || d_height > 0);
+        assert(ratio > 0);
 
-	    const T expectedWidth = d_height * ratio;
+        const T expectedWidth = d_height * ratio;
         const bool keepHeight = (mode == AM_SHRINK) ?
                 expectedWidth <= d_width : expectedWidth >= d_width;
 
@@ -130,9 +132,18 @@ public:
         {
             d_height = d_width / ratio;
         }
-	}
+    }
+    
+    /*!
+    \brief allows writing the size to std ostream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Size& v)
+    {
+        s << "CEGUI::Size<" << typeid(T).name() << ">(" << v.d_width << ", " << v.d_height << ")";
+        return s;
+    }
 
-	T d_width;
+    T d_width;
     T d_height;
 };
 

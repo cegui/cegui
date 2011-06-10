@@ -365,6 +365,12 @@ public:
         return Rect(d_min + r.d_min, d_max + r.d_max);
     }
     
+    inline friend std::ostream& operator << (std::ostream& s, const Rect& v)
+    {
+        s << "CEGUI::Rect<" << typeid(T).name() << ">(" << v.d_min.d_x << ", " << v.d_min.d_y << ", " << v.d_max.d_x << ", " << v.d_max.d_y << ")";
+        return s;
+    }
+    
 	/*************************************************************************
 		Data Fields
 	*************************************************************************/
