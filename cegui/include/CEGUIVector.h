@@ -31,6 +31,8 @@
 #define _CEGUIVector_h_
 
 #include "CEGUIBase.h"
+#include <typeinfo>
+#include <ostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -145,6 +147,15 @@ public:
     {
         return !(operator==(vec));
     }
+    
+    /*!
+    \brief allows writing the vector2 to std ostream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Vector2& v)
+    {
+        s << "CEGUI::Vector2<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ")";
+        return s;
+    }
 
     T d_x;
     T d_y;
@@ -201,20 +212,29 @@ public:
         return !(operator==(vec));
     }
 
-	inline Vector3 operator*(const T& c) const
-	{
-		return Vector3(d_x * c, d_y * c, d_z * c);
-	}
+    inline Vector3 operator*(const T& c) const
+    {
+        return Vector3(d_x * c, d_y * c, d_z * c);
+    }
 
-	inline Vector3 operator+(const Vector3& v) const
-	{
-		return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
-	}
+    inline Vector3 operator+(const Vector3& v) const
+    {
+        return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
+    }
 
     inline Vector3 operator-(const Vector3& v) const
-	{
-		return Vector3(d_x - v.d_x, d_y - v.d_y, d_z - v.d_z);
-	}
+    {
+        return Vector3(d_x - v.d_x, d_y - v.d_y, d_z - v.d_z);
+    }
+    
+    /*!
+    \brief allows writing the vector3 to std ostream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const Vector3& v)
+    {
+        s << "CEGUI::Vector3<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ", " << v.d_z << ")";
+        return s;
+    }
 
     T d_x;
     T d_y;
