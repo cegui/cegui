@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIChainedXMLHandler.h
-    created:    Wed Aug 11 2010
+    filename:   CEGUIImage.cpp
+    created:    Sat Jun 11 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,50 +25,33 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIChainedXMLHandler_h_
-#define _CEGUIChainedXMLHandler_h_
-
-#include "CEGUIXMLHandler.h"
+#include "CEGUIImage.h"
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Abstract XMLHandler based class
-class CEGUIEXPORT ChainedXMLHandler : public XMLHandler
+
+//----------------------------------------------------------------------------//
+Image::~Image()
 {
-public:
-    ChainedXMLHandler();
-    virtual ~ChainedXMLHandler();
+}
 
-    // XMLHandler overrides
-    const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
-    void elementStart(const String& element, const XMLAttributes& attributes);
-    void elementEnd(const String& element);
+//----------------------------------------------------------------------------//
+void Image::elementStartLocal(const String& element, const XMLAttributes& attributes)
+{
+     Logger::getSingleton().logEvent(
+        "    [Image] Unknown XML tag encountered: " + element);
+}
 
-    //! returns whether this chained handler has completed.
-    bool completed() const;
+//----------------------------------------------------------------------------//
+void Image::elementEndLocal(const String& element)
+{
+    if (element == "Image")
+        d_completed = true;
+}
 
-protected:
-    //! Function that handles elements locally (used at end of handler chain)
-    virtual void elementStartLocal(const String& element,
-                                   const XMLAttributes& attributes) = 0;
-    //! Function that handles elements locally (used at end of handler chain)
-    virtual void elementEndLocal(const String& element) = 0;
-
-    //! clean up any chained handler.
-    void cleanupChainedHandler();
-
-    //! chained xml handler object.
-    ChainedXMLHandler* d_chainedHandler;
-    //! is the chained handler completed.
-    bool d_completed;
-    //! should the chained handler be deleted by us?
-    bool d_deleteChaniedHandler;
-};
-
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUIChainedXMLHandler_h_
 

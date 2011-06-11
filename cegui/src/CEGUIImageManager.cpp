@@ -58,7 +58,7 @@ class ImagePrefixMatchPred
 public:
     ImagePrefixMatchPred(const String& prefix) : d_prefix(prefix + '/') {}
 
-    bool operator()(const std::pair<String, Image*>& v)
+    bool operator()(const std::pair<String, std::pair<Image*, ImageFactory*> >& v)
     { return v.first.find(d_prefix) == 0; }
 };
 
@@ -73,13 +73,9 @@ const String ImagesetNameAttribute( "Name" );
 const String ImagesetNativeHorzResAttribute( "NativeHorzRes" );
 const String ImagesetNativeVertResAttribute( "NativeVertRes" );
 const String ImagesetAutoScaledAttribute( "AutoScaled" );
+const String ImageTextureAttribute( "Texture" );
+const String ImageTypeAttribute( "Type" );
 const String ImageNameAttribute( "Name" );
-const String ImageXPosAttribute( "XPos" );
-const String ImageYPosAttribute( "YPos" );
-const String ImageWidthAttribute( "Width" );
-const String ImageHeightAttribute( "Height" );
-const String ImageXOffsetAttribute( "XOffset" );
-const String ImageYOffsetAttribute( "YOffset" );
 
 //----------------------------------------------------------------------------//
 // Internal variables used when parsing XML
@@ -94,12 +90,18 @@ ImageManager::ImageManager()
     std::sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
         "[CEGUI::ImageManager] Singleton created " + String(addr_buff));
+
+    // self-register the built in 'BasicImage' type.
+    addImageType<BasicImage>("BasicImage");
 }
 
 //----------------------------------------------------------------------------//
 ImageManager::~ImageManager()
 {
     destroyAll();
+
+    while (!d_factories.empty())
+        removeImageType(d_factories.begin()->first);
 
     char addr_buff[32];
     std::sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -108,16 +110,99 @@ ImageManager::~ImageManager()
 }
 
 //----------------------------------------------------------------------------//
-void ImageManager::add(const Image& image)
+void ImageManager::removeImageType(const String& name)
 {
-    if (d_images.find(image.getName()) != d_images.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "[ImageManager] Image already exists: " + image.getName()));
+    ImageFactoryRegistry::iterator i(d_factories.find(name));
 
-    d_images[image.getName()] = &image.clone();
+    if (i == d_factories.end())
+        return;
 
     Logger::getSingleton().logEvent(
-        "[ImageManager] Added image: " + image.getName());
+        "[CEGUI::ImageManager] Unregistered Image type: " + name);
+
+    CEGUI_DELETE_AO i->second;
+	d_factories.erase(name);
+}
+
+//----------------------------------------------------------------------------//
+bool ImageManager::isImageTypeAvailable(const String& name) const
+{
+    return d_factories.find(name) != d_factories.end();
+}
+
+//----------------------------------------------------------------------------//
+Image& ImageManager::create(const String& type, const String& name)
+{
+    if (d_images.find(name) != d_images.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[ImageManager] Image already exists: " + name));
+
+    ImageFactoryRegistry::iterator i(d_factories.find(type));
+
+    if (i == d_factories.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[ImageManager] Unknown Image type: " + type));
+
+    ImageFactory* factory = i->second;
+    Image& image = factory->create(name);
+    d_images[name] = std::make_pair(&image, factory);
+
+    char addr_buff[32];
+    sprintf(addr_buff, "%p", static_cast<void*>(&image));
+
+    Logger::getSingleton().logEvent(
+        "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
+        ") of type: " + type);
+
+    return image;
+}
+
+//----------------------------------------------------------------------------//
+Image& ImageManager::create(const XMLAttributes& attributes)
+{
+    const String& type(attributes.getValueAsString(ImageTypeAttribute, "BasicImage"));
+    const String& name(attributes.getValueAsString(ImageNameAttribute));
+
+    if (name.empty())
+        CEGUI_THROW(InvalidRequestException(
+            "[ImageManager] Invalid (empty) image name passed to create."));
+
+    if (d_images.find(name) != d_images.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "[ImageManager] Image already exists: " + name));
+
+    ImageFactoryRegistry::iterator i(d_factories.find(type));
+
+    if (i == d_factories.end())
+        CEGUI_THROW(UnknownObjectException(
+            "[ImageManager] Unknown Image type: " + type));
+
+    ImageFactory* factory = i->second;
+    Image& image = factory->create(attributes);
+
+    // sanity check that the created image uses the name specified in the
+    // attributes block
+    if (image.getName() != name)
+    {
+        const String message(
+            "[ImageManager] Factory for type: " + type + " created Image named: " +
+            image.getName() + ".  Was expecting name: " + name);
+            
+        factory->destroy(image);
+
+        CEGUI_THROW(InvalidRequestException(message));
+    }
+
+    d_images[name] = std::make_pair(&image, factory);
+
+    char addr_buff[32];
+    sprintf(addr_buff, "%p", static_cast<void*>(&image));
+
+    Logger::getSingleton().logEvent(
+        "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
+        ") of type: " + type);
+
+    return image;
 }
 
 //----------------------------------------------------------------------------//
@@ -140,7 +225,10 @@ void ImageManager::destroy(ImageMap::iterator& iter)
 {
     Logger::getSingleton().logEvent(
         "[ImageManager] Deleted image: " + iter->first);
-    CEGUI_DELETE_AO iter->second;
+
+    // use the stored factory to destroy the image it created.
+    iter->second.second->destroy(*iter->second.first);
+
     d_images.erase(iter);
 }
 
@@ -160,7 +248,7 @@ Image& ImageManager::get(const String& name) const
         CEGUI_THROW(UnknownObjectException(
             "[ImageManager] Image not defined: " + name));
 
-    return *i->second;
+    return *i->second.first;
 }
 
 //----------------------------------------------------------------------------//
@@ -210,18 +298,17 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
         createTexture(name, filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
+    BasicImage& image = static_cast<BasicImage&>(create("BasicImage", name));
+    image.setTexture(tex);
     const Rectf rect(Vector2f(0.0f, 0.0f), tex->getOriginalDataSize());
-
-    BasicImage image(name, tex, rect,
-                     Vector2f(0, 0), false, Sizef(0, 0));
-    add(image);
+    image.setArea(rect);
 }
 
 //----------------------------------------------------------------------------//
 void ImageManager::notifyDisplaySizeChanged(const Sizef& size)
 {
     for (ImageMap::iterator i = d_images.begin() ; i != d_images.end(); ++i)
-        i->second->notifyDisplaySizeChanged(size);
+        i->second.first->notifyDisplaySizeChanged(size);
 }
 
 const String& ImageManager::getSchemaName() const
@@ -235,8 +322,8 @@ const String& ImageManager::getDefaultResourceGroup() const
 }
 
 //----------------------------------------------------------------------------//
-void ImageManager::elementStart(const String& element,
-                                const XMLAttributes& attributes)
+void ImageManager::elementStartLocal(const String& element,
+                                     const XMLAttributes& attributes)
 {
     if (element == ImageElement)
         elementImageStart(attributes);
@@ -246,6 +333,11 @@ void ImageManager::elementStart(const String& element,
         Logger::getSingleton().logEvent(
             "[ImageManager] Unknown XML element encountered: <" +
             element + ">", Errors);
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::elementEndLocal(const String&)
+{
 }
 
 //----------------------------------------------------------------------------//
@@ -285,26 +377,31 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
 //----------------------------------------------------------------------------//
 void ImageManager::elementImageStart(const XMLAttributes& attributes)
 {
-    const String name(attributes.getValueAsString(ImageNameAttribute));
+    const String image_name(s_texture->getName() + '/' +
+        attributes.getValueAsString(ImageNameAttribute));
 
-    Rectf rect;
-    rect.left(
-        attributes.getValueAsInteger(ImageXPosAttribute));
-    rect.top(
-        attributes.getValueAsInteger(ImageYPosAttribute));
-    rect.setWidth(
-        attributes.getValueAsInteger(ImageWidthAttribute));
-    rect.setHeight(
-        attributes.getValueAsInteger(ImageHeightAttribute));
+    XMLAttributes rw_attrs(attributes);
 
-    const Vector2f offset(
-        attributes.getValueAsInteger(ImageXOffsetAttribute, 0),
-        attributes.getValueAsInteger(ImageYOffsetAttribute, 0));
+    // rewrite the name attribute to include the texture name
+    rw_attrs.add(ImageNameAttribute, image_name);
 
-    BasicImage image(s_texture->getName() + '/' + name, s_texture,
-            rect, offset, s_autoscaled, s_nativeResolution);
+    if (!rw_attrs.exists(ImageTextureAttribute))
+        rw_attrs.add(ImageTextureAttribute, s_texture->getName());
 
-    add(image);
+    if (!rw_attrs.exists(ImagesetAutoScaledAttribute))
+        rw_attrs.add(ImagesetAutoScaledAttribute,
+                     s_autoscaled ? "true" : "false");
+
+    if (!rw_attrs.exists(ImagesetNativeHorzResAttribute))
+        rw_attrs.add(ImagesetNativeHorzResAttribute,
+                     PropertyHelper<float>::toString(s_nativeResolution.d_width));
+
+    if (!rw_attrs.exists(ImagesetNativeVertResAttribute))
+        rw_attrs.add(ImagesetNativeVertResAttribute,
+                     PropertyHelper<float>::toString(s_nativeResolution.d_height));
+
+    d_deleteChaniedHandler = false;
+    d_chainedHandler = &create(rw_attrs);
 }
 
 //----------------------------------------------------------------------------//

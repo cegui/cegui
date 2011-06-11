@@ -64,6 +64,7 @@ class GeometryBuffer;
 class GlobalEventSet;
 class Image;
 class ImageCodec;
+class ImageManager;
 class ImagerySection;
 class Interpolator;
 class JustifiedRenderedString;

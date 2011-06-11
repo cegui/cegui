@@ -29,9 +29,12 @@
 #define _CEGUIImageManager_h_
 
 #include "CEGUISingleton.h"
-#include "CEGUIXMLHandler.h"
+#include "CEGUIChainedXMLHandler.h"
 #include "CEGUIString.h"
 #include "CEGUISize.h"
+#include "CEGUIImageFactory.h"
+#include "CEGUILogger.h"
+#include "CEGUIExceptions.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -45,14 +48,91 @@ namespace CEGUI
 class CEGUIEXPORT ImageManager :
         public Singleton<ImageManager>,
         public AllocatedObject<ImageManager>,
-        public XMLHandler
+        public ChainedXMLHandler
 {
 public:
     ImageManager();
     ~ImageManager();
 
-    //! add a /copy/ (via Image::clone) of \a image.
-    void add(const Image& image);
+    /*!
+    \brief
+        Register an Image subclass with the system and associate it with the
+        identifier \a name.
+
+        This registers a subclass of the Image class, such that instances of
+        that subclass can subsequently be created by using the identifier
+        \a name.
+
+    \tparam T
+        The Image subclass to be instantiated when an Image is created using the
+        type identifier \a name.
+
+    \param name
+        String object describing the identifier that the Image subclass will be
+        registered under.
+
+    \exception AlreadyExistsException
+        thrown if an Image subclass is already registered using \a name.
+    */
+    template <typename T>
+    void addImageType(const String& name);
+
+    /*!
+    \brief
+        Unregister the Image subclass that was registered under the identifier
+        \a name.
+
+    \param name
+        String object describing the identifier of the Image subclass that is to
+        be unregistered.  If no such identifier is known within the system, no
+        action is taken.
+
+    \note
+        You should avoid removing Image subclass types that are still in use.
+        Internally a factory system is employed for the creation and deletion
+        of Image based objects; if an Image subclass - and therefore it's
+        factory - is removed while instances of that class are still active, it
+        will not be possible to safely delete those instances.
+    */
+    void removeImageType(const String& name);
+
+    /*!
+    \brief
+        Return whether an Image subclass has been registered using the
+        identifier \a name.
+
+    \param name
+        String object describing the identifier to test for.
+
+    \return
+        - true if an Image subclass is registered using the identifier \a name.
+        - false if no Image subclass is registered using the identifier \a name.
+    */
+    bool isImageTypeAvailable(const String& name) const;
+
+    /*!
+    \brief
+        Create an instance of Image subclass registered for identifier \a type
+        using the name \a name.
+
+    \param type
+        String object describing the identifier of the Image subclass that is to
+        be created.
+
+    \param name
+        String object describing the name that the newly created instance will
+        be created with.  This name must be unique within the system. 
+
+    \exception UnknownObjectException
+        thrown if no Image subclass has been registered using identifier \a type.
+
+    \exception AlreadyExistsException
+        thrown if an Image instance named \a name already exists.
+    */
+    Image& create(const String& type, const String& name);
+
+    Image& create(const XMLAttributes& attributes);
+
     void destroy(Image& image);
     void destroy(const String& name);
     void destroyAll();
@@ -104,11 +184,18 @@ public:
     const String& getSchemaName() const;
     const String& getDefaultResourceGroup() const;
 
-    void elementStart(const String& element, const XMLAttributes& attributes);
-
 private:
+    // implement chained xml handler abstract interface
+    void elementStartLocal(const String& element, const XMLAttributes& attributes);
+    void elementEndLocal(const String& element);
+
+    //! container type used to hold the registered Image types.
+    typedef std::map<String, ImageFactory*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, RenderEffectFactory*)> ImageFactoryRegistry;
+
     //! container type used to hold the images.
-    typedef std::map<String, Image*, StringFastLessCompare
+    typedef std::map<String, std::pair<Image*, ImageFactory*>,
+                     StringFastLessCompare
                      CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
 
     //! helper to delete an image given an map iterator.
@@ -120,10 +207,27 @@ private:
     //! Default resource group specifically for Imagesets.
     static String d_imagesetDefaultResourceGroup;
 
+    //! container holding the factories.
+    ImageFactoryRegistry d_factories;
     //! container holding the images.
     ImageMap d_images;
 };
 
+//---------------------------------------------------------------------------//
+template <typename T>
+void ImageManager::addImageType(const String& name)
+{
+    if (isImageTypeAvailable(name))
+        CEGUI_THROW(AlreadyExistsException(
+            "[CEGUI::ImageManager] Image type already exists: " + name));
+
+    d_factories[name] = CEGUI_NEW_AO TplImageFactory<T>;
+
+    Logger::getSingleton().logEvent(
+        "[CEGUI::ImageManager] Registered Image type: " + name);
+}
+
+//---------------------------------------------------------------------------//
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
