@@ -2017,7 +2017,7 @@ public:
 	\return
 		Pointer to the newly created child Window object.
 	*/
-    Window* createChild(const String& type, const String& name);
+    Window* createChild(const String& type, const String& name = "");
 
     /*!
     \brief
