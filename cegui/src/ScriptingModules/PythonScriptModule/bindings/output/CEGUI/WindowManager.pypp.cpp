@@ -27,6 +27,14 @@ struct WindowManager_wrapper : CEGUI::WindowManager, bp::wrapper< CEGUI::WindowM
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
+    }
+
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
         if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
             return func_subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
@@ -465,6 +473,29 @@ void register_WindowManager_class(){
                 , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
                 , default_fireEvent_function_type(&WindowManager_wrapper::default_fireEvent)
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( WindowManager_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            WindowManager_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &WindowManager_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( WindowManager_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            WindowManager_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &WindowManager_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

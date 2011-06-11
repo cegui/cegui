@@ -6,10 +6,43 @@
 
 namespace bp = boost::python;
 
+struct SectionSpecification_wrapper : CEGUI::SectionSpecification, bp::wrapper< CEGUI::SectionSpecification > {
+
+    SectionSpecification_wrapper(CEGUI::SectionSpecification const & arg )
+    : CEGUI::SectionSpecification( arg )
+      , bp::wrapper< CEGUI::SectionSpecification >(){
+        // copy constructor
+        
+    }
+
+    SectionSpecification_wrapper(::CEGUI::String const & owner, ::CEGUI::String const & sectionName, ::CEGUI::String const & controlPropertySource, ::CEGUI::String const & controlPropertyValue, ::CEGUI::String const & controlPropertyWidget )
+    : CEGUI::SectionSpecification( boost::ref(owner), boost::ref(sectionName), boost::ref(controlPropertySource), boost::ref(controlPropertyValue), boost::ref(controlPropertyWidget) )
+      , bp::wrapper< CEGUI::SectionSpecification >(){
+        // constructor
+    
+    }
+
+    SectionSpecification_wrapper(::CEGUI::String const & owner, ::CEGUI::String const & sectionName, ::CEGUI::String const & controlPropertySource, ::CEGUI::String const & controlPropertyValue, ::CEGUI::String const & controlPropertyWidget, ::CEGUI::ColourRect const & cols )
+    : CEGUI::SectionSpecification( boost::ref(owner), boost::ref(sectionName), boost::ref(controlPropertySource), boost::ref(controlPropertyValue), boost::ref(controlPropertyWidget), boost::ref(cols) )
+      , bp::wrapper< CEGUI::SectionSpecification >(){
+        // constructor
+    
+    }
+
+    void initColourRectForOverride( ::CEGUI::Window const & wnd, ::CEGUI::ColourRect & cr ) const {
+        CEGUI::SectionSpecification::initColourRectForOverride( boost::ref(wnd), boost::ref(cr) );
+    }
+
+    bool shouldBeDrawn( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::SectionSpecification::shouldBeDrawn( boost::ref(wnd) );
+    }
+
+};
+
 void register_SectionSpecification_class(){
 
     { //::CEGUI::SectionSpecification
-        typedef bp::class_< CEGUI::SectionSpecification > SectionSpecification_exposer_t;
+        typedef bp::class_< SectionSpecification_wrapper > SectionSpecification_exposer_t;
         SectionSpecification_exposer_t SectionSpecification_exposer = SectionSpecification_exposer_t( "SectionSpecification", bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const & >(( bp::arg("owner"), bp::arg("sectionName"), bp::arg("controlPropertySource"), bp::arg("controlPropertyValue"), bp::arg("controlPropertyWidget") )) );
         bp::scope SectionSpecification_scope( SectionSpecification_exposer );
         SectionSpecification_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::ColourRect const & >(( bp::arg("owner"), bp::arg("sectionName"), bp::arg("controlPropertySource"), bp::arg("controlPropertyValue"), bp::arg("controlPropertyWidget"), bp::arg("cols") )) );
@@ -64,6 +97,27 @@ void register_SectionSpecification_class(){
             \n\
                     @return\n\
                         String object holding the name of the target ImagerySection.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::SectionSpecification::initColourRectForOverride
+        
+            typedef void ( SectionSpecification_wrapper::*initColourRectForOverride_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect & ) const;
+            
+            SectionSpecification_exposer.def( 
+                "initColourRectForOverride"
+                , initColourRectForOverride_function_type( &SectionSpecification_wrapper::initColourRectForOverride )
+                , ( bp::arg("wnd"), bp::arg("cr") )
+                , "*!\n\
+                    \n\
+                        Helper method to initialise a ColourRect with appropriate values according to the way\
+                        the\n\
+                        section sepcification is set up.\n\
+            \n\
+                        This will try and get values from multiple places:\n\
+                            - a property attached to  wnd\n\
+                            - the integral d_coloursOverride values.\n\
+                            - or default to colour(1,1,1,1);\n\
                     *\n" );
         
         }
@@ -273,6 +327,19 @@ void register_SectionSpecification_class(){
                     @return\n\
                         Nothing.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::SectionSpecification::shouldBeDrawn
+        
+            typedef bool ( SectionSpecification_wrapper::*shouldBeDrawn_function_type )( ::CEGUI::Window const & ) const;
+            
+            SectionSpecification_exposer.def( 
+                "shouldBeDrawn"
+                , shouldBeDrawn_function_type( &SectionSpecification_wrapper::shouldBeDrawn )
+                , ( bp::arg("wnd") )
+                , "** return whether the section should be drawn, based upon the\n\
+             * render control property and associated items.\n\
+             *\n" );
         
         }
         { //::CEGUI::SectionSpecification::writeXMLToStream

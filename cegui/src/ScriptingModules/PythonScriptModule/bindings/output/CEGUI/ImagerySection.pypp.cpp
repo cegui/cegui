@@ -6,10 +6,39 @@
 
 namespace bp = boost::python;
 
+struct ImagerySection_wrapper : CEGUI::ImagerySection, bp::wrapper< CEGUI::ImagerySection > {
+
+    ImagerySection_wrapper(CEGUI::ImagerySection const & arg )
+    : CEGUI::ImagerySection( arg )
+      , bp::wrapper< CEGUI::ImagerySection >(){
+        // copy constructor
+        
+    }
+
+    ImagerySection_wrapper( )
+    : CEGUI::ImagerySection( )
+      , bp::wrapper< CEGUI::ImagerySection >(){
+        // null constructor
+    
+    }
+
+    ImagerySection_wrapper(::CEGUI::String const & name )
+    : CEGUI::ImagerySection( boost::ref(name) )
+      , bp::wrapper< CEGUI::ImagerySection >(){
+        // constructor
+    
+    }
+
+    void initMasterColourRect( ::CEGUI::Window const & wnd, ::CEGUI::ColourRect & cr ) const {
+        CEGUI::ImagerySection::initMasterColourRect( boost::ref(wnd), boost::ref(cr) );
+    }
+
+};
+
 void register_ImagerySection_class(){
 
     { //::CEGUI::ImagerySection
-        typedef bp::class_< CEGUI::ImagerySection > ImagerySection_exposer_t;
+        typedef bp::class_< ImagerySection_wrapper > ImagerySection_exposer_t;
         ImagerySection_exposer_t ImagerySection_exposer = ImagerySection_exposer_t( "ImagerySection", bp::init< >("*!\n\
         \n\
             Constructor.\n\
@@ -191,6 +220,26 @@ void register_ImagerySection_class(){
             \n\
                     @return\n\
                         String object holding the name of the ImagerySection.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::initMasterColourRect
+        
+            typedef void ( ImagerySection_wrapper::*initMasterColourRect_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect & ) const;
+            
+            ImagerySection_exposer.def( 
+                "initMasterColourRect"
+                , initMasterColourRect_function_type( &ImagerySection_wrapper::initMasterColourRect )
+                , ( bp::arg("wnd"), bp::arg("cr") )
+                , "*!\n\
+                    \n\
+                        Helper method to initialise a ColourRect with appropriate values according to the way\
+                        the\n\
+                        ImagerySection is set up.\n\
+            \n\
+                        This will try and get values from multiple places:\n\
+                            - a property attached to  wnd\n\
+                            - or the integral d_masterColours value.\n\
                     *\n" );
         
         }

@@ -52,6 +52,8 @@
 
 #include "ComponentArea.pypp.hpp"
 
+#include "ComponentList.pypp.hpp"
+
 #include "Connection.pypp.hpp"
 
 #include "ConstBaseIterator_3dfe55a685a628d9556dccd6ce85e923.pypp.hpp"
@@ -432,22 +434,24 @@
 
 #include "XMLSerializer.pypp.hpp"
 
+#include "vector_less__CEGUI_scope_UDim__greater_.pypp.hpp"
+
 namespace bp = boost::python;
 
 struct CEGUI_String_to_python
 {
     static PyObject* convert(const CEGUI::String& s)
     {
-		// use native byteorder
-		int byteorder = 0;
+        // use native byteorder
+        int byteorder = 0;
 
-		// "replace" replaces invalid utf32 chars with "?"
-		
-		// python wants the size of the buffer, not length of the string,
-		// this is the reason for the sizeof
-		return boost::python::incref(
-			PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
-		);
+        // "replace" replaces invalid utf32 chars with "?"
+        
+        // python wants the size of the buffer, not length of the string,
+        // this is the reason for the sizeof
+        return boost::python::incref(
+            PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
+        );
     }
 };
 
@@ -478,9 +482,9 @@ struct CEGUI_String_from_python
         if (PyUnicode_Check(obj_ptr))
         {
             // we have to employ a bit more machinery since this is utf16 coded string
-			// we encode given unicode object (ucs2 - utf16) to utf8
-			PyObject* utf8 = PyUnicode_AsUTF8String(obj_ptr);
-			// then we get the raw bytes of the utf8 python object
+            // we encode given unicode object (ucs2 - utf16) to utf8
+            PyObject* utf8 = PyUnicode_AsUTF8String(obj_ptr);
+            // then we get the raw bytes of the utf8 python object
             const CEGUI::utf8* value = (CEGUI::utf8*)PyString_AsString(utf8);
             if (value == 0)
                 boost::python::throw_error_already_set();
@@ -488,9 +492,9 @@ struct CEGUI_String_from_python
             void* storage = ((boost::python::converter::rvalue_from_python_storage<CEGUI::String>*)data)->storage.bytes;
             new (storage) CEGUI::String(value);
             data->convertible = storage;
-			// now we don't need utf8 anymore, CEGUI::String holds the data for us now, by decreasing
-			// refcount to utf8, we are practically deallocating it
-			boost::python::decref(utf8);
+            // now we don't need utf8 anymore, CEGUI::String holds the data for us now, by decreasing
+            // refcount to utf8, we are practically deallocating it
+            boost::python::decref(utf8);
         }
         else
         {
@@ -517,9 +521,13 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_StrIndexList_class();
 
+    register_vector_less__CEGUI_scope_UDim__greater__class();
+
     register_LBItemList_class();
 
     register_TargetTypeStack_class();
+
+    register_ComponentList_class();
 
     register_PropertyLinkDefinitionList_class();
 
@@ -704,8 +712,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_ImageDim_class();
 
     register_SingletonImageManager_class();
-
-    register_XMLHandler_class();
 
     register_ImageManager_class();
 
@@ -932,6 +938,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_WindowRendererManager_class();
 
     register_XMLAttributes_class();
+
+    register_XMLHandler_class();
 
     register_XMLSerializer_class();
 

@@ -29,6 +29,90 @@ struct BasicRenderedStringParser_wrapper : CEGUI::BasicRenderedStringParser, bp:
     
     }
 
+    virtual void appendRenderedText( ::CEGUI::RenderedString & rs, ::CEGUI::String const & text ) const {
+        if( bp::override func_appendRenderedText = this->get_override( "appendRenderedText" ) )
+            func_appendRenderedText( boost::ref(rs), boost::ref(text) );
+        else{
+            this->CEGUI::BasicRenderedStringParser::appendRenderedText( boost::ref(rs), boost::ref(text) );
+        }
+    }
+    
+    virtual void default_appendRenderedText( ::CEGUI::RenderedString & rs, ::CEGUI::String const & text ) const {
+        CEGUI::BasicRenderedStringParser::appendRenderedText( boost::ref(rs), boost::ref(text) );
+    }
+
+    void handleAspectLock( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleAspectLock( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleBottomPadding( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleBottomPadding( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleColour( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleColour( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleFont( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleFont( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleImage( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleImage( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleImageHeight( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleImageHeight( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleImageSize( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleImageSize( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleImageWidth( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleImageWidth( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleLeftPadding( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleLeftPadding( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handlePadding( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handlePadding( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleRightPadding( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleRightPadding( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleTopPadding( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleTopPadding( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleVertAlignment( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleVertAlignment( boost::ref(rs), boost::ref(value) );
+    }
+
+    void handleWindow( ::CEGUI::RenderedString & rs, ::CEGUI::String const & value ){
+        CEGUI::BasicRenderedStringParser::handleWindow( boost::ref(rs), boost::ref(value) );
+    }
+
+    virtual void initialiseDefaultState(  ){
+        if( bp::override func_initialiseDefaultState = this->get_override( "initialiseDefaultState" ) )
+            func_initialiseDefaultState(  );
+        else{
+            this->CEGUI::BasicRenderedStringParser::initialiseDefaultState(  );
+        }
+    }
+    
+    virtual void default_initialiseDefaultState(  ){
+        CEGUI::BasicRenderedStringParser::initialiseDefaultState( );
+    }
+
+    void initialiseTagHandlers(  ){
+        CEGUI::BasicRenderedStringParser::initialiseTagHandlers(  );
+    }
+
     virtual ::CEGUI::RenderedString parse( ::CEGUI::String const & input_string, ::CEGUI::Font * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
         if( bp::override func_parse = this->get_override( "parse" ) )
             return func_parse( boost::ref(input_string), boost::python::ptr(initial_font), boost::python::ptr(initial_colours) );
@@ -39,6 +123,18 @@ struct BasicRenderedStringParser_wrapper : CEGUI::BasicRenderedStringParser, bp:
     
     ::CEGUI::RenderedString default_parse( ::CEGUI::String const & input_string, ::CEGUI::Font * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
         return CEGUI::BasicRenderedStringParser::parse( boost::ref(input_string), boost::python::ptr(initial_font), boost::python::ptr(initial_colours) );
+    }
+
+    virtual void processControlString( ::CEGUI::RenderedString & rs, ::CEGUI::String const & ctrl_str ){
+        if( bp::override func_processControlString = this->get_override( "processControlString" ) )
+            func_processControlString( boost::ref(rs), boost::ref(ctrl_str) );
+        else{
+            this->CEGUI::BasicRenderedStringParser::processControlString( boost::ref(rs), boost::ref(ctrl_str) );
+        }
+    }
+    
+    virtual void default_processControlString( ::CEGUI::RenderedString & rs, ::CEGUI::String const & ctrl_str ){
+        CEGUI::BasicRenderedStringParser::processControlString( boost::ref(rs), boost::ref(ctrl_str) );
     }
 
 };
@@ -76,6 +172,17 @@ void register_BasicRenderedStringParser_class(){
             @param initial_colours\n\
                 Reference to a ColourRect describing the initial colours to be used.\n\
             *\n") );
+        { //::CEGUI::BasicRenderedStringParser::appendRenderedText
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*appendRenderedText_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) const;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "appendRenderedText"
+                , appendRenderedText_function_type( &BasicRenderedStringParser_wrapper::default_appendRenderedText )
+                , ( bp::arg("rs"), bp::arg("text") )
+                , "! append the text string  text to the RenderedString  rs.\n" );
+        
+        }
         { //::CEGUI::BasicRenderedStringParser::getInitialColours
         
             typedef ::CEGUI::ColourRect const & ( ::CEGUI::BasicRenderedStringParser::*getInitialColours_function_type )(  ) const;
@@ -104,6 +211,168 @@ void register_BasicRenderedStringParser_class(){
             *\n" );
         
         }
+        { //::CEGUI::BasicRenderedStringParser::handleAspectLock
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleAspectLock_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleAspectLock"
+                , handleAspectLock_function_type( &BasicRenderedStringParser_wrapper::handleAspectLock )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleBottomPadding
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleBottomPadding_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleBottomPadding"
+                , handleBottomPadding_function_type( &BasicRenderedStringParser_wrapper::handleBottomPadding )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleColour
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleColour_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleColour"
+                , handleColour_function_type( &BasicRenderedStringParser_wrapper::handleColour )
+                , ( bp::arg("rs"), bp::arg("value") )
+                , "! handlers for the various tags supported\n" );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleFont
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleFont_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleFont"
+                , handleFont_function_type( &BasicRenderedStringParser_wrapper::handleFont )
+                , ( bp::arg("rs"), bp::arg("value") )
+                , "! handlers for the various tags supported\n" );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleImage
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleImage_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleImage"
+                , handleImage_function_type( &BasicRenderedStringParser_wrapper::handleImage )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleImageHeight
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleImageHeight_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleImageHeight"
+                , handleImageHeight_function_type( &BasicRenderedStringParser_wrapper::handleImageHeight )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleImageSize
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleImageSize_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleImageSize"
+                , handleImageSize_function_type( &BasicRenderedStringParser_wrapper::handleImageSize )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleImageWidth
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleImageWidth_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleImageWidth"
+                , handleImageWidth_function_type( &BasicRenderedStringParser_wrapper::handleImageWidth )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleLeftPadding
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleLeftPadding_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleLeftPadding"
+                , handleLeftPadding_function_type( &BasicRenderedStringParser_wrapper::handleLeftPadding )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handlePadding
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handlePadding_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handlePadding"
+                , handlePadding_function_type( &BasicRenderedStringParser_wrapper::handlePadding )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleRightPadding
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleRightPadding_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleRightPadding"
+                , handleRightPadding_function_type( &BasicRenderedStringParser_wrapper::handleRightPadding )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleTopPadding
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleTopPadding_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleTopPadding"
+                , handleTopPadding_function_type( &BasicRenderedStringParser_wrapper::handleTopPadding )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleVertAlignment
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleVertAlignment_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleVertAlignment"
+                , handleVertAlignment_function_type( &BasicRenderedStringParser_wrapper::handleVertAlignment )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::handleWindow
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*handleWindow_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "handleWindow"
+                , handleWindow_function_type( &BasicRenderedStringParser_wrapper::handleWindow )
+                , ( bp::arg("rs"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::initialiseDefaultState
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*initialiseDefaultState_function_type )(  ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "initialiseDefaultState"
+                , initialiseDefaultState_function_type( &BasicRenderedStringParser_wrapper::default_initialiseDefaultState )
+                , "! initialise the default state\n" );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::initialiseTagHandlers
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*initialiseTagHandlers_function_type )(  ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "initialiseTagHandlers"
+                , initialiseTagHandlers_function_type( &BasicRenderedStringParser_wrapper::initialiseTagHandlers )
+                , "! initialise tag handlers\n" );
+        
+        }
         { //::CEGUI::BasicRenderedStringParser::parse
         
             typedef ::CEGUI::RenderedString ( ::CEGUI::BasicRenderedStringParser::*parse_function_type )( ::CEGUI::String const &,::CEGUI::Font *,::CEGUI::ColourRect const * ) ;
@@ -114,6 +383,17 @@ void register_BasicRenderedStringParser_class(){
                 , parse_function_type(&::CEGUI::BasicRenderedStringParser::parse)
                 , default_parse_function_type(&BasicRenderedStringParser_wrapper::default_parse)
                 , ( bp::arg("input_string"), bp::arg("initial_font"), bp::arg("initial_colours") ) );
+        
+        }
+        { //::CEGUI::BasicRenderedStringParser::processControlString
+        
+            typedef void ( BasicRenderedStringParser_wrapper::*processControlString_function_type )( ::CEGUI::RenderedString &,::CEGUI::String const & ) ;
+            
+            BasicRenderedStringParser_exposer.def( 
+                "processControlString"
+                , processControlString_function_type( &BasicRenderedStringParser_wrapper::default_processControlString )
+                , ( bp::arg("rs"), bp::arg("ctrl_str") )
+                , "! Process the control string  ctrl_str.\n" );
         
         }
         { //::CEGUI::BasicRenderedStringParser::setInitialColours

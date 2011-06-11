@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::GeometryBuffer > {
 
+    GeometryBuffer_wrapper( )
+    : CEGUI::GeometryBuffer( )
+      , bp::wrapper< CEGUI::GeometryBuffer >(){
+        // null constructor
+    
+    }
+
     virtual void appendGeometry( ::CEGUI::Vertex const * const vbuff, ::CEGUI::uint vertex_count ){
         bp::override func_appendGeometry = this->get_override( "appendGeometry" );
         func_appendGeometry( vbuff, vertex_count );
@@ -110,6 +117,7 @@ void register_GeometryBuffer_class(){
         typedef bp::class_< GeometryBuffer_wrapper, boost::noncopyable > GeometryBuffer_exposer_t;
         GeometryBuffer_exposer_t GeometryBuffer_exposer = GeometryBuffer_exposer_t( "GeometryBuffer", bp::no_init );
         bp::scope GeometryBuffer_scope( GeometryBuffer_exposer );
+        GeometryBuffer_exposer.def( bp::init< >("! Constructor.\n") );
         { //::CEGUI::GeometryBuffer::appendGeometry
         
             typedef void ( ::CEGUI::GeometryBuffer::*appendGeometry_function_type )( ::CEGUI::Vertex const * const,::CEGUI::uint ) ;

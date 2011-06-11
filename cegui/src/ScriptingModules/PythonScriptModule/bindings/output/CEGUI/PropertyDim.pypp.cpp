@@ -6,10 +6,88 @@
 
 namespace bp = boost::python;
 
+struct PropertyDim_wrapper : CEGUI::PropertyDim, bp::wrapper< CEGUI::PropertyDim > {
+
+    PropertyDim_wrapper(CEGUI::PropertyDim const & arg )
+    : CEGUI::PropertyDim( arg )
+      , bp::wrapper< CEGUI::PropertyDim >(){
+        // copy constructor
+        
+    }
+
+    PropertyDim_wrapper(::CEGUI::String const & name, ::CEGUI::String const & property, ::CEGUI::DimensionType type )
+    : CEGUI::PropertyDim( boost::ref(name), boost::ref(property), type )
+      , bp::wrapper< CEGUI::PropertyDim >(){
+        // constructor
+    
+    }
+
+    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
+        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
+            return func_clone_impl(  );
+        else{
+            return this->CEGUI::PropertyDim::clone_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
+        return CEGUI::PropertyDim::clone_impl( );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd) );
+        else{
+            return this->CEGUI::PropertyDim::getValue_impl( boost::ref(wnd) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::PropertyDim::getValue_impl( boost::ref(wnd) );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+        else{
+            return this->CEGUI::PropertyDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        return CEGUI::PropertyDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    }
+
+    virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementAttributes_impl = this->get_override( "writeXMLElementAttributes_impl" ) )
+            func_writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::PropertyDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+    }
+
+    virtual void writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementName_impl = this->get_override( "writeXMLElementName_impl" ) )
+            func_writeXMLElementName_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::PropertyDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+    }
+
+};
+
 void register_PropertyDim_class(){
 
     { //::CEGUI::PropertyDim
-        typedef bp::class_< CEGUI::PropertyDim, bp::bases< CEGUI::BaseDim > > PropertyDim_exposer_t;
+        typedef bp::class_< PropertyDim_wrapper, bp::bases< CEGUI::BaseDim > > PropertyDim_exposer_t;
         PropertyDim_exposer_t PropertyDim_exposer = PropertyDim_exposer_t( "PropertyDim", "*!\n\
         \n\
             Dimension type that represents the value of a Window property.\n\
@@ -40,6 +118,58 @@ void register_PropertyDim_class(){
                     to be thrown.\n\
                 *\n") );
         bp::scope PropertyDim_scope( PropertyDim_exposer );
+        { //::CEGUI::PropertyDim::clone_impl
+        
+            typedef ::CEGUI::BaseDim * ( PropertyDim_wrapper::*clone_impl_function_type )(  ) const;
+            
+            PropertyDim_exposer.def( 
+                "clone_impl"
+                , clone_impl_function_type( &PropertyDim_wrapper::default_clone_impl )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::PropertyDim::getValue_impl
+        
+            typedef float ( PropertyDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            
+            PropertyDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &PropertyDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd") )
+                , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::PropertyDim::getValue_impl
+        
+            typedef float ( PropertyDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            
+            PropertyDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &PropertyDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd"), bp::arg("container") )
+                , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::PropertyDim::writeXMLElementAttributes_impl
+        
+            typedef void ( PropertyDim_wrapper::*writeXMLElementAttributes_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyDim_exposer.def( 
+                "writeXMLElementAttributes_impl"
+                , writeXMLElementAttributes_impl_function_type( &PropertyDim_wrapper::default_writeXMLElementAttributes_impl )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::PropertyDim::writeXMLElementName_impl
+        
+            typedef void ( PropertyDim_wrapper::*writeXMLElementName_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyDim_exposer.def( 
+                "writeXMLElementName_impl"
+                , writeXMLElementName_impl_function_type( &PropertyDim_wrapper::default_writeXMLElementName_impl )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
     }
 
 }

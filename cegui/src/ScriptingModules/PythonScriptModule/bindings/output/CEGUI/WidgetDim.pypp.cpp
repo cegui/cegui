@@ -6,10 +6,88 @@
 
 namespace bp = boost::python;
 
+struct WidgetDim_wrapper : CEGUI::WidgetDim, bp::wrapper< CEGUI::WidgetDim > {
+
+    WidgetDim_wrapper(CEGUI::WidgetDim const & arg )
+    : CEGUI::WidgetDim( arg )
+      , bp::wrapper< CEGUI::WidgetDim >(){
+        // copy constructor
+        
+    }
+
+    WidgetDim_wrapper(::CEGUI::String const & name, ::CEGUI::DimensionType dim )
+    : CEGUI::WidgetDim( boost::ref(name), dim )
+      , bp::wrapper< CEGUI::WidgetDim >(){
+        // constructor
+    
+    }
+
+    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
+        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
+            return func_clone_impl(  );
+        else{
+            return this->CEGUI::WidgetDim::clone_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
+        return CEGUI::WidgetDim::clone_impl( );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd) );
+        else{
+            return this->CEGUI::WidgetDim::getValue_impl( boost::ref(wnd) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::WidgetDim::getValue_impl( boost::ref(wnd) );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+        else{
+            return this->CEGUI::WidgetDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        return CEGUI::WidgetDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    }
+
+    virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementAttributes_impl = this->get_override( "writeXMLElementAttributes_impl" ) )
+            func_writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::WidgetDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::WidgetDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+    }
+
+    virtual void writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementName_impl = this->get_override( "writeXMLElementName_impl" ) )
+            func_writeXMLElementName_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::WidgetDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::WidgetDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+    }
+
+};
+
 void register_WidgetDim_class(){
 
     { //::CEGUI::WidgetDim
-        typedef bp::class_< CEGUI::WidgetDim, bp::bases< CEGUI::BaseDim > > WidgetDim_exposer_t;
+        typedef bp::class_< WidgetDim_wrapper, bp::bases< CEGUI::BaseDim > > WidgetDim_exposer_t;
         WidgetDim_exposer_t WidgetDim_exposer = WidgetDim_exposer_t( "WidgetDim", "*!\n\
             \n\
                 Dimension type that represents some dimension of a Windowwidget.  Implements BaseDim\
@@ -32,6 +110,38 @@ void register_WidgetDim_class(){
                     is to represent.\n\
                 *\n") );
         bp::scope WidgetDim_scope( WidgetDim_exposer );
+        { //::CEGUI::WidgetDim::clone_impl
+        
+            typedef ::CEGUI::BaseDim * ( WidgetDim_wrapper::*clone_impl_function_type )(  ) const;
+            
+            WidgetDim_exposer.def( 
+                "clone_impl"
+                , clone_impl_function_type( &WidgetDim_wrapper::default_clone_impl )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::WidgetDim::getValue_impl
+        
+            typedef float ( WidgetDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            
+            WidgetDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &WidgetDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd") )
+                , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::WidgetDim::getValue_impl
+        
+            typedef float ( WidgetDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            
+            WidgetDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &WidgetDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd"), bp::arg("container") )
+                , "Implementation of the base class interface\n" );
+        
+        }
         { //::CEGUI::WidgetDim::setSourceDimension
         
             typedef void ( ::CEGUI::WidgetDim::*setSourceDimension_function_type )( ::CEGUI::DimensionType ) ;
@@ -72,6 +182,26 @@ void register_WidgetDim_class(){
                     @return\n\
                         Nothing.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::WidgetDim::writeXMLElementAttributes_impl
+        
+            typedef void ( WidgetDim_wrapper::*writeXMLElementAttributes_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            WidgetDim_exposer.def( 
+                "writeXMLElementAttributes_impl"
+                , writeXMLElementAttributes_impl_function_type( &WidgetDim_wrapper::default_writeXMLElementAttributes_impl )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::WidgetDim::writeXMLElementName_impl
+        
+            typedef void ( WidgetDim_wrapper::*writeXMLElementName_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            WidgetDim_exposer.def( 
+                "writeXMLElementName_impl"
+                , writeXMLElementName_impl_function_type( &WidgetDim_wrapper::default_writeXMLElementName_impl )
+                , ( bp::arg("xml_stream") ) );
         
         }
     }

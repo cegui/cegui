@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct WindowFactory_wrapper : CEGUI::WindowFactory, bp::wrapper< CEGUI::WindowFactory > {
 
+    WindowFactory_wrapper(::CEGUI::String const & type )
+    : CEGUI::WindowFactory( boost::ref(type) )
+      , bp::wrapper< CEGUI::WindowFactory >(){
+        // constructor
+    
+    }
+
     virtual ::CEGUI::Window * createWindow( ::CEGUI::String const & name ){
         bp::override func_createWindow = this->get_override( "createWindow" );
         return func_createWindow( boost::ref(name) );
@@ -26,6 +33,7 @@ void register_WindowFactory_class(){
         typedef bp::class_< WindowFactory_wrapper, boost::noncopyable > WindowFactory_exposer_t;
         WindowFactory_exposer_t WindowFactory_exposer = WindowFactory_exposer_t( "WindowFactory", bp::no_init );
         bp::scope WindowFactory_scope( WindowFactory_exposer );
+        WindowFactory_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("type") ), "! Constructor\n") );
         { //::CEGUI::WindowFactory::createWindow
         
             typedef ::CEGUI::Window * ( ::CEGUI::WindowFactory::*createWindow_function_type )( ::CEGUI::String const & ) ;

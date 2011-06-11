@@ -15,6 +15,10 @@ struct RenderingSurface_wrapper : CEGUI::RenderingSurface, bp::wrapper< CEGUI::R
     
     }
 
+    void attachWindow( ::CEGUI::RenderingWindow & w ){
+        CEGUI::RenderingSurface::attachWindow( boost::ref(w) );
+    }
+
     virtual void destroyRenderingWindow( ::CEGUI::RenderingWindow & window ) {
         if( bp::override func_destroyRenderingWindow = this->get_override( "destroyRenderingWindow" ) )
             func_destroyRenderingWindow( boost::ref(window) );
@@ -27,6 +31,10 @@ struct RenderingSurface_wrapper : CEGUI::RenderingSurface, bp::wrapper< CEGUI::R
         CEGUI::RenderingSurface::destroyRenderingWindow( boost::ref(window) );
     }
 
+    void detatchWindow( ::CEGUI::RenderingWindow & w ){
+        CEGUI::RenderingSurface::detatchWindow( boost::ref(w) );
+    }
+
     virtual void draw(  ) {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw(  );
@@ -37,6 +45,10 @@ struct RenderingSurface_wrapper : CEGUI::RenderingSurface, bp::wrapper< CEGUI::R
     
     void default_draw(  ) {
         CEGUI::RenderingSurface::draw( );
+    }
+
+    void draw( ::CEGUI::RenderQueue const & queue, ::CEGUI::RenderQueueEventArgs & args ){
+        CEGUI::RenderingSurface::draw( boost::ref(queue), boost::ref(args) );
     }
 
     virtual void invalidate(  ) {
@@ -85,6 +97,14 @@ struct RenderingSurface_wrapper : CEGUI::RenderingSurface, bp::wrapper< CEGUI::R
     
     void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -166,6 +186,17 @@ void register_RenderingSurface_class(){
                 *\n" );
         
         }
+        { //::CEGUI::RenderingSurface::attachWindow
+        
+            typedef void ( RenderingSurface_wrapper::*attachWindow_function_type )( ::CEGUI::RenderingWindow & ) ;
+            
+            RenderingSurface_exposer.def( 
+                "attachWindow"
+                , attachWindow_function_type( &RenderingSurface_wrapper::attachWindow )
+                , ( bp::arg("w") )
+                , "! attach ReneringWindow from this RenderingSurface\n" );
+        
+        }
         { //::CEGUI::RenderingSurface::clearGeometry
         
             typedef void ( ::CEGUI::RenderingSurface::*clearGeometry_function_type )( ::CEGUI::RenderQueueID const ) ;
@@ -228,6 +259,17 @@ void register_RenderingSurface_class(){
                 , ( bp::arg("window") ) );
         
         }
+        { //::CEGUI::RenderingSurface::detatchWindow
+        
+            typedef void ( RenderingSurface_wrapper::*detatchWindow_function_type )( ::CEGUI::RenderingWindow & ) ;
+            
+            RenderingSurface_exposer.def( 
+                "detatchWindow"
+                , detatchWindow_function_type( &RenderingSurface_wrapper::detatchWindow )
+                , ( bp::arg("w") )
+                , "! detatch ReneringWindow from this RenderingSurface\n" );
+        
+        }
         { //::CEGUI::RenderingSurface::draw
         
             typedef void ( ::CEGUI::RenderingSurface::*draw_function_type )(  ) ;
@@ -237,6 +279,17 @@ void register_RenderingSurface_class(){
                 "draw"
                 , draw_function_type(&::CEGUI::RenderingSurface::draw)
                 , default_draw_function_type(&RenderingSurface_wrapper::default_draw) );
+        
+        }
+        { //::CEGUI::RenderingSurface::draw
+        
+            typedef void ( RenderingSurface_wrapper::*draw_function_type )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) ;
+            
+            RenderingSurface_exposer.def( 
+                "draw"
+                , draw_function_type( &RenderingSurface_wrapper::draw )
+                , ( bp::arg("queue"), bp::arg("args") )
+                , "! draw a rendering queue, firing events before and after.\n" );
         
         }
         { //::CEGUI::RenderingSurface::getRenderTarget
@@ -372,6 +425,29 @@ void register_RenderingSurface_class(){
                 , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
                 , default_fireEvent_function_type(&RenderingSurface_wrapper::default_fireEvent)
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( RenderingSurface_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            RenderingSurface_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &RenderingSurface_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( RenderingSurface_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            RenderingSurface_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &RenderingSurface_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

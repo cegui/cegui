@@ -27,6 +27,18 @@ struct PropertyDefinitionBase_wrapper : CEGUI::PropertyDefinitionBase, bp::wrapp
         CEGUI::PropertyDefinitionBase::set( boost::python::ptr(receiver), boost::ref(value) );
     }
 
+    virtual void writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLAttributes = this->get_override( "writeXMLAttributes" ) )
+            func_writeXMLAttributes( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::PropertyDefinitionBase::writeXMLAttributes( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyDefinitionBase::writeXMLAttributes( boost::ref(xml_stream) );
+    }
+
     virtual void writeXMLElementType( ::CEGUI::XMLSerializer & xml_stream ) const {
         bp::override func_writeXMLElementType = this->get_override( "writeXMLElementType" );
         func_writeXMLElementType( boost::ref(xml_stream) );
@@ -108,6 +120,26 @@ void register_PropertyDefinitionBase_class(){
                 , set_function_type(&::CEGUI::PropertyDefinitionBase::set)
                 , default_set_function_type(&PropertyDefinitionBase_wrapper::default_set)
                 , ( bp::arg("receiver"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::PropertyDefinitionBase::writeXMLAttributes
+        
+            typedef void ( PropertyDefinitionBase_wrapper::*writeXMLAttributes_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyDefinitionBase_exposer.def( 
+                "writeXMLAttributes"
+                , writeXMLAttributes_function_type( &PropertyDefinitionBase_wrapper::default_writeXMLAttributes )
+                , ( bp::arg("xml_stream") )
+                , "*!\n\
+                    \n\
+                        Write out any xml attributes added in a sub-class.  Note that you\n\
+                        should not write the closing '>' character sequence, nor any other\n\
+                        information in this function.  You should always call the base class\n\
+                        implementation of this function when overriding.\n\
+            \n\
+                    @param xml_stream\n\
+                        Stream where xml data should be output.\n\
+                    *\n" );
         
         }
         { //::CEGUI::PropertyDefinitionBase::writeXMLElementType

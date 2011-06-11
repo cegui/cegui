@@ -22,6 +22,10 @@ struct DefaultResourceProvider_wrapper : CEGUI::DefaultResourceProvider, bp::wra
     
     }
 
+    ::CEGUI::String getFinalFilename( ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ) const {
+        return CEGUI::DefaultResourceProvider::getFinalFilename( boost::ref(filename), boost::ref(resourceGroup) );
+    }
+
     virtual ::size_t getResourceGroupFileNames( ::std::vector< CEGUI::String > & out_vec, ::CEGUI::String const & file_pattern, ::CEGUI::String const & resource_group ) {
         if( bp::override func_getResourceGroupFileNames = this->get_override( "getResourceGroupFileNames" ) )
             return func_getResourceGroupFileNames( boost::ref(out_vec), boost::ref(file_pattern), boost::ref(resource_group) );
@@ -85,6 +89,22 @@ void register_DefaultResourceProvider_class(){
                     The resource group identifier for which the associated directory is to\n\
                     be cleared.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::DefaultResourceProvider::getFinalFilename
+        
+            typedef ::CEGUI::String ( DefaultResourceProvider_wrapper::*getFinalFilename_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) const;
+            
+            DefaultResourceProvider_exposer.def( 
+                "getFinalFilename"
+                , getFinalFilename_function_type( &DefaultResourceProvider_wrapper::getFinalFilename )
+                , ( bp::arg("filename"), bp::arg("resourceGroup") )
+                , "*!\n\
+            \n\
+                Return the final path and filename, taking into account the given\n\
+                resource group identifier that should be used when attempting to\n\
+                load the data.\n\
+            *\n" );
         
         }
         { //::CEGUI::DefaultResourceProvider::getResourceGroupDirectory

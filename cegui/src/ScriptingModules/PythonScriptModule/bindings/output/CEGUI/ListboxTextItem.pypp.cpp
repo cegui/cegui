@@ -46,6 +46,10 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
         return CEGUI::ListboxTextItem::getPixelSize( );
     }
 
+    void parseTextString(  ) const {
+        CEGUI::ListboxTextItem::parseTextString(  );
+    }
+
     virtual void setText( ::CEGUI::String const & text ) {
         if( bp::override func_setText = this->get_override( "setText" ) )
             func_setText( boost::ref(text) );
@@ -56,6 +60,14 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
     
     void default_setText( ::CEGUI::String const & text ) {
         CEGUI::ListboxTextItem::setText( boost::ref(text) );
+    }
+
+    ::CEGUI::Colour calculateModulatedAlphaColour( ::CEGUI::Colour col, float alpha ) const {
+        return CEGUI::ListboxItem::calculateModulatedAlphaColour( col, alpha );
+    }
+
+    ::CEGUI::ColourRect getModulateAlphaColourRect( ::CEGUI::ColourRect const & cols, float alpha ) const {
+        return CEGUI::ListboxItem::getModulateAlphaColourRect( boost::ref(cols), alpha );
     }
 
 };
@@ -146,6 +158,15 @@ void register_ListboxTextItem_class(){
                 "isTextParsingEnabled"
                 , isTextParsingEnabled_function_type( &::CEGUI::ListboxTextItem::isTextParsingEnabled )
                 , "! return whether text parsing is enabled for this ListboxTextItem.\n" );
+        
+        }
+        { //::CEGUI::ListboxTextItem::parseTextString
+        
+            typedef void ( ListboxTextItem_wrapper::*parseTextString_function_type )(  ) const;
+            
+            ListboxTextItem_exposer.def( 
+                "parseTextString"
+                , parseTextString_function_type( &ListboxTextItem_wrapper::parseTextString ) );
         
         }
         { //::CEGUI::ListboxTextItem::setFont
@@ -294,6 +315,39 @@ void register_ListboxTextItem_class(){
         ListboxTextItem_exposer.def_readonly( "DefaultTextColour", CEGUI::ListboxTextItem::DefaultTextColour, "*************************************************************************\n\
            Constants\n\
         *************************************************************************\n" );
+        { //::CEGUI::ListboxItem::calculateModulatedAlphaColour
+        
+            typedef ::CEGUI::Colour ( ListboxTextItem_wrapper::*calculateModulatedAlphaColour_function_type )( ::CEGUI::Colour,float ) const;
+            
+            ListboxTextItem_exposer.def( 
+                "calculateModulatedAlphaColour"
+                , calculateModulatedAlphaColour_function_type( &ListboxTextItem_wrapper::calculateModulatedAlphaColour )
+                , ( bp::arg("col"), bp::arg("alpha") )
+                , "*!\n\
+            \n\
+                Return a colour value describing the colour specified by  col after having its alpha\n\
+                component modulated by the value  alpha.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::ListboxItem::getModulateAlphaColourRect
+        
+            typedef ::CEGUI::ColourRect ( ListboxTextItem_wrapper::*getModulateAlphaColourRect_function_type )( ::CEGUI::ColourRect const &,float ) const;
+            
+            ListboxTextItem_exposer.def( 
+                "getModulateAlphaColourRect"
+                , getModulateAlphaColourRect_function_type( &ListboxTextItem_wrapper::getModulateAlphaColourRect )
+                , ( bp::arg("cols"), bp::arg("alpha") )
+                , "*************************************************************************\n\
+                Implementation methods\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+                Return a ColourRect object describing the colours in  cols after having their alpha\n\
+                component modulated by the value  alpha.\n\
+            *\n" );
+        
+        }
     }
 
 }

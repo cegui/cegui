@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Scheme_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Scheme_ptr__greater___greater___greater__comma__CEGUI_scope_Scheme_ptr___greater__wrapper : CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme* >, bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme* > > {
 
+    ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Scheme_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Scheme_ptr__greater___greater___greater__comma__CEGUI_scope_Scheme_ptr___greater__wrapper( )
+    : CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme*>( )
+      , bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme* > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::Scheme * getCurrentValue(  ) const {
         bp::override func_getCurrentValue = this->get_override( "getCurrentValue" );
         return func_getCurrentValue(  );
@@ -21,6 +28,9 @@ void register_ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_class(){
         typedef bp::class_< ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Scheme_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Scheme_ptr__greater___greater___greater__comma__CEGUI_scope_Scheme_ptr___greater__wrapper, boost::noncopyable > ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer_t;
         ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer_t ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer = ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer_t( "ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174", bp::no_init );
         bp::scope ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_scope( ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer );
+        ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme* >::getCurrentValue
         
             typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > >, CEGUI::Scheme* > exported_class_t;

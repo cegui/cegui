@@ -34,6 +34,22 @@ struct PropertyLinkDefinition_wrapper : CEGUI::PropertyLinkDefinition, bp::wrapp
         return CEGUI::PropertyLinkDefinition::get( boost::python::ptr(receiver) );
     }
 
+    ::CEGUI::Window const * getTargetWindow( ::CEGUI::PropertyReceiver const * receiver ) const {
+        return CEGUI::PropertyLinkDefinition::getTargetWindow( boost::python::ptr(receiver) );
+    }
+
+    ::CEGUI::Window * getTargetWindow( ::CEGUI::PropertyReceiver * receiver ){
+        return CEGUI::PropertyLinkDefinition::getTargetWindow( boost::python::ptr(receiver) );
+    }
+
+    ::CEGUI::Window const * getTargetWindow( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::String const & name ) const {
+        return CEGUI::PropertyLinkDefinition::getTargetWindow( boost::python::ptr(receiver), boost::ref(name) );
+    }
+
+    ::CEGUI::Window * getTargetWindow( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & name ){
+        return CEGUI::PropertyLinkDefinition::getTargetWindow( boost::python::ptr(receiver), boost::ref(name) );
+    }
+
     virtual void set( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
         if( bp::override func_set = this->get_override( "set" ) )
             func_set( boost::python::ptr(receiver), boost::ref(value) );
@@ -44,6 +60,30 @@ struct PropertyLinkDefinition_wrapper : CEGUI::PropertyLinkDefinition, bp::wrapp
     
     void default_set( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
         CEGUI::PropertyLinkDefinition::set( boost::python::ptr(receiver), boost::ref(value) );
+    }
+
+    virtual void writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLAttributes = this->get_override( "writeXMLAttributes" ) )
+            func_writeXMLAttributes( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::PropertyLinkDefinition::writeXMLAttributes( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyLinkDefinition::writeXMLAttributes( boost::ref(xml_stream) );
+    }
+
+    virtual void writeXMLElementType( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementType = this->get_override( "writeXMLElementType" ) )
+            func_writeXMLElementType( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::PropertyLinkDefinition::writeXMLElementType( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementType( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyLinkDefinition::writeXMLElementType( boost::ref(xml_stream) );
     }
 
     virtual ::CEGUI::String getDefault( ::CEGUI::PropertyReceiver const * receiver ) const  {
@@ -140,6 +180,69 @@ void register_PropertyLinkDefinition_class(){
                 , ( bp::arg("receiver") ) );
         
         }
+        { //::CEGUI::PropertyLinkDefinition::getTargetWindow
+        
+            typedef ::CEGUI::Window const * ( PropertyLinkDefinition_wrapper::*getTargetWindow_function_type )( ::CEGUI::PropertyReceiver const * ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "getTargetWindow"
+                , getTargetWindow_function_type( &PropertyLinkDefinition_wrapper::getTargetWindow )
+                , ( bp::arg("receiver") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                    \n\
+                        return a pointer to the window containing the target property to\n\
+                        be accessed.\n\
+            \n\
+                    @exception UnknownObjectException\n\
+                        thrown if no such target window exists within the system.\n\
+            \n\
+                     deprecated\n\
+                        This will be removed in 0.8.x.  Use the version taking a suffix\n\
+                        string instead!\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::PropertyLinkDefinition::getTargetWindow
+        
+            typedef ::CEGUI::Window * ( PropertyLinkDefinition_wrapper::*getTargetWindow_function_type )( ::CEGUI::PropertyReceiver * ) ;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "getTargetWindow"
+                , getTargetWindow_function_type( &PropertyLinkDefinition_wrapper::getTargetWindow )
+                , ( bp::arg("receiver") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+             deprecated\n\
+                This will be removed in 0.8.x.  Use the version taking a suffix\n\
+                string instead!\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::PropertyLinkDefinition::getTargetWindow
+        
+            typedef ::CEGUI::Window const * ( PropertyLinkDefinition_wrapper::*getTargetWindow_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::String const & ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "getTargetWindow"
+                , getTargetWindow_function_type( &PropertyLinkDefinition_wrapper::getTargetWindow )
+                , ( bp::arg("receiver"), bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Return a pointer to the target window with the given name.\n" );
+        
+        }
+        { //::CEGUI::PropertyLinkDefinition::getTargetWindow
+        
+            typedef ::CEGUI::Window * ( PropertyLinkDefinition_wrapper::*getTargetWindow_function_type )( ::CEGUI::PropertyReceiver *,::CEGUI::String const & ) ;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "getTargetWindow"
+                , getTargetWindow_function_type( &PropertyLinkDefinition_wrapper::getTargetWindow )
+                , ( bp::arg("receiver"), bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Return a pointer to the target window with the given name.\n" );
+        
+        }
         { //::CEGUI::PropertyLinkDefinition::isTargetProperty
         
             typedef bool ( ::CEGUI::PropertyLinkDefinition::*isTargetProperty_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) const;
@@ -161,6 +264,26 @@ void register_PropertyLinkDefinition_class(){
                 , set_function_type(&::CEGUI::PropertyLinkDefinition::set)
                 , default_set_function_type(&PropertyLinkDefinition_wrapper::default_set)
                 , ( bp::arg("receiver"), bp::arg("value") ) );
+        
+        }
+        { //::CEGUI::PropertyLinkDefinition::writeXMLAttributes
+        
+            typedef void ( PropertyLinkDefinition_wrapper::*writeXMLAttributes_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "writeXMLAttributes"
+                , writeXMLAttributes_function_type( &PropertyLinkDefinition_wrapper::default_writeXMLAttributes )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::PropertyLinkDefinition::writeXMLElementType
+        
+            typedef void ( PropertyLinkDefinition_wrapper::*writeXMLElementType_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "writeXMLElementType"
+                , writeXMLElementType_function_type( &PropertyLinkDefinition_wrapper::default_writeXMLElementType )
+                , ( bp::arg("xml_stream") ) );
         
         }
         { //::CEGUI::Property::getDefault

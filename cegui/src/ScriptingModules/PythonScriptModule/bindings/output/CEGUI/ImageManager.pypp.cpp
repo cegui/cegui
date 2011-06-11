@@ -15,30 +15,6 @@ struct ImageManager_wrapper : CEGUI::ImageManager, bp::wrapper< CEGUI::ImageMana
     
     }
 
-    virtual void elementStart( ::CEGUI::String const & element, ::CEGUI::XMLAttributes const & attributes ) {
-        if( bp::override func_elementStart = this->get_override( "elementStart" ) )
-            func_elementStart( boost::ref(element), boost::ref(attributes) );
-        else{
-            this->CEGUI::ImageManager::elementStart( boost::ref(element), boost::ref(attributes) );
-        }
-    }
-    
-    void default_elementStart( ::CEGUI::String const & element, ::CEGUI::XMLAttributes const & attributes ) {
-        CEGUI::ImageManager::elementStart( boost::ref(element), boost::ref(attributes) );
-    }
-
-    virtual void elementEnd( ::CEGUI::String const & element ) {
-        if( bp::override func_elementEnd = this->get_override( "elementEnd" ) )
-            func_elementEnd( boost::ref(element) );
-        else{
-            this->CEGUI::XMLHandler::elementEnd( boost::ref(element) );
-        }
-    }
-    
-    void default_elementEnd( ::CEGUI::String const & element ) {
-        CEGUI::XMLHandler::elementEnd( boost::ref(element) );
-    }
-
     virtual void text( ::CEGUI::String const & text ) {
         if( bp::override func_text = this->get_override( "text" ) )
             func_text( boost::ref(text) );
@@ -56,20 +32,9 @@ struct ImageManager_wrapper : CEGUI::ImageManager, bp::wrapper< CEGUI::ImageMana
 void register_ImageManager_class(){
 
     { //::CEGUI::ImageManager
-        typedef bp::class_< ImageManager_wrapper, bp::bases< CEGUI::Singleton< CEGUI::ImageManager >, CEGUI::XMLHandler >, boost::noncopyable > ImageManager_exposer_t;
+        typedef bp::class_< ImageManager_wrapper, bp::bases< CEGUI::Singleton< CEGUI::ImageManager > >, boost::noncopyable > ImageManager_exposer_t;
         ImageManager_exposer_t ImageManager_exposer = ImageManager_exposer_t( "ImageManager", bp::init< >() );
         bp::scope ImageManager_scope( ImageManager_exposer );
-        { //::CEGUI::ImageManager::add
-        
-            typedef void ( ::CEGUI::ImageManager::*add_function_type )( ::CEGUI::Image const & ) ;
-            
-            ImageManager_exposer.def( 
-                "add"
-                , add_function_type( &::CEGUI::ImageManager::add )
-                , ( bp::arg("image") )
-                , "! add a copy (via Image.clone) of  image.\n" );
-        
-        }
         { //::CEGUI::ImageManager::addFromImageFile
         
             typedef void ( ::CEGUI::ImageManager::*addFromImageFile_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const & ) ;
@@ -80,6 +45,47 @@ void register_ImageManager_class(){
                 , ( bp::arg("name"), bp::arg("filename"), bp::arg("resource_group")="" ) );
         
         }
+        { //::CEGUI::ImageManager::create
+        
+            typedef ::CEGUI::Image & ( ::CEGUI::ImageManager::*create_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            ImageManager_exposer.def( 
+                "create"
+                , create_function_type( &::CEGUI::ImageManager::create )
+                , ( bp::arg("type"), bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Create an instance of Image subclass registered for identifier  type\n\
+                    using the name  name.\n\
+            \n\
+                @param type\n\
+                    String object describing the identifier of the Image subclass that is to\n\
+                    be created.\n\
+            \n\
+                @param name\n\
+                    String object describing the name that the newly created instance will\n\
+                    be created with.  This name must be unique within the system. \n\
+            \n\
+                @exception UnknownObjectException\n\
+                    thrown if no Image subclass has been registered using identifier  type.\n\
+            \n\
+                @exception AlreadyExistsException\n\
+                    thrown if an Image instance named  name already exists.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::ImageManager::create
+        
+            typedef ::CEGUI::Image & ( ::CEGUI::ImageManager::*create_function_type )( ::CEGUI::XMLAttributes const & ) ;
+            
+            ImageManager_exposer.def( 
+                "create"
+                , create_function_type( &::CEGUI::ImageManager::create )
+                , ( bp::arg("attributes") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::ImageManager::destroy
         
             typedef void ( ::CEGUI::ImageManager::*destroy_function_type )( ::CEGUI::Image & ) ;
@@ -87,8 +93,7 @@ void register_ImageManager_class(){
             ImageManager_exposer.def( 
                 "destroy"
                 , destroy_function_type( &::CEGUI::ImageManager::destroy )
-                , ( bp::arg("image") )
-                , "! add a copy (via Image.clone) of  image.\n" );
+                , ( bp::arg("image") ) );
         
         }
         { //::CEGUI::ImageManager::destroy
@@ -118,18 +123,6 @@ void register_ImageManager_class(){
                 "destroyImageCollection"
                 , destroyImageCollection_function_type( &::CEGUI::ImageManager::destroyImageCollection )
                 , ( bp::arg("prefix"), bp::arg("delete_texture")=(bool const)(true) ) );
-        
-        }
-        { //::CEGUI::ImageManager::elementStart
-        
-            typedef void ( ::CEGUI::ImageManager::*elementStart_function_type )( ::CEGUI::String const &,::CEGUI::XMLAttributes const & ) ;
-            typedef void ( ImageManager_wrapper::*default_elementStart_function_type )( ::CEGUI::String const &,::CEGUI::XMLAttributes const & ) ;
-            
-            ImageManager_exposer.def( 
-                "elementStart"
-                , elementStart_function_type(&::CEGUI::ImageManager::elementStart)
-                , default_elementStart_function_type(&ImageManager_wrapper::default_elementStart)
-                , ( bp::arg("element"), bp::arg("attributes") ) );
         
         }
         { //::CEGUI::ImageManager::get
@@ -200,6 +193,28 @@ void register_ImageManager_class(){
                 , ( bp::arg("name") ) );
         
         }
+        { //::CEGUI::ImageManager::isImageTypeAvailable
+        
+            typedef bool ( ::CEGUI::ImageManager::*isImageTypeAvailable_function_type )( ::CEGUI::String const & ) const;
+            
+            ImageManager_exposer.def( 
+                "isImageTypeAvailable"
+                , isImageTypeAvailable_function_type( &::CEGUI::ImageManager::isImageTypeAvailable )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Return whether an Image subclass has been registered using the\n\
+                    identifier  name.\n\
+            \n\
+                @param name\n\
+                    String object describing the identifier to test for.\n\
+            \n\
+                @return\n\
+                    - true if an Image subclass is registered using the identifier  name.\n\
+                    - false if no Image subclass is registered using the identifier  name.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::ImageManager::loadImageset
         
             typedef void ( ::CEGUI::ImageManager::*loadImageset_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
@@ -227,6 +242,33 @@ void register_ImageManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::ImageManager::removeImageType
+        
+            typedef void ( ::CEGUI::ImageManager::*removeImageType_function_type )( ::CEGUI::String const & ) ;
+            
+            ImageManager_exposer.def( 
+                "removeImageType"
+                , removeImageType_function_type( &::CEGUI::ImageManager::removeImageType )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Unregister the Image subclass that was registered under the identifier\n\
+                     name.\n\
+            \n\
+                @param name\n\
+                    String object describing the identifier of the Image subclass that is to\n\
+                    be unregistered.  If no such identifier is known within the system, no\n\
+                    action is taken.\n\
+            \n\
+                \note\n\
+                    You should avoid removing Image subclass types that are still in use.\n\
+                    Internally a factory system is employed for the creation and deletion\n\
+                    of Image based objects; if an Image subclass - and therefore it's\n\
+                    factory - is removed while instances of that class are still active, it\n\
+                    will not be possible to safely delete those instances.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::ImageManager::setImagesetDefaultResourceGroup
         
             typedef void ( *setImagesetDefaultResourceGroup_function_type )( ::CEGUI::String const & );
@@ -242,18 +284,6 @@ void register_ImageManager_class(){
                 @param resourceGroup\n\
                     String describing the default resource group identifier to be used.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::XMLHandler::elementEnd
-        
-            typedef void ( ::CEGUI::XMLHandler::*elementEnd_function_type )( ::CEGUI::String const & ) ;
-            typedef void ( ImageManager_wrapper::*default_elementEnd_function_type )( ::CEGUI::String const & ) ;
-            
-            ImageManager_exposer.def( 
-                "elementEnd"
-                , elementEnd_function_type(&::CEGUI::XMLHandler::elementEnd)
-                , default_elementEnd_function_type(&ImageManager_wrapper::default_elementEnd)
-                , ( bp::arg("element") ) );
         
         }
         { //::CEGUI::XMLHandler::text

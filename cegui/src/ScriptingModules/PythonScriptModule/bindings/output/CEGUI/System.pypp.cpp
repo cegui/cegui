@@ -20,6 +20,14 @@ struct System_wrapper : CEGUI::System, bp::wrapper< CEGUI::System > {
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
+    }
+
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
         if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
             return func_subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
@@ -1590,6 +1598,29 @@ void register_System_class(){
                 , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
                 , default_fireEvent_function_type(&System_wrapper::default_fireEvent)
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( System_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            System_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &System_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( System_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            System_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &System_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

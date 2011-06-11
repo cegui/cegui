@@ -15,6 +15,98 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     }
 
+    virtual void addButtonForTabContent( ::CEGUI::Window * wnd ){
+        if( bp::override func_addButtonForTabContent = this->get_override( "addButtonForTabContent" ) )
+            func_addButtonForTabContent( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::addButtonForTabContent( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_addButtonForTabContent( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::addButtonForTabContent( boost::python::ptr(wnd) );
+    }
+
+    virtual void addChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
+            func_addChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::addChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_addChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::addChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void addTabControlProperties(  ){
+        CEGUI::TabControl::addTabControlProperties(  );
+    }
+
+    void calculateTabButtonSizePosition( ::size_t index ){
+        CEGUI::TabControl::calculateTabButtonSizePosition( index );
+    }
+
+    ::CEGUI::TabButton * createTabButton( ::CEGUI::String const & name ) const {
+        return CEGUI::TabControl::createTabButton( boost::ref(name) );
+    }
+
+    virtual void drawSelf( ::CEGUI::RenderingContext const & arg0 ){
+        if( bp::override func_drawSelf = this->get_override( "drawSelf" ) )
+            func_drawSelf( boost::ref(arg0) );
+        else{
+            this->CEGUI::TabControl::drawSelf( boost::ref(arg0) );
+        }
+    }
+    
+    virtual void default_drawSelf( ::CEGUI::RenderingContext const & arg0 ){
+        CEGUI::TabControl::drawSelf( boost::ref(arg0) );
+    }
+
+    ::CEGUI::TabButton * getButtonForTabContents( ::CEGUI::Window * wnd ) const {
+        return CEGUI::TabControl::getButtonForTabContents( boost::python::ptr(wnd) );
+    }
+
+    virtual ::CEGUI::Window * getChild_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChild_impl = this->get_override( "getChild_impl" ) )
+            return func_getChild_impl( boost::ref(name_path) );
+        else{
+            return this->CEGUI::TabControl::getChild_impl( boost::ref(name_path) );
+        }
+    }
+    
+    virtual ::CEGUI::Window * default_getChild_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::TabControl::getChild_impl( boost::ref(name_path) );
+    }
+
+    ::CEGUI::Window * getTabButtonPane(  ) const {
+        return CEGUI::TabControl::getTabButtonPane(  );
+    }
+
+    ::CEGUI::Window * getTabPane(  ) const {
+        return CEGUI::TabControl::getTabPane(  );
+    }
+
+    bool handleContentWindowTextChanged( ::CEGUI::EventArgs const & args ){
+        return CEGUI::TabControl::handleContentWindowTextChanged( boost::ref(args) );
+    }
+
+    bool handleDraggedPane( ::CEGUI::EventArgs const & e ){
+        return CEGUI::TabControl::handleDraggedPane( boost::ref(e) );
+    }
+
+    bool handleScrollPane( ::CEGUI::EventArgs const & e ){
+        return CEGUI::TabControl::handleScrollPane( boost::ref(e) );
+    }
+
+    bool handleTabButtonClicked( ::CEGUI::EventArgs const & args ){
+        return CEGUI::TabControl::handleTabButtonClicked( boost::ref(args) );
+    }
+
+    bool handleWheeledPane( ::CEGUI::EventArgs const & e ){
+        return CEGUI::TabControl::handleWheeledPane( boost::ref(e) );
+    }
+
     virtual void initialiseComponents(  ) {
         if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
             func_initialiseComponents(  );
@@ -27,6 +119,146 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         CEGUI::TabControl::initialiseComponents( );
     }
 
+    ::CEGUI::String makeButtonName( ::CEGUI::Window * wnd ){
+        return CEGUI::TabControl::makeButtonName( boost::python::ptr(wnd) );
+    }
+
+    virtual void makeTabVisible_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_makeTabVisible_impl = this->get_override( "makeTabVisible_impl" ) )
+            func_makeTabVisible_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::makeTabVisible_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_makeTabVisible_impl( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::makeTabVisible_impl( boost::python::ptr(wnd) );
+    }
+
+    virtual void onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onFontChanged = this->get_override( "onFontChanged" ) )
+            func_onFontChanged( boost::ref(e) );
+        else{
+            this->CEGUI::TabControl::onFontChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::TabControl::onFontChanged( boost::ref(e) );
+    }
+
+    virtual void onSelectionChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSelectionChanged = this->get_override( "onSelectionChanged" ) )
+            func_onSelectionChanged( boost::ref(e) );
+        else{
+            this->CEGUI::TabControl::onSelectionChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSelectionChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::TabControl::onSelectionChanged( boost::ref(e) );
+    }
+
+    virtual void performChildWindowLayout(  ){
+        if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
+            func_performChildWindowLayout(  );
+        else{
+            this->CEGUI::TabControl::performChildWindowLayout(  );
+        }
+    }
+    
+    virtual void default_performChildWindowLayout(  ){
+        CEGUI::TabControl::performChildWindowLayout( );
+    }
+
+    virtual void removeButtonForTabContent( ::CEGUI::Window * wnd ){
+        if( bp::override func_removeButtonForTabContent = this->get_override( "removeButtonForTabContent" ) )
+            func_removeButtonForTabContent( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::removeButtonForTabContent( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_removeButtonForTabContent( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::removeButtonForTabContent( boost::python::ptr(wnd) );
+    }
+
+    virtual void removeChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
+            func_removeChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::removeChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_removeChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::removeChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void removeTab_impl( ::CEGUI::Window * window ){
+        CEGUI::TabControl::removeTab_impl( boost::python::ptr(window) );
+    }
+
+    virtual void selectTab_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_selectTab_impl = this->get_override( "selectTab_impl" ) )
+            func_selectTab_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::TabControl::selectTab_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_selectTab_impl( ::CEGUI::Window * wnd ){
+        CEGUI::TabControl::selectTab_impl( boost::python::ptr(wnd) );
+    }
+
+    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
+        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
+            return func_testClassName_impl( boost::ref(class_name) );
+        else{
+            return this->CEGUI::TabControl::testClassName_impl( boost::ref(class_name) );
+        }
+    }
+    
+    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
+        return CEGUI::TabControl::testClassName_impl( boost::ref(class_name) );
+    }
+
+    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+        if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
+            return func_validateWindowRenderer( boost::ref(name) );
+        else{
+            return this->CEGUI::TabControl::validateWindowRenderer( boost::ref(name) );
+        }
+    }
+    
+    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
+        return CEGUI::TabControl::validateWindowRenderer( boost::ref(name) );
+    }
+
+    virtual int writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeChildWindowsXML = this->get_override( "writeChildWindowsXML" ) )
+            return func_writeChildWindowsXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::TabControl::writeChildWindowsXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::TabControl::writeChildWindowsXML( boost::ref(xml_stream) );
+    }
+
+    void addStandardProperties(  ){
+        CEGUI::Window::addStandardProperties(  );
+    }
+
+    void addWindowToDrawList( ::CEGUI::Window & wnd, bool at_back=false ){
+        CEGUI::Window::addWindowToDrawList( boost::ref(wnd), at_back );
+    }
+
+    void allocateRenderingWindow(  ){
+        CEGUI::Window::allocateRenderingWindow(  );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -37,6 +269,22 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     void default_beginInitialisation(  ) {
         CEGUI::Window::beginInitialisation( );
+    }
+
+    void bufferGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::bufferGeometry( boost::ref(ctx) );
+    }
+
+    virtual void cleanupChildren(  ){
+        if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
+            func_cleanupChildren(  );
+        else{
+            this->CEGUI::Window::cleanupChildren(  );
+        }
+    }
+    
+    virtual void default_cleanupChildren(  ){
+        CEGUI::Window::cleanupChildren( );
     }
 
     virtual void cloneChildWidgetsTo( ::CEGUI::Window & target ) const  {
@@ -61,6 +309,14 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     void default_clonePropertiesTo( ::CEGUI::Window & target ) const  {
         CEGUI::Window::clonePropertiesTo( boost::ref(target) );
+    }
+
+    bool constrainToMaxSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMaxSize( boost::ref(base_sz), boost::ref(sz) );
+    }
+
+    bool constrainToMinSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMinSize( boost::ref(base_sz), boost::ref(sz) );
     }
 
     virtual void destroy(  ) {
@@ -99,6 +355,78 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    void generateAutoRepeatEvent( ::CEGUI::MouseButton button ){
+        CEGUI::Window::generateAutoRepeatEvent( button );
+    }
+
+    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
+            return func_getClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
+        if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
+            return func_getHitTestRect_impl(  );
+        else{
+            return this->CEGUI::Window::getHitTestRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getHitTestRect_impl(  ) const {
+        return CEGUI::Window::getHitTestRect_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getInnerRectClipper_impl(  ) const {
+        if( bp::override func_getInnerRectClipper_impl = this->get_override( "getInnerRectClipper_impl" ) )
+            return func_getInnerRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getInnerRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
+        return CEGUI::Window::getInnerRectClipper_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
+            return func_getNonClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
+        if( bp::override func_getOuterRectClipper_impl = this->get_override( "getOuterRectClipper_impl" ) )
+            return func_getOuterRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getOuterRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getOuterRectClipper_impl(  ) const {
+        return CEGUI::Window::getOuterRectClipper_impl( );
+    }
+
+    ::CEGUI::Rectf getParentElementClipIntersection( ::CEGUI::Rectf const & unclipped_area ) const {
+        return CEGUI::Window::getParentElementClipIntersection( boost::ref(unclipped_area) );
+    }
+
     virtual void getRenderingContext_impl( ::CEGUI::RenderingContext & ctx ) const  {
         if( bp::override func_getRenderingContext_impl = this->get_override( "getRenderingContext_impl" ) )
             func_getRenderingContext_impl( boost::ref(ctx) );
@@ -109,6 +437,10 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     void default_getRenderingContext_impl( ::CEGUI::RenderingContext & ctx ) const  {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
@@ -123,6 +455,30 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
+    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl(  ) const {
+        if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
+            return func_getUnclippedOuterRect_impl(  );
+        else{
+            return this->CEGUI::Window::getUnclippedOuterRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl(  ) const {
+        return CEGUI::Window::getUnclippedOuterRect_impl( );
+    }
+
+    ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
+    }
+
+    void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::initialiseClippers( boost::ref(ctx) );
+    }
+
+    void invalidate_impl( bool const recursive ){
+        CEGUI::Window::invalidate_impl( recursive );
+    }
+
     virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
@@ -133,6 +489,634 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
+    }
+
+    bool isInnerRectSizeChanged(  ) const {
+        return CEGUI::Window::isInnerRectSizeChanged(  );
+    }
+
+    bool isPropertyAtDefault( ::CEGUI::Property const * property ) const {
+        return CEGUI::Window::isPropertyAtDefault( boost::python::ptr(property) );
+    }
+
+    bool isTopOfZOrder(  ) const {
+        return CEGUI::Window::isTopOfZOrder(  );
+    }
+
+    virtual bool moveToFront_impl( bool wasClicked ){
+        if( bp::override func_moveToFront_impl = this->get_override( "moveToFront_impl" ) )
+            return func_moveToFront_impl( wasClicked );
+        else{
+            return this->CEGUI::Window::moveToFront_impl( wasClicked );
+        }
+    }
+    
+    virtual bool default_moveToFront_impl( bool wasClicked ){
+        return CEGUI::Window::moveToFront_impl( wasClicked );
+    }
+
+    void notifyClippingChanged(  ){
+        CEGUI::Window::notifyClippingChanged(  );
+    }
+
+    virtual void onActivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onActivated = this->get_override( "onActivated" ) )
+            func_onActivated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onActivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onActivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::Window::onActivated( boost::ref(e) );
+    }
+
+    virtual void onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlphaChanged = this->get_override( "onAlphaChanged" ) )
+            func_onAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlwaysOnTopChanged = this->get_override( "onAlwaysOnTopChanged" ) )
+            func_onAlwaysOnTopChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+    }
+
+    virtual void onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureGained = this->get_override( "onCaptureGained" ) )
+            func_onCaptureGained( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCaptureGained( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onCaptureGained( boost::ref(e) );
+    }
+
+    virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureLost = this->get_override( "onCaptureLost" ) )
+            func_onCaptureLost( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCaptureLost( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onCaptureLost( boost::ref(e) );
+    }
+
+    virtual void onCharacter( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onCharacter = this->get_override( "onCharacter" ) )
+            func_onCharacter( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCharacter( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCharacter( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onCharacter( boost::ref(e) );
+    }
+
+    virtual void onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildAdded = this->get_override( "onChildAdded" ) )
+            func_onChildAdded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildAdded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildAdded( boost::ref(e) );
+    }
+
+    virtual void onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildRemoved = this->get_override( "onChildRemoved" ) )
+            func_onChildRemoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildRemoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildRemoved( boost::ref(e) );
+    }
+
+    virtual void onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onClippingChanged = this->get_override( "onClippingChanged" ) )
+            func_onClippingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onClippingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onClippingChanged( boost::ref(e) );
+    }
+
+    virtual void onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onDeactivated = this->get_override( "onDeactivated" ) )
+            func_onDeactivated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDeactivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::Window::onDeactivated( boost::ref(e) );
+    }
+
+    virtual void onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDestructionStarted = this->get_override( "onDestructionStarted" ) )
+            func_onDestructionStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDestructionStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDestructionStarted( boost::ref(e) );
+    }
+
+    virtual void onDisabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDisabled = this->get_override( "onDisabled" ) )
+            func_onDisabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDisabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDisabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDisabled( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemDropped = this->get_override( "onDragDropItemDropped" ) )
+            func_onDragDropItemDropped( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemEnters = this->get_override( "onDragDropItemEnters" ) )
+            func_onDragDropItemEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemLeaves = this->get_override( "onDragDropItemLeaves" ) )
+            func_onDragDropItemLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+    }
+
+    virtual void onEnabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onEnabled = this->get_override( "onEnabled" ) )
+            func_onEnabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onEnabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onEnabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onEnabled( boost::ref(e) );
+    }
+
+    virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHidden = this->get_override( "onHidden" ) )
+            func_onHidden( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHidden( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHidden( boost::ref(e) );
+    }
+
+    virtual void onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
+            func_onHorizontalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onIDChanged = this->get_override( "onIDChanged" ) )
+            func_onIDChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onIDChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onIDChanged( boost::ref(e) );
+    }
+
+    virtual void onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onInheritsAlphaChanged = this->get_override( "onInheritsAlphaChanged" ) )
+            func_onInheritsAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyDown = this->get_override( "onKeyDown" ) )
+            func_onKeyDown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyDown( boost::ref(e) );
+    }
+
+    virtual void onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyUp = this->get_override( "onKeyUp" ) )
+            func_onKeyUp( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyUp( boost::ref(e) );
+    }
+
+    virtual void onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMarginChanged = this->get_override( "onMarginChanged" ) )
+            func_onMarginChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMarginChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMarginChanged( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonDown = this->get_override( "onMouseButtonDown" ) )
+            func_onMouseButtonDown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseButtonDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseButtonDown( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonUp = this->get_override( "onMouseButtonUp" ) )
+            func_onMouseButtonUp( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseButtonUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseButtonUp( boost::ref(e) );
+    }
+
+    virtual void onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseClicked = this->get_override( "onMouseClicked" ) )
+            func_onMouseClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseDoubleClicked = this->get_override( "onMouseDoubleClicked" ) )
+            func_onMouseDoubleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEnters = this->get_override( "onMouseEnters" ) )
+            func_onMouseEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEnters( boost::ref(e) );
+    }
+
+    virtual void onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEntersArea = this->get_override( "onMouseEntersArea" ) )
+            func_onMouseEntersArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+    }
+
+    virtual void onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeaves = this->get_override( "onMouseLeaves" ) )
+            func_onMouseLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeaves( boost::ref(e) );
+    }
+
+    virtual void onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeavesArea = this->get_override( "onMouseLeavesArea" ) )
+            func_onMouseLeavesArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+    }
+
+    virtual void onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseMove = this->get_override( "onMouseMove" ) )
+            func_onMouseMove( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseMove( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseMove( boost::ref(e) );
+    }
+
+    virtual void onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseTripleClicked = this->get_override( "onMouseTripleClicked" ) )
+            func_onMouseTripleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseWheel = this->get_override( "onMouseWheel" ) )
+            func_onMouseWheel( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseWheel( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseWheel( boost::ref(e) );
+    }
+
+    virtual void onMoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMoved = this->get_override( "onMoved" ) )
+            func_onMoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMoved( boost::ref(e) );
+    }
+
+    virtual void onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
+            func_onNonClientChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onNonClientChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onNonClientChanged( boost::ref(e) );
+    }
+
+    virtual void onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentDestroyChanged = this->get_override( "onParentDestroyChanged" ) )
+            func_onParentDestroyChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+    }
+
+    virtual void onParentSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
+            func_onParentSized( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentSized( boost::ref(e) );
+    }
+
+    virtual void onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingEnded = this->get_override( "onRenderingEnded" ) )
+            func_onRenderingEnded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingEnded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingEnded( boost::ref(e) );
+    }
+
+    virtual void onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingStarted = this->get_override( "onRenderingStarted" ) )
+            func_onRenderingStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingStarted( boost::ref(e) );
+    }
+
+    virtual void onRotated( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRotated = this->get_override( "onRotated" ) )
+            func_onRotated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRotated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRotated( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRotated( boost::ref(e) );
+    }
+
+    virtual void onShown( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onShown = this->get_override( "onShown" ) )
+            func_onShown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onShown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onShown( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onShown( boost::ref(e) );
+    }
+
+    virtual void onSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSized = this->get_override( "onSized" ) )
+            func_onSized( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onSized( boost::ref(e) );
+    }
+
+    virtual void onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextChanged = this->get_override( "onTextChanged" ) )
+            func_onTextChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onTextChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onTextChanged( boost::ref(e) );
+    }
+
+    virtual void onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextParsingChanged = this->get_override( "onTextParsingChanged" ) )
+            func_onTextParsingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+    }
+
+    virtual void onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
+            func_onVerticalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererAttached = this->get_override( "onWindowRendererAttached" ) )
+            func_onWindowRendererAttached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererDetached = this->get_override( "onWindowRendererDetached" ) )
+            func_onWindowRendererDetached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+    }
+
+    virtual void onZChange_impl(  ){
+        if( bp::override func_onZChange_impl = this->get_override( "onZChange_impl" ) )
+            func_onZChange_impl(  );
+        else{
+            this->CEGUI::Window::onZChange_impl(  );
+        }
+    }
+    
+    virtual void default_onZChange_impl(  ){
+        CEGUI::Window::onZChange_impl( );
+    }
+
+    virtual void onZChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onZChanged = this->get_override( "onZChanged" ) )
+            func_onZChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onZChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onZChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onZChanged( boost::ref(e) );
     }
 
     virtual bool performCopy( ::CEGUI::Clipboard & clipboard ) {
@@ -171,6 +1155,34 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         return CEGUI::Window::performPaste( boost::ref(clipboard) );
     }
 
+    virtual void populateGeometryBuffer(  ){
+        if( bp::override func_populateGeometryBuffer = this->get_override( "populateGeometryBuffer" ) )
+            func_populateGeometryBuffer(  );
+        else{
+            this->CEGUI::Window::populateGeometryBuffer(  );
+        }
+    }
+    
+    virtual void default_populateGeometryBuffer(  ){
+        CEGUI::Window::populateGeometryBuffer( );
+    }
+
+    void queueGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::queueGeometry( boost::ref(ctx) );
+    }
+
+    void releaseRenderingWindow(  ){
+        CEGUI::Window::releaseRenderingWindow(  );
+    }
+
+    void removeWindowFromDrawList( ::CEGUI::Window const & wnd ){
+        CEGUI::Window::removeWindowFromDrawList( boost::ref(wnd) );
+    }
+
+    void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+        CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+    }
+
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
         if( bp::override func_setLookNFeel = this->get_override( "setLookNFeel" ) )
             func_setLookNFeel( boost::ref(look) );
@@ -193,6 +1205,10 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     void default_setMargin( ::CEGUI::UBox const & margin ) {
         CEGUI::Window::setMargin( boost::ref(margin) );
+    }
+
+    void setParent( ::CEGUI::Window * parent ){
+        CEGUI::Window::setParent( boost::python::ptr(parent) );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -219,6 +1235,10 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
     }
 
+    void transferChildSurfaces(  ){
+        CEGUI::Window::transferChildSurfaces(  );
+    }
+
     virtual void update( float elapsed ) {
         if( bp::override func_update = this->get_override( "update" ) )
             func_update( elapsed );
@@ -229,6 +1249,46 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
     
     void default_update( float elapsed ) {
         CEGUI::Window::update( elapsed );
+    }
+
+    void updateGeometryRenderSettings(  ){
+        CEGUI::Window::updateGeometryRenderSettings(  );
+    }
+
+    virtual void updateSelf( float elapsed ){
+        if( bp::override func_updateSelf = this->get_override( "updateSelf" ) )
+            func_updateSelf( elapsed );
+        else{
+            this->CEGUI::Window::updateSelf( elapsed );
+        }
+    }
+    
+    virtual void default_updateSelf( float elapsed ){
+        CEGUI::Window::updateSelf( elapsed );
+    }
+
+    virtual bool writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeAutoChildWindowXML = this->get_override( "writeAutoChildWindowXML" ) )
+            return func_writeAutoChildWindowXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual bool default_writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+    }
+
+    virtual int writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writePropertiesXML = this->get_override( "writePropertiesXML" ) )
+            return func_writePropertiesXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writePropertiesXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writePropertiesXML( boost::ref(xml_stream) );
     }
 
     virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
@@ -265,6 +1325,30 @@ void register_TabControl_class(){
             .value("Bottom", CEGUI::TabControl::Bottom)
             .export_values()
             ;
+        { //::CEGUI::TabControl::addButtonForTabContent
+        
+            typedef void ( TabControl_wrapper::*addButtonForTabContent_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "addButtonForTabContent"
+                , addButtonForTabContent_function_type( &TabControl_wrapper::default_addButtonForTabContent )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Add a TabButton for the specified child Window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::addChild_impl
+        
+            typedef void ( TabControl_wrapper::*addChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "addChild_impl"
+                , addChild_impl_function_type( &TabControl_wrapper::default_addChild_impl )
+                , ( bp::arg("wnd") ) );
+        
+        }
         { //::CEGUI::TabControl::addTab
         
             typedef void ( ::CEGUI::TabControl::*addTab_function_type )( ::CEGUI::Window * ) ;
@@ -283,6 +1367,120 @@ void register_TabControl_class(){
             *\n" );
         
         }
+        { //::CEGUI::TabControl::addTabControlProperties
+        
+            typedef void ( TabControl_wrapper::*addTabControlProperties_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "addTabControlProperties"
+                , addTabControlProperties_function_type( &TabControl_wrapper::addTabControlProperties )
+                , "*************************************************************************\n\
+               Private methods\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::TabControl::calculateTabButtonSizePosition
+        
+            typedef void ( TabControl_wrapper::*calculateTabButtonSizePosition_function_type )( ::size_t ) ;
+            
+            TabControl_exposer.def( 
+                "calculateTabButtonSizePosition"
+                , calculateTabButtonSizePosition_function_type( &TabControl_wrapper::calculateTabButtonSizePosition )
+                , ( bp::arg("index") )
+                , "*************************************************************************\n\
+            Abstract Implementation Functions (must be provided by derived class)\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+                create and return a pointer to a TabButton widget for use as a clickable tab header\n\
+            @param name\n\
+                Button name\n\
+            @return\n\
+                Pointer to a TabButton to be used for changing tabs.\n\
+            *\n\
+            virtual TabButton*  createTabButton_impl(const String& name) const     = 0;\n\
+            *!\n\
+            \n\
+                Calculate the correct position and size of a tab button, based on the\n\
+                index it is due to be placed at.\n\
+            @param index\n\
+                The index of the tab button\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::createTabButton
+        
+            typedef ::CEGUI::TabButton * ( TabControl_wrapper::*createTabButton_function_type )( ::CEGUI::String const & ) const;
+            
+            TabControl_exposer.def( 
+                "createTabButton"
+                , createTabButton_function_type( &TabControl_wrapper::createTabButton )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                create and return a pointer to a TabButton widget for use as a clickable tab header\n\
+            @param name\n\
+                Button name\n\
+            @return\n\
+                Pointer to a TabButton to be used for changing tabs.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::drawSelf
+        
+            typedef void ( TabControl_wrapper::*drawSelf_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            TabControl_exposer.def( 
+                "drawSelf"
+                , drawSelf_function_type( &TabControl_wrapper::default_drawSelf )
+                , ( bp::arg("arg0") )
+                , "*************************************************************************\n\
+                  Implementation Functions\n\
+               *************************************************************************\n\
+                *!\n\
+                \n\
+                    Perform the actual rendering for this Window.\n\
+            \n\
+                @param z\n\
+                    float value specifying the base Z co-ordinate that should be used when rendering\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::TabControl::getButtonForTabContents
+        
+            typedef ::CEGUI::TabButton * ( TabControl_wrapper::*getButtonForTabContents_function_type )( ::CEGUI::Window * ) const;
+            
+            TabControl_exposer.def( 
+                "getButtonForTabContents"
+                , getButtonForTabContents_function_type( &TabControl_wrapper::getButtonForTabContents )
+                , ( bp::arg("wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                Remove the TabButton for the specified child Window.\n\
+            *\n\
+            *!\n\
+            \n\
+                Return the TabButton associated with this Window.\n\
+            @exception InvalidRequestException thrown if content is not found.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::getChild_impl
+        
+            typedef ::CEGUI::Window * ( TabControl_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            TabControl_exposer.def( 
+                "getChild_impl"
+                , getChild_impl_function_type( &TabControl_wrapper::default_getChild_impl )
+                , ( bp::arg("name_path") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::TabControl::getSelectedTabIndex
         
             typedef ::size_t ( ::CEGUI::TabControl::*getSelectedTabIndex_function_type )(  ) const;
@@ -297,6 +1495,27 @@ void register_TabControl_class(){
                @return\n\
                   index of the currently selected tab.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::TabControl::getTabButtonPane
+        
+            typedef ::CEGUI::Window * ( TabControl_wrapper::*getTabButtonPane_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getTabButtonPane"
+                , getTabButtonPane_function_type( &TabControl_wrapper::getTabButtonPane )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a pointer to the tab button pane (Window)for\n\
+                    this TabControl.\n\
+            \n\
+                @return\n\
+                    Pointer to a Window object.\n\
+            \n\
+                @exception UnknownObjectException\n\
+                    Thrown if the component does not exist.\n\
+                *\n" );
         
         }
         { //::CEGUI::TabControl::getTabContents
@@ -401,6 +1620,27 @@ void register_TabControl_class(){
             *\n" );
         
         }
+        { //::CEGUI::TabControl::getTabPane
+        
+            typedef ::CEGUI::Window * ( TabControl_wrapper::*getTabPane_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getTabPane"
+                , getTabPane_function_type( &TabControl_wrapper::getTabPane )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a pointer to the content component widget for\n\
+                    this TabControl.\n\
+            \n\
+                @return\n\
+                    Pointer to a Window object.\n\
+            \n\
+                @exception UnknownObjectException\n\
+                    Thrown if the component does not exist.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::TabControl::getTabPanePosition
         
             typedef ::CEGUI::TabControl::TabPanePosition ( ::CEGUI::TabControl::*getTabPanePosition_function_type )(  ) const;
@@ -428,6 +1668,62 @@ void register_TabControl_class(){
             \n\
                 Return the amount of padding to add either side of the text in the tab\n\
             *\n" );
+        
+        }
+        { //::CEGUI::TabControl::handleContentWindowTextChanged
+        
+            typedef bool ( TabControl_wrapper::*handleContentWindowTextChanged_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            TabControl_exposer.def( 
+                "handleContentWindowTextChanged"
+                , handleContentWindowTextChanged_function_type( &TabControl_wrapper::handleContentWindowTextChanged )
+                , ( bp::arg("args") )
+                , "*************************************************************************\n\
+            Event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::TabControl::handleDraggedPane
+        
+            typedef bool ( TabControl_wrapper::*handleDraggedPane_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            TabControl_exposer.def( 
+                "handleDraggedPane"
+                , handleDraggedPane_function_type( &TabControl_wrapper::handleDraggedPane )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::TabControl::handleScrollPane
+        
+            typedef bool ( TabControl_wrapper::*handleScrollPane_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            TabControl_exposer.def( 
+                "handleScrollPane"
+                , handleScrollPane_function_type( &TabControl_wrapper::handleScrollPane )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::TabControl::handleTabButtonClicked
+        
+            typedef bool ( TabControl_wrapper::*handleTabButtonClicked_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            TabControl_exposer.def( 
+                "handleTabButtonClicked"
+                , handleTabButtonClicked_function_type( &TabControl_wrapper::handleTabButtonClicked )
+                , ( bp::arg("args") )
+                , "*************************************************************************\n\
+            Event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::TabControl::handleWheeledPane
+        
+            typedef bool ( TabControl_wrapper::*handleWheeledPane_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            TabControl_exposer.def( 
+                "handleWheeledPane"
+                , handleWheeledPane_function_type( &TabControl_wrapper::handleWheeledPane )
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::TabControl::initialiseComponents
@@ -461,6 +1757,25 @@ void register_TabControl_class(){
             \n\
                @exception  InvalidRequestException thrown if  wnd is not a valid tab contents window.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::TabControl::makeButtonName
+        
+            typedef ::CEGUI::String ( TabControl_wrapper::*makeButtonName_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "makeButtonName"
+                , makeButtonName_function_type( &TabControl_wrapper::makeButtonName )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Return the TabButton associated with this Window.\n\
+            @exception InvalidRequestException thrown if content is not found.\n\
+            *\n\
+            *!\n\
+            \n\
+                Construct a button name to handle a window.\n\
+            *\n" );
         
         }
         { //::CEGUI::TabControl::makeTabVisible
@@ -508,6 +1823,95 @@ void register_TabControl_class(){
             *\n" );
         
         }
+        { //::CEGUI::TabControl::makeTabVisible_impl
+        
+            typedef void ( TabControl_wrapper::*makeTabVisible_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "makeTabVisible_impl"
+                , makeTabVisible_impl_function_type( &TabControl_wrapper::default_makeTabVisible_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Internal implementation of make tab visible.\n\
+            @param wnd\n\
+                Pointer to a Window which is the root of the tab content to make visible\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::onFontChanged
+        
+            typedef void ( TabControl_wrapper::*onFontChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onFontChanged"
+                , onFontChanged_function_type( &TabControl_wrapper::default_onFontChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+               \n\
+                  Handler called when the window's font is changed.\n\
+            \n\
+               @param e\n\
+                  WindowEventArgs object whose 'window' pointer field is set to the window that triggered the\
+                  event.  For this\n\
+                  event the trigger window is always 'this'.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::TabControl::onSelectionChanged
+        
+            typedef void ( TabControl_wrapper::*onSelectionChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onSelectionChanged"
+                , onSelectionChanged_function_type( &TabControl_wrapper::default_onSelectionChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               New event handlers\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               Handler called internally when the currently selected item or items changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::performChildWindowLayout
+        
+            typedef void ( TabControl_wrapper::*performChildWindowLayout_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "performChildWindowLayout"
+                , performChildWindowLayout_function_type( &TabControl_wrapper::default_performChildWindowLayout ) );
+        
+        }
+        { //::CEGUI::TabControl::removeButtonForTabContent
+        
+            typedef void ( TabControl_wrapper::*removeButtonForTabContent_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "removeButtonForTabContent"
+                , removeButtonForTabContent_function_type( &TabControl_wrapper::default_removeButtonForTabContent )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Add a TabButton for the specified child Window.\n\
+            *\n\
+            *!\n\
+            \n\
+                Remove the TabButton for the specified child Window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::removeChild_impl
+        
+            typedef void ( TabControl_wrapper::*removeChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "removeChild_impl"
+                , removeChild_impl_function_type( &TabControl_wrapper::default_removeChild_impl )
+                , ( bp::arg("wnd") ) );
+        
+        }
         { //::CEGUI::TabControl::removeTab
         
             typedef void ( ::CEGUI::TabControl::*removeTab_function_type )( ::CEGUI::String const & ) ;
@@ -551,6 +1955,33 @@ void register_TabControl_class(){
             Remove the tab with the given ID from the tab control.\n\
             \n\
             The tab content will be destroyed.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TabControl::removeTab_impl
+        
+            typedef void ( TabControl_wrapper::*removeTab_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "removeTab_impl"
+                , removeTab_impl_function_type( &TabControl_wrapper::removeTab_impl )
+                , ( bp::arg("window") )
+                , "! Implementation function to do main work of removing a tab.\n" );
+        
+        }
+        { //::CEGUI::TabControl::selectTab_impl
+        
+            typedef void ( TabControl_wrapper::*selectTab_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "selectTab_impl"
+                , selectTab_impl_function_type( &TabControl_wrapper::default_selectTab_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Internal implementation of select tab.\n\
+            @param wnd\n\
+                Pointer to a Window which is the root of the tab content to select\n\
             *\n" );
         
         }
@@ -646,6 +2077,48 @@ void register_TabControl_class(){
             *\n" );
         
         }
+        { //::CEGUI::TabControl::testClassName_impl
+        
+            typedef bool ( TabControl_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            TabControl_exposer.def( 
+                "testClassName_impl"
+                , testClassName_impl_function_type( &TabControl_wrapper::default_testClassName_impl )
+                , ( bp::arg("class_name") )
+                , "*!\n\
+               \n\
+                  Return whether this window was inherited from the given class name at some point in the\
+                  inheritance hierarchy.\n\
+            \n\
+               @param class_name\n\
+                  The class name that is to be checked.\n\
+            \n\
+               @return\n\
+                  true if this window was inherited from  class_name. false if not.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::TabControl::validateWindowRenderer
+        
+            typedef bool ( TabControl_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            
+            TabControl_exposer.def( 
+                "validateWindowRenderer"
+                , validateWindowRenderer_function_type( &TabControl_wrapper::default_validateWindowRenderer )
+                , ( bp::arg("name") )
+                , "validate window renderer\n" );
+        
+        }
+        { //::CEGUI::TabControl::writeChildWindowsXML
+        
+            typedef int ( TabControl_wrapper::*writeChildWindowsXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TabControl_exposer.def( 
+                "writeChildWindowsXML"
+                , writeChildWindowsXML_function_type( &TabControl_wrapper::default_writeChildWindowsXML )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
         TabControl_exposer.add_static_property( "ButtonScrollLeft"
                         , bp::make_getter( &CEGUI::TabControl::ButtonScrollLeft
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -664,6 +2137,58 @@ void register_TabControl_class(){
         TabControl_exposer.add_static_property( "TabButtonPaneName"
                         , bp::make_getter( &CEGUI::TabControl::TabButtonPaneName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::Window::addStandardProperties
+        
+            typedef void ( TabControl_wrapper::*addStandardProperties_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "addStandardProperties"
+                , addStandardProperties_function_type( &TabControl_wrapper::addStandardProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.Window properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addWindowToDrawList
+        
+            typedef void ( TabControl_wrapper::*addWindowToDrawList_function_type )( ::CEGUI::Window &,bool ) ;
+            
+            TabControl_exposer.def( 
+                "addWindowToDrawList"
+                , addWindowToDrawList_function_type( &TabControl_wrapper::addWindowToDrawList )
+                , ( bp::arg("wnd"), bp::arg("at_back")=(bool)(false) )
+                , "*!\n\
+                \n\
+                    Add the given window to the drawing list at an appropriate position for\n\
+                    it's settings and the required direction.  Basically, when  at_back\n\
+                    is false, the window will appear in front of all other windows with the\n\
+                    same 'always on top' setting.  When  at_back is true, the window will\n\
+                    appear behind all other windows wih the same 'always on top' setting.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be added to the drawing list.\n\
+            \n\
+                @param at_back\n\
+                    Indicates whether the window should be placed at the back of other\n\
+                    windows in the same group. If this is false, the window is placed in\n\
+                    front of other windows in the group.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::allocateRenderingWindow
+        
+            typedef void ( TabControl_wrapper::*allocateRenderingWindow_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "allocateRenderingWindow"
+                , allocateRenderingWindow_function_type( &TabControl_wrapper::allocateRenderingWindow )
+                , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;
@@ -673,6 +2198,39 @@ void register_TabControl_class(){
                 "beginInitialisation"
                 , beginInitialisation_function_type(&::CEGUI::Window::beginInitialisation)
                 , default_beginInitialisation_function_type(&TabControl_wrapper::default_beginInitialisation) );
+        
+        }
+        { //::CEGUI::Window::bufferGeometry
+        
+            typedef void ( TabControl_wrapper::*bufferGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            TabControl_exposer.def( 
+                "bufferGeometry"
+                , bufferGeometry_function_type( &TabControl_wrapper::bufferGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with generating and buffering\n\
+                    window geometry.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf; it is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::cleanupChildren
+        
+            typedef void ( TabControl_wrapper::*cleanupChildren_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "cleanupChildren"
+                , cleanupChildren_function_type( &TabControl_wrapper::default_cleanupChildren )
+                , "*!\n\
+            \n\
+                Cleanup child windows\n\
+            *\n" );
         
         }
         { //::CEGUI::Window::cloneChildWidgetsTo
@@ -697,6 +2255,29 @@ void register_TabControl_class(){
                 , clonePropertiesTo_function_type(&::CEGUI::Window::clonePropertiesTo)
                 , default_clonePropertiesTo_function_type(&TabControl_wrapper::default_clonePropertiesTo)
                 , ( bp::arg("target") ) );
+        
+        }
+        { //::CEGUI::Window::constrainToMaxSize
+        
+            typedef bool ( TabControl_wrapper::*constrainToMaxSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            TabControl_exposer.def( 
+                "constrainToMaxSize"
+                , constrainToMaxSize_function_type( &TabControl_wrapper::constrainToMaxSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n\
+            constrain given USize to window's max size, return if size changed.\n" );
+        
+        }
+        { //::CEGUI::Window::constrainToMinSize
+        
+            typedef bool ( TabControl_wrapper::*constrainToMinSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            TabControl_exposer.def( 
+                "constrainToMinSize"
+                , constrainToMinSize_function_type( &TabControl_wrapper::constrainToMinSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n" );
         
         }
         { //::CEGUI::Window::destroy
@@ -733,6 +2314,97 @@ void register_TabControl_class(){
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
         
         }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( TabControl_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &TabControl_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::Window::generateAutoRepeatEvent
+        
+            typedef void ( TabControl_wrapper::*generateAutoRepeatEvent_function_type )( ::CEGUI::MouseButton ) ;
+            
+            TabControl_exposer.def( 
+                "generateAutoRepeatEvent"
+                , generateAutoRepeatEvent_function_type( &TabControl_wrapper::generateAutoRepeatEvent )
+                , ( bp::arg("button") )
+                , "*!\n\
+            \n\
+                Fires off a repeated mouse button down event for this window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::getClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getClientChildWindowContentArea_impl"
+                , getClientChildWindowContentArea_impl_function_type( &TabControl_wrapper::default_getClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return non-client content area\n\
+            ! Default implementation of function to return client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getHitTestRect_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getHitTestRect_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getHitTestRect_impl"
+                , getHitTestRect_impl_function_type( &TabControl_wrapper::default_getHitTestRect_impl )
+                , "! Default implementation of function to return Window inner clipper area.\n\
+            ! Default implementation of function to return Window hit-test area.\n" );
+        
+        }
+        { //::CEGUI::Window::getInnerRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getInnerRectClipper_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getInnerRectClipper_impl"
+                , getInnerRectClipper_impl_function_type( &TabControl_wrapper::default_getInnerRectClipper_impl )
+                , "! Default implementation of function to return Window outer clipper area.\n\
+            ! Default implementation of function to return Window inner clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getNonClientChildWindowContentArea_impl"
+                , getNonClientChildWindowContentArea_impl_function_type( &TabControl_wrapper::default_getNonClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return Window hit-test area.\n\
+            ! Default implementation of function to return non-client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getOuterRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getOuterRectClipper_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getOuterRectClipper_impl"
+                , getOuterRectClipper_impl_function_type( &TabControl_wrapper::default_getOuterRectClipper_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window outer clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getParentElementClipIntersection
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getParentElementClipIntersection_function_type )( ::CEGUI::Rectf const & ) const;
+            
+            TabControl_exposer.def( 
+                "getParentElementClipIntersection"
+                , getParentElementClipIntersection_function_type( &TabControl_wrapper::getParentElementClipIntersection )
+                , ( bp::arg("unclipped_area") )
+                , "! helper function for calculating clipping rectangles.\n" );
+        
+        }
         { //::CEGUI::Window::getRenderedStringParser
         
             typedef ::CEGUI::RenderedStringParser & ( ::CEGUI::Window::*getRenderedStringParser_function_type )(  ) const;
@@ -755,6 +2427,18 @@ void register_TabControl_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( TabControl_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &TabControl_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
+        
+        }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
             typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
@@ -764,6 +2448,55 @@ void register_TabControl_class(){
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
                 , default_getUnclippedInnerRect_impl_function_type(&TabControl_wrapper::default_getUnclippedInnerRect_impl) );
+        
+        }
+        { //::CEGUI::Window::getUnclippedOuterRect_impl
+        
+            typedef ::CEGUI::Rectf ( TabControl_wrapper::*getUnclippedOuterRect_impl_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "getUnclippedOuterRect_impl"
+                , getUnclippedOuterRect_impl_function_type( &TabControl_wrapper::default_getUnclippedOuterRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n" );
+        
+        }
+        { //::CEGUI::Window::getWindowAttachedToCommonAncestor
+        
+            typedef ::CEGUI::Window const * ( TabControl_wrapper::*getWindowAttachedToCommonAncestor_function_type )( ::CEGUI::Window const & ) const;
+            
+            TabControl_exposer.def( 
+                "getWindowAttachedToCommonAncestor"
+                , getWindowAttachedToCommonAncestor_function_type( &TabControl_wrapper::getWindowAttachedToCommonAncestor )
+                , ( bp::arg("wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                Helper function to return the ancestor Window of a wnd that is attached\n\
+                as a child to a window that is also an ancestor of a this.  Returns 0\n\
+                if a wnd and a this are not part of the same hierachy.\n\
+             *\n" );
+        
+        }
+        { //::CEGUI::Window::initialiseClippers
+        
+            typedef void ( TabControl_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            TabControl_exposer.def( 
+                "initialiseClippers"
+                , initialiseClippers_function_type( &TabControl_wrapper::initialiseClippers )
+                , ( bp::arg("ctx") )
+                , "! Helper to intialise the needed clipping for geometry and render surface.\n" );
+        
+        }
+        { //::CEGUI::Window::invalidate_impl
+        
+            typedef void ( TabControl_wrapper::*invalidate_impl_function_type )( bool const ) ;
+            
+            TabControl_exposer.def( 
+                "invalidate_impl"
+                , invalidate_impl_function_type( &TabControl_wrapper::invalidate_impl )
+                , ( bp::arg("recursive") )
+                , "! helper function to invalidate window and optionally child windows.\n" );
         
         }
         { //::CEGUI::Window::isHit
@@ -776,6 +2509,1036 @@ void register_TabControl_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&TabControl_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isInnerRectSizeChanged
+        
+            typedef bool ( TabControl_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "isInnerRectSizeChanged"
+                , isInnerRectSizeChanged_function_type( &TabControl_wrapper::isInnerRectSizeChanged )
+                , "! helper to return whether the inner rect size has changed\n" );
+        
+        }
+        { //::CEGUI::Window::isPropertyAtDefault
+        
+            typedef bool ( TabControl_wrapper::*isPropertyAtDefault_function_type )( ::CEGUI::Property const * ) const;
+            
+            TabControl_exposer.def( 
+                "isPropertyAtDefault"
+                , isPropertyAtDefault_function_type( &TabControl_wrapper::isPropertyAtDefault )
+                , ( bp::arg("property") )
+                , "*!\n\
+            \n\
+                Returns whether a property is at it's default value.\n\
+                This function is different from Property.isDefatult as it takes the assigned look'n'feel\n\
+                (if the is one) into account.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::isTopOfZOrder
+        
+            typedef bool ( TabControl_wrapper::*isTopOfZOrder_function_type )(  ) const;
+            
+            TabControl_exposer.def( 
+                "isTopOfZOrder"
+                , isTopOfZOrder_function_type( &TabControl_wrapper::isTopOfZOrder )
+                , "*!\n\
+                \n\
+                    Return whether the window is at the top of the Z-Order.  This will\n\
+                    correctly take into account 'Always on top' windows as needed.\n\
+            \n\
+                @return\n\
+                    - true if the Window is at the top of the z-order in relation to sibling\n\
+                      windows with the same 'always on top' setting.\n\
+                    - false if the Window is not at the top of the z-order in relation to\n\
+                      sibling windows with the same 'always on top' setting.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::moveToFront_impl
+        
+            typedef bool ( TabControl_wrapper::*moveToFront_impl_function_type )( bool ) ;
+            
+            TabControl_exposer.def( 
+                "moveToFront_impl"
+                , moveToFront_impl_function_type( &TabControl_wrapper::default_moveToFront_impl )
+                , ( bp::arg("wasClicked") )
+                , "*!\n\
+                \n\
+                    Implements move to front behavior.\n\
+            \n\
+                @return\n\
+                    Should return true if some action was taken, or false if there was\n\
+                    nothing to be done.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::notifyClippingChanged
+        
+            typedef void ( TabControl_wrapper::*notifyClippingChanged_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "notifyClippingChanged"
+                , notifyClippingChanged_function_type( &TabControl_wrapper::notifyClippingChanged )
+                , "*!\n\
+            \n\
+                Recursively inform all children that the clipping has changed and screen rects\n\
+                needs to be recached.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onActivated
+        
+            typedef void ( TabControl_wrapper::*onActivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onActivated"
+                , onActivated_function_type( &TabControl_wrapper::default_onActivated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window has become the active window.\n\
+            \n\
+                @param e\n\
+                    ActivationEventArgs class whose 'otherWindow' field is set to the window\n\
+                    that previously was active, or NULL for none.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlphaChanged
+        
+            typedef void ( TabControl_wrapper::*onAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onAlphaChanged"
+                , onAlphaChanged_function_type( &TabControl_wrapper::default_onAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's alpha blend value is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlwaysOnTopChanged
+        
+            typedef void ( TabControl_wrapper::*onAlwaysOnTopChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onAlwaysOnTopChanged"
+                , onAlwaysOnTopChanged_function_type( &TabControl_wrapper::default_onAlwaysOnTopChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's always-on-top setting is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCaptureGained
+        
+            typedef void ( TabControl_wrapper::*onCaptureGained_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onCaptureGained"
+                , onCaptureGained_function_type( &TabControl_wrapper::default_onCaptureGained )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window gains capture of mouse inputs.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCaptureLost
+        
+            typedef void ( TabControl_wrapper::*onCaptureLost_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onCaptureLost"
+                , onCaptureLost_function_type( &TabControl_wrapper::default_onCaptureLost )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window loses capture of mouse inputs.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCharacter
+        
+            typedef void ( TabControl_wrapper::*onCharacter_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onCharacter"
+                , onCharacter_function_type( &TabControl_wrapper::default_onCharacter )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a character-key has been pressed while this window\n\
+                    has input focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'codepoint' field is set to the Unicode code\n\
+                    point (encoded as utf32) for the character typed, and whose 'sysKeys'\n\
+                    field represents the combination of SystemKey that were active when the\n\
+                    event was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildAdded
+        
+            typedef void ( TabControl_wrapper::*onChildAdded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onChildAdded"
+                , onChildAdded_function_type( &TabControl_wrapper::default_onChildAdded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is added to this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that has been added.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildRemoved
+        
+            typedef void ( TabControl_wrapper::*onChildRemoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onChildRemoved"
+                , onChildRemoved_function_type( &TabControl_wrapper::default_onChildRemoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is removed from this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the window\n\
+                    that has been removed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onClippingChanged
+        
+            typedef void ( TabControl_wrapper::*onClippingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onClippingChanged"
+                , onClippingChanged_function_type( &TabControl_wrapper::default_onClippingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being clipped by it's\n\
+                    parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDeactivated
+        
+            typedef void ( TabControl_wrapper::*onDeactivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDeactivated"
+                , onDeactivated_function_type( &TabControl_wrapper::default_onDeactivated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window has lost input focus and has been\n\
+                    deactivated.\n\
+            \n\
+                @param e\n\
+                    ActivationEventArgs object whose 'otherWindow' field is set to the\n\
+                    window that has now become active, or NULL for none.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDestructionStarted
+        
+            typedef void ( TabControl_wrapper::*onDestructionStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDestructionStarted"
+                , onDestructionStarted_function_type( &TabControl_wrapper::default_onDestructionStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's destruction sequence has begun.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDisabled
+        
+            typedef void ( TabControl_wrapper::*onDisabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDisabled"
+                , onDisabled_function_type( &TabControl_wrapper::default_onDisabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is disabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemDropped
+        
+            typedef void ( TabControl_wrapper::*onDragDropItemDropped_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDragDropItemDropped"
+                , onDragDropItemDropped_function_type( &TabControl_wrapper::default_onDragDropItemDropped )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemEnters
+        
+            typedef void ( TabControl_wrapper::*onDragDropItemEnters_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDragDropItemEnters"
+                , onDragDropItemEnters_function_type( &TabControl_wrapper::default_onDragDropItemEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemLeaves
+        
+            typedef void ( TabControl_wrapper::*onDragDropItemLeaves_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onDragDropItemLeaves"
+                , onDragDropItemLeaves_function_type( &TabControl_wrapper::default_onDragDropItemLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onEnabled
+        
+            typedef void ( TabControl_wrapper::*onEnabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onEnabled"
+                , onEnabled_function_type( &TabControl_wrapper::default_onEnabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is enabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHidden
+        
+            typedef void ( TabControl_wrapper::*onHidden_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onHidden"
+                , onHidden_function_type( &TabControl_wrapper::default_onHidden )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is hidden.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHorizontalAlignmentChanged
+        
+            typedef void ( TabControl_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onHorizontalAlignmentChanged"
+                , onHorizontalAlignmentChanged_function_type( &TabControl_wrapper::default_onHorizontalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the horizontal alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onIDChanged
+        
+            typedef void ( TabControl_wrapper::*onIDChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onIDChanged"
+                , onIDChanged_function_type( &TabControl_wrapper::default_onIDChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's client assigned ID is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onInheritsAlphaChanged
+        
+            typedef void ( TabControl_wrapper::*onInheritsAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onInheritsAlphaChanged"
+                , onInheritsAlphaChanged_function_type( &TabControl_wrapper::default_onInheritsAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for inheriting alpha-blending\n\
+                    is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyDown
+        
+            typedef void ( TabControl_wrapper::*onKeyDown_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onKeyDown"
+                , onKeyDown_function_type( &TabControl_wrapper::default_onKeyDown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been depressed while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was pressed, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyUp
+        
+            typedef void ( TabControl_wrapper::*onKeyUp_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onKeyUp"
+                , onKeyUp_function_type( &TabControl_wrapper::default_onKeyUp )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been released while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was released, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMarginChanged
+        
+            typedef void ( TabControl_wrapper::*onMarginChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMarginChanged"
+                , onMarginChanged_function_type( &TabControl_wrapper::default_onMarginChanged )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::Window::onMouseButtonDown
+        
+            typedef void ( TabControl_wrapper::*onMouseButtonDown_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseButtonDown"
+                , onMouseButtonDown_function_type( &TabControl_wrapper::default_onMouseButtonDown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been depressed within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseButtonUp
+        
+            typedef void ( TabControl_wrapper::*onMouseButtonUp_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseButtonUp"
+                , onMouseButtonUp_function_type( &TabControl_wrapper::default_onMouseButtonUp )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been released within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseClicked
+        
+            typedef void ( TabControl_wrapper::*onMouseClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseClicked"
+                , onMouseClicked_function_type( &TabControl_wrapper::default_onMouseClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been clicked (that is depressed\n\
+                    and then released, within a specified time) within this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseDoubleClicked
+        
+            typedef void ( TabControl_wrapper::*onMouseDoubleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseDoubleClicked"
+                , onMouseDoubleClicked_function_type( &TabControl_wrapper::default_onMouseDoubleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been double-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEnters
+        
+            typedef void ( TabControl_wrapper::*onMouseEnters_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseEnters"
+                , onMouseEnters_function_type( &TabControl_wrapper::default_onMouseEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area and\n\
+                    is actually over some part of this windows surface and not, for\n\
+                    instance over a child window - even though technically in those cases\n\
+                    the mouse is also within this Window's area, the handler will not be\n\
+                    called.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseEntersArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEntersArea
+        
+            typedef void ( TabControl_wrapper::*onMouseEntersArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseEntersArea"
+                , onMouseEntersArea_function_type( &TabControl_wrapper::default_onMouseEntersArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeaves
+        
+            typedef void ( TabControl_wrapper::*onMouseLeaves_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseLeaves"
+                , onMouseLeaves_function_type( &TabControl_wrapper::default_onMouseLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor is no longer over this window's\n\
+                    surface area.  This will be called when the mouse is not over a part\n\
+                    of this Window's actual surface - even though technically the mouse is\n\
+                    still within the Window's area, for example if the mouse moves over a\n\
+                    child window.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseLeavesArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeavesArea
+        
+            typedef void ( TabControl_wrapper::*onMouseLeavesArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseLeavesArea"
+                , onMouseLeavesArea_function_type( &TabControl_wrapper::default_onMouseLeavesArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has left this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseMove
+        
+            typedef void ( TabControl_wrapper::*onMouseMove_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseMove"
+                , onMouseMove_function_type( &TabControl_wrapper::default_onMouseMove )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has been moved within this window's\n\
+                    area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseTripleClicked
+        
+            typedef void ( TabControl_wrapper::*onMouseTripleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseTripleClicked"
+                , onMouseTripleClicked_function_type( &TabControl_wrapper::default_onMouseTripleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been triple-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseWheel
+        
+            typedef void ( TabControl_wrapper::*onMouseWheel_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMouseWheel"
+                , onMouseWheel_function_type( &TabControl_wrapper::default_onMouseWheel )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse wheel (z-axis) position changes within\n\
+                    this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMoved
+        
+            typedef void ( TabControl_wrapper::*onMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onMoved"
+                , onMoved_function_type( &TabControl_wrapper::default_onMoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's position changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onNonClientChanged
+        
+            typedef void ( TabControl_wrapper::*onNonClientChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onNonClientChanged"
+                , onNonClientChanged_function_type( &TabControl_wrapper::default_onNonClientChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's non-client setting, affecting it's\n\
+                    position and size relative to it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentDestroyChanged
+        
+            typedef void ( TabControl_wrapper::*onParentDestroyChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onParentDestroyChanged"
+                , onParentDestroyChanged_function_type( &TabControl_wrapper::default_onParentDestroyChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being destroyed\n\
+                    automatically be it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentSized
+        
+            typedef void ( TabControl_wrapper::*onParentSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onParentSized"
+                , onParentSized_function_type( &TabControl_wrapper::default_onParentSized )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's parent window has been resized.  If\n\
+                    this window is the root  GUI Sheet window, this call will be made when\n\
+                    the display size changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the the\n\
+                    window that caused the event; this is typically either this window's\n\
+                    parent window, or NULL to indicate the screen size has changed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingEnded
+        
+            typedef void ( TabControl_wrapper::*onRenderingEnded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onRenderingEnded"
+                , onRenderingEnded_function_type( &TabControl_wrapper::default_onRenderingEnded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has ended.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingStarted
+        
+            typedef void ( TabControl_wrapper::*onRenderingStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onRenderingStarted"
+                , onRenderingStarted_function_type( &TabControl_wrapper::default_onRenderingStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has started.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRotated
+        
+            typedef void ( TabControl_wrapper::*onRotated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onRotated"
+                , onRotated_function_type( &TabControl_wrapper::default_onRotated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's rotation factor is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onShown
+        
+            typedef void ( TabControl_wrapper::*onShown_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onShown"
+                , onShown_function_type( &TabControl_wrapper::default_onShown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is shown (made visible).\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onSized
+        
+            typedef void ( TabControl_wrapper::*onSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onSized"
+                , onSized_function_type( &TabControl_wrapper::default_onSized )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+                    Event trigger methods\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Handler called when the window's size changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onTextChanged
+        
+            typedef void ( TabControl_wrapper::*onTextChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onTextChanged"
+                , onTextChanged_function_type( &TabControl_wrapper::default_onTextChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's text is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onTextParsingChanged
+        
+            typedef void ( TabControl_wrapper::*onTextParsingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onTextParsingChanged"
+                , onTextParsingChanged_function_type( &TabControl_wrapper::default_onTextParsingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for whether text parsing is\n\
+                    enabled is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onVerticalAlignmentChanged
+        
+            typedef void ( TabControl_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onVerticalAlignmentChanged"
+                , onVerticalAlignmentChanged_function_type( &TabControl_wrapper::default_onVerticalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the vertical alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererAttached
+        
+            typedef void ( TabControl_wrapper::*onWindowRendererAttached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onWindowRendererAttached"
+                , onWindowRendererAttached_function_type( &TabControl_wrapper::default_onWindowRendererAttached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a new window renderer object is attached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got a new\n\
+                      window renderer attached. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererDetached
+        
+            typedef void ( TabControl_wrapper::*onWindowRendererDetached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onWindowRendererDetached"
+                , onWindowRendererDetached_function_type( &TabControl_wrapper::default_onWindowRendererDetached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the currently attached window renderer object is detached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got lost its\n\
+                      window renderer. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChange_impl
+        
+            typedef void ( TabControl_wrapper::*onZChange_impl_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "onZChange_impl"
+                , onZChange_impl_function_type( &TabControl_wrapper::default_onZChange_impl )
+                , "*!\n\
+            \n\
+                Notify 'this' and all siblings of a ZOrder change event\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChanged
+        
+            typedef void ( TabControl_wrapper::*onZChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            TabControl_exposer.def( 
+                "onZChanged"
+                , onZChanged_function_type( &TabControl_wrapper::default_onZChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the z-order position of this window has changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::performCopy
@@ -814,6 +3577,112 @@ void register_TabControl_class(){
                 , ( bp::arg("clipboard") ) );
         
         }
+        { //::CEGUI::Window::populateGeometryBuffer
+        
+            typedef void ( TabControl_wrapper::*populateGeometryBuffer_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "populateGeometryBuffer"
+                , populateGeometryBuffer_function_type( &TabControl_wrapper::default_populateGeometryBuffer )
+                , "*!\n\
+                \n\
+                    Update the rendering cache.\n\
+            \n\
+                    Populates the Window's GeometryBuffer ready for rendering.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::queueGeometry
+        
+            typedef void ( TabControl_wrapper::*queueGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            TabControl_exposer.def( 
+                "queueGeometry"
+                , queueGeometry_function_type( &TabControl_wrapper::queueGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with positioning, clipping and\n\
+                    queueing of window geometry to RenderingSurfaces.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf and is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::releaseRenderingWindow
+        
+            typedef void ( TabControl_wrapper::*releaseRenderingWindow_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "releaseRenderingWindow"
+                , releaseRenderingWindow_function_type( &TabControl_wrapper::releaseRenderingWindow )
+                , "! helper to clean up the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::removeWindowFromDrawList
+        
+            typedef void ( TabControl_wrapper::*removeWindowFromDrawList_function_type )( ::CEGUI::Window const & ) ;
+            
+            TabControl_exposer.def( 
+                "removeWindowFromDrawList"
+                , removeWindowFromDrawList_function_type( &TabControl_wrapper::removeWindowFromDrawList )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Removes the window from the drawing list.  If the window is not attached\n\
+                    to the drawing list then nothing happens.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be removed from the drawing list.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::setArea_impl
+        
+            typedef void ( TabControl_wrapper::*setArea_impl_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const &,bool,bool ) ;
+            
+            TabControl_exposer.def( 
+                "setArea_impl"
+                , setArea_impl_function_type( &TabControl_wrapper::setArea_impl )
+                , ( bp::arg("pos"), bp::arg("size"), bp::arg("topLeftSizing")=(bool)(false), bp::arg("fireEvents")=(bool)(true) )
+                , "*!\n\
+                \n\
+                    Implementation method to modify window area while correctly applying\n\
+                    min  max size processing, and firing any appropriate events.\n\
+            \n\
+                note\n\
+                    This is the implementation function for setting size and position.\n\
+                    In order to simplify area management, from this point on, all\n\
+                    modifications to window size and position (area rect) should come\n\
+                    through here.\n\
+            \n\
+                param pos\n\
+                    UVector2 object describing the new area position.\n\
+            \n\
+                param size\n\
+                    USize object describing the new area size.\n\
+            \n\
+                param topLeftSizing\n\
+                    - true to indicate the the operation is a sizing operation on the top\n\
+                      andor left edges of the area, and so window movement should be\n\
+                      inhibited if size is at max or min.\n\
+                    - false to indicate the operation is not a strict sizing operation on\n\
+                      the top andor left edges and that the window position may change as\n\
+                      required\n\
+            \n\
+                param fireEvents\n\
+                    - true if events should be fired as normal.\n\
+                    - false to inhibit firing of events (required, for example, if you need\n\
+                      to call this from the onSizeonMove handlers).\n\
+                 *\n" );
+        
+        }
         { //::CEGUI::Window::setLookNFeel
         
             typedef void ( ::CEGUI::Window::*setLookNFeel_function_type )( ::CEGUI::String const & ) ;
@@ -836,6 +3705,27 @@ void register_TabControl_class(){
                 , setMargin_function_type(&::CEGUI::Window::setMargin)
                 , default_setMargin_function_type(&TabControl_wrapper::default_setMargin)
                 , ( bp::arg("margin") ) );
+        
+        }
+        { //::CEGUI::Window::setParent
+        
+            typedef void ( TabControl_wrapper::*setParent_function_type )( ::CEGUI::Window * ) ;
+            
+            TabControl_exposer.def( 
+                "setParent"
+                , setParent_function_type( &TabControl_wrapper::setParent )
+                , ( bp::arg("parent") )
+                , "*!\n\
+                \n\
+                    Set the parent window for this window object.\n\
+            \n\
+                @param parent\n\
+                    Pointer to a Window object that is to be assigned as the parent to this\n\
+                    Window.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent
@@ -862,6 +3752,16 @@ void register_TabControl_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
+        { //::CEGUI::Window::transferChildSurfaces
+        
+            typedef void ( TabControl_wrapper::*transferChildSurfaces_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "transferChildSurfaces"
+                , transferChildSurfaces_function_type( &TabControl_wrapper::transferChildSurfaces )
+                , "! transfer RenderingSurfaces to be owned by our target RenderingSurface.\n" );
+        
+        }
         { //::CEGUI::Window::update
         
             typedef void ( ::CEGUI::Window::*update_function_type )( float ) ;
@@ -872,6 +3772,64 @@ void register_TabControl_class(){
                 , update_function_type(&::CEGUI::Window::update)
                 , default_update_function_type(&TabControl_wrapper::default_update)
                 , ( bp::arg("elapsed") ) );
+        
+        }
+        { //::CEGUI::Window::updateGeometryRenderSettings
+        
+            typedef void ( TabControl_wrapper::*updateGeometryRenderSettings_function_type )(  ) ;
+            
+            TabControl_exposer.def( 
+                "updateGeometryRenderSettings"
+                , updateGeometryRenderSettings_function_type( &TabControl_wrapper::updateGeometryRenderSettings )
+                , "*!\n\
+            \n\
+                Update position and clip region on this Windows geometry  rendering\n\
+                surface.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::updateSelf
+        
+            typedef void ( TabControl_wrapper::*updateSelf_function_type )( float ) ;
+            
+            TabControl_exposer.def( 
+                "updateSelf"
+                , updateSelf_function_type( &TabControl_wrapper::default_updateSelf )
+                , ( bp::arg("elapsed") )
+                , "*************************************************************************\n\
+                    Implementation Functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Perform actual update processing for this Window.\n\
+            \n\
+                @param elapsed\n\
+                    float value indicating the number of seconds elapsed since the last\n\
+                    update call.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::writeAutoChildWindowXML
+        
+            typedef bool ( TabControl_wrapper::*writeAutoChildWindowXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TabControl_exposer.def( 
+                "writeAutoChildWindowXML"
+                , writeAutoChildWindowXML_function_type( &TabControl_wrapper::default_writeAutoChildWindowXML )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::Window::writePropertiesXML
+        
+            typedef int ( TabControl_wrapper::*writePropertiesXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TabControl_exposer.def( 
+                "writePropertiesXML"
+                , writePropertiesXML_function_type( &TabControl_wrapper::default_writePropertiesXML )
+                , ( bp::arg("xml_stream") ) );
         
         }
         { //::CEGUI::Window::writeXMLToStream

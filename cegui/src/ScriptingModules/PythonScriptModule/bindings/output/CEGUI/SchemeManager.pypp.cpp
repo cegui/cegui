@@ -15,6 +15,26 @@ struct SchemeManager_wrapper : CEGUI::SchemeManager, bp::wrapper< CEGUI::SchemeM
     
     }
 
+    virtual void doPostObjectAdditionAction( ::CEGUI::Scheme & object ){
+        if( bp::override func_doPostObjectAdditionAction = this->get_override( "doPostObjectAdditionAction" ) )
+            func_doPostObjectAdditionAction( boost::ref(object) );
+        else{
+            this->CEGUI::SchemeManager::doPostObjectAdditionAction( boost::ref(object) );
+        }
+    }
+    
+    virtual void default_doPostObjectAdditionAction( ::CEGUI::Scheme & object ){
+        CEGUI::SchemeManager::doPostObjectAdditionAction( boost::ref(object) );
+    }
+
+    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ob ){
+        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
+    }
+
+    ::CEGUI::Scheme & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Scheme * object, ::CEGUI::XMLResourceExistsAction const action ){
+        return CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -25,6 +45,14 @@ struct SchemeManager_wrapper : CEGUI::SchemeManager, bp::wrapper< CEGUI::SchemeM
     
     void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -59,6 +87,17 @@ void register_SchemeManager_class(){
         typedef bp::class_< SchemeManager_wrapper, bp::bases< CEGUI::Singleton< CEGUI::SchemeManager >, CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > >, boost::noncopyable > SchemeManager_exposer_t;
         SchemeManager_exposer_t SchemeManager_exposer = SchemeManager_exposer_t( "SchemeManager", bp::init< >("! Constructor.\n") );
         bp::scope SchemeManager_scope( SchemeManager_exposer );
+        { //::CEGUI::SchemeManager::doPostObjectAdditionAction
+        
+            typedef void ( SchemeManager_wrapper::*doPostObjectAdditionAction_function_type )( ::CEGUI::Scheme & ) ;
+            
+            SchemeManager_exposer.def( 
+                "doPostObjectAdditionAction"
+                , doPostObjectAdditionAction_function_type( &SchemeManager_wrapper::default_doPostObjectAdditionAction )
+                , ( bp::arg("object") )
+                , "override from base\n" );
+        
+        }
         { //::CEGUI::SchemeManager::getIterator
         
             typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > > > ( ::CEGUI::SchemeManager::*getIterator_function_type )(  ) const;
@@ -73,6 +112,29 @@ void register_SchemeManager_class(){
             *\n" );
         
         }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
+        
+            typedef CEGUI::SchemeManager exported_class_t;
+            typedef void ( SchemeManager_wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ) ;
+            
+            SchemeManager_exposer.def( 
+                "destroyObject"
+                , destroyObject_function_type( &SchemeManager_wrapper::destroyObject )
+                , ( bp::arg("ob") ) );
+        
+        }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction
+        
+            typedef CEGUI::SchemeManager exported_class_t;
+            typedef ::CEGUI::Scheme & ( SchemeManager_wrapper::*doExistingObjectAction_function_type )( ::CEGUI::String const,::CEGUI::Scheme *,::CEGUI::XMLResourceExistsAction const ) ;
+            
+            SchemeManager_exposer.def( 
+                "doExistingObjectAction"
+                , doExistingObjectAction_function_type( &SchemeManager_wrapper::doExistingObjectAction )
+                , ( bp::arg("object_name"), bp::arg("object"), bp::arg("action") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::EventSet::fireEvent
         
             typedef void ( ::CEGUI::EventSet::*fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
@@ -83,6 +145,29 @@ void register_SchemeManager_class(){
                 , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
                 , default_fireEvent_function_type(&SchemeManager_wrapper::default_fireEvent)
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( SchemeManager_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            SchemeManager_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &SchemeManager_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( SchemeManager_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            SchemeManager_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &SchemeManager_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

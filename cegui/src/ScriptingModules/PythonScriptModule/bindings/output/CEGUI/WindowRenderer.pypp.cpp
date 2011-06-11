@@ -39,6 +39,54 @@ struct WindowRenderer_wrapper : CEGUI::WindowRenderer, bp::wrapper< CEGUI::Windo
         return CEGUI::WindowRenderer::getUnclippedInnerRect( );
     }
 
+    virtual void onAttach(  ){
+        if( bp::override func_onAttach = this->get_override( "onAttach" ) )
+            func_onAttach(  );
+        else{
+            this->CEGUI::WindowRenderer::onAttach(  );
+        }
+    }
+    
+    virtual void default_onAttach(  ){
+        CEGUI::WindowRenderer::onAttach( );
+    }
+
+    virtual void onDetach(  ){
+        if( bp::override func_onDetach = this->get_override( "onDetach" ) )
+            func_onDetach(  );
+        else{
+            this->CEGUI::WindowRenderer::onDetach(  );
+        }
+    }
+    
+    virtual void default_onDetach(  ){
+        CEGUI::WindowRenderer::onDetach( );
+    }
+
+    virtual void onLookNFeelAssigned(  ){
+        if( bp::override func_onLookNFeelAssigned = this->get_override( "onLookNFeelAssigned" ) )
+            func_onLookNFeelAssigned(  );
+        else{
+            this->CEGUI::WindowRenderer::onLookNFeelAssigned(  );
+        }
+    }
+    
+    virtual void default_onLookNFeelAssigned(  ){
+        CEGUI::WindowRenderer::onLookNFeelAssigned( );
+    }
+
+    virtual void onLookNFeelUnassigned(  ){
+        if( bp::override func_onLookNFeelUnassigned = this->get_override( "onLookNFeelUnassigned" ) )
+            func_onLookNFeelUnassigned(  );
+        else{
+            this->CEGUI::WindowRenderer::onLookNFeelUnassigned(  );
+        }
+    }
+    
+    virtual void default_onLookNFeelUnassigned(  ){
+        CEGUI::WindowRenderer::onLookNFeelUnassigned( );
+    }
+
     virtual void performChildWindowLayout(  ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
             func_performChildWindowLayout(  );
@@ -49,6 +97,14 @@ struct WindowRenderer_wrapper : CEGUI::WindowRenderer, bp::wrapper< CEGUI::Windo
     
     void default_performChildWindowLayout(  ) {
         CEGUI::WindowRenderer::performChildWindowLayout( );
+    }
+
+    void registerProperty( ::CEGUI::Property * property, bool const ban_from_xml ){
+        CEGUI::WindowRenderer::registerProperty( boost::python::ptr(property), ban_from_xml );
+    }
+
+    void registerProperty( ::CEGUI::Property * property ){
+        CEGUI::WindowRenderer::registerProperty( boost::python::ptr(property) );
     }
 
     virtual void render(  ){
@@ -168,6 +224,58 @@ void register_WindowRenderer_class(){
             *\n" );
         
         }
+        { //::CEGUI::WindowRenderer::onAttach
+        
+            typedef void ( WindowRenderer_wrapper::*onAttach_function_type )(  ) ;
+            
+            WindowRenderer_exposer.def( 
+                "onAttach"
+                , onAttach_function_type( &WindowRenderer_wrapper::default_onAttach )
+                , "*!\n\
+            \n\
+                Handler called when this windowrenderer is attached to a window\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WindowRenderer::onDetach
+        
+            typedef void ( WindowRenderer_wrapper::*onDetach_function_type )(  ) ;
+            
+            WindowRenderer_exposer.def( 
+                "onDetach"
+                , onDetach_function_type( &WindowRenderer_wrapper::default_onDetach )
+                , "*!\n\
+            \n\
+                Handler called when this windowrenderer is detached from its window\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WindowRenderer::onLookNFeelAssigned
+        
+            typedef void ( WindowRenderer_wrapper::*onLookNFeelAssigned_function_type )(  ) ;
+            
+            WindowRenderer_exposer.def( 
+                "onLookNFeelAssigned"
+                , onLookNFeelAssigned_function_type( &WindowRenderer_wrapper::default_onLookNFeelAssigned )
+                , "*!\n\
+            \n\
+                Handler called when a Look'N'Feel is assigned to our window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WindowRenderer::onLookNFeelUnassigned
+        
+            typedef void ( WindowRenderer_wrapper::*onLookNFeelUnassigned_function_type )(  ) ;
+            
+            WindowRenderer_exposer.def( 
+                "onLookNFeelUnassigned"
+                , onLookNFeelUnassigned_function_type( &WindowRenderer_wrapper::default_onLookNFeelUnassigned )
+                , "*!\n\
+            \n\
+                Handler called when a Look'N'Feel is removedunassigned from our window.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::WindowRenderer::performChildWindowLayout
         
             typedef void ( ::CEGUI::WindowRenderer::*performChildWindowLayout_function_type )(  ) ;
@@ -177,6 +285,52 @@ void register_WindowRenderer_class(){
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::WindowRenderer::performChildWindowLayout)
                 , default_performChildWindowLayout_function_type(&WindowRenderer_wrapper::default_performChildWindowLayout) );
+        
+        }
+        { //::CEGUI::WindowRenderer::registerProperty
+        
+            typedef void ( WindowRenderer_wrapper::*registerProperty_function_type )( ::CEGUI::Property *,bool const ) ;
+            
+            WindowRenderer_exposer.def( 
+                "registerProperty"
+                , registerProperty_function_type( &WindowRenderer_wrapper::registerProperty )
+                , ( bp::arg("property"), bp::arg("ban_from_xml") )
+                , "*************************************************************************\n\
+                    Implementation methods\n\
+                **************************************************************************\n\
+                *!\n\
+                \n\
+                    Register a property class that will be properly managed by this window\n\
+                    renderer.\n\
+            \n\
+                @param property\n\
+                    Pointer to a static Property object that will be added to the target\n\
+                    window.\n\
+            \n\
+                @param ban_from_xml\n\
+                    - true if this property should be added to the 'ban' list so that it is\n\
+                      not written in XML output.\n\
+                    - false if this property is not banned and should appear in XML output.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::WindowRenderer::registerProperty
+        
+            typedef void ( WindowRenderer_wrapper::*registerProperty_function_type )( ::CEGUI::Property * ) ;
+            
+            WindowRenderer_exposer.def( 
+                "registerProperty"
+                , registerProperty_function_type( &WindowRenderer_wrapper::registerProperty )
+                , ( bp::arg("property") )
+                , "*!\n\
+                \n\
+                    Register a property class that will be properly managed by this window\n\
+                    renderer.\n\
+            \n\
+                @param property\n\
+                    Pointer to a static Property object that will be added to the target\n\
+                    window.\n\
+                *\n" );
         
         }
         { //::CEGUI::WindowRenderer::render

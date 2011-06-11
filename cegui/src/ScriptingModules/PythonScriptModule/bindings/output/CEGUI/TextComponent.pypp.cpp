@@ -6,10 +6,60 @@
 
 namespace bp = boost::python;
 
+struct TextComponent_wrapper : CEGUI::TextComponent, bp::wrapper< CEGUI::TextComponent > {
+
+    TextComponent_wrapper( )
+    : CEGUI::TextComponent( )
+      , bp::wrapper< CEGUI::TextComponent >(){
+        // null constructor
+    
+    }
+
+    TextComponent_wrapper(::CEGUI::TextComponent const & obj )
+    : CEGUI::TextComponent( boost::ref(obj) )
+      , bp::wrapper< CEGUI::TextComponent >(){
+        // copy constructor
+    
+    }
+
+    virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
+        if( bp::override func_render_impl = this->get_override( "render_impl" ) )
+            func_render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
+        else{
+            this->CEGUI::TextComponent::render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
+        }
+    }
+    
+    virtual void default_render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
+        CEGUI::TextComponent::render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
+    }
+
+    void setupStringFormatter( ::CEGUI::Window const & window, ::CEGUI::RenderedString const & rendered_string ) const {
+        CEGUI::TextComponent::setupStringFormatter( boost::ref(window), boost::ref(rendered_string) );
+    }
+
+    void initColoursRect( ::CEGUI::Window const & wnd, ::CEGUI::ColourRect const * modCols, ::CEGUI::ColourRect & cr ) const {
+        CEGUI::FalagardComponentBase::initColoursRect( boost::ref(wnd), boost::python::ptr(modCols), boost::ref(cr) );
+    }
+
+    bool writeColoursXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::FalagardComponentBase::writeColoursXML( boost::ref(xml_stream) );
+    }
+
+    bool writeHorzFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::FalagardComponentBase::writeHorzFormatXML( boost::ref(xml_stream) );
+    }
+
+    bool writeVertFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::FalagardComponentBase::writeVertFormatXML( boost::ref(xml_stream) );
+    }
+
+};
+
 void register_TextComponent_class(){
 
     { //::CEGUI::TextComponent
-        typedef bp::class_< CEGUI::TextComponent, bp::bases< CEGUI::FalagardComponentBase > > TextComponent_exposer_t;
+        typedef bp::class_< TextComponent_wrapper, bp::bases< CEGUI::FalagardComponentBase > > TextComponent_exposer_t;
         TextComponent_exposer_t TextComponent_exposer = TextComponent_exposer_t( "TextComponent", "*!\n\
         \n\
             Class that encapsulates information for a text component.\n\
@@ -182,6 +232,17 @@ void register_TextComponent_class(){
                 , "! Assignment\n" );
         
         }
+        { //::CEGUI::TextComponent::render_impl
+        
+            typedef void ( TextComponent_wrapper::*render_impl_function_type )( ::CEGUI::Window &,::CEGUI::Rectf &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
+            
+            TextComponent_exposer.def( 
+                "render_impl"
+                , render_impl_function_type( &TextComponent_wrapper::default_render_impl )
+                , ( bp::arg("srcWindow"), bp::arg("destRect"), bp::arg("modColours"), bp::arg("clipper"), bp::arg("clipToDisplay") )
+                , "implemets abstract from base\n" );
+        
+        }
         { //::CEGUI::TextComponent::setFont
         
             typedef void ( ::CEGUI::TextComponent::*setFont_function_type )( ::CEGUI::String const & ) ;
@@ -313,6 +374,17 @@ void register_TextComponent_class(){
                     *\n" );
         
         }
+        { //::CEGUI::TextComponent::setupStringFormatter
+        
+            typedef void ( TextComponent_wrapper::*setupStringFormatter_function_type )( ::CEGUI::Window const &,::CEGUI::RenderedString const & ) const;
+            
+            TextComponent_exposer.def( 
+                "setupStringFormatter"
+                , setupStringFormatter_function_type( &TextComponent_wrapper::setupStringFormatter )
+                , ( bp::arg("window"), bp::arg("rendered_string") )
+                , "! helper to set up an appropriate FormattedRenderedString\n" );
+        
+        }
         { //::CEGUI::TextComponent::writeXMLToStream
         
             typedef void ( ::CEGUI::TextComponent::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
@@ -331,6 +403,96 @@ void register_TextComponent_class(){
             \n\
                     @return\n\
                         Nothing.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::initColoursRect
+        
+            typedef void ( TextComponent_wrapper::*initColoursRect_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect const *,::CEGUI::ColourRect & ) const;
+            
+            TextComponent_exposer.def( 
+                "initColoursRect"
+                , initColoursRect_function_type( &TextComponent_wrapper::initColoursRect )
+                , ( bp::arg("wnd"), bp::arg("modCols"), bp::arg("cr") )
+                , "*!\n\
+                    \n\
+                        Helper method to initialise a ColourRect with appropriate values according to the way\
+                        the\n\
+                        ImageryComponent is set up.\n\
+            \n\
+                        This will try and get values from multiple places:\n\
+                            - a property attached to  wnd\n\
+                            - or the integral d_colours value.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::writeColoursXML
+        
+            typedef bool ( TextComponent_wrapper::*writeColoursXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TextComponent_exposer.def( 
+                "writeColoursXML"
+                , writeColoursXML_function_type( &TextComponent_wrapper::writeColoursXML )
+                , ( bp::arg("xml_stream") )
+                , "*!\n\
+                    \n\
+                        Writes xml for the colours to a OutStream.  Will prefer property colours before\
+                        explicit.\n\
+            \n\
+                    \note\n\
+                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
+            \n\
+            \n\
+                    @return\n\
+                        - true if xml element was written.\n\
+                        - false if nothing was output due to the formatting not being set (sub-class may then\
+                        choose to do something else.)\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::writeHorzFormatXML
+        
+            typedef bool ( TextComponent_wrapper::*writeHorzFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TextComponent_exposer.def( 
+                "writeHorzFormatXML"
+                , writeHorzFormatXML_function_type( &TextComponent_wrapper::writeHorzFormatXML )
+                , ( bp::arg("xml_stream") )
+                , "*!\n\
+                    \n\
+                        Writes xml for the horizontal formatting to a OutStream if such a property is defined.\n\
+            \n\
+                    \note\n\
+                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
+            \n\
+            \n\
+                    @return\n\
+                        - true if xml element was written.\n\
+                        - false if nothing was output due to the formatting not being set (sub-class may then\
+                        choose to do something else.)\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::writeVertFormatXML
+        
+            typedef bool ( TextComponent_wrapper::*writeVertFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            TextComponent_exposer.def( 
+                "writeVertFormatXML"
+                , writeVertFormatXML_function_type( &TextComponent_wrapper::writeVertFormatXML )
+                , ( bp::arg("xml_stream") )
+                , "*!\n\
+                    \n\
+                        Writes xml for the vertical formatting to a OutStream if such a property is defined.\n\
+            \n\
+                    \note\n\
+                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
+            \n\
+            \n\
+                    @return\n\
+                        - true if xml element was written.\n\
+                        - false if nothing was output due to the formatting not being set (sub-class may then\
+                        choose to do something else.)\n\
                     *\n" );
         
         }

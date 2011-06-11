@@ -577,7 +577,7 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
         if len(c.arguments) > 0:
             c.exclude()
 
-	# CEGUISystem.h
+    # CEGUISystem.h
     system = CEGUI_ns.class_("System")
     system.include()
     commonUtils.excludeAllPrivate(system)
@@ -598,11 +598,11 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     # CEGUITplWindowRendererFactory.h
     # CEGUITplWRFactoryRegisterer.h
     # python doesn't like templates :-)
-	
-	# CEGUIUDim.h
+    
+    # CEGUIUDim.h
     udim = CEGUI_ns.class_("UDim")
     udim.include()
-	
+    
     ubox = CEGUI_ns.class_("UBox")
     ubox.include()
     
@@ -852,6 +852,8 @@ void Iterator_previous(::CEGUI::%s& t)
     # elements/CEGUIGridLayoutContainer.h
     gridLayoutContainer = CEGUI_ns.class_("GridLayoutContainer")
     gridLayoutContainer.include()
+    # FIXME: Temporary, this should work with transformations
+    gridLayoutContainer.mem_fun("mapFromIdxToGrid").exclude()
     
     # elements/CEGUIGroupBox.h
     groupBox = CEGUI_ns.class_("GroupBox")
@@ -947,6 +949,8 @@ void Iterator_previous(::CEGUI::%s& t)
     multiColumnList.include()
     # internal private class
     multiColumnList.class_("ListRow").exclude()
+    # internal
+    multiColumnList.mem_fun("pred_descend").exclude()
     
     # elements/CEGUIMultiLineEditbox.h
     multiLineEditbox = CEGUI_ns.class_("MultiLineEditbox")
@@ -1158,9 +1162,8 @@ void Iterator_previous(::CEGUI::%s& t)
     # no need for this function, just use getSingleton
     mb.mem_funs("getSingletonPtr").exclude()
 
-    # hack that should work for now! disallows inheriting and overriding in python
+    # at no point should you need any private methods
     commonUtils.excludeAllPrivate(CEGUI_ns)
-    commonUtils.excludeAllProtected(CEGUI_ns)
 
 def configureExceptions(mb):
     exception = mb.namespace("CEGUI").class_("Exception")

@@ -6,10 +6,32 @@
 
 namespace bp = boost::python;
 
+struct EventLinkDefinition_wrapper : CEGUI::EventLinkDefinition, bp::wrapper< CEGUI::EventLinkDefinition > {
+
+    EventLinkDefinition_wrapper(CEGUI::EventLinkDefinition const & arg )
+    : CEGUI::EventLinkDefinition( arg )
+      , bp::wrapper< CEGUI::EventLinkDefinition >(){
+        // copy constructor
+        
+    }
+
+    EventLinkDefinition_wrapper(::CEGUI::String const & event_name )
+    : CEGUI::EventLinkDefinition( boost::ref(event_name) )
+      , bp::wrapper< CEGUI::EventLinkDefinition >(){
+        // constructor
+    
+    }
+
+    ::CEGUI::Window * getTargetWindow( ::CEGUI::Window & start_wnd, ::CEGUI::String const & name ) const {
+        return CEGUI::EventLinkDefinition::getTargetWindow( boost::ref(start_wnd), boost::ref(name) );
+    }
+
+};
+
 void register_EventLinkDefinition_class(){
 
     { //::CEGUI::EventLinkDefinition
-        typedef bp::class_< CEGUI::EventLinkDefinition > EventLinkDefinition_exposer_t;
+        typedef bp::class_< EventLinkDefinition_wrapper > EventLinkDefinition_exposer_t;
         EventLinkDefinition_exposer_t EventLinkDefinition_exposer = EventLinkDefinition_exposer_t( "EventLinkDefinition", bp::init< CEGUI::String const & >(( bp::arg("event_name") )) );
         bp::scope EventLinkDefinition_scope( EventLinkDefinition_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::EventLinkDefinition >();
@@ -55,6 +77,18 @@ void register_EventLinkDefinition_class(){
                 , getName_function_type( &::CEGUI::EventLinkDefinition::getName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "! return the name of the Event defined here.\n" );
+        
+        }
+        { //::CEGUI::EventLinkDefinition::getTargetWindow
+        
+            typedef ::CEGUI::Window * ( EventLinkDefinition_wrapper::*getTargetWindow_function_type )( ::CEGUI::Window &,::CEGUI::String const & ) const;
+            
+            EventLinkDefinition_exposer.def( 
+                "getTargetWindow"
+                , getTargetWindow_function_type( &EventLinkDefinition_wrapper::getTargetWindow )
+                , ( bp::arg("start_wnd"), bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Return a pointer to the target window with the given name.\n" );
         
         }
         { //::CEGUI::EventLinkDefinition::initialiseWidget
