@@ -28,6 +28,7 @@
 #ifndef _CEGUIImage_h_
 #define _CEGUIImage_h_
 
+#include "CEGUIChainedXMLHandler.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIRect.h"
@@ -44,10 +45,11 @@ namespace CEGUI
     quad, or something more complex.
 */
 class CEGUIEXPORT Image :
-    public AllocatedObject<Image>
+    public AllocatedObject<Image>,
+    public ChainedXMLHandler
 {
 public:
-    virtual ~Image() {}
+    virtual ~Image();
 
     virtual const String& getName() const = 0;
 
@@ -60,8 +62,6 @@ public:
                         const ColourRect& colours) const = 0;
 
     virtual void notifyDisplaySizeChanged(const Sizef& size) = 0;
-
-    virtual Image& clone() const = 0;
 
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
@@ -97,6 +97,12 @@ public:
     {
         render(buffer, Rectf(position, size), clip_area, colours);
     }
+
+protected:
+    // implement chained xml handler abstract interface
+    void elementStartLocal(const String& element,
+                           const XMLAttributes& attributes);
+    void elementEndLocal(const String& element);
 };
 
 } // End of  CEGUI namespace section

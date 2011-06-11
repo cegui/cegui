@@ -44,6 +44,7 @@ class CEGUIEXPORT BasicImage : public Image
 {
 public:
     BasicImage(const String& name);
+    BasicImage(const XMLAttributes& attributes);
 
     BasicImage(const String& name, Texture* texture,
                const Rectf& tex_area, const Vector2f& offset,
@@ -64,17 +65,16 @@ public:
                 const Rectf* clip_area,
                 const ColourRect& colours) const;
     void notifyDisplaySizeChanged(const Sizef& size);
-    Image& clone() const;
 
 protected:
     //! name used when the BasicImage was created.
     String d_name;
     //! Texture used by this image.
     Texture* d_texture;
-    //! Rect defining texture co-ords for this image.
-    Rectf d_area;
     //! Actual pixel size.
     Sizef d_pixelSize;
+    //! Rect defining texture co-ords for this image.
+    Rectf d_area;
     //! Defined pixel offset
     Vector2f d_pixelOffset;
     //! Whether image is auto-scaled or not.

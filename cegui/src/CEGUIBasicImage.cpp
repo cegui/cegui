@@ -30,17 +30,31 @@
 #include "CEGUITexture.h"
 #include "CEGUIVertex.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIXMLAttributes.h"
 #include "CEGUISystem.h" // this being here is a bit nasty IMO
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ImageTypeAttribute( "Type" );
+const String ImageNameAttribute( "Name" );
+const String ImageTextureAttribute( "Texture" );
+const String ImageXPosAttribute( "XPos" );
+const String ImageYPosAttribute( "YPos" );
+const String ImageWidthAttribute( "Width" );
+const String ImageHeightAttribute( "Height" );
+const String ImageXOffsetAttribute( "XOffset" );
+const String ImageYOffsetAttribute( "YOffset" );
+const String ImageAutoScaledAttribute( "AutoScaled" );
+const String ImageNativeHorzResAttribute( "NativeHorzRes" );
+const String ImageNativeVertResAttribute( "NativeVertRes" );
+
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name) :
     d_name(name),
     d_texture(0),
-    d_area(0.0f, 0.0f, 0.0f, 0.0f),
     d_pixelSize(0, 0),
+    d_area(0.0f, 0.0f, 0.0f, 0.0f),
     d_pixelOffset(0.0f, 0.0f),
     d_autoscaled(false),
     d_nativeResolution(640, 480),
@@ -50,13 +64,36 @@ BasicImage::BasicImage(const String& name) :
 }
 
 //----------------------------------------------------------------------------//
+BasicImage::BasicImage(const XMLAttributes& attributes) :
+    d_name(attributes.getValueAsString(ImageNameAttribute)),
+    d_texture(&System::getSingleton().getRenderer()->getTexture(
+              attributes.getValueAsString(ImageTextureAttribute))),
+    d_pixelSize(attributes.getValueAsInteger(ImageWidthAttribute, 0),
+                attributes.getValueAsInteger(ImageHeightAttribute, 0)),
+    d_area(Vector2f(attributes.getValueAsInteger(ImageXPosAttribute, 0),
+                    attributes.getValueAsInteger(ImageYPosAttribute, 0)),
+           d_pixelSize),
+    d_pixelOffset(Vector2f(
+        attributes.getValueAsInteger(ImageXOffsetAttribute, 0),
+        attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+    d_autoscaled(attributes.getValueAsBool(ImageAutoScaledAttribute)),
+    d_nativeResolution(Sizef(
+        attributes.getValueAsFloat(ImageNativeHorzResAttribute, 640),
+        attributes.getValueAsFloat(ImageNativeVertResAttribute, 480)))
+{
+    // force initialisation of the autoscaling fields.
+    notifyDisplaySizeChanged(
+        System::getSingleton().getRenderer()->getDisplaySize());
+}
+
+//----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name, Texture* texture,
                        const Rectf& pixel_area, const Vector2f& pixel_offset,
                        const bool autoscaled, const Sizef& native_res) :
     d_name(name),
     d_texture(texture),
-    d_area(pixel_area),
     d_pixelSize(pixel_area.getSize()),
+    d_area(pixel_area),
     d_pixelOffset(pixel_offset),
     d_autoscaled(autoscaled),
     d_nativeResolution(native_res)
@@ -248,12 +285,6 @@ void BasicImage::notifyDisplaySizeChanged(const Sizef& size)
     d_scaledSize.d_height = d_pixelSize.d_height * y_scale;
     d_scaledOffset.d_x = d_pixelOffset.d_x * x_scale;
     d_scaledOffset.d_y = d_pixelOffset.d_y * y_scale;
-}
-
-//----------------------------------------------------------------------------//
-Image& BasicImage::clone() const
-{
-    return *CEGUI_NEW_AO BasicImage(*this);
 }
 
 //----------------------------------------------------------------------------//

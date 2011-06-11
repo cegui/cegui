@@ -16,13 +16,12 @@
 	</xsd:complexType>
 	
 	<xsd:complexType name="ImageType">
+        <xsd:sequence>
+            <xsd:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xsd:sequence>
 		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="XPos" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="YPos" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="Width" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="Height" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="XOffset" type="xsd:integer" use="optional" default="0"/>
-		<xsd:attribute name="YOffset" type="xsd:integer" use="optional" default="0"/>						
+		<xsd:attribute name="Type" type="xsd:string" use="optional" default="BasicImage" />
+		<xsd:anyAttribute processContents="skip" />
 	</xsd:complexType>
 
 </xsd:schema>
