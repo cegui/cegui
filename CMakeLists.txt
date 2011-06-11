@@ -193,6 +193,9 @@ if (APPLE)
     option( CEGUI_APPLE_DYLIB_SET_VERSION_INFO "Specifies whether to set VERSION and SOVERSION for libraries." FALSE )
 endif()
 
+# regression and performance tests
+cmake_dependent_option( CEGUI_BUILD_TESTS "Specifies whether to build the regression and performance tests." FALSE "Boost_FOUND" FALSE )
+
 
 ################################################################################
 # Define vars holding the names for all the libs we can build for CEGUI.
@@ -428,3 +431,6 @@ endif()
 add_subdirectory(datafiles)
 #add_subdirectory(doc)
 
+if (CEGUI_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

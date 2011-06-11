@@ -460,3 +460,86 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
     endif()
 endmacro()
 
+#
+# Define a CEGUI test executable
+#
+macro (cegui_add_test_executable _NAME)
+    set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
+
+    cegui_gather_files()
+
+    ###########################################################################
+    #                     Statically Linked Executable
+    ###########################################################################
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        add_executable(${CEGUI_TARGET_NAME}_Static ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+        set_property(TARGET ${CEGUI_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
+
+        # append the _d (or whatever) for debug builds as needed.
+        if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
+            set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES
+                OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}_Static${CEGUI_BUILD_SUFFIX}"
+            )
+        endif()
+
+        if (APPLE)
+            cegui_apple_app_setup(${CEGUI_TARGET_NAME}_Static TRUE)
+        endif()
+    endif()
+
+    ###########################################################################
+    #                   Dynamically Linked Executable
+    ###########################################################################
+    add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+
+    # append the _d (or whatever) for debug builds as needed.
+    if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
+        )
+    endif()
+
+    if (NOT APPLE)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
+        )
+    endif()
+    
+    ###########################################################################
+    #                      LIBRARY LINK SETUP
+    ###########################################################################
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME}
+        ${CEGUI_BASE_LIBNAME}
+        ${CEGUI_NULL_RENDERER_LIBNAME}
+        boost_unit_test_framework # FIXME: Not portable!
+    )
+
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        target_link_libraries(${CEGUI_TARGET_NAME}_Static
+            ${CEGUI_NULL_RENDERER_LIBNAME}_Static
+            ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
+            ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
+            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+        )
+    endif()
+
+    ###########################################################################
+    #                           INSTALLATION
+    ###########################################################################
+    if (UNIX AND NOT APPLE AND NOT WIN32)
+        install(TARGETS ${CEGUI_TARGET_NAME}
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+    )
+
+        if (CEGUI_BUILD_STATIC_CONFIGURATION)
+            install(TARGETS ${CEGUI_TARGET_NAME}_Static
+                RUNTIME DESTINATION bin
+                LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        )
+        endif()
+    endif()
+
+endmacro()
