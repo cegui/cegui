@@ -1,0 +1,27 @@
+REGRESSION TESTS
+===============================================================================
+
+This folder contains regression tests of the CEGUI library.
+
+The whole system uses boost::test as a driving framework with several custom
+additions for performance testing. This doesn't mean you have to get boost to
+use CEGUI! You only need boost to run the test suite which you likely aren't
+going to need.
+
+Coverage
+===============================================================================
+We are not aiming for 100% coverage! CEGUI wasn't developed with tests
+initially and it would be very hard to get everything covered at this point.
+
+However tests will be gradually added and we plan to maintain and keep them
+around from now on. They should help us make bigger changes with more
+confidence and potentially point out issues we wouldn't have known about
+otherwise.
+
+Performance
+===============================================================================
+Part of this suite are performance tests of various CEGUI parts. Comparing data
+across PCs and even environments on the same PC is ridiculous! These should
+only serve to assess performance implications when changing CEGUI core code and
+the raw time data should only be compared between runs on the same PC, same OS,
+same environment.
