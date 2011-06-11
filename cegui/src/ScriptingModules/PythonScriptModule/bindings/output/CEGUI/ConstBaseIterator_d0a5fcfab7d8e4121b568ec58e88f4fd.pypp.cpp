@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping__greater__wrapper : CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping >, bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping > > {
 
+    ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping__greater__wrapper( )
+    : CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping>( )
+      , bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::WindowFactoryManager::FalagardWindowMapping getCurrentValue(  ) const {
         bp::override func_getCurrentValue = this->get_override( "getCurrentValue" );
         return func_getCurrentValue(  );
@@ -21,6 +28,9 @@ void register_ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_class(){
         typedef bp::class_< ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_FalagardWindowMapping__greater__wrapper, boost::noncopyable > ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer_t;
         ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer_t ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer = ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer_t( "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd", bp::no_init );
         bp::scope ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_scope( ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer );
+        ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping >::getCurrentValue
         
             typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::FalagardWindowMapping, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::FalagardWindowMapping> > >, CEGUI::WindowFactoryManager::FalagardWindowMapping > exported_class_t;

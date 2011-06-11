@@ -15,6 +15,26 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     }
 
+    bool closeClickHandler( ::CEGUI::EventArgs const & e ){
+        return CEGUI::FrameWindow::closeClickHandler( boost::ref(e) );
+    }
+
+    ::CEGUI::FrameWindow::SizingLocation getSizingBorderAtPoint( ::CEGUI::Vector2f const & pt ) const {
+        return CEGUI::FrameWindow::getSizingBorderAtPoint( boost::ref(pt) );
+    }
+
+    virtual ::CEGUI::Rectf getSizingRect(  ) const {
+        if( bp::override func_getSizingRect = this->get_override( "getSizingRect" ) )
+            return func_getSizingRect(  );
+        else{
+            return this->CEGUI::FrameWindow::getSizingRect(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getSizingRect(  ) const {
+        return CEGUI::FrameWindow::getSizingRect( );
+    }
+
     virtual void initialiseComponents(  ) {
         if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
             func_initialiseComponents(  );
@@ -25,6 +45,10 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     void default_initialiseComponents(  ) {
         CEGUI::FrameWindow::initialiseComponents( );
+    }
+
+    bool isBottomSizingLocation( ::CEGUI::FrameWindow::SizingLocation loc ) const {
+        return CEGUI::FrameWindow::isBottomSizingLocation( loc );
     }
 
     virtual bool isHit( ::CEGUI::Vector2f const & position, bool const arg1 ) const  {
@@ -39,6 +63,206 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         return CEGUI::FrameWindow::isHit( boost::ref(position), arg1 );
     }
 
+    bool isLeftSizingLocation( ::CEGUI::FrameWindow::SizingLocation loc ) const {
+        return CEGUI::FrameWindow::isLeftSizingLocation( loc );
+    }
+
+    bool isRightSizingLocation( ::CEGUI::FrameWindow::SizingLocation loc ) const {
+        return CEGUI::FrameWindow::isRightSizingLocation( loc );
+    }
+
+    bool isTopSizingLocation( ::CEGUI::FrameWindow::SizingLocation loc ) const {
+        return CEGUI::FrameWindow::isTopSizingLocation( loc );
+    }
+
+    bool moveBottomEdge( float delta, ::CEGUI::URect & out_area ){
+        return CEGUI::FrameWindow::moveBottomEdge( delta, boost::ref(out_area) );
+    }
+
+    bool moveLeftEdge( float delta, ::CEGUI::URect & out_area ){
+        return CEGUI::FrameWindow::moveLeftEdge( delta, boost::ref(out_area) );
+    }
+
+    bool moveRightEdge( float delta, ::CEGUI::URect & out_area ){
+        return CEGUI::FrameWindow::moveRightEdge( delta, boost::ref(out_area) );
+    }
+
+    bool moveTopEdge( float delta, ::CEGUI::URect & out_area ){
+        return CEGUI::FrameWindow::moveTopEdge( delta, boost::ref(out_area) );
+    }
+
+    virtual void onActivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onActivated = this->get_override( "onActivated" ) )
+            func_onActivated( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onActivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onActivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::FrameWindow::onActivated( boost::ref(e) );
+    }
+
+    virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureLost = this->get_override( "onCaptureLost" ) )
+            func_onCaptureLost( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onCaptureLost( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onCaptureLost( boost::ref(e) );
+    }
+
+    virtual void onCloseClicked( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCloseClicked = this->get_override( "onCloseClicked" ) )
+            func_onCloseClicked( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onCloseClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCloseClicked( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onCloseClicked( boost::ref(e) );
+    }
+
+    virtual void onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onDeactivated = this->get_override( "onDeactivated" ) )
+            func_onDeactivated( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onDeactivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::FrameWindow::onDeactivated( boost::ref(e) );
+    }
+
+    virtual void onDragSizingEnded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDragSizingEnded = this->get_override( "onDragSizingEnded" ) )
+            func_onDragSizingEnded( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onDragSizingEnded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragSizingEnded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onDragSizingEnded( boost::ref(e) );
+    }
+
+    virtual void onDragSizingStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDragSizingStarted = this->get_override( "onDragSizingStarted" ) )
+            func_onDragSizingStarted( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onDragSizingStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragSizingStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onDragSizingStarted( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonDown = this->get_override( "onMouseButtonDown" ) )
+            func_onMouseButtonDown( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onMouseButtonDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::FrameWindow::onMouseButtonDown( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonUp = this->get_override( "onMouseButtonUp" ) )
+            func_onMouseButtonUp( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onMouseButtonUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::FrameWindow::onMouseButtonUp( boost::ref(e) );
+    }
+
+    virtual void onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseMove = this->get_override( "onMouseMove" ) )
+            func_onMouseMove( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onMouseMove( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::FrameWindow::onMouseMove( boost::ref(e) );
+    }
+
+    virtual void onRollupToggled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRollupToggled = this->get_override( "onRollupToggled" ) )
+            func_onRollupToggled( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onRollupToggled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRollupToggled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onRollupToggled( boost::ref(e) );
+    }
+
+    virtual void onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextChanged = this->get_override( "onTextChanged" ) )
+            func_onTextChanged( boost::ref(e) );
+        else{
+            this->CEGUI::FrameWindow::onTextChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::FrameWindow::onTextChanged( boost::ref(e) );
+    }
+
+    void setCursorForPoint( ::CEGUI::Vector2f const & pt ) const {
+        CEGUI::FrameWindow::setCursorForPoint( boost::ref(pt) );
+    }
+
+    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
+        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
+            return func_testClassName_impl( boost::ref(class_name) );
+        else{
+            return this->CEGUI::FrameWindow::testClassName_impl( boost::ref(class_name) );
+        }
+    }
+    
+    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
+        return CEGUI::FrameWindow::testClassName_impl( boost::ref(class_name) );
+    }
+
+    virtual void addChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
+            func_addChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_addChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void addStandardProperties(  ){
+        CEGUI::Window::addStandardProperties(  );
+    }
+
+    void addWindowToDrawList( ::CEGUI::Window & wnd, bool at_back=false ){
+        CEGUI::Window::addWindowToDrawList( boost::ref(wnd), at_back );
+    }
+
+    void allocateRenderingWindow(  ){
+        CEGUI::Window::allocateRenderingWindow(  );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -49,6 +273,22 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     void default_beginInitialisation(  ) {
         CEGUI::Window::beginInitialisation( );
+    }
+
+    void bufferGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::bufferGeometry( boost::ref(ctx) );
+    }
+
+    virtual void cleanupChildren(  ){
+        if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
+            func_cleanupChildren(  );
+        else{
+            this->CEGUI::Window::cleanupChildren(  );
+        }
+    }
+    
+    virtual void default_cleanupChildren(  ){
+        CEGUI::Window::cleanupChildren( );
     }
 
     virtual void cloneChildWidgetsTo( ::CEGUI::Window & target ) const  {
@@ -75,6 +315,14 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::Window::clonePropertiesTo( boost::ref(target) );
     }
 
+    bool constrainToMaxSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMaxSize( boost::ref(base_sz), boost::ref(sz) );
+    }
+
+    bool constrainToMinSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMinSize( boost::ref(base_sz), boost::ref(sz) );
+    }
+
     virtual void destroy(  ) {
         if( bp::override func_destroy = this->get_override( "destroy" ) )
             func_destroy(  );
@@ -85,6 +333,18 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     void default_destroy(  ) {
         CEGUI::Window::destroy( );
+    }
+
+    virtual void drawSelf( ::CEGUI::RenderingContext const & ctx ){
+        if( bp::override func_drawSelf = this->get_override( "drawSelf" ) )
+            func_drawSelf( boost::ref(ctx) );
+        else{
+            this->CEGUI::Window::drawSelf( boost::ref(ctx) );
+        }
+    }
+    
+    virtual void default_drawSelf( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::drawSelf( boost::ref(ctx) );
     }
 
     virtual void endInitialisation(  ) {
@@ -111,6 +371,90 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    void generateAutoRepeatEvent( ::CEGUI::MouseButton button ){
+        CEGUI::Window::generateAutoRepeatEvent( button );
+    }
+
+    virtual ::CEGUI::Window * getChild_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChild_impl = this->get_override( "getChild_impl" ) )
+            return func_getChild_impl( boost::ref(name_path) );
+        else{
+            return this->CEGUI::Window::getChild_impl( boost::ref(name_path) );
+        }
+    }
+    
+    virtual ::CEGUI::Window * default_getChild_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::Window::getChild_impl( boost::ref(name_path) );
+    }
+
+    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
+            return func_getClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
+        if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
+            return func_getHitTestRect_impl(  );
+        else{
+            return this->CEGUI::Window::getHitTestRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getHitTestRect_impl(  ) const {
+        return CEGUI::Window::getHitTestRect_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getInnerRectClipper_impl(  ) const {
+        if( bp::override func_getInnerRectClipper_impl = this->get_override( "getInnerRectClipper_impl" ) )
+            return func_getInnerRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getInnerRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
+        return CEGUI::Window::getInnerRectClipper_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
+            return func_getNonClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
+        if( bp::override func_getOuterRectClipper_impl = this->get_override( "getOuterRectClipper_impl" ) )
+            return func_getOuterRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getOuterRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getOuterRectClipper_impl(  ) const {
+        return CEGUI::Window::getOuterRectClipper_impl( );
+    }
+
+    ::CEGUI::Rectf getParentElementClipIntersection( ::CEGUI::Rectf const & unclipped_area ) const {
+        return CEGUI::Window::getParentElementClipIntersection( boost::ref(unclipped_area) );
+    }
+
     virtual void getRenderingContext_impl( ::CEGUI::RenderingContext & ctx ) const  {
         if( bp::override func_getRenderingContext_impl = this->get_override( "getRenderingContext_impl" ) )
             func_getRenderingContext_impl( boost::ref(ctx) );
@@ -123,6 +467,10 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
+    }
+
     virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
@@ -133,6 +481,586 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl(  ) const {
+        if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
+            return func_getUnclippedOuterRect_impl(  );
+        else{
+            return this->CEGUI::Window::getUnclippedOuterRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl(  ) const {
+        return CEGUI::Window::getUnclippedOuterRect_impl( );
+    }
+
+    ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
+    }
+
+    void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::initialiseClippers( boost::ref(ctx) );
+    }
+
+    void invalidate_impl( bool const recursive ){
+        CEGUI::Window::invalidate_impl( recursive );
+    }
+
+    bool isInnerRectSizeChanged(  ) const {
+        return CEGUI::Window::isInnerRectSizeChanged(  );
+    }
+
+    bool isPropertyAtDefault( ::CEGUI::Property const * property ) const {
+        return CEGUI::Window::isPropertyAtDefault( boost::python::ptr(property) );
+    }
+
+    bool isTopOfZOrder(  ) const {
+        return CEGUI::Window::isTopOfZOrder(  );
+    }
+
+    virtual bool moveToFront_impl( bool wasClicked ){
+        if( bp::override func_moveToFront_impl = this->get_override( "moveToFront_impl" ) )
+            return func_moveToFront_impl( wasClicked );
+        else{
+            return this->CEGUI::Window::moveToFront_impl( wasClicked );
+        }
+    }
+    
+    virtual bool default_moveToFront_impl( bool wasClicked ){
+        return CEGUI::Window::moveToFront_impl( wasClicked );
+    }
+
+    void notifyClippingChanged(  ){
+        CEGUI::Window::notifyClippingChanged(  );
+    }
+
+    virtual void onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlphaChanged = this->get_override( "onAlphaChanged" ) )
+            func_onAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlwaysOnTopChanged = this->get_override( "onAlwaysOnTopChanged" ) )
+            func_onAlwaysOnTopChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+    }
+
+    virtual void onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureGained = this->get_override( "onCaptureGained" ) )
+            func_onCaptureGained( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCaptureGained( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onCaptureGained( boost::ref(e) );
+    }
+
+    virtual void onCharacter( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onCharacter = this->get_override( "onCharacter" ) )
+            func_onCharacter( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCharacter( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCharacter( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onCharacter( boost::ref(e) );
+    }
+
+    virtual void onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildAdded = this->get_override( "onChildAdded" ) )
+            func_onChildAdded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildAdded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildAdded( boost::ref(e) );
+    }
+
+    virtual void onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildRemoved = this->get_override( "onChildRemoved" ) )
+            func_onChildRemoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildRemoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildRemoved( boost::ref(e) );
+    }
+
+    virtual void onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onClippingChanged = this->get_override( "onClippingChanged" ) )
+            func_onClippingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onClippingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onClippingChanged( boost::ref(e) );
+    }
+
+    virtual void onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDestructionStarted = this->get_override( "onDestructionStarted" ) )
+            func_onDestructionStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDestructionStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDestructionStarted( boost::ref(e) );
+    }
+
+    virtual void onDisabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDisabled = this->get_override( "onDisabled" ) )
+            func_onDisabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDisabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDisabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDisabled( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemDropped = this->get_override( "onDragDropItemDropped" ) )
+            func_onDragDropItemDropped( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemEnters = this->get_override( "onDragDropItemEnters" ) )
+            func_onDragDropItemEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemLeaves = this->get_override( "onDragDropItemLeaves" ) )
+            func_onDragDropItemLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+    }
+
+    virtual void onEnabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onEnabled = this->get_override( "onEnabled" ) )
+            func_onEnabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onEnabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onEnabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onEnabled( boost::ref(e) );
+    }
+
+    virtual void onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onFontChanged = this->get_override( "onFontChanged" ) )
+            func_onFontChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onFontChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onFontChanged( boost::ref(e) );
+    }
+
+    virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHidden = this->get_override( "onHidden" ) )
+            func_onHidden( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHidden( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHidden( boost::ref(e) );
+    }
+
+    virtual void onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
+            func_onHorizontalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onIDChanged = this->get_override( "onIDChanged" ) )
+            func_onIDChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onIDChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onIDChanged( boost::ref(e) );
+    }
+
+    virtual void onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onInheritsAlphaChanged = this->get_override( "onInheritsAlphaChanged" ) )
+            func_onInheritsAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyDown = this->get_override( "onKeyDown" ) )
+            func_onKeyDown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyDown( boost::ref(e) );
+    }
+
+    virtual void onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyUp = this->get_override( "onKeyUp" ) )
+            func_onKeyUp( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyUp( boost::ref(e) );
+    }
+
+    virtual void onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMarginChanged = this->get_override( "onMarginChanged" ) )
+            func_onMarginChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMarginChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMarginChanged( boost::ref(e) );
+    }
+
+    virtual void onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseClicked = this->get_override( "onMouseClicked" ) )
+            func_onMouseClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseDoubleClicked = this->get_override( "onMouseDoubleClicked" ) )
+            func_onMouseDoubleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEnters = this->get_override( "onMouseEnters" ) )
+            func_onMouseEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEnters( boost::ref(e) );
+    }
+
+    virtual void onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEntersArea = this->get_override( "onMouseEntersArea" ) )
+            func_onMouseEntersArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+    }
+
+    virtual void onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeaves = this->get_override( "onMouseLeaves" ) )
+            func_onMouseLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeaves( boost::ref(e) );
+    }
+
+    virtual void onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeavesArea = this->get_override( "onMouseLeavesArea" ) )
+            func_onMouseLeavesArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+    }
+
+    virtual void onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseTripleClicked = this->get_override( "onMouseTripleClicked" ) )
+            func_onMouseTripleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseWheel = this->get_override( "onMouseWheel" ) )
+            func_onMouseWheel( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseWheel( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseWheel( boost::ref(e) );
+    }
+
+    virtual void onMoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMoved = this->get_override( "onMoved" ) )
+            func_onMoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMoved( boost::ref(e) );
+    }
+
+    virtual void onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
+            func_onNonClientChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onNonClientChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onNonClientChanged( boost::ref(e) );
+    }
+
+    virtual void onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentDestroyChanged = this->get_override( "onParentDestroyChanged" ) )
+            func_onParentDestroyChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+    }
+
+    virtual void onParentSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
+            func_onParentSized( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentSized( boost::ref(e) );
+    }
+
+    virtual void onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingEnded = this->get_override( "onRenderingEnded" ) )
+            func_onRenderingEnded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingEnded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingEnded( boost::ref(e) );
+    }
+
+    virtual void onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingStarted = this->get_override( "onRenderingStarted" ) )
+            func_onRenderingStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingStarted( boost::ref(e) );
+    }
+
+    virtual void onRotated( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRotated = this->get_override( "onRotated" ) )
+            func_onRotated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRotated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRotated( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRotated( boost::ref(e) );
+    }
+
+    virtual void onShown( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onShown = this->get_override( "onShown" ) )
+            func_onShown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onShown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onShown( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onShown( boost::ref(e) );
+    }
+
+    virtual void onSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSized = this->get_override( "onSized" ) )
+            func_onSized( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onSized( boost::ref(e) );
+    }
+
+    virtual void onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextParsingChanged = this->get_override( "onTextParsingChanged" ) )
+            func_onTextParsingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+    }
+
+    virtual void onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
+            func_onVerticalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererAttached = this->get_override( "onWindowRendererAttached" ) )
+            func_onWindowRendererAttached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererDetached = this->get_override( "onWindowRendererDetached" ) )
+            func_onWindowRendererDetached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+    }
+
+    virtual void onZChange_impl(  ){
+        if( bp::override func_onZChange_impl = this->get_override( "onZChange_impl" ) )
+            func_onZChange_impl(  );
+        else{
+            this->CEGUI::Window::onZChange_impl(  );
+        }
+    }
+    
+    virtual void default_onZChange_impl(  ){
+        CEGUI::Window::onZChange_impl( );
+    }
+
+    virtual void onZChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onZChanged = this->get_override( "onZChanged" ) )
+            func_onZChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onZChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onZChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onZChanged( boost::ref(e) );
     }
 
     virtual void performChildWindowLayout(  ) {
@@ -183,6 +1111,46 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         return CEGUI::Window::performPaste( boost::ref(clipboard) );
     }
 
+    virtual void populateGeometryBuffer(  ){
+        if( bp::override func_populateGeometryBuffer = this->get_override( "populateGeometryBuffer" ) )
+            func_populateGeometryBuffer(  );
+        else{
+            this->CEGUI::Window::populateGeometryBuffer(  );
+        }
+    }
+    
+    virtual void default_populateGeometryBuffer(  ){
+        CEGUI::Window::populateGeometryBuffer( );
+    }
+
+    void queueGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::queueGeometry( boost::ref(ctx) );
+    }
+
+    void releaseRenderingWindow(  ){
+        CEGUI::Window::releaseRenderingWindow(  );
+    }
+
+    virtual void removeChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
+            func_removeChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_removeChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void removeWindowFromDrawList( ::CEGUI::Window const & wnd ){
+        CEGUI::Window::removeWindowFromDrawList( boost::ref(wnd) );
+    }
+
+    void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+        CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+    }
+
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
         if( bp::override func_setLookNFeel = this->get_override( "setLookNFeel" ) )
             func_setLookNFeel( boost::ref(look) );
@@ -205,6 +1173,10 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     void default_setMargin( ::CEGUI::UBox const & margin ) {
         CEGUI::Window::setMargin( boost::ref(margin) );
+    }
+
+    void setParent( ::CEGUI::Window * parent ){
+        CEGUI::Window::setParent( boost::python::ptr(parent) );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -231,6 +1203,10 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
     }
 
+    void transferChildSurfaces(  ){
+        CEGUI::Window::transferChildSurfaces(  );
+    }
+
     virtual void update( float elapsed ) {
         if( bp::override func_update = this->get_override( "update" ) )
             func_update( elapsed );
@@ -241,6 +1217,70 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
     
     void default_update( float elapsed ) {
         CEGUI::Window::update( elapsed );
+    }
+
+    void updateGeometryRenderSettings(  ){
+        CEGUI::Window::updateGeometryRenderSettings(  );
+    }
+
+    virtual void updateSelf( float elapsed ){
+        if( bp::override func_updateSelf = this->get_override( "updateSelf" ) )
+            func_updateSelf( elapsed );
+        else{
+            this->CEGUI::Window::updateSelf( elapsed );
+        }
+    }
+    
+    virtual void default_updateSelf( float elapsed ){
+        CEGUI::Window::updateSelf( elapsed );
+    }
+
+    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+        if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
+            return func_validateWindowRenderer( boost::ref(name) );
+        else{
+            return this->CEGUI::Window::validateWindowRenderer( boost::ref(name) );
+        }
+    }
+    
+    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
+        return CEGUI::Window::validateWindowRenderer( boost::ref(name) );
+    }
+
+    virtual bool writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeAutoChildWindowXML = this->get_override( "writeAutoChildWindowXML" ) )
+            return func_writeAutoChildWindowXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual bool default_writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+    }
+
+    virtual int writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeChildWindowsXML = this->get_override( "writeChildWindowsXML" ) )
+            return func_writeChildWindowsXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writeChildWindowsXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writeChildWindowsXML( boost::ref(xml_stream) );
+    }
+
+    virtual int writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writePropertiesXML = this->get_override( "writePropertiesXML" ) )
+            return func_writePropertiesXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writePropertiesXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writePropertiesXML( boost::ref(xml_stream) );
     }
 
     virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
@@ -284,6 +1324,20 @@ void register_FrameWindow_class(){
             .value("SizingRight", CEGUI::FrameWindow::SizingRight)
             .export_values()
             ;
+        { //::CEGUI::FrameWindow::closeClickHandler
+        
+            typedef bool ( FrameWindow_wrapper::*closeClickHandler_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "closeClickHandler"
+                , closeClickHandler_function_type( &FrameWindow_wrapper::closeClickHandler )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Method to respond to close button click events and fire our close event\n\
+            *\n" );
+        
+        }
         { //::CEGUI::FrameWindow::getCloseButton
         
             typedef ::CEGUI::PushButton * ( ::CEGUI::FrameWindow::*getCloseButton_function_type )(  ) const;
@@ -377,6 +1431,29 @@ void register_FrameWindow_class(){
                 *\n" );
         
         }
+        { //::CEGUI::FrameWindow::getSizingBorderAtPoint
+        
+            typedef ::CEGUI::FrameWindow::SizingLocation ( FrameWindow_wrapper::*getSizingBorderAtPoint_function_type )( ::CEGUI::Vector2f const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "getSizingBorderAtPoint"
+                , getSizingBorderAtPoint_function_type( &FrameWindow_wrapper::getSizingBorderAtPoint )
+                , ( bp::arg("pt") )
+                , "*!\n\
+               \n\
+                  check local pixel co-ordinate point 'pt' and return one of the\n\
+                  SizingLocation enumerated values depending where the point falls on\n\
+                  the sizing border.\n\
+            \n\
+               @param pt\n\
+                  Point object describing, in pixels, the window relative offset to check.\n\
+            \n\
+               @return\n\
+                  One of the SizingLocation enumerated values that describe which part of\n\
+                  the sizing border that  pt corresponded to, if any.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::FrameWindow::getSizingBorderThickness
         
             typedef float ( ::CEGUI::FrameWindow::*getSizingBorderThickness_function_type )(  ) const;
@@ -391,6 +1468,20 @@ void register_FrameWindow_class(){
                @return\n\
                   float value describing the thickness of the sizing border in screen pixels.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::getSizingRect
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getSizingRect_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getSizingRect"
+                , getSizingRect_function_type( &FrameWindow_wrapper::default_getSizingRect )
+                , "*!\n\
+            \n\
+               Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing\
+               area for this window.\n\
+            *\n" );
         
         }
         { //::CEGUI::FrameWindow::getTitlebar
@@ -422,6 +1513,26 @@ void register_FrameWindow_class(){
                 "initialiseComponents"
                 , initialiseComponents_function_type(&::CEGUI::FrameWindow::initialiseComponents)
                 , default_initialiseComponents_function_type(&FrameWindow_wrapper::default_initialiseComponents) );
+        
+        }
+        { //::CEGUI::FrameWindow::isBottomSizingLocation
+        
+            typedef bool ( FrameWindow_wrapper::*isBottomSizingLocation_function_type )( ::CEGUI::FrameWindow::SizingLocation ) const;
+            
+            FrameWindow_exposer.def( 
+                "isBottomSizingLocation"
+                , isBottomSizingLocation_function_type( &FrameWindow_wrapper::isBottomSizingLocation )
+                , ( bp::arg("loc") )
+                , "*!\n\
+               \n\
+                  return true if given SizingLocation is on bottom edge.\n\
+            \n\
+               @param loc\n\
+                  SizingLocation value to be checked.\n\
+            \n\
+               @return\n\
+                  true if  loc is on the bottom edge.  false if  loc is not on the bottom edge.\n\
+               *\n" );
         
         }
         { //::CEGUI::FrameWindow::isCloseButtonEnabled
@@ -485,6 +1596,46 @@ void register_FrameWindow_class(){
                 , isHit_function_type(&::CEGUI::FrameWindow::isHit)
                 , default_isHit_function_type(&FrameWindow_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("arg1") ) );
+        
+        }
+        { //::CEGUI::FrameWindow::isLeftSizingLocation
+        
+            typedef bool ( FrameWindow_wrapper::*isLeftSizingLocation_function_type )( ::CEGUI::FrameWindow::SizingLocation ) const;
+            
+            FrameWindow_exposer.def( 
+                "isLeftSizingLocation"
+                , isLeftSizingLocation_function_type( &FrameWindow_wrapper::isLeftSizingLocation )
+                , ( bp::arg("loc") )
+                , "*!\n\
+               \n\
+                  return true if given SizingLocation is on left edge.\n\
+            \n\
+               @param loc\n\
+                  SizingLocation value to be checked.\n\
+            \n\
+               @return\n\
+                  true if  loc is on the left edge.  false if  loc is not on the left edge.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::isRightSizingLocation
+        
+            typedef bool ( FrameWindow_wrapper::*isRightSizingLocation_function_type )( ::CEGUI::FrameWindow::SizingLocation ) const;
+            
+            FrameWindow_exposer.def( 
+                "isRightSizingLocation"
+                , isRightSizingLocation_function_type( &FrameWindow_wrapper::isRightSizingLocation )
+                , ( bp::arg("loc") )
+                , "*!\n\
+               \n\
+                  return true if given SizingLocation is on right edge.\n\
+            \n\
+               @param loc\n\
+                  SizingLocation value to be checked.\n\
+            \n\
+               @return\n\
+                  true if  loc is on the right edge.  false if  loc is not on the right edge.\n\
+               *\n" );
         
         }
         { //::CEGUI::FrameWindow::isRolledup
@@ -553,6 +1704,105 @@ void register_FrameWindow_class(){
                *  \n" );
         
         }
+        { //::CEGUI::FrameWindow::isTopSizingLocation
+        
+            typedef bool ( FrameWindow_wrapper::*isTopSizingLocation_function_type )( ::CEGUI::FrameWindow::SizingLocation ) const;
+            
+            FrameWindow_exposer.def( 
+                "isTopSizingLocation"
+                , isTopSizingLocation_function_type( &FrameWindow_wrapper::isTopSizingLocation )
+                , ( bp::arg("loc") )
+                , "*!\n\
+               \n\
+                  return true if given SizingLocation is on top edge.\n\
+            \n\
+               @param loc\n\
+                  SizingLocation value to be checked.\n\
+            \n\
+               @return\n\
+                  true if  loc is on the top edge.  false if  loc is not on the top edge.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::moveBottomEdge
+        
+            typedef bool ( FrameWindow_wrapper::*moveBottomEdge_function_type )( float,::CEGUI::URect & ) ;
+            
+            FrameWindow_exposer.def( 
+                "moveBottomEdge"
+                , moveBottomEdge_function_type( &FrameWindow_wrapper::moveBottomEdge )
+                , ( bp::arg("delta"), bp::arg("out_area") )
+                , "*!\n\
+               \n\
+                  move the window's bottom edge by 'delta'.  The rest of the window does not move, thus this\
+                  changes the size of the Window.\n\
+            \n\
+               @param delta\n\
+                  float value that specifies the amount to move the window edge, and in which direction.\
+                  Positive values make window larger.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::moveLeftEdge
+        
+            typedef bool ( FrameWindow_wrapper::*moveLeftEdge_function_type )( float,::CEGUI::URect & ) ;
+            
+            FrameWindow_exposer.def( 
+                "moveLeftEdge"
+                , moveLeftEdge_function_type( &FrameWindow_wrapper::moveLeftEdge )
+                , ( bp::arg("delta"), bp::arg("out_area") )
+                , "*************************************************************************\n\
+                  Implementation Functions\n\
+               *************************************************************************\n\
+               *!\n\
+               \n\
+                  move the window's left edge by 'delta'.  The rest of the window does not move, thus this\
+                  changes the size of the Window.\n\
+            \n\
+               @param delta\n\
+                  float value that specifies the amount to move the window edge, and in which direction.\
+                  Positive values make window smaller.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::moveRightEdge
+        
+            typedef bool ( FrameWindow_wrapper::*moveRightEdge_function_type )( float,::CEGUI::URect & ) ;
+            
+            FrameWindow_exposer.def( 
+                "moveRightEdge"
+                , moveRightEdge_function_type( &FrameWindow_wrapper::moveRightEdge )
+                , ( bp::arg("delta"), bp::arg("out_area") )
+                , "*!\n\
+               \n\
+                  move the window's right edge by 'delta'.  The rest of the window does not move, thus this\
+                  changes the size of the Window.\n\
+            \n\
+               @param delta\n\
+                  float value that specifies the amount to move the window edge, and in which direction.\
+                  Positive values make window larger.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::moveTopEdge
+        
+            typedef bool ( FrameWindow_wrapper::*moveTopEdge_function_type )( float,::CEGUI::URect & ) ;
+            
+            FrameWindow_exposer.def( 
+                "moveTopEdge"
+                , moveTopEdge_function_type( &FrameWindow_wrapper::moveTopEdge )
+                , ( bp::arg("delta"), bp::arg("out_area") )
+                , "*!\n\
+               \n\
+                  move the window's top edge by 'delta'.  The rest of the window does not move, thus this\
+                  changes the size of the Window.\n\
+            \n\
+               @param delta\n\
+                  float value that specifies the amount to move the window edge, and in which direction.\
+                  Positive values make window smaller.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::FrameWindow::offsetPixelPosition
         
             typedef void ( ::CEGUI::FrameWindow::*offsetPixelPosition_function_type )( ::CEGUI::Vector2f const & ) ;
@@ -576,6 +1826,136 @@ void register_FrameWindow_class(){
                *\n" );
         
         }
+        { //::CEGUI::FrameWindow::onActivated
+        
+            typedef void ( FrameWindow_wrapper::*onActivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onActivated"
+                , onActivated_function_type( &FrameWindow_wrapper::default_onActivated )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::FrameWindow::onCaptureLost
+        
+            typedef void ( FrameWindow_wrapper::*onCaptureLost_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onCaptureLost"
+                , onCaptureLost_function_type( &FrameWindow_wrapper::default_onCaptureLost )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::FrameWindow::onCloseClicked
+        
+            typedef void ( FrameWindow_wrapper::*onCloseClicked_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onCloseClicked"
+                , onCloseClicked_function_type( &FrameWindow_wrapper::default_onCloseClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Event generated internally whenever the close button is clicked.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onDeactivated
+        
+            typedef void ( FrameWindow_wrapper::*onDeactivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDeactivated"
+                , onDeactivated_function_type( &FrameWindow_wrapper::default_onDeactivated )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::FrameWindow::onDragSizingEnded
+        
+            typedef void ( FrameWindow_wrapper::*onDragSizingEnded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDragSizingEnded"
+                , onDragSizingEnded_function_type( &FrameWindow_wrapper::default_onDragSizingEnded )
+                , ( bp::arg("e") )
+                , "! Handler called when drag-sizing of the FrameWindow ends.\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onDragSizingStarted
+        
+            typedef void ( FrameWindow_wrapper::*onDragSizingStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDragSizingStarted"
+                , onDragSizingStarted_function_type( &FrameWindow_wrapper::default_onDragSizingStarted )
+                , ( bp::arg("e") )
+                , "! Handler called when drag-sizing of the FrameWindow starts.\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onMouseButtonDown
+        
+            typedef void ( FrameWindow_wrapper::*onMouseButtonDown_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseButtonDown"
+                , onMouseButtonDown_function_type( &FrameWindow_wrapper::default_onMouseButtonDown )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Overridden event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onMouseButtonUp
+        
+            typedef void ( FrameWindow_wrapper::*onMouseButtonUp_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseButtonUp"
+                , onMouseButtonUp_function_type( &FrameWindow_wrapper::default_onMouseButtonUp )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::FrameWindow::onMouseMove
+        
+            typedef void ( FrameWindow_wrapper::*onMouseMove_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseMove"
+                , onMouseMove_function_type( &FrameWindow_wrapper::default_onMouseMove )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Overridden event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onRollupToggled
+        
+            typedef void ( FrameWindow_wrapper::*onRollupToggled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onRollupToggled"
+                , onRollupToggled_function_type( &FrameWindow_wrapper::default_onRollupToggled )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               New events for Frame Windows\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               Event generated internally whenever the roll-up  shade state of the window\n\
+               changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::onTextChanged
+        
+            typedef void ( FrameWindow_wrapper::*onTextChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onTextChanged"
+                , onTextChanged_function_type( &FrameWindow_wrapper::default_onTextChanged )
+                , ( bp::arg("e") ) );
+        
+        }
         { //::CEGUI::FrameWindow::setCloseButtonEnabled
         
             typedef void ( ::CEGUI::FrameWindow::*setCloseButtonEnabled_function_type )( bool ) ;
@@ -595,6 +1975,20 @@ void register_FrameWindow_class(){
                @return\n\
                   Nothing.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::FrameWindow::setCursorForPoint
+        
+            typedef void ( FrameWindow_wrapper::*setCursorForPoint_function_type )( ::CEGUI::Vector2f const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "setCursorForPoint"
+                , setCursorForPoint_function_type( &FrameWindow_wrapper::setCursorForPoint )
+                , ( bp::arg("pt") )
+                , "*!\n\
+            \n\
+               Set the appropriate mouse cursor for the given window-relative pixel point.\n\
+            *\n" );
         
         }
         { //::CEGUI::FrameWindow::setDragMovingEnabled
@@ -892,6 +2286,27 @@ void register_FrameWindow_class(){
                *\n" );
         
         }
+        { //::CEGUI::FrameWindow::testClassName_impl
+        
+            typedef bool ( FrameWindow_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "testClassName_impl"
+                , testClassName_impl_function_type( &FrameWindow_wrapper::default_testClassName_impl )
+                , ( bp::arg("class_name") )
+                , "*!\n\
+               \n\
+                  Return whether this window was inherited from the given class name at some point in the\
+                  inheritance hierarchy.\n\
+            \n\
+               @param class_name\n\
+                  The class name that is to be checked.\n\
+            \n\
+               @return\n\
+                  true if this window was inherited from  class_name. false if not.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::FrameWindow::toggleRollup
         
             typedef void ( ::CEGUI::FrameWindow::*toggleRollup_function_type )(  ) ;
@@ -928,6 +2343,72 @@ void register_FrameWindow_class(){
         FrameWindow_exposer.add_static_property( "TitlebarName"
                         , bp::make_getter( &CEGUI::FrameWindow::TitlebarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::Window::addChild_impl
+        
+            typedef void ( FrameWindow_wrapper::*addChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            FrameWindow_exposer.def( 
+                "addChild_impl"
+                , addChild_impl_function_type( &FrameWindow_wrapper::default_addChild_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Add given window to child list at an appropriate position\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addStandardProperties
+        
+            typedef void ( FrameWindow_wrapper::*addStandardProperties_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "addStandardProperties"
+                , addStandardProperties_function_type( &FrameWindow_wrapper::addStandardProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.Window properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addWindowToDrawList
+        
+            typedef void ( FrameWindow_wrapper::*addWindowToDrawList_function_type )( ::CEGUI::Window &,bool ) ;
+            
+            FrameWindow_exposer.def( 
+                "addWindowToDrawList"
+                , addWindowToDrawList_function_type( &FrameWindow_wrapper::addWindowToDrawList )
+                , ( bp::arg("wnd"), bp::arg("at_back")=(bool)(false) )
+                , "*!\n\
+                \n\
+                    Add the given window to the drawing list at an appropriate position for\n\
+                    it's settings and the required direction.  Basically, when  at_back\n\
+                    is false, the window will appear in front of all other windows with the\n\
+                    same 'always on top' setting.  When  at_back is true, the window will\n\
+                    appear behind all other windows wih the same 'always on top' setting.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be added to the drawing list.\n\
+            \n\
+                @param at_back\n\
+                    Indicates whether the window should be placed at the back of other\n\
+                    windows in the same group. If this is false, the window is placed in\n\
+                    front of other windows in the group.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::allocateRenderingWindow
+        
+            typedef void ( FrameWindow_wrapper::*allocateRenderingWindow_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "allocateRenderingWindow"
+                , allocateRenderingWindow_function_type( &FrameWindow_wrapper::allocateRenderingWindow )
+                , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;
@@ -937,6 +2418,39 @@ void register_FrameWindow_class(){
                 "beginInitialisation"
                 , beginInitialisation_function_type(&::CEGUI::Window::beginInitialisation)
                 , default_beginInitialisation_function_type(&FrameWindow_wrapper::default_beginInitialisation) );
+        
+        }
+        { //::CEGUI::Window::bufferGeometry
+        
+            typedef void ( FrameWindow_wrapper::*bufferGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "bufferGeometry"
+                , bufferGeometry_function_type( &FrameWindow_wrapper::bufferGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with generating and buffering\n\
+                    window geometry.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf; it is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::cleanupChildren
+        
+            typedef void ( FrameWindow_wrapper::*cleanupChildren_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "cleanupChildren"
+                , cleanupChildren_function_type( &FrameWindow_wrapper::default_cleanupChildren )
+                , "*!\n\
+            \n\
+                Cleanup child windows\n\
+            *\n" );
         
         }
         { //::CEGUI::Window::cloneChildWidgetsTo
@@ -963,6 +2477,29 @@ void register_FrameWindow_class(){
                 , ( bp::arg("target") ) );
         
         }
+        { //::CEGUI::Window::constrainToMaxSize
+        
+            typedef bool ( FrameWindow_wrapper::*constrainToMaxSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            FrameWindow_exposer.def( 
+                "constrainToMaxSize"
+                , constrainToMaxSize_function_type( &FrameWindow_wrapper::constrainToMaxSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n\
+            constrain given USize to window's max size, return if size changed.\n" );
+        
+        }
+        { //::CEGUI::Window::constrainToMinSize
+        
+            typedef bool ( FrameWindow_wrapper::*constrainToMinSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            FrameWindow_exposer.def( 
+                "constrainToMinSize"
+                , constrainToMinSize_function_type( &FrameWindow_wrapper::constrainToMinSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n" );
+        
+        }
         { //::CEGUI::Window::destroy
         
             typedef void ( ::CEGUI::Window::*destroy_function_type )(  ) ;
@@ -972,6 +2509,27 @@ void register_FrameWindow_class(){
                 "destroy"
                 , destroy_function_type(&::CEGUI::Window::destroy)
                 , default_destroy_function_type(&FrameWindow_wrapper::default_destroy) );
+        
+        }
+        { //::CEGUI::Window::drawSelf
+        
+            typedef void ( FrameWindow_wrapper::*drawSelf_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "drawSelf"
+                , drawSelf_function_type( &FrameWindow_wrapper::default_drawSelf )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform the actual rendering for this Window.\n\
+            \n\
+                @param ctx\n\
+                    RenderingContext holding the details of the RenderingSurface to be\n\
+                    used for the Window rendering operations.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::endInitialisation
@@ -997,6 +2555,109 @@ void register_FrameWindow_class(){
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
         
         }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( FrameWindow_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &FrameWindow_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::Window::generateAutoRepeatEvent
+        
+            typedef void ( FrameWindow_wrapper::*generateAutoRepeatEvent_function_type )( ::CEGUI::MouseButton ) ;
+            
+            FrameWindow_exposer.def( 
+                "generateAutoRepeatEvent"
+                , generateAutoRepeatEvent_function_type( &FrameWindow_wrapper::generateAutoRepeatEvent )
+                , ( bp::arg("button") )
+                , "*!\n\
+            \n\
+                Fires off a repeated mouse button down event for this window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::getChild_impl
+        
+            typedef ::CEGUI::Window * ( FrameWindow_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "getChild_impl"
+                , getChild_impl_function_type( &FrameWindow_wrapper::default_getChild_impl )
+                , ( bp::arg("name_path") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! implementation function to get window at name_path, returns 0 if none.\n" );
+        
+        }
+        { //::CEGUI::Window::getClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getClientChildWindowContentArea_impl"
+                , getClientChildWindowContentArea_impl_function_type( &FrameWindow_wrapper::default_getClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return non-client content area\n\
+            ! Default implementation of function to return client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getHitTestRect_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getHitTestRect_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getHitTestRect_impl"
+                , getHitTestRect_impl_function_type( &FrameWindow_wrapper::default_getHitTestRect_impl )
+                , "! Default implementation of function to return Window inner clipper area.\n\
+            ! Default implementation of function to return Window hit-test area.\n" );
+        
+        }
+        { //::CEGUI::Window::getInnerRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getInnerRectClipper_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getInnerRectClipper_impl"
+                , getInnerRectClipper_impl_function_type( &FrameWindow_wrapper::default_getInnerRectClipper_impl )
+                , "! Default implementation of function to return Window outer clipper area.\n\
+            ! Default implementation of function to return Window inner clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getNonClientChildWindowContentArea_impl"
+                , getNonClientChildWindowContentArea_impl_function_type( &FrameWindow_wrapper::default_getNonClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return Window hit-test area.\n\
+            ! Default implementation of function to return non-client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getOuterRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getOuterRectClipper_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getOuterRectClipper_impl"
+                , getOuterRectClipper_impl_function_type( &FrameWindow_wrapper::default_getOuterRectClipper_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window outer clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getParentElementClipIntersection
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getParentElementClipIntersection_function_type )( ::CEGUI::Rectf const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "getParentElementClipIntersection"
+                , getParentElementClipIntersection_function_type( &FrameWindow_wrapper::getParentElementClipIntersection )
+                , ( bp::arg("unclipped_area") )
+                , "! helper function for calculating clipping rectangles.\n" );
+        
+        }
         { //::CEGUI::Window::getRenderedStringParser
         
             typedef ::CEGUI::RenderedStringParser & ( ::CEGUI::Window::*getRenderedStringParser_function_type )(  ) const;
@@ -1019,6 +2680,18 @@ void register_FrameWindow_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( FrameWindow_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &FrameWindow_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
+        
+        }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
             typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
@@ -1028,6 +2701,975 @@ void register_FrameWindow_class(){
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
                 , default_getUnclippedInnerRect_impl_function_type(&FrameWindow_wrapper::default_getUnclippedInnerRect_impl) );
+        
+        }
+        { //::CEGUI::Window::getUnclippedOuterRect_impl
+        
+            typedef ::CEGUI::Rectf ( FrameWindow_wrapper::*getUnclippedOuterRect_impl_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "getUnclippedOuterRect_impl"
+                , getUnclippedOuterRect_impl_function_type( &FrameWindow_wrapper::default_getUnclippedOuterRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n" );
+        
+        }
+        { //::CEGUI::Window::getWindowAttachedToCommonAncestor
+        
+            typedef ::CEGUI::Window const * ( FrameWindow_wrapper::*getWindowAttachedToCommonAncestor_function_type )( ::CEGUI::Window const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "getWindowAttachedToCommonAncestor"
+                , getWindowAttachedToCommonAncestor_function_type( &FrameWindow_wrapper::getWindowAttachedToCommonAncestor )
+                , ( bp::arg("wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                Helper function to return the ancestor Window of a wnd that is attached\n\
+                as a child to a window that is also an ancestor of a this.  Returns 0\n\
+                if a wnd and a this are not part of the same hierachy.\n\
+             *\n" );
+        
+        }
+        { //::CEGUI::Window::initialiseClippers
+        
+            typedef void ( FrameWindow_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "initialiseClippers"
+                , initialiseClippers_function_type( &FrameWindow_wrapper::initialiseClippers )
+                , ( bp::arg("ctx") )
+                , "! Helper to intialise the needed clipping for geometry and render surface.\n" );
+        
+        }
+        { //::CEGUI::Window::invalidate_impl
+        
+            typedef void ( FrameWindow_wrapper::*invalidate_impl_function_type )( bool const ) ;
+            
+            FrameWindow_exposer.def( 
+                "invalidate_impl"
+                , invalidate_impl_function_type( &FrameWindow_wrapper::invalidate_impl )
+                , ( bp::arg("recursive") )
+                , "! helper function to invalidate window and optionally child windows.\n" );
+        
+        }
+        { //::CEGUI::Window::isInnerRectSizeChanged
+        
+            typedef bool ( FrameWindow_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "isInnerRectSizeChanged"
+                , isInnerRectSizeChanged_function_type( &FrameWindow_wrapper::isInnerRectSizeChanged )
+                , "! helper to return whether the inner rect size has changed\n" );
+        
+        }
+        { //::CEGUI::Window::isPropertyAtDefault
+        
+            typedef bool ( FrameWindow_wrapper::*isPropertyAtDefault_function_type )( ::CEGUI::Property const * ) const;
+            
+            FrameWindow_exposer.def( 
+                "isPropertyAtDefault"
+                , isPropertyAtDefault_function_type( &FrameWindow_wrapper::isPropertyAtDefault )
+                , ( bp::arg("property") )
+                , "*!\n\
+            \n\
+                Returns whether a property is at it's default value.\n\
+                This function is different from Property.isDefatult as it takes the assigned look'n'feel\n\
+                (if the is one) into account.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::isTopOfZOrder
+        
+            typedef bool ( FrameWindow_wrapper::*isTopOfZOrder_function_type )(  ) const;
+            
+            FrameWindow_exposer.def( 
+                "isTopOfZOrder"
+                , isTopOfZOrder_function_type( &FrameWindow_wrapper::isTopOfZOrder )
+                , "*!\n\
+                \n\
+                    Return whether the window is at the top of the Z-Order.  This will\n\
+                    correctly take into account 'Always on top' windows as needed.\n\
+            \n\
+                @return\n\
+                    - true if the Window is at the top of the z-order in relation to sibling\n\
+                      windows with the same 'always on top' setting.\n\
+                    - false if the Window is not at the top of the z-order in relation to\n\
+                      sibling windows with the same 'always on top' setting.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::moveToFront_impl
+        
+            typedef bool ( FrameWindow_wrapper::*moveToFront_impl_function_type )( bool ) ;
+            
+            FrameWindow_exposer.def( 
+                "moveToFront_impl"
+                , moveToFront_impl_function_type( &FrameWindow_wrapper::default_moveToFront_impl )
+                , ( bp::arg("wasClicked") )
+                , "*!\n\
+                \n\
+                    Implements move to front behavior.\n\
+            \n\
+                @return\n\
+                    Should return true if some action was taken, or false if there was\n\
+                    nothing to be done.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::notifyClippingChanged
+        
+            typedef void ( FrameWindow_wrapper::*notifyClippingChanged_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "notifyClippingChanged"
+                , notifyClippingChanged_function_type( &FrameWindow_wrapper::notifyClippingChanged )
+                , "*!\n\
+            \n\
+                Recursively inform all children that the clipping has changed and screen rects\n\
+                needs to be recached.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlphaChanged
+        
+            typedef void ( FrameWindow_wrapper::*onAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onAlphaChanged"
+                , onAlphaChanged_function_type( &FrameWindow_wrapper::default_onAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's alpha blend value is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlwaysOnTopChanged
+        
+            typedef void ( FrameWindow_wrapper::*onAlwaysOnTopChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onAlwaysOnTopChanged"
+                , onAlwaysOnTopChanged_function_type( &FrameWindow_wrapper::default_onAlwaysOnTopChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's always-on-top setting is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCaptureGained
+        
+            typedef void ( FrameWindow_wrapper::*onCaptureGained_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onCaptureGained"
+                , onCaptureGained_function_type( &FrameWindow_wrapper::default_onCaptureGained )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window gains capture of mouse inputs.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCharacter
+        
+            typedef void ( FrameWindow_wrapper::*onCharacter_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onCharacter"
+                , onCharacter_function_type( &FrameWindow_wrapper::default_onCharacter )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a character-key has been pressed while this window\n\
+                    has input focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'codepoint' field is set to the Unicode code\n\
+                    point (encoded as utf32) for the character typed, and whose 'sysKeys'\n\
+                    field represents the combination of SystemKey that were active when the\n\
+                    event was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildAdded
+        
+            typedef void ( FrameWindow_wrapper::*onChildAdded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onChildAdded"
+                , onChildAdded_function_type( &FrameWindow_wrapper::default_onChildAdded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is added to this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that has been added.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildRemoved
+        
+            typedef void ( FrameWindow_wrapper::*onChildRemoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onChildRemoved"
+                , onChildRemoved_function_type( &FrameWindow_wrapper::default_onChildRemoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is removed from this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the window\n\
+                    that has been removed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onClippingChanged
+        
+            typedef void ( FrameWindow_wrapper::*onClippingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onClippingChanged"
+                , onClippingChanged_function_type( &FrameWindow_wrapper::default_onClippingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being clipped by it's\n\
+                    parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDestructionStarted
+        
+            typedef void ( FrameWindow_wrapper::*onDestructionStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDestructionStarted"
+                , onDestructionStarted_function_type( &FrameWindow_wrapper::default_onDestructionStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's destruction sequence has begun.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDisabled
+        
+            typedef void ( FrameWindow_wrapper::*onDisabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDisabled"
+                , onDisabled_function_type( &FrameWindow_wrapper::default_onDisabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is disabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemDropped
+        
+            typedef void ( FrameWindow_wrapper::*onDragDropItemDropped_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDragDropItemDropped"
+                , onDragDropItemDropped_function_type( &FrameWindow_wrapper::default_onDragDropItemDropped )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemEnters
+        
+            typedef void ( FrameWindow_wrapper::*onDragDropItemEnters_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDragDropItemEnters"
+                , onDragDropItemEnters_function_type( &FrameWindow_wrapper::default_onDragDropItemEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemLeaves
+        
+            typedef void ( FrameWindow_wrapper::*onDragDropItemLeaves_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onDragDropItemLeaves"
+                , onDragDropItemLeaves_function_type( &FrameWindow_wrapper::default_onDragDropItemLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onEnabled
+        
+            typedef void ( FrameWindow_wrapper::*onEnabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onEnabled"
+                , onEnabled_function_type( &FrameWindow_wrapper::default_onEnabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is enabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onFontChanged
+        
+            typedef void ( FrameWindow_wrapper::*onFontChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onFontChanged"
+                , onFontChanged_function_type( &FrameWindow_wrapper::default_onFontChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's font is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHidden
+        
+            typedef void ( FrameWindow_wrapper::*onHidden_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onHidden"
+                , onHidden_function_type( &FrameWindow_wrapper::default_onHidden )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is hidden.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHorizontalAlignmentChanged
+        
+            typedef void ( FrameWindow_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onHorizontalAlignmentChanged"
+                , onHorizontalAlignmentChanged_function_type( &FrameWindow_wrapper::default_onHorizontalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the horizontal alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onIDChanged
+        
+            typedef void ( FrameWindow_wrapper::*onIDChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onIDChanged"
+                , onIDChanged_function_type( &FrameWindow_wrapper::default_onIDChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's client assigned ID is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onInheritsAlphaChanged
+        
+            typedef void ( FrameWindow_wrapper::*onInheritsAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onInheritsAlphaChanged"
+                , onInheritsAlphaChanged_function_type( &FrameWindow_wrapper::default_onInheritsAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for inheriting alpha-blending\n\
+                    is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyDown
+        
+            typedef void ( FrameWindow_wrapper::*onKeyDown_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onKeyDown"
+                , onKeyDown_function_type( &FrameWindow_wrapper::default_onKeyDown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been depressed while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was pressed, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyUp
+        
+            typedef void ( FrameWindow_wrapper::*onKeyUp_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onKeyUp"
+                , onKeyUp_function_type( &FrameWindow_wrapper::default_onKeyUp )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been released while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was released, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMarginChanged
+        
+            typedef void ( FrameWindow_wrapper::*onMarginChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMarginChanged"
+                , onMarginChanged_function_type( &FrameWindow_wrapper::default_onMarginChanged )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::Window::onMouseClicked
+        
+            typedef void ( FrameWindow_wrapper::*onMouseClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseClicked"
+                , onMouseClicked_function_type( &FrameWindow_wrapper::default_onMouseClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been clicked (that is depressed\n\
+                    and then released, within a specified time) within this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseDoubleClicked
+        
+            typedef void ( FrameWindow_wrapper::*onMouseDoubleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseDoubleClicked"
+                , onMouseDoubleClicked_function_type( &FrameWindow_wrapper::default_onMouseDoubleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been double-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEnters
+        
+            typedef void ( FrameWindow_wrapper::*onMouseEnters_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseEnters"
+                , onMouseEnters_function_type( &FrameWindow_wrapper::default_onMouseEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area and\n\
+                    is actually over some part of this windows surface and not, for\n\
+                    instance over a child window - even though technically in those cases\n\
+                    the mouse is also within this Window's area, the handler will not be\n\
+                    called.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseEntersArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEntersArea
+        
+            typedef void ( FrameWindow_wrapper::*onMouseEntersArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseEntersArea"
+                , onMouseEntersArea_function_type( &FrameWindow_wrapper::default_onMouseEntersArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeaves
+        
+            typedef void ( FrameWindow_wrapper::*onMouseLeaves_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseLeaves"
+                , onMouseLeaves_function_type( &FrameWindow_wrapper::default_onMouseLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor is no longer over this window's\n\
+                    surface area.  This will be called when the mouse is not over a part\n\
+                    of this Window's actual surface - even though technically the mouse is\n\
+                    still within the Window's area, for example if the mouse moves over a\n\
+                    child window.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseLeavesArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeavesArea
+        
+            typedef void ( FrameWindow_wrapper::*onMouseLeavesArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseLeavesArea"
+                , onMouseLeavesArea_function_type( &FrameWindow_wrapper::default_onMouseLeavesArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has left this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseTripleClicked
+        
+            typedef void ( FrameWindow_wrapper::*onMouseTripleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseTripleClicked"
+                , onMouseTripleClicked_function_type( &FrameWindow_wrapper::default_onMouseTripleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been triple-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseWheel
+        
+            typedef void ( FrameWindow_wrapper::*onMouseWheel_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMouseWheel"
+                , onMouseWheel_function_type( &FrameWindow_wrapper::default_onMouseWheel )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse wheel (z-axis) position changes within\n\
+                    this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMoved
+        
+            typedef void ( FrameWindow_wrapper::*onMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onMoved"
+                , onMoved_function_type( &FrameWindow_wrapper::default_onMoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's position changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onNonClientChanged
+        
+            typedef void ( FrameWindow_wrapper::*onNonClientChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onNonClientChanged"
+                , onNonClientChanged_function_type( &FrameWindow_wrapper::default_onNonClientChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's non-client setting, affecting it's\n\
+                    position and size relative to it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentDestroyChanged
+        
+            typedef void ( FrameWindow_wrapper::*onParentDestroyChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onParentDestroyChanged"
+                , onParentDestroyChanged_function_type( &FrameWindow_wrapper::default_onParentDestroyChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being destroyed\n\
+                    automatically be it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentSized
+        
+            typedef void ( FrameWindow_wrapper::*onParentSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onParentSized"
+                , onParentSized_function_type( &FrameWindow_wrapper::default_onParentSized )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's parent window has been resized.  If\n\
+                    this window is the root  GUI Sheet window, this call will be made when\n\
+                    the display size changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the the\n\
+                    window that caused the event; this is typically either this window's\n\
+                    parent window, or NULL to indicate the screen size has changed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingEnded
+        
+            typedef void ( FrameWindow_wrapper::*onRenderingEnded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onRenderingEnded"
+                , onRenderingEnded_function_type( &FrameWindow_wrapper::default_onRenderingEnded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has ended.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingStarted
+        
+            typedef void ( FrameWindow_wrapper::*onRenderingStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onRenderingStarted"
+                , onRenderingStarted_function_type( &FrameWindow_wrapper::default_onRenderingStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has started.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRotated
+        
+            typedef void ( FrameWindow_wrapper::*onRotated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onRotated"
+                , onRotated_function_type( &FrameWindow_wrapper::default_onRotated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's rotation factor is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onShown
+        
+            typedef void ( FrameWindow_wrapper::*onShown_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onShown"
+                , onShown_function_type( &FrameWindow_wrapper::default_onShown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is shown (made visible).\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onSized
+        
+            typedef void ( FrameWindow_wrapper::*onSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onSized"
+                , onSized_function_type( &FrameWindow_wrapper::default_onSized )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+                    Event trigger methods\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Handler called when the window's size changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onTextParsingChanged
+        
+            typedef void ( FrameWindow_wrapper::*onTextParsingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onTextParsingChanged"
+                , onTextParsingChanged_function_type( &FrameWindow_wrapper::default_onTextParsingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for whether text parsing is\n\
+                    enabled is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onVerticalAlignmentChanged
+        
+            typedef void ( FrameWindow_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onVerticalAlignmentChanged"
+                , onVerticalAlignmentChanged_function_type( &FrameWindow_wrapper::default_onVerticalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the vertical alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererAttached
+        
+            typedef void ( FrameWindow_wrapper::*onWindowRendererAttached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onWindowRendererAttached"
+                , onWindowRendererAttached_function_type( &FrameWindow_wrapper::default_onWindowRendererAttached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a new window renderer object is attached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got a new\n\
+                      window renderer attached. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererDetached
+        
+            typedef void ( FrameWindow_wrapper::*onWindowRendererDetached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onWindowRendererDetached"
+                , onWindowRendererDetached_function_type( &FrameWindow_wrapper::default_onWindowRendererDetached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the currently attached window renderer object is detached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got lost its\n\
+                      window renderer. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChange_impl
+        
+            typedef void ( FrameWindow_wrapper::*onZChange_impl_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "onZChange_impl"
+                , onZChange_impl_function_type( &FrameWindow_wrapper::default_onZChange_impl )
+                , "*!\n\
+            \n\
+                Notify 'this' and all siblings of a ZOrder change event\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChanged
+        
+            typedef void ( FrameWindow_wrapper::*onZChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            FrameWindow_exposer.def( 
+                "onZChanged"
+                , onZChanged_function_type( &FrameWindow_wrapper::default_onZChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the z-order position of this window has changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::performChildWindowLayout
@@ -1077,6 +3719,126 @@ void register_FrameWindow_class(){
                 , ( bp::arg("clipboard") ) );
         
         }
+        { //::CEGUI::Window::populateGeometryBuffer
+        
+            typedef void ( FrameWindow_wrapper::*populateGeometryBuffer_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "populateGeometryBuffer"
+                , populateGeometryBuffer_function_type( &FrameWindow_wrapper::default_populateGeometryBuffer )
+                , "*!\n\
+                \n\
+                    Update the rendering cache.\n\
+            \n\
+                    Populates the Window's GeometryBuffer ready for rendering.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::queueGeometry
+        
+            typedef void ( FrameWindow_wrapper::*queueGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "queueGeometry"
+                , queueGeometry_function_type( &FrameWindow_wrapper::queueGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with positioning, clipping and\n\
+                    queueing of window geometry to RenderingSurfaces.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf and is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::releaseRenderingWindow
+        
+            typedef void ( FrameWindow_wrapper::*releaseRenderingWindow_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "releaseRenderingWindow"
+                , releaseRenderingWindow_function_type( &FrameWindow_wrapper::releaseRenderingWindow )
+                , "! helper to clean up the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::removeChild_impl
+        
+            typedef void ( FrameWindow_wrapper::*removeChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            FrameWindow_exposer.def( 
+                "removeChild_impl"
+                , removeChild_impl_function_type( &FrameWindow_wrapper::default_removeChild_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Remove given window from child list\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::removeWindowFromDrawList
+        
+            typedef void ( FrameWindow_wrapper::*removeWindowFromDrawList_function_type )( ::CEGUI::Window const & ) ;
+            
+            FrameWindow_exposer.def( 
+                "removeWindowFromDrawList"
+                , removeWindowFromDrawList_function_type( &FrameWindow_wrapper::removeWindowFromDrawList )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Removes the window from the drawing list.  If the window is not attached\n\
+                    to the drawing list then nothing happens.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be removed from the drawing list.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::setArea_impl
+        
+            typedef void ( FrameWindow_wrapper::*setArea_impl_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const &,bool,bool ) ;
+            
+            FrameWindow_exposer.def( 
+                "setArea_impl"
+                , setArea_impl_function_type( &FrameWindow_wrapper::setArea_impl )
+                , ( bp::arg("pos"), bp::arg("size"), bp::arg("topLeftSizing")=(bool)(false), bp::arg("fireEvents")=(bool)(true) )
+                , "*!\n\
+                \n\
+                    Implementation method to modify window area while correctly applying\n\
+                    min  max size processing, and firing any appropriate events.\n\
+            \n\
+                note\n\
+                    This is the implementation function for setting size and position.\n\
+                    In order to simplify area management, from this point on, all\n\
+                    modifications to window size and position (area rect) should come\n\
+                    through here.\n\
+            \n\
+                param pos\n\
+                    UVector2 object describing the new area position.\n\
+            \n\
+                param size\n\
+                    USize object describing the new area size.\n\
+            \n\
+                param topLeftSizing\n\
+                    - true to indicate the the operation is a sizing operation on the top\n\
+                      andor left edges of the area, and so window movement should be\n\
+                      inhibited if size is at max or min.\n\
+                    - false to indicate the operation is not a strict sizing operation on\n\
+                      the top andor left edges and that the window position may change as\n\
+                      required\n\
+            \n\
+                param fireEvents\n\
+                    - true if events should be fired as normal.\n\
+                    - false to inhibit firing of events (required, for example, if you need\n\
+                      to call this from the onSizeonMove handlers).\n\
+                 *\n" );
+        
+        }
         { //::CEGUI::Window::setLookNFeel
         
             typedef void ( ::CEGUI::Window::*setLookNFeel_function_type )( ::CEGUI::String const & ) ;
@@ -1099,6 +3861,27 @@ void register_FrameWindow_class(){
                 , setMargin_function_type(&::CEGUI::Window::setMargin)
                 , default_setMargin_function_type(&FrameWindow_wrapper::default_setMargin)
                 , ( bp::arg("margin") ) );
+        
+        }
+        { //::CEGUI::Window::setParent
+        
+            typedef void ( FrameWindow_wrapper::*setParent_function_type )( ::CEGUI::Window * ) ;
+            
+            FrameWindow_exposer.def( 
+                "setParent"
+                , setParent_function_type( &FrameWindow_wrapper::setParent )
+                , ( bp::arg("parent") )
+                , "*!\n\
+                \n\
+                    Set the parent window for this window object.\n\
+            \n\
+                @param parent\n\
+                    Pointer to a Window object that is to be assigned as the parent to this\n\
+                    Window.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent
@@ -1125,6 +3908,16 @@ void register_FrameWindow_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
+        { //::CEGUI::Window::transferChildSurfaces
+        
+            typedef void ( FrameWindow_wrapper::*transferChildSurfaces_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "transferChildSurfaces"
+                , transferChildSurfaces_function_type( &FrameWindow_wrapper::transferChildSurfaces )
+                , "! transfer RenderingSurfaces to be owned by our target RenderingSurface.\n" );
+        
+        }
         { //::CEGUI::Window::update
         
             typedef void ( ::CEGUI::Window::*update_function_type )( float ) ;
@@ -1135,6 +3928,92 @@ void register_FrameWindow_class(){
                 , update_function_type(&::CEGUI::Window::update)
                 , default_update_function_type(&FrameWindow_wrapper::default_update)
                 , ( bp::arg("elapsed") ) );
+        
+        }
+        { //::CEGUI::Window::updateGeometryRenderSettings
+        
+            typedef void ( FrameWindow_wrapper::*updateGeometryRenderSettings_function_type )(  ) ;
+            
+            FrameWindow_exposer.def( 
+                "updateGeometryRenderSettings"
+                , updateGeometryRenderSettings_function_type( &FrameWindow_wrapper::updateGeometryRenderSettings )
+                , "*!\n\
+            \n\
+                Update position and clip region on this Windows geometry  rendering\n\
+                surface.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::updateSelf
+        
+            typedef void ( FrameWindow_wrapper::*updateSelf_function_type )( float ) ;
+            
+            FrameWindow_exposer.def( 
+                "updateSelf"
+                , updateSelf_function_type( &FrameWindow_wrapper::default_updateSelf )
+                , ( bp::arg("elapsed") )
+                , "*************************************************************************\n\
+                    Implementation Functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Perform actual update processing for this Window.\n\
+            \n\
+                @param elapsed\n\
+                    float value indicating the number of seconds elapsed since the last\n\
+                    update call.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::validateWindowRenderer
+        
+            typedef bool ( FrameWindow_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            
+            FrameWindow_exposer.def( 
+                "validateWindowRenderer"
+                , validateWindowRenderer_function_type( &FrameWindow_wrapper::default_validateWindowRenderer )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Function used in checking if a WindowRenderer is valid for this window.\n\
+            \n\
+                @return\n\
+                    Returns true if the given WindowRenderer class name is valid for this window.\n\
+                    False if not.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::writeAutoChildWindowXML
+        
+            typedef bool ( FrameWindow_wrapper::*writeAutoChildWindowXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            FrameWindow_exposer.def( 
+                "writeAutoChildWindowXML"
+                , writeAutoChildWindowXML_function_type( &FrameWindow_wrapper::default_writeAutoChildWindowXML )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::Window::writeChildWindowsXML
+        
+            typedef int ( FrameWindow_wrapper::*writeChildWindowsXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            FrameWindow_exposer.def( 
+                "writeChildWindowsXML"
+                , writeChildWindowsXML_function_type( &FrameWindow_wrapper::default_writeChildWindowsXML )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::Window::writePropertiesXML
+        
+            typedef int ( FrameWindow_wrapper::*writePropertiesXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            FrameWindow_exposer.def( 
+                "writePropertiesXML"
+                , writePropertiesXML_function_type( &FrameWindow_wrapper::default_writePropertiesXML )
+                , ( bp::arg("xml_stream") ) );
         
         }
         { //::CEGUI::Window::writeXMLToStream

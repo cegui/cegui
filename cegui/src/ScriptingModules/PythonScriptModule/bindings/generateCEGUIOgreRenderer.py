@@ -52,9 +52,9 @@ def filterDeclarations(mb):
     imagecodec.include()
     imagecodec.noncopyable = True
 
-    commonUtils.excludeAllProtected(CEGUI_ns)
     commonUtils.excludeAllPrivate(CEGUI_ns)
 
+    # for users using python-ogre in conjunction to PyCEGUI
     mb.global_ns.class_( "::Ogre::RenderTarget" ).already_exposed = True
     mb.global_ns.class_( "::Ogre::TexturePtr" ).already_exposed = True
 

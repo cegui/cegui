@@ -6,10 +6,32 @@
 
 namespace bp = boost::python;
 
+struct Event_wrapper : CEGUI::Event, bp::wrapper< CEGUI::Event > {
+
+    Event_wrapper(::CEGUI::String const & name )
+    : CEGUI::Event( boost::ref(name) )
+      , bp::wrapper< CEGUI::Event >(){
+        // constructor
+    
+    }
+
+    Event_wrapper(::CEGUI::Event const & arg0 )
+    : CEGUI::Event( boost::ref(arg0) )
+      , bp::wrapper< CEGUI::Event >(){
+        // copy constructor
+    
+    }
+
+    void unsubscribe( ::CEGUI::BoundSlot const & slot ){
+        CEGUI::Event::unsubscribe( boost::ref(slot) );
+    }
+
+};
+
 void register_Event_class(){
 
     { //::CEGUI::Event
-        typedef bp::class_< CEGUI::Event, boost::noncopyable > Event_exposer_t;
+        typedef bp::class_< Event_wrapper, boost::noncopyable > Event_exposer_t;
         Event_exposer_t Event_exposer = Event_exposer_t( "Event", bp::init< CEGUI::String const & >(( bp::arg("name") ), "*!\n\
         \n\
             Constructs a new Event object with the specified name\n\
@@ -56,6 +78,7 @@ void register_Event_class(){
             }
         }
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::Event >();
+        Event_exposer.def( bp::init< CEGUI::Event const & >(( bp::arg("arg0") ), "Copy constructor and assignment are not allowed for events\n") );
         { //::CEGUI::Event::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::Event::*getName_function_type )(  ) const;
@@ -146,6 +169,26 @@ void register_Event_class(){
                 @return\n\
                     A Connection object which can be used to disconnect (unsubscribe) from\n\
                     the Event, and also to check the connection state.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Event::unsubscribe
+        
+            typedef void ( Event_wrapper::*unsubscribe_function_type )( ::CEGUI::BoundSlot const & ) ;
+            
+            Event_exposer.def( 
+                "unsubscribe"
+                , unsubscribe_function_type( &Event_wrapper::unsubscribe )
+                , ( bp::arg("slot") )
+                , "*!\n\
+                \n\
+                    Disconnects and removes the given BoundSlot from the collection of bound\n\
+                    slots attached to this Event, thus 'unsubscribing' it.\n\
+            \n\
+                \note\n\
+                    This is an implementation member, and is not available to client code.\n\
+                    In order to detach  unsubscribe from an Event you should be using the\n\
+                    Connection object(s) returned when you initially subscribed.\n\
                 *\n" );
         
         }

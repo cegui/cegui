@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wrapper< CEGUI::RenderedStringComponent > {
 
+    RenderedStringComponent_wrapper( )
+    : CEGUI::RenderedStringComponent( )
+      , bp::wrapper< CEGUI::RenderedStringComponent >(){
+        // null constructor
+    
+    }
+
     virtual bool canSplit(  ) const {
         bp::override func_canSplit = this->get_override( "canSplit" );
         return func_canSplit(  );
@@ -46,6 +53,7 @@ void register_RenderedStringComponent_class(){
         typedef bp::class_< RenderedStringComponent_wrapper, boost::noncopyable > RenderedStringComponent_exposer_t;
         RenderedStringComponent_exposer_t RenderedStringComponent_exposer = RenderedStringComponent_exposer_t( "RenderedStringComponent", bp::no_init );
         bp::scope RenderedStringComponent_scope( RenderedStringComponent_exposer );
+        RenderedStringComponent_exposer.def( bp::init< >("! Protected constructor.\n") );
         { //::CEGUI::RenderedStringComponent::canSplit
         
             typedef bool ( ::CEGUI::RenderedStringComponent::*canSplit_function_type )(  ) const;

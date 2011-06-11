@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct ImageCodec_wrapper : CEGUI::ImageCodec, bp::wrapper< CEGUI::ImageCodec > {
 
+    ImageCodec_wrapper(::CEGUI::String const & name )
+    : CEGUI::ImageCodec( boost::ref(name) )
+      , bp::wrapper< CEGUI::ImageCodec >(){
+        // constructor
+    
+    }
+
     virtual ::CEGUI::Texture * load( ::CEGUI::RawDataContainer const & data, ::CEGUI::Texture * result ){
         bp::override func_load = this->get_override( "load" );
         return func_load( boost::ref(data), boost::python::ptr(result) );
@@ -21,6 +28,12 @@ void register_ImageCodec_class(){
         typedef bp::class_< ImageCodec_wrapper, boost::noncopyable > ImageCodec_exposer_t;
         ImageCodec_exposer_t ImageCodec_exposer = ImageCodec_exposer_t( "ImageCodec", bp::no_init );
         bp::scope ImageCodec_scope( ImageCodec_exposer );
+        ImageCodec_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("name") ), "*\n\
+           \n\
+          Constructor \n\
+          \n\
+          @param name of the codec \n\
+        *\n") );
         { //::CEGUI::ImageCodec::getIdentifierString
         
             typedef ::CEGUI::String const & ( ::CEGUI::ImageCodec::*getIdentifierString_function_type )(  ) const;

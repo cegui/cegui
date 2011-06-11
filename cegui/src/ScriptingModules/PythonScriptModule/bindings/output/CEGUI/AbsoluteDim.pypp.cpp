@@ -6,10 +6,88 @@
 
 namespace bp = boost::python;
 
+struct AbsoluteDim_wrapper : CEGUI::AbsoluteDim, bp::wrapper< CEGUI::AbsoluteDim > {
+
+    AbsoluteDim_wrapper(CEGUI::AbsoluteDim const & arg )
+    : CEGUI::AbsoluteDim( arg )
+      , bp::wrapper< CEGUI::AbsoluteDim >(){
+        // copy constructor
+        
+    }
+
+    AbsoluteDim_wrapper(float val )
+    : CEGUI::AbsoluteDim( val )
+      , bp::wrapper< CEGUI::AbsoluteDim >(){
+        // constructor
+    
+    }
+
+    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
+        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
+            return func_clone_impl(  );
+        else{
+            return this->CEGUI::AbsoluteDim::clone_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
+        return CEGUI::AbsoluteDim::clone_impl( );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd) );
+        else{
+            return this->CEGUI::AbsoluteDim::getValue_impl( boost::ref(wnd) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::AbsoluteDim::getValue_impl( boost::ref(wnd) );
+    }
+
+    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
+            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+        else{
+            return this->CEGUI::AbsoluteDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+        }
+    }
+    
+    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        return CEGUI::AbsoluteDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    }
+
+    virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementAttributes_impl = this->get_override( "writeXMLElementAttributes_impl" ) )
+            func_writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::AbsoluteDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::AbsoluteDim::writeXMLElementAttributes_impl( boost::ref(xml_stream) );
+    }
+
+    virtual void writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeXMLElementName_impl = this->get_override( "writeXMLElementName_impl" ) )
+            func_writeXMLElementName_impl( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::AbsoluteDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual void default_writeXMLElementName_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::AbsoluteDim::writeXMLElementName_impl( boost::ref(xml_stream) );
+    }
+
+};
+
 void register_AbsoluteDim_class(){
 
     { //::CEGUI::AbsoluteDim
-        typedef bp::class_< CEGUI::AbsoluteDim, bp::bases< CEGUI::BaseDim > > AbsoluteDim_exposer_t;
+        typedef bp::class_< AbsoluteDim_wrapper, bp::bases< CEGUI::BaseDim > > AbsoluteDim_exposer_t;
         AbsoluteDim_exposer_t AbsoluteDim_exposer = AbsoluteDim_exposer_t( "AbsoluteDim", "*!\n\
         \n\
             Dimension type that represents an absolute pixel value.  Implements BaseDim interface.\n\
@@ -22,6 +100,38 @@ void register_AbsoluteDim_class(){
                 *\n") );
         bp::scope AbsoluteDim_scope( AbsoluteDim_exposer );
         bp::implicitly_convertible< float, CEGUI::AbsoluteDim >();
+        { //::CEGUI::AbsoluteDim::clone_impl
+        
+            typedef ::CEGUI::BaseDim * ( AbsoluteDim_wrapper::*clone_impl_function_type )(  ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "clone_impl"
+                , clone_impl_function_type( &AbsoluteDim_wrapper::default_clone_impl )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::AbsoluteDim::getValue_impl
+        
+            typedef float ( AbsoluteDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &AbsoluteDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd") )
+                , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::AbsoluteDim::getValue_impl
+        
+            typedef float ( AbsoluteDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "getValue_impl"
+                , getValue_impl_function_type( &AbsoluteDim_wrapper::default_getValue_impl )
+                , ( bp::arg("wnd"), bp::arg("container") )
+                , "Implementation of the base class interface\n" );
+        
+        }
         { //::CEGUI::AbsoluteDim::setValue
         
             typedef void ( ::CEGUI::AbsoluteDim::*setValue_function_type )( float ) ;
@@ -34,6 +144,26 @@ void register_AbsoluteDim_class(){
             \n\
                 Set the current value of the AbsoluteDim.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::AbsoluteDim::writeXMLElementAttributes_impl
+        
+            typedef void ( AbsoluteDim_wrapper::*writeXMLElementAttributes_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "writeXMLElementAttributes_impl"
+                , writeXMLElementAttributes_impl_function_type( &AbsoluteDim_wrapper::default_writeXMLElementAttributes_impl )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::AbsoluteDim::writeXMLElementName_impl
+        
+            typedef void ( AbsoluteDim_wrapper::*writeXMLElementName_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "writeXMLElementName_impl"
+                , writeXMLElementName_impl_function_type( &AbsoluteDim_wrapper::default_writeXMLElementName_impl )
+                , ( bp::arg("xml_stream") ) );
         
         }
     }

@@ -8,6 +8,17 @@ namespace bp = boost::python;
 
 struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
 
+    Font_wrapper(::CEGUI::String const & name, ::CEGUI::String const & type_name, ::CEGUI::String const & filename, ::CEGUI::String const & resource_group, bool const auto_scaled, float const native_horz_res, float const native_vert_res )
+    : CEGUI::Font( boost::ref(name), boost::ref(type_name), boost::ref(filename), boost::ref(resource_group), auto_scaled, native_horz_res, native_vert_res )
+      , bp::wrapper< CEGUI::Font >(){
+        // constructor
+    
+    }
+
+    void addFontProperties(  ){
+        CEGUI::Font::addFontProperties(  );
+    }
+
     virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         if( bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" ) )
             func_notifyDisplaySizeChanged( boost::ref(size) );
@@ -18,6 +29,22 @@ struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
     
     void default_notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         CEGUI::Font::notifyDisplaySizeChanged( boost::ref(size) );
+    }
+
+    virtual void rasterise( ::CEGUI::utf32 start_codepoint, ::CEGUI::utf32 end_codepoint ) const {
+        if( bp::override func_rasterise = this->get_override( "rasterise" ) )
+            func_rasterise( start_codepoint, end_codepoint );
+        else{
+            this->CEGUI::Font::rasterise( start_codepoint, end_codepoint );
+        }
+    }
+    
+    virtual void default_rasterise( ::CEGUI::utf32 start_codepoint, ::CEGUI::utf32 end_codepoint ) const {
+        CEGUI::Font::rasterise( start_codepoint, end_codepoint );
+    }
+
+    void setMaxCodepoint( ::CEGUI::utf32 codepoint ){
+        CEGUI::Font::setMaxCodepoint( codepoint );
     }
 
     virtual void updateFont(  ){
@@ -38,6 +65,17 @@ void register_Font_class(){
         typedef bp::class_< Font_wrapper, bp::bases< CEGUI::PropertySet >, boost::noncopyable > Font_exposer_t;
         Font_exposer_t Font_exposer = Font_exposer_t( "Font", bp::no_init );
         bp::scope Font_scope( Font_exposer );
+        Font_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool, float, float >(( bp::arg("name"), bp::arg("type_name"), bp::arg("filename"), bp::arg("resource_group"), bp::arg("auto_scaled"), bp::arg("native_horz_res"), bp::arg("native_vert_res") )) );
+        { //::CEGUI::Font::addFontProperties
+        
+            typedef void ( Font_wrapper::*addFontProperties_function_type )(  ) ;
+            
+            Font_exposer.def( 
+                "addFontProperties"
+                , addFontProperties_function_type( &Font_wrapper::addFontProperties )
+                , "! Register all properties of this class.\n" );
+        
+        }
         { //::CEGUI::Font::drawText
         
             typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
@@ -342,6 +380,30 @@ void register_Font_class(){
                 , ( bp::arg("size") ) );
         
         }
+        { //::CEGUI::Font::rasterise
+        
+            typedef void ( Font_wrapper::*rasterise_function_type )( ::CEGUI::utf32,::CEGUI::utf32 ) const;
+            
+            Font_exposer.def( 
+                "rasterise"
+                , rasterise_function_type( &Font_wrapper::default_rasterise )
+                , ( bp::arg("start_codepoint"), bp::arg("end_codepoint") )
+                , "*!\n\
+            \n\
+                This function prepares a certain range of glyphs to be ready for\n\
+                displaying. This means that after returning from this function\n\
+                glyphs from d_cp_map[start_codepoint] to d_cp_map[end_codepoint]\n\
+                should have their d_image member set. If there is an error\n\
+                during rasterisation of some glyph, it's okay to leave the\n\
+                d_image field set to NULL, in which case such glyphs will\n\
+                be skipped from display.\n\
+            @param start_codepoint\n\
+                The lowest codepoint that should be rasterised\n\
+            @param end_codepoint\n\
+                The highest codepoint that should be rasterised\n\
+            *\n" );
+        
+        }
         { //::CEGUI::Font::setAutoScaled
         
             typedef void ( ::CEGUI::Font::*setAutoScaled_function_type )( bool const ) ;
@@ -378,6 +440,21 @@ void register_Font_class(){
                 @return\n\
                     Nothing.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Font::setMaxCodepoint
+        
+            typedef void ( Font_wrapper::*setMaxCodepoint_function_type )( ::CEGUI::utf32 ) ;
+            
+            Font_exposer.def( 
+                "setMaxCodepoint"
+                , setMaxCodepoint_function_type( &Font_wrapper::setMaxCodepoint )
+                , ( bp::arg("codepoint") )
+                , "*!\n\
+            \n\
+                Set the maximal glyph index. This reserves the respective\n\
+                number of bits in the d_glyphPageLoaded array.\n\
+            *\n" );
         
         }
         { //::CEGUI::Font::setNativeResolution

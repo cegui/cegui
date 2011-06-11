@@ -15,6 +15,13 @@ struct EventSet_wrapper : CEGUI::EventSet, bp::wrapper< CEGUI::EventSet > {
     
     }
 
+    EventSet_wrapper(::CEGUI::EventSet & arg0 )
+    : CEGUI::EventSet( boost::ref(arg0) )
+      , bp::wrapper< CEGUI::EventSet >(){
+        // constructor
+    
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -25,6 +32,14 @@ struct EventSet_wrapper : CEGUI::EventSet, bp::wrapper< CEGUI::EventSet > {
     
     void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -76,19 +91,14 @@ public:
         // I don't understand why this is happening, I think boost::python should use typeid(args).name() and deduce that it's a
         // derived class, not CEGUI::EventArgs base class
         // However this is not happening so I have to go through all EventArgs classes and try casting one after another
-        if (dynamic_cast<const CEGUI::DisplayEventArgs*>(&args))
+        if (dynamic_cast<const CEGUI::AnimationEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::AnimationEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::DisplayEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DisplayEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::UpdateEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
@@ -96,14 +106,9 @@ if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::HeaderSequenceEventArgs&>(args));
 }
 
-if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
+if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
 {
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::UpdateEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
@@ -111,29 +116,29 @@ if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DragDropEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ActivationEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::WindowEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::LinkedEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::LinkedEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::AnimationEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::AnimationEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
@@ -144,6 +149,16 @@ if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
 if (dynamic_cast<const CEGUI::ResourceEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ResourceEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::LinkedEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::LinkedEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::EventArgs*>(&args))
@@ -221,6 +236,7 @@ void register_EventSet_class(){
             Constructor for EventSet objects\n\
         *\n") );
         bp::scope EventSet_scope( EventSet_exposer );
+        EventSet_exposer.def( bp::init< CEGUI::EventSet & >(( bp::arg("arg0") ), "Do not allow copying, assignment, or any other usage than simple creation.\n") );
         { //::CEGUI::EventSet::addEvent
         
             typedef void ( ::CEGUI::EventSet::*addEvent_function_type )( ::CEGUI::String const & ) ;
@@ -280,6 +296,17 @@ void register_EventSet_class(){
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
         
         }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( EventSet_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            EventSet_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &EventSet_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
         { //::CEGUI::EventSet::getEventObject
         
             typedef ::CEGUI::Event * ( ::CEGUI::EventSet::*getEventObject_function_type )( ::CEGUI::String const &,bool ) ;
@@ -322,6 +349,18 @@ void register_EventSet_class(){
                 Return a EventSet.Iterator object to iterate over the events currently\n\
                 added to the EventSet.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( EventSet_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            EventSet_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &EventSet_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::isEventPresent

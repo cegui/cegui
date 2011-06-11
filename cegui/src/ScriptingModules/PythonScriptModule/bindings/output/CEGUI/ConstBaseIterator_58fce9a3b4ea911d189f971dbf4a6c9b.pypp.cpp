@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Event_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Event_ptr__greater___greater___greater__comma__CEGUI_scope_Event_ptr___greater__wrapper : CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event* >, bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event* > > {
 
+    ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Event_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Event_ptr__greater___greater___greater__comma__CEGUI_scope_Event_ptr___greater__wrapper( )
+    : CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event*>( )
+      , bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event* > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::Event * getCurrentValue(  ) const {
         bp::override func_getCurrentValue = this->get_override( "getCurrentValue" );
         return func_getCurrentValue(  );
@@ -21,6 +28,9 @@ void register_ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_class(){
         typedef bp::class_< ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_Event_ptr__comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_Event_ptr__greater___greater___greater__comma__CEGUI_scope_Event_ptr___greater__wrapper, boost::noncopyable > ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer_t;
         ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer_t ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer = ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer_t( "ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b", bp::no_init );
         bp::scope ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_scope( ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer );
+        ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event* >::getCurrentValue
         
             typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >, CEGUI::Event* > exported_class_t;

@@ -15,6 +15,18 @@ struct MouseCursor_wrapper : CEGUI::MouseCursor, bp::wrapper< CEGUI::MouseCursor
     
     }
 
+    virtual void onImageChanged( ::CEGUI::MouseCursorEventArgs & e ){
+        if( bp::override func_onImageChanged = this->get_override( "onImageChanged" ) )
+            func_onImageChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MouseCursor::onImageChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onImageChanged( ::CEGUI::MouseCursorEventArgs & e ){
+        CEGUI::MouseCursor::onImageChanged( boost::ref(e) );
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -25,6 +37,14 @@ struct MouseCursor_wrapper : CEGUI::MouseCursor, bp::wrapper< CEGUI::MouseCursor
     
     void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -283,6 +303,23 @@ void register_MouseCursor_class(){
                *\n" );
         
         }
+        { //::CEGUI::MouseCursor::onImageChanged
+        
+            typedef void ( MouseCursor_wrapper::*onImageChanged_function_type )( ::CEGUI::MouseCursorEventArgs & ) ;
+            
+            MouseCursor_exposer.def( 
+                "onImageChanged"
+                , onImageChanged_function_type( &MouseCursor_wrapper::default_onImageChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               New event handlers\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               event triggered internally when image of mouse cursor changes\n\
+            *\n" );
+        
+        }
         { //::CEGUI::MouseCursor::setConstraintArea
         
             typedef void ( ::CEGUI::MouseCursor::*setConstraintArea_function_type )( ::CEGUI::Rectf const * ) ;
@@ -483,6 +520,29 @@ void register_MouseCursor_class(){
                 , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
                 , default_fireEvent_function_type(&MouseCursor_wrapper::default_fireEvent)
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( MouseCursor_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            MouseCursor_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &MouseCursor_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( MouseCursor_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            MouseCursor_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &MouseCursor_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

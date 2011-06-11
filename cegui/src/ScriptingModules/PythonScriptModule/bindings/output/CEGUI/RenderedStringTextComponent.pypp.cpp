@@ -79,6 +79,10 @@ struct RenderedStringTextComponent_wrapper : CEGUI::RenderedStringTextComponent,
         CEGUI::RenderedStringTextComponent::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
+    static ::size_t getNextTokenLength( ::CEGUI::String const & text, ::size_t start_idx ){
+        return CEGUI::RenderedStringTextComponent::getNextTokenLength( boost::ref(text), start_idx );
+    }
+
     virtual ::CEGUI::Sizef getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
@@ -184,6 +188,16 @@ void register_RenderedStringTextComponent_class(){
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "! set the font to use when rendering the text.\n\
             ! return the font set to be used.  If 0 the default font will be used.\n" );
+        
+        }
+        { //::CEGUI::RenderedStringTextComponent::getNextTokenLength
+        
+            typedef ::size_t ( *getNextTokenLength_function_type )( ::CEGUI::String const &,::size_t );
+            
+            RenderedStringTextComponent_exposer.def( 
+                "getNextTokenLength"
+                , getNextTokenLength_function_type( &RenderedStringTextComponent_wrapper::getNextTokenLength )
+                , ( bp::arg("text"), bp::arg("start_idx") ) );
         
         }
         { //::CEGUI::RenderedStringTextComponent::getPixelSize
@@ -292,6 +306,7 @@ void register_RenderedStringTextComponent_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
+        RenderedStringTextComponent_exposer.staticmethod( "getNextTokenLength" );
     }
 
 }

@@ -55,7 +55,7 @@ def addConstants(mb, constants):
 
 def addVersionInfo(mb, name, version):
     import datetime 
-	    
+    
     t = datetime.datetime.now().isoformat(' ').strip()
     
     docstring = "%s - version %s" % (name, version)
@@ -94,15 +94,6 @@ def excludeAllPrivate(cls):
             & declarations.virtuality_type_matcher_t(declarations.VIRTUALITY_TYPES.PURE_VIRTUAL)
     
     cls.mem_funs(query, allow_empty = True).include()
-    
-def excludeAllProtected(cls):
-    cls.decls(declarations.matchers.access_type_matcher_t("protected")).exclude()
-    
-    # include back pure virtual protected functions
-    query = declarations.matchers.access_type_matcher_t("protected") \
-            & declarations.virtuality_type_matcher_t(declarations.VIRTUALITY_TYPES.PURE_VIRTUAL)
-            
-    cls.mem_funs(query, allow_empty = True).include()
 
 # this adds string converters - should only be used in CEGUI package!
 def addStringConverters(mb):
@@ -112,16 +103,16 @@ struct CEGUI_String_to_python
 {
     static PyObject* convert(const CEGUI::String& s)
     {
-		// use native byteorder
-		int byteorder = 0;
+        // use native byteorder
+        int byteorder = 0;
 
-		// "replace" replaces invalid utf32 chars with "?"
-		
-		// python wants the size of the buffer, not length of the string,
-		// this is the reason for the sizeof
-		return boost::python::incref(
-			PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
-		);
+        // "replace" replaces invalid utf32 chars with "?"
+        
+        // python wants the size of the buffer, not length of the string,
+        // this is the reason for the sizeof
+        return boost::python::incref(
+            PyUnicode_DecodeUTF32((const char*)(s.ptr()), s.length() * sizeof(CEGUI::utf32), "replace", &byteorder)
+        );
     }
 };
 
@@ -152,9 +143,9 @@ struct CEGUI_String_from_python
         if (PyUnicode_Check(obj_ptr))
         {
             // we have to employ a bit more machinery since this is utf16 coded string
-			// we encode given unicode object (ucs2 - utf16) to utf8
-			PyObject* utf8 = PyUnicode_AsUTF8String(obj_ptr);
-			// then we get the raw bytes of the utf8 python object
+            // we encode given unicode object (ucs2 - utf16) to utf8
+            PyObject* utf8 = PyUnicode_AsUTF8String(obj_ptr);
+            // then we get the raw bytes of the utf8 python object
             const CEGUI::utf8* value = (CEGUI::utf8*)PyString_AsString(utf8);
             if (value == 0)
                 boost::python::throw_error_already_set();
@@ -162,9 +153,9 @@ struct CEGUI_String_from_python
             void* storage = ((boost::python::converter::rvalue_from_python_storage<CEGUI::String>*)data)->storage.bytes;
             new (storage) CEGUI::String(value);
             data->convertible = storage;
-			// now we don't need utf8 anymore, CEGUI::String holds the data for us now, by decreasing
-			// refcount to utf8, we are practically deallocating it
-			boost::python::decref(utf8);
+            // now we don't need utf8 anymore, CEGUI::String holds the data for us now, by decreasing
+            // refcount to utf8, we are practically deallocating it
+            boost::python::decref(utf8);
         }
         else
         {
@@ -206,4 +197,3 @@ def addSupportForString(mb):
             var.use_make_functions = True
             # we have to use return_by_value to make converters work
             var.set_getter_call_policies(call_policies.return_value_policy(call_policies.return_by_value))
-    

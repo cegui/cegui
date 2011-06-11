@@ -15,9 +15,17 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
     
     }
 
+    ::CEGUI::Colour calculateModulatedAlphaColour( ::CEGUI::Colour col, float alpha ) const {
+        return CEGUI::ListboxItem::calculateModulatedAlphaColour( col, alpha );
+    }
+
     virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const {
         bp::override func_draw = this->get_override( "draw" );
         func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
+    }
+
+    ::CEGUI::ColourRect getModulateAlphaColourRect( ::CEGUI::ColourRect const & cols, float alpha ) const {
+        return CEGUI::ListboxItem::getModulateAlphaColourRect( boost::ref(cols), alpha );
     }
 
     virtual ::CEGUI::Sizef getPixelSize(  ) const {
@@ -51,6 +59,21 @@ void register_ListboxItem_class(){
             base class constructor\n\
         *\n") );
         bp::scope ListboxItem_scope( ListboxItem_exposer );
+        { //::CEGUI::ListboxItem::calculateModulatedAlphaColour
+        
+            typedef ::CEGUI::Colour ( ListboxItem_wrapper::*calculateModulatedAlphaColour_function_type )( ::CEGUI::Colour,float ) const;
+            
+            ListboxItem_exposer.def( 
+                "calculateModulatedAlphaColour"
+                , calculateModulatedAlphaColour_function_type( &ListboxItem_wrapper::calculateModulatedAlphaColour )
+                , ( bp::arg("col"), bp::arg("alpha") )
+                , "*!\n\
+            \n\
+                Return a colour value describing the colour specified by  col after having its alpha\n\
+                component modulated by the value  alpha.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::ListboxItem::draw
         
             typedef void ( ::CEGUI::ListboxItem::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Rectf const &,float,::CEGUI::Rectf const * ) const;
@@ -96,6 +119,24 @@ void register_ListboxItem_class(){
                 @return\n\
                     ID code currently assigned to this list box item\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::ListboxItem::getModulateAlphaColourRect
+        
+            typedef ::CEGUI::ColourRect ( ListboxItem_wrapper::*getModulateAlphaColourRect_function_type )( ::CEGUI::ColourRect const &,float ) const;
+            
+            ListboxItem_exposer.def( 
+                "getModulateAlphaColourRect"
+                , getModulateAlphaColourRect_function_type( &ListboxItem_wrapper::getModulateAlphaColourRect )
+                , ( bp::arg("cols"), bp::arg("alpha") )
+                , "*************************************************************************\n\
+                Implementation methods\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+                Return a ColourRect object describing the colours in  cols after having their alpha\n\
+                component modulated by the value  alpha.\n\
+            *\n" );
         
         }
         { //::CEGUI::ListboxItem::getOwnerWindow

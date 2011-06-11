@@ -22,6 +22,10 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
     
     }
 
+    ::CEGUI::Colour calculateModulatedAlphaColour( ::CEGUI::Colour col, float alpha ) const {
+        return CEGUI::TreeItem::calculateModulatedAlphaColour( col, alpha );
+    }
+
     virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Rectf const & targetRect, float alpha, ::CEGUI::Rectf const * clipper ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
             func_draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
@@ -34,6 +38,10 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         CEGUI::TreeItem::draw( boost::ref(buffer), boost::ref(targetRect), alpha, boost::python::ptr(clipper) );
     }
 
+    ::CEGUI::ColourRect getModulateAlphaColourRect( ::CEGUI::ColourRect const & cols, float alpha ) const {
+        return CEGUI::TreeItem::getModulateAlphaColourRect( boost::ref(cols), alpha );
+    }
+
     virtual ::CEGUI::Sizef getPixelSize(  ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
             return func_getPixelSize(  );
@@ -44,6 +52,10 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
     
     ::CEGUI::Sizef default_getPixelSize(  ) const  {
         return CEGUI::TreeItem::getPixelSize( );
+    }
+
+    void parseTextString(  ) const {
+        CEGUI::TreeItem::parseTextString(  );
     }
 
 };
@@ -82,6 +94,21 @@ void register_TreeItem_class(){
                 "addItem"
                 , addItem_function_type( &::CEGUI::TreeItem::addItem )
                 , ( bp::arg("item") ) );
+        
+        }
+        { //::CEGUI::TreeItem::calculateModulatedAlphaColour
+        
+            typedef ::CEGUI::Colour ( TreeItem_wrapper::*calculateModulatedAlphaColour_function_type )( ::CEGUI::Colour,float ) const;
+            
+            TreeItem_exposer.def( 
+                "calculateModulatedAlphaColour"
+                , calculateModulatedAlphaColour_function_type( &TreeItem_wrapper::calculateModulatedAlphaColour )
+                , ( bp::arg("col"), bp::arg("alpha") )
+                , "*!\n\
+             \n\
+                 Return a colour value describing the colour specified by  col after\n\
+                 having its alpha component modulated by the value  alpha.\n\
+             *\n" );
         
         }
         { //::CEGUI::TreeItem::draw
@@ -174,6 +201,24 @@ void register_TreeItem_class(){
                 "getItemList"
                 , getItemList_function_type( &::CEGUI::TreeItem::getItemList )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::TreeItem::getModulateAlphaColourRect
+        
+            typedef ::CEGUI::ColourRect ( TreeItem_wrapper::*getModulateAlphaColourRect_function_type )( ::CEGUI::ColourRect const &,float ) const;
+            
+            TreeItem_exposer.def( 
+                "getModulateAlphaColourRect"
+                , getModulateAlphaColourRect_function_type( &TreeItem_wrapper::getModulateAlphaColourRect )
+                , ( bp::arg("cols"), bp::arg("alpha") )
+                , "*************************************************************************\n\
+                Implementation methods\n\
+             *************************************************************************\n\
+            *!\n\
+             \n\
+                Return a ColourRect object describing the colours in  cols after\n\
+                having their alpha component modulated by the value  alpha.\n\
+             *\n" );
         
         }
         { //::CEGUI::TreeItem::getOwnerWindow
@@ -395,6 +440,16 @@ void register_TreeItem_class(){
         }
         TreeItem_exposer.def( bp::self < bp::self );
         TreeItem_exposer.def( bp::self > bp::self );
+        { //::CEGUI::TreeItem::parseTextString
+        
+            typedef void ( TreeItem_wrapper::*parseTextString_function_type )(  ) const;
+            
+            TreeItem_exposer.def( 
+                "parseTextString"
+                , parseTextString_function_type( &TreeItem_wrapper::parseTextString )
+                , "! parse the text visual string into a RenderString representation.\n" );
+        
+        }
         { //::CEGUI::TreeItem::removeItem
         
             typedef void ( ::CEGUI::TreeItem::*removeItem_function_type )( ::CEGUI::TreeItem const * ) ;

@@ -15,6 +15,50 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     }
 
+    bool clearAllSelections_impl(  ){
+        return CEGUI::MultiColumnList::clearAllSelections_impl(  );
+    }
+
+    void configureScrollbars(  ){
+        CEGUI::MultiColumnList::configureScrollbars(  );
+    }
+
+    ::CEGUI::ListboxItem * getItemAtPoint( ::CEGUI::Vector2f const & pt ) const {
+        return CEGUI::MultiColumnList::getItemAtPoint( boost::ref(pt) );
+    }
+
+    bool handleColumnSizeChange( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleColumnSizeChange( boost::ref(e) );
+    }
+
+    bool handleHeaderScroll( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleHeaderScroll( boost::ref(e) );
+    }
+
+    bool handleHeaderSegDblClick( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleHeaderSegDblClick( boost::ref(e) );
+    }
+
+    bool handleHeaderSegMove( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleHeaderSegMove( boost::ref(e) );
+    }
+
+    bool handleHorzScrollbar( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleHorzScrollbar( boost::ref(e) );
+    }
+
+    bool handleSortColumnChange( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleSortColumnChange( boost::ref(e) );
+    }
+
+    bool handleSortDirectionChange( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleSortDirectionChange( boost::ref(e) );
+    }
+
+    bool handleVertScrollbar( ::CEGUI::EventArgs const & e ){
+        return CEGUI::MultiColumnList::handleVertScrollbar( boost::ref(e) );
+    }
+
     virtual void initialiseComponents(  ) {
         if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
             func_initialiseComponents(  );
@@ -27,6 +71,274 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         CEGUI::MultiColumnList::initialiseComponents( );
     }
 
+    void moveColumn_impl( ::CEGUI::uint col_idx, ::CEGUI::uint position ){
+        CEGUI::MultiColumnList::moveColumn_impl( col_idx, position );
+    }
+
+    virtual void onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onFontChanged = this->get_override( "onFontChanged" ) )
+            func_onFontChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onFontChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onFontChanged( boost::ref(e) );
+    }
+
+    virtual void onHorzScrollbarModeChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHorzScrollbarModeChanged = this->get_override( "onHorzScrollbarModeChanged" ) )
+            func_onHorzScrollbarModeChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onHorzScrollbarModeChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHorzScrollbarModeChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onHorzScrollbarModeChanged( boost::ref(e) );
+    }
+
+    virtual void onListColumnMoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onListColumnMoved = this->get_override( "onListColumnMoved" ) )
+            func_onListColumnMoved( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onListColumnMoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onListColumnMoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onListColumnMoved( boost::ref(e) );
+    }
+
+    virtual void onListColumnSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onListColumnSized = this->get_override( "onListColumnSized" ) )
+            func_onListColumnSized( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onListColumnSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onListColumnSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onListColumnSized( boost::ref(e) );
+    }
+
+    virtual void onListContentsChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onListContentsChanged = this->get_override( "onListContentsChanged" ) )
+            func_onListContentsChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onListContentsChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onListContentsChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onListContentsChanged( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonDown = this->get_override( "onMouseButtonDown" ) )
+            func_onMouseButtonDown( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onMouseButtonDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::MultiColumnList::onMouseButtonDown( boost::ref(e) );
+    }
+
+    virtual void onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseWheel = this->get_override( "onMouseWheel" ) )
+            func_onMouseWheel( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onMouseWheel( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseWheel( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::MultiColumnList::onMouseWheel( boost::ref(e) );
+    }
+
+    virtual void onNominatedSelectColumnChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onNominatedSelectColumnChanged = this->get_override( "onNominatedSelectColumnChanged" ) )
+            func_onNominatedSelectColumnChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onNominatedSelectColumnChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNominatedSelectColumnChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onNominatedSelectColumnChanged( boost::ref(e) );
+    }
+
+    virtual void onNominatedSelectRowChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onNominatedSelectRowChanged = this->get_override( "onNominatedSelectRowChanged" ) )
+            func_onNominatedSelectRowChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onNominatedSelectRowChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNominatedSelectRowChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onNominatedSelectRowChanged( boost::ref(e) );
+    }
+
+    virtual void onSelectionChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSelectionChanged = this->get_override( "onSelectionChanged" ) )
+            func_onSelectionChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onSelectionChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSelectionChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onSelectionChanged( boost::ref(e) );
+    }
+
+    virtual void onSelectionModeChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSelectionModeChanged = this->get_override( "onSelectionModeChanged" ) )
+            func_onSelectionModeChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onSelectionModeChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSelectionModeChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onSelectionModeChanged( boost::ref(e) );
+    }
+
+    virtual void onSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSized = this->get_override( "onSized" ) )
+            func_onSized( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onSized( boost::ref(e) );
+    }
+
+    virtual void onSortColumnChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSortColumnChanged = this->get_override( "onSortColumnChanged" ) )
+            func_onSortColumnChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onSortColumnChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSortColumnChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onSortColumnChanged( boost::ref(e) );
+    }
+
+    virtual void onSortDirectionChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSortDirectionChanged = this->get_override( "onSortDirectionChanged" ) )
+            func_onSortDirectionChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onSortDirectionChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSortDirectionChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onSortDirectionChanged( boost::ref(e) );
+    }
+
+    virtual void onVertScrollbarModeChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onVertScrollbarModeChanged = this->get_override( "onVertScrollbarModeChanged" ) )
+            func_onVertScrollbarModeChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiColumnList::onVertScrollbarModeChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onVertScrollbarModeChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiColumnList::onVertScrollbarModeChanged( boost::ref(e) );
+    }
+
+    bool resetList_impl(  ){
+        return CEGUI::MultiColumnList::resetList_impl(  );
+    }
+
+    void resortList(  ){
+        CEGUI::MultiColumnList::resortList(  );
+    }
+
+    bool selectRange( ::CEGUI::MCLGridRef const & start, ::CEGUI::MCLGridRef const & end ){
+        return CEGUI::MultiColumnList::selectRange( boost::ref(start), boost::ref(end) );
+    }
+
+    bool setItemSelectState_impl( ::CEGUI::MCLGridRef const grid_ref, bool state ){
+        return CEGUI::MultiColumnList::setItemSelectState_impl( grid_ref, state );
+    }
+
+    void setSelectForItemsInColumn( ::CEGUI::uint col_idx, bool state ){
+        CEGUI::MultiColumnList::setSelectForItemsInColumn( col_idx, state );
+    }
+
+    void setSelectForItemsInRow( ::CEGUI::uint row_idx, bool state ){
+        CEGUI::MultiColumnList::setSelectForItemsInRow( row_idx, state );
+    }
+
+    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
+        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
+            return func_testClassName_impl( boost::ref(class_name) );
+        else{
+            return this->CEGUI::MultiColumnList::testClassName_impl( boost::ref(class_name) );
+        }
+    }
+    
+    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
+        return CEGUI::MultiColumnList::testClassName_impl( boost::ref(class_name) );
+    }
+
+    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+        if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
+            return func_validateWindowRenderer( boost::ref(name) );
+        else{
+            return this->CEGUI::MultiColumnList::validateWindowRenderer( boost::ref(name) );
+        }
+    }
+    
+    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
+        return CEGUI::MultiColumnList::validateWindowRenderer( boost::ref(name) );
+    }
+
+    virtual int writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writePropertiesXML = this->get_override( "writePropertiesXML" ) )
+            return func_writePropertiesXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::MultiColumnList::writePropertiesXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::MultiColumnList::writePropertiesXML( boost::ref(xml_stream) );
+    }
+
+    virtual void addChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
+            func_addChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_addChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void addStandardProperties(  ){
+        CEGUI::Window::addStandardProperties(  );
+    }
+
+    void addWindowToDrawList( ::CEGUI::Window & wnd, bool at_back=false ){
+        CEGUI::Window::addWindowToDrawList( boost::ref(wnd), at_back );
+    }
+
+    void allocateRenderingWindow(  ){
+        CEGUI::Window::allocateRenderingWindow(  );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -37,6 +349,22 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     void default_beginInitialisation(  ) {
         CEGUI::Window::beginInitialisation( );
+    }
+
+    void bufferGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::bufferGeometry( boost::ref(ctx) );
+    }
+
+    virtual void cleanupChildren(  ){
+        if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
+            func_cleanupChildren(  );
+        else{
+            this->CEGUI::Window::cleanupChildren(  );
+        }
+    }
+    
+    virtual void default_cleanupChildren(  ){
+        CEGUI::Window::cleanupChildren( );
     }
 
     virtual void cloneChildWidgetsTo( ::CEGUI::Window & target ) const  {
@@ -63,6 +391,14 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         CEGUI::Window::clonePropertiesTo( boost::ref(target) );
     }
 
+    bool constrainToMaxSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMaxSize( boost::ref(base_sz), boost::ref(sz) );
+    }
+
+    bool constrainToMinSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
+        return CEGUI::Window::constrainToMinSize( boost::ref(base_sz), boost::ref(sz) );
+    }
+
     virtual void destroy(  ) {
         if( bp::override func_destroy = this->get_override( "destroy" ) )
             func_destroy(  );
@@ -73,6 +409,18 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     void default_destroy(  ) {
         CEGUI::Window::destroy( );
+    }
+
+    virtual void drawSelf( ::CEGUI::RenderingContext const & ctx ){
+        if( bp::override func_drawSelf = this->get_override( "drawSelf" ) )
+            func_drawSelf( boost::ref(ctx) );
+        else{
+            this->CEGUI::Window::drawSelf( boost::ref(ctx) );
+        }
+    }
+    
+    virtual void default_drawSelf( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::drawSelf( boost::ref(ctx) );
     }
 
     virtual void endInitialisation(  ) {
@@ -99,6 +447,90 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
     }
 
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    void generateAutoRepeatEvent( ::CEGUI::MouseButton button ){
+        CEGUI::Window::generateAutoRepeatEvent( button );
+    }
+
+    virtual ::CEGUI::Window * getChild_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChild_impl = this->get_override( "getChild_impl" ) )
+            return func_getChild_impl( boost::ref(name_path) );
+        else{
+            return this->CEGUI::Window::getChild_impl( boost::ref(name_path) );
+        }
+    }
+    
+    virtual ::CEGUI::Window * default_getChild_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::Window::getChild_impl( boost::ref(name_path) );
+    }
+
+    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
+            return func_getClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
+        if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
+            return func_getHitTestRect_impl(  );
+        else{
+            return this->CEGUI::Window::getHitTestRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getHitTestRect_impl(  ) const {
+        return CEGUI::Window::getHitTestRect_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getInnerRectClipper_impl(  ) const {
+        if( bp::override func_getInnerRectClipper_impl = this->get_override( "getInnerRectClipper_impl" ) )
+            return func_getInnerRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getInnerRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
+        return CEGUI::Window::getInnerRectClipper_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
+            return func_getNonClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
+        if( bp::override func_getOuterRectClipper_impl = this->get_override( "getOuterRectClipper_impl" ) )
+            return func_getOuterRectClipper_impl(  );
+        else{
+            return this->CEGUI::Window::getOuterRectClipper_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getOuterRectClipper_impl(  ) const {
+        return CEGUI::Window::getOuterRectClipper_impl( );
+    }
+
+    ::CEGUI::Rectf getParentElementClipIntersection( ::CEGUI::Rectf const & unclipped_area ) const {
+        return CEGUI::Window::getParentElementClipIntersection( boost::ref(unclipped_area) );
+    }
+
     virtual void getRenderingContext_impl( ::CEGUI::RenderingContext & ctx ) const  {
         if( bp::override func_getRenderingContext_impl = this->get_override( "getRenderingContext_impl" ) )
             func_getRenderingContext_impl( boost::ref(ctx) );
@@ -109,6 +541,10 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     void default_getRenderingContext_impl( ::CEGUI::RenderingContext & ctx ) const  {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
@@ -123,6 +559,30 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
+    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl(  ) const {
+        if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
+            return func_getUnclippedOuterRect_impl(  );
+        else{
+            return this->CEGUI::Window::getUnclippedOuterRect_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl(  ) const {
+        return CEGUI::Window::getUnclippedOuterRect_impl( );
+    }
+
+    ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
+    }
+
+    void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::initialiseClippers( boost::ref(ctx) );
+    }
+
+    void invalidate_impl( bool const recursive ){
+        CEGUI::Window::invalidate_impl( recursive );
+    }
+
     virtual bool isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
@@ -133,6 +593,598 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     bool default_isHit( ::CEGUI::Vector2f const & position, bool const allow_disabled=false ) const  {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
+    }
+
+    bool isInnerRectSizeChanged(  ) const {
+        return CEGUI::Window::isInnerRectSizeChanged(  );
+    }
+
+    bool isPropertyAtDefault( ::CEGUI::Property const * property ) const {
+        return CEGUI::Window::isPropertyAtDefault( boost::python::ptr(property) );
+    }
+
+    bool isTopOfZOrder(  ) const {
+        return CEGUI::Window::isTopOfZOrder(  );
+    }
+
+    virtual bool moveToFront_impl( bool wasClicked ){
+        if( bp::override func_moveToFront_impl = this->get_override( "moveToFront_impl" ) )
+            return func_moveToFront_impl( wasClicked );
+        else{
+            return this->CEGUI::Window::moveToFront_impl( wasClicked );
+        }
+    }
+    
+    virtual bool default_moveToFront_impl( bool wasClicked ){
+        return CEGUI::Window::moveToFront_impl( wasClicked );
+    }
+
+    void notifyClippingChanged(  ){
+        CEGUI::Window::notifyClippingChanged(  );
+    }
+
+    virtual void onActivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onActivated = this->get_override( "onActivated" ) )
+            func_onActivated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onActivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onActivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::Window::onActivated( boost::ref(e) );
+    }
+
+    virtual void onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlphaChanged = this->get_override( "onAlphaChanged" ) )
+            func_onAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onAlwaysOnTopChanged = this->get_override( "onAlwaysOnTopChanged" ) )
+            func_onAlwaysOnTopChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onAlwaysOnTopChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onAlwaysOnTopChanged( boost::ref(e) );
+    }
+
+    virtual void onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureGained = this->get_override( "onCaptureGained" ) )
+            func_onCaptureGained( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCaptureGained( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureGained( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onCaptureGained( boost::ref(e) );
+    }
+
+    virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onCaptureLost = this->get_override( "onCaptureLost" ) )
+            func_onCaptureLost( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCaptureLost( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCaptureLost( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onCaptureLost( boost::ref(e) );
+    }
+
+    virtual void onCharacter( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onCharacter = this->get_override( "onCharacter" ) )
+            func_onCharacter( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onCharacter( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onCharacter( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onCharacter( boost::ref(e) );
+    }
+
+    virtual void onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildAdded = this->get_override( "onChildAdded" ) )
+            func_onChildAdded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildAdded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildAdded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildAdded( boost::ref(e) );
+    }
+
+    virtual void onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onChildRemoved = this->get_override( "onChildRemoved" ) )
+            func_onChildRemoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onChildRemoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onChildRemoved( boost::ref(e) );
+    }
+
+    virtual void onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onClippingChanged = this->get_override( "onClippingChanged" ) )
+            func_onClippingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onClippingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onClippingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onClippingChanged( boost::ref(e) );
+    }
+
+    virtual void onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        if( bp::override func_onDeactivated = this->get_override( "onDeactivated" ) )
+            func_onDeactivated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDeactivated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDeactivated( ::CEGUI::ActivationEventArgs & e ){
+        CEGUI::Window::onDeactivated( boost::ref(e) );
+    }
+
+    virtual void onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDestructionStarted = this->get_override( "onDestructionStarted" ) )
+            func_onDestructionStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDestructionStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDestructionStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDestructionStarted( boost::ref(e) );
+    }
+
+    virtual void onDisabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onDisabled = this->get_override( "onDisabled" ) )
+            func_onDisabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDisabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDisabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onDisabled( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemDropped = this->get_override( "onDragDropItemDropped" ) )
+            func_onDragDropItemDropped( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemDropped( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemDropped( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemEnters = this->get_override( "onDragDropItemEnters" ) )
+            func_onDragDropItemEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemEnters( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemEnters( boost::ref(e) );
+    }
+
+    virtual void onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        if( bp::override func_onDragDropItemLeaves = this->get_override( "onDragDropItemLeaves" ) )
+            func_onDragDropItemLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDragDropItemLeaves( ::CEGUI::DragDropEventArgs & e ){
+        CEGUI::Window::onDragDropItemLeaves( boost::ref(e) );
+    }
+
+    virtual void onEnabled( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onEnabled = this->get_override( "onEnabled" ) )
+            func_onEnabled( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onEnabled( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onEnabled( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onEnabled( boost::ref(e) );
+    }
+
+    virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHidden = this->get_override( "onHidden" ) )
+            func_onHidden( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHidden( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHidden( boost::ref(e) );
+    }
+
+    virtual void onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
+            func_onHorizontalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onIDChanged = this->get_override( "onIDChanged" ) )
+            func_onIDChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onIDChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onIDChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onIDChanged( boost::ref(e) );
+    }
+
+    virtual void onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onInheritsAlphaChanged = this->get_override( "onInheritsAlphaChanged" ) )
+            func_onInheritsAlphaChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyDown = this->get_override( "onKeyDown" ) )
+            func_onKeyDown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyDown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyDown( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyDown( boost::ref(e) );
+    }
+
+    virtual void onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        if( bp::override func_onKeyUp = this->get_override( "onKeyUp" ) )
+            func_onKeyUp( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onKeyUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onKeyUp( ::CEGUI::KeyEventArgs & e ){
+        CEGUI::Window::onKeyUp( boost::ref(e) );
+    }
+
+    virtual void onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMarginChanged = this->get_override( "onMarginChanged" ) )
+            func_onMarginChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMarginChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMarginChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMarginChanged( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonUp = this->get_override( "onMouseButtonUp" ) )
+            func_onMouseButtonUp( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseButtonUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseButtonUp( boost::ref(e) );
+    }
+
+    virtual void onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseClicked = this->get_override( "onMouseClicked" ) )
+            func_onMouseClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseDoubleClicked = this->get_override( "onMouseDoubleClicked" ) )
+            func_onMouseDoubleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseDoubleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseDoubleClicked( boost::ref(e) );
+    }
+
+    virtual void onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEnters = this->get_override( "onMouseEnters" ) )
+            func_onMouseEnters( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEnters( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEnters( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEnters( boost::ref(e) );
+    }
+
+    virtual void onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseEntersArea = this->get_override( "onMouseEntersArea" ) )
+            func_onMouseEntersArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseEntersArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseEntersArea( boost::ref(e) );
+    }
+
+    virtual void onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeaves = this->get_override( "onMouseLeaves" ) )
+            func_onMouseLeaves( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeaves( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeaves( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeaves( boost::ref(e) );
+    }
+
+    virtual void onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseLeavesArea = this->get_override( "onMouseLeavesArea" ) )
+            func_onMouseLeavesArea( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseLeavesArea( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseLeavesArea( boost::ref(e) );
+    }
+
+    virtual void onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseMove = this->get_override( "onMouseMove" ) )
+            func_onMouseMove( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseMove( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseMove( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseMove( boost::ref(e) );
+    }
+
+    virtual void onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseTripleClicked = this->get_override( "onMouseTripleClicked" ) )
+            func_onMouseTripleClicked( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseTripleClicked( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::Window::onMouseTripleClicked( boost::ref(e) );
+    }
+
+    virtual void onMoved( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onMoved = this->get_override( "onMoved" ) )
+            func_onMoved( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onMoved( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMoved( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onMoved( boost::ref(e) );
+    }
+
+    virtual void onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
+            func_onNonClientChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onNonClientChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onNonClientChanged( boost::ref(e) );
+    }
+
+    virtual void onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentDestroyChanged = this->get_override( "onParentDestroyChanged" ) )
+            func_onParentDestroyChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
+    }
+
+    virtual void onParentSized( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
+            func_onParentSized( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onParentSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentSized( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onParentSized( boost::ref(e) );
+    }
+
+    virtual void onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingEnded = this->get_override( "onRenderingEnded" ) )
+            func_onRenderingEnded( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingEnded( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingEnded( boost::ref(e) );
+    }
+
+    virtual void onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRenderingStarted = this->get_override( "onRenderingStarted" ) )
+            func_onRenderingStarted( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRenderingStarted( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRenderingStarted( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRenderingStarted( boost::ref(e) );
+    }
+
+    virtual void onRotated( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onRotated = this->get_override( "onRotated" ) )
+            func_onRotated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onRotated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onRotated( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onRotated( boost::ref(e) );
+    }
+
+    virtual void onShown( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onShown = this->get_override( "onShown" ) )
+            func_onShown( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onShown( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onShown( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onShown( boost::ref(e) );
+    }
+
+    virtual void onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextChanged = this->get_override( "onTextChanged" ) )
+            func_onTextChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onTextChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onTextChanged( boost::ref(e) );
+    }
+
+    virtual void onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTextParsingChanged = this->get_override( "onTextParsingChanged" ) )
+            func_onTextParsingChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onTextParsingChanged( boost::ref(e) );
+    }
+
+    virtual void onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
+            func_onVerticalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererAttached = this->get_override( "onWindowRendererAttached" ) )
+            func_onWindowRendererAttached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererAttached( boost::ref(e) );
+    }
+
+    virtual void onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onWindowRendererDetached = this->get_override( "onWindowRendererDetached" ) )
+            func_onWindowRendererDetached( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onWindowRendererDetached( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onWindowRendererDetached( boost::ref(e) );
+    }
+
+    virtual void onZChange_impl(  ){
+        if( bp::override func_onZChange_impl = this->get_override( "onZChange_impl" ) )
+            func_onZChange_impl(  );
+        else{
+            this->CEGUI::Window::onZChange_impl(  );
+        }
+    }
+    
+    virtual void default_onZChange_impl(  ){
+        CEGUI::Window::onZChange_impl( );
+    }
+
+    virtual void onZChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onZChanged = this->get_override( "onZChanged" ) )
+            func_onZChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onZChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onZChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onZChanged( boost::ref(e) );
     }
 
     virtual void performChildWindowLayout(  ) {
@@ -183,6 +1235,46 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         return CEGUI::Window::performPaste( boost::ref(clipboard) );
     }
 
+    virtual void populateGeometryBuffer(  ){
+        if( bp::override func_populateGeometryBuffer = this->get_override( "populateGeometryBuffer" ) )
+            func_populateGeometryBuffer(  );
+        else{
+            this->CEGUI::Window::populateGeometryBuffer(  );
+        }
+    }
+    
+    virtual void default_populateGeometryBuffer(  ){
+        CEGUI::Window::populateGeometryBuffer( );
+    }
+
+    void queueGeometry( ::CEGUI::RenderingContext const & ctx ){
+        CEGUI::Window::queueGeometry( boost::ref(ctx) );
+    }
+
+    void releaseRenderingWindow(  ){
+        CEGUI::Window::releaseRenderingWindow(  );
+    }
+
+    virtual void removeChild_impl( ::CEGUI::Window * wnd ){
+        if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
+            func_removeChild_impl( boost::python::ptr(wnd) );
+        else{
+            this->CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+        }
+    }
+    
+    virtual void default_removeChild_impl( ::CEGUI::Window * wnd ){
+        CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+    }
+
+    void removeWindowFromDrawList( ::CEGUI::Window const & wnd ){
+        CEGUI::Window::removeWindowFromDrawList( boost::ref(wnd) );
+    }
+
+    void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+        CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+    }
+
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
         if( bp::override func_setLookNFeel = this->get_override( "setLookNFeel" ) )
             func_setLookNFeel( boost::ref(look) );
@@ -205,6 +1297,10 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     void default_setMargin( ::CEGUI::UBox const & margin ) {
         CEGUI::Window::setMargin( boost::ref(margin) );
+    }
+
+    void setParent( ::CEGUI::Window * parent ){
+        CEGUI::Window::setParent( boost::python::ptr(parent) );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -231,6 +1327,10 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
     }
 
+    void transferChildSurfaces(  ){
+        CEGUI::Window::transferChildSurfaces(  );
+    }
+
     virtual void update( float elapsed ) {
         if( bp::override func_update = this->get_override( "update" ) )
             func_update( elapsed );
@@ -241,6 +1341,46 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
     
     void default_update( float elapsed ) {
         CEGUI::Window::update( elapsed );
+    }
+
+    void updateGeometryRenderSettings(  ){
+        CEGUI::Window::updateGeometryRenderSettings(  );
+    }
+
+    virtual void updateSelf( float elapsed ){
+        if( bp::override func_updateSelf = this->get_override( "updateSelf" ) )
+            func_updateSelf( elapsed );
+        else{
+            this->CEGUI::Window::updateSelf( elapsed );
+        }
+    }
+    
+    virtual void default_updateSelf( float elapsed ){
+        CEGUI::Window::updateSelf( elapsed );
+    }
+
+    virtual bool writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeAutoChildWindowXML = this->get_override( "writeAutoChildWindowXML" ) )
+            return func_writeAutoChildWindowXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual bool default_writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writeAutoChildWindowXML( boost::ref(xml_stream) );
+    }
+
+    virtual int writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeChildWindowsXML = this->get_override( "writeChildWindowsXML" ) )
+            return func_writeChildWindowsXML( boost::ref(xml_stream) );
+        else{
+            return this->CEGUI::Window::writeChildWindowsXML( boost::ref(xml_stream) );
+        }
+    }
+    
+    virtual int default_writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
+        return CEGUI::Window::writeChildWindowsXML( boost::ref(xml_stream) );
     }
 
     virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
@@ -407,6 +1547,39 @@ void register_MultiColumnList_class(){
                @return\n\
                   Nothing.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::clearAllSelections_impl
+        
+            typedef bool ( MultiColumnList_wrapper::*clearAllSelections_impl_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "clearAllSelections_impl"
+                , clearAllSelections_impl_function_type( &MultiColumnList_wrapper::clearAllSelections_impl )
+                , "*!\n\
+               \n\
+                  Clear the selected state for all items (implementation)\n\
+            \n\
+               @return\n\
+                  true if some selections were cleared, false nothing was changed.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::configureScrollbars
+        
+            typedef void ( MultiColumnList_wrapper::*configureScrollbars_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "configureScrollbars"
+                , configureScrollbars_function_type( &MultiColumnList_wrapper::configureScrollbars )
+                , "*************************************************************************\n\
+               Implementation Functions\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               display required integrated scroll bars according to current state of the list box and update\
+               their values.\n\
+            *\n" );
         
         }
         { //::CEGUI::MultiColumnList::findColumnItemWithText
@@ -706,6 +1879,25 @@ void register_MultiColumnList_class(){
                   Pointer to the ListboxItem at grid reference  grid_ref.\n\
             \n\
                @exception InvalidRequestException  thrown if  grid_ref is invalid for this list box.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::getItemAtPoint
+        
+            typedef ::CEGUI::ListboxItem * ( MultiColumnList_wrapper::*getItemAtPoint_function_type )( ::CEGUI::Vector2f const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getItemAtPoint"
+                , getItemAtPoint_function_type( &MultiColumnList_wrapper::getItemAtPoint )
+                , ( bp::arg("pt") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+               \n\
+                  Return the ListboxItem under the given window local pixel co-ordinate.\n\
+            \n\
+               @return\n\
+                  ListboxItem that is under window pixel co-ordinate  pt, or NULL if no\n\
+                  item is under that position.\n\
                *\n" );
         
         }
@@ -1095,6 +2287,82 @@ void register_MultiColumnList_class(){
             *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::handleColumnSizeChange
+        
+            typedef bool ( MultiColumnList_wrapper::*handleColumnSizeChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleColumnSizeChange"
+                , handleColumnSizeChange_function_type( &MultiColumnList_wrapper::handleColumnSizeChange )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleHeaderScroll
+        
+            typedef bool ( MultiColumnList_wrapper::*handleHeaderScroll_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleHeaderScroll"
+                , handleHeaderScroll_function_type( &MultiColumnList_wrapper::handleHeaderScroll )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Handlers for subscribed events\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleHeaderSegDblClick
+        
+            typedef bool ( MultiColumnList_wrapper::*handleHeaderSegDblClick_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleHeaderSegDblClick"
+                , handleHeaderSegDblClick_function_type( &MultiColumnList_wrapper::handleHeaderSegDblClick )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleHeaderSegMove
+        
+            typedef bool ( MultiColumnList_wrapper::*handleHeaderSegMove_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleHeaderSegMove"
+                , handleHeaderSegMove_function_type( &MultiColumnList_wrapper::handleHeaderSegMove )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Handlers for subscribed events\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleHorzScrollbar
+        
+            typedef bool ( MultiColumnList_wrapper::*handleHorzScrollbar_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleHorzScrollbar"
+                , handleHorzScrollbar_function_type( &MultiColumnList_wrapper::handleHorzScrollbar )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleSortColumnChange
+        
+            typedef bool ( MultiColumnList_wrapper::*handleSortColumnChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleSortColumnChange"
+                , handleSortColumnChange_function_type( &MultiColumnList_wrapper::handleSortColumnChange )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleSortDirectionChange
+        
+            typedef bool ( MultiColumnList_wrapper::*handleSortDirectionChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleSortDirectionChange"
+                , handleSortDirectionChange_function_type( &MultiColumnList_wrapper::handleSortDirectionChange )
+                , ( bp::arg("e") ) );
+        
+        }
         { //::CEGUI::MultiColumnList::handleUpdatedItemData
         
             typedef void ( ::CEGUI::MultiColumnList::*handleUpdatedItemData_function_type )(  ) ;
@@ -1111,6 +2379,16 @@ void register_MultiColumnList_class(){
                @return\n\
                   Nothing.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::handleVertScrollbar
+        
+            typedef bool ( MultiColumnList_wrapper::*handleVertScrollbar_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "handleVertScrollbar"
+                , handleVertScrollbar_function_type( &MultiColumnList_wrapper::handleVertScrollbar )
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::MultiColumnList::initialiseComponents
@@ -1457,6 +2735,227 @@ void register_MultiColumnList_class(){
                *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::moveColumn_impl
+        
+            typedef void ( MultiColumnList_wrapper::*moveColumn_impl_function_type )( ::CEGUI::uint,::CEGUI::uint ) ;
+            
+            MultiColumnList_exposer.def( 
+                "moveColumn_impl"
+                , moveColumn_impl_function_type( &MultiColumnList_wrapper::moveColumn_impl )
+                , ( bp::arg("col_idx"), bp::arg("position") )
+                , "*!\n\
+               \n\
+                  Move the column at index  col_idx so it is at index  position.  Implementation version which\
+                  does not move the\n\
+                  header segment (since that may have already happened).\n\
+            \n\
+               @exception InvalidRequestException  thrown if  col_idx is invalid.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onFontChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onFontChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onFontChanged"
+                , onFontChanged_function_type( &MultiColumnList_wrapper::default_onFontChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Overridden Event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onHorzScrollbarModeChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onHorzScrollbarModeChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onHorzScrollbarModeChanged"
+                , onHorzScrollbarModeChanged_function_type( &MultiColumnList_wrapper::default_onHorzScrollbarModeChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the horizontal scroll bar 'force' mode is changed.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onListColumnMoved
+        
+            typedef void ( MultiColumnList_wrapper::*onListColumnMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onListColumnMoved"
+                , onListColumnMoved_function_type( &MultiColumnList_wrapper::default_onListColumnMoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the column order is changed.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onListColumnSized
+        
+            typedef void ( MultiColumnList_wrapper::*onListColumnSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onListColumnSized"
+                , onListColumnSized_function_type( &MultiColumnList_wrapper::default_onListColumnSized )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when a column is sized.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onListContentsChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onListContentsChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onListContentsChanged"
+                , onListContentsChanged_function_type( &MultiColumnList_wrapper::default_onListContentsChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the list contents is changed.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onMouseButtonDown
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseButtonDown_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseButtonDown"
+                , onMouseButtonDown_function_type( &MultiColumnList_wrapper::default_onMouseButtonDown )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::onMouseWheel
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseWheel_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseWheel"
+                , onMouseWheel_function_type( &MultiColumnList_wrapper::default_onMouseWheel )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::MultiColumnList::onNominatedSelectColumnChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onNominatedSelectColumnChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onNominatedSelectColumnChanged"
+                , onNominatedSelectColumnChanged_function_type( &MultiColumnList_wrapper::default_onNominatedSelectColumnChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the nominated selection column changes\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onNominatedSelectRowChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onNominatedSelectRowChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onNominatedSelectRowChanged"
+                , onNominatedSelectRowChanged_function_type( &MultiColumnList_wrapper::default_onNominatedSelectRowChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the nominated selection row changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onSelectionChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onSelectionChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onSelectionChanged"
+                , onSelectionChanged_function_type( &MultiColumnList_wrapper::default_onSelectionChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the current selection changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onSelectionModeChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onSelectionModeChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onSelectionModeChanged"
+                , onSelectionModeChanged_function_type( &MultiColumnList_wrapper::default_onSelectionModeChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               New event handlers for multi column list\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               Handler called when the selection mode of the list box changes\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onSized
+        
+            typedef void ( MultiColumnList_wrapper::*onSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onSized"
+                , onSized_function_type( &MultiColumnList_wrapper::default_onSized )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Overridden Event handlers\n\
+            *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onSortColumnChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onSortColumnChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onSortColumnChanged"
+                , onSortColumnChanged_function_type( &MultiColumnList_wrapper::default_onSortColumnChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the sort column changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onSortDirectionChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onSortDirectionChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onSortDirectionChanged"
+                , onSortDirectionChanged_function_type( &MultiColumnList_wrapper::default_onSortDirectionChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the sort direction changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::onVertScrollbarModeChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onVertScrollbarModeChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onVertScrollbarModeChanged"
+                , onVertScrollbarModeChanged_function_type( &MultiColumnList_wrapper::default_onVertScrollbarModeChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+               Handler called when the vertical scroll bar 'force' mode is changed.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::MultiColumnList::removeColumn
         
             typedef void ( ::CEGUI::MultiColumnList::*removeColumn_function_type )( ::CEGUI::uint ) ;
@@ -1540,6 +3039,54 @@ void register_MultiColumnList_class(){
             \n\
                   Note that this will cause 'AutoDelete' items to be deleted.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::resetList_impl
+        
+            typedef bool ( MultiColumnList_wrapper::*resetList_impl_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "resetList_impl"
+                , resetList_impl_function_type( &MultiColumnList_wrapper::resetList_impl )
+                , "*!\n\
+               \n\
+                  Remove all items from the list.\n\
+            \n\
+               \note\n\
+                  Note that this will cause 'AutoDelete' items to be deleted.\n\
+            \n\
+               @return\n\
+                  - true if the list contents were changed.\n\
+                  - false if the list contents were not changed (list already empty).\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::resortList
+        
+            typedef void ( MultiColumnList_wrapper::*resortList_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "resortList"
+                , resortList_function_type( &MultiColumnList_wrapper::resortList )
+                , "*!\n\
+            \n\
+                Causes the internal list to be (re)sorted.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::selectRange
+        
+            typedef bool ( MultiColumnList_wrapper::*selectRange_function_type )( ::CEGUI::MCLGridRef const &,::CEGUI::MCLGridRef const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "selectRange"
+                , selectRange_function_type( &MultiColumnList_wrapper::selectRange )
+                , ( bp::arg("start"), bp::arg("end") )
+                , "*!\n\
+            \n\
+               select all strings between positions  start and  end.  (inclusive).  Returns true if something\
+               was modified.\n\
+            *\n" );
         
         }
         { //::CEGUI::MultiColumnList::setColumnHeaderWidth
@@ -1682,6 +3229,22 @@ void register_MultiColumnList_class(){
                *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::setItemSelectState_impl
+        
+            typedef bool ( MultiColumnList_wrapper::*setItemSelectState_impl_function_type )( ::CEGUI::MCLGridRef const,bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setItemSelectState_impl"
+                , setItemSelectState_impl_function_type( &MultiColumnList_wrapper::setItemSelectState_impl )
+                , ( bp::arg("grid_ref"), bp::arg("state") )
+                , "*!\n\
+            \n\
+               Set select state for the given item.  This appropriately selects other\n\
+               items depending upon the select mode.  Returns true if something is\n\
+               changed, else false.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::MultiColumnList::setNominatedSelectionColumn
         
             typedef void ( ::CEGUI::MultiColumnList::*setNominatedSelectionColumn_function_type )( ::CEGUI::uint ) ;
@@ -1771,6 +3334,34 @@ void register_MultiColumnList_class(){
             \n\
                @exception InvalidRequestException  thrown if  row_idx is out of range\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::setSelectForItemsInColumn
+        
+            typedef void ( MultiColumnList_wrapper::*setSelectForItemsInColumn_function_type )( ::CEGUI::uint,bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setSelectForItemsInColumn"
+                , setSelectForItemsInColumn_function_type( &MultiColumnList_wrapper::setSelectForItemsInColumn )
+                , ( bp::arg("col_idx"), bp::arg("state") )
+                , "*!\n\
+            \n\
+               Set select state for all items in the given column\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::setSelectForItemsInRow
+        
+            typedef void ( MultiColumnList_wrapper::*setSelectForItemsInRow_function_type )( ::CEGUI::uint,bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setSelectForItemsInRow"
+                , setSelectForItemsInRow_function_type( &MultiColumnList_wrapper::setSelectForItemsInRow )
+                , ( bp::arg("row_idx"), bp::arg("state") )
+                , "*!\n\
+            \n\
+               Set select state for all items in the given row\n\
+            *\n" );
         
         }
         { //::CEGUI::MultiColumnList::setSelectionMode
@@ -1964,6 +3555,49 @@ void register_MultiColumnList_class(){
                *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::testClassName_impl
+        
+            typedef bool ( MultiColumnList_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "testClassName_impl"
+                , testClassName_impl_function_type( &MultiColumnList_wrapper::default_testClassName_impl )
+                , ( bp::arg("class_name") )
+                , "*!\n\
+               \n\
+                  Return whether this window was inherited from the given class name at some point in the\
+                  inheritance hierarchy.\n\
+            \n\
+               @param class_name\n\
+                  The class name that is to be checked.\n\
+            \n\
+               @return\n\
+                  true if this window was inherited from  class_name. false if not.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::validateWindowRenderer
+        
+            typedef bool ( MultiColumnList_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "validateWindowRenderer"
+                , validateWindowRenderer_function_type( &MultiColumnList_wrapper::default_validateWindowRenderer )
+                , ( bp::arg("name") )
+                , "overrides function in base class.\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::writePropertiesXML
+        
+            typedef int ( MultiColumnList_wrapper::*writePropertiesXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "writePropertiesXML"
+                , writePropertiesXML_function_type( &MultiColumnList_wrapper::default_writePropertiesXML )
+                , ( bp::arg("xml_stream") )
+                , "overrides function in base class.\n" );
+        
+        }
         MultiColumnList_exposer.add_static_property( "EventHorzScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::MultiColumnList::EventHorzScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -2006,6 +3640,72 @@ void register_MultiColumnList_class(){
         MultiColumnList_exposer.add_static_property( "VertScrollbarName"
                         , bp::make_getter( &CEGUI::MultiColumnList::VertScrollbarName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::Window::addChild_impl
+        
+            typedef void ( MultiColumnList_wrapper::*addChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "addChild_impl"
+                , addChild_impl_function_type( &MultiColumnList_wrapper::default_addChild_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Add given window to child list at an appropriate position\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addStandardProperties
+        
+            typedef void ( MultiColumnList_wrapper::*addStandardProperties_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "addStandardProperties"
+                , addStandardProperties_function_type( &MultiColumnList_wrapper::addStandardProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.Window properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addWindowToDrawList
+        
+            typedef void ( MultiColumnList_wrapper::*addWindowToDrawList_function_type )( ::CEGUI::Window &,bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "addWindowToDrawList"
+                , addWindowToDrawList_function_type( &MultiColumnList_wrapper::addWindowToDrawList )
+                , ( bp::arg("wnd"), bp::arg("at_back")=(bool)(false) )
+                , "*!\n\
+                \n\
+                    Add the given window to the drawing list at an appropriate position for\n\
+                    it's settings and the required direction.  Basically, when  at_back\n\
+                    is false, the window will appear in front of all other windows with the\n\
+                    same 'always on top' setting.  When  at_back is true, the window will\n\
+                    appear behind all other windows wih the same 'always on top' setting.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be added to the drawing list.\n\
+            \n\
+                @param at_back\n\
+                    Indicates whether the window should be placed at the back of other\n\
+                    windows in the same group. If this is false, the window is placed in\n\
+                    front of other windows in the group.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::allocateRenderingWindow
+        
+            typedef void ( MultiColumnList_wrapper::*allocateRenderingWindow_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "allocateRenderingWindow"
+                , allocateRenderingWindow_function_type( &MultiColumnList_wrapper::allocateRenderingWindow )
+                , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;
@@ -2015,6 +3715,39 @@ void register_MultiColumnList_class(){
                 "beginInitialisation"
                 , beginInitialisation_function_type(&::CEGUI::Window::beginInitialisation)
                 , default_beginInitialisation_function_type(&MultiColumnList_wrapper::default_beginInitialisation) );
+        
+        }
+        { //::CEGUI::Window::bufferGeometry
+        
+            typedef void ( MultiColumnList_wrapper::*bufferGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "bufferGeometry"
+                , bufferGeometry_function_type( &MultiColumnList_wrapper::bufferGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with generating and buffering\n\
+                    window geometry.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf; it is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::cleanupChildren
+        
+            typedef void ( MultiColumnList_wrapper::*cleanupChildren_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "cleanupChildren"
+                , cleanupChildren_function_type( &MultiColumnList_wrapper::default_cleanupChildren )
+                , "*!\n\
+            \n\
+                Cleanup child windows\n\
+            *\n" );
         
         }
         { //::CEGUI::Window::cloneChildWidgetsTo
@@ -2041,6 +3774,29 @@ void register_MultiColumnList_class(){
                 , ( bp::arg("target") ) );
         
         }
+        { //::CEGUI::Window::constrainToMaxSize
+        
+            typedef bool ( MultiColumnList_wrapper::*constrainToMaxSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "constrainToMaxSize"
+                , constrainToMaxSize_function_type( &MultiColumnList_wrapper::constrainToMaxSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n\
+            constrain given USize to window's max size, return if size changed.\n" );
+        
+        }
+        { //::CEGUI::Window::constrainToMinSize
+        
+            typedef bool ( MultiColumnList_wrapper::*constrainToMinSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "constrainToMinSize"
+                , constrainToMinSize_function_type( &MultiColumnList_wrapper::constrainToMinSize )
+                , ( bp::arg("base_sz"), bp::arg("sz") )
+                , "constrain given USize to window's min size, return if size changed.\n" );
+        
+        }
         { //::CEGUI::Window::destroy
         
             typedef void ( ::CEGUI::Window::*destroy_function_type )(  ) ;
@@ -2050,6 +3806,27 @@ void register_MultiColumnList_class(){
                 "destroy"
                 , destroy_function_type(&::CEGUI::Window::destroy)
                 , default_destroy_function_type(&MultiColumnList_wrapper::default_destroy) );
+        
+        }
+        { //::CEGUI::Window::drawSelf
+        
+            typedef void ( MultiColumnList_wrapper::*drawSelf_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "drawSelf"
+                , drawSelf_function_type( &MultiColumnList_wrapper::default_drawSelf )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform the actual rendering for this Window.\n\
+            \n\
+                @param ctx\n\
+                    RenderingContext holding the details of the RenderingSurface to be\n\
+                    used for the Window rendering operations.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::endInitialisation
@@ -2075,6 +3852,109 @@ void register_MultiColumnList_class(){
                 , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
         
         }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( MultiColumnList_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &MultiColumnList_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::Window::generateAutoRepeatEvent
+        
+            typedef void ( MultiColumnList_wrapper::*generateAutoRepeatEvent_function_type )( ::CEGUI::MouseButton ) ;
+            
+            MultiColumnList_exposer.def( 
+                "generateAutoRepeatEvent"
+                , generateAutoRepeatEvent_function_type( &MultiColumnList_wrapper::generateAutoRepeatEvent )
+                , ( bp::arg("button") )
+                , "*!\n\
+            \n\
+                Fires off a repeated mouse button down event for this window.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::getChild_impl
+        
+            typedef ::CEGUI::Window * ( MultiColumnList_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getChild_impl"
+                , getChild_impl_function_type( &MultiColumnList_wrapper::default_getChild_impl )
+                , ( bp::arg("name_path") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! implementation function to get window at name_path, returns 0 if none.\n" );
+        
+        }
+        { //::CEGUI::Window::getClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getClientChildWindowContentArea_impl"
+                , getClientChildWindowContentArea_impl_function_type( &MultiColumnList_wrapper::default_getClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return non-client content area\n\
+            ! Default implementation of function to return client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getHitTestRect_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getHitTestRect_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getHitTestRect_impl"
+                , getHitTestRect_impl_function_type( &MultiColumnList_wrapper::default_getHitTestRect_impl )
+                , "! Default implementation of function to return Window inner clipper area.\n\
+            ! Default implementation of function to return Window hit-test area.\n" );
+        
+        }
+        { //::CEGUI::Window::getInnerRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getInnerRectClipper_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getInnerRectClipper_impl"
+                , getInnerRectClipper_impl_function_type( &MultiColumnList_wrapper::default_getInnerRectClipper_impl )
+                , "! Default implementation of function to return Window outer clipper area.\n\
+            ! Default implementation of function to return Window inner clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getNonClientChildWindowContentArea_impl"
+                , getNonClientChildWindowContentArea_impl_function_type( &MultiColumnList_wrapper::default_getNonClientChildWindowContentArea_impl )
+                , "! Default implementation of function to return Window hit-test area.\n\
+            ! Default implementation of function to return non-client content area\n" );
+        
+        }
+        { //::CEGUI::Window::getOuterRectClipper_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getOuterRectClipper_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getOuterRectClipper_impl"
+                , getOuterRectClipper_impl_function_type( &MultiColumnList_wrapper::default_getOuterRectClipper_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window outer clipper area.\n" );
+        
+        }
+        { //::CEGUI::Window::getParentElementClipIntersection
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getParentElementClipIntersection_function_type )( ::CEGUI::Rectf const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getParentElementClipIntersection"
+                , getParentElementClipIntersection_function_type( &MultiColumnList_wrapper::getParentElementClipIntersection )
+                , ( bp::arg("unclipped_area") )
+                , "! helper function for calculating clipping rectangles.\n" );
+        
+        }
         { //::CEGUI::Window::getRenderedStringParser
         
             typedef ::CEGUI::RenderedStringParser & ( ::CEGUI::Window::*getRenderedStringParser_function_type )(  ) const;
@@ -2097,6 +3977,18 @@ void register_MultiColumnList_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( MultiColumnList_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &MultiColumnList_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
+        
+        }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
             typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
@@ -2106,6 +3998,55 @@ void register_MultiColumnList_class(){
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
                 , default_getUnclippedInnerRect_impl_function_type(&MultiColumnList_wrapper::default_getUnclippedInnerRect_impl) );
+        
+        }
+        { //::CEGUI::Window::getUnclippedOuterRect_impl
+        
+            typedef ::CEGUI::Rectf ( MultiColumnList_wrapper::*getUnclippedOuterRect_impl_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getUnclippedOuterRect_impl"
+                , getUnclippedOuterRect_impl_function_type( &MultiColumnList_wrapper::default_getUnclippedOuterRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n" );
+        
+        }
+        { //::CEGUI::Window::getWindowAttachedToCommonAncestor
+        
+            typedef ::CEGUI::Window const * ( MultiColumnList_wrapper::*getWindowAttachedToCommonAncestor_function_type )( ::CEGUI::Window const & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getWindowAttachedToCommonAncestor"
+                , getWindowAttachedToCommonAncestor_function_type( &MultiColumnList_wrapper::getWindowAttachedToCommonAncestor )
+                , ( bp::arg("wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                Helper function to return the ancestor Window of a wnd that is attached\n\
+                as a child to a window that is also an ancestor of a this.  Returns 0\n\
+                if a wnd and a this are not part of the same hierachy.\n\
+             *\n" );
+        
+        }
+        { //::CEGUI::Window::initialiseClippers
+        
+            typedef void ( MultiColumnList_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "initialiseClippers"
+                , initialiseClippers_function_type( &MultiColumnList_wrapper::initialiseClippers )
+                , ( bp::arg("ctx") )
+                , "! Helper to intialise the needed clipping for geometry and render surface.\n" );
+        
+        }
+        { //::CEGUI::Window::invalidate_impl
+        
+            typedef void ( MultiColumnList_wrapper::*invalidate_impl_function_type )( bool const ) ;
+            
+            MultiColumnList_exposer.def( 
+                "invalidate_impl"
+                , invalidate_impl_function_type( &MultiColumnList_wrapper::invalidate_impl )
+                , ( bp::arg("recursive") )
+                , "! helper function to invalidate window and optionally child windows.\n" );
         
         }
         { //::CEGUI::Window::isHit
@@ -2118,6 +4059,978 @@ void register_MultiColumnList_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&MultiColumnList_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isInnerRectSizeChanged
+        
+            typedef bool ( MultiColumnList_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "isInnerRectSizeChanged"
+                , isInnerRectSizeChanged_function_type( &MultiColumnList_wrapper::isInnerRectSizeChanged )
+                , "! helper to return whether the inner rect size has changed\n" );
+        
+        }
+        { //::CEGUI::Window::isPropertyAtDefault
+        
+            typedef bool ( MultiColumnList_wrapper::*isPropertyAtDefault_function_type )( ::CEGUI::Property const * ) const;
+            
+            MultiColumnList_exposer.def( 
+                "isPropertyAtDefault"
+                , isPropertyAtDefault_function_type( &MultiColumnList_wrapper::isPropertyAtDefault )
+                , ( bp::arg("property") )
+                , "*!\n\
+            \n\
+                Returns whether a property is at it's default value.\n\
+                This function is different from Property.isDefatult as it takes the assigned look'n'feel\n\
+                (if the is one) into account.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::isTopOfZOrder
+        
+            typedef bool ( MultiColumnList_wrapper::*isTopOfZOrder_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "isTopOfZOrder"
+                , isTopOfZOrder_function_type( &MultiColumnList_wrapper::isTopOfZOrder )
+                , "*!\n\
+                \n\
+                    Return whether the window is at the top of the Z-Order.  This will\n\
+                    correctly take into account 'Always on top' windows as needed.\n\
+            \n\
+                @return\n\
+                    - true if the Window is at the top of the z-order in relation to sibling\n\
+                      windows with the same 'always on top' setting.\n\
+                    - false if the Window is not at the top of the z-order in relation to\n\
+                      sibling windows with the same 'always on top' setting.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::moveToFront_impl
+        
+            typedef bool ( MultiColumnList_wrapper::*moveToFront_impl_function_type )( bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "moveToFront_impl"
+                , moveToFront_impl_function_type( &MultiColumnList_wrapper::default_moveToFront_impl )
+                , ( bp::arg("wasClicked") )
+                , "*!\n\
+                \n\
+                    Implements move to front behavior.\n\
+            \n\
+                @return\n\
+                    Should return true if some action was taken, or false if there was\n\
+                    nothing to be done.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::notifyClippingChanged
+        
+            typedef void ( MultiColumnList_wrapper::*notifyClippingChanged_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "notifyClippingChanged"
+                , notifyClippingChanged_function_type( &MultiColumnList_wrapper::notifyClippingChanged )
+                , "*!\n\
+            \n\
+                Recursively inform all children that the clipping has changed and screen rects\n\
+                needs to be recached.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onActivated
+        
+            typedef void ( MultiColumnList_wrapper::*onActivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onActivated"
+                , onActivated_function_type( &MultiColumnList_wrapper::default_onActivated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window has become the active window.\n\
+            \n\
+                @param e\n\
+                    ActivationEventArgs class whose 'otherWindow' field is set to the window\n\
+                    that previously was active, or NULL for none.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlphaChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onAlphaChanged"
+                , onAlphaChanged_function_type( &MultiColumnList_wrapper::default_onAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's alpha blend value is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onAlwaysOnTopChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onAlwaysOnTopChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onAlwaysOnTopChanged"
+                , onAlwaysOnTopChanged_function_type( &MultiColumnList_wrapper::default_onAlwaysOnTopChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's always-on-top setting is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCaptureGained
+        
+            typedef void ( MultiColumnList_wrapper::*onCaptureGained_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onCaptureGained"
+                , onCaptureGained_function_type( &MultiColumnList_wrapper::default_onCaptureGained )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window gains capture of mouse inputs.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCaptureLost
+        
+            typedef void ( MultiColumnList_wrapper::*onCaptureLost_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onCaptureLost"
+                , onCaptureLost_function_type( &MultiColumnList_wrapper::default_onCaptureLost )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window loses capture of mouse inputs.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onCharacter
+        
+            typedef void ( MultiColumnList_wrapper::*onCharacter_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onCharacter"
+                , onCharacter_function_type( &MultiColumnList_wrapper::default_onCharacter )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a character-key has been pressed while this window\n\
+                    has input focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'codepoint' field is set to the Unicode code\n\
+                    point (encoded as utf32) for the character typed, and whose 'sysKeys'\n\
+                    field represents the combination of SystemKey that were active when the\n\
+                    event was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildAdded
+        
+            typedef void ( MultiColumnList_wrapper::*onChildAdded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onChildAdded"
+                , onChildAdded_function_type( &MultiColumnList_wrapper::default_onChildAdded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is added to this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that has been added.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onChildRemoved
+        
+            typedef void ( MultiColumnList_wrapper::*onChildRemoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onChildRemoved"
+                , onChildRemoved_function_type( &MultiColumnList_wrapper::default_onChildRemoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a child window is removed from this window.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the window\n\
+                    that has been removed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onClippingChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onClippingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onClippingChanged"
+                , onClippingChanged_function_type( &MultiColumnList_wrapper::default_onClippingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being clipped by it's\n\
+                    parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDeactivated
+        
+            typedef void ( MultiColumnList_wrapper::*onDeactivated_function_type )( ::CEGUI::ActivationEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDeactivated"
+                , onDeactivated_function_type( &MultiColumnList_wrapper::default_onDeactivated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window has lost input focus and has been\n\
+                    deactivated.\n\
+            \n\
+                @param e\n\
+                    ActivationEventArgs object whose 'otherWindow' field is set to the\n\
+                    window that has now become active, or NULL for none.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDestructionStarted
+        
+            typedef void ( MultiColumnList_wrapper::*onDestructionStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDestructionStarted"
+                , onDestructionStarted_function_type( &MultiColumnList_wrapper::default_onDestructionStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's destruction sequence has begun.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDisabled
+        
+            typedef void ( MultiColumnList_wrapper::*onDisabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDisabled"
+                , onDisabled_function_type( &MultiColumnList_wrapper::default_onDisabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is disabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemDropped
+        
+            typedef void ( MultiColumnList_wrapper::*onDragDropItemDropped_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDragDropItemDropped"
+                , onDragDropItemDropped_function_type( &MultiColumnList_wrapper::default_onDragDropItemDropped )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemEnters
+        
+            typedef void ( MultiColumnList_wrapper::*onDragDropItemEnters_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDragDropItemEnters"
+                , onDragDropItemEnters_function_type( &MultiColumnList_wrapper::default_onDragDropItemEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onDragDropItemLeaves
+        
+            typedef void ( MultiColumnList_wrapper::*onDragDropItemLeaves_function_type )( ::CEGUI::DragDropEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onDragDropItemLeaves"
+                , onDragDropItemLeaves_function_type( &MultiColumnList_wrapper::default_onDragDropItemLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a DragContainer is dragged over this window.\n\
+            \n\
+                @param e\n\
+                    DragDropEventArgs object initialised as follows:\n\
+                    - window field is normaly set to point to 'this' window.\n\
+                    - dragDropItem is a pointer to a DragContainer window that triggered\n\
+                      the event.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onEnabled
+        
+            typedef void ( MultiColumnList_wrapper::*onEnabled_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onEnabled"
+                , onEnabled_function_type( &MultiColumnList_wrapper::default_onEnabled )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is enabled.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHidden
+        
+            typedef void ( MultiColumnList_wrapper::*onHidden_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onHidden"
+                , onHidden_function_type( &MultiColumnList_wrapper::default_onHidden )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is hidden.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onHorizontalAlignmentChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onHorizontalAlignmentChanged"
+                , onHorizontalAlignmentChanged_function_type( &MultiColumnList_wrapper::default_onHorizontalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the horizontal alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onIDChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onIDChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onIDChanged"
+                , onIDChanged_function_type( &MultiColumnList_wrapper::default_onIDChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's client assigned ID is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onInheritsAlphaChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onInheritsAlphaChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onInheritsAlphaChanged"
+                , onInheritsAlphaChanged_function_type( &MultiColumnList_wrapper::default_onInheritsAlphaChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for inheriting alpha-blending\n\
+                    is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyDown
+        
+            typedef void ( MultiColumnList_wrapper::*onKeyDown_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onKeyDown"
+                , onKeyDown_function_type( &MultiColumnList_wrapper::default_onKeyDown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been depressed while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was pressed, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onKeyUp
+        
+            typedef void ( MultiColumnList_wrapper::*onKeyUp_function_type )( ::CEGUI::KeyEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onKeyUp"
+                , onKeyUp_function_type( &MultiColumnList_wrapper::default_onKeyUp )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a key as been released while this window has input\n\
+                    focus.\n\
+            \n\
+                @param e\n\
+                    KeyEventArgs object whose 'scancode' field is set to the Key.Scan value\n\
+                    representing the key that was released, and whose 'sysKeys' field\n\
+                    represents the combination of SystemKey that were active when the event\n\
+                    was generated.  All other fields should be considered as 'junk'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMarginChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onMarginChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMarginChanged"
+                , onMarginChanged_function_type( &MultiColumnList_wrapper::default_onMarginChanged )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::Window::onMouseButtonUp
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseButtonUp_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseButtonUp"
+                , onMouseButtonUp_function_type( &MultiColumnList_wrapper::default_onMouseButtonUp )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been released within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseClicked
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseClicked"
+                , onMouseClicked_function_type( &MultiColumnList_wrapper::default_onMouseClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been clicked (that is depressed\n\
+                    and then released, within a specified time) within this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseDoubleClicked
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseDoubleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseDoubleClicked"
+                , onMouseDoubleClicked_function_type( &MultiColumnList_wrapper::default_onMouseDoubleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been double-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEnters
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseEnters_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseEnters"
+                , onMouseEnters_function_type( &MultiColumnList_wrapper::default_onMouseEnters )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area and\n\
+                    is actually over some part of this windows surface and not, for\n\
+                    instance over a child window - even though technically in those cases\n\
+                    the mouse is also within this Window's area, the handler will not be\n\
+                    called.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseEntersArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseEntersArea
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseEntersArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseEntersArea"
+                , onMouseEntersArea_function_type( &MultiColumnList_wrapper::default_onMouseEntersArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has entered this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeaves
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseLeaves_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseLeaves"
+                , onMouseLeaves_function_type( &MultiColumnList_wrapper::default_onMouseLeaves )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor is no longer over this window's\n\
+                    surface area.  This will be called when the mouse is not over a part\n\
+                    of this Window's actual surface - even though technically the mouse is\n\
+                    still within the Window's area, for example if the mouse moves over a\n\
+                    child window.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+            \n\
+                @see\n\
+                    Window.onMouseLeavesArea\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseLeavesArea
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseLeavesArea_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseLeavesArea"
+                , onMouseLeavesArea_function_type( &MultiColumnList_wrapper::default_onMouseLeavesArea )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has left this window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseMove
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseMove_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseMove"
+                , onMouseMove_function_type( &MultiColumnList_wrapper::default_onMouseMove )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the mouse cursor has been moved within this window's\n\
+                    area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMouseTripleClicked
+        
+            typedef void ( MultiColumnList_wrapper::*onMouseTripleClicked_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMouseTripleClicked"
+                , onMouseTripleClicked_function_type( &MultiColumnList_wrapper::default_onMouseTripleClicked )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a mouse button has been triple-clicked within this\n\
+                    window's area.\n\
+            \n\
+                @param e\n\
+                    MouseEventArgs object.  All fields are valid.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onMoved
+        
+            typedef void ( MultiColumnList_wrapper::*onMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onMoved"
+                , onMoved_function_type( &MultiColumnList_wrapper::default_onMoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's position changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onNonClientChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onNonClientChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onNonClientChanged"
+                , onNonClientChanged_function_type( &MultiColumnList_wrapper::default_onNonClientChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's non-client setting, affecting it's\n\
+                    position and size relative to it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentDestroyChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onParentDestroyChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onParentDestroyChanged"
+                , onParentDestroyChanged_function_type( &MultiColumnList_wrapper::default_onParentDestroyChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for being destroyed\n\
+                    automatically be it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onParentSized
+        
+            typedef void ( MultiColumnList_wrapper::*onParentSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onParentSized"
+                , onParentSized_function_type( &MultiColumnList_wrapper::default_onParentSized )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window's parent window has been resized.  If\n\
+                    this window is the root  GUI Sheet window, this call will be made when\n\
+                    the display size changes.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set the the\n\
+                    window that caused the event; this is typically either this window's\n\
+                    parent window, or NULL to indicate the screen size has changed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingEnded
+        
+            typedef void ( MultiColumnList_wrapper::*onRenderingEnded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onRenderingEnded"
+                , onRenderingEnded_function_type( &MultiColumnList_wrapper::default_onRenderingEnded )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has ended.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRenderingStarted
+        
+            typedef void ( MultiColumnList_wrapper::*onRenderingStarted_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onRenderingStarted"
+                , onRenderingStarted_function_type( &MultiColumnList_wrapper::default_onRenderingStarted )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when rendering for this window has started.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onRotated
+        
+            typedef void ( MultiColumnList_wrapper::*onRotated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onRotated"
+                , onRotated_function_type( &MultiColumnList_wrapper::default_onRotated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's rotation factor is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onShown
+        
+            typedef void ( MultiColumnList_wrapper::*onShown_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onShown"
+                , onShown_function_type( &MultiColumnList_wrapper::default_onShown )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window is shown (made visible).\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onTextChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onTextChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onTextChanged"
+                , onTextChanged_function_type( &MultiColumnList_wrapper::default_onTextChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's text is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onTextParsingChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onTextParsingChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onTextParsingChanged"
+                , onTextParsingChanged_function_type( &MultiColumnList_wrapper::default_onTextParsingChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the window's setting for whether text parsing is\n\
+                    enabled is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onVerticalAlignmentChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onVerticalAlignmentChanged"
+                , onVerticalAlignmentChanged_function_type( &MultiColumnList_wrapper::default_onVerticalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the vertical alignment setting for the window is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object whos alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererAttached
+        
+            typedef void ( MultiColumnList_wrapper::*onWindowRendererAttached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onWindowRendererAttached"
+                , onWindowRendererAttached_function_type( &MultiColumnList_wrapper::default_onWindowRendererAttached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when a new window renderer object is attached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got a new\n\
+                      window renderer attached. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onWindowRendererDetached
+        
+            typedef void ( MultiColumnList_wrapper::*onWindowRendererDetached_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onWindowRendererDetached"
+                , onWindowRendererDetached_function_type( &MultiColumnList_wrapper::default_onWindowRendererDetached )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the currently attached window renderer object is detached.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object initialised as follows:\n\
+                    - window field is set to point to the Window object that just got lost its\n\
+                      window renderer. (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChange_impl
+        
+            typedef void ( MultiColumnList_wrapper::*onZChange_impl_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onZChange_impl"
+                , onZChange_impl_function_type( &MultiColumnList_wrapper::default_onZChange_impl )
+                , "*!\n\
+            \n\
+                Notify 'this' and all siblings of a ZOrder change event\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::onZChanged
+        
+            typedef void ( MultiColumnList_wrapper::*onZChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "onZChanged"
+                , onZChanged_function_type( &MultiColumnList_wrapper::default_onZChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the z-order position of this window has changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::performChildWindowLayout
@@ -2167,6 +5080,126 @@ void register_MultiColumnList_class(){
                 , ( bp::arg("clipboard") ) );
         
         }
+        { //::CEGUI::Window::populateGeometryBuffer
+        
+            typedef void ( MultiColumnList_wrapper::*populateGeometryBuffer_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "populateGeometryBuffer"
+                , populateGeometryBuffer_function_type( &MultiColumnList_wrapper::default_populateGeometryBuffer )
+                , "*!\n\
+                \n\
+                    Update the rendering cache.\n\
+            \n\
+                    Populates the Window's GeometryBuffer ready for rendering.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::queueGeometry
+        
+            typedef void ( MultiColumnList_wrapper::*queueGeometry_function_type )( ::CEGUI::RenderingContext const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "queueGeometry"
+                , queueGeometry_function_type( &MultiColumnList_wrapper::queueGeometry )
+                , ( bp::arg("ctx") )
+                , "*!\n\
+                \n\
+                    Perform drawing operations concerned with positioning, clipping and\n\
+                    queueing of window geometry to RenderingSurfaces.\n\
+            \n\
+                \note\n\
+                    This function is a sub-function of drawSelf and is provided to make it\n\
+                    easier to override drawSelf without needing to duplicate large sections\n\
+                    of the code from the default implementation.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::releaseRenderingWindow
+        
+            typedef void ( MultiColumnList_wrapper::*releaseRenderingWindow_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "releaseRenderingWindow"
+                , releaseRenderingWindow_function_type( &MultiColumnList_wrapper::releaseRenderingWindow )
+                , "! helper to clean up the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::removeChild_impl
+        
+            typedef void ( MultiColumnList_wrapper::*removeChild_impl_function_type )( ::CEGUI::Window * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "removeChild_impl"
+                , removeChild_impl_function_type( &MultiColumnList_wrapper::default_removeChild_impl )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+            \n\
+                Remove given window from child list\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::removeWindowFromDrawList
+        
+            typedef void ( MultiColumnList_wrapper::*removeWindowFromDrawList_function_type )( ::CEGUI::Window const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "removeWindowFromDrawList"
+                , removeWindowFromDrawList_function_type( &MultiColumnList_wrapper::removeWindowFromDrawList )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Removes the window from the drawing list.  If the window is not attached\n\
+                    to the drawing list then nothing happens.\n\
+            \n\
+                @param wnd\n\
+                    Window object to be removed from the drawing list.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::setArea_impl
+        
+            typedef void ( MultiColumnList_wrapper::*setArea_impl_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const &,bool,bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setArea_impl"
+                , setArea_impl_function_type( &MultiColumnList_wrapper::setArea_impl )
+                , ( bp::arg("pos"), bp::arg("size"), bp::arg("topLeftSizing")=(bool)(false), bp::arg("fireEvents")=(bool)(true) )
+                , "*!\n\
+                \n\
+                    Implementation method to modify window area while correctly applying\n\
+                    min  max size processing, and firing any appropriate events.\n\
+            \n\
+                note\n\
+                    This is the implementation function for setting size and position.\n\
+                    In order to simplify area management, from this point on, all\n\
+                    modifications to window size and position (area rect) should come\n\
+                    through here.\n\
+            \n\
+                param pos\n\
+                    UVector2 object describing the new area position.\n\
+            \n\
+                param size\n\
+                    USize object describing the new area size.\n\
+            \n\
+                param topLeftSizing\n\
+                    - true to indicate the the operation is a sizing operation on the top\n\
+                      andor left edges of the area, and so window movement should be\n\
+                      inhibited if size is at max or min.\n\
+                    - false to indicate the operation is not a strict sizing operation on\n\
+                      the top andor left edges and that the window position may change as\n\
+                      required\n\
+            \n\
+                param fireEvents\n\
+                    - true if events should be fired as normal.\n\
+                    - false to inhibit firing of events (required, for example, if you need\n\
+                      to call this from the onSizeonMove handlers).\n\
+                 *\n" );
+        
+        }
         { //::CEGUI::Window::setLookNFeel
         
             typedef void ( ::CEGUI::Window::*setLookNFeel_function_type )( ::CEGUI::String const & ) ;
@@ -2189,6 +5222,27 @@ void register_MultiColumnList_class(){
                 , setMargin_function_type(&::CEGUI::Window::setMargin)
                 , default_setMargin_function_type(&MultiColumnList_wrapper::default_setMargin)
                 , ( bp::arg("margin") ) );
+        
+        }
+        { //::CEGUI::Window::setParent
+        
+            typedef void ( MultiColumnList_wrapper::*setParent_function_type )( ::CEGUI::Window * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setParent"
+                , setParent_function_type( &MultiColumnList_wrapper::setParent )
+                , ( bp::arg("parent") )
+                , "*!\n\
+                \n\
+                    Set the parent window for this window object.\n\
+            \n\
+                @param parent\n\
+                    Pointer to a Window object that is to be assigned as the parent to this\n\
+                    Window.\n\
+            \n\
+                @return\n\
+                    Nothing\n\
+                *\n" );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent
@@ -2215,6 +5269,16 @@ void register_MultiColumnList_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
+        { //::CEGUI::Window::transferChildSurfaces
+        
+            typedef void ( MultiColumnList_wrapper::*transferChildSurfaces_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "transferChildSurfaces"
+                , transferChildSurfaces_function_type( &MultiColumnList_wrapper::transferChildSurfaces )
+                , "! transfer RenderingSurfaces to be owned by our target RenderingSurface.\n" );
+        
+        }
         { //::CEGUI::Window::update
         
             typedef void ( ::CEGUI::Window::*update_function_type )( float ) ;
@@ -2225,6 +5289,64 @@ void register_MultiColumnList_class(){
                 , update_function_type(&::CEGUI::Window::update)
                 , default_update_function_type(&MultiColumnList_wrapper::default_update)
                 , ( bp::arg("elapsed") ) );
+        
+        }
+        { //::CEGUI::Window::updateGeometryRenderSettings
+        
+            typedef void ( MultiColumnList_wrapper::*updateGeometryRenderSettings_function_type )(  ) ;
+            
+            MultiColumnList_exposer.def( 
+                "updateGeometryRenderSettings"
+                , updateGeometryRenderSettings_function_type( &MultiColumnList_wrapper::updateGeometryRenderSettings )
+                , "*!\n\
+            \n\
+                Update position and clip region on this Windows geometry  rendering\n\
+                surface.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::updateSelf
+        
+            typedef void ( MultiColumnList_wrapper::*updateSelf_function_type )( float ) ;
+            
+            MultiColumnList_exposer.def( 
+                "updateSelf"
+                , updateSelf_function_type( &MultiColumnList_wrapper::default_updateSelf )
+                , ( bp::arg("elapsed") )
+                , "*************************************************************************\n\
+                    Implementation Functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Perform actual update processing for this Window.\n\
+            \n\
+                @param elapsed\n\
+                    float value indicating the number of seconds elapsed since the last\n\
+                    update call.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::writeAutoChildWindowXML
+        
+            typedef bool ( MultiColumnList_wrapper::*writeAutoChildWindowXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "writeAutoChildWindowXML"
+                , writeAutoChildWindowXML_function_type( &MultiColumnList_wrapper::default_writeAutoChildWindowXML )
+                , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::Window::writeChildWindowsXML
+        
+            typedef int ( MultiColumnList_wrapper::*writeChildWindowsXML_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            MultiColumnList_exposer.def( 
+                "writeChildWindowsXML"
+                , writeChildWindowsXML_function_type( &MultiColumnList_wrapper::default_writeChildWindowsXML )
+                , ( bp::arg("xml_stream") ) );
         
         }
         { //::CEGUI::Window::writeXMLToStream

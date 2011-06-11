@@ -8,6 +8,20 @@ namespace bp = boost::python;
 
 struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRenderer > {
 
+    OgreRenderer_wrapper( )
+    : CEGUI::OgreRenderer( )
+      , bp::wrapper< CEGUI::OgreRenderer >(){
+        // null constructor
+    
+    }
+
+    OgreRenderer_wrapper(::Ogre::RenderTarget & target )
+    : CEGUI::OgreRenderer( boost::ref(target) )
+      , bp::wrapper< CEGUI::OgreRenderer >(){
+        // constructor
+    
+    }
+
     virtual void beginRendering(  ) {
         if( bp::override func_beginRendering = this->get_override( "beginRendering" ) )
             func_beginRendering(  );
@@ -18,6 +32,14 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
     
     void default_beginRendering(  ) {
         CEGUI::OgreRenderer::beginRendering( );
+    }
+
+    void checkOgreInitialised(  ){
+        CEGUI::OgreRenderer::checkOgreInitialised(  );
+    }
+
+    void constructor_impl( ::Ogre::RenderTarget & target ){
+        CEGUI::OgreRenderer::constructor_impl( boost::ref(target) );
     }
 
     virtual ::CEGUI::TextureTarget * createTextureTarget(  ) {
@@ -140,6 +162,14 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         return CEGUI::OgreRenderer::getMaxTextureSize( );
     }
 
+    static void logTextureCreation( ::CEGUI::String const & name ){
+        CEGUI::OgreRenderer::logTextureCreation( boost::ref(name) );
+    }
+
+    static void logTextureDestruction( ::CEGUI::String const & name ){
+        CEGUI::OgreRenderer::logTextureDestruction( boost::ref(name) );
+    }
+
     virtual void setDisplaySize( ::CEGUI::Sizef const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
@@ -152,6 +182,10 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         CEGUI::OgreRenderer::setDisplaySize( boost::ref(sz) );
     }
 
+    void throwIfNameExists( ::CEGUI::String const & name ) const {
+        CEGUI::OgreRenderer::throwIfNameExists( boost::ref(name) );
+    }
+
 };
 
 void register_OgreRenderer_class(){
@@ -160,6 +194,9 @@ void register_OgreRenderer_class(){
         typedef bp::class_< OgreRenderer_wrapper, bp::bases< ::CEGUI::Renderer >, boost::noncopyable > OgreRenderer_exposer_t;
         OgreRenderer_exposer_t OgreRenderer_exposer = OgreRenderer_exposer_t( "OgreRenderer", "! CEGUI.Renderer implementation for the Ogre engine.\n", bp::no_init );
         bp::scope OgreRenderer_scope( OgreRenderer_exposer );
+        OgreRenderer_exposer.def( bp::init< >("! default constructor.\n") );
+        OgreRenderer_exposer.def( bp::init< Ogre::RenderTarget & >(( bp::arg("target") ), "! default constructor.\n\
+        ! constructor takin the Ogre.RenderTarget to use as the default root.\n") );
         { //::CEGUI::OgreRenderer::beginRendering
         
             typedef void ( ::CEGUI::OgreRenderer::*beginRendering_function_type )(  ) ;
@@ -233,6 +270,27 @@ void register_OgreRenderer_class(){
                 @return\n\
                     Reference to the CEGUI.OgreRenderer object that was created.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::OgreRenderer::checkOgreInitialised
+        
+            typedef void ( OgreRenderer_wrapper::*checkOgreInitialised_function_type )(  ) ;
+            
+            OgreRenderer_exposer.def( 
+                "checkOgreInitialised"
+                , checkOgreInitialised_function_type( &OgreRenderer_wrapper::checkOgreInitialised )
+                , "! checks Ogre initialisation.  throws exceptions if an issue is detected.\n" );
+        
+        }
+        { //::CEGUI::OgreRenderer::constructor_impl
+        
+            typedef void ( OgreRenderer_wrapper::*constructor_impl_function_type )( ::Ogre::RenderTarget & ) ;
+            
+            OgreRenderer_exposer.def( 
+                "constructor_impl"
+                , constructor_impl_function_type( &OgreRenderer_wrapper::constructor_impl )
+                , ( bp::arg("target") )
+                , "! common parts of constructor\n" );
         
         }
         { //::CEGUI::OgreRenderer::create
@@ -641,6 +699,30 @@ void register_OgreRenderer_class(){
                 , "! return whether CEGUI rendering is enabled.\n" );
         
         }
+        { //::CEGUI::OgreRenderer::logTextureCreation
+        
+            typedef void ( *logTextureCreation_function_type )( ::CEGUI::String const & );
+            
+            OgreRenderer_exposer.def( 
+                "logTextureCreation"
+                , logTextureCreation_function_type( &OgreRenderer_wrapper::logTextureCreation )
+                , ( bp::arg("name") )
+                , "! helper to throw exception if name is already used.\n\
+            ! helper to safely log the creation of a named texture\n" );
+        
+        }
+        { //::CEGUI::OgreRenderer::logTextureDestruction
+        
+            typedef void ( *logTextureDestruction_function_type )( ::CEGUI::String const & );
+            
+            OgreRenderer_exposer.def( 
+                "logTextureDestruction"
+                , logTextureDestruction_function_type( &OgreRenderer_wrapper::logTextureDestruction )
+                , ( bp::arg("name") )
+                , "! helper to safely log the creation of a named texture\n\
+            ! helper to safely log the destruction of a named texture\n" );
+        
+        }
         { //::CEGUI::OgreRenderer::setDefaultRootRenderTarget
         
             typedef void ( ::CEGUI::OgreRenderer::*setDefaultRootRenderTarget_function_type )( ::Ogre::RenderTarget & ) ;
@@ -721,6 +803,18 @@ void register_OgreRenderer_class(){
                 , "! set the render states for the specified BlendMode.\n" );
         
         }
+        { //::CEGUI::OgreRenderer::throwIfNameExists
+        
+            typedef void ( OgreRenderer_wrapper::*throwIfNameExists_function_type )( ::CEGUI::String const & ) const;
+            
+            OgreRenderer_exposer.def( 
+                "throwIfNameExists"
+                , throwIfNameExists_function_type( &OgreRenderer_wrapper::throwIfNameExists )
+                , ( bp::arg("name") )
+                , "! checks Ogre initialisation.  throws exceptions if an issue is detected.\n\
+            ! helper to throw exception if name is already used.\n" );
+        
+        }
         OgreRenderer_exposer.staticmethod( "bootstrapSystem" );
         OgreRenderer_exposer.staticmethod( "create" );
         OgreRenderer_exposer.staticmethod( "createOgreImageCodec" );
@@ -729,6 +823,8 @@ void register_OgreRenderer_class(){
         OgreRenderer_exposer.staticmethod( "destroyOgreImageCodec" );
         OgreRenderer_exposer.staticmethod( "destroyOgreResourceProvider" );
         OgreRenderer_exposer.staticmethod( "destroySystem" );
+        OgreRenderer_exposer.staticmethod( "logTextureCreation" );
+        OgreRenderer_exposer.staticmethod( "logTextureDestruction" );
     }
 
 }

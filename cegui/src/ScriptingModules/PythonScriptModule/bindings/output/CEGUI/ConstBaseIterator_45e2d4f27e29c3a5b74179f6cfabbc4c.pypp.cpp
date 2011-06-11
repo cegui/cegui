@@ -8,6 +8,13 @@ namespace bp = boost::python;
 
 struct ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack__greater__wrapper : CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack >, bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack > > {
 
+    ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack__greater__wrapper( )
+    : CEGUI::ConstBaseIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack>( )
+      , bp::wrapper< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::WindowFactoryManager::AliasTargetStack getCurrentValue(  ) const {
         bp::override func_getCurrentValue = this->get_override( "getCurrentValue" );
         return func_getCurrentValue(  );
@@ -21,6 +28,9 @@ void register_ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_class(){
         typedef bp::class_< ConstBaseIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_greater___greater___greater__comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack__greater__wrapper, boost::noncopyable > ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer_t;
         ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer_t ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer = ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer_t( "ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c", bp::no_init );
         bp::scope ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_scope( ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer );
+        ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack >::getCurrentValue
         
             typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack > exported_class_t;

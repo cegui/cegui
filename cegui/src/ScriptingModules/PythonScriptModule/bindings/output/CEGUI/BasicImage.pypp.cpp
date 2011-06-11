@@ -22,6 +22,13 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
     
     }
 
+    BasicImage_wrapper(::CEGUI::XMLAttributes const & attributes )
+    : CEGUI::BasicImage( boost::ref(attributes) )
+      , bp::wrapper< CEGUI::BasicImage >(){
+        // constructor
+    
+    }
+
     BasicImage_wrapper(::CEGUI::String const & name, ::CEGUI::Texture * texture, ::CEGUI::Rectf const & tex_area, ::CEGUI::Vector2f const & offset, bool const autoscaled, ::CEGUI::Sizef const & native_res )
     : CEGUI::BasicImage( boost::ref(name), boost::python::ptr(texture), boost::ref(tex_area), boost::ref(offset), autoscaled, boost::ref(native_res) )
       , bp::wrapper< CEGUI::BasicImage >(){
@@ -53,6 +60,42 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
         CEGUI::BasicImage::render( boost::ref(buffer), boost::ref(dest_area), boost::python::ptr(clip_area), boost::ref(colours) );
     }
 
+    virtual void elementEndLocal( ::CEGUI::String const & element ){
+        if( bp::override func_elementEndLocal = this->get_override( "elementEndLocal" ) )
+            func_elementEndLocal( boost::ref(element) );
+        else{
+            this->CEGUI::Image::elementEndLocal( boost::ref(element) );
+        }
+    }
+    
+    virtual void default_elementEndLocal( ::CEGUI::String const & element ){
+        CEGUI::Image::elementEndLocal( boost::ref(element) );
+    }
+
+    virtual void elementStartLocal( ::CEGUI::String const & element, ::CEGUI::XMLAttributes const & attributes ){
+        if( bp::override func_elementStartLocal = this->get_override( "elementStartLocal" ) )
+            func_elementStartLocal( boost::ref(element), boost::ref(attributes) );
+        else{
+            this->CEGUI::Image::elementStartLocal( boost::ref(element), boost::ref(attributes) );
+        }
+    }
+    
+    virtual void default_elementStartLocal( ::CEGUI::String const & element, ::CEGUI::XMLAttributes const & attributes ){
+        CEGUI::Image::elementStartLocal( boost::ref(element), boost::ref(attributes) );
+    }
+
+    virtual void text( ::CEGUI::String const & text ) {
+        if( bp::override func_text = this->get_override( "text" ) )
+            func_text( boost::ref(text) );
+        else{
+            this->CEGUI::XMLHandler::text( boost::ref(text) );
+        }
+    }
+    
+    void default_text( ::CEGUI::String const & text ) {
+        CEGUI::XMLHandler::text( boost::ref(text) );
+    }
+
 };
 
 void register_BasicImage_class(){
@@ -62,17 +105,9 @@ void register_BasicImage_class(){
         BasicImage_exposer_t BasicImage_exposer = BasicImage_exposer_t( "BasicImage", bp::init< CEGUI::String const & >(( bp::arg("name") )) );
         bp::scope BasicImage_scope( BasicImage_exposer );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::BasicImage >();
+        BasicImage_exposer.def( bp::init< CEGUI::XMLAttributes const & >(( bp::arg("attributes") )) );
+        bp::implicitly_convertible< CEGUI::XMLAttributes const &, CEGUI::BasicImage >();
         BasicImage_exposer.def( bp::init< CEGUI::String const &, CEGUI::Texture *, CEGUI::Rectf const &, CEGUI::Vector2f const &, bool, CEGUI::Sizef const & >(( bp::arg("name"), bp::arg("texture"), bp::arg("tex_area"), bp::arg("offset"), bp::arg("autoscaled"), bp::arg("native_res") )) );
-        { //::CEGUI::BasicImage::clone
-        
-            typedef ::CEGUI::Image & ( ::CEGUI::BasicImage::*clone_function_type )(  ) const;
-            
-            BasicImage_exposer.def( 
-                "clone"
-                , clone_function_type(&::CEGUI::BasicImage::clone)
-                , bp::return_value_policy< bp::reference_existing_object >() );
-        
-        }
         { //::CEGUI::BasicImage::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::BasicImage::*getName_function_type )(  ) const;
@@ -175,6 +210,39 @@ void register_BasicImage_class(){
                 "setTexture"
                 , setTexture_function_type( &::CEGUI::BasicImage::setTexture )
                 , ( bp::arg("texture") ) );
+        
+        }
+        { //::CEGUI::Image::elementEndLocal
+        
+            typedef void ( BasicImage_wrapper::*elementEndLocal_function_type )( ::CEGUI::String const & ) ;
+            
+            BasicImage_exposer.def( 
+                "elementEndLocal"
+                , elementEndLocal_function_type( &BasicImage_wrapper::default_elementEndLocal )
+                , ( bp::arg("element") ) );
+        
+        }
+        { //::CEGUI::Image::elementStartLocal
+        
+            typedef void ( BasicImage_wrapper::*elementStartLocal_function_type )( ::CEGUI::String const &,::CEGUI::XMLAttributes const & ) ;
+            
+            BasicImage_exposer.def( 
+                "elementStartLocal"
+                , elementStartLocal_function_type( &BasicImage_wrapper::default_elementStartLocal )
+                , ( bp::arg("element"), bp::arg("attributes") )
+                , "implement chained xml handler abstract interface\n" );
+        
+        }
+        { //::CEGUI::XMLHandler::text
+        
+            typedef void ( ::CEGUI::XMLHandler::*text_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( BasicImage_wrapper::*default_text_function_type )( ::CEGUI::String const & ) ;
+            
+            BasicImage_exposer.def( 
+                "text"
+                , text_function_type(&::CEGUI::XMLHandler::text)
+                , default_text_function_type(&BasicImage_wrapper::default_text)
+                , ( bp::arg("text") ) );
         
         }
     }

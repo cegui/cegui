@@ -6,10 +6,36 @@
 
 namespace bp = boost::python;
 
+struct RenderedString_wrapper : CEGUI::RenderedString, bp::wrapper< CEGUI::RenderedString > {
+
+    RenderedString_wrapper( )
+    : CEGUI::RenderedString( )
+      , bp::wrapper< CEGUI::RenderedString >(){
+        // null constructor
+    
+    }
+
+    RenderedString_wrapper(::CEGUI::RenderedString const & other )
+    : CEGUI::RenderedString( boost::ref(other) )
+      , bp::wrapper< CEGUI::RenderedString >(){
+        // copy constructor
+    
+    }
+
+    static void clearComponentList( ::std::vector< CEGUI::RenderedStringComponent* > & list ){
+        CEGUI::RenderedString::clearComponentList( boost::ref(list) );
+    }
+
+    void cloneComponentList( ::std::vector< CEGUI::RenderedStringComponent* > const & list ){
+        CEGUI::RenderedString::cloneComponentList( boost::ref(list) );
+    }
+
+};
+
 void register_RenderedString_class(){
 
     { //::CEGUI::RenderedString
-        typedef bp::class_< CEGUI::RenderedString > RenderedString_exposer_t;
+        typedef bp::class_< RenderedString_wrapper > RenderedString_exposer_t;
         RenderedString_exposer_t RenderedString_exposer = RenderedString_exposer_t( "RenderedString", bp::init< >("! Constructor.\n") );
         bp::scope RenderedString_scope( RenderedString_exposer );
         RenderedString_exposer.def( bp::init< CEGUI::RenderedString const & >(( bp::arg("other") ), "! Copy constructor.\n") );
@@ -34,6 +60,18 @@ void register_RenderedString_class(){
                 , "! linebreak the rendered string at the present position.\n" );
         
         }
+        { //::CEGUI::RenderedString::clearComponentList
+        
+            typedef void ( *clearComponentList_function_type )( ::std::vector< CEGUI::RenderedStringComponent* > & );
+            
+            RenderedString_exposer.def( 
+                "clearComponentList"
+                , clearComponentList_function_type( &RenderedString_wrapper::clearComponentList )
+                , ( bp::arg("list") )
+                , "! Make this object's component list a clone of  list.\n\
+            ! Free components in the given ComponentList and clear the list.\n" );
+        
+        }
         { //::CEGUI::RenderedString::clearComponents
         
             typedef void ( ::CEGUI::RenderedString::*clearComponents_function_type )(  ) ;
@@ -42,6 +80,18 @@ void register_RenderedString_class(){
                 "clearComponents"
                 , clearComponents_function_type( &::CEGUI::RenderedString::clearComponents )
                 , "! clear the list of components drawn for this string.\n" );
+        
+        }
+        { //::CEGUI::RenderedString::cloneComponentList
+        
+            typedef void ( RenderedString_wrapper::*cloneComponentList_function_type )( ::std::vector< CEGUI::RenderedStringComponent* > const & ) ;
+            
+            RenderedString_exposer.def( 
+                "cloneComponentList"
+                , cloneComponentList_function_type( &RenderedString_wrapper::cloneComponentList )
+                , ( bp::arg("list") )
+                , "! lines that make up this string.\n\
+            ! Make this object's component list a clone of  list.\n" );
         
         }
         { //::CEGUI::RenderedString::draw
@@ -155,6 +205,7 @@ void register_RenderedString_class(){
                 *\n" );
         
         }
+        RenderedString_exposer.staticmethod( "clearComponentList" );
     }
 
 }
