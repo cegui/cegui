@@ -1,0 +1,15 @@
+syntax: glob
+.DS_Store
+*.tmp
+*~
+*.o
+*.obj
+*.orig
+*.rej
+*.dylib
+*.so
+*.dll
+dependencies/
+build/
+xcuserdata/
+*.xcworkspace/
