@@ -13,3 +13,4 @@ dependencies/
 build/
 xcuserdata/
 *.xcworkspace/
+*.pyc
