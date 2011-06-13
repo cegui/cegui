@@ -12,7 +12,7 @@
             <Property Name="PageSize" Value="1" />
             <Property Name="StepSize" Value="0.01" />
             <Property Name="OverlapSize" Value="0.5" />
-            <Property Name="Tooltip" Value="This scrollbar will scroll the window layout." />
+            <Property Name="TooltipText" Value="This scrollbar will scroll the window layout." />
         </Window>
 
         <Window Name="Window1" Type="TaharezLook/FrameWindow">
@@ -21,13 +21,13 @@
             <Property Name="MinSize" Value="{{0,128},{0,128}}" />
             <Property Name="Size" Value="{{0.4,0},{0.3,0}}" />
             <Property Name="Text" Value="Demo 8 - Listbox Demo" />
-            <Property Name="Tooltip" Value="Window shows a simple Listbox demo." />
+            <Property Name="TooltipText" Value="Window shows a simple Listbox demo." />
 
             <Window Name="Listbox" Type="TaharezLook/Listbox">
                 <Property Name="Position" Value="{{0.05,0},{0.05,0}}" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Size" Value="{{0.9,0},{0.38,0}}" />
-                <Property Name="Tooltip" Value="Listbox containing the items you have added." />
+                <Property Name="TooltipText" Value="Listbox containing the items you have added." />
             </Window>
 
             <Window Name="Controls" Type="TaharezLook/StaticText">
@@ -43,7 +43,7 @@
                     <Property Name="PageSize" Value="0.0625" />
                     <Property Name="StepSize" Value="0.00392" />
                     <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the red colour component." />
+                    <Property Name="TooltipText" Value="Slider to adjust the red colour component." />
                 </Window>
 
                 <Window Name="Green" Type="TaharezLook/HorizontalScrollbar">
@@ -54,7 +54,7 @@
                     <Property Name="PageSize" Value="0.0625" />
                     <Property Name="StepSize" Value="0.00392" />
                     <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the green colour component." />
+                    <Property Name="TooltipText" Value="Slider to adjust the green colour component." />
                 </Window>
 
                 <Window Name="Blue" Type="TaharezLook/HorizontalScrollbar">
@@ -65,7 +65,7 @@
                     <Property Name="PageSize" Value="0.0625" />
                     <Property Name="StepSize" Value="0.00392" />
                     <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the blue colour component." />
+                    <Property Name="TooltipText" Value="Slider to adjust the blue colour component." />
                 </Window>
 
                 <Window Name="ColourSample" Type="TaharezLook/StaticImage">
@@ -74,14 +74,14 @@
                     <Property Name="Size" Value="{{0.9,0},{0.1,0}}" />
                     <Property Name="Image" Value="TaharezLook/MultiListSelectionBrush" />
                     <Property Name="ImageColours" Value="tl:0 tr:0 bl:0 br:0" />
-                    <Property Name="Tooltip" Value="Shows a sample of the selected colour." />
+                    <Property Name="TooltipText" Value="Shows a sample of the selected colour." />
                 </Window>
 
                 <Window Name="Editbox" Type="TaharezLook/Editbox">
                     <Property Name="Position" Value="{{0.05,0},{0.38,0}}" />
                     <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                     <Property Name="Size" Value="{{0.6,0},{0.15,0}}" />
-                    <Property Name="Tooltip" Value="Enter the text for a new Listbox item here." />
+                    <Property Name="TooltipText" Value="Enter the text for a new Listbox item here." />
                 </Window>
 
                 <Window Name="Add" Type="TaharezLook/Button">
@@ -89,7 +89,7 @@
                     <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                     <Property Name="Size" Value="{{0.3,0},{0.15,0}}" />
                     <Property Name="Text" Value="Add" />
-                    <Property Name="Tooltip" Value="Adds a new item to the Listbox." />
+                    <Property Name="TooltipText" Value="Adds a new item to the Listbox." />
                 </Window>
 
                 <Window Name="ins1" Type="TaharezLook/StaticText">
@@ -98,7 +98,7 @@
                     <Property Name="Size" Value="{{0.9,0},{0.4,0}}" />
                     <Property Name="HorzFormatting" Value="WordWrapCentred" />
                     <Property Name="Text" Value="Use this panel to add items.  The scrollbars change the selection colour." />
-                    <Property Name="Tooltip" Value="Information panel." />
+                    <Property Name="TooltipText" Value="Information panel." />
                 </Window>
             </Window>
         </Window>
@@ -109,7 +109,7 @@
             <Property Name="MinSize" Value="{{0,128},{0,128}}" />
             <Property Name="Size" Value="{{0.4,0},{0.3,0}}" />
             <Property Name="Text" Value="Demo 8 - Information Window" />
-            <Property Name="Tooltip" Value="Contains some StaticText information panels" />
+            <Property Name="TooltipText" Value="Contains some StaticText information panels" />
 
             <Window Name="Info" Type="TaharezLook/StaticText">
                 <Property Name="Position" Value="{{0.05,0},{0.05,0}}" />
@@ -124,7 +124,7 @@
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Size" Value="{{0.9,0},{0.55,0}}" />
                 <Property Name="HorzFormatting" Value="WordWrapCentred" />
-                <Property Name="Text" Value="We removed this, and now use proper Tooltips instead!" />
+                <Property Name="Text" Value="We removed this, and now use proper tool tips instead!" />
             </Window>
         </Window>
     </Window>
