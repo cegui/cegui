@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUIScheme Name="TaharezLook">
+<GUIScheme Name="AlfiskoSkin">
     <Font Filename="DejaVuSans-10.font" />
     <Imageset Filename="AlfiskoSkin.imageset" />
     <LookNFeel Filename="AlfiskoSkin.looknfeel" />
