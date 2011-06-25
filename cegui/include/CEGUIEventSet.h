@@ -41,7 +41,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -190,6 +189,28 @@ public:
                                              Event::Group group,
                                              Event::Subscriber subscriber);
 
+    /*!
+    \copydoc EventSet::subscribeEvent
+    
+    \internal This is there just to make the syntax a tad easier
+    */
+    template<typename Arg1, typename Arg2>
+    inline Event::Connection subscribeEvent(const String& name, Arg1 arg1, Arg2 arg2)
+    {
+        return subscribeEvent(name, Event::Subscriber(arg1, arg2));
+    }
+    
+    /*!
+    \copydoc EventSet::subscribeEvent
+    
+    \internal This is there just to make the syntax a tad easier
+    */
+    template<typename Arg1, typename Arg2>
+    inline Event::Connection subscribeEvent(const String& name, Event::Group group, Arg1 arg1, Arg2 arg2)
+    {
+        return subscribeEvent(name, group, Event::Subscriber(arg1, arg2));
+    }
+    
     /*!
     \brief
         Subscribes the named Event to a scripted funtion

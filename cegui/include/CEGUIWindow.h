@@ -3380,8 +3380,7 @@ public:
         Clones this Window and returns the result
 
     \param
-        deepCopy if true, even children are copied (the old name prefix will
-        be replaced with new name prefix)
+        deepCopy if true, even children are copied
 
     \return
         the cloned Window
