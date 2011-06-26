@@ -200,9 +200,9 @@ void EventSet::fireEvent_impl(const String& name, EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-EventSet::Iterator EventSet::getIterator(void) const
+EventSet::EventIterator EventSet::getEventIterator(void) const
 {
-    return Iterator(d_events.begin(), d_events.end());
+    return EventIterator(d_events.begin(), d_events.end());
 }
 
 //----------------------------------------------------------------------------//

@@ -2503,7 +2503,7 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
 int Window::writePropertiesXML(XMLSerializer& xml_stream) const
 {
     int propertiesWritten = 0;
-    PropertySet::Iterator iter =  PropertySet::getIterator();
+    PropertySet::PropertyIterator iter =  getPropertyIterator();
 
     while(!iter.isAtEnd())
     {
@@ -3554,18 +3554,6 @@ void Window::updateGeometryRenderSettings()
 }
 
 //----------------------------------------------------------------------------//
-EventSet::Iterator Window::getEventIterator() const
-{
-    return EventSet::getIterator();
-}
-
-//----------------------------------------------------------------------------//
-PropertySet::Iterator Window::getPropertyIterator() const
-{
-    return PropertySet::getIterator();
-}
-
-//----------------------------------------------------------------------------//
 bool Window::isDragDropTarget() const
 {
     return d_dragDropTarget;
@@ -4320,9 +4308,7 @@ Window* Window::clone(const bool deepCopy) const
 //----------------------------------------------------------------------------//
 void Window::clonePropertiesTo(Window& target) const
 {
-    PropertySet::Iterator propertyIt = getPropertyIterator();
-
-    for (PropertySet::Iterator propertyIt = getPropertyIterator();
+    for (PropertySet::PropertyIterator propertyIt = getPropertyIterator();
          !propertyIt.isAtEnd();
          ++propertyIt) 
     {
