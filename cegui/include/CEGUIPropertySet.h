@@ -293,14 +293,14 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-    typedef	ConstMapIterator<PropertyRegistry> Iterator;
+    typedef	ConstMapIterator<PropertyRegistry> PropertyIterator;
 
     /*!
     \brief
         Return a PropertySet::PropertyIterator object to iterate over the available
         Properties.
     */
-    Iterator getIterator(void) const;
+    PropertyIterator getPropertyIterator(void) const;
 };
 
 /*!
