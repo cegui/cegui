@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(Subscribing)
     }
     {
         MemberMethodSubscriber instance;
-        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, CEGUI::Event::Subscriber(&MemberMethodSubscriber::memberMethod, &instance));
+        CEGUI::Event::Connection connection = set.subscribeEvent(eventName, &MemberMethodSubscriber::memberMethod, &instance);
         args.d_targetValue = 3;
         set.fireEvent(eventName, args);
         BOOST_CHECK_EQUAL(g_GlobalEventValue, 3);
