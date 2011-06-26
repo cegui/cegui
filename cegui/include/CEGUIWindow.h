@@ -4322,6 +4322,9 @@ protected:
     //! definition of type used for the list of attached child windows.
     typedef std::vector<Window*
         CEGUI_VECTOR_ALLOC(Window*)> ChildList;
+    //! definition of type used for the list of child windows to be drawn
+    typedef std::vector<Window*
+        CEGUI_VECTOR_ALLOC(Window*)> ChildDrawList;
     //! definition of type used for the UserString dictionary.
     typedef std::map<String, String, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, String)> UserStringMap;
@@ -4352,7 +4355,7 @@ protected:
     //! The list of child Window objects attached to this.
     ChildList d_children;
     //! Child window objects arranged in rendering order.
-    ChildList d_drawList;
+    ChildDrawList d_drawList;
     //! Holds pointer to the parent window.
     Window* d_parent;
     //! true when Window will be auto-destroyed by parent.

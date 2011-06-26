@@ -459,15 +459,15 @@ const Window* Window::getActiveChild(void) const
     if (!isActive())
         return 0;
 
-    size_t pos = getChildCount();
-
-    while (pos-- > 0)
+    for (ChildDrawList::const_reverse_iterator it = d_drawList.rbegin(); it != d_drawList.rend(); ++it)
     {
         // don't need full backward scan for activeness as we already know
         // 'this' is active.  NB: This uses the draw-ordered child list, as that
         // should be quicker in most cases.
-        if (d_drawList[pos]->d_active)
-            return d_drawList[pos]->getActiveChild();
+        
+        const Window* wnd = *it;
+        if (wnd->d_active)
+            return wnd->getActiveChild();
     }
 
     // no child was active, therefore we are the topmost active window
@@ -688,7 +688,7 @@ bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
 //----------------------------------------------------------------------------//
 Window* Window::getChildAtPosition(const Vector2f& position) const
 {
-    const ChildList::const_reverse_iterator end = d_drawList.rend();
+    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
 
     Vector2f p;
     // if the window has RenderingWindow backing
@@ -697,7 +697,7 @@ Window* Window::getChildAtPosition(const Vector2f& position) const
     else
         p = position;
 
-    ChildList::const_reverse_iterator child;
+    ChildDrawList::const_reverse_iterator child;
     for (child = d_drawList.rbegin(); child != end; ++child)
     {
         if ((*child)->isEffectiveVisible())
@@ -722,7 +722,7 @@ Window* Window::getChildAtPosition(const Vector2f& position) const
 Window* Window::getTargetChildAtPosition(const Vector2f& position,
                                          const bool allow_disabled) const
 {
-    const ChildList::const_reverse_iterator end = d_drawList.rend();
+    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
 
     Vector2f p;
     // if the window has RenderingWindow backing
@@ -731,7 +731,7 @@ Window* Window::getTargetChildAtPosition(const Vector2f& position,
     else
         p = position;
 
-    ChildList::const_reverse_iterator child;
+    ChildDrawList::const_reverse_iterator child;
     for (child = d_drawList.rbegin(); child != end; ++child)
     {
         if ((*child)->isEffectiveVisible())
@@ -1213,9 +1213,10 @@ void Window::render()
         drawSelf(ctx);
 
         // render any child windows
-        const size_t child_count = getChildCount();
-        for (size_t i = 0; i < child_count; ++i)
-            d_drawList[i]->render();
+        for (ChildDrawList::iterator it = d_drawList.begin(); it != d_drawList.end(); ++it)
+        {
+            (*it)->render();
+        }
     }
 
     // do final rendering for surface if it's ours
@@ -2603,7 +2604,7 @@ void Window::addWindowToDrawList(Window& wnd, bool at_back)
     if (at_back)
     {
          // calculate position where window should be added for drawing
-        ChildList::iterator pos = d_drawList.begin();
+        ChildDrawList::iterator pos = d_drawList.begin();
         if (wnd.isAlwaysOnTop())
         {
             // find first topmost window
@@ -2617,7 +2618,7 @@ void Window::addWindowToDrawList(Window& wnd, bool at_back)
     else
     {
         // calculate position where window should be added for drawing
-        ChildList::reverse_iterator position = d_drawList.rbegin();
+        ChildDrawList::reverse_iterator position = d_drawList.rbegin();
         if (!wnd.isAlwaysOnTop())
         {
             // find last non-topmost window
@@ -2636,7 +2637,7 @@ void Window::removeWindowFromDrawList(const Window& wnd)
     if (!d_drawList.empty())
     {
         // attempt to find the window in the draw list
-        const ChildList::iterator position =
+        const ChildDrawList::iterator position =
             std::find(d_drawList.begin(), d_drawList.end(), &wnd);
 
         // remove the window if it was found in the draw list
@@ -2656,14 +2657,14 @@ Window* Window::getActiveSibling()
     {
         // scan backwards through the draw list, as this will
         // usually result in the fastest result.
-        size_t idx = d_parent->getChildCount();
-        while (idx-- > 0)
+        for (ChildDrawList::reverse_iterator it = d_parent->d_drawList.rbegin(); it != d_parent->d_drawList.rend(); ++it)
         {
+            Window* wnd = *it;
             // if this child is active
-            if (d_parent->d_drawList[idx]->isActive())
+            if (wnd->isActive())
             {
                 // set the return value
-                activeWnd = d_parent->d_drawList[idx];
+                activeWnd = wnd;
                 // exit loop early, as we have found what we needed
                 break;
             }
@@ -3613,7 +3614,7 @@ bool Window::isTopOfZOrder() const
         return true;
 
     // get position of window at top of z-order in same group as this window
-    ChildList::reverse_iterator pos = d_parent->d_drawList.rbegin();
+    ChildDrawList::reverse_iterator pos = d_parent->d_drawList.rbegin();
     if (!d_alwaysOnTop)
     {
         // find last non-topmost window
@@ -4109,9 +4110,9 @@ void Window::moveInFront(const Window* const window)
             return;
 
     // find our position in the parent child draw list
-    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
-                                          d_parent->d_drawList.end(),
-                                          this));
+    const ChildDrawList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                              d_parent->d_drawList.end(),
+                                              this));
     // sanity checK that we were attached to our parent.
     assert(p != d_parent->d_drawList.end());
 
@@ -4119,9 +4120,9 @@ void Window::moveInFront(const Window* const window)
     d_parent->d_drawList.erase(p);
 
     // find window we're to be moved in front of in parent's draw list
-    ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
-                                    d_parent->d_drawList.end(),
-                                    window));
+    ChildDrawList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                        d_parent->d_drawList.end(),
+                                        window));
     // sanity check that target window was also attached to correct parent.
     assert(i != d_parent->d_drawList.end());
 
@@ -4141,9 +4142,9 @@ void Window::moveBehind(const Window* const window)
             return;
 
     // find our position in the parent child draw list
-    const ChildList::iterator p(std::find(d_parent->d_drawList.begin(),
-                                          d_parent->d_drawList.end(),
-                                          this));
+    const ChildDrawList::iterator p(std::find(d_parent->d_drawList.begin(),
+                                              d_parent->d_drawList.end(),
+                                              this));
     // sanity checK that we were attached to our parent.
     assert(p != d_parent->d_drawList.end());
 
@@ -4151,9 +4152,9 @@ void Window::moveBehind(const Window* const window)
     d_parent->d_drawList.erase(p);
 
     // find window we're to be moved in front of in parent's draw list
-    const ChildList::iterator i(std::find(d_parent->d_drawList.begin(),
-                                          d_parent->d_drawList.end(),
-                                          window));
+    const ChildDrawList::iterator i(std::find(d_parent->d_drawList.begin(),
+                                              d_parent->d_drawList.end(),
+                                              window));
     // sanity check that target window was also attached to correct parent.
     assert(i != d_parent->d_drawList.end());
 
@@ -4406,7 +4407,7 @@ size_t Window::getZIndex() const
     if (!d_parent)
         return 0;
 
-    ChildList::iterator i = std::find(
+    ChildDrawList::iterator i = std::find(
         d_parent->d_drawList.begin(),
         d_parent->d_drawList.end(),
         this);
