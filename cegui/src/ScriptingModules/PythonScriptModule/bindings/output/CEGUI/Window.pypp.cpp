@@ -1446,8 +1446,7 @@ void register_Window_class(){
                     Clones this Window and returns the result\n\
             \n\
                 @param\n\
-                    deepCopy if true, even children are copied (the old name prefix will\n\
-                    be replaced with new name prefix)\n\
+                    deepCopy if true, even children are copied\n\
             \n\
                 @return\n\
                     the cloned Window\n\
@@ -2173,39 +2172,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getEventIterator
-        
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::Window::*getEventIterator_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getEventIterator"
-                , getEventIterator_function_type( &::CEGUI::Window::getEventIterator )
-                , "*!\n\
-                \n\
-                    Helper method that returns an EventSet.Iterator object that can be used\n\
-                    to iterate over the events currently added to the EventSet of this Window.\n\
-                \n\
-                    This helper member is provided as an easy way to avoid some abiguity\n\
-                    we have due to using multiple inheritence.  Ultimately it avoids the\n\
-                    need to do things like this (which some people don't like!):\n\
-                    .\n\
-                     obtain an iterator for the EventSet\n\
-                    EventSet.Iterator evt_iter = myWindow.EventSet.getIterator();\n\
-            \n\
-                     obtain an iterator for the PropertySet\n\
-                    PropertySet.Iterator prp_iter = myWindow.PropertySet.getIterator();\n\
-                    \n\n\
-            \n\
-                \note\n\
-                    Iterating over events in the EventSet is of questionable use these days,\n\
-                    since available Events are no longer added in one batch at creation time,\n\
-                    but are added individually whenever an event is first subscribed.\n\
-            \n\
-                @return\n\
-                    EventSet.Iterator object.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::getFont
         
             typedef ::CEGUI::Font * ( ::CEGUI::Window::*getFont_function_type )( bool ) const;
@@ -2690,35 +2656,6 @@ void register_Window_class(){
                 @return\n\
                     UVector2 describing the position (top-left corner) of the window area.\n\
                  *\n" );
-        
-        }
-        { //::CEGUI::Window::getPropertyIterator
-        
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::Window::*getPropertyIterator_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getPropertyIterator"
-                , getPropertyIterator_function_type( &::CEGUI::Window::getPropertyIterator )
-                , "*!\n\
-                \n\
-                    Helper method that returns a PropertySet.Iterator object that can be\n\
-                    used to iterate over the events currently added to the PropertySet of\n\
-                    this Window.\n\
-                \n\
-                    This helper member is provided as an easy way to avoid some abiguity\n\
-                    we have due to using multiple inheritence.  Ultimately it avoids the\n\
-                    need to do things like this (which some people don't like!):\n\
-                    .\n\
-                     obtain an iterator for the EventSet\n\
-                    EventSet. Iterator evt_iter = myWindow.EventSet.getIterator();\n\
-            \n\
-                     obtain an iterator for the PropertySet\n\
-                    PropertySet.Iterator prp_iter = myWindow.PropertySet.getIterator();\n\
-                    \n\n\
-            \n\
-                @return\n\
-                    PropertySet.Iterator object.\n\
-                *\n" );
         
         }
         { //::CEGUI::Window::getRenderedString

@@ -515,7 +515,7 @@
 ~@typedef_t@string@::std::string
 ~@typedef_t@__FILE@::__FILE
 ~@typedef_t@new_handler@::std::new_handler
-~@typedef_t@__pthread_unwind_buf_t@::__pthread_unwind_buf_t
+~@typedef_t@EventIterator@::CEGUI::EventSet::EventIterator
 ~@typedef_t@wstring@::std::wstring
 ~@typedef_t@uid_t@::uid_t
 ~@typedef_t@__u_quad_t@::__u_quad_t
@@ -523,7 +523,6 @@
 ~@typedef_t@__gthread_cond_t@::__gthread_cond_t
 ~@typedef_t@_Atomic_word@::_Atomic_word
 ~@typedef_t@ifstream@::std::ifstream
-~@typedef_t@Iterator@::CEGUI::EventSet::Iterator
 ~@typedef_t@wint_t@::wint_t
 ~@typedef_t@__rlim_t@::__rlim_t
 ~@typedef_t@__gthread_mutex_t@::__gthread_mutex_t
@@ -1068,6 +1067,7 @@
 ~@typedef_t@reverse_iterator@::std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::reverse_iterator
 ~@typedef_t@reverse_iterator@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >::reverse_iterator
 ~@typedef_t@reverse_iterator@::CEGUI::String::reverse_iterator
+~@typedef_t@__pthread_unwind_buf_t@::__pthread_unwind_buf_t
 ~@typedef_t@__ssize_t@::__ssize_t
 ~@typedef_t@time_t@::time_t
 ~@typedef_t@pthread_t@::pthread_t
@@ -2024,7 +2024,6 @@
 ~@member_function_t@equal_range@::std::pair< std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) ::std::pair<std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > >,std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) 
 ~@member_function_t@equal_range@::std::pair< std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const::std::pair<std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > >,std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const
 ~@member_function_t@_S_normalize_category@int (*)( int )int (*)( int )
-~@member_function_t@getIterator@::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const::CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const
 ~@member_function_t@_M_set_sharable@void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) 
 ~@member_function_t@_M_set_sharable@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) 
 ~@member_function_t@attachWindow@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) 
@@ -2240,6 +2239,7 @@
 ~@member_function_t@isMuted@bool ( ::CEGUI::EventSet::* )(  ) constbool ( ::CEGUI::EventSet::* )(  ) const
 ~@member_function_t@setPivot@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) 
+~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@clamp@void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float >,::CEGUI::Size< float > ) void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float>,::CEGUI::Size<float> ) 
 ~@member_function_t@do_transform@::std::wstring ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const
@@ -3229,6 +3229,7 @@
 ~@member_function_t@__defer@void ( ::__pthread_cleanup_class::* )(  ) void ( ::__pthread_cleanup_class::* )(  ) 
 ~@member_function_t@_M_refcopy@wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) 
 ~@member_function_t@_M_refcopy@char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) 
+~@member_function_t@getEventIterator@::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const::CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::Event*> > > > ( ::CEGUI::EventSet::* )(  ) const
 ~@member_function_t@_M_replace_aux@::std::wstring & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t,::size_t,wchar_t ) ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > & ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t,::size_t,wchar_t ) 
 ~@member_function_t@_M_replace_aux@::std::string & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::size_t,char ) ::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::size_t,char ) 
 ~@member_function_t@c_str@wchar_t const * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) constwchar_t const * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) const

@@ -307,6 +307,20 @@ void register_EventSet_class(){
                 , "! Implementation event firing member\n" );
         
         }
+        { //::CEGUI::EventSet::getEventIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::EventSet::*getEventIterator_function_type )(  ) const;
+            
+            EventSet_exposer.def( 
+                "getEventIterator"
+                , getEventIterator_function_type( &::CEGUI::EventSet::getEventIterator )
+                , "*!\n\
+            \n\
+                Return a EventSet.EventIterator object to iterate over the events currently\n\
+                added to the EventSet.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::EventSet::getEventObject
         
             typedef ::CEGUI::Event * ( ::CEGUI::EventSet::*getEventObject_function_type )( ::CEGUI::String const &,bool ) ;
@@ -335,20 +349,6 @@ void register_EventSet_class(){
                     Pointer to the Event object in this EventSet with the specifed name.\n\
                     Or 0 if such an Event does not exist and  autoAdd was false.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::EventSet::getIterator
-        
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > > > ( ::CEGUI::EventSet::*getIterator_function_type )(  ) const;
-            
-            EventSet_exposer.def( 
-                "getIterator"
-                , getIterator_function_type( &::CEGUI::EventSet::getIterator )
-                , "*!\n\
-            \n\
-                Return a EventSet.Iterator object to iterate over the events currently\n\
-                added to the EventSet.\n\
-            *\n" );
         
         }
         { //::CEGUI::EventSet::getScriptModule

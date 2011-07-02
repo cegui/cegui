@@ -58,20 +58,6 @@ void register_PropertySet_class(){
                *\n" );
         
         }
-        { //::CEGUI::PropertySet::getIterator
-        
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::PropertySet::*getIterator_function_type )(  ) const;
-            
-            PropertySet_exposer.def( 
-                "getIterator"
-                , getIterator_function_type( &::CEGUI::PropertySet::getIterator )
-                , "*!\n\
-            \n\
-                Return a PropertySet.PropertyIterator object to iterate over the available\n\
-                Properties.\n\
-            *\n" );
-        
-        }
         { //::CEGUI::PropertySet::getProperty
         
             typedef ::CEGUI::String ( ::CEGUI::PropertySet::*getProperty_function_type )( ::CEGUI::String const & ) const;
@@ -157,6 +143,20 @@ void register_PropertySet_class(){
                 @return\n\
                     Pointer to the property instance\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::PropertySet::getPropertyIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::PropertySet::*getPropertyIterator_function_type )(  ) const;
+            
+            PropertySet_exposer.def( 
+                "getPropertyIterator"
+                , getPropertyIterator_function_type( &::CEGUI::PropertySet::getPropertyIterator )
+                , "*!\n\
+            \n\
+                Return a PropertySet.PropertyIterator object to iterate over the available\n\
+                Properties.\n\
+            *\n" );
         
         }
         { //::CEGUI::PropertySet::isPropertyDefault
