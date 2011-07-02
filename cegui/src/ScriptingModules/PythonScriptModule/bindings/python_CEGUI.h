@@ -150,10 +150,10 @@ namespace pyplusplus
         
         typedef ::CEGUI::Event::Connection Connection;
         typedef ::CEGUI::Event::Subscriber Subscriber;
-        typedef ::CEGUI::EventSet::Iterator EventIterator;
+        typedef ::CEGUI::EventSet::EventIterator EventIterator;
         
         typedef ::CEGUI::FontManager::FontIterator FontIterator;
-        typedef ::CEGUI::PropertySet::Iterator PropertyIterator;
+        typedef ::CEGUI::PropertySet::PropertyIterator PropertyIterator;
         typedef ::CEGUI::SchemeManager::SchemeIterator SchemeIterator;
         typedef ::CEGUI::WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
         typedef ::CEGUI::WindowFactoryManager::TypeAliasIterator TypeAliasIterator;
@@ -227,13 +227,13 @@ namespace python_CEGUI
             sizeof ( ::CEGUI::Event::Subscriber) ;
             
             sizeof ( ::CEGUI::FontManager::FontIterator);
-            sizeof ( ::CEGUI::PropertySet::Iterator);
+            sizeof ( ::CEGUI::PropertySet::PropertyIterator);
             sizeof ( ::CEGUI::SchemeManager::SchemeIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::WindowFactoryIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::TypeAliasIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::FalagardMappingIterator);
             sizeof ( ::CEGUI::WindowManager::WindowIterator);
-            sizeof ( ::CEGUI::EventSet::Iterator );
+            sizeof ( ::CEGUI::EventSet::EventIterator );
             sizeof ( ::CEGUI::String::iterator );
             sizeof ( ::CEGUI::Vector2< float > );
             sizeof ( ::CEGUI::Vector3< float > );
