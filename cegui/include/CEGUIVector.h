@@ -158,27 +158,27 @@ public:
     }
 
     //! \brief finger saving alias for Vector2(0, 0)
-    inline Vector2 zero()
+    inline static Vector2 zero()
     {
-        return Vector2(0, 0);
+        return Vector2(TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
     }
 
     //! \brief finger saving alias for Vector2(1, 1)
     inline static Vector2 one()
     {
-        return Vector2(1, 1);
+        return Vector2(TypeSensitiveOne<T>(), TypeSensitiveOne<T>());
     }
     
     //! \brief finger saving alias for Vector2(1, 0)
     inline static Vector2 one_x()
     {
-        return Vector2(1, 0);
+        return Vector2(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
     }
     
     //! \brief finger saving alias for Vector2(0, 1)
     inline static Vector2 one_y()
     {
-        return Vector2(0, 1);
+        return Vector2(TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
     }
 
     T d_x;
@@ -271,31 +271,31 @@ public:
     //! \brief finger saving alias for Vector3(0, 0, 0)
     inline static Vector3 zero()
     {
-        return Vector3(0, 0, 0);
+        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
     }
 
     //! \brief finger saving alias for Vector3(1, 1, 1)
     inline static Vector3 one()
     {
-        return Vector3(1, 1, 1);
+        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveOne<T>(), TypeSensitiveOne<T>());
     }
     
     //! \brief finger saving alias for Vector3(1, 0, 0)
     inline static Vector3 one_x()
     {
-        return Vector3(1, 0, 0);
+        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
     }
     
     //! \brief finger saving alias for Vector3(0, 1, 0)
     inline static Vector3 one_y()
     {
-        return Vector3(0, 1, 0);
+        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
     }
 
     //! \brief finger saving alias for Vector3(0, 0, 1)
     inline static Vector3 one_z()
     {
-        return Vector3(0, 0, 1);
+        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
     }
     
     T d_x;
