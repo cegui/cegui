@@ -247,12 +247,24 @@ void register_URect_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::Rect< CEGUI::UDim >::zero
+        
+            typedef CEGUI::Rect< CEGUI::UDim > exported_class_t;
+            typedef ::CEGUI::Rect< CEGUI::UDim > ( *zero_function_type )(  );
+            
+            URect_exposer.def( 
+                "zero"
+                , zero_function_type( &::CEGUI::Rect< CEGUI::UDim >::zero )
+                , "!  finger saving alias for zero sized, zero positioned rect\n" );
+        
+        }
         URect_exposer.def_readwrite( "d_max", &CEGUI::Rect< CEGUI::UDim >::d_max, "*************************************************************************\n\
-           Data Fields\n\
+            Data Fields\n\
         *************************************************************************\n" );
         URect_exposer.def_readwrite( "d_min", &CEGUI::Rect< CEGUI::UDim >::d_min, "*************************************************************************\n\
-           Data Fields\n\
+            Data Fields\n\
         *************************************************************************\n" );
+        URect_exposer.staticmethod( "zero" );
     }
 
 }

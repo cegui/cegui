@@ -25,6 +25,39 @@ void register_Sizef_class(){
                 , ( bp::arg("min"), bp::arg("max") ) );
         
         }
+        { //::CEGUI::Size< float >::one
+        
+            typedef CEGUI::Size< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( *one_function_type )(  );
+            
+            Sizef_exposer.def( 
+                "one"
+                , one_function_type( &::CEGUI::Size< float >::one )
+                , "!  finger saving alias for Size(1, 1)\n" );
+        
+        }
+        { //::CEGUI::Size< float >::one_height
+        
+            typedef CEGUI::Size< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( *one_height_function_type )(  );
+            
+            Sizef_exposer.def( 
+                "one_height"
+                , one_height_function_type( &::CEGUI::Size< float >::one_height )
+                , "!  finger saving alias for Size(0, 1)\n" );
+        
+        }
+        { //::CEGUI::Size< float >::one_width
+        
+            typedef CEGUI::Size< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( *one_width_function_type )(  );
+            
+            Sizef_exposer.def( 
+                "one_width"
+                , one_width_function_type( &::CEGUI::Size< float >::one_width )
+                , "!  finger saving alias for Size(1, 0)\n" );
+        
+        }
         Sizef_exposer.def( bp::self != bp::self );
         Sizef_exposer.def( bp::self * bp::other< float >() );
         Sizef_exposer.def( bp::self + bp::self );
@@ -40,8 +73,36 @@ void register_Sizef_class(){
                 , ( bp::arg("mode"), bp::arg("ratio") ) );
         
         }
+        { //::CEGUI::Size< float >::square
+        
+            typedef CEGUI::Size< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( *square_function_type )( float const & );
+            
+            Sizef_exposer.def( 
+                "square"
+                , square_function_type( &::CEGUI::Size< float >::square )
+                , ( bp::arg("side") )
+                , "!  finger saving alias for Size(side, side)\n" );
+        
+        }
+        { //::CEGUI::Size< float >::zero
+        
+            typedef CEGUI::Size< float > exported_class_t;
+            typedef ::CEGUI::Size< float > ( *zero_function_type )(  );
+            
+            Sizef_exposer.def( 
+                "zero"
+                , zero_function_type( &::CEGUI::Size< float >::zero )
+                , "!  finger saving alias for Size(0, 0)\n" );
+        
+        }
         Sizef_exposer.def_readwrite( "d_height", &CEGUI::Size< float >::d_height );
         Sizef_exposer.def_readwrite( "d_width", &CEGUI::Size< float >::d_width );
+        Sizef_exposer.staticmethod( "one" );
+        Sizef_exposer.staticmethod( "one_height" );
+        Sizef_exposer.staticmethod( "one_width" );
+        Sizef_exposer.staticmethod( "square" );
+        Sizef_exposer.staticmethod( "zero" );
     }
 
 }

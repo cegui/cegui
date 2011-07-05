@@ -29,6 +29,7 @@
 #define _CEGUIUDim_h_
 
 #include "CEGUIBase.h"
+#include <ostream>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -131,6 +132,15 @@ public:
     inline bool operator!=(const UDim& other) const
     {
         return !operator==(other);
+    }
+    
+    /*!
+    \brief allows writing the udim to std ostream
+    */
+    inline friend std::ostream& operator << (std::ostream& s, const UDim& v)
+    {
+        s << "CEGUI::UDim(" << v.d_scale << ", " << v.d_offset << ")";
+        return s;
     }
     
     /*!
@@ -276,6 +286,40 @@ public:
     UDim d_bottom;
     UDim d_right;
 };
+
+/*!
+* \brief allows you to get UDim(0, 0) if you pass UDim or just 0 if you pass anything else
+* 
+* \todo Is this the right place where to put this?
+*/
+template<typename T>
+inline T TypeSensitiveZero()
+{
+    return T(0);
+}
+
+template<>
+inline UDim TypeSensitiveZero<UDim>()
+{
+    return UDim(0, 0);
+}
+
+/*!
+* \brief allows you to get UDim::relative() if you pass UDim or just 1 if you pass anything else
+* 
+* \todo Is this the right place where to put this?
+*/
+template<typename T>
+inline T TypeSensitiveOne()
+{
+    return T(1);
+}
+
+template<>
+inline UDim TypeSensitiveOne<UDim>()
+{
+    return UDim::relative();
+}
 
 } // End of  CEGUI namespace section
 

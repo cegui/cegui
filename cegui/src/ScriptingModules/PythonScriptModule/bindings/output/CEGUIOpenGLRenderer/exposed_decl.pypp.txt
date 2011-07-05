@@ -158,6 +158,7 @@
 ~@destructor_t@~iterator@ ( ::CEGUI::String::iterator::* )(  )  ( ::CEGUI::String::iterator::* )(  ) 
 ~@destructor_t@~RenderingSurface@ ( ::CEGUI::RenderingSurface::* )(  )  ( ::CEGUI::RenderingSurface::* )(  ) 
 ~@destructor_t@~Rect@ ( ::CEGUI::Rect<float>::* )(  )  ( ::CEGUI::Rect<float>::* )(  ) 
+~@destructor_t@~Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )(  )  ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) 
 ~@destructor_t@~type_info@ ( ::std::type_info::* )(  )  ( ::std::type_info::* )(  ) 
 ~@destructor_t@~_Callback_list@ ( ::std::ios_base::_Callback_list::* )(  )  ( ::std::ios_base::_Callback_list::* )(  ) 
 ~@destructor_t@~__locale_struct@ ( ::__locale_struct::* )(  )  ( ::__locale_struct::* )(  ) 
@@ -185,6 +186,7 @@
 ~@destructor_t@~_Rb_tree@ ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  )  ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) 
 ~@destructor_t@~_Rb_tree@ ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  )  ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) 
 ~@destructor_t@~Size@ ( ::CEGUI::Size<float>::* )(  )  ( ::CEGUI::Size<float>::* )(  ) 
+~@destructor_t@~Size@ ( ::CEGUI::Size<CEGUI::UDim>::* )(  )  ( ::CEGUI::Size<CEGUI::UDim>::* )(  ) 
 ~@destructor_t@~exception@ ( ::std::exception::* )(  )  ( ::std::exception::* )(  ) 
 ~@destructor_t@~domain_error@ ( ::std::domain_error::* )(  )  ( ::std::domain_error::* )(  ) 
 ~@destructor_t@~__numeric_traits_integer@ ( ::__gnu_cxx::__numeric_traits_integer<long>::* )(  )  ( ::__gnu_cxx::__numeric_traits_integer<long>::* )(  ) 
@@ -206,6 +208,7 @@
 ~@destructor_t@~reverse_iterator@ ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )(  )  ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )(  ) 
 ~@destructor_t@~reverse_iterator@ ( ::std::reverse_iterator<CEGUI::String::iterator>::* )(  )  ( ::std::reverse_iterator<CEGUI::String::iterator>::* )(  ) 
 ~@destructor_t@~Vector2@ ( ::CEGUI::Vector2<float>::* )(  )  ( ::CEGUI::Vector2<float>::* )(  ) 
+~@destructor_t@~Vector2@ ( ::CEGUI::Vector2<CEGUI::UDim>::* )(  )  ( ::CEGUI::Vector2<CEGUI::UDim>::* )(  ) 
 ~@destructor_t@~collate@ ( ::std::collate<wchar_t>::* )(  )  ( ::std::collate<wchar_t>::* )(  ) 
 ~@destructor_t@~collate@ ( ::std::collate<char>::* )(  )  ( ::std::collate<char>::* )(  ) 
 ~@destructor_t@~sched_param@ ( ::sched_param::* )(  )  ( ::sched_param::* )(  ) 
@@ -275,7 +278,12 @@
 ~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::RenderTarget>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::RenderTarget>::* )(  ) 
 ~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )(  ) 
 ~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )(  ) 
+~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )(  ) 
+~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )(  ) 
 ~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )(  ) 
+~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )(  ) 
+~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )(  ) 
+~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )(  ) 
 ~@destructor_t@~AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::String>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::String>::* )(  ) 
 ~@destructor_t@~bad_cast@ ( ::std::bad_cast::* )(  )  ( ::std::bad_cast::* )(  ) 
 ~@destructor_t@~sentry@ ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::sentry::* )(  )  ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::sentry::* )(  ) 
@@ -290,6 +298,7 @@
 ~@destructor_t@~map@ ( ::std::map<CEGUI::RenderQueueID, CEGUI::RenderQueue, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )(  )  ( ::std::map<CEGUI::RenderQueueID, CEGUI::RenderQueue, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )(  ) 
 ~@destructor_t@~map@ ( ::std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  )  ( ::std::map<CEGUI::String, CEGUI::Event*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) 
 ~@destructor_t@~forward_iterator_tag@ ( ::std::forward_iterator_tag::* )(  )  ( ::std::forward_iterator_tag::* )(  ) 
+~@destructor_t@~UBox@ ( ::CEGUI::UBox::* )(  )  ( ::CEGUI::UBox::* )(  ) 
 ~@destructor_t@~__uninitialized_fill_n@ ( ::std::__uninitialized_fill_n<false>::* )(  )  ( ::std::__uninitialized_fill_n<false>::* )(  ) 
 ~@destructor_t@~__uninitialized_fill_n@ ( ::std::__uninitialized_fill_n<true>::* )(  )  ( ::std::__uninitialized_fill_n<true>::* )(  ) 
 ~@destructor_t@~lconv@ ( ::lconv::* )(  )  ( ::lconv::* )(  ) 
@@ -300,6 +309,7 @@
 ~@destructor_t@~collate_byname@ ( ::std::collate_byname<char>::* )(  )  ( ::std::collate_byname<char>::* )(  ) 
 ~@destructor_t@~random_access_iterator_tag@ ( ::std::random_access_iterator_tag::* )(  )  ( ::std::random_access_iterator_tag::* )(  ) 
 ~@destructor_t@~._37@ ( ::__mbstate_t::* )(  )  ( ::__mbstate_t::* )(  ) 
+~@destructor_t@~UDim@ ( ::CEGUI::UDim::* )(  )  ( ::CEGUI::UDim::* )(  ) 
 ~@enumeration_t@_Ios_Iostate@::std::_Ios_Iostate
 ~@enumeration_t@('/usr/include/pthread.h', 66)@::
 ~@enumeration_t@('/usr/include/c++/4.5/bits/cpp_type_traits.h', 239)@::std::__is_integer< long long >
@@ -473,6 +483,7 @@
 ~@typedef_t@PFNGLGETPROGRAMBINARYPROC@::PFNGLGETPROGRAMBINARYPROC
 ~@typedef_t@PFNGLFINISHASYNCSGIXPROC@::PFNGLFINISHASYNCSGIXPROC
 ~@typedef_t@PFNGLCONVOLUTIONPARAMETERFPROC@::PFNGLCONVOLUTIONPARAMETERFPROC
+~@typedef_t@USize@::CEGUI::USize
 ~@typedef_t@off_t@::off_t
 ~@typedef_t@PFNGLBINDBUFFERRANGEEXTPROC@::PFNGLBINDBUFFERRANGEEXTPROC
 ~@typedef_t@PFNGLTEXSUBIMAGE1DEXTPROC@::PFNGLTEXSUBIMAGE1DEXTPROC
@@ -521,14 +532,13 @@
 ~@typedef_t@PFNGLTEXCOORDPOINTERVINTELPROC@::PFNGLTEXCOORDPOINTERVINTELPROC
 ~@typedef_t@PFNGLUNIFORM1UI64VNVPROC@::PFNGLUNIFORM1UI64VNVPROC
 ~@typedef_t@PFNGLVERTEXSTREAM4FVATIPROC@::PFNGLVERTEXSTREAM4FVATIPROC
-~@typedef_t@PFNGLPROGRAMUNIFORM1FVEXTPROC@::PFNGLPROGRAMUNIFORM1FVEXTPROC
+~@typedef_t@uid_t@::uid_t
 ~@typedef_t@PFNGLLINKPROGRAMPROC@::PFNGLLINKPROGRAMPROC
 ~@typedef_t@PFNGLPOLLINSTRUMENTSSGIXPROC@::PFNGLPOLLINSTRUMENTSSGIXPROC
 ~@typedef_t@PFNGLWINDOWPOS4SMESAPROC@::PFNGLWINDOWPOS4SMESAPROC
 ~@typedef_t@PFNGLVALIDATEPROGRAMPROC@::PFNGLVALIDATEPROGRAMPROC
 ~@typedef_t@PFNGLDRAWELEMENTSBASEVERTEXPROC@::PFNGLDRAWELEMENTSBASEVERTEXPROC
 ~@typedef_t@PFNGLMATRIXINDEXUBVARBPROC@::PFNGLMATRIXINDEXUBVARBPROC
-~@typedef_t@PFNGLCHECKNAMEDFRAMEBUFFERSTATUSEXTPROC@::PFNGLCHECKNAMEDFRAMEBUFFERSTATUSEXTPROC
 ~@typedef_t@PFNGLVERTEXATTRIBL2UI64NVPROC@::PFNGLVERTEXATTRIBL2UI64NVPROC
 ~@typedef_t@PFNGLISFENCEAPPLEPROC@::PFNGLISFENCEAPPLEPROC
 ~@typedef_t@PFNGLVERTEXATTRIB2SVNVPROC@::PFNGLVERTEXATTRIB2SVNVPROC
@@ -678,7 +688,7 @@
 ~@typedef_t@PFNGLTEXCOORD3HVNVPROC@::PFNGLTEXCOORD3HVNVPROC
 ~@typedef_t@PFNGLVERTEXATTRIBL1UI64NVPROC@::PFNGLVERTEXATTRIBL1UI64NVPROC
 ~@typedef_t@__uint8_t@::__uint8_t
-~@typedef_t@PFNGLPROGRAMUNIFORM2DPROC@::PFNGLPROGRAMUNIFORM2DPROC
+~@typedef_t@PFNGLVERTEXATTRIBL4I64NVPROC@::PFNGLVERTEXATTRIBL4I64NVPROC
 ~@typedef_t@size_type@::std::string::size_type
 ~@typedef_t@size_type@::std::wstring::size_type
 ~@typedef_t@size_type@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >::size_type
@@ -889,7 +899,7 @@
 ~@typedef_t@PFNGLIMAGETRANSFORMPARAMETERIVHPPROC@::PFNGLIMAGETRANSFORMPARAMETERIVHPPROC
 ~@typedef_t@PFNGLBINDFRAMEBUFFERPROC@::PFNGLBINDFRAMEBUFFERPROC
 ~@typedef_t@PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC@::PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC
-~@typedef_t@PFNGLPROGRAMUNIFORM3DPROC@::PFNGLPROGRAMUNIFORM3DPROC
+~@typedef_t@PFNGLCHECKNAMEDFRAMEBUFFERSTATUSEXTPROC@::PFNGLCHECKNAMEDFRAMEBUFFERSTATUSEXTPROC
 ~@typedef_t@PFNGLVERTEXATTRIBI4UIPROC@::PFNGLVERTEXATTRIBI4UIPROC
 ~@typedef_t@PFNGLREADINSTRUMENTSSGIXPROC@::PFNGLREADINSTRUMENTSSGIXPROC
 ~@typedef_t@PFNGLMATRIXPOPEXTPROC@::PFNGLMATRIXPOPEXTPROC
@@ -1021,6 +1031,7 @@
 ~@typedef_t@PFNGLWEIGHTBVARBPROC@::PFNGLWEIGHTBVARBPROC
 ~@typedef_t@PFNGLGETUNIFORMIVARBPROC@::PFNGLGETUNIFORMIVARBPROC
 ~@typedef_t@PFNGLTEXSUBIMAGE4DSGISPROC@::PFNGLTEXSUBIMAGE4DSGISPROC
+~@typedef_t@UVector2@::CEGUI::UVector2
 ~@typedef_t@PFNGLDETAILTEXFUNCSGISPROC@::PFNGLDETAILTEXFUNCSGISPROC
 ~@typedef_t@PFNGLUNIFORMMATRIX3FVARBPROC@::PFNGLUNIFORMMATRIX3FVARBPROC
 ~@typedef_t@PFNGLWINDOWPOS3FARBPROC@::PFNGLWINDOWPOS3FARBPROC
@@ -1704,7 +1715,7 @@
 ~@typedef_t@PFNGLBINDVERTEXARRAYPROC@::PFNGLBINDVERTEXARRAYPROC
 ~@typedef_t@__int64_t@::__int64_t
 ~@typedef_t@PFNGLGETINTEGERI_VPROC@::PFNGLGETINTEGERI_VPROC
-~@typedef_t@uid_t@::uid_t
+~@typedef_t@PFNGLPROGRAMUNIFORM1FVEXTPROC@::PFNGLPROGRAMUNIFORM1FVEXTPROC
 ~@typedef_t@PFNGLCONVOLUTIONFILTER2DPROC@::PFNGLCONVOLUTIONFILTER2DPROC
 ~@typedef_t@PFNGLPROGRAMLOCALPARAMETERI4UINVPROC@::PFNGLPROGRAMLOCALPARAMETERI4UINVPROC
 ~@typedef_t@PFNGLPROGRAMUNIFORM1FEXTPROC@::PFNGLPROGRAMUNIFORM1FEXTPROC
@@ -2068,6 +2079,7 @@
 ~@typedef_t@PFNGLWINDOWPOS3IVARBPROC@::PFNGLWINDOWPOS3IVARBPROC
 ~@typedef_t@PFNGLGETSYNCIVPROC@::PFNGLGETSYNCIVPROC
 ~@typedef_t@PFNGLPROGRAMUNIFORM4FPROC@::PFNGLPROGRAMUNIFORM4FPROC
+~@typedef_t@PFNGLPROGRAMUNIFORM3DPROC@::PFNGLPROGRAMUNIFORM3DPROC
 ~@typedef_t@PFNGLGETACTIVEATTRIBPROC@::PFNGLGETACTIVEATTRIBPROC
 ~@typedef_t@PFNGLBINDFRAGDATALOCATIONEXTPROC@::PFNGLBINDFRAGDATALOCATIONEXTPROC
 ~@typedef_t@PFNGLMATRIXTRANSLATEDEXTPROC@::PFNGLMATRIXTRANSLATEDEXTPROC
@@ -2373,7 +2385,7 @@
 ~@typedef_t@open_mode@::std::ios_base::open_mode
 ~@typedef_t@PFNGLCLAMPCOLORARBPROC@::PFNGLCLAMPCOLORARBPROC
 ~@typedef_t@PFNGLUNIFORMMATRIX2X3FVPROC@::PFNGLUNIFORMMATRIX2X3FVPROC
-~@typedef_t@PFNGLVERTEXATTRIBL4I64NVPROC@::PFNGLVERTEXATTRIBL4I64NVPROC
+~@typedef_t@PFNGLPROGRAMUNIFORM2DPROC@::PFNGLPROGRAMUNIFORM2DPROC
 ~@typedef_t@PFNGLISTRANSFORMFEEDBACKPROC@::PFNGLISTRANSFORMFEEDBACKPROC
 ~@typedef_t@PFNGLPROGRAMUNIFORM4UIEXTPROC@::PFNGLPROGRAMUNIFORM4UIEXTPROC
 ~@typedef_t@PFNGLPROGRAMUNIFORM4UIVPROC@::PFNGLPROGRAMUNIFORM4UIVPROC
@@ -2452,6 +2464,7 @@
 ~@typedef_t@PFNGLUNIFORM3UIVPROC@::PFNGLUNIFORM3UIVPROC
 ~@typedef_t@ptrdiff_t@::ptrdiff_t
 ~@typedef_t@PFNGLPROGRAMUNIFORM2UIEXTPROC@::PFNGLPROGRAMUNIFORM2UIEXTPROC
+~@typedef_t@URect@::CEGUI::URect
 ~@typedef_t@PFNGLACTIVEVARYINGNVPROC@::PFNGLACTIVEVARYINGNVPROC
 ~@typedef_t@_Raw_bytes_alloc@::std::string::_Rep::_Raw_bytes_alloc
 ~@typedef_t@_Raw_bytes_alloc@::std::wstring::_Rep::_Raw_bytes_alloc
@@ -3223,7 +3236,6 @@
 ~@class_declaration_t@ScrolledItemListBase@::CEGUI::ScrolledItemListBase
 ~@class_declaration_t@__normal_iterator< const CEGUI::GeometryBuffer**, std::vector< const CEGUI::GeometryBuffer* > >@::__gnu_cxx::__normal_iterator< const CEGUI::GeometryBuffer**, std::vector< const CEGUI::GeometryBuffer* > >
 ~@class_declaration_t@basic_ofstream< wchar_t, std::char_traits< wchar_t > >@::std::basic_ofstream< wchar_t, std::char_traits< wchar_t > >
-~@class_declaration_t@ImageManager@::CEGUI::ImageManager
 ~@class_declaration_t@pair< std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > >, std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > >@::std::pair< std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > >, std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > >
 ~@class_declaration_t@codecvt< char, char, __mbstate_t >@::std::codecvt< char, char, __mbstate_t >
 ~@class_declaration_t@Vertex@::CEGUI::Vertex
@@ -3283,7 +3295,6 @@
 ~@class_declaration_t@pair< std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >, std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > > >@::std::pair< std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >, std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > > >
 ~@class_declaration_t@reverse_iterator< std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > >@::std::reverse_iterator< std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > >
 ~@class_declaration_t@ImagerySection@::CEGUI::ImagerySection
-~@class_declaration_t@_IO_FILE@::_IO_FILE
 ~@class_declaration_t@reverse_iterator< __gnu_cxx::__normal_iterator< char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > > >@::std::reverse_iterator< __gnu_cxx::__normal_iterator< char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > > >
 ~@class_declaration_t@pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue >@::std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue >
 ~@class_declaration_t@_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > >@::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > >
@@ -3390,7 +3401,7 @@
 ~@class_declaration_t@LeftAlignedRenderedString@::CEGUI::LeftAlignedRenderedString
 ~@class_declaration_t@__numeric_traits_floating< long unsigned int >@::__gnu_cxx::__numeric_traits_floating< long unsigned int >
 ~@class_declaration_t@DefaultRenderedStringParser@::CEGUI::DefaultRenderedStringParser
-~@class_declaration_t@UBox@::CEGUI::UBox
+~@class_declaration_t@_IO_FILE@::_IO_FILE
 ~@class_declaration_t@TreeItem@::CEGUI::TreeItem
 ~@class_declaration_t@RenderedStringTextComponent@::CEGUI::RenderedStringTextComponent
 ~@class_declaration_t@LayoutContainer@::CEGUI::LayoutContainer
@@ -3447,7 +3458,7 @@
 ~@class_declaration_t@__class_type_info@::__cxxabiv1::__class_type_info
 ~@class_declaration_t@money_base@::std::money_base
 ~@class_declaration_t@reverse_iterator< __gnu_cxx::__normal_iterator< CEGUI::TextureTarget**, std::vector< CEGUI::TextureTarget* > > >@::std::reverse_iterator< __gnu_cxx::__normal_iterator< CEGUI::TextureTarget**, std::vector< CEGUI::TextureTarget* > > >
-~@class_declaration_t@UDim@::CEGUI::UDim
+~@class_declaration_t@ImageManager@::CEGUI::ImageManager
 ~@class_declaration_t@ItemListbox@::CEGUI::ItemListbox
 ~@class_declaration_t@__normal_iterator< const char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > >@::__gnu_cxx::__normal_iterator< const char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > >
 ~@class_declaration_t@DragContainer@::CEGUI::DragContainer
@@ -3474,12 +3485,14 @@
 ~@class_t@AllocatedObject< CEGUI::Vector2< float > >@::CEGUI::AllocatedObject< CEGUI::Vector2< float > >
 ~@class_t@__uninitialized_fill< false >@::std::__uninitialized_fill< false >
 ~@class_t@__is_floating< double >@::std::__is_floating< double >
+~@class_t@Vector2< CEGUI::UDim >@::CEGUI::Vector2< CEGUI::UDim >
 ~@class_t@iterator< std::random_access_iterator_tag, bool, long, bool const*, bool >@::std::iterator< std::random_access_iterator_tag, bool, long, bool const*, bool >
 ~@class_t@basic_ostream< wchar_t, std::char_traits< wchar_t > >@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > >
 ~@class_t@LinkedEventArgs@::CEGUI::LinkedEventArgs
 ~@class_t@ios_base@::std::ios_base
 ~@class_t@rebind< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::Event* > > >@::std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > >::rebind< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::Event* > > >
 ~@class_t@Rect< float >@::CEGUI::Rect< float >
+~@class_t@AllocatedObject< CEGUI::Vector2< CEGUI::UDim > >@::CEGUI::AllocatedObject< CEGUI::Vector2< CEGUI::UDim > >
 ~@class_t@__remove_unsigned< unsigned short >@::__gnu_cxx::__remove_unsigned< unsigned short >
 ~@class_t@SubscriberSlot@::CEGUI::SubscriberSlot
 ~@class_t@__conditional_type< true, __gnu_cxx::__numeric_traits_integer< long >, __gnu_cxx::__numeric_traits_floating< long > >@::__gnu_cxx::__conditional_type< true, __gnu_cxx::__numeric_traits_integer< long >, __gnu_cxx::__numeric_traits_floating< long > >
@@ -3506,6 +3519,7 @@
 ~@class_t@_Vector_impl@::std::_Vector_base< CEGUI::RenderingWindow*, std::allocator< CEGUI::RenderingWindow* > >::_Vector_impl
 ~@class_t@_Vector_impl@::std::_Vector_base< CEGUI::GeometryBuffer const*, std::allocator< CEGUI::GeometryBuffer const* > >::_Vector_impl
 ~@class_t@__remove_unsigned< unsigned long long >@::__gnu_cxx::__remove_unsigned< unsigned long long >
+~@class_t@AllocatedObject< CEGUI::Rect< CEGUI::UDim > >@::CEGUI::AllocatedObject< CEGUI::Rect< CEGUI::UDim > >
 ~@class_t@__is_integer< unsigned char >@::std::__is_integer< unsigned char >
 ~@class_t@map<CEGUI::String, CEGUI::OpenGLTexture*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >@::std::map<CEGUI::String, CEGUI::OpenGLTexture*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >
 ~@class_t@wstring@::std::wstring
@@ -3519,9 +3533,10 @@
 ~@class_t@vector< CEGUI::RenderingWindow* >@::std::vector< CEGUI::RenderingWindow* >
 ~@class_t@allocator< CEGUI::TextureTarget* >@::std::allocator< CEGUI::TextureTarget* >
 ~@class_t@__is_integer< signed char >@::std::__is_integer< signed char >
+~@class_t@('/usr/include/bits/pthreadtypes.h', 154)@::pthread_rwlock_t
 ~@class_t@_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >
 ~@class_t@invalid_argument@::std::invalid_argument
-~@class_t@__pthread_cleanup_frame@::__pthread_cleanup_frame
+~@class_t@AllocatedObject< CEGUI::UDim >@::CEGUI::AllocatedObject< CEGUI::UDim >
 ~@class_t@__uninitialized_fill< true >@::std::__uninitialized_fill< true >
 ~@class_t@__add_unsigned< long long >@::__gnu_cxx::__add_unsigned< long long >
 ~@class_t@RenderTarget@::CEGUI::RenderTarget
@@ -3541,6 +3556,7 @@
 ~@class_t@timespec@::timespec
 ~@class_t@locale@::std::locale
 ~@class_t@GeometryBuffer@::CEGUI::GeometryBuffer
+~@class_t@__pthread_cleanup_frame@::__pthread_cleanup_frame
 ~@class_t@pthread_mutexattr_t@::pthread_mutexattr_t
 ~@class_t@RefCounted< CEGUI::BoundSlot >@::CEGUI::RefCounted< CEGUI::BoundSlot >
 ~@class_t@type_info@::std::type_info
@@ -3579,6 +3595,7 @@
 ~@class_t@__uninitialized_fill_n< false >@::std::__uninitialized_fill_n< false >
 ~@class_t@AllocatedObject< CEGUI::BoundSlot >@::CEGUI::AllocatedObject< CEGUI::BoundSlot >
 ~@class_t@__is_integer< unsigned long long >@::std::__is_integer< unsigned long long >
+~@class_t@AllocatedObject< CEGUI::Size< CEGUI::UDim > >@::CEGUI::AllocatedObject< CEGUI::Size< CEGUI::UDim > >
 ~@class_t@out_of_range@::std::out_of_range
 ~@class_t@new_allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >@::__gnu_cxx::new_allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >
 ~@class_t@allocator< std::_Rb_tree_node< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >@::std::allocator< std::_Rb_tree_node< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >
@@ -3647,6 +3664,7 @@
 ~@class_t@iterator_traits< std::_Bit_const_iterator >@::std::iterator_traits< std::_Bit_const_iterator >
 +@class_t@OpenGLRenderTarget@::CEGUI::OpenGLRenderTarget
 ~@class_t@basic_ios< wchar_t, std::char_traits< wchar_t > >@::std::basic_ios< wchar_t, std::char_traits< wchar_t > >
+~@class_t@UDim@::CEGUI::UDim
 ~@class_t@_pthread_cleanup_buffer@::_pthread_cleanup_buffer
 ~@class_t@bad_alloc@::std::bad_alloc
 ~@class_t@__is_byte< char >@::std::__is_byte< char >
@@ -3676,9 +3694,11 @@
 ~@class_t@_Vector_base< CEGUI::TextureTarget*, std::allocator< CEGUI::TextureTarget* > >@::std::_Vector_base< CEGUI::TextureTarget*, std::allocator< CEGUI::TextureTarget* > >
 ~@class_t@bad_cast@::std::bad_cast
 ~@class_t@itimerspec@::itimerspec
+~@class_t@UBox@::CEGUI::UBox
 ~@class_t@Renderer@::CEGUI::Renderer
 ~@class_t@_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >
 ~@class_t@__forced_unwind@::__cxxabiv1::__forced_unwind
+~@class_t@Rect< CEGUI::UDim >@::CEGUI::Rect< CEGUI::UDim >
 ~@class_t@new_allocator< std::_Rb_tree_node< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >@::__gnu_cxx::new_allocator< std::_Rb_tree_node< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >
 ~@class_t@_Rb_tree_impl< std::less< unsigned int >, false >@::std::_Rb_tree< unsigned int, std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > >, std::_Select1st< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >::_Rb_tree_impl< std::less< unsigned int >, false >
 ~@class_t@__numeric_traits< unsigned long >@::__gnu_cxx::__numeric_traits< unsigned long >
@@ -3717,7 +3737,8 @@
 ~@class_t@new_allocator< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::Event* > > >@::__gnu_cxx::new_allocator< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::Event* > > >
 ~@class_t@basic_streambuf< char, std::char_traits< char > >@::std::basic_streambuf< char, std::char_traits< char > >
 ~@class_t@underflow_error@::std::underflow_error
-~@class_t@('/usr/include/bits/pthreadtypes.h', 154)@::pthread_rwlock_t
+~@class_t@AllocatedObject< CEGUI::UBox >@::CEGUI::AllocatedObject< CEGUI::UBox >
+~@class_t@Size< CEGUI::UDim >@::CEGUI::Size< CEGUI::UDim >
 ~@class_t@multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >@::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> >
 ~@class_t@rebind< char >@::std::allocator< char >::rebind< char >
 ~@class_t@rebind< char >@::std::allocator< wchar_t >::rebind< char >
@@ -3810,6 +3831,7 @@
 ~@member_function_t@_M_install_cache@void ( ::std::locale::_Impl::* )( ::std::locale::facet const *,::size_t ) void ( ::std::locale::_Impl::* )( ::std::locale::facet const *,::size_t ) 
 ~@member_function_t@_S_get_c_name@char const * (*)(  )char const * (*)(  )
 ~@member_function_t@setSize@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size<float> const & ) 
+~@member_function_t@setSize@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
 +@member_function_t@setArea@void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::Rectf const & ) void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::Rectf const & ) 
 ~@member_function_t@setArea@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) 
 ~@member_function_t@to_int_type@int (*)( char const & )int (*)( char const & )
@@ -3817,6 +3839,13 @@
 ~@member_function_t@build_utf8_buff@::CEGUI::utf8 * ( ::CEGUI::String::* )(  ) const::CEGUI::utf8 * ( ::CEGUI::String::* )(  ) const
 ~@member_function_t@sync@int ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) int ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@member_function_t@sync@int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) 
+~@member_function_t@zero@::CEGUI::Vector2< float > (*)(  )::CEGUI::Vector2<float> (*)(  )
+~@member_function_t@zero@::CEGUI::Vector2< CEGUI::UDim > (*)(  )::CEGUI::Vector2<CEGUI::UDim> (*)(  )
+~@member_function_t@zero@::CEGUI::Rect< float > (*)(  )::CEGUI::Rect<float> (*)(  )
+~@member_function_t@zero@::CEGUI::Size< float > (*)(  )::CEGUI::Size<float> (*)(  )
+~@member_function_t@zero@::CEGUI::Size< CEGUI::UDim > (*)(  )::CEGUI::Size<CEGUI::UDim> (*)(  )
+~@member_function_t@zero@::CEGUI::Rect< CEGUI::UDim > (*)(  )::CEGUI::Rect<CEGUI::UDim> (*)(  )
+~@member_function_t@zero@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 ~@member_function_t@epptr@wchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) constwchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
 ~@member_function_t@epptr@char * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) constchar * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) const
 ~@member_function_t@_M_deallocate@void ( ::std::_Vector_base<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::CEGUI::OpenGLGeometryBuffer * *,::size_t ) void ( ::std::_Vector_base<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::CEGUI::OpenGLGeometryBuffer * *,::size_t ) 
@@ -3933,6 +3962,7 @@
 ~@member_function_t@snextc@int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) 
 ~@member_function_t@loadFromMemory@void ( ::CEGUI::Texture::* )( void const *,::CEGUI::Sizef const &,::CEGUI::Texture::PixelFormat ) void ( ::CEGUI::Texture::* )( void const *,::CEGUI::Sizef const &,::CEGUI::Texture::PixelFormat ) 
 ~@member_function_t@constrainSize@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size< float > const &,::CEGUI::Size< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size<float> const &,::CEGUI::Size<float> const & ) 
+~@member_function_t@constrainSize@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const &,::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const &,::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@member_function_t@isEventPresent@bool ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) bool ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) 
 ~@member_function_t@narrow@char ( ::std::ctype<char>::* )( char,char ) constchar ( ::std::ctype<char>::* )( char,char ) const
 ~@member_function_t@narrow@char const * ( ::std::ctype<char>::* )( char const *,char const *,char,char * ) constchar const * ( ::std::ctype<char>::* )( char const *,char const *,char,char * ) const
@@ -3963,7 +3993,9 @@
 ~@member_function_t@_M_set_length_and_sharable@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::size_t ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::size_t ) 
 ~@member_function_t@_M_set_length_and_sharable@void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::size_t ) void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::size_t ) 
 ~@member_function_t@getIntersection@::CEGUI::Rect< float > ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect< float > const & ) const::CEGUI::Rect<float> ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect<float> const & ) const
+~@member_function_t@getIntersection@::CEGUI::Rect< CEGUI::UDim > ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & ) const::CEGUI::Rect<CEGUI::UDim> ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) const
 ~@member_function_t@offset@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_function_t@offset@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@member_function_t@replace@::std::string & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::std::string const & ) ::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > const & ) 
 ~@member_function_t@replace@::std::string & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::std::string const &,::size_t,::size_t ) ::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &,::size_t,::size_t ) 
 ~@member_function_t@replace@::std::string & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,char const *,::size_t ) ::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t,char const *,::size_t ) 
@@ -4008,6 +4040,7 @@
 ~@member_function_t@replace@::CEGUI::String & ( ::CEGUI::String::* )( ::size_t,::size_t,char const *,::size_t ) ::CEGUI::String & ( ::CEGUI::String::* )( ::size_t,::size_t,char const *,::size_t ) 
 ~@member_function_t@replace@::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::String::iterator,::CEGUI::String::iterator,char const *,::size_t ) ::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::String::iterator,::CEGUI::String::iterator,char const *,::size_t ) 
 ~@member_function_t@getWidth@float ( ::CEGUI::Rect<float>::* )(  ) constfloat ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@getWidth@::CEGUI::UDim ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@substr@::std::string ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,::size_t ) const
 ~@member_function_t@substr@::std::wstring ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )( ::size_t,::size_t ) const
 ~@member_function_t@substr@::CEGUI::String ( ::CEGUI::String::* )( ::size_t,::size_t ) const::CEGUI::String ( ::CEGUI::String::* )( ::size_t,::size_t ) const
@@ -4065,6 +4098,7 @@
 ~@member_function_t@pubimbue@::std::locale ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) ::std::locale ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) 
 ~@member_function_t@pubimbue@::std::locale ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::locale const & ) ::std::locale ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::locale const & ) 
 ~@member_function_t@getPosition@::CEGUI::Vector2< float > const & ( ::CEGUI::Rect<float>::* )(  ) const::CEGUI::Vector2<float> const & ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@getPosition@::CEGUI::Vector2< CEGUI::UDim > const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::Vector2<CEGUI::UDim> const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) 
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) 
 ~@member_function_t@_M_fill_insert@void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator< CEGUI::OpenGLGeometryBuffer**, std::vector< CEGUI::OpenGLGeometryBuffer* > >,::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator<CEGUI::OpenGLGeometryBuffer**,std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> > >,::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) 
@@ -4109,8 +4143,6 @@
 ~@member_function_t@compare@int ( ::CEGUI::String::* )( ::size_t,::size_t,char const *,::size_t ) constint ( ::CEGUI::String::* )( ::size_t,::size_t,char const *,::size_t ) const
 ~@member_function_t@do_scan_is@wchar_t const * ( ::std::ctype<wchar_t>::* )( short unsigned int,wchar_t const *,wchar_t const * ) constwchar_t const * ( ::std::ctype<wchar_t>::* )( short unsigned int,wchar_t const *,wchar_t const * ) const
 ~@member_function_t@do_scan_is@wchar_t const * ( ::std::__ctype_abstract_base<wchar_t>::* )( short unsigned int,wchar_t const *,wchar_t const * ) constwchar_t const * ( ::std::__ctype_abstract_base<wchar_t>::* )( short unsigned int,wchar_t const *,wchar_t const * ) const
-~@member_function_t@setp@void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t * ) void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t * ) 
-~@member_function_t@setp@void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char * ) void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char * ) 
 ~@member_function_t@rdstate@::std::_Ios_Iostate ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) const::std::_Ios_Iostate ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
 ~@member_function_t@rdstate@::std::_Ios_Iostate ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const::std::_Ios_Iostate ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const
 ~@member_function_t@_M_fill_assign@void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) 
@@ -4218,6 +4250,7 @@
 ~@member_function_t@endRendering@void ( ::CEGUI::Renderer::* )(  ) void ( ::CEGUI::Renderer::* )(  ) 
 ~@member_function_t@getSize@::CEGUI::Size< float > ( ::CEGUI::Rect<float>::* )(  ) const::CEGUI::Size<float> ( ::CEGUI::Rect<float>::* )(  ) const
 ~@member_function_t@getSize@::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const
+~@member_function_t@getSize@::CEGUI::Size< CEGUI::UDim > ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::Size<CEGUI::UDim> ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@_S_construct_aux_2@char * (*)( ::size_t,char,::std::allocator< char > const & )char * (*)( ::size_t,char,::std::allocator<char> const & )
 ~@member_function_t@_S_construct_aux_2@wchar_t * (*)( ::size_t,wchar_t,::std::allocator< wchar_t > const & )wchar_t * (*)( ::size_t,wchar_t,::std::allocator<wchar_t> const & )
 ~@member_function_t@egptr@wchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) constwchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
@@ -4244,6 +4277,10 @@
 ~@member_function_t@good@bool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) constbool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const
 ~@member_function_t@pptr@wchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) constwchar_t * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
 ~@member_function_t@pptr@char * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) constchar * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) const
+~@member_function_t@one_x@::CEGUI::Vector2< float > (*)(  )::CEGUI::Vector2<float> (*)(  )
+~@member_function_t@one_x@::CEGUI::Vector2< CEGUI::UDim > (*)(  )::CEGUI::Vector2<CEGUI::UDim> (*)(  )
+~@member_function_t@one_y@::CEGUI::Vector2< float > (*)(  )::CEGUI::Vector2<float> (*)(  )
+~@member_function_t@one_y@::CEGUI::Vector2< CEGUI::UDim > (*)(  )::CEGUI::Vector2<CEGUI::UDim> (*)(  )
 ~@member_function_t@front@::CEGUI::OpenGLGeometryBuffer * & ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )(  ) ::CEGUI::OpenGLGeometryBuffer * & ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )(  ) 
 ~@member_function_t@front@::CEGUI::OpenGLGeometryBuffer * const & ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )(  ) const::CEGUI::OpenGLGeometryBuffer * const & ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )(  ) const
 ~@member_function_t@front@::CEGUI::TextureTarget * & ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )(  ) ::CEGUI::TextureTarget * & ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )(  ) 
@@ -4266,6 +4303,7 @@
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@clamp@void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float >,::CEGUI::Size< float > ) void ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float>,::CEGUI::Size<float> ) 
+~@member_function_t@clamp@void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim >,::CEGUI::Size< CEGUI::UDim > ) void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim>,::CEGUI::Size<CEGUI::UDim> ) 
 ~@member_function_t@do_transform@::std::wstring ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const
 ~@member_function_t@do_transform@::std::string ( ::std::collate<char>::* )( char const *,char const * ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::collate<char>::* )( char const *,char const * ) const
 +@member_function_t@activate@void ( ::CEGUI::OpenGLRenderTarget::* )(  ) void ( ::CEGUI::OpenGLRenderTarget::* )(  ) 
@@ -4322,6 +4360,7 @@
 ~@member_function_t@put@::std::ostreambuf_iterator< char, std::char_traits< char > > ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( ::std::ostreambuf_iterator< char, std::char_traits< char > >,::std::ios_base &,char,void const * ) const::std::ostreambuf_iterator<char,std::char_traits<char> > ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( ::std::ostreambuf_iterator<char,std::char_traits<char> >,::std::ios_base &,char,void const * ) const
 ~@member_function_t@put@::std::basic_ostream< char, std::char_traits< char > > & ( ::std::basic_ostream<char,std::char_traits<char> >::* )( char ) ::std::basic_ostream<char,std::char_traits<char> > & ( ::std::basic_ostream<char,std::char_traits<char> >::* )( char ) 
 ~@member_function_t@setPosition@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_function_t@setPosition@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@member_function_t@upper_bound@::std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) ::std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) 
 ~@member_function_t@upper_bound@::std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const::std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const
 ~@member_function_t@upper_bound@::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > ( ::std::map<CEGUI::String, CEGUI::OpenGLTexture*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::CEGUI::String const & ) ::std::_Rb_tree_iterator<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > ( ::std::map<CEGUI::String, CEGUI::OpenGLTexture*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::CEGUI::String const & ) 
@@ -4394,6 +4433,8 @@
 ~@member_function_t@assign@::CEGUI::String & ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) ::CEGUI::String & ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) 
 ~@member_function_t@assign@::CEGUI::String & ( ::CEGUI::String::* )( char const * ) ::CEGUI::String & ( ::CEGUI::String::* )( char const * ) 
 ~@member_function_t@assign@::CEGUI::String & ( ::CEGUI::String::* )( char const *,::size_t ) ::CEGUI::String & ( ::CEGUI::String::* )( char const *,::size_t ) 
+~@member_function_t@_M_group_float@void ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,wchar_t const *,wchar_t *,wchar_t *,int & ) constvoid ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,wchar_t const *,wchar_t *,wchar_t *,int & ) const
+~@member_function_t@_M_group_float@void ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,char const *,char *,char *,int & ) constvoid ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,char const *,char *,char *,int & ) const
 ~@member_function_t@do_thousands_sep@wchar_t ( ::std::numpunct<wchar_t>::* )(  ) constwchar_t ( ::std::numpunct<wchar_t>::* )(  ) const
 ~@member_function_t@do_thousands_sep@char ( ::std::numpunct<char>::* )(  ) constchar ( ::std::numpunct<char>::* )(  ) const
 ~@member_function_t@getloc@::std::locale ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) const::std::locale ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
@@ -4403,8 +4444,10 @@
 ~@member_function_t@showmanyc@::std::streamsize ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) ::std::streamsize ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) 
 +@member_function_t@getDefaultRenderingRoot@::CEGUI::RenderingRoot & ( ::CEGUI::OpenGLRenderer::* )(  ) ::CEGUI::RenderingRoot & ( ::CEGUI::OpenGLRenderer::* )(  ) 
 ~@member_function_t@getDefaultRenderingRoot@::CEGUI::RenderingRoot & ( ::CEGUI::Renderer::* )(  ) ::CEGUI::RenderingRoot & ( ::CEGUI::Renderer::* )(  ) 
-~@member_function_t@_M_group_float@void ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,wchar_t const *,wchar_t *,wchar_t *,int & ) constvoid ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,wchar_t const *,wchar_t *,wchar_t *,int & ) const
-~@member_function_t@_M_group_float@void ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,char const *,char *,char *,int & ) constvoid ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,char const *,char *,char *,int & ) const
+~@member_function_t@one@::CEGUI::Vector2< float > (*)(  )::CEGUI::Vector2<float> (*)(  )
+~@member_function_t@one@::CEGUI::Vector2< CEGUI::UDim > (*)(  )::CEGUI::Vector2<CEGUI::UDim> (*)(  )
+~@member_function_t@one@::CEGUI::Size< float > (*)(  )::CEGUI::Size<float> (*)(  )
+~@member_function_t@one@::CEGUI::Size< CEGUI::UDim > (*)(  )::CEGUI::Size<CEGUI::UDim> (*)(  )
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueueID const,::CEGUI::GeometryBuffer const & ) 
 ~@member_function_t@removeGeometryBuffer@void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::RenderQueue::* )( ::CEGUI::GeometryBuffer const & ) 
 ~@member_function_t@_M_is_leaked@bool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) constbool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) const
@@ -4428,6 +4471,8 @@
 ~@member_function_t@size@::size_t ( ::CEGUI::String::* )(  ) const::size_t ( ::CEGUI::String::* )(  ) const
 ~@member_function_t@top@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
 ~@member_function_t@top@float const & ( ::CEGUI::Rect<float>::* )(  ) constfloat const & ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@top@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
+~@member_function_t@top@::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@construct@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > *,::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > const & ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > *,::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > const & ) 
 ~@member_function_t@construct@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > *,::std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > const & ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair<const CEGUI::String,CEGUI::OpenGLTexture*> *,::std::pair<const CEGUI::String,CEGUI::OpenGLTexture*> const & ) 
 ~@member_function_t@construct@void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * *,::CEGUI::OpenGLGeometryBuffer * const & ) void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * *,::CEGUI::OpenGLGeometryBuffer * const & ) 
@@ -4475,6 +4520,7 @@
 ~@member_function_t@_M_upper_bound@::std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > *,::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > *,unsigned int const & ) ::std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > *,::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > *,unsigned int const & ) 
 ~@member_function_t@_M_upper_bound@::std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > const *,::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > const *,unsigned int const & ) const::std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > const *,::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > const *,unsigned int const & ) const
 ~@member_function_t@scaleToAspect@void ( ::CEGUI::Size<float>::* )( ::CEGUI::AspectMode,float ) void ( ::CEGUI::Size<float>::* )( ::CEGUI::AspectMode,float ) 
+~@member_function_t@scaleToAspect@void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::AspectMode,::CEGUI::UDim ) void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::AspectMode,::CEGUI::UDim ) 
 ~@member_function_t@_S_compare@int (*)( ::size_t,::size_t )int (*)( ::size_t,::size_t )
 ~@member_function_t@_S_compare@int (*)( ::size_t,::size_t )int (*)( ::size_t,::size_t )
 ~@member_function_t@addEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) 
@@ -4538,21 +4584,8 @@
 ~@member_function_t@_S_maximum@::std::_Rb_tree_node_base const * (*)( ::std::_Rb_tree_node_base const * )::std::_Rb_tree_node_base const * (*)( ::std::_Rb_tree_node_base const * )
 ~@member_function_t@_S_maximum@::std::_Rb_tree_node_base * (*)( ::std::_Rb_tree_node_base * )::std::_Rb_tree_node_base * (*)( ::std::_Rb_tree_node_base * )
 ~@member_function_t@_S_maximum@::std::_Rb_tree_node_base const * (*)( ::std::_Rb_tree_node_base const * )::std::_Rb_tree_node_base const * (*)( ::std::_Rb_tree_node_base const * )
-+@member_function_t@destroy@void (*)( ::CEGUI::OpenGLRenderer & )void (*)( ::CEGUI::OpenGLRenderer & )
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair<const CEGUI::String,CEGUI::OpenGLTexture*> * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::TextureTarget*>::* )( ::CEGUI::TextureTarget * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::TextureTarget*>::* )( ::CEGUI::TextureTarget * * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::RenderingWindow*>::* )( ::CEGUI::RenderingWindow * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::RenderingWindow*>::* )( ::CEGUI::RenderingWindow * * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::RenderQueueID, CEGUI::RenderQueue> > * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >::* )( ::std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >::* )( ::std::pair<const CEGUI::RenderQueueID,CEGUI::RenderQueue> * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::GeometryBuffer const*>::* )( ::CEGUI::GeometryBuffer const * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::GeometryBuffer const*>::* )( ::CEGUI::GeometryBuffer const * * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::Event* > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::Event*> > * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::Event*> >::* )( ::std::pair< const CEGUI::String, CEGUI::Event* > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::Event*> >::* )( ::std::pair<const CEGUI::String,CEGUI::Event*> * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >::* )( ::std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > * ) void ( ::__gnu_cxx::new_allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >::* )( ::std::pair<const unsigned int,CEGUI::RefCounted<CEGUI::BoundSlot> > * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<wchar_t>::* )( wchar_t * ) void ( ::__gnu_cxx::new_allocator<wchar_t>::* )( wchar_t * ) 
-~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<char>::* )( char * ) void ( ::__gnu_cxx::new_allocator<char>::* )( char * ) 
+~@member_function_t@setp@void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t * ) void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t * ) 
+~@member_function_t@setp@void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char * ) void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char * ) 
 ~@member_function_t@appendVertex@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const & ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vertex const & ) 
 ~@member_function_t@do_grouping@::std::string ( ::std::numpunct<wchar_t>::* )(  ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::numpunct<wchar_t>::* )(  ) const
 ~@member_function_t@do_grouping@::std::string ( ::std::numpunct<char>::* )(  ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::numpunct<char>::* )(  ) const
@@ -4575,8 +4608,6 @@
 ~@member_function_t@_M_extract_float@::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::ios_base &,::std::_Ios_Iostate &,::std::string & ) const::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::ios_base &,::std::_Ios_Iostate &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ) const
 ~@member_function_t@_M_extract_float@::std::istreambuf_iterator< char, std::char_traits< char > > ( ::std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::* )( ::std::istreambuf_iterator< char, std::char_traits< char > >,::std::istreambuf_iterator< char, std::char_traits< char > >,::std::ios_base &,::std::_Ios_Iostate &,::std::string & ) const::std::istreambuf_iterator<char,std::char_traits<char> > ( ::std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::* )( ::std::istreambuf_iterator<char,std::char_traits<char> >,::std::istreambuf_iterator<char,std::char_traits<char> >,::std::ios_base &,::std::_Ios_Iostate &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & ) const
 ~@member_function_t@_M_getloc@::std::locale const & ( ::std::ios_base::* )(  ) const::std::locale const & ( ::std::ios_base::* )(  ) const
-+@member_function_t@createGeometryBuffer@::CEGUI::GeometryBuffer & ( ::CEGUI::OpenGLRenderer::* )(  ) ::CEGUI::GeometryBuffer & ( ::CEGUI::OpenGLRenderer::* )(  ) 
-~@member_function_t@createGeometryBuffer@::CEGUI::GeometryBuffer & ( ::CEGUI::Renderer::* )(  ) ::CEGUI::GeometryBuffer & ( ::CEGUI::Renderer::* )(  ) 
 ~@member_function_t@_M_compare@int ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) constint ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const
 ~@member_function_t@_M_compare@int ( ::std::collate<char>::* )( char const *,char const * ) constint ( ::std::collate<char>::* )( char const *,char const * ) const
 ~@member_function_t@clear@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) 
@@ -4778,6 +4809,7 @@
 ~@member_function_t@_M_group_int@void ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,::std::ios_base &,wchar_t *,wchar_t *,int & ) constvoid ( ::std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( char const *,::size_t,wchar_t,::std::ios_base &,wchar_t *,wchar_t *,int & ) const
 ~@member_function_t@_M_group_int@void ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,::std::ios_base &,char *,char *,int & ) constvoid ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::size_t,char,::std::ios_base &,char *,char *,int & ) const
 ~@member_function_t@_M_initialize_ctype@void ( ::std::ctype<wchar_t>::* )(  ) void ( ::std::ctype<wchar_t>::* )(  ) 
+~@member_function_t@relative@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 +@member_function_t@isImageryCache@bool ( ::CEGUI::OpenGLViewportTarget::* )(  ) constbool ( ::CEGUI::OpenGLViewportTarget::* )(  ) const
 +@member_function_t@isImageryCache@bool ( ::CEGUI::RenderTarget::* )(  ) constbool ( ::CEGUI::RenderTarget::* )(  ) const
 ~@member_function_t@fail@bool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) constbool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
@@ -4893,6 +4925,7 @@
 +@member_function_t@create@::CEGUI::OpenGLRenderer & (*)( ::CEGUI::OpenGLRenderer::TextureTargetType const )::CEGUI::OpenGLRenderer & (*)( ::CEGUI::OpenGLRenderer::TextureTargetType const )
 +@member_function_t@create@::CEGUI::OpenGLRenderer & (*)( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const )::CEGUI::OpenGLRenderer & (*)( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const )
 ~@member_function_t@constrainSizeMin@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size<float> const & ) 
+~@member_function_t@constrainSizeMin@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@member_function_t@__pure_dummy@void ( ::__cxxabiv1::__forced_unwind::* )(  ) void ( ::__cxxabiv1::__forced_unwind::* )(  ) 
 ~@member_function_t@resize@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,char ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t,char ) 
 ~@member_function_t@resize@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) 
@@ -4906,6 +4939,7 @@
 ~@member_function_t@resize@void ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) void ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) 
 ~@member_function_t@utf32_comp_utf32@int ( ::CEGUI::String::* )( ::CEGUI::utf32 const *,::CEGUI::utf32 const *,::size_t ) constint ( ::CEGUI::String::* )( ::CEGUI::utf32 const *,::CEGUI::utf32 const *,::size_t ) const
 ~@member_function_t@isPointInRect@bool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2< float > const & ) constbool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2<float> const & ) const
+~@member_function_t@isPointInRect@bool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) constbool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_function_t@empty@bool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) constbool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) const
 ~@member_function_t@empty@bool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) constbool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::* )(  ) const
 ~@member_function_t@empty@bool ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) constbool ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const
@@ -5002,6 +5036,7 @@
 ~@member_function_t@max_size@::size_t ( ::__gnu_cxx::new_allocator<wchar_t>::* )(  ) const::size_t ( ::__gnu_cxx::new_allocator<wchar_t>::* )(  ) const
 ~@member_function_t@max_size@::size_t ( ::__gnu_cxx::new_allocator<char>::* )(  ) const::size_t ( ::__gnu_cxx::new_allocator<char>::* )(  ) const
 ~@member_function_t@setHeight@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
+~@member_function_t@setHeight@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
 ~@member_function_t@setf@::std::_Ios_Fmtflags ( ::std::ios_base::* )( ::std::_Ios_Fmtflags ) ::std::_Ios_Fmtflags ( ::std::ios_base::* )( ::std::_Ios_Fmtflags ) 
 ~@member_function_t@setf@::std::_Ios_Fmtflags ( ::std::ios_base::* )( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags ) ::std::_Ios_Fmtflags ( ::std::ios_base::* )( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags ) 
 ~@member_function_t@setg@void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t *,wchar_t * ) void ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,wchar_t *,wchar_t * ) 
@@ -5025,6 +5060,8 @@
 ~@member_function_t@destroyRenderingWindow@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) 
 ~@member_function_t@left@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
 ~@member_function_t@left@float const & ( ::CEGUI::Rect<float>::* )(  ) constfloat const & ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@left@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
+~@member_function_t@left@::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@_M_add_reference@void ( ::std::ios_base::_Callback_list::* )(  ) void ( ::std::ios_base::_Callback_list::* )(  ) 
 ~@member_function_t@_M_add_reference@void ( ::std::locale::facet::* )(  ) constvoid ( ::std::locale::facet::* )(  ) const
 ~@member_function_t@_M_add_reference@void ( ::std::locale::_Impl::* )(  ) void ( ::std::locale::_Impl::* )(  ) 
@@ -5091,15 +5128,33 @@
 ~@member_function_t@key_comp@::std::less< CEGUI::RenderQueueID > ( ::std::_Rb_tree<CEGUI::RenderQueueID, std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue>, std::_Select1st<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )(  ) const::std::less<CEGUI::RenderQueueID> ( ::std::_Rb_tree<CEGUI::RenderQueueID, std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue>, std::_Select1st<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )(  ) const
 ~@member_function_t@key_comp@::CEGUI::StringFastLessCompare ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) const::CEGUI::StringFastLessCompare ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) const
 ~@member_function_t@key_comp@::std::less< unsigned int > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const::std::less<unsigned int> ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const
+~@member_function_t@percent@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 ~@member_function_t@__setdoit@void ( ::__pthread_cleanup_class::* )( int ) void ( ::__pthread_cleanup_class::* )( int ) 
 ~@member_function_t@do_truename@::std::wstring ( ::std::numpunct<wchar_t>::* )(  ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::numpunct<wchar_t>::* )(  ) const
 ~@member_function_t@do_truename@::std::string ( ::std::numpunct<char>::* )(  ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::numpunct<char>::* )(  ) const
+~@member_function_t@one_height@::CEGUI::Size< float > (*)(  )::CEGUI::Size<float> (*)(  )
+~@member_function_t@one_height@::CEGUI::Size< CEGUI::UDim > (*)(  )::CEGUI::Size<CEGUI::UDim> (*)(  )
 ~@member_function_t@_M_init@void ( ::std::ios_base::* )(  ) void ( ::std::ios_base::* )(  ) 
 ~@member_function_t@__restore@void ( ::__pthread_cleanup_class::* )(  ) constvoid ( ::__pthread_cleanup_class::* )(  ) const
 ~@member_function_t@_M_clone@char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator< char > const &,::size_t ) char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator<char> const &,::size_t ) 
 ~@member_function_t@_M_clone@wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator< wchar_t > const &,::size_t ) wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator<wchar_t> const &,::size_t ) 
 ~@member_function_t@pbackfail@::wint_t ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::wint_t ) ::wint_t ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::wint_t ) 
 ~@member_function_t@pbackfail@int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( int ) int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( int ) 
++@member_function_t@destroy@void (*)( ::CEGUI::OpenGLRenderer & )void (*)( ::CEGUI::OpenGLRenderer & )
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >::* )( ::std::pair<const CEGUI::String,CEGUI::OpenGLTexture*> * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::OpenGLGeometryBuffer*>::* )( ::CEGUI::OpenGLGeometryBuffer * * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::TextureTarget*>::* )( ::CEGUI::TextureTarget * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::TextureTarget*>::* )( ::CEGUI::TextureTarget * * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::RenderingWindow*>::* )( ::CEGUI::RenderingWindow * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::RenderingWindow*>::* )( ::CEGUI::RenderingWindow * * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::RenderQueueID, CEGUI::RenderQueue> > * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >::* )( ::std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >::* )( ::std::pair<const CEGUI::RenderQueueID,CEGUI::RenderQueue> * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<CEGUI::GeometryBuffer const*>::* )( ::CEGUI::GeometryBuffer const * * ) void ( ::__gnu_cxx::new_allocator<CEGUI::GeometryBuffer const*>::* )( ::CEGUI::GeometryBuffer const * * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::Event* > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::Event*> > * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::Event*> >::* )( ::std::pair< const CEGUI::String, CEGUI::Event* > * ) void ( ::__gnu_cxx::new_allocator<std::pair<CEGUI::String const, CEGUI::Event*> >::* )( ::std::pair<const CEGUI::String,CEGUI::Event*> * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > * ) void ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >::* )( ::std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > * ) void ( ::__gnu_cxx::new_allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >::* )( ::std::pair<const unsigned int,CEGUI::RefCounted<CEGUI::BoundSlot> > * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<wchar_t>::* )( wchar_t * ) void ( ::__gnu_cxx::new_allocator<wchar_t>::* )( wchar_t * ) 
+~@member_function_t@destroy@void ( ::__gnu_cxx::new_allocator<char>::* )( char * ) void ( ::__gnu_cxx::new_allocator<char>::* )( char * ) 
 ~@member_function_t@subscribeScriptedEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::String const & ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::String const & ) 
 ~@member_function_t@subscribeScriptedEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) 
 ~@member_function_t@insert@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::__gnu_cxx::__normal_iterator< char*, std::basic_string< char, std::char_traits< char >, std::allocator< char > > >,::size_t,char ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::__gnu_cxx::__normal_iterator<char*,std::basic_string<char, std::char_traits<char>, std::allocator<char> > >,::size_t,char ) 
@@ -5160,8 +5215,12 @@
 ~@member_function_t@_M_begin@::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > const * ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > const * ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const
 ~@member_function_t@_M_assign@void (*)( char *,::size_t,char )void (*)( char *,::size_t,char )
 ~@member_function_t@_M_assign@void (*)( wchar_t *,::size_t,wchar_t )void (*)( wchar_t *,::size_t,wchar_t )
+~@member_function_t@one_width@::CEGUI::Size< float > (*)(  )::CEGUI::Size<float> (*)(  )
+~@member_function_t@one_width@::CEGUI::Size< CEGUI::UDim > (*)(  )::CEGUI::Size<CEGUI::UDim> (*)(  )
 ~@member_function_t@right@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
 ~@member_function_t@right@float const & ( ::CEGUI::Rect<float>::* )(  ) constfloat const & ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@right@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
+~@member_function_t@right@::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@sync_with_stdio@bool (*)( bool )bool (*)( bool )
 ~@member_function_t@truename@::std::wstring ( ::std::numpunct<wchar_t>::* )(  ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::numpunct<wchar_t>::* )(  ) const
 ~@member_function_t@truename@::std::string ( ::std::numpunct<char>::* )(  ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::numpunct<char>::* )(  ) const
@@ -5235,6 +5294,8 @@
 ~@member_function_t@_M_remove_reference@void ( ::std::locale::_Impl::* )(  ) void ( ::std::locale::_Impl::* )(  ) 
 ~@member_function_t@not_eof@int (*)( int const & )int (*)( int const & )
 ~@member_function_t@not_eof@::wint_t (*)( ::wint_t const & )::wint_t (*)( ::wint_t const & )
++@member_function_t@createGeometryBuffer@::CEGUI::GeometryBuffer & ( ::CEGUI::OpenGLRenderer::* )(  ) ::CEGUI::GeometryBuffer & ( ::CEGUI::OpenGLRenderer::* )(  ) 
+~@member_function_t@createGeometryBuffer@::CEGUI::GeometryBuffer & ( ::CEGUI::Renderer::* )(  ) ::CEGUI::GeometryBuffer & ( ::CEGUI::Renderer::* )(  ) 
 ~@member_function_t@isInvalidated@bool ( ::CEGUI::RenderingSurface::* )(  ) constbool ( ::CEGUI::RenderingSurface::* )(  ) const
 ~@member_function_t@_M_is_shared@bool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) constbool ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )(  ) const
 ~@member_function_t@_M_is_shared@bool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) constbool ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )(  ) const
@@ -5302,13 +5363,18 @@
 ~@member_function_t@_M_initialize@void ( ::std::_Rb_tree<CEGUI::RenderQueueID, std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue>, std::_Select1st<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::_Rb_tree_impl<std::less<CEGUI::RenderQueueID>, false>::* )(  ) void ( ::std::_Rb_tree<CEGUI::RenderQueueID, std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue>, std::_Select1st<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> >, std::less<CEGUI::RenderQueueID>, std::allocator<std::pair<CEGUI::RenderQueueID const, CEGUI::RenderQueue> > >::_Rb_tree_impl<std::less<CEGUI::RenderQueueID>, false>::* )(  ) 
 ~@member_function_t@_M_initialize@void ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::_Rb_tree_impl<CEGUI::StringFastLessCompare, false>::* )(  ) void ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::_Rb_tree_impl<CEGUI::StringFastLessCompare, false>::* )(  ) 
 ~@member_function_t@_M_initialize@void ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::_Rb_tree_impl<std::less<unsigned int>, false>::* )(  ) void ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::_Rb_tree_impl<std::less<unsigned int>, false>::* )(  ) 
+~@member_function_t@px@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 ~@member_function_t@getVertexCount@::CEGUI::uint ( ::CEGUI::GeometryBuffer::* )(  ) const::CEGUI::uint ( ::CEGUI::GeometryBuffer::* )(  ) const
 ~@member_function_t@constrainSizeMax@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size<float> const & ) 
+~@member_function_t@constrainSizeMax@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@member_function_t@_M_range_check@void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::size_t ) constvoid ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::size_t ) const
 ~@member_function_t@_M_range_check@void ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )( ::size_t ) constvoid ( ::std::vector<CEGUI::TextureTarget*, std::allocator<CEGUI::TextureTarget*> >::* )( ::size_t ) const
 ~@member_function_t@_M_range_check@void ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )( ::size_t ) constvoid ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )( ::size_t ) const
 ~@member_function_t@_M_range_check@void ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )( ::size_t ) constvoid ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )( ::size_t ) const
+~@member_function_t@square@::CEGUI::Size< float > (*)( float const & )::CEGUI::Size<float> (*)( float const & )
+~@member_function_t@square@::CEGUI::Size< CEGUI::UDim > (*)( ::CEGUI::UDim const & )::CEGUI::Size<CEGUI::UDim> (*)( ::CEGUI::UDim const & )
 ~@member_function_t@setWidth@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
+~@member_function_t@setWidth@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
 ~@member_function_t@_M_convert_to_wmask@::wctype_t ( ::std::ctype<wchar_t>::* )( short unsigned int const ) const::wctype_t ( ::std::ctype<wchar_t>::* )( short unsigned int const ) const
 ~@member_function_t@_M_install_facet@void ( ::std::locale::_Impl::* )( ::std::locale::id const *,::std::locale::facet const * ) void ( ::std::locale::_Impl::* )( ::std::locale::id const *,::std::locale::facet const * ) 
 ~@member_function_t@createRenderingWindow@::CEGUI::RenderingWindow & ( ::CEGUI::RenderingSurface::* )( ::CEGUI::TextureTarget & ) ::CEGUI::RenderingWindow & ( ::CEGUI::RenderingSurface::* )( ::CEGUI::TextureTarget & ) 
@@ -5390,6 +5456,7 @@
 ~@member_function_t@getRenderTarget@::CEGUI::RenderTarget const & ( ::CEGUI::RenderingSurface::* )(  ) const::CEGUI::RenderTarget const & ( ::CEGUI::RenderingSurface::* )(  ) const
 ~@member_function_t@getRenderTarget@::CEGUI::RenderTarget & ( ::CEGUI::RenderingSurface::* )(  ) ::CEGUI::RenderTarget & ( ::CEGUI::RenderingSurface::* )(  ) 
 ~@member_function_t@getHeight@float ( ::CEGUI::Rect<float>::* )(  ) constfloat ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@getHeight@::CEGUI::UDim ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@classic_table@short unsigned int const * (*)(  )short unsigned int const * (*)(  )
 ~@member_function_t@_S_right@::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > * (*)( ::std::_Rb_tree_node_base * )::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > * (*)( ::std::_Rb_tree_node_base * )
 ~@member_function_t@_S_right@::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > const * (*)( ::std::_Rb_tree_node_base const * )::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > const * (*)( ::std::_Rb_tree_node_base const * )
@@ -5439,6 +5506,8 @@
 ~@member_function_t@_M_widen_init@void ( ::std::ctype<char>::* )(  ) constvoid ( ::std::ctype<char>::* )(  ) const
 ~@member_function_t@bottom@void ( ::CEGUI::Rect<float>::* )( float const & ) void ( ::CEGUI::Rect<float>::* )( float const & ) 
 ~@member_function_t@bottom@float const & ( ::CEGUI::Rect<float>::* )(  ) constfloat const & ( ::CEGUI::Rect<float>::* )(  ) const
+~@member_function_t@bottom@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
+~@member_function_t@bottom@::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const::CEGUI::UDim const & ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) const
 ~@member_function_t@do_get@::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::ios_base &,::std::_Ios_Iostate &,bool & ) const::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::ios_base &,::std::_Ios_Iostate &,bool & ) const
 ~@member_function_t@do_get@::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::ios_base &,::std::_Ios_Iostate &,long int & ) const::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::ios_base &,::std::_Ios_Iostate &,long int & ) const
 ~@member_function_t@do_get@::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >,::std::ios_base &,::std::_Ios_Iostate &,short unsigned int & ) const::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> > ( ::std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::* )( ::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::istreambuf_iterator<wchar_t,std::char_traits<wchar_t> >,::std::ios_base &,::std::_Ios_Iostate &,short unsigned int & ) const
@@ -5598,6 +5667,11 @@
 ~@constructor_t@Rect@ ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2< float > const &,::CEGUI::Vector2< float > const & )  ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> const & ) 
 ~@constructor_t@Rect@ ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2< float > const &,::CEGUI::Size< float > const & )  ( ::CEGUI::Rect<float>::* )( ::CEGUI::Vector2<float> const &,::CEGUI::Size<float> const & ) 
 ~@constructor_t@Rect@ ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect< float > const & )  ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect<float> const & ) 
+~@constructor_t@Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )(  )  ( ::CEGUI::Rect<CEGUI::UDim>::* )(  ) 
+~@constructor_t@Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & )  ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & ) 
+~@constructor_t@Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Vector2< CEGUI::UDim > const & )  ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const &,::CEGUI::Vector2<CEGUI::UDim> const & ) 
+~@constructor_t@Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const &,::CEGUI::Size< CEGUI::UDim > const & )  ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const &,::CEGUI::Size<CEGUI::UDim> const & ) 
+~@constructor_t@Rect@ ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & )  ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) 
 ~@constructor_t@multimap@ ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  )  ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) 
 ~@constructor_t@multimap@ ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::less< unsigned int > const &,::std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > const & )  ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::less<unsigned int> const &,::std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > const & ) 
 ~@constructor_t@multimap@ ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::multimap< unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > const & )  ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > > const & ) 
@@ -5728,6 +5802,10 @@
 ~@constructor_t@collate@ ( ::std::collate<wchar_t>::* )( ::std::__c_locale,::size_t )  ( ::std::collate<wchar_t>::* )( ::std::__c_locale,::size_t ) 
 ~@constructor_t@collate@ ( ::std::collate<char>::* )( ::size_t )  ( ::std::collate<char>::* )( ::size_t ) 
 ~@constructor_t@collate@ ( ::std::collate<char>::* )( ::std::__c_locale,::size_t )  ( ::std::collate<char>::* )( ::std::__c_locale,::size_t ) 
+~@constructor_t@UBox@ ( ::CEGUI::UBox::* )(  )  ( ::CEGUI::UBox::* )(  ) 
+~@constructor_t@UBox@ ( ::CEGUI::UBox::* )( ::CEGUI::UDim const & )  ( ::CEGUI::UBox::* )( ::CEGUI::UDim const & ) 
+~@constructor_t@UBox@ ( ::CEGUI::UBox::* )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & )  ( ::CEGUI::UBox::* )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & ) 
+~@constructor_t@UBox@ ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & )  ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) 
 ~@constructor_t@__pthread_internal_list@ ( ::__pthread_internal_list::* )( ::__pthread_internal_list const & )  ( ::__pthread_internal_list::* )( ::__pthread_internal_list const & ) 
 ~@constructor_t@__pthread_internal_list@ ( ::__pthread_internal_list::* )(  )  ( ::__pthread_internal_list::* )(  ) 
 ~@constructor_t@pthread_barrier_t@ ( ::pthread_barrier_t::* )( ::pthread_barrier_t const & )  ( ::pthread_barrier_t::* )( ::pthread_barrier_t const & ) 
@@ -5760,8 +5838,18 @@
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )(  ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )( ::CEGUI::AllocatedObject< CEGUI::GeometryBuffer > const & )  ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer> const & ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )(  ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Size< CEGUI::UDim > > const & )  ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> > const & ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )(  ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Rect< CEGUI::UDim > > const & )  ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> > const & ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )(  ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )( ::CEGUI::AllocatedObject< CEGUI::Renderer > const & )  ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )( ::CEGUI::AllocatedObject<CEGUI::Renderer> const & ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )(  ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Vector2< CEGUI::UDim > > const & )  ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> > const & ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )(  ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )( ::CEGUI::AllocatedObject< CEGUI::UBox > const & )  ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )( ::CEGUI::AllocatedObject<CEGUI::UBox> const & ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )(  ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )( ::CEGUI::AllocatedObject< CEGUI::UDim > const & )  ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )( ::CEGUI::AllocatedObject<CEGUI::UDim> const & ) 
+~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )(  ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::String>::* )( ::CEGUI::AllocatedObject< CEGUI::String > const & )  ( ::CEGUI::AllocatedObject<CEGUI::String>::* )( ::CEGUI::AllocatedObject<CEGUI::String> const & ) 
 ~@constructor_t@AllocatedObject@ ( ::CEGUI::AllocatedObject<CEGUI::String>::* )(  )  ( ::CEGUI::AllocatedObject<CEGUI::String>::* )(  ) 
 ~@constructor_t@forward_iterator_tag@ ( ::std::forward_iterator_tag::* )( ::std::forward_iterator_tag const & )  ( ::std::forward_iterator_tag::* )( ::std::forward_iterator_tag const & ) 
@@ -5948,6 +6036,9 @@
 ~@constructor_t@Size@ ( ::CEGUI::Size<float>::* )(  )  ( ::CEGUI::Size<float>::* )(  ) 
 ~@constructor_t@Size@ ( ::CEGUI::Size<float>::* )( float const &,float const & )  ( ::CEGUI::Size<float>::* )( float const &,float const & ) 
 ~@constructor_t@Size@ ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & )  ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) 
+~@constructor_t@Size@ ( ::CEGUI::Size<CEGUI::UDim>::* )(  )  ( ::CEGUI::Size<CEGUI::UDim>::* )(  ) 
+~@constructor_t@Size@ ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const & )  ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const & ) 
+~@constructor_t@Size@ ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & )  ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@constructor_t@__mbstate_t@ ( ::__mbstate_t::* )( ::__mbstate_t const & )  ( ::__mbstate_t::* )( ::__mbstate_t const & ) 
 ~@constructor_t@__mbstate_t@ ( ::__mbstate_t::* )(  )  ( ::__mbstate_t::* )(  ) 
 ~@constructor_t@__is_floating@ ( ::std::__is_floating<long double>::* )( ::std::__is_floating< long double > const & )  ( ::std::__is_floating<long double>::* )( ::std::__is_floating<long double> const & ) 
@@ -5967,6 +6058,9 @@
 ~@constructor_t@Vector2@ ( ::CEGUI::Vector2<float>::* )(  )  ( ::CEGUI::Vector2<float>::* )(  ) 
 ~@constructor_t@Vector2@ ( ::CEGUI::Vector2<float>::* )( float const &,float const & )  ( ::CEGUI::Vector2<float>::* )( float const &,float const & ) 
 ~@constructor_t@Vector2@ ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & )  ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@constructor_t@Vector2@ ( ::CEGUI::Vector2<CEGUI::UDim>::* )(  )  ( ::CEGUI::Vector2<CEGUI::UDim>::* )(  ) 
+~@constructor_t@Vector2@ ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const & )  ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const &,::CEGUI::UDim const & ) 
+~@constructor_t@Vector2@ ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & )  ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@constructor_t@Init@ ( ::std::ios_base::Init::* )( ::std::ios_base::Init const & )  ( ::std::ios_base::Init::* )( ::std::ios_base::Init const & ) 
 ~@constructor_t@Init@ ( ::std::ios_base::Init::* )(  )  ( ::std::ios_base::Init::* )(  ) 
 ~@constructor_t@itimerspec@ ( ::itimerspec::* )( ::itimerspec const & )  ( ::itimerspec::* )( ::itimerspec const & ) 
@@ -6084,6 +6178,9 @@
 ~@constructor_t@_Impl@ ( ::std::locale::_Impl::* )( char const *,::size_t )  ( ::std::locale::_Impl::* )( char const *,::size_t ) 
 ~@constructor_t@_Impl@ ( ::std::locale::_Impl::* )( ::size_t )  ( ::std::locale::_Impl::* )( ::size_t ) 
 ~@constructor_t@_Impl@ ( ::std::locale::_Impl::* )( ::std::locale::_Impl const & )  ( ::std::locale::_Impl::* )( ::std::locale::_Impl const & ) 
+~@constructor_t@UDim@ ( ::CEGUI::UDim::* )(  )  ( ::CEGUI::UDim::* )(  ) 
+~@constructor_t@UDim@ ( ::CEGUI::UDim::* )( float,float )  ( ::CEGUI::UDim::* )( float,float ) 
+~@constructor_t@UDim@ ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & )  ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@constructor_t@_Rb_tree@ ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )(  )  ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )(  ) 
 ~@constructor_t@_Rb_tree@ ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::CEGUI::StringFastLessCompare const &,::std::allocator< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > const & )  ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::CEGUI::StringFastLessCompare const &,::std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > const & ) 
 ~@constructor_t@_Rb_tree@ ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::OpenGLTexture* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > > const & )  ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > > const & ) 
@@ -6143,7 +6240,7 @@
 ~@variable_t@d_windows@::CEGUI::RenderingSurface::d_windows
 ~@variable_t@_M_index@::std::ios_base::_Callback_list::_M_index
 ~@variable_t@_M_index@::std::locale::id::_M_index
-~@variable_t@_ZTISt13basic_ostreamIwSt11char_traitsIwEE@::_ZTISt13basic_ostreamIwSt11char_traitsIwEE
+~@variable_t@d_offset@::CEGUI::UDim::d_offset
 ~@variable_t@_M_fill_init@::std::basic_ios< wchar_t, std::char_traits< wchar_t > >::_M_fill_init
 ~@variable_t@_M_fill_init@::std::basic_ios< char, std::char_traits< char > >::_M_fill_init
 ~@variable_t@digit@::std::ctype_base::digit
@@ -6151,9 +6248,12 @@
 ~@variable_t@_ZTISo@::_ZTISo
 ~@variable_t@failbit@::std::ios_base::failbit
 ~@variable_t@_M_caches@::std::locale::_Impl::_M_caches
+~@variable_t@d_bottom@::CEGUI::UBox::d_bottom
 ~@variable_t@DefaultNativeVertRes@::CEGUI::DefaultNativeVertRes
 ~@variable_t@d_x@::CEGUI::Vector2< float >::d_x
+~@variable_t@d_x@::CEGUI::Vector2< CEGUI::UDim >::d_x
 ~@variable_t@d_y@::CEGUI::Vector2< float >::d_y
+~@variable_t@d_y@::CEGUI::Vector2< CEGUI::UDim >::d_y
 ~@variable_t@_M_toupper@::std::ctype< char >::_M_toupper
 ~@variable_t@_ZTISt7num_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwEEE@::_ZTISt7num_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwEEE
 ~@variable_t@_M_dataplus@::std::string::_M_dataplus
@@ -6184,13 +6284,14 @@
 ~@variable_t@current@::std::reverse_iterator< CEGUI::String::iterator >::current
 ~@variable_t@d_subscriber@::CEGUI::BoundSlot::d_subscriber
 ~@variable_t@__writer_wakeup@::pthread_rwlock_t::__writer_wakeup
-~@variable_t@d_buffer@::CEGUI::String::d_buffer
+~@variable_t@d_invalidated@::CEGUI::RenderingSurface::d_invalidated
 ~@variable_t@queueID@::CEGUI::RenderQueueEventArgs::queueID
 ~@variable_t@_M_widen@::std::ctype< wchar_t >::_M_widen
 ~@variable_t@_M_widen@::std::ctype< char >::_M_widen
 ~@variable_t@_M_ok@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > >::sentry::_M_ok
 ~@variable_t@_M_ok@::std::basic_ostream< char, std::char_traits< char > >::sentry::_M_ok
 +@variable_t@d_viewDistance@::CEGUI::OpenGLRenderTarget::d_viewDistance
+~@variable_t@d_top@::CEGUI::UBox::d_top
 ~@variable_t@_M_os@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > >::sentry::_M_os
 ~@variable_t@_M_os@::std::basic_ostream< char, std::char_traits< char > >::sentry::_M_os
 ~@variable_t@punct@::std::ctype_base::punct
@@ -6222,9 +6323,11 @@
 ~@variable_t@__nusers@::pthread_mutex_t::__pthread_mutex_s::__nusers
 ~@variable_t@tm_yday@::tm::tm_yday
 ~@variable_t@cntrl@::std::ctype_base::cntrl
+~@variable_t@_ZTISt13basic_ostreamIwSt11char_traitsIwEE@::_ZTISt13basic_ostreamIwSt11char_traitsIwEE
 ~@variable_t@d_functor_impl@::CEGUI::SubscriberSlot::d_functor_impl
 ~@variable_t@d_encodeddatlen@::CEGUI::String::d_encodeddatlen
 ~@variable_t@none@::std::locale::none
+~@variable_t@d_left@::CEGUI::UBox::d_left
 ~@variable_t@tv_nsec@::timespec::tv_nsec
 ~@variable_t@tm_zone@::tm::tm_zone
 ~@variable_t@int_p_cs_precedes@::lconv::int_p_cs_precedes
@@ -6261,6 +6364,7 @@
 ~@variable_t@_M_capacity@::std::string::_Rep_base::_M_capacity
 ~@variable_t@_M_capacity@::std::wstring::_Rep_base::_M_capacity
 ~@variable_t@d_min@::CEGUI::Rect< float >::d_min
+~@variable_t@d_min@::CEGUI::Rect< CEGUI::UDim >::d_min
 ~@variable_t@d_quickbuff@::CEGUI::String::d_quickbuff
 ~@variable_t@_ZTIN5CEGUI18OpenGLRenderTargetE@::_ZTIN5CEGUI18OpenGLRenderTargetE
 ~@variable_t@tm_year@::tm::tm_year
@@ -6285,6 +6389,7 @@
 ~@variable_t@_M_mask@::std::_Bit_reference::_M_mask
 ~@variable_t@__wch@::__mbstate_t::__wch
 ~@variable_t@d_width@::CEGUI::Size< float >::d_width
+~@variable_t@d_width@::CEGUI::Size< CEGUI::UDim >::d_width
 ~@variable_t@_ZTISt12out_of_range@::_ZTISt12out_of_range
 ~@variable_t@_S_global@::std::locale::_S_global
 ~@variable_t@d_blendMode@::CEGUI::GeometryBuffer::d_blendMode
@@ -6307,6 +6412,7 @@
 ~@variable_t@__align@::pthread_mutex_t::__align
 ~@variable_t@__align@::pthread_rwlock_t::__align
 ~@variable_t@__align@::pthread_mutexattr_t::__align
+~@variable_t@d_scale@::CEGUI::UDim::d_scale
 ~@variable_t@thousands_sep@::lconv::thousands_sep
 ~@variable_t@numeric@::std::locale::numeric
 ~@variable_t@int_p_sign_posn@::lconv::int_p_sign_posn
@@ -6349,7 +6455,7 @@
 ~@variable_t@__is_signed@::__gnu_cxx::__numeric_traits_integer< char >::__is_signed
 ~@variable_t@__is_signed@::__gnu_cxx::__numeric_traits_integer< unsigned long >::__is_signed
 ~@variable_t@__is_signed@::__gnu_cxx::__numeric_traits_integer< int >::__is_signed
-~@variable_t@__wakeup_seq@::pthread_cond_t::__wakeup_seq
+~@variable_t@__ctype_tolower@::__locale_struct::__ctype_tolower
 ~@variable_t@_ZTISt12length_error@::_ZTISt12length_error
 ~@variable_t@_ZTINSt8ios_base7failureE@::_ZTINSt8ios_base7failureE
 ~@variable_t@_M_parent@::std::_Rb_tree_node_base::_M_parent
@@ -6374,8 +6480,10 @@
 ~@variable_t@_S_empty_rep_storage@::std::wstring::_Rep::_S_empty_rep_storage
 ~@variable_t@d_reserve@::CEGUI::String::d_reserve
 ~@variable_t@d_max@::CEGUI::Rect< float >::d_max
+~@variable_t@d_max@::CEGUI::Rect< CEGUI::UDim >::d_max
 ~@variable_t@_ZTIN5CEGUI8EventSetE@::_ZTIN5CEGUI8EventSetE
 ~@variable_t@d_height@::CEGUI::Size< float >::d_height
+~@variable_t@d_height@::CEGUI::Size< CEGUI::UDim >::d_height
 ~@variable_t@_M_fill@::std::basic_ios< wchar_t, std::char_traits< wchar_t > >::_M_fill
 ~@variable_t@_M_fill@::std::basic_ios< char, std::char_traits< char > >::_M_fill
 ~@variable_t@EventNamespace@::CEGUI::RenderingSurface::EventNamespace
@@ -6399,6 +6507,7 @@
 ~@variable_t@tm_gmtoff@::tm::tm_gmtoff
 ~@variable_t@_M_local_word@::std::ios_base::_M_local_word
 ~@variable_t@_ZTISt14overflow_error@::_ZTISt14overflow_error
+~@variable_t@d_right@::CEGUI::UBox::d_right
 ~@variable_t@_M_finish@::std::_Vector_base< CEGUI::OpenGLGeometryBuffer*, std::allocator< CEGUI::OpenGLGeometryBuffer* > >::_Vector_impl::_M_finish
 ~@variable_t@_M_finish@::std::_Vector_base< CEGUI::TextureTarget*, std::allocator< CEGUI::TextureTarget* > >::_Vector_impl::_M_finish
 ~@variable_t@_M_finish@::std::_Vector_base< CEGUI::RenderingWindow*, std::allocator< CEGUI::RenderingWindow* > >::_Vector_impl::_M_finish
@@ -6420,9 +6529,9 @@
 ~@variable_t@_M_end_of_storage@::std::_Vector_base< CEGUI::TextureTarget*, std::allocator< CEGUI::TextureTarget* > >::_Vector_impl::_M_end_of_storage
 ~@variable_t@_M_end_of_storage@::std::_Vector_base< CEGUI::RenderingWindow*, std::allocator< CEGUI::RenderingWindow* > >::_Vector_impl::_M_end_of_storage
 ~@variable_t@_M_end_of_storage@::std::_Vector_base< CEGUI::GeometryBuffer const*, std::allocator< CEGUI::GeometryBuffer const* > >::_Vector_impl::_M_end_of_storage
-~@variable_t@d_invalidated@::CEGUI::RenderingSurface::d_invalidated
+~@variable_t@d_buffer@::CEGUI::String::d_buffer
 ~@variable_t@fixed@::std::ios_base::fixed
-~@variable_t@__ctype_tolower@::__locale_struct::__ctype_tolower
+~@variable_t@__wakeup_seq@::pthread_cond_t::__wakeup_seq
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::OpenGLTexture* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
@@ -6633,6 +6742,15 @@
 ~@variable_t@npos@::CEGUI::String::npos
 ~@variable_t@time@::std::locale::time
 ~@variable_t@_ZTIN5CEGUI12RenderTargetE@::_ZTIN5CEGUI12RenderTargetE
+~@free_operator_t@operator<@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
+~@free_operator_t@operator<@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
+~@free_operator_t@operator<@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
 ~@free_operator_t@operator>@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
 ~@free_operator_t@operator>@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
 ~@free_operator_t@operator>@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
@@ -6642,15 +6760,51 @@
 ~@free_operator_t@operator>@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
 ~@free_operator_t@operator>@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
 ~@free_operator_t@operator>@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
-~@free_operator_t@operator==@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
-~@free_operator_t@operator==@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
-~@free_operator_t@operator==@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
+~@free_operator_t@operator delete []@void (*)( void *,void * )void (*)( void *,void * )
+~@free_operator_t@operator delete []@void (*)( void *,::std::nothrow_t const & )void (*)( void *,::std::nothrow_t const & )
+~@free_operator_t@operator delete []@void (*)( void * )void (*)( void * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,unsigned char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,unsigned char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,signed char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,signed char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,char const * )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
+~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,wchar_t const * )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,wchar_t const * )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,unsigned char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,unsigned char )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,signed char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,signed char )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char )
+~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,char )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,char )
+~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,wchar_t )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,wchar_t )
+~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,::std::wstring const & )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::std::string const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Rect< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Rect<float> const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Vector2< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Vector2<float> const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Size< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Size<float> const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Size< CEGUI::UDim > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Size<CEGUI::UDim> const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Rect< CEGUI::UDim > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Rect<CEGUI::UDim> const & )
+~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Vector2< CEGUI::UDim > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Vector2<CEGUI::UDim> const & )
+~@free_operator_t@operator<<@::std::ostream & (*)( ::std::ostream &,::CEGUI::UDim const & )::std::ostream & (*)( ::std::ostream &,::CEGUI::UDim const & )
+~@free_operator_t@operator<<@::std::ostream & (*)( ::std::ostream &,::CEGUI::String const & )::std::ostream & (*)( ::std::ostream &,::CEGUI::String const & )
+~@free_operator_t@operator*@::CEGUI::Rect< CEGUI::UDim > (*)( ::CEGUI::Rect< CEGUI::UDim > const &,float const )::CEGUI::Rect<CEGUI::UDim> (*)( ::CEGUI::Rect<CEGUI::UDim> const &,float const )
+~@free_operator_t@operator*@::CEGUI::Vector2< CEGUI::UDim > (*)( ::CEGUI::Vector2< CEGUI::UDim > const &,float const )::CEGUI::Vector2<CEGUI::UDim> (*)( ::CEGUI::Vector2<CEGUI::UDim> const &,float const )
+~@free_operator_t@operator-@::ptrdiff_t (*)( ::std::_Bit_iterator_base const &,::std::_Bit_iterator_base const & )::ptrdiff_t (*)( ::std::_Bit_iterator_base const &,::std::_Bit_iterator_base const & )
+~@free_operator_t@operator-@long int (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )long int (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
+~@free_operator_t@operator-@long int (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )long int (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
+~@free_operator_t@operator>=@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
+~@free_operator_t@operator>=@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
+~@free_operator_t@operator>=@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
+~@free_operator_t@operator>>@::std::basic_istream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_istream< wchar_t, std::char_traits< wchar_t > > &,::std::wstring & )::std::basic_istream<wchar_t,std::char_traits<wchar_t> > & (*)( ::std::basic_istream<wchar_t,std::char_traits<wchar_t> > &,::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > & )
+~@free_operator_t@operator>>@::std::basic_istream< char, std::char_traits< char > > & (*)( ::std::basic_istream< char, std::char_traits< char > > &,::std::string & )::std::basic_istream<char,std::char_traits<char> > & (*)( ::std::basic_istream<char,std::char_traits<char> > &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & )
+~@free_operator_t@operator&@::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )
+~@free_operator_t@operator&@::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )
+~@free_operator_t@operator&@::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )
 ~@free_operator_t@operator delete@void (*)( void *,void * )void (*)( void *,void * )
 ~@free_operator_t@operator delete@void (*)( void *,::std::nothrow_t const & )void (*)( void *,::std::nothrow_t const & )
 ~@free_operator_t@operator delete@void (*)( void * )void (*)( void * )
@@ -6672,57 +6826,21 @@
 ~@free_operator_t@operator~@::std::_Ios_Iostate (*)( ::std::_Ios_Iostate )::std::_Ios_Iostate (*)( ::std::_Ios_Iostate )
 ~@free_operator_t@operator~@::std::_Ios_Openmode (*)( ::std::_Ios_Openmode )::std::_Ios_Openmode (*)( ::std::_Ios_Openmode )
 ~@free_operator_t@operator~@::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags )::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags )
-~@free_operator_t@operator delete []@void (*)( void *,void * )void (*)( void *,void * )
-~@free_operator_t@operator delete []@void (*)( void *,::std::nothrow_t const & )void (*)( void *,::std::nothrow_t const & )
-~@free_operator_t@operator delete []@void (*)( void * )void (*)( void * )
+~@free_operator_t@operator==@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
+~@free_operator_t@operator==@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
+~@free_operator_t@operator==@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
+~@free_operator_t@operator|=@::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )
+~@free_operator_t@operator|=@::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )
+~@free_operator_t@operator|=@::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )
 ~@free_operator_t@operator^@::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )
 ~@free_operator_t@operator^@::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )
 ~@free_operator_t@operator^@::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,unsigned char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,unsigned char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,signed char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,signed char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,char const * )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char const * )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char const * )
-~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,wchar_t const * )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,wchar_t const * )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,unsigned char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,unsigned char )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,signed char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,signed char )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,char )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,char )
-~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,char )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,char )
-~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,wchar_t )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,wchar_t )
-~@free_operator_t@operator<<@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > &,::std::wstring const & )::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & (*)( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > &,::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > const & )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::std::string const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > const & )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Rect< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Rect<float> const & )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Vector2< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Vector2<float> const & )
-~@free_operator_t@operator<<@::std::basic_ostream< char, std::char_traits< char > > & (*)( ::std::basic_ostream< char, std::char_traits< char > > &,::CEGUI::Size< float > const & )::std::basic_ostream<char,std::char_traits<char> > & (*)( ::std::basic_ostream<char,std::char_traits<char> > &,::CEGUI::Size<float> const & )
-~@free_operator_t@operator<<@::std::ostream & (*)( ::std::ostream &,::CEGUI::String const & )::std::ostream & (*)( ::std::ostream &,::CEGUI::String const & )
-~@free_operator_t@operator>=@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
-~@free_operator_t@operator>=@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
-~@free_operator_t@operator>=@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
-~@free_operator_t@operator<=@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
-~@free_operator_t@operator<=@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
-~@free_operator_t@operator<=@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
-~@free_operator_t@operator<@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
-~@free_operator_t@operator<@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
-~@free_operator_t@operator<@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
 ~@free_operator_t@operator+@::std::_Bit_const_iterator (*)( ::ptrdiff_t,::std::_Bit_const_iterator const & )::std::_Bit_const_iterator (*)( ::ptrdiff_t,::std::_Bit_const_iterator const & )
 ~@free_operator_t@operator+@::std::_Bit_iterator (*)( ::ptrdiff_t,::std::_Bit_iterator const & )::std::_Bit_iterator (*)( ::ptrdiff_t,::std::_Bit_iterator const & )
 ~@free_operator_t@operator+@::CEGUI::String (*)( char const *,::CEGUI::String const & )::CEGUI::String (*)( char const *,::CEGUI::String const & )
@@ -6736,26 +6854,24 @@
 ~@free_operator_t@operator+@::CEGUI::String (*)( ::CEGUI::String const &,::CEGUI::String const & )::CEGUI::String (*)( ::CEGUI::String const &,::CEGUI::String const & )
 ~@free_operator_t@operator+@::CEGUI::String::const_iterator (*)( long int,::CEGUI::String::const_iterator const & )::CEGUI::String::const_iterator (*)( long int,::CEGUI::String::const_iterator const & )
 ~@free_operator_t@operator+@::CEGUI::String::iterator (*)( long int,::CEGUI::String::iterator const & )::CEGUI::String::iterator (*)( long int,::CEGUI::String::iterator const & )
-~@free_operator_t@operator|=@::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )
-~@free_operator_t@operator|=@::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )
-~@free_operator_t@operator|=@::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )
-~@free_operator_t@operator-@::ptrdiff_t (*)( ::std::_Bit_iterator_base const &,::std::_Bit_iterator_base const & )::ptrdiff_t (*)( ::std::_Bit_iterator_base const &,::std::_Bit_iterator_base const & )
-~@free_operator_t@operator-@long int (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )long int (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
-~@free_operator_t@operator-@long int (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )long int (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
-~@free_operator_t@operator&=@::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )
-~@free_operator_t@operator&=@::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )
-~@free_operator_t@operator&=@::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )
 ~@free_operator_t@operator new []@void * (*)( ::size_t,void * )void * (*)( ::size_t,void * )
 ~@free_operator_t@operator new []@void * (*)( ::size_t,::std::nothrow_t const & )void * (*)( ::size_t,::std::nothrow_t const & )
 ~@free_operator_t@operator new []@void * (*)( ::size_t )void * (*)( ::size_t )
+~@free_operator_t@operator<=@bool (*)( char const *,::CEGUI::String const & )bool (*)( char const *,::CEGUI::String const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,char const * )bool (*)( ::CEGUI::String const &,char const * )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )bool (*)( ::CEGUI::utf8 const *,::CEGUI::String const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )bool (*)( ::CEGUI::String const &,::CEGUI::utf8 const * )
+~@free_operator_t@operator<=@bool (*)( ::std::string const &,::CEGUI::String const & )bool (*)( ::std::string const &,::CEGUI::String const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::std::string const & )bool (*)( ::CEGUI::String const &,::std::string const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String const &,::CEGUI::String const & )bool (*)( ::CEGUI::String const &,::CEGUI::String const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )bool (*)( ::CEGUI::String::const_iterator const &,::CEGUI::String::const_iterator const & )
+~@free_operator_t@operator<=@bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )bool (*)( ::CEGUI::String::iterator const &,::CEGUI::String::iterator const & )
+~@free_operator_t@operator&=@::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )
+~@free_operator_t@operator&=@::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )
+~@free_operator_t@operator&=@::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )
 ~@free_operator_t@operator^=@::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )::std::_Ios_Iostate & (*)( ::std::_Ios_Iostate &,::std::_Ios_Iostate )
 ~@free_operator_t@operator^=@::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )::std::_Ios_Openmode & (*)( ::std::_Ios_Openmode &,::std::_Ios_Openmode )
 ~@free_operator_t@operator^=@::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags & (*)( ::std::_Ios_Fmtflags &,::std::_Ios_Fmtflags )
-~@free_operator_t@operator>>@::std::basic_istream< wchar_t, std::char_traits< wchar_t > > & (*)( ::std::basic_istream< wchar_t, std::char_traits< wchar_t > > &,::std::wstring & )::std::basic_istream<wchar_t,std::char_traits<wchar_t> > & (*)( ::std::basic_istream<wchar_t,std::char_traits<wchar_t> > &,::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > & )
-~@free_operator_t@operator>>@::std::basic_istream< char, std::char_traits< char > > & (*)( ::std::basic_istream< char, std::char_traits< char > > &,::std::string & )::std::basic_istream<char,std::char_traits<char> > & (*)( ::std::basic_istream<char,std::char_traits<char> > &,::std::basic_string<char,std::char_traits<char>,std::allocator<char> > & )
-~@free_operator_t@operator&@::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )::std::_Ios_Iostate (*)( ::std::_Ios_Iostate,::std::_Ios_Iostate )
-~@free_operator_t@operator&@::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )::std::_Ios_Openmode (*)( ::std::_Ios_Openmode,::std::_Ios_Openmode )
-~@free_operator_t@operator&@::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )::std::_Ios_Fmtflags (*)( ::std::_Ios_Fmtflags,::std::_Ios_Fmtflags )
 ~@member_operator_t@operator=@::std::__uninitialized_fill_n< false > & ( ::std::__uninitialized_fill_n<false>::* )( ::std::__uninitialized_fill_n< false > const & ) ::std::__uninitialized_fill_n<false> & ( ::std::__uninitialized_fill_n<false>::* )( ::std::__uninitialized_fill_n<false> const & ) 
 ~@member_operator_t@operator=@::std::__uninitialized_fill_n< true > & ( ::std::__uninitialized_fill_n<true>::* )( ::std::__uninitialized_fill_n< true > const & ) ::std::__uninitialized_fill_n<true> & ( ::std::__uninitialized_fill_n<true>::* )( ::std::__uninitialized_fill_n<true> const & ) 
 ~@member_operator_t@operator=@::std::runtime_error & ( ::std::runtime_error::* )( ::std::runtime_error const & ) ::std::runtime_error & ( ::std::runtime_error::* )( ::std::runtime_error const & ) 
@@ -6926,7 +7042,9 @@
 ~@member_operator_t@operator=@::imaxdiv_t & ( ::imaxdiv_t::* )( ::imaxdiv_t const & ) ::imaxdiv_t & ( ::imaxdiv_t::* )( ::imaxdiv_t const & ) 
 ~@member_operator_t@operator=@::tm & ( ::tm::* )( ::tm const & ) ::tm & ( ::tm::* )( ::tm const & ) 
 ~@member_operator_t@operator=@::CEGUI::EventArgs & ( ::CEGUI::EventArgs::* )( ::CEGUI::EventArgs const & ) ::CEGUI::EventArgs & ( ::CEGUI::EventArgs::* )( ::CEGUI::EventArgs const & ) 
+~@member_operator_t@operator=@::CEGUI::UBox & ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) ::CEGUI::UBox & ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) 
 ~@member_operator_t@operator=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_operator_t@operator=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@member_operator_t@operator=@::CEGUI::TextureTarget & ( ::CEGUI::TextureTarget::* )( ::CEGUI::TextureTarget const & ) ::CEGUI::TextureTarget & ( ::CEGUI::TextureTarget::* )( ::CEGUI::TextureTarget const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Rect< float > > & ( ::CEGUI::AllocatedObject<CEGUI::Rect<float> >::* )( ::CEGUI::AllocatedObject< CEGUI::Rect< float > > const & ) ::CEGUI::AllocatedObject<CEGUI::Rect<float> > & ( ::CEGUI::AllocatedObject<CEGUI::Rect<float> >::* )( ::CEGUI::AllocatedObject<CEGUI::Rect<float> > const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Vector2< float > > & ( ::CEGUI::AllocatedObject<CEGUI::Vector2<float> >::* )( ::CEGUI::AllocatedObject< CEGUI::Vector2< float > > const & ) ::CEGUI::AllocatedObject<CEGUI::Vector2<float> > & ( ::CEGUI::AllocatedObject<CEGUI::Vector2<float> >::* )( ::CEGUI::AllocatedObject<CEGUI::Vector2<float> > const & ) 
@@ -6939,7 +7057,12 @@
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::RenderTarget > & ( ::CEGUI::AllocatedObject<CEGUI::RenderTarget>::* )( ::CEGUI::AllocatedObject< CEGUI::RenderTarget > const & ) ::CEGUI::AllocatedObject<CEGUI::RenderTarget> & ( ::CEGUI::AllocatedObject<CEGUI::RenderTarget>::* )( ::CEGUI::AllocatedObject<CEGUI::RenderTarget> const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Texture > & ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )( ::CEGUI::AllocatedObject< CEGUI::Texture > const & ) ::CEGUI::AllocatedObject<CEGUI::Texture> & ( ::CEGUI::AllocatedObject<CEGUI::Texture>::* )( ::CEGUI::AllocatedObject<CEGUI::Texture> const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::GeometryBuffer > & ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )( ::CEGUI::AllocatedObject< CEGUI::GeometryBuffer > const & ) ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer> & ( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer>::* )( ::CEGUI::AllocatedObject<CEGUI::GeometryBuffer> const & ) 
+~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Size< CEGUI::UDim > > & ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Size< CEGUI::UDim > > const & ) ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> > & ( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Size<CEGUI::UDim> > const & ) 
+~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Rect< CEGUI::UDim > > & ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Rect< CEGUI::UDim > > const & ) ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> > & ( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Rect<CEGUI::UDim> > const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Renderer > & ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )( ::CEGUI::AllocatedObject< CEGUI::Renderer > const & ) ::CEGUI::AllocatedObject<CEGUI::Renderer> & ( ::CEGUI::AllocatedObject<CEGUI::Renderer>::* )( ::CEGUI::AllocatedObject<CEGUI::Renderer> const & ) 
+~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::Vector2< CEGUI::UDim > > & ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject< CEGUI::Vector2< CEGUI::UDim > > const & ) ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> > & ( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> >::* )( ::CEGUI::AllocatedObject<CEGUI::Vector2<CEGUI::UDim> > const & ) 
+~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::UBox > & ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )( ::CEGUI::AllocatedObject< CEGUI::UBox > const & ) ::CEGUI::AllocatedObject<CEGUI::UBox> & ( ::CEGUI::AllocatedObject<CEGUI::UBox>::* )( ::CEGUI::AllocatedObject<CEGUI::UBox> const & ) 
+~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::UDim > & ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )( ::CEGUI::AllocatedObject< CEGUI::UDim > const & ) ::CEGUI::AllocatedObject<CEGUI::UDim> & ( ::CEGUI::AllocatedObject<CEGUI::UDim>::* )( ::CEGUI::AllocatedObject<CEGUI::UDim> const & ) 
 ~@member_operator_t@operator=@::CEGUI::AllocatedObject< CEGUI::String > & ( ::CEGUI::AllocatedObject<CEGUI::String>::* )( ::CEGUI::AllocatedObject< CEGUI::String > const & ) ::CEGUI::AllocatedObject<CEGUI::String> & ( ::CEGUI::AllocatedObject<CEGUI::String>::* )( ::CEGUI::AllocatedObject<CEGUI::String> const & ) 
 ~@member_operator_t@operator=@::CEGUI::SubscriberSlot & ( ::CEGUI::SubscriberSlot::* )( ::CEGUI::SubscriberSlot const & ) ::CEGUI::SubscriberSlot & ( ::CEGUI::SubscriberSlot::* )( ::CEGUI::SubscriberSlot const & ) 
 ~@member_operator_t@operator=@::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( ::CEGUI::String::const_iterator const & ) ::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( ::CEGUI::String::const_iterator const & ) 
@@ -6956,12 +7079,15 @@
 ~@member_operator_t@operator=@::CEGUI::StringFastLessCompare & ( ::CEGUI::StringFastLessCompare::* )( ::CEGUI::StringFastLessCompare const & ) ::CEGUI::StringFastLessCompare & ( ::CEGUI::StringFastLessCompare::* )( ::CEGUI::StringFastLessCompare const & ) 
 ~@member_operator_t@operator=@::CEGUI::RefCounted< CEGUI::BoundSlot > & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted< CEGUI::BoundSlot > const & ) ::CEGUI::RefCounted<CEGUI::BoundSlot> & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted<CEGUI::BoundSlot> const & ) 
 ~@member_operator_t@operator=@::CEGUI::Size< float > & ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & ) ::CEGUI::Size<float> & ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) 
+~@member_operator_t@operator=@::CEGUI::Size< CEGUI::UDim > & ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) ::CEGUI::Size<CEGUI::UDim> & ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@member_operator_t@operator=@::CEGUI::RenderQueue & ( ::CEGUI::RenderQueue::* )( ::CEGUI::RenderQueue const & ) ::CEGUI::RenderQueue & ( ::CEGUI::RenderQueue::* )( ::CEGUI::RenderQueue const & ) 
 ~@member_operator_t@operator=@::CEGUI::RenderQueueEventArgs & ( ::CEGUI::RenderQueueEventArgs::* )( ::CEGUI::RenderQueueEventArgs const & ) ::CEGUI::RenderQueueEventArgs & ( ::CEGUI::RenderQueueEventArgs::* )( ::CEGUI::RenderQueueEventArgs const & ) 
 +@member_operator_t@operator=@::CEGUI::OpenGLRenderer & ( ::CEGUI::OpenGLRenderer::* )( ::CEGUI::OpenGLRenderer const & ) ::CEGUI::OpenGLRenderer & ( ::CEGUI::OpenGLRenderer::* )( ::CEGUI::OpenGLRenderer const & ) 
 ~@member_operator_t@operator=@::CEGUI::Texture & ( ::CEGUI::Texture::* )( ::CEGUI::Texture const & ) ::CEGUI::Texture & ( ::CEGUI::Texture::* )( ::CEGUI::Texture const & ) 
 ~@member_operator_t@operator=@::CEGUI::EventSet & ( ::CEGUI::EventSet::* )( ::CEGUI::EventSet & ) ::CEGUI::EventSet & ( ::CEGUI::EventSet::* )( ::CEGUI::EventSet & ) 
 ~@member_operator_t@operator=@::CEGUI::Renderer & ( ::CEGUI::Renderer::* )( ::CEGUI::Renderer const & ) ::CEGUI::Renderer & ( ::CEGUI::Renderer::* )( ::CEGUI::Renderer const & ) 
+~@member_operator_t@operator=@::CEGUI::Rect< CEGUI::UDim > & ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & ) ::CEGUI::Rect<CEGUI::UDim> & ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) 
+~@member_operator_t@operator=@::CEGUI::UDim & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) ::CEGUI::UDim & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@member_operator_t@operator=@::CEGUI::RenderTarget & ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderTarget const & ) ::CEGUI::RenderTarget & ( ::CEGUI::RenderTarget::* )( ::CEGUI::RenderTarget const & ) 
 ~@member_operator_t@operator=@::CEGUI::Event::ScopedConnection & ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::Event::ScopedConnection const & ) ::CEGUI::Event::ScopedConnection & ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::Event::ScopedConnection const & ) 
 ~@member_operator_t@operator=@::CEGUI::Event::ScopedConnection & ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::RefCounted< CEGUI::BoundSlot > const & ) ::CEGUI::Event::ScopedConnection & ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::RefCounted<CEGUI::BoundSlot> const & ) 
@@ -7079,14 +7205,22 @@
 ~@member_operator_t@operator*@unsigned int const & ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )(  ) constunsigned int const & ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )(  ) const
 ~@member_operator_t@operator*@unsigned int & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )(  ) constunsigned int & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )(  ) const
 ~@member_operator_t@operator*@bool ( ::std::_Bit_const_iterator::* )(  ) constbool ( ::std::_Bit_const_iterator::* )(  ) const
+~@member_operator_t@operator*@::CEGUI::UBox ( ::CEGUI::UBox::* )( float const ) const::CEGUI::UBox ( ::CEGUI::UBox::* )( float const ) const
+~@member_operator_t@operator*@::CEGUI::UBox ( ::CEGUI::UBox::* )( ::CEGUI::UDim const & ) const::CEGUI::UBox ( ::CEGUI::UBox::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator*@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
 ~@member_operator_t@operator*@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( float const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( float const & ) const
+~@member_operator_t@operator*@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
+~@member_operator_t@operator*@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator*@::CEGUI::utf32 const & ( ::CEGUI::String::const_iterator::* )(  ) const::CEGUI::utf32 const & ( ::CEGUI::String::const_iterator::* )(  ) const
 ~@member_operator_t@operator*@::CEGUI::utf32 & ( ::CEGUI::String::iterator::* )(  ) const::CEGUI::utf32 & ( ::CEGUI::String::iterator::* )(  ) const
 ~@member_operator_t@operator*@::CEGUI::Rect< float > ( ::CEGUI::Rect<float>::* )( float ) const::CEGUI::Rect<float> ( ::CEGUI::Rect<float>::* )( float ) const
 ~@member_operator_t@operator*@::CEGUI::BoundSlot const & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) const::CEGUI::BoundSlot const & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) const
 ~@member_operator_t@operator*@::CEGUI::BoundSlot & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) ::CEGUI::BoundSlot & ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) 
 ~@member_operator_t@operator*@::CEGUI::Size< float > ( ::CEGUI::Size<float>::* )( float const & ) const::CEGUI::Size<float> ( ::CEGUI::Size<float>::* )( float const & ) const
+~@member_operator_t@operator*@::CEGUI::Size< CEGUI::UDim > ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const::CEGUI::Size<CEGUI::UDim> ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const
+~@member_operator_t@operator*@::CEGUI::Rect< CEGUI::UDim > ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim ) const::CEGUI::Rect<CEGUI::UDim> ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim ) const
+~@member_operator_t@operator*@::CEGUI::UDim ( ::CEGUI::UDim::* )( float const ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( float const ) const
+~@member_operator_t@operator*@::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator-@::std::_Bit_iterator ( ::std::_Bit_iterator::* )( long int ) const::std::_Bit_iterator ( ::std::_Bit_iterator::* )( long int ) const
 ~@member_operator_t@operator-@::std::reverse_iterator< std::_Bit_const_iterator > ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )( long int ) const::std::reverse_iterator<std::_Bit_const_iterator> ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )( long int ) const
 ~@member_operator_t@operator-@::std::reverse_iterator< std::_Bit_iterator > ( ::std::reverse_iterator<std::_Bit_iterator>::* )( long int ) const::std::reverse_iterator<std::_Bit_iterator> ( ::std::reverse_iterator<std::_Bit_iterator>::* )( long int ) const
@@ -7094,10 +7228,15 @@
 ~@member_operator_t@operator-@::std::reverse_iterator< CEGUI::String::iterator > ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) const::std::reverse_iterator<CEGUI::String::iterator> ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) const
 ~@member_operator_t@operator-@::std::_Bit_const_iterator ( ::std::_Bit_const_iterator::* )( long int ) const::std::_Bit_const_iterator ( ::std::_Bit_const_iterator::* )( long int ) const
 ~@member_operator_t@operator-@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
+~@member_operator_t@operator-@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator-@::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const
 ~@member_operator_t@operator-@::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const
+~@member_operator_t@operator-@::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator/@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
 ~@member_operator_t@operator/@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( float const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( float const & ) const
+~@member_operator_t@operator/@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
+~@member_operator_t@operator/@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) const
+~@member_operator_t@operator/@::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator!@bool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) constbool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
 ~@member_operator_t@operator!@bool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) constbool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const
 ~@member_operator_t@operator>=@bool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) constbool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) const
@@ -7108,8 +7247,10 @@
 ~@member_operator_t@operator-=@::std::reverse_iterator< CEGUI::String::iterator > & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) ::std::reverse_iterator<CEGUI::String::iterator> & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) 
 ~@member_operator_t@operator-=@::std::_Bit_const_iterator & ( ::std::_Bit_const_iterator::* )( long int ) ::std::_Bit_const_iterator & ( ::std::_Bit_const_iterator::* )( long int ) 
 ~@member_operator_t@operator-=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_operator_t@operator-=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@member_operator_t@operator-=@::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( long int ) ::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( long int ) 
 ~@member_operator_t@operator-=@::CEGUI::String::iterator & ( ::CEGUI::String::iterator::* )( long int ) ::CEGUI::String::iterator & ( ::CEGUI::String::iterator::* )( long int ) 
+~@member_operator_t@operator-=@::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) ::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@member_operator_t@operator--@::std::_Bit_iterator & ( ::std::_Bit_iterator::* )(  ) ::std::_Bit_iterator & ( ::std::_Bit_iterator::* )(  ) 
 ~@member_operator_t@operator--@::std::_Bit_iterator ( ::std::_Bit_iterator::* )( int ) ::std::_Bit_iterator ( ::std::_Bit_iterator::* )( int ) 
 ~@member_operator_t@operator--@::std::reverse_iterator< std::_Bit_const_iterator > & ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )(  ) ::std::reverse_iterator<std::_Bit_const_iterator> & ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )(  ) 
@@ -7147,6 +7288,7 @@
 ~@member_operator_t@operator+=@::std::reverse_iterator< CEGUI::String::iterator > & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) ::std::reverse_iterator<CEGUI::String::iterator> & ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) 
 ~@member_operator_t@operator+=@::std::_Bit_const_iterator & ( ::std::_Bit_const_iterator::* )( long int ) ::std::_Bit_const_iterator & ( ::std::_Bit_const_iterator::* )( long int ) 
 ~@member_operator_t@operator+=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_operator_t@operator+=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
 ~@member_operator_t@operator+=@::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( long int ) ::CEGUI::String::const_iterator & ( ::CEGUI::String::const_iterator::* )( long int ) 
 ~@member_operator_t@operator+=@::CEGUI::String::iterator & ( ::CEGUI::String::iterator::* )( long int ) ::CEGUI::String::iterator & ( ::CEGUI::String::iterator::* )( long int ) 
 ~@member_operator_t@operator+=@::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::String const & ) ::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::String const & ) 
@@ -7154,7 +7296,10 @@
 ~@member_operator_t@operator+=@::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::utf8 const * ) ::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::utf8 const * ) 
 ~@member_operator_t@operator+=@::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::utf32 ) ::CEGUI::String & ( ::CEGUI::String::* )( ::CEGUI::utf32 ) 
 ~@member_operator_t@operator+=@::CEGUI::String & ( ::CEGUI::String::* )( char const * ) ::CEGUI::String & ( ::CEGUI::String::* )( char const * ) 
+~@member_operator_t@operator+=@::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) ::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@member_operator_t@operator/=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
+~@member_operator_t@operator/=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
+~@member_operator_t@operator/=@::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) ::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@member_operator_t@operator++@::std::_Bit_iterator & ( ::std::_Bit_iterator::* )(  ) ::std::_Bit_iterator & ( ::std::_Bit_iterator::* )(  ) 
 ~@member_operator_t@operator++@::std::_Bit_iterator ( ::std::_Bit_iterator::* )( int ) ::std::_Bit_iterator ( ::std::_Bit_iterator::* )( int ) 
 ~@member_operator_t@operator++@::std::reverse_iterator< std::_Bit_const_iterator > & ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )(  ) ::std::reverse_iterator<std::_Bit_const_iterator> & ( ::std::reverse_iterator<std::_Bit_const_iterator>::* )(  ) 
@@ -7174,19 +7319,29 @@
 ~@member_operator_t@operator!=@bool ( ::std::type_info::* )( ::std::type_info const & ) constbool ( ::std::type_info::* )( ::std::type_info const & ) const
 ~@member_operator_t@operator!=@bool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) constbool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) const
 ~@member_operator_t@operator!=@bool ( ::std::locale::* )( ::std::locale const & ) constbool ( ::std::locale::* )( ::std::locale const & ) const
+~@member_operator_t@operator!=@bool ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) constbool ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) const
 ~@member_operator_t@operator!=@bool ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) constbool ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
+~@member_operator_t@operator!=@bool ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) constbool ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator!=@bool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect< float > const & ) constbool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect<float> const & ) const
 ~@member_operator_t@operator!=@bool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted< CEGUI::BoundSlot > const & ) constbool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted<CEGUI::BoundSlot> const & ) const
 ~@member_operator_t@operator!=@bool ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & ) constbool ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) const
+~@member_operator_t@operator!=@bool ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) constbool ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) const
+~@member_operator_t@operator!=@bool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & ) constbool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) const
+~@member_operator_t@operator!=@bool ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) constbool ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator!=@bool ( ::CEGUI::BoundSlot::* )( ::CEGUI::BoundSlot const & ) constbool ( ::CEGUI::BoundSlot::* )( ::CEGUI::BoundSlot const & ) const
 ~@member_operator_t@operator==@bool ( ::std::_Bit_reference::* )( ::std::_Bit_reference const & ) constbool ( ::std::_Bit_reference::* )( ::std::_Bit_reference const & ) const
 ~@member_operator_t@operator==@bool ( ::std::type_info::* )( ::std::type_info const & ) constbool ( ::std::type_info::* )( ::std::type_info const & ) const
 ~@member_operator_t@operator==@bool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) constbool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) const
 ~@member_operator_t@operator==@bool ( ::std::locale::* )( ::std::locale const & ) constbool ( ::std::locale::* )( ::std::locale const & ) const
+~@member_operator_t@operator==@bool ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) constbool ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) const
 ~@member_operator_t@operator==@bool ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) constbool ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
+~@member_operator_t@operator==@bool ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) constbool ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator==@bool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect< float > const & ) constbool ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect<float> const & ) const
 ~@member_operator_t@operator==@bool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted< CEGUI::BoundSlot > const & ) constbool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )( ::CEGUI::RefCounted<CEGUI::BoundSlot> const & ) const
 ~@member_operator_t@operator==@bool ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & ) constbool ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) const
+~@member_operator_t@operator==@bool ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) constbool ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) const
+~@member_operator_t@operator==@bool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & ) constbool ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) const
+~@member_operator_t@operator==@bool ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) constbool ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator==@bool ( ::CEGUI::BoundSlot::* )( ::CEGUI::BoundSlot const & ) constbool ( ::CEGUI::BoundSlot::* )( ::CEGUI::BoundSlot const & ) const
 ~@member_operator_t@operator[]@char const & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) constchar const & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) const
 ~@member_operator_t@operator[]@char & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) char & ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )( ::size_t ) 
@@ -7226,15 +7381,24 @@
 ~@member_operator_t@operator+@::std::reverse_iterator< CEGUI::String::const_iterator > ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )( long int ) const::std::reverse_iterator<CEGUI::String::const_iterator> ( ::std::reverse_iterator<CEGUI::String::const_iterator>::* )( long int ) const
 ~@member_operator_t@operator+@::std::reverse_iterator< CEGUI::String::iterator > ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) const::std::reverse_iterator<CEGUI::String::iterator> ( ::std::reverse_iterator<CEGUI::String::iterator>::* )( long int ) const
 ~@member_operator_t@operator+@::std::_Bit_const_iterator ( ::std::_Bit_const_iterator::* )( long int ) const::std::_Bit_const_iterator ( ::std::_Bit_const_iterator::* )( long int ) const
+~@member_operator_t@operator+@::CEGUI::UBox ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) const::CEGUI::UBox ( ::CEGUI::UBox::* )( ::CEGUI::UBox const & ) const
 ~@member_operator_t@operator+@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
+~@member_operator_t@operator+@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator+@::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const
 ~@member_operator_t@operator+@::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const
 ~@member_operator_t@operator+@::CEGUI::Rect< float > ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect< float > const & ) const::CEGUI::Rect<float> ( ::CEGUI::Rect<float>::* )( ::CEGUI::Rect<float> const & ) const
 ~@member_operator_t@operator+@::CEGUI::Size< float > ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & ) const::CEGUI::Size<float> ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) const
+~@member_operator_t@operator+@::CEGUI::Size< CEGUI::UDim > ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) const::CEGUI::Size<CEGUI::UDim> ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) const
+~@member_operator_t@operator+@::CEGUI::Rect< CEGUI::UDim > ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect< CEGUI::UDim > const & ) const::CEGUI::Rect<CEGUI::UDim> ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Rect<CEGUI::UDim> const & ) const
+~@member_operator_t@operator+@::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator<=@bool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) constbool ( ::std::_Bit_iterator_base::* )( ::std::_Bit_iterator_base const & ) const
 ~@member_operator_t@operator*=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) 
 ~@member_operator_t@operator*=@::CEGUI::Vector2< float > & ( ::CEGUI::Vector2<float>::* )( float const & ) ::CEGUI::Vector2<float> & ( ::CEGUI::Vector2<float>::* )( float const & ) 
+~@member_operator_t@operator*=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) 
+~@member_operator_t@operator*=@::CEGUI::Vector2< CEGUI::UDim > & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) ::CEGUI::Vector2<CEGUI::UDim> & ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::UDim const & ) 
 ~@member_operator_t@operator*=@::CEGUI::Rect< float > const & ( ::CEGUI::Rect<float>::* )( float ) ::CEGUI::Rect<float> const & ( ::CEGUI::Rect<float>::* )( float ) 
+~@member_operator_t@operator*=@::CEGUI::Rect< CEGUI::UDim > const & ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim ) ::CEGUI::Rect<CEGUI::UDim> const & ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::UDim ) 
+~@member_operator_t@operator*=@::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) ::CEGUI::UDim const & ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) 
 ~@free_function_t@glCopyTexImage1D@void (*)( ::GLenum,::GLint,::GLenum,::GLint,::GLint,::GLsizei,::GLint )void (*)( ::GLenum,::GLint,::GLenum,::GLint,::GLint,::GLsizei,::GLint )
 ~@free_function_t@sleep@unsigned int (*)( unsigned int )unsigned int (*)( unsigned int )
 ~@free_function_t@group_member@int (*)( ::__gid_t )int (*)( ::__gid_t )
@@ -8195,6 +8359,7 @@
 ~@free_function_t@pthread_attr_getstackaddr@int (*)( __restrict__ ::pthread_attr_t const *,__restrict__ void * * )int (*)( __restrict__ ::pthread_attr_t const *,__restrict__ void * * )
 ~@free_function_t@strtok_r@char * (*)( __restrict__ char *,__restrict__ char const *,__restrict__ char * * )char * (*)( __restrict__ char *,__restrict__ char const *,__restrict__ char * * )
 ~@free_function_t@__builtin_ctan@complex double (*)( complex double )complex double (*)( complex double )
+~@free_function_t@TypeSensitiveZero@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 ~@free_function_t@euidaccess@int (*)( char const *,int )int (*)( char const *,int )
 ~@free_function_t@glRasterPos3iv@void (*)( ::GLint const * )void (*)( ::GLint const * )
 ~@free_function_t@geteuid@::__uid_t (*)(  )::__uid_t (*)(  )
@@ -8381,6 +8546,7 @@
 ~@free_function_t@nice@int (*)( int )int (*)( int )
 ~@free_function_t@__ctype_toupper_loc@int const * * (*)(  )int const * * (*)(  )
 ~@free_function_t@gluEndPolygon@void (*)( ::GLUtesselator * )void (*)( ::GLUtesselator * )
+~@free_function_t@TypeSensitiveOne@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
 ~@free_function_t@pthread_mutex_lock@int (*)( ::pthread_mutex_t * )int (*)( ::pthread_mutex_t * )
 ~@free_function_t@towlower_l@::wint_t (*)( ::wint_t,::__locale_t )::wint_t (*)( ::wint_t,::__locale_t )
 ~@free_function_t@glRectdv@void (*)( ::GLdouble const *,::GLdouble const * )void (*)( ::GLdouble const *,::GLdouble const * )

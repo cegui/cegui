@@ -370,6 +370,12 @@ public:
         return s;
     }
     
+    //! \brief finger saving alias for zero sized, zero positioned rect
+    inline static Rect zero()
+    {
+        return Rect(Vector2<T>::zero(), Size<T>::zero());
+    }
+    
     /*************************************************************************
         Data Fields
     *************************************************************************/

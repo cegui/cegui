@@ -355,12 +355,24 @@ void register_Rectf_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::Rect< float >::zero
+        
+            typedef CEGUI::Rect< float > exported_class_t;
+            typedef ::CEGUI::Rect< float > ( *zero_function_type )(  );
+            
+            Rectf_exposer.def( 
+                "zero"
+                , zero_function_type( &::CEGUI::Rect< float >::zero )
+                , "!  finger saving alias for zero sized, zero positioned rect\n" );
+        
+        }
         Rectf_exposer.def_readwrite( "d_max", &CEGUI::Rect< float >::d_max, "*************************************************************************\n\
-           Data Fields\n\
+            Data Fields\n\
         *************************************************************************\n" );
         Rectf_exposer.def_readwrite( "d_min", &CEGUI::Rect< float >::d_min, "*************************************************************************\n\
-           Data Fields\n\
+            Data Fields\n\
         *************************************************************************\n" );
+        Rectf_exposer.staticmethod( "zero" );
     }
 
 }

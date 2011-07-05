@@ -143,6 +143,36 @@ public:
         return s;
     }
 
+    //! \brief finger saving alias for Size(side, side)
+    inline static Size square(const T& side)
+    {
+        return Size(side, side);
+    }
+
+    //! \brief finger saving alias for Size(0, 0)
+    inline static Size zero()
+    {
+        return square(TypeSensitiveZero<T>());
+    }
+    
+    //! \brief finger saving alias for Size(1, 1)
+    inline static Size one()
+    {
+        return square(TypeSensitiveOne<T>());
+    }
+    
+    //! \brief finger saving alias for Size(1, 0)
+    inline static Size one_width()
+    {
+        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+    }
+    
+    //! \brief finger saving alias for Size(0, 1)
+    inline static Size one_height()
+    {
+        return Size(TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
+    }
+
     T d_width;
     T d_height;
 };
