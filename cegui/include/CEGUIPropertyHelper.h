@@ -37,6 +37,7 @@
 #include "CEGUIColour.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIUDim.h"
+#include "CEGUIRect.h"
 
 #include <cstdio>
 

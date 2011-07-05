@@ -30,7 +30,6 @@
 #ifndef _CEGUIRect_h_
 #define _CEGUIRect_h_
 
-#include "CEGUIBase.h"
 #include "CEGUIVector.h"
 #include "CEGUISize.h"
 
@@ -371,9 +370,9 @@ public:
         return s;
     }
     
-	/*************************************************************************
-		Data Fields
-	*************************************************************************/
+    /*************************************************************************
+        Data Fields
+    *************************************************************************/
     Vector2<T> d_min;
     Vector2<T> d_max;
 
@@ -385,6 +384,14 @@ public:
 
 // the main reason for this is to keep C++ API in sync with other languages
 typedef Rect<float> Rectf;
+
+// we need to allow URect to be multiplied by floats, this is the most elegant way to do that
+inline Rect<UDim> operator * (const Rect<UDim>& v, const float c)
+{
+    return Rect<UDim>(v.d_min * c, v.d_max * c);
+}
+
+typedef Rect<UDim> URect;
 
 } // End of  CEGUI namespace section
 

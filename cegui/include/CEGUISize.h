@@ -30,7 +30,7 @@
 #ifndef _CEGUISize_h_
 #define _CEGUISize_h_
 
-#include "CEGUIBase.h"
+#include "CEGUIUDim.h"
 #include <typeinfo>
 #include <ostream>
 
@@ -149,6 +149,7 @@ public:
 
 // the main reason for this is to keep C++ API in sync with other languages
 typedef Size<float> Sizef;
+typedef Size<UDim> USize;
 
 } // End of  CEGUI namespace section
 
