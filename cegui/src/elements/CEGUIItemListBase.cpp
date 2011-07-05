@@ -449,21 +449,22 @@ void ItemListBase::addItemListBaseProperties(void)
 *************************************************************************/
 void ItemListBase::addChild_impl(Window* wnd)
 {
+    ItemEntry* item = dynamic_cast<ItemEntry*>(wnd);
+    
     // if this is an ItemEntry we add it like one, but only if it is not already in the list!
-    if (wnd->testClassName("ItemEntry"))
+    if (item)
     {
         // add to the pane if we have one
         if (d_pane != this)
         {
-            d_pane->addChild(wnd);
+            d_pane->addChild(item);
         }
         // add item directly to us
         else
         {
-            Window::addChild_impl(wnd);
+            Window::addChild_impl(item);
         }
 
-        ItemEntry* item = static_cast<ItemEntry*>(wnd);
 	    if (item->d_ownerList != this)
 	    {
 	        // perform normal addItem
@@ -557,12 +558,13 @@ Rectf ItemListBase::getItemRenderArea(void) const
 ************************************************************************/
 bool ItemListBase::handle_PaneChildRemoved(const EventArgs& e)
 {
-    Window* w = static_cast<const WindowEventArgs&>(e).window;
+    Window* wnd = static_cast<const WindowEventArgs&>(e).window;
 
     // make sure it is removed from the itemlist if we have an ItemEntry
-    if (w->testClassName("ItemEntry"))
+    ItemEntry* item = dynamic_cast<ItemEntry*>(wnd);
+    if (item)
     {
-        ItemEntryList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), w);
+        ItemEntryList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
 
         // if item is in the list
         if (pos != d_listItems.end())

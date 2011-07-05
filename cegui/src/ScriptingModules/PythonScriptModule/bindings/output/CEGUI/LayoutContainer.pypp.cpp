@@ -156,18 +156,6 @@ struct LayoutContainer_wrapper : CEGUI::LayoutContainer, bp::wrapper< CEGUI::Lay
         CEGUI::LayoutContainer::removeChild_impl( boost::python::ptr(wnd) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::LayoutContainer::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::LayoutContainer::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void update( float elapsed ) {
         if( bp::override func_update = this->get_override( "update" ) )
             func_update( elapsed );
@@ -1516,17 +1504,6 @@ void register_LayoutContainer_class(){
                 , removeChild_impl_function_type( &LayoutContainer_wrapper::default_removeChild_impl )
                 , ( bp::arg("wnd") )
                 , "     Ref:  Window.removeChild_impl" );
-        
-        }
-        { //::CEGUI::LayoutContainer::testClassName_impl
-        
-            typedef bool ( LayoutContainer_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            LayoutContainer_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &LayoutContainer_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "! Ref:  Window.testClassName_impl\n" );
         
         }
         { //::CEGUI::LayoutContainer::update

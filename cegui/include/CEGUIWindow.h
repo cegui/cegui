@@ -1388,20 +1388,6 @@ public:
 
     /*!
     \brief
-        Return whether this window was inherited from the given class name at
-        some point in the inheritance hierarchy.
-
-    \param class_name
-        The class name that is to be checked.
-
-    \return
-        true if this window was inherited from \a class_name. false if not.
-    */
-    bool testClassName(const String& class_name) const
-    {return testClassName_impl(class_name);}
-
-    /*!
-    \brief
         Get the vertical alignment.
 
         Returns the vertical alignment for the window.  This setting affects how
@@ -4003,23 +3989,6 @@ protected:
         Populates the Window's GeometryBuffer ready for rendering.
     */
     virtual void populateGeometryBuffer()  {}
-
-    /*!
-    \brief
-        Return whether this window was inherited from the given class name at
-        some point in the inheritance hierarchy.
-
-    \param class_name
-        The class name that is to be checked.
-
-    \return
-        true if this window was inherited from \a class_name. false if not.
-    */
-    virtual bool testClassName_impl(const String& class_name) const
-    {
-        if (class_name == "Window")   return true;
-        return false;
-    }
 
     /*!
     \brief

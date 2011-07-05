@@ -39,18 +39,6 @@ struct ItemEntry_wrapper : CEGUI::ItemEntry, bp::wrapper< CEGUI::ItemEntry > {
         CEGUI::ItemEntry::onSelectionChanged( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::ItemEntry::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::ItemEntry::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
             return func_validateWindowRenderer( boost::ref(name) );
@@ -1401,14 +1389,14 @@ void register_ItemEntry_class(){
             *\n" );
         
         }
-        { //::CEGUI::ItemEntry::testClassName_impl
+        { //::CEGUI::ItemEntry::validateWindowRenderer
         
-            typedef bool ( ItemEntry_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( ItemEntry_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
             
             ItemEntry_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &ItemEntry_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
+                "validateWindowRenderer"
+                , validateWindowRenderer_function_type( &ItemEntry_wrapper::default_validateWindowRenderer )
+                , ( bp::arg("name") )
                 , "*************************************************************************\n\
                     Abstract Implementation Functions\n\
                 *************************************************************************\n\
@@ -1424,28 +1412,7 @@ void register_ItemEntry_class(){
                *************************************************************************\n\
                   Implementation Functions\n\
                *************************************************************************\n\
-               *!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at\n\
-                  some point in the inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::ItemEntry::validateWindowRenderer
-        
-            typedef bool ( ItemEntry_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
-            
-            ItemEntry_exposer.def( 
-                "validateWindowRenderer"
-                , validateWindowRenderer_function_type( &ItemEntry_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
-                , "validate window renderer\n" );
+                 validate window renderer\n" );
         
         }
         ItemEntry_exposer.add_static_property( "EventSelectionChanged"

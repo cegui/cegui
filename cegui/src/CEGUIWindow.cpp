@@ -3348,13 +3348,14 @@ void Window::onWindowRendererAttached(WindowEventArgs& e)
             "Window::onWindowRendererAttached: The "
             "window renderer '" + d_windowRenderer->getName() + "' is not "
             "compatible with this widget type (" + getType() + ")"));
-
-    if (!testClassName(d_windowRenderer->getClass()))
+        
+    // FIXME: This needs to be checked but differently!
+    /*if (!testClassName(d_windowRenderer->getClass()))
         CEGUI_THROW(InvalidRequestException(
             "Window::onWindowRendererAttached: The "
             "window renderer '" + d_windowRenderer->getName() + "' is not "
             "compatible with this widget type (" + getType() + "). It requires "
-            "a '" + d_windowRenderer->getClass() + "' based window type."));
+            "a '" + d_windowRenderer->getClass() + "' based window type."));*/
 
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();

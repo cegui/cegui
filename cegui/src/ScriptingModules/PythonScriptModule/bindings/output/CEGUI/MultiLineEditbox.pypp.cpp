@@ -323,18 +323,6 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         return CEGUI::MultiLineEditbox::performPaste( boost::ref(clipboard) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::MultiLineEditbox::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::MultiLineEditbox::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
             return func_validateWindowRenderer( boost::ref(name) );
@@ -2390,27 +2378,6 @@ void register_MultiLineEditbox_class(){
             \n\
                @return\n\
                   Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::MultiLineEditbox::testClassName_impl
-        
-            typedef bool ( MultiLineEditbox_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            MultiLineEditbox_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &MultiLineEditbox_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at some point in the\
-                  inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
                *\n" );
         
         }

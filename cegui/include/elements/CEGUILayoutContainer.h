@@ -113,15 +113,6 @@ protected:
     /// @copydoc Window::getClientChildWindowContentArea_impl
     virtual Rectf getClientChildWindowContentArea_impl() const;
 
-    //! @copydoc Window::testClassName_impl
-    virtual bool testClassName_impl(const String& class_name) const
-    {
-        if (class_name == "LayoutContainer")
-            return true;
-
-        return Window::testClassName_impl(class_name);
-    }
-
     size_t getIdxOfChild(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl

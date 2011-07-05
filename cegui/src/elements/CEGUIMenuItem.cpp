@@ -115,11 +115,11 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     if (oldstate != d_hovering)
     {
         // are we attached to a menu ?
-        if (d_ownerList && d_ownerList->testClassName("MenuBase"))
+        MenuBase* menu = dynamic_cast<MenuBase*>(d_ownerList);
+        if (menu)
         {
             if (d_hovering)
             {
-                MenuBase* menu = static_cast<MenuBase*>(d_ownerList);
                 // does this menubar only allow one popup open? and is there a popup open?
                 const MenuItem* curpopup = menu->getPopupMenuItem();
 
@@ -219,7 +219,7 @@ void MenuItem::openPopupMenu(bool notify)
 
     if (notify && p)
     {
-        if (p->testClassName("Menubar"))
+        if (dynamic_cast<Menubar*>(p))
         {
             // align the popup to the bottom-left of the menuitem
             UVector2 pos(cegui_absdim(0), cegui_absdim(d_pixelSize.d_height));
@@ -229,7 +229,7 @@ void MenuItem::openPopupMenu(bool notify)
             return; // the rest is handled when the menu bar eventually calls us itself
         }
         // or maybe a popup menu?
-        else if (p->testClassName("PopupMenu"))
+        else if (dynamic_cast<PopupMenu*>(p))
         {
             // align the popup to the top-right of the menuitem
             UVector2 pos(cegui_absdim(d_pixelSize.d_width), cegui_absdim(0));
@@ -263,12 +263,9 @@ void MenuItem::closePopupMenu(bool notify)
 
     // should we notify the parent menu base?
     // if we are attached to a menu base, we let it handle the "deactivation"
-    Window* p = d_ownerList;
-
-    if (notify && p && p->testClassName("MenuBase"))
+    MenuBase* menu = dynamic_cast<MenuBase*>(d_ownerList);
+    if (notify && menu)
     {
-        MenuBase* menu = static_cast<MenuBase*>(p);
-
         // only if the menu base does not allow multiple popups
         if (!menu->isMultiplePopupsAllowed())
         {
@@ -342,23 +339,24 @@ void MenuItem::startPopupOpening(void)
 void MenuItem::closeAllMenuItemPopups()
 {
     // are we attached to a PopupMenu?
-    Window* p = d_ownerList;
-
-    if (p && p->testClassName("Menubar"))
+    if (!d_ownerList)
+        return;
+    
+    if (dynamic_cast<Menubar*>(d_ownerList))
     {
         closePopupMenu();
         return;
     }
 
-    if (p && p->testClassName("PopupMenu"))
+    PopupMenu* pop = dynamic_cast<PopupMenu*>(d_ownerList);
+    if (pop)
     {
-        PopupMenu* pop = static_cast<PopupMenu*>(p);
         // is this parent popup attached to a menu item?
-        p = pop->getParent();
-
-        if (p && p->testClassName("MenuItem"))
+        Window* popParent = pop->getParent();
+        MenuItem* mi = dynamic_cast<MenuItem*>(popParent);
+        
+        if (mi)
         {
-            MenuItem* mi = static_cast<MenuItem*>(p);
             // recurse
             mi->closeAllMenuItemPopups();
         }
@@ -503,10 +501,11 @@ void MenuItem::onTextChanged(WindowEventArgs& e)
 
     // if we are attached to a ItemListBase, we make it update as necessary
     Window* parent = getParent();
-
-    if (parent && parent->testClassName("ItemListBase"))
+    ItemListBase* ilb = dynamic_cast<ItemListBase*>(parent);
+    
+    if (ilb)
     {
-        static_cast<ItemListBase*>(parent)->handleUpdatedItemData();
+        ilb->handleUpdatedItemData();
     }
 
     ++e.handled;
@@ -558,12 +557,12 @@ void MenuItem::addChild_impl(Window* wnd)
 {
     ItemEntry::addChild_impl(wnd);
 
+    PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);
     // if this is a PopupMenu we add it like one
-    if (wnd->testClassName("PopupMenu"))
+    if (pop)
     {
-        setPopupMenu_impl((PopupMenu*)wnd, false);
+        setPopupMenu_impl(pop, false);
     }
-
 }
 
 /*************************************************************************

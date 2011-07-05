@@ -111,18 +111,6 @@ struct DefaultWindow_wrapper : CEGUI::DefaultWindow, bp::wrapper< CEGUI::Default
         CEGUI::DefaultWindow::onMouseWheel( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::DefaultWindow::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::DefaultWindow::testClassName_impl( boost::ref(class_name) );
-    }
-
     void updateMouseEventHandled( ::CEGUI::MouseEventArgs & e ) const {
         CEGUI::DefaultWindow::updateMouseEventHandled( boost::ref(e) );
     }
@@ -1300,27 +1288,6 @@ void register_DefaultWindow_class(){
                 , onMouseWheel_function_type( &DefaultWindow_wrapper::default_onMouseWheel )
                 , ( bp::arg("e") )
                 , "override the mouse event handlers\n" );
-        
-        }
-        { //::CEGUI::DefaultWindow::testClassName_impl
-        
-            typedef bool ( DefaultWindow_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            DefaultWindow_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &DefaultWindow_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at some point in the\
-                  inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
-               *\n" );
         
         }
         { //::CEGUI::DefaultWindow::updateMouseEventHandled

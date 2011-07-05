@@ -51,18 +51,6 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         CEGUI::GroupBox::removeChild_impl( boost::python::ptr(wnd) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const  {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::GroupBox::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    bool default_testClassName_impl( ::CEGUI::String const & class_name ) const  {
-        return CEGUI::GroupBox::testClassName_impl( boost::ref(class_name) );
-    }
-
     void addStandardProperties(  ){
         CEGUI::Window::addStandardProperties(  );
     }
@@ -1295,18 +1283,6 @@ void register_GroupBox_class(){
             \n\
                Remove our child again when necessary.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::GroupBox::testClassName_impl
-        
-            typedef bool ( ::CEGUI::GroupBox::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            typedef bool ( GroupBox_wrapper::*default_testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            GroupBox_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type(&::CEGUI::GroupBox::testClassName_impl)
-                , default_testClassName_impl_function_type(&GroupBox_wrapper::default_testClassName_impl)
-                , ( bp::arg("class_name") ) );
         
         }
         GroupBox_exposer.add_static_property( "ContentPaneName"

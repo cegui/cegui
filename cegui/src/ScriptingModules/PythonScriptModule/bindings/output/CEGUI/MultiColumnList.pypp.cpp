@@ -279,18 +279,6 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         CEGUI::MultiColumnList::setSelectForItemsInRow( row_idx, state );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::MultiColumnList::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::MultiColumnList::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
             return func_validateWindowRenderer( boost::ref(name) );
@@ -3552,27 +3540,6 @@ void register_MultiColumnList_class(){
             \n\
                @return\n\
                   Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::MultiColumnList::testClassName_impl
-        
-            typedef bool ( MultiColumnList_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            MultiColumnList_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &MultiColumnList_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at some point in the\
-                  inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
                *\n" );
         
         }

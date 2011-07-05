@@ -219,18 +219,6 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         CEGUI::DragContainer::onMoved( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::DragContainer::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::DragContainer::testClassName_impl( boost::ref(class_name) );
-    }
-
     void updateActiveMouseCursor(  ) const {
         CEGUI::DragContainer::updateActiveMouseCursor(  );
     }
@@ -2057,27 +2045,6 @@ void register_DragContainer_class(){
                         - true to enabled the use of the fixed offset.\n\
                         - false to use the regular logic.\n\
                     *\n" );
-        
-        }
-        { //::CEGUI::DragContainer::testClassName_impl
-        
-            typedef bool ( DragContainer_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            DragContainer_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &DragContainer_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-                  \n\
-                     Return whether this window was inherited from the given class name at some point in the\
-                     inheritance hierarchy.\n\
-            \n\
-                  @param class_name\n\
-                     The class name that is to be checked.\n\
-            \n\
-                  @return\n\
-                     true if this window was inherited from  class_name. false if not.\n\
-                  *\n" );
         
         }
         { //::CEGUI::DragContainer::updateActiveMouseCursor
