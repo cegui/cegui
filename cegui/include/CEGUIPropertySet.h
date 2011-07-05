@@ -42,14 +42,10 @@
 #include "CEGUIExceptions.h"
 #include <map>
 
-
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
-
-// for the crazy people not wanting RTTI
-//#define CEGUI_NO_RTTI
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -178,9 +174,6 @@ public:
     template<typename T>
     typename PropertyHelper<T>::return_type getProperty(const String& name)
     {
-#ifdef CEGUI_NO_RTTI
-        return PropertyHelper<T>::fromString(getProperty(name));
-#else
         PropertyRegistry::iterator pos = d_properties.find(name);
 
         if (pos == d_properties.end())
@@ -201,7 +194,6 @@ public:
             // fall back to string get
             return PropertyHelper<T>::fromString(baseProperty->get(this));
         }
-#endif
     }
 
 	/*!
@@ -231,9 +223,6 @@ public:
     template<typename T>
     void    setProperty(const String& name, typename PropertyHelper<T>::pass_type value)
     {
-#ifdef CEGUI_NO_RTTI
-        setProperty(name, PropertyHelper<T>::toString(value));
-#else
         PropertyRegistry::iterator pos = d_properties.find(name);
 
         if (pos == d_properties.end())
@@ -254,7 +243,6 @@ public:
             // fall back to string set
             baseProperty->set(this, PropertyHelper<T>::toString(value));
         }
-#endif
     }
 
 	/*!
