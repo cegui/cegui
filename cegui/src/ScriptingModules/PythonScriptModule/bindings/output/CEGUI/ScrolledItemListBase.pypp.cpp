@@ -75,18 +75,6 @@ struct ScrolledItemListBase_wrapper : CEGUI::ScrolledItemListBase, bp::wrapper< 
         CEGUI::ScrolledItemListBase::onVertScrollbarModeChanged( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::ScrolledItemListBase::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::ScrolledItemListBase::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1350,7 +1338,10 @@ void register_ScrolledItemListBase_class(){
                 "configureScrollbars"
                 , configureScrollbars_function_type( &ScrolledItemListBase_wrapper::configureScrollbars )
                 , ( bp::arg("doc_size") )
-                , "*!\n\
+                , "************************************************************************\n\
+                Implementation functions\n\
+            ************************************************************************\n\
+            *!\n\
             \n\
                 Configure scrollbars\n\
             *\n" );
@@ -1564,30 +1555,6 @@ void register_ScrolledItemListBase_class(){
             \n\
                 Sets whether the vertical scrollbar should be forced visible. Despite content size.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::ScrolledItemListBase::testClassName_impl
-        
-            typedef bool ( ScrolledItemListBase_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            ScrolledItemListBase_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &ScrolledItemListBase_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "************************************************************************\n\
-                    Implementation functions\n\
-                ************************************************************************\n\
-                *!\n\
-                \n\
-                    Return whether this window was inherited from the given class name at some point in the\
-                    inheritance hierarchy.\n\
-            \n\
-                @param class_name\n\
-                    The class name that is to be checked.\n\
-            \n\
-                @return\n\
-                    true if this window was inherited from  class_name. false if not.\n\
-                *\n" );
         
         }
         ScrolledItemListBase_exposer.add_static_property( "ContentPaneName"

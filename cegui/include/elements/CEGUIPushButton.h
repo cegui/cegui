@@ -93,27 +93,6 @@ protected:
 		Overridden Event Handlers
 	*************************************************************************/
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
-
-
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
-
-	\param class_name
-		The class name that is to be checked.
-
-	\return
-		true if this window was inherited from \a class_name. false if not.
-	*/
-	virtual bool	testClassName_impl(const String& class_name) const
-	{
-		if (class_name=="PushButton")	return true;
-		return ButtonBase::testClassName_impl(class_name);
-	}
-
 };
 
 } // End of  CEGUI namespace section

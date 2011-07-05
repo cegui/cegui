@@ -51,18 +51,6 @@ struct SequentialLayoutContainer_wrapper : CEGUI::SequentialLayoutContainer, bp:
         CEGUI::SequentialLayoutContainer::swapChildPositions( wnd1, wnd2 );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::SequentialLayoutContainer::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::SequentialLayoutContainer::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1547,17 +1535,6 @@ void register_SequentialLayoutContainer_class(){
             \n\
                 Swaps positions of given windows\n\
             *\n" );
-        
-        }
-        { //::CEGUI::SequentialLayoutContainer::testClassName_impl
-        
-            typedef bool ( SequentialLayoutContainer_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            SequentialLayoutContainer_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &SequentialLayoutContainer_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "! Ref:  Window.testClassName_impl\n" );
         
         }
         SequentialLayoutContainer_exposer.add_static_property( "EventChildOrderChanged"

@@ -178,14 +178,6 @@ protected:
         container.
     */
     virtual void onChildOrderChanged(WindowEventArgs& e);
-
-    //! @copydoc Window::testClassName_impl
-    virtual bool    testClassName_impl(const String& class_name) const
-    {
-        if (class_name == "SequentialLayoutContainer")    return true;
-
-        return LayoutContainer::testClassName_impl(class_name);
-    }
 };
 
 } // End of  CEGUI namespace section

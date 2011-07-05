@@ -107,18 +107,6 @@ struct MenuItem_wrapper : CEGUI::MenuItem, bp::wrapper< CEGUI::MenuItem > {
         CEGUI::MenuItem::setPopupMenu_impl( boost::python::ptr(popup), add_as_child );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::MenuItem::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::MenuItem::testClassName_impl( boost::ref(class_name) );
-    }
-
     void updateInternalState( ::CEGUI::Vector2f const & mouse_pos ){
         CEGUI::MenuItem::updateInternalState( boost::ref(mouse_pos) );
     }
@@ -1590,27 +1578,6 @@ void register_MenuItem_class(){
             \n\
                 starts the opening timer for the popup, which will open it if the timer is enabled.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::MenuItem::testClassName_impl
-        
-            typedef bool ( MenuItem_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            MenuItem_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &MenuItem_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-                \n\
-                    Return whether this window was inherited from the given class name at some point in the\
-                    inheritance hierarchy.\n\
-            \n\
-                @param class_name\n\
-                    The class name that is to be checked.\n\
-            \n\
-                @return\n\
-                    true if this window was inherited from  class_name. false if not.\n\
-                *\n" );
         
         }
         { //::CEGUI::MenuItem::togglePopupMenu
@@ -3308,7 +3275,22 @@ void register_MenuItem_class(){
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &MenuItem_wrapper::default_validateWindowRenderer )
                 , ( bp::arg("name") )
-                , "validate window renderer\n" );
+                , "*************************************************************************\n\
+                    Abstract Implementation Functions\n\
+                *************************************************************************\n\
+                *!\n\
+                \n\
+                    Return the optimal size for the item\n\
+            \n\
+                @return\n\
+                    Size describing the size in pixel that this ItemEntry's content requires\n\
+                    for non-clipped rendering\n\
+                *\n\
+                virtual Size getItemPixelSize_impl(void) const = 0;\n\
+               *************************************************************************\n\
+                  Implementation Functions\n\
+               *************************************************************************\n\
+                 validate window renderer\n" );
         
         }
         { //::CEGUI::Window::writeAutoChildWindowXML

@@ -115,18 +115,6 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         CEGUI::ItemListbox::onSelectionChanged( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const  {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::ItemListbox::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    bool default_testClassName_impl( ::CEGUI::String const & class_name ) const  {
-        return CEGUI::ItemListbox::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1709,18 +1697,6 @@ void register_ItemListbox_class(){
             *\n" );
         
         }
-        { //::CEGUI::ItemListbox::testClassName_impl
-        
-            typedef bool ( ::CEGUI::ItemListbox::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            typedef bool ( ItemListbox_wrapper::*default_testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            ItemListbox_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type(&::CEGUI::ItemListbox::testClassName_impl)
-                , default_testClassName_impl_function_type(&ItemListbox_wrapper::default_testClassName_impl)
-                , ( bp::arg("class_name") ) );
-        
-        }
         ItemListbox_exposer.add_static_property( "EventMultiSelectModeChanged"
                         , bp::make_getter( &CEGUI::ItemListbox::EventMultiSelectModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -1869,7 +1845,10 @@ void register_ItemListbox_class(){
                 "configureScrollbars"
                 , configureScrollbars_function_type( &ItemListbox_wrapper::configureScrollbars )
                 , ( bp::arg("doc_size") )
-                , "*!\n\
+                , "************************************************************************\n\
+                Implementation functions\n\
+            ************************************************************************\n\
+            *!\n\
             \n\
                 Configure scrollbars\n\
             *\n" );

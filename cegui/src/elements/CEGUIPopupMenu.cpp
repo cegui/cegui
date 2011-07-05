@@ -97,7 +97,7 @@ void PopupMenu::openPopupMenu(bool notify)
 
     // should we let the parent menu item initiate the open?
     Window* parent = getParent();
-    if (notify && parent && parent->testClassName("MenuItem"))
+    if (notify && parent && dynamic_cast<MenuItem*>(parent))
     {
         static_cast<MenuItem*>(parent)->openPopupMenu();
         return; // the rest will be handled when MenuItem calls us itself
@@ -154,7 +154,7 @@ void PopupMenu::closePopupMenu(bool notify)
 
     // should we let the parent menu item close initiate the close?
     Window* parent = getParent();
-    if (notify && parent && parent->testClassName("MenuItem"))
+    if (notify && parent && dynamic_cast<MenuItem*>(parent))
     {
         static_cast<MenuItem*>(parent)->closePopupMenu();
         return; // the rest will be handled when MenuItem calls us itself
@@ -332,7 +332,7 @@ void PopupMenu::onDestructionStarted(WindowEventArgs& e)
 {
     // if we are attached to a menuitem, we make sure that gets updated
     Window* p = getParent();
-    if (p && p->testClassName("MenuItem"))
+    if (p && dynamic_cast<MenuItem*>(p))
     {
         static_cast<MenuItem*>(p)->setPopupMenu(0);
     }

@@ -87,18 +87,6 @@ struct TabButton_wrapper : CEGUI::TabButton, bp::wrapper< CEGUI::TabButton > {
         CEGUI::TabButton::setSelected( selected );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::TabButton::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::TabButton::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1359,30 +1347,6 @@ void register_TabButton_class(){
                 Set the target window which is the content pane which this button is\n\
                 covering.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::TabButton::testClassName_impl
-        
-            typedef bool ( TabButton_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            TabButton_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &TabButton_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*************************************************************************\n\
-                  Implementation Functions\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at some point in the\
-                  inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
-               *\n" );
         
         }
         TabButton_exposer.add_static_property( "EventClicked"

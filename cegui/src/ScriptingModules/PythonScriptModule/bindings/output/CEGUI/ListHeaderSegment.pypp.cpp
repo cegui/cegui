@@ -231,18 +231,6 @@ struct ListHeaderSegment_wrapper : CEGUI::ListHeaderSegment, bp::wrapper< CEGUI:
         CEGUI::ListHeaderSegment::onSplitterDoubleClicked( boost::ref(e) );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::ListHeaderSegment::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::ListHeaderSegment::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1977,27 +1965,6 @@ void register_ListHeaderSegment_class(){
             \n\
                @return\n\
                   Nothing\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::ListHeaderSegment::testClassName_impl
-        
-            typedef bool ( ListHeaderSegment_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            ListHeaderSegment_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &ListHeaderSegment_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-               \n\
-                  Return whether this window was inherited from the given class name at some point in the\
-                  inheritance hierarchy.\n\
-            \n\
-               @param class_name\n\
-                  The class name that is to be checked.\n\
-            \n\
-               @return\n\
-                  true if this window was inherited from  class_name. false if not.\n\
                *\n" );
         
         }

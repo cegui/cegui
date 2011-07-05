@@ -27,18 +27,6 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         CEGUI::VerticalLayoutContainer::layout( );
     }
 
-    virtual bool testClassName_impl( ::CEGUI::String const & class_name ) const {
-        if( bp::override func_testClassName_impl = this->get_override( "testClassName_impl" ) )
-            return func_testClassName_impl( boost::ref(class_name) );
-        else{
-            return this->CEGUI::VerticalLayoutContainer::testClassName_impl( boost::ref(class_name) );
-        }
-    }
-    
-    virtual bool default_testClassName_impl( ::CEGUI::String const & class_name ) const {
-        return CEGUI::VerticalLayoutContainer::testClassName_impl( boost::ref(class_name) );
-    }
-
     virtual void addChild_impl( ::CEGUI::Window * wnd ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
             func_addChild_impl( boost::python::ptr(wnd) );
@@ -1353,27 +1341,6 @@ void register_VerticalLayoutContainer_class(){
                 "layout"
                 , layout_function_type(&::CEGUI::VerticalLayoutContainer::layout)
                 , default_layout_function_type(&VerticalLayoutContainer_wrapper::default_layout) );
-        
-        }
-        { //::CEGUI::VerticalLayoutContainer::testClassName_impl
-        
-            typedef bool ( VerticalLayoutContainer_wrapper::*testClassName_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            VerticalLayoutContainer_exposer.def( 
-                "testClassName_impl"
-                , testClassName_impl_function_type( &VerticalLayoutContainer_wrapper::default_testClassName_impl )
-                , ( bp::arg("class_name") )
-                , "*!\n\
-                \n\
-                    Return whether this window was inherited from the given class name at\n\
-                    some point in the inheritance hierarchy.\n\
-            \n\
-                @param class_name\n\
-                    The class name that is to be checked.\n\
-            \n\
-                @return\n\
-                    true if this window was inherited from  class_name. false if not.\n\
-                *\n" );
         
         }
         { //::CEGUI::LayoutContainer::addChild_impl

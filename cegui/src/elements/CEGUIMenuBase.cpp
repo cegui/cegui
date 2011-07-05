@@ -176,10 +176,10 @@ void MenuBase::onHidden(WindowEventArgs& e)
             if (!d_listItems[i])
                 continue;
 
-            if (!d_listItems[i]->testClassName("MenuItem"))
+            MenuItem* menuItem = dynamic_cast<MenuItem*>(d_listItems[i]);
+            if (!menuItem)
                 continue;
 
-            MenuItem* menuItem = static_cast<MenuItem*>(d_listItems[i]);
             if (!menuItem->getPopupMenu())
                 continue;
 

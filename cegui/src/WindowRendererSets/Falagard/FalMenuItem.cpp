@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "elements/CEGUIMenuItem.h"
+#include "elements/CEGUIMenubar.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,7 +46,7 @@ Sizef FalagardMenuItem::getItemPixelSize() const
 {
     MenuItem* w = (MenuItem*)d_window;
     Window* parent = w->getParent();
-    bool not_menubar = (!parent) ? true : !parent->testClassName("Menubar");
+    bool not_menubar = (!parent) ? true : !dynamic_cast<Menubar*>(parent);
     const WidgetLookFeel& wlf = getLookNFeel();
     const NamedArea* area;
 
@@ -99,7 +100,7 @@ void FalagardMenuItem::render()
 
     // only draw popup-open/closed-icon if we have a popup menu, and parent is not a menubar
     Window* parent_window = w->getParent();
-    bool not_menubar = (!parent_window) ? true : !parent_window->testClassName("Menubar");
+    bool not_menubar = (!parent_window) ? true : !dynamic_cast<Menubar*>(parent_window);
 
     if (w->getPopupMenu() && not_menubar)
     {

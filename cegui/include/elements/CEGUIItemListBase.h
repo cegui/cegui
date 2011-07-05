@@ -513,22 +513,6 @@ protected:
 	*/
 	bool	resetList_impl(void);
 
-	/*!
-	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
-
-	\param class_name
-		The class name that is to be checked.
-
-	\return
-		true if this window was inherited from \a class_name. false if not.
-	*/
-	virtual bool	testClassName_impl(const String& class_name) const
-	{
-		if (class_name=="ItemListBase")	return true;
-		return Window::testClassName_impl(class_name);
-	}
-
     // validate window renderer
     virtual bool    validateWindowRenderer(const String& name) const
     {

@@ -639,24 +639,6 @@ protected:
 	*/
 	virtual	Rectf	getSizingRect(void) const		{return Rectf(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);}
 
-
-	/*!
-	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
-
-	\param class_name
-		The class name that is to be checked.
-
-	\return
-		true if this window was inherited from \a class_name. false if not.
-	*/
-	virtual bool	testClassName_impl(const String& class_name) const
-	{
-		if (class_name=="FrameWindow")	return true;
-		return Window::testClassName_impl(class_name);
-	}
-
-
 	/*************************************************************************
 		New events for Frame Windows
 	*************************************************************************/
