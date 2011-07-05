@@ -30,7 +30,7 @@
 #ifndef _CEGUIVector_h_
 #define _CEGUIVector_h_
 
-#include "CEGUIBase.h"
+#include "CEGUIUDim.h"
 #include <typeinfo>
 #include <ostream>
 
@@ -120,17 +120,17 @@ public:
         return Vector2(d_x / vec.d_x, d_y / vec.d_y);
     }
 
-	inline Vector2 operator*(const T& c) const
+    inline Vector2 operator*(const T& c) const
     {
         return Vector2(d_x * c, d_y * c);
     }
 
-	inline Vector2& operator*=(const T& c)
+    inline Vector2& operator*=(const T& c)
     {
-	    d_x *= c;
-	    d_y *= c;
+        d_x *= c;
+        d_y *= c;
 
-	    return *this;
+        return *this;
     }
 
     inline Vector2 operator/(const T& c) const
@@ -157,12 +157,44 @@ public:
         return s;
     }
 
+    //! \brief finger saving alias for Vector2(0, 0)
+    inline Vector2 zero()
+    {
+        return Vector2(0, 0);
+    }
+
+    //! \brief finger saving alias for Vector2(1, 1)
+    inline static Vector2 one()
+    {
+        return Vector2(1, 1);
+    }
+    
+    //! \brief finger saving alias for Vector2(1, 0)
+    inline static Vector2 one_x()
+    {
+        return Vector2(1, 0);
+    }
+    
+    //! \brief finger saving alias for Vector2(0, 1)
+    inline static Vector2 one_y()
+    {
+        return Vector2(0, 1);
+    }
+
     T d_x;
     T d_y;
 };
 
 // the main reason for this is to keep C++ API in sync with other languages
 typedef Vector2<float> Vector2f;
+
+// we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
+inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
+{
+    return Vector2<UDim>(v.d_x * c, v.d_y * c);
+}
+
+typedef Vector2<UDim> UVector2;
 
 /*!
 \brief
@@ -236,6 +268,36 @@ public:
         return s;
     }
 
+    //! \brief finger saving alias for Vector3(0, 0, 0)
+    inline static Vector3 zero()
+    {
+        return Vector3(0, 0, 0);
+    }
+
+    //! \brief finger saving alias for Vector3(1, 1, 1)
+    inline static Vector3 one()
+    {
+        return Vector3(1, 1, 1);
+    }
+    
+    //! \brief finger saving alias for Vector3(1, 0, 0)
+    inline static Vector3 one_x()
+    {
+        return Vector3(1, 0, 0);
+    }
+    
+    //! \brief finger saving alias for Vector3(0, 1, 0)
+    inline static Vector3 one_y()
+    {
+        return Vector3(0, 1, 0);
+    }
+
+    //! \brief finger saving alias for Vector3(0, 0, 1)
+    inline static Vector3 one_z()
+    {
+        return Vector3(0, 0, 1);
+    }
+    
     T d_x;
     T d_y;
     T d_z;

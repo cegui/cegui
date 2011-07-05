@@ -28,8 +28,7 @@
 #ifndef _CEGUIUDim_h_
 #define _CEGUIUDim_h_
 
-#include "CEGUIRect.h"
-#include "CEGUIVector.h"
+#include "CEGUIBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -53,28 +52,40 @@ class CEGUIEXPORT UDim :
     public AllocatedObject<UDim>
 {
 public:
-    UDim() {}
-    UDim(float scale, float offset) : d_scale(scale), d_offset(offset) {}
-    UDim(const UDim& v): d_scale(v.d_scale), d_offset(v.d_offset) {}
-    ~UDim() {}
+    inline UDim()
+    {}
+    
+    inline UDim(float scale, float offset):
+        d_scale(scale),
+        d_offset(offset)
+    {}
+        
+    inline UDim(const UDim& v):
+        d_scale(v.d_scale),
+        d_offset(v.d_offset)
+    {}
 
-    UDim operator+(const UDim& other) const
+    inline UDim operator+(const UDim& other) const
     {
         return UDim(d_scale + other.d_scale, d_offset + other.d_offset);
     }
-    UDim operator-(const UDim& other) const
+    
+    inline UDim operator-(const UDim& other) const
     {
         return UDim(d_scale - other.d_scale, d_offset - other.d_offset);
     }
-    UDim operator*(const float val) const
+    
+    inline UDim operator*(const float val) const
     {
         return UDim(d_scale * val, d_offset * val);
     }
-    UDim operator*(const UDim& other) const
+    
+    inline UDim operator*(const UDim& other) const
     {
         return UDim(d_scale * other.d_scale, d_offset * other.d_offset);
     }
-    UDim operator/(const UDim& other) const
+    
+    inline UDim operator/(const UDim& other) const
     {
         // division by zero sets component to zero.  Not technically correct
         // but probably better than exceptions and/or NaN values.
@@ -82,25 +93,28 @@ public:
                     other.d_offset == 0.0f ? 0.0f : d_offset / other.d_offset);
     }
 
-    const UDim& operator+=(const UDim& other)
+    inline const UDim& operator+=(const UDim& other)
     {
         d_scale += other.d_scale;
         d_offset += other.d_offset;
         return *this;
     }
-    const UDim& operator-=(const UDim& other)
+    
+    inline const UDim& operator-=(const UDim& other)
     {
         d_scale -= other.d_scale;
         d_offset -= other.d_offset;
         return *this;
     }
-    const UDim& operator*=(const UDim& other)
+    
+    inline const UDim& operator*=(const UDim& other)
     {
         d_scale *= other.d_scale;
         d_offset *= other.d_offset;
         return *this;
     }
-    const UDim& operator/=(const UDim& other)
+    
+    inline const UDim& operator/=(const UDim& other)
     {
         // division by zero sets component to zero.  Not technically correct
         // but probably better than exceptions and/or NaN values.
@@ -109,34 +123,61 @@ public:
         return *this;
     }
 
-    bool operator==(const UDim& other) const
+    inline bool operator==(const UDim& other) const
     {
         return d_scale == other.d_scale && d_offset == other.d_offset;
     }
-    bool operator!=(const UDim& other) const
+    
+    inline bool operator!=(const UDim& other) const
     {
         return !operator==(other);
     }
+    
+    /*!
+    \brief finger saving convenience method returning UDim(0, 0)
+    */
+    inline static UDim zero()
+    {
+        return UDim(0.0f, 0.0f);
+    }
 
-    float d_scale, d_offset;
+    /*!
+    \brief finger saving convenience method returning UDim(1, 0)
+    
+    \note
+        Allows quite neat 0.5 * UDim::relative() self documenting syntax
+    */
+    inline static UDim relative()
+    {
+        return UDim(1.0f, 0.0f);
+    }
+    
+    /*!
+    \brief finger saving convenience method returning UDim(0.01, 0)
+    
+    \note
+        Allows quite neat 50 * UDim::percent() self documenting syntax
+    */
+    inline static UDim percent()
+    {
+        return UDim(0.01f, 0.0f);
+    }
+    
+    /*!
+    \brief finger saving convenience method returning UDim(0, 1)
+    
+    \note
+        Allows quite neat 100 * UDim::px() self documenting syntax,
+        you can combine it with UDim::relative() as well (using operator+)
+    */
+    inline static UDim px()
+    {
+        return UDim(0.0f, 1.0f);
+    }
+    
+    float d_scale;
+    float d_offset;
 };
-
-// we need to allow UVector2 to be multiplied by floats, this is the most elegant way to do that
-inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
-{
-    return Vector2<UDim>(v.d_x * c, v.d_y * c);
-}
-
-typedef Vector2<UDim> UVector2;
-
-// we need to allow URect to be multiplied by floats, this is the most elegant way to do that
-inline Rect<UDim> operator * (const Rect<UDim>& v, const float c)
-{
-    return Rect<UDim>(v.d_min * c, v.d_max * c);
-}
-
-typedef Size<UDim> USize;
-typedef Rect<UDim> URect;
 
 /*!
 \brief

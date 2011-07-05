@@ -29,6 +29,9 @@
 #define _CEGUICoordConverter_h_
 
 #include "CEGUIUDim.h"
+#include "CEGUIVector.h"
+#include "CEGUISize.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

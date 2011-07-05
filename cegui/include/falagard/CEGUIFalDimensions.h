@@ -31,6 +31,7 @@
 #include "CEGUIFalEnums.h"
 #include "../CEGUIString.h"
 #include "../CEGUIUDim.h"
+#include "../CEGUIRect.h"
 #include "../CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
