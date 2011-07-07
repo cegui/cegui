@@ -221,7 +221,7 @@ void InventoryReceiver::populateGeometryBuffer()
 //------------------------------------------------------------------------------//
 Rectf InventoryReceiver::gridBasePixelRect() const
 {
-    return getChildWindowContentArea();
+    return getClientChildWindowContentArea();
 }
 
 //------------------------------------------------------------------------------//

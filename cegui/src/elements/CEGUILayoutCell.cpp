@@ -58,21 +58,21 @@ LayoutCell::~LayoutCell(void)
 {}
 
 //----------------------------------------------------------------------------//
+Rectf LayoutCell::getClientChildWindowContentArea() const
+{
+    if (!d_parent)
+        return Window::getClientChildWindowContentArea();
+    else
+        return Rectf(getUnclippedOuterRect().getPosition(),
+                    d_parent->getUnclippedInnerRect().getSize());
+}
+
+//----------------------------------------------------------------------------//
 Rectf LayoutCell::getUnclippedInnerRect_impl(void) const
 {
     return d_parent ?
            d_parent->getUnclippedInnerRect() :
            Window::getUnclippedInnerRect_impl();
-}
-
-//----------------------------------------------------------------------------//
-Rectf LayoutCell::getClientChildWindowContentArea_impl() const
-{
-    if (!d_parent)
-        return Window::getClientChildWindowContentArea_impl();
-    else
-        return Rectf(getUnclippedOuterRect().getPosition(),
-                    d_parent->getUnclippedInnerRect().getSize());
 }
 
 //----------------------------------------------------------------------------//

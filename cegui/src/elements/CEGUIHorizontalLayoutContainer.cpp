@@ -54,7 +54,8 @@ HorizontalLayoutContainer::~HorizontalLayoutContainer(void)
 void HorizontalLayoutContainer::layout()
 {
     // used to compare UDims
-    const float absHeight = getChildWindowContentArea().getHeight();
+    // FIXME: Should be used for client windows only!
+    const float absHeight = getClientChildWindowContentArea().getHeight();
 
     // this is where we store the left offset
     // we continually increase this number as we go through the windows
