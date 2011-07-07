@@ -251,16 +251,16 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         return CEGUI::Window::getChild_impl( boost::ref(name_path) );
     }
 
-    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
-            return func_getClientChildWindowContentArea_impl(  );
+    virtual ::CEGUI::Rectf getClientChildWindowContentArea(  ) const  {
+        if( bp::override func_getClientChildWindowContentArea = this->get_override( "getClientChildWindowContentArea" ) )
+            return func_getClientChildWindowContentArea(  );
         else{
-            return this->CEGUI::LayoutContainer::getClientChildWindowContentArea_impl(  );
+            return this->CEGUI::LayoutContainer::getClientChildWindowContentArea(  );
         }
     }
     
-    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::LayoutContainer::getClientChildWindowContentArea_impl( );
+    ::CEGUI::Rectf default_getClientChildWindowContentArea(  ) const  {
+        return CEGUI::LayoutContainer::getClientChildWindowContentArea( );
     }
 
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
@@ -289,18 +289,6 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
     
     virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
         return CEGUI::Window::getInnerRectClipper_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
-            return func_getNonClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
     }
 
     virtual ::CEGUI::UVector2 getOffsetForWindow( ::CEGUI::Window * window ) const {
@@ -347,7 +335,7 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -355,7 +343,7 @@ struct GridLayoutContainer_wrapper : CEGUI::GridLayoutContainer, bp::wrapper< CE
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -1991,14 +1979,15 @@ void register_GridLayoutContainer_class(){
                 , "! implementation function to get window at name_path, returns 0 if none.\n" );
         
         }
-        { //::CEGUI::LayoutContainer::getClientChildWindowContentArea_impl
+        { //::CEGUI::LayoutContainer::getClientChildWindowContentArea
         
-            typedef ::CEGUI::Rectf ( GridLayoutContainer_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::LayoutContainer::*getClientChildWindowContentArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( GridLayoutContainer_wrapper::*default_getClientChildWindowContentArea_function_type )(  ) const;
             
             GridLayoutContainer_exposer.def( 
-                "getClientChildWindowContentArea_impl"
-                , getClientChildWindowContentArea_impl_function_type( &GridLayoutContainer_wrapper::default_getClientChildWindowContentArea_impl )
-                , "     Ref:  Window.getClientChildWindowContentArea_impl" );
+                "getClientChildWindowContentArea"
+                , getClientChildWindowContentArea_function_type(&::CEGUI::LayoutContainer::getClientChildWindowContentArea)
+                , default_getClientChildWindowContentArea_function_type(&GridLayoutContainer_wrapper::default_getClientChildWindowContentArea) );
         
         }
         { //::CEGUI::Window::getHitTestRect_impl
@@ -2033,17 +2022,6 @@ void register_GridLayoutContainer_class(){
             ! Default implementation of function to return Window inner clipper area.\n" );
         
         }
-        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
-        
-            typedef ::CEGUI::Rectf ( GridLayoutContainer_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
-            
-            GridLayoutContainer_exposer.def( 
-                "getNonClientChildWindowContentArea_impl"
-                , getNonClientChildWindowContentArea_impl_function_type( &GridLayoutContainer_wrapper::default_getNonClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return Window hit-test area.\n\
-            ! Default implementation of function to return non-client content area\n" );
-        
-        }
         { //::CEGUI::LayoutContainer::getOffsetForWindow
         
             typedef ::CEGUI::UVector2 ( GridLayoutContainer_wrapper::*getOffsetForWindow_function_type )( ::CEGUI::Window * ) const;
@@ -2065,7 +2043,7 @@ void register_GridLayoutContainer_class(){
             GridLayoutContainer_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &GridLayoutContainer_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -2116,13 +2094,12 @@ void register_GridLayoutContainer_class(){
         }
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( GridLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( GridLayoutContainer_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             GridLayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::LayoutContainer::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&GridLayoutContainer_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &GridLayoutContainer_wrapper::default_getUnclippedInnerRect_impl )
+                , "     Ref:  Window.getUnclippedInnerRect_impl" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect_impl

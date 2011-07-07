@@ -151,18 +151,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         return CEGUI::Window::getChild_impl( boost::ref(name_path) );
     }
 
-    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
-            return func_getClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getClientChildWindowContentArea_impl( );
-    }
-
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
         if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
             return func_getHitTestRect_impl(  );
@@ -185,18 +173,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
     
     virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
         return CEGUI::Window::getInnerRectClipper_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
-            return func_getNonClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
     }
 
     virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
@@ -227,7 +203,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -235,7 +211,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -2050,35 +2026,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getChildWindowContentArea
-        
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
-            
-            Window_exposer.def( 
-                "getChildWindowContentArea"
-                , getChildWindowContentArea_function_type( &::CEGUI::Window::getChildWindowContentArea )
-                , ( bp::arg("non_client")=(bool const)(false) )
-                , "*!\n\
-                \n\
-                    Return a Rect that describes the area that is used to position\n\
-                    and - for scale values - size child content attached to this Window.\n\
-            \n\
-                    By and large the area returned here will be the same as the unclipped\n\
-                    inner rect (for client content) or the unclipped outer rect (for non\n\
-                    client content), although certain advanced uses will require\n\
-                    alternative Rects to be returned.\n\
-            \n\
-                \note\n\
-                    The behaviour of this function is modified by overriding the\n\
-                    protected Window.getClientChildWindowContentArea_impl andor\n\
-                    Window.getNonClientChildWindowContentArea_impl functions.\n\
-            \n\
-                @param non_client\n\
-                    - true to return the non-client child content area.\n\
-                    - false to return the client child content area (default).\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::getChild_impl
         
             typedef ::CEGUI::Window * ( Window_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
@@ -2091,42 +2038,25 @@ void register_Window_class(){
                 , "! implementation function to get window at name_path, returns 0 if none.\n" );
         
         }
-        { //::CEGUI::Window::getClientChildWindowContentArea_impl
+        { //::CEGUI::Window::getClientChildWindowContentArea
         
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getClientChildWindowContentArea_function_type )(  ) const;
             
             Window_exposer.def( 
-                "getClientChildWindowContentArea_impl"
-                , getClientChildWindowContentArea_impl_function_type( &Window_wrapper::default_getClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return non-client content area\n\
-            ! Default implementation of function to return client content area\n" );
-        
-        }
-        { //::CEGUI::Window::getClipRect
-        
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getClipRect_function_type )( bool const ) const;
-            
-            Window_exposer.def( 
-                "getClipRect"
-                , getClipRect_function_type( &::CEGUI::Window::getClipRect )
-                , ( bp::arg("non_client")=(bool const)(false) )
+                "getClientChildWindowContentArea"
+                , getClientChildWindowContentArea_function_type( &::CEGUI::Window::getClientChildWindowContentArea )
                 , "*!\n\
                 \n\
-                    Return a Rect that describes the rendering clipping rect for the Window.\n\
+                    Return a Rect that describes the area that is used to position\n\
+                    and - for scale values - size child content attached to this Window.\n\
             \n\
-                    This function can return the clipping rect for either the inner or outer\n\
-                    area dependant upon the boolean values passed in.\n\
+                    By and large the area returned here will be the same as the unclipped\n\
+                    inner rect (for client content) or the unclipped outer rect (for non\n\
+                    client content), although certain advanced uses will require\n\
+                    alternative Rects to be returned.\n\
             \n\
                 \note\n\
-                    The areas returned by this function gives you the correct clipping rects\n\
-                    for rendering within the Window's areas.  The area described may or may\n\
-                    not correspond to the final visual clipping actually seen on the\n\
-                    display; this is intentional and neccessary due to the way that imagery\n\
-                    is cached under some configurations.\n\
-            \n\
-                @param non_client\n\
-                    - true to return the non-client clipping area (based on outer rect).\n\
-                    - false to return the client clipping area (based on inner rect).\n\
+                    This returns valid Rect for the client child windows\n\
                 *\n" );
         
         }
@@ -2226,11 +2156,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getHitTestRect
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getHitTestRect"
                 , getHitTestRect_function_type( &::CEGUI::Window::getHitTestRect )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
                     Return the Rect that descibes the clipped screen area that is used for\n\
@@ -2291,11 +2222,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getInnerRectClipper
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getInnerRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getInnerRectClipper"
                 , getInnerRectClipper_function_type( &::CEGUI::Window::getInnerRectClipper )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
                     Return a Rect that describes the rendering clipping rect based upon the\n\
@@ -2307,6 +2239,9 @@ void register_Window_class(){
                     may or may not correspond to the final visual clipping actually seen on\n\
                     the display; this is intentional and neccessary due to the way that\n\
                     imagery is cached under some configurations.\n\
+                    \n\
+                \note\n\
+                    This is also called the client clipping rectangle\n\
                 *\n" );
         
         }
@@ -2477,24 +2412,36 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
+        { //::CEGUI::Window::getNonClientChildWindowContentArea
         
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getNonClientChildWindowContentArea_function_type )(  ) const;
             
             Window_exposer.def( 
-                "getNonClientChildWindowContentArea_impl"
-                , getNonClientChildWindowContentArea_impl_function_type( &Window_wrapper::default_getNonClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return Window hit-test area.\n\
-            ! Default implementation of function to return non-client content area\n" );
+                "getNonClientChildWindowContentArea"
+                , getNonClientChildWindowContentArea_function_type( &::CEGUI::Window::getNonClientChildWindowContentArea )
+                , "*!\n\
+                \n\
+                    Return a Rect that describes the area that is used to position\n\
+                    and - for scale values - size child content attached to this Window.\n\
+            \n\
+                    By and large the area returned here will be the same as the unclipped\n\
+                    inner rect (for client content) or the unclipped outer rect (for non\n\
+                    client content), although certain advanced uses will require\n\
+                    alternative Rects to be returned.\n\
+            \n\
+                \note\n\
+                    This returns valid Rect for the non-client child windows\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::getOuterRectClipper
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getOuterRectClipper"
                 , getOuterRectClipper_function_type( &::CEGUI::Window::getOuterRectClipper )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
                     Return a Rect that describes the rendering clipping rect based upon the\n\
@@ -2506,6 +2453,9 @@ void register_Window_class(){
                     may or may not correspond to the final visual clipping actually seen on\n\
                     the display; this is intentional and neccessary due to the way that\n\
                     imagery is cached under some configurations.\n\
+                    \n\
+                \note\n\
+                    This is also called the non-client clipping rectangle\n\
                 *\n" );
         
         }
@@ -2516,7 +2466,7 @@ void register_Window_class(){
             Window_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &Window_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -2930,11 +2880,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect"
                 , getUnclippedInnerRect_function_type( &::CEGUI::Window::getUnclippedInnerRect )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
             \n\
                 Return a Rect that describes the unclipped inner rect area of the Window\n\
@@ -2944,22 +2895,23 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( Window_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Window_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&Window_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &Window_wrapper::default_getUnclippedInnerRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window inner rect area.\n" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
+            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getUnclippedOuterRect"
                 , getUnclippedOuterRect_function_type( &::CEGUI::Window::getUnclippedOuterRect )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
             \n\
                 Return a Rect that describes the unclipped outer rect area of the Window\n\
@@ -2975,27 +2927,6 @@ void register_Window_class(){
                 "getUnclippedOuterRect_impl"
                 , getUnclippedOuterRect_impl_function_type( &Window_wrapper::default_getUnclippedOuterRect_impl )
                 , "! Default implementation of function to return Window outer rect area.\n" );
-        
-        }
-        { //::CEGUI::Window::getUnclippedRect
-        
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
-            
-            Window_exposer.def( 
-                "getUnclippedRect"
-                , getUnclippedRect_function_type( &::CEGUI::Window::getUnclippedRect )
-                , ( bp::arg("inner") )
-                , "*!\n\
-                \n\
-                    Return a Rect that describes the unclipped area covered by the Window.\n\
-            \n\
-                    This function can return either the inner or outer area dependant upon\n\
-                    the boolean values passed in.\n\
-            \n\
-                @param inner\n\
-                    - true if the inner rect area should be returned.\n\
-                    - false if the outer rect area should be returned.\n\
-                *\n" );
         
         }
         { //::CEGUI::Window::getUnprojectedPosition

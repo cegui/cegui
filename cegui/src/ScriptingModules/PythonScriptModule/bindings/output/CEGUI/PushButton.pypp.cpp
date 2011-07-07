@@ -191,18 +191,6 @@ struct PushButton_wrapper : CEGUI::PushButton, bp::wrapper< CEGUI::PushButton > 
         return CEGUI::Window::getChild_impl( boost::ref(name_path) );
     }
 
-    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
-            return func_getClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getClientChildWindowContentArea_impl( );
-    }
-
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
         if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
             return func_getHitTestRect_impl(  );
@@ -225,18 +213,6 @@ struct PushButton_wrapper : CEGUI::PushButton, bp::wrapper< CEGUI::PushButton > 
     
     virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
         return CEGUI::Window::getInnerRectClipper_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
-            return func_getNonClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
     }
 
     virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
@@ -271,7 +247,7 @@ struct PushButton_wrapper : CEGUI::PushButton, bp::wrapper< CEGUI::PushButton > 
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -279,7 +255,7 @@ struct PushButton_wrapper : CEGUI::PushButton, bp::wrapper< CEGUI::PushButton > 
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -1494,17 +1470,6 @@ void register_PushButton_class(){
                 , "! implementation function to get window at name_path, returns 0 if none.\n" );
         
         }
-        { //::CEGUI::Window::getClientChildWindowContentArea_impl
-        
-            typedef ::CEGUI::Rectf ( PushButton_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
-            
-            PushButton_exposer.def( 
-                "getClientChildWindowContentArea_impl"
-                , getClientChildWindowContentArea_impl_function_type( &PushButton_wrapper::default_getClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return non-client content area\n\
-            ! Default implementation of function to return client content area\n" );
-        
-        }
         { //::CEGUI::Window::getHitTestRect_impl
         
             typedef ::CEGUI::Rectf ( PushButton_wrapper::*getHitTestRect_impl_function_type )(  ) const;
@@ -1527,17 +1492,6 @@ void register_PushButton_class(){
             ! Default implementation of function to return Window inner clipper area.\n" );
         
         }
-        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
-        
-            typedef ::CEGUI::Rectf ( PushButton_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
-            
-            PushButton_exposer.def( 
-                "getNonClientChildWindowContentArea_impl"
-                , getNonClientChildWindowContentArea_impl_function_type( &PushButton_wrapper::default_getNonClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return Window hit-test area.\n\
-            ! Default implementation of function to return non-client content area\n" );
-        
-        }
         { //::CEGUI::Window::getOuterRectClipper_impl
         
             typedef ::CEGUI::Rectf ( PushButton_wrapper::*getOuterRectClipper_impl_function_type )(  ) const;
@@ -1545,7 +1499,7 @@ void register_PushButton_class(){
             PushButton_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &PushButton_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -1596,13 +1550,13 @@ void register_PushButton_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( PushButton_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( PushButton_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             PushButton_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&PushButton_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &PushButton_wrapper::default_getUnclippedInnerRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window inner rect area.\n" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect_impl
