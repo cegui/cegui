@@ -183,7 +183,7 @@ float CoordConverter::getBaseXValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rectf parent_rect(parent ?
-        parent->getChildWindowContentArea(window.isNonClientWindow()) :
+        (window.isNonClientWindow() ? parent->getNonClientChildWindowContentArea() : parent->getClientChildWindowContentArea()) :
         Rectf(Vector2f(0, 0),
              System::getSingleton().getRenderer()->getDisplaySize())
     );
@@ -215,7 +215,7 @@ float CoordConverter::getBaseYValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rectf parent_rect(parent ?
-        parent->getChildWindowContentArea(window.isNonClientWindow()) :
+        (window.isNonClientWindow() ? parent->getNonClientChildWindowContentArea() : parent->getClientChildWindowContentArea()) :
         Rectf(Vector2f(0, 0),
              System::getSingleton().getRenderer()->getDisplaySize())
     );

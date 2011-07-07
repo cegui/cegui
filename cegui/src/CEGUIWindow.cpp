@@ -538,7 +538,7 @@ float Window::getEffectiveAlpha(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedOuterRect() const
+const Rectf& Window::getUnclippedOuterRect() const
 {
     if (!d_outerUnclippedRectValid)
     {
@@ -550,7 +550,7 @@ Rectf Window::getUnclippedOuterRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedInnerRect() const
+const Rectf& Window::getUnclippedInnerRect() const
 {
     if (!d_innerUnclippedRectValid)
     {
@@ -562,13 +562,7 @@ Rectf Window::getUnclippedInnerRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedRect(const bool inner) const
-{
-    return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
-}
-
-//----------------------------------------------------------------------------//
-Rectf Window::getOuterRectClipper() const
+const Rectf& Window::getOuterRectClipper() const
 {
     if (!d_outerRectClipperValid)
     {
@@ -580,7 +574,7 @@ Rectf Window::getOuterRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getInnerRectClipper() const
+const Rectf& Window::getInnerRectClipper() const
 {
     if (!d_innerRectClipperValid)
     {
@@ -592,13 +586,7 @@ Rectf Window::getInnerRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getClipRect(const bool non_client) const
-{
-    return non_client ? getOuterRectClipper() : getInnerRectClipper();
-}
-
-//----------------------------------------------------------------------------//
-Rectf Window::getHitTestRect() const
+const Rectf& Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
     {
@@ -614,7 +602,7 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
 {
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
-            d_parent->getClipRect(d_nonClientContent) :
+            (d_nonClientContent ? d_parent->getOuterRectClipper() : d_parent->getInnerRectClipper()):
             Rectf(Vector2f(0, 0),
                    System::getSingleton().getRenderer()->getDisplaySize()));
 }
@@ -659,7 +647,7 @@ Rectf Window::getHitTestRect_impl() const
     {
         return getUnclippedOuterRect().getIntersection(
             d_parent->getHitTestRect().getIntersection(
-                d_parent->getClipRect(d_nonClientContent)));
+                d_nonClientContent ? d_parent->getOuterRectClipper() : d_parent->getInnerRectClipper()));
     }
     // not clipped to parent wnd, so get intersection with screen area.
     else
@@ -4369,23 +4357,15 @@ void Window::cloneChildWidgetsTo(Window& target) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getChildWindowContentArea(const bool non_client) const
+Rectf Window::getNonClientChildWindowContentArea() const
 {
-    return non_client ?
-        getNonClientChildWindowContentArea_impl() :
-        getClientChildWindowContentArea_impl();
+    return getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getNonClientChildWindowContentArea_impl() const
+Rectf Window::getClientChildWindowContentArea() const
 {
-    return getUnclippedOuterRect_impl();
-}
-
-//----------------------------------------------------------------------------//
-Rectf Window::getClientChildWindowContentArea_impl() const
-{
-    return getUnclippedInnerRect_impl();
+    return getUnclippedInnerRect();
 }
 
 //----------------------------------------------------------------------------//
