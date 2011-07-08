@@ -952,14 +952,20 @@ public:
         Return a Rect that describes the unclipped outer rect area of the Window
         in screen pixels.
     */
-    Rectf getUnclippedOuterRect() const;
+    const Rectf& getUnclippedOuterRect() const;
 
     /*!
     \brief
-        Return a Rect that describes the unclipped inner rect area of the Window
-        in screen pixels.
+        Return a Rect object that describes, unclipped, the inner rectangle for
+        this window.  The inner rectangle is typically an area that excludes
+        some frame or other rendering that should not be touched by subsequent
+        rendering.
+
+    \return
+        Rect object that describes, in unclipped screen pixel co-ordinates, the
+        window object's inner rect area.
     */
-    Rectf getUnclippedInnerRect() const;
+    const Rectf& getUnclippedInnerRect() const;
 
     /*!
     \brief
@@ -972,7 +978,7 @@ public:
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
     */
-    Rectf getUnclippedRect(const bool inner) const;
+    const Rectf& getUnclippedRect(const bool inner) const;
 
     /*!
     \brief
@@ -986,7 +992,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rectf getOuterRectClipper() const;
+    const Rectf& getOuterRectClipper() const;
 
     /*!
     \brief
@@ -1000,7 +1006,7 @@ public:
         the display; this is intentional and neccessary due to the way that
         imagery is cached under some configurations.
     */
-    Rectf getInnerRectClipper() const;
+    const Rectf& getInnerRectClipper() const;
 
     /*!
     \brief
@@ -1020,7 +1026,7 @@ public:
         - true to return the non-client clipping area (based on outer rect).
         - false to return the client clipping area (based on inner rect).
     */
-    Rectf getClipRect(const bool non_client = false) const;
+    const Rectf& getClipRect(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1032,7 +1038,7 @@ public:
         as opposed to what is used for rendering (since the actual rendering
         clipper rects should not to be used if reliable results are desired).
     */
-    Rectf getHitTestRect() const;
+    const Rectf& getHitTestRect() const;
 
     /*!
     \brief
@@ -1054,24 +1060,6 @@ public:
         - false to return the client child content area (default).
     */
     Rectf getChildWindowContentArea(const bool non_client = false) const;
-
-    /*!
-    \brief
-        Return a Rect object that describes, unclipped, the inner rectangle for
-        this window.  The inner rectangle is typically an area that excludes
-        some frame or other rendering that should not be touched by subsequent
-        rendering.
-
-    \return
-        Rect object that describes, in unclipped screen pixel co-ordinates, the
-        window object's inner rect area.
-
-    \note
-        This function is going to change from public visibility to pretected.
-        All code accessing the area rects via external code should be using the
-        regular getUnclippedInnerRect function.
-    */
-    virtual Rectf getUnclippedInnerRect_impl(void) const;
 
     /*!
     \brief
@@ -4192,6 +4180,8 @@ protected:
 
     //! Default implementation of function to return Window outer rect area.
     virtual Rectf getUnclippedOuterRect_impl() const;
+    //! Default implementation of function to return Window inner rect area.
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
     //! Default implementation of function to return Window outer clipper area.
     virtual Rectf getOuterRectClipper_impl() const;
     //! Default implementation of function to return Window inner clipper area.

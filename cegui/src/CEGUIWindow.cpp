@@ -538,7 +538,7 @@ float Window::getEffectiveAlpha(void) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedOuterRect() const
+const Rectf& Window::getUnclippedOuterRect() const
 {
     if (!d_outerUnclippedRectValid)
     {
@@ -550,7 +550,7 @@ Rectf Window::getUnclippedOuterRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedInnerRect() const
+const Rectf& Window::getUnclippedInnerRect() const
 {
     if (!d_innerUnclippedRectValid)
     {
@@ -562,13 +562,13 @@ Rectf Window::getUnclippedInnerRect() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getUnclippedRect(const bool inner) const
+const Rectf& Window::getUnclippedRect(const bool inner) const
 {
     return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getOuterRectClipper() const
+const Rectf& Window::getOuterRectClipper() const
 {
     if (!d_outerRectClipperValid)
     {
@@ -580,7 +580,7 @@ Rectf Window::getOuterRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getInnerRectClipper() const
+const Rectf& Window::getInnerRectClipper() const
 {
     if (!d_innerRectClipperValid)
     {
@@ -592,13 +592,13 @@ Rectf Window::getInnerRectClipper() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getClipRect(const bool non_client) const
+const Rectf& Window::getClipRect(const bool non_client) const
 {
     return non_client ? getOuterRectClipper() : getInnerRectClipper();
 }
 
 //----------------------------------------------------------------------------//
-Rectf Window::getHitTestRect() const
+const Rectf& Window::getHitTestRect() const
 {
     if (!d_hitTestRectValid)
     {
@@ -627,18 +627,18 @@ Rectf Window::getUnclippedOuterRect_impl() const
 }
 
 //----------------------------------------------------------------------------//
+Rectf Window::getUnclippedInnerRect_impl() const
+{
+    return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
+                              getUnclippedOuterRect();
+}
+
+//----------------------------------------------------------------------------//
 Rectf Window::getOuterRectClipper_impl() const
 {
     return (d_surface && d_surface->isRenderingWindow()) ?
         getUnclippedOuterRect() :
         getParentElementClipIntersection(getUnclippedOuterRect());
-}
-
-//----------------------------------------------------------------------------//
-Rectf Window::getUnclippedInnerRect_impl(void) const
-{
-    return d_windowRenderer ? d_windowRenderer->getUnclippedInnerRect() :
-                              getUnclippedOuterRect();
 }
 
 //----------------------------------------------------------------------------//

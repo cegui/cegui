@@ -135,10 +135,10 @@ public:
     */
     Rectf getChildExtentsArea(void) const;
 
-    // Overridden from Window.
-    Rectf getUnclippedInnerRect_impl(void) const;
-
 protected:
+    // Overridden from Window.
+    virtual Rectf getUnclippedInnerRect_impl() const;
+    
     /*!
     \brief
         Notification method called whenever the content size may have changed.
