@@ -192,19 +192,19 @@ Rectf ScrolledContainer::getHitTestRect_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getNonClientChildWindowContentArea() const
+Rectf ScrolledContainer::getNonClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
-        return Window::getNonClientChildWindowContentArea();
+        return Window::getNonClientChildWindowContentArea_impl();
     else
         return Rectf(getUnclippedOuterRect().getPosition(),
                     d_parent->getUnclippedInnerRect().getSize());
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getClientChildWindowContentArea() const
+Rectf ScrolledContainer::getClientChildWindowContentArea_impl() const
 {
-    return getNonClientChildWindowContentArea();
+    return getNonClientChildWindowContentArea_impl();
 }
 
 //----------------------------------------------------------------------------//

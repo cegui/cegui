@@ -54,8 +54,7 @@ VerticalLayoutContainer::~VerticalLayoutContainer(void)
 void VerticalLayoutContainer::layout()
 {
     // used to compare UDims
-    // FIXME: Should be used for client windows only!
-    const float absWidth = getClientChildWindowContentArea().getWidth();
+    const float absWidth = getChildWindowContentArea().getWidth();
 
     // this is where we store the top offset
     // we continually increase this number as we go through the windows

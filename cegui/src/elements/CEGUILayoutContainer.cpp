@@ -85,6 +85,14 @@ void LayoutContainer::layoutIfNecessary()
 }
 
 //----------------------------------------------------------------------------//
+Rectf LayoutContainer::getUnclippedInnerRect_impl(void) const
+{
+    return d_parent ?
+           d_parent->getUnclippedInnerRect() :
+           Window::getUnclippedInnerRect_impl();
+}
+
+//----------------------------------------------------------------------------//
 void LayoutContainer::update(float elapsed)
 {
     Window::update(elapsed);
@@ -93,21 +101,13 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-Rectf LayoutContainer::getClientChildWindowContentArea() const
+Rectf LayoutContainer::getClientChildWindowContentArea_impl() const
 {
     if (!d_parent)
-        return Window::getClientChildWindowContentArea();
+        return Window::getClientChildWindowContentArea_impl();
     else
         return Rectf(getUnclippedOuterRect().getPosition(),
                     d_parent->getUnclippedInnerRect().getSize());
-}
-
-//----------------------------------------------------------------------------//
-Rectf LayoutContainer::getUnclippedInnerRect_impl(void) const
-{
-    return d_parent ?
-           d_parent->getUnclippedInnerRect() :
-           Window::getUnclippedInnerRect_impl();
 }
 
 //----------------------------------------------------------------------------//

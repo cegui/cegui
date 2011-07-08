@@ -135,10 +135,9 @@ public:
     */
     Rectf getChildExtentsArea(void) const;
 
-    Rectf getNonClientChildWindowContentArea() const;
-    
-    Rectf getClientChildWindowContentArea() const;
-    
+    // Overridden from Window.
+    Rectf getUnclippedInnerRect_impl(void) const;
+
 protected:
     /*!
     \brief
@@ -172,10 +171,9 @@ protected:
 
     // overridden from Window.
     void drawSelf(const RenderingContext&) {};
-    
-    // Overridden from Window.
-    Rectf getUnclippedInnerRect_impl(void) const;
     Rectf getInnerRectClipper_impl() const;
+    Rectf getNonClientChildWindowContentArea_impl() const;
+    Rectf getClientChildWindowContentArea_impl() const;
 
     Rectf getHitTestRect_impl() const;
     void onChildAdded(WindowEventArgs& e);
