@@ -85,19 +85,19 @@ void LayoutContainer::layoutIfNecessary()
 }
 
 //----------------------------------------------------------------------------//
-Rectf LayoutContainer::getUnclippedInnerRect_impl(void) const
-{
-    return d_parent ?
-           d_parent->getUnclippedInnerRect() :
-           Window::getUnclippedInnerRect_impl();
-}
-
-//----------------------------------------------------------------------------//
 void LayoutContainer::update(float elapsed)
 {
     Window::update(elapsed);
 
     layoutIfNecessary();
+}
+
+//----------------------------------------------------------------------------//
+Rectf LayoutContainer::getUnclippedInnerRect_impl() const
+{
+    return d_parent ?
+           d_parent->getUnclippedInnerRect() :
+           Window::getUnclippedInnerRect_impl();
 }
 
 //----------------------------------------------------------------------------//

@@ -169,7 +169,7 @@ bool ScrolledContainer::handleChildMoved(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getUnclippedInnerRect_impl(void) const
+Rectf ScrolledContainer::getUnclippedInnerRect_impl() const
 {
     return d_parent ?
         d_parent->getUnclippedInnerRect() :
