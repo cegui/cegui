@@ -295,14 +295,14 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);
     // allow for scroll position
-    text_part_rect.d_left += text_offset;
+    text_part_rect.d_min.d_x += text_offset;
     // centre text vertically within the defined text area
-    text_part_rect.d_top += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
+    text_part_rect.d_min.d_y += (text_area.getHeight() - font->getFontHeight()) * 0.5f;
 
     ColourRect colours;
     const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
-    const colour unselectedColour(getUnselectedTextColour());
+    const Colour unselectedColour(getUnselectedTextColour());
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
@@ -316,7 +316,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                        text_part_rect.getPosition(), &text_area, colours);
 
         // adjust rect for next section
-        text_part_rect.d_left += font->getTextExtent(text);
+        text_part_rect.d_min.d_x += font->getTextExtent(text);
 
     }
     else
@@ -353,9 +353,9 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                 {
 
                     // calculate area for selection imagery.
-                    Rect hlarea(text_area);
-                    hlarea.d_min.d_x = text_part_rect.d_left ;
-                    hlarea.d_max.d_x = text_part_rect.d_left + charAdvance ;
+                    Rectf hlarea(text_area);
+                    hlarea.d_min.d_x = text_part_rect.d_min.d_x ;
+                    hlarea.d_max.d_x = text_part_rect.d_min.d_x + charAdvance ;
 
                     // render the selection imagery.
                     wlf.getStateImagery(active ? "ActiveSelection" :
