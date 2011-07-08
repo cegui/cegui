@@ -240,6 +240,6 @@
 	<Image Name="PopupMenuMiddle" XPos="191" YPos="209" Width="1" Height="1" />
 	<Image Name="PopupMenuArrowRight" XPos="179" YPos="204" Width="5" Height="5" />
 	<Image Name="PopupMenuArrowLeft" XPos="179" YPos="210" Width="5" Height="5" />
-	<Image Name="TreeListClosed" XPos="175" YPos="111" Width="7" Height="11" XOffset="8" YOffset="2" />
-	<Image Name="TreeListOpened" XPos="164" YPos="111" Width="11" Height="7" XOffset="8" YOffset="2"/>
+	<Image Name="TreeListClosed" XPos="175" YPos="111" Width="7" Height="11" />
+	<Image Name="TreeListOpened" XPos="164" YPos="111" Width="11" Height="7" />
 </Imageset>
