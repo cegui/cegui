@@ -27,6 +27,18 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         CEGUI::ScrolledContainer::drawSelf( boost::ref(arg0) );
     }
 
+    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
+            return func_getClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::ScrolledContainer::getClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::ScrolledContainer::getClientChildWindowContentArea_impl( );
+    }
+
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
         if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
             return func_getHitTestRect_impl(  );
@@ -51,7 +63,19 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         return CEGUI::ScrolledContainer::getInnerRectClipper_impl( );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
+    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
+        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
+            return func_getNonClientChildWindowContentArea_impl(  );
+        else{
+            return this->CEGUI::ScrolledContainer::getNonClientChildWindowContentArea_impl(  );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
+        return CEGUI::ScrolledContainer::getNonClientChildWindowContentArea_impl( );
+    }
+
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -59,7 +83,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         }
     }
     
-    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
+    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
         return CEGUI::ScrolledContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -1228,13 +1252,13 @@ void register_ScrolledContainer_class(){
                 *\n" );
         
         }
-        { //::CEGUI::ScrolledContainer::getClientChildWindowContentArea
+        { //::CEGUI::ScrolledContainer::getClientChildWindowContentArea_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getClientChildWindowContentArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
-                "getClientChildWindowContentArea"
-                , getClientChildWindowContentArea_function_type( &::CEGUI::ScrolledContainer::getClientChildWindowContentArea ) );
+                "getClientChildWindowContentArea_impl"
+                , getClientChildWindowContentArea_impl_function_type( &ScrolledContainer_wrapper::default_getClientChildWindowContentArea_impl ) );
         
         }
         { //::CEGUI::ScrolledContainer::getContentArea
@@ -1271,26 +1295,27 @@ void register_ScrolledContainer_class(){
             ScrolledContainer_exposer.def( 
                 "getInnerRectClipper_impl"
                 , getInnerRectClipper_impl_function_type( &ScrolledContainer_wrapper::default_getInnerRectClipper_impl )
-                , "Overridden from Window.\n" );
+                , "overridden from Window.\n" );
         
         }
-        { //::CEGUI::ScrolledContainer::getNonClientChildWindowContentArea
+        { //::CEGUI::ScrolledContainer::getNonClientChildWindowContentArea_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getNonClientChildWindowContentArea_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
-                "getNonClientChildWindowContentArea"
-                , getNonClientChildWindowContentArea_function_type( &::CEGUI::ScrolledContainer::getNonClientChildWindowContentArea ) );
+                "getNonClientChildWindowContentArea_impl"
+                , getNonClientChildWindowContentArea_impl_function_type( &ScrolledContainer_wrapper::default_getNonClientChildWindowContentArea_impl ) );
         
         }
         { //::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type( &ScrolledContainer_wrapper::default_getUnclippedInnerRect_impl )
-                , "Overridden from Window.\n" );
+                , getUnclippedInnerRect_impl_function_type(&::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl)
+                , default_getUnclippedInnerRect_impl_function_type(&ScrolledContainer_wrapper::default_getUnclippedInnerRect_impl) );
         
         }
         { //::CEGUI::ScrolledContainer::handleChildMoved
@@ -1693,7 +1718,7 @@ void register_ScrolledContainer_class(){
             ScrolledContainer_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &ScrolledContainer_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window inner rect area.\n\
+                , "! Default implementation of function to return Window outer rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
