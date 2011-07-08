@@ -109,12 +109,13 @@ public:
     */
     void setClipperWindow(Window* w);
 
+    // Overridden from Window.
+    virtual Rectf getUnclippedInnerRect_impl(void) const;
+
 protected:
     /*************************************************************************
     	Overridden from Window.
     *************************************************************************/
-    virtual Rectf getUnclippedInnerRect_impl(void) const;
-    
     virtual void drawSelf(const RenderingContext&) {}
 
     /*************************************************************************

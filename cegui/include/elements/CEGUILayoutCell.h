@@ -86,12 +86,12 @@ public:
     */
     virtual ~LayoutCell(void);
 
-    /// @copydoc Window::getClientChildWindowContentArea
-    virtual Rectf getClientChildWindowContentArea() const;
-    
-protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     virtual Rectf getUnclippedInnerRect_impl(void) const;
+
+protected:
+    /// @copydoc Window::getClientChildWindowContentArea_impl
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     /// @copydoc Window::addChild_impl
     virtual void addChild_impl(Window* wnd);

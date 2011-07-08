@@ -103,15 +103,15 @@ public:
     */
     virtual void layoutIfNecessary();
 
-    /// @copydoc Window::update
-    virtual void update(float elapsed);
-    
-    /// @copydoc Window::getClientChildWindowContentArea
-    virtual Rectf getClientChildWindowContentArea() const;
-    
-protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
     virtual Rectf getUnclippedInnerRect_impl(void) const;
+
+    /// @copydoc Window::update
+    virtual void update(float elapsed);
+
+protected:
+    /// @copydoc Window::getClientChildWindowContentArea_impl
+    virtual Rectf getClientChildWindowContentArea_impl() const;
 
     size_t getIdxOfChild(Window* wnd) const;
 

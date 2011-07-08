@@ -287,9 +287,8 @@ void GridLayoutContainer::layout()
     std::vector<UDim> rowSizes(d_gridHeight, UDim(0, 0));
 
     // used to compare UDims
-    // FIXME: Should be used for client windows only!
-    const float absWidth = getClientChildWindowContentArea().getWidth();
-    const float absHeight = getClientChildWindowContentArea().getHeight();
+    const float absWidth = getChildWindowContentArea().getWidth();
+    const float absHeight = getChildWindowContentArea().getHeight();
 
     // first, we need to determine rowSizes and colSizes, this is needed before
     // any layouting work takes place
