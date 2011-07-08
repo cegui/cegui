@@ -271,7 +271,7 @@ struct ProgressBar_wrapper : CEGUI::ProgressBar, bp::wrapper< CEGUI::ProgressBar
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -279,7 +279,7 @@ struct ProgressBar_wrapper : CEGUI::ProgressBar, bp::wrapper< CEGUI::ProgressBar
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -1671,7 +1671,7 @@ void register_ProgressBar_class(){
             ProgressBar_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &ProgressBar_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -1722,13 +1722,13 @@ void register_ProgressBar_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( ProgressBar_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ProgressBar_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ProgressBar_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&ProgressBar_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &ProgressBar_wrapper::default_getUnclippedInnerRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window inner rect area.\n" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect_impl

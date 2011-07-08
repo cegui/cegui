@@ -75,7 +75,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         return CEGUI::ScrolledContainer::getNonClientChildWindowContentArea_impl( );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -83,7 +83,7 @@ struct ScrolledContainer_wrapper : CEGUI::ScrolledContainer, bp::wrapper< CEGUI:
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::ScrolledContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -1309,13 +1309,12 @@ void register_ScrolledContainer_class(){
         }
         { //::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::ScrolledContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( ScrolledContainer_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             ScrolledContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::ScrolledContainer::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&ScrolledContainer_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &ScrolledContainer_wrapper::default_getUnclippedInnerRect_impl )
+                , "Overridden from Window.\n" );
         
         }
         { //::CEGUI::ScrolledContainer::handleChildMoved
@@ -1718,7 +1717,7 @@ void register_ScrolledContainer_class(){
             ScrolledContainer_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &ScrolledContainer_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }

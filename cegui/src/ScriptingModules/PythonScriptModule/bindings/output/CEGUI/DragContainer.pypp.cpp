@@ -443,7 +443,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -451,7 +451,7 @@ struct DragContainer_wrapper : CEGUI::DragContainer, bp::wrapper< CEGUI::DragCon
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
@@ -2384,7 +2384,7 @@ void register_DragContainer_class(){
             DragContainer_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &DragContainer_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -2423,13 +2423,13 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( DragContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( DragContainer_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             DragContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&DragContainer_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &DragContainer_wrapper::default_getUnclippedInnerRect_impl )
+                , "! Default implementation of function to return Window outer rect area.\n\
+            ! Default implementation of function to return Window inner rect area.\n" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect_impl
