@@ -287,7 +287,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
             return func_getUnclippedInnerRect_impl(  );
         else{
@@ -295,7 +295,7 @@ struct VerticalLayoutContainer_wrapper : CEGUI::VerticalLayoutContainer, bp::wra
         }
     }
     
-    ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const  {
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
         return CEGUI::LayoutContainer::getUnclippedInnerRect_impl( );
     }
 
@@ -1677,7 +1677,7 @@ void register_VerticalLayoutContainer_class(){
             VerticalLayoutContainer_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &VerticalLayoutContainer_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
+                , "! Default implementation of function to return Window inner rect area.\n\
             ! Default implementation of function to return Window outer clipper area.\n" );
         
         }
@@ -1728,13 +1728,12 @@ void register_VerticalLayoutContainer_class(){
         }
         { //::CEGUI::LayoutContainer::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( ::CEGUI::LayoutContainer::*getUnclippedInnerRect_impl_function_type )(  ) const;
-            typedef ::CEGUI::Rectf ( VerticalLayoutContainer_wrapper::*default_getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( VerticalLayoutContainer_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
             
             VerticalLayoutContainer_exposer.def( 
                 "getUnclippedInnerRect_impl"
-                , getUnclippedInnerRect_impl_function_type(&::CEGUI::LayoutContainer::getUnclippedInnerRect_impl)
-                , default_getUnclippedInnerRect_impl_function_type(&VerticalLayoutContainer_wrapper::default_getUnclippedInnerRect_impl) );
+                , getUnclippedInnerRect_impl_function_type( &VerticalLayoutContainer_wrapper::default_getUnclippedInnerRect_impl )
+                , "     Ref:  Window.getUnclippedInnerRect_impl" );
         
         }
         { //::CEGUI::Window::getUnclippedOuterRect_impl
