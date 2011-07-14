@@ -82,6 +82,7 @@ if (CEGUI_SAMPLES_USE_OPENGL)
     # This works around an issue in the prebuilt deps and can be removed once those are fixed :)
     if (WIN32)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
+        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut_static.lib)
     endif()
 endif()
 
