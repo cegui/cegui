@@ -10,6 +10,9 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(CEGUIMacros)
 include(CMakeDependentOption)
 
+if (APPLE)
+    set( CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X")
+endif()
 
 ################################################################################
 # Start of main Project definitions
@@ -185,7 +188,6 @@ endif()
 
 # Apple OS X specific options
 if (APPLE)
-    set( CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "Build architectures for Mac OS X" FORCE )
     set( CEGUI_APPLE_DYLIB_INSTALL_PATH "@executable_path/../Frameworks" CACHE STRING "Specifies the install rpath for dylibs and frameworks." )
     set( CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS TRUE CACHE BOOL "Specifies how to reference the dylibs, frameworks and datafiles in the sample app bundles:
     TRUE: specifies that the files will be symlinked (saves space, but apps are not truly stand-alone)
