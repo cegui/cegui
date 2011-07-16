@@ -186,8 +186,6 @@ class Window //: public EventSet
 	void setTooltipText(utf8string tip);
 	void setInheritsTooltipText(bool setting);
 
-	bool testClassName(utf8string class_name) const;
-
     bool isDragDropTarget() const;
     void setDragDropTarget(bool setting);
 	void notifyDragDropItemEnters(DragContainer* item);

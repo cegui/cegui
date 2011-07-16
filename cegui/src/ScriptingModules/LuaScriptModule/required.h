@@ -100,8 +100,8 @@ TreeItem* ceguiLua_createTreeItem(const String& text, uint item_id, void* item_d
 /************************************************************************
     Stuff needed to make the iterators work
 *************************************************************************/
-typedef PropertySet::Iterator PropertyIterator;
-typedef EventSet::Iterator EventIterator;
+typedef PropertySet::PropertyIterator PropertyIterator;
+typedef EventSet::EventIterator EventIterator;
 typedef WindowManager::WindowIterator WindowIterator;
 typedef WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
 typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
@@ -112,13 +112,13 @@ typedef FontManager::FontIterator FontIterator;
 template <typename T>
 inline PropertyIterator ceguiLua_getPropertyIterator(const T* self)
 {
-    return static_cast<const PropertySet*>(self)->getIterator();
+    return static_cast<const PropertySet*>(self)->getPropertyIterator();
 }
 
 template <typename T>
 inline EventIterator ceguiLua_getEventIterator(const T* self)
 {
-    return static_cast<const EventSet*>(self)->getIterator();
+    return static_cast<const EventSet*>(self)->getEventIterator();
 }
 
 
