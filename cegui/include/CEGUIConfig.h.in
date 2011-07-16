@@ -36,6 +36,11 @@ setting CMake options and regenerating, rather than editing directly.
 #ifndef _CEGUIConfig_h_
 #define _CEGUIConfig_h_
 
+// CMake defines NDEBUG on all platforms, but not always DEBUG :-/
+#if !defined(NDEBUG) && !defined(DEBUG)
+#   define DEBUG 1
+#endif
+
 #cmakedefine CEGUI_HAS_VERSION_SUFFIX
 #ifdef CEGUI_HAS_VERSION_SUFFIX
 #   ifndef CEGUI_VERSION_SUFFIX
