@@ -75,6 +75,7 @@ public:
     RenderedStringImageComponent* split(float split_point, bool first_component);
     RenderedStringImageComponent* clone() const;
     size_t getSpaceCount() const;
+    void setSelection(const float start, const float end);
 
 protected:
     //! pointer to the image drawn by the component.
@@ -83,6 +84,8 @@ protected:
     ColourRect d_colours;
     //! target size to render the image at (0s mean natural size)
     Sizef d_size;
+    // whether the image is marked as selected.
+    bool d_selected;
 };
 
 } // End of  CEGUI namespace section

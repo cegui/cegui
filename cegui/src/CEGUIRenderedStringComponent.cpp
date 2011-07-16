@@ -27,6 +27,8 @@
  ***************************************************************************/
 #include "CEGUIRenderedStringComponent.h"
 
+#include "CEGUIImageManager.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -35,7 +37,9 @@ namespace CEGUI
 RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
     d_verticalFormatting(VF_BOTTOM_ALIGNED),
-    d_aspectLock(false)
+    d_aspectLock(false),
+//    d_selectionImage(0)
+    d_selectionImage(&ImageManager::getSingleton().get("TaharezLook/GenericBrush"))
 {
 }
 

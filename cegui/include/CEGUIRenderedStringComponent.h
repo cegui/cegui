@@ -113,6 +113,9 @@ public:
     //! return the total number of spacing characters in the string.
     virtual size_t getSpaceCount() const = 0;
 
+    //! mark some region appropriate given /a start and /a end as selected.
+    virtual void setSelection(const float start, const float end) = 0;
+
 protected:
     //! Protected constructor.
     RenderedStringComponent();
@@ -123,6 +126,8 @@ protected:
     VerticalFormatting d_verticalFormatting;
     //! true if the aspect ratio should be maintained where possible.
     bool d_aspectLock;
+    //! Image to draw for selection
+    const Image* d_selectionImage;
 };
 
 } // End of  CEGUI namespace section

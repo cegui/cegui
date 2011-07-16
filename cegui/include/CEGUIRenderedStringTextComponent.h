@@ -71,6 +71,7 @@ public:
     RenderedStringTextComponent* split(float split_point, bool first_component);
     RenderedStringTextComponent* clone() const;
     size_t getSpaceCount() const;
+    void setSelection(const float start, const float end);
 
 protected:
     static size_t getNextTokenLength(const String& text, size_t start_idx);
@@ -81,6 +82,8 @@ protected:
     Font* d_font;
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours;
+    //! last set selection
+    size_t d_selectionStart, d_selectionLength;
 };
     
 } // End of  CEGUI namespace section

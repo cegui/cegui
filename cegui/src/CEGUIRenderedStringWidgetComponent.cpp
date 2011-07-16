@@ -28,6 +28,7 @@
 #include "CEGUIRenderedStringWidgetComponent.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIWindow.h"
+#include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
@@ -35,20 +36,23 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
-    d_window(0)
+    d_window(0),
+    d_selected(false)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent(
         const String& widget_name) :
-    d_window(0 /* FIXME: WindowManager::getSingleton().getWindow(widget_name)*/ )
+    d_window(0 /* FIXME: WindowManager::getSingleton().getWindow(widget_name)*/ ),
+    d_selected(false)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent(Window* widget) :
-    d_window(widget)
+    d_window(widget),
+    d_selected(false)
 {
 }
 
@@ -71,10 +75,16 @@ const Window* RenderedStringWidgetComponent::getWindow() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
+void RenderedStringWidgetComponent::setSelection(const float start, const float end)
+{
+    d_selected = (start != end);
+}
+
+//----------------------------------------------------------------------------//
+void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
                                          const Vector2f& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
-                                         const Rectf* /*clip_rect*/,
+                                         const Rectf* clip_rect,
                                          const float vertical_space,
                                          const float /*space_extra*/) const
 {
@@ -121,6 +131,13 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& /*buffer*/,
     default:
         CEGUI_THROW(InvalidRequestException("RenderedStringTextComponent::draw: "
                 "unknown VerticalFormatting option specified."));
+    }
+
+    // render the selection if needed
+    if (d_selectionImage && d_selected)
+    {
+        const Rectf select_area(position, getPixelSize());
+        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
     }
 
     // we do not actually draw the widget, we just move it into position.

@@ -59,10 +59,13 @@ public:
     RenderedStringWidgetComponent* split(float split_point, bool first_component);
     RenderedStringWidgetComponent* clone() const;
     size_t getSpaceCount() const;
+    void setSelection(const float start, const float end);
 
 protected:
     //! pointer to the window controlled by this component.
     Window* d_window;
+    // whether the image is marked as selected.
+    bool d_selected;
 };
 
 } // End of  CEGUI namespace section

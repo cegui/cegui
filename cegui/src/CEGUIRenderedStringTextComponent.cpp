@@ -38,7 +38,9 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent() :
     d_font(0),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_selectionStart(0),
+    d_selectionLength(0)
 {
 }
 
@@ -46,7 +48,9 @@ RenderedStringTextComponent::RenderedStringTextComponent() :
 RenderedStringTextComponent::RenderedStringTextComponent(const String& text) :
     d_text(text),
     d_font(0),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_selectionStart(0),
+    d_selectionLength(0)
 {
 }
 
@@ -55,7 +59,9 @@ RenderedStringTextComponent::RenderedStringTextComponent(
         const String& text, const String& font_name) :
     d_text(text),
     d_font(font_name.empty() ? 0 : &FontManager::getSingleton().get(font_name)),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_selectionStart(0),
+    d_selectionLength(0)
 {
 }
 
@@ -64,7 +70,9 @@ RenderedStringTextComponent::RenderedStringTextComponent(const String& text,
                                                          Font* font) :
     d_text(text),
     d_font(font),
-    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+    d_selectionStart(0),
+    d_selectionLength(0)
 {
 }
 
@@ -118,6 +126,21 @@ const ColourRect& RenderedStringTextComponent::getColours() const
 }
 
 //----------------------------------------------------------------------------//
+void RenderedStringTextComponent::setSelection(const float start, const float end)
+{
+    if (start >= end)
+    {
+        d_selectionStart = d_selectionLength = 0;
+        return;
+    }
+
+    Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+
+    d_selectionStart = fnt->getCharAtPixel(d_text, start);
+    d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart + 1;
+}
+
+//----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
                                        const Vector2f& position,
                                        const ColourRect* mod_colours,
@@ -164,6 +187,24 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
     ColourRect final_cols(d_colours);
     if (mod_colours)
         final_cols *= *mod_colours;
+
+    // render selection
+    if (d_selectionImage && d_selectionLength)
+    {
+        float sel_start_extent = 0, sel_end_extent = 0;
+
+        if (d_selectionStart > 0)
+            sel_start_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart));
+
+        sel_end_extent = fnt->getTextExtent(d_text.substr(0, d_selectionStart + d_selectionLength));
+
+        Rectf sel_rect(position.d_x + sel_start_extent,
+                       position.d_y,
+                       position.d_x + sel_end_extent,
+                       position.d_y + vertical_space);
+
+        d_selectionImage->render(buffer, sel_rect, clip_rect, ColourRect(0xFF002FFF));
+    }
 
     // draw the text string.
     fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
@@ -254,7 +295,23 @@ RenderedStringTextComponent* RenderedStringTextComponent::split(
         d_text.find_first_not_of(TextUtils::DefaultWrapDelimiters, left_len);
     if (rhs_start == String::npos)
         rhs_start = left_len;
-    
+
+    // split the selection
+    if (d_selectionLength)
+    {
+        const size_t sel_end = d_selectionStart + d_selectionLength - 1;
+        lhs->d_selectionStart = d_selectionStart;
+        lhs->d_selectionLength = sel_end < left_len ? d_selectionLength : left_len - d_selectionStart;
+
+        if (sel_end >= left_len)
+        {
+            d_selectionStart = 0;
+            d_selectionLength -= rhs_start;
+        }
+        else
+            setSelection(0, 0);
+    }
+
     d_text = d_text.substr(rhs_start);
 
     return lhs;

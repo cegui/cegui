@@ -157,6 +157,9 @@ public:
     //! return number of lines in this string.
     size_t getLineCount() const;
 
+    //! set selection highlight
+    void setSelection(float start, float end);
+
     //! Copy constructor.
     RenderedString(const RenderedString& other);
     //! Assignment.

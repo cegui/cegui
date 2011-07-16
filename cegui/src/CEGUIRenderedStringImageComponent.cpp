@@ -38,14 +38,16 @@ namespace CEGUI
 RenderedStringImageComponent::RenderedStringImageComponent() :
     d_image(0),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0)
+    d_size(0, 0),
+    d_selected(false)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0)
+    d_size(0, 0),
+    d_selected(false)
 {
     setImage(name);
 }
@@ -54,7 +56,8 @@ RenderedStringImageComponent::RenderedStringImageComponent(const String& name) :
 RenderedStringImageComponent::RenderedStringImageComponent(const Image* image) :
     d_image(image),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-    d_size(0, 0)
+    d_size(0, 0),
+    d_selected(false)
 {
 }
 
@@ -99,6 +102,12 @@ void RenderedStringImageComponent::setColours(const Colour& c)
 const ColourRect& RenderedStringImageComponent::getColours() const
 {
     return d_colours;
+}
+
+//----------------------------------------------------------------------------//
+void RenderedStringImageComponent::setSelection(const float start, const float end)
+{
+    d_selected = (start != end);
 }
 
 //----------------------------------------------------------------------------//
@@ -151,6 +160,13 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
 
     // apply padding to position
     dest.offset(d_padding.getPosition());
+
+    // render the selection if needed
+    if (d_selectionImage && d_selected)
+    {
+        const Rectf select_area(position, getPixelSize());
+        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
+    }
 
     // apply modulative colours if needed.
     ColourRect final_cols(d_colours);
