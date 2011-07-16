@@ -302,5 +302,28 @@ void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
+void RenderedString::setSelection(float start, float end)
+{
+    const size_t last_component = d_lines[0].second;
+    float partial_extent = 0;
+    size_t idx = 0;
+    for (; idx < last_component; ++idx)
+        if (start <= partial_extent + d_components[idx]->getPixelSize().d_width)
+            break;
+
+    start -= partial_extent;
+    end -= partial_extent;
+
+    while (end > 0.0f)
+    {
+        const float comp_extent = d_components[idx]->getPixelSize().d_width;
+        d_components[idx]->setSelection(start, (end >= comp_extent) ? comp_extent : end);
+        start = 0;
+        end -= comp_extent;
+        ++idx;
+    }
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
