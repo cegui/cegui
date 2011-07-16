@@ -3,9 +3,14 @@
 ***********************************************************************/
 class ImageManager
 {
-	static ImageManager& getSingleton();
+//    template <typename T> void addImageType(utf8string name);
+    void removeImageType(utf8string name);
 
-    void add(const Image& image);
+    bool isImageTypeAvailable(utf8string name) const;
+
+    Image& create(utf8string type, utf8string name);
+//    Image& create(const XMLAttributes& attributes);
+
     void destroy(Image& image);
     void destroy(utf8string name);
     void destroyAll();
@@ -21,6 +26,8 @@ class ImageManager
     void addFromImageFile(utf8string name,
                           utf8string filename,
                           utf8string resource_group = "");
+
+    void notifyDisplaySizeChanged(const Size<float>& size);
 
     static void setImagesetDefaultResourceGroup(utf8string resourceGroup);
     static string getImagesetDefaultResourceGroup();

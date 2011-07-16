@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Apr 25 18:06:06 2011.
+** Generated automatically by tolua++-1.0.93 on Sat Jul 16 10:25:08 2011.
 */
 
 #ifndef __cplusplus
@@ -9177,43 +9177,15 @@ static int tolua_CEGUI_CEGUI_BasicImage_setNativeResolution00(lua_State* tolua_S
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getSingleton of class  CEGUI::ImageManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_getSingleton00
-static int tolua_CEGUI_CEGUI_ImageManager_getSingleton00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertable(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
- {
-  CEGUI::ImageManager& tolua_ret = (CEGUI::ImageManager&)  CEGUI::ImageManager::getSingleton();
- tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::ImageManager");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getSingleton'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: add of class  CEGUI::ImageManager */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_add00
-static int tolua_CEGUI_CEGUI_ImageManager_add00(lua_State* tolua_S)
+/* method: removeImageType of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_removeImageType00
+static int tolua_CEGUI_CEGUI_ImageManager_removeImageType00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::Image",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -9221,18 +9193,88 @@ static int tolua_CEGUI_CEGUI_ImageManager_add00(lua_State* tolua_S)
 #endif
  {
   CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::Image* image = ((const CEGUI::Image*)  tolua_tousertype(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'add'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeImageType'",NULL);
 #endif
  {
-  self->add(*image);
+  self->removeImageType(name);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'add'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'removeImageType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isImageTypeAvailable of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_isImageTypeAvailable00
+static int tolua_CEGUI_CEGUI_ImageManager_isImageTypeAvailable00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageManager* self = (const CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isImageTypeAvailable'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isImageTypeAvailable(name);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isImageTypeAvailable'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: create of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_create00
+static int tolua_CEGUI_CEGUI_ImageManager_create00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
+  utf8string type = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'create'",NULL);
+#endif
+ {
+  CEGUI::Image& tolua_ret = (CEGUI::Image&)  self->create(type,name);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Image");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
  return 0;
 #endif
 }
@@ -9532,6 +9574,39 @@ static int tolua_CEGUI_CEGUI_ImageManager_addFromImageFile00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'addFromImageFile'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: notifyDisplaySizeChanged of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_ImageManager_notifyDisplaySizeChanged00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageManager* self = (CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size<float>* size = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
+#endif
+ {
+  self->notifyDisplaySizeChanged(*size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
  return 0;
 #endif
 }
@@ -18138,40 +18213,6 @@ static int tolua_CEGUI_CEGUI_Window_setInheritsTooltipText00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setInheritsTooltipText'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: testClassName of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_testClassName00
-static int tolua_CEGUI_CEGUI_Window_testClassName00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-  utf8string class_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'testClassName'",NULL);
-#endif
- {
-  bool tolua_ret = (bool)  self->testClassName(class_name);
- tolua_pushboolean(tolua_S,(bool)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'testClassName'.",&tolua_err);
  return 0;
 #endif
 }
@@ -58637,8 +58678,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ImageManager","CEGUI::ImageManager","",NULL);
   tolua_beginmodule(tolua_S,"ImageManager");
-   tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_ImageManager_getSingleton00);
-   tolua_function(tolua_S,"add",tolua_CEGUI_CEGUI_ImageManager_add00);
+   tolua_function(tolua_S,"removeImageType",tolua_CEGUI_CEGUI_ImageManager_removeImageType00);
+   tolua_function(tolua_S,"isImageTypeAvailable",tolua_CEGUI_CEGUI_ImageManager_isImageTypeAvailable00);
+   tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_ImageManager_create00);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_ImageManager_destroy00);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_ImageManager_destroy01);
    tolua_function(tolua_S,"destroyAll",tolua_CEGUI_CEGUI_ImageManager_destroyAll00);
@@ -58648,6 +58690,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"loadImageset",tolua_CEGUI_CEGUI_ImageManager_loadImageset00);
    tolua_function(tolua_S,"destroyImageCollection",tolua_CEGUI_CEGUI_ImageManager_destroyImageCollection00);
    tolua_function(tolua_S,"addFromImageFile",tolua_CEGUI_CEGUI_ImageManager_addFromImageFile00);
+   tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_ImageManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"setImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_setImagesetDefaultResourceGroup00);
    tolua_function(tolua_S,"getImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_getImagesetDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
@@ -59364,7 +59407,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setTooltipType",tolua_CEGUI_CEGUI_Window_setTooltipType00);
    tolua_function(tolua_S,"setTooltipText",tolua_CEGUI_CEGUI_Window_setTooltipText00);
    tolua_function(tolua_S,"setInheritsTooltipText",tolua_CEGUI_CEGUI_Window_setInheritsTooltipText00);
-   tolua_function(tolua_S,"testClassName",tolua_CEGUI_CEGUI_Window_testClassName00);
    tolua_function(tolua_S,"isDragDropTarget",tolua_CEGUI_CEGUI_Window_isDragDropTarget00);
    tolua_function(tolua_S,"setDragDropTarget",tolua_CEGUI_CEGUI_Window_setDragDropTarget00);
    tolua_function(tolua_S,"notifyDragDropItemEnters",tolua_CEGUI_CEGUI_Window_notifyDragDropItemEnters00);
