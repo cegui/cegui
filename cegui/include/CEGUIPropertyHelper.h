@@ -842,6 +842,27 @@ public:
     }
 };
 
+
+template<>
+class CEGUIEXPORT PropertyHelper<Font*>
+{
+public:
+    typedef const Font* return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Font* const pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("Font*");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
+};
+
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIPropertyHelper_h_

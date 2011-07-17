@@ -4375,7 +4375,6 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::Font              d_fontProperty;
     
     static  WindowProperties::WindowRenderer    d_windowRendererProperty;
     static  WindowProperties::LookNFeel         d_lookNFeelProperty;

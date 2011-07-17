@@ -128,7 +128,6 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
-WindowProperties::Font              Window::d_fontProperty;
 
 WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
 WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
@@ -866,7 +865,7 @@ void Window::setText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setFont(Font* font)
+void Window::setFont( Font* font)
 {
     d_font = font;
     d_renderedStringValid = false;
@@ -1510,7 +1509,11 @@ void Window::addStandardProperties(void)
         &Window::setDisabled, &Window::isDisabled, false
     );
 
-    addProperty(&d_fontProperty);
+    CEGUI_DEFINE_PROPERTY(Window,Font*,
+        "Font","Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
+        (void(CEGUI::Window::*)(const CEGUI::Font*))(void(CEGUI::Window::*)(CEGUI::Font*))&Window::setFont,
+        (const CEGUI::Font* (CEGUI::Window::*)()const)&Window::getFont, 0
+    );
 
     CEGUI_DEFINE_PROPERTY(Window, uint,
         "ID", "Property to get/set the ID value of the Window. Value is an unsigned integer number.",
@@ -1525,7 +1528,7 @@ void Window::addStandardProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window,Image*,
         "MouseCursorImage","Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
-        &Window::setMouseCursor, &Window::getMouseCursor, 0
+        &Window::setMouseCursor, (const CEGUI::Image* (CEGUI::Window::*)()const)&Window::getMouseCursor, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
