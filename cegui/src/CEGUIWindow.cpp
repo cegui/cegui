@@ -129,24 +129,9 @@ DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
 WindowProperties::Font              Window::d_fontProperty;
-/*TplProperty<Window, Image*>         Window::d_mouseCursorProperty("MouseCursor", "Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
-                                                            &Window::getMouseCursor, &Window::setMouseCursor, 0);*/
-WindowProperties::MouseCursorImage  Window::d_mouseCursorProperty;
 
-WindowProperties::VerticalAlignment   Window::d_vertAlignProperty;
-WindowProperties::HorizontalAlignment Window::d_horzAlignProperty;
-
-WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
 WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
-WindowProperties::DragDropTarget    Window::d_dragDropTargetProperty;
-WindowProperties::AutoRenderingSurface Window::d_autoRenderingSurfaceProperty;
-WindowProperties::Rotation Window::d_rotationProperty;
-WindowProperties::NonClient Window::d_nonClientProperty;
-WindowProperties::TextParsingEnabled Window::d_textParsingEnabledProperty;
-WindowProperties::Margin Window:: d_marginProperty;
-WindowProperties::UpdateMode Window::d_updateModeProperty;
-WindowProperties::MouseInputPropagationEnabled Window::d_mouseInputPropagationProperty;
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name) :
@@ -1537,7 +1522,11 @@ void Window::addStandardProperties(void)
         &Window::setInheritsAlpha, &Window::inheritsAlpha, true
     );
 
-    addProperty(&d_mouseCursorProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window,Image*,
+        "MouseCursorImage","Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
+        &Window::setMouseCursor, &Window::getMouseCursor, 0
+    );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "Visible", "Property to get/set the 'visible state' setting for the Window. Value is either \"True\" or \"False\".",
@@ -1604,8 +1593,15 @@ void Window::addStandardProperties(void)
         &Window::setRiseOnClickEnabled, &Window::isRiseOnClickEnabled, true
     );
 
-    addProperty(&d_vertAlignProperty);
-    addProperty(&d_horzAlignProperty);
+    CEGUI_DEFINE_PROPERTY(Window, VerticalAlignment,
+        "VerticalAlignment", "Property to get/set the windows vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
+        &Window::setVerticalAlignment, &Window::getVerticalAlignment, VA_TOP
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Window, HorizontalAlignment,
+        "HorizontalAlignment", "Property to get/set the windows horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
+        &Window::setHorizontalAlignment, &Window::getHorizontalAlignment, HA_LEFT
+    );
 
     CEGUI_DEFINE_PROPERTY(Window, URect,
         "Area", "Property to get/set the windows unified area rectangle. Value is a \"URect\".",
@@ -1652,16 +1648,57 @@ void Window::addStandardProperties(void)
 		&Window::setMaxSize, &Window::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
 	);
 
-    addProperty(&d_mousePassThroughEnabledProperty);
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "MousePassThroughEnabled", "Property to get/set whether the window ignores mouse events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
+        &Window::setMousePassThroughEnabled, &Window::isMousePassThroughEnabled, false
+    );
+    
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
-    addProperty(&d_dragDropTargetProperty);
-    addProperty(&d_autoRenderingSurfaceProperty);
-    addProperty(&d_rotationProperty);
-    addProperty(&d_nonClientProperty);
-    addProperty(&d_textParsingEnabledProperty);
-    addProperty(&d_marginProperty);
-    addProperty(&d_updateModeProperty);
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "DragDropTarget", "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"True\" or \"False\".",
+        &Window::setDragDropTarget, &Window::isDragDropTarget, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "AutoRenderingSurface", "Property to get/set whether the Window will automatically attempt to "
+        "use a full imagery caching RenderingSurface (if supported by the "
+        "renderer).  Here, full imagery caching usually will mean caching a "
+        "window's representation onto a texture (although no such "
+        "implementation requirement is specified.)"
+        "  Value is either \"True\" or \"False\".",
+        &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Window, Quaternion,
+        "Rotation", "Property to get/set the windows rotation factors.  Value is "
+        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
+        &Window::setRotation, &Window::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+    );
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "NonClient", "Property to get/set the 'non-client' setting for the Window.  "
+        "Value is either \"True\" or \"False\".",
+        &Window::setNonClientWindow, &Window::isNonClientWindow, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "TextParsingEnabled", "Property to get/set the text parsing setting for the Window.  "
+        "Value is either \"True\" or \"False\".",
+        &Window::setTextParsingEnabled, &Window::isTextParsingEnabled, true
+    );
+   
+    CEGUI_DEFINE_PROPERTY(Window, UBox,
+        "Margin", "Property to get/set margin for the Window. Value format:"
+        "{top:{[tops],[topo]},left:{[lefts],[lefto]},bottom:{[bottoms],[bottomo]},right:{[rights],[righto]}}.",
+        &Window::setMargin, &Window::getMargin, UBox(UDim(0, 0))
+    );
+   
+    CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
+        "UpdateMode", "Property to get/set the window update mode setting.  "
+        "Value is one of \"Always\", \"Never\" or \"Visible\".",
+        &Window::setUpdateMode,&Window::getUpdateMode,WUM_VISIBLE
+    );
 
     CEGUI_DEFINE_PROPERTY(Window, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting for the Window. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
@@ -1673,20 +1710,28 @@ void Window::addStandardProperties(void)
         &Window::setAspectRatio, &Window::getAspectRatio, 1.0 / 1.0
     );
 
-    addProperty(&d_mouseInputPropagationProperty);
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "MouseInputPropagationEnabled", "Property to get/set whether unhandled mouse inputs should be "
+        "propagated back to the Window's parent.  "
+        "Value is either \"True\" or \"False\".",
+        &Window::setMouseInputPropagationEnabled, &Window::isMouseInputPropagationEnabled, false
+    );
+
+
+
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
     {
         banPropertyFromXML("DestroyedByParent");
-        banPropertyFromXML(&d_vertAlignProperty);
-        banPropertyFromXML(&d_horzAlignProperty);
+        banPropertyFromXML("VerticalAlignment");
+        banPropertyFromXML("HorizontalAlignment");
         banPropertyFromXML("Area");
         banPropertyFromXML("Position");
-		banPropertyFromXML("XPosition");
+        banPropertyFromXML("XPosition");
         banPropertyFromXML("YPosition");
-		banPropertyFromXML("Size");
-		banPropertyFromXML("Width");
+        banPropertyFromXML("Size");
+        banPropertyFromXML("Width");
         banPropertyFromXML("Height");
         banPropertyFromXML("MinSize");
         banPropertyFromXML("MaxSize");

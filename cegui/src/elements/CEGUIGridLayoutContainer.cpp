@@ -487,7 +487,7 @@ size_t GridLayoutContainer::translateAPToGridIdx(size_t APIdx) const
 Window* GridLayoutContainer::createDummy()
 {
     char i_buff[32];
-    sprintf(i_buff, "%i", d_nextDummyIdx);
+    sprintf(i_buff, "%lu", d_nextDummyIdx);
     ++d_nextDummyIdx;
 
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
