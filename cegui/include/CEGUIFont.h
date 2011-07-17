@@ -440,6 +440,8 @@ protected:
     mutable CodepointMap d_cp_map;
 };
 
+
+
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

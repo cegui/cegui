@@ -30,6 +30,8 @@
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIImageManager.h"
 #include "CEGUIImage.h"
+#include "CEGUIFontManager.h"
+#include "CEGUIFont.h"
 #include "CEGUIExceptions.h"
 
 #include <cstdio>
@@ -70,6 +72,37 @@ PropertyHelper<Image*>::fromString(const String& str)
 //----------------------------------------------------------------------------//
 PropertyHelper<Image*>::string_return_type PropertyHelper<Image*>::toString(
     PropertyHelper<Image*>::pass_type val)
+{
+    return val ? val->getName() : String("");
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<Font*>::return_type
+PropertyHelper<Font*>::fromString(const String& str)
+{
+    using namespace std;
+
+    // handle empty string case
+    if (str.empty())
+        return 0;
+
+    PropertyHelper<Font*>::return_type image;
+
+    CEGUI_TRY
+    {
+        image = &FontManager::getSingleton().get(str);
+    }
+    CEGUI_CATCH(UnknownObjectException&)
+    {
+        image = 0;
+    }
+
+    return image;
+}
+
+//----------------------------------------------------------------------------//
+PropertyHelper<Font*>::string_return_type PropertyHelper<Font*>::toString(
+    PropertyHelper<Font*>::pass_type val)
 {
     return val ? val->getName() : String("");
 }

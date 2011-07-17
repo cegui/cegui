@@ -39,6 +39,7 @@
 #include "CEGUIUDim.h"
 #include "CEGUIRect.h"
 
+
 #include <cstdio>
 
 #include <sstream>
@@ -50,6 +51,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+
 /*!
 \brief
 	Helper class used to convert various data types to and from the format expected in Propery strings
@@ -837,6 +840,27 @@ public:
 
         return String(buff);
     }
+};
+
+
+template<>
+class CEGUIEXPORT PropertyHelper<Font*>
+{
+public:
+    typedef const Font* return_type;
+    typedef return_type safe_method_return_type;
+    typedef const Font* const pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("Font*");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str);
+    static string_return_type toString(pass_type val);
 };
 
 } // End of  CEGUI namespace section

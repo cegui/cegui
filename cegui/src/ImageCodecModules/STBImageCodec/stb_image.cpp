@@ -405,9 +405,9 @@ char *stbi_failure_reason(void)
    return failure_reason;
 }
 
-static int e(char *str)
+static int e(const char *str)
 {
-   failure_reason = str;
+   failure_reason = (char*)str;
    return 0;
 }
 
@@ -2863,7 +2863,7 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    offset = get32le(s);
    hsz = get32le(s);
    if (hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108) return epuc("unknown BMP", "BMP type not supported: unknown");
-   failure_reason = "bad BMP";
+   failure_reason = (char*)"bad BMP";
    if (hsz == 12) {
       s->img_x = get16le(s);
       s->img_y = get16le(s);
@@ -3578,7 +3578,7 @@ stbi_uc *stbi_psd_load_from_memory (stbi_uc const *buffer, int len, int *x, int 
 #ifndef STBI_NO_HDR
 static int hdr_test(stbi *s)
 {
-   char *signature = "#?RADIANCE\n";
+   char *signature = (char*)"#?RADIANCE\n";
    int i;
    for (i=0; signature[i]; ++i)
       if (get8(s) != signature[i])
@@ -3787,7 +3787,7 @@ float *stbi_hdr_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y,
 
 static void write8(FILE *f, int x) { uint8 z = (uint8) x; fwrite(&z,1,1,f); }
 
-static void writefv(FILE *f, char *fmt, va_list v)
+static void writefv(FILE *f,const char *fmt, va_list v)
 {
    while (*fmt) {
       switch (*fmt++) {
@@ -3803,7 +3803,7 @@ static void writefv(FILE *f, char *fmt, va_list v)
    }
 }
 
-static void writef(FILE *f, char *fmt, ...)
+static void writef(FILE *f,const char *fmt, ...)
 {
    va_list v;
    va_start(v, fmt);
@@ -3868,7 +3868,7 @@ int stbi_write_bmp(char const *filename, int x, int y, int comp, void *data)
 {
    int pad = (-x*3) & 3;
    return outfile(filename,-1,-1,x,y,comp,data,0,pad,
-           "11 4 22 4" "4 44 22 444444",
+           (char*)"11 4 22 4" "4 44 22 444444",
            'B', 'M', 14+40+(x*3+pad)*y, 0,0, 14+40,  // file header
             40, x,y, 1,24, 0,0,0,0,0,0);             // bitmap header
 }
@@ -3877,7 +3877,7 @@ int stbi_write_tga(char const *filename, int x, int y, int comp, void *data)
 {
    int has_alpha = !(comp & 1);
    return outfile(filename, -1,-1, x, y, comp, data, has_alpha, 0,
-                  "111 221 2222 11", 0,0,2, 0,0,0, 0,0,x,y, 24+8*has_alpha, 8*has_alpha);
+                  (char*)"111 221 2222 11", 0,0,2, 0,0,0, 0,0,x,y, 24+8*has_alpha, 8*has_alpha);
 }
 
 // any other image formats that do interleaved rgb data?
