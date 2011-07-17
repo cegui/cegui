@@ -40,6 +40,11 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_getSpaceCount(  );
     }
 
+    virtual void setSelection( float const start, float const end ){
+        bp::override func_setSelection = this->get_override( "setSelection" );
+        func_setSelection( start, end );
+    }
+
     virtual ::CEGUI::RenderedStringComponent * split( float split_point, bool first_component ){
         bp::override func_split = this->get_override( "split" );
         return func_split( split_point, first_component );
@@ -241,6 +246,17 @@ void register_RenderedStringComponent_class(){
                 , ( bp::arg("padding") )
                 , "! set the left padding value.\n\
             ! set the right padding value.\n" );
+        
+        }
+        { //::CEGUI::RenderedStringComponent::setSelection
+        
+            typedef void ( ::CEGUI::RenderedStringComponent::*setSelection_function_type )( float const,float const ) ;
+            
+            RenderedStringComponent_exposer.def( 
+                "setSelection"
+                , bp::pure_virtual( setSelection_function_type(&::CEGUI::RenderedStringComponent::setSelection) )
+                , ( bp::arg("start"), bp::arg("end") )
+                , "! mark some region appropriate given a start and a end as selected.\n" );
         
         }
         { //::CEGUI::RenderedStringComponent::setTopPadding
