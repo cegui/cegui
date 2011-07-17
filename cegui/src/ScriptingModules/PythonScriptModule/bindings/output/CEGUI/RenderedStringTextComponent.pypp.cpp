@@ -107,6 +107,18 @@ struct RenderedStringTextComponent_wrapper : CEGUI::RenderedStringTextComponent,
         return CEGUI::RenderedStringTextComponent::getSpaceCount( );
     }
 
+    virtual void setSelection( float const start, float const end ) {
+        if( bp::override func_setSelection = this->get_override( "setSelection" ) )
+            func_setSelection( start, end );
+        else{
+            this->CEGUI::RenderedStringTextComponent::setSelection( start, end );
+        }
+    }
+    
+    void default_setSelection( float const start, float const end ) {
+        CEGUI::RenderedStringTextComponent::setSelection( start, end );
+    }
+
     virtual ::CEGUI::RenderedStringTextComponent * split( float split_point, bool first_component ) {
         if( bp::override func_split = this->get_override( "split" ) )
             return func_split( split_point, first_component );
@@ -280,6 +292,18 @@ void register_RenderedStringTextComponent_class(){
                 , ( bp::arg("font_name") )
                 , "! set the font to use when rendering the text.\n\
             ! set the font to use when rendering the text.\n" );
+        
+        }
+        { //::CEGUI::RenderedStringTextComponent::setSelection
+        
+            typedef void ( ::CEGUI::RenderedStringTextComponent::*setSelection_function_type )( float const,float const ) ;
+            typedef void ( RenderedStringTextComponent_wrapper::*default_setSelection_function_type )( float const,float const ) ;
+            
+            RenderedStringTextComponent_exposer.def( 
+                "setSelection"
+                , setSelection_function_type(&::CEGUI::RenderedStringTextComponent::setSelection)
+                , default_setSelection_function_type(&RenderedStringTextComponent_wrapper::default_setSelection)
+                , ( bp::arg("start"), bp::arg("end") ) );
         
         }
         { //::CEGUI::RenderedStringTextComponent::setText

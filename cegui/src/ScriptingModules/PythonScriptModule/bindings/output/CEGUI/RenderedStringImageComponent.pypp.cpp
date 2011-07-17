@@ -96,6 +96,18 @@ struct RenderedStringImageComponent_wrapper : CEGUI::RenderedStringImageComponen
         return CEGUI::RenderedStringImageComponent::getSpaceCount( );
     }
 
+    virtual void setSelection( float const start, float const end ) {
+        if( bp::override func_setSelection = this->get_override( "setSelection" ) )
+            func_setSelection( start, end );
+        else{
+            this->CEGUI::RenderedStringImageComponent::setSelection( start, end );
+        }
+    }
+    
+    void default_setSelection( float const start, float const end ) {
+        CEGUI::RenderedStringImageComponent::setSelection( start, end );
+    }
+
     virtual ::CEGUI::RenderedStringImageComponent * split( float split_point, bool first_component ) {
         if( bp::override func_split = this->get_override( "split" ) )
             return func_split( split_point, first_component );
@@ -258,6 +270,18 @@ void register_RenderedStringImageComponent_class(){
                 , ( bp::arg("image") )
                 , "! Set the image to be drawn by this component.\n\
             ! Set the image to be drawn by this component.\n" );
+        
+        }
+        { //::CEGUI::RenderedStringImageComponent::setSelection
+        
+            typedef void ( ::CEGUI::RenderedStringImageComponent::*setSelection_function_type )( float const,float const ) ;
+            typedef void ( RenderedStringImageComponent_wrapper::*default_setSelection_function_type )( float const,float const ) ;
+            
+            RenderedStringImageComponent_exposer.def( 
+                "setSelection"
+                , setSelection_function_type(&::CEGUI::RenderedStringImageComponent::setSelection)
+                , default_setSelection_function_type(&RenderedStringImageComponent_wrapper::default_setSelection)
+                , ( bp::arg("start"), bp::arg("end") ) );
         
         }
         { //::CEGUI::RenderedStringImageComponent::setSize

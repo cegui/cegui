@@ -172,6 +172,17 @@ void register_RenderedString_class(){
             ! Assignment.\n" );
         
         }
+        { //::CEGUI::RenderedString::setSelection
+        
+            typedef void ( ::CEGUI::RenderedString::*setSelection_function_type )( float,float ) ;
+            
+            RenderedString_exposer.def( 
+                "setSelection"
+                , setSelection_function_type( &::CEGUI::RenderedString::setSelection )
+                , ( bp::arg("start"), bp::arg("end") )
+                , "! set selection highlight\n" );
+        
+        }
         { //::CEGUI::RenderedString::split
         
             typedef void ( ::CEGUI::RenderedString::*split_function_type )( ::size_t const,float,::CEGUI::RenderedString & ) ;

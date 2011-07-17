@@ -96,6 +96,18 @@ struct RenderedStringWidgetComponent_wrapper : CEGUI::RenderedStringWidgetCompon
         return CEGUI::RenderedStringWidgetComponent::getSpaceCount( );
     }
 
+    virtual void setSelection( float const start, float const end ) {
+        if( bp::override func_setSelection = this->get_override( "setSelection" ) )
+            func_setSelection( start, end );
+        else{
+            this->CEGUI::RenderedStringWidgetComponent::setSelection( start, end );
+        }
+    }
+    
+    void default_setSelection( float const start, float const end ) {
+        CEGUI::RenderedStringWidgetComponent::setSelection( start, end );
+    }
+
     virtual ::CEGUI::RenderedStringWidgetComponent * split( float split_point, bool first_component ) {
         if( bp::override func_split = this->get_override( "split" ) )
             return func_split( split_point, first_component );
@@ -187,6 +199,18 @@ void register_RenderedStringWidgetComponent_class(){
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "! Set the window to be controlled by this component.\n\
             ! return the window currently controlled by this component\n" );
+        
+        }
+        { //::CEGUI::RenderedStringWidgetComponent::setSelection
+        
+            typedef void ( ::CEGUI::RenderedStringWidgetComponent::*setSelection_function_type )( float const,float const ) ;
+            typedef void ( RenderedStringWidgetComponent_wrapper::*default_setSelection_function_type )( float const,float const ) ;
+            
+            RenderedStringWidgetComponent_exposer.def( 
+                "setSelection"
+                , setSelection_function_type(&::CEGUI::RenderedStringWidgetComponent::setSelection)
+                , default_setSelection_function_type(&RenderedStringWidgetComponent_wrapper::default_setSelection)
+                , ( bp::arg("start"), bp::arg("end") ) );
         
         }
         { //::CEGUI::RenderedStringWidgetComponent::setWindow
