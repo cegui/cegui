@@ -121,10 +121,10 @@ namespace CEGUI
         {
             switch(childNode->Type())
             {
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::ELEMENT:
+            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TINYXML_ELEMENT:
                 processElement(childNode->ToElement());
                 break;
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TEXT:
+            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TINYXML_TEXT:
                 if (childNode->ToText()->Value() != '\0')
                     d_handler->text((encoded_char*)childNode->ToText()->Value());
                 break;

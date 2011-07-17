@@ -124,6 +124,173 @@ enum WindowUpdateMode
     WUM_VISIBLE
 };
 
+
+template<>
+class PropertyHelper<CEGUI::VerticalAlignment>
+{
+public:
+    typedef VerticalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef VerticalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("VerticalAlignment");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+    
+      if (str == "Centre")
+      {
+          return VA_CENTRE;
+      }
+      else if (str == "Bottom")
+      {
+          return VA_BOTTOM;
+      }
+      else
+      {
+          return VA_TOP;
+      }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == VA_CENTRE)
+        {
+            return "Centre";
+        }
+        else if (val == VA_BOTTOM)
+        {
+            return "Bottom";
+        }
+        else if (val == VA_TOP)
+        {
+            return "Top";
+        }
+        else
+        {
+            assert(false && "Invalid vertical alignment");
+            return "Centre";
+        }
+    }
+};
+
+template<>
+class PropertyHelper<HorizontalAlignment>
+{
+public:
+    typedef HorizontalAlignment return_type;
+    typedef return_type safe_method_return_type;
+    typedef HorizontalAlignment pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("HorizontalAlignment");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+    
+        if (str == "Centre")
+        {
+            return HA_CENTRE;
+        }
+        else if (str == "Right")
+        {
+            return HA_RIGHT;
+        }
+        else
+        {
+            return HA_LEFT;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == HA_CENTRE)
+        {
+            return "Centre";
+        }
+        else if (val == HA_RIGHT)
+        {
+            return "Right";
+        }
+        else if (val == HA_LEFT)
+        {
+            return "Left";
+        }
+        else
+        {
+            assert(false && "Invalid horizontal alignment");
+            return "Centre";
+        }
+    }
+};
+
+template<>
+class PropertyHelper<WindowUpdateMode>
+{
+public:
+    typedef WindowUpdateMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef WindowUpdateMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("WindowUpdateMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+    
+        if (str == "Always")
+        {
+            return WUM_ALWAYS;
+        }
+        else if (str == "Never")
+        {
+            return WUM_NEVER;
+        }
+        else
+        {
+            return WUM_VISIBLE;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == WUM_ALWAYS)
+        {
+            return "Always";
+        }
+        else if (val == WUM_NEVER)
+        {
+            return "Never";
+        }
+        else if (val == WUM_VISIBLE)
+        {
+            return "Visible";
+        }
+        else
+        {
+            assert(false && "Invalid Window Update Mode");
+            return "Always";
+        }
+    }
+};
+
+
 /*!
 \brief
     An abstract base class providing common functionality and specifying the
@@ -4208,24 +4375,9 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::Font              d_fontProperty;
-
-    static  WindowProperties::MouseCursorImage  d_mouseCursorProperty;
     
-    static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
-    static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
- 
-    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
     static  WindowProperties::WindowRenderer    d_windowRendererProperty;
     static  WindowProperties::LookNFeel         d_lookNFeelProperty;
-    static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
-    static  WindowProperties::AutoRenderingSurface d_autoRenderingSurfaceProperty;
-    static  WindowProperties::Rotation d_rotationProperty;
-    static  WindowProperties::NonClient d_nonClientProperty;
-    static  WindowProperties::TextParsingEnabled d_textParsingEnabledProperty;
-    static  WindowProperties::Margin d_marginProperty;
-    static  WindowProperties::UpdateMode d_updateModeProperty;
-    static  WindowProperties::MouseInputPropagationEnabled d_mouseInputPropagationProperty;
 
     /*************************************************************************
         Implementation Data
