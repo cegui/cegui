@@ -340,7 +340,7 @@ class Rotation : public Property
         Rotation() : Property(
         "Rotation",
         "Property to get/set the windows rotation factors.  Value is "
-        "\"w:[x_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
+        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
 		"w:1 x:0 y:0 z:0")
         {}
 

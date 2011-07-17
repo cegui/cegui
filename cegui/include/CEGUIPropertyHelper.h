@@ -39,6 +39,7 @@
 #include "CEGUIUDim.h"
 #include "CEGUIRect.h"
 
+
 #include <cstdio>
 
 #include <sstream>
@@ -50,6 +51,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+
 /*!
 \brief
 	Helper class used to convert various data types to and from the format expected in Propery strings
