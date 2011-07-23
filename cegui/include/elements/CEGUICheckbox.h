@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "CEGUIButtonBase.h"
-#include "CEGUICheckboxProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -135,11 +134,6 @@ protected:
 	bool		d_selected;					//!< true if check-box is selected (has checkmark)
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static CheckboxProperties::Selected	d_selectedProperty;
-
 
 	/*************************************************************************
 		Private methods
