@@ -29,7 +29,6 @@
 #define _CEGUIItemListbox_h_
 
 #include "CEGUIScrolledItemListBase.h"
-#include "CEGUIItemListboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -261,11 +260,6 @@ protected:
         Overridden event handlers
     ************************************************************************/
     virtual void onKeyDown(KeyEventArgs& e);
-
-    /************************************************************************
-        Static Properties for this class
-    ************************************************************************/
-    static ItemListboxProperties::MultiSelect d_multiSelectProperty;
 
     /************************************************************************
         Implementation data
