@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIListboxProperties.h"
 #include <vector>
 
 
@@ -758,14 +757,6 @@ protected:
     friend class ListboxWindowRenderer;
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ListboxProperties::Sort					d_sortProperty;
-	static ListboxProperties::MultiSelect			d_multiSelectProperty;
-	static ListboxProperties::ForceVertScrollbar	d_forceVertProperty;
-	static ListboxProperties::ForceHorzScrollbar	d_forceHorzProperty;
-	static ListboxProperties::ItemTooltips			d_itemTooltipsProperty;
 
 	/*************************************************************************
 		Private methods

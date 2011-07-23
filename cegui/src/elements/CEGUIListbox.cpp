@@ -51,16 +51,6 @@ ListboxWindowRenderer::ListboxWindowRenderer(const String& name) :
 }
 
 /*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-ListboxProperties::Sort					Listbox::d_sortProperty;
-ListboxProperties::MultiSelect			Listbox::d_multiSelectProperty;
-ListboxProperties::ForceVertScrollbar	Listbox::d_forceVertProperty;
-ListboxProperties::ForceHorzScrollbar	Listbox::d_forceHorzProperty;
-ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
-
-
-/*************************************************************************
 	Constants
 *************************************************************************/
 // event names
@@ -1046,11 +1036,27 @@ bool Listbox::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void Listbox::addListboxProperties(void)
 {
-	addProperty(&d_sortProperty);
-	addProperty(&d_multiSelectProperty);
-	addProperty(&d_forceHorzProperty);
-	addProperty(&d_forceVertProperty);
-	addProperty(&d_itemTooltipsProperty);
+	const String propertyOrigin("Listbox");
+	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+        "Sort","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+        &Listbox::setSortingEnabled, &Listbox::isSortEnabled, false
+    );
+	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+        "MultiSelect","Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".",
+        &Listbox::setMultiselectEnabled, &Listbox::isMultiselectEnabled, false
+    );
+	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+        "ForceVertScrollbar","Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+        &Listbox::setShowVertScrollbar, &Listbox::isVertScrollbarAlwaysShown, false
+    );
+	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+        "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+        &Listbox::setShowHorzScrollbar, &Listbox::isHorzScrollbarAlwaysShown, false
+    );
+	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+        "ItemTooltips","Property to access the show item tooltips setting of the list box.  Value is either \"True\" or \"False\".",
+        &Listbox::setItemTooltipsEnabled, &Listbox::isItemTooltipsEnabled, false
+    );
 }
 
 
