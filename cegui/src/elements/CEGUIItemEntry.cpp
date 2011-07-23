@@ -49,12 +49,6 @@ const String ItemEntry::WidgetTypeName("CEGUI/ItemEntry");
 const String ItemEntry::EventSelectionChanged("SelectionChanged");
 
 /*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-ItemEntryProperties::Selectable ItemEntry::d_selectableProperty;
-ItemEntryProperties::Selected   ItemEntry::d_selectedProperty;
-
-/*************************************************************************
 	Constructor for ItemEntry base class.
 *************************************************************************/
 ItemEntry::ItemEntry(const String& type, const String& name)
@@ -148,8 +142,15 @@ void ItemEntry::onMouseClicked(MouseEventArgs& e)
 *************************************************************************/
 void ItemEntry::addItemEntryProperties(void)
 {
-    addProperty(&d_selectableProperty);
-    addProperty(&d_selectedProperty);
+    const String propertyOrigin("ItemEntry");
+    CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
+		      "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+		      &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
+    );
+    CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
+		      "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+		      &ItemEntry::setSelected, &ItemEntry::isSelected, false
+    );
 }
 
 } // End of  CEGUI namespace section

@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIItemEntryProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -238,11 +237,6 @@ protected:
     friend class ItemListBase;
 
 private:
-    /************************************************************************
-        Static Properties for this class
-    ************************************************************************/
-    static ItemEntryProperties::Selectable d_selectableProperty;
-    static ItemEntryProperties::Selected d_selectedProperty;
     
     void addItemEntryProperties(void);
 };
