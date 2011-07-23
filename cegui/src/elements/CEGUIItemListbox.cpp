@@ -41,11 +41,6 @@ const String ItemListbox::WidgetTypeName("CEGUI/ItemListbox");
 const String ItemListbox::EventSelectionChanged("SelectionChanged");
 const String ItemListbox::EventMultiSelectModeChanged("MultiSelectModeChanged");
 
-/*************************************************************************
-    Properties
-*************************************************************************/
-ItemListboxProperties::MultiSelect ItemListbox::d_multiSelectProperty;
-
 /************************************************************************
     Constructor
 ************************************************************************/
@@ -304,7 +299,11 @@ void ItemListbox::notifyItemSelectState(ItemEntry* li, bool state)
 *************************************************************************/
 void ItemListbox::addItemListboxProperties()
 {
-    addProperty(&d_multiSelectProperty);
+    const String propertyOrigin("ItemListbox");
+    CEGUI_DEFINE_PROPERTY(ItemListbox, bool,
+        "MultiSelect","Property to get/set the state of the multiselect enabled setting for the ItemListbox.  Value is either \"True\" or \"False\".",
+        &ItemListbox::setMultiSelectEnabled, &ItemListbox::isMultiSelectEnabled, false
+    );
 }
 
 /*************************************************************************
