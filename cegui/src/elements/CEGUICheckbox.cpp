@@ -35,13 +35,6 @@ namespace CEGUI
 const String Checkbox::EventNamespace("Checkbox");
 const String Checkbox::WidgetTypeName("CEGUI/Checkbox");
 
-
-/*************************************************************************
-	Definitions for Properties
-*************************************************************************/
-CheckboxProperties::Selected	Checkbox::d_selectedProperty;
-
-
 /*************************************************************************
 	Event name constants
 *************************************************************************/
@@ -129,7 +122,11 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 *************************************************************************/
 void Checkbox::addCheckboxProperties(void)
 {
-	addProperty(&d_selectedProperty);
+	const String propertyOrigin("Checkbox");
+	CEGUI_DEFINE_PROPERTY(Checkbox, bool,
+        "Selected","Property to get/set the selected state of the Checkbox.  Value is either \"True\" or \"False\".",
+        &Checkbox::setSelected, &Checkbox::isSelected, false
+    );
 }
 
 
