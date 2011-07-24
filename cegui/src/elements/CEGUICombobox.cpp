@@ -48,22 +48,6 @@ namespace CEGUI
 const String Combobox::EventNamespace("Combobox");
 const String Combobox::WidgetTypeName("CEGUI/Combobox");
 
-
-/*************************************************************************
-	Definitions for Properties for this class
-*************************************************************************/
-ComboboxProperties::ReadOnly					Combobox::d_readOnlyProperty;
-ComboboxProperties::ValidationString			Combobox::d_validationStringProperty;
-ComboboxProperties::CaretIndex					Combobox::d_caretIndexProperty;
-ComboboxProperties::EditSelectionStart			Combobox::d_selStartProperty;
-ComboboxProperties::EditSelectionLength			Combobox::d_selLengthProperty;
-ComboboxProperties::MaxEditTextLength			Combobox::d_maxTextLengthProperty;
-ComboboxProperties::SortList					Combobox::d_sortProperty;
-ComboboxProperties::ForceVertScrollbar			Combobox::d_forceVertProperty;
-ComboboxProperties::ForceHorzScrollbar			Combobox::d_forceHorzProperty;
-ComboboxProperties::SingleClickMode				Combobox::d_singleClickOperationProperty;
-
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -304,6 +288,21 @@ void Combobox::setCaretIndex(size_t caret_pos)
 void Combobox::setSelection(size_t start_pos, size_t end_pos)
 {
 	getEditbox()->setSelection(start_pos, end_pos);
+}
+
+/*************************************************************************
+	Define the current selectionStart for the Editbox
+*************************************************************************/
+void Combobox::setSelectionStart(size_t start_pos)
+{
+	getEditbox()->setSelectionStart(start_pos);
+}
+/*************************************************************************
+	Define the current selectionLength for the Editbox
+*************************************************************************/
+void Combobox::setSelectionLength(size_t length)
+{
+	getEditbox()->setSelectionLength(length);
 }
 
 
@@ -825,16 +824,47 @@ bool Combobox::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void Combobox::addComboboxProperties(void)
 {
-	addProperty(&d_sortProperty);
-	addProperty(&d_forceHorzProperty);
-	addProperty(&d_forceVertProperty);
-	addProperty(&d_readOnlyProperty);
-	addProperty(&d_validationStringProperty);
-	addProperty(&d_maxTextLengthProperty);
-	addProperty(&d_selStartProperty);
-	addProperty(&d_selLengthProperty);
-	addProperty(&d_caretIndexProperty);
-	addProperty(&d_singleClickOperationProperty);
+    const String propertyOrigin("Combobox");
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
+          &Combobox::setReadOnly, &Combobox::isReadOnly, false
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, String,
+          "ValidationString","Property to get/set the validation string Editbox.  Value is a text string.",
+          &Combobox::setValidationString, &Combobox::getValidationString, ".*"
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, size_t,
+          "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
+          &Combobox::setCaretIndex, &Combobox::getCaretIndex, 0
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, size_t,
+          "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
+          &Combobox::setSelectionStart, &Combobox::getSelectionStartIndex, 0
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, size_t,
+          "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
+          &Combobox::setSelectionLength, &Combobox::getSelectionLength, 0
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, size_t,
+          "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
+          &Combobox::setMaxTextLength, &Combobox::getMaxTextLength, String().max_size()
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "SortList","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+          &Combobox::setSortingEnabled, &Combobox::isSortEnabled, false
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+          &Combobox::setShowVertScrollbar, &Combobox::isVertScrollbarAlwaysShown, false
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+          &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "SingleClickMode","Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".",
+          &Combobox::setSingleClickEnabled, &Combobox::getSingleClickEnabled, false
+    );
 }
 
 

@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIComboboxProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -601,7 +600,30 @@ public:
 		Nothing.
 	*/
 	void	setSelection(size_t start_pos, size_t end_pos);
-	
+	/*!
+	\brief
+		Define the current selection start for the Editbox
+
+	\param start_pos
+		Index of the starting point for the selection.  If this value is greater than the number of characters in the Editbox, the
+		selection start will be set to the end of the text.
+
+	\return
+		Nothing.
+	*/
+	void	setSelectionStart(size_t start_pos);
+
+	/*!
+	\brief
+		Define the current selection for the Editbox
+
+	\param start_pos
+		Length of the selection.
+
+	\return
+		Nothing.
+	*/
+	void	setSelectionLength(size_t length);
 
 	/*!
 	\brief
@@ -1016,20 +1038,6 @@ protected:
 
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ComboboxProperties::ReadOnly						d_readOnlyProperty;
-	static ComboboxProperties::ValidationString				d_validationStringProperty;
-	static ComboboxProperties::CaretIndex					d_caretIndexProperty;
-	static ComboboxProperties::EditSelectionStart			d_selStartProperty;
-	static ComboboxProperties::EditSelectionLength			d_selLengthProperty;
-	static ComboboxProperties::MaxEditTextLength			d_maxTextLengthProperty;
-	static ComboboxProperties::SortList						d_sortProperty;
-	static ComboboxProperties::ForceVertScrollbar			d_forceVertProperty;
-	static ComboboxProperties::ForceHorzScrollbar			d_forceHorzProperty;
-	static ComboboxProperties::SingleClickMode				d_singleClickOperationProperty;
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
