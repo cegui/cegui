@@ -34,8 +34,6 @@
 #include "../CEGUIWindow.h"
 #include "CEGUIItemEntry.h"
 
-#include "CEGUIMenuItemProperties.h"
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -325,11 +323,6 @@ protected:
     UVector2 d_popupOffset; //!< current offset for popup placement.
 
 private:
-    /************************************************************************
-    Static Properties for this class
-    ************************************************************************/
-    static MenuItemProperties::PopupOffset d_popupOffsetProperty;
-    static MenuItemProperties::AutoPopupTimeout d_autoPopupTimeoutProperty;
 
     /*************************************************************************
         Private methods

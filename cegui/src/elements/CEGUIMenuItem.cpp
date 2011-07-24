@@ -47,12 +47,6 @@ const String MenuItem::EventNamespace("MenuItem");
 const String MenuItem::EventClicked("Clicked");
 
 /*************************************************************************
-Definition of Properties for this class
-*************************************************************************/
-MenuItemProperties::PopupOffset MenuItem::d_popupOffsetProperty;
-MenuItemProperties::AutoPopupTimeout MenuItem::d_autoPopupTimeoutProperty;
-
-/*************************************************************************
     Constructor for MenuItem base class.
 *************************************************************************/
 MenuItem::MenuItem(const String& type, const String& name)
@@ -570,8 +564,15 @@ Add MenuItem specific properties
 *************************************************************************/
 void MenuItem::addMenuItemProperties(void)
 {
-    addProperty(&d_popupOffsetProperty);
-    addProperty(&d_autoPopupTimeoutProperty);
+    const String propertyOrigin("MenuItem");
+    CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
+        "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
+        &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
+    );
+    CEGUI_DEFINE_PROPERTY(MenuItem, float,
+        "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
+        &MenuItem::setAutoPopupTimeout, &MenuItem::getAutoPopupTimeout, 0.0f
+    );
 }
 
 } // End of  CEGUI namespace section
