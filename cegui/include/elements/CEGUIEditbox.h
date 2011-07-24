@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIEditboxProperties.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -362,6 +361,31 @@ public:
 
     /*!
     \brief
+        Define the current selection start for the Editbox
+
+        \param start_pos
+        Index of the starting point for the selection.  If this value is greater than the number of characters in the Editbox, the
+        selection start will be set to the end of the text.
+
+    \return
+        Nothing.
+    */
+    void setSelectionStart(size_t start_pos);
+
+    /*!
+    \brief
+        Define the current selection for the Editbox
+
+    \param start_pos
+        Length of the selection.
+
+    \return
+        Nothing.
+    */
+    void setSelectionLength(size_t length);
+
+    /*!
+    \brief
         set the code point used when rendering masked text.
 
     \param code_point
@@ -582,14 +606,6 @@ protected:
     size_t d_dragAnchorIdx;
 
 private:
-    static EditboxProperties::ReadOnly         d_readOnlyProperty;
-    static EditboxProperties::MaskText         d_maskTextProperty;
-    static EditboxProperties::MaskCodepoint    d_maskCodepointProperty;
-    static EditboxProperties::ValidationString d_validationStringProperty;
-    static EditboxProperties::CaretIndex       d_caretIndexProperty;
-    static EditboxProperties::SelectionStart   d_selectionStartProperty;
-    static EditboxProperties::SelectionLength  d_selectionLengthProperty;
-    static EditboxProperties::MaxTextLength    d_maxTextLengthProperty;
 
     void addEditboxProperties(void);
 };
