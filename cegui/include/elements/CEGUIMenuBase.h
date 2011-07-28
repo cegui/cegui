@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIMenuBaseProperties.h"
 #include "CEGUIItemListBase.h"
 
 
@@ -219,13 +218,6 @@ protected:
 
 
 private:
-    /*************************************************************************
-    Static Properties for this class
-    *************************************************************************/
-    static MenuBaseProperties::ItemSpacing          d_itemSpacingProperty;
-    static MenuBaseProperties::AllowMultiplePopups  d_allowMultiplePopupsProperty;
-    static MenuBaseProperties::AutoCloseNestedPopups d_autoCloseNestedPopupsProperty;
-
     /*************************************************************************
     Private methods
     *************************************************************************/

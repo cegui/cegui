@@ -36,14 +36,6 @@ namespace CEGUI
 {
 
 /*************************************************************************
-Definition of Properties for this class
-*************************************************************************/
-MenuBaseProperties::ItemSpacing         MenuBase::d_itemSpacingProperty;
-MenuBaseProperties::AllowMultiplePopups MenuBase::d_allowMultiplePopupsProperty;
-MenuBaseProperties::AutoCloseNestedPopups    MenuBase::d_autoCloseNestedPopupsProperty;
-
-
-/*************************************************************************
     Constants
 *************************************************************************/
 // event strings
@@ -124,9 +116,20 @@ void MenuBase::onPopupClosed(WindowEventArgs& e)
 *************************************************************************/
 void MenuBase::addMenuBaseProperties(void)
 {
-    addProperty(&d_itemSpacingProperty);
-    addProperty(&d_allowMultiplePopupsProperty);
-    addProperty(&d_autoCloseNestedPopupsProperty);
+    const String propertyOrigin("MenuBase");
+
+    CEGUI_DEFINE_PROPERTY(MenuBase, float,
+        "ItemSpacing", "Property to get/set the item spacing of the menu.  Value is a float.",
+        &MenuBase::setItemSpacing, &MenuBase::getItemSpacing, 10.0f
+    );
+    CEGUI_DEFINE_PROPERTY(MenuBase, bool,
+        "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"True\" or \"False\".",
+        &MenuBase::setAllowMultiplePopups, &MenuBase::isMultiplePopupsAllowed, false
+    );
+    CEGUI_DEFINE_PROPERTY(MenuBase, bool,
+        "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"True\" or \"False\".",
+        &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false
+    );
 }
 
 
