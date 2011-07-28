@@ -35,13 +35,6 @@ namespace CEGUI
 {
 
 /*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-PopupMenuProperties::FadeInTime		PopupMenu::d_fadeInTimeProperty;
-PopupMenuProperties::FadeOutTime	PopupMenu::d_fadeOutTimeProperty;
-
-
-/*************************************************************************
 	Constants
 *************************************************************************/
 const String PopupMenu::WidgetTypeName("CEGUI/PopupMenu");
@@ -387,8 +380,16 @@ void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
 *************************************************************************/
 void PopupMenu::addPopupMenuProperties(void)
 {
-	addProperty(&d_fadeInTimeProperty);
-    addProperty(&d_fadeOutTimeProperty);
+    const String propertyOrigin("PopupMenu");
+
+    CEGUI_DEFINE_PROPERTY(PopupMenu, float,
+        "FadeInTime", "Property to get/set the fade in time in seconds of the popup menu.  Value is a float.",
+        &PopupMenu::setFadeInTime, &PopupMenu::getFadeInTime, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(PopupMenu, float,
+        "FadeOutTime", "Property to get/set the fade out time in seconds of the popup menu.  Value is a float.",
+        &PopupMenu::setFadeOutTime, &PopupMenu::getFadeOutTime, 0.0f
+    );
 }
 
 } // End of  CEGUI namespace section

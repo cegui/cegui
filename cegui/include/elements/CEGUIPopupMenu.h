@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIPopupMenuProperties.h"
 #include "CEGUIMenuBase.h"
 
 
@@ -213,13 +212,6 @@ protected:
 
 
 private:
-    /*************************************************************************
-    Static Properties for this class
-    *************************************************************************/
-    static PopupMenuProperties::FadeInTime  d_fadeInTimeProperty;
-    static PopupMenuProperties::FadeOutTime d_fadeOutTimeProperty;
-
-
     /*************************************************************************
     Private methods
     *************************************************************************/
