@@ -38,14 +38,6 @@ const String Scrollbar::EventNamespace("Scrollbar");
 const String Scrollbar::WidgetTypeName("CEGUI/Scrollbar");
 
 //----------------------------------------------------------------------------//
-ScrollbarProperties::DocumentSize   Scrollbar::d_documentSizeProperty;
-ScrollbarProperties::PageSize       Scrollbar::d_pageSizeProperty;
-ScrollbarProperties::StepSize       Scrollbar::d_stepSizeProperty;
-ScrollbarProperties::OverlapSize    Scrollbar::d_overlapSizeProperty;
-ScrollbarProperties::ScrollPosition Scrollbar::d_scrollPositionProperty;
-ScrollbarProperties::EndLockEnabled Scrollbar::d_endLockEnabledProperty;
-
-//----------------------------------------------------------------------------//
 const String Scrollbar::EventScrollPositionChanged( "ScrollPositionChanged" );
 const String Scrollbar::EventThumbTrackStarted("ThumbTrackStarted");
 const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
@@ -306,21 +298,42 @@ bool Scrollbar::handleThumbTrackEnded(const EventArgs&)
 //----------------------------------------------------------------------------//
 void Scrollbar::addScrollbarProperties(void)
 {
-    addProperty(&d_documentSizeProperty);
-    addProperty(&d_pageSizeProperty);
-    addProperty(&d_stepSizeProperty);
-    addProperty(&d_overlapSizeProperty);
-    addProperty(&d_scrollPositionProperty);
-    addProperty(&d_endLockEnabledProperty);
+    const String propertyOrigin("Scrollbar");
+
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "DocumentSize", "Property to get/set the document size for the Scrollbar.  Value is a float.",
+        &Scrollbar::setDocumentSize, &Scrollbar::getDocumentSize, 1.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "PageSize", "Property to get/set the page size for the Scrollbar.  Value is a float.",
+        &Scrollbar::setPageSize, &Scrollbar::getPageSize, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "StepSize", "Property to get/set the step size for the Scrollbar.  Value is a float.",
+        &Scrollbar::setStepSize, &Scrollbar::getStepSize, 1.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "OverlapSize", "Property to get/set the overlap size for the Scrollbar.  Value is a float.",
+        &Scrollbar::setOverlapSize, &Scrollbar::getOverlapSize, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "ScrollPosition", "Property to get/set the scroll position of the Scrollbar.  Value is a float.",
+        &Scrollbar::setScrollPosition, &Scrollbar::getScrollPosition, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "EndLockEnabled", "Property to get/set the 'end lock' mode setting for the Scrollbar. "
+        "Value is either \"True\" or \"False\".",
+        &Scrollbar::setAlpha, &Scrollbar::getAlpha, false
+    );
 
     // we ban all these properties from xml for auto windows
     if (isAutoWindow())
     {
-        banPropertyFromXML(&d_documentSizeProperty);
-        banPropertyFromXML(&d_pageSizeProperty);
-        banPropertyFromXML(&d_stepSizeProperty);
-        banPropertyFromXML(&d_overlapSizeProperty);
-        banPropertyFromXML(&d_scrollPositionProperty);
+        banPropertyFromXML("DocumentSize");
+        banPropertyFromXML("PageSize");
+        banPropertyFromXML("StepSize");
+        banPropertyFromXML("OverlapSize");
+        banPropertyFromXML("ScrollPosition");
 
         // scrollbars tend to have their visibility toggled alot, so we ban
         // that as well

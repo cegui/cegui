@@ -30,7 +30,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIScrollbarProperties.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -593,14 +592,6 @@ protected:
     bool d_endLockPosition;
 
 private:
-    // Static Properties for this class
-    static ScrollbarProperties::DocumentSize    d_documentSizeProperty;
-    static ScrollbarProperties::PageSize        d_pageSizeProperty;
-    static ScrollbarProperties::StepSize        d_stepSizeProperty;
-    static ScrollbarProperties::OverlapSize     d_overlapSizeProperty;
-    static ScrollbarProperties::ScrollPosition  d_scrollPositionProperty;
-    static ScrollbarProperties::EndLockEnabled  d_endLockEnabledProperty;
-
     //! Adds scrollbar specific properties.
     void addScrollbarProperties(void);
 };
