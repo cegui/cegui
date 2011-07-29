@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIListHeaderSegmentProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -492,20 +491,64 @@ protected:
 
 private:
 	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ListHeaderSegmentProperties::Clickable		d_clickableProperty;
-	static ListHeaderSegmentProperties::Dragable		d_dragableProperty;
-	static ListHeaderSegmentProperties::Sizable			d_sizableProperty;
-	static ListHeaderSegmentProperties::SortDirection	d_sortDirectionProperty;
-    static ListHeaderSegmentProperties::SizingCursorImage   d_sizingCursorProperty;
-    static ListHeaderSegmentProperties::MovingCursorImage   d_movingCursorProperty;
-
-
-	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addHeaderSegmentProperties(void);
+};
+
+
+template<>
+class PropertyHelper<ListHeaderSegment::SortDirection>
+{
+public:
+    typedef ListHeaderSegment::SortDirection return_type;
+    typedef return_type safe_method_return_type;
+    typedef ListHeaderSegment::SortDirection pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("SortMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "Ascending")
+        {
+            return ListHeaderSegment::Ascending;
+        }
+        else if (str == "Descending")
+        {
+            return ListHeaderSegment::Descending;
+        }
+        else
+        {
+            return ListHeaderSegment::None;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == ListHeaderSegment::None)
+        {
+            return "None";
+        }
+        else if (val == ListHeaderSegment::Ascending)
+        {
+            return "Ascending";
+        }
+        else if (val == ListHeaderSegment::Descending)
+        {
+            return "Descending";
+        }
+        else
+        {
+            assert(false && "Invalid Sort Direction");
+            return "Ascending";
+        }
+    }
 };
 
 } // End of  CEGUI namespace section
