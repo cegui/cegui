@@ -38,13 +38,6 @@ namespace CEGUI
 const String Titlebar::EventNamespace("Titlebar");
 const String Titlebar::WidgetTypeName("CEGUI/Titlebar");
 
-
-/*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-TitlebarProperties::DraggingEnabled	Titlebar::d_dragEnabledProperty;
-
-
 /*************************************************************************
 	Constructor
 *************************************************************************/
@@ -242,7 +235,13 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 *************************************************************************/
 void Titlebar::addTitlebarProperties(void)
 {
-	addProperty(&d_dragEnabledProperty);
+
+    const String propertyOrigin("Titlebar");
+
+    CEGUI_DEFINE_PROPERTY(Titlebar, bool,
+        "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"True\" or \"False\".",
+        &Titlebar::setDraggingEnabled, &Titlebar::isDraggingEnabled, true
+    );
 }
 
 

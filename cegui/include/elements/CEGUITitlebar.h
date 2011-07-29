@@ -31,7 +31,6 @@
 #define _CEGUITitlebar_h_
 
 #include "../CEGUIWindow.h"
-#include "CEGUITitlebarProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -129,12 +128,6 @@ protected:
 	Rectf d_oldCursorArea;	//!< Used to backup cursor restraint area.
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static TitlebarProperties::DraggingEnabled	d_dragEnabledProperty;
-
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
