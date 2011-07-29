@@ -30,8 +30,6 @@
 
 #include "../CEGUIWindow.h"
 #include "../CEGUIWindowFactory.h"
-#include "CEGUIDragContainerProperties.h"
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -559,17 +557,6 @@ namespace CEGUI
         UVector2 d_fixedDragOffset;
 
     private:
-        /*************************************************************************
-            Static properties for the Spinner widget
-        *************************************************************************/
-        static DragContainerProperties::DragAlpha       d_dragAlphaProperty;
-        static DragContainerProperties::DragCursorImage d_dragCursorImageProperty;
-        static DragContainerProperties::DraggingEnabled d_dragEnabledProperty;
-        static DragContainerProperties::DragThreshold   d_dragThresholdProperty;
-        static DragContainerProperties::StickyMode      d_stickyModeProperty;
-        static DragContainerProperties::FixedDragOffset d_fixedDragOffsetProperty;
-        static DragContainerProperties::UseFixedDragOffset d_useFixedDragOffsetProperty;
-
         /*************************************************************************
         	Implementation methods
         *************************************************************************/
