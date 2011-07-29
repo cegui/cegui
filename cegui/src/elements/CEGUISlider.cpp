@@ -47,14 +47,6 @@ SliderWindowRenderer::SliderWindowRenderer(const String& name) :
 }
 
 /*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-SliderProperties::CurrentValue	Slider::d_currentValueProperty;
-SliderProperties::MaximumValue	Slider::d_maximumValueProperty;
-SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
-
-
-/*************************************************************************
 	Event name constants
 *************************************************************************/
 const String Slider::EventValueChanged( "ValueChanged" );
@@ -262,9 +254,21 @@ bool Slider::handleThumbTrackEnded(const EventArgs&)
 *************************************************************************/
 void Slider::addSliderProperties(void)
 {
-	addProperty(&d_currentValueProperty);
-	addProperty(&d_clickStepSizeProperty);
-	addProperty(&d_maximumValueProperty);
+
+    const String propertyOrigin("Slider");
+
+    CEGUI_DEFINE_PROPERTY(Slider, float,
+        "CurrentValue", "Property to get/set the current value of the slider.  Value is a float.",
+        &Slider::setCurrentValue, &Slider::getCurrentValue, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Slider, float,
+        "MaximumValue", "Property to get/set the maximum value of the slider.  Value is a float.",
+        &Slider::setMaxValue, &Slider::getMaxValue, 1.0f
+    );
+    CEGUI_DEFINE_PROPERTY(Slider, float,
+        "ClickStepSize", "Property to get/set the click-step size for the slider.  Value is a float.",
+        &Slider::setClickStep, &Slider::getClickStep, 0.01f
+    );
 }
 
 /*************************************************************************
