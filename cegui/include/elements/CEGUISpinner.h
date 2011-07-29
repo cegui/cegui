@@ -30,7 +30,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUISpinnerProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -409,15 +408,6 @@ namespace CEGUI
 
     private:
         /*************************************************************************
-        	Static properties for the Spinner widget
-        *************************************************************************/
-        static SpinnerProperties::CurrentValue  d_currentValueProperty;
-        static SpinnerProperties::StepSize      d_stepSizeProperty;
-        static SpinnerProperties::MaximumValue  d_maxValueProperty;
-        static SpinnerProperties::MinimumValue  d_minValueProperty;
-        static SpinnerProperties::TextInputMode d_textInputModeProperty;
-
-        /*************************************************************************
         	Private Implementation Methods
         *************************************************************************/
         /*!
@@ -429,6 +419,72 @@ namespace CEGUI
         */
         void    addSpinnerProperties(void);
     };
+
+
+
+template<>
+class PropertyHelper<Spinner::TextInputMode>
+{
+public:
+    typedef Spinner::TextInputMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef Spinner::TextInputMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("SortMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "FloatingPoint")
+        {
+            return Spinner::FloatingPoint;
+        }
+        else if (str == "Hexadecimal")
+        {
+            return Spinner::Hexadecimal;
+        }
+        else if (str == "Octal")
+        {
+            return Spinner::Octal;
+        }
+        else
+        {
+            return Spinner::Integer;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == Spinner::Octal)
+        {
+            return "Octal";
+        }
+        else if (val == Spinner::FloatingPoint)
+        {
+            return "FloatingPoint";
+        }
+        else if (val == Spinner::Hexadecimal)
+        {
+            return "Hexadecimal";
+        }
+        else if (val == Spinner::Integer)
+        {
+            return "Integer";
+        }
+        else
+        {
+            assert(false && "Invalid Text Input Mode");
+            return "FloatingPoint";
+        }
+    }
+};
+
+
 
 } // End of  CEGUI namespace section
 

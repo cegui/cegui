@@ -56,12 +56,6 @@ namespace CEGUI
     const String Spinner::EditboxName( "__auto_editbox__" );
     const String Spinner::IncreaseButtonName( "__auto_incbtn__" );
     const String Spinner::DecreaseButtonName( "__auto_decbtn__" );
-    // properties
-    SpinnerProperties::CurrentValue  Spinner::d_currentValueProperty;
-    SpinnerProperties::StepSize      Spinner::d_stepSizeProperty;
-    SpinnerProperties::MaximumValue  Spinner::d_maxValueProperty;
-    SpinnerProperties::MinimumValue  Spinner::d_minValueProperty;
-    SpinnerProperties::TextInputMode Spinner::d_textInputModeProperty;
     //////////////////////////////////////////////////////////////////////////
     // this is taken from stringencoders lib (and modified)
     // http://code.google.com/p/stringencoders/
@@ -213,11 +207,29 @@ namespace CEGUI
 
     void Spinner::addSpinnerProperties(void)
     {
-        addProperty(&d_currentValueProperty);
-        addProperty(&d_stepSizeProperty);
-        addProperty(&d_maxValueProperty);
-        addProperty(&d_minValueProperty);
-        addProperty(&d_textInputModeProperty);
+        const String propertyOrigin("Spinner");
+
+        CEGUI_DEFINE_PROPERTY(Spinner, double,
+            "CurrentValue", "Property to get/set the current value of the spinner.  Value is a float.",
+            &Spinner::setCurrentValue, &Spinner::getCurrentValue, 0.0f
+        );
+        CEGUI_DEFINE_PROPERTY(Spinner, double,
+            "StepSize", "Property to get/set the step size of the spinner.  Value is a float.",
+            &Spinner::setStepSize, &Spinner::getStepSize, 1.0f
+        );
+        CEGUI_DEFINE_PROPERTY(Spinner, double,
+            "MinimumValue", "Property to get/set the minimum value setting of the spinner.  Value is a float.",
+            &Spinner::setMinimumValue, &Spinner::getMinimumValue, -32768.000000f
+        );
+        CEGUI_DEFINE_PROPERTY(Spinner, double,
+            "MaximumValue", "Property to get/set the maximum value setting of the spinner.  Value is a float.",
+            &Spinner::setMaximumValue, &Spinner::getMaximumValue, 32767.000000f
+        );
+        CEGUI_DEFINE_PROPERTY(Spinner, Spinner::TextInputMode,
+            "TextInputMode", "Property to get/set the TextInputMode setting for the spinner.  Value is \"FloatingPoint\", \"Integer\", \"Hexadecimal\", or \"Octal\".",
+            &Spinner::setTextInputMode, &Spinner::getTextInputMode, Spinner::Integer
+        );
+    
     }
 
     double Spinner::getValueFromText(void) const
