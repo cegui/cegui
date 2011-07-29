@@ -203,6 +203,38 @@ public:
         return String(buff);
     }
 };
+template<>
+class PropertyHelper<double>
+{
+public:
+    typedef double return_type;
+    typedef return_type safe_method_return_type;
+    typedef const double pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("double");
+
+        return type;
+    }
+
+    static inline return_type fromString(const String& str)
+    {
+        double val = 0;
+        sscanf(str.c_str(), " %g", (float*)&val);
+        
+        return val;
+    }
+
+    static inline string_return_type toString(pass_type val)
+    {
+        char buff[64];
+        snprintf(buff, sizeof(buff), "%g", val);
+
+        return String(buff);
+    }
+};
 
 template<>
 class PropertyHelper<int>
