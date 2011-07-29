@@ -38,18 +38,6 @@ namespace CEGUI
 const String ListHeaderSegment::EventNamespace("ListHeaderSegment");
 const String ListHeaderSegment::WidgetTypeName("CEGUI/ListHeaderSegment");
 
-
-/*************************************************************************
-	Properties for this class
-*************************************************************************/
-ListHeaderSegmentProperties::Clickable		ListHeaderSegment::d_clickableProperty;
-ListHeaderSegmentProperties::Dragable		ListHeaderSegment::d_dragableProperty;
-ListHeaderSegmentProperties::Sizable		ListHeaderSegment::d_sizableProperty;
-ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionProperty;
-ListHeaderSegmentProperties::SizingCursorImage   ListHeaderSegment::d_sizingCursorProperty;
-ListHeaderSegmentProperties::MovingCursorImage   ListHeaderSegment::d_movingCursorProperty;
-
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -625,12 +613,32 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::addHeaderSegmentProperties(void)
 {
-	addProperty(&d_clickableProperty);
-	addProperty(&d_sizableProperty);
-	addProperty(&d_dragableProperty);
-	addProperty(&d_sortDirectionProperty);
-    addProperty(&d_sizingCursorProperty);
-    addProperty(&d_movingCursorProperty);
+    const String propertyOrigin("ListHeaderSegment");
+
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
+        "Sizable", "Property to get/set the sizable setting of the header segment.  Value is either \"True\" or \"False\".",
+        &ListHeaderSegment::setSizingEnabled, &ListHeaderSegment::isSizingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
+        "Clickable", "Property to get/set the click-able setting of the header segment.  Value is either \"True\" or \"False\".",
+        &ListHeaderSegment::setClickable, &ListHeaderSegment::isClickable, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
+        "Dragable", "Property to get/set the drag-able setting of the header segment.  Value is either \"True\" or \"False\".",
+        &ListHeaderSegment::setDragMovingEnabled, &ListHeaderSegment::isDragMovingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, ListHeaderSegment::SortDirection,
+        "SortDirection", "Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.",
+        &ListHeaderSegment::setSortDirection, &ListHeaderSegment::getSortDirection, ListHeaderSegment::None
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
+        "SizingCursorImage", "Property to get/set the sizing cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
+        &ListHeaderSegment::setSizingCursorImage, &ListHeaderSegment::getSizingCursorImage, 0
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
+        "MovingCursorImage", "Property to get/set the moving cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
+        &ListHeaderSegment::setMovingCursorImage, &ListHeaderSegment::getMovingCursorImage, 0
+    );
 }
 
 const Image* ListHeaderSegment::getSizingCursorImage() const
