@@ -43,10 +43,6 @@ namespace CEGUI
     const String Tooltip::EventFadeTimeChanged("FadeTimeChanged");
     const String Tooltip::EventTooltipActive("TooltipActive");
     const String Tooltip::EventTooltipInactive("TooltipInactive");
-    // Property objects
-    TooltipProperties::HoverTime    Tooltip::d_hoverTimeProperty;
-    TooltipProperties::DisplayTime  Tooltip::d_displayTimeProperty;
-    TooltipProperties::FadeTime     Tooltip::d_fadeTimeProperty;
     //////////////////////////////////////////////////////////////////////////
 
     /*************************************************************************
@@ -393,9 +389,22 @@ namespace CEGUI
 
     void Tooltip::addTooltipProperties(void)
     {
-        addProperty(&d_hoverTimeProperty);
-        addProperty(&d_displayTimeProperty);
-        addProperty(&d_fadeTimeProperty);
+        const String propertyOrigin("Tooltip");
+
+        CEGUI_DEFINE_PROPERTY(Tooltip, float,
+            "HoverTime", "Property to get/set the hover timeout value in seconds.  Value is a float.",
+            &Tooltip::setHoverTime, &Tooltip::getHoverTime, 0.4f
+        );
+
+        CEGUI_DEFINE_PROPERTY(Tooltip, float,
+            "DisplayTime", "Property to get/set the display timeout value in seconds.  Value is a float.",
+            &Tooltip::setDisplayTime, &Tooltip::getDisplayTime, 7.5f
+        );
+
+        CEGUI_DEFINE_PROPERTY(Tooltip, float,
+            "FadeTime", "Property to get/set duration of the fade effect in seconds.  Value is a float.",
+            &Tooltip::setFadeTime, &Tooltip::getFadeTime, 0.33f
+        );
     }
 
     void Tooltip::onMouseEnters(MouseEventArgs& e)
