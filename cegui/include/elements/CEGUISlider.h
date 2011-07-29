@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUISliderProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -387,13 +386,6 @@ protected:
 	float	d_step;			//!< amount to adjust slider by when clicked (and not dragged).
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static SliderProperties::CurrentValue	d_currentValueProperty;
-	static SliderProperties::MaximumValue	d_maximumValueProperty;
-	static SliderProperties::ClickStepSize	d_clickStepSizeProperty;
-
 
 	/*************************************************************************
 		Private methods
