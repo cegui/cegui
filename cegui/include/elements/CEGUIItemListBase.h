@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIItemListBaseProperties.h"
 #include "CEGUIItemEntry.h"
 
 #include <vector>
@@ -92,7 +91,7 @@ public:
         Descending,
         UserSort
     };
-    
+
     //!< Sorting callback type
     typedef bool (*SortCallback)(const ItemEntry* a, const ItemEntry* b);
 
@@ -578,13 +577,6 @@ protected:
 
 private:
 	/*************************************************************************
-        Static Properties for this class
-	*************************************************************************/
-	static ItemListBaseProperties::AutoResizeEnabled	d_autoResizeEnabledProperty;
-    static ItemListBaseProperties::SortEnabled d_sortEnabledProperty;
-    static ItemListBaseProperties::SortMode d_sortModeProperty;
-
-	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addItemListBaseProperties(void);
@@ -603,6 +595,62 @@ private:
 	*/
     bool handle_PaneChildRemoved(const EventArgs& e);
 };
+
+
+template<>
+class PropertyHelper<ItemListBase::SortMode>
+{
+public:
+    typedef ItemListBase::SortMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef ItemListBase::SortMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("SortMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "Ascending")
+        {
+            return ItemListBase::Ascending;
+        }
+        else if (str == "Descending")
+        {
+            return ItemListBase::Descending;
+        }
+        else
+        {
+            return ItemListBase::UserSort;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == ItemListBase::UserSort)
+        {
+            return "UserSort";
+        }
+        else if (val == ItemListBase::Ascending)
+        {
+            return "Ascending";
+        }
+        else if (val == ItemListBase::Descending)
+        {
+            return "Descending";
+        }
+        else
+        {
+            assert(false && "Invalid sort mode");
+            return "Ascending";
+        }
+    }
+};
+
 
 } // End of  CEGUI namespace section
 
