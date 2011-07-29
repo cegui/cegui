@@ -35,14 +35,6 @@ namespace CEGUI
 const String ProgressBar::WidgetTypeName("CEGUI/ProgressBar");
 const String ProgressBar::EventNamespace("ProgressBar");
 
-
-/*************************************************************************
-	Definitions of Properties for this class
-*************************************************************************/
-ProgressBarProperties::CurrentProgress	ProgressBar::d_currentProgressProperty;
-ProgressBarProperties::StepSize			ProgressBar::d_stepSizeProperty;
-
-
 /*************************************************************************
 	Event name constants
 *************************************************************************/
@@ -120,8 +112,16 @@ void ProgressBar::onProgressDone(WindowEventArgs& e)
 *************************************************************************/
 void ProgressBar::addProgressBarProperties(void)
 {
-	addProperty(&d_stepSizeProperty);
-	addProperty(&d_currentProgressProperty);
+    const String propertyOrigin("ProgressBar");
+
+    CEGUI_DEFINE_PROPERTY(ProgressBar, float,
+        "CurrentProgress", "Property to get/set the current progress of the progress bar.  Value is a float  value between 0.0 and 1.0 specifying the progress.",
+        &ProgressBar::setProgress, &ProgressBar::getProgress, 0.0f
+    );
+    CEGUI_DEFINE_PROPERTY(ProgressBar, float,
+        "StepSize", "Property to get/set the step size setting for the progress bar.  Value is a float value.",
+        &ProgressBar::setStepSize, &ProgressBar::getStep, 0.0f
+    );
 }
 
 

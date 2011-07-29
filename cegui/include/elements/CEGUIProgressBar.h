@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIProgressBarProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -186,13 +185,6 @@ protected:
 
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ProgressBarProperties::CurrentProgress	d_currentProgressProperty;
-	static ProgressBarProperties::StepSize			d_stepSizeProperty;
-
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
