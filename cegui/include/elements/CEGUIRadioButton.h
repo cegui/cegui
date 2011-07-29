@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "CEGUIButtonBase.h"
-#include "CEGUIRadioButtonProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -176,13 +175,6 @@ protected:
 
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static RadioButtonProperties::Selected	d_selectedProperty;
-	static RadioButtonProperties::GroupID	d_groupIDProperty;
-
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/

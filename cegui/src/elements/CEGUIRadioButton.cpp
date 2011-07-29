@@ -37,13 +37,6 @@ const String RadioButton::WidgetTypeName("CEGUI/RadioButton");
 
 
 /*************************************************************************
-    Definitions of Properties for this class
-*************************************************************************/
-RadioButtonProperties::Selected RadioButton::d_selectedProperty;
-RadioButtonProperties::GroupID  RadioButton::d_groupIDProperty;
-
-
-/*************************************************************************
     Event name constants
 *************************************************************************/
 // generated internally by Window
@@ -223,8 +216,17 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 *************************************************************************/
 void RadioButton::addRadioButtonProperties(void)
 {
-    addProperty(&d_selectedProperty);
-    addProperty(&d_groupIDProperty);
+    const String propertyOrigin("RadioButton");
+
+    CEGUI_DEFINE_PROPERTY(RadioButton, bool,
+        "Selected", "Property to get/set the selected state of the RadioButton.  Value is either \"True\" or \"False\".",
+        &RadioButton::setSelected, &RadioButton::isSelected, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(RadioButton, ulong,
+        "GroupID", "Property to get/set the radio button group ID.  Value is an unsigned integer number.",
+        &RadioButton::setGroupID, &RadioButton::getGroupID, 0
+    );
 }
 
 
