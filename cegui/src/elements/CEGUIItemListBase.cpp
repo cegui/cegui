@@ -72,14 +72,6 @@ static bool ItemEntry_greater(const ItemEntry* a, const ItemEntry* b)
 
 /************************************************************************/
 
-
-/*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-ItemListBaseProperties::AutoResizeEnabled ItemListBase::d_autoResizeEnabledProperty;
-ItemListBaseProperties::SortEnabled ItemListBase::d_sortEnabledProperty;
-ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -438,9 +430,20 @@ bool ItemListBase::resetList_impl(void)
 *************************************************************************/
 void ItemListBase::addItemListBaseProperties(void)
 {
-    addProperty(&d_autoResizeEnabledProperty);
-    addProperty(&d_sortEnabledProperty);
-    addProperty(&d_sortModeProperty);
+    const String propertyOrigin("ItemListBase");
+
+        CEGUI_DEFINE_PROPERTY(ItemListBase, bool,
+            "AutoResizeEnabled", "Property to get/set the state of the auto resizing enabled setting for the ItemListBase.  Value is either \"True\" or \"False\".",
+            &ItemListBase::setAutoResizeEnabled, &ItemListBase::isAutoResizeEnabled, false
+        );
+        CEGUI_DEFINE_PROPERTY(ItemListBase, bool,
+            "SortEnabled", "Property to get/set the state of the sorting enabled setting for the ItemListBase.  Value is either \"True\" or \"False\".",
+            &ItemListBase::setSortEnabled, &ItemListBase::isSortEnabled, false
+        );
+        CEGUI_DEFINE_PROPERTY(ItemListBase, ItemListBase::SortMode,
+            "SortMode", "Property to get/set the sorting mode for the ItemListBase.  Value is either \"Ascending\", \"Descending\" or \"UserSort\".",
+            &ItemListBase::setSortMode, &ItemListBase::getSortMode, ItemListBase::Ascending
+        );
 }
 
 
