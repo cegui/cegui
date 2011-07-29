@@ -182,13 +182,13 @@ namespace CEGUI
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "StickyMode", "Property to get/set the state of the sticky mode setting for the "
                 "DragContainer.  Value is either \"True\" or \"False\".",
-            &DragContainer::setStickyModeEnabled, &DragContainer::getStickyModeEnabled, true
+            &DragContainer::setStickyModeEnabled, &DragContainer::isStickyModeEnabled, true
         );
         CEGUI_DEFINE_PROPERTY(DragContainer, UVector2,
             "FixedDragOffset", "Property to get/set the state of the fixed dragging offset "
                 "setting for the DragContainer.  "
                 "Value is a UVector2 property value.",
-            &DragContainer::setFixedDragOffset, &DragContainer::getFixedDragOffset, UVector2::Zero
+            &DragContainer::setFixedDragOffset, &DragContainer::getFixedDragOffset, UVector2::zero()
         );
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "UseFixedDragOffset", "Property to get/set the setting that control whether the fixed "
