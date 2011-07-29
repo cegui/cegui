@@ -29,7 +29,6 @@
 #define _CEGUITooltip_h_
 
 #include "../CEGUIWindow.h"
-#include "CEGUITooltipProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -394,13 +393,6 @@ namespace CEGUI
         bool d_inPositionSelf;
 
     private:
-        /*************************************************************************
-            Static Properties for this class
-        *************************************************************************/
-        static TooltipProperties::HoverTime      d_hoverTimeProperty;
-        static TooltipProperties::DisplayTime    d_displayTimeProperty;
-        static TooltipProperties::FadeTime       d_fadeTimeProperty;
-
         /*************************************************************************
             Private methods
         *************************************************************************/
