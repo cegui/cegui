@@ -27,7 +27,7 @@ struct SchemeManager_wrapper : CEGUI::SchemeManager, bp::wrapper< CEGUI::SchemeM
         CEGUI::SchemeManager::doPostObjectAdditionAction( boost::ref(object) );
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ob ){
+    void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ob ){
         CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
     }
 
@@ -115,7 +115,7 @@ void register_SchemeManager_class(){
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
         
             typedef CEGUI::SchemeManager exported_class_t;
-            typedef void ( SchemeManager_wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ) ;
+            typedef void ( SchemeManager_wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ) ;
             
             SchemeManager_exposer.def( 
                 "destroyObject"

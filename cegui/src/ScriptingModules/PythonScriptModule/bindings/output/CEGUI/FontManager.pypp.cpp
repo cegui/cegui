@@ -27,7 +27,7 @@ struct FontManager_wrapper : CEGUI::FontManager, bp::wrapper< CEGUI::FontManager
         CEGUI::FontManager::doPostObjectAdditionAction( boost::ref(object) );
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Font* > > ob ){
+	void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ob ){
         CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject( ob );
     }
 
@@ -175,7 +175,7 @@ void register_FontManager_class(){
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject
         
             typedef CEGUI::FontManager exported_class_t;
-            typedef void ( FontManager_wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Font* > > ) ;
+            typedef void ( FontManager_wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ) ;
             
             FontManager_exposer.def( 
                 "destroyObject"
