@@ -2816,6 +2816,65 @@ void register_Combobox_class(){
                *\n" );
         
         }
+        { //::CEGUI::Combobox::setSelectionLength
+        
+            typedef void ( ::CEGUI::Combobox::*setSelectionLength_function_type )( ::size_t ) ;
+            
+            Combobox_exposer.def( 
+                "setSelectionLength"
+                , setSelectionLength_function_type( &::CEGUI::Combobox::setSelectionLength )
+                , ( bp::arg("length") )
+                , "*!\n\
+               \n\
+                  Define the current selection for the Editbox\n\
+            \n\
+               @param start_pos\n\
+                  Length of the selection.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::Combobox::setSelectionStart
+        
+            typedef void ( ::CEGUI::Combobox::*setSelectionStart_function_type )( ::size_t ) ;
+            
+            Combobox_exposer.def( 
+                "setSelectionStart"
+                , setSelectionStart_function_type( &::CEGUI::Combobox::setSelectionStart )
+                , ( bp::arg("start_pos") )
+                , "*!\n\
+               \n\
+                  Define the current selection for the Editbox\n\
+            \n\
+               @param start_pos\n\
+                  Index of the starting point for the selection.  If this value is greater than the number of\
+                  characters in the Editbox, the\n\
+                  selection start will be set to the end of the text.\n\
+            \n\
+               @param end_pos\n\
+                  Index of the ending point for the selection.  If this value is greater than the number of\
+                  characters in the Editbox, the\n\
+                  selection start will be set to the end of the text.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n\
+               *!\n\
+               \n\
+                  Define the current selection start for the Editbox\n\
+            \n\
+               @param start_pos\n\
+                  Index of the starting point for the selection.  If this value is greater than the number of\
+                  characters in the Editbox, the\n\
+                  selection start will be set to the end of the text.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::Combobox::setShowHorzScrollbar
         
             typedef void ( ::CEGUI::Combobox::*setShowHorzScrollbar_function_type )( bool ) ;

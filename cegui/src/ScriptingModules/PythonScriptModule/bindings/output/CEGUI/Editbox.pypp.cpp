@@ -2139,6 +2139,48 @@ void register_Editbox_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Editbox::setSelectionLength
+        
+            typedef void ( ::CEGUI::Editbox::*setSelectionLength_function_type )( ::size_t ) ;
+            
+            Editbox_exposer.def( 
+                "setSelectionLength"
+                , setSelectionLength_function_type( &::CEGUI::Editbox::setSelectionLength )
+                , ( bp::arg("length") )
+                , "*!\n\
+                \n\
+                    Define the current selection for the Editbox\n\
+            \n\
+                @param start_pos\n\
+                    Length of the selection.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Editbox::setSelectionStart
+        
+            typedef void ( ::CEGUI::Editbox::*setSelectionStart_function_type )( ::size_t ) ;
+            
+            Editbox_exposer.def( 
+                "setSelectionStart"
+                , setSelectionStart_function_type( &::CEGUI::Editbox::setSelectionStart )
+                , ( bp::arg("start_pos") )
+                , "*!\n\
+                \n\
+                    Define the current selection start for the Editbox\n\
+            \n\
+                    @param start_pos\n\
+                    Index of the starting point for the selection.  If this value is greater than the number of\
+                    characters in the Editbox, the\n\
+                    selection start will be set to the end of the text.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Editbox::setTextMasked
         
             typedef void ( ::CEGUI::Editbox::*setTextMasked_function_type )( bool ) ;
