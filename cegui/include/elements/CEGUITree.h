@@ -32,7 +32,6 @@
 #include "../CEGUIWindow.h"
 #include "../CEGUIWindowManager.h"
 #include "CEGUITreeItem.h"
-#include "CEGUITreeProperties.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -845,15 +844,6 @@ protected:
     ImagerySection* d_closeButtonImagery;
 
 private:
-    /*************************************************************************
-        Static Properties for this class
-     *************************************************************************/
-    static TreeProperties::Sort					d_sortProperty;
-    static TreeProperties::MultiSelect			d_multiSelectProperty;
-    static TreeProperties::ForceVertScrollbar	d_forceVertProperty;
-    static TreeProperties::ForceHorzScrollbar	d_forceHorzProperty;
-    static TreeProperties::ItemTooltips			d_itemTooltipsProperty;
-    
     /*************************************************************************
         Private methods
      *************************************************************************/
