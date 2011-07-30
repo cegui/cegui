@@ -1258,13 +1258,13 @@ void register_ProgressBar_class(){
             *\n" );
         
         }
-        { //::CEGUI::ProgressBar::getStep
+        { //::CEGUI::ProgressBar::getStepSize
         
-            typedef float ( ::CEGUI::ProgressBar::*getStep_function_type )(  ) const;
+            typedef float ( ::CEGUI::ProgressBar::*getStepSize_function_type )(  ) const;
             
             ProgressBar_exposer.def( 
-                "getStep"
-                , getStep_function_type( &::CEGUI::ProgressBar::getStep )
+                "getStepSize"
+                , getStepSize_function_type( &::CEGUI::ProgressBar::getStepSize )
                 , "*!\n\
             \n\
                return the current step size\n\
