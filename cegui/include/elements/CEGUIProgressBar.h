@@ -83,7 +83,7 @@ public:
 	\brief
 		return the current step size
 	*/
-	float	getStep(void) const			{return d_step;}
+	float	getStepSize(void) const			{return d_step;}
 
 
 	/*************************************************************************
