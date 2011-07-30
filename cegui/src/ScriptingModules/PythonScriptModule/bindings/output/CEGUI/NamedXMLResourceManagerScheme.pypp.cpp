@@ -15,7 +15,7 @@ struct NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Schem
     
     }
 
-    void destroyObject( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ob ){
+    void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ob ){
         CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
     }
 
@@ -173,7 +173,7 @@ void register_NamedXMLResourceManagerScheme_class(){
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
         
             typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*destroyObject_function_type )( ::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::Scheme* > > ) ;
+            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ) ;
             
             NamedXMLResourceManagerScheme_exposer.def( 
                 "destroyObject"

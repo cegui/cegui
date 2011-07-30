@@ -38,8 +38,7 @@ RenderedStringComponent::RenderedStringComponent() :
     d_padding(0, 0, 0, 0),
     d_verticalFormatting(VF_BOTTOM_ALIGNED),
     d_aspectLock(false),
-//    d_selectionImage(0)
-    d_selectionImage(&ImageManager::getSingleton().get("TaharezLook/GenericBrush"))
+    d_selectionImage(0)
 {
 }
 
