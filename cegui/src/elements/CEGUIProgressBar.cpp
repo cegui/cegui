@@ -120,7 +120,7 @@ void ProgressBar::addProgressBarProperties(void)
     );
     CEGUI_DEFINE_PROPERTY(ProgressBar, float,
         "StepSize", "Property to get/set the step size setting for the progress bar.  Value is a float value.",
-        &ProgressBar::setStepSize, &ProgressBar::getStep, 0.0f
+        &ProgressBar::setStepSize, &ProgressBar::getStepSize, 0.0f
     );
 }
 
