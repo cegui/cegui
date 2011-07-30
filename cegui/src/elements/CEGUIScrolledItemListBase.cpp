@@ -49,12 +49,6 @@ const String ScrolledItemListBase::VertScrollbarName( "__auto_vscrollbar__" );
 const String ScrolledItemListBase::HorzScrollbarName( "__auto_hscrollbar__" );
 const String ScrolledItemListBase::ContentPaneName("__auto_content_pane__");
 
-/*************************************************************************
-    Properties
-*************************************************************************/
-ScrolledItemListBaseProperties::ForceVertScrollbar ScrolledItemListBase::d_forceVertScrollbarProperty;
-ScrolledItemListBaseProperties::ForceHorzScrollbar ScrolledItemListBase::d_forceHorzScrollbarProperty;
-
 /************************************************************************
     Constructor
 ************************************************************************/
@@ -303,8 +297,17 @@ void ScrolledItemListBase::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void ScrolledItemListBase::addScrolledItemListBaseProperties()
 {
-    addProperty(&d_forceVertScrollbarProperty);
-    addProperty(&d_forceHorzScrollbarProperty);
+
+    const String propertyOrigin("ScrolledItemListBase");
+
+    CEGUI_DEFINE_PROPERTY(ScrolledItemListBase, bool,
+        "ForceVertScrollbar", "Property to get/set the state of the force vertical scrollbar setting for the ScrolledItemListBase.  Value is either \"True\" or \"False\".",
+        &ScrolledItemListBase::setShowVertScrollbar, &ScrolledItemListBase::isVertScrollbarAlwaysShown, false
+    );
+    CEGUI_DEFINE_PROPERTY(ScrolledItemListBase, bool,
+        "ForceHorzScrollbar", "Property to get/set the state of the force horizontal scrollbar setting for the ScrolledItemListBase.  Value is either \"True\" or \"False\".",
+        &ScrolledItemListBase::setShowHorzScrollbar, &ScrolledItemListBase::isHorzScrollbarAlwaysShown, false
+    );
 }
 
 //----------------------------------------------------------------------------//
