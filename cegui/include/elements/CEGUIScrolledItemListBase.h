@@ -30,7 +30,6 @@
 
 #include "CEGUIItemListBase.h"
 #include "CEGUIScrollbar.h"
-#include "CEGUIScrolledItemListBaseProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -193,12 +192,6 @@ protected:
     bool d_forceHScroll;
 
 private:
-    /************************************************************************
-        Static Properties for this class
-    ************************************************************************/
-    static ScrolledItemListBaseProperties::ForceVertScrollbar d_forceVertScrollbarProperty;
-    static ScrolledItemListBaseProperties::ForceHorzScrollbar d_forceHorzScrollbarProperty;
-
     void addScrolledItemListBaseProperties(void);
 };
 
