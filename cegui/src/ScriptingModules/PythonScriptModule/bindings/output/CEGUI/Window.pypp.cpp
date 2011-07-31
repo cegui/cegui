@@ -2163,7 +2163,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getFont
         
-            typedef ::CEGUI::Font * ( ::CEGUI::Window::*getFont_function_type )( bool ) const;
+            typedef ::CEGUI::Font const * ( ::CEGUI::Window::*getFont_function_type )( bool ) const;
             
             Window_exposer.def( 
                 "getFont"
@@ -2175,7 +2175,7 @@ void register_Window_class(){
                     return the active Font object for the Window.\n\
             \n\
                 @param useDefault\n\
-                    Sepcifies whether to return the default font if this Window has no\n\
+                    Specifies whether to return the default font if this Window has no\n\
                     preferred font set.\n\
             \n\
                 @return\n\
@@ -6037,7 +6037,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::setFont
         
-            typedef void ( ::CEGUI::Window::*setFont_function_type )( ::CEGUI::Font * ) ;
+            typedef void ( ::CEGUI::Window::*setFont_function_type )( ::CEGUI::Font const * ) ;
             
             Window_exposer.def( 
                 "setFont"

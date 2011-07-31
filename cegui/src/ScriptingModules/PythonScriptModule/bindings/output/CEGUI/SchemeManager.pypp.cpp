@@ -27,10 +27,6 @@ struct SchemeManager_wrapper : CEGUI::SchemeManager, bp::wrapper< CEGUI::SchemeM
         CEGUI::SchemeManager::doPostObjectAdditionAction( boost::ref(object) );
     }
 
-    void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
-    }
-
     ::CEGUI::Scheme & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Scheme * object, ::CEGUI::XMLResourceExistsAction const action ){
         return CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
     }
@@ -110,17 +106,6 @@ void register_SchemeManager_class(){
                 Return a SchemeManager.SchemeIterator object to iterate over the\n\
                 available schemes.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
-        
-            typedef CEGUI::SchemeManager exported_class_t;
-            typedef void ( SchemeManager_wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ) ;
-            
-            SchemeManager_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &SchemeManager_wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
         
         }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction

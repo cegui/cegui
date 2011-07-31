@@ -27,10 +27,6 @@ struct FontManager_wrapper : CEGUI::FontManager, bp::wrapper< CEGUI::FontManager
         CEGUI::FontManager::doPostObjectAdditionAction( boost::ref(object) );
     }
 
-	void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject( ob );
-    }
-
     ::CEGUI::Font & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Font * object, ::CEGUI::XMLResourceExistsAction const action ){
         return CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
     }
@@ -170,17 +166,6 @@ void register_FontManager_class(){
                 @param out_stream\n\
                     OutStream (std.ostream based) object where data is to be sent.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject
-        
-            typedef CEGUI::FontManager exported_class_t;
-            typedef void ( FontManager_wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ) ;
-            
-            FontManager_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &FontManager_wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
         
         }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction
