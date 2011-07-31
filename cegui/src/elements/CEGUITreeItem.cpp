@@ -139,7 +139,7 @@ Colour TreeItem::calculateModulatedAlphaColour(Colour col, float alpha) const
 /*************************************************************************
     Return a pointer to the font being used by this TreeItem
 *************************************************************************/
-Font* TreeItem::getFont(void) const
+const Font* TreeItem::getFont(void) const
 {
     // prefer out own font
     if (d_font != 0)
@@ -162,7 +162,7 @@ void TreeItem::setFont(const String& font_name)
 }
 
 //----------------------------------------------------------------------------//
-void TreeItem::setFont(Font* font)
+void TreeItem::setFont(const Font* font)
 {
     d_font = font;
 
@@ -176,7 +176,7 @@ void TreeItem::setFont(Font* font)
 *************************************************************************/
 Sizef TreeItem::getPixelSize(void) const
 {
-    Font* fnt = getFont();
+    const Font* fnt = getFont();
 
     if (!fnt)
         return Sizef(0, 0);
@@ -288,7 +288,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
         d_selectBrush->render(buffer, finalRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
-    Font* font = getFont();
+    const Font* font = getFont();
 
     if (!font)
         return;
@@ -351,7 +351,7 @@ void TreeItem::setText( const String& text )
 void TreeItem::parseTextString() const
 {
     d_renderedString =
-        d_stringParser.parse(getTextVisual(), getFont(), &d_textCols);
+        d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
     d_renderedStringValid = true;
 }
 

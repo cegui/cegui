@@ -232,8 +232,9 @@ namespace CEGUI
 
         CEGUI_TRY
         {
+            // FIXME: Evil const cast!
             font = d_fontPropertyName.empty() ?
-                (d_font.empty() ? srcWindow.getFont() : &FontManager::getSingleton().get(d_font))
+                (d_font.empty() ? const_cast<Font*>(srcWindow.getFont()) : &FontManager::getSingleton().get(d_font))
                 : &FontManager::getSingleton().get(srcWindow.getProperty(d_fontPropertyName));
         }
         CEGUI_CATCH (UnknownObjectException&)

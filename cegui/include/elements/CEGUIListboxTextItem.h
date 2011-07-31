@@ -79,7 +79,7 @@ public:
 	\return
 		Font to be used for rendering this item
 	*/
-	Font*	getFont(void) const;
+	const Font*	getFont(void) const;
 
 
 	/*!

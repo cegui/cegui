@@ -206,7 +206,7 @@ public:
             (root->getChild("root/FontDemo/FontSample"));
 
 		// Query the font from the textbox
-        Font *f = mle->getFont ();
+        const Font *f = mle->getFont ();
 
 		// Build up the font name...
         String s = f->getProperty ("Name");
@@ -273,7 +273,7 @@ public:
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
             (root->getChild("root/FontDemo/FontSample"));
 
-        Font *f = mle->getFont ();
+        Font *f = const_cast<Font*>(mle->getFont());
         f->setProperty ("AutoScaled",
                         PropertyHelper<bool>::toString (cb->isSelected ()));
 
@@ -291,7 +291,7 @@ public:
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
             (root->getChild("root/FontDemo/FontSample"));
 
-        Font *f = mle->getFont ();
+        Font *f = const_cast<Font*>(mle->getFont ());
         f->setProperty ("Antialiased",
                         PropertyHelper<bool>::toString (cb->isSelected ()));
 
@@ -306,7 +306,7 @@ public:
         Scrollbar *sb = static_cast<Scrollbar *> (
             static_cast<const WindowEventArgs&> (e).window);
 
-        Font *f = root->getChild("root/FontDemo/FontSample")->getFont ();
+        Font *f = const_cast<Font*>(root->getChild("root/FontDemo/FontSample")->getFont ());
 
         f->setProperty ("PointSize",
                         PropertyHelper<int>::toString (

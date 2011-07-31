@@ -504,7 +504,7 @@ bool Window::isAncestor(const Window* window) const
 }
 
 //----------------------------------------------------------------------------//
-Font* Window::getFont(bool useDefault) const
+const Font* Window::getFont(bool useDefault) const
 {
     if (!d_font)
         return useDefault ? System::getSingleton().getDefaultFont() : 0;
@@ -865,7 +865,7 @@ void Window::setText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setFont( Font* font)
+void Window::setFont(const Font* font)
 {
     d_font = font;
     d_renderedStringValid = false;
@@ -1509,10 +1509,9 @@ void Window::addStandardProperties(void)
         &Window::setDisabled, &Window::isDisabled, false
     );
 
-    CEGUI_DEFINE_PROPERTY(Window,Font*,
+    CEGUI_DEFINE_PROPERTY(Window, Font*,
         "Font","Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
-        (void(CEGUI::Window::*)(const CEGUI::Font*))(void(CEGUI::Window::*)(CEGUI::Font*))&Window::setFont,
-        (const CEGUI::Font* (CEGUI::Window::*)()const)&Window::getFont, 0
+        &Window::setFont, &Window::property_getFont, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, uint,
@@ -1526,9 +1525,9 @@ void Window::addStandardProperties(void)
     );
 
 
-    CEGUI_DEFINE_PROPERTY(Window,Image*,
+    CEGUI_DEFINE_PROPERTY(Window, Image*,
         "MouseCursorImage","Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
-        &Window::setMouseCursor, (const CEGUI::Image* (CEGUI::Window::*)()const)&Window::getMouseCursor, 0
+        &Window::setMouseCursor, &Window::property_getMouseCursor, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1719,9 +1718,6 @@ void Window::addStandardProperties(void)
         "Value is either \"True\" or \"False\".",
         &Window::setMouseInputPropagationEnabled, &Window::isMouseInputPropagationEnabled, false
     );
-
-
-
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -3997,8 +3993,9 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
+		// FIXME: Evil const cast!
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), getFont(), 0);
+            getTextVisual(), const_cast<Font*>(getFont()), 0);
         d_renderedStringValid = true;
     }
 
@@ -4499,6 +4496,18 @@ const Window* Window::getWindowAttachedToCommonAncestor(const Window& wnd) const
 bool Window::isBehind(const Window& wnd) const
 {
     return !isInFront(wnd);
+}
+
+//----------------------------------------------------------------------------//
+const Font* Window::property_getFont() const
+{
+    return d_font;
+}
+
+//----------------------------------------------------------------------------//
+const Image* Window::property_getMouseCursor() const
+{
+    return d_mouseCursor;
 }
 
 //----------------------------------------------------------------------------//

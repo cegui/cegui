@@ -406,6 +406,8 @@ bool Editbox::performPaste(Clipboard& clipboard)
             return false;
         }
     }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//

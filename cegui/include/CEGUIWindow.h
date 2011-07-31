@@ -1052,7 +1052,7 @@ public:
         return the active Font object for the Window.
 
     \param useDefault
-        Sepcifies whether to return the default font if this Window has no
+        Specifies whether to return the default font if this Window has no
         preferred font set.
 
     \return
@@ -1060,7 +1060,7 @@ public:
         assigned font, and \a useDefault is true, then the default system font
         is returned.
     */
-    Font* getFont(bool useDefault = true) const;
+    const Font* getFont(bool useDefault = true) const;
 
     /*!
     \brief
@@ -2016,7 +2016,7 @@ public:
     \return
         Nothing
     */
-    void setFont(Font* font);
+    void setFont(const Font* font);
 
     /*!
     \brief
@@ -4460,7 +4460,7 @@ protected:
     bool d_distCapturedInputs;
 
     //! Holds pointer to the Window objects current Font.
-    Font* d_font;
+    const Font* d_font;
     //! Holds the text / label / caption for this Window.
     String d_textLogical;
     //! pointer to bidirection support object
@@ -4580,6 +4580,11 @@ private:
     *************************************************************************/
     Window(const Window&) : PropertySet(), EventSet() {}
     Window& operator=(const Window&) {return *this;}
+
+    //! Not intended for public use, only used as a "Font" property getter
+    const Font* property_getFont() const;
+    //! Not intended for public use, only used as a "MouseCursor" property getter
+    const Image* property_getMouseCursor() const;
 };
 
 } // End of  CEGUI namespace section
