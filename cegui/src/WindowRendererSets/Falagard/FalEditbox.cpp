@@ -77,7 +77,7 @@ void FalagardEditbox::render()
     renderBaseImagery(wlf);
 
     // no font == no more rendering
-    Font* const font = d_window->getFont();
+    const Font* font = d_window->getFont();
     if (!font)
         return;
 
@@ -219,7 +219,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
                                        const Rectf& text_area,
                                        float text_offset)
 {
-    Font* const font = d_window->getFont();
+    const Font* font = d_window->getFont();
 
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);

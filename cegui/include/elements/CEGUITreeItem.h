@@ -98,7 +98,7 @@ public:
      \return
         Font to be used for rendering this item
      */
-    Font* getFont(void) const;
+    const Font* getFont(void) const;
 
     /*!
      \brief
@@ -123,7 +123,7 @@ public:
      \return
         Nothing
      */
-    void setFont(Font* font);
+    void setFont(const Font* font);
 
     /*!
      \brief
@@ -660,7 +660,7 @@ protected:
     //! Colours used for rendering the text.
     ColourRect d_textCols;
     //! Font used for rendering text.
-    Font* d_font;
+    const Font* d_font;
     //! Image for the icon to be displayed with this TreeItem.
     const Image* d_iconImage;
     //! list of items in this item's tree branch.

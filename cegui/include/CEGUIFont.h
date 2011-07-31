@@ -126,7 +126,7 @@ public:
     void drawText(GeometryBuffer& buffer, const String& text,
                   const Vector2f& position, const Rectf* clip_rect,
                   const ColourRect& colours, const float space_extra = 0.0f,
-                  const float x_scale = 1.0f, const float y_scale = 1.0f);
+                  const float x_scale = 1.0f, const float y_scale = 1.0f) const;
 
     /*!
     \brief

@@ -419,7 +419,7 @@ namespace CEGUI
         // get window to use.
         const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
         // get font to use
-        Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
+        const Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
 
         if (fontObj)
         {

@@ -62,7 +62,7 @@ ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_da
 /*************************************************************************
 	Return a pointer to the font being used by this ListboxTextItem
 *************************************************************************/
-Font* ListboxTextItem::getFont(void) const
+const Font* ListboxTextItem::getFont(void) const
 {
 	// prefer out own font
 	if (d_font)
@@ -105,7 +105,7 @@ void ListboxTextItem::setFont(Font* font)
 *************************************************************************/
 Sizef ListboxTextItem::getPixelSize(void) const
 {
-    Font* fnt = getFont();
+    const Font* fnt = getFont();
 
     if (!fnt)
         return Sizef(0, 0);
@@ -138,7 +138,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
         d_selectBrush->render(buffer, targetRect, clipper,
                             getModulateAlphaColourRect(d_selectCols, alpha));
 
-    Font* font = getFont();
+    const Font* font = getFont();
 
     if (!font)
         return;
@@ -191,10 +191,10 @@ void ListboxTextItem::parseTextString() const
 {
     if (d_textParsingEnabled)
         d_renderedString =
-            d_stringParser.parse(getTextVisual(), getFont(), &d_textCols);
+            d_stringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
     else
         d_renderedString =
-            d_noTagsStringParser.parse(getTextVisual(), getFont(), &d_textCols);
+            d_noTagsStringParser.parse(getTextVisual(), const_cast<Font*>(getFont()), &d_textCols);
 
     d_renderedStringValid = true;
 }

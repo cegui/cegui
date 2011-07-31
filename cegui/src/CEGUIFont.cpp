@@ -191,7 +191,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 void Font::drawText(GeometryBuffer& buffer, const String& text,
                     const Vector2f& position, const Rectf* clip_rect,
                     const ColourRect& colours, const float space_extra,
-                    const float x_scale, const float y_scale)
+                    const float x_scale, const float y_scale) const
 {
     const float base_y = position.d_y + getBaseline(y_scale);
     Vector2f glyph_pos(position);
