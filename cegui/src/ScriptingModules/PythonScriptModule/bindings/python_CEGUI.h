@@ -126,9 +126,10 @@ namespace pyplusplus
 {
 	namespace aliases
 	{
-        typedef ::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >    NamedXMLResourceManagerFont;
         typedef ::CEGUI::RefCounted< CEGUI::FormattedRenderedString > RefCountedFormattedRenderedString;
-        typedef ::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >  NamedXMLResourceManagerScheme;
+
+        typedef ::CEGUI::NamedXMLResourceManager<CEGUI::Font, CEGUI::Font_xmlHandler> NamedXMLResourceManagerFont;
+        typedef ::CEGUI::NamedXMLResourceManager<CEGUI::Scheme, CEGUI::Scheme_xmlHandler> NamedXMLResourceManagerScheme;
 
         typedef ::CEGUI::Vector2<float> Vector2;
         typedef ::CEGUI::Vector3<float> Vector3;

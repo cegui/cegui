@@ -15,10 +15,6 @@ struct NamedXMLResourceManager_less__CEGUI_scope_Font_comma__CEGUI_scope_Font_xm
     
     }
 
-    void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject( ob );
-    }
-
     ::CEGUI::Font & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Font * object, ::CEGUI::XMLResourceExistsAction const action ){
         return CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
     }
@@ -168,17 +164,6 @@ void register_NamedXMLResourceManagerFont_class(){
                 "destroyAll"
                 , destroyAll_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyAll )
                 , "----------------------------------------------------------------------------\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::destroyObject
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler > exported_class_t;
-            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Font_comma__CEGUI_scope_Font_xmlHandler__greater__wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::ObjectRegistry::iterator ) ;
-            
-            NamedXMLResourceManagerFont_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &NamedXMLResourceManager_less__CEGUI_scope_Font_comma__CEGUI_scope_Font_xmlHandler__greater__wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
         
         }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction

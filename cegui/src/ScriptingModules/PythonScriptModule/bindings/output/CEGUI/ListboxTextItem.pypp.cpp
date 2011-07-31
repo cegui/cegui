@@ -102,7 +102,7 @@ void register_ListboxTextItem_class(){
         }
         { //::CEGUI::ListboxTextItem::getFont
         
-            typedef ::CEGUI::Font * ( ::CEGUI::ListboxTextItem::*getFont_function_type )(  ) const;
+            typedef ::CEGUI::Font const * ( ::CEGUI::ListboxTextItem::*getFont_function_type )(  ) const;
             
             ListboxTextItem_exposer.def( 
                 "getFont"

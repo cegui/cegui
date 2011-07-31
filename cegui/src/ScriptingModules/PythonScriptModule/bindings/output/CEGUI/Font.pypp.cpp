@@ -78,7 +78,7 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::drawText
         
-            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) ;
+            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) const;
             
             Font_exposer.def( 
                 "drawText"

@@ -135,7 +135,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::getFont
         
-            typedef ::CEGUI::Font * ( ::CEGUI::TreeItem::*getFont_function_type )(  ) const;
+            typedef ::CEGUI::Font const * ( ::CEGUI::TreeItem::*getFont_function_type )(  ) const;
             
             TreeItem_exposer.def( 
                 "getFont"
@@ -526,7 +526,7 @@ void register_TreeItem_class(){
         }
         { //::CEGUI::TreeItem::setFont
         
-            typedef void ( ::CEGUI::TreeItem::*setFont_function_type )( ::CEGUI::Font * ) ;
+            typedef void ( ::CEGUI::TreeItem::*setFont_function_type )( ::CEGUI::Font const * ) ;
             
             TreeItem_exposer.def( 
                 "setFont"

@@ -15,10 +15,6 @@ struct NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Schem
     
     }
 
-    void destroyObject( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ob ){
-        CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject( ob );
-    }
-
     ::CEGUI::Scheme & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Scheme * object, ::CEGUI::XMLResourceExistsAction const action ){
         return CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
     }
@@ -168,17 +164,6 @@ void register_NamedXMLResourceManagerScheme_class(){
                 "destroyAll"
                 , destroyAll_function_type( &::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyAll )
                 , "----------------------------------------------------------------------------\n" );
-        
-        }
-        { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::destroyObject
-        
-            typedef CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler > exported_class_t;
-            typedef void ( NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::*destroyObject_function_type )( CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::ObjectRegistry::iterator ) ;
-            
-            NamedXMLResourceManagerScheme_exposer.def( 
-                "destroyObject"
-                , destroyObject_function_type( &NamedXMLResourceManager_less__CEGUI_scope_Scheme_comma__CEGUI_scope_Scheme_xmlHandler__greater__wrapper::destroyObject )
-                , ( bp::arg("ob") ) );
         
         }
         { //::CEGUI::NamedXMLResourceManager< CEGUI::Scheme, CEGUI::Scheme_xmlHandler >::doExistingObjectAction

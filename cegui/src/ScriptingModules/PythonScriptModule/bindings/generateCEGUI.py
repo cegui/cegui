@@ -1151,13 +1151,14 @@ void Iterator_previous(::CEGUI::%s& t)
             if arg.default_value == "0ffffffff":
                 arg.default_value = "0xffffffff"
                 
-    # HACK! These shouldn't be needed exposed!
     for cls in CEGUI_ns.classes():
         if cls.name.startswith("Singleton"):
             cls.include()
             
         if cls.name.startswith("NamedXMLResourceManager"):
             cls.include()
+            # WORKAROUND: would not compile on Windows, pyplusplus substitutes the internal _Rb_tree_iterator
+            cls.mem_fun("destroyObject").exclude()
             
     # no need for this function, just use getSingleton
     mb.mem_funs("getSingletonPtr").exclude()
