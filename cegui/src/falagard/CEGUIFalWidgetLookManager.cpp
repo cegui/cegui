@@ -154,6 +154,8 @@ namespace CEGUI
         XMLSerializer xml(out_stream);
         // output root element
         xml.openTag("Falagard");
+        xml.attribute("version", Falagard_xmlHandler::NativeVersion);
+        
         CEGUI_TRY
         {
             // output the desired widget look data

@@ -11,7 +11,7 @@
     is being done mostly for fun, though also to demonstrate the use of CEGUI
     with Ogre.
 -->
-<Falagard>
+<Falagard version="7">
     <WidgetLook name="OgreTray/BGTest">
         <ImagerySection name="main">
             <ImageryComponent>
