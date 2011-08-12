@@ -4501,13 +4501,13 @@ bool Window::isBehind(const Window& wnd) const
 //----------------------------------------------------------------------------//
 const Font* Window::property_getFont() const
 {
-    return d_font;
+    return getFont();
 }
 
 //----------------------------------------------------------------------------//
 const Image* Window::property_getMouseCursor() const
 {
-    return d_mouseCursor;
+    return getMouseCursor();
 }
 
 //----------------------------------------------------------------------------//
