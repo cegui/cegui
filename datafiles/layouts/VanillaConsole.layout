@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
     <Window Name="Console" Type="Vanilla/FrameWindow">
         <Property Name="AlwaysOnTop" Value="True" />
         <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />

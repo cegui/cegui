@@ -249,12 +249,12 @@ void register_WindowManager_class(){
         }
         { //::CEGUI::WindowManager::getLayoutAsString
         
-            typedef ::CEGUI::String ( ::CEGUI::WindowManager::*getLayoutAsString_function_type )( ::CEGUI::Window const &,bool ) const;
+            typedef ::CEGUI::String ( ::CEGUI::WindowManager::*getLayoutAsString_function_type )( ::CEGUI::Window const & ) const;
             
             WindowManager_exposer.def( 
                 "getLayoutAsString"
                 , getLayoutAsString_function_type( &::CEGUI::WindowManager::getLayoutAsString )
-                , ( bp::arg("window"), bp::arg("writeParent")=(bool)(false) )
+                , ( bp::arg("window") )
                 , "*!\n\
                 \n\
                     Writes a full XML window layout, starting at the given Window and returns the result as\
@@ -262,11 +262,6 @@ void register_WindowManager_class(){
             \n\
                 @param window\n\
                     Window object to become the root of the layout.\n\
-            \n\
-                @param writeParent\n\
-                    If the starting window has a parent window, specifies whether to write the parent name\
-                    into\n\
-                    the Parent attribute of the GUILayout XML element.\n\
             \n\
                 @Warning: \n\
                     This is a convenience function and isn't designed to be fast at all! Use the other\
@@ -355,12 +350,12 @@ void register_WindowManager_class(){
         }
         { //::CEGUI::WindowManager::saveLayoutToFile
         
-            typedef void ( ::CEGUI::WindowManager::*saveLayoutToFile_function_type )( ::CEGUI::Window const &,::CEGUI::String const &,bool const ) const;
+            typedef void ( ::CEGUI::WindowManager::*saveLayoutToFile_function_type )( ::CEGUI::Window const &,::CEGUI::String const & ) const;
             
             WindowManager_exposer.def( 
                 "saveLayoutToFile"
                 , saveLayoutToFile_function_type( &::CEGUI::WindowManager::saveLayoutToFile )
-                , ( bp::arg("window"), bp::arg("filename"), bp::arg("writeParent")=(bool const)(false) )
+                , ( bp::arg("window"), bp::arg("filename") )
                 , "*!\n\
                 \n\
                     Save a full XML window layout, starting at the given Window, to a file\n\
@@ -374,10 +369,6 @@ void register_WindowManager_class(){
                     does not use any part of the ResourceProvider system, but rather will\n\
                     write directly to disk.  If this is not desirable, you should prefer the\n\
                     OutStream based writeWindowLayoutToStream functions.\n\
-            \n\
-                @param writeParent\n\
-                    If the starting window has a parent window, specifies whether to write\n\
-                    the parent name into the Parent attribute of the GUILayout XML element.\n\
                 *\n" );
         
         }
@@ -425,12 +416,12 @@ void register_WindowManager_class(){
         }
         { //::CEGUI::WindowManager::writeLayoutToStream
         
-            typedef void ( ::CEGUI::WindowManager::*writeLayoutToStream_function_type )( ::CEGUI::Window const &,::CEGUI::OutStream &,bool ) const;
+            typedef void ( ::CEGUI::WindowManager::*writeLayoutToStream_function_type )( ::CEGUI::Window const &,::CEGUI::OutStream & ) const;
             
             WindowManager_exposer.def( 
                 "writeLayoutToStream"
                 , writeLayoutToStream_function_type( &::CEGUI::WindowManager::writeLayoutToStream )
-                , ( bp::arg("window"), bp::arg("out_stream"), bp::arg("writeParent")=(bool)(false) )
+                , ( bp::arg("window"), bp::arg("out_stream") )
                 , "*!\n\
                 \n\
                     Writes a full XML window layout, starting at the given Window to the given OutStream.\n\
@@ -440,11 +431,6 @@ void register_WindowManager_class(){
             \n\
                 @param out_stream\n\
                     OutStream (std.ostream based) object where data is to be sent.\n\
-            \n\
-                @param writeParent\n\
-                    If the starting window has a parent window, specifies whether to write the parent name\
-                    into\n\
-                    the Parent attribute of the GUILayout XML element.\n\
             \n\
                 @return\n\
                     Nothing.\n\

@@ -47,6 +47,8 @@ class GUILayout_xmlHandler : public XMLHandler
 {
 	typedef WindowManager::PropertyCallback PropertyCallback;
 public:
+    static const String NativeVersion;                  //!< The only version that we will allow to load
+    
 	/*************************************************************************
 		Construction & Destruction
 	*************************************************************************/
@@ -95,7 +97,7 @@ public:
 		Return a pointer to the 'root' window created.
 	*/
 	Window*	getLayoutRootWindow(void) const;
-
+    
 private:
 	/*************************************************************************
 		Implementation Constants
@@ -115,6 +117,16 @@ private:
     static const String LayoutImportResourceGroupAttribute; //!< Attribute name that stores the resource group identifier used when loading imported file.
 	static const String EventNameAttribute;			//!< Attribute name that stores the event name to be subscribed.
 	static const String EventFunctionAttribute;		//!< Attribute name that stores the name of the scripted function to be bound.
+
+    /*!
+    \brief
+        Method that handles the opening GUILayout XML element.
+
+    \note
+        This method just checks the version attribute and there is no equivalent
+        elementGUILayoutEnd method, because it would be just NOOP anyways
+    */
+    void elementGUILayoutStart(const XMLAttributes& attributes);
 
     /*!
     \brief

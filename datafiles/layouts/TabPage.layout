@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
 
 <Window Name="" Type="DefaultWindow">
     <Window Name="Text" Type="TaharezLook/StaticText">

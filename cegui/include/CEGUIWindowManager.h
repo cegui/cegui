@@ -282,14 +282,10 @@ public:
     \param out_stream
         OutStream (std::ostream based) object where data is to be sent.
 
-    \param writeParent
-        If the starting window has a parent window, specifies whether to write the parent name into
-        the Parent attribute of the GUILayout XML element.
-
     \return
         Nothing.
     */
-    void writeLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
+    void writeLayoutToStream(const Window& window, OutStream& out_stream) const;
 
     /*!
     \brief
@@ -298,10 +294,6 @@ public:
     \param window
         Window object to become the root of the layout.
 
-    \param writeParent
-        If the starting window has a parent window, specifies whether to write the parent name into
-        the Parent attribute of the GUILayout XML element.
-
     \warning
         This is a convenience function and isn't designed to be fast at all! Use the other alternatives
         if you want performance.
@@ -309,7 +301,7 @@ public:
     \return
         String containing XML of the resulting layout
     */
-    String getLayoutAsString(const Window& window, bool writeParent = false) const;
+    String getLayoutAsString(const Window& window) const;
 
     /*!
     \brief
@@ -324,12 +316,8 @@ public:
         does not use any part of the ResourceProvider system, but rather will
         write directly to disk.  If this is not desirable, you should prefer the
         OutStream based writeWindowLayoutToStream functions.
-
-    \param writeParent
-        If the starting window has a parent window, specifies whether to write
-        the parent name into the Parent attribute of the GUILayout XML element.
     */
-    void saveLayoutToFile(const Window& window, const String& filename, const bool writeParent = false) const;
+    void saveLayoutToFile(const Window& window, const String& filename) const;
 
     /*!
     \brief

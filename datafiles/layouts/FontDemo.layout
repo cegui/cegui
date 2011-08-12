@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
 <Window Name="root" Type="DefaultWindow">
     <Window Name="FontDemo" Type="TaharezLook/FrameWindow">
         <Property Name="Position" Value="{{0.1,0},{0.1,0}}" />

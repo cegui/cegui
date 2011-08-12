@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
     <Window Name="root" Type="Vanilla/StaticImage">
         <Property Name="Position" Value="{{0,0},{0,0}}" />
         <Property Name="Size" Value="{{1,0},{1,0}}" />

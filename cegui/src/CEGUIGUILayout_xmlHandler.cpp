@@ -40,6 +40,9 @@ namespace CEGUI
 /*************************************************************************
     Implementation Constants
 *************************************************************************/
+// note the assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
+const String GUILayout_xmlHandler::NativeVersion( "4" );
+
 const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
 const String GUILayout_xmlHandler::WindowElement( "Window" );
 const String GUILayout_xmlHandler::AutoWindowElement( "AutoWindow" );
@@ -67,8 +70,13 @@ const String& GUILayout_xmlHandler::getDefaultResourceGroup() const
 
 void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
+	// handle root GUILayoutElement element
+	if (element == GUILayoutElement)
+	{
+		elementGUILayoutStart(attributes);
+	}
     // handle Window element (create window and make an entry on our "window stack")
-    if (element == WindowElement)
+	else if (element == WindowElement)
     {
         elementWindowStart(attributes);
     }
@@ -101,6 +109,11 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 
 void GUILayout_xmlHandler::elementEnd(const String& element)
 {
+	//if (element == GUILayoutElement)
+    //{
+	//	NOOP
+    //}
+
     // handle Window element
     if (element == WindowElement)
     {
@@ -166,6 +179,23 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
 Window* GUILayout_xmlHandler::getLayoutRootWindow(void) const
 {
     return d_root;
+}
+
+/*************************************************************************
+    Method that handles the opening GUILayout XML element.
+*************************************************************************/
+void GUILayout_xmlHandler::elementGUILayoutStart(const XMLAttributes& attributes)
+{
+    const String version = attributes.getValueAsString("version", "unknown");
+
+    if (version != NativeVersion)
+    {
+        CEGUI_THROW(InvalidRequestException(
+            "GUILayout_xmlHandler::elementGUILayoutStart - You are attempting to load a layout of "
+            "version '" + version + "' but this CEGUI version is only meant to load layouts of "
+            "version '" + NativeVersion + "'. Consider using the migrate.py script bundled with "
+            "CEGUI Unified Editor to migrate your data."));
+    }
 }
 
 /*************************************************************************
