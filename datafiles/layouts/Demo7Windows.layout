@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
     <Window Name="root" Type="DefaultWindow">
         <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="Area" Value="{{0,0},{0,0},{1,0},{1,0}}" />

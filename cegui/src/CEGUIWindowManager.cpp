@@ -351,35 +351,31 @@ void WindowManager::cleanDeadPool(void)
     d_deathrow.clear();
 }
 
-void WindowManager::writeLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent) const
+void WindowManager::writeLayoutToStream(const Window& window, OutStream& out_stream) const
 {
 
     XMLSerializer xml(out_stream);
     // output GUILayout start element
     xml.openTag("GUILayout");
-    // see if we need the parent attribute to be written
-    if ((window.getParent() != 0) && writeParent)
-    {
-        xml.attribute("Parent", window.getParent()->getName());
-    }
+    xml.attribute("version", GUILayout_xmlHandler::NativeVersion);
+    
     // write windows
     window.writeXMLToStream(xml);
     // write closing GUILayout element
     xml.closeTag();
 }
 
-String WindowManager::getLayoutAsString(const Window& window, bool writeParent) const
+String WindowManager::getLayoutAsString(const Window& window) const
 {
     std::ostringstream str;
-    writeLayoutToStream(window, str, writeParent);
+    writeLayoutToStream(window, str);
 
     return String(str.str());
 }
 
 //----------------------------------------------------------------------------//
 void WindowManager::saveLayoutToFile(const Window& window,
-                                     const String& filename,
-                                     const bool writeParent) const
+                                     const String& filename) const
 {
     std::ofstream stream(filename.c_str());
 
@@ -387,7 +383,7 @@ void WindowManager::saveLayoutToFile(const Window& window,
         CEGUI_THROW(FileIOException("WindowManager::saveWindowLayout: "
             "failed to create stream for writing."));
 
-    writeLayoutToStream(window, stream, writeParent);
+    writeLayoutToStream(window, stream);
 }
 
 String WindowManager::generateUniqueWindowName()

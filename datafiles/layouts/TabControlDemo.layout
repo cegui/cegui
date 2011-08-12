@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<GUILayout >
+<GUILayout version="4">
     <Window Type="TaharezLook/FrameWindow" Name="Frame" >
         <Property Name="Text" Value="Tab Control Demo" />
         <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
     <Window Name="Page2" Type="DefaultWindow">
         <Property Name="Text" Value="Page two" />
         <Window Name="Button1" Type="TaharezLook/Button">
