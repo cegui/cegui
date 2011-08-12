@@ -50,6 +50,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    // note: The assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
+    const String Falagard_xmlHandler::NativeVersion("7");
+    
     ////////////////////////////////////////////////////////////////////////////////
     // element names
     const String Falagard_xmlHandler::FalagardElement("Falagard");
@@ -344,9 +347,20 @@ namespace CEGUI
     /*************************************************************************
         Method that handles the opening Falagard XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes&)
+    void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes& attributes)
     {
         Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
+        
+        const String version = attributes.getValueAsString("version", "unknown");
+
+        if (version != NativeVersion)
+        {
+            CEGUI_THROW(InvalidRequestException(
+                "Falagard_xmlHandler::elementFalagardStart - You are attempting to load a looknfeel of "
+                "version '" + version + "' but this CEGUI version is only meant to load looknfeels of "
+                "version '" + NativeVersion + "'. Consider using the migrate.py script bundled with "
+                "CEGUI Unified Editor to migrate your data."));
+        }
     }
 
     /*************************************************************************

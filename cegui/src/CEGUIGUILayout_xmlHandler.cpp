@@ -40,7 +40,7 @@ namespace CEGUI
 /*************************************************************************
     Implementation Constants
 *************************************************************************/
-// note the assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
+// note: The assets' versions aren't usually the same as CEGUI version, they are versioned from version 1 onwards!
 const String GUILayout_xmlHandler::NativeVersion( "4" );
 
 const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );

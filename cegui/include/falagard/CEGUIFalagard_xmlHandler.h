@@ -71,6 +71,9 @@ namespace CEGUI
             Destructor for Falagard_xmlHandler objects
         */
         ~Falagard_xmlHandler();
+        
+        //! Stores the native version, the only version we are supposed to load
+        static const String NativeVersion;
 
     protected:
         /*************************************************************************

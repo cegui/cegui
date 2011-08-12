@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Falagard>
+<Falagard version="7">
     <WidgetLook name="AlfiskoSkin/Button">
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
