@@ -94,6 +94,22 @@ void register_SchemeManager_class(){
                 , "override from base\n" );
         
         }
+        { //::CEGUI::SchemeManager::getAutoLoadResources
+        
+            typedef bool ( ::CEGUI::SchemeManager::*getAutoLoadResources_function_type )(  ) const;
+            
+            SchemeManager_exposer.def( 
+                "getAutoLoadResources"
+                , getAutoLoadResources_function_type( &::CEGUI::SchemeManager::getAutoLoadResources )
+                , "*!\n\
+            \n\
+                Checks whether resources are loaded immediately after schemes are created\n\
+                \n\
+            @see\n\
+                SchemeManager.setAutoLoadResources\n\
+            *\n" );
+        
+        }
         { //::CEGUI::SchemeManager::getIterator
         
             typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Scheme*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Scheme*> > > > ( ::CEGUI::SchemeManager::*getIterator_function_type )(  ) const;
@@ -105,6 +121,30 @@ void register_SchemeManager_class(){
             \n\
                 Return a SchemeManager.SchemeIterator object to iterate over the\n\
                 available schemes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::SchemeManager::setAutoLoadResources
+        
+            typedef void ( ::CEGUI::SchemeManager::*setAutoLoadResources_function_type )( bool ) ;
+            
+            SchemeManager_exposer.def( 
+                "setAutoLoadResources"
+                , setAutoLoadResources_function_type( &::CEGUI::SchemeManager::setAutoLoadResources )
+                , ( bp::arg("enabled") )
+                , "*!\n\
+            \n\
+                If this is enabled, Schemas will immediately load their resources after they are created\n\
+                \n\
+            It's sometimes useful to turn this off when you want to load things more selectively.\n\
+            This is enabled by default.\n\
+            \n\
+            @param enabled\n\
+                If true, you will have to load resources from the Scheme yourself!\n\
+            \n\
+            \note\n\
+                Calling Scheme.loadResources after you create the Scheme is equivalent to this being enabled\n\
+                and creating the scheme.\n\
             *\n" );
         
         }
