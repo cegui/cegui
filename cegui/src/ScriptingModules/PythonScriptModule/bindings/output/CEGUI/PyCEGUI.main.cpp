@@ -66,6 +66,8 @@
 
 #include "ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174.pypp.hpp"
 
+#include "ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9.pypp.hpp"
+
 #include "ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b.pypp.hpp"
 
 #include "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd.pypp.hpp"
@@ -177,6 +179,8 @@
 #include "ListboxItem.pypp.hpp"
 
 #include "ListboxTextItem.pypp.hpp"
+
+#include "LoadableUIElementIterator.pypp.hpp"
 
 #include "Logger.pypp.hpp"
 
@@ -619,6 +623,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_class();
 
+    register_ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9_class();
+
     register_ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b_class();
 
     register_EventIterator_class();
@@ -634,6 +640,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_TypeAliasIterator_class();
 
     register_FalagardMappingIterator_class();
+
+    register_LoadableUIElementIterator_class();
 
     register_WindowIterator_class();
 

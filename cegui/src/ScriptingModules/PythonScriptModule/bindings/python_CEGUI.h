@@ -155,6 +155,7 @@ namespace pyplusplus
         
         typedef ::CEGUI::FontManager::FontIterator FontIterator;
         typedef ::CEGUI::PropertySet::PropertyIterator PropertyIterator;
+        typedef ::CEGUI::Scheme::LoadableUIElementIterator LoadableUIElementIterator;
         typedef ::CEGUI::SchemeManager::SchemeIterator SchemeIterator;
         typedef ::CEGUI::WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
         typedef ::CEGUI::WindowFactoryManager::TypeAliasIterator TypeAliasIterator;
@@ -229,6 +230,7 @@ namespace python_CEGUI
             
             sizeof ( ::CEGUI::FontManager::FontIterator);
             sizeof ( ::CEGUI::PropertySet::PropertyIterator);
+            sizeof ( ::CEGUI::Scheme::LoadableUIElementIterator);
             sizeof ( ::CEGUI::SchemeManager::SchemeIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::WindowFactoryIterator);
             sizeof ( ::CEGUI::WindowFactoryManager::TypeAliasIterator);
