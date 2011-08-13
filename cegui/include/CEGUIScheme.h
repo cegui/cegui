@@ -59,8 +59,31 @@ namespace CEGUI
 class CEGUIEXPORT Scheme :
     public AllocatedObject<Scheme>
 {
-	friend class Scheme_xmlHandler;
+private:
+    friend class Scheme_xmlHandler;
+    
+    /*************************************************************************
+        Construction and Destruction
+    *************************************************************************/
+    /*!
+    \brief
+        Constructs an empty scheme object with the specified name.
+
+    \param name
+        String object holding the name of the Scheme object.
+    */
+    Scheme(const String& name);
+
 public:
+    /*!
+    \brief
+        Destroys a Scheme object
+
+    \internal
+        has to be public for luabind compatibility
+    */
+    ~Scheme(void);
+    
 	/*!
 	\brief
 		Loads all resources for this scheme.
@@ -123,19 +146,6 @@ public:
     */
     static void setDefaultResourceGroup(const String& resourceGroup)
         { d_defaultResourceGroup = resourceGroup; }
-
-private:
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructs an empty scheme object with the specified name.
-
-	\param name
-		String object holding the name of the Scheme object.
-	*/
-	Scheme(const String& name);
 
     /*!
     \brief
@@ -280,17 +290,6 @@ private:
         Check state of all falagard mappings created by the scheme.
     */
     bool areFalagardMappingsLoaded() const;
-
-public:		// for luabind compatibility
-	/*!
-	\brief
-		Destroys a Scheme object
-
-	\return
-		Nothing
-	*/
-	~Scheme(void);
-
 
 private:
 	/*************************************************************************
