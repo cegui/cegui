@@ -70,10 +70,38 @@ public:
         available schemes.
     */
     SchemeIterator  getIterator() const;
+    
+    /*!
+    \brief
+        If this is enabled, Schemas will immediately load their resources after they are created
+        
+    It's sometimes useful to turn this off when you want to load things more selectively.
+    This is enabled by default.
+    
+    \param enabled
+        If true, you will have to load resources from the Scheme yourself!
+    
+    \note
+        Calling Scheme::loadResources after you create the Scheme is equivalent to this being enabled
+        and creating the scheme.
+    */
+    void setAutoLoadResources(bool enabled);
+    
+    /*!
+    \brief
+        Checks whether resources are loaded immediately after schemes are created
+        
+    \see
+        SchemeManager::setAutoLoadResources
+    */
+    bool getAutoLoadResources() const;
 
 protected:
     // override from base
     void doPostObjectAdditionAction(Scheme& object);
+    
+    //! If true, Scheme::loadResources is called after "create" is called for it
+    bool d_autoLoadResources;
 };
 
 } // End of  CEGUI namespace section

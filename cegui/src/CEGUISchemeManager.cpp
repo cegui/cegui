@@ -36,8 +36,9 @@ template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton = 0;
 
 //----------------------------------------------------------------------------//
 SchemeManager::SchemeManager() :
-    NamedXMLResourceManager<Scheme, Scheme_xmlHandler>("Scheme")
-
+    NamedXMLResourceManager<Scheme, Scheme_xmlHandler>("Scheme"),
+    
+    d_autoLoadResources(true)
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -66,9 +67,24 @@ SchemeManager::SchemeIterator SchemeManager::getIterator(void) const
 }
 
 //----------------------------------------------------------------------------//
+void SchemeManager::setAutoLoadResources(bool enabled)
+{
+    d_autoLoadResources = enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool SchemeManager::getAutoLoadResources() const
+{
+    return d_autoLoadResources;
+}
+
+//----------------------------------------------------------------------------//
 void SchemeManager::doPostObjectAdditionAction(Scheme& object)
 {
-    object.loadResources();
+    if (d_autoLoadResources)
+    {
+        object.loadResources();
+    }
 }
 
 //----------------------------------------------------------------------------//
