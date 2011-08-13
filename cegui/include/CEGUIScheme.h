@@ -73,7 +73,7 @@ private:
         String object holding the name of the Scheme object.
     */
     Scheme(const String& name);
-
+    
 public:
     /*!
     \brief
@@ -290,17 +290,57 @@ public:
         Check state of all falagard mappings created by the scheme.
     */
     bool areFalagardMappingsLoaded() const;
+    
+    /*!
+    \brief
+        A single file reference to a font, imageset or so to be loaded as part of this Scheme
+        
+    \note
+        This is public because you might want to iterate over these and load them yourself!
+    */
+    struct LoadableUIElement
+    {
+        String  name;
+        String  filename;
+        String  resourceGroup;
+    };
+    
+private:
+    //! \internal This is implementation specific so we keep it private!
+    typedef std::vector<LoadableUIElement
+        CEGUI_VECTOR_ALLOC(LoadableUIElement)>      LoadableUIElementList;
+
+public:    
+    typedef ConstVectorIterator<LoadableUIElementList> LoadableUIElementIterator;
+    
+    /*!
+    \brief
+        Retrieves iterator for all references to XML imagesets that are to be loaded with this Scheme
+    */
+    LoadableUIElementIterator getXMLImagesets() const;
+    
+    /*!
+    \brief
+        Retrieves iterator for all references to image file imagesets that are to be loaded with this Scheme
+    */
+    LoadableUIElementIterator getImageFileImagesets() const;
+    
+    /*!
+    \brief
+        Retrieves iterator for all references to font files that are to be loaded with this Scheme
+    */
+    LoadableUIElementIterator getFonts() const;
+    
+    /*!
+    \brief
+        Retrieves iterator for all references to LookNFeels files that are to be loaded with this Scheme
+    */
+    LoadableUIElementIterator getLookNFeels() const;
 
 private:
 	/*************************************************************************
 		Structs used to hold scheme information
 	*************************************************************************/
-	struct LoadableUIElement
-	{
-		String	name;
-		String	filename;
-        String  resourceGroup;
-	};
 
 	struct	UIElementFactory
 	{
@@ -350,8 +390,6 @@ private:
 	*************************************************************************/
 	String	d_name;			//!< the name of this scheme.
 
-    typedef std::vector<LoadableUIElement
-        CEGUI_VECTOR_ALLOC(LoadableUIElement)>      LoadableUIElementList;
 	LoadableUIElementList                   		d_imagesets;
 	LoadableUIElementList                   		d_imagesetsFromImages;
 	LoadableUIElementList                   		d_fonts;

@@ -797,4 +797,26 @@ bool Scheme::areFalagardMappingsLoaded() const
     return true;
 }
 
+Scheme::LoadableUIElementIterator Scheme::getXMLImagesets() const
+{
+    return LoadableUIElementIterator(d_imagesets.begin(), d_imagesets.end());
+}
+
+Scheme::LoadableUIElementIterator Scheme::getImageFileImagesets() const
+{
+    return LoadableUIElementIterator(d_imagesetsFromImages.begin(), d_imagesetsFromImages.end());
+}
+
+
+Scheme::LoadableUIElementIterator Scheme::getFonts() const
+{
+    return LoadableUIElementIterator(d_fonts.begin(), d_fonts.end());
+}
+
+
+Scheme::LoadableUIElementIterator Scheme::getLookNFeels() const
+{
+    return LoadableUIElementIterator(d_looknfeels.begin(), d_looknfeels.end());
+}
+
 } // End of  CEGUI namespace section
