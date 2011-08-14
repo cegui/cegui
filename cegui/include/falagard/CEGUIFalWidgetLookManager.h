@@ -93,8 +93,8 @@ namespace CEGUI
             the previous definitions are overwritten by the new data.  An entry will appear in the log each time any
             look & feel component is overwritten.
 
-        \param filename
-            String object containing the filename of a file containing the widget look & feel data
+        \param source
+            RawDataContainer containing the source code that will be parsed
 
         \param resourceGroup
             Resource group identifier to pass to the resource provider when loading the file.
@@ -102,11 +102,20 @@ namespace CEGUI
         \return
             Nothing.
 
-        \exception	FileIOException				thrown if there was some problem accessing or parsing the file \a filename
-        \exception	InvalidRequestException		thrown if an invalid filename was provided.
+        \exception FileIOException             thrown if there was some problem accessing or parsing the file \a filename
+        \exception InvalidRequestException     thrown if an invalid filename was provided.
         */
-        void parseLookNFeelSpecification(const String& filename, const String& resourceGroup = "");
-
+        void parseLookNFeelSpecificationFromContainer(const RawDataContainer& source);
+        
+        /*!
+        \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
+        */
+        void parseLookNFeelSpecificationFromFile(const String& filename, const String& resourceGroup = "");
+        
+        /*!
+        \see WidgetLookManager::parseLookNFeelSpecificationFromContainer
+        */
+        void parseLookNFeelSpecificationFromString(const String& source);
 
         /*!
         \brief

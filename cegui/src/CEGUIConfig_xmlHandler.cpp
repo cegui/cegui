@@ -404,7 +404,7 @@ void Config_xmlHandler::autoLoadLookNFeels(const String& pattern,
 
     for (size_t i = 0; i < num; ++i)
         WidgetLookManager::getSingleton().
-            parseLookNFeelSpecification(names[i], group);
+            parseLookNFeelSpecificationFromFile(names[i], group);
 }
 
 //----------------------------------------------------------------------------//

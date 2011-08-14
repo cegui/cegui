@@ -156,14 +156,14 @@ void register_WidgetLookManager_class(){
                     *\n" );
         
         }
-        { //::CEGUI::WidgetLookManager::parseLookNFeelSpecification
+        { //::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromContainer
         
-            typedef void ( ::CEGUI::WidgetLookManager::*parseLookNFeelSpecification_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef void ( ::CEGUI::WidgetLookManager::*parseLookNFeelSpecificationFromContainer_function_type )( ::CEGUI::RawDataContainer const & ) ;
             
             WidgetLookManager_exposer.def( 
-                "parseLookNFeelSpecification"
-                , parseLookNFeelSpecification_function_type( &::CEGUI::WidgetLookManager::parseLookNFeelSpecification )
-                , ( bp::arg("filename"), bp::arg("resourceGroup")="" )
+                "parseLookNFeelSpecificationFromContainer"
+                , parseLookNFeelSpecificationFromContainer_function_type( &::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromContainer )
+                , ( bp::arg("source") )
                 , "*!\n\
                     \n\
                         Parses a file containing window look & feel specifications (in the form of XML).\n\
@@ -175,8 +175,8 @@ void register_WidgetLookManager_class(){
                         log each time any\n\
                         look & feel component is overwritten.\n\
             \n\
-                    @param filename\n\
-                        String object containing the filename of a file containing the widget look & feel data\n\
+                    @param source\n\
+                        RawDataContainer containing the source code that will be parsed\n\
             \n\
                     @param resourceGroup\n\
                         Resource group identifier to pass to the resource provider when loading the file.\n\
@@ -184,10 +184,36 @@ void register_WidgetLookManager_class(){
                     @return\n\
                         Nothing.\n\
             \n\
-                    @exception   FileIOException            thrown if there was some problem accessing or\
-                    parsing the file  filename\n\
-                    @exception   InvalidRequestException    thrown if an invalid filename was provided.\n\
+                    @exception FileIOException             thrown if there was some problem accessing or parsing\
+                    the file  filename\n\
+                    @exception InvalidRequestException     thrown if an invalid filename was provided.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromFile
+        
+            typedef void ( ::CEGUI::WidgetLookManager::*parseLookNFeelSpecificationFromFile_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            WidgetLookManager_exposer.def( 
+                "parseLookNFeelSpecificationFromFile"
+                , parseLookNFeelSpecificationFromFile_function_type( &::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromFile )
+                , ( bp::arg("filename"), bp::arg("resourceGroup")="" )
+                , "*!\n\
+            @see WidgetLookManager.parseLookNFeelSpecificationFromContainer\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromString
+        
+            typedef void ( ::CEGUI::WidgetLookManager::*parseLookNFeelSpecificationFromString_function_type )( ::CEGUI::String const & ) ;
+            
+            WidgetLookManager_exposer.def( 
+                "parseLookNFeelSpecificationFromString"
+                , parseLookNFeelSpecificationFromString_function_type( &::CEGUI::WidgetLookManager::parseLookNFeelSpecificationFromString )
+                , ( bp::arg("source") )
+                , "*!\n\
+            @see WidgetLookManager.parseLookNFeelSpecificationFromContainer\n\
+            *\n" );
         
         }
         { //::CEGUI::WidgetLookManager::setDefaultResourceGroup
