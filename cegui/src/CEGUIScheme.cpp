@@ -241,7 +241,7 @@ void Scheme::loadLookNFeels()
     for (LoadableUIElementList::const_iterator pos = d_looknfeels.begin();
         pos != d_looknfeels.end(); ++pos)
     {
-        wlfMgr.parseLookNFeelSpecification((*pos).filename, (*pos).resourceGroup);
+        wlfMgr.parseLookNFeelSpecificationFromFile((*pos).filename, (*pos).resourceGroup);
     }
 }
 

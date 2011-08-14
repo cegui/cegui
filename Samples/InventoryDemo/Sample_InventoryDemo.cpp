@@ -62,7 +62,7 @@ bool InventoryDemo::initialiseSample()
     WindowRendererManager::addFactory<TplWindowRendererFactory<InventoryItemRenderer> >();
 
     // load looknfeel for custom inventory components (needs TaharezLook images)
-    WidgetLookManager::getSingleton().parseLookNFeelSpecification("InventoryComponents.looknfeel");
+    WidgetLookManager::getSingleton().parseLookNFeelSpecificationFromFile("InventoryComponents.looknfeel");
 
     // create mapping for the item type
     // This is the equivalent to the following entry in a scheme xml file:

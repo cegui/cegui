@@ -74,7 +74,25 @@ namespace CEGUI
 		  return Singleton<WidgetLookManager>::getSingletonPtr();
   	}
 
-    void WidgetLookManager::parseLookNFeelSpecification(const String& filename, const String& resourceGroup)
+    void WidgetLookManager::parseLookNFeelSpecificationFromContainer(const RawDataContainer& source)
+    {
+        // create handler object
+        Falagard_xmlHandler handler(this);
+
+        // perform parse of XML data
+        CEGUI_TRY
+        {
+            System::getSingleton().getXMLParser()->parseXML(
+                handler, source, FalagardSchemaName);
+        }
+        CEGUI_CATCH(...)
+        {
+            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecificationFromContainer - loading of look and feel data from raw data container has failed.", Errors);
+            CEGUI_RETHROW;
+        }
+    }
+    
+    void WidgetLookManager::parseLookNFeelSpecificationFromFile(const String& filename, const String& resourceGroup)
     {
         // valid filenames are required!
         if (filename.empty())
@@ -95,6 +113,24 @@ namespace CEGUI
         CEGUI_CATCH(...)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from file '" + filename +"' has failed.", Errors);
+            CEGUI_RETHROW;
+        }
+    }
+    
+    void WidgetLookManager::parseLookNFeelSpecificationFromString(const String& source)
+    {
+        // create handler object
+        Falagard_xmlHandler handler(this);
+
+        // perform parse of XML data
+        CEGUI_TRY
+        {
+            System::getSingleton().getXMLParser()->parseXMLString(
+                handler, source, FalagardSchemaName);
+        }
+        CEGUI_CATCH(...)
+        {
+            Logger::getSingleton().logEvent("WidgetLookManager::parseLookNFeelSpecification - loading of look and feel data from string has failed.", Errors);
             CEGUI_RETHROW;
         }
     }
