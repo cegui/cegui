@@ -2123,52 +2123,52 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
     // limit new pixel size to: minSize <= newSize <= maxSize
     d_pixelSize.clamp(absMin, absMax);
 
-	if (d_aspectMode != AM_IGNORE)
-	{
-		// make sure we respect current aspect mode and ratio
-		d_pixelSize.scaleToAspect(d_aspectMode, d_aspectRatio);
+    if (d_aspectMode != AM_IGNORE)
+    {
+        // make sure we respect current aspect mode and ratio
+        d_pixelSize.scaleToAspect(d_aspectMode, d_aspectRatio);
 
-		// make sure we haven't blown any of the hard limits
-		// still maintain the aspect when we do this
-		if (d_aspectMode == AM_SHRINK)
-		{
-			float ratio = 1.0f;
-			// check that we haven't blown the min size
-			if (d_pixelSize.d_width < absMin.d_width)
-			{
-				ratio = absMin.d_width / d_pixelSize.d_width;
-			}
-			if (d_pixelSize.d_height < absMin.d_height)
-			{
-				const float newRatio = absMin.d_height / d_pixelSize.d_height;
-				if (newRatio > ratio)
-					ratio = newRatio;
-			}
+        // make sure we haven't blown any of the hard limits
+        // still maintain the aspect when we do this
+        if (d_aspectMode == AM_SHRINK)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (d_pixelSize.d_width < absMin.d_width)
+            {
+                ratio = absMin.d_width / d_pixelSize.d_width;
+            }
+            if (d_pixelSize.d_height < absMin.d_height)
+            {
+                const float newRatio = absMin.d_height / d_pixelSize.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
 
-			d_pixelSize.d_width *= ratio;
-			d_pixelSize.d_height *= ratio;
-		}
-		else if (d_aspectMode == AM_EXPAND)
-		{
-			float ratio = 1.0f;
-			// check that we haven't blown the min size
-			if (d_pixelSize.d_width > absMax.d_width)
-			{
-				ratio = absMax.d_width / d_pixelSize.d_width;
-			}
-			if (d_pixelSize.d_height > absMax.d_height)
-			{
-				const float newRatio = absMax.d_height / d_pixelSize.d_height;
-				if (newRatio > ratio)
-					ratio = newRatio;
-			}
+            d_pixelSize.d_width *= ratio;
+            d_pixelSize.d_height *= ratio;
+        }
+        else if (d_aspectMode == AM_EXPAND)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (d_pixelSize.d_width > absMax.d_width)
+            {
+                ratio = absMax.d_width / d_pixelSize.d_width;
+            }
+            if (d_pixelSize.d_height > absMax.d_height)
+            {
+                const float newRatio = absMax.d_height / d_pixelSize.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
 
-			d_pixelSize.d_width *= ratio;
-			d_pixelSize.d_height *= ratio;
-		}
-		// NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
-		//       the result won't be limited by both limits!
-	}
+            d_pixelSize.d_width *= ratio;
+            d_pixelSize.d_height *= ratio;
+        }
+        // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
+        //       the result won't be limited by both limits!
+    }
 
     d_area.setSize(size);
     sized = (d_pixelSize != oldSize);
