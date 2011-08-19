@@ -206,6 +206,24 @@ public:
     */
     virtual void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 
+    /*!
+    \brief
+        Returns whether the property is readable.
+
+    \return
+        - true if the property is readable.
+        - false if the property isn't readable.
+    */
+    virtual bool isReadable() const{return true;}
+    /*!
+    \brief
+        Returns whether the property is writeable.
+
+    \return
+        - true if the property is writeable.
+        - false if the property isn't writeable.
+    */
+    virtual bool isWriteable() const{return true;}
 protected:
 	String d_name;		//!< String that stores the Property name.
 	String d_help;		//!< String that stores the Property help text.

@@ -34,7 +34,7 @@
 
 #include "CEGUIProperty.h"
 #include "CEGUIPropertyHelper.h"
-
+#include "CEGUIExceptions.h"
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -72,20 +72,33 @@ public:
     {
         setNative(receiver, Helper::fromString(value));
     }
-    
+
     /*!
     \brief native set method, sets the property given a native type
     
     \see Property::set
     */
-    virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value) = 0;
-
+    virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value)
+    {
+        if (isWritable())
+            setNative_impl(receiver,value);
+        else
+            CEGUI_THROW(InvalidRequestException(String("Property ") + d_origin + ":" + d_name + " is not readable!"));
+    }
     /*!
     \brief native get method, returns the native type by copy
     
     \see Property::get
     */
-    virtual typename Helper::safe_method_return_type getNative(const PropertyReceiver* receiver) const = 0;
+    virtual typename Helper::safe_method_return_type getNative(const PropertyReceiver* receiver) const{
+        if (isReadable())
+            return getNative_impl(receiver);
+        else
+            CEGUI_THROW(InvalidRequestException(String("Property ") + d_origin + ":" + d_name+" is not writable!"));
+    }
+protected:
+    virtual void setNative_impl(PropertyReceiver* receiver, typename Helper::pass_type value) = 0;
+    virtual typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const = 0;
 };
 
 } // End of  CEGUI namespace section
