@@ -32,7 +32,6 @@
 
 #include "CEGUILayoutContainer.h"
 #include "../CEGUIWindowFactory.h"
-#include "CEGUIGridLayoutContainerProperties.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -113,6 +112,11 @@ public:
         Sets grid's dimensions.
     */
     void setGridDimensions(size_t width, size_t height);
+    /*!
+    \brief
+        Sets grid's dimensions.
+    */
+    void setGrid(const Sizef &size);
 
     /*!
     \brief
@@ -125,6 +129,13 @@ public:
         Retrieves grid height, the amount of rows in the grid
     */
     size_t getGridHeight() const;
+
+    /*!
+    \brief
+        Retrieves grid width, the amount of cells in one row
+    */
+    Sizef getGrid() const;
+
 
     /*!
     \brief
@@ -314,13 +325,61 @@ protected:
     virtual void removeChild_impl(Window* wnd);
 
 private:
-    /*************************************************************************
-        Properties for GridLayoutContainer class
-    *************************************************************************/
-    static GridLayoutContainerProperties::GridSize d_gridSizeProperty;
-    static GridLayoutContainerProperties::AutoPositioning d_autoPositioningProperty;
-
     void addGridLayoutContainerProperties(void);
+};
+
+template<>
+class PropertyHelper<GridLayoutContainer::AutoPositioning>
+{
+public:
+    typedef GridLayoutContainer::AutoPositioning return_type;
+    typedef return_type safe_method_return_type;
+    typedef GridLayoutContainer::AutoPositioning pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("AutoPositioning");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "Disabled")
+        {
+            return GridLayoutContainer::AP_Disabled;
+        }
+        else if (str == "Top to Bottom")
+        {
+            return GridLayoutContainer::AP_TopToBottom;
+        }
+        else
+        {
+            return GridLayoutContainer::AP_LeftToRight;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == GridLayoutContainer::AP_LeftToRight)
+        {
+            return "Left to Right";
+        }
+        else if (val == GridLayoutContainer::AP_Disabled)
+        {
+            return "Disabled";
+        }
+        else if (val == GridLayoutContainer::AP_TopToBottom)
+        {
+            return "Top to Bottom";
+        }
+        else
+        {
+            assert(false && "Invalid Auto Positioning");
+            return "Left to Right";
+        }
+    }
 };
 
 } // End of  CEGUI namespace section
@@ -330,4 +389,3 @@ private:
 #endif
 
 #endif  // end of guard _CEGUIGridLayoutContainer_h_
-

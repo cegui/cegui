@@ -47,12 +47,6 @@ const String GridLayoutContainer::EventNamespace("GridLayoutContainer");
 const String GridLayoutContainer::EventChildOrderChanged("ChildOrderChanged");
 
 /*************************************************************************
-    Properties
-*************************************************************************/
-GridLayoutContainerProperties::GridSize GridLayoutContainer::d_gridSizeProperty;
-GridLayoutContainerProperties::AutoPositioning GridLayoutContainer::d_autoPositioningProperty;
-
-/*************************************************************************
     Constructor
 *************************************************************************/
 GridLayoutContainer::GridLayoutContainer(const String& type,
@@ -153,6 +147,12 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
 }
 
 //----------------------------------------------------------------------------//
+void GridLayoutContainer::setGrid(const Sizef &size)
+{
+	setGridDimensions(ceil(std::max(0.0f, size.d_width)),ceil(std::max(0.0f, size.d_height)));
+}
+
+//----------------------------------------------------------------------------//
 size_t GridLayoutContainer::getGridWidth() const
 {
     return d_gridWidth;
@@ -163,6 +163,13 @@ size_t GridLayoutContainer::getGridHeight() const
 {
     return d_gridHeight;
 }
+//----------------------------------------------------------------------------//
+Sizef GridLayoutContainer::getGrid() const
+{
+    return Sizef(getGridWidth(),getGridHeight());
+}
+
+
 
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::setAutoPositioning(AutoPositioning positioning)
@@ -582,11 +589,23 @@ void GridLayoutContainer::removeChild_impl(Window* wnd)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addGridLayoutContainerProperties(void)
 {
-    addProperty(&d_gridSizeProperty);
-    addProperty(&d_autoPositioningProperty);
+
+    const String propertyOrigin("GridLayoutContainer");
+
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, Sizef,
+        "GridSize", "Size of the grid of this layout container. "
+        "Value uses the 'w:# h:#' format and will be rounded up because "
+        "only integer values are valid as grid size.",
+        &GridLayoutContainer::setGrid, &GridLayoutContainer::getGrid, Sizef::zero()
+    );
+    CEGUI_DEFINE_PROPERTY(GridLayoutContainer, AutoPositioning,
+        "AutoPositioning", "Sets the method used for auto positioning. "
+        "Possible values: 'Disabled', 'Left to Right', 'Top to Bottom'.",
+        &GridLayoutContainer::setAutoPositioning, &GridLayoutContainer::getAutoPositioning, GridLayoutContainer::AP_LeftToRight
+    );
+
 }
 
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
