@@ -33,8 +33,6 @@
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
 #include "CEGUIListHeader.h"
-#include "CEGUIMultiColumnListProperties.h"
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -267,7 +265,7 @@ public:
 	\exception	InvalidRequestException		thrown if there are no columns in this multi column list.
 	*/
 	uint	getSortColumn(void) const;
-
+	uint	getSortColumnID(void) const;
 
 	/*!
 	\brief
@@ -805,7 +803,7 @@ public:
 		Nothing.
 	*/
 	void	addColumn(const String& text, uint col_id, const UDim& width);
-
+	void	addColumn(const String& value);
 
 	/*!
 	\brief
@@ -1622,27 +1620,122 @@ protected:
 
 private:
 	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static MultiColumnListProperties::ColumnsMovable				d_columnsMovableProperty;
-	static MultiColumnListProperties::ColumnsSizable				d_columnsSizableProperty;
-	static MultiColumnListProperties::ForceHorzScrollbar			d_forceHorzScrollProperty;
-	static MultiColumnListProperties::ForceVertScrollbar			d_forceVertScrollProperty;
-	static MultiColumnListProperties::NominatedSelectionColumnID	d_nominatedSelectColProperty;
-	static MultiColumnListProperties::NominatedSelectionRow			d_nominatedSelectRowProperty;
-	static MultiColumnListProperties::SelectionMode					d_selectModeProperty;
-	static MultiColumnListProperties::SortColumnID					d_sortColumnIDProperty;
-	static MultiColumnListProperties::SortDirection					d_sortDirectionProperty;
-	static MultiColumnListProperties::SortSettingEnabled			d_sortSettingProperty;
-	static MultiColumnListProperties::ColumnHeader					d_columnHeaderProperty;
-	static MultiColumnListProperties::RowCount						d_rowCountProperty;
-
-
-	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addMultiColumnListProperties(void);
 };
+
+
+template<>
+class PropertyHelper<MultiColumnList::SelectionMode>
+{
+public:
+    typedef MultiColumnList::SelectionMode return_type;
+    typedef return_type safe_method_return_type;
+    typedef MultiColumnList::SelectionMode pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("SelectionMode");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        MultiColumnList::SelectionMode mode;
+
+        if (str == "RowMultiple")
+        {
+            mode = MultiColumnList::RowMultiple;
+        }
+        else if (str == "ColumnSingle")
+        {
+            mode = MultiColumnList::ColumnSingle;
+        }
+        else if (str == "ColumnMultiple")
+        {
+            mode = MultiColumnList::ColumnMultiple;
+        }
+        else if (str == "CellSingle")
+        {
+            mode = MultiColumnList::CellSingle;
+        }
+        else if (str == "CellMultiple")
+        {
+            mode = MultiColumnList::CellMultiple;
+        }
+        else if (str == "NominatedColumnSingle")
+        {
+            mode = MultiColumnList::NominatedColumnSingle;
+        }
+        else if (str == "NominatedColumnMultiple")
+        {
+            mode = MultiColumnList::NominatedColumnMultiple;
+        }
+        else if (str == "NominatedRowSingle")
+        {
+            mode = MultiColumnList::NominatedRowSingle;
+        }
+        else if (str == "NominatedRowMultiple")
+        {
+            mode = MultiColumnList::NominatedRowMultiple;
+        }
+        else
+        {
+            mode = MultiColumnList::RowSingle;
+        }
+        return mode;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        switch(val)
+        {
+        case MultiColumnList::RowMultiple:
+            return String("RowMultiple");
+            break;
+
+        case MultiColumnList::ColumnSingle:
+            return String("ColumnSingle");
+            break;
+
+        case MultiColumnList::ColumnMultiple:
+            return String("ColumnMultiple");
+            break;
+
+        case MultiColumnList::CellSingle:
+            return String("CellSingle");
+            break;
+
+        case MultiColumnList::CellMultiple:
+            return String("CellMultiple");
+            break;
+
+        case MultiColumnList::NominatedColumnSingle:
+            return String("NominatedColumnSingle");
+            break;
+
+        case MultiColumnList::NominatedColumnMultiple:
+            return String("NominatedColumnMultiple");
+            break;
+
+        case MultiColumnList::NominatedRowSingle:
+            return String("NominatedRowSingle");
+            break;
+
+        case MultiColumnList::NominatedRowMultiple:
+            return String("NominatedRowMultiple");
+            break;
+
+        default:
+            return String("RowSingle");
+            break;
+        }
+    }
+};
+
 
 } // End of  CEGUI namespace section
 

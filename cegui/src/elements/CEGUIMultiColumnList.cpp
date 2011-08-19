@@ -33,6 +33,7 @@
 #include "elements/CEGUIListHeader.h"
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUILogger.h"
+#include "CEGUITextUtils.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIWindowManager.h"
@@ -52,23 +53,6 @@ MultiColumnListWindowRenderer::MultiColumnListWindowRenderer(const String& name)
     WindowRenderer(name, MultiColumnList::EventNamespace)
 {
 }
-
-/*************************************************************************
-	Properties for this class
-*************************************************************************/
-MultiColumnListProperties::ColumnsMovable				MultiColumnList::d_columnsMovableProperty;
-MultiColumnListProperties::ColumnsSizable				MultiColumnList::d_columnsSizableProperty;
-MultiColumnListProperties::ForceHorzScrollbar			MultiColumnList::d_forceHorzScrollProperty;
-MultiColumnListProperties::ForceVertScrollbar			MultiColumnList::d_forceVertScrollProperty;
-MultiColumnListProperties::NominatedSelectionColumnID	MultiColumnList::d_nominatedSelectColProperty;
-MultiColumnListProperties::NominatedSelectionRow		MultiColumnList::d_nominatedSelectRowProperty;
-MultiColumnListProperties::SelectionMode				MultiColumnList::d_selectModeProperty;
-MultiColumnListProperties::SortColumnID					MultiColumnList::d_sortColumnIDProperty;
-MultiColumnListProperties::SortDirection				MultiColumnList::d_sortDirectionProperty;
-MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingProperty;
-MultiColumnListProperties::ColumnHeader					MultiColumnList::d_columnHeaderProperty;
-MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -179,6 +163,14 @@ uint MultiColumnList::getSortColumn(void) const
 	return getListHeader()->getSortColumn();
 }
 
+uint MultiColumnList::getSortColumnID(void) const
+{
+    if (getColumnCount() > 0)
+    {
+        return getColumnID(getSortColumn());
+    }
+    return 0;
+}
 
 /*************************************************************************
 	Return the zero based column index of the column with the specified ID.
@@ -591,7 +583,11 @@ bool MultiColumnList::isItemSelected(const MCLGridRef& grid_ref) const
 *************************************************************************/
 uint MultiColumnList::getNominatedSelectionColumnID(void) const
 {
-	return getListHeader()->getSegmentFromColumn(d_nominatedSelectCol).getID();
+    if (getColumnCount() > 0)
+    {
+        return getListHeader()->getSegmentFromColumn(d_nominatedSelectCol).getID();
+    }
+    return 0;
 }
 
 
@@ -674,7 +670,53 @@ void MultiColumnList::addColumn(const String& text, uint col_id, const UDim& wid
 	insertColumn(text, col_id, width, getColumnCount());
 }
 
+/*************************************************************************
+	Add a column to the table.
+*************************************************************************/
+void MultiColumnList::addColumn(const String& value)
+{
+    size_t idstart = value.rfind("id:");
+    size_t wstart = value.rfind("width:");
+    size_t capstart = value.find("text:");
 
+    // some defaults in case of missing data
+    String caption, id("0"), width("{0.33,0}");
+
+    // extract the caption field
+    if (capstart != String::npos)
+    {
+        capstart = value.find_first_of(":") + 1;
+
+        if (wstart == String::npos)
+            if (idstart == String::npos)
+                caption = value.substr(capstart);
+            else
+                caption = value.substr(capstart, idstart - capstart);
+        else
+            caption = value.substr(capstart, wstart - capstart);
+
+        // trim trailing whitespace
+        TextUtils::trimTrailingChars(caption, TextUtils::DefaultWhitespace);
+    }
+
+    // extract the width field
+    if (wstart != String::npos)
+    {
+        width = value.substr(wstart);
+        width = width.substr(width.find_first_of("{"));
+        width = width.substr(0, width.find_last_of("}") + 1);
+    }
+
+    // extract the id field.
+    if (idstart != String::npos)
+    {
+        id = value.substr(idstart);
+        id = id.substr(id.find_first_of(":") + 1);
+    }
+
+    // add the column accordingly
+    addColumn(caption, PropertyHelper<uint>::fromString(id), PropertyHelper<UDim>::fromString(width));
+}
 /*************************************************************************
 	Insert a column into the table.
 *************************************************************************/
@@ -2152,18 +2194,67 @@ bool MultiColumnList::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void MultiColumnList::addMultiColumnListProperties(void)
 {
-	addProperty(&d_columnsSizableProperty);
-	addProperty(&d_columnsMovableProperty);
-	addProperty(&d_forceHorzScrollProperty);
-	addProperty(&d_forceVertScrollProperty);
-	addProperty(&d_nominatedSelectColProperty);
-	addProperty(&d_nominatedSelectRowProperty);
-	addProperty(&d_selectModeProperty);
-	addProperty(&d_sortColumnIDProperty);
-	addProperty(&d_sortDirectionProperty);
-	addProperty(&d_sortSettingProperty);
-	addProperty(&d_columnHeaderProperty);
-	addProperty(&d_rowCountProperty);
+    const String propertyOrigin("MultiColumnList");
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
+        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
+        &MultiColumnList::setUserColumnSizingEnabled, &MultiColumnList::isUserColumnSizingEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
+        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
+        &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
+        "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction."
+        "  Value is either \"True\" or \"False\".",
+        &MultiColumnList::setUserSortControlEnabled, &MultiColumnList::isUserSortControlEnabled, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, ListHeaderSegment::SortDirection,
+        "SortDirection", "Property to get/set the sort direction setting of the list."
+        "  Value is the text of one of the SortDirection enumerated value names.",
+        &MultiColumnList::setSortDirection, &MultiColumnList::getSortDirection, ListHeaderSegment::None
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
+        "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
+        "  Value is either \"True\" or \"False\".",
+        &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false
+    );
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
+        "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal scroll bar of the list box."
+        "  Value is either \"True\" or \"False\".",
+        &MultiColumnList::setShowHorzScrollbar, &MultiColumnList::isHorzScrollbarAlwaysShown, false
+    );
+
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
+        "NominatedSelectionColumnID", "Property to get/set the nominated selection column (via ID).  Value is an unsigned integer number.",
+        &MultiColumnList::setNominatedSelectionColumn, &MultiColumnList::getNominatedSelectionColumnID, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
+        "NominatedSelectionRow", "Property to get/set the nominated selection row.  Value is an unsigned integer number.",
+        &MultiColumnList::setNominatedSelectionRow, &MultiColumnList::getNominatedSelectionRow, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, uint,
+        "RowCount", "Property to access the number of rows in the list (read only)",
+        0, &MultiColumnList::getRowCount, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,
+        "SelectionMode", "Property to get/set the selection mode setting of the list."
+        "  Value is the text of one of the SelectionMode enumerated value names.",
+        &MultiColumnList::setSelectionMode, &MultiColumnList::getSelectionMode, MultiColumnList::RowSingle
+    );
+
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, String,
+        "ColumnHeader", "Property to set up a column (there is no getter for this property)",
+        &MultiColumnList::addColumn, 0, ""
+    );
 }
 
 
