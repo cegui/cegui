@@ -46,19 +46,6 @@ const String ScrollablePane::EventContentPaneScrolled("ContentPaneScrolled");
 const String ScrollablePane::VertScrollbarName( "__auto_vscrollbar__" );
 const String ScrollablePane::HorzScrollbarName( "__auto_hscrollbar__" );
 const String ScrollablePane::ScrolledContainerName( "__auto_container__" );
-
-//----------------------------------------------------------------------------//
-ScrollablePaneProperties::ForceHorzScrollbar   ScrollablePane::d_horzScrollbarProperty;
-ScrollablePaneProperties::ForceVertScrollbar   ScrollablePane::d_vertScrollbarProperty;
-ScrollablePaneProperties::ContentPaneAutoSized ScrollablePane::d_autoSizedProperty;
-ScrollablePaneProperties::ContentArea          ScrollablePane::d_contentAreaProperty;
-ScrollablePaneProperties::HorzStepSize         ScrollablePane::d_horzStepProperty;
-ScrollablePaneProperties::HorzOverlapSize      ScrollablePane::d_horzOverlapProperty;
-ScrollablePaneProperties::HorzScrollPosition   ScrollablePane::d_horzScrollPositionProperty;
-ScrollablePaneProperties::VertStepSize         ScrollablePane::d_vertStepProperty;
-ScrollablePaneProperties::VertOverlapSize      ScrollablePane::d_vertOverlapProperty;
-ScrollablePaneProperties::VertScrollPosition   ScrollablePane::d_vertScrollPositionProperty;
-
 //----------------------------------------------------------------------------//
 ScrollablePaneWindowRenderer::ScrollablePaneWindowRenderer(const String& name) :
 WindowRenderer(name, ScrollablePane::EventNamespace)
@@ -520,16 +507,54 @@ void ScrollablePane::onMouseWheel(MouseEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrollablePane::addScrollablePaneProperties(void)
 {
-    addProperty(&d_horzScrollbarProperty);
-    addProperty(&d_vertScrollbarProperty);
-    addProperty(&d_autoSizedProperty);
-    addProperty(&d_contentAreaProperty);
-    addProperty(&d_horzStepProperty);
-    addProperty(&d_horzOverlapProperty);
-    addProperty(&d_horzScrollPositionProperty);
-    addProperty(&d_vertStepProperty);
-    addProperty(&d_vertOverlapProperty);
-    addProperty(&d_vertScrollPositionProperty);
+    const String propertyOrigin("ScrollablePane");
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
+        "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
+        "bar of the tree.  Value is either \"True\" or \"False\".",
+        &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false
+    );
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
+        "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
+        "scroll bar of the tree.  Value is either \"True\" or \"False\".",
+        &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "HorzStepSize", "Property to get/set the step size for the horizontal Scrollbar.  Value is a float.",
+        &ScrollablePane::setHorizontalStepSize, &ScrollablePane::getHorizontalStepSize, 0.1f
+    );
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "HorzOverlapSize", "Property to get/set the overlap size for the horizontal Scrollbar.  Value is a float.",
+        &ScrollablePane::setHorizontalOverlapSize, &ScrollablePane::getHorizontalOverlapSize, 0.01f
+    );
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "HorzScrollPosition", "Property to get/set the scroll position of the horizontal Scrollbar as a fraction.  Value is a float.",
+        &ScrollablePane::setHorizontalScrollPosition, &ScrollablePane::getHorizontalScrollPosition, 0.0f
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "VertStepSize", "Property to get/set the step size for the vertical Scrollbar.  Value is a float.",
+        &ScrollablePane::setVerticalStepSize, &ScrollablePane::getHorizontalStepSize, 0.1f
+    );
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "VertOverlapSize", "Property to get/set the overlap size for the vertical Scrollbar.  Value is a float.",
+        &ScrollablePane::setVerticalOverlapSize, &ScrollablePane::getVerticalOverlapSize, 0.01f
+    );
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
+        "VertScrollPosition", "Property to get/set the scroll position of the vertical Scrollbar as a fraction.  Value is a float.",
+        &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
+        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself.  Value is either \"True\" or \"False\".",
+        &ScrollablePane::setContentPaneAutoSized, &ScrollablePane::isContentPaneAutoSized, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
+        "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
+        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero()
+    );
 }
 
 //----------------------------------------------------------------------------//
