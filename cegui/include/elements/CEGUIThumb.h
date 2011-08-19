@@ -32,7 +32,6 @@
 #define _CEGUIThumb_h_
 
 #include "CEGUIPushButton.h"
-#include "CEGUIThumbProperties.h"
 #include <utility>
 
 
@@ -197,6 +196,21 @@ public:
 	*/
 	void	setVertRange(float min, float max);
 
+	/*!
+	\brief
+		set the movement range of the thumb for the vertical axis.
+
+		The values specified here are relative to the parent window for the thumb, and are specified in whichever
+		metrics mode is active for the widget.
+
+	\param range
+		the setting for the thumb on the vertical axis.
+
+	\return
+		Nothing.
+	*/
+	void	setVertRange(const std::pair<float, float> &range);
+
 
 	/*!
 	\brief
@@ -215,6 +229,20 @@ public:
 		Nothing.
 	*/
 	void	setHorzRange(float min, float max);
+	/*!
+	\brief
+		set the movement range of the thumb for the horizontal axis.
+
+		The values specified here are relative to the parent window for the thumb, and are specified in whichever
+		metrics mode is active for the widget.
+
+	\param range
+		the setting for the thumb on the horizontal axis.
+
+	\return
+		Nothing.
+	*/
+	void	setHorzRange(const std::pair<float, float> &range);
 
 
 	/*************************************************************************
@@ -287,19 +315,40 @@ protected:
 
 private:
 	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ThumbProperties::HotTracked	d_hotTrackedProperty;
-	static ThumbProperties::VertFree	d_vertFreeProperty;
-	static ThumbProperties::HorzFree	d_horzFreeProperty;
-	static ThumbProperties::VertRange	d_vertRangeProperty;
-	static ThumbProperties::HorzRange	d_horzRangeProperty;
-
-
-	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addThumbProperties(void);
+};
+
+template<>
+class PropertyHelper<std::pair<float,float> >
+{
+public:
+    typedef std::pair<float,float> return_type;
+    typedef return_type safe_method_return_type;
+    typedef const std::pair<float,float>& pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("std::pair<float,float>");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        float rangeMin = 0, rangeMax = 0;
+        sscanf(str.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
+        return std::pair<float,float>(rangeMin,rangeMax);
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[64];
+        sprintf(buff, "min:%f max:%f", val.first, val.second);
+        return buff;
+    }
 };
 
 } // End of  CEGUI namespace section

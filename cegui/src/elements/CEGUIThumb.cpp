@@ -36,17 +36,6 @@ namespace CEGUI
 const String Thumb::EventNamespace("Thumb");
 const String Thumb::WidgetTypeName("CEGUI/Thumb");
 
-
-/*************************************************************************
-	Static Properties for this class
-*************************************************************************/
-ThumbProperties::HotTracked	Thumb::d_hotTrackedProperty;
-ThumbProperties::VertFree	Thumb::d_vertFreeProperty;
-ThumbProperties::HorzFree	Thumb::d_horzFreeProperty;
-ThumbProperties::VertRange	Thumb::d_vertRangeProperty;
-ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
-
-
 /*************************************************************************
 	Event name constants
 *************************************************************************/
@@ -112,7 +101,13 @@ void Thumb::setVertRange(float min, float max)
 
 }
 
-
+/*************************************************************************
+	set the movement range of the thumb for the vertical axis.	
+*************************************************************************/
+void Thumb::setVertRange(const std::pair<float, float> &range)
+{
+	setVertRange(range.first,range.second);
+}
 /*************************************************************************
 	set the movement range of the thumb for the horizontal axis.
 *************************************************************************/
@@ -143,6 +138,13 @@ void Thumb::setHorzRange(float min, float max)
 		setXPosition(cegui_absdim(max));
 	}
 
+}
+/*************************************************************************
+	set the movement range of the thumb for the horizontal axis.
+*************************************************************************/
+void Thumb::setHorzRange(const std::pair<float, float> &range)
+{
+	setHorzRange(range.first,range.second);
 }
 
 
@@ -310,19 +312,40 @@ std::pair<float, float>	Thumb::getHorzRange(void) const
 *************************************************************************/
 void Thumb::addThumbProperties(void)
 {
-	addProperty(&d_hotTrackedProperty);
-	addProperty(&d_vertFreeProperty);
-	addProperty(&d_horzFreeProperty);
-	addProperty(&d_vertRangeProperty);
-	addProperty(&d_horzRangeProperty);
+    const String propertyOrigin("Thumb");
+    CEGUI_DEFINE_PROPERTY(Thumb, bool,
+        "HotTracked", "Property to get/set the state of the state of the 'hot-tracked' setting for the thumb."
+        "  Value is either \"True\" or \"False\".",
+        &Thumb::setHotTracked, &Thumb::isHotTracked, true
+    );
+		typedef std::pair<float,float> range;
+    CEGUI_DEFINE_PROPERTY(Thumb, range,
+        "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
+        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f,1.0f)
+    );
+
+    CEGUI_DEFINE_PROPERTY(Thumb, range,
+        "HorzRange", "Property to get/set the horizontal movement range for the thumb.  Value is \"min:[float] max:[float]\".",
+        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f,1.0f)
+    );
+
+
+    CEGUI_DEFINE_PROPERTY(Thumb, bool,
+        "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"True\" or \"False\".",
+        &Thumb::setVertFree, &Thumb::isVertFree, false
+    );
+    CEGUI_DEFINE_PROPERTY(Thumb, bool,
+        "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".",
+        &Thumb::setHorzFree, &Thumb::isHorzFree, false
+    );
 
     // if we're an autowindow we ban some properties from XML
     if (isAutoWindow())
     {
-        banPropertyFromXML(&d_vertRangeProperty);
-        banPropertyFromXML(&d_horzRangeProperty);
-        banPropertyFromXML(&d_vertFreeProperty);
-        banPropertyFromXML(&d_horzFreeProperty);
+        banPropertyFromXML("VertRange");
+        banPropertyFromXML("HorzRange");
+        banPropertyFromXML("VertFree");
+        banPropertyFromXML("HorzFree");
     }
 }
 
