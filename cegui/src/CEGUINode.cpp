@@ -1,7 +1,7 @@
 /***********************************************************************
     filename:   CEGUINode.cpp
     created:    18/8/2011
-    author:     Paul D Turner
+    author:     Martin Preisler
 
     purpose:    Implements the Node class
 *************************************************************************/
