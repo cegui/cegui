@@ -33,8 +33,6 @@
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
 #include "CEGUIListHeaderSegment.h"
-#include "CEGUIListHeaderProperties.h"
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -256,6 +254,17 @@ public:
 	\exception	InvalidRequestException		thrown if no segments are attached to the ListHeader.
 	*/
 	ListHeaderSegment&	getSortSegment(void) const;
+	/*!
+	\brief
+		Return the ListHeaderSegment ID that is marked as being the 'sort key' segment.  There must be at least one segment
+		to successfully call this method.
+
+	\return
+		uint which is the sort-key segment ID.
+
+	\exception	InvalidRequestException		thrown if no segments are attached to the ListHeader.
+	*/
+	uint	getSortSegmentID(void) const;
 
 
 	/*!
@@ -948,16 +957,6 @@ protected:
 
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ListHeaderProperties::SortSettingEnabled		d_sortSettingProperty;
-	static ListHeaderProperties::ColumnsSizable			d_sizableProperty;
-	static ListHeaderProperties::ColumnsMovable			d_movableProperty;
-	static ListHeaderProperties::SortColumnID			d_sortColumnIDProperty;
-	static ListHeaderProperties::SortDirection			d_sortDirectionProperty;
-
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/

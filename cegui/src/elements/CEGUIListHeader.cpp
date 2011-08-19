@@ -46,17 +46,6 @@ ListHeaderWindowRenderer::ListHeaderWindowRenderer(const String& name) :
     WindowRenderer(name, "ListHeader")
 {
 }
-
-/*************************************************************************
-	Properties for this class
-*************************************************************************/
-ListHeaderProperties::SortSettingEnabled	ListHeader::d_sortSettingProperty;
-ListHeaderProperties::ColumnsSizable		ListHeader::d_sizableProperty;
-ListHeaderProperties::ColumnsMovable		ListHeader::d_movableProperty;
-ListHeaderProperties::SortColumnID			ListHeader::d_sortColumnIDProperty;
-ListHeaderProperties::SortDirection			ListHeader::d_sortDirectionProperty;
-
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -132,9 +121,7 @@ ListHeaderSegment& ListHeader::getSegmentFromColumn(uint column) const
 	{
 		return *d_segments[column];
 	}
-
 }
-
 
 /*************************************************************************
 	Return the ListHeaderSegment with the requested ID.
@@ -170,7 +157,13 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 	}
 
 }
-
+/*************************************************************************
+	Return the sort-key segment.
+*************************************************************************/
+uint ListHeader::getSortSegmentID(void) const
+{
+	return getSortSegment().getID();
+}
 
 /*************************************************************************
 	Given a segment, return it's zero based column index.
@@ -1037,11 +1030,30 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 *************************************************************************/
 void ListHeader::addHeaderProperties(void)
 {
-	addProperty(&d_sizableProperty);
-	addProperty(&d_movableProperty);
-	addProperty(&d_sortSettingProperty);
-	addProperty(&d_sortColumnIDProperty);
-	addProperty(&d_sortDirectionProperty);
+
+    const String propertyOrigin("ListHeader");
+
+
+    CEGUI_DEFINE_PROPERTY(ListHeader, bool,
+        "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".",
+        &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeader, bool,
+        "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
+        &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeader, bool,
+        "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
+        &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeader, uint,
+        "SortColumnID", "Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
+        &ListHeader::setSortColumnFromID, &ListHeader::getSortSegmentID, 0
+    );
+    CEGUI_DEFINE_PROPERTY(ListHeader, ListHeaderSegment::SortDirection,
+        "SortDirection", "Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
+        &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::None
+    );
 }
 
 /*************************************************************************
