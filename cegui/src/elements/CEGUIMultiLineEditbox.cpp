@@ -72,19 +72,6 @@ void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
 	Undo support
 *************************************************************************/
 /*************************************************************************
-	Static Properties for this class
-*************************************************************************/
-MultiLineEditboxProperties::ReadOnly				MultiLineEditbox::d_readOnlyProperty;
-MultiLineEditboxProperties::WordWrap				MultiLineEditbox::d_wordWrapProperty;
-MultiLineEditboxProperties::CaretIndex				MultiLineEditbox::d_caretIndexProperty;
-MultiLineEditboxProperties::SelectionStart			MultiLineEditbox::d_selectionStartProperty;
-MultiLineEditboxProperties::SelectionLength			MultiLineEditbox::d_selectionLengthProperty;
-MultiLineEditboxProperties::MaxTextLength			MultiLineEditbox::d_maxTextLengthProperty;
-MultiLineEditboxProperties::SelectionBrushImage     MultiLineEditbox::d_selectionBrushProperty;
-MultiLineEditboxProperties::ForceVertScrollbar      MultiLineEditbox::d_forceVertProperty;
-
-
-/*************************************************************************
 	Constants
 *************************************************************************/
 // event names
@@ -282,6 +269,17 @@ void MultiLineEditbox::setSelection(size_t start_pos, size_t end_pos)
 
 }
 
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setSelectionStart(size_t start_pos)
+{
+    this->setSelection(start_pos,start_pos + this->getSelectionLength());
+}
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::setSelectionLength(size_t length)
+{
+    this->setSelection(this->getSelectionStartIndex(),this->getSelectionStartIndex() + length);
+}
+
 
 /*************************************************************************
 	set the maximum text length for this edit box.
@@ -320,7 +318,7 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	// calculate the location of the caret
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
 	if (caretLine < d_lines.size())
@@ -454,7 +452,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 
 	String paraText;
 
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 
 	if (fnt)
 	{
@@ -762,16 +760,12 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
         
         WindowEventArgs args(this);
         onTextChanged(args);
-
-		return true;
     }
     else
     {
         // Trigger text box full event
         WindowEventArgs args(this);
         onEditboxFullEvent(args);
-
-		return true;
     }
 }
 
@@ -1622,14 +1616,45 @@ bool MultiLineEditbox::isWordWrapped(void) const
 *************************************************************************/
 void MultiLineEditbox::addMultiLineEditboxProperties(void)
 {
-	addProperty(&d_readOnlyProperty);
-	addProperty(&d_wordWrapProperty);
-	addProperty(&d_caretIndexProperty);
-	addProperty(&d_selectionStartProperty);
-	addProperty(&d_selectionLengthProperty);
-	addProperty(&d_maxTextLengthProperty);
-    addProperty(&d_selectionBrushProperty);
-    addProperty(&d_forceVertProperty);
+
+    const String propertyOrigin("MultiLineEditbox");
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
+        &MultiLineEditbox::setReadOnly, &MultiLineEditbox::isReadOnly, false
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
+        "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
+        &MultiLineEditbox::setCaretIndex, &MultiLineEditbox::getCaretIndex, 0
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
+        "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
+        &MultiLineEditbox::setSelectionStart, &MultiLineEditbox::getSelectionStartIndex, 0
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
+        "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
+        &MultiLineEditbox::setSelectionLength, &MultiLineEditbox::getSelectionLength, 0
+    );
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
+        "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
+        &MultiLineEditbox::setMaxTextLength, &MultiLineEditbox::getMaxTextLength, String().max_size()
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"True\" or \"False\".",
+        &MultiLineEditbox::setWordWrapping, &MultiLineEditbox::isWordWrapped, true
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
+        "SelectionBrushImage", "Property to get/set the selection brush image for the editbox.  Value should be \"set:[imageset name] image:[image name]\".",
+        &MultiLineEditbox::setSelectionBrushImage, &MultiLineEditbox::getSelectionBrushImage, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
+        "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
+        "Value is either \"True\" or \"False\".",
+        &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
+    );
+
 }
 
 /*************************************************************************

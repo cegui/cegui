@@ -33,10 +33,8 @@
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
 #include "../CEGUIFont.h"
-#include "CEGUIMultiLineEditboxProperties.h"
 
 #include <vector>
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -371,6 +369,31 @@ public:
 	*/
 	void	setSelection(size_t start_pos, size_t end_pos);
 	
+
+    /*!
+    \brief
+        Define the current selection start for the Editbox
+
+        \param start_pos
+        Index of the starting point for the selection.  If this value is greater than the number of characters in the Editbox, the
+        selection start will be set to the end of the text.
+
+    \return
+        Nothing.
+    */
+    void setSelectionStart(size_t start_pos);
+
+    /*!
+    \brief
+        Define the current selection for the Editbox
+
+    \param start_pos
+        Length of the selection.
+
+    \return
+        Nothing.
+    */
+    void setSelectionLength(size_t length);
 
 	/*!
 	\brief
@@ -753,19 +776,6 @@ protected:
 
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static MultiLineEditboxProperties::ReadOnly					d_readOnlyProperty;
-	static MultiLineEditboxProperties::WordWrap					d_wordWrapProperty;
-	static MultiLineEditboxProperties::CaretIndex				d_caretIndexProperty;
-	static MultiLineEditboxProperties::SelectionStart			d_selectionStartProperty;
-	static MultiLineEditboxProperties::SelectionLength			d_selectionLengthProperty;
-	static MultiLineEditboxProperties::MaxTextLength			d_maxTextLengthProperty;
-    static MultiLineEditboxProperties::SelectionBrushImage      d_selectionBrushProperty;
-    static MultiLineEditboxProperties::ForceVertScrollbar	    d_forceVertProperty;
-
-
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
