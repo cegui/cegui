@@ -323,7 +323,7 @@ void Scrollbar::addScrollbarProperties(void)
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "EndLockEnabled", "Property to get/set the 'end lock' mode setting for the Scrollbar. "
         "Value is either \"True\" or \"False\".",
-        &Scrollbar::setAlpha, &Scrollbar::getAlpha, false
+        &Scrollbar::setEndLockEnabled, &Scrollbar::getEndLockEnabled, false
     );
 
     // we ban all these properties from xml for auto windows
