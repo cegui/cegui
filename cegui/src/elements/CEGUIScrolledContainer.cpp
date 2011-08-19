@@ -39,11 +39,6 @@ const String ScrolledContainer::EventContentChanged("ContentChanged");
 const String ScrolledContainer::EventAutoSizeSettingChanged("AutoSizeSettingChanged");
 
 //----------------------------------------------------------------------------//
-ScrolledContainerProperties::ContentPaneAutoSized ScrolledContainer::d_autoSizedProperty;
-ScrolledContainerProperties::ContentArea          ScrolledContainer::d_contentAreaProperty;
-ScrolledContainerProperties::ChildExtentsArea     ScrolledContainer::d_childExtentsAreaProperty;
-
-//----------------------------------------------------------------------------//
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
     d_contentArea(0, 0, 0, 0),
@@ -259,9 +254,23 @@ void ScrolledContainer::onParentSized(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrolledContainer::addScrolledContainerProperties(void)
 {
-    addProperty(&d_autoSizedProperty);
-    addProperty(&d_contentAreaProperty);
-    addProperty(&d_childExtentsAreaProperty);
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(ScrolledContainer, bool,
+        "ContentPaneAutoSized", "Property to get/set the setting which controls whether the content pane will auto-size itself."
+        "  Value is either \"True\" or \"False\".",
+        &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
+    );
+    CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
+        "ContentArea", "Property to get/set the current content area rectangle of the content pane."
+        "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
+        &ScrolledContainer::setContentArea, &ScrolledContainer::getContentArea, Rectf::zero()
+    );
+    CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
+        "ChildExtentsArea", "Property to get the current content extents rectangle."
+        "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
+        0, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
+    );
 }
 
 //----------------------------------------------------------------------------//

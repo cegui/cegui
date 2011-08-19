@@ -30,7 +30,6 @@
 
 #include "../CEGUIWindow.h"
 #include "../CEGUIWindowFactory.h"
-#include "CEGUIScrolledContainerProperties.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -190,10 +189,6 @@ protected:
     bool d_autosizePane;
 
 private:
-    static ScrolledContainerProperties::ContentPaneAutoSized d_autoSizedProperty;
-    static ScrolledContainerProperties::ContentArea          d_contentAreaProperty;
-    static ScrolledContainerProperties::ChildExtentsArea     d_childExtentsAreaProperty;
-
     void addScrolledContainerProperties(void);
 };
 
