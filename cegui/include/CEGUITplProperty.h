@@ -85,7 +85,16 @@ public:
             d_constRefGetter(0),
             d_refGetter(getter)
         {}
-
+        // to set 0 as func
+        GetterFunctor(int val):
+            d_plainGetter(0),
+            d_constRefGetter(0),
+            d_refGetter(0)
+        {}
+        operator bool(void) const
+        {
+            return d_plainGetter || d_constRefGetter || d_refGetter;
+        }
         typename Helper::safe_method_return_type operator()(const C* instance) const
         {
             // FIXME: Ideally we want this to be done during compilation, not runtime
@@ -117,20 +126,29 @@ public:
     virtual ~TplProperty()
     {}
     
-    //! \copydoc TypedProperty::setNative
-    virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value)
+    //! \copydoc TypedProperty::setNative_impl
+    virtual void setNative_impl(PropertyReceiver* receiver, typename Helper::pass_type value)
     {
         C* instance = static_cast<C*>(receiver);
         CEGUI_CALL_MEMBER_FN(*instance, d_setter)(value);
     }
 
-    //! \copydoc TypedProperty::getNative
-    virtual typename Helper::safe_method_return_type getNative(const PropertyReceiver* receiver) const
+    //! \copydoc TypedProperty::getNative_impl
+    virtual typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
     {
         const C* instance = static_cast<const C*>(receiver);
-		return d_getter(instance);
+        return d_getter(instance);
     }
-    
+    //! \copydoc Property::isReadable
+    virtual bool isReadable() const
+    {
+        return d_getter;
+    }
+    //! \copydoc Property::isWritable
+    virtual bool isWritable() const
+    {
+        return d_setter;
+    }
 private:
     Setter d_setter;
     GetterFunctor d_getter;
