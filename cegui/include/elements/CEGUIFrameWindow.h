@@ -32,8 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIFrameWindowProperties.h"
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -265,7 +263,7 @@ public:
 		Nothing
 	*/
 	void	toggleRollup(void);
-
+	void	setRollup(bool val);
 
 	/*!
 	\brief
@@ -701,11 +699,6 @@ protected:
 
 private:
 	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static FrameWindowProperties::RollUpState		d_rollUpStateProperty;
-
-	/*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addFrameWindowProperties(void);
@@ -718,3 +711,4 @@ private:
 #endif
 
 #endif	// end of guard _CEGUIFrameWindow_h_
+

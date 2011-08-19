@@ -42,12 +42,6 @@ namespace CEGUI
 const String FrameWindow::EventNamespace("FrameWindow");
 const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
 
-
-/*************************************************************************
-	Definitions for Properties
-*************************************************************************/
-FrameWindowProperties::RollUpState				FrameWindow::d_rollUpStateProperty;
-
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -215,8 +209,13 @@ void FrameWindow::toggleRollup(void)
     }
 
 }
-
-
+void FrameWindow::setRollup(bool val)
+{
+    if(val != isRolledup())
+    {
+        toggleRollup();
+    }
+}
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
@@ -766,7 +765,11 @@ void FrameWindow::addFrameWindowProperties(void)
         &FrameWindow::setRollupEnabled, &FrameWindow::isRollupEnabled, true
     ); // TODO: Inconsistency between RollUp and Rollup
 
-	addProperty(&d_rollUpStateProperty);
+    CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
+        "RollUpState", "Property to get/set the roll-up / shade state of the window.  Value is either \"True\" or \"False\".",
+        &FrameWindow::setRollup, &FrameWindow::isRolledup, false
+    );
+
 
 	CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
         "DragMovingEnabled", "Property to get/set the setting for whether the user may drag the window around by its title bar. Value is either \"True\" or \"False\".",
@@ -927,3 +930,4 @@ void FrameWindow::onDragSizingEnded(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
