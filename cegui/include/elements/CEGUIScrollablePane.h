@@ -30,7 +30,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUIScrollablePaneProperties.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -590,17 +589,6 @@ protected:
     Event::Connection d_autoSizeChangedConn;
 
 private:
-    static ScrollablePaneProperties::ForceHorzScrollbar     d_horzScrollbarProperty;
-    static ScrollablePaneProperties::ForceVertScrollbar     d_vertScrollbarProperty;
-    static ScrollablePaneProperties::ContentPaneAutoSized   d_autoSizedProperty;
-    static ScrollablePaneProperties::ContentArea            d_contentAreaProperty;
-    static ScrollablePaneProperties::HorzStepSize           d_horzStepProperty;
-    static ScrollablePaneProperties::HorzOverlapSize        d_horzOverlapProperty;
-    static ScrollablePaneProperties::HorzScrollPosition     d_horzScrollPositionProperty;
-    static ScrollablePaneProperties::VertStepSize           d_vertStepProperty;
-    static ScrollablePaneProperties::VertOverlapSize        d_vertOverlapProperty;
-    static ScrollablePaneProperties::VertScrollPosition     d_vertScrollPositionProperty;
-
     void addScrollablePaneProperties(void);
 };
 
