@@ -32,7 +32,6 @@
 
 #include "../CEGUIBase.h"
 #include "../CEGUIWindow.h"
-#include "CEGUITabControlProperties.h"
 #include <vector>
 
 
@@ -491,13 +490,6 @@ protected:
     void calculateTabButtonSizePosition(size_t index);
 
 protected:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-    static TabControlProperties::TabHeight       d_tabHeightProperty;
-    static TabControlProperties::TabTextPadding  d_tabTextPaddingProperty;
-    static TabControlProperties::TabPanePosition d_tabPanePosition;
-
     /*************************************************************************
 		Private methods
 	*************************************************************************/
@@ -517,7 +509,51 @@ protected:
     bool handleWheeledPane(const EventArgs& e);
 };
 
+template<>
+class PropertyHelper<TabControl::TabPanePosition>
+{
+public:
+    typedef TabControl::TabPanePosition return_type;
+    typedef return_type safe_method_return_type;
+    typedef TabControl::TabPanePosition pass_type;
+    typedef String string_return_type;
 
+    static const String& getDataTypeName()
+    {
+        static String type("TabPanePosition");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "Bottom")
+        {
+            return TabControl::Bottom;
+        }
+        else
+        {
+            return TabControl::Top;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        if (val == TabControl::Top)
+        {
+            return "Top";
+        }
+        else if (val == TabControl::Bottom)
+        {
+            return "Bottom";
+        }
+        else
+        {
+            assert(false && "Invalid Tab Pane Position");
+            return "Top";
+        }
+    }
+};
 } // End of  CEGUI namespace section
 
 

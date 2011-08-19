@@ -52,13 +52,6 @@ TabControlWindowRenderer::TabControlWindowRenderer(const String& name) :
 }
 
 /*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-TabControlProperties::TabHeight		            TabControl::d_tabHeightProperty;
-TabControlProperties::TabTextPadding		    TabControl::d_tabTextPaddingProperty;
-TabControlProperties::TabPanePosition		    TabControl::d_tabPanePosition;
-
-/*************************************************************************
 	Constants
 *************************************************************************/
 // event names
@@ -440,9 +433,20 @@ Add tab control properties
 *************************************************************************/
 void TabControl::addTabControlProperties(void)
 {
-    addProperty(&d_tabHeightProperty);
-    addProperty(&d_tabTextPaddingProperty);
-    addProperty(&d_tabPanePosition);
+    const String propertyOrigin("TabControl");
+
+    CEGUI_DEFINE_PROPERTY(TabControl, UDim,
+        "TabHeight", "Property to get/set the height of the tabs.",
+        &TabControl::setTabHeight, &TabControl::getTabHeight, UDim(0.05f,0.0f)
+    );
+    CEGUI_DEFINE_PROPERTY(TabControl, UDim,
+        "TabTextPadding", "Property to get/set the padding either side of the tab buttons.",
+        &TabControl::setTabTextPadding, &TabControl::getTabTextPadding, UDim(0.0f,0.5f)
+    );
+    CEGUI_DEFINE_PROPERTY(TabControl, TabPanePosition,
+        "TabPanePosition", "Property to get/set the position of the buttons pane.",
+        &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::Top
+    );
 }
 /*************************************************************************
 Internal version of adding a child window
@@ -518,7 +522,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
         btn->setXPosition(prevButton->getArea().d_max.d_x);
     }
     // Width is based on font size (expressed as absolute)
-    const Font* fnt = btn->getFont();
+    Font* fnt = btn->getFont();
     btn->setWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
                         getTabTextPadding() + getTabTextPadding());
 
