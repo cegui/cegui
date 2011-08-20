@@ -1441,6 +1441,19 @@ void register_GridLayoutContainer_class(){
             *\n" );
         
         }
+        { //::CEGUI::GridLayoutContainer::getGrid
+        
+            typedef ::CEGUI::Sizef ( ::CEGUI::GridLayoutContainer::*getGrid_function_type )(  ) const;
+            
+            GridLayoutContainer_exposer.def( 
+                "getGrid"
+                , getGrid_function_type( &::CEGUI::GridLayoutContainer::getGrid )
+                , "*!\n\
+            \n\
+                Retrieves grid width, the amount of cells in one row\n\
+            *\n" );
+        
+        }
         { //::CEGUI::GridLayoutContainer::getGridCellOffset
         
             typedef ::CEGUI::UVector2 ( GridLayoutContainer_wrapper::*getGridCellOffset_function_type )( ::std::vector< CEGUI::UDim > const &,::std::vector< CEGUI::UDim > const &,::size_t,::size_t ) const;
@@ -1626,6 +1639,24 @@ void register_GridLayoutContainer_class(){
                     The newly set auto positioning sequence will start over!\n\
                     Use setAutoPositioningIdx to set it's starting point\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::GridLayoutContainer::setGrid
+        
+            typedef void ( ::CEGUI::GridLayoutContainer::*setGrid_function_type )( ::CEGUI::Sizef const & ) ;
+            
+            GridLayoutContainer_exposer.def( 
+                "setGrid"
+                , setGrid_function_type( &::CEGUI::GridLayoutContainer::setGrid )
+                , ( bp::arg("size") )
+                , "*!\n\
+            \n\
+                Sets grid's dimensions.\n\
+            *\n\
+            *!\n\
+            \n\
+                Sets grid's dimensions.\n\
+            *\n" );
         
         }
         { //::CEGUI::GridLayoutContainer::setGridDimensions

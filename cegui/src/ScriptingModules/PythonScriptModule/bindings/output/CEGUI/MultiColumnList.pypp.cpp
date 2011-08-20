@@ -1439,6 +1439,32 @@ void register_MultiColumnList_class(){
                *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::addColumn
+        
+            typedef void ( ::CEGUI::MultiColumnList::*addColumn_function_type )( ::CEGUI::String const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "addColumn"
+                , addColumn_function_type( &::CEGUI::MultiColumnList::addColumn )
+                , ( bp::arg("value") )
+                , "*!\n\
+               \n\
+                  Add a column to the list box.\n\
+            \n\
+               @param text\n\
+                  String object containing the text label for the column header.\n\
+            \n\
+               @param col_id\n\
+                  ID code to be assigned to the column header.\n\
+            \n\
+               @param width\n\
+                  UDim describing the initial width to be set for the column.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::MultiColumnList::addRow
         
             typedef ::CEGUI::uint ( ::CEGUI::MultiColumnList::*addRow_function_type )( ::CEGUI::uint ) ;
@@ -2180,6 +2206,27 @@ void register_MultiColumnList_class(){
             MultiColumnList_exposer.def( 
                 "getSortColumn"
                 , getSortColumn_function_type( &::CEGUI::MultiColumnList::getSortColumn )
+                , "*!\n\
+               \n\
+                  Return the zero based index of the current sort column.  There must be at least one column to\
+                  successfully call this\n\
+                  method.\n\
+            \n\
+               @return\n\
+                  Zero based column index that is the current sort column.\n\
+            \n\
+               @exception  InvalidRequestException    thrown if there are no columns in this multi column\
+               list.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::getSortColumnID
+        
+            typedef ::CEGUI::uint ( ::CEGUI::MultiColumnList::*getSortColumnID_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getSortColumnID"
+                , getSortColumnID_function_type( &::CEGUI::MultiColumnList::getSortColumnID )
                 , "*!\n\
                \n\
                   Return the zero based index of the current sort column.  There must be at least one column to\

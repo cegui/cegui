@@ -110,6 +110,30 @@ struct PropertyLinkDefinition_wrapper : CEGUI::PropertyLinkDefinition, bp::wrapp
         return CEGUI::Property::isDefault( boost::python::ptr(receiver) );
     }
 
+    virtual bool isReadable(  ) const  {
+        if( bp::override func_isReadable = this->get_override( "isReadable" ) )
+            return func_isReadable(  );
+        else{
+            return this->CEGUI::Property::isReadable(  );
+        }
+    }
+    
+    bool default_isReadable(  ) const  {
+        return CEGUI::Property::isReadable( );
+    }
+
+    virtual bool isWritable(  ) const  {
+        if( bp::override func_isWritable = this->get_override( "isWritable" ) )
+            return func_isWritable(  );
+        else{
+            return this->CEGUI::Property::isWritable(  );
+        }
+    }
+    
+    bool default_isWritable(  ) const  {
+        return CEGUI::Property::isWritable( );
+    }
+
     virtual void writeXMLToStream( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::XMLSerializer & xml_stream ) const  {
         if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
             func_writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
@@ -308,6 +332,28 @@ void register_PropertyLinkDefinition_class(){
                 , isDefault_function_type(&::CEGUI::Property::isDefault)
                 , default_isDefault_function_type(&PropertyLinkDefinition_wrapper::default_isDefault)
                 , ( bp::arg("receiver") ) );
+        
+        }
+        { //::CEGUI::Property::isReadable
+        
+            typedef bool ( ::CEGUI::Property::*isReadable_function_type )(  ) const;
+            typedef bool ( PropertyLinkDefinition_wrapper::*default_isReadable_function_type )(  ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "isReadable"
+                , isReadable_function_type(&::CEGUI::Property::isReadable)
+                , default_isReadable_function_type(&PropertyLinkDefinition_wrapper::default_isReadable) );
+        
+        }
+        { //::CEGUI::Property::isWritable
+        
+            typedef bool ( ::CEGUI::Property::*isWritable_function_type )(  ) const;
+            typedef bool ( PropertyLinkDefinition_wrapper::*default_isWritable_function_type )(  ) const;
+            
+            PropertyLinkDefinition_exposer.def( 
+                "isWritable"
+                , isWritable_function_type(&::CEGUI::Property::isWritable)
+                , default_isWritable_function_type(&PropertyLinkDefinition_wrapper::default_isWritable) );
         
         }
         { //::CEGUI::Property::writeXMLToStream

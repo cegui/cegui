@@ -169,6 +169,14 @@ public:
 	*/
 	bool	isRollupEnabled(void) const					{return d_rollupEnabled;}
 
+    /*!
+    \brief
+        Sets whether the window is currently rolled up (a.k.a shaded).
+
+    \see
+        Window::isRolledup
+    */
+    void    setRolledup(bool val);
 
 	/*!
 	\brief
@@ -263,7 +271,6 @@ public:
 		Nothing
 	*/
 	void	toggleRollup(void);
-	void	setRollup(bool val);
 
 	/*!
 	\brief
