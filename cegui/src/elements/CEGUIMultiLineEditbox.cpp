@@ -318,7 +318,7 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	// calculate the location of the caret
-	Font* fnt = getFont();
+	const Font* fnt = getFont();
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
 	if (caretLine < d_lines.size())
@@ -452,7 +452,7 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 
 	String paraText;
 
-	Font* fnt = getFont();
+	const Font* fnt = getFont();
 
 	if (fnt)
 	{
