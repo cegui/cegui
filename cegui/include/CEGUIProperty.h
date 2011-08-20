@@ -217,13 +217,13 @@ public:
     virtual bool isReadable() const{return true;}
     /*!
     \brief
-        Returns whether the property is writeable.
+        Returns whether the property is writable.
 
     \return
-        - true if the property is writeable.
-        - false if the property isn't writeable.
+        - true if the property is writable.
+        - false if the property isn't writable.
     */
-    virtual bool isWriteable() const{return true;}
+    virtual bool isWritable() const{return true;}
 protected:
 	String d_name;		//!< String that stores the Property name.
 	String d_help;		//!< String that stores the Property help text.
