@@ -145,7 +145,7 @@ public:
         return d_getter;
     }
     //! \copydoc Property::isWritable
-    virtual bool isWritable() const
+    virtual bool isWriteable() const
     {
         return d_setter;
     }

@@ -80,7 +80,7 @@ public:
     */
     virtual void setNative(PropertyReceiver* receiver, typename Helper::pass_type value)
     {
-        if (isWritable())
+        if (isWriteable())
             setNative_impl(receiver,value);
         else
             CEGUI_THROW(InvalidRequestException(String("Property ") + d_origin + ":" + d_name + " is not readable!"));
