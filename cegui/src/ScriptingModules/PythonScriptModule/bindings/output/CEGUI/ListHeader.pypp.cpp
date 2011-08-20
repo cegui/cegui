@@ -1744,6 +1744,37 @@ void register_ListHeader_class(){
                *\n" );
         
         }
+        { //::CEGUI::ListHeader::getSortSegmentID
+        
+            typedef ::CEGUI::uint ( ::CEGUI::ListHeader::*getSortSegmentID_function_type )(  ) const;
+            
+            ListHeader_exposer.def( 
+                "getSortSegmentID"
+                , getSortSegmentID_function_type( &::CEGUI::ListHeader::getSortSegmentID )
+                , "*!\n\
+               \n\
+                  Return the ListHeaderSegment that is marked as being the 'sort key' segment.  There must be at\
+                  least one segment\n\
+                  to successfully call this method.\n\
+            \n\
+               @return\n\
+                  ListHeaderSegment object which is the sort-key segment.\n\
+            \n\
+               @exception  InvalidRequestException    thrown if no segments are attached to the ListHeader.\n\
+               *\n\
+               *!\n\
+               \n\
+                  Return the ListHeaderSegment ID that is marked as being the 'sort key' segment.  There must be\
+                  at least one segment\n\
+                  to successfully call this method.\n\
+            \n\
+               @return\n\
+                  uint which is the sort-key segment ID.\n\
+            \n\
+               @exception  InvalidRequestException    thrown if no segments are attached to the ListHeader.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::ListHeader::getTotalSegmentsPixelExtent
         
             typedef float ( ::CEGUI::ListHeader::*getTotalSegmentsPixelExtent_function_type )(  ) const;

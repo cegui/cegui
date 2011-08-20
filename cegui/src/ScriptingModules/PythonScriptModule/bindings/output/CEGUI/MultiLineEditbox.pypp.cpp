@@ -2338,6 +2338,48 @@ void register_MultiLineEditbox_class(){
                 , "selection brush image property support\n" );
         
         }
+        { //::CEGUI::MultiLineEditbox::setSelectionLength
+        
+            typedef void ( ::CEGUI::MultiLineEditbox::*setSelectionLength_function_type )( ::size_t ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "setSelectionLength"
+                , setSelectionLength_function_type( &::CEGUI::MultiLineEditbox::setSelectionLength )
+                , ( bp::arg("length") )
+                , "*!\n\
+                \n\
+                    Define the current selection for the Editbox\n\
+            \n\
+                @param start_pos\n\
+                    Length of the selection.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::setSelectionStart
+        
+            typedef void ( ::CEGUI::MultiLineEditbox::*setSelectionStart_function_type )( ::size_t ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "setSelectionStart"
+                , setSelectionStart_function_type( &::CEGUI::MultiLineEditbox::setSelectionStart )
+                , ( bp::arg("start_pos") )
+                , "*!\n\
+                \n\
+                    Define the current selection start for the Editbox\n\
+            \n\
+                    @param start_pos\n\
+                    Index of the starting point for the selection.  If this value is greater than the number of\
+                    characters in the Editbox, the\n\
+                    selection start will be set to the end of the text.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::MultiLineEditbox::setShowVertScrollbar
         
             typedef void ( ::CEGUI::MultiLineEditbox::*setShowVertScrollbar_function_type )( bool ) ;

@@ -2193,6 +2193,23 @@ void register_FrameWindow_class(){
                 *\n" );
         
         }
+        { //::CEGUI::FrameWindow::setRolledup
+        
+            typedef void ( ::CEGUI::FrameWindow::*setRolledup_function_type )( bool ) ;
+            
+            FrameWindow_exposer.def( 
+                "setRolledup"
+                , setRolledup_function_type( &::CEGUI::FrameWindow::setRolledup )
+                , ( bp::arg("val") )
+                , "*!\n\
+                \n\
+                    Sets whether the window is currently rolled up (a.k.a shaded).\n\
+            \n\
+                @see\n\
+                    Window.isRolledup\n\
+                *\n" );
+        
+        }
         { //::CEGUI::FrameWindow::setRollupEnabled
         
             typedef void ( ::CEGUI::FrameWindow::*setRollupEnabled_function_type )( bool ) ;

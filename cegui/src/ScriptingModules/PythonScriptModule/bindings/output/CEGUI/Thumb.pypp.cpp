@@ -1467,6 +1467,47 @@ void register_Thumb_class(){
                *\n" );
         
         }
+        { //::CEGUI::Thumb::setHorzRange
+        
+            typedef void ( ::CEGUI::Thumb::*setHorzRange_function_type )( ::std::pair< float, float > const & ) ;
+            
+            Thumb_exposer.def( 
+                "setHorzRange"
+                , setHorzRange_function_type( &::CEGUI::Thumb::setHorzRange )
+                , ( bp::arg("range") )
+                , "*!\n\
+               \n\
+                  set the movement range of the thumb for the horizontal axis.\n\
+            \n\
+                  The values specified here are relative to the parent window for the thumb, and are specified\
+                  in whichever\n\
+                  metrics mode is active for the widget.\n\
+            \n\
+               @param min\n\
+                  the minimum setting for the thumb on the horizontal axis.\n\
+            \n\
+               @param max\n\
+                  the maximum setting for the thumb on the horizontal axis.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n\
+               *!\n\
+               \n\
+                  set the movement range of the thumb for the horizontal axis.\n\
+            \n\
+                  The values specified here are relative to the parent window for the thumb, and are specified\
+                  in whichever\n\
+                  metrics mode is active for the widget.\n\
+            \n\
+               @param range\n\
+                  the setting for the thumb on the horizontal axis.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::Thumb::setHotTracked
         
             typedef void ( ::CEGUI::Thumb::*setHotTracked_function_type )( bool ) ;
@@ -1532,6 +1573,30 @@ void register_Thumb_class(){
             \n\
                @param max\n\
                   the maximum setting for the thumb on the vertical axis.\n\
+            \n\
+               @return\n\
+                  Nothing.\n\
+               *\n" );
+        
+        }
+        { //::CEGUI::Thumb::setVertRange
+        
+            typedef void ( ::CEGUI::Thumb::*setVertRange_function_type )( ::std::pair< float, float > const & ) ;
+            
+            Thumb_exposer.def( 
+                "setVertRange"
+                , setVertRange_function_type( &::CEGUI::Thumb::setVertRange )
+                , ( bp::arg("range") )
+                , "*!\n\
+               \n\
+                  set the movement range of the thumb for the vertical axis.\n\
+            \n\
+                  The values specified here are relative to the parent window for the thumb, and are specified\
+                  in whichever\n\
+                  metrics mode is active for the widget.\n\
+            \n\
+               @param range\n\
+                  the setting for the thumb on the vertical axis.\n\
             \n\
                @return\n\
                   Nothing.\n\
