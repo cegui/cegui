@@ -282,6 +282,12 @@ public:
      * changed.
      */
     static const String EventZOrderChanged;
+    /** Event fired when the non-client setting for the Window is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window whose non-client setting was
+     * changed.
+     */
+    static const String EventNonClientChanged;
     
     /*!
     \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
@@ -794,6 +800,11 @@ public:
     */
     void removeChild(Node* node);
     
+    inline Node* getChild(size_t idx) const
+    {
+        return d_children[idx];
+    }
+    
     inline size_t getChildCount() const
     {
         return d_children.size();
@@ -829,7 +840,10 @@ public:
         Return a Rect that describes the unclipped outer rect area of the Window
         in screen pixels.
     */
-    const CachedRectf& getUnclippedOuterRect() const;
+    inline const CachedRectf& getUnclippedOuterRect() const
+    {
+        d_unclippedOuterRect;
+    }
 
     /*!
     \brief
@@ -842,7 +856,10 @@ public:
         Rect object that describes, in unclipped screen pixel co-ordinates, the
         window object's inner rect area.
     */
-    const CachedRectf& getUnclippedInnerRect() const;
+    inline const CachedRectf& getUnclippedInnerRect() const
+    {
+        return d_unclippedInnerRect;
+    }
 
     /*!
     \brief
@@ -1185,6 +1202,18 @@ protected:
         'this'.
     */
     virtual void onZOrderChanged(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when the window's non-client setting, affecting it's
+        position and size relative to it's parent is changed.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onNonClientChanged(NodeEventArgs& e);
     
     /*************************************************************************
         Implementation Data
