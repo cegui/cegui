@@ -34,6 +34,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIPropertySet.h"
 #include "CEGUIEventSet.h"
+#include "CEGUIEventArgs.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -199,7 +200,22 @@ public:
         }
     }
 };
-   
+
+/*!
+\brief
+    EventArgs based class that is used for objects passed to handlers triggered for events
+    concerning some Node object.
+*/
+class CEGUIEXPORT NodeEventArgs : public EventArgs
+{
+public:
+    NodeEventArgs(Node* node):
+        node(node)
+    {}
+
+    Node* node;     //!< pointer to a Node object of relevance to the event.
+};
+
 /*!
 \brief Represents a positioned and sized node in a tree graph (think of it as a widget graph)
 
@@ -213,6 +229,21 @@ class CEGUIEXPORT Node :
     public AllocatedObject<Node>
 {
 public:
+    //! Namespace for global events
+    static const String EventNamespace;
+
+    // generated internally by Node
+    /** Event fired when the Node size has changed.
+     * Handlers are passed a const NodeEventArgs reference with
+     * NodeEventArgs::node set to the Node whose size was changed.
+     */
+    static const String EventSized;
+    /** Event fired when the Node position has changed.
+     * Handlers are passed a const NodeEventArgs reference with
+     * NodeEventArgs::node set to the Node whose position was changed.
+     */
+    static const String EventMoved;
+    
     /*!
     \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
     */
@@ -254,9 +285,14 @@ public:
             return CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(noPixelAlignment);
         }
         
-        inline void invalidate()
+        inline void invalidateCache()
         {
             d_cacheValid = false;
+        }
+        
+        inline bool isCachedValid() const
+        {
+            return d_cacheValid;
         }
         
         inline void regenerateCache() const
@@ -974,9 +1010,32 @@ protected:
     virtual Rectf getClientChildContentArea_impl() const;
 
     // constrain given USize to window's min size, return if size changed.
-    bool constrainToMinSize(const Sizef& base_sz, USize& sz);
+    bool constrainToMinSize(const Sizef& base_sz, USize& sz) const;
     // constrain given USize to window's max size, return if size changed.
-    bool constrainToMaxSize(const Sizef& base_sz, USize& sz);
+    bool constrainToMaxSize(const Sizef& base_sz, USize& sz) const;
+    
+    /*************************************************************************
+        Event trigger methods
+    *************************************************************************/
+    /*!
+    \brief
+        Handler called when the node's size changes.
+
+    \param e
+        NodeEventArgs object whose 'node' pointer field is set to the node
+        that triggered the event.
+    */
+    virtual void onSized(NodeEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the node's position changes.
+
+    \param e
+        WindowEventArgs object whose 'node' pointer field is set to the node
+        that triggered the event.
+    */
+    virtual void onMoved(NodeEventArgs& e);
     
     /*************************************************************************
         Implementation Data
@@ -995,25 +1054,20 @@ protected:
     
     //! This Window objects area as defined by a URect.
     URect d_area;
-    
     //! Specifies the base for horizontal alignment.
     HorizontalAlignment d_horizontalAlignment;
     //! Specifies the base for vertical alignment.
     VerticalAlignment d_verticalAlignment;
-    
     //! current minimum size for the window.
     USize d_minSize;
     //! current maximum size for the window.
     USize d_maxSize;
-    
     //! How to satisfy current aspect ratio
     AspectMode d_aspectMode;
     //! The target aspect ratio
     float d_aspectRatio;
-
     //! Current constrained pixel size of the window.
     Sizef d_pixelSize;
-    
     //! Rotation of this window (relative to the parent)
     Quaternion d_rotation;
     
