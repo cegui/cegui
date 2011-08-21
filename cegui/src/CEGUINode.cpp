@@ -40,9 +40,12 @@ namespace CEGUI
 {
 
 const String Node::EventNamespace("Node");
+
 const String Node::EventSized("Sized");
 const String Node::EventMoved("Moved");
-    
+const String Node::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
+const String Node::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
+
 //----------------------------------------------------------------------------//
 Node::Node():
     d_parent(0),
@@ -215,6 +218,30 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
 }
 
 //----------------------------------------------------------------------------//
+void Node::setHorizontalAlignment(const HorizontalAlignment alignment)
+{
+    if (d_horizontalAlignment == alignment)
+        return;
+
+    d_horizontalAlignment = alignment;
+
+    NodeEventArgs args(this);
+    onHorizontalAlignmentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setVerticalAlignment(const VerticalAlignment alignment)
+{
+    if (d_verticalAlignment == alignment)
+        return;
+
+    d_verticalAlignment = alignment;
+
+    NodeEventArgs args(this);
+    onVerticalAlignmentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
 bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
@@ -336,6 +363,22 @@ void Node::onMoved(NodeEventArgs& e)
     }*/
 
     fireEvent(EventMoved, e, EventNamespace);
+}
+
+void Node::onHorizontalAlignmentChanged(NodeEventArgs& e)
+{
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //notifyScreenAreaChanged();
+
+    fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);   
+}
+   
+void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
+{
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //notifyScreenAreaChanged();
+
+    fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);   
 }
 
 } // End of  CEGUI namespace section
