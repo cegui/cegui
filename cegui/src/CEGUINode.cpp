@@ -106,9 +106,10 @@ void Node::notifyScreenAreaChanged(bool recursive /* = true */)
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
     
-    d_outerRectClipperValid = false;
-    d_innerRectClipperValid = false;
-    d_hitTestRectValid = false;
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //d_outerRectClipperValid = false;
+    //d_innerRectClipperValid = false;
+    //d_hitTestRectValid = false;
 
     // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
     //updateGeometryRenderSettings();
@@ -299,9 +300,10 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
     
-    d_outerRectClipperValid = false;
-    d_innerRectClipperValid = false;
-    d_hitTestRectValid = false;
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //d_outerRectClipperValid = false;
+    //d_innerRectClipperValid = false;
+    //d_hitTestRectValid = false;
 
     // notes of what we did
     bool moved = false, sized;

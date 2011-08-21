@@ -872,67 +872,10 @@ public:
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
     */
-    const Rectf& getUnclippedRect(const bool inner) const;
-
-    /*!
-    \brief
-        Return a Rect that describes the rendering clipping rect based upon the
-        outer rect area of the window.
-
-    \note
-        The area returned by this function gives you the correct clipping rect
-        for rendering within the Window's outer rect area.  The area described
-        may or may not correspond to the final visual clipping actually seen on
-        the display; this is intentional and neccessary due to the way that
-        imagery is cached under some configurations.
-    */
-    const Rectf& getOuterRectClipper() const;
-
-    /*!
-    \brief
-        Return a Rect that describes the rendering clipping rect based upon the
-        inner rect area of the window.
-
-    \note
-        The area returned by this function gives you the correct clipping rect
-        for rendering within the Window's inner rect area.  The area described
-        may or may not correspond to the final visual clipping actually seen on
-        the display; this is intentional and neccessary due to the way that
-        imagery is cached under some configurations.
-    */
-    const Rectf& getInnerRectClipper() const;
-
-    /*!
-    \brief
-        Return a Rect that describes the rendering clipping rect for the Window.
-
-        This function can return the clipping rect for either the inner or outer
-        area dependant upon the boolean values passed in.
-
-    \note
-        The areas returned by this function gives you the correct clipping rects
-        for rendering within the Window's areas.  The area described may or may
-        not correspond to the final visual clipping actually seen on the
-        display; this is intentional and neccessary due to the way that imagery
-        is cached under some configurations.
-
-    \param non_client
-        - true to return the non-client clipping area (based on outer rect).
-        - false to return the client clipping area (based on inner rect).
-    */
-    const Rectf& getClipRect(const bool non_client = false) const;
-
-    /*!
-    \brief
-        Return the Rect that descibes the clipped screen area that is used for
-        determining whether this window has been hit by a certain point.
-
-        The area returned by this function may also be useful for certain
-        calculations that require the clipped Window area as seen on the display
-        as opposed to what is used for rendering (since the actual rendering
-        clipper rects should not to be used if reliable results are desired).
-    */
-    const Rectf& getHitTestRect() const;
+    const CachedRectf& getUnclippedRect(const bool inner) const
+    {
+        return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
+    }
 
     /*!
     \brief
@@ -955,39 +898,6 @@ public:
     */
     Rectf getChildContentArea(const bool non_client = false) const;
     
-    /*!
-    \brief
-        check if the given pixel position would hit this window.
-
-    \param position
-        Vector2 object describing the position to check.  The position
-        describes a pixel offset from the top-left corner of the display.
-
-    \param allow_disabled
-        - true specifies that the window may be 'hit' if it is disabled.
-        - false specifies that the window may only be hit if it is enabled.
-
-    \return
-        - true if \a position hits this Window.
-        - false if \a position does not hit this window.
-    */
-    virtual bool isHit(const Vector2f& position,
-                       const bool allow_disabled = false) const;
-
-    /*!
-    \brief
-        return the child Window that is hit by the given pixel position
-
-    \param position
-        Vector2 object describing the position to check.  The position
-        describes a pixel offset from the top-left corner of the display.
-
-    \return
-        Pointer to the child Window that was hit according to the location
-        \a position, or 0 if no child of this window was hit.
-    */
-    Node* getChildNodeAtPosition(const Vector2f& position) const;
-
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2f getUnprojectedPosition(const Vector2f& pos) const;
     
@@ -1253,17 +1163,6 @@ protected:
     CachedRectf d_unclippedOuterRect;
     //! inner area rect in screen pixels
     CachedRectf d_unclippedInnerRect;
-    
-    //! outer area clipping rect in screen pixels
-    mutable Rectf d_outerRectClipper;
-    //! inner area clipping rect in screen pixels
-    mutable Rectf d_innerRectClipper;
-    //! area rect used for hit-testing against this window
-    mutable Rectf d_hitTestRect;
-
-    mutable bool d_outerRectClipperValid;
-    mutable bool d_innerRectClipperValid;
-    mutable bool d_hitTestRectValid;
 
 private:
     /*************************************************************************
