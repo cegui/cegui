@@ -35,6 +35,8 @@
 #include "CEGUICoordConverter.h"
 #include "CEGUISystem.h"
 
+#include <algorithm>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -47,6 +49,9 @@ const String Node::EventMoved("Moved");
 const String Node::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Node::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
 const String Node::EventRotated("Rotated");
+const String Node::EventChildAdded("ChildAdded");
+const String Node::EventChildRemoved("ChildRemoved");
+const String Node::EventZOrderChanged("ZOrderChanged");
 
 //----------------------------------------------------------------------------//
 Node::Node():
@@ -115,6 +120,143 @@ void Node::notifyScreenAreaChanged(bool recursive /* = true */)
             d_children[i]->notifyScreenAreaChanged();
     }
 }
+
+//----------------------------------------------------------------------------//
+void Node::setHorizontalAlignment(const HorizontalAlignment alignment)
+{
+    if (d_horizontalAlignment == alignment)
+        return;
+
+    d_horizontalAlignment = alignment;
+
+    NodeEventArgs args(this);
+    onHorizontalAlignmentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setVerticalAlignment(const VerticalAlignment alignment)
+{
+    if (d_verticalAlignment == alignment)
+        return;
+
+    d_verticalAlignment = alignment;
+
+    NodeEventArgs args(this);
+    onVerticalAlignmentChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setMinSize(const USize& size)
+{
+    d_minSize = size;
+
+    // Apply set minimum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Sizef base_sz((d_parent && !d_nonClient) ?
+                         d_parent->getUnclippedInnerRect().get().getSize() :
+                         getParentPixelSize());
+
+    USize wnd_sz(getSize());
+
+    if (constrainToMinSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setMaxSize(const USize& size)
+{
+    d_maxSize = size;
+
+    // Apply set maximum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Sizef base_sz((d_parent && !d_nonClient) ?
+                         d_parent->getUnclippedInnerRect().get().getSize() :
+                         getParentPixelSize());
+
+    USize wnd_sz(getSize());
+
+    if (constrainToMaxSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setAspectMode(AspectMode mode)
+{
+    if (d_aspectMode == mode)
+        return;
+
+    d_aspectMode = mode;
+
+    // ensure the area is calculated with the new aspect mode
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+void Node::setAspectRatio(float ratio)
+{
+    if (d_aspectRatio == ratio)
+        return;
+
+    d_aspectRatio = ratio;
+
+    // ensure the area is calculated with the new aspect ratio
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+Sizef Node::getParentPixelSize() const
+{
+    return d_parent ?
+           d_parent->d_pixelSize :
+           System::getSingleton().getRenderer()->getDisplaySize();
+}
+
+//----------------------------------------------------------------------------//
+void Node::setRotation(const Quaternion& rotation)
+{
+    d_rotation = rotation;
+
+    NodeEventArgs args(this);
+    onRotated(args);
+}
+
+//----------------------------------------------------------------------------//
+void Node::addChild(Node* node)
+{
+    // don't add null window or ourself as a child
+    // TODO: IMO we should throw exceptions in both of these cases
+    if (!node || node == this)
+        return;
+
+    addChild_impl(node);
+    NodeEventArgs args(node);
+    onChildAdded(args);
+    node->onZOrderChanged_impl();
+}
+
+//----------------------------------------------------------------------------//
+void Node::removeChild(Node* node)
+{
+    removeChild_impl(node);
+    NodeEventArgs args(node);
+    onChildRemoved(args);
+    node->onZOrderChanged_impl();
+}
+
 
 //----------------------------------------------------------------------------//
 void Node::setArea_impl(const UVector2& pos, const USize& size,
@@ -242,116 +384,95 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
 }
 
 //----------------------------------------------------------------------------//
-void Node::setHorizontalAlignment(const HorizontalAlignment alignment)
+void Node::setParent(Node* parent)
 {
-    if (d_horizontalAlignment == alignment)
-        return;
+    d_parent = parent;
 
-    d_horizontalAlignment = alignment;
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    // if we do not have a surface, xfer any surfaces from our children to
+    // whatever our target surface now is.
+    /*if (!d_surface)
+        transferChildSurfaces();
+    // else, since we have a surface, child surfaces stay with us.  Though we
+    // must now ensure /our/ surface is xferred if it is a RenderingWindow.
+    else if (d_surface->isRenderingWindow())
+    {
+        // target surface is eihter the parent's target, or the default root.
+        RenderingSurface& tgt = d_parent ?
+            d_parent->getTargetRenderingSurface() :
+            System::getSingleton().getRenderer()->getDefaultRenderingRoot();
 
-    NodeEventArgs args(this);
-    onHorizontalAlignmentChanged(args);
+        tgt.transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
+    }*/
 }
 
 //----------------------------------------------------------------------------//
-void Node::setVerticalAlignment(const VerticalAlignment alignment)
+void Node::addChild_impl(Node* node)
 {
-    if (d_verticalAlignment == alignment)
-        return;
+    // URGENT: CEGUI::Window will need to reimplement this and add special functionality
+    
+    // if node is attached elsewhere, detach it first (will fire normal events)
+    Node* const old_parent = node->getParentNode();
+    if (old_parent)
+        old_parent->removeChild(node);
+    
+    // add node to child list
+    d_children.push_back(node);
 
-    d_verticalAlignment = alignment;
+    // set the parent window
+    node->setParent(this);
 
-    NodeEventArgs args(this);
-    onVerticalAlignmentChanged(args);
+    // update area rects and content for the added window
+    node->notifyScreenAreaChanged(true);
+    
+    // correctly call parent sized notification if needed.
+    if (!old_parent || old_parent->getPixelSize() != getPixelSize())
+    {
+        NodeEventArgs args(this);
+        node->onParentSized(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
-void Node::setMinSize(const USize& size)
+void Node::removeChild_impl(Node* node)
 {
-    d_minSize = size;
+    // find this window in the child list
+    ChildList::iterator it = std::find(d_children.begin(), d_children.end(), node);
 
-    // Apply set minimum size to the windows set size.
-    // We can't use code in setArea[_impl] to adjust the set size, because
-    // that code has to ensure that it's possible for a size constrained
-    // window to 'recover' it's original (scaled) sizing when the constraint
-    // no longer needs to be applied.
-
-    // get size of 'base' - i.e. the size of the parent region.
-    const Sizef base_sz((d_parent && !d_nonClient) ?
-                         d_parent->getUnclippedInnerRect().get().getSize() :
-                         getParentPixelSize());
-
-    USize wnd_sz(getSize());
-
-    if (constrainToMinSize(base_sz, wnd_sz))
-        setSize(wnd_sz);
+    // if the window was found in the child list
+    if (it != d_children.end())
+    {
+        // remove window from child list
+        d_children.erase(it);
+        // reset windows parent so it's no longer this window.
+        node->setParent(0);
+        // URGENT: Window needs to reimplement and do this
+        // unban properties window could write as a root window
+        //wnd->unbanPropertyFromXML("RestoreOldCapture");
+    }
 }
 
 //----------------------------------------------------------------------------//
-void Node::setMaxSize(const USize& size)
+void Node::onZOrderChanged_impl()
 {
-    d_maxSize = size;
+    if (!d_parent)
+    {
+        NodeEventArgs args(this);
+        onZOrderChanged(args);
+    }
+    else
+    {
+        const size_t child_count = d_parent->getChildCount();
 
-    // Apply set maximum size to the windows set size.
-    // We can't use code in setArea[_impl] to adjust the set size, because
-    // that code has to ensure that it's possible for a size constrained
-    // window to 'recover' it's original (scaled) sizing when the constraint
-    // no longer needs to be applied.
+        for (size_t i = 0; i < child_count; ++i)
+        {
+            NodeEventArgs args(d_parent->d_children[i]);
+            d_parent->d_children[i]->onZOrderChanged(args);
+        }
 
-    // get size of 'base' - i.e. the size of the parent region.
-    const Sizef base_sz((d_parent && !d_nonClient) ?
-                         d_parent->getUnclippedInnerRect().get().getSize() :
-                         getParentPixelSize());
-
-    USize wnd_sz(getSize());
-
-    if (constrainToMaxSize(base_sz, wnd_sz))
-        setSize(wnd_sz);
-}
-
-//----------------------------------------------------------------------------//
-void Node::setAspectMode(AspectMode mode)
-{
-    if (d_aspectMode == mode)
-        return;
-
-    d_aspectMode = mode;
-
-    // ensure the area is calculated with the new aspect mode
-    // TODO: This potentially wastes effort, we should just mark it as dirty
-    //       and postpone the calculation for as long as possible
-    setArea(getArea());
-}
-
-//----------------------------------------------------------------------------//
-void Node::setAspectRatio(float ratio)
-{
-    if (d_aspectRatio == ratio)
-        return;
-
-    d_aspectRatio = ratio;
-
-    // ensure the area is calculated with the new aspect ratio
-    // TODO: This potentially wastes effort, we should just mark it as dirty
-    //       and postpone the calculation for as long as possible
-    setArea(getArea());
-}
-
-//----------------------------------------------------------------------------//
-Sizef Node::getParentPixelSize() const
-{
-    return d_parent ?
-           d_parent->d_pixelSize :
-           System::getSingleton().getRenderer()->getDisplaySize();
-}
-
-//----------------------------------------------------------------------------//
-void Node::setRotation(const Quaternion& rotation)
-{
-    d_rotation = rotation;
-
-    NodeEventArgs args(this);
-    onRotated(args);
+    }
+    // URGENT: Window needs this
+    //System::getSingleton().updateWindowContainingMouse();
 }
 
 //----------------------------------------------------------------------------//
@@ -575,6 +696,38 @@ void Node::onRotated(NodeEventArgs& e)
         Vector3f(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
     */
     fireEvent(EventRotated, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Node::onChildAdded(NodeEventArgs& e)
+{
+    // URGENT: Window will need this
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    //System::getSingleton().signalRedraw();
+    fireEvent(EventChildAdded, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Node::onChildRemoved(NodeEventArgs& e)
+{
+    // URGENT: Window will need this
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    //System::getSingleton().signalRedraw();
+    // Though we do need to invalidate the rendering surface!
+    //getTargetRenderingSurface().invalidate();
+    fireEvent(EventChildRemoved, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Node::onZOrderChanged(NodeEventArgs& e)
+{
+    // URGENT: Window will need this
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    //System::getSingleton().signalRedraw();
+    fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section
