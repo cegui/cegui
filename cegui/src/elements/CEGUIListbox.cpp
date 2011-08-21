@@ -828,7 +828,7 @@ void Listbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when we are sized
 *************************************************************************/
-void Listbox::onSized(WindowEventArgs& e)
+void Listbox::onSized(NodeEventArgs& e)
 {
 	// base class handling
 	Window::onSized(e);

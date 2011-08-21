@@ -204,7 +204,7 @@ protected:
     virtual void    onPopupClosed(WindowEventArgs& e);
 
     // overridden from base
-    virtual void onChildRemoved(WindowEventArgs& e);
+    virtual void onChildRemoved(NodeEventArgs& e);
     virtual void onHidden(WindowEventArgs& e);
 
     /*************************************************************************

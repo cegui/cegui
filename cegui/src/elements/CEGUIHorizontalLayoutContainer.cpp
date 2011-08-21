@@ -54,7 +54,7 @@ HorizontalLayoutContainer::~HorizontalLayoutContainer(void)
 void HorizontalLayoutContainer::layout()
 {
     // used to compare UDims
-    const float absHeight = getChildWindowContentArea().getHeight();
+    const float absHeight = getChildContentArea().get().getHeight();
 
     // this is where we store the left offset
     // we continually increase this number as we go through the windows
@@ -63,7 +63,7 @@ void HorizontalLayoutContainer::layout()
 
     for (ChildList::iterator it = d_children.begin(); it != d_children.end(); ++it)
     {
-        Window* window = *it;
+        Window* window = static_cast<Window*>(*it);
 
         const UVector2 offset = getOffsetForWindow(window);
         const UVector2 boundingSize = getBoundingSizeForWindow(window);

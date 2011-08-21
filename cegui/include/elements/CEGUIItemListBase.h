@@ -548,7 +548,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-    virtual void onParentSized(WindowEventArgs& e);
+    virtual void onParentSized(NodeEventArgs& e);
 	//virtual void    onChildRemoved(WindowEventArgs& e);
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 

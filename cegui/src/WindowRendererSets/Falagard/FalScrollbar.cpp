@@ -116,7 +116,7 @@ namespace CEGUI
     float FalagardScrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
     {
         Scrollbar* w = (Scrollbar*)d_window;
-        const Rectf absrect(w->getThumb()->getUnclippedOuterRect());
+        const Rectf& absrect(w->getThumb()->getUnclippedOuterRect().get());
 
         if ((d_vertical && (pt.d_y > absrect.bottom())) ||
             (!d_vertical && (pt.d_x > absrect.right())))

@@ -1888,7 +1888,7 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when we are sized
 *************************************************************************/
-void MultiColumnList::onSized(WindowEventArgs& e)
+void MultiColumnList::onSized(NodeEventArgs& e)
 {
 	// base class handling
 	Window::onSized(e);

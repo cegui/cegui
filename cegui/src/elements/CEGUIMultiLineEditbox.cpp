@@ -1489,7 +1489,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when widget size is changed.
 *************************************************************************/
-void MultiLineEditbox::onSized(WindowEventArgs& e)
+void MultiLineEditbox::onSized(NodeEventArgs& e)
 {
 	formatText(true);
 
