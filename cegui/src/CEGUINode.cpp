@@ -265,6 +265,50 @@ void Node::setVerticalAlignment(const VerticalAlignment alignment)
 }
 
 //----------------------------------------------------------------------------//
+void Node::setMinSize(const USize& size)
+{
+    d_minSize = size;
+
+    // Apply set minimum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Sizef base_sz((d_parent && !d_nonClient) ?
+                         d_parent->getUnclippedInnerRect().get().getSize() :
+                         getParentPixelSize());
+
+    USize wnd_sz(getSize());
+
+    if (constrainToMinSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setMaxSize(const USize& size)
+{
+    d_maxSize = size;
+
+    // Apply set maximum size to the windows set size.
+    // We can't use code in setArea[_impl] to adjust the set size, because
+    // that code has to ensure that it's possible for a size constrained
+    // window to 'recover' it's original (scaled) sizing when the constraint
+    // no longer needs to be applied.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Sizef base_sz((d_parent && !d_nonClient) ?
+                         d_parent->getUnclippedInnerRect().get().getSize() :
+                         getParentPixelSize());
+
+    USize wnd_sz(getSize());
+
+    if (constrainToMaxSize(base_sz, wnd_sz))
+        setSize(wnd_sz);
+}
+
+//----------------------------------------------------------------------------//
 bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
