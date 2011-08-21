@@ -309,6 +309,34 @@ void Node::setMaxSize(const USize& size)
 }
 
 //----------------------------------------------------------------------------//
+void Node::setAspectMode(AspectMode mode)
+{
+    if (d_aspectMode == mode)
+        return;
+
+    d_aspectMode = mode;
+
+    // ensure the area is calculated with the new aspect mode
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+void Node::setAspectRatio(float ratio)
+{
+    if (d_aspectRatio == ratio)
+        return;
+
+    d_aspectRatio = ratio;
+
+    // ensure the area is calculated with the new aspect ratio
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
 bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));

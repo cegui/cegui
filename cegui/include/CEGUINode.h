@@ -679,7 +679,10 @@ public:
     \brief
         Retrieves currently used aspect mode
     */
-    AspectMode getAspectMode() const;
+    inline AspectMode getAspectMode() const
+    {
+        return d_aspectMode;
+    }
 
     /*!
     \brief
@@ -695,7 +698,10 @@ public:
 
     \see Window::setAspectRatio
     */
-    float getAspectRatio() const;
+    inline float getAspectRatio() const
+    {
+        return d_aspectRatio;
+    }
     
     /*!
     \brief
