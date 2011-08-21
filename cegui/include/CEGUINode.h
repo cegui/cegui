@@ -946,7 +946,7 @@ protected:
     \brief
         Add standard CEGUI::Node properties.
     */
-    void addNodeProperties(void);
+    void addNodeProperties();
 
     /*!
     \brief

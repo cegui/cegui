@@ -71,7 +71,9 @@ Node::Node():
     
     d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
-{}
+{
+    addNodeProperties();
+}
 
 //----------------------------------------------------------------------------//
 Node::~Node()
@@ -393,6 +395,64 @@ const Node::CachedRectf& Node::getClientChildContentArea() const
 const Node::CachedRectf& Node::getNonClientChildContentArea() const
 {
     return getUnclippedOuterRect();
+}
+
+void Node::addNodeProperties()
+{
+    const String propertyOrigin("Node");
+    
+    CEGUI_DEFINE_PROPERTY(Node, URect,
+        "Area", "Property to get/set the windows unified area rectangle. Value is a \"URect\".",
+        &Node::setArea, &Node::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY_NO_XML(Node, UVector2,
+        "Position", "Property to get/set the windows unified position. Value is a \"UVector2\".",
+        &Node::setPosition, &Node::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
+    );
+    
+    CEGUI_DEFINE_PROPERTY_NO_XML(Node, USize,
+        "Size", "Property to get/set the windows unified size.  Value is a \"USize\".",
+        &Node::setSize, &Node::getSize, USize(UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY(Node, USize,
+        "MinSize", "Property to get/set the windows unified minimum size.  Value is a \"USize\".",
+        &Node::setMinSize, &Node::getMinSize, USize(UDim(0, 0), UDim(0, 0))
+    );
+
+    CEGUI_DEFINE_PROPERTY(Node, USize,
+        "MaxSize", "Property to get/set the windows unified maximum size.  Value is a \"USize\".",
+        &Node::setMaxSize, &Node::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Node, AspectMode,
+        "AspectMode", "Property to get/set the 'aspect mode' setting for the Window. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
+        &Node::setAspectMode, &Node::getAspectMode, AM_IGNORE
+    );
+
+    CEGUI_DEFINE_PROPERTY(Node, float,
+        "AspectRatio", "Property to get/set the aspect ratio. Only applies when aspect mode is not \"Ignore\".",
+        &Node::setAspectRatio, &Node::getAspectRatio, 1.0 / 1.0
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Node, bool,
+        "PixelAligned", "Property to get/set the Node's size and position should be pixel aligned.  "
+        "Value is either \"True\" or \"False\".",
+        &Node::setPixelAligned, &Node::isPixelAligned, true
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Node, Quaternion,
+        "Rotation", "Property to get/set the windows rotation factors.  Value is "
+        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
+        &Node::setRotation, &Node::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+    );
+    
+    CEGUI_DEFINE_PROPERTY(Node, bool,
+        "NonClient", "Property to get/set the 'non-client' setting for the Window.  "
+        "Value is either \"True\" or \"False\".",
+        &Node::setNonClient, &Node::isNonClient, false
+    );
 }
 
 //----------------------------------------------------------------------------//
