@@ -52,6 +52,7 @@ const String Node::EventRotated("Rotated");
 const String Node::EventChildAdded("ChildAdded");
 const String Node::EventChildRemoved("ChildRemoved");
 const String Node::EventZOrderChanged("ZOrderChanged");
+const String Node::EventNonClientChanged("NonClientChanged");
 
 //----------------------------------------------------------------------------//
 Node::Node():
@@ -257,6 +258,37 @@ void Node::removeChild(Node* node)
     node->onZOrderChanged_impl();
 }
 
+//----------------------------------------------------------------------------//
+bool Node::isChild(const Node* node) const
+{
+    return std::find(d_children.begin(), d_children.end(), node) != d_children.end();
+}
+
+//----------------------------------------------------------------------------//
+bool Node::isAncestor(const Node* node) const
+{
+    if (!d_parent)
+    {
+        // no parent, no ancestor, nothing can be our ancestor
+        return false;
+    }
+    
+    return d_parent == node || d_parent->isAncestor(node);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setNonClient(const bool setting)
+{
+    if (setting == d_nonClient)
+    {
+        return;
+    }
+    
+    d_nonClient = setting;
+
+    NodeEventArgs args(this);
+    onNonClientChanged(args);
+}
 
 //----------------------------------------------------------------------------//
 void Node::setArea_impl(const UVector2& pos, const USize& size,
@@ -728,6 +760,14 @@ void Node::onZOrderChanged(NodeEventArgs& e)
     // to resubmit it's imagery to the Renderer.
     //System::getSingleton().signalRedraw();
     fireEvent(EventZOrderChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Node::onNonClientChanged(NodeEventArgs& e)
+{
+    // TODO: Trigger update of size and position information if needed
+
+    fireEvent(EventNonClientChanged, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section
