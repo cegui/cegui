@@ -692,7 +692,7 @@ void ListHeader::setColumnWidth(uint column, const UDim& width)
 	}
 	else
 	{
-		d_segments[column]->setWidth(width);
+		d_segments[column]->setSize(USize(width, d_segments[column]->getSize().d_height));
 
 		layoutSegments();
 

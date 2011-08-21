@@ -116,9 +116,9 @@ void RadioButton::deselectOtherButtonsInGroup(void) const
         for (size_t child = 0; child < child_count; ++child)
         {
             // is this child same type as we are?
-            if (d_parent->getChildAtIdx(child)->getType() == getType())
+            if (getParent()->getChildAtIdx(child)->getType() == getType())
             {
-                RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
+                RadioButton* rb = (RadioButton*)getParent()->getChildAtIdx(child);
 
                 // is child same group, selected, but not 'this'?
                 if (rb->isSelected() && (rb != this) && (rb->getGroupID() == d_groupID))
@@ -190,9 +190,9 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
         for (size_t child = 0; child < child_count; ++child)
         {
             // is this child same type as we are?
-            if (d_parent->getChildAtIdx(child)->getType() == getType())
+            if (getParent()->getChildAtIdx(child)->getType() == getType())
             {
-                RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
+                RadioButton* rb = (RadioButton*)getParent()->getChildAtIdx(child);
 
                 // is child same group and selected?
                 if (rb->isSelected() && (rb->getGroupID() == d_groupID))

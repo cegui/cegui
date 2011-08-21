@@ -378,7 +378,7 @@ namespace CEGUI
         Window::onClippingChanged(e);
     }
 
-    void DragContainer::onMoved(WindowEventArgs& e)
+    void DragContainer::onMoved(NodeEventArgs& e)
     {
         Window::onMoved(e);
         if (d_dropflag)

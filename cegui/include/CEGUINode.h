@@ -495,6 +495,16 @@ public:
         setArea_impl(pos, d_area.getSize());
     }
 
+    inline void setXPosition(const UDim& pos)
+    {
+        setPosition(UVector2(pos, getYPosition()));
+    }
+    
+    inline void setYPosition(const UDim& pos)
+    {
+        setPosition(UVector2(getXPosition(), pos));
+    }
+
     /*!
     \brief
         Get the window's position.
@@ -515,6 +525,16 @@ public:
     inline const UVector2& getPosition() const
     {
         return d_area.getPosition();
+    }
+    
+    inline const UDim& getXPosition() const
+    {
+        return getPosition().d_x;
+    }
+    
+    inline const UDim& getYPosition() const
+    {
+        return getPosition().d_x;
     }
     
     /*!
@@ -613,6 +633,26 @@ public:
     inline USize getSize() const
     {
         return d_area.getSize();
+    }
+
+    inline void setWidth(const UDim& width)
+    {
+        setSize(USize(width, getSize().d_height));
+    }
+
+    inline UDim getWidth() const
+    {
+        return getSize().d_width;
+    }
+
+    inline void setHeight(const UDim& height)
+    {
+        setSize(USize(getSize().d_width, height));
+    }
+
+    inline UDim getHeight() const
+    {
+        return getSize().d_height;
     }
 
     /*!
@@ -825,7 +865,20 @@ public:
     */
     void removeChild(Node* node);
     
-    inline Node* getChild(size_t idx) const
+    /*!
+    \brief
+        return a pointer to the child window that is attached to 'this' at the
+        given index.
+
+    \param idx
+        Index of the child window whos pointer should be returned.  This value
+        is not bounds checked, client code should ensure that this is less than
+        the value returned by getChildCount().
+
+    \return
+        Pointer to the child window currently attached at index position \a idx
+    */
+    inline Node* getChildNodeAtIdx(size_t idx) const
     {
         return d_children[idx];
     }
@@ -837,6 +890,18 @@ public:
 
     bool isChild(const Node* node) const;
 
+    /*!
+    \brief
+        return true if the specified Window is some ancestor of this Window.
+
+    \param window
+        Pointer to the Window object to look for.
+
+    \return
+        - true if \a window was found to be an ancestor (parent, or parent of
+          parent, etc) of this Window.
+        - false if \a window is not an ancestor of this window.
+    */
     bool isAncestor(const Node* node) const;
     
     /*!
@@ -1014,16 +1079,10 @@ protected:
     */
     virtual void removeChild_impl(Node* node);
     
-    /*!
-    \brief
-        Notify 'this' and all siblings of a ZOrder change event
-    */
-    virtual void onZOrderChanged_impl();
-    
     //! Default implementation of function to return Window outer rect area.
-    virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment = false) const;
+    virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Window inner rect area.
-    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment = false) const;
+    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
     // constrain given USize to window's min size, return if size changed.
     bool constrainToMinSize(const Sizef& base_sz, USize& sz) const;
@@ -1122,17 +1181,6 @@ protected:
     
     /*!
     \brief
-        Handler called when the z-order position of this window has changed.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
-        'this'.
-    */
-    virtual void onZOrderChanged(NodeEventArgs& e);
-    
-    /*!
-    \brief
         Handler called when the window's non-client setting, affecting it's
         position and size relative to it's parent is changed.
 
@@ -1179,6 +1227,9 @@ protected:
     //! Rotation of this window (relative to the parent)
     Quaternion d_rotation;
     
+    //! true if the Window responds to z-order change requests.
+    bool d_zOrderingEnabled;
+    
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;
     //! inner area rect in screen pixels
@@ -1201,4 +1252,3 @@ private:
 #endif
 
 #endif  // end of guard _CEGUINode_h_
-

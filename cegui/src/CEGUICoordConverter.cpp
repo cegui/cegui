@@ -31,34 +31,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-float CoordConverter::windowToScreenX(const Window& window, const UDim& x)
-{
-    return getBaseXValue(window) + asAbsolute(x, window.getPixelSize().d_width);
-}
-
-//----------------------------------------------------------------------------//
-
-float CoordConverter::windowToScreenY(const Window& window, const UDim& y)
-{
-    return getBaseYValue(window) + asAbsolute(y, window.getPixelSize().d_height);
-}
-
-//----------------------------------------------------------------------------//
-
-Vector2f CoordConverter::windowToScreen(const Window& window, const UVector2& vec)
-{
-    return getBaseValue(window) + asAbsolute(vec, window.getPixelSize());
-}
-
-//----------------------------------------------------------------------------//
-
-Rectf CoordConverter::windowToScreen(const Window& window, const URect& rect)
-{
-    Rectf tmp(asAbsolute(rect, window.getPixelSize()));
-    tmp.offset(getBaseValue(window));
-
-    return tmp;
-}
 
 //----------------------------------------------------------------------------//
 
@@ -101,37 +73,6 @@ Rectf CoordConverter::screenToWindow(const Window& window, const URect& rect)
 
     pixel.offset(base);
     return pixel;
-}
-
-//----------------------------------------------------------------------------//
-
-float CoordConverter::windowToScreenX(const Window& window, const float x)
-{
-    return getBaseXValue(window) + x;
-}
-
-//----------------------------------------------------------------------------//
-
-float CoordConverter::windowToScreenY(const Window& window, const float y)
-{
-    return getBaseYValue(window) + y;
-}
-
-//----------------------------------------------------------------------------//
-
-Vector2f CoordConverter::windowToScreen(const Window& window, const Vector2f& vec)
-{
-    return getBaseValue(window) + vec;
-}
-
-//----------------------------------------------------------------------------//
-
-Rectf CoordConverter::windowToScreen(const Window& window, const Rectf& rect)
-{
-    Rectf tmp(rect);
-    tmp.offset(getBaseValue(window));
-
-    return tmp;
 }
 
 //----------------------------------------------------------------------------//
@@ -183,7 +124,7 @@ float CoordConverter::getBaseXValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rectf parent_rect(parent ?
-        parent->getChildWindowContentArea(window.isNonClientWindow()) :
+        parent->getChildContentArea(window.isNonClient()).get() :
         Rectf(Vector2f(0, 0),
              System::getSingleton().getRenderer()->getDisplaySize())
     );
@@ -215,7 +156,7 @@ float CoordConverter::getBaseYValue(const Window& window)
     const Window* parent = window.getParent();
 
     const Rectf parent_rect(parent ?
-        parent->getChildWindowContentArea(window.isNonClientWindow()) :
+        parent->getChildContentArea(window.isNonClient()).get() :
         Rectf(Vector2f(0, 0),
              System::getSingleton().getRenderer()->getDisplaySize())
     );

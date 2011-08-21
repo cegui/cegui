@@ -69,6 +69,8 @@ Node::Node():
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
     
+    d_zOrderingEnabled(true),
+    
     d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
 {
@@ -329,6 +331,7 @@ Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
     return ret;
 }
 
+//----------------------------------------------------------------------------//
 Sizef Node::getParentPixelSize(bool skipAllPixelAlignment) const
 {
     if (d_parent)
@@ -361,7 +364,6 @@ void Node::addChild(Node* node)
     addChild_impl(node);
     NodeEventArgs args(node);
     onChildAdded(args);
-    node->onZOrderChanged_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -370,7 +372,6 @@ void Node::removeChild(Node* node)
     removeChild_impl(node);
     NodeEventArgs args(node);
     onChildRemoved(args);
-    node->onZOrderChanged_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -608,29 +609,6 @@ void Node::removeChild_impl(Node* node)
         // unban properties window could write as a root window
         //wnd->unbanPropertyFromXML("RestoreOldCapture");
     }
-}
-
-//----------------------------------------------------------------------------//
-void Node::onZOrderChanged_impl()
-{
-    if (!d_parent)
-    {
-        NodeEventArgs args(this);
-        onZOrderChanged(args);
-    }
-    else
-    {
-        const size_t child_count = d_parent->getChildCount();
-
-        for (size_t i = 0; i < child_count; ++i)
-        {
-            NodeEventArgs args(d_parent->d_children[i]);
-            d_parent->d_children[i]->onZOrderChanged(args);
-        }
-
-    }
-    // URGENT: Window needs this
-    //System::getSingleton().updateWindowContainingMouse();
 }
 
 //----------------------------------------------------------------------------//
@@ -938,16 +916,6 @@ void Node::onChildRemoved(NodeEventArgs& e)
     // Though we do need to invalidate the rendering surface!
     //getTargetRenderingSurface().invalidate();
     fireEvent(EventChildRemoved, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Node::onZOrderChanged(NodeEventArgs& e)
-{
-    // URGENT: Window will need this
-    // we no longer want a total redraw here, instead we just get each window
-    // to resubmit it's imagery to the Renderer.
-    //System::getSingleton().signalRedraw();
-    fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

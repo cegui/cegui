@@ -97,8 +97,8 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
     
     if (parent)
     {
-        const Rectf outer(parent->getUnclippedOuterRect());
-        const Rectf inner(parent->getUnclippedInnerRect());
+        const Rectf& outer(parent->getUnclippedOuterRect().get());
+        const Rectf& inner(parent->getUnclippedInnerRect().get());
         x_adj = inner.d_min.d_x - outer.d_min.d_x;
         y_adj = inner.d_min.d_y - outer.d_min.d_y;
     }
