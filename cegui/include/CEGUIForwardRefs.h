@@ -75,6 +75,8 @@ class LinkedEventArgs;
 class Logger;
 class MouseCursor;
 class NativeClipboardProvider;
+class Node;
+class NodeEventArgs;
 class Property;
 template<typename T> class PropertyHelper;
 class PropertyReceiver;

@@ -32,22 +32,310 @@
 #endif
 
 #include "CEGUINode.h"
+#include "CEGUICoordConverter.h"
+#include "CEGUISystem.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+const String Node::EventNamespace("Node");
+const String Node::EventSized("Sized");
+const String Node::EventMoved("Moved");
+    
 //----------------------------------------------------------------------------//
 Node::Node():
+    d_parent(0),
+    
+    d_nonClient(false),
+    
+    d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
+    d_horizontalAlignment(HA_LEFT),
+    d_verticalAlignment(VA_TOP),
+    d_minSize(cegui_reldim(0), cegui_reldim(0)),
+    d_maxSize(cegui_reldim(1), cegui_reldim(1)),
+    d_pixelSize(0.0f, 0.0f),
+    d_rotation(Quaternion::IDENTITY),
+    
     d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
 {}
 
+//----------------------------------------------------------------------------//
 Node::~Node()
 {}
 
+//----------------------------------------------------------------------------//
 Node::Node(const Node&):
     d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
 {}
+
+//----------------------------------------------------------------------------//
+void Node::setArea(const UVector2& pos, const USize& size)
+{
+    // Limit the value we set to something that's within the constraints
+    // specified via the min and max size settings.
+
+    // get size of 'base' - i.e. the size of the parent region.
+    const Sizef base_sz((d_parent && !d_nonClient) ?
+                         d_parent->getUnclippedInnerRect().get().getSize() :
+                         getParentPixelSize());
+
+    USize newsz(size);
+    constrainToMinSize(base_sz, newsz);
+    constrainToMaxSize(base_sz, newsz);
+
+    setArea_impl(pos, newsz);
+}
+
+//----------------------------------------------------------------------------//
+void Node::setArea_impl(const UVector2& pos, const USize& size,
+                        bool topLeftSizing, bool fireEvents)
+{
+    // we make sure the screen areas are recached when this is called as we need
+    // it in most cases
+    d_unclippedOuterRect.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
+    
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
+
+    // notes of what we did
+    bool moved = false, sized;
+
+    // save original size so we can work out how to behave later on
+    const Sizef oldSize(d_pixelSize);
+
+    // calculate pixel sizes for everything, so we have a common format for
+    // comparisons.
+    Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+    Sizef absMin(CoordConverter::asAbsolute(d_minSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    const Sizef base_size((d_parent && !d_nonClient) ?
+                           d_parent->getUnclippedInnerRect().get().getSize() :
+                           getParentPixelSize());
+
+    d_pixelSize = CoordConverter::asAbsolute(size, base_size);
+
+    // limit new pixel size to: minSize <= newSize <= maxSize
+    d_pixelSize.clamp(absMin, absMax);
+
+    if (d_aspectMode != AM_IGNORE)
+    {
+        // make sure we respect current aspect mode and ratio
+        d_pixelSize.scaleToAspect(d_aspectMode, d_aspectRatio);
+
+        // make sure we haven't blown any of the hard limits
+        // still maintain the aspect when we do this
+        if (d_aspectMode == AM_SHRINK)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (d_pixelSize.d_width < absMin.d_width)
+            {
+                ratio = absMin.d_width / d_pixelSize.d_width;
+            }
+            if (d_pixelSize.d_height < absMin.d_height)
+            {
+                const float newRatio = absMin.d_height / d_pixelSize.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
+
+            d_pixelSize.d_width *= ratio;
+            d_pixelSize.d_height *= ratio;
+        }
+        else if (d_aspectMode == AM_EXPAND)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (d_pixelSize.d_width > absMax.d_width)
+            {
+                ratio = absMax.d_width / d_pixelSize.d_width;
+            }
+            if (d_pixelSize.d_height > absMax.d_height)
+            {
+                const float newRatio = absMax.d_height / d_pixelSize.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
+
+            d_pixelSize.d_width *= ratio;
+            d_pixelSize.d_height *= ratio;
+        }
+        // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
+        //       the result won't be limited by both limits!
+    }
+
+    d_area.setSize(size);
+    sized = (d_pixelSize != oldSize);
+
+    // If this is a top/left edge sizing op, only modify position if the size
+    // actually changed.  If it is not a sizing op, then position may always
+    // change.
+    if (!topLeftSizing || sized)
+    {
+        // only update position if a change has occurred.
+        if (pos != d_area.d_min)
+        {
+            d_area.setPosition(pos);
+            moved = true;
+        }
+    }
+
+    // fire events as required
+    if (fireEvents)
+    {
+        NodeEventArgs args(this);
+
+        if (moved)
+        {
+            onMoved(args);
+            // reset handled so 'sized' event can re-use (since  wo do not care
+            // about it)
+            args.handled = 0;
+        }
+
+        if (sized)
+            onSized(args);
+    }
+
+    if (moved || sized)
+        System::getSingleton().updateWindowContainingMouse();
+
+    // update geometry position and clipping if nothing from above appears to
+    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //if (!d_outerUnclippedRectValid)
+    //    updateGeometryRenderSettings();
+}
+
+//----------------------------------------------------------------------------//
+bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
+{
+    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Sizef min_sz(CoordConverter::asAbsolute(d_minSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    bool size_changed = false;
+
+    // check width is not less than the minimum
+    if (pixel_sz.d_width < min_sz.d_width)
+    {
+        sz.d_width.d_offset = ceguimin(sz.d_width.d_offset, d_minSize.d_width.d_offset);
+
+        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
+            (min_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    // check height is not less than the minimum
+    if (pixel_sz.d_height < min_sz.d_height)
+    {
+        sz.d_height.d_offset = ceguimin(sz.d_height.d_offset, d_minSize.d_height.d_offset);
+
+        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
+            (min_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    return size_changed;
+}
+
+//----------------------------------------------------------------------------//
+bool Node::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
+{
+    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
+    const Sizef max_sz(CoordConverter::asAbsolute(d_maxSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    bool size_changed = false;
+
+    // check width is not greater than the maximum
+    if (pixel_sz.d_width > max_sz.d_width)
+    {
+        sz.d_width.d_offset = ceguimax(sz.d_width.d_offset, d_maxSize.d_width.d_offset);
+
+        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
+            (max_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    // check height is not greater than the maximum
+    if (pixel_sz.d_height > max_sz.d_height)
+    {
+        sz.d_height.d_offset = ceguimax(sz.d_height.d_offset, d_maxSize.d_height.d_offset);
+
+        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
+            (max_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
+            0.0f;
+
+        size_changed = true;
+    }
+
+    return size_changed;
+}
+
+//----------------------------------------------------------------------------//
+void Node::onSized(NodeEventArgs& e)
+{
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    /*// resize the underlying RenderingWindow if we're using such a thing
+    if (d_surface && d_surface->isRenderingWindow())
+        static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
+
+    // screen area changes when we're resized.
+    // NB: Called non-recursive since the onParentSized notifications will deal
+    // more selectively with child Window cases.
+    notifyScreenAreaChanged(false);
+
+    // we need to layout loonfeel based content first, in case anything is
+    // relying on that content for size or positioning info (i.e. some child
+    // is used to establish inner-rect position or size).
+    //
+    // TODO: The subsequent onParentSized notification for those windows cause
+    // additional - unneccessary - work; we should look to optimise that.
+    performChildWindowLayout();
+
+    // inform children their parent has been re-sized
+    const size_t child_count = getChildCount();
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        WindowEventArgs args(this);
+        d_children[i]->onParentSized(args);
+    }
+
+    invalidate();*/
+
+    fireEvent(EventSized, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Node::onMoved(NodeEventArgs& e)
+{
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    /*notifyScreenAreaChanged();
+
+    // handle invalidation of surfaces and trigger needed redraws
+    if (d_parent)
+    {
+        d_parent->invalidateRenderingSurface();
+        // need to redraw some geometry if parent uses a caching surface
+        if (d_parent->getTargetRenderingSurface().isRenderingWindow())
+            System::getSingleton().signalRedraw();
+    }*/
+
+    fireEvent(EventMoved, e, EventNamespace);
+}
 
 } // End of  CEGUI namespace section
