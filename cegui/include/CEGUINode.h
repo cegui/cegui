@@ -303,7 +303,7 @@ public:
             return CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(noPixelAlignment);
         }
         
-        inline void invalidateCache()
+        inline void invalidateCache() const
         {
             d_cacheValid = false;
         }
@@ -1025,7 +1025,7 @@ protected:
                       bool topLeftSizing = false, bool fireEvents = true);
 
     //! helper to return whether the inner rect size has changed
-    inline bool isInnerRectSizeChanged()
+    inline bool isInnerRectSizeChanged() const
     {
         const Sizef old_sz(d_unclippedInnerRect.get().getSize());
         d_unclippedInnerRect.invalidateCache();
