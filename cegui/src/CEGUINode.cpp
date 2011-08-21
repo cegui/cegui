@@ -65,6 +65,7 @@ Node::Node():
     d_verticalAlignment(VA_TOP),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(1), cegui_reldim(1)),
+    d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
     
@@ -199,6 +200,8 @@ void Node::setAspectMode(AspectMode mode)
 
     d_aspectMode = mode;
 
+    // TODO: We want an Event and more smart rect update handling
+    
     // ensure the area is calculated with the new aspect mode
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
@@ -213,10 +216,99 @@ void Node::setAspectRatio(float ratio)
 
     d_aspectRatio = ratio;
 
+    // TODO: We want an Event and more smart rect update handling
+    
     // ensure the area is calculated with the new aspect ratio
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
     setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+void Node::setPixelAligned(const bool setting)
+{
+    if (d_pixelAligned == setting)
+        return;
+    
+    d_pixelAligned = setting;
+    
+    // TODO: We want an Event and more smart rect update handling
+    
+    // ensure the area is calculated with the new pixel aligned setting
+    // TODO: This potentially wastes effort, we should just mark it as dirty
+    //       and postpone the calculation for as long as possible
+    setArea(getArea());
+}
+
+//----------------------------------------------------------------------------//
+Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
+{
+    // TODO: skip all pixel alignment!
+    
+    // calculate pixel sizes for everything, so we have a common format for
+    // comparisons.
+    const Sizef absMin(CoordConverter::asAbsolute(d_minSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+    const Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
+        System::getSingleton().getRenderer()->getDisplaySize()));
+
+    const Sizef base_size((d_parent && !d_nonClient) ?
+                           d_parent->getUnclippedInnerRect().get().getSize() :
+                           getParentPixelSize());
+
+    Sizef ret = CoordConverter::asAbsolute(d_area.getSize(), base_size);
+
+    // limit new pixel size to: minSize <= newSize <= maxSize
+    ret.clamp(absMin, absMax);
+
+    if (d_aspectMode != AM_IGNORE)
+    {
+        // make sure we respect current aspect mode and ratio
+        ret.scaleToAspect(d_aspectMode, d_aspectRatio);
+
+        // make sure we haven't blown any of the hard limits
+        // still maintain the aspect when we do this
+        if (d_aspectMode == AM_SHRINK)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (ret.d_width < absMin.d_width)
+            {
+                ratio = absMin.d_width / ret.d_width;
+            }
+            if (ret.d_height < absMin.d_height)
+            {
+                const float newRatio = absMin.d_height / ret.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
+
+            ret.d_width *= ratio;
+            ret.d_height *= ratio;
+        }
+        else if (d_aspectMode == AM_EXPAND)
+        {
+            float ratio = 1.0f;
+            // check that we haven't blown the min size
+            if (ret.d_width > absMax.d_width)
+            {
+                ratio = absMax.d_width / ret.d_width;
+            }
+            if (ret.d_height > absMax.d_height)
+            {
+                const float newRatio = absMax.d_height / ret.d_height;
+                if (newRatio > ratio)
+                    ratio = newRatio;
+            }
+
+            ret.d_width *= ratio;
+            ret.d_height *= ratio;
+        }
+        // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
+        //       the result won't be limited by both limits!
+    }
+    
+    return ret;
 }
 
 //----------------------------------------------------------------------------//
@@ -323,70 +415,9 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
     // save original size so we can work out how to behave later on
     const Sizef oldSize(d_pixelSize);
 
-    // calculate pixel sizes for everything, so we have a common format for
-    // comparisons.
-    Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
-    Sizef absMin(CoordConverter::asAbsolute(d_minSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
-
-    const Sizef base_size((d_parent && !d_nonClient) ?
-                           d_parent->getUnclippedInnerRect().get().getSize() :
-                           getParentPixelSize());
-
-    d_pixelSize = CoordConverter::asAbsolute(size, base_size);
-
-    // limit new pixel size to: minSize <= newSize <= maxSize
-    d_pixelSize.clamp(absMin, absMax);
-
-    if (d_aspectMode != AM_IGNORE)
-    {
-        // make sure we respect current aspect mode and ratio
-        d_pixelSize.scaleToAspect(d_aspectMode, d_aspectRatio);
-
-        // make sure we haven't blown any of the hard limits
-        // still maintain the aspect when we do this
-        if (d_aspectMode == AM_SHRINK)
-        {
-            float ratio = 1.0f;
-            // check that we haven't blown the min size
-            if (d_pixelSize.d_width < absMin.d_width)
-            {
-                ratio = absMin.d_width / d_pixelSize.d_width;
-            }
-            if (d_pixelSize.d_height < absMin.d_height)
-            {
-                const float newRatio = absMin.d_height / d_pixelSize.d_height;
-                if (newRatio > ratio)
-                    ratio = newRatio;
-            }
-
-            d_pixelSize.d_width *= ratio;
-            d_pixelSize.d_height *= ratio;
-        }
-        else if (d_aspectMode == AM_EXPAND)
-        {
-            float ratio = 1.0f;
-            // check that we haven't blown the min size
-            if (d_pixelSize.d_width > absMax.d_width)
-            {
-                ratio = absMax.d_width / d_pixelSize.d_width;
-            }
-            if (d_pixelSize.d_height > absMax.d_height)
-            {
-                const float newRatio = absMax.d_height / d_pixelSize.d_height;
-                if (newRatio > ratio)
-                    ratio = newRatio;
-            }
-
-            d_pixelSize.d_width *= ratio;
-            d_pixelSize.d_height *= ratio;
-        }
-        // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
-        //       the result won't be limited by both limits!
-    }
-
     d_area.setSize(size);
+    d_pixelSize = calculatePixelSize();
+
     sized = (d_pixelSize != oldSize);
 
     // If this is a top/left edge sizing op, only modify position if the size
@@ -524,10 +555,22 @@ void Node::onZOrderChanged_impl()
 //----------------------------------------------------------------------------//
 Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
-    Rectf ret(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+    const Sizef pixel_size = skipAllPixelAlignment ? calculatePixelSize(true) : getPixelSize();
+    Rectf ret(Vector2f(0, 0), pixel_size);
     
     const Node* parent = getParentNode();
-    const Rectf parent_rect(parent ? parent->getChildContentArea(isNonClient()).get() : Rectf(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize()));
+    
+    Rectf parent_rect;
+    if (parent)
+    {
+        const CachedRectf& base = parent->getChildContentArea(isNonClient());
+        parent_rect = skipAllPixelAlignment ? base.getFresh(true) : base.get();
+    }
+    else
+    {
+        parent_rect = Rectf(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
+    }
+    
     const Sizef parent_size = parent_rect.getSize();
     
     Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size);
@@ -535,10 +578,10 @@ Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     switch (getHorizontalAlignment())
     {
         case HA_CENTRE:
-            offset.d_x += (parent_size.d_width - getPixelSize().d_width) * 0.5f;
+            offset.d_x += (parent_size.d_width - pixel_size.d_width) * 0.5f;
             break;
         case HA_RIGHT:
-            offset.d_x += parent_size.d_width - getPixelSize().d_width;
+            offset.d_x += parent_size.d_width - pixel_size.d_width;
             break;
         default:
             break;
@@ -547,17 +590,16 @@ Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     switch (getVerticalAlignment())
     {
         case VA_CENTRE:
-            offset.d_y += (parent_size.d_height - getPixelSize().d_height) * 0.5f;
+            offset.d_y += (parent_size.d_height - pixel_size.d_height) * 0.5f;
             break;
         case VA_BOTTOM:
-            offset.d_y += parent_size.d_height - getPixelSize().d_height;
+            offset.d_y += parent_size.d_height - pixel_size.d_height;
             break;
         default:
             break;
     }
 
-    // TODO: When pixel aligned property gets into Node
-    //if (d_pixelAligned)
+    if (d_pixelAligned && !skipAllPixelAlignment)
     {
         offset = Vector2f(PixelAligned(offset.d_x), PixelAligned(offset.d_y));
     }
