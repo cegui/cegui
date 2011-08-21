@@ -36,9 +36,6 @@
 namespace CEGUI
 {
 
-// improve readability - http://www.parashift.com/c++-faq-lite/pointers-to-members.html#faq-33.6
-#define CEGUI_CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember)) 
-    
 template<class C, typename T>
 class TplProperty : public TypedProperty<T>
 {
