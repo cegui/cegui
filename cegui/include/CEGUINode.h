@@ -775,7 +775,7 @@ public:
     \return
         Size object that describes the pixel dimensions of this Node object's parent
     */
-    Sizef getParentPixelSize(void) const;
+    Sizef getParentPixelSize(bool skipAllPixelAlignment = false) const;
 
     /*!
     \brief sets rotation of this widget
