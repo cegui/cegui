@@ -49,9 +49,9 @@ public:
     \brief
         converts given UDim to absolute value
     */
-    inline static float asAbsolute(const UDim& u, float base)
+    inline static float asAbsolute(const UDim& u, float base, bool pixelAlign = true)
     {
-        return PixelAligned(base * u.d_scale) + u.d_offset;
+        return pixelAlign ? PixelAligned(base * u.d_scale + u.d_offset) : base * u.d_scale + u.d_offset;
     }
 
     /*!
@@ -67,9 +67,9 @@ public:
     \brief
         converts given Vector2<UDim> to absolute Vector2f
     */
-    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base)
+    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Vector2f(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
+        return Vector2f(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
@@ -85,9 +85,9 @@ public:
     \brief
         converts given Size<UDim> to absolute Sizef
     */
-    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base)
+    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Sizef(asAbsolute(v.d_width, base.d_width), asAbsolute(v.d_height, base.d_height));
+        return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
 
     /*!
@@ -99,13 +99,13 @@ public:
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }
 
-    inline static Rectf asAbsolute(const URect& r, const Sizef& base)
+    inline static Rectf asAbsolute(const URect& r, const Sizef& base, bool pixelAlign = true)
     {
         return Rectf(
-                   asAbsolute(r.d_min.d_x, base.d_width),
-                   asAbsolute(r.d_min.d_y, base.d_height),
-                   asAbsolute(r.d_max.d_x, base.d_width),
-                   asAbsolute(r.d_max.d_y, base.d_height)
+                   asAbsolute(r.d_min.d_x, base.d_width,  pixelAlign),
+                   asAbsolute(r.d_min.d_y, base.d_height, pixelAlign),
+                   asAbsolute(r.d_max.d_x, base.d_width,  pixelAlign),
+                   asAbsolute(r.d_max.d_y, base.d_height, pixelAlign)
                );
     }
 

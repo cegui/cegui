@@ -732,15 +732,40 @@ public:
     
     /*!
     \brief
+        Sets whether this Node is pixel aligned (both position and size, basically the 4 "corners").
+        
+    \note
+        Pixel aligning is enabled by default and for most widgets it makes a lot of sense and just looks better.
+        Especially with text. However for HUD or decorative elements pixel aligning might make transitions less
+        fluid. Feel free to experiment with the setting.
+    */
+    void setPixelAligned(const bool setting);
+    
+    /*!
+    \brief
+        Checks whether this Node is pixel aligned
+        
+    \see
+        Node::setPixelAligned
+    */
+    inline bool isPixelAligned() const
+    {
+        return d_pixelAligned;
+    }
+    
+    /*!
+    \brief
         Return the window size in pixels.
 
     \return
         Size object describing this windows size in pixels.
     */
-    inline Sizef getPixelSize() const
+    inline const Sizef& getPixelSize() const
     {
         return d_pixelSize;
     }
+
+    Sizef calculatePixelSize(bool skipAllPixelAlignment = false) const;
 
     /*!
     \brief
@@ -1147,6 +1172,8 @@ protected:
     AspectMode d_aspectMode;
     //! The target aspect ratio
     float d_aspectRatio;
+    //! If true, the position and size are pixel aligned
+    bool d_pixelAligned;
     //! Current constrained pixel size of the window.
     Sizef d_pixelSize;
     //! Rotation of this window (relative to the parent)
