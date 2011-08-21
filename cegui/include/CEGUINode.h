@@ -238,6 +238,12 @@ public:
      * NodeEventArgs::node set to the Node whose size was changed.
      */
     static const String EventSized;
+    /** Event fired when the parent of this Window has been re-sized.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window pointing to the <em>parent window</em> that
+     * was resized, not the window whose parent was resized.
+     */
+    static const String EventParentSized;
     /** Event fired when the Node position has changed.
      * Handlers are passed a const NodeEventArgs reference with
      * NodeEventArgs::node set to the Node whose position was changed.
@@ -940,6 +946,18 @@ public:
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
     Vector2f getUnprojectedPosition(const Vector2f& pos) const;
+    
+    /*!
+    \brief
+        Inform the node, and optionally all children, that screen area
+        rectangles have changed.
+
+    \param recursive
+        - true to recursively call notifyScreenAreaChanged on attached child
+          Node objects.
+        - false to just process \e this Node.
+    */
+    virtual void notifyScreenAreaChanged(bool recursive = true);
 
 protected:
     /*!
@@ -1006,6 +1024,14 @@ protected:
     void setArea_impl(const UVector2& pos, const USize& size,
                       bool topLeftSizing = false, bool fireEvents = true);
 
+    //! helper to return whether the inner rect size has changed
+    inline bool isInnerRectSizeChanged()
+    {
+        const Sizef old_sz(d_unclippedInnerRect.get().getSize());
+        d_unclippedInnerRect.invalidateCache();
+        return old_sz != d_unclippedInnerRect.get().getSize();
+    }
+    
     //! Default implementation of function to return Window outer rect area.
     virtual Rectf getUnclippedOuterRect_impl(bool noPixelAlignment = false) const;
     //! Default implementation of function to return Window inner rect area.
@@ -1038,6 +1064,19 @@ protected:
         that triggered the event.
     */
     virtual void onSized(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when this node's parent node has been resized.  If
+        this node is the root / GUI Sheet window, this call will be made when
+        the display size changes.
+
+    \param e
+        NodeEventArgs object whose 'node' pointer field is set the the
+        node that caused the event; this is typically either this node's
+        parent window, or NULL to indicate the screen size has changed.
+    */
+    virtual void onParentSized(NodeEventArgs& e);
 
     /*!
     \brief
