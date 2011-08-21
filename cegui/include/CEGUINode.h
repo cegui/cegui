@@ -243,6 +243,18 @@ public:
      * NodeEventArgs::node set to the Node whose position was changed.
      */
     static const String EventMoved;
+    /** Event fired when the horizontal alignment for the window is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the window whose horizontal alignment
+     * setting was changed.
+     */
+    static const String EventHorizontalAlignmentChanged;
+    /** Event fired when the vertical alignment for the window is changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the window whose vertical alignment
+     * setting was changed.
+     */
+    static const String EventVerticalAlignmentChanged;
     
     /*!
     \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
@@ -486,20 +498,20 @@ public:
         Nothing.
      */
     virtual void setHorizontalAlignment(const HorizontalAlignment alignment);
-
+    
     /*!
     \brief
-        Get the vertical alignment.
+        Get the horizontal alignment.
 
-        Returns the vertical alignment for the window.  This setting affects how
-        the windows position is interpreted relative to its parent.
+        Returns the horizontal alignment for the window.  This setting affects
+        how the windows position is interpreted relative to its parent.
 
     \return
-        One of the VerticalAlignment enumerated values.
+        One of the HorizontalAlignment enumerated values.
      */
-    inline VerticalAlignment getVerticalAlignment() const
+    inline HorizontalAlignment getHorizontalAlignment() const
     {
-        return d_verticalAlignment;
+        return d_horizontalAlignment;
     }
 
     /*!
@@ -516,20 +528,20 @@ public:
         Nothing.
      */
     virtual void setVerticalAlignment(const VerticalAlignment alignment);
-
+    
     /*!
     \brief
-        Get the horizontal alignment.
+        Get the vertical alignment.
 
-        Returns the horizontal alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
+        Returns the vertical alignment for the window.  This setting affects how
+        the windows position is interpreted relative to its parent.
 
     \return
-        One of the HorizontalAlignment enumerated values.
+        One of the VerticalAlignment enumerated values.
      */
-    inline HorizontalAlignment getHorizontalAlignment() const
+    inline VerticalAlignment getVerticalAlignment() const
     {
-        return d_horizontalAlignment;
+        return d_verticalAlignment;
     }
 
     /*!
@@ -1036,6 +1048,30 @@ protected:
         that triggered the event.
     */
     virtual void onMoved(NodeEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the horizontal alignment setting for the window is
+        changed.
+
+    \param e
+        NodeEventArgs object initialised as follows:
+        - node field is set to point to the Node object whos alignment has
+          changed (typically 'this').
+    */
+    virtual void onHorizontalAlignmentChanged(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when the vertical alignment setting for the node is
+        changed.
+
+    \param e
+        NodeEventArgs object initialised as follows:
+        - node field is set to point to the Node object whos alignment has
+          changed (typically 'this').
+    */
+    virtual void onVerticalAlignmentChanged(NodeEventArgs& e);
     
     /*************************************************************************
         Implementation Data
