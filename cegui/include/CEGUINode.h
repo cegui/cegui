@@ -266,6 +266,22 @@ public:
      * WindowEventArgs::window set to the Window whose rotation was changed.
      */
     static const String EventRotated;
+    /** Event fired when a child Window has been added.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the child window that was added.
+     */
+    static const String EventChildAdded;
+    /** Event fired when a child window has been removed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the child window that was removed.
+     */
+    static const String EventChildRemoved;
+    /** Event fired when the z-order of the window has changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window whose z order position has
+     * changed.
+     */
+    static const String EventZOrderChanged;
     
     /*!
     \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
@@ -973,31 +989,6 @@ public:
 protected:
     /*!
     \brief
-        Set the parent window for this window object.
-
-    \param parent
-        Pointer to a Window object that is to be assigned as the parent to this
-        Window.
-
-    \return
-        Nothing
-    */
-    void setParent(Node* parent);
-
-    /*!
-    \brief
-        Add given window to child list at an appropriate position
-    */
-    virtual void addChild_impl(Node* node);
-
-    /*!
-    \brief
-        Remove given window from child list
-    */
-    virtual void removeChild_impl(Node* node);
-
-    /*!
-    \brief
         Add standard CEGUI::Node properties.
     */
     void addNodeProperties(void);
@@ -1042,6 +1033,37 @@ protected:
         d_unclippedInnerRect.invalidateCache();
         return old_sz != d_unclippedInnerRect.get().getSize();
     }
+    
+    /*!
+    \brief
+        Set the parent window for this window object.
+
+    \param parent
+        Pointer to a Window object that is to be assigned as the parent to this
+        Window.
+
+    \return
+        Nothing
+    */
+    void setParent(Node* parent);
+
+    /*!
+    \brief
+        Add given window to child list at an appropriate position
+    */
+    virtual void addChild_impl(Node* node);
+
+    /*!
+    \brief
+        Remove given window from child list
+    */
+    virtual void removeChild_impl(Node* node);
+    
+    /*!
+    \brief
+        Notify 'this' and all siblings of a ZOrder change event
+    */
+    virtual void onZOrderChanged_impl();
     
     //! Default implementation of function to return Window outer rect area.
     virtual Rectf getUnclippedOuterRect_impl(bool noPixelAlignment = false) const;
@@ -1132,6 +1154,37 @@ protected:
         that triggered the event.
     */
     virtual void onRotated(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when a child window is added to this window.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that has been added.
+    */
+    virtual void onChildAdded(NodeEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when a child window is removed from this window.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set the window
+        that has been removed.
+    */
+    virtual void onChildRemoved(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when the z-order position of this window has changed.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onZOrderChanged(NodeEventArgs& e);
     
     /*************************************************************************
         Implementation Data
