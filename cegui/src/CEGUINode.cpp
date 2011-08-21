@@ -292,6 +292,18 @@ void Node::setNonClient(const bool setting)
 }
 
 //----------------------------------------------------------------------------//
+const Node::CachedRectf& Node::getClientChildContentArea() const
+{
+    return getUnclippedInnerRect();
+}
+
+//----------------------------------------------------------------------------//
+const Node::CachedRectf& Node::getNonClientChildContentArea() const
+{
+    return getUnclippedOuterRect();
+}
+
+//----------------------------------------------------------------------------//
 void Node::setArea_impl(const UVector2& pos, const USize& size,
                         bool topLeftSizing, bool fireEvents)
 {
@@ -507,6 +519,57 @@ void Node::onZOrderChanged_impl()
     }
     // URGENT: Window needs this
     //System::getSingleton().updateWindowContainingMouse();
+}
+
+//----------------------------------------------------------------------------//
+Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
+{
+    Rectf ret(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+    
+    const Node* parent = getParentNode();
+    const Rectf parent_rect(parent ? parent->getChildContentArea(isNonClient()).get() : Rectf(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize()));
+    const Sizef parent_size = parent_rect.getSize();
+    
+    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size);
+
+    switch (getHorizontalAlignment())
+    {
+        case HA_CENTRE:
+            offset.d_x += (parent_size.d_width - getPixelSize().d_width) * 0.5f;
+            break;
+        case HA_RIGHT:
+            offset.d_x += parent_size.d_width - getPixelSize().d_width;
+            break;
+        default:
+            break;
+    }
+    
+    switch (getVerticalAlignment())
+    {
+        case VA_CENTRE:
+            offset.d_y += (parent_size.d_height - getPixelSize().d_height) * 0.5f;
+            break;
+        case VA_BOTTOM:
+            offset.d_y += parent_size.d_height - getPixelSize().d_height;
+            break;
+        default:
+            break;
+    }
+
+    // TODO: When pixel aligned property gets into Node
+    //if (d_pixelAligned)
+    {
+        offset = Vector2f(PixelAligned(offset.d_x), PixelAligned(offset.d_y));
+    }
+    
+    ret.offset(offset);
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+Rectf Node::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
+{
+    return skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get();
 }
 
 //----------------------------------------------------------------------------//

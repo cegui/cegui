@@ -318,16 +318,16 @@ public:
         /*!
         \brief skips all caching and calls the generator
         */
-        inline Rectf getFresh(bool noPixelAlignment = false) const
+        inline Rectf getFresh(bool skipAllPixelAlignment = false) const
         {
             // if the cache is not valid we will use this chance to regenerate it
             // of course this is only applicable if we are allowed to use pixel alignment where applicable
-            if (!d_cacheValid && !noPixelAlignment)
+            if (!d_cacheValid && !skipAllPixelAlignment)
             {
                 return get();
             }
             
-            return CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(noPixelAlignment);
+            return CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(skipAllPixelAlignment);
         }
         
         inline void invalidateCache() const
@@ -872,10 +872,13 @@ public:
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
     */
-    const CachedRectf& getUnclippedRect(const bool inner) const
+    inline const CachedRectf& getUnclippedRect(const bool inner) const
     {
         return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
     }
+
+    virtual const CachedRectf& getClientChildContentArea() const;
+    virtual const CachedRectf& getNonClientChildContentArea() const;
 
     /*!
     \brief
@@ -896,10 +899,10 @@ public:
         - true to return the non-client child content area.
         - false to return the client child content area (default).
     */
-    Rectf getChildContentArea(const bool non_client = false) const;
-    
-    //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
+    inline const CachedRectf& getChildContentArea(const bool non_client = false) const
+    {
+        return non_client ? getNonClientChildContentArea() : getClientChildContentArea();
+    }
     
     /*!
     \brief
@@ -993,19 +996,9 @@ protected:
     virtual void onZOrderChanged_impl();
     
     //! Default implementation of function to return Window outer rect area.
-    virtual Rectf getUnclippedOuterRect_impl(bool noPixelAlignment = false) const;
+    virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment = false) const;
     //! Default implementation of function to return Window inner rect area.
-    virtual Rectf getUnclippedInnerRect_impl(bool noPixelAlignment = false) const;
-    //! Default implementation of function to return Window outer clipper area.
-    virtual Rectf getOuterRectClipper_impl() const;
-    //! Default implementation of function to return Window inner clipper area.
-    virtual Rectf getInnerRectClipper_impl() const;
-    //! Default implementation of function to return Window hit-test area.
-    virtual Rectf getHitTestRect_impl() const;
-    //! Default implementation of function to return non-client content area
-    virtual Rectf getNonClientChildContentArea_impl() const;
-    //! Default implementation of function to return client content area
-    virtual Rectf getClientChildContentArea_impl() const;
+    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment = false) const;
 
     // constrain given USize to window's min size, return if size changed.
     bool constrainToMinSize(const Sizef& base_sz, USize& sz) const;
