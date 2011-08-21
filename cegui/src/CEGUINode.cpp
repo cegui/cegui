@@ -254,11 +254,21 @@ Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
     const Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize()));
 
-    const Sizef base_size((d_parent && !d_nonClient) ?
+    Sizef base_size;
+    if (skipAllPixelAlignment)
+    {
+        base_size = Sizef((d_parent && !d_nonClient) ?
+                           d_parent->getUnclippedInnerRect().getFresh(true).getSize() :
+                           getParentPixelSize(true));
+    }
+    else
+    {
+        base_size = Sizef((d_parent && !d_nonClient) ?
                            d_parent->getUnclippedInnerRect().get().getSize() :
                            getParentPixelSize());
+    }
 
-    Sizef ret = CoordConverter::asAbsolute(d_area.getSize(), base_size);
+    Sizef ret = CoordConverter::asAbsolute(d_area.getSize(), base_size, false);
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     ret.clamp(absMin, absMax);
@@ -310,15 +320,25 @@ Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
         //       the result won't be limited by both limits!
     }
     
+    if (d_pixelAligned)
+    {
+        ret.d_width = PixelAligned(ret.d_width);
+        ret.d_height = PixelAligned(ret.d_height);
+    }
+    
     return ret;
 }
 
-//----------------------------------------------------------------------------//
-Sizef Node::getParentPixelSize() const
+Sizef Node::getParentPixelSize(bool skipAllPixelAlignment) const
 {
-    return d_parent ?
-           d_parent->d_pixelSize :
-           System::getSingleton().getRenderer()->getDisplaySize();
+    if (d_parent)
+    {
+        return skipAllPixelAlignment ? d_parent->calculatePixelSize(true) : d_parent->getPixelSize();
+    }
+    else
+    {
+        return System::getSingleton().getRenderer()->getDisplaySize();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -510,8 +530,9 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
             onSized(args);
     }
 
-    if (moved || sized)
-        System::getSingleton().updateWindowContainingMouse();
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //if (moved || sized)
+    //    System::getSingleton().updateWindowContainingMouse();
 
     // update geometry position and clipping if nothing from above appears to
     // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
