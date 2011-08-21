@@ -261,6 +261,11 @@ public:
      * setting was changed.
      */
     static const String EventVerticalAlignmentChanged;
+    /** Event fired when the rotation factor(s) for the window are changed.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window whose rotation was changed.
+     */
+    static const String EventRotated;
     
     /*!
     \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
@@ -1117,6 +1122,16 @@ protected:
           changed (typically 'this').
     */
     virtual void onVerticalAlignmentChanged(NodeEventArgs& e);
+    
+    /*!
+    \brief
+        Handler called when the node's rotation is changed.
+
+    \param e
+        NodeEventArgs object whose 'node' pointer field is set to the node
+        that triggered the event.
+    */
+    virtual void onRotated(NodeEventArgs& e);
     
     /*************************************************************************
         Implementation Data

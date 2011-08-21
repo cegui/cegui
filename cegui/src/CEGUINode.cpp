@@ -46,6 +46,7 @@ const String Node::EventParentSized("ParentSized");
 const String Node::EventMoved("Moved");
 const String Node::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Node::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
+const String Node::EventRotated("Rotated");
 
 //----------------------------------------------------------------------------//
 Node::Node():
@@ -337,6 +338,23 @@ void Node::setAspectRatio(float ratio)
 }
 
 //----------------------------------------------------------------------------//
+Sizef Node::getParentPixelSize() const
+{
+    return d_parent ?
+           d_parent->d_pixelSize :
+           System::getSingleton().getRenderer()->getDisplaySize();
+}
+
+//----------------------------------------------------------------------------//
+void Node::setRotation(const Quaternion& rotation)
+{
+    d_rotation = rotation;
+
+    NodeEventArgs args(this);
+    onRotated(args);
+}
+
+//----------------------------------------------------------------------------//
 bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
@@ -514,6 +532,49 @@ void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
     notifyScreenAreaChanged();
 
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);   
+}
+
+//----------------------------------------------------------------------------//
+void Node::onRotated(NodeEventArgs& e)
+{
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    // if we have no surface set, enable the auto surface
+    /*if (!d_surface)
+    {
+        Logger::getSingleton().logEvent("Window::setRotation - "
+            "Activating AutoRenderingSurface on Window '" + d_name +
+            "' to enable rotation support.");
+
+        setUsingAutoRenderingSurface(true);
+
+        // still no surface?  Renderer or HW must not support what we need :(
+        if (!d_surface)
+        {
+            Logger::getSingleton().logEvent("Window::setRotation - "
+                "Failed to obtain a suitable ReneringWindow surface for "
+                "Window '" + d_name + "'.  Rotation will not be available.",
+                Errors);
+
+            return;
+        }
+    }
+
+    // ensure surface we have is the right type
+    if (!d_surface->isRenderingWindow())
+    {
+        Logger::getSingleton().logEvent("Window::setRotation - "
+            "Window '" + d_name + "' has a manual RenderingSurface that is not "
+            "a RenderingWindow.  Rotation will not be available.", Errors);
+
+        return;
+    }
+
+    // Checks / setup complete!  Now we can finally set the rotation.
+    static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
+    static_cast<RenderingWindow*>(d_surface)->setPivot(
+        Vector3f(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
+    */
+    fireEvent(EventRotated, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section
