@@ -42,6 +42,7 @@ namespace CEGUI
 const String Node::EventNamespace("Node");
 
 const String Node::EventSized("Sized");
+const String Node::EventParentSized("ParentSized");
 const String Node::EventMoved("Moved");
 const String Node::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Node::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
@@ -90,6 +91,28 @@ void Node::setArea(const UVector2& pos, const USize& size)
     constrainToMaxSize(base_sz, newsz);
 
     setArea_impl(pos, newsz);
+}
+
+//----------------------------------------------------------------------------//
+void Node::notifyScreenAreaChanged(bool recursive /* = true */)
+{
+    d_unclippedOuterRect.invalidateCache();
+    d_unclippedInnerRect.invalidateCache();
+    
+    d_outerRectClipperValid = false;
+    d_innerRectClipperValid = false;
+    d_hitTestRectValid = false;
+
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    //updateGeometryRenderSettings();
+
+    // inform children that their screen area must be updated
+    if (recursive)
+    {
+        const size_t child_count = getChildCount();
+        for (size_t i = 0; i < child_count; ++i)
+            d_children[i]->notifyScreenAreaChanged();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -320,12 +343,14 @@ void Node::onSized(NodeEventArgs& e)
     /*// resize the underlying RenderingWindow if we're using such a thing
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-
+    */
     // screen area changes when we're resized.
     // NB: Called non-recursive since the onParentSized notifications will deal
     // more selectively with child Window cases.
     notifyScreenAreaChanged(false);
 
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    /*
     // we need to layout loonfeel based content first, in case anything is
     // relying on that content for size or positioning info (i.e. some child
     // is used to establish inner-rect position or size).
@@ -333,26 +358,66 @@ void Node::onSized(NodeEventArgs& e)
     // TODO: The subsequent onParentSized notification for those windows cause
     // additional - unneccessary - work; we should look to optimise that.
     performChildWindowLayout();
+    */
 
     // inform children their parent has been re-sized
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        WindowEventArgs args(this);
+        NodeEventArgs args(this);
         d_children[i]->onParentSized(args);
     }
-
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    /*
     invalidate();*/
 
     fireEvent(EventSized, e, EventNamespace);
 }
 
+
+//----------------------------------------------------------------------------//
+void Node::onParentSized(NodeEventArgs& e)
+{
+    // set window area back on itself to cause minimum and maximum size
+    // constraints to be applied as required.  (fire no events though)
+
+    setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
+
+    const bool moved =
+        ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
+         (d_horizontalAlignment != HA_LEFT) || (d_verticalAlignment != VA_TOP));
+    const bool sized =
+        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0) ||
+         isInnerRectSizeChanged());
+
+    // now see if events should be fired.
+    if (moved)
+    {
+        NodeEventArgs args(this);
+        onMoved(args);
+    }
+
+    if (sized)
+    {
+        NodeEventArgs args(this);
+        onSized(args);
+    }
+
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    // if we were not moved or sized, do child layout anyway!
+    /*if (!(moved || sized))
+        performChildWindowLayout();*/
+
+    fireEvent(EventParentSized, e, EventNamespace);
+}
+
 //----------------------------------------------------------------------------//
 void Node::onMoved(NodeEventArgs& e)
 {
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    /*notifyScreenAreaChanged();
+    notifyScreenAreaChanged();
 
+    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
+    /*
     // handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
     {
@@ -367,16 +432,14 @@ void Node::onMoved(NodeEventArgs& e)
 
 void Node::onHorizontalAlignmentChanged(NodeEventArgs& e)
 {
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //notifyScreenAreaChanged();
+    notifyScreenAreaChanged();
 
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);   
 }
    
 void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
 {
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //notifyScreenAreaChanged();
+    notifyScreenAreaChanged();
 
     fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);   
 }
