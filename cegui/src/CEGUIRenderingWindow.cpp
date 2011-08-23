@@ -95,8 +95,10 @@ void RenderingWindow::setPosition(const Vector2f& position)
 //----------------------------------------------------------------------------//
 void RenderingWindow::setSize(const Sizef& size)
 {
-    d_size.d_width = PixelAligned(size.d_width);
-    d_size.d_height = PixelAligned(size.d_height);
+    // URGENT FIXME: Isn't this in the hands of the user?
+    /*d_size.d_width = PixelAligned(size.d_width);
+    d_size.d_height = PixelAligned(size.d_height);*/
+    d_size = size;
     d_geometryValid = false;
 
     d_textarget.declareRenderSize(d_size);

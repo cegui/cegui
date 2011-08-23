@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "elements/CEGUIProgressBar.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -71,7 +72,7 @@ namespace CEGUI
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
         {
-            float height = PixelAligned(progressClipper.getHeight() * w->getProgress());
+            float height = CoordConverter::alignToPixels(progressClipper.getHeight() * w->getProgress());
 
             if (d_reversed)
             {
@@ -84,7 +85,7 @@ namespace CEGUI
         }
         else
         {
-            float width = PixelAligned(progressClipper.getWidth() * w->getProgress());
+            float width = CoordConverter::alignToPixels(progressClipper.getWidth() * w->getProgress());
 
             if (d_reversed)
             {

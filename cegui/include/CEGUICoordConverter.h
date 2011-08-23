@@ -47,11 +47,31 @@ class CEGUIEXPORT CoordConverter
 public:
     /*!
     \brief
+        Static method used to return a float value rounded to the nearest integer.
+
+        This method is used throughout the library to ensure that elements are
+        kept at integer pixel positions on the display if user wishes so.
+
+    \param x
+        Expression to be rounded to nearest whole number
+
+    \return
+        \a x after having been rounded
+        
+    \see Node::setPixelAligned
+    */
+    inline static float alignToPixels(float x)
+    {
+        return (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f));
+    }
+    
+    /*!
+    \brief
         converts given UDim to absolute value
     */
     inline static float asAbsolute(const UDim& u, float base, bool pixelAlign = true)
     {
-        return pixelAlign ? PixelAligned(base * u.d_scale + u.d_offset) : base * u.d_scale + u.d_offset;
+        return pixelAlign ? alignToPixels(base * u.d_scale + u.d_offset) : base * u.d_scale + u.d_offset;
     }
 
     /*!

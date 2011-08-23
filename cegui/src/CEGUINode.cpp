@@ -324,8 +324,8 @@ Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
     
     if (d_pixelAligned)
     {
-        ret.d_width = PixelAligned(ret.d_width);
-        ret.d_height = PixelAligned(ret.d_height);
+        ret.d_width = CoordConverter::alignToPixels(ret.d_width);
+        ret.d_height = CoordConverter::alignToPixels(ret.d_height);
     }
     
     return ret;
@@ -660,7 +660,8 @@ Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 
     if (d_pixelAligned && !skipAllPixelAlignment)
     {
-        offset = Vector2f(PixelAligned(offset.d_x), PixelAligned(offset.d_y));
+        offset = Vector2f(CoordConverter::alignToPixels(offset.d_x),
+                          CoordConverter::alignToPixels(offset.d_y));
     }
     
     ret.offset(offset);
