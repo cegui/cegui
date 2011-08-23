@@ -65,11 +65,11 @@ Node::Node():
     d_verticalAlignment(VA_TOP),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
     d_maxSize(cegui_reldim(1), cegui_reldim(1)),
+    d_aspectMode(AM_IGNORE),
+    d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
-    
-    d_zOrderingEnabled(true),
     
     d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)

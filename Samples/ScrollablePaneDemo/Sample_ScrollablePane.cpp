@@ -220,9 +220,10 @@ bool ScrollablePaneSample::demoNewDialog(const CEGUI::EventArgs&)
     
     // we put this in the center of the viewport into the scrollable pane
     UVector2 uni_center(UDim(0.5f,0), UDim(0.5f,0));
-    Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);
-    Vector2f target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);
-    dlg->setPosition(UVector2(UDim(0,target.d_x-100), UDim(0,target.d_y-50)));
+    // URGENT FIXME!
+    //Vector2f center = CoordConverter::windowToScreen(*d_root, uni_center);
+    //Vector2f target = CoordConverter::screenToWindow(*d_pane->getContentPane(), center);
+    //dlg->setPosition(UVector2(UDim(0,target.d_x-100), UDim(0,target.d_y-50)));
     
     d_pane->addChild(dlg);
     

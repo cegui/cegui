@@ -335,14 +335,15 @@ public:
             d_cacheValid = false;
         }
         
-        inline bool isCachedValid() const
+        inline bool isCacheValid() const
         {
             return d_cacheValid;
         }
         
         inline void regenerateCache() const
         {
-            // false, since when we are caching we don't want to override anything
+            // false, since when we are caching we don't want to skip anything, we want everything to act
+            // exactly as it was setup
             d_cachedData = CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(false);
             
             d_cacheValid = true;
@@ -932,7 +933,7 @@ public:
     */
     inline const CachedRectf& getUnclippedOuterRect() const
     {
-        d_unclippedOuterRect;
+        return d_unclippedOuterRect;
     }
 
     /*!
@@ -1043,8 +1044,8 @@ protected:
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
      */
-    void setArea_impl(const UVector2& pos, const USize& size,
-                      bool topLeftSizing = false, bool fireEvents = true);
+    virtual void setArea_impl(const UVector2& pos, const USize& size,
+                              bool topLeftSizing = false, bool fireEvents = true);
 
     //! helper to return whether the inner rect size has changed
     inline bool isInnerRectSizeChanged() const
@@ -1065,7 +1066,7 @@ protected:
     \return
         Nothing
     */
-    void setParent(Node* parent);
+    virtual void setParent(Node* parent);
 
     /*!
     \brief
@@ -1226,9 +1227,6 @@ protected:
     Sizef d_pixelSize;
     //! Rotation of this window (relative to the parent)
     Quaternion d_rotation;
-    
-    //! true if the Window responds to z-order change requests.
-    bool d_zOrderingEnabled;
     
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;
