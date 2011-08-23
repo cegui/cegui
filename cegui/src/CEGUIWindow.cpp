@@ -52,6 +52,7 @@
 #include <iterator>
 #include <cmath>
 #include <stdio.h>
+#include <iostream>
 
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUIFribidiVisualMapping.h"
@@ -124,7 +125,9 @@ WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
 WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 
 //----------------------------------------------------------------------------//
-Window::Window(const String& type, const String& name) :
+Window::Window(const String& type, const String& name):
+    Node(),
+
     // basic types and initial window name
     d_type(type),
     d_name(name),
@@ -186,6 +189,7 @@ Window::Window(const String& type, const String& name) :
     // z-order related options
     d_alwaysOnTop(false),
     d_riseOnClick(true),
+    d_zOrderingEnabled(true),
 
     // mouse input options
     d_wantsMultiClicks(true),
@@ -207,7 +211,6 @@ Window::Window(const String& type, const String& name) :
 
     // XML writing options
     d_allowWriteXML(true),
-    
 
     // initialise area cache rects
     d_outerRectClipper(0, 0, 0, 0),
@@ -1066,7 +1069,7 @@ void Window::render()
     // don't do anything if window is not visible
     if (!isEffectiveVisible())
         return;
-
+    
     // get rendering context
     RenderingContext ctx;
     getRenderingContext(ctx);
@@ -1176,9 +1179,16 @@ void Window::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChild_impl(Window* wnd)
+void Window::addChild_impl(Node* node)
 {
-    const Window* const existing = Window::getChild_impl(wnd->getName());
+    Window* wnd = dynamic_cast<Window*>(node);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("Window::addChild - You can't add nodes of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
+    const Window* const existing = getChild_impl(wnd->getName());
 
     if (existing == wnd)
         return;
@@ -1190,6 +1200,8 @@ void Window::addChild_impl(Window* wnd)
             getNamePath() + " since a Window with that name is already "
             "attached."));
 
+    std::cout << getName().c_str() << std::endl;
+        
     Node::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
@@ -1204,8 +1216,10 @@ void Window::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild_impl(Window* wnd)
+void Window::removeChild_impl(Node* node)
 {
+    Window* wnd = static_cast<Window*>(node);
+    
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
@@ -1868,6 +1882,8 @@ void Window::setInheritsTooltipText(bool setting)
 void Window::setArea_impl(const UVector2& pos, const USize& size,
                           bool topLeftSizing, bool fireEvents)
 {
+    Node::setArea_impl(pos, size, topLeftSizing, fireEvents);
+    
     // we make sure the screen areas are recached when this is called as we need
     // it in most cases
     d_outerRectClipperValid = false;
@@ -2971,10 +2987,10 @@ void Window::notifyScreenAreaChanged(bool recursive /* = true */)
     d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
     d_hitTestRectValid = false;
-
-    updateGeometryRenderSettings();
     
     Node::notifyScreenAreaChanged(recursive);
+
+    updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
@@ -3000,7 +3016,7 @@ void Window::updateGeometryRenderSettings()
         // position is the offset of the window on the dest surface.
         const Rectf ucrect(getUnclippedOuterRect().get());
         d_geometry->setTranslation(Vector3f(ucrect.d_min.d_x - ctx.offset.d_x,
-                                             ucrect.d_min.d_y - ctx.offset.d_y, 0.0f));
+                                            ucrect.d_min.d_y - ctx.offset.d_y, 0.0f));
     }
     initialiseClippers(ctx);
 }

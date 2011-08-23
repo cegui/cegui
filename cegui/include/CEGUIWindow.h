@@ -3283,13 +3283,13 @@ protected:
     \brief
         Add given window to child list at an appropriate position
     */
-    virtual void addChild_impl(Window* wnd);
+    virtual void addChild_impl(Node* node);
 
     /*!
     \brief
         Remove given window from child list
     */
-    virtual void removeChild_impl(Window* wnd);
+    virtual void removeChild_impl(Node* node);
 
     /*!
     \brief
@@ -3512,6 +3512,8 @@ protected:
     bool d_alwaysOnTop;
     //! whether window should rise in the z order when left clicked.
     bool d_riseOnClick;
+    //! true if the Window responds to z-order change requests.
+    bool d_zOrderingEnabled;
 
     //! true if the Window wishes to hear about multi-click mouse events.
     bool d_wantsMultiClicks;
