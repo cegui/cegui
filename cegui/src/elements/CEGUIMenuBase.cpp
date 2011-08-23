@@ -127,7 +127,7 @@ void MenuBase::addMenuBaseProperties(void)
         &MenuBase::setAllowMultiplePopups, &MenuBase::isMultiplePopupsAllowed, false
     );
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
-        "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"True\" or \"False\".",
+        "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"True\" or \"False\".",
         &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false
     );
 }
