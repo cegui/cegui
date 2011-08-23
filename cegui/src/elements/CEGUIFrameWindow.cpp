@@ -36,6 +36,8 @@
 #include "CEGUIImageManager.h"
 #include "CEGUICoordConverter.h"
 
+// URGENT FIXME: I commented instances of PixelAligned in here, I think they are not necessary but it should be checked!
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -223,8 +225,8 @@ void FrameWindow::setRolledup(bool val)
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 {
-    UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
-                     cegui_absdim(PixelAligned(offset.d_y)));
+    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.d_x/*)*/),
+                     cegui_absdim(/*PixelAligned(*/offset.d_y/*)*/));
 
     setPosition(d_area.getPosition() + uOffset);
 }
@@ -323,7 +325,7 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
         delta = orgWidth - minWidth;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     if (d_horizontalAlignment == HA_RIGHT)
     {
@@ -365,7 +367,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         delta = minWidth - orgWidth;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     out_area.d_max.d_x.d_offset += adjustment;
 
@@ -409,7 +411,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
         delta = orgHeight - minHeight;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     if (d_verticalAlignment == VA_BOTTOM)
     {
@@ -453,7 +455,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         delta = minHeight - orgHeight;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     out_area.d_max.d_y.d_offset += adjustment;
 
