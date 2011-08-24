@@ -110,14 +110,6 @@ void Node::notifyScreenAreaChanged(bool recursive /* = true */)
 {
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
-    
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //d_outerRectClipperValid = false;
-    //d_innerRectClipperValid = false;
-    //d_hitTestRectValid = false;
-
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //updateGeometryRenderSettings();
 
     // inform children that their screen area must be updated
     if (recursive)
@@ -484,11 +476,6 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
     // it in most cases
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
-    
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //d_outerRectClipperValid = false;
-    //d_innerRectClipperValid = false;
-    //d_hitTestRectValid = false;
 
     // notes of what we did
     bool moved = false, sized;
@@ -530,46 +517,17 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
         if (sized)
             onSized(args);
     }
-
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //if (moved || sized)
-    //    System::getSingleton().updateWindowContainingMouse();
-
-    // update geometry position and clipping if nothing from above appears to
-    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    //if (!d_outerUnclippedRectValid)
-    //    updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
 void Node::setParent(Node* parent)
 {
     d_parent = parent;
-
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    // if we do not have a surface, xfer any surfaces from our children to
-    // whatever our target surface now is.
-    /*if (!d_surface)
-        transferChildSurfaces();
-    // else, since we have a surface, child surfaces stay with us.  Though we
-    // must now ensure /our/ surface is xferred if it is a RenderingWindow.
-    else if (d_surface->isRenderingWindow())
-    {
-        // target surface is eihter the parent's target, or the default root.
-        RenderingSurface& tgt = d_parent ?
-            d_parent->getTargetRenderingSurface() :
-            System::getSingleton().getRenderer()->getDefaultRenderingRoot();
-
-        tgt.transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
-    }*/
 }
 
 //----------------------------------------------------------------------------//
 void Node::addChild_impl(Node* node)
 {
-    // URGENT: CEGUI::Window will need to reimplement this and add special functionality
-    
     // if node is attached elsewhere, detach it first (will fire normal events)
     Node* const old_parent = node->getParentNode();
     if (old_parent)
@@ -605,9 +563,6 @@ void Node::removeChild_impl(Node* node)
         d_children.erase(it);
         // reset windows parent so it's no longer this window.
         node->setParent(0);
-        // URGENT: Window needs to reimplement and do this
-        // unban properties window could write as a root window
-        //wnd->unbanPropertyFromXML("RestoreOldCapture");
     }
 }
 
@@ -749,26 +704,10 @@ bool Node::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
 //----------------------------------------------------------------------------//
 void Node::onSized(NodeEventArgs& e)
 {
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    /*// resize the underlying RenderingWindow if we're using such a thing
-    if (d_surface && d_surface->isRenderingWindow())
-        static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
-    */
     // screen area changes when we're resized.
     // NB: Called non-recursive since the onParentSized notifications will deal
     // more selectively with child Window cases.
     notifyScreenAreaChanged(false);
-
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    /*
-    // we need to layout loonfeel based content first, in case anything is
-    // relying on that content for size or positioning info (i.e. some child
-    // is used to establish inner-rect position or size).
-    //
-    // TODO: The subsequent onParentSized notification for those windows cause
-    // additional - unneccessary - work; we should look to optimise that.
-    performChildWindowLayout();
-    */
 
     // inform children their parent has been re-sized
     const size_t child_count = getChildCount();
@@ -777,9 +716,6 @@ void Node::onSized(NodeEventArgs& e)
         NodeEventArgs args(this);
         d_children[i]->onParentSized(args);
     }
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    /*
-    invalidate();*/
 
     fireEvent(EventSized, e, EventNamespace);
 }
@@ -813,11 +749,6 @@ void Node::onParentSized(NodeEventArgs& e)
         onSized(args);
     }
 
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    // if we were not moved or sized, do child layout anyway!
-    /*if (!(moved || sized))
-        performChildWindowLayout();*/
-
     fireEvent(EventParentSized, e, EventNamespace);
 }
 
@@ -825,17 +756,6 @@ void Node::onParentSized(NodeEventArgs& e)
 void Node::onMoved(NodeEventArgs& e)
 {
     notifyScreenAreaChanged();
-
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    /*
-    // handle invalidation of surfaces and trigger needed redraws
-    if (d_parent)
-    {
-        d_parent->invalidateRenderingSurface();
-        // need to redraw some geometry if parent uses a caching surface
-        if (d_parent->getTargetRenderingSurface().isRenderingWindow())
-            System::getSingleton().signalRedraw();
-    }*/
 
     fireEvent(EventMoved, e, EventNamespace);
 }
@@ -857,65 +777,18 @@ void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
 //----------------------------------------------------------------------------//
 void Node::onRotated(NodeEventArgs& e)
 {
-    // URGENT: This has to go into CEGUI::Window once it inherits CEGUI::Node
-    // if we have no surface set, enable the auto surface
-    /*if (!d_surface)
-    {
-        Logger::getSingleton().logEvent("Window::setRotation - "
-            "Activating AutoRenderingSurface on Window '" + d_name +
-            "' to enable rotation support.");
-
-        setUsingAutoRenderingSurface(true);
-
-        // still no surface?  Renderer or HW must not support what we need :(
-        if (!d_surface)
-        {
-            Logger::getSingleton().logEvent("Window::setRotation - "
-                "Failed to obtain a suitable ReneringWindow surface for "
-                "Window '" + d_name + "'.  Rotation will not be available.",
-                Errors);
-
-            return;
-        }
-    }
-
-    // ensure surface we have is the right type
-    if (!d_surface->isRenderingWindow())
-    {
-        Logger::getSingleton().logEvent("Window::setRotation - "
-            "Window '" + d_name + "' has a manual RenderingSurface that is not "
-            "a RenderingWindow.  Rotation will not be available.", Errors);
-
-        return;
-    }
-
-    // Checks / setup complete!  Now we can finally set the rotation.
-    static_cast<RenderingWindow*>(d_surface)->setRotation(d_rotation);
-    static_cast<RenderingWindow*>(d_surface)->setPivot(
-        Vector3f(d_pixelSize.d_width / 2.0f, d_pixelSize.d_height / 2.0f, 0.0f));
-    */
     fireEvent(EventRotated, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Node::onChildAdded(NodeEventArgs& e)
 {
-    // URGENT: Window will need this
-    // we no longer want a total redraw here, instead we just get each window
-    // to resubmit it's imagery to the Renderer.
-    //System::getSingleton().signalRedraw();
     fireEvent(EventChildAdded, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Node::onChildRemoved(NodeEventArgs& e)
 {
-    // URGENT: Window will need this
-    // we no longer want a total redraw here, instead we just get each window
-    // to resubmit it's imagery to the Renderer.
-    //System::getSingleton().signalRedraw();
-    // Though we do need to invalidate the rendering surface!
-    //getTargetRenderingSurface().invalidate();
     fireEvent(EventChildRemoved, e, EventNamespace);
 }
 

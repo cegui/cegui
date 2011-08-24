@@ -2400,7 +2400,7 @@ public:
         The factory name of the currently assigned WindowRenderer.
         If no WindowRenderer is assigned an empty string is returned.
     */
-    String getWindowRendererName(void) const;
+    const String& getWindowRendererName() const;
 
     /*!
     \brief
