@@ -1891,12 +1891,13 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
     d_hitTestRectValid = false;
 
     //if (moved || sized)
+    // FIXME: This is potentially wasteful
     System::getSingleton().updateWindowContainingMouse();
 
     // update geometry position and clipping if nothing from above appears to
     // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-    //if (!d_outerUnclippedRectValid)
-    updateGeometryRenderSettings();
+    if (!d_unclippedOuterRect.isCacheValid())
+        updateGeometryRenderSettings();
 }
 
 //----------------------------------------------------------------------------//
@@ -2477,6 +2478,7 @@ void Window::onParentSized(NodeEventArgs& e)
     Node::onParentSized(e);
 
     // if we were not moved or sized, do child layout anyway!
+    // URGENT FIXME
     //if (!(moved || sized))
     performChildWindowLayout();
 }
@@ -2852,12 +2854,13 @@ bool Window::validateWindowRenderer(const String&) const
 }
 
 //----------------------------------------------------------------------------//
-String Window::getWindowRendererName(void) const
+const String& Window::getWindowRendererName() const
 {
     if (d_windowRenderer)
         return d_windowRenderer->getName();
 
-    return String();
+    static String empty("");
+    return empty;
 }
 
 
