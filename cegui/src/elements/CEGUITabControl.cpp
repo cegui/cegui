@@ -433,16 +433,18 @@ Add tab control properties
 *************************************************************************/
 void TabControl::addTabControlProperties(void)
 {
-    const String propertyOrigin("TabControl");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(TabControl, UDim,
         "TabHeight", "Property to get/set the height of the tabs.",
         &TabControl::setTabHeight, &TabControl::getTabHeight, UDim(0.05f,0.0f)
     );
+    
     CEGUI_DEFINE_PROPERTY(TabControl, UDim,
         "TabTextPadding", "Property to get/set the padding either side of the tab buttons.",
         &TabControl::setTabTextPadding, &TabControl::getTabTextPadding, UDim(0.0f,0.5f)
     );
+    
     CEGUI_DEFINE_PROPERTY(TabControl, TabPanePosition,
         "TabPanePosition", "Property to get/set the position of the buttons pane.",
         &TabControl::setTabPanePosition, &TabControl::getTabPanePosition, TabControl::Top

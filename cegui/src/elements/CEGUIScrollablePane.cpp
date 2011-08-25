@@ -507,27 +507,30 @@ void ScrollablePane::onMouseWheel(MouseEventArgs& e)
 //----------------------------------------------------------------------------//
 void ScrollablePane::addScrollablePaneProperties(void)
 {
-    const String propertyOrigin("ScrollablePane");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll "
         "bar of the tree.  Value is either \"True\" or \"False\".",
-        &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false
+        &ScrollablePane::setShowVertScrollbar, &ScrollablePane::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal "
         "scroll bar of the tree.  Value is either \"True\" or \"False\".",
-        &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false
+        &ScrollablePane::setShowHorzScrollbar, &ScrollablePane::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "HorzStepSize", "Property to get/set the step size for the horizontal Scrollbar.  Value is a float.",
-        &ScrollablePane::setHorizontalStepSize, &ScrollablePane::getHorizontalStepSize, 0.1f
+        &ScrollablePane::setHorizontalStepSize, &ScrollablePane::getHorizontalStepSize, 0.1f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "HorzOverlapSize", "Property to get/set the overlap size for the horizontal Scrollbar.  Value is a float.",
-        &ScrollablePane::setHorizontalOverlapSize, &ScrollablePane::getHorizontalOverlapSize, 0.01f
+        &ScrollablePane::setHorizontalOverlapSize, &ScrollablePane::getHorizontalOverlapSize, 0.01f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "HorzScrollPosition", "Property to get/set the scroll position of the horizontal Scrollbar as a fraction.  Value is a float.",
         &ScrollablePane::setHorizontalScrollPosition, &ScrollablePane::getHorizontalScrollPosition, 0.0f
@@ -535,15 +538,17 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "VertStepSize", "Property to get/set the step size for the vertical Scrollbar.  Value is a float.",
-        &ScrollablePane::setVerticalStepSize, &ScrollablePane::getHorizontalStepSize, 0.1f
+        &ScrollablePane::setVerticalStepSize, &ScrollablePane::getVerticalStepSize, 0.1f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "VertOverlapSize", "Property to get/set the overlap size for the vertical Scrollbar.  Value is a float.",
-        &ScrollablePane::setVerticalOverlapSize, &ScrollablePane::getVerticalOverlapSize, 0.01f
+        &ScrollablePane::setVerticalOverlapSize, &ScrollablePane::getVerticalOverlapSize, 0.01f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrollablePane, float,
         "VertScrollPosition", "Property to get/set the scroll position of the vertical Scrollbar as a fraction.  Value is a float.",
-        &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f
+        &ScrollablePane::setVerticalScrollPosition, &ScrollablePane::getVerticalScrollPosition, 0.0f /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, bool,
@@ -553,7 +558,7 @@ void ScrollablePane::addScrollablePaneProperties(void)
 
     CEGUI_DEFINE_PROPERTY(ScrollablePane, Rectf,
         "ContentArea", "Property to get/set the current content area rectangle of the content pane.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
-        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero()
+        &ScrollablePane::setContentPaneArea, &ScrollablePane::getContentPaneArea, Rectf::zero() /* TODO: Inconsistency */
     );
 }
 

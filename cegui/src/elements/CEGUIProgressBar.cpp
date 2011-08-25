@@ -112,12 +112,13 @@ void ProgressBar::onProgressDone(WindowEventArgs& e)
 *************************************************************************/
 void ProgressBar::addProgressBarProperties(void)
 {
-    const String propertyOrigin("ProgressBar");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ProgressBar, float,
         "CurrentProgress", "Property to get/set the current progress of the progress bar.  Value is a float  value between 0.0 and 1.0 specifying the progress.",
-        &ProgressBar::setProgress, &ProgressBar::getProgress, 0.0f
+        &ProgressBar::setProgress, &ProgressBar::getProgress, 0.0f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ProgressBar, float,
         "StepSize", "Property to get/set the step size setting for the progress bar.  Value is a float value.",
         &ProgressBar::setStepSize, &ProgressBar::getStepSize, 0.0f

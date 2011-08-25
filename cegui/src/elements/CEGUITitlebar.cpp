@@ -235,8 +235,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 *************************************************************************/
 void Titlebar::addTitlebarProperties(void)
 {
-
-    const String propertyOrigin("Titlebar");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(Titlebar, bool,
         "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"True\" or \"False\".",

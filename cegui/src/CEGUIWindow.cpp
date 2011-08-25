@@ -1670,7 +1670,7 @@ void Window::addStandardProperties(void)
         "window's representation onto a texture (although no such "
         "implementation requirement is specified.)"
         "  Value is either \"True\" or \"False\".",
-        &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false
+        &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false /* TODO: Inconsistency*/
     );
     
     CEGUI_DEFINE_PROPERTY(Window, Quaternion,
@@ -1681,7 +1681,7 @@ void Window::addStandardProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "NonClient", "Property to get/set the 'non-client' setting for the Window.  "
         "Value is either \"True\" or \"False\".",
-        &Window::setNonClientWindow, &Window::isNonClientWindow, false
+        &Window::setNonClientWindow, &Window::isNonClientWindow, false  /* TODO: Inconsistency*/
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1699,7 +1699,7 @@ void Window::addStandardProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
         "UpdateMode", "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
-        &Window::setUpdateMode,&Window::getUpdateMode,WUM_VISIBLE
+        &Window::setUpdateMode,&Window::getUpdateMode, WUM_VISIBLE
     );
 
     CEGUI_DEFINE_PROPERTY(Window, AspectMode,

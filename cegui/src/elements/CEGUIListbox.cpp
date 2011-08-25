@@ -1036,26 +1036,31 @@ bool Listbox::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void Listbox::addListboxProperties(void)
 {
-	const String propertyOrigin("Listbox");
-	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+    const String& propertyOrigin = WidgetTypeName;
+    
+    CEGUI_DEFINE_PROPERTY(Listbox, bool,
         "Sort","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
-        &Listbox::setSortingEnabled, &Listbox::isSortEnabled, false
+        &Listbox::setSortingEnabled, &Listbox::isSortEnabled, false /* TODO: Inconsistency */
     );
-	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+    
+    CEGUI_DEFINE_PROPERTY(Listbox, bool,
         "MultiSelect","Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".",
-        &Listbox::setMultiselectEnabled, &Listbox::isMultiselectEnabled, false
+        &Listbox::setMultiselectEnabled, &Listbox::isMultiselectEnabled, false /* TODO: Inconsistency */
     );
-	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+    
+    CEGUI_DEFINE_PROPERTY(Listbox, bool,
         "ForceVertScrollbar","Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
-        &Listbox::setShowVertScrollbar, &Listbox::isVertScrollbarAlwaysShown, false
+        &Listbox::setShowVertScrollbar, &Listbox::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+    
+    CEGUI_DEFINE_PROPERTY(Listbox, bool,
         "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
-        &Listbox::setShowHorzScrollbar, &Listbox::isHorzScrollbarAlwaysShown, false
+        &Listbox::setShowHorzScrollbar, &Listbox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-	CEGUI_DEFINE_PROPERTY(Listbox, bool,
+    
+    CEGUI_DEFINE_PROPERTY(Listbox, bool,
         "ItemTooltips","Property to access the show item tooltips setting of the list box.  Value is either \"True\" or \"False\".",
-        &Listbox::setItemTooltipsEnabled, &Listbox::isItemTooltipsEnabled, false
+        &Listbox::setItemTooltipsEnabled, &Listbox::isItemTooltipsEnabled, false /* TODO: Inconsistency */
     );
 }
 

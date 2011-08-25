@@ -312,28 +312,31 @@ std::pair<float, float>	Thumb::getHorzRange(void) const
 *************************************************************************/
 void Thumb::addThumbProperties(void)
 {
-    const String propertyOrigin("Thumb");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HotTracked", "Property to get/set the state of the state of the 'hot-tracked' setting for the thumb."
         "  Value is either \"True\" or \"False\".",
         &Thumb::setHotTracked, &Thumb::isHotTracked, true
     );
-		typedef std::pair<float,float> range;
+    
+    typedef std::pair<float,float> range;
+    
     CEGUI_DEFINE_PROPERTY(Thumb, range,
         "VertRange", "Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
-        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f,1.0f)
+        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f, 1.0f)
     );
 
     CEGUI_DEFINE_PROPERTY(Thumb, range,
         "HorzRange", "Property to get/set the horizontal movement range for the thumb.  Value is \"min:[float] max:[float]\".",
-        &Thumb::setVertRange, &Thumb::getVertRange, range(0.0f,1.0f)
+        &Thumb::setHorzRange, &Thumb::getHorzRange, range(0.0f, 1.0f)
     );
-
 
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "VertFree", "Property to get/set the state the setting to free the thumb vertically.  Value is either \"True\" or \"False\".",
         &Thumb::setVertFree, &Thumb::isVertFree, false
     );
+    
     CEGUI_DEFINE_PROPERTY(Thumb, bool,
         "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".",
         &Thumb::setHorzFree, &Thumb::isHorzFree, false

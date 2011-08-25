@@ -161,40 +161,46 @@ namespace CEGUI
 
     void DragContainer::addDragContainerProperties(void)
     {
-        const String propertyOrigin("DragContainer");
+        const String& propertyOrigin = WidgetTypeName;
 
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "DraggingEnabled", "Property to get/set the state of the dragging enabled setting for the DragContainer.  Value is either \"True\" or \"False\".",
             &DragContainer::setDraggingEnabled, &DragContainer::isDraggingEnabled, true
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, float,
             "DragAlpha", "Property to get/set the dragging alpha value.  Value is a float.",
             &DragContainer::setDragAlpha, &DragContainer::getDragAlpha, 0.5f
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, float,
             "DragThreshold", "Property to get/set the dragging threshold value.  Value is a float.",
-            &DragContainer::setPixelDragThreshold, &DragContainer::getPixelDragThreshold, 8.0f
+            &DragContainer::setPixelDragThreshold, &DragContainer::getPixelDragThreshold, 8.0f /* TODO: Inconsistency */
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, Image*,
             "DragCursorImage", "Property to get/set the mouse cursor image used when dragging.  Value should be \"set:<imageset name> image:<image name>\".",
             &DragContainer::setDragCursorImage, &DragContainer::getDragCursorImage, 0
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "StickyMode", "Property to get/set the state of the sticky mode setting for the "
                 "DragContainer.  Value is either \"True\" or \"False\".",
-            &DragContainer::setStickyModeEnabled, &DragContainer::isStickyModeEnabled, true
+            &DragContainer::setStickyModeEnabled, &DragContainer::isStickyModeEnabled, true /* TODO: Inconsistency */
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, UVector2,
             "FixedDragOffset", "Property to get/set the state of the fixed dragging offset "
                 "setting for the DragContainer.  "
                 "Value is a UVector2 property value.",
             &DragContainer::setFixedDragOffset, &DragContainer::getFixedDragOffset, UVector2::zero()
         );
+        
         CEGUI_DEFINE_PROPERTY(DragContainer, bool,
             "UseFixedDragOffset", "Property to get/set the setting that control whether the fixed "
                 "dragging offset will be used.  "
                 "Value is either \"True\" or \"False\".",
-            &DragContainer::setUsingFixedDragOffset, &DragContainer::isUsingFixedDragOffset, false
+            &DragContainer::setUsingFixedDragOffset, &DragContainer::isUsingFixedDragOffset, false /* TODO: Inconsistency */
         );
     }
 

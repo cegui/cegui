@@ -298,28 +298,33 @@ bool Scrollbar::handleThumbTrackEnded(const EventArgs&)
 //----------------------------------------------------------------------------//
 void Scrollbar::addScrollbarProperties(void)
 {
-    const String propertyOrigin("Scrollbar");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "DocumentSize", "Property to get/set the document size for the Scrollbar.  Value is a float.",
         &Scrollbar::setDocumentSize, &Scrollbar::getDocumentSize, 1.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "PageSize", "Property to get/set the page size for the Scrollbar.  Value is a float.",
         &Scrollbar::setPageSize, &Scrollbar::getPageSize, 0.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "StepSize", "Property to get/set the step size for the Scrollbar.  Value is a float.",
         &Scrollbar::setStepSize, &Scrollbar::getStepSize, 1.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "OverlapSize", "Property to get/set the overlap size for the Scrollbar.  Value is a float.",
         &Scrollbar::setOverlapSize, &Scrollbar::getOverlapSize, 0.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "ScrollPosition", "Property to get/set the scroll position of the Scrollbar.  Value is a float.",
         &Scrollbar::setScrollPosition, &Scrollbar::getScrollPosition, 0.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Scrollbar, bool,
         "EndLockEnabled", "Property to get/set the 'end lock' mode setting for the Scrollbar. "
         "Value is either \"True\" or \"False\".",

@@ -1616,16 +1616,18 @@ bool MultiLineEditbox::isWordWrapped(void) const
 *************************************************************************/
 void MultiLineEditbox::addMultiLineEditboxProperties(void)
 {
-
-    const String propertyOrigin("MultiLineEditbox");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
         &MultiLineEditbox::setReadOnly, &MultiLineEditbox::isReadOnly, false
     );
+    
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
         "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
         &MultiLineEditbox::setCaretIndex, &MultiLineEditbox::getCaretIndex, 0
     );
+    
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
         "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
         &MultiLineEditbox::setSelectionStart, &MultiLineEditbox::getSelectionStartIndex, 0
@@ -1634,6 +1636,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
         "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
         &MultiLineEditbox::setSelectionLength, &MultiLineEditbox::getSelectionLength, 0
     );
+    
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, size_t,
         "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
         &MultiLineEditbox::setMaxTextLength, &MultiLineEditbox::getMaxTextLength, String().max_size()
@@ -1641,7 +1644,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "WordWrap", "Property to get/set the word-wrap setting of the edit box.  Value is either \"True\" or \"False\".",
-        &MultiLineEditbox::setWordWrapping, &MultiLineEditbox::isWordWrapped, true
+        &MultiLineEditbox::setWordWrapping, &MultiLineEditbox::isWordWrapped, true /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, Image*,
@@ -1652,9 +1655,8 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiLineEditbox, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
         "Value is either \"True\" or \"False\".",
-        &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false
+        &MultiLineEditbox::setShowVertScrollbar, &MultiLineEditbox::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-
 }
 
 /*************************************************************************

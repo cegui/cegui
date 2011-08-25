@@ -613,28 +613,33 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::addHeaderSegmentProperties(void)
 {
-    const String propertyOrigin("ListHeaderSegment");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
         "Sizable", "Property to get/set the sizable setting of the header segment.  Value is either \"True\" or \"False\".",
-        &ListHeaderSegment::setSizingEnabled, &ListHeaderSegment::isSizingEnabled, true
+        &ListHeaderSegment::setSizingEnabled, &ListHeaderSegment::isSizingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
         "Clickable", "Property to get/set the click-able setting of the header segment.  Value is either \"True\" or \"False\".",
         &ListHeaderSegment::setClickable, &ListHeaderSegment::isClickable, true
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, bool,
         "Dragable", "Property to get/set the drag-able setting of the header segment.  Value is either \"True\" or \"False\".",
-        &ListHeaderSegment::setDragMovingEnabled, &ListHeaderSegment::isDragMovingEnabled, true
+        &ListHeaderSegment::setDragMovingEnabled, &ListHeaderSegment::isDragMovingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.",
         &ListHeaderSegment::setSortDirection, &ListHeaderSegment::getSortDirection, ListHeaderSegment::None
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "SizingCursorImage", "Property to get/set the sizing cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
         &ListHeaderSegment::setSizingCursorImage, &ListHeaderSegment::getSizingCursorImage, 0
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeaderSegment, Image*,
         "MovingCursorImage", "Property to get/set the moving cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
         &ListHeaderSegment::setMovingCursorImage, &ListHeaderSegment::getMovingCursorImage, 0

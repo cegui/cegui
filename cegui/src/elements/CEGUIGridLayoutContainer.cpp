@@ -589,8 +589,7 @@ void GridLayoutContainer::removeChild_impl(Window* wnd)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::addGridLayoutContainerProperties(void)
 {
-
-    const String propertyOrigin("GridLayoutContainer");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(GridLayoutContainer, Sizef,
         "GridSize", "Size of the grid of this layout container. "
@@ -598,6 +597,7 @@ void GridLayoutContainer::addGridLayoutContainerProperties(void)
         "only integer values are valid as grid size.",
         &GridLayoutContainer::setGrid, &GridLayoutContainer::getGrid, Sizef::zero()
     );
+    
     CEGUI_DEFINE_PROPERTY(GridLayoutContainer, AutoPositioning,
         "AutoPositioning", "Sets the method used for auto positioning. "
         "Possible values: 'Disabled', 'Left to Right', 'Top to Bottom'.",
