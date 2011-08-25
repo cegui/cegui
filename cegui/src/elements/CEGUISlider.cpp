@@ -254,20 +254,21 @@ bool Slider::handleThumbTrackEnded(const EventArgs&)
 *************************************************************************/
 void Slider::addSliderProperties(void)
 {
-
-    const String propertyOrigin("Slider");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "CurrentValue", "Property to get/set the current value of the slider.  Value is a float.",
         &Slider::setCurrentValue, &Slider::getCurrentValue, 0.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "MaximumValue", "Property to get/set the maximum value of the slider.  Value is a float.",
-        &Slider::setMaxValue, &Slider::getMaxValue, 1.0f
+        &Slider::setMaxValue, &Slider::getMaxValue, 1.0f /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(Slider, float,
         "ClickStepSize", "Property to get/set the click-step size for the slider.  Value is a float.",
-        &Slider::setClickStep, &Slider::getClickStep, 0.01f
+        &Slider::setClickStep, &Slider::getClickStep, 0.01f /* TODO: Inconsistency */
     );
 }
 

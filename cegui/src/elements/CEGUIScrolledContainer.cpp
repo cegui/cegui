@@ -261,11 +261,13 @@ void ScrolledContainer::addScrolledContainerProperties(void)
         "  Value is either \"True\" or \"False\".",
         &ScrolledContainer::setContentPaneAutoSized, &ScrolledContainer::isContentPaneAutoSized, true
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ContentArea", "Property to get/set the current content area rectangle of the content pane."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         &ScrolledContainer::setContentArea, &ScrolledContainer::getContentArea, Rectf::zero()
     );
+    
     CEGUI_DEFINE_PROPERTY(ScrolledContainer, Rectf,
         "ChildExtentsArea", "Property to get the current content extents rectangle."
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",

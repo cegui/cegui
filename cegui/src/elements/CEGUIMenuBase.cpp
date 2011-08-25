@@ -116,16 +116,18 @@ void MenuBase::onPopupClosed(WindowEventArgs& e)
 *************************************************************************/
 void MenuBase::addMenuBaseProperties(void)
 {
-    const String propertyOrigin("MenuBase");
+    const String propertyOrigin = "CEGUI/MenuBase";
 
     CEGUI_DEFINE_PROPERTY(MenuBase, float,
         "ItemSpacing", "Property to get/set the item spacing of the menu.  Value is a float.",
         &MenuBase::setItemSpacing, &MenuBase::getItemSpacing, 10.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
         "AllowMultiplePopups", "Property to get/set the state of the allow multiple popups setting for the menu.  Value is either \"True\" or \"False\".",
-        &MenuBase::setAllowMultiplePopups, &MenuBase::isMultiplePopupsAllowed, false
+        &MenuBase::setAllowMultiplePopups, &MenuBase::isMultiplePopupsAllowed, false /* TODO: Inconsistency and awful English */
     );
+    
     CEGUI_DEFINE_PROPERTY(MenuBase, bool,
         "AutoCloseNestedPopups", "Property to set if the menu should close all its open child popups, when it gets hidden. Value is either \"True\" or \"False\".",
         &MenuBase::setAutoCloseNestedPopups, &MenuBase::getAutoCloseNestedPopups, false

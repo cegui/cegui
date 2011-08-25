@@ -389,7 +389,7 @@ namespace CEGUI
 
     void Tooltip::addTooltipProperties(void)
     {
-        const String propertyOrigin("Tooltip");
+        const String& propertyOrigin = WidgetTypeName;
 
         CEGUI_DEFINE_PROPERTY(Tooltip, float,
             "HoverTime", "Property to get/set the hover timeout value in seconds.  Value is a float.",

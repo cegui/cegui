@@ -927,35 +927,43 @@ void Editbox::onTextChanged(WindowEventArgs& e)
 //----------------------------------------------------------------------------//
 void Editbox::addEditboxProperties(void)
 {
-    const String propertyOrigin("Editbox");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
           "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
           &Editbox::setReadOnly, &Editbox::isReadOnly, false
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, bool,
           "MaskText","Property to get/set the mask text setting for the Editbox.  Value is either \"True\" or \"False\".",
-          &Editbox::setTextMasked, &Editbox::isTextMasked, false
+          &Editbox::setTextMasked, &Editbox::isTextMasked, false /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, uint,
           "MaskCodepoint","Property to get/set the utf32 codepoint value used for masking text.  Value is \"[uint]\".",
           &Editbox::setMaskCodePoint, &Editbox::getMaskCodePoint, 42
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, String,
           "ValidationString","Property to get/set the validation string Editbox.  Value is a text string.",
           &Editbox::setValidationString, &Editbox::getValidationString, ".*"
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "CaretIndex","Property to get/set the current caret index.  Value is \"[uint]\".",
           &Editbox::setCaretIndex, &Editbox::getCaretIndex, 0
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "SelectionStart","Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
-          &Editbox::setSelectionStart, &Editbox::getSelectionStartIndex, 0
+          &Editbox::setSelectionStart, &Editbox::getSelectionStartIndex, 0 /* TODO: getter inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "SelectionLength","Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
           &Editbox::setSelectionLength, &Editbox::getSelectionLength, 0
     );
+    
     CEGUI_DEFINE_PROPERTY(Editbox, size_t,
           "MaxTextLength","Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
           &Editbox::setMaxTextLength, &Editbox::getMaxTextLength, String().max_size()

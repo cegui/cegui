@@ -824,7 +824,8 @@ bool Combobox::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void Combobox::addComboboxProperties(void)
 {
-    const String propertyOrigin("Combobox");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "ReadOnly","Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".",
           &Combobox::setReadOnly, &Combobox::isReadOnly, false
@@ -851,19 +852,19 @@ void Combobox::addComboboxProperties(void)
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "SortList","Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
-          &Combobox::setSortingEnabled, &Combobox::isSortEnabled, false
+          &Combobox::setSortingEnabled, &Combobox::isSortEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
-          &Combobox::setShowVertScrollbar, &Combobox::isVertScrollbarAlwaysShown, false
+          &Combobox::setShowVertScrollbar, &Combobox::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "ForceHorzScrollbar","Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
-          &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false
+          &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "SingleClickMode","Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".",
-          &Combobox::setSingleClickEnabled, &Combobox::getSingleClickEnabled, false
+          &Combobox::setSingleClickEnabled, &Combobox::getSingleClickEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
 }
 

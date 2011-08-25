@@ -2194,21 +2194,22 @@ bool MultiColumnList::isHorzScrollbarAlwaysShown(void) const
 *************************************************************************/
 void MultiColumnList::addMultiColumnListProperties(void)
 {
-    const String propertyOrigin("MultiColumnList");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
-        &MultiColumnList::setUserColumnSizingEnabled, &MultiColumnList::isUserColumnSizingEnabled, true
+        &MultiColumnList::setUserColumnSizingEnabled, &MultiColumnList::isUserColumnSizingEnabled, true /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
-        &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true
+        &MultiColumnList::setUserColumnDraggingEnabled, &MultiColumnList::isUserColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction."
         "  Value is either \"True\" or \"False\".",
-        &MultiColumnList::setUserSortControlEnabled, &MultiColumnList::isUserSortControlEnabled, true
+        &MultiColumnList::setUserSortControlEnabled, &MultiColumnList::isUserSortControlEnabled, true /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, ListHeaderSegment::SortDirection,
@@ -2220,18 +2221,18 @@ void MultiColumnList::addMultiColumnListProperties(void)
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceVertScrollbar", "Property to get/set the 'always show' setting for the vertical scroll bar of the list box."
         "  Value is either \"True\" or \"False\".",
-        &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false
+        &MultiColumnList::setShowVertScrollbar, &MultiColumnList::isVertScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(MultiColumnList, bool,
         "ForceHorzScrollbar", "Property to get/set the 'always show' setting for the horizontal scroll bar of the list box."
         "  Value is either \"True\" or \"False\".",
-        &MultiColumnList::setShowHorzScrollbar, &MultiColumnList::isHorzScrollbarAlwaysShown, false
+        &MultiColumnList::setShowHorzScrollbar, &MultiColumnList::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency */
     );
-
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
         "NominatedSelectionColumnID", "Property to get/set the nominated selection column (via ID).  Value is an unsigned integer number.",
-        &MultiColumnList::setNominatedSelectionColumn, &MultiColumnList::getNominatedSelectionColumnID, 0
+        &MultiColumnList::setNominatedSelectionColumn, &MultiColumnList::getNominatedSelectionColumnID, 0 /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, uint,
@@ -2241,7 +2242,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 
     CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, uint,
         "RowCount", "Property to access the number of rows in the list (read only)",
-        0, &MultiColumnList::getRowCount, 0
+        0, &MultiColumnList::getRowCount, 0 
     );
 
     CEGUI_DEFINE_PROPERTY(MultiColumnList, MultiColumnList::SelectionMode,
@@ -2250,10 +2251,9 @@ void MultiColumnList::addMultiColumnListProperties(void)
         &MultiColumnList::setSelectionMode, &MultiColumnList::getSelectionMode, MultiColumnList::RowSingle
     );
 
-
     CEGUI_DEFINE_PROPERTY_NO_XML(MultiColumnList, String,
         "ColumnHeader", "Property to set up a column (there is no getter for this property)",
-        &MultiColumnList::addColumn, 0, ""
+        &MultiColumnList::addColumn, 0, "" /* TODO: This is quite a hack, isn't it? */
     );
 }
 

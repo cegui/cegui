@@ -216,7 +216,7 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 *************************************************************************/
 void RadioButton::addRadioButtonProperties(void)
 {
-    const String propertyOrigin("RadioButton");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(RadioButton, bool,
         "Selected", "Property to get/set the selected state of the RadioButton.  Value is either \"True\" or \"False\".",

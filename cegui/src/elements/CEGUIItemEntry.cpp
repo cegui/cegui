@@ -142,14 +142,16 @@ void ItemEntry::onMouseClicked(MouseEventArgs& e)
 *************************************************************************/
 void ItemEntry::addItemEntryProperties(void)
 {
-    const String propertyOrigin("ItemEntry");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
-		      "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"True\" or \"False\".",
-		      &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
+            "Selectable","Property to get/set the state of the selectable setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+            &ItemEntry::setSelectable, &ItemEntry::isSelectable, false
     );
+    
     CEGUI_DEFINE_PROPERTY(ItemEntry, bool,
-		      "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"True\" or \"False\".",
-		      &ItemEntry::setSelected, &ItemEntry::isSelected, false
+            "Selected","Property to get/set the state of the selected setting for the ItemEntry.  Value is either \"True\" or \"False\".",
+            &ItemEntry::setSelected, &ItemEntry::isSelected, false
     );
 }
 

@@ -122,8 +122,9 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 *************************************************************************/
 void Checkbox::addCheckboxProperties(void)
 {
-	const String propertyOrigin("Checkbox");
-	CEGUI_DEFINE_PROPERTY(Checkbox, bool,
+    const String& propertyOrigin = WidgetTypeName;
+    
+    CEGUI_DEFINE_PROPERTY(Checkbox, bool,
         "Selected","Property to get/set the selected state of the Checkbox.  Value is either \"True\" or \"False\".",
         &Checkbox::setSelected, &Checkbox::isSelected, false
     );

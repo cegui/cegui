@@ -320,6 +320,9 @@ private:
 	void	addThumbProperties(void);
 };
 
+/*
+TODO: This is horrible, PropertyHelper for std::pair<float, float> would be fine but enforcing min: %f max: %f is just horrible
+*/
 template<>
 class PropertyHelper<std::pair<float,float> >
 {

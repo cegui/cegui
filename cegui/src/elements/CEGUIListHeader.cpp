@@ -1030,26 +1030,28 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 *************************************************************************/
 void ListHeader::addHeaderProperties(void)
 {
-
-    const String propertyOrigin("ListHeader");
-
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "SortSettingEnabled", "Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".",
-        &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true
+        &ListHeader::setSortingEnabled, &ListHeader::isSortingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsSizable", "Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
-        &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true
+        &ListHeader::setColumnSizingEnabled, &ListHeader::isColumnSizingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeader, bool,
         "ColumnsMovable", "Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
-        &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true
+        &ListHeader::setColumnDraggingEnabled, &ListHeader::isColumnDraggingEnabled, true /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeader, uint,
         "SortColumnID", "Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
-        &ListHeader::setSortColumnFromID, &ListHeader::getSortSegmentID, 0
+        &ListHeader::setSortColumnFromID, &ListHeader::getSortSegmentID, 0 /* TODO: Inconsistency */
     );
+    
     CEGUI_DEFINE_PROPERTY(ListHeader, ListHeaderSegment::SortDirection,
         "SortDirection", "Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
         &ListHeader::setSortDirection, &ListHeader::getSortDirection, ListHeaderSegment::None

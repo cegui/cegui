@@ -769,7 +769,7 @@ void FrameWindow::addFrameWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,
         "RollUpState", "Property to get/set the roll-up / shade state of the window.  Value is either \"True\" or \"False\".",
-        &FrameWindow::setRolledup, &FrameWindow::isRolledup, false
+        &FrameWindow::setRolledup, &FrameWindow::isRolledup, false /* TODO: Inconsistency */
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, bool,

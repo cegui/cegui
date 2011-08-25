@@ -380,12 +380,13 @@ void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
 *************************************************************************/
 void PopupMenu::addPopupMenuProperties(void)
 {
-    const String propertyOrigin("PopupMenu");
+    const String& propertyOrigin = WidgetTypeName;
 
     CEGUI_DEFINE_PROPERTY(PopupMenu, float,
         "FadeInTime", "Property to get/set the fade in time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeInTime, &PopupMenu::getFadeInTime, 0.0f
     );
+    
     CEGUI_DEFINE_PROPERTY(PopupMenu, float,
         "FadeOutTime", "Property to get/set the fade out time in seconds of the popup menu.  Value is a float.",
         &PopupMenu::setFadeOutTime, &PopupMenu::getFadeOutTime, 0.0f

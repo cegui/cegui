@@ -564,11 +564,13 @@ Add MenuItem specific properties
 *************************************************************************/
 void MenuItem::addMenuItemProperties(void)
 {
-    const String propertyOrigin("MenuItem");
+    const String& propertyOrigin = WidgetTypeName;
+    
     CEGUI_DEFINE_PROPERTY(MenuItem, UVector2,
         "PopupOffset","Property to specify an offset for the popup menu position. Value is a UVector2 property value.",
         &MenuItem::setPopupOffset, &MenuItem::getPopupOffset, UVector2::zero()
     );
+    
     CEGUI_DEFINE_PROPERTY(MenuItem, float,
         "AutoPopupTimeout","Property to specify the time, which has to elapse before the popup window is opened/closed if the hovering state changes. Value is a float property value.",
         &MenuItem::setAutoPopupTimeout, &MenuItem::getAutoPopupTimeout, 0.0f
