@@ -30,7 +30,7 @@
 
 #include "FalModule.h"
 #include "../../elements/CEGUIMultiLineEditbox.h"
-#include "FalMultiLineEditboxProperties.h"
+#include "FalagardProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -185,10 +185,6 @@ protected:
         exists.
     */
     Colour getOptionalPropertyColour(const String& propertyName) const;
-
-    // properties
-    static FalagardMultiLineEditboxProperties::BlinkCaret d_blinkCaretProperty;
-    static FalagardMultiLineEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
 
     //! true if the caret imagery should blink.
     bool d_blinkCaret;
