@@ -29,20 +29,18 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardListHeader::TypeName("Falagard/ListHeader");
 
-    // properties
-    FalagardListHeaderProperties::SegmentWidgetType FalagardListHeader::d_segmentWidgetTypeProperty;
-
-
     FalagardListHeader::FalagardListHeader(const String& type) :
         ListHeaderWindowRenderer(type)
     {
-        registerProperty(&d_segmentWidgetTypeProperty);
+        CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardListHeader,String,
+        "SegmentWidgetType", "Property to get/set the widget type used when creating header segments.  Value should be \"[widgetTypeName]\".",
+        &FalagardListHeader::setSegmentWidgetType,&FalagardListHeader::getSegmentWidgetType,
+        "");
     }
 
     void FalagardListHeader::render()

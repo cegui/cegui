@@ -31,7 +31,7 @@
 #include "FalModule.h"
 #include "../../elements/CEGUIListHeader.h"
 #include "../../falagard/CEGUIFalWidgetLookFeel.h"
-#include "FalListHeaderProperties.h"
+#include "FalagardProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -74,8 +74,6 @@ namespace CEGUI
         void destroyListSegment(ListHeaderSegment* segment) const;
 
 protected:
-        // properties
-        static FalagardListHeaderProperties::SegmentWidgetType   d_segmentWidgetTypeProperty;
 
         // data fields
         String  d_segmentWidgetType;
