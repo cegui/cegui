@@ -29,7 +29,7 @@
 #define _FalProgressBar_h_
 
 #include "FalModule.h"
-#include "FalagardProperty.h"
+#include "../../CEGUITplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

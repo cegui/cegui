@@ -31,7 +31,7 @@
 #include "FalModule.h"
 #include "../../elements/CEGUIListHeader.h"
 #include "../../falagard/CEGUIFalWidgetLookFeel.h"
-#include "FalagardProperty.h"
+#include "../../CEGUITplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
