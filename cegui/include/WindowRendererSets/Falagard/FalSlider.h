@@ -30,7 +30,7 @@
 
 #include "FalModule.h"
 #include "../../elements/CEGUISlider.h"
-#include "FalSliderProperties.h"
+#include "../../CEGUITplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -90,10 +90,6 @@ namespace CEGUI
         void updateThumb(void);
         float getValueFromThumb(void) const;
         float getAdjustDirectionFromPoint(const Vector2f& pt) const;
-
-        // property objects
-        static FalagardSliderProperties::VerticalSlider d_verticalProperty;
-        static FalagardSliderProperties::ReversedDirection d_reversedProperty;
     };
 
 } // End of  CEGUI namespace section
