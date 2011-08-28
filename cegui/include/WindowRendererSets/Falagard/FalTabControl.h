@@ -30,7 +30,7 @@
 
 #include "FalModule.h"
 #include "../../elements/CEGUITabControl.h"
-#include "FalTabControlProperties.h"
+#include "../../CEGUITplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -85,9 +85,6 @@ namespace CEGUI
 
         // data fields
         String  d_tabButtonType;
-
-        // properties
-        static FalagardTabControlProperties::TabButtonType d_tabButtonTypeProperty;
     };
 
 } // End of  CEGUI namespace section
