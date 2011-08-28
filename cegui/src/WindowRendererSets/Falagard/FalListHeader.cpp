@@ -37,7 +37,7 @@ namespace CEGUI
     FalagardListHeader::FalagardListHeader(const String& type) :
         ListHeaderWindowRenderer(type)
     {
-        CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardListHeader,String,
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardListHeader,String,
         "SegmentWidgetType", "Property to get/set the widget type used when creating header segments.  Value should be \"[widgetTypeName]\".",
         &FalagardListHeader::setSegmentWidgetType,&FalagardListHeader::getSegmentWidgetType,
         "");

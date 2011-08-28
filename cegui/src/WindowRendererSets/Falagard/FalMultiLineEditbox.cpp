@@ -53,12 +53,12 @@ FalagardMultiLineEditbox::FalagardMultiLineEditbox(const String& type) :
     d_showCaret(true)
 {
 
-    CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardMultiLineEditbox,bool,
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox,bool,
         "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
         "Value is either \"True\" or \"False\".",
         &FalagardMultiLineEditbox::setCaretBlinkEnabled,&FalagardMultiLineEditbox::isCaretBlinkEnabled,
         false);
-    CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardMultiLineEditbox,float,
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardMultiLineEditbox,float,
         "BlinkCaretTimeout", "Property to get/set the caret blink timeout / speed.  "
         "Value is a float value indicating the timeout in seconds.",
         &FalagardMultiLineEditbox::setCaretBlinkTimeout,&FalagardMultiLineEditbox::getCaretBlinkTimeout,

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalagardProperty.h
+    filename:   TplWindowRendererProperty.h
     created:    27/08/2011
     author:     Hans Mackowiak
 
@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIFalagardProperty_h_
-#define _CEGUIFalagardProperty_h_
+#ifndef _TplWindowRendererProperty_h_
+#define _TplWindowRendererProperty_h_
 
 #include "../../CEGUITplProperty.h"
 
@@ -38,14 +38,14 @@ namespace CEGUI
 
     
 template<class C, typename T>
-class FalagardProperty : public TypedProperty<T>
+class TplWindowRendererProperty : public TypedProperty<T>
 {
 public:
     typedef typename TplProperty<C,T>::Setter Setter;
     typedef typename TplProperty<C,T>::GetterFunctor GetterFunctor;
     typedef PropertyHelper<T> Helper;
     
-    FalagardProperty(const String& name, const String& help,
+    TplWindowRendererProperty(const String& name, const String& help,
     Setter setter, GetterFunctor getter,
     typename Helper::pass_type defaultValue = T()):
     TypedProperty<T>(name,help,C::TypeName, defaultValue),
@@ -53,7 +53,7 @@ public:
         d_getter(getter)
     {}
     
-    virtual ~FalagardProperty()
+    virtual ~TplWindowRendererProperty()
     {}
     
     //! \copydoc TypedProperty::setNative_impl
@@ -94,9 +94,9 @@ Example of usage inside addStandardProperties or similar method.
 };
 
 */
-#define CEGUI_DEFINE_FALAGARD_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
+#define CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
-    static ::CEGUI::FalagardProperty<class_type, property_native_type> sProperty(\
+    static ::CEGUI::TplWindowRendererProperty<class_type, property_native_type> sProperty(\
             name, help, setter, getter, default_value);\
     \
     this->registerProperty(&sProperty);\
@@ -114,13 +114,13 @@ Example of usage inside addStandardProperties or similar method.
 };
 
 */
-#define CEGUI_DEFINE_FALAGARD_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
+#define CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
-    static ::CEGUI::FalagardProperty<class_type, property_native_type> sProperty(\
+    static ::CEGUI::TplWindowRendererProperty<class_type, property_native_type> sProperty(\
             name, help, setter, getter, default_value);\
     \
     this->registerProperty(&sProperty,true);\
 }
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIFalagardProperty_h_
+#endif  // end of guard _TplWindowRendererProperty_h_
