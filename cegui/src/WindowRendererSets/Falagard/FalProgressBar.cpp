@@ -29,23 +29,26 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "elements/CEGUIProgressBar.h"
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardProgressBar::TypeName("Falagard/ProgressBar");
-
-    FalagardProgressBarProperties::VerticalProgress FalagardProgressBar::d_verticalProperty;
-    FalagardProgressBarProperties::ReversedProgress FalagardProgressBar::d_reversedProperty;
-
 
     FalagardProgressBar::FalagardProgressBar(const String& type) :
         WindowRenderer(type, "ProgressBar"),
         d_vertical(false),
         d_reversed(false)
     {
-        registerProperty(&d_verticalProperty);
-        registerProperty(&d_reversedProperty);
+        CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardProgressBar,bool,
+        "VerticalProgress", "Property to get/set whether the ProgressBar operates in the vertical direction."
+        "  Value is either \"True\" or \"False\".",
+        &FalagardProgressBar::setVertical,&FalagardProgressBar::isVertical,
+        false);
+        CEGUI_DEFINE_FALAGARD_PROPERTY(FalagardProgressBar,bool,
+        "ReversedProgress", "Property to get/set whether the ProgressBar operates in reversed direction."
+        "  Value is either \"True\" or \"False\".",
+        &FalagardProgressBar::setReversed,&FalagardProgressBar::isReversed,
+        false);
     }
 
     void FalagardProgressBar::render()
