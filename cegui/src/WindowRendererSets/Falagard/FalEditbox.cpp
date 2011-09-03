@@ -32,7 +32,7 @@
 #include "FalEditbox.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUITplWindowRendererProperty.h"
 #include "CEGUICoordConverter.h"
 #include "CEGUIFont.h"
 #include "CEGUIBidiVisualMapping.h"
@@ -42,11 +42,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-FalagardEditboxProperties::BlinkCaret FalagardEditbox::d_blinkCaretProperty;
-FalagardEditboxProperties::BlinkCaretTimeout FalagardEditbox::d_blinkCaretTimeoutProperty;
-FalagardEditboxProperties::TextFormatting FalagardEditbox::d_textFormattingProperty;
-
 //----------------------------------------------------------------------------//
 const String FalagardEditbox::TypeName("Falagard/Editbox");
 
@@ -64,9 +59,21 @@ FalagardEditbox::FalagardEditbox(const String& type) :
     d_showCaret(true),
     d_textFormatting(HTF_LEFT_ALIGNED)
 {
-    registerProperty(&d_blinkCaretProperty);
-    registerProperty(&d_blinkCaretTimeoutProperty);
-    registerProperty(&d_textFormattingProperty);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, bool,
+        "BlinkCaret", "Property to get/set whether the Editbox caret should blink.  "
+        "Value is either \"True\" or \"False\".",
+        &FalagardEditbox::setCaretBlinkEnabled, &FalagardEditbox::isCaretBlinkEnabled,
+        false);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, float,
+        "BlinkCaretTimeout", "Property to get/set the caret blink timeout / speed.  "
+        "Value is a float value indicating the timeout in seconds.",
+        &FalagardEditbox::setCaretBlinkTimeout, &FalagardEditbox::getCaretBlinkTimeout,
+        DefaultCaretBlinkTimeout);
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardEditbox, HorizontalTextFormatting,
+        "TextFormatting", "Property to get/set the horizontal formatting mode. "
+        "Value is one of: LeftAligned, RightAligned or HorzCentred",
+        &FalagardEditbox::setTextFormatting, &FalagardEditbox::getTextFormatting,
+        HTF_LEFT_ALIGNED);
 }
 
 //----------------------------------------------------------------------------//
