@@ -28,22 +28,28 @@
 #include "FalStatic.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUITplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardStatic::TypeName("Falagard/Static");
 
-    FalagardStaticProperties::FrameEnabled          FalagardStatic::d_frameEnabledProperty;
-    FalagardStaticProperties::BackgroundEnabled     FalagardStatic::d_backgroundEnabledProperty;
-
     FalagardStatic::FalagardStatic(const String& type) :
         WindowRenderer(type),
         d_frameEnabled(false),
         d_backgroundEnabled(false)
     {
-        registerProperty(&d_frameEnabledProperty);
-        registerProperty(&d_backgroundEnabledProperty);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStatic, bool,
+            "FrameEnabled", "Property to get/set the state of the frame enabled setting for the FalagardStatic widget."
+            "  Value is either \"True\" or \"False\".",
+            &FalagardStatic::setFrameEnabled, &FalagardStatic::isFrameEnabled,
+            true);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStatic, bool,
+            "BackgroundEnabled", "Property to get/set the state of the frame background setting for the FalagardStatic widget."
+            "  Value is either \"True\" or \"False\".",
+            &FalagardStatic::setBackgroundEnabled, &FalagardStatic::isBackgroundEnabled,
+            true);
     }
 
     void FalagardStatic::setFrameEnabled(bool setting)
