@@ -30,7 +30,6 @@
 
 #include "FalModule.h"
 #include "FalStatic.h"
-#include "FalStaticTextProperties.h"
 #include "../../falagard/CEGUIFalEnums.h"
 #include "../../CEGUIColourRect.h"
 #include <vector>
@@ -190,15 +189,6 @@ namespace CEGUI
 
         // event subscribers
         bool handleScrollbarChange(const EventArgs& e);
-
-        // properties
-        static FalagardStaticTextProperties::TextColours    d_textColoursProperty;
-        static FalagardStaticTextProperties::VertFormatting d_vertFormattingProperty;
-        static FalagardStaticTextProperties::HorzFormatting d_horzFormattingProperty;
-        static FalagardStaticTextProperties::VertScrollbar  d_vertScrollbarProperty;
-        static FalagardStaticTextProperties::HorzScrollbar  d_horzScrollbarProperty;
-        static FalagardStaticTextProperties::HorzExtent     d_horzExtentProperty;
-        static FalagardStaticTextProperties::VertExtent     d_vertExtentProperty;
 
         // implementation data
         //! Horizontal formatting to be applied to the text.
