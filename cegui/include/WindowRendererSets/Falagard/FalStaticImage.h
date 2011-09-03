@@ -31,7 +31,6 @@
 #include "../../CEGUIImage.h"
 #include "FalModule.h"
 #include "FalStatic.h"
-#include "FalStaticImageProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -85,9 +84,6 @@ namespace CEGUI
         void render();
 
     protected:
-        // static properties
-        static FalagardStaticImageProperties::Image d_imageProperty;
-
         // implementation data
         const Image* d_image;
     };
