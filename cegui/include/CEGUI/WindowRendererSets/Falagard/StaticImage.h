@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalStaticImage.h
+    filename:   StaticImage.h
     created:    Tue Jul 5 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,10 +28,10 @@
 #ifndef _FalStaticImage_h_
 #define _FalStaticImage_h_
 
-#include "../../CEGUIImage.h"
-#include "FalModule.h"
-#include "FalStatic.h"
-#include "FalStaticImageProperties.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowRendererSets/Falagard/Static.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticImageProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

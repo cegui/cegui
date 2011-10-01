@@ -36,10 +36,10 @@
 #include <cassert>
 
 // bring in configuration options
-#include "CEGUIConfig.h"
+#include "CEGUI/Config.h"
 
 // add CEGUI version defines
-#include "CEGUIVersion.h"
+#include "CEGUI/Version.h"
 
 /*************************************************************************
 	Dynamic Library import / export control conditional
@@ -196,7 +196,7 @@ typedef std::ostream OutStream;     //!< Output stream class.
 /*************************************************************************
 	Bring in forward references to all GUI base system classes
 *************************************************************************/
-#include "CEGUIForwardRefs.h"
-#include "CEGUIMemoryAllocation.h"
+#include "CEGUI/ForwardRefs.h"
+#include "CEGUI/MemoryAllocation.h"
 
 #endif	// end of guard _CEGUIBase_h_

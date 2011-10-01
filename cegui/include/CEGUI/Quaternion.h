@@ -30,9 +30,9 @@
 #ifndef _CEGUIQuaternion_h_
 #define _CEGUIQuaternion_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIInterpolator.h"
-#include "CEGUIVector.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Interpolator.h"
+#include "CEGUI/Vector.h"
 #include <cmath>
 
 // Start of CEGUI namespace section

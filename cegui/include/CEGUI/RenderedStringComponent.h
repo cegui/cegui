@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderedStringComponent_h_
 #define _CEGUIRenderedStringComponent_h_
 
-#include "CEGUISize.h"
-#include "CEGUIRect.h"
-#include "falagard/CEGUIFalEnums.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/falagard/Enums.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

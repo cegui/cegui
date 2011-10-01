@@ -3,8 +3,8 @@
 #include <map>
 #include <iostream>
 
-#include "CEGUI.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 
 namespace CEGUI
 {

@@ -30,9 +30,9 @@
 #ifndef _CEGUIScriptModule_h_
 #define _CEGUIScriptModule_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIEvent.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Event.h"
 
 
 // Start of CEGUI namespace section

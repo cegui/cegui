@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalItemEntry.h
+    filename:   ItemEntry.h
     created:    Thu Sep 22 2005
     author:     Tomas Lindquist Olsen
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalItemEntry_h_
 #define _FalItemEntry_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIItemEntry.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ItemEntry.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

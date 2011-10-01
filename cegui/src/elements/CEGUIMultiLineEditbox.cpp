@@ -27,14 +27,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIMultiLineEditbox.h"
-#include "elements/CEGUIScrollbar.h"
-#include "CEGUITextUtils.h"
-#include "CEGUIImage.h"
-#include "CEGUIExceptions.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIClipboard.h"
+#include "CEGUI/elements/MultiLineEditbox.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/TextUtils.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Clipboard.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

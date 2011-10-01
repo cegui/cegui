@@ -27,11 +27,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIEventSet.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIGlobalEventSet.h"
-#include "CEGUIScriptModule.h"
-#include "CEGUISystem.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/ScriptModule.h"
+#include "CEGUI/System.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

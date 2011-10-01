@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRenderedStringWordWrapper.h"
-#include "CEGUIJustifiedRenderedString.h"
-#include "CEGUILeftAlignedRenderedString.h"
+#include "CEGUI/RenderedStringWordWrapper.h"
+#include "CEGUI/JustifiedRenderedString.h"
+#include "CEGUI/LeftAlignedRenderedString.h"
 
 // The purpose of this file is to define a specialised RenderedStringWordWrapper
 // for Justified formatting so that the last line is handled correctly.

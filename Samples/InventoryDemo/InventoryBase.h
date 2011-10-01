@@ -29,7 +29,7 @@
 #define _InventoryBase_h_
 
 #include "BoolArray2D.h"
-#include <CEGUIRect.h>
+#include <CEGUI/Rect.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -27,15 +27,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIAnimationManager.h"
-#include "CEGUILogger.h"
-#include "CEGUIAnimation.h"
-#include "CEGUIAnimationInstance.h"
-#include "CEGUITplInterpolators.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLParser.h"
-#include "CEGUIAnimation_xmlHandler.h"
+#include "CEGUI/AnimationManager.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Animation.h"
+#include "CEGUI/AnimationInstance.h"
+#include "CEGUI/TplInterpolators.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/Animation_xmlHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

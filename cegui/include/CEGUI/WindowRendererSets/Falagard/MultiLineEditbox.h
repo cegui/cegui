@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalMultiLineEditbox.h
+    filename:   MultiLineEditbox.h
     created:    Thu Jul 7 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalMultiLineEditbox_h_
 #define _FalMultiLineEditbox_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIMultiLineEditbox.h"
-#include "FalMultiLineEditboxProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/MultiLineEditbox.h"
+#include "CEGUI/WindowRendererSets/Falagard/MultiLineEditboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

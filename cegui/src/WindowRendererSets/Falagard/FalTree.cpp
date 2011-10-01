@@ -25,11 +25,11 @@ author:		Jonathan Welch (Based on Code by David Durant)
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "FalTree.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
+#include "CEGUI/WindowRendererSets/Falagard/Tree.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/elements/Scrollbar.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

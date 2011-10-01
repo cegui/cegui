@@ -28,9 +28,9 @@
 #ifndef _CEGUIOpenGLRenderTarget_h_
 #define _CEGUIOpenGLRenderTarget_h_
 
-#include "CEGUIOpenGLRenderer.h"
-#include "../../CEGUIRenderTarget.h"
-#include "../../CEGUIRect.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "../../RenderTarget.h"
+#include "../../Rect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

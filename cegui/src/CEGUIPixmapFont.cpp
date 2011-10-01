@@ -25,12 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIPixmapFont.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIBasicImage.h"
-#include "CEGUIFont_xmlHandler.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUILogger.h"
+#include "CEGUI/PixmapFont.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/BasicImage.h"
+#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Logger.h"
 
 #ifdef _MSC_VER
 #define snprintf _snprintf

@@ -29,8 +29,8 @@
 
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D10
 
-#include "CEGUI.h"
-#include "RendererModules/Direct3D10/CEGUIDirect3D10Renderer.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/RendererModules/Direct3D10/Renderer.h"
 #define WIN32_LEAN_AND_MEAN
 #include <d3d10.h>
 //----------------------------------------------------------------------------//

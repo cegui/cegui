@@ -25,15 +25,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUISize.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Size.h"
 
 #include "PVRTGlobal.h"
 #include "PVRTTexture.h"
 #include "PVRTDecompress.h"
 
-#include "CEGUIPVRImageCodec.h"
+#include "CEGUI/ImageCodecModules/PVR/ImageCodec.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

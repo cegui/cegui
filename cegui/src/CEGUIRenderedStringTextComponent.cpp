@@ -25,12 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRenderedStringTextComponent.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIFont.h"
-#include "CEGUISystem.h"
-#include "CEGUIExceptions.h"
-#include "CEGUITextUtils.h"
+#include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/TextUtils.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

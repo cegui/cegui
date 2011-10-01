@@ -28,10 +28,10 @@
 #ifndef _CEGUIOgreGeometryBuffer_h_
 #define _CEGUIOgreGeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUIOgreRenderer.h"
-#include "../../CEGUIRect.h"
-#include "../../CEGUIQuaternion.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#include "../../Rect.h"
+#include "../../Quaternion.h"
 
 #include <OgreMatrix4.h>
 #include <OgreColourValue.h>

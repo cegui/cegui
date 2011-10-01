@@ -30,8 +30,8 @@
 #ifndef _CEGUISlider_h_
 #define _CEGUISlider_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
+#include "../Base.h"
+#include "../Window.h"
 
 
 #if defined(_MSC_VER)

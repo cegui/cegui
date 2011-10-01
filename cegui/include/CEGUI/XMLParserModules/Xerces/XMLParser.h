@@ -28,8 +28,8 @@
 #ifndef _CEGUIXercesParser_h_
 #define _CEGUIXercesParser_h_
 
-#include "../../CEGUIXMLParser.h"
-#include "CEGUIXercesParserProperties.h"
+#include "../../XMLParser.h"
+#include "CEGUI/XMLParserModules/Xerces/XMLParserProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

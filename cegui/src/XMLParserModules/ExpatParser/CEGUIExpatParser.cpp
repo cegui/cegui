@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExpatParser.h"
-#include "CEGUIResourceProvider.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLHandler.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/XMLParserModules/Expat/XMLParser.h"
+#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLHandler.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/PropertyHelper.h"
 #include <expat.h>
 
 // Start of CEGUI namespace section

@@ -28,10 +28,10 @@
 #ifndef _CEGUIDirect3D9GeometryBuffer_h_
 #define _CEGUIDirect3D9GeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUIDirect3D9Renderer.h"
-#include "../../CEGUIRect.h"
-#include "../../CEGUIQuaternion.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/RendererModules/Direct3D9/Renderer.h"
+#include "../../Rect.h"
+#include "../../Quaternion.h"
 #include <d3dx9.h>
 #include <utility>
 #include <vector>

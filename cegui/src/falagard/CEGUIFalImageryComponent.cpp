@@ -25,12 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalImageryComponent.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/falagard/ImageryComponent.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/PropertyHelper.h"
 #include <iostream>
 #include <cstdlib>
 

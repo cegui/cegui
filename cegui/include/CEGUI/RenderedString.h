@@ -28,8 +28,8 @@
 #ifndef _CEGUIRenderedString_h_
 #define _CEGUIRenderedString_h_
 
-#include "CEGUISize.h"
-#include "CEGUIRect.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Rect.h"
 #include <vector>
 #include <utility>
 

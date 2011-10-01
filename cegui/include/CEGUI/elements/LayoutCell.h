@@ -30,7 +30,7 @@
 #ifndef _CEGUILayoutCell_h_
 #define _CEGUILayoutCell_h_
 
-#include "../CEGUIWindow.h"
+#include "../Window.h"
 
 #include <map>
 

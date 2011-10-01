@@ -29,7 +29,7 @@
 #define _Sample_Demo6_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Sample class
 class Demo6Sample : public CEGuiSample

@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIScrollablePane.h"
-#include "elements/CEGUIScrolledContainer.h"
-#include "elements/CEGUIScrollbar.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/elements/ScrollablePane.h"
+#include "CEGUI/elements/ScrolledContainer.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Exceptions.h"
 #include <math.h>
 
 // Start of CEGUI namespace section

@@ -27,8 +27,8 @@
  ***************************************************************************/
 #ifndef _CEGUIXMLSerializer_h_
 #define _CEGUIXMLSerializer_h_
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
 #include <vector>
 
 #if defined(_MSC_VER)

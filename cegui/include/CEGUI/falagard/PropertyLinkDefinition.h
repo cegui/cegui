@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalPropertyLinkDefinition.h
+    filename:   CEGUIPropertyLinkDefinition.h
     created:    Sat Oct 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyLinkDefinition_h_
 #define _CEGUIFalPropertyLinkDefinition_h_
 
-#include "CEGUIFalPropertyDefinitionBase.h"
+#include "./PropertyDefinitionBase.h"
 #include <vector>
 
 #if defined (_MSC_VER)

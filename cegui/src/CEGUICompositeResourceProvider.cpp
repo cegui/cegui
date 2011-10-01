@@ -25,8 +25,8 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUICompositeResourceProvider.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/CompositeResourceProvider.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

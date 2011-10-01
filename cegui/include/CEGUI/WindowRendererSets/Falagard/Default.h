@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalDefault.h
+    filename:   Default.h
     created:    Sat Jan 14 2006
     author:     Tomas Lindquist Olsen <tomas@famolsen.dk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalDefault_h_
 #define _FalDefault_h_
 
-#include "FalModule.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

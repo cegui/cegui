@@ -28,8 +28,8 @@
 #ifndef _CEGUIWidgetModule_h_
 #define _CEGUIWidgetModule_h_
 
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowFactoryManager.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowFactoryManager.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIWIDGETMODULE_EXPORTS

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalComponentBase.h
+    filename:   CEGUIComponentBase.h
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalComponentBase_h_
 #define _CEGUIFalComponentBase_h_
 
-#include "CEGUIFalDimensions.h"
-#include "../CEGUIWindow.h"
-#include "../CEGUIColourRect.h"
+#include "./Dimensions.h"
+#include "../Window.h"
+#include "../ColourRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

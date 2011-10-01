@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIIrrlichtRenderTarget.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIIrrlichtGeometryBuffer.h"
+#include "CEGUI/RendererModules/Irrlicht/RenderTarget.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/RendererModules/Irrlicht/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

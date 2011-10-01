@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalPropertyLinkDefinition.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIWindow.h"
+#include "CEGUI/falagard/PropertyLinkDefinition.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Window.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

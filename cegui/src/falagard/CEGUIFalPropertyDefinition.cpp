@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalPropertyDefinition.h"
-#include "CEGUIWindow.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/falagard/PropertyDefinition.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/WindowManager.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

@@ -29,12 +29,12 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIConfig.h"
+#include "CEGUI/Config.h"
 
 #ifdef CEGUI_USE_MINIBIDI
 
-#include "CEGUIMinibidiVisualMapping.h"
-#include "CEGUILogger.h"
+#include "CEGUI/MinibidiVisualMapping.h"
+#include "CEGUI/Logger.h"
 
 // include minibidi code directly
 #include "minibidi.cpp"

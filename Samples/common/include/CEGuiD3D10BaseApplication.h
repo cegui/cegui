@@ -29,7 +29,7 @@
 #define _CEGuiD3D10BaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUIGeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   define WIN32_LEAN_AND_MEAN

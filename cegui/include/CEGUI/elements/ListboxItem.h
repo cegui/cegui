@@ -30,12 +30,12 @@
 #ifndef _CEGUIListboxItem_h_
 #define _CEGUIListboxItem_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIString.h"
-#include "../CEGUIColourRect.h"
-#include "../CEGUITextUtils.h"
-#include "../CEGUISize.h"
-#include "../CEGUIRect.h"
+#include "../Base.h"
+#include "../String.h"
+#include "../ColourRect.h"
+#include "../TextUtils.h"
+#include "../Size.h"
+#include "../Rect.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)

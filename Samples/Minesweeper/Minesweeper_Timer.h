@@ -30,9 +30,9 @@
 #ifndef _Minesweeper_Timer_h_
 #define _Minesweeper_Timer_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIWindowFactory.h"
-#include "CEGUIProperty.h" 
+#include "CEGUI/Window.h"
+#include "CEGUI/WindowFactory.h"
+#include "CEGUI/Property.h" 
 
 namespace TimerProperties 
 {

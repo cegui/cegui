@@ -30,9 +30,9 @@
 #ifndef _CEGUIListHeader_h_
 #define _CEGUIListHeader_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
-#include "CEGUIListHeaderSegment.h"
+#include "../Base.h"
+#include "../Window.h"
+#include "./ListHeaderSegment.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

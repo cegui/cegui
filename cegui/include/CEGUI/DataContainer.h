@@ -30,7 +30,7 @@
 #ifndef _CEGUIDataContainer_h_
 #define _CEGUIDataContainer_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

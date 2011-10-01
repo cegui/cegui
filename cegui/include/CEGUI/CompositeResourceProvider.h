@@ -27,10 +27,10 @@ Author:   Hans Mackowiak (Hanmac) hanmac@gmx.de
 ***************************************************************************/
 #ifndef _CEGUICompositeResourceProvider_h_
 #define _CEGUICompositeResourceProvider_h_
-#include "CEGUIBase.h"
-#include "CEGUIIteratorBase.h"
-#include "CEGUIMemoryAllocation.h"
-#include "CEGUIResourceProvider.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/MemoryAllocation.h"
+#include "CEGUI/ResourceProvider.h"
 #include <map>
 
 #if defined(_MSC_VER)

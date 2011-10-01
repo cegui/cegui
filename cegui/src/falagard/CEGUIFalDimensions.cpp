@@ -25,18 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalDimensions.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIWindow.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIFont.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/falagard/Dimensions.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/CoordConverter.h"
 #include <cassert>
 
 // Start of CEGUI namespace section

@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUINullTexture.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIImageCodec.h"
-#include "CEGUISystem.h"
+#include "CEGUI/RendererModules/Null/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodec.h"
+#include "CEGUI/System.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

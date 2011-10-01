@@ -27,14 +27,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIFreeTypeFont.h"
-#include "CEGUIExceptions.h"
-#include "CEGUITexture.h"
-#include "CEGUIImageManager.h"
-#include "CEGUISystem.h"
-#include "CEGUILogger.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIFont_xmlHandler.h"
+#include "CEGUI/FreeTypeFont.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Font_xmlHandler.h"
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>

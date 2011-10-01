@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderingSurface_h_
 #define _CEGUIRenderingSurface_h_
 
-#include "CEGUIEventSet.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIRenderQueue.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/RenderQueue.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

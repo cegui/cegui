@@ -28,11 +28,11 @@
 #ifndef _CEGUIRenderEffectManager_h_
 #define _CEGUIRenderEffectManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUIIteratorBase.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIRenderEffectFactory.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/RenderEffectFactory.h"
 #include <map>
 
 #if defined(_MSC_VER)

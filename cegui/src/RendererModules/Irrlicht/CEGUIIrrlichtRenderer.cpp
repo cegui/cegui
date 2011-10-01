@@ -25,15 +25,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIIrrlichtRenderer.h"
-#include "CEGUIIrrlichtGeometryBuffer.h"
-#include "CEGUIIrrlichtWindowTarget.h"
-#include "CEGUIIrrlichtTextureTarget.h"
-#include "CEGUIIrrlichtTexture.h"
-#include "CEGUIIrrlichtResourceProvider.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIIrrlichtEventPusher.h"
-#include "CEGUIIrrlichtImageCodec.h"
+#include "CEGUI/RendererModules/Irrlicht/Renderer.h"
+#include "CEGUI/RendererModules/Irrlicht/GeometryBuffer.h"
+#include "CEGUI/RendererModules/Irrlicht/WindowTarget.h"
+#include "CEGUI/RendererModules/Irrlicht/TextureTarget.h"
+#include "CEGUI/RendererModules/Irrlicht/Texture.h"
+#include "CEGUI/RendererModules/Irrlicht/ResourceProvider.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/RendererModules/Irrlicht/EventPusher.h"
+#include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
 
 #include <irrlicht.h>
 #include <algorithm>

@@ -28,7 +28,7 @@
 #ifndef _CEGUIXercesParserProperties_h_
 #define _CEGUIXercesParserProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "../../Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalTooltip.h
+    filename:   Tooltip.h
     created:    Thu Jul 7 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalTooltip_h_
 #define _FalTooltip_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUITooltip.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/Tooltip.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

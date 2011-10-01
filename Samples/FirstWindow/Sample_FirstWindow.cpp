@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_FirstWindow.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {

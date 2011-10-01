@@ -27,9 +27,9 @@
 #ifndef _CEGUIDirect3D11Renderer_h_
 #define _CEGUIDirect3D11Renderer_h_
 
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUISize.h"
-#include "../../CEGUIVector.h"
+#include "../../Renderer.h"
+#include "../../Size.h"
+#include "../../Vector.h"
 #include <vector>
 #include <map>
 

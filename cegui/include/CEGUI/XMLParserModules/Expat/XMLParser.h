@@ -28,7 +28,7 @@
 #ifndef _CEGUIExpatParser_h_
 #define _CEGUIExpatParser_h_
 
-#include "../../CEGUIXMLParser.h"
+#include "../../XMLParser.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIEXPATPARSER_EXPORTS

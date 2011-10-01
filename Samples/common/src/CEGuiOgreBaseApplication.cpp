@@ -40,8 +40,8 @@
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
 #include "CEGuiSample.h"
-#include "RendererModules/Ogre/CEGUIOgreImageCodec.h"
-#include "RendererModules/Ogre/CEGUIOgreResourceProvider.h"
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :

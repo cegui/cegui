@@ -28,10 +28,10 @@
 #ifndef _CEGUIEvent_h_
 #define _CEGUIEvent_h_
 
-#include "CEGUIString.h"
-#include "CEGUIBoundSlot.h"
-#include "CEGUISubscriberSlot.h"
-#include "CEGUIRefCounted.h"
+#include "CEGUI/String.h"
+#include "CEGUI/BoundSlot.h"
+#include "CEGUI/SubscriberSlot.h"
+#include "CEGUI/RefCounted.h"
 
 #include <map>
 

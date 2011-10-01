@@ -30,16 +30,16 @@
 #ifndef _CEGUIPropertySet_h_
 #define _CEGUIPropertySet_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIIteratorBase.h"
-#include "CEGUIProperty.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUITypedProperty.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/Property.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/TypedProperty.h"
 // not needed in this header but you are likely to use it if you include this,
 // we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
-#include "CEGUITplProperty.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/TplProperty.h"
+#include "CEGUI/Exceptions.h"
 #include <map>
 
 #if defined(_MSC_VER)

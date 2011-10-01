@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalPropertyDefinition.h
+    filename:   CEGUIPropertyDefinition.h
     created:    Sun Jun 26 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyDefinition_h_
 #define _CEGUIFalPropertyDefinition_h_
 
-#include "CEGUIFalPropertyDefinitionBase.h"
+#include "./PropertyDefinitionBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

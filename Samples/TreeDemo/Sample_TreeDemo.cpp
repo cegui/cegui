@@ -26,11 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_TreeDemo.h"
-#include "CEGUI.h"
-#include "CEGUIPropertyHelper.h"    // for string conversions
-#include "elements/CEGUITree.h"
-#include "elements/CEGUIEditbox.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/CEGUI.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #define WIN32_LEAN_AND_MEAN

@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIWindowRendererModule.h"
-#include "CEGUIWRFactoryRegisterer.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/WindowRendererModule.h"
+#include "CEGUI/WRFactoryRegisterer.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

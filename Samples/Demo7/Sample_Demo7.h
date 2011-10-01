@@ -29,7 +29,7 @@
 #define _Sample_Demo7_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Sample subclass for CEGUI::RenderEffect.  This particluar implementation
 // provides a basic 'wobbly window' type effect.

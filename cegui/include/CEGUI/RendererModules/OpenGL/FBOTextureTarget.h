@@ -28,9 +28,9 @@
 #ifndef _CEGUIOpenGLFBOTextureTarget_h_
 #define _CEGUIOpenGLFBOTextureTarget_h_
 
-#include "CEGUIOpenGLTextureTarget.h"
-#include "../../CEGUIRect.h"
-#include "CEGUIOpenGL.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "../../Rect.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

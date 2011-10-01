@@ -30,12 +30,12 @@
 #ifndef _CEGUIWindowFactoryManager_h_
 #define _CEGUIWindowFactoryManager_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISingleton.h"
-#include "CEGUILogger.h"
-#include "CEGUIIteratorBase.h"
-#include "CEGUIWindowFactory.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/WindowFactory.h"
 #include <map>
 #include <vector>
 

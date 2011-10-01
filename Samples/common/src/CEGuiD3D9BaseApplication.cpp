@@ -37,10 +37,10 @@
 #undef min
 #undef max
 
-#include "RendererModules/Direct3D9/CEGUIDirect3D9Renderer.h"
+#include "CEGUI/RendererModules/Direct3D9/Renderer.h"
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include "CEGUIRenderingRoot.h"
 #include <stdexcept>
 

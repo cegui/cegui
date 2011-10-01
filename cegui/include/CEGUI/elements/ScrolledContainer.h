@@ -28,8 +28,8 @@
 #ifndef _CEGUIScrolledContainer_h_
 #define _CEGUIScrolledContainer_h_
 
-#include "../CEGUIWindow.h"
-#include "../CEGUIWindowFactory.h"
+#include "../Window.h"
+#include "../WindowFactory.h"
 #include <map>
 
 #if defined(_MSC_VER)

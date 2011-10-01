@@ -30,9 +30,9 @@
 #ifndef _CEGUIFreeTypeFont_h_
 #define _CEGUIFreeTypeFont_h_
 
-#include "CEGUIFont.h"
-#include "CEGUIDataContainer.h"
-#include "CEGUIBasicImage.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/BasicImage.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

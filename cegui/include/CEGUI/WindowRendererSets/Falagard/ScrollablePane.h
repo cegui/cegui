@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalScrollablePane.h
+    filename:   ScrollablePane.h
     created:    Thu Jul 7 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalScrollablePane_h_
 #define _FalScrollablePane_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIScrollablePane.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ScrollablePane.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

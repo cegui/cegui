@@ -28,8 +28,8 @@
 #ifndef _CEGUIRegexMatcher_h_
 #define _CEGUIRegexMatcher_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

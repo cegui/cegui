@@ -28,8 +28,8 @@
 #ifndef _CEGUIVertex_h_
 #define _CEGUIVertex_h_
 
-#include "CEGUIVector.h"
-#include "CEGUIColour.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Colour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,7 +30,7 @@
 #ifndef _CEGUITitlebar_h_
 #define _CEGUITitlebar_h_
 
-#include "../CEGUIWindow.h"
+#include "../Window.h"
 
 
 #if defined(_MSC_VER)

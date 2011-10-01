@@ -30,7 +30,7 @@
 #ifndef _CEGUISize_h_
 #define _CEGUISize_h_
 
-#include "CEGUIUDim.h"
+#include "CEGUI/UDim.h"
 #include <typeinfo>
 #include <ostream>
 

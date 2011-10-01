@@ -31,28 +31,28 @@
 
 #include <GL/glew.h>
 
-#include "CEGUIOpenGLRenderer.h"
-#include "CEGUIOpenGLTexture.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIImageCodec.h"
-#include "CEGUIDynamicModule.h"
-#include "CEGUIOpenGLViewportTarget.h"
-#include "CEGUIOpenGLGeometryBuffer.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIOpenGLFBOTextureTarget.h"
-#include "CEGUISystem.h"
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUILogger.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodec.h"
+#include "CEGUI/DynamicModule.h"
+#include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/RendererModules/OpenGL/FBOTextureTarget.h"
+#include "CEGUI/System.h"
+#include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/Logger.h"
 
 #include <sstream>
 #include <algorithm>
 
 #if defined(__linux__)  || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-#   include "CEGUIOpenGLGLXPBTextureTarget.h"
+#   include "CEGUI/RendererModules/OpenGL/GLXPBTextureTarget.h"
 #elif defined(_WIN32) || defined(__WIN32__)
-#   include "CEGUIOpenGLWGLPBTextureTarget.h"
+#   include "CEGUI/RendererModules/OpenGL/WGLPBTextureTarget.h"
 #elif defined(__APPLE__)
-#   include "CEGUIOpenGLApplePBTextureTarget.h"
+#   include "CEGUI/RendererModules/OpenGL/ApplePBTextureTarget.h"
 #endif
 
 // Start of CEGUI namespace section

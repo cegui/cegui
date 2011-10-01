@@ -25,18 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIConfig_xmlHandler.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIFontManager.h"
-#include "CEGUISchemeManager.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIScriptModule.h"
-#include "CEGUIXMLParser.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/Config_xmlHandler.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/SchemeManager.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/ScriptModule.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

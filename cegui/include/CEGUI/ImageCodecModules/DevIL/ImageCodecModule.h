@@ -31,7 +31,7 @@
 #ifndef _CEGUIDevILImageCodecModule_h_
 #define _CEGUIDevILImageCodecModule_h_
 
-#include "CEGUIDevILImageCodec.h"
+#include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
 
 /*! 
   \brief 

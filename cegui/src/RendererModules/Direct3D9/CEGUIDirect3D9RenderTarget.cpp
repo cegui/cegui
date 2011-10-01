@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirect3D9RenderTarget.h"
-#include "CEGUIDirect3D9GeometryBuffer.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/RendererModules/Direct3D9/RenderTarget.h"
+#include "CEGUI/RendererModules/Direct3D9/GeometryBuffer.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/Exceptions.h"
 #include <d3dx9.h>
 
 // Start of CEGUI namespace section

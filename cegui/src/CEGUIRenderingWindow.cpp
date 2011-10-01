@@ -25,14 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRenderingWindow.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUISystem.h"
-#include "CEGUIRenderer.h"
-#include "CEGUIVertex.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUITexture.h"
-#include "CEGUIRenderEffect.h"
+#include "CEGUI/RenderingWindow.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/Vertex.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/RenderEffect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

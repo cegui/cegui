@@ -25,17 +25,17 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUISystem.h"
-#include "CEGUISchemeManager.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIFont.h"
-#include "CEGUIWindow.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/System.h"
+#include "CEGUI/SchemeManager.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/CoordConverter.h"
 
-#include "elements/CEGUIScrollablePane.h"
-#include "elements/CEGUIScrolledContainer.h"
+#include "CEGUI/elements/ScrollablePane.h"
+#include "CEGUI/elements/ScrolledContainer.h"
 
 #include "CEGuiSample.h"
 #include "CEGuiBaseApplication.h"

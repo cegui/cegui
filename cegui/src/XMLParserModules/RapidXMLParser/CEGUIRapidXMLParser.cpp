@@ -31,13 +31,13 @@
 
 #include "rapidxml.hpp"
 
-#include "CEGUIRapidXMLParser.h"
-#include "CEGUIResourceProvider.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLHandler.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/XMLParserModules/RapidXML/XMLParser.h"
+#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLHandler.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

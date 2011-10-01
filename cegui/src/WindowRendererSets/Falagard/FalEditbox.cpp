@@ -29,13 +29,13 @@
 #   include "config.h"
 #endif
 
-#include "FalEditbox.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIFont.h"
-#include "CEGUIBidiVisualMapping.h"
+#include "CEGUI/WindowRendererSets/Falagard/Editbox.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/BidiVisualMapping.h"
 
 #include <stdio.h>
 

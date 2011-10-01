@@ -31,14 +31,14 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIPixmapFont.h"
-#include "CEGUIXMLSerializer.h" 
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
+#include "CEGUI/PixmapFont.h"
+#include "CEGUI/XMLSerializer.h" 
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
 
 #ifdef CEGUI_HAS_FREETYPE
-#   include "CEGUIFreeTypeFont.h"
+#   include "CEGUI/FreeTypeFont.h"
 #endif
 
 // Start of CEGUI namespace section

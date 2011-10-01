@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUINullTextureTarget.h"
-#include "CEGUINullTexture.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/RendererModules/Null/TextureTarget.h"
+#include "CEGUI/RendererModules/Null/Texture.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

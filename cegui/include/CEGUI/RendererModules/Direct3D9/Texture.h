@@ -28,10 +28,10 @@
 #ifndef _CEGUIDirect3D9Texture_h_
 #define _CEGUIDirect3D9Texture_h_
 
-#include "../../CEGUIBase.h"
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUITexture.h"
-#include "CEGUIDirect3D9Renderer.h"
+#include "../../Base.h"
+#include "../../Renderer.h"
+#include "../../Texture.h"
+#include "CEGUI/RendererModules/Direct3D9/Renderer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

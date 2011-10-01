@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIComboDropList.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIListboxItem.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/elements/ComboDropList.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

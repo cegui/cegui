@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalEventLinkDefinition.h"
-#include "CEGUIWindow.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUILinkedEvent.h"
+#include "CEGUI/falagard/EventLinkDefinition.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/LinkedEvent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

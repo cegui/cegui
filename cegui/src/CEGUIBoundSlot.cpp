@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIBoundSlot.h"
-#include "CEGUIEvent.h"
+#include "CEGUI/BoundSlot.h"
+#include "CEGUI/Event.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -31,17 +31,17 @@
 #   include "config.h"
 #endif
 
-#include "elements/CEGUIEditbox.h"
-#include "CEGUITextUtils.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIFont.h"
-#include "CEGUIClipboard.h"
+#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/TextUtils.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Clipboard.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
-#   include "CEGUIPCRERegexMatcher.h"
+#   include "CEGUI/PCRERegexMatcher.h"
 #else
-#   include "CEGUIRegexMatcher.h"
+#   include "CEGUI/RegexMatcher.h"
 #endif
-#include "CEGUIBidiVisualMapping.h"
+#include "CEGUI/BidiVisualMapping.h"
 #include <string.h>
 
 // Start of CEGUI namespace section

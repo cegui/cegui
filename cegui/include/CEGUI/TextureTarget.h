@@ -28,7 +28,7 @@
 #ifndef _CEGUITextureTarget_h_
 #define _CEGUITextureTarget_h_
 
-#include "CEGUIRenderTarget.h"
+#include "CEGUI/RenderTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

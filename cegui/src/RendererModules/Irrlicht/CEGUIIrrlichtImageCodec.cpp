@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIIrrlichtImageCodec.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIIrrlichtMemoryFile.h"
-#include "CEGUISize.h"
+#include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/RendererModules/Irrlicht/MemoryFile.h"
+#include "CEGUI/Size.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

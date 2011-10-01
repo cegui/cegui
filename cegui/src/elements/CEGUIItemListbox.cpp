@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIItemListbox.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/elements/ItemListbox.h"
+#include "CEGUI/Exceptions.h"
 
 // begin CEGUI namespace
 namespace CEGUI

@@ -1,5 +1,5 @@
 /***********************************************************************
-	filename: 	FalStaticProperties.h
+	filename: 	StaticProperties.h
 	created:	Sat Sep 17 2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 	
@@ -30,7 +30,7 @@
 #ifndef _FalagardStaticProperties_h_
 #define _FalagardStaticProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

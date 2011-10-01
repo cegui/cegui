@@ -28,7 +28,7 @@
 #ifndef _CEGUILeftAlignedRenderedString_h_
 #define _CEGUILeftAlignedRenderedString_h_
 
-#include "CEGUIFormattedRenderedString.h"
+#include "CEGUI/FormattedRenderedString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

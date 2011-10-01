@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalScrollbarProperties.h
+    filename:   ScrollbarProperties.h
     created:    Mon Jul 4 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalScrollbarProperties_h_
 #define _FalScrollbarProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

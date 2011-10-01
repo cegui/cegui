@@ -29,10 +29,10 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIDynamicModule.h"
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/DynamicModule.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Exceptions.h"
 
 #if defined(__WIN32__) || defined(_WIN32)
 #   if defined(_MSC_VER)

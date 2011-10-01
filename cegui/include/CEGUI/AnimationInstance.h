@@ -30,8 +30,8 @@
 #ifndef _CEGUIAnimationInstance_h_
 #define _CEGUIAnimationInstance_h_
 
-#include "CEGUIEventArgs.h"
-#include "CEGUIEvent.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/Event.h"
 #include <map>
 #include <vector>
 

@@ -25,12 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIScheme_xmlHandler.h"
-#include "CEGUILogger.h"
-#include "CEGUIScheme.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIXMLParser.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/Scheme_xmlHandler.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Scheme.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

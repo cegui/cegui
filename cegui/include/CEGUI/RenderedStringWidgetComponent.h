@@ -28,8 +28,8 @@
 #ifndef _CEGUIRenderedStringWidgetComponent_h_
 #define _CEGUIRenderedStringWidgetComponent_h_
 
-#include "CEGUIRenderedStringComponent.h"
-#include "CEGUIString.h"
+#include "CEGUI/RenderedStringComponent.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

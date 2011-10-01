@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalImageryComponent.h
+    filename:   CEGUIImageryComponent.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalImageryComponent_h_
 #define _CEGUIFalImageryComponent_h_
 
-#include "CEGUIFalComponentBase.h"
-#include "../CEGUIXMLSerializer.h"
+#include "./ComponentBase.h"
+#include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

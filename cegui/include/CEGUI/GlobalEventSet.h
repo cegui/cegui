@@ -28,8 +28,8 @@
 #ifndef _CEGUIGlobalEventSet_h_
 #define _CEGUIGlobalEventSet_h_
 
-#include "CEGUIEventSet.h"
-#include "CEGUISingleton.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/Singleton.h"
 
 
 #if defined(_MSC_VER)

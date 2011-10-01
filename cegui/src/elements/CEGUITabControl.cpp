@@ -27,15 +27,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "elements/CEGUITabControl.h"
-#include "elements/CEGUITabButton.h"
-#include "elements/CEGUIPushButton.h"
-#include "elements/CEGUIDefaultWindow.h"
-#include "CEGUIFont.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/elements/TabControl.h"
+#include "CEGUI/elements/TabButton.h"
+#include "CEGUI/elements/PushButton.h"
+#include "CEGUI/elements/DefaultWindow.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

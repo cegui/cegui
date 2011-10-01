@@ -47,8 +47,8 @@
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "RendererModules/Irrlicht/CEGUIIrrlichtRenderer.h"
-#include "CEGUI.h"
+#include "CEGUI/RendererModules/Irrlicht/Renderer.h"
+#include "CEGUI/CEGUI.h"
 
 #include <irrlicht.h>
 

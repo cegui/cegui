@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalButton.h
+    filename:   Button.h
     created:    Wed Jun 22 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalButton_h_
 #define _FalButton_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIButtonBase.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ButtonBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

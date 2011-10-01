@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIThumb.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/Thumb.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

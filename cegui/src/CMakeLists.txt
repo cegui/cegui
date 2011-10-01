@@ -6,13 +6,13 @@ file (GLOB WIDGET_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" elements/*
 file (GLOB FALAGARD_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" falagard/*.cpp)
 set (CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${WIDGET_SOURCE_FILES} ${FALAGARD_SOURCE_FILES})
 
-file (GLOB CORE_HEADER_FILES ../include/*.h)
-file (GLOB WIDGET_HEADER_FILES ../include/elements/*.h)
-file (GLOB FALAGARD_HEADER_FILES ../include/falagard/*.h)
+file (GLOB CORE_HEADER_FILES ../include/CEGUI/*.h)
+file (GLOB WIDGET_HEADER_FILES ../include/CEGUI/elements/*.h)
+file (GLOB FALAGARD_HEADER_FILES ../include/CEGUI/falagard/*.h)
 
 list (APPEND CORE_HEADER_FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/../include/CEGUIConfig.h
-    ${CMAKE_CURRENT_BINARY_DIR}/../include/CEGUIVersion.h
+    ${CMAKE_CURRENT_BINARY_DIR}/../include/CEGUI/Config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/../include/CEGUI/Version.h
 )
 
 # never compile this directly, it's included in another file

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalListHeaderSegment.h
+    filename:   ListHeaderSegment.h
     created:    Tue Jul 5 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalListHeaderSegment_h_
 #define _FalListHeaderSegment_h_
 
-#include "FalModule.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalProgressBar.h
+    filename:   ProgressBar.h
     created:    Sat Jul 2 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalProgressBar_h_
 #define _FalProgressBar_h_
 
-#include "FalModule.h"
-#include "FalProgressBarProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowRendererSets/Falagard/ProgressBarProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

@@ -30,9 +30,9 @@
 #ifndef _CEGUIImageCodec_h_
 #define _CEGUIImageCodec_h_
 
-#include "CEGUIBase.h" 
-#include "CEGUIDataContainer.h"
-#include "CEGUITexture.h" 
+#include "CEGUI/Base.h" 
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/Texture.h" 
 
 // Start of CEGUI namespace section 
 namespace CEGUI 

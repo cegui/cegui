@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalProgressBarProperties.h"
-#include "FalProgressBar.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/WindowRendererSets/Falagard/ProgressBarProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/ProgressBar.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

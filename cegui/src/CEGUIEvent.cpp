@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIEvent.h"
-#include "CEGUIEventArgs.h"
+#include "CEGUI/Event.h"
+#include "CEGUI/EventArgs.h"
 
 #include <algorithm>
 

@@ -28,12 +28,12 @@
 #ifndef _CEGUISchemeManager_h_
 #define _CEGUISchemeManager_h_
 
-#include "CEGUIBase.h"
-#include "CEGUISingleton.h"
-#include "CEGUINamedXMLResourceManager.h"
-#include "CEGUIScheme.h"
-#include "CEGUIScheme_xmlHandler.h"
-#include "CEGUIIteratorBase.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/NamedXMLResourceManager.h"
+#include "CEGUI/Scheme.h"
+#include "CEGUI/Scheme_xmlHandler.h"
+#include "CEGUI/IteratorBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

@@ -30,7 +30,7 @@
 #if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10)
 
 #include "Win32AppHelper.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include <TCHAR.H>
 
 /*************************************************************************

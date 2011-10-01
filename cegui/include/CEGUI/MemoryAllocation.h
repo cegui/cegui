@@ -101,7 +101,7 @@ void destructN(T* basePtr, size_t count)
 #endif
 
 #ifndef CEGUI_CUSTOM_ALLOCATORS_INCLUDE
-#   define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUIMemoryStdAllocator.h"
+#   define CEGUI_CUSTOM_ALLOCATORS_INCLUDE "CEGUI/MemoryStdAllocator.h"
 #endif
 
 // all the wrappers have been declared, now we include the chosen memory allocator file
@@ -120,7 +120,7 @@ void destructN(T* basePtr, size_t count)
 
 #endif
 
-#include "CEGUIMemoryAllocatedObject.h"
-#include "CEGUIMemorySTLWrapper.h"
+#include "CEGUI/MemoryAllocatedObject.h"
+#include "CEGUI/MemorySTLWrapper.h"
 
 #endif	// end of guard _CEGUIMemoryAllocation_h_

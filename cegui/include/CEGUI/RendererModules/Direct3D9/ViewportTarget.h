@@ -28,8 +28,8 @@
 #ifndef _CEGUIDirect3D9ViewportTarget_h_
 #define _CEGUIDirect3D9ViewportTarget_h_
 
-#include "CEGUIDirect3D9RenderTarget.h"
-#include "../../CEGUIRect.h"
+#include "CEGUI/RendererModules/Direct3D9/RenderTarget.h"
+#include "../../Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

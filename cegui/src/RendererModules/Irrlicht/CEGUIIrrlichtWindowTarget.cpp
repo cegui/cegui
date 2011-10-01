@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIIrrlichtWindowTarget.h"
+#include "CEGUI/RendererModules/Irrlicht/WindowTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

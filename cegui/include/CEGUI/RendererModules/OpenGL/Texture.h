@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLTexture_h_
 #define _CEGUIOpenGLTexture_h_
 
-#include "../../CEGUIBase.h"
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUITexture.h"
-#include "CEGUIOpenGLRenderer.h"
+#include "../../Base.h"
+#include "../../Renderer.h"
+#include "../../Texture.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

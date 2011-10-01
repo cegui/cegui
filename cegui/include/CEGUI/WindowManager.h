@@ -30,12 +30,12 @@
 #ifndef _CEGUIWindowManager_h_
 #define _CEGUIWindowManager_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISingleton.h"
-#include "CEGUILogger.h"
-#include "CEGUIIteratorBase.h"
-#include "CEGUIEventSet.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/IteratorBase.h"
+#include "CEGUI/EventSet.h"
 #include <map>
 #include <vector>
 

@@ -28,7 +28,7 @@
 #ifndef _CEGUIUDim_h_
 #define _CEGUIUDim_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 #include <ostream>
 
 #if defined(_MSC_VER)

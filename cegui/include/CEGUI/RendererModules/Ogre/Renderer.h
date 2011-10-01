@@ -28,9 +28,9 @@
 #ifndef _CEGUIOgreRenderer_h_
 #define _CEGUIOgreRenderer_h_
 
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUISize.h"
-#include "../../CEGUIVector.h"
+#include "../../Renderer.h"
+#include "../../Size.h"
+#include "../../Vector.h"
 
 #include <vector>
 

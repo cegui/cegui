@@ -29,15 +29,15 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIFontManager.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLParser.h"
-#include "CEGUIPixmapFont.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/PixmapFont.h"
 
 #ifdef CEGUI_HAS_FREETYPE
-#   include "CEGUIFreeTypeFont.h"
+#   include "CEGUI/FreeTypeFont.h"
 #endif
 
 

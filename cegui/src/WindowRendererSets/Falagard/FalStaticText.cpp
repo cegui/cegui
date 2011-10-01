@@ -25,18 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalStaticText.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
-#include "CEGUIEvent.h"
-#include "CEGUIFont.h"
-#include "CEGUILeftAlignedRenderedString.h"
-#include "CEGUIRightAlignedRenderedString.h"
-#include "CEGUICentredRenderedString.h"
-#include "CEGUIJustifiedRenderedString.h"
-#include "CEGUIRenderedStringWordWrapper.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticText.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/Event.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/LeftAlignedRenderedString.h"
+#include "CEGUI/RightAlignedRenderedString.h"
+#include "CEGUI/CentredRenderedString.h"
+#include "CEGUI/JustifiedRenderedString.h"
+#include "CEGUI/RenderedStringWordWrapper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

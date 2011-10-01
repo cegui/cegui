@@ -24,16 +24,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirect3D11Renderer.h"
-#include "CEGUIDirect3D11GeometryBuffer.h"
-#include "CEGUIDirect3D11TextureTarget.h"
-#include "CEGUIDirect3D11ViewportTarget.h"
-#include "CEGUIDirect3D11Texture.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUILogger.h"
+#include "CEGUI/RendererModules/Direct3D11/Renderer.h"
+#include "CEGUI/RendererModules/Direct3D11/GeometryBuffer.h"
+#include "CEGUI/RendererModules/Direct3D11/TextureTarget.h"
+#include "CEGUI/RendererModules/Direct3D11/ViewportTarget.h"
+#include "CEGUI/RendererModules/Direct3D11/Texture.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/Logger.h"
 #include <algorithm>
 
 #include "d3dx11effect.h"

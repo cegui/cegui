@@ -28,7 +28,7 @@
 #ifndef _CEGUITplWindowFactory_h_
 #define _CEGUITplWindowFactory_h_
 
-#include "CEGUIWindowFactory.h"
+#include "CEGUI/WindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

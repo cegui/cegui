@@ -28,11 +28,11 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIQuaternion.h"
-#include "CEGUIVector.h"
-#include "CEGUIString.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/Quaternion.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/String.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Exceptions.h"
 #include <limits>
 
 // Start of CEGUI namespace section

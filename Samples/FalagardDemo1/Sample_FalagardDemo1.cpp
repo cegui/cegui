@@ -26,8 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_FalagardDemo1.h"
-#include "CEGUI.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/CEGUI.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {

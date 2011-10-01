@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIBasicImage.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUITexture.h"
-#include "CEGUIVertex.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUISystem.h" // this being here is a bit nasty IMO
+#include "CEGUI/BasicImage.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/Vertex.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/System.h" // this being here is a bit nasty IMO
 
 // Start of CEGUI namespace section
 namespace CEGUI

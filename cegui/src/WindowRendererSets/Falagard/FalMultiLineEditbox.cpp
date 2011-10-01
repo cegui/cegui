@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalMultiLineEditbox.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIImage.h"
+#include "CEGUI/WindowRendererSets/Falagard/MultiLineEditbox.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

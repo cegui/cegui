@@ -28,11 +28,11 @@
 #ifndef _CEGUIRenderingWindow_h_
 #define _CEGUIRenderingWindow_h_
 
-#include "CEGUIRenderingSurface.h"
-#include "CEGUIVector.h"
-#include "CEGUIQuaternion.h"
-#include "CEGUISize.h"
-#include "CEGUIRect.h"
+#include "CEGUI/RenderingSurface.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Quaternion.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Rect.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

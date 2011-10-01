@@ -28,11 +28,11 @@
 #ifndef _CEGUIFont_h_
 #define _CEGUIFont_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIPropertySet.h"
-#include "CEGUIString.h"
-#include "CEGUIXMLSerializer.h"
-#include "CEGUIFontGlyph.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/PropertySet.h"
+#include "CEGUI/String.h"
+#include "CEGUI/XMLSerializer.h"
+#include "CEGUI/FontGlyph.h"
 
 #include <map>
 

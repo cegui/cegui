@@ -30,7 +30,7 @@
  ***************************************************************************/
 #ifndef _CEGUITGAImageCodec_h_
 #define _CEGUITGAImageCodec_h_
-#include "../../CEGUIImageCodec.h"
+#include "../../ImageCodec.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUITGAIMAGECODEC_EXPORTS

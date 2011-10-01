@@ -27,8 +27,8 @@
 #ifndef _CEGUIDirect3D11TextureTarget_h_
 #define _CEGUIDirect3D11TextureTarget_h_
 
-#include "CEGUIDirect3D11RenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUI/RendererModules/Direct3D11/RenderTarget.h"
+#include "../../TextureTarget.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

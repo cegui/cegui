@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIMinizipResourceProvider.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/MinizipResourceProvider.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
 // exclude code on apple unless feature macro is defined.
 #if !defined(__APPLE__) || defined(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)

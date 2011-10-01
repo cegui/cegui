@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalMenuItem.h
+    filename:   MenuItem.h
     created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalMenuItem_h_
 #define _FalMenuItem_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIItemEntry.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ItemEntry.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

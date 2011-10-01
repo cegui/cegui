@@ -31,8 +31,7 @@
 // should look okay though when running.
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
 

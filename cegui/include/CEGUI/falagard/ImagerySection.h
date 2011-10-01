@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalImagerySection.h
+    filename:   CEGUIImagerySection.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalImagerySection_h_
 #define _CEGUIFalImagerySection_h_
 
-#include "CEGUIFalImageryComponent.h"
-#include "CEGUIFalTextComponent.h"
-#include "CEGUIFalFrameComponent.h"
-#include "../CEGUIXMLSerializer.h"
+#include "./ImageryComponent.h"
+#include "./TextComponent.h"
+#include "./FrameComponent.h"
+#include "../XMLSerializer.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

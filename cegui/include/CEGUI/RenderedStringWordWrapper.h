@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderedStringWordWrapper_h_
 #define _CEGUIRenderedStringWordWrapper_h_
 
-#include "CEGUIFormattedRenderedString.h"
-#include "CEGUIJustifiedRenderedString.h"
-#include "CEGUIVector.h"
+#include "CEGUI/FormattedRenderedString.h"
+#include "CEGUI/JustifiedRenderedString.h"
+#include "CEGUI/Vector.h"
 #include <vector>
 
 // Start of CEGUI namespace section

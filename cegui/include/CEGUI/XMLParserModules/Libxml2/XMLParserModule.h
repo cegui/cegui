@@ -28,7 +28,7 @@
 #ifndef _CEGUILibxmlParserModule_h_
 #define _CEGUILibxmlParserModule_h_
 
-#include "CEGUILibxmlParser.h"
+#include "CEGUI/XMLParserModules/Libxml2/XMLParser.h"
 
 /*!
 \brief

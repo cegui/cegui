@@ -30,8 +30,8 @@
 #ifndef _CEGUIWindowProperties_h_
 #define _CEGUIWindowProperties_h_
 
-#include "CEGUIProperty.h"
-#include "CEGUIXMLSerializer.h"
+#include "CEGUI/Property.h"
+#include "CEGUI/XMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

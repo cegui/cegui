@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalListbox.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIListboxItem.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUI/WindowRendererSets/Falagard/Listbox.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

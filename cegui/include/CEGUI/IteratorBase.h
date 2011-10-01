@@ -33,7 +33,7 @@
 #ifndef _CEGUIIteratorBase_h_
 #define _CEGUIIteratorBase_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 
 
 // Start of CEGUI namespace section

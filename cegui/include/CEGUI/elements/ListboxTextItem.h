@@ -29,9 +29,9 @@
  ***************************************************************************/
 #ifndef _CEGUIListboxTextItem_h_
 #define _CEGUIListboxTextItem_h_
-#include "CEGUIListboxItem.h"
-#include "../CEGUIBasicRenderedStringParser.h"
-#include "../CEGUIDefaultRenderedStringParser.h"
+#include "./ListboxItem.h"
+#include "../BasicRenderedStringParser.h"
+#include "../DefaultRenderedStringParser.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

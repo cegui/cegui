@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalXMLEnumHelper.h
+    filename:   CEGUIXMLEnumHelper.h
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalXMLEnumHelper_h_
 #define _CEGUIFalXMLEnumHelper_h_
 
-#include "../CEGUIString.h"
-#include "../CEGUIWindow.h"
-#include "CEGUIFalEnums.h"
+#include "../String.h"
+#include "../Window.h"
+#include "./Enums.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

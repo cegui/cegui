@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalListbox.h
+    filename:   Listbox.h
     created:    Mon Jul 4 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalListbox_h_
 #define _FalListbox_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIListbox.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/Listbox.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

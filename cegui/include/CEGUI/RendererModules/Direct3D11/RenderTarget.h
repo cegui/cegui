@@ -27,9 +27,9 @@
 #ifndef _CEGUIDirect3D10RenderTarget_h_
 #define _CEGUIDirect3D10RenderTarget_h_
 
-#include "../../CEGUIRenderTarget.h"
-#include "CEGUIDirect3D11Renderer.h"
-#include "../../CEGUIRect.h"
+#include "../../RenderTarget.h"
+#include "CEGUI/RendererModules/Direct3D11/Renderer.h"
+#include "../../Rect.h"
 #include <d3dx10.h>
 
 

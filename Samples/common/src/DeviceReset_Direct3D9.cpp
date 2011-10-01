@@ -29,8 +29,8 @@
 
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D9
 
-#include "CEGUI.h"
-#include "RendererModules/Direct3D9/CEGUIDirect3D9Renderer.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/RendererModules/Direct3D9/Renderer.h"
 
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the

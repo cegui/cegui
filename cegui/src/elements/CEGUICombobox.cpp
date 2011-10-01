@@ -27,12 +27,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUICombobox.h"
-#include "elements/CEGUIEditbox.h"
-#include "elements/CEGUIPushButton.h"
-#include "elements/CEGUIComboDropList.h"
-#include "elements/CEGUIListboxItem.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/elements/Combobox.h"
+#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/elements/PushButton.h"
+#include "CEGUI/elements/ComboDropList.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/WindowManager.h"
 
 /*************************************************************************
 	General information.

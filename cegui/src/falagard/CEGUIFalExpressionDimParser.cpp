@@ -35,7 +35,7 @@
 // Take the name prefix into account.
 #define yylex   CEGUI::ED_lex
 
-#include "CEGUIFalExpressionDimParser.hpp"
+#include "CEGUI/ExpressionDimParser.hpp"
 
 /* User implementation prologue.  */
 #line 59 "CEGUIFalExpressionDimParser.y"
@@ -45,7 +45,7 @@ ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylva
                                        ExpressionDim_impl* ctx);
 
 }
-#include "CEGUIFalExpressionDim_impl.h"
+#include "CEGUI/ExpressionDim_impl.h"
 
 
 /* Line 317 of lalr1.cc.  */

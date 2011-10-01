@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalSlider.h
+    filename:   Slider.h
     created:    Sun Jul 3 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalSlider_h_
 #define _FalSlider_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUISlider.h"
-#include "FalSliderProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/Slider.h"
+#include "CEGUI/WindowRendererSets/Falagard/SliderProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

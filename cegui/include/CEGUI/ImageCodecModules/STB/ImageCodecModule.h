@@ -30,7 +30,7 @@
 #ifndef _CEGUISTBImageCodecModule_h_
 #define _CEGUISTBImageCodecModule_h_
 
-#include "CEGUISTBImageCodec.h"
+#include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
 
 /*! 
   \brief 

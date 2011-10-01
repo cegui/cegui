@@ -31,34 +31,34 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIWindow.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUISystem.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIMouseCursor.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIWindowRendererManager.h"
-#include "elements/CEGUITooltip.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "falagard/CEGUIFalWidgetComponent.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIRenderingContext.h"
-#include "CEGUIRenderingWindow.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/System.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/MouseCursor.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/WindowRendererManager.h"
+#include "CEGUI/elements/Tooltip.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/WidgetComponent.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/RenderingContext.h"
+#include "CEGUI/RenderingWindow.h"
 #include <algorithm>
 #include <iterator>
 #include <cmath>
 #include <stdio.h>
 
 #if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUIFribidiVisualMapping.h"
+    #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUIMinibidiVisualMapping.h"
+    #include "CEGUI/MinibidiVisualMapping.h"
 #else
-    #include "CEGUIBidiVisualMapping.h"
+    #include "CEGUI/BidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section

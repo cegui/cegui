@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalStateImagery.h
+    filename:   CEGUIStateImagery.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalStateImagery_h_
 #define _CEGUIFalStateImagery_h_
 
-#include "CEGUIFalLayerSpecification.h"
-#include "../CEGUIWindow.h"
+#include "./LayerSpecification.h"
+#include "../Window.h"
 #include <set>
 
 #if defined(_MSC_VER)

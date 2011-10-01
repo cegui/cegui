@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalFrameComponent.h
+    filename:   CEGUIFrameComponent.h
     created:    Mon Jul 18 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalFrameComponent_h_
 #define _CEGUIFalFrameComponent_h_
 
-#include "CEGUIFalComponentBase.h"
-#include "../CEGUIXMLSerializer.h"
+#include "./ComponentBase.h"
+#include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

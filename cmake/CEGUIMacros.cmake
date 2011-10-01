@@ -7,7 +7,7 @@
 #
 macro (cegui_gather_files)
     file (RELATIVE_PATH _REL_SRC_DIR "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-    string (REPLACE src include _REL_INC_DIR ${_REL_SRC_DIR})
+    string (REPLACE src include/CEGUI _REL_INC_DIR ${_REL_SRC_DIR})
     set (_CURR_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
     file (GLOB CORE_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" *.cpp)

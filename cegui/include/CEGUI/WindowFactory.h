@@ -30,9 +30,9 @@
 #ifndef _CEGUIWindowFactory_h_
 #define _CEGUIWindowFactory_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIWindow.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Window.h"
 
 /*!
 \brief

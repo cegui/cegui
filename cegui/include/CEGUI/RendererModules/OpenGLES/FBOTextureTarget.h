@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLESFBOTextureTarget_h_
 #define _CEGUIOpenGLESFBOTextureTarget_h_
 
-#include "CEGUIOpenGLESRenderTarget.h"
-#include "../../CEGUITextureTarget.h"
-#include "../../CEGUIRect.h"
-#include "CEGUIOpenGLES.h"
+#include "CEGUI/OpenGLESRenderTarget.h"
+#include "../../TextureTarget.h"
+#include "../../Rect.h"
+#include "CEGUI/OpenGLES.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

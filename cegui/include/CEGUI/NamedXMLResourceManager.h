@@ -28,12 +28,12 @@
 #ifndef _CEGUINamedXMLResourceManager_h_
 #define _CEGUINamedXMLResourceManager_h_
 
-#include "CEGUIEventSet.h"
-#include "CEGUIString.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUIInputEvent.h"
-#include "CEGUISystem.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/System.h"
 #include <map>
 
 // Start of CEGUI namespace section

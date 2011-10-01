@@ -29,10 +29,10 @@
 # include "config.h"
 #endif
 
-#include "CEGUIIrrlichtTexture.h"
-#include "CEGUISystem.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIImageCodec.h"
+#include "CEGUI/RendererModules/Irrlicht/Texture.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodec.h"
 #include <irrlicht.h>
 
 // Start of CEGUI namespace section

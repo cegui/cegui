@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalListHeader.h
+    filename:   ListHeader.h
     created:    Wed Jul 6 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,10 +28,10 @@
 #ifndef _FalListHeader_h_
 #define _FalListHeader_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIListHeader.h"
-#include "../../falagard/CEGUIFalWidgetLookFeel.h"
-#include "FalListHeaderProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ListHeader.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowRendererSets/Falagard/ListHeaderProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

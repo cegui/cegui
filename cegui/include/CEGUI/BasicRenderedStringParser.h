@@ -28,12 +28,12 @@
 #ifndef _CEGUIBasicRenderedStringParser_h_
 #define _CEGUIBasicRenderedStringParser_h_
 
-#include "CEGUIRenderedStringParser.h"
+#include "CEGUI/RenderedStringParser.h"
 
-#include "CEGUIRect.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIString.h"
-#include "falagard/CEGUIFalEnums.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/String.h"
+#include "CEGUI/falagard/Enums.h"
 #include <map>
 
 #if defined(_MSC_VER)

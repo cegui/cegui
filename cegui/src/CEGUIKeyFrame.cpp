@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIKeyFrame.h"
-#include "CEGUIAnimationInstance.h"
-#include "CEGUIAffector.h"
+#include "CEGUI/KeyFrame.h"
+#include "CEGUI/AnimationInstance.h"
+#include "CEGUI/Affector.h"
 #include <cmath>
 
 // Start of CEGUI namespace section

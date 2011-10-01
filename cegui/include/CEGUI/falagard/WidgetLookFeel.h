@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalWidgetLookFeel.h
+    filename:   CEGUIWidgetLookFeel.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,14 +28,14 @@
 #ifndef _CEGUIFalWidgetLookFeel_h_
 #define _CEGUIFalWidgetLookFeel_h_
 
-#include "CEGUIFalStateImagery.h"
-#include "CEGUIFalWidgetComponent.h"
-#include "CEGUIFalImagerySection.h"
-#include "CEGUIFalPropertyInitialiser.h"
-#include "CEGUIFalPropertyDefinition.h"
-#include "CEGUIFalPropertyLinkDefinition.h"
-#include "CEGUIFalEventLinkDefinition.h"
-#include "CEGUIFalNamedArea.h"
+#include "./StateImagery.h"
+#include "./WidgetComponent.h"
+#include "./ImagerySection.h"
+#include "./PropertyInitialiser.h"
+#include "./PropertyDefinition.h"
+#include "./PropertyLinkDefinition.h"
+#include "./EventLinkDefinition.h"
+#include "./NamedArea.h"
 #include <map>
 
 #if defined(_MSC_VER)

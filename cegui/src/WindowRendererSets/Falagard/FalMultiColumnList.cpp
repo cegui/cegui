@@ -25,14 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalMultiColumnList.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUICoordConverter.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIListHeader.h"
-#include "elements/CEGUIListboxItem.h"
+#include "CEGUI/WindowRendererSets/Falagard/MultiColumnList.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/ListHeader.h"
+#include "CEGUI/elements/ListboxItem.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

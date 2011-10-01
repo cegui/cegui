@@ -28,7 +28,7 @@
 #ifndef _CEGUIRapidXMLParserModule_h_
 #define _CEGUIRapidXMLParserModule_h_
 
-#include "CEGUIRapidXMLParser.h"
+#include "CEGUI/XMLParserModules/RapidXML/XMLParser.h"
 
 /*!
 \brief

@@ -30,10 +30,10 @@
 #ifndef _CEGUIWindowRendererManager_h_
 #define _CEGUIWindowRendererManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUIWindowRenderer.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/WindowRenderer.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 #include <map>
 #include <vector>
 

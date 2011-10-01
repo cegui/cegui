@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOpenGLESFBOTextureTarget.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIGeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUIOpenGLESRenderer.h"
-#include "CEGUIOpenGLESTexture.h"
+#include "CEGUI/RendererModules/OpenGLES/Renderer.h"
+#include "CEGUI/RendererModules/OpenGLES/Texture.h"
 
 #ifndef __APPLE__
 #include "egl/egl.h"

@@ -30,9 +30,9 @@
 #ifndef _CEGUIScheme_h_
 #define _CEGUIScheme_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISchemeManager.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/SchemeManager.h"
 
 
 #include <vector>

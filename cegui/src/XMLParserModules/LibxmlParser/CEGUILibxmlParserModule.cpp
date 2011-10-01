@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUILibxmlParserModule.h"
-#include "CEGUILibxmlParser.h"
+#include "CEGUI/XMLParserModules/Libxml2/XMLParserModule.h"
+#include "CEGUI/XMLParserModules/Libxml2/XMLParser.h"
 
 CEGUI::XMLParser* createParser(void)
 {

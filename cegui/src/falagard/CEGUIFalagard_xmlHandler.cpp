@@ -29,22 +29,22 @@
 #   include "config.h"
 #endif
 
-#include "falagard/CEGUIFalagard_xmlHandler.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "falagard/CEGUIFalWidgetComponent.h"
-#include "falagard/CEGUIFalTextComponent.h"
-#include "falagard/CEGUIFalFrameComponent.h"
-#include "falagard/CEGUIFalNamedArea.h"
-#include "falagard/CEGUIFalPropertyDefinition.h"
-#include "falagard/CEGUIFalPropertyLinkDefinition.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
+#include "CEGUI/falagard/XMLHandler.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/WidgetComponent.h"
+#include "CEGUI/falagard/TextComponent.h"
+#include "CEGUI/falagard/FrameComponent.h"
+#include "CEGUI/falagard/NamedArea.h"
+#include "CEGUI/falagard/PropertyDefinition.h"
+#include "CEGUI/falagard/PropertyLinkDefinition.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 #ifdef CEGUI_HAS_EXPRESSION_DIM
-#   include "falagard/CEGUIFalExpressionDim.h"
+#   include "CEGUI/falagard/ExpressionDim.h"
 #endif
-#include "CEGUIXMLAttributes.h"
-#include "CEGUILogger.h"
-#include "CEGUIAnimation_xmlHandler.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Animation_xmlHandler.h"
 #include <sstream>
 
 // Start of CEGUI namespace section

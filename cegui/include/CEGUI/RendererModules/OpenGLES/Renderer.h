@@ -28,11 +28,11 @@
 #ifndef _CEGUIOpenGLESRenderer_h_
 #define _CEGUIOpenGLESRenderer_h_
 
-#include "../../CEGUIBase.h"
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUISize.h"
-#include "../../CEGUIVector.h"
-#include "CEGUIOpenGLES.h"
+#include "../../Base.h"
+#include "../../Renderer.h"
+#include "../../Size.h"
+#include "../../Vector.h"
+#include "CEGUI/OpenGLES.h"
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)

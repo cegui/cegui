@@ -40,7 +40,7 @@ Each item in here has a comment to describe what it's for.
 #define _CEGUISamplesConfig_h_
 
 // Bring in main config file
-#include "CEGUIConfig.h"
+#include "CEGUI/Config.h"
 
 // Define the default place where samples will look for datafiles
 #if defined(_WIN32) || defined(__WIN32__)

@@ -28,7 +28,7 @@
 #ifndef _CEGUIChainedXMLHandler_h_
 #define _CEGUIChainedXMLHandler_h_
 
-#include "CEGUIXMLHandler.h"
+#include "CEGUI/XMLHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

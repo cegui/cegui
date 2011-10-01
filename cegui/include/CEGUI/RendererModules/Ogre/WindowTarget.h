@@ -28,7 +28,7 @@
 #ifndef _CEGUIOgreWindowTarget_h_
 #define _CEGUIOgreWindowTarget_h_
 
-#include "CEGUIOgreRenderTarget.h"
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,9 +30,9 @@
 #ifndef _CEGUIItemListBase_h_
 #define _CEGUIItemListBase_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
-#include "CEGUIItemEntry.h"
+#include "../Base.h"
+#include "../Window.h"
+#include "./ItemEntry.h"
 
 #include <vector>
 

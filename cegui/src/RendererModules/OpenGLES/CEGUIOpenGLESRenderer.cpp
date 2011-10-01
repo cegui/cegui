@@ -29,21 +29,21 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIOpenGLESRenderer.h"
-#include "CEGUIOpenGLESTexture.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIImageCodec.h"
-#include "CEGUIDynamicModule.h"
-#include "CEGUIOpenGLESViewportTarget.h"
-#include "CEGUIOpenGLESGeometryBuffer.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIOpenGLESFBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGLES/Renderer.h"
+#include "CEGUI/RendererModules/OpenGLES/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/ImageCodec.h"
+#include "CEGUI/DynamicModule.h"
+#include "CEGUI/RendererModules/OpenGLES/ViewportTarget.h"
+#include "CEGUI/RendererModules/OpenGLES/GeometryBuffer.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
 
 #include <sstream>
 #include <algorithm>
 
-#include "CEGUIOpenGLESFBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

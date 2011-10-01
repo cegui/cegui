@@ -27,14 +27,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIWindowProperties.h"
-#include "CEGUIWindow.h"
-#include "CEGUIFont.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowFactoryManager.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
+#include "CEGUI/WindowProperties.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowFactoryManager.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
 #include <cstdlib>
 #include <cstdio>
 

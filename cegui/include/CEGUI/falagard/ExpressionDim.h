@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalExpressionDim.h
+    filename:   CEGUIExpressionDim.h
     created:    Tue Dec 29 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalExpressionDim_h_
 #define _CEGUIFalExpressionDim_h_
 
-#include "CEGUIFalDimensions.h"
+#include "./Dimensions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

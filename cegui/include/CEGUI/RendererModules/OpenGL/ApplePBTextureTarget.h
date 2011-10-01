@@ -29,7 +29,7 @@
 #define _CEGUIOpenGLApplePBTextureTarget_h_
 
 #include <OpenGL/OpenGL.h>
-#include "CEGUIOpenGLTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

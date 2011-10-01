@@ -30,8 +30,8 @@
 #ifndef _CEGUIDefaultResourceProvider_h_
 #define _CEGUIDefaultResourceProvider_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIResourceProvider.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/ResourceProvider.h"
 
 #include <map>
 

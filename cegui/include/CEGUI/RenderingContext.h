@@ -28,7 +28,7 @@
 #ifndef _CEGUIRenderingContext_h_
 #define _CEGUIRenderingContext_h_
 
-#include "CEGUIRenderingSurface.h"
+#include "CEGUI/RenderingSurface.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

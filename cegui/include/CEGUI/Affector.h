@@ -30,8 +30,8 @@
 #ifndef _CEGUIAffector_h_
 #define _CEGUIAffector_h_
 
-#include "CEGUIString.h"
-#include "CEGUIKeyFrame.h"
+#include "CEGUI/String.h"
+#include "CEGUI/KeyFrame.h"
 #include <map>
 
 #if defined(_MSC_VER)

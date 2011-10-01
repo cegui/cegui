@@ -29,25 +29,25 @@
 #   include "config.h"
 #endif
 
-#include "falagard/CEGUIFalTextComponent.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIFont.h"
-#include "CEGUILeftAlignedRenderedString.h"
-#include "CEGUIRightAlignedRenderedString.h"
-#include "CEGUICentredRenderedString.h"
-#include "CEGUIJustifiedRenderedString.h"
-#include "CEGUIRenderedStringWordWrapper.h"
+#include "CEGUI/falagard/TextComponent.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/LeftAlignedRenderedString.h"
+#include "CEGUI/RightAlignedRenderedString.h"
+#include "CEGUI/CentredRenderedString.h"
+#include "CEGUI/JustifiedRenderedString.h"
+#include "CEGUI/RenderedStringWordWrapper.h"
 #include <iostream>
 
 #if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUIFribidiVisualMapping.h"
+    #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUIMinibidiVisualMapping.h"
+    #include "CEGUI/MinibidiVisualMapping.h"
 #else
-    #include "CEGUIBidiVisualMapping.h"
+    #include "CEGUI/BidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalNamedArea.h
+    filename:   CEGUINamedArea.h
     created:    Sun Jun 26 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalNamedArea_h_
 #define _CEGUIFalNamedArea_h_
 
-#include "CEGUIFalDimensions.h"
+#include "./Dimensions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,9 +30,9 @@
 #ifndef _CEGUIGroupBox_h_
 #define _CEGUIGroupBox_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindowFactory.h"
-#include "CEGUIClippedContainer.h"
+#include "../Base.h"
+#include "../WindowFactory.h"
+#include "./ClippedContainer.h"
 #include <vector>
 
 

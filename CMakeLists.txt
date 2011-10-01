@@ -390,8 +390,8 @@ endif()
 ################################################################################
 # Deal with files we generate from template files
 ################################################################################
-configure_file( cegui/include/CEGUIVersion.h.in cegui/include/CEGUIVersion.h )
-configure_file( cegui/include/CEGUIConfig.h.in cegui/include/CEGUIConfig.h )
+configure_file( cegui/include/CEGUI/Version.h.in cegui/include/CEGUI/Version.h )
+configure_file( cegui/include/CEGUI/Config.h.in cegui/include/CEGUI/Config.h )
 configure_file( Samples/common/include/CEGUISamplesConfig.h.in Samples/common/include/CEGUISamplesConfig.h )
 
 if (UNIX AND NOT APPLE)

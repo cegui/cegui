@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDefaultLogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/DefaultLogger.h"
+#include "CEGUI/Exceptions.h"
 #include <ctime>
 #include <iomanip>
 

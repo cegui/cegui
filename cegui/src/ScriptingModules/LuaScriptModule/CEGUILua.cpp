@@ -31,11 +31,9 @@
 #   include "config.h"
 #endif
 
-#include "CEGUI.h"
-#include "CEGUIConfig.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUILua.h"
-#include "CEGUILuaFunctor.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/ScriptModules/Lua/ScriptModule.h"
+#include "CEGUI/ScriptModules/Lua/Functor.h"
 #include <vector>
 
 // include Lua libs and tolua++

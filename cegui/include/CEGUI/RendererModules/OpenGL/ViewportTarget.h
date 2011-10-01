@@ -28,8 +28,8 @@
 #ifndef _CEGUIOpenGLViewportTarget_h_
 #define _CEGUIOpenGLViewportTarget_h_
 
-#include "CEGUIOpenGLRenderTarget.h"
-#include "../../CEGUIRect.h"
+#include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
+#include "../../Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

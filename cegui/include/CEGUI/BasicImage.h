@@ -28,9 +28,9 @@
 #ifndef _CEGUIBasicImage_h_
 #define _CEGUIBasicImage_h_
 
-#include "CEGUIImage.h"
-#include "CEGUIString.h"
-#include "CEGUIRect.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Rect.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

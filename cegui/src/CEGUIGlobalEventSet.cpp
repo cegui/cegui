@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIGlobalEventSet.h"
-#include "CEGUILogger.h"
+#include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/Logger.h"
 
 
 // Start of CEGUI namespace section

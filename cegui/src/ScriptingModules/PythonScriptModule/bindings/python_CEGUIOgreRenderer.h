@@ -1,12 +1,12 @@
-#include "CEGUIString.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUITexture.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRenderingRoot.h"
+#include "CEGUI/String.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/RenderingRoot.h"
 
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
-#include "RendererModules/Ogre/CEGUIOgreResourceProvider.h"
-#include "RendererModules/Ogre/CEGUIOgreImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 
 namespace Ogre
 {

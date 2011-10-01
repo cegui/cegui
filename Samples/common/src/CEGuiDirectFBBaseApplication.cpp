@@ -32,9 +32,9 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTFB
 
 #include "CEGuiDirectFBBaseApplication.h"
-#include "RendererModules/DirectFB/CEGUIDirectFBRenderer.h"
+#include "CEGUI/RendererModules/DirectFB/Renderer.h"
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 #include <directfb.h>
 

@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUINamedXMLResourceManager.h"
+#include "CEGUI/NamedXMLResourceManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -28,8 +28,8 @@
 #ifndef _CEGUIRenderedStringParser_h_
 #define _CEGUIRenderedStringParser_h_
 
-#include "CEGUIRenderedString.h"
-#include "CEGUIString.h"
+#include "CEGUI/RenderedString.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

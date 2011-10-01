@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalTextComponent.h
+    filename:   CEGUITextComponent.h
     created:    Sun Jun 19 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalTextComponent_h_
 #define _CEGUIFalTextComponent_h_
 
-#include "CEGUIFalComponentBase.h"
-#include "../CEGUIRenderedString.h"
-#include "../CEGUIRefCounted.h"
-#include "../CEGUIFormattedRenderedString.h"
+#include "./ComponentBase.h"
+#include "../RenderedString.h"
+#include "../RefCounted.h"
+#include "../FormattedRenderedString.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)

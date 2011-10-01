@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIMenuBase.h"
-#include "elements/CEGUIPopupMenu.h"
-#include "elements/CEGUIMenuItem.h"
+#include "CEGUI/elements/MenuBase.h"
+#include "CEGUI/elements/PopupMenu.h"
+#include "CEGUI/elements/MenuItem.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

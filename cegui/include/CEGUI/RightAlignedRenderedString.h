@@ -28,7 +28,7 @@
 #ifndef _CEGUIRightAlignedRenderedString_h_
 #define _CEGUIRightAlignedRenderedString_h_
 
-#include "CEGUIFormattedRenderedString.h"
+#include "CEGUI/FormattedRenderedString.h"
 #include <vector>
 
 #if defined (_MSC_VER)

@@ -30,8 +30,8 @@
 #ifndef _CEGUIGridLayoutContainer_h_
 #define _CEGUIGridLayoutContainer_h_
 
-#include "CEGUILayoutContainer.h"
-#include "../CEGUIWindowFactory.h"
+#include "./LayoutContainer.h"
+#include "../WindowFactory.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

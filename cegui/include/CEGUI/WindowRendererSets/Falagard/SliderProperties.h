@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalSliderProperties.h
+    filename:   SliderProperties.h
     created:    Sun Jul 3 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalSliderProperties_h_
 #define _FalSliderProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

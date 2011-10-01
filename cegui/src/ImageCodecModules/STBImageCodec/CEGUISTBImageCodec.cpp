@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUISTBImageCodec.h"
-#include "CEGUILogger.h"
-#include "CEGUISize.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodecModules/STB/ImageCodec.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Size.h"
 #define STBI_HEADER_FILE_ONLY
 #include "stb_image.cpp"
 

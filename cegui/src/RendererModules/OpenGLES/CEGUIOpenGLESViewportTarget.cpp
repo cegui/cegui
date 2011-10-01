@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOpenGLESViewportTarget.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIOpenGLES.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/RendererModules/OpenGLES/ViewportTarget.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/OpenGLES.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

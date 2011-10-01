@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalTabControl.h
+    filename:   TabControl.h
     created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalTabControl_h_
 #define _FalTabControl_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUITabControl.h"
-#include "FalTabControlProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/TabControl.h"
+#include "CEGUI/WindowRendererSets/Falagard/TabControlProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

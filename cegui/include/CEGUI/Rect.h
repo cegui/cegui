@@ -30,8 +30,8 @@
 #ifndef _CEGUIRect_h_
 #define _CEGUIRect_h_
 
-#include "CEGUIVector.h"
-#include "CEGUISize.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Size.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

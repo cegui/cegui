@@ -29,22 +29,22 @@
 #   include "config.h"
 #endif
 
-#include "elements/CEGUITree.h"
-#include "elements/CEGUITreeItem.h"
-#include "CEGUISystem.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIFont.h"
-#include "CEGUIWindow.h"
+#include "CEGUI/elements/Tree.h"
+#include "CEGUI/elements/TreeItem.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Window.h"
 #include <algorithm>
 
 #if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUIFribidiVisualMapping.h"
+    #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUIMinibidiVisualMapping.h"
+    #include "CEGUI/MinibidiVisualMapping.h"
 #else
-    #include "CEGUIBidiVisualMapping.h"
+    #include "CEGUI/BidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section

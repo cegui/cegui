@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderedStringTextComponent_h_
 #define _CEGUIRenderedStringTextComponent_h_
 
-#include "CEGUIRenderedStringComponent.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIString.h"
+#include "CEGUI/RenderedStringComponent.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

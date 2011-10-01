@@ -28,10 +28,10 @@
 #ifndef _CEGUIIrrlichtTextureTarget_h_
 #define _CEGUIIrrlichtTextureTarget_h_
 
-#include "CEGUIIrrlichtRendererDef.h"
-#include "../../CEGUITextureTarget.h"
-#include "CEGUIIrrlichtRenderTarget.h"
-#include "../../CEGUIString.h"
+#include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
+#include "../../TextureTarget.h"
+#include "CEGUI/RendererModules/Irrlicht/RenderTarget.h"
+#include "../../String.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

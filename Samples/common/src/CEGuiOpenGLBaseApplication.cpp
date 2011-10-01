@@ -38,9 +38,9 @@
 #ifdef CEGUI_SAMPLES_USE_OPENGL
 
 #include "CEGuiOpenGLBaseApplication.h"
-#include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>

@@ -28,9 +28,9 @@
 #ifndef _CEGUIOpenGLESGeometryBuffer_h_
 #define _CEGUIOpenGLESGeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUIOpenGLESRenderer.h"
-#include "../../CEGUIRect.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/OpenGLESRenderer.h"
+#include "../../Rect.h"
 
 #include <utility>
 #include <vector>
