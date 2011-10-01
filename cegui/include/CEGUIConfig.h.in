@@ -97,7 +97,7 @@ setting CMake options and regenerating, rather than editing directly.
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// The following defines the header and namespace used for TinyXML
+// The following defines the header, namespace and api macros for TinyXML
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_BUILD_EMBEDDED_TINYXML
 
@@ -108,6 +108,7 @@ setting CMake options and regenerating, rather than editing directly.
 #   ifndef CEGUI_TINYXML_NAMESPACE
 #       define CEGUI_TINYXML_NAMESPACE CEGUITinyXML
 #   endif
+#   define CEGUI_TINYXML_HAS_2_6_API 1
 #else
 #   ifndef CEGUI_TINYXML_H
 #       define CEGUI_TINYXML_H <tinyxml.h>
@@ -115,6 +116,7 @@ setting CMake options and regenerating, rather than editing directly.
 #   ifndef CEGUI_TINYXML_NAMESPACE
 #       define CEGUI_TINYXML_NAMESPACE
 #   endif
+#cmakedefine CEGUI_TINYXML_HAS_2_6_API 1
 #endif
 
 //////////////////////////////////////////////////////////////////////////
