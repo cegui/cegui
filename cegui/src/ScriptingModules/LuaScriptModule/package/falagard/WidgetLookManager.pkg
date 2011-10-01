@@ -6,7 +6,10 @@ class WidgetLookManager
 {
   static WidgetLookManager& getSingleton(void);
 
-  void parseLookNFeelSpecification(utf8string filename, utf8string resourceGroup = "");
+  //void parseLookNFeelSpecificationFromContainer(const RawDataContainer& source);
+  void parseLookNFeelSpecificationFromFile(utf8string filename, utf8string resourceGroup = "");
+  void parseLookNFeelSpecificationFromString(utf8string source);
+
   bool isWidgetLookAvailable(utf8string widget) const;
   const WidgetLookFeel& getWidgetLook(utf8string widget) const;
   void eraseWidgetLook(utf8string widget);
