@@ -11,8 +11,9 @@ class WindowManager : public EventSet
 	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window*	loadLayoutFromFile(utf8string filename, utf8string resourceGroup = "");
     tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadLayoutFromString(utf8string source);
 
-    void writeLayoutToStream(const Window& window, OutStream& out, bool writeParent=false) const;
-    void saveLayoutToFile(const Window& window, utf8string filename, bool writeParent = false) const;
+    void writeLayoutToStream(const Window& window, OutStream& out) const;
+    string getLayoutAsString(const Window& window) const;
+    void saveLayoutToFile(const Window& window, utf8string filename) const;
 
 	void destroyWindow(Window* window);
 	void destroyAllWindows();
