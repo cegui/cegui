@@ -236,9 +236,12 @@ void ScrolledContainer::onChildRemoved(WindowEventArgs& e)
         d_eventConnections.erase(conn);
     }
 
-    // perform notification.
-    WindowEventArgs args(this);
-    onContentChanged(args);
+    // perform notification only if we're not currently being destroyed
+    if (!d_destructionStarted)
+    {
+        WindowEventArgs args(this);
+        onContentChanged(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
